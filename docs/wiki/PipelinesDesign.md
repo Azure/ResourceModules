@@ -6,8 +6,6 @@ This section gives you an overview of the design principals the pipelines follow
 
 ### _Navigation_
 
-- [Pipelines Design](#pipelines-design)
-    - [_Navigation_](#navigation)
 - [Module Pipelines](#module-pipelines)
   - [Module pipeline inputs](#module-pipeline-inputs)
   - [Pipeline phases](#pipeline-phases)
@@ -95,9 +93,9 @@ Note that, for the deployments we have to account for certain [prerequisites](#p
 
 #### Removal
 
-The removal phase is strongly coupled with the previous deployment phase. Fundamentally, we want to remove any test-deployed resource after its test concluded. If we would not, we would generate unnecessary costs and may temper with any subsequent test. Some resources may require a dedicated logic to be removed. This logic should be stored alongside the generally utilized removal script in the `.utilities/pipelines/resourceRemoval` folder and be referenced by the `Initialize-DeploymentRemoval.ps1` script that orchestrates the removal.
+The removal phase takes care of removing all resources deployed as part of the previous deployment phase. The reason is twofold: keeping validation subscriptions costs down and allow deployments from scratch at every run.
 
-Most of the removal scripts rely on the deployment name used during the preceding deployment step. Based on this name in combination with the template file path, the removal script find the corresponding deployment and removes all contained resources.
+For additional details on how removal works please refer to the dedicated [Removal action](PipelineRemovalAction) page.
 
 ### Publish
 
@@ -106,7 +104,7 @@ The publish phase concludes each module's pipeline. If all previous tests succee
 - _private bicep registry_
 
 By the time of this writing, the publishing experience works as follows:
-1. A user can optionally specific a specific version in the module's pipeline file, or during runtime. If the user does not, a default version is used
+1. A user can optionally specify a version in the module's pipeline file, or during runtime. If the user does not, a default version is used
 1. No matter what publishing location we enabled, the corresponding logic will
    1. Fetch the latest version of this module in the target location (if available)
    1. Compare it with any specified custom version the user optionally provided

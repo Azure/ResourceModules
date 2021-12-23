@@ -22,7 +22,7 @@ Optional. The time to wait in between the search for resources via their remove 
 Optional. The deployment name to use for the removal
 
 .PARAMETER TemplateFilePath
-Optional. The path to the deployment file
+Mandatory. The path to the deployment file
 
 .PARAMETER RemovalSequence
 Optional. The order of resource types to apply for deletion

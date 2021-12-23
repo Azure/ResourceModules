@@ -23,16 +23,16 @@ Optional. Skip Cleanup of Bicep metadata from json files
 .PARAMETER SkipBicepCleanUp
 Optional. Skip removal of bicep files and folders
 
-.PARAMETER SkipWorkflowUpdate
+.PARAMETER SkipPipelineUpdate
 Optional. Skip replacing .bicep with .json in workflow files
 
 .EXAMPLE
 . .\utilities\tools\ConvertTo-ARMTemplate.ps1
 
-Converts top level bicep modules to json based ARM template, cleaning up all bicep files and folders and updating the workflow files to use the json files.
+Converts top level bicep modules to json-based ARM template, cleaning up all bicep files and folders and updating the workflow files to use the json files.
 
 .EXAMPLE
-. .\utilities\tools\ConvertTo-ARMTemplate.ps1 -ConvertChildren -SkipMetadataCleanup -SkipBicepCleanUp -SkipWorkflowUpdate
+. .\utilities\tools\ConvertTo-ARMTemplate.ps1 -ConvertChildren -SkipMetadataCleanup -SkipBicepCleanUp -SkipPipelineUpdate
 
 Only converts top level bicep modules to json based ARM template, keeping metadata in json, keeping all bicep files and folders, and not updating workflows.
 
@@ -52,7 +52,7 @@ param (
     [switch] $SkipBicepCleanUp,
 
     [Parameter(Mandatory = $false)]
-    [switch] $SkipWorkflowUpdate
+    [switch] $SkipPipelineUpdate
 )
 
 $rootPath = Get-Item -Path $Path | Select-Object -ExpandProperty 'FullName'
@@ -80,8 +80,10 @@ Write-Verbose 'Convert bicep files to json'
 
 Write-Verbose "Convert bicep files to json - Processing [$($BicepFilesToConvert.count)] file(s)"
 if ($PSCmdlet.ShouldProcess("[$($BicepFilesToConvert.count)] deploy.bicep file(s) in path [$armFolderPath]", 'az bicep build')) {
-    $BicepFilesToConvert | ForEach-Object -ThrottleLimit $env:NUMBER_OF_PROCESSORS -Parallel {
-        Invoke-Expression -Command "az bicep build --file '$_'"
+    # parallelism is not supported on GitHub runners
+    #$BicepFilesToConvert | ForEach-Object -ThrottleLimit $env:NUMBER_OF_PROCESSORS -Parallel {
+    $BicepFilesToConvert | ForEach-Object {
+        az bicep build --file $_
     }
 }
 
@@ -94,8 +96,9 @@ if (-not $SkipMetadataCleanup) {
 
     Write-Verbose "Remove Bicep metadata from json - Processing [$($BicepFilesToConvert.count)] file(s)"
     if ($PSCmdlet.ShouldProcess("[$($BicepFilesToConvert.count)] deploy.bicep file(s) in path [$armFolderPath]", 'Set-Content')) {
-        $BicepFilesToConvert | ForEach-Object -ThrottleLimit $env:NUMBER_OF_PROCESSORS -Parallel {
-
+        # parallelism is not supported on GitHub runners
+        #$BicepFilesToConvert | ForEach-Object -ThrottleLimit $env:NUMBER_OF_PROCESSORS -Parallel {
+        $BicepFilesToConvert | ForEach-Object {
             function Remove-JSONMetadata {
                 <#
             .SYNOPSIS
@@ -164,21 +167,38 @@ if (-not $SkipBicepCleanUp) {
 }
 #endregion
 
-#region Update workflow files - Replace .bicep with .json in workflow files
-if (-not $SkipWorkflowUpdate) {
-    Write-Verbose 'Update workflow files'
+#region Update pipeline files - Replace .bicep with .json in workflow files
+if (-not $SkipPipelineUpdate) {
+    Write-Verbose 'Update pipeline files'
 
-    $workflowFolderPath = Join-Path -Path $rootPath -ChildPath '.github\workflows'
-    $workflowFilesToUpdate = Get-ChildItem -Path $workflowFolderPath -Filter 'ms.*.yml' -File -Force
-    Write-Verbose "Update workflow files - Processing [$($workflowFilesToUpdate.count)] file(s)"
-    if ($PSCmdlet.ShouldProcess("[$($workflowFilesToUpdate.count)] ms.*.yml file(s) in path [$armFolderPath]", 'Set-Content')) {
-        $workflowFilesToUpdate | ForEach-Object -ThrottleLimit $env:NUMBER_OF_PROCESSORS -Parallel {
+    # GitHub workflow files
+    $ghWorkflowFolderPath = Join-Path -Path $rootPath -ChildPath '.github\workflows'
+    $ghWorkflowFilesToUpdate = Get-ChildItem -Path $ghWorkflowFolderPath -Filter 'ms.*.yml' -File -Force
+    Write-Verbose ('Update workflow files - Processing [{0}] file(s)' -f $ghWorkflowFilesToUpdate.count)
+    if ($PSCmdlet.ShouldProcess(('[{0}] ms.*.yml file(s) in path [{1}]' -f $ghWorkflowFilesToUpdate.Count, $ghWorkflowFolderPath), 'Set-Content')) {
+        # parallelism is not supported on GitHub runners
+        #$ghWorkflowFilesToUpdate | ForEach-Object -ThrottleLimit $env:NUMBER_OF_PROCESSORS -Parallel {
+        $ghWorkflowFilesToUpdate | ForEach-Object {
             $content = $_ | Get-Content
-            $content = $content.Replace('deploy.bicep', 'deploy.json')
+            $content = $content -replace 'templateFilePath:(.*).bicep', 'templateFilePath:$1.json'
             $_ | Set-Content -Value $content
         }
     }
 
-    Write-Verbose 'Update workflow files - Done'
+    # Azure DevOps Pipelines
+    $adoPipelineFolderPath = Join-Path -Path $rootPath -ChildPath '.azuredevops\modulePipelines'
+    $adoPipelineFilesToUpdate = Get-ChildItem -Path $adoPipelineFolderPath -Filter 'ms.*.yml' -File -Force
+    Write-Verbose ('Update Azure DevOps pipeline files - Processing [{0}] file(s)' -f $adoPipelineFilesToUpdate.count)
+    if ($PSCmdlet.ShouldProcess(('[{0}] ms.*.yml file(s) in path [{1}]' -f $adoPipelineFilesToUpdate.Count, $adoPipelineFolderPath), 'Set-Content')) {
+        # parallelism is not supported on GitHub runners
+        #$adoPipelineFilesToUpdate | ForEach-Object -ThrottleLimit $env:NUMBER_OF_PROCESSORS -Parallel {
+        $adoPipelineFilesToUpdate | ForEach-Object {
+            $content = $_ | Get-Content
+            $content = $content -replace 'templateFilePath:(.*).bicep', 'templateFilePath:$1.json'
+            $_ | Set-Content -Value $content
+        }
+    }
+
+    Write-Verbose 'Update pipeline files - Done'
 }
 #endregion

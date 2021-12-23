@@ -79,6 +79,7 @@ function Initialize-DeploymentRemoval {
                     )
                     break
                 }
+                ### CODE LOCATION: Add custom removal sequence here
             }
 
             # Invoke removal
