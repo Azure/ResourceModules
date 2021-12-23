@@ -162,6 +162,7 @@ The primary pipeline variable file hosts the fundamental pipeline configuration 
 | - | - | - |
 | `bicepRegistryName` | "adpsxxazacrx001" | The container registry to publish bicep templates to |
 | `bicepRegistryRGName` | "artifacts-rg" | The resource group of the container registry to publish bicep templates to. Is used to create a new container registry if not yet existing |
+| `bicepRegistryRGName` | "artifacts-rg" | The location of the resource group of the container registry to publish bicep templates to. Is used to create a new resource group if not yet existing |
 | `bicepRegistryDoPublish` | "true" | A central switch to enable/disable publishing to the private bicep registry |
 
 ### Tokens Replacement
