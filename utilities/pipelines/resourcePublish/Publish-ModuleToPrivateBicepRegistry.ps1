@@ -72,7 +72,7 @@ function Publish-ModuleToPrivateBicepRegistry {
         ##    FIND AVAILABLE VERSION   ##
         #################################
         # Extracts Microsoft.KeyVault/vaults from e.g. C:\arm\Microsoft.KeyVault\vaults\deploy.bicep
-        $ $moduleRegistryIdentifier = 'bicep/modules/{0}' -f $moduleIdentifier.Replace('\', '/').Replace('/', '.').ToLower()
+        $moduleRegistryIdentifier = 'bicep/modules/{0}' -f $moduleIdentifier.Replace('\', '/').Replace('/', '.').ToLower()
 
         if (-not ($repositories = Get-AzContainerRegistryRepository -RegistryName $bicepRegistryName -ErrorAction 'SilentlyContinue')) {
             # No repositories yet
@@ -138,7 +138,7 @@ function Publish-ModuleToPrivateBicepRegistry {
     end {
         Write-Debug ('{0} exited' -f $MyInvocation.MyCommand)
     }
-}
+} }
         #############################################
         ##    Publish to private bicep registry    ##
         #############################################
