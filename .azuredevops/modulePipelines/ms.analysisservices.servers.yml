@@ -37,21 +37,21 @@ variables:
   - name: modulePath
     value: '/arm/Microsoft.AnalysisServices/servers'
 
-stages:
-  - stage: Validation
-    displayName: Pester tests
-    jobs:
-      - template: /.azuredevops/pipelineTemplates/module.jobs.validate.yml
+  # stages:
+  #   - stage: Validation
+  #     displayName: Pester tests
+  #     jobs:
+  #       - template: /.azuredevops/pipelineTemplates/module.jobs.validate.yml
 
-  - stage: Deployment
-    displayName: Deployment tests
-    jobs:
-      - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
-        parameters:
-          removeDeployment: '${{ parameters.removeDeployment }}'
-          deploymentBlocks:
-            - path: $(modulePath)/.parameters/min.parameters.json
-            - path: $(modulePath)/.parameters/parameters.json
+  #   - stage: Deployment
+  #     displayName: Deployment tests
+  #     jobs:
+  #       - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
+  #         parameters:
+  #           removeDeployment: '${{ parameters.removeDeployment }}'
+  #           deploymentBlocks:
+  #             - path: $(modulePath)/.parameters/min.parameters.json
+  #             - path: $(modulePath)/.parameters/parameters.json
 
   - stage: Publishing
     displayName: Publish module
