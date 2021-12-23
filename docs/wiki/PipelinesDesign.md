@@ -6,8 +6,6 @@ This section gives you an overview of the design principals the pipelines follow
 
 ### _Navigation_
 
-- [Pipelines Design](#pipelines-design)
-    - [_Navigation_](#navigation)
 - [Module Pipelines](#module-pipelines)
   - [Module pipeline inputs](#module-pipeline-inputs)
   - [Pipeline phases](#pipeline-phases)
