@@ -38,6 +38,7 @@ function Invoke-ResourcePostRemoval {
                     $null = Remove-AzKeyVault -ResourceId $matchingKeyVault.Id -InRemovedState -Force -Location $matchingKeyVault.Location
                 }
             }
+            break
         }
         'Microsoft.CognitiveServices/accounts' {
             $resourceGroupName = $resourceId.Split('/')[4]
@@ -49,6 +50,7 @@ function Invoke-ResourcePostRemoval {
                     $null = Remove-AzCognitiveServicesAccount -InRemovedState -Force -Location $matchingAccount.Location -ResourceGroupName $resourceGroupName -Name $matchingAccount.AccountName
                 }
             }
+            break
         }
         'Microsoft.ApiManagement/service' {
             $subscriptionId = $resourceId.Split('/')[2]
@@ -73,6 +75,7 @@ function Invoke-ResourcePostRemoval {
                     $null = Invoke-AzRestMethod @purgeRequestInputObject
                 }
             }
+            break
         }
         'Microsoft.OperationalInsights/workspaces' {
             $subscriptionId = $resourceId.Split('/')[2]
@@ -98,6 +101,7 @@ function Invoke-ResourcePostRemoval {
                     }
                 }
             }
+            break
         }
         'Microsoft.RecoveryServices/vaults/backupFabrics/protectionContainers/protectedItems' {
             # Remove protected VM
@@ -133,6 +137,7 @@ function Invoke-ResourcePostRemoval {
 
             # Undo a potential soft delete state change
             $null = Set-AzRecoveryServicesVaultProperty -VaultId $vaultId -SoftDeleteFeatureState $softDeleteStatus.TrimEnd('d')
+            break
         }
         ### CODE LOCATION: Add custom post-removal operation here
     }
