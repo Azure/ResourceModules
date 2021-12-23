@@ -36,7 +36,15 @@ For the most part, this section is to be populated manually. However, for a spec
 - Tags
 - User Assigned Identities
 
-To be able to change this list with minimum effort, the script reads the content from markdown files in the folder: `utilities/tools/moduleReadMeSource`.
+To be able to change this list with minimum effort, the script reads the content from markdown files in the folder: `utilities/tools/moduleReadMeSource` and matches their title against the parameters of the template file. If a match is found, it's content is added to the readme alongside the generated header. This means, if you want to add another case, you just need to add a new file to the `moduleReadMeSource` folder and follow the naming pattern `resourceUsage-<parameteRName>.md`.
+
+For example, the content of file `resourceUsage-roleAssignments.md` in folder `moduleReadMeSource` is added to a template's readMe if it contains a parameter `roleAssignments`. The combined result is:
+
+```markdown
+### Parameter Usage: `roleAssignments`
+
+<[resourceUsage-roleAssignments.md] file content>
+```
 
 # How to use it
 
