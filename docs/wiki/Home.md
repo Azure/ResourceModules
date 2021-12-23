@@ -24,6 +24,8 @@ If you're unfamiliar with Infrastructure as Code, or wonder how you can use the 
   - [Bicep to ARM conversion script](./UtilitiesConversionScript)
 - [Pipelines](./Pipelines)
   - [Design](./PipelinesDesign)
+    - [Parameter File Tokens](./ParameterFileTokens)
+    - [Removal action](./PipelineRemovalAction)
   - [Usage](./PipelinesUsage)
 - [Contribution Guide](./ContributionGuide)
 - [Known Issues](./KnownIssues)
