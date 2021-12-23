@@ -76,7 +76,7 @@ Microsoft.Sql
   └─ databases [child-module/resource]
 ```
 
-In this folder we recommend to place the child-resource-template alongside a ReadMe (that can be generated via the `.github\workflows\scripts\Set-ModuleReadMe.ps1` script) and optionally further nest additional folders for it's child-resources.
+In this folder we recommend to place the child-resource-template alongside a ReadMe (that can be generated via the [Set-ModuleReadMe](./UtilitiesSetModuleReadMe) script) and optionally further nest additional folders for it's child-resources.
 
 The parent template should reference all it's direct child-templates to allow for an end-to-end deployment experience while allowing any user to also reference 'just' the child-resource itself. In the case of the SQL-server example the server template would reference the database module and encapsulate it it in a loop to allow for the deployment of n-amount of databases. For example
 
@@ -180,7 +180,7 @@ module <mainResource>_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, in
 Here you specify the platform roles available for the main resource.
 
 The `builtInRoleNames` variable contains the list of applicable roles for the specific resource to which the nested_rbac.bicep module applies.
->**Note**: You can find a helper script `Get-FormattedRBACRoles.ps1` in the `utilities\tools` folder of the repository. You can use this script to extract a formatted list of RBAC roles used in the CARML modules based on the RBAC lists in Azure.
+>**Note**: You use the helper script [Get-FormattedRBACRoles.ps1](./UtilitiesGetFormattedRBACRoleList) to extract a formatted list of RBAC roles used in the CARML modules based on the RBAC lists in Azure.
 
 The element requires you to provide both the `principalIds` & `roleDefinitionOrIdName` to assign to the principal IDs. Also, the `resourceId` is target resource's resource ID that allows us to reference it as an `existing` resource. Note, the implementation of the `split` in the resource reference becomes longer the deeper you go in the child-resource hierarchy.
 
@@ -194,7 +194,6 @@ var builtInRoleNames = {
   'Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b24988ac-6180-42a0-ab88-20f7382dd24c')
   'Reader': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'acdd72a7-3385-48ef-bd42-f606fba81ae7')
   // <optionalAdditionalRoles>
-  // You can find a helper script `Get-FormattedRBACRoles.ps1` in the `tools` folder of the repository to fetch the roles.
 
 }
 
@@ -524,7 +523,7 @@ Its primary components are in order:
 - A **Template references** section listing relevant resources [ARM template reference](https://docs.microsoft.com/en-us/azure/templates).
 
 Note the following recommendations
-- Use our module generation script `Set-ModuleReadMe` that will do most of the work for you. Currently you can find it at 'utilities\tools\Set-ModuleReadMe.ps1'. Just load the file and invoke the function like this `Set-ModuleReadMe -TemplateFilePath '<pathToModule>/deploy.bicep'`
+- Use our module ReadMe generation script [Set-ModuleReadMe](./UtilitiesSetModuleReadMe) that will do most of the work for you.
 - It is not recommended to describe how to use child resources in the parent readme file (for example 'How to define a [container] entry for the [storage account]'). Instead it is recommended to reference the child resource's ReadMe instead (for example 'container/readme.md').
 
 # Parameter files

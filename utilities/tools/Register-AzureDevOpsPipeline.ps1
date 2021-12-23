@@ -30,13 +30,16 @@ Defaults to 'Azure/ResourceModules'
 Optional. The type of source repository. Either 'GitHub' or 'tfsgit' (for Azure DevOps).
 Defaults to 'GitHub'.
 
+.PARAMETER GitHubPAT
+Optional. A personal access token for the GitHub repository with the source code.
+
 .PARAMETER GitHubServiceConnectionName
 Optional. The pre-created service connection to the GitHub source repository if the pipeline files are in GitHub.
 It is recommended to create the service connection using oAuth.
 
 .PARAMETER AzureDevOpsPAT
-Required. The access token whith appropirate permissions to create Azure Pipelines.
-Usually the System.AccessToken from an Azure Pipeline instance run has sufficent permissions as well.
+Required. The access token with appropriate permissions to create Azure Pipelines.
+Usually the System.AccessToken from an Azure Pipeline instance run has sufficient permissions as well.
 Reference: https://docs.microsoft.com/en-us/azure/devops/pipelines/process/access-tokens?view=azure-devops&tabs=yaml#how-do-i-determine-the-job-authorization-scope-of-my-yaml-pipeline
 Needs at least the permissions:
 - Release: Read, write, execute & manage
@@ -67,6 +70,29 @@ $inputObject = @{
 Register-AzureDevOpsPipeline @inputObject
 
 Registers all pipelines in the default path in the DevOps project [Contoso/CICD] by leveraging the given AzureDevOpsPAT and creating a service connection to GitHub using the provided GitHubPAT
+
+.EXAMPLE
+$inputObject = @{
+    OrganizationName      = 'Contoso'
+    ProjectName           = 'CICD'
+    SourceRepository      = 'Azure/ResourceModules'
+    AzureDevOpsPAT        = '<Placeholder>'
+}
+Register-AzureDevOpsPipeline @inputObject
+
+Registers all pipelines in the default path in the DevOps project [Contoso/CICD] by leveraging the given AzureDevOpsPAT and using a pre-created service connection to GitHub
+
+.EXAMPLE
+$inputObject = @{
+    OrganizationName      = 'Contoso'
+    ProjectName           = 'CICD'
+    SourceRepositoryType  = 'tfsgit'
+    SourceRepository      = 'Azure/ResourceModules'
+    AzureDevOpsPAT        = '<Placeholder>'
+}
+Register-AzureDevOpsPipeline @inputObject
+
+Register all pipelines in a DevOps repository with default values in a the target project
 
 .NOTES
 You'll need the 'azure-devops' extension to run this function: `az extension add --upgrade -n azure-devops`
