@@ -17,9 +17,6 @@ Mandatory. Name of the private bicep registry to publish to.
 .PARAMETER bicepRegistryRgName
 Mandatory. ResourceGroup of the private bicep registry to publish to.
 
-.PARAMETER bicepRegistryRgLocation
-Optional. The location of the resourceGroup the private bicep registry is deployed to. Required if the resource group is not yet existing.
-
 .PARAMETER customVersion
 Optional. A custom version that can be provided by the UI. '-' represents an empty value.
 
@@ -40,9 +37,6 @@ function Publish-ModuleToPrivateBicepRegistry {
 
         [Parameter(Mandatory)]
         [string] $bicepRegistryRgName,
-
-        [Parameter(Mandatory = $false)]
-        [string] $bicepRegistryRgLocation,
 
         [Parameter(Mandatory)]
         [string] $bicepRegistryName,
@@ -67,14 +61,6 @@ function Publish-ModuleToPrivateBicepRegistry {
             throw "The template in path [$templateFilePath] is no bicep template."
         }
 
-        # Resource Group
-        if (-not (Get-AzResourceGroup -Name $bicepRegistryRgName -ErrorAction 'SilentlyContinue')) {
-            if ($PSCmdlet.ShouldProcess("Resource group [$bicepRegistryRgName] to location [$bicepRegistryRgLocation]", 'Deploy')) {
-                New-AzResourceGroup -Name $bicepRegistryRgName -Location $bicepRegistryRgLocation
-            }
-        }
-
-
         # Registry
         if (-not (Get-AzContainerRegistry -ResourceGroupName $bicepRegistryRgName -Name $bicepRegistryName -ErrorAction 'SilentlyContinue')) {
             if ($PSCmdlet.ShouldProcess("Container Registry [$bicepRegistryName] to resource group [$bicepRegistryRgName]", 'Deploy')) {
@@ -86,8 +72,7 @@ function Publish-ModuleToPrivateBicepRegistry {
         ##    FIND AVAILABLE VERSION   ##
         #################################
         # Extracts Microsoft.KeyVault/vaults from e.g. C:\arm\Microsoft.KeyVault\vaults\deploy.bicep
-        $moduleIdentifier = (Split-Path $templateFilePath -Parent).Replace('\', '/').Split('/arm/')[1]
-        $moduleRegistryIdentifier = 'bicep/modules/{0}' -f $moduleIdentifier.Replace('\', '/').Replace('/', '.').ToLower()
+        $ $moduleRegistryIdentifier = 'bicep/modules/{0}' -f $moduleIdentifier.Replace('\', '/').Replace('/', '.').ToLower()
 
         if (-not ($repositories = Get-AzContainerRegistryRepository -RegistryName $bicepRegistryName -ErrorAction 'SilentlyContinue')) {
             # No repositories yet
@@ -140,6 +125,20 @@ function Publish-ModuleToPrivateBicepRegistry {
             throw ('The provided custom version [{0}] must be higher than the current latest version [{1}] published in the private bicep registry [{2}]' -f $newVersionObject.ToString(), $latestVersion.ToString(), $bicepRegistryName)
         }
 
+        #############################################
+        ##    Publish to private bicep registry    ##
+        #############################################
+        $publishingTarget = 'br:{0}.azurecr.io/{1}:{2}' -f $bicepRegistryName, $moduleRegistryIdentifier, $newVersion
+        if ($PSCmdlet.ShouldProcess("Private bicep registry entry [$moduleRegistryIdentifier] version [$newVersion] to registry [$bicepRegistryName]", 'Publish')) {
+            bicep publish $templateFilePath --target $publishingTarget
+        }
+        Write-Verbose 'Publish complete'
+    }
+
+    end {
+        Write-Debug ('{0} exited' -f $MyInvocation.MyCommand)
+    }
+}
         #############################################
         ##    Publish to private bicep registry    ##
         #############################################
