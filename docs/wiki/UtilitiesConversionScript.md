@@ -16,7 +16,7 @@ This page documents the conversion utility and how to use it.
 ---
 # Location
 
-You can find the script under `/utilities/tools/ConvertTo-ARMTemplate.ps1`
+`You can find the script under /utilities/tools/ConvertTo-ARMTemplate.ps1`
 
 # What it does
 
@@ -27,27 +27,26 @@ by using the following steps.
 1. Remove bicep metadata from json
 1. Remove bicep files and folders
 1. Update pipeline files - Replace .bicep with .json in pipeline files
-
 # How to use it
 
 The script can be called with the following parameters:
 
 | name | description |
 |-|-|
-| `Path` | The path to the root of the repo. |
-| `ConvertChildren` | Convert child resource modules to bicep. |
-| `SkipMetadataCleanup` | Skip Cleanup of bicep metadata from json files |
-| `SkipBicepCleanUp` | Skip removal of bicep files and folders |
-| `SkipPipelineUpdate` | Skip replacing .bicep with .json in pipeline files |
+| -Path | The path to the root of the repo. |
+| -ConvertChildren | Convert child resource modules to bicep. |
+| -SkipMetadataCleanup | Skip Cleanup of bicep metadata from json files |
+| -SkipBicepCleanUp | Skip removal of bicep files and folders |
+| -SkipPipelineUpdate | Skip replacing .bicep with .json in pipeline files |
 
-## Example 1: Convert top level bicep modules to json based ARM template, cleaning up all bicep files and folders and updating the workflow files to use the json files
+## Examples
 
+Converts top level bicep modules to json based ARM template, cleaning up all bicep files and folders and updating the workflow files to use the json files.
 ```powershell
-. ./utilities/tools/ConvertTo-ARMTemplate.ps1
+. .\utilities\tools\ConvertTo-ARMTemplate.ps1
 ```
 
-## Example 2: Only convert top level bicep modules to json based ARM template, keeping metadata in json, keeping all bicep files and folders, and not updating workflows
-
+Only converts top level bicep modules to json based ARM template, keeping metadata in json, keeping all bicep files and folders, and not updating workflows.
 ```powershell
-. ./utilities/tools/ConvertTo-ARMTemplate.ps1 -ConvertChildren -SkipMetadataCleanup -SkipBicepCleanUp -SkipWorkflowUpdate
+. .\utilities\tools\ConvertTo-ARMTemplate.ps1 -ConvertChildren -SkipMetadataCleanup -SkipBicepCleanUp -SkipWorkflowUpdate
 ```
