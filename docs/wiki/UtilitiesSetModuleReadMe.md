@@ -28,6 +28,16 @@ You can find the script under `/utilities/tools/Set-ModuleReadMe.ps1`
 
 ## Special case: 'Parameter Usage' section
 
+The 'Parameter Usage' examples are located just beneath the 'Parameters' table. They are intended to show how to use complex objects/arrays that can be provided as parameters (excluding child-resources as they have their own readMe).
+
+For the most part, this section is to be populated manually. However, for a specific set of common parameters, we automatically add their example to the readMe if the parameter exists in the template. At the time of this writing these are:
+- Private Endpoints
+- Role Assignments
+- Tags
+- User Assigned Identities
+
+To be able to change this list with minimum effort, the script reads the content from markdown files in the folder: `utilities/tools/moduleReadMeSource`.
+
 # How to use it
 
 The script can be called with the following parameters:
