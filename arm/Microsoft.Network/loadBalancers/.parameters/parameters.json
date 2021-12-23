@@ -68,6 +68,16 @@
                 }
             ]
         },
+        "inboundNatRules": {
+            "value": [
+                {}
+            ]
+        },
+        "outboundRules": {
+            "value": [
+                {}
+            ]
+        },
         "diagnosticLogsRetentionInDays": {
             "value": 7
         },

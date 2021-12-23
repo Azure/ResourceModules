@@ -61,6 +61,12 @@ param tags object = {}
 @description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
+@description('Optional. Collection of inbound NAT Rules used by a load balancer. Defining inbound NAT rules on your load balancer is mutually exclusive with defining an inbound NAT pool. Inbound NAT pools are referenced from virtual machine scale sets. NICs that are associated with individual virtual machines cannot reference an Inbound NAT pool. They have to reference individual inbound NAT rules.')
+param inboundNatRules array = []
+
+@description('Optional. The outbound rules.')
+param outboundRules array = []
+
 var frontendsSubnets = [for item in frontendIPConfigurations: {
   id: item.properties.subnetId
 }]
@@ -149,6 +155,8 @@ resource loadBalancer 'Microsoft.Network/loadBalancers@2021-02-01' = {
   properties: {
     frontendIPConfigurations: frontendIPConfigurations_var
     backendAddressPools: backendAddressPools
+    inboundNatRules: inboundNatRules
+    outboundRules: outboundRules
     loadBalancingRules: loadBalancingRules_var
     probes: probes_var
   }
