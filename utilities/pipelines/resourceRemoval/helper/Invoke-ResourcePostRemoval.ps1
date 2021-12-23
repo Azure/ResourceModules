@@ -74,6 +74,31 @@ function Invoke-ResourcePostRemoval {
                 }
             }
         }
+        'Microsoft.OperationalInsights/workspaces' {
+            $subscriptionId = $resourceId.Split('/')[2]
+            $resourceGroupName = $resourceId.Split('/')[4]
+            $resourceName = Split-Path $ResourceId -Leaf
+            # Fetch service in soft-delete state
+            $getPath = '/subscriptions/{0}/providers/Microsoft.OperationalInsights/deletedWorkspaces?api-version=2020-03-01-preview' -f $subscriptionId
+            $getRequestInputObject = @{
+                Method = 'GET'
+                Path   = $getPath
+            }
+            $softDeletedService = ((Invoke-AzRestMethod @getRequestInputObject).Content | ConvertFrom-Json).value | Where-Object { $_.id -eq $resourceId }
+            if ($softDeletedService) {
+                # Recover service
+                $location = $softDeletedService.location
+                if ($PSCmdlet.ShouldProcess(('Log analytics workspace [{0}]' -f $resourceId), 'New')) {
+                    $recoveredWorkspace = New-AzOperationalInsightsWorkspace -ResourceGroupName $resourceGroupName -Name $resourceName -Location $location
+                }
+                if ($recoveredWorkspace) {
+                    # Purge service
+                    if ($PSCmdlet.ShouldProcess(('Log analytics workspace with ID [{0}]' -f $resourceId), 'Purge')) {
+                        $recoveredWorkspace | Remove-AzOperationalInsightsWorkspace -ForceDelete -Force
+                    }
+                }
+            }
+        }
         'Microsoft.RecoveryServices/vaults/backupFabrics/protectionContainers/protectedItems' {
             # Remove protected VM
             # Required if e.g. a VM was listed in an RSV and only that VM is removed
