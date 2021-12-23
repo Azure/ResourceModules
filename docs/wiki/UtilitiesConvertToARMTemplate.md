@@ -43,11 +43,11 @@ The script can be called with the following parameters:
 ## Example 1: Convert top level bicep modules to json based ARM template, cleaning up all bicep files and folders and updating the workflow files to use the json files
 
 ```powershell
-. ./utilities/tools/ConvertTo-ARMTemplate.ps1
+. './utilities/tools/ConvertTo-ARMTemplate.ps1'
 ```
 
 ## Example 2: Only convert top level bicep modules to json based ARM template, keeping metadata in json, keeping all bicep files and folders, and not updating workflows
 
 ```powershell
-. ./utilities/tools/ConvertTo-ARMTemplate.ps1 -ConvertChildren -SkipMetadataCleanup -SkipBicepCleanUp -SkipWorkflowUpdate
+. './utilities/tools/ConvertTo-ARMTemplate.ps1' -ConvertChildren -SkipMetadataCleanup -SkipBicepCleanUp -SkipWorkflowUpdate
 ```
