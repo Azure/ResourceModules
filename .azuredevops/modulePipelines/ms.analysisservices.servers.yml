@@ -37,7 +37,7 @@ variables:
   - name: modulePath
     value: '/arm/Microsoft.AnalysisServices/servers'
 
-  # stages:
+  stages:
   #   - stage: Validation
   #     displayName: Pester tests
   #     jobs:
