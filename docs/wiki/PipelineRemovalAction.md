@@ -39,15 +39,18 @@ It uses several helper scripts that can be found in the `/utilities/pipelines/re
 # Create a specialized removal procedure
 
 You can define a custom removal procedure by:
-1. influencing the **sequence** in which resource are removed by prioritizing specific resource types (_Virtual WAN_ and _Automation Account_ are examples of modules that uses this method)
-1. define a **custom removal action** to remove a resource of a _specific resource type_ (_Recovery Services Vault_ is an example of resource type that defines it)
-1. define a custom **post-removal action** to be run after removing a resource of a _specific resource type_ (_Key Vaults_ uses this to purge)
+1. influencing the **order** in which resources are removed by prioritizing specific resource types 
+    > **Example** Removing a _Virtual WAN_ resource requires related resources to be deleted in a specific order
+1. defining a **custom removal action** to remove a resource of a _specific resource type_ 
+    > **Example** A _Recovery Services Vault_ resource requires some protected items to be identified and removed beforehand
+1. defining a custom **post-removal action** to be run after removing a resource of a _specific resource type_
+    > **Example** A _Key Vault_ resource needs to be purged when soft deletion is enforced
 
 Those methods can be combined independently.
 
 > **Important**: _custom_ and _post-removal_ actions will be executed when a resource of the type you specify is removed **regardless** of which deployment triggered the deployment. Make sure you do not assume the resource is in a particular state defined by your module.
 
-To modify the resource types removal **sequence**:
+To modify the resource types removal **order**:
 1. Open the `/utilities/pipelines/resourceRemoval/Initialize-DeploymentRemoval.ps1` file.
 1. Look for the following comment: `### CODE LOCATION: Add custom removal sequence here`
 1. Add a case value that matches your module name
