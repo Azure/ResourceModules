@@ -138,8 +138,7 @@ function Publish-ModuleToPrivateBicepRegistry {
         if ($newVersionObject -lt $latestVersion -or $newVersionObject -eq $latestVersion) {
             throw ('The provided custom version [{0}] must be higher than the current latest version [{1}] published in the private bicep registry [{2}]' -f $newVersionObject.ToString(), $latestVersion.ToString(), $bicepRegistryName)
         }
-    }
-}
+
         #############################################
         ##    Publish to private bicep registry    ##
         #############################################
