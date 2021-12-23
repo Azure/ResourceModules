@@ -94,7 +94,7 @@ The steps you'd want to follow are
   - Service connection(s) used in the pipeline(s)
   - Agent pool(s) used in the pipeline(s) if not using the default available agents
 #>
-function Register-AzureDevOpsPipelines {
+function Register-AzureDevOpsPipeline {
 
     [CmdletBinding(SupportsShouldProcess)]
     param (

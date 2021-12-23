@@ -30,6 +30,9 @@ inputs:
     description: 'Required to publish to private bicep registry. ResourceGroup of the container registry to publish to'
     required: false
   bicepRegistryRgName:
+    description: 'Required to publish to private bicep registry. Name of the container registry resource group'
+    required: false
+  bicepRegistryRgLocation:
     description: 'Required to publish to private bicep registry. Location of the container registry resource group'
     required: false
   bicepRegistryDoPublish:
@@ -95,11 +98,12 @@ runs:
           . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourcePublish' 'Publish-ModuleToPrivateBicepRegistry.ps1')
 
           $functionInput = @{
-            templateFilePath    = Join-Path $env:GITHUB_WORKSPACE "${{ inputs.templateFilePath }}"
-            bicepRegistryName   = '${{ inputs.bicepRegistryName }}'
-            bicepRegistryRgName = '${{ inputs.bicepRegistryRgName }}'
-            customVersion       = '${{ inputs.customVersion }}'
-            versioningOption    = '${{ inputs.versioningOption }}'
+            templateFilePath        = Join-Path $env:GITHUB_WORKSPACE "${{ inputs.templateFilePath }}"
+            bicepRegistryName       = '${{ inputs.bicepRegistryName }}'
+            bicepRegistryRgName     = '${{ inputs.bicepRegistryRgName }}'
+            bicepRegistryRgLocation = '${{ inputs.bicepRegistryRgLocation }}'
+            customVersion           = '${{ inputs.customVersion }}'
+            versioningOption        = '${{ inputs.versioningOption }}'
           }
 
           Write-Verbose "Invoke task with" -Verbose

@@ -498,9 +498,6 @@ While exceptions might be needed, the following guidance should be followed as m
   > name: '${deployment().name}-Table-${index}'
   > ```
 
-
-
-
 ## Outputs
 
 - Output names are in camelCase, i.e `storageAccountResourceId`
