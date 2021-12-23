@@ -72,6 +72,13 @@ function Initialize-DeploymentRemoval {
                     )
                     break
                 }
+                'workspaces' {
+                    $removalSequence += @(
+                        'Microsoft.OperationsManagement/solutions',
+                        'Microsoft.OperationalInsights/workspaces/linkedServices'
+                    )
+                    break
+                }
                 ### CODE LOCATION: Add custom removal sequence here
             }
 
