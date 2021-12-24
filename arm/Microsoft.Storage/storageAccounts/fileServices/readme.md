@@ -23,8 +23,8 @@ This module can be used to deploy a file share service into a storage account.
 | `logsToEnable` | array | `[StorageRead, StorageWrite, StorageDelete]` | `[StorageRead, StorageWrite, StorageDelete]` | Optional. The name of logs that will be streamed. |
 | `metricsToEnable` | array | `[Transaction]` | `[Transaction]` | Optional. The name of metrics that will be streamed. |
 | `name` | string | `default` |  | Optional. The name of the file service |
-| `protocolSettings` | object | `{object}` |  | Protocol settings for file service |
-| `shareDeleteRetentionPolicy` | object | `{object}` |  | The service properties for soft delete. |
+| `protocolSettings` | object | `{object}` |  | Optional. Protocol settings for file service |
+| `shareDeleteRetentionPolicy` | object | `{object}` |  | Optional. The service properties for soft delete. |
 | `shares` | _[shares](shares/readme.md)_ array | `[]` |  | Optional. File shares to create. |
 | `storageAccountName` | string |  |  | Required. Name of the Storage Account. |
 | `workspaceId` | string |  |  | Optional. Resource ID of a log analytics workspace. |

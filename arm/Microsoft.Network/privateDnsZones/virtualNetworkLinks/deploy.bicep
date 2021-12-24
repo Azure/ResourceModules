@@ -2,7 +2,7 @@
 param privateDnsZoneName string
 
 @description('Optional. The name of the virtual network link.')
-param name string = last(split(virtualNetworkResourceId, '/'))
+param name string = '${last(split(virtualNetworkResourceId, '/'))}-vnetlink'
 
 @description('Optional. The location of the PrivateDNSZone. Should be global.')
 param location string = 'global'
@@ -24,11 +24,11 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
-resource privateDnsZone 'Microsoft.Network/privateDnsZones@2018-09-01' existing = {
+resource privateDnsZone 'Microsoft.Network/privateDnsZones@2020-06-01' existing = {
   name: privateDnsZoneName
 }
 
-resource virtualNetworkLink 'Microsoft.Network/privateDnsZones/virtualNetworkLinks@2018-09-01' = {
+resource virtualNetworkLink 'Microsoft.Network/privateDnsZones/virtualNetworkLinks@2020-06-01' = {
   name: name
   parent: privateDnsZone
   location: location
