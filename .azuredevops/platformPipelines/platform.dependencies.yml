@@ -46,3 +46,5 @@ stages:
             - path: $(dependencyPath)/Microsoft.Resources/resourceGroups/parameters/parameters.json
               templateFilePath: $(templateFilePath)
               displayName: User Assigned Identity
+    dependsOn:
+      - deploy_rg
