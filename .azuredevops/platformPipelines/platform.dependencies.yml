@@ -115,7 +115,7 @@ stages:
             - path: $(dependencyPath)/$(resourceType)/parameters/fa.parameters.json
               templateFilePath: $(templateFilePath)
               displayName: FunctionApp storage account
-      - job:
+      - job: sa_upload
           displayName: Upload files to storage account
           pool:
             ${{ if eq(variables['vmImage'], '') }}:
