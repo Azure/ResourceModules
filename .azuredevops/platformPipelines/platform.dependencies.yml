@@ -18,6 +18,8 @@ variables:
     value: 'utilities/pipelines/dependencies'
   - name: modulesPath
     value: 'arm'
+  - name: defaultResourceGroupName
+    value: 'validation-rg'
 
 stages:
   - stage: deploy_rg
@@ -140,7 +142,7 @@ stages:
 
                 # Upload files to storage account
                 $functionInput = @{
-                  ResourceGroupName   = '${{ env.resourceGroupName }}'
+                  ResourceGroupName   = '$(defaultResourceGroupName)'
                   StorageAccountName  = $storageAccountParameters.name.value
                   contentDirectories  = Join-Path '$(Build.SourcesDirectory)' $(dependencyPath) '$(resourceType)' 'uploads'
                   targetContainer     = $storageAccountParameters.blobServices.value.containers[0].name
