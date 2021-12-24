@@ -30,5 +30,7 @@ stages:
           deploymentBlocks:
             - path: $(dependencyPath)/Microsoft.Resources/resourceGroups/parameters/artifacts.parameters.json
               templateFilePath: $(templateFilePath)
+              displayName: Artifacts Resource Group
             - path: $(dependencyPath)/Microsoft.Resources/resourceGroups/parameters/validation.parameters.json
               templateFilePath: $(templateFilePath)
+              displayName: Validation Resource Group
