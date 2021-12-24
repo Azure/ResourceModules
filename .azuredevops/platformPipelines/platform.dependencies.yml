@@ -54,7 +54,7 @@ stages:
     displayName: Deploy policy assignment
     variables:
       resourceType: 'Microsoft.Authorization/policyAssignments'
-      templateFilePath: $(modulesPath)/$(resourceType)/.bicep/nested_policyAssignments_sub
+      templateFilePath: $(modulesPath)/$(resourceType)/.bicep/nested_policyAssignments_sub.bicep
     jobs:
       - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
         parameters:
