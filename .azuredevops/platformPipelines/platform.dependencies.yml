@@ -23,7 +23,7 @@ stages:
   - stage: ResourceGroups
     displayName: Resource Groups
     variables:
-      - templateFilePath: $(modulesPath)/Microsoft.Resources/resourceGroups/deploy.json
+      templateFilePath: $(modulesPath)/Microsoft.Resources/resourceGroups/deploy.json
     jobs:
       - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
         parameters:
