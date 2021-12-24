@@ -132,17 +132,17 @@ stages:
               scriptLocation: 'inlineScript'
               inlineScript: |
                 # Load used functions
-                . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'sharedScripts' 'Export-ContentToBlob.ps1')
+                . (Join-Path '$(Build.SourcesDirectory)' 'utilities' 'pipelines' 'sharedScripts' 'Export-ContentToBlob.ps1')
 
                 # Get storage account name
-                $parameterFilePath = Join-Path $env:GITHUB_WORKSPACE '${{ env.dependencyPath }}' 'Microsoft.Storage/storageAccounts' 'parameters' 'parameters.json'
+                $parameterFilePath = Join-Path '$(Build.SourcesDirectory)' $(dependencyPath) '$(resourceType)' 'parameters' 'parameters.json'
                 $storageAccountParameters = (ConvertFrom-Json (Get-Content -path $parameterFilePath -Raw)).parameters
 
                 # Upload files to storage account
                 $functionInput = @{
                   ResourceGroupName   = '${{ env.resourceGroupName }}'
                   StorageAccountName  = $storageAccountParameters.name.value
-                  contentDirectories  = Join-Path $env:GITHUB_WORKSPACE '${{ env.dependencyPath }}' 'Microsoft.Storage/storageAccounts' 'uploads'
+                  contentDirectories  = Join-Path '$(Build.SourcesDirectory)' $(dependencyPath) '$(resourceType)' 'uploads'
                   targetContainer     = $storageAccountParameters.blobServices.value.containers[0].name
                 }
 
