@@ -20,8 +20,8 @@ variables:
     value: 'arm'
 
 stages:
-  - stage: ResourceGroups
-    displayName: Resource Groups
+  - stage: deploy_rg
+    displayName: Deploy resource group
     variables:
       templateFilePath: $(modulesPath)/Microsoft.Resources/resourceGroups/deploy.json
     jobs:
@@ -34,3 +34,15 @@ stages:
             - path: $(dependencyPath)/Microsoft.Resources/resourceGroups/parameters/validation.parameters.json
               templateFilePath: $(templateFilePath)
               displayName: Validation Resource Group
+
+  - stage: deploy_msi
+    displayName: Deploy user assigned identity
+    variables:
+      templateFilePath: $(modulesPath)/Microsoft.ManagedIdentity/userAssignedIdentities/deploy.json
+    jobs:
+      - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
+        parameters:
+          deploymentBlocks:
+            - path: $(dependencyPath)/Microsoft.Resources/resourceGroups/parameters/parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: User Assigned Identity
