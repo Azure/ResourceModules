@@ -23,27 +23,29 @@ stages:
   - stage: deploy_rg
     displayName: Deploy resource group
     variables:
-      templateFilePath: $(modulesPath)/Microsoft.Resources/resourceGroups/deploy.bicep
+      resourceType: 'Microsoft.Resources/resourceGroups'
+      templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
     jobs:
       - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
         parameters:
           deploymentBlocks:
-            - path: $(dependencyPath)/Microsoft.Resources/resourceGroups/parameters/artifacts.parameters.json
+            - path: $(dependencyPath)/$(resourceType)/parameters/artifacts.parameters.json
               templateFilePath: $(templateFilePath)
               displayName: Artifacts Resource Group
-            - path: $(dependencyPath)/Microsoft.Resources/resourceGroups/parameters/validation.parameters.json
+            - path: $(dependencyPath)/$(resourceType)/parameters/validation.parameters.json
               templateFilePath: $(templateFilePath)
               displayName: Validation Resource Group
 
   - stage: deploy_msi
     displayName: Deploy user assigned identity
     variables:
-      templateFilePath: $(modulesPath)/Microsoft.ManagedIdentity/userAssignedIdentities/deploy.bicep
+      resourceType: 'Microsoft.ManagedIdentity/userAssignedIdentities'
+      templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
     jobs:
       - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
         parameters:
           deploymentBlocks:
-            - path: $(dependencyPath)/Microsoft.Resources/resourceGroups/parameters/parameters.json
+            - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
               templateFilePath: $(templateFilePath)
               displayName: User Assigned Identity
     dependsOn:
