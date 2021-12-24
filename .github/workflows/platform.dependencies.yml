@@ -38,8 +38,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        parameterFilePaths:
-          ['artifacts.parameters.json', 'validation.parameters.json']
+        parameterFilePaths: ['validation.parameters.json']
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -106,33 +105,6 @@ jobs:
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.defaultLocation }}'
           resourceGroupName: '${{ env.resourceGroupName }}'
-          subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
-          managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
-          removeDeployment: '${{ env.removeDeployment }}'
-
-  job_deploy_privateBicepRegistry:
-    runs-on: ubuntu-20.04
-    name: 'Deploy private bicep registry'
-    env:
-      namespace: 'Microsoft.ContainerRegistry\registries'
-    needs:
-      - job_deploy_rg
-    strategy:
-      fail-fast: false
-      matrix:
-        parameterFilePaths: ['parameters.json']
-    steps:
-      - name: 'Checkout'
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-      - name: 'Deploy module'
-        uses: ./.github/actions/templates/validateModuleDeployment
-        with:
-          templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
-          parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
-          location: '${{ env.defaultLocation }}'
-          resourceGroupName: '${{ env.resourceGroupNameArtifacts }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
           removeDeployment: '${{ env.removeDeployment }}'
@@ -219,7 +191,7 @@ jobs:
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
           removeDeployment: '${{ env.removeDeployment }}'
 
-  job_upload_storage_files:
+  job_sa_upload_storage_files:
     runs-on: ubuntu-20.04
     name: 'Upload files to storage account'
     needs:

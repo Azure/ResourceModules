@@ -29,9 +29,6 @@ stages:
       - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
         parameters:
           deploymentBlocks:
-            - path: $(dependencyPath)/$(resourceType)/parameters/artifacts.parameters.json
-              templateFilePath: $(templateFilePath)
-              displayName: Artifacts Resource Group
             - path: $(dependencyPath)/$(resourceType)/parameters/validation.parameters.json
               templateFilePath: $(templateFilePath)
               displayName: Validation Resource Group
@@ -48,5 +45,112 @@ stages:
             - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
               templateFilePath: $(templateFilePath)
               displayName: User Assigned Identity
+    dependsOn:
+      - deploy_rg
+
+  - stage: deploy_pa
+    displayName: Deploy policy assignment
+    variables:
+      resourceType: 'Microsoft.Authorization/policyAssignments'
+      templateFilePath: $(modulesPath)/$(resourceType)/.bicep/nested_policyAssignments_sub
+    jobs:
+      - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
+        parameters:
+          deploymentBlocks:
+            - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: Policy assignment
+    dependsOn:
+      - deploy_rg
+
+  - stage: deploy_evh
+    displayName: Deploy event hub
+    variables:
+      resourceType: 'Microsoft.EventHub/namespaces'
+      templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
+    jobs:
+      - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
+        parameters:
+          deploymentBlocks:
+            - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: EventHub
+    dependsOn:
+      - deploy_rg
+
+  - stage: deploy_law
+    displayName: Deploy log analytics workspace
+    variables:
+      resourceType: 'Microsoft.OperationalInsights/workspaces'
+      templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
+    jobs:
+      - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
+        parameters:
+          deploymentBlocks:
+            - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: Default LAW
+            - path: $(dependencyPath)/$(resourceType)/parameters/appi.parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: AppInsights LAW
+    dependsOn:
+      - deploy_rg
+
+  - stage: deploy_sa
+    displayName: Deploy storage account
+    variables:
+      resourceType: 'Microsoft.Storage/storageAccounts'
+      templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
+    jobs:
+      - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
+        parameters:
+          deploymentBlocks:
+            - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: Default storage account
+              jobName: default_sa
+            - path: $(dependencyPath)/$(resourceType)/parameters/law.parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: LAW storage account
+            - path: $(dependencyPath)/$(resourceType)/parameters/fa.parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: FunctionApp storage account
+      - job:
+          displayName: Upload files to storage account
+          pool:
+            ${{ if eq(variables['vmImage'], '') }}:
+              name: $(poolName)
+            ${{ if eq(variables['poolName'], '') }}:
+              vmImage: $(vmImage)
+          steps:
+            - task: AzureCLI@2
+              enabled: true
+              displayName: Upload files to storage account
+              inputs:
+                azureSubscription: $(serviceConnection)
+                scriptType: 'pscore'
+                scriptLocation: 'inlineScript'
+                inlineScript: |
+                  # Load used functions
+                  . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'sharedScripts' 'Export-ContentToBlob.ps1')
+
+                  # Get storage account name
+                  $parameterFilePath = Join-Path $env:GITHUB_WORKSPACE '${{ env.dependencyPath }}' 'Microsoft.Storage/storageAccounts' 'parameters' 'parameters.json'
+                  $storageAccountParameters = (ConvertFrom-Json (Get-Content -path $parameterFilePath -Raw)).parameters
+
+                  # Upload files to storage account
+                  $functionInput = @{
+                    ResourceGroupName   = '${{ env.resourceGroupName }}'
+                    StorageAccountName  = $storageAccountParameters.name.value
+                    contentDirectories  = Join-Path $env:GITHUB_WORKSPACE '${{ env.dependencyPath }}' 'Microsoft.Storage/storageAccounts' 'uploads'
+                    targetContainer     = $storageAccountParameters.blobServices.value.containers[0].name
+                  }
+
+                  Write-Verbose "Invoke task with" -Verbose
+                  Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
+
+                  Export-ContentToBlob @functionInput -Verbose
+          dependsOn:
+            - default_sa
     dependsOn:
       - deploy_rg
