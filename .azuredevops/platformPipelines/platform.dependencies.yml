@@ -23,7 +23,7 @@ stages:
   - stage: deploy_rg
     displayName: Deploy resource group
     variables:
-      templateFilePath: $(modulesPath)/Microsoft.Resources/resourceGroups/deploy.json
+      templateFilePath: $(modulesPath)/Microsoft.Resources/resourceGroups/deploy.bicep
     jobs:
       - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
         parameters:
@@ -38,7 +38,7 @@ stages:
   - stage: deploy_msi
     displayName: Deploy user assigned identity
     variables:
-      templateFilePath: $(modulesPath)/Microsoft.ManagedIdentity/userAssignedIdentities/deploy.json
+      templateFilePath: $(modulesPath)/Microsoft.ManagedIdentity/userAssignedIdentities/deploy.bicep
     jobs:
       - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
         parameters:
