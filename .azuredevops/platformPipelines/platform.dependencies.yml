@@ -1,0 +1,34 @@
+name: '.Platform: Dependencies'
+
+# trigger:
+#   batch: true
+#   branches:
+#     include:
+#       - main
+#   paths:
+#     include:
+#       - '.azuredevops/pipelineTemplates/module.jobs.deploy.yml'
+#       - '.azuredevops/platformPipelines/platform.dependencies.yml'
+#       - 'utilities/pipelines/dependencies/**'
+
+variables:
+  - template: '/.azuredevops/pipelineVariables/global.variables.yml'
+  - group: 'PLATFORM_VARIABLES'
+  - name: dependencyPath
+    value: 'utilities/pipelines/dependencies'
+  - name: modulesPath
+    value: 'arm'
+
+stages:
+  - stage: ResourceGroups
+    displayName: Resource Groups
+    variables:
+      - templateFilePath: $(modulesPath)/Microsoft.Resources/resourceGroups/deploy.json
+    jobs:
+      - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
+        parameters:
+          deploymentBlocks:
+            - path: $(dependencyPath)/Microsoft.Resources/resourceGroups/parameters/artifacts.parameters.json
+              templateFilePath: $(templateFilePath)
+            - path: $(dependencyPath)/Microsoft.Resources/resourceGroups/parameters/validation.parameters.json
+              templateFilePath: $(templateFilePath)
