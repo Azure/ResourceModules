@@ -115,42 +115,42 @@ stages:
             - path: $(dependencyPath)/$(resourceType)/parameters/fa.parameters.json
               templateFilePath: $(templateFilePath)
               displayName: FunctionApp storage account
-      - job: sa_upload
-          displayName: Upload files to storage account
-          pool:
-            ${{ if eq(variables['vmImage'], '') }}:
-              name: $(poolName)
-            ${{ if eq(variables['poolName'], '') }}:
-              vmImage: $(vmImage)
-          steps:
-            - task: AzureCLI@2
-              enabled: true
-              displayName: Upload files to storage account
-              inputs:
-                azureSubscription: $(serviceConnection)
-                scriptType: 'pscore'
-                scriptLocation: 'inlineScript'
-                inlineScript: |
-                  # Load used functions
-                  . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'sharedScripts' 'Export-ContentToBlob.ps1')
+      - job:
+        displayName: Upload files to storage account
+        pool:
+          ${{ if eq(variables['vmImage'], '') }}:
+            name: $(poolName)
+          ${{ if eq(variables['poolName'], '') }}:
+            vmImage: $(vmImage)
+        steps:
+          - task: AzureCLI@2
+            enabled: true
+            displayName: Upload files to storage account
+            inputs:
+              azureSubscription: $(serviceConnection)
+              scriptType: 'pscore'
+              scriptLocation: 'inlineScript'
+              inlineScript: |
+                # Load used functions
+                . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'sharedScripts' 'Export-ContentToBlob.ps1')
 
-                  # Get storage account name
-                  $parameterFilePath = Join-Path $env:GITHUB_WORKSPACE '${{ env.dependencyPath }}' 'Microsoft.Storage/storageAccounts' 'parameters' 'parameters.json'
-                  $storageAccountParameters = (ConvertFrom-Json (Get-Content -path $parameterFilePath -Raw)).parameters
+                # Get storage account name
+                $parameterFilePath = Join-Path $env:GITHUB_WORKSPACE '${{ env.dependencyPath }}' 'Microsoft.Storage/storageAccounts' 'parameters' 'parameters.json'
+                $storageAccountParameters = (ConvertFrom-Json (Get-Content -path $parameterFilePath -Raw)).parameters
 
-                  # Upload files to storage account
-                  $functionInput = @{
-                    ResourceGroupName   = '${{ env.resourceGroupName }}'
-                    StorageAccountName  = $storageAccountParameters.name.value
-                    contentDirectories  = Join-Path $env:GITHUB_WORKSPACE '${{ env.dependencyPath }}' 'Microsoft.Storage/storageAccounts' 'uploads'
-                    targetContainer     = $storageAccountParameters.blobServices.value.containers[0].name
-                  }
+                # Upload files to storage account
+                $functionInput = @{
+                  ResourceGroupName   = '${{ env.resourceGroupName }}'
+                  StorageAccountName  = $storageAccountParameters.name.value
+                  contentDirectories  = Join-Path $env:GITHUB_WORKSPACE '${{ env.dependencyPath }}' 'Microsoft.Storage/storageAccounts' 'uploads'
+                  targetContainer     = $storageAccountParameters.blobServices.value.containers[0].name
+                }
 
-                  Write-Verbose "Invoke task with" -Verbose
-                  Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
+                Write-Verbose "Invoke task with" -Verbose
+                Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
-                  Export-ContentToBlob @functionInput -Verbose
-          dependsOn:
-            - default_sa
+                Export-ContentToBlob @functionInput -Verbose
+        dependsOn:
+          - default_sa
     dependsOn:
       - deploy_rg
