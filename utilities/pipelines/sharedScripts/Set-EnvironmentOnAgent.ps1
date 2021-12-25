@@ -107,6 +107,7 @@ function Set-EnvironmentOnAgent {
             @{ Name = 'Az.Monitor' },
             @{ Name = 'Az.CognitiveServices' },
             @{ Name = 'Az.OperationalInsights' },
+            @{ Name = 'Az.Storage' },
             @{ Name = 'Pester'; Version = '5.3.0' }
         )
     )
