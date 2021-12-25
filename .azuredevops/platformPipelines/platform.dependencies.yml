@@ -231,22 +231,10 @@ stages:
             - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
               templateFilePath: $(templateFilePath)
               displayName: Default User Defined Routes
-    dependsOn:
-      - deploy_rg
-
-  - stage: deploy_sqlmi_udr
-    displayName: Deploy sqlmi route tables
-    condition: eq(${{ parameters.deploySqlMiDependencies }}, true)
-    variables:
-      resourceType: 'Microsoft.Network/routeTables'
-      templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
-    jobs:
-      - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
-        parameters:
-          deploymentBlocks:
-            - path: $(dependencyPath)/$(resourceType)/parameters/sqlMi.parameters.json
-              templateFilePath: $(templateFilePath)
-              displayName: SQLMI User Defined Routes
+            - ${{ if eq( parameters.deploySqlMiDependencies, true) }}:
+                - path: $(dependencyPath)/$(resourceType)/parameters/sqlMi.parameters.json
+                  templateFilePath: $(templateFilePath)
+                  displayName: SQLMI User Defined Routes
     dependsOn:
       - deploy_rg
 
@@ -391,6 +379,7 @@ stages:
                 - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
                   templateFilePath: $(templateFilePath)
                   displayName: SQLMI key vault
+                  jobName: sqlmi_kv
       - job:
         displayName: Set key vault secrets keys and certificates
         pool:
@@ -443,7 +432,147 @@ stages:
                 Set-AzKeyVaultSecret -VaultName $keyVaultName -Name 'apimclientsecret' -SecretValue $password
         dependsOn:
           - default_kv
+      - job:
+        displayName: Set sqlmi key vault secrets and keys
+        condition: eq(${{ parameters.deploySqlMiDependencies }}, true)
+        pool:
+          ${{ if eq(variables['vmImage'], '') }}:
+            name: $(poolName)
+          ${{ if eq(variables['poolName'], '') }}:
+            vmImage: $(vmImage)
+        steps:
+          - task: PowerShell@2
+            displayName: 'Setup agent'
+            inputs:
+              targetType: inline
+              pwsh: true
+              script: |
+                # Load used functions
+                . (Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
+
+                # Set agent up
+                Set-EnvironmentOnAgent
+          - task: AzureCLI@2
+            enabled: true
+            displayName: Set sqlmi key vault secrets and keys
+            inputs:
+              azureSubscription: $(serviceConnection)
+              scriptType: 'pscore'
+              scriptLocation: 'inlineScript'
+              inlineScript: |
+                $usernameString = (-join ((65..90) + (97..122) | Get-Random -Count 9 -SetSeed 1 | % {[char]$_ + "$_"})).substring(0,19) # max length
+                $passwordString = (New-Guid).Guid.SubString(0,19)
+                $vpnSharedKeyString =  (New-Guid).Guid.SubString(0,32)
+                $keyVaultName = 'adp-sxx-az-kv-x-sqlmi'
+                $userName = ConvertTo-SecureString -String $usernameString -AsPlainText -Force
+                $password = ConvertTo-SecureString -String $passwordString -AsPlainText -Force
+                $vpnSharedKey = ConvertTo-SecureString -String $vpnSharedKeyString -AsPlainText -Force
+                # SQLManagedInstances secrets
+                Set-AzKeyVaultSecret -VaultName $keyVaultName -Name 'administratorLogin' -SecretValue $username
+                Set-AzKeyVaultSecret -VaultName $keyVaultName -Name 'administratorLoginPassword' -SecretValue $password
+                # SQLManagedInstances Keys
+                az keyvault key create --vault-name $keyVaultName --name 'keyEncryptionKeySqlMi'
+        dependsOn:
+          - sqlmi_kv
     dependsOn:
       - deploy_sa
       - deploy_evh
       - deploy_law
+
+  - stage: deploy_avdag
+    displayName: Deploy AVD application group
+    variables:
+      resourceType: 'Microsoft.DesktopVirtualization/applicationgroups'
+      templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
+    jobs:
+      - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
+        parameters:
+          deploymentBlocks:
+            - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: Default Application Group
+    dependsOn:
+      - deploy_avdhp
+
+  - stage: deploy_rolea
+    displayName: Deploy role assignments
+    variables:
+      resourceType: 'Microsoft.Authorization\roleAssignments'
+      templateFilePath: $(modulesPath)/$(resourceType)/.bicep/nested_rbac_sub.bicep
+    jobs:
+      - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
+        parameters:
+          deploymentBlocks:
+            - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: MSI Role Assignment
+    dependsOn:
+      - deploy_msi
+
+  - stage: deploy_vnet
+    displayName: Deploy virtual networks
+    variables:
+      resourceType: 'Microsoft.Network/virtualNetworks'
+      templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
+    jobs:
+      - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
+        parameters:
+          deploymentBlocks:
+            - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: Default Virtual Network
+            - path: $(dependencyPath)/$(resourceType)/parameters/1.bastion.parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: Bastion Virtual Network
+            - path: $(dependencyPath)/$(resourceType)/parameters/2.vnetpeer01.parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: VNET PEering 1 Virtual Network
+            - path: $(dependencyPath)/$(resourceType)/parameters/3.vnetpeer02.parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: VNET Peering 2 Virtual Network
+            - path: $(dependencyPath)/$(resourceType)/parameters/4.azfw.parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: Azure Firewall Virtual Network
+            - path: $(dependencyPath)/$(resourceType)/parameters/5.aks.parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: AKS Virtual Network
+            - ${{ if eq( parameters.deploySqlMiDependencies, true) }}:
+                - path: $(dependencyPath)/$(resourceType)/parameters/6.sqlmi.parameters.json
+                  templateFilePath: $(templateFilePath)
+                  displayName: SQL MI Virtual Network
+    dependsOn:
+      - deploy_nsg
+      - ${{ if eq( parameters.deploySqlMiDependencies, true) }}:
+          - deploy_udr
+
+  - stage: deploy_dnszone
+    displayName: Deploy private DNS zones
+    variables:
+      resourceType: 'Microsoft.Network/privateDnsZones'
+      templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
+    jobs:
+      - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
+        parameters:
+          deploymentBlocks:
+            - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: Default Private DNS Zones
+    dependsOn:
+      - job_deploy_vnet
+
+  - stage: deploy_vm
+    displayName: Deploy virtual machines
+    variables:
+      resourceType: 'Microsoft.Compute/virtualMachines'
+      templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
+    jobs:
+      - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
+        parameters:
+          deploymentBlocks:
+            - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: Default Virtual Machine
+    dependsOn:
+      - job_deploy_vnet
+      - deploy_rsv
+      - deploy_kv
