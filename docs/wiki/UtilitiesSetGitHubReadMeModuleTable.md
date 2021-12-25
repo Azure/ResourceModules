@@ -10,7 +10,6 @@ In the platform's pipelines, script script is invoked for both the root ReadMe a
 - [Location](#location)
 - [How it works](#what-it-does)
 - [How to use it](#how-to-use-it)
-  - [Examples](#examples)
 
 ---
 # Location
