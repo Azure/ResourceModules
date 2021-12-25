@@ -271,24 +271,10 @@ stages:
             - path: $(dependencyPath)/$(resourceType)/parameters/bastion.parameters.json
               templateFilePath: $(templateFilePath)
               displayName: Bastion NSG
-    dependsOn:
-      - deploy_sa
-      - deploy_evh
-      - deploy_law
-
-  - stage: deploy_sqlmi_nsg
-    displayName: Deploy sqlmi network security group
-    condition: eq(${{ parameters.deploySqlMiDependencies }}, true)
-    variables:
-      resourceType: 'Microsoft.Network/networkSecurityGroups'
-      templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
-    jobs:
-      - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
-        parameters:
-          deploymentBlocks:
-            - path: $(dependencyPath)/$(resourceType)/parameters/sqlmi.parameters.json
-              templateFilePath: $(templateFilePath)
-              displayName: SQLMI NSG
+            - ${{ if eq( parameters.deploySqlMiDependencies, true) }}:
+                - path: $(dependencyPath)/$(resourceType)/parameters/sqlmi.parameters.json
+                  templateFilePath: $(templateFilePath)
+                  displayName: SQLMI NSG
     dependsOn:
       - deploy_sa
       - deploy_evh
