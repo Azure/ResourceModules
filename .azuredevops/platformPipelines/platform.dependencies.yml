@@ -558,7 +558,7 @@ stages:
               templateFilePath: $(templateFilePath)
               displayName: Default Private DNS Zones
     dependsOn:
-      - job_deploy_vnet
+      - deploy_vnet
 
   - stage: deploy_vm
     displayName: Deploy virtual machines
@@ -573,6 +573,6 @@ stages:
               templateFilePath: $(templateFilePath)
               displayName: Default Virtual Machine
     dependsOn:
-      - job_deploy_vnet
+      - deploy_vnet
       - deploy_rsv
       - deploy_kv
