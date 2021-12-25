@@ -142,7 +142,6 @@ stages:
 
                 # Set agent up
                 Set-EnvironmentOnAgent
-
           - task: AzurePowerShell@5
             displayName: Upload files to storage account
             inputs:
@@ -400,14 +399,12 @@ stages:
 
                 # Set agent up
                 Set-EnvironmentOnAgent
-          - task: AzureCLI@2
-            enabled: true
+          - task: AzurePowerShell@5
             displayName: Set key vault secrets keys and certificates
             inputs:
               azureSubscription: $(serviceConnection)
-              scriptType: 'pscore'
-              scriptLocation: 'inlineScript'
-              inlineScript: |
+              ScriptType: 'InlineScript'
+              Inline: |
                 $usernameString = (-join ((65..90) + (97..122) | Get-Random -Count 9 -SetSeed 1 | % {[char]$_ + "$_"})).substring(0,19) # max length
                 $passwordString = (New-Guid).Guid.SubString(0,19)
                 $vpnSharedKeyString =  (New-Guid).Guid.SubString(0,32)
@@ -431,6 +428,9 @@ stages:
                 # API management
                 Set-AzKeyVaultSecret -VaultName $keyVaultName -Name 'apimclientid' -SecretValue $username
                 Set-AzKeyVaultSecret -VaultName $keyVaultName -Name 'apimclientsecret' -SecretValue $password
+              azurePowerShellVersion: 'LatestVersion'
+              pwsh: true
+
         dependsOn:
           - default_kv
       - job:
@@ -453,14 +453,12 @@ stages:
 
                 # Set agent up
                 Set-EnvironmentOnAgent
-          - task: AzureCLI@2
-            enabled: true
+          - task: AzurePowerShell@5
             displayName: Set sqlmi key vault secrets and keys
             inputs:
               azureSubscription: $(serviceConnection)
-              scriptType: 'pscore'
-              scriptLocation: 'inlineScript'
-              inlineScript: |
+              ScriptType: 'InlineScript'
+              Inline: |
                 $usernameString = (-join ((65..90) + (97..122) | Get-Random -Count 9 -SetSeed 1 | % {[char]$_ + "$_"})).substring(0,19) # max length
                 $passwordString = (New-Guid).Guid.SubString(0,19)
                 $vpnSharedKeyString =  (New-Guid).Guid.SubString(0,32)
@@ -473,6 +471,8 @@ stages:
                 Set-AzKeyVaultSecret -VaultName $keyVaultName -Name 'administratorLoginPassword' -SecretValue $password
                 # SQLManagedInstances Keys
                 az keyvault key create --vault-name $keyVaultName --name 'keyEncryptionKeySqlMi'
+              azurePowerShellVersion: 'LatestVersion'
+              pwsh: true
         dependsOn:
           - sqlmi_kv
     dependsOn:
