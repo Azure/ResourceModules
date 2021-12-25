@@ -23,9 +23,9 @@ If the switch for pester tests (`-PesterTest`) was provided the script will
 If the switch for either the validation test (`-ValidationTest`) or deployment test (`-DeploymentTest`) was provided alongside a hashtable for the token replacement (`-ValidateOrDeployParameters`), the script will
 1. Search all parameter files for the given module template
 1. Craft a dictionary to replace all tokens in these parameter files with actual values. This dictionary will consist
-  - of the subscriptionID & managementGroupID of the provided `ValidateOrDeployParameters` object,
-  - add all key-value pairs of the `-AdditionalTokens` object to it,
-  - and optionally also add all key-value pairs specified in the `settings.json`'s `parameterFileTokens` object if the `-SkipParameterFileTokens` parameter was not set
+   - of the subscriptionID & managementGroupID of the provided `ValidateOrDeployParameters` object,
+   - add all key-value pairs of the `-AdditionalTokens` object to it,
+   - and optionally also add all key-value pairs specified in the `settings.json`'s `parameterFileTokens` object if the `-SkipParameterFileTokens` parameter was not set
 1. It replaces all tokens in the parameter files as per the object created in the previous step
 1. If the `-ValidationTest` parameter was set, it runs a deployment validation using the `Test-TemplateWithParameterFile` script
 1. If the `-DeploymentTest` parameter was set, it runs a deployment using the `New-ModuleDeployment` script (with no retries). By default it uses the standard `parameters.json` parameter file. However, if the switch `-DeployAllModuleParameterFiles` was set, it runs the deployment for all parameter files in the module's `.parameters` folder
