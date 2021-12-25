@@ -394,10 +394,6 @@ stages:
       - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
         parameters:
           deploymentBlocks:
-            ${{ if eq( parameters.deploySqlMiDependencies, true) }}:
-              - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
-                templateFilePath: $(templateFilePath)
-                displayName: SQLMI key vault
             - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
               templateFilePath: $(templateFilePath)
               displayName: Default Key Vault
@@ -405,6 +401,10 @@ stages:
             - path: $(dependencyPath)/$(resourceType)/parameters/pe.parameters.json
               templateFilePath: $(templateFilePath)
               displayName: Private Endpoint Key Vault
+            - ${{ if eq( parameters.deploySqlMiDependencies, true) }}:
+                - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
+                  templateFilePath: $(templateFilePath)
+                  displayName: SQLMI key vault
       - job:
         displayName: Set key vault secrets keys and certificates
         pool:
