@@ -110,19 +110,19 @@ stages:
       resourceType: 'Microsoft.Storage/storageAccounts'
       templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
     jobs:
-      - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
-        parameters:
-          deploymentBlocks:
-            - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
-              templateFilePath: $(templateFilePath)
-              displayName: Default storage account
-              jobName: default_sa
-            # - path: $(dependencyPath)/$(resourceType)/parameters/law.parameters.json
-            #   templateFilePath: $(templateFilePath)
-            #   displayName: LAW storage account
-            # - path: $(dependencyPath)/$(resourceType)/parameters/fa.parameters.json
-            #   templateFilePath: $(templateFilePath)
-            #   displayName: FunctionApp storage account
+      # - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
+      #   parameters:
+      #     deploymentBlocks:
+      #       - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
+      #         templateFilePath: $(templateFilePath)
+      #         displayName: Default storage account
+      #         jobName: default_sa
+      #       - path: $(dependencyPath)/$(resourceType)/parameters/law.parameters.json
+      #         templateFilePath: $(templateFilePath)
+      #         displayName: LAW storage account
+      #       - path: $(dependencyPath)/$(resourceType)/parameters/fa.parameters.json
+      #         templateFilePath: $(templateFilePath)
+      #         displayName: FunctionApp storage account
       - job:
         displayName: Upload files to storage account
         pool:
@@ -142,13 +142,13 @@ stages:
 
                 # Set agent up
                 Set-EnvironmentOnAgent
-          - task: AzurePowerShell@4
-            enabled: true
+
+          - task: AzurePowerShell@5
             displayName: Upload files to storage account
             inputs:
               azureSubscription: $(serviceConnection)
-              scriptType: InlineScript
-              inline: |
+              ScriptType: 'InlineScript'
+              Inline: |
                 # Load used functions
                 . (Join-Path '$(Build.SourcesDirectory)' 'utilities' 'pipelines' 'sharedScripts' 'Export-ContentToBlob.ps1')
 
@@ -168,8 +168,10 @@ stages:
                 Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
                 Export-ContentToBlob @functionInput -Verbose
-        dependsOn:
-          - default_sa
+              azurePowerShellVersion: 'LatestVersion'
+              pwsh: true
+        # dependsOn:
+        #   - default_sa
     dependsOn:
       #- deploy_rg
 
