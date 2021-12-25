@@ -117,12 +117,12 @@ stages:
               templateFilePath: $(templateFilePath)
               displayName: Default storage account
               jobName: default_sa
-            - path: $(dependencyPath)/$(resourceType)/parameters/law.parameters.json
-              templateFilePath: $(templateFilePath)
-              displayName: LAW storage account
-            - path: $(dependencyPath)/$(resourceType)/parameters/fa.parameters.json
-              templateFilePath: $(templateFilePath)
-              displayName: FunctionApp storage account
+            # - path: $(dependencyPath)/$(resourceType)/parameters/law.parameters.json
+            #   templateFilePath: $(templateFilePath)
+            #   displayName: LAW storage account
+            # - path: $(dependencyPath)/$(resourceType)/parameters/fa.parameters.json
+            #   templateFilePath: $(templateFilePath)
+            #   displayName: FunctionApp storage account
       - job:
         displayName: Upload files to storage account
         pool:
