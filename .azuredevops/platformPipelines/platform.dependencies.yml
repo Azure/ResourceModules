@@ -545,34 +545,34 @@ stages:
       - ${{ if eq( parameters.deploySqlMiDependencies, true) }}:
           - deploy_udr
 
-  # - stage: deploy_dnszone
-  #   displayName: Deploy private DNS zones
-  #   variables:
-  #     resourceType: 'Microsoft.Network/privateDnsZones'
-  #     templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
-  #   jobs:
-  #     - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
-  #       parameters:
-  #         deploymentBlocks:
-  #           - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
-  #             templateFilePath: $(templateFilePath)
-  #             displayName: Default Private DNS Zones
-  #   dependsOn:
-  #     - deploy_vnet
+  - stage: deploy_dnszone
+    displayName: Deploy private DNS zones
+    variables:
+      resourceType: 'Microsoft.Network/privateDnsZones'
+      templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
+    jobs:
+      - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
+        parameters:
+          deploymentBlocks:
+            - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: Default Private DNS Zones
+    dependsOn:
+      - deploy_vnet
 
-  # - stage: deploy_vm
-  #   displayName: Deploy virtual machines
-  #   variables:
-  #     resourceType: 'Microsoft.Compute/virtualMachines'
-  #     templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
-  #   jobs:
-  #     - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
-  #       parameters:
-  #         deploymentBlocks:
-  #           - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
-  #             templateFilePath: $(templateFilePath)
-  #             displayName: Default Virtual Machine
-  #   dependsOn:
-  #     - deploy_vnet
-  #     - deploy_rsv
-  #     - deploy_kv
+  - stage: deploy_vm
+    displayName: Deploy virtual machines
+    variables:
+      resourceType: 'Microsoft.Compute/virtualMachines'
+      templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
+    jobs:
+      - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
+        parameters:
+          deploymentBlocks:
+            - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: Default Virtual Machine
+    dependsOn:
+      - deploy_vnet
+      # - deploy_rsv
+      - deploy_kv
