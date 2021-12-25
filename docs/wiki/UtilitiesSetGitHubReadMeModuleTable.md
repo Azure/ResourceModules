@@ -1,7 +1,7 @@
 # GitHub ReadMe Module Table(s) Update Script
 
 Use this script to update a given ReadMe's module table in its 'Available Resource Modules' section.
-In the platform's pipelines, script script is invoked for both the root ReadMe and `arm` folder ReadMe with a different set of required columns each time anything in the `arm` path is updated to keep the table in sync
+In the platform's pipeline `platform.updateReadMe.yml`, this script is invoked each time anything in the `arm` path changes to keep the table in sync. It updates both the root ReadMe (`/readme.md`) and `arm` folder ReadMe (`/arm/readme.md`) with a different set of required columns
 
 ---
 
