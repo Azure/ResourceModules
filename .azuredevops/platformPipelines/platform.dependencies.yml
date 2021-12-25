@@ -573,4 +573,4 @@ stages:
     dependsOn:
       - deploy_vnet
       # - deploy_rsv
-      - deploy_kv
+      # - deploy_kv
