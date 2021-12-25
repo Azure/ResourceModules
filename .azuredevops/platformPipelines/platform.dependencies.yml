@@ -1,5 +1,11 @@
 name: '.Platform - Dependencies'
 
+parameters:
+  - name: deploySqlMiDependencies
+    displayName: Enable SqlMi dependencies deployment
+    type: boolean
+    default: false
+
 # trigger:
 #   batch: true
 #   branches:
@@ -125,6 +131,17 @@ stages:
           ${{ if eq(variables['poolName'], '') }}:
             vmImage: $(vmImage)
         steps:
+          - task: PowerShell@2
+            displayName: 'Setup agent'
+            inputs:
+              targetType: inline
+              pwsh: true
+              script: |
+                # Load used functions
+                . (Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
+
+                # Set agent up
+                Set-EnvironmentOnAgent
           - task: AzureCLI@2
             enabled: true
             displayName: Upload files to storage account
@@ -156,3 +173,123 @@ stages:
           - default_sa
     dependsOn:
       - deploy_rg
+
+  - stage: deploy_sig
+    displayName: Deploy shared image gallery and definition
+    variables:
+      resourceType: 'Microsoft.Compute/galleries'
+      templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
+    jobs:
+      - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
+        parameters:
+          deploymentBlocks:
+            - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: Default SIG and SID
+    dependsOn:
+      - deploy_rg
+
+  - stage: deploy_ag
+    displayName: Deploy action groups
+    variables:
+      resourceType: 'Microsoft.Compute/galleries'
+      templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
+    jobs:
+      - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
+        parameters:
+          deploymentBlocks:
+            - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: Default Action Group
+    dependsOn:
+      - deploy_rg
+
+  - stage: deploy_asg
+    displayName: Deploy application security groups
+    variables:
+      resourceType: 'Microsoft.Network/applicationSecurityGroups'
+      templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
+    jobs:
+      - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
+        parameters:
+          deploymentBlocks:
+            - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: Default Application Security Groups
+    dependsOn:
+      - deploy_rg
+
+  - stage: deploy_udr
+    displayName: Deploy route tables
+    variables:
+      resourceType: 'Microsoft.Network/routeTables'
+      templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
+    jobs:
+      - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
+        parameters:
+          deploymentBlocks:
+            - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: Default User Defined Routes
+    dependsOn:
+      - deploy_rg
+
+  - stage: deploy_sqlmi_udr
+    displayName: Deploy sqlmi route tables
+    condition: eq(${{ parameters.deploySqlMiDependencies }}, true)
+    variables:
+      resourceType: 'Microsoft.Network/routeTables'
+      templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
+    jobs:
+      - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
+        parameters:
+          deploymentBlocks:
+            - path: $(dependencyPath)/$(resourceType)/parameters/sqlMi.parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: SQLMI User Defined Routes
+    dependsOn:
+      - deploy_rg
+
+  - stage: deploy_nsg
+    displayName: Deploy network security groups
+    variables:
+      resourceType: 'Microsoft.Network/networkSecurityGroups'
+      templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
+    jobs:
+      - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
+        parameters:
+          deploymentBlocks:
+            - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: Default NSG
+            - path: $(dependencyPath)/$(resourceType)/parameters/apgw.parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: App Gateway NSG
+            - path: $(dependencyPath)/$(resourceType)/parameters/ase.parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: ASE NSG
+            - path: $(dependencyPath)/$(resourceType)/parameters/bastion.parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: Bastion NSG
+    dependsOn:
+      - deploy_sa
+      - deploy_evh
+      - deploy_law
+
+  - stage: deploy_sqlmi_nsg
+    displayName: Deploy sqlmi network security group
+    condition: eq(${{ parameters.deploySqlMiDependencies }}, true)
+    variables:
+      resourceType: 'Microsoft.Network/networkSecurityGroups'
+      templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
+    jobs:
+      - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
+        parameters:
+          deploymentBlocks:
+            - path: $(dependencyPath)/$(resourceType)/parameters/sqlmi.parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: Default NSG
+    dependsOn:
+      - deploy_sa
+      - deploy_evh
+      - deploy_law

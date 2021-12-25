@@ -314,7 +314,7 @@ jobs:
 
   job_deploy_udr:
     runs-on: ubuntu-20.04
-    name: 'Deploy sqlmi route tables'
+    name: 'Deploy route tables'
     env:
       namespace: 'Microsoft.Network\routeTables'
     needs:
