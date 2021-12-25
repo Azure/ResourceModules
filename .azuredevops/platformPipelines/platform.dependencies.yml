@@ -493,7 +493,6 @@ stages:
   #             displayName: Default Application Group
   #   dependsOn:
   #     - deploy_avdhp
-
   # - stage: deploy_rolea
   #   displayName: Deploy role assignments
   #   variables:
@@ -508,7 +507,6 @@ stages:
   #             displayName: MSI Role Assignment
   #   dependsOn:
   #     - deploy_msi
-
   - stage: deploy_vnet
     displayName: Deploy virtual networks
     variables:
@@ -540,10 +538,10 @@ stages:
             #     - path: $(dependencyPath)/$(resourceType)/parameters/6.sqlmi.parameters.json
             #       templateFilePath: $(templateFilePath)
             #       displayName: SQL MI Virtual Network
-    dependsOn:
-      - deploy_nsg
-      - ${{ if eq( parameters.deploySqlMiDependencies, true) }}:
-          - deploy_udr
+    # dependsOn:
+    #   - deploy_nsg
+    #   - ${{ if eq( parameters.deploySqlMiDependencies, true) }}:
+    #       - deploy_udr
 
   - stage: deploy_dnszone
     displayName: Deploy private DNS zones
