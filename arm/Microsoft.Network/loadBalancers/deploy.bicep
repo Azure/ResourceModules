@@ -16,14 +16,12 @@ param loadBalancerSku string = 'Standard'
 param frontendIPConfigurations array
 
 @description('Optional. Collection of backend address pools used by a load balancer.')
-@minLength(1)
 param backendAddressPools array = []
 
 @description('Optional. Array of objects containing all load balancing rules')
 param loadBalancingRules array = []
 
 @description('Optional. Array of objects containing all probes, these are references in the load balancing rules')
-@minLength(1)
 param probes array = []
 
 @description('Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.')
