@@ -9,11 +9,9 @@
             "value": [
                 {
                     "name": "publicIPConfig1",
-                    "properties": {
-                        "publicIPAddressId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/publicIPAddresses/adp-sxx-az-pip-x-lb",
-                        "subnetId": "",
-                        "privateIPAddress": ""
-                    }
+                    "publicIPAddressId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/publicIPAddresses/adp-sxx-az-pip-x-lb",
+                    "subnetId": "",
+                    "privateIPAddress": ""
                 }
             ]
         },
@@ -21,26 +19,36 @@
             "value": [
                 {
                     "name": "backendAddressPool1"
+                },
+                {
+                    "name": "backendAddressPool2"
                 }
             ]
         },
         "loadBalancingRules": {
             "value": [
                 {
-                    "name": "publicIPLBRule",
-                    "properties": {
-                        "frontendIPConfigurationName": "publicIPConfig1",
-                        "frontendPort": 80,
-                        "backendPort": 80,
-                        "enableFloatingIP": false,
-                        "idleTimeoutInMinutes": 5,
-                        "protocol": "TCP",
-                        "enableTcpReset": false,
-                        "loadDistribution": "Default",
-                        "disableOutboundSnat": false,
-                        "probeName": "probe",
-                        "backendAddressPoolName": "backendAddressPool"
-                    }
+                    "name": "publicIPLBRule1",
+                    "frontendIPConfigurationName": "publicIPConfig1",
+                    "frontendPort": 80,
+                    "backendPort": 80,
+                    "enableFloatingIP": false,
+                    "idleTimeoutInMinutes": 5,
+                    "protocol": "Tcp",
+                    "enableTcpReset": false,
+                    "loadDistribution": "Default",
+                    "disableOutboundSnat": true,
+                    "probeName": "probe1",
+                    "backendAddressPoolName": "backendAddressPool1"
+                },
+                {
+                    "name": "publicIPLBRule2",
+                    "frontendIPConfigurationName": "publicIPConfig1",
+                    "frontendPort": 8080,
+                    "backendPort": 8080,
+                    "loadDistribution": "Default",
+                    "probeName": "probe2",
+                    "backendAddressPoolName": "backendAddressPool2"
                 }
             ]
         },
@@ -53,9 +61,14 @@
                     "backendPort": 443,
                     "enableFloatingIP": false,
                     "idleTimeoutInMinutes": 4,
-                    "protocol": "TCP",
-                    "backendIPConfiguration": null,
+                    "protocol": "Tcp",
                     "enableTcpReset": false
+                },
+                {
+                    "name": "inboundNatRule2",
+                    "frontendIPConfigurationName": "publicIPConfig1",
+                    "frontendPort": 3389,
+                    "backendPort": 3389
                 }
             ]
         },
@@ -65,24 +78,24 @@
                     "name": "outboundRule1",
                     "frontendIPConfigurationName": "publicIPConfig1",
                     "backendAddressPoolName": "backendAddressPool1",
-                    "protocol": "All",
-                    "allocatedOutboundPorts": 63984,
-                    "enableTcpReset": true,
-                    "idleTimeoutInMinutes": 4
+                    "allocatedOutboundPorts": 63984
                 }
             ]
         },
         "probes": {
             "value": [
                 {
-                    "name": "probe",
-                    "properties": {
-                        "protocol": "TCP",
-                        "port": 80,
-                        "requestPath": "/",
-                        "intervalInSeconds": 10,
-                        "numberOfProbes": 5
-                    }
+                    "name": "probe1",
+                    "protocol": "Tcp",
+                    "port": 80,
+                    "intervalInSeconds": 10,
+                    "numberOfProbes": 5
+                },
+                {
+                    "name": "probe2",
+                    "protocol": "Https",
+                    "port": 443,
+                    "requestPath": "/"
                 }
             ]
         },
