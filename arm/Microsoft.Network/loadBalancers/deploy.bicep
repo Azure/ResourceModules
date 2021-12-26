@@ -19,9 +19,8 @@ param frontendIPConfigurations array
 @minLength(1)
 param backendAddressPools array = []
 
-@description('Required. Array of objects containing all load balancing rules')
-@minLength(1)
-param loadBalancingRules array
+@description('Optional. Array of objects containing all load balancing rules')
+param loadBalancingRules array = []
 
 @description('Optional. Array of objects containing all probes, these are references in the load balancing rules')
 @minLength(1)
