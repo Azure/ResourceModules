@@ -8,7 +8,7 @@
         "frontendIPConfigurations": {
             "value": [
                 {
-                    "name": "publicIPConfig",
+                    "name": "publicIPConfig1",
                     "properties": {
                         "publicIPAddressId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/publicIPAddresses/adp-sxx-az-pip-x-lb",
                         "subnetId": "",
@@ -20,7 +20,7 @@
         "backendAddressPools": {
             "value": [
                 {
-                    "name": "backendAddressPool"
+                    "name": "backendAddressPool1"
                 }
             ]
         },
@@ -29,7 +29,7 @@
                 {
                     "name": "publicIPLBRule",
                     "properties": {
-                        "frontendIPConfigurationName": "publicIPConfig",
+                        "frontendIPConfigurationName": "publicIPConfig1",
                         "frontendPort": 80,
                         "backendPort": 80,
                         "enableFloatingIP": false,
@@ -41,6 +41,34 @@
                         "probeName": "probe",
                         "backendAddressPoolName": "backendAddressPool"
                     }
+                }
+            ]
+        },
+        "inboundNatRules": {
+            "value": [
+                {
+                    "name": "inboundNatRule1",
+                    "frontendIPConfigurationName": "publicIPConfig1",
+                    "frontendPort": 443,
+                    "backendPort": 443,
+                    "enableFloatingIP": false,
+                    "idleTimeoutInMinutes": 4,
+                    "protocol": "TCP",
+                    "backendIPConfiguration": null,
+                    "enableTcpReset": false
+                }
+            ]
+        },
+        "outboundRules": {
+            "value": [
+                {
+                    "name": "outboundRule1",
+                    "frontendIPConfigurationName": "publicIPConfig1",
+                    "backendAddressPoolName": "backendAddressPool1",
+                    "protocol": "All",
+                    "allocatedOutboundPorts": 63984,
+                    "enableTcpReset": true,
+                    "idleTimeoutInMinutes": 4
                 }
             ]
         },
@@ -66,16 +94,6 @@
                         "<<deploymentSpId>>"
                     ]
                 }
-            ]
-        },
-        "inboundNatRules": {
-            "value": [
-                {}
-            ]
-        },
-        "outboundRules": {
-            "value": [
-                {}
             ]
         },
         "diagnosticLogsRetentionInDays": {

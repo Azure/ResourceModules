@@ -111,6 +111,38 @@ var loadBalancingRules_var = [for loadBalancingRule in loadBalancingRules: {
   }
 }]
 
+var inboundNatRules_var = [for inboundNatRule in inboundNatRules: {
+  name: inboundNatRule.name
+  properties: {
+    frontendIPConfiguration: {
+      id: resourceId('Microsoft.Network/loadBalancers/frontendIPConfigurations', name, inboundNatRule.properties.frontendIPConfigurationName)
+    }
+    frontendPort: inboundNatRule.frontendPort
+    backendPort: inboundNatRule.backendPort
+    enableFloatingIP: contains(inboundNatRule, 'enableFloatingIP') ? inboundNatRule.enableFloatingIP : false
+    idleTimeoutInMinutes: contains(inboundNatRule, 'idleTimeoutInMinutes') ? inboundNatRule.idleTimeoutInMinutes : 4
+    protocol: contains(inboundNatRule, 'protocol') ? inboundNatRule.protocol : 'TCP'
+    backendIPConfiguration: contains(inboundNatRule, 'backendIPConfiguration') ? inboundNatRule.backendIPConfiguration : null
+    enableTcpReset: contains(inboundNatRule, 'enableTcpReset') ? inboundNatRule.enableTcpReset : false
+  }
+}]
+
+var outboundRules_var = [for outboundRule in outboundRules: {
+  name: outboundRule.name
+  properties: {
+    frontendIPConfiguration: {
+      id: resourceId('Microsoft.Network/loadBalancers/frontendIPConfigurations', name, outboundRule.properties.frontendIPConfigurationName)
+    }
+    backendAddressPool: {
+      id: resourceId('Microsoft.Network/loadBalancers/backendAddressPools', name, outboundRule.properties.backendAddressPoolName)
+    }
+    protocol: contains(outboundRule, 'protocol') ? outboundRule.protocol : 'All'
+    allocatedOutboundPorts: contains(outboundRule, 'allocatedOutboundPorts') ? outboundRule.allocatedOutboundPorts : 63984
+    enableTcpReset: contains(outboundRule, 'enableTcpReset') ? outboundRule.enableTcpReset : true
+    idleTimeoutInMinutes: contains(outboundRule, 'idleTimeoutInMinutes') ? outboundRule.idleTimeoutInMinutes : 4
+  }
+}]
+
 var probes_var = [for probe in probes: {
   name: probe.name
   properties: {
@@ -155,9 +187,9 @@ resource loadBalancer 'Microsoft.Network/loadBalancers@2021-02-01' = {
   properties: {
     frontendIPConfigurations: frontendIPConfigurations_var
     backendAddressPools: backendAddressPools
-    inboundNatRules: inboundNatRules
-    outboundRules: outboundRules
     loadBalancingRules: loadBalancingRules_var
+    inboundNatRules: inboundNatRules_var
+    outboundRules: outboundRules_var
     probes: probes_var
   }
 }
