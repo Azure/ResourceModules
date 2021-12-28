@@ -62,7 +62,7 @@ jobs:
   call-workflow-passing-data:
     needs:
     - job_set_workflow_param
-    uses: .github/workflows/template.module.yml@main
+    uses: ./.github/workflows/template.module.yml@main
     with:
       modulePath: '${{ env.modulePath}}'
       removeDeployment: '${{ needs.job_set_workflow_param.outputs.removeDeployment }}'
