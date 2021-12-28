@@ -20,6 +20,14 @@ on:
         description: 'Custom version to apply. Used only if higher than latest'
         required: true
     secrets:
+      AZURE_CREDENTIALS:
+        required: true
+      ARM_SUBSCRIPTION_ID:
+        required: true
+      ARM_MGMTGROUP_ID:
+        required: true
+      ARM_TENANT_ID:
+        required: true
       DEPLOYMENT_SP_ID:
         required: true
 
@@ -43,6 +51,10 @@ jobs:
       - run: echo ${{ inputs.versioningOption }}
       - run: echo ${{ inputs.customVersion }}
       - run: echo ${{ secrets.DEPLOYMENT_SP_ID }}
+      - run: echo ${{ env.AZURE_CREDENTIALS }}
+      - run: echo ${{ env.ARM_SUBSCRIPTION_ID }}
+      - run: echo ${{ env.ARM_MGMTGROUP_ID }}
+      - run: echo ${{ env.ARM_TENANT_ID }}
       - run: echo ${{ env.DEPLOYMENT_SP_ID }}
 
   # ####################
