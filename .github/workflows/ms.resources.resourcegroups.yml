@@ -81,4 +81,5 @@ jobs:
       removeDeployment: 'true'
       versioningOption: 'patch'
       customVersion: '0.0.1'
-      DEPLOYMENT_SP_ID: 'example'
+    secrets:
+      DEPLOYMENT_SP_ID: ${{ secrets.DEPLOYMENT_SP_ID }}
