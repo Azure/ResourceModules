@@ -8,7 +8,7 @@ on:
         description: 'Relative path to the module folder'
         required: true
       removeDeployment:
-        type: boolean
+        type: string
         description: 'Remove deployed module'
         required: true
       versioningOption:
