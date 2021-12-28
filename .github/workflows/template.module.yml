@@ -1,4 +1,4 @@
-name: 'Template: Module Pipeline'
+name: '.Template: Module Pipeline'
 
 on:
   workflow_call:

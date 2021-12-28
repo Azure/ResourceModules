@@ -70,7 +70,7 @@ jobs:
   #     customVersion: '${{ needs.job_set_workflow_param.outputs.customVersion }}'
 
   call-workflow-passing-data:
-    uses: ./.github/workflows/template.module.yml@main
+    uses: eriqua/ResourceModules/.github/workflows/template.module.yml@main
     with:
       modulePath: '${{ env.modulePath}}'
       removeDeployment: 'true'
