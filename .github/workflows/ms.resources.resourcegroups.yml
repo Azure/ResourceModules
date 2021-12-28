@@ -75,6 +75,8 @@ jobs:
   #     customVersion: '${{ needs.job_set_workflow_param.outputs.customVersion }}'
 
   call-workflow-passing-data:
+    needs:
+    - job_set_workflow_param
     uses: eriqua/ResourceModules/.github/workflows/template.module.yml@main
     with:
       modulePath: 'arm/Microsoft.Resources/resourceGroups'
