@@ -72,7 +72,7 @@ jobs:
   call-workflow-passing-data:
     uses: eriqua/ResourceModules/.github/workflows/template.module.yml@main
     with:
-      modulePath: '${{ env.modulePath}}'
+      modulePath: 'arm/Microsoft.Resources/resourceGroups'
       removeDeployment: 'true'
       versioningOption: 'patch'
       customVersion: '0.0.1'
