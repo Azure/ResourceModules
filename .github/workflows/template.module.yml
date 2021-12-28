@@ -20,14 +20,6 @@ on:
         description: 'Custom version to apply. Used only if higher than latest'
         required: true
     secrets:
-    #   AZURE_CREDENTIALS:
-    #     required: true
-    #   ARM_SUBSCRIPTION_ID:
-    #     required: true
-    #   ARM_MGMTGROUP_ID:
-    #     required: true
-    #   ARM_TENANT_ID:
-    #      required: true
       DEPLOYMENT_SP_ID:
         required: true
 
