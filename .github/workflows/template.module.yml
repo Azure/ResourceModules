@@ -12,14 +12,11 @@ on:
         description: 'Remove deployed module'
         required: true
       versioningOption:
-        type: choice
+        type: string
         description: 'The mode to handle the version increments [major|minor|patch]'
         required: true
-        options:
-          - major
-          - minor
-          - patch
       customVersion:
+        type: string
         description: 'Custom version to apply. Used only if higher than latest'
         required: true
 
