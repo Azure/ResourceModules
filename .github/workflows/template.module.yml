@@ -51,6 +51,7 @@ jobs:
       - run: echo ${{ inputs.versioningOption }}
       - run: echo ${{ inputs.customVersion }}
       - run: echo ${{ secrets.DEPLOYMENT_SP_ID }}
+      - run: echo ${{ env.DEPLOYMENT_SP_ID }}
 
   # ####################
   # #   Pester Tests   #
