@@ -76,3 +76,8 @@ jobs:
       removeDeployment: 'true'
       versioningOption: 'patch'
       customVersion: '0.0.1'
+      AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
+      ARM_SUBSCRIPTION_ID: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
+      ARM_MGMTGROUP_ID: '${{ secrets.ARM_MGMTGROUP_ID }}'
+      ARM_TENANT_ID: '${{ secrets.ARM_TENANT_ID }}'
+      DEPLOYMENT_SP_ID: '${{ secrets.DEPLOYMENT_SP_ID }}'
