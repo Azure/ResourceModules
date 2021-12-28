@@ -44,7 +44,7 @@ jobs:
   ##################
   job_echo_input:
     runs-on: ubuntu-20.04
-    name: 'Pester tests'
+    name: 'Echo tests'
     steps:
       - run: echo ${{ inputs.modulePath }}
       - run: echo ${{ inputs.removeDeployment }}
