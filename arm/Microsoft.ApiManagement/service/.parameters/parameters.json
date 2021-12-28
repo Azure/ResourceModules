@@ -2,44 +2,52 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "apiManagementServiceName": {
-            "value": "sxx-az-am-weu-x-001"
+        "name": {
+            "value": "sxx-az-am-x-001"
         },
         "publisherEmail": {
             "value": "apimgmt-noreply@mail.windowsazure.com"
         },
         "publisherName": {
-            "value": "sxx-az-amorg-weu-x-001"
+            "value": "sxx-az-amorg-x-001"
         },
         "cuaId": {
             "value": "00000-0-000000"
         },
-        "apiManagementServicePolicy": {
-            "value": {
-                "value": "<policies> <inbound> <rate-limit-by-key calls='250' renewal-period='60' counter-key='@(context.Request.IpAddress)' /> </inbound> <backend> <forward-request /> </backend> <outbound> </outbound> </policies>",
-                "format": "xml"
-            }
-        },
-        "portalSignIn": {
-            "value": {
-                "enabled": false
-            }
-        },
-        "portalSignUp": {
-            "value": {
-                "enabled": false,
-                "termsOfService": {
-                    "enabled": false,
-                    "consentRequired": false
+        "portalSettings": {
+            "value": [
+                {
+                    "name": "signin",
+                    "properties": {
+                        "enabled": false
+                    }
+                },
+                {
+                    "name": "signup",
+                    "properties": {
+                        "enabled": false,
+                        "termsOfService": {
+                            "enabled": false,
+                            "consentRequired": false
+                        }
+                    }
                 }
-            }
+            ]
+        },
+        "policies": {
+            "value": [
+                {
+                    "value": "<policies> <inbound> <rate-limit-by-key calls='250' renewal-period='60' counter-key='@(context.Request.IpAddress)' /> </inbound> <backend> <forward-request /> </backend> <outbound> </outbound> </policies>",
+                    "format": "xml"
+                }
+            ]
         },
         "roleAssignments": {
             "value": [
                 {
                     "roleDefinitionIdOrName": "Reader",
                     "principalIds": [
-                        "5545f7a0-51f4-46af-b3b4-baecf5176a56"
+                        "<<deploymentSpId>>"
                     ]
                 }
             ]

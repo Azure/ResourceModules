@@ -24,7 +24,7 @@ param paths array = []
 ])
 param kind string = 'Hash'
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
@@ -32,8 +32,17 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
+resource databaseAccount 'Microsoft.DocumentDB/databaseAccounts@2021-07-01-preview' existing = {
+  name: databaseAccountName
+
+  resource sqlDatabase 'sqlDatabases@2021-07-01-preview' existing = {
+    name: sqlDatabaseName
+  }
+}
+
 resource container 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers@2021-07-01-preview' = {
-  name: '${databaseAccountName}/${sqlDatabaseName}/${name}'
+  name: name
+  parent: databaseAccount::sqlDatabase
   tags: tags
   properties: {
     resource: {
@@ -52,8 +61,8 @@ resource container 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases/container
 @description('The name of the container.')
 output containerName string = container.name
 
-@description('The Resource Id of the container.')
+@description('The resource ID of the container.')
 output containerResourceId string = container.id
 
-@description('The name of the Resource Group the container was created in.')
+@description('The name of the resource group the container was created in.')
 output containerResourceGroup string = resourceGroup().name

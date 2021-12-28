@@ -1,6 +1,7 @@
 # Wiki content
 
 - [Home](./Home)
+- [Context](./Context)
 - [Getting Started](./GettingStarted)
 - [Modules](./Modules)
   - [Design](./ModulesDesign)
@@ -8,6 +9,7 @@
 - [Testing](./Testing)
   - [Design](./TestingDesign)
   - [Usage](./TestingUsage)
+- [Utilities](./Utilities)
 - [Pipelines](./Pipelines)
   - [Design](./PipelinesDesign)
   - [Usage](./PipelinesUsage)

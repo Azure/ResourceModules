@@ -1,0 +1,86 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "name": {
+      "value": "adp-sxx-az-vnet-x-001"
+    },
+    "addressPrefixes": {
+      "value": [
+        "10.0.0.0/16"
+      ]
+    },
+    "subnets": {
+      "value": [
+        {
+          "name": "GatewaySubnet",
+          "addressPrefix": "10.0.255.0/24"
+        },
+        {
+          "name": "sxx-az-subnet-x-001", // VM subnet
+          "addressPrefix": "10.0.0.0/24",
+          "networkSecurityGroupName": "adp-sxx-az-nsg-x-001",
+          "serviceEndpoints": [
+            "Microsoft.EventHub",
+            "Microsoft.Sql",
+            "Microsoft.Storage",
+            "Microsoft.KeyVault"
+          ]
+        },
+        {
+          "name": "sxx-az-subnet-x-002", // VMSS subnet
+          "addressPrefix": "10.0.1.0/24",
+          "networkSecurityGroupName": "adp-sxx-az-nsg-x-001",
+          "serviceEndpoints": [
+            "Microsoft.EventHub",
+            "Microsoft.Sql",
+            "Microsoft.Storage",
+            "Microsoft.KeyVault"
+          ]
+        },
+        {
+          "name": "sxx-az-subnet-x-003", // ServiceBus subnet
+          "addressPrefix": "10.0.2.0/24",
+          "networkSecurityGroupName": "adp-sxx-az-nsg-x-001",
+          "serviceEndpoints": [
+            "Microsoft.ServiceBus"
+          ]
+        },
+        {
+          "name": "sxx-az-subnet-x-004", // ANF subnet
+          "addressPrefix": "10.0.3.0/24",
+          "delegations": [
+            {
+              "name": "netappDel",
+              "properties": {
+                "serviceName": "Microsoft.Netapp/volumes"
+              }
+            }
+          ]
+        },
+        {
+          "name": "AzureBastionSubnet", // Bastion subnet
+          "addressPrefix": "10.0.5.0/24",
+          "networkSecurityGroupName": "adp-sxx-az-nsg-x-bastion"
+        },
+        {
+          "name": "sxx-az-subnet-x-005-privateEndpoints", // PE subnet
+          "addressPrefix": "10.0.6.0/24",
+          "networkSecurityGroupName": "adp-sxx-az-nsg-x-001",
+          "privateEndpointNetworkPolicies": "Disabled", // This property must be set to disabled for subnets that contain private endpoints. It confirms that NSGs rules will not apply to private endpoints (currently not supported). Default Value when not specified is "Enabled".
+          "privateLinkServiceNetworkPolicies": "Enabled"
+        },
+        {
+          "name": "sxx-az-subnet-x-006", // ASE subnet
+          "addressPrefix": "10.0.7.0/24",
+          "networkSecurityGroupName": "adp-sxx-az-nsg-x-ase"
+        },
+        {
+          "name": "sxx-az-subnet-x-007", // APGW subnet
+          "addressPrefix": "10.0.8.0/24",
+          "networkSecurityGroupName": "adp-sxx-az-nsg-x-apgw"
+        }
+      ]
+    }
+  }
+}

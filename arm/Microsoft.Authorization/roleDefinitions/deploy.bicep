@@ -1,81 +1,87 @@
 targetScope = 'managementGroup'
 
-@description('Required. Name of the custom RBAC role to be created.')
+@sys.description('Required. Name of the custom RBAC role to be created.')
 param roleName string
 
-@description('Optional. Description of the custom RBAC role to be created.')
-param roleDescription string = ''
+@sys.description('Optional. Description of the custom RBAC role to be created.')
+param description string = ''
 
-@description('Optional. List of allowed actions.')
+@sys.description('Optional. List of allowed actions.')
 param actions array = []
 
-@description('Optional. List of denied actions.')
+@sys.description('Optional. List of denied actions.')
 param notActions array = []
 
-@description('Optional. List of allowed data actions.')
+@sys.description('Optional. List of allowed data actions. This is not supported if the assignableScopes contains Management Group Scopes')
 param dataActions array = []
 
-@description('Optional. List of denied data actions.')
+@sys.description('Optional. List of denied data actions. This is not supported if the assignableScopes contains Management Group Scopes')
 param notDataActions array = []
 
-@description('Optional. The ID of the Management Group where the Role Definition and Target Scope will be applied to. Cannot use when Subscription or Resource Groups Parameters are used.')
+@sys.description('Optional. The group ID of the Management Group where the Role Definition and Target Scope will be applied to. Cannot use when Subscription or Resource Groups Parameters are used.')
 param managementGroupId string = ''
 
-@description('Optional. The Subscription ID where the Role Definition and Target Scope will be applied to. Use for both Subscription level and Resource Group Level.')
+@sys.description('Optional. The subscription ID where the Role Definition and Target Scope will be applied to. Use for both Subscription level and Resource Group Level.')
 param subscriptionId string = ''
 
-@description('Optional. The name of the Resource Group where the Role Definition and Target Scope will be applied to.')
+@sys.description('Optional. The name of the Resource Group where the Role Definition and Target Scope will be applied to.')
 param resourceGroupName string = ''
 
-@description('Optional. Location for all resources.')
+@sys.description('Optional. Location for all resources.')
 param location string = deployment().location
 
-module roleDefinition_mg './.bicep/nested_roleDefinitions_mg.bicep' = if (!empty(managementGroupId) && empty(subscriptionId) && empty(resourceGroupName)) {
-  name: 'roleDefinition-mg-${guid(roleName, managementGroupId, location)}'
+@sys.description('Optional. Role definition assignable scopes. If not provided, will use the current scope provided.')
+param assignableScopes array = []
+
+module roleDefinition_mg '.bicep/nested_roleDefinitions_mg.bicep' = if (!empty(managementGroupId) && empty(subscriptionId) && empty(resourceGroupName)) {
+  name: '${uniqueString(deployment().name, location)}-RoleDefinition-MG-Module'
   scope: managementGroup(managementGroupId)
   params: {
     roleName: roleName
-    roleDescription: roleDescription
-    actions: actions
-    notActions: notActions
-    dataActions: dataActions
-    notDataActions: notDataActions
+    description: !empty(description) ? description : ''
+    actions: !empty(actions) ? actions : []
+    notActions: !empty(notActions) ? notActions : []
+    assignableScopes: !empty(assignableScopes) ? assignableScopes : []
     managementGroupId: managementGroupId
-    location: location
   }
 }
 
-module roleDefinition_sub './.bicep/nested_roleDefinitions_sub.bicep' = if (empty(managementGroupId) && !empty(subscriptionId) && empty(resourceGroupName)) {
-  name: 'roleDefinition-sub-${guid(roleName, subscriptionId, location)}'
+module roleDefinition_sub '.bicep/nested_roleDefinitions_sub.bicep' = if (empty(managementGroupId) && !empty(subscriptionId) && empty(resourceGroupName)) {
+  name: '${uniqueString(deployment().name, location)}-RoleDefinition-Sub-Module'
   scope: subscription(subscriptionId)
   params: {
     roleName: roleName
-    roleDescription: roleDescription
-    actions: actions
-    notActions: notActions
-    dataActions: dataActions
-    notDataActions: notDataActions
+    description: !empty(description) ? description : ''
+    actions: !empty(actions) ? actions : []
+    notActions: !empty(notActions) ? notActions : []
+    dataActions: !empty(dataActions) ? dataActions : []
+    notDataActions: !empty(notDataActions) ? notDataActions : []
+    assignableScopes: !empty(assignableScopes) ? assignableScopes : []
     subscriptionId: subscriptionId
-    location: location
   }
 }
 
-module roleDefinition_rg './.bicep/nested_roleDefinitions_rg.bicep' = if (empty(managementGroupId) && !empty(resourceGroupName) && !empty(subscriptionId)) {
-  name: 'roleDefinition-rg-${guid(roleName, subscriptionId, resourceGroupName, location)}'
+module roleDefinition_rg '.bicep/nested_roleDefinitions_rg.bicep' = if (empty(managementGroupId) && !empty(resourceGroupName) && !empty(subscriptionId)) {
+  name: '${uniqueString(deployment().name, location)}-RoleDefinition-RG-Module'
   scope: resourceGroup(subscriptionId, resourceGroupName)
   params: {
     roleName: roleName
-    roleDescription: roleDescription
-    actions: actions
-    notActions: notActions
-    dataActions: dataActions
-    notDataActions: notDataActions
+    description: !empty(description) ? description : ''
+    actions: !empty(actions) ? actions : []
+    notActions: !empty(notActions) ? notActions : []
+    dataActions: !empty(dataActions) ? dataActions : []
+    notDataActions: !empty(notDataActions) ? notDataActions : []
+    assignableScopes: !empty(assignableScopes) ? assignableScopes : []
     subscriptionId: subscriptionId
     resourceGroupName: resourceGroupName
-    location: location
   }
 }
 
+@sys.description('The GUID of the Role Definition')
 output roleDefinitionName string = !empty(managementGroupId) ? roleDefinition_mg.outputs.roleDefinitionName : (!empty(resourceGroupName) ? roleDefinition_rg.outputs.roleDefinitionName : roleDefinition_sub.outputs.roleDefinitionName)
-output roleDefinitionId string = !empty(managementGroupId) ? roleDefinition_mg.outputs.roleDefinitionId : (!empty(resourceGroupName) ? roleDefinition_rg.outputs.roleDefinitionId : roleDefinition_sub.outputs.roleDefinitionId)
+
+@sys.description('The resource ID of the Role Definition')
+output roleDefinitionResourceId string = !empty(managementGroupId) ? roleDefinition_mg.outputs.roleDefinitionResourceId : (!empty(resourceGroupName) ? roleDefinition_rg.outputs.roleDefinitionResourceId : roleDefinition_sub.outputs.roleDefinitionResourceId)
+
+@sys.description('The scope this Role Definition applies to')
 output roleDefinitionScope string = !empty(managementGroupId) ? roleDefinition_mg.outputs.roleDefinitionScope : (!empty(resourceGroupName) ? roleDefinition_rg.outputs.roleDefinitionScope : roleDefinition_sub.outputs.roleDefinitionScope)

@@ -1,4 +1,4 @@
-# registrationDefinitions `[Microsoft.ManagedServices/registrationDefinitions]`
+# Registration Definitions `[Microsoft.ManagedServices/registrationDefinitions]`
 
 This module deploys `registrationDefinitions` and `registrationAssignments` (often refered to as 'Lighthouse' or 'resource delegation')
 on subscription or resource group scopes. This type of delegation is very similar to role assignments but here the principal that is
@@ -8,7 +8,7 @@ remote/managing tenant.
 
 ## Resource types
 
-| Resource Type | Api Version |
+| Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.ManagedServices/registrationAssignments` | 2019-09-01 |
 | `Microsoft.ManagedServices/registrationDefinitions` | 2019-09-01 |
@@ -19,7 +19,7 @@ remote/managing tenant.
 | :-- | :-- | :-- | :-- | :-- |
 | `authorizations` | array |  |  | Required. Specify an array of objects, containing object of Azure Active Directory principalId, a Azure roleDefinitionId, and an optional principalIdDisplayName. The roleDefinition specified is granted to the principalId in the provider's Active Directory and the principalIdDisplayName is visible to customers. |
 | `managedByTenantId` | string |  |  | Required. Specify the tenant ID of the tenant which homes the principals you are delegating permissions to. |
-| `registrationDefinitionName` | string |  |  | Required. Specify a unique name for your offer/registration. i.e '<Managing Tenant> - <Remote Tenant> - <ResourceName>' |
+| `name` | string |  |  | Required. Specify a unique name for your offer/registration. i.e '<Managing Tenant> - <Remote Tenant> - <ResourceName>' |
 | `registrationDescription` | string |  |  | Required. Description of the offer/registration. i.e. 'Managed by <Managing Org Name>' |
 | `resourceGroupName` | string |  |  | Optional. Specify the name of the Resource Group to delegate access to. If not provided, delegation will be done on the targeted subscription. |
 
@@ -57,11 +57,12 @@ remote/managing tenant.
 
 ## Outputs
 
-| Output Name | Type |
-| :-- | :-- |
-| `registrationAssignmentId` | string |
-| `registrationDefinitionId` | string |
-| `registrationDefinitionName` | string |
+| Output Name | Type | Description |
+| :-- | :-- | :-- |
+| `registrationAssignmentId` | string | The registration assignment resource ID |
+| `registrationDefinitionName` | string | The name of the registration definition |
+| `registrationDefinitionResourceId` | string | The resource ID of the registration definition |
+| `registrationDefinitionSubscription` | string | The subscription the registration definition was deployed into |
 
 ## Considerations
 
@@ -117,5 +118,4 @@ There are a couple of limitations that you should be aware of with Lighthouse:
 
 ## Template references
 
-- [Registrationassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ManagedServices/2019-09-01/registrationAssignments)
-- [Registrationdefinitions](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ManagedServices/2019-09-01/registrationDefinitions)
+- [Define resources with Bicep and ARM templates](https://docs.microsoft.com/en-us/azure/templates)

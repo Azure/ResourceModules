@@ -11,10 +11,10 @@ var privateEndpoint_var = {
     privateEndpointObj.service
   ]
   privateDnsZoneResourceIds: (contains(privateEndpointObj, 'privateDnsZoneResourceIds') ? (empty(privateEndpointObj.privateDnsZoneResourceIds) ? [] : privateEndpointObj.privateDnsZoneResourceIds) : [])
-  customDnsConfigs: (contains(privateEndpointObj, 'customDnsConfigs') ? (empty(privateEndpointObj.customDnsConfigs) ? json('null') : privateEndpointObj.customDnsConfigs) : json('null'))
+  customDnsConfigs: contains(privateEndpointObj, 'customDnsConfigs') ? (!empty(privateEndpointObj.customDnsConfigs) ? privateEndpointObj.customDnsConfigs : null) : null
 }
 
-resource privateEndpoint 'Microsoft.Network/privateEndpoints@2021-05-01' = {
+resource privateEndpoint 'Microsoft.Network/privateEndpoints@2021-03-01' = {
   name: privateEndpoint_var.name
   location: privateEndpointVnetLocation
   tags: tags

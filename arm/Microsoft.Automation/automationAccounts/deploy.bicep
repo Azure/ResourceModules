@@ -1,5 +1,5 @@
-@description('Required. Name of the Automation Account')
-param automationAccountName string
+@description('Required. Name of the Automation Account.')
+param name string
 
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
@@ -8,28 +8,32 @@ param location string = resourceGroup().location
   'Free'
   'Basic'
 ])
-@description('Optional. SKU name of the account')
+@description('Optional. SKU name of the account.')
 param skuName string = 'Basic'
 
-@description('Optional. List of modules to be created in the automation account')
-@metadata({
-  name: 'Module name'
-  version: 'Module version or specify latest to get the latest version'
-  uri: 'Module package uri, e.g. https://www.powershellgallery.com/api/v2/package'
-})
+@description('Optional. List of modules to be created in the automation account.')
 param modules array = []
 
-@description('Optional. List of runbooks to be created in the automation account')
+@description('Optional. List of runbooks to be created in the automation account.')
 param runbooks array = []
 
-@description('Optional. SAS token validity length. Usage: \'PT8H\' - valid for 8 hours; \'P5D\' - valid for 5 days; \'P1Y\' - valid for 1 year. When not provided, the SAS token will be valid for 8 hours.')
-param sasTokenValidityLength string = 'PT8H'
-
-@description('Optional. List of schedules to be created in the automation account')
+@description('Optional. List of schedules to be created in the automation account.')
 param schedules array = []
 
-@description('Optional. List of jobSchedules to be created in the automation account')
+@description('Optional. List of jobSchedules to be created in the automation account.')
 param jobSchedules array = []
+
+@description('Optional. List of variables to be created in the automation account.')
+param variables array = []
+
+@description('Optional. ID of the log analytics workspace to be linked to the deployed automation account.')
+param linkedWorkspaceId string = ''
+
+@description('Optional. List of gallerySolutions to be created in the linked log analytics workspace')
+param gallerySolutions array = []
+
+@description('Optional. List of softwareUpdateConfigurations to be created in the automation account')
+param softwareUpdateConfigurations array = []
 
 @description('Optional. Configuration Details for private endpoints.')
 param privateEndpoints array = []
@@ -39,10 +43,10 @@ param privateEndpoints array = []
 @description('Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.')
 param diagnosticLogsRetentionInDays int = 365
 
-@description('Optional. Resource identifier of the Diagnostic Storage Account.')
+@description('Optional. Resource ID of the diagnostic storage account.')
 param diagnosticStorageAccountId string = ''
 
-@description('Optional. Resource identifier of Log Analytics.')
+@description('Optional. Resource ID of log analytics.')
 param workspaceId string = ''
 
 @description('Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.')
@@ -50,6 +54,12 @@ param eventHubAuthorizationRuleId string = ''
 
 @description('Optional. Name of the event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.')
 param eventHubName string = ''
+
+@description('Optional. Enables system assigned managed identity on the resource.')
+param systemAssignedIdentity bool = false
+
+@description('Optional. The ID(s) to assign to the resource.')
+param userAssignedIdentities object = {}
 
 @allowed([
   'CanNotDelete'
@@ -59,25 +69,14 @@ param eventHubName string = ''
 @description('Optional. Specify the type of lock.')
 param lock string = 'NotSpecified'
 
-@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'')
+@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
 param roleAssignments array = []
 
 @description('Optional. Tags of the Automation Account resource.')
 param tags object = {}
 
-@description('Optional. Time used as a basis for e.g. the schedule start date')
-param baseTime string = utcNow('u')
-
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered.')
 param cuaId string = ''
-
-var accountSasProperties = {
-  signedServices: 'b'
-  signedPermission: 'r'
-  signedExpiry: dateTimeAdd(baseTime, sasTokenValidityLength)
-  signedResourceTypes: 'o'
-  signedProtocol: 'https'
-}
 
 @description('Optional. The name of logs that will be streamed.')
 @allowed([
@@ -118,33 +117,20 @@ var diagnosticsMetrics = [for metric in metricsToEnable: {
   }
 }]
 
-var builtInRoleNames = {
-  'Owner': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '8e3af657-a8ff-443c-a75c-2fe8c4bcb635')
-  'Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b24988ac-6180-42a0-ab88-20f7382dd24c')
-  'Reader': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'acdd72a7-3385-48ef-bd42-f606fba81ae7')
-  'Automation Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'f353d9bd-d4a6-484e-a77a-8050b599b867')
-  'Automation Job Operator': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '4fe576fe-1146-4730-92eb-48519fa6bf9f')
-  'Automation Operator': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'd3881f73-407a-4167-8283-e981cbba0404')
-  'Automation Runbook Operator': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '5fb5aef8-1081-4b8e-bb16-9d5d0385bab5')
-  'Log Analytics Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '92aaf0da-9dab-42b6-94a3-d43ce8d16293')
-  'Log Analytics Reader': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '73c42c96-874c-492b-b04d-ab87d138a893')
-  'Managed Application Contributor Role': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '641177b8-a67a-45b9-a033-47bc880bb21e')
-  'Managed Application Operator Role': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'c7393b34-138c-406f-901b-d8cf2b17e6ae')
-  'Managed Applications Reader': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b9331d33-8a36-4f8c-b097-4f54124fdb44')
-  'Monitoring Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '749f88d5-cbae-40b8-bcfc-e573ddc772fa')
-  'Monitoring Metrics Publisher': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '3913510d-42f4-4e42-8a64-420c390055eb')
-  'Monitoring Reader': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '43d0d8ad-25c7-4714-9337-8ba259a9fe05')
-  'Resource Policy Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '36243c78-bf99-498c-9df9-86d9f8d28608')
-  'User Access Administrator': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '18d7d88d-d35e-4fb5-a5c3-7773c20a72d9')
-}
+var identityType = systemAssignedIdentity ? (!empty(userAssignedIdentities) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned') : (!empty(userAssignedIdentities) ? 'UserAssigned' : 'None')
 
-module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
+var identity = identityType != 'None' ? {
+  type: identityType
+  userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
+} : null
+
+module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   name: 'pid-${cuaId}'
   params: {}
 }
 
 resource automationAccount 'Microsoft.Automation/automationAccounts@2020-01-13-preview' = {
-  name: automationAccountName
+  name: name
   location: location
   tags: tags
   properties: {
@@ -152,63 +138,157 @@ resource automationAccount 'Microsoft.Automation/automationAccounts@2020-01-13-p
       name: skuName
     }
   }
-
-  resource automationAccount_modules 'modules@2020-01-13-preview' = [for (module, index) in modules: {
-    name: module.name
-    location: location
-    tags: tags
-    properties: {
-      contentLink: {
-        uri: module.version == 'latest' ? '${module.uri}/${module.name}' : '${module.uri}/${module.name}/${module.version}'
-        version: module.version == 'latest' ? null : module.version
-      }
-    }
-  }]
-
-  resource automationAccount_schedules 'schedules@2020-01-13-preview' = [for (schedule, index) in schedules: {
-    name: schedule.scheduleName
-    properties: {
-      startTime: (empty(schedule.startTime) ? dateTimeAdd(baseTime, 'PT10M') : schedule.startTime)
-      frequency: (empty(schedule.frequency) ? json('null') : schedule.frequency)
-      expiryTime: (empty(schedule.expiryTime) ? json('null') : schedule.expiryTime)
-      interval: ((0 == schedule.interval) ? json('null') : schedule.interval)
-      timeZone: (empty(schedule.timeZone) ? json('null') : schedule.timeZone)
-      advancedSchedule: (empty(schedule.advancedSchedule) ? json('null') : schedule.advancedSchedule)
-    }
-  }]
-
-  resource automationAccount_runbooks 'runbooks@2019-06-01' = [for (runbook, index) in runbooks: {
-    name: runbook.runbookName
-    properties: {
-      runbookType: (empty(runbook.runbookType) ? json('null') : runbook.runbookType)
-      publishContentLink: {
-        uri: (empty(runbook.runbookScriptUri) ? json('null') : (empty(runbook.scriptStorageAccountId) ? 'runbook.runbookScriptUri' : 'runbook.runbookScriptUri${listAccountSas(runbook.scriptStorageAccountId, '2019-04-01', accountSasProperties).accountSasToken}'))
-        version: (empty(runbook.version) ? json('null') : runbook.version)
-      }
-    }
-  }]
-
-  resource automationAccount_jobSchedules 'jobSchedules@2020-01-13-preview' = [for (jobSchedule, index) in jobSchedules: {
-    name: jobSchedule.jobScheduleName
-    properties: {
-      parameters: (empty(jobSchedule.parameters) ? json('null') : jobSchedule.parameters)
-      runbook: {
-        name: jobSchedule.runbookName
-      }
-      runOn: (empty(jobSchedule.runOn) ? json('null') : jobSchedule.runOn)
-      schedule: {
-        name: jobSchedule.scheduleName
-      }
-    }
-    dependsOn: [
-      automationAccount_schedules
-      automationAccount_runbooks
-    ]
-  }]
+  identity: identity
 }
 
+module automationAccount_modules 'modules/deploy.bicep' = [for (module, index) in modules: {
+  name: '${uniqueString(deployment().name, location)}-AutoAccount-Module-${index}'
+  params: {
+    name: module.name
+    automationAccountName: automationAccount.name
+    version: module.version
+    uri: module.uri
+    location: location
+    tags: tags
+  }
+}]
+
+module automationAccount_schedules 'schedules/deploy.bicep' = [for (schedule, index) in schedules: {
+  name: '${uniqueString(deployment().name, location)}-AutoAccount-Schedule-${index}'
+  params: {
+    name: schedule.name
+    automationAccountName: automationAccount.name
+    advancedSchedule: contains(schedule, 'advancedSchedule') ? schedule.advancedSchedule : null
+    scheduleDescription: contains(schedule, 'description') ? schedule.description : ''
+    expiryTime: contains(schedule, 'expiryTime') ? schedule.expiryTime : ''
+    frequency: contains(schedule, 'frequency') ? schedule.frequency : 'OneTime'
+    interval: contains(schedule, 'interval') ? schedule.interval : 0
+    startTime: contains(schedule, 'startTime') ? schedule.startTime : ''
+    timeZone: contains(schedule, 'timeZone') ? schedule.timeZone : ''
+  }
+}]
+
+module automationAccount_runbooks 'runbooks/deploy.bicep' = [for (runbook, index) in runbooks: {
+  name: '${uniqueString(deployment().name, location)}-AutoAccount-Runbook-${index}'
+  params: {
+    name: runbook.name
+    automationAccountName: automationAccount.name
+    runbookType: runbook.runbookType
+    runbookDescription: contains(runbook, 'description') ? runbook.description : ''
+    uri: contains(runbook, 'uri') ? runbook.uri : ''
+    version: contains(runbook, 'version') ? runbook.version : ''
+    location: location
+    tags: tags
+  }
+}]
+
+module automationAccount_jobSchedules 'jobSchedules/deploy.bicep' = [for (jobSchedule, index) in jobSchedules: {
+  name: '${uniqueString(deployment().name, location)}-AutoAccount-JobSchedule-${index}'
+  params: {
+    automationAccountName: automationAccount.name
+    runbookName: jobSchedule.runbookName
+    scheduleName: jobSchedule.scheduleName
+    parameters: contains(jobSchedule, 'parameters') ? (!empty(jobSchedule.parameters) ? jobSchedule.parameters : {}) : {}
+    runOn: contains(jobSchedule, 'runOn') ? (!empty(jobSchedule.runOn) ? jobSchedule.runOn : '') : ''
+  }
+  dependsOn: [
+    automationAccount_schedules
+    automationAccount_runbooks
+  ]
+}]
+
+module automationAccount_variables 'variables/deploy.bicep' = [for (variable, index) in variables: {
+  name: '${uniqueString(deployment().name, location)}-AutoAccount-Variable-${index}'
+  params: {
+    automationAccountName: automationAccount.name
+    name: variable.name
+    description: contains(variable, 'description') ? variable.description : ''
+    value: variable.value
+    isEncrypted: contains(variable, 'isEncrypted') ? variable.isEncrypted : false
+  }
+}]
+
+module automationAccount_linkedService '.bicep/nested_linkedService.bicep' = if (!empty(linkedWorkspaceId)) {
+  name: '${uniqueString(deployment().name, location)}-AutoAccount-LinkedService'
+  params: {
+    name: 'automation'
+    logAnalyticsWorkspaceName: '${last(split(linkedWorkspaceId, '/'))}'
+    resourceId: automationAccount.id
+    tags: tags
+  }
+  // This is to support linked services to law in different subscription and resource group than the automation account.
+  // The current scope is used by default if no linked service is intended to be created.
+  scope: resourceGroup(!empty(linkedWorkspaceId) ? split(linkedWorkspaceId, '/')[2] : subscription().subscriptionId, !empty(linkedWorkspaceId) ? split(linkedWorkspaceId, '/')[4] : resourceGroup().name)
+}
+
+module automationAccount_solutions '.bicep/nested_solution.bicep' = [for (gallerySolution, index) in gallerySolutions: if (!empty(linkedWorkspaceId)) {
+  name: '${uniqueString(deployment().name, location)}-AutoAccount-Solution-${index}'
+  params: {
+    name: gallerySolution
+    location: location
+    logAnalyticsWorkspaceName: '${last(split(linkedWorkspaceId, '/'))}'
+  }
+  // This is to support solution to law in different subscription and resource group than the automation account.
+  // The current scope is used by default if no linked service is intended to be created.
+  scope: resourceGroup(!empty(linkedWorkspaceId) ? split(linkedWorkspaceId, '/')[2] : subscription().subscriptionId, !empty(linkedWorkspaceId) ? split(linkedWorkspaceId, '/')[4] : resourceGroup().name)
+  dependsOn: [
+    automationAccount_linkedService
+  ]
+}]
+
+module automationAccount_softwareUpdateConfigurations 'softwareUpdateConfigurations/deploy.bicep' = [for (softwareUpdateConfiguration, index) in softwareUpdateConfigurations: {
+  name: '${uniqueString(deployment().name, location)}-AutoAccount-SwUpdateConfig-${index}'
+  params: {
+    name: softwareUpdateConfiguration.name
+    automationAccountName: automationAccount.name
+    frequency: softwareUpdateConfiguration.frequency
+    operatingSystem: softwareUpdateConfiguration.operatingSystem
+    rebootSetting: softwareUpdateConfiguration.rebootSetting
+    azureVirtualMachines: contains(softwareUpdateConfiguration, 'azureVirtualMachines') ? !empty(softwareUpdateConfiguration.azureVirtualMachines) ? softwareUpdateConfiguration.azureVirtualMachines : [] : []
+    excludeUpdates: contains(softwareUpdateConfiguration, 'excludeUpdates') ? !empty(softwareUpdateConfiguration.excludeUpdates) ? softwareUpdateConfiguration.excludeUpdates : [] : []
+    expiryTime: contains(softwareUpdateConfiguration, 'expiryTime') ? !empty(softwareUpdateConfiguration.expiryTime) ? softwareUpdateConfiguration.expiryTime : '' : ''
+    expiryTimeOffsetMinutes: contains(softwareUpdateConfiguration, 'expiryTimeOffsetMinutes') ? softwareUpdateConfiguration.expiryTimeOffsetMinute : 0
+    includeUpdates: contains(softwareUpdateConfiguration, 'includeUpdates') ? !empty(softwareUpdateConfiguration.includeUpdates) ? softwareUpdateConfiguration.includeUpdates : [] : []
+    interval: contains(softwareUpdateConfiguration, 'interval') ? softwareUpdateConfiguration.interval : 1
+    isEnabled: contains(softwareUpdateConfiguration, 'isEnabled') ? !empty(softwareUpdateConfiguration.isEnabled) ? softwareUpdateConfiguration.isEnabled : true : true
+    maintenanceWindow: contains(softwareUpdateConfiguration, 'maintenanceWindow') ? !empty(softwareUpdateConfiguration.maintenanceWindow) ? softwareUpdateConfiguration.maintenanceWindow : 'PT2H' : 'PT2H'
+    monthDays: contains(softwareUpdateConfiguration, 'monthDays') ? !empty(softwareUpdateConfiguration.monthDays) ? softwareUpdateConfiguration.monthDays : [] : []
+    monthlyOccurrences: contains(softwareUpdateConfiguration, 'monthlyOccurrences') ? !empty(softwareUpdateConfiguration.monthlyOccurrences) ? softwareUpdateConfiguration.monthlyOccurrences : [] : []
+    nextRun: contains(softwareUpdateConfiguration, 'nextRun') ? !empty(softwareUpdateConfiguration.nextRun) ? softwareUpdateConfiguration.nextRun : '' : ''
+    nextRunOffsetMinutes: contains(softwareUpdateConfiguration, 'nextRunOffsetMinutes') ? softwareUpdateConfiguration.nextRunOffsetMinutes : 0
+    nonAzureComputerNames: contains(softwareUpdateConfiguration, 'nonAzureComputerNames') ? !empty(softwareUpdateConfiguration.nonAzureComputerNames) ? softwareUpdateConfiguration.nonAzureComputerNames : [] : []
+    nonAzureQueries: contains(softwareUpdateConfiguration, 'nonAzureQueries') ? !empty(softwareUpdateConfiguration.nonAzureQueries) ? softwareUpdateConfiguration.nonAzureQueries : [] : []
+    postTaskParameters: contains(softwareUpdateConfiguration, 'postTaskParameters') ? !empty(softwareUpdateConfiguration.postTaskParameters) ? softwareUpdateConfiguration.postTaskParameters : {} : {}
+    postTaskSource: contains(softwareUpdateConfiguration, 'postTaskSource') ? !empty(softwareUpdateConfiguration.postTaskSource) ? softwareUpdateConfiguration.postTaskSource : '' : ''
+    preTaskParameters: contains(softwareUpdateConfiguration, 'preTaskParameters') ? !empty(softwareUpdateConfiguration.preTaskParameters) ? softwareUpdateConfiguration.preTaskParameters : {} : {}
+    preTaskSource: contains(softwareUpdateConfiguration, 'preTaskSource') ? !empty(softwareUpdateConfiguration.preTaskSource) ? softwareUpdateConfiguration.preTaskSource : '' : ''
+    scheduleDescription: contains(softwareUpdateConfiguration, 'scheduleDescription') ? !empty(softwareUpdateConfiguration.scheduleDescription) ? softwareUpdateConfiguration.scheduleDescription : '' : ''
+    scopeByLocations: contains(softwareUpdateConfiguration, 'scopeByLocations') ? !empty(softwareUpdateConfiguration.scopeByLocations) ? softwareUpdateConfiguration.scopeByLocations : [] : []
+    scopeByResources: contains(softwareUpdateConfiguration, 'scopeByResources') ? !empty(softwareUpdateConfiguration.scopeByResources) ? softwareUpdateConfiguration.scopeByResources : [
+      subscription().id
+    ] : [
+      subscription().id
+    ]
+    scopeByTags: contains(softwareUpdateConfiguration, 'scopeByTags') ? !empty(softwareUpdateConfiguration.scopeByTags) ? softwareUpdateConfiguration.scopeByTags : {} : {}
+    scopeByTagsOperation: contains(softwareUpdateConfiguration, 'scopeByTagsOperation') ? !empty(softwareUpdateConfiguration.scopeByTagsOperation) ? softwareUpdateConfiguration.scopeByTagsOperation : 'All' : 'All'
+    startTime: contains(softwareUpdateConfiguration, 'startTime') ? !empty(softwareUpdateConfiguration.startTime) ? softwareUpdateConfiguration.startTime : '' : ''
+    timeZone: contains(softwareUpdateConfiguration, 'timeZone') ? !empty(softwareUpdateConfiguration.timeZone) ? softwareUpdateConfiguration.timeZone : 'UTC' : 'UTC'
+    updateClassifications: contains(softwareUpdateConfiguration, 'updateClassifications') ? !empty(softwareUpdateConfiguration.updateClassifications) ? softwareUpdateConfiguration.updateClassifications : [
+      'Critical'
+      'Security'
+    ] : [
+      'Critical'
+      'Security'
+    ]
+    weekDays: contains(softwareUpdateConfiguration, 'weekDays') ? empty(softwareUpdateConfiguration.weekDays) ? softwareUpdateConfiguration.weekDays : [] : []
+  }
+  dependsOn: [
+    automationAccount_solutions
+  ]
+}]
+
 resource automationAccount_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
-  name: '${automationAccount.name}-${lock}-lock'
+  name: '${automationAccount.name}-AutoAccount-${lock}-lock'
   properties: {
     level: lock
     notes: (lock == 'CanNotDelete') ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
@@ -216,21 +296,21 @@ resource automationAccount_lock 'Microsoft.Authorization/locks@2016-09-01' = if 
   scope: automationAccount
 }
 
-resource automationAccount_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2017-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId)) || (!empty(eventHubAuthorizationRuleId)) || (!empty(eventHubName))) {
-  name: '${automationAccount.name}-diagnosticSettings'
+resource automationAccount_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId)) || (!empty(eventHubAuthorizationRuleId)) || (!empty(eventHubName))) {
+  name: '${automationAccount.name}-AutoAccount-diagnosticSettings'
   properties: {
-    storageAccountId: (empty(diagnosticStorageAccountId) ? json('null') : diagnosticStorageAccountId)
-    workspaceId: (empty(workspaceId) ? json('null') : workspaceId)
-    eventHubAuthorizationRuleId: (empty(eventHubAuthorizationRuleId) ? json('null') : eventHubAuthorizationRuleId)
-    eventHubName: (empty(eventHubName) ? json('null') : eventHubName)
-    metrics: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? json('null') : diagnosticsMetrics)
-    logs: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? json('null') : diagnosticsLogs)
+    storageAccountId: !empty(diagnosticStorageAccountId) ? diagnosticStorageAccountId : null
+    workspaceId: !empty(workspaceId) ? workspaceId : null
+    eventHubAuthorizationRuleId: !empty(eventHubAuthorizationRuleId) ? eventHubAuthorizationRuleId : null
+    eventHubName: !empty(eventHubName) ? eventHubName : null
+    metrics: diagnosticsMetrics
+    logs: diagnosticsLogs
   }
   scope: automationAccount
 }
 
-module automationAccount_privateEndpoints './.bicep/nested_privateEndpoint.bicep' = [for (endpoint, index) in privateEndpoints: if (!empty(privateEndpoints)) {
-  name: '${uniqueString(deployment().name, location)}-Automation-PrivateEndpoints-${index}'
+module automationAccount_privateEndpoints '.bicep/nested_privateEndpoint.bicep' = [for (endpoint, index) in privateEndpoints: if (!empty(privateEndpoints)) {
+  name: '${uniqueString(deployment().name, location)}-AutoAccount-PrivateEndpoint-${index}'
   params: {
     privateEndpointResourceId: automationAccount.id
     privateEndpointVnetLocation: (empty(privateEndpoints) ? 'dummy' : reference(split(endpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location)
@@ -242,19 +322,23 @@ module automationAccount_privateEndpoints './.bicep/nested_privateEndpoint.bicep
   ]
 }]
 
-module automationAccount_rbac './.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
-  name: 'rbac-${deployment().name}${index}'
+module automationAccount_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+  name: '${uniqueString(deployment().name, location)}-AutoAccount-Rbac-${index}'
   params: {
-    roleAssignmentObj: roleAssignment
-    builtInRoleNames: builtInRoleNames
-    resourceName: automationAccount.name
+    principalIds: roleAssignment.principalIds
+    roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
+    resourceId: automationAccount.id
   }
 }]
 
+@description('The name of the deployed automation account')
 output automationAccountName string = automationAccount.name
+
+@description('The resource ID of the deployed automation account')
 output automationAccountResourceId string = automationAccount.id
+
+@description('The resource group of the deployed automation account')
 output automationAccountResourceGroup string = resourceGroup().name
-output modules array = modules
-output schedules array = schedules
-output jobSchedules array = jobSchedules
-output runbooks array = runbooks
+
+@description('The principal ID of the system assigned identity.')
+output systemAssignedPrincipalId string = systemAssignedIdentity ? automationAccount.identity.principalId : ''

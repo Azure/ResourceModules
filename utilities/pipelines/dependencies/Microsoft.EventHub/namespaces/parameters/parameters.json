@@ -1,0 +1,33 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "name": {
+      "value": "adp-sxx-az-evhns-x-001"
+    },
+    "eventHubs": {
+      "value": [
+        {
+          "name": "adp-sxx-az-evh-x-001",
+          "authorizationRules": [
+            {
+              "name": "RootManageSharedAccessKey",
+              "rights": [
+                "Listen",
+                "Manage",
+                "Send"
+              ]
+            },
+            {
+              "name": "SendListenAccess",
+              "rights": [
+                "Listen",
+                "Send"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

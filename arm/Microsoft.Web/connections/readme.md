@@ -1,14 +1,14 @@
-# API Connection `[Microsoft.Web/connections]`
+# API Connections `[Microsoft.Web/connections]`
 
-This module deploys an Azure API Connection.
+This module deploys an Azure API connection.
 
 ## Resource types
 
-| Resource Type | Api Version |
+| Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
+| `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
 | `Microsoft.Web/connections` | 2016-06-01 |
-| `Microsoft.Web/connections/providers/roleAssignments` | 2021-04-01-preview |
 
 ## Parameters
 
@@ -17,12 +17,12 @@ This module deploys an Azure API Connection.
 | `alternativeParameterValues` | object | `{object}` |  | Optional. Alternative parameter values. |
 | `connectionApi` | object | `{object}` |  | Optional. Specific values for some API connections. |
 | `connectionKind` | string |  |  | Required. Connection Kind. Example: 'V1' when using blobs. It can change depending on the resource. |
-| `connectionName` | string |  |  | Required. Connection name for connection. Example: 'azureblob' when using blobs.  It can change depending on the resource. |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered. |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered. |
 | `customParameterValues` | object | `{object}` |  | Optional. Customized parameter values for specific connections. |
 | `displayName` | string |  |  | Required. Display name connection. Example: 'blobconnection' when using blobs. It can change depending on the resource. |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location of the deployment. |
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
+| `name` | string |  |  | Required. Connection name for connection. Example: 'azureblob' when using blobs.  It can change depending on the resource. |
 | `nonSecretParameterValues` | object | `{object}` |  | Optional. Dictionary of nonsecret parameter values. |
 | `parameterValues` | secureObject | `{object}` |  | Optional. Connection strings or access keys for connection. Example: 'accountName' and 'accessKey' when using blobs.  It can change depending on the resource. |
 | `parameterValueType` | string |  |  | Optional. Value Type of parameter, in case alternativeParameterValues is used. |
@@ -30,6 +30,28 @@ This module deploys an Azure API Connection.
 | `statuses` | array | `[]` |  | Optional. Status of the connection. |
 | `tags` | object | `{object}` |  | Optional. Tags of the resource. |
 | `testLinks` | array | `[]` |  | Optional. Links to test the API connection. |
+
+### Parameter Usage: `roleAssignments`
+
+```json
+"roleAssignments": {
+    "value": [
+        {
+            "roleDefinitionIdOrName": "Reader",
+            "principalIds": [
+                "12345678-1234-1234-1234-123456789012", // object 1
+                "78945612-1234-1234-1234-123456789012" // object 2
+            ]
+        },
+        {
+            "roleDefinitionIdOrName": "/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11",
+            "principalIds": [
+                "12345678-1234-1234-1234-123456789012" // object 1
+            ]
+        }
+    ]
+}
+```
 
 ### Parameter Usage: `connectionApi`
 
@@ -101,13 +123,14 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 ## Outputs
 
-| Output Name | Type |
-| :-- | :-- |
-| `connectionName` | string |
-| `connectionResourceGroup` | string |
-| `connectionResourceId` | string |
+| Output Name | Type | Description |
+| :-- | :-- | :-- |
+| `connectionName` | string | The name of the connection |
+| `connectionResourceGroup` | string | The resource group the connection was deployed into |
+| `connectionResourceId` | string | The resource ID of the connection |
 
 ## Template references
 
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-04-01-preview/roleAssignments)
 - [Connections](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Web/2016-06-01/connections)

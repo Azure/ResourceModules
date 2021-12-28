@@ -116,7 +116,7 @@ resource deviceSecurityGroups 'Microsoft.Security/deviceSecurityGroups@2019-08-0
   }
 }
 
-module iotSecuritySolutions './.bicep/nested_iotSecuritySolutions.bicep' = if (!empty(ioTSecuritySolutionProperties)) {
+module iotSecuritySolutions '.bicep/nested_iotSecuritySolutions.bicep' = if (!empty(ioTSecuritySolutionProperties)) {
   name: '${uniqueString(deployment().name)}-ASC-IotSecuritySolutions'
   scope: resourceGroup(empty(ioTSecuritySolutionProperties) ? 'dummy' : ioTSecuritySolutionProperties.resourceGroup)
   params: {
@@ -222,4 +222,5 @@ resource workspaceSettings 'Microsoft.Security/workspaceSettings@2017-08-01-prev
   ]
 }
 
+@description('The resource IDs of the used log analytics workspace')
 output workspaceId string = workspaceId

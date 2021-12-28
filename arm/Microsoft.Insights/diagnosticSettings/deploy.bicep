@@ -3,17 +3,17 @@ targetScope = 'subscription'
 @description('Optional. Name of the ActivityLog diagnostic settings.')
 @minLength(1)
 @maxLength(260)
-param diagnosticsName string = '${uniqueString(subscription().id)}-ActivityLog'
+param name string = '${uniqueString(subscription().id)}-ActivityLog'
 
 @description('Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.')
 @minValue(0)
 @maxValue(365)
 param diagnosticLogsRetentionInDays int = 365
 
-@description('Optional. Resource identifier of the Diagnostic Storage Account.')
+@description('Optional. Resource ID of the diagnostic storage account.')
 param diagnosticStorageAccountId string = ''
 
-@description('Optional. Resource identifier of Log Analytics.')
+@description('Optional. Resource ID of log analytics.')
 param workspaceId string = ''
 
 @description('Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.')
@@ -53,16 +53,22 @@ var diagnosticsLogs = [for log in logsToEnable: {
   }
 }]
 
-resource activityLog 'Microsoft.Insights/diagnosticSettings@2017-05-01-preview' = {
-  name: diagnosticsName
+resource diagnosticSetting 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = {
+  name: name
   properties: {
-    storageAccountId: (empty(diagnosticStorageAccountId) ? json('null') : diagnosticStorageAccountId)
-    workspaceId: (empty(workspaceId) ? json('null') : workspaceId)
-    eventHubAuthorizationRuleId: (empty(eventHubAuthorizationRuleId) ? json('null') : eventHubAuthorizationRuleId)
-    eventHubName: (empty(eventHubName) ? json('null') : eventHubName)
-    logs: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? json('null') : diagnosticsLogs)
+    storageAccountId: (empty(diagnosticStorageAccountId) ? null : diagnosticStorageAccountId)
+    workspaceId: (empty(workspaceId) ? null : workspaceId)
+    eventHubAuthorizationRuleId: (empty(eventHubAuthorizationRuleId) ? null : eventHubAuthorizationRuleId)
+    eventHubName: (empty(eventHubName) ? null : eventHubName)
+    logs: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? null : diagnosticsLogs)
   }
 }
 
-output diagnosticsName string = activityLog.name
-output diagnosticResourceId string = activityLog.id
+@description('The name of the diagnostic settings')
+output diagnosticsName string = diagnosticSetting.name
+
+@description('The resource ID of the diagnostic settings')
+output diagnosticResourceId string = diagnosticSetting.id
+
+@description('The name of the subscription to deploy into')
+output subscriptionName string = subscription().displayName

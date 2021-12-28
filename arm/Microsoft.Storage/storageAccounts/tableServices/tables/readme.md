@@ -4,7 +4,7 @@ This module deploys a storage account table
 
 ## Resource Types
 
-| Resource Type | Api Version |
+| Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Storage/storageAccounts/tableServices/tables` | 2021-06-01 |
 
@@ -12,9 +12,10 @@ This module deploys a storage account table
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `name` | string |  |  | Required. Name of the table. |
 | `storageAccountName` | string |  |  | Required. Name of the Storage Account. |
+| `tableServicesName` | string | `default` |  | Optional. The name of the table service |
 
 ## Outputs
 
@@ -22,7 +23,7 @@ This module deploys a storage account table
 | :-- | :-- | :-- |
 | `tableName` | string | The name of the deployed file share service |
 | `tableResourceGroup` | string | The resource group of the deployed file share service |
-| `tableResourceId` | string | The id of the deployed file share service |
+| `tableResourceId` | string | The resource ID of the deployed file share service |
 
 ## Template references
 

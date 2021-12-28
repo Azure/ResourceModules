@@ -5,13 +5,13 @@ param tags object
 
 var privateEndpointResourceName = last(split(privateEndpointResourceId, '/'))
 var privateEndpoint_var = {
-  name: (contains(privateEndpoint, 'name') ? (empty(privateEndpoint.name) ? '${privateEndpointResourceName}-${privateEndpoint.service}' : privateEndpoint.name) : '${privateEndpointResourceName}-${privateEndpoint.service}')
+  name: contains(privateEndpoint, 'name') ? (empty(privateEndpoint.name) ? '${privateEndpointResourceName}-${privateEndpoint.service}' : privateEndpoint.name) : '${privateEndpointResourceName}-${privateEndpoint.service}'
   subnetResourceId: privateEndpoint.subnetResourceId
   service: [
     privateEndpoint.service
   ]
-  privateDnsZoneResourceIds: (contains(privateEndpoint, 'privateDnsZoneResourceIds') ? (empty(privateEndpoint.privateDnsZoneResourceIds) ? [] : privateEndpoint.privateDnsZoneResourceIds) : [])
-  customDnsConfigs: (contains(privateEndpoint, 'customDnsConfigs') ? (empty(privateEndpoint.customDnsConfigs) ? json('null') : privateEndpoint.customDnsConfigs) : json('null'))
+  privateDnsZoneResourceIds: contains(privateEndpoint, 'privateDnsZoneResourceIds') ? (empty(privateEndpoint.privateDnsZoneResourceIds) ? [] : privateEndpoint.privateDnsZoneResourceIds) : []
+  customDnsConfigs: contains(privateEndpoint, 'customDnsConfigs') ? (empty(privateEndpoint.customDnsConfigs) ? null : privateEndpoint.customDnsConfigs) : null
 }
 
 resource privateEndpoint_name 'Microsoft.Network/privateEndpoints@2021-05-01' = {

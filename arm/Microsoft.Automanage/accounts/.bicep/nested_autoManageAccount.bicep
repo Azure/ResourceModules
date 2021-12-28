@@ -9,6 +9,9 @@ resource account 'Microsoft.Automanage/accounts@2020-06-30-preview' = {
   }
 }
 
+@description('The name of the auto manage account')
 output accountName string = account.name
+@description('The resource ID of the auto manage account')
 output accountResourceId string = account.id
+@description('The principal ID of the system assigned identity')
 output principalId string = account.identity.principalId

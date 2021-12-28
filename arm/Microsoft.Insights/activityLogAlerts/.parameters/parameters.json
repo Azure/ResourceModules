@@ -2,8 +2,8 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "alertName": {
-            "value": "sxx-az-ala-weu-x-001"
+        "name": {
+            "value": "sxx-az-ala-x-001"
         },
         "scopes": {
             "value": [
@@ -29,7 +29,7 @@
         "actions": {
             "value": [
                 {
-                    "actionGroupId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/microsoft.insights/actiongroups/adp-sxx-az-ag-weu-x-001"
+                    "actionGroupId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/microsoft.insights/actiongroups/adp-sxx-az-ag-x-001"
                 }
             ]
         },
@@ -38,7 +38,7 @@
                 {
                     "roleDefinitionIdOrName": "Reader",
                     "principalIds": [
-                        "5545f7a0-51f4-46af-b3b4-baecf5176a56"
+                        "<<deploymentSpId>>"
                     ]
                 }
             ]

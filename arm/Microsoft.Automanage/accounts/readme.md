@@ -1,10 +1,10 @@
-# AutoManage `[Microsoft.Automanage/accounts]`
+# Automanage Accounts `[Microsoft.Automanage/accounts]`
 
-This module deploys an AutoManage account and associates VM with it.
+This module deploys an Automanage account and associates VM with it.
 
 ## Resource Types
 
-| Resource Type | Api Version |
+| Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
 | `Microsoft.Automanage/accounts` | 2020-06-30-preview |
@@ -14,23 +14,22 @@ This module deploys an AutoManage account and associates VM with it.
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `autoManageAccountName` | string | `[format('{0}-AutoManage', replace(subscription().displayName, ' ', ''))]` |  | Optional. The name of automanage account |
 | `autoManageAccountResourceGroupName` | string | `[format('{0}_group', replace(subscription().displayName, ' ', ''))]` |  | Optional. The resource group name where automanage will be created |
 | `configurationProfile` | string | `Production` | `[Production, Dev/Test]` | Optional. The configuration profile of automanage |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered. |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered. |
 | `location` | string | `[deployment().location]` |  | Optional. The location of automanage |
+| `name` | string | `[format('{0}-AutoManage', replace(subscription().displayName, ' ', ''))]` |  | Optional. The name of automanage account |
 | `vmName` | string |  |  | Required. The name of the VM to be associated |
 | `vmResourceGroupName` | string |  |  | Required. The name of the VM resource group |
 
 ## Outputs
 
-| Output Name | Type |
-| :-- | :-- |
-| `autoManageAccountName` | string |
-| `autoManageAccountResourceGroup` | string |
-| `autoManageAccountResourceId` | string |
+| Output Name | Type | Description |
+| :-- | :-- | :-- |
+| `autoManageAccountName` | string | The name of the auto manage account |
+| `autoManageAccountResourceGroup` | string | The resource group the auto manage account was deployed into |
+| `autoManageAccountResourceId` | string | The resource ID of the auto manage account |
 
 ## Template references
 
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-04-01-preview/roleAssignments)
-- [Accounts](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Automanage/2020-06-30-preview/accounts)
+- [Define resources with Bicep and ARM templates](https://docs.microsoft.com/en-us/azure/templates)

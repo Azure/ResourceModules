@@ -1,5 +1,5 @@
 @description('Required. The name to be used for the Application Gateway.')
-param applicationGatewayName string
+param name string
 
 @description('Optional. The name of the SKU for the Application Gateway.')
 @allowed([
@@ -21,7 +21,7 @@ param capacity int = 2
 @description('Optional. Enables HTTP/2 support.')
 param http2Enabled bool = true
 
-@description('Required. PublicIP Resource Id used in Public Frontend.')
+@description('Required. PublicIP Resource ID used in Public Frontend.')
 param frontendPublicIpResourceId string
 
 @metadata({
@@ -39,11 +39,11 @@ param subnetName string
 @description('Optional. The name of the Virtual Network Resource Group where the Application Gateway will be deployed.')
 param vNetResourceGroup string = resourceGroup().name
 
-@description('Optional. The Subscription Id of the Virtual Network where the Application Gateway will be deployed.')
+@description('Optional. The Subscription ID of the Virtual Network where the Application Gateway will be deployed.')
 param vNetSubscriptionId string = subscription().subscriptionId
 
-@description('Optional. Resource Id of an User assigned managed identity which will be associated with the App Gateway.')
-param managedIdentityResourceId string = ''
+@description('Optional. The ID(s) to assign to the resource.')
+param userAssignedIdentities object = {}
 
 @description('Optional. Application Gateway IP configuration name.')
 param gatewayIpConfigurationName string = 'gatewayIpConfiguration01'
@@ -51,7 +51,7 @@ param gatewayIpConfigurationName string = 'gatewayIpConfiguration01'
 @description('Optional. SSL certificate reference name for a certificate stored in the Key Vault to configure the HTTPS listeners.')
 param sslCertificateName string = 'sslCertificate01'
 
-@description('Optional. Secret Id of the SSL certificate stored in the Key Vault that will be used to configure the HTTPS listeners.')
+@description('Optional. Secret ID of the SSL certificate stored in the Key Vault that will be used to configure the HTTPS listeners.')
 param sslCertificateKeyVaultSecretId string = ''
 
 @description('Required. The backend pools to be configured.')
@@ -66,10 +66,10 @@ param probes array = []
 @description('Required. The frontend http listeners to be configured.')
 param frontendHttpListeners array = []
 
-@description('Required. The frontend https listeners to be configured.')
+@description('Required. The frontend HTTPS listeners to be configured.')
 param frontendHttpsListeners array = []
 
-@description('Optional. The http redirects to be configured. Each redirect will route http traffic to a pre-defined frontEnd https listener.')
+@description('Optional. The http redirects to be configured. Each redirect will route http traffic to a predefined frontEnd HTTPS listener.')
 param frontendHttpRedirects array = []
 
 @description('Required. The routing rules to be configured. These rules will be used to route requests from frontend listeners to backend pools using a backend HTTP configuration.')
@@ -83,10 +83,10 @@ param location string = resourceGroup().location
 @maxValue(365)
 param diagnosticLogsRetentionInDays int = 365
 
-@description('Optional. Resource identifier of the Diagnostic Storage Account.')
+@description('Optional. Resource ID of the diagnostic storage account.')
 param diagnosticStorageAccountId string = ''
 
-@description('Optional. Resource identifier of Log Analytics.')
+@description('Optional. Resource ID of log analytics.')
 param workspaceId string = ''
 
 @description('Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.')
@@ -109,7 +109,7 @@ param roleAssignments array = []
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered.')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered.')
 param cuaId string = ''
 
 @description('Optional. The name of logs that will be streamed.')
@@ -151,7 +151,7 @@ var diagnosticsMetrics = [for metric in metricsToEnable: {
   }
 }]
 
-var applicationGatewayResourceId = resourceId('Microsoft.Network/applicationGateways', applicationGatewayName)
+var applicationGatewayResourceId = resourceId('Microsoft.Network/applicationGateways', name)
 var subnetResourceId = resourceId(vNetSubscriptionId, vNetResourceGroup, 'Microsoft.Network/virtualNetworks/subnets', vNetName, subnetName)
 var frontendPublicIPConfigurationName = 'public'
 var frontendPrivateIPConfigurationName = 'private'
@@ -192,40 +192,19 @@ var frontendPorts = concat((empty(frontendHttpListeners) ? frontendHttpListeners
 var httpListeners = concat((empty(frontendHttpListeners) ? frontendHttpListeners : frontendHttpListeners_var), (empty(frontendHttpsListeners) ? frontendHttpsListeners : frontendHttpsListeners_var), (empty(frontendHttpRedirects) ? frontendHttpRedirects : frontendHttpRedirects_var))
 var redirectConfigurations = (empty(frontendHttpRedirects) ? frontendHttpRedirects : httpRedirectConfigurations)
 var requestRoutingRules = concat(httpsRequestRoutingRules, (empty(frontendHttpRedirects) ? frontendHttpRedirects : httpRequestRoutingRules))
-var identity = {
-  type: 'UserAssigned'
-  userAssignedIdentities: {
-    '${managedIdentityResourceId}': {}
-  }
-}
-var builtInRoleNames = {
-  'Owner': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '8e3af657-a8ff-443c-a75c-2fe8c4bcb635')
-  'Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b24988ac-6180-42a0-ab88-20f7382dd24c')
-  'Reader': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'acdd72a7-3385-48ef-bd42-f606fba81ae7')
-  'Avere Cluster Create': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'a7b1b19a-0e83-4fe5-935c-faaefbfd18c3')
-  'Avere Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '4f8fab4f-1852-4a58-a46a-8eaf358af14a')
-  'Azure Service Deploy Release Management Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '21d96096-b162-414a-8302-d8354f9d91b2')
-  'CAL-Custom-Role': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '7b266cd7-0bba-4ae2-8423-90ede5e1e898')
-  'ExpressRoute Administrator': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'a48d7896-14b4-4889-afef-fbb65a96e5a2')
-  'Log Analytics Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '92aaf0da-9dab-42b6-94a3-d43ce8d16293')
-  'Log Analytics Reader': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '73c42c96-874c-492b-b04d-ab87d138a893')
-  'Managed Application Contributor Role': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '641177b8-a67a-45b9-a033-47bc880bb21e')
-  'Managed Application Operator Role': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'c7393b34-138c-406f-901b-d8cf2b17e6ae')
-  'Managed Applications Reader': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b9331d33-8a36-4f8c-b097-4f54124fdb44')
-  'masterreader': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'a48d7796-14b4-4889-afef-fbb65a93e5a2')
-  'Monitoring Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '749f88d5-cbae-40b8-bcfc-e573ddc772fa')
-  'Monitoring Metrics Publisher': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '3913510d-42f4-4e42-8a64-420c390055eb')
-  'Monitoring Reader': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '43d0d8ad-25c7-4714-9337-8ba259a9fe05')
-  'Network Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '4d97b98b-1d4f-4787-a291-c67834d212e7')
-  'Resource Policy Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '36243c78-bf99-498c-9df9-86d9f8d28608')
-  'User Access Administrator': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '18d7d88d-d35e-4fb5-a5c3-7773c20a72d9')
-  'Virtual Machine Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '9980e02c-c2be-4d73-94e8-173b1dc7cf3c')
-}
+
+var identityType = !empty(userAssignedIdentities) ? 'UserAssigned' : 'None'
+
+var identity = identityType != 'None' ? {
+  type: identityType
+  userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
+} : null
+
 var backendAddressPools = [for backendPool in backendPools: {
   name: backendPool.backendPoolName
   type: 'Microsoft.Network/applicationGateways/backendAddressPools'
   properties: {
-    backendAddresses: (contains(backendPool, 'BackendAddresses') ? backendPool.BackendAddresses : [])
+    backendAddresses: contains(backendPool, 'BackendAddresses') ? backendPool.BackendAddresses : []
   }
 }]
 var probes_var = [for probe in probes: {
@@ -235,12 +214,12 @@ var probes_var = [for probe in probes: {
     protocol: probe.protocol
     host: probe.host
     path: probe.path
-    interval: (contains(probe, 'interval') ? probe.interval : 30)
-    timeout: (contains(probe, 'timeout') ? probe.timeout : 30)
-    unhealthyThreshold: (contains(probe, 'timeout') ? probe.unhealthyThreshold : 3)
-    minServers: (contains(probe, 'timeout') ? probe.minServers : 0)
+    interval: contains(probe, 'interval') ? probe.interval : 30
+    timeout: contains(probe, 'timeout') ? probe.timeout : 30
+    unhealthyThreshold: contains(probe, 'timeout') ? probe.unhealthyThreshold : 3
+    minServers: contains(probe, 'timeout') ? probe.minServers : 0
     match: {
-      body: (contains(probe, 'timeout') ? probe.body : '')
+      body: contains(probe, 'timeout') ? probe.body : ''
       statusCodes: probe.statusCodes
     }
   }
@@ -253,7 +232,7 @@ var backendHttpConfigurations_var = [for backendHttpConfiguration in backendHttp
     cookieBasedAffinity: backendHttpConfiguration.cookieBasedAffinity
     pickHostNameFromBackendAddress: backendHttpConfiguration.pickHostNameFromBackendAddress
     probeEnabled: backendHttpConfiguration.probeEnabled
-    probe: (bool(backendHttpConfiguration.probeEnabled) ? json('{"id": "${applicationGatewayResourceId}/probes/${backendHttpConfiguration.backendHttpConfigurationName}Probe"}') : json('null'))
+    probe: bool(backendHttpConfiguration.probeEnabled) ? json('{"id": "${applicationGatewayResourceId}/probes/${backendHttpConfiguration.backendHttpConfigurationName}Probe"}') : null
   }
 }]
 var frontendHttpsPorts = [for frontendHttpsListener in frontendHttpsListeners: {
@@ -266,14 +245,14 @@ var frontendHttpsListeners_var = [for frontendHttpsListener in frontendHttpsList
   name: frontendHttpsListener.frontendListenerName
   properties: {
     FrontendIPConfiguration: {
-      Id: '${applicationGatewayResourceId}/frontendIPConfigurations/${frontendHttpsListener.frontendIPType}'
+      id: '${applicationGatewayResourceId}/frontendIPConfigurations/${frontendHttpsListener.frontendIPType}'
     }
     FrontendPort: {
-      Id: '${applicationGatewayResourceId}/frontendPorts/port${frontendHttpsListener.port}'
+      id: '${applicationGatewayResourceId}/frontendPorts/port${frontendHttpsListener.port}'
     }
     Protocol: 'https'
     SslCertificate: {
-      Id: '${applicationGatewayResourceId}/sslCertificates/${sslCertificateName}'
+      id: '${applicationGatewayResourceId}/sslCertificates/${sslCertificateName}'
     }
   }
 }]
@@ -287,10 +266,10 @@ var frontendHttpListeners_var = [for frontendHttpListener in frontendHttpListene
   name: frontendHttpListener.frontendListenerName
   properties: {
     FrontendIPConfiguration: {
-      Id: '${applicationGatewayResourceId}/frontendIPConfigurations/${frontendHttpListener.frontendIPType}'
+      id: '${applicationGatewayResourceId}/frontendIPConfigurations/${frontendHttpListener.frontendIPType}'
     }
     FrontendPort: {
-      Id: '${applicationGatewayResourceId}/frontendPorts/port${frontendHttpListener.port}'
+      id: '${applicationGatewayResourceId}/frontendPorts/port${frontendHttpListener.port}'
     }
     Protocol: 'http'
   }
@@ -320,10 +299,10 @@ var frontendHttpRedirects_var = [for frontendHttpRedirect in frontendHttpRedirec
   name: '${httpListenerhttpRedirectNamePrefix}${frontendHttpRedirect.port}'
   properties: {
     FrontendIPConfiguration: {
-      Id: '${applicationGatewayResourceId}/frontendIPConfigurations/${frontendHttpRedirect.frontendIPType}'
+      id: '${applicationGatewayResourceId}/frontendIPConfigurations/${frontendHttpRedirect.frontendIPType}'
     }
     FrontendPort: {
-      Id: '${applicationGatewayResourceId}/frontendPorts/port${frontendHttpRedirect.port}'
+      id: '${applicationGatewayResourceId}/frontendPorts/port${frontendHttpRedirect.port}'
     }
     Protocol: 'http'
   }
@@ -357,20 +336,20 @@ var httpRedirectConfigurations = [for frontendHttpRedirect in frontendHttpRedire
   }
 }]
 
-module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
+module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   name: 'pid-${cuaId}'
   params: {}
 }
 
-resource applicationGateway 'Microsoft.Network/applicationGateways@2021-02-01' = {
-  name: applicationGatewayName
+resource applicationGateway 'Microsoft.Network/applicationGateways@2021-03-01' = {
+  name: name
   location: location
-  identity: (empty(managedIdentityResourceId) ? json('null') : identity)
+  identity: identity
   tags: tags
   properties: {
     sku: {
       name: sku
-      tier: (endsWith(sku, 'v2') ? sku : substring(sku, 0, indexOf(sku, '_')))
+      tier: endsWith(sku, 'v2') ? sku : substring(sku, 0, indexOf(sku, '_'))
       capacity: capacity
     }
     gatewayIPConfigurations: [
@@ -387,7 +366,7 @@ resource applicationGateway 'Microsoft.Network/applicationGateways@2021-02-01' =
       {
         name: frontendPrivateIPConfigurationName
         type: 'Microsoft.Network/applicationGateways/frontendIPConfigurations'
-        properties: (empty(frontendPrivateIpAddress) ? frontendPrivateIPDynamicConfiguration : frontendPrivateIPStaticConfiguration)
+        properties: empty(frontendPrivateIpAddress) ? frontendPrivateIPDynamicConfiguration : frontendPrivateIPStaticConfiguration
       }
       {
         name: frontendPublicIPConfigurationName
@@ -398,7 +377,7 @@ resource applicationGateway 'Microsoft.Network/applicationGateways@2021-02-01' =
         }
       }
     ]
-    sslCertificates: (empty(sslCertificateKeyVaultSecretId) ? json('null') : sslCertificates)
+    sslCertificates: empty(sslCertificateKeyVaultSecretId) ? null : sslCertificates
     backendAddressPools: backendAddressPools
     probes: probes_var
     backendHttpSettingsCollection: backendHttpConfigurations_var
@@ -407,7 +386,7 @@ resource applicationGateway 'Microsoft.Network/applicationGateways@2021-02-01' =
     redirectConfigurations: redirectConfigurations
     requestRoutingRules: requestRoutingRules
     enableHttp2: http2Enabled
-    webApplicationFirewallConfiguration: (startsWith(sku, 'WAF') ? wafConfiguration : json('null'))
+    webApplicationFirewallConfiguration: startsWith(sku, 'WAF') ? wafConfiguration : null
   }
   dependsOn: []
 }
@@ -416,36 +395,38 @@ resource applicationGateway_lock 'Microsoft.Authorization/locks@2016-09-01' = if
   name: '${applicationGateway.name}-${lock}-lock'
   properties: {
     level: lock
-    notes: (lock == 'CanNotDelete') ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
+    notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: applicationGateway
 }
 
-resource applicationGateway_diagnosticSettingName 'Microsoft.Insights/diagnosticsettings@2017-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId)) || (!empty(eventHubAuthorizationRuleId)) || (!empty(eventHubName))) {
+resource applicationGateway_diagnosticSettingName 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = if (!empty(diagnosticStorageAccountId) || !empty(workspaceId) || !empty(eventHubAuthorizationRuleId) || !empty(eventHubName)) {
   name: '${applicationGateway.name}-diagnosticSettings'
   properties: {
-    storageAccountId: (empty(diagnosticStorageAccountId) ? json('null') : diagnosticStorageAccountId)
-    workspaceId: (empty(workspaceId) ? json('null') : workspaceId)
-    eventHubAuthorizationRuleId: (empty(eventHubAuthorizationRuleId) ? json('null') : eventHubAuthorizationRuleId)
-    eventHubName: (empty(eventHubName) ? json('null') : eventHubName)
-    metrics: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? json('null') : diagnosticsMetrics)
-    logs: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? json('null') : diagnosticsLogs)
+    storageAccountId: empty(diagnosticStorageAccountId) ? null : diagnosticStorageAccountId
+    workspaceId: empty(workspaceId) ? null : workspaceId
+    eventHubAuthorizationRuleId: empty(eventHubAuthorizationRuleId) ? null : eventHubAuthorizationRuleId
+    eventHubName: empty(eventHubName) ? null : eventHubName
+    metrics: empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName) ? null : diagnosticsMetrics
+    logs: empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName) ? null : diagnosticsLogs
   }
   scope: applicationGateway
 }
 
-module applicationGateway_rbac './.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
-  name: 'rbac-${deployment().name}${index}'
+module applicationGateway_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+  name: '${uniqueString(deployment().name, location)}-AppGateway-Rbac-${index}'
   params: {
-    roleAssignmentObj: roleAssignment
-    builtInRoleNames: builtInRoleNames
-    resourceName: applicationGateway.name
+    principalIds: roleAssignment.principalIds
+    roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
+    resourceId: applicationGateway.id
   }
-  dependsOn: [
-    applicationGateway
-  ]
 }]
 
+@description('The name of the application gateway')
 output applicationGatewayName string = applicationGateway.name
+
+@description('The resource ID of the application gateway')
 output applicationGatewayResourceId string = applicationGateway.id
+
+@description('The resource group the application gateway was deployed into')
 output applicationGatewayResourceGroup string = resourceGroup().name

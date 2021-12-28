@@ -1,30 +1,30 @@
-# Action Group `[Microsoft.Insights/actionGroups]`
+# Action Groups `[Microsoft.Insights/actionGroups]`
 
-This module deploys an Action Group
+This module deploys an Action Group.
 
 ## Resource Types
 
-| Resource Type | Api Version |
+| Resource Type | API Version |
 | :-- | :-- |
+| `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
 | `microsoft.insights/actionGroups` | 2019-06-01 |
-| `microsoft.insights/actionGroups/providers/roleAssignments` | 2021-04-01-preview |
 
 ## Parameters
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `actionGroupName` | string |  |  | Required. The name of the action group. |
 | `armRoleReceivers` | array | `[]` |  | Optional. The list of ARM role receivers that are part of this action group. Roles are Azure RBAC roles and only built-in roles are supported. |
 | `automationRunbookReceivers` | array | `[]` |  | Optional. The list of AutomationRunbook receivers that are part of this action group. |
 | `azureAppPushReceivers` | array | `[]` |  | Optional. The list of AzureAppPush receivers that are part of this action group. |
 | `azureFunctionReceivers` | array | `[]` |  | Optional. The list of function receivers that are part of this action group. |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `emailReceivers` | array | `[]` |  | Optional. The list of email receivers that are part of this action group. |
 | `enabled` | bool | `True` |  | Optional. Indicates whether this action group is enabled. If an action group is not enabled, then none of its receivers will receive communications. |
 | `groupShortName` | string |  |  | Required. The short name of the action group. |
 | `itsmReceivers` | array | `[]` |  | Optional. The list of ITSM receivers that are part of this action group. |
 | `location` | string | `global` |  | Optional. Location for all resources. |
 | `logicAppReceivers` | array | `[]` |  | Optional. The list of logic app receivers that are part of this action group. |
+| `name` | string |  |  | Required. The name of the action group. |
 | `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
 | `smsReceivers` | array | `[]` |  | Optional. The list of SMS receivers that are part of this action group. |
 | `tags` | object | `{object}` |  | Optional. Tags of the resource. |
@@ -69,13 +69,6 @@ Example:
 "roleAssignments": {
     "value": [
         {
-            "roleDefinitionIdOrName": "Desktop Virtualization User",
-            "principalIds": [
-                "12345678-1234-1234-1234-123456789012", // object 1
-                "78945612-1234-1234-1234-123456789012" // object 2
-            ]
-        },
-        {
             "roleDefinitionIdOrName": "Reader",
             "principalIds": [
                 "12345678-1234-1234-1234-123456789012", // object 1
@@ -102,7 +95,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
         "Environment": "Non-Prod",
         "Contact": "test.user@testcompany.com",
         "PurchaseOrder": "1234",
-        "CostCenter": "112244",
+        "CostCenter": "7890",
         "ServiceName": "DeploymentValidation",
         "Role": "DeploymentValidation"
     }
@@ -123,12 +116,13 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 ## Outputs
 
-| Output Name | Type |
-| :-- | :-- |
-| `actionGroupName` | string |
-| `actionGroupResourceId` | string |
-| `deploymentResourceGroup` | string |
+| Output Name | Type | Description |
+| :-- | :-- | :-- |
+| `actionGroupName` | string | The name of the action group  |
+| `actionGroupResourceGroup` | string | The resource group the action group was deployed into |
+| `actionGroupResourceId` | string | The resource ID of the action group  |
 
 ## Template references
 
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-04-01-preview/roleAssignments)
 - [Actiongroups](https://docs.microsoft.com/en-us/azure/templates/microsoft.insights/2019-06-01/actionGroups)

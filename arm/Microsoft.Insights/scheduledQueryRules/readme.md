@@ -1,54 +1,43 @@
 # Scheduled Query Rules `[Microsoft.Insights/scheduledQueryRules]`
 
-This module deploys an Alert based on metrics
+This module deploys a scheduled query rule.
 
 ## Resource types
 
-| Resource Type | Api Version |
+| Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Insights/scheduledQueryRules` | 2018-04-16 |
-| `microsoft.insights/scheduledQueryRules/providers/roleAssignments` | 2021-04-01-preview |
+| `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
+| `Microsoft.Insights/scheduledQueryRules` | 2021-02-01-preview |
 
 ## Parameters
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `actions` | array | `[]` |  | Optional. The list of actions to take when alert triggers. |
-| `alertDescription` | string |  |  | Optional. Description of the alert. |
-| `alertName` | string |  |  | Required. The name of the Alert. |
-| `authorizedResources` | array | `[]` |  | Optional. The list of resource id's referenced in the query. |
-| `breachesThreshold` | int | `3` |  | Optional. Number of threadshold violation to trigger the alert |
-| `breachesThresholdOperator` | string | `GreaterThan` | `[GreaterThan, Equal, LessThan]` | Optional. If `metricColumn` is specified, operator for the breaches count evaluation to trigger the alert. Not used if using result count trigger. |
-| `breachesTriggerType` | string | `Consecutive` | `[Consecutive, Total]` | Optional. Type of aggregation of threadshold violation |
-| `criterias` | array | `[]` |  | Optional. The list of action alert creterias. |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
-| `enabled` | string | `true` | `[true, false]` | Optional. Indicates whether this alert is enabled. |
-| `evaluationFrequency` | int | `5` | `[5, 10, 15, 30, 45, 60, 120, 180, 240, 300, 360, 1440]` | Optional. How often the metric alert is evaluated (in minutes). |
+| `actions` | array | `[]` |  | Optional. Actions to invoke when the alert fires. |
+| `alertDescription` | string |  |  | Optional. The description of the scheduled query rule. |
+| `autoMitigate` | bool | `True` |  | Optional. The flag that indicates whether the alert should be automatically resolved or not. Relevant only for rules of the kind LogAlert. |
+| `criterias` | object | `{object}` |  | Optional. The rule criteria that defines the conditions of the scheduled query rule. |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
+| `enabled` | bool | `True` |  | Optional. The flag which indicates whether this scheduled query rule is enabled. |
+| `evaluationFrequency` | string |  |  | Optional. How often the scheduled query rule is evaluated represented in ISO 8601 duration format. Relevant and required only for rules of the kind LogAlert. |
+| `kind` | string | `LogAlert` | `[LogAlert, LogToMetric]` | Optional. Indicates the type of scheduled query rule. |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
-| `metricColumn` | string |  |  | Optional. Variable (column) on which the query result will be grouped and then evaluated for trigger condition. Use comma to specify more than one. Leave empty to use "Number of results" type of alert logic |
-| `metricResultCountThreshold` | int |  |  | Optional. Operator for metric or number of result evaluation. |
-| `metricResultCountThresholdOperator` | string | `GreaterThan` | `[GreaterThan, Equal, LessThan]` | Optional. Operator of threshold breaches to trigger the alert. |
-| `odataType` | string | `AlertingAction` | `[AlertingAction, LogToMetricAction]` | Optional. Type of the alert criteria. |
-| `query` | string |  |  | Optional. The query to execute |
+| `name` | string |  |  | Required. The name of the Alert. |
+| `queryTimeRange` | string |  |  | Optional. If specified (in ISO 8601 duration format) then overrides the query time range. Relevant only for rules of the kind LogAlert. |
 | `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
-| `severity` | int | `3` | `[0, 1, 2, 3, 4]` | Optional. The severity of the alert. |
-| `suppressForMinutes` | int |  |  | Optional. Suppress Alert for (in minutes). |
+| `scopes` | array | `[]` |  | Required. The list of resource IDs that this scheduled query rule is scoped to. |
+| `severity` | int | `3` | `[0, 1, 2, 3, 4]` | Optional. Severity of the alert. Should be an integer between [0-4]. Value of 0 is severest. Relevant and required only for rules of the kind LogAlert. |
+| `skipQueryValidation` | bool |  |  | Optional. The flag which indicates whether the provided query should be validated or not. Relevant only for rules of the kind LogAlert. |
+| `suppressForMinutes` | string |  |  | Optional. Mute actions for the chosen period of time (in ISO 8601 duration format) after the alert is fired. If set, autoMitigate must be disabled.Relevant only for rules of the kind LogAlert. |
 | `tags` | object | `{object}` |  | Optional. Tags of the resource. |
-| `windowSize` | int | `60` | `[5, 10, 15, 30, 45, 60, 120, 180, 240, 300, 360, 1440, 2880]` | Optional. The period of time (in minutes) that is used to monitor alert activity based on the threshold. |
-| `workspaceResourceId` | string |  |  | Required. Resource ID of the Log Analytics workspace where the query needs to be executed |
+| `targetResourceTypes` | array | `[]` |  | Optional. List of resource type of the target resource(s) on which the alert is created/updated. For example if the scope is a resource group and targetResourceTypes is Microsoft.Compute/virtualMachines, then a different alert will be fired for each virtual machine in the resource group which meet the alert criteria. Relevant only for rules of the kind LogAlert |
+| `windowSize` | string |  |  | Optional. The period of time (in ISO 8601 duration format) on which the Alert query will be executed (bin size). Relevant and required only for rules of the kind LogAlert. |
 
 ### Parameter Usage: `roleAssignments`
 
 ```json
 "roleAssignments": {
     "value": [
-        {
-            "roleDefinitionIdOrName": "Desktop Virtualization User",
-            "principalIds": [
-                "12345678-1234-1234-1234-123456789012", // object 1
-                "78945612-1234-1234-1234-123456789012" // object 2
-            ]
-        },
         {
             "roleDefinitionIdOrName": "Reader",
             "principalIds": [
@@ -85,12 +74,13 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 ## Outputs
 
-| Output Name | Type |
-| :-- | :-- |
-| `deploymentResourceGroup` | string |
-| `queryAlertName` | string |
-| `queryAlertResourceId` | string |
+| Output Name | Type | Description |
+| :-- | :-- | :-- |
+| `deploymentResourceGroup` | string | The Resource Group of the created query rule. |
+| `queryAlertName` | string | The Name of the created query rule. |
+| `queryAlertResourceId` | string | The resource ID of the created query rule. |
 
 ## Template references
 
-- [Scheduledqueryrules](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2018-04-16/scheduledQueryRules)
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-04-01-preview/roleAssignments)
+- [Scheduledqueryrules](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-02-01-preview/scheduledQueryRules)

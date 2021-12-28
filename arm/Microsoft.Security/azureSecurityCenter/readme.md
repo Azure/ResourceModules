@@ -1,10 +1,10 @@
-# AzureSecurityCenter `[Microsoft.Security/azureSecurityCenter]`
+# Azure Security Center `[Microsoft.Security/azureSecurityCenter]`
 
-This template enables Azure Security Center - Standard tier by default, could be overridden.
+This template enables Azure security center - Standard tier by default, could be overridden.
 
 ## Resource types
 
-| Resource Type | Api Version |
+| Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Security/autoProvisioningSettings` | 2017-08-01-preview |
 | `Microsoft.Security/deviceSecurityGroups` | 2019-08-01 |
@@ -128,13 +128,12 @@ This template enables Azure Security Center - Standard tier by default, could be
 
 ## Outputs
 
-| Output Name | Type |
-| :-- | :-- |
-| `workspaceId` | string |
+| Output Name | Type | Description |
+| :-- | :-- | :-- |
+| `workspaceId` | string | The resource IDs of the used log analytics workspace |
 
 ## Template references
 
-- [Advancedthreatprotectionsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Security/2019-01-01/advancedThreatProtectionSettings)
 - [Autoprovisioningsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Security/2017-08-01-preview/autoProvisioningSettings)
 - [Devicesecuritygroups](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Security/2019-08-01/deviceSecurityGroups)
 - [Iotsecuritysolutions](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Security/2019-08-01/iotSecuritySolutions)

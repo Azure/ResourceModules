@@ -1,8 +1,8 @@
-# DocumentDB Database Account SQL Databases `[Microsoft.DocumentDB/databaseAccount/sqlDatabases]`
+# DocumentDB Database Account SQL Databases `[Microsoft.DocumentDB/databaseAccounts/sqlDatabases]`
 
 ## Resource Types
 
-| Resource Type | Api Version |
+| Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.DocumentDB/databaseAccounts/sqlDatabases` | 2021-06-15 |
 | `Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers` | 2021-07-01-preview |
@@ -12,19 +12,36 @@
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `containers` | _[containers](containers/readme.md)_ array | `[]` |  | Optional. Array of containers to deploy in the SQL database. |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
-| `databaseAccountName` | string |  |  | Required. Id of the Cosmos DB database account. |
-| `name` | string |  |  | Required. Name of the SQL Database  |
-| `tags` | object | `{object}` |  | Optional. Tags of the SQL Database resource. |
-| `throughput` | int | `400` |  | Optional. Request Units per second |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
+| `databaseAccountName` | string |  |  | Required. ID of the Cosmos DB database account. |
+| `name` | string |  |  | Required. Name of the SQL database  |
+| `tags` | object | `{object}` |  | Optional. Tags of the SQL database resource. |
+| `throughput` | int | `400` |  | Optional. Request units per second |
+
+### Parameter Usage: `tags`
+
+Tag names and tag values can be provided as needed. A tag can be left without a value.
+
+```json
+"tags": {
+    "value": {
+        "Environment": "Non-Prod",
+        "Contact": "test.user@testcompany.com",
+        "PurchaseOrder": "1234",
+        "CostCenter": "7890",
+        "ServiceName": "DeploymentValidation",
+        "Role": "DeploymentValidation"
+    }
+}
+```
 
 ## Outputs
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `sqlDatabaseName` | string | The name of the sql database. |
-| `sqlDatabaseResourceGroup` | string | The name of the Resource Group the sql database was created in. |
-| `sqlDatabaseResourceId` | string | The Resource Id of the sql database. |
+| `sqlDatabaseName` | string | The name of the SQL database. |
+| `sqlDatabaseResourceGroup` | string | The name of the resource group the SQL database was created in. |
+| `sqlDatabaseResourceId` | string | The resource ID of the SQL database. |
 
 ## Template references
 

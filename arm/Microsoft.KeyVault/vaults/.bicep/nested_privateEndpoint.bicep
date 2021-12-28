@@ -11,7 +11,7 @@ var privateEndpoint_var = {
     privateEndpointObj.service
   ]
   privateDnsZoneResourceIds: (contains(privateEndpointObj, 'privateDnsZoneResourceIds') ? (empty(privateEndpointObj.privateDnsZoneResourceIds) ? [] : privateEndpointObj.privateDnsZoneResourceIds) : [])
-  customDnsConfigs: (contains(privateEndpointObj, 'customDnsConfigs') ? (empty(privateEndpointObj.customDnsConfigs) ? json('null') : privateEndpointObj.customDnsConfigs) : json('null'))
+  customDnsConfigs: (contains(privateEndpointObj, 'customDnsConfigs') ? (empty(privateEndpointObj.customDnsConfigs) ? null : privateEndpointObj.customDnsConfigs) : null)
 }
 
 resource privateEndpoint 'Microsoft.Network/privateEndpoints@2021-05-01' = {
@@ -37,7 +37,7 @@ resource privateEndpoint 'Microsoft.Network/privateEndpoints@2021-05-01' = {
 }
 
 resource privateDnsZoneGroups 'Microsoft.Network/privateEndpoints/privateDnsZoneGroups@2021-02-01' = if (!empty(privateEndpoint_var.privateDnsZoneResourceIds)) {
-  name: '${privateEndpoint_var.name}/default'
+  name: '${privateEndpoint.name}/default'
   properties: {
     privateDnsZoneConfigs: [for j in range(0, length(privateEndpoint_var.privateDnsZoneResourceIds)): {
       name: last(split(privateEndpoint_var.privateDnsZoneResourceIds[j], '/'))
@@ -46,7 +46,4 @@ resource privateDnsZoneGroups 'Microsoft.Network/privateEndpoints/privateDnsZone
       }
     }]
   }
-  dependsOn: [
-    privateEndpoint
-  ]
 }

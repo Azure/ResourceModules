@@ -1,5 +1,5 @@
 @description('Required. Specifies the Virtual Network Gateway name.')
-param virtualNetworkGatewayName string
+param name string
 
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
@@ -7,13 +7,11 @@ param location string = resourceGroup().location
 @description('Optional. Specifies the name of the Public IP used by the Virtual Network Gateway. If it\'s not provided, a \'-pip\' suffix will be appended to the gateway\'s name.')
 param gatewayPipName array = []
 
-@description('Optional. Resource Id of the Public IP Prefix object. This is only needed if you want your Public IPs created in a PIP Prefix.')
-param publicIPPrefixId string = ''
+@description('Optional. Resource ID of the Public IP Prefix object. This is only needed if you want your Public IPs created in a PIP Prefix.')
+param publicIPPrefixResourceId string = ''
 
-@description('Optional. Specifies the zones of the Public IP address.')
-param publicIpZones array = [
-  '1'
-]
+@description('Optional. Specifies the zones of the Public IP address. Basic IP SKU does not support Availability Zones.')
+param publicIpZones array = []
 
 @description('Optional. DNS name(s) of the Public IP resource(s). If you enabled active-active configuration, you need to provide 2 DNS names, if you want to use this feature. A region specific suffix will be appended to it, e.g.: your-DNS-name.westeurope.cloudapp.azure.com')
 param domainNameLabel array = []
@@ -34,6 +32,9 @@ param virtualNetworkGatewayType string
   'VpnGw1AZ'
   'VpnGw2AZ'
   'VpnGw3AZ'
+  'Standard'
+  'HighPerformance'
+  'UltraPerformance'
   'ErGw1AZ'
   'ErGw2AZ'
   'ErGw3AZ'
@@ -47,8 +48,8 @@ param virtualNetworkGatewaySku string
 ])
 param vpnType string = 'RouteBased'
 
-@description('Required. Virtual Network resource Id')
-param vNetId string
+@description('Required. Virtual Network resource ID')
+param vNetResourceId string
 
 @description('Optional. Value to specify if the Gateway should be deployed in active-active or active-passive configuration')
 param activeActive bool = true
@@ -73,10 +74,10 @@ param clientRevokedCertThumbprint string = ''
 @maxValue(365)
 param diagnosticLogsRetentionInDays int = 365
 
-@description('Required. Resource identifier of the Diagnostic Storage Account.')
+@description('Optional. Resource ID of the diagnostic storage account.')
 param diagnosticStorageAccountId string = ''
 
-@description('Required. Resource identifier of Log Analytics.')
+@description('Optional. Resource ID of log analytics.')
 param workspaceId string = ''
 
 @description('Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.')
@@ -99,7 +100,7 @@ param lock string = 'NotSpecified'
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 @description('Optional. The name of logs that will be streamed.')
@@ -169,18 +170,20 @@ var zoneRedundantSkus = [
   'VpnGw1AZ'
   'VpnGw2AZ'
   'VpnGw3AZ'
+  'VpnGw4AZ'
+  'VpnGw5AZ'
   'ErGw1AZ'
   'ErGw2AZ'
   'ErGw3AZ'
 ]
 var gatewayPipSku = contains(zoneRedundantSkus, virtualNetworkGatewaySku) ? 'Standard' : 'Basic'
 var gatewayPipAllocationMethod = contains(zoneRedundantSkus, virtualNetworkGatewaySku) ? 'Static' : 'Dynamic'
-var gatewaySubnetId = '${vNetId}/subnets/GatewaySubnet'
+var gatewaySubnetId = '${vNetResourceId}/subnets/GatewaySubnet'
 var activeActive_var = (virtualNetworkGatewayType == 'ExpressRoute') ? bool('false') : activeActive
 
 // Public IP variables
-var gatewayPipName1 = (length(gatewayPipName) == 0) ? '${virtualNetworkGatewayName}-pip1' : gatewayPipName[0]
-var gatewayPipName2 = activeActive_var ? ((length(gatewayPipName) == 1) ? '${virtualNetworkGatewayName}-pip2' : gatewayPipName[1]) : ''
+var gatewayPipName1 = (length(gatewayPipName) == 0) ? '${name}-pip1' : gatewayPipName[0]
+var gatewayPipName2 = activeActive_var ? ((length(gatewayPipName) == 1) ? '${name}-pip2' : gatewayPipName[1]) : ''
 
 var gatewayMultiPipArray = [
   gatewayPipName1
@@ -199,7 +202,7 @@ var bgpSettings = {
   asn: asn
 }
 var publicIPPrefix = {
-  id: publicIPPrefixId
+  id: publicIPPrefixResourceId
 }
 var activePassiveIpConfiguration = [
   {
@@ -263,29 +266,11 @@ var vpnClientConfiguration = {
       vpnClientAddressPoolPrefix
     ]
   }
-  vpnClientRootCertificates: (empty(clientRootCertData) ? json('null') : vpnClientRootCertificates)
-  vpnClientRevokedCertificates: (empty(clientRevokedCertThumbprint) ? json('null') : vpmClientRevokedCertificates)
+  vpnClientRootCertificates: empty(clientRootCertData) ? null : vpnClientRootCertificates
+  vpnClientRevokedCertificates: empty(clientRevokedCertThumbprint) ? null : vpmClientRevokedCertificates
 }
 
-var builtInRoleNames = {
-  'Owner': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '8e3af657-a8ff-443c-a75c-2fe8c4bcb635')
-  'Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b24988ac-6180-42a0-ab88-20f7382dd24c')
-  'Reader': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'acdd72a7-3385-48ef-bd42-f606fba81ae7')
-  'Avere Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '4f8fab4f-1852-4a58-a46a-8eaf358af14a')
-  'Log Analytics Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '92aaf0da-9dab-42b6-94a3-d43ce8d16293')
-  'Log Analytics Reader': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '73c42c96-874c-492b-b04d-ab87d138a893')
-  'Managed Application Contributor Role': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '641177b8-a67a-45b9-a033-47bc880bb21e')
-  'Managed Application Operator Role': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'c7393b34-138c-406f-901b-d8cf2b17e6ae')
-  'Managed Applications Reader': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b9331d33-8a36-4f8c-b097-4f54124fdb44')
-  'Monitoring Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '749f88d5-cbae-40b8-bcfc-e573ddc772fa')
-  'Monitoring Metrics Publisher': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '3913510d-42f4-4e42-8a64-420c390055eb')
-  'Monitoring Reader': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '43d0d8ad-25c7-4714-9337-8ba259a9fe05')
-  'Network Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '4d97b98b-1d4f-4787-a291-c67834d212e7')
-  'Resource Policy Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '36243c78-bf99-498c-9df9-86d9f8d28608')
-  'User Access Administrator': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '18d7d88d-d35e-4fb5-a5c3-7773c20a72d9')
-}
-
-module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
+module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   name: 'pid-${cuaId}'
   params: {}
 }
@@ -302,10 +287,10 @@ resource virtualGatewayPublicIP 'Microsoft.Network/publicIPAddresses@2021-02-01'
   }
   properties: {
     publicIPAllocationMethod: gatewayPipAllocationMethod
-    publicIPPrefix: ((!empty(publicIPPrefixId)) ? publicIPPrefix : json('null'))
-    dnsSettings: ((length(virtualGatewayPipName_var) == length(domainNameLabel)) ? json('{"domainNameLabel": "${domainNameLabel[index]}"}') : json('null'))
+    publicIPPrefix: !empty(publicIPPrefixResourceId) ? publicIPPrefix : null
+    dnsSettings: length(virtualGatewayPipName_var) == length(domainNameLabel) ? json('{"domainNameLabel": "${domainNameLabel[index]}"}') : null
   }
-  zones: publicIpZones
+  zones: contains(zoneRedundantSkus, virtualNetworkGatewaySku) ? publicIpZones : null
 }]
 
 @batchSize(1)
@@ -313,21 +298,21 @@ resource virtualGatewayPublicIP_lock 'Microsoft.Authorization/locks@2016-09-01' 
   name: '${virtualGatewayPublicIpName}-${lock}-lock'
   properties: {
     level: lock
-    notes: (lock == 'CanNotDelete') ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
+    notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: virtualGatewayPublicIP[index]
 }]
 
 @batchSize(1)
-resource virtualNetworkGatewayPublicIp_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2017-05-01-preview' = [for (virtualGatewayPublicIpName, index) in virtualGatewayPipName_var: if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId)) || (!empty(eventHubAuthorizationRuleId)) || (!empty(eventHubName))) {
+resource virtualNetworkGatewayPublicIp_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2021-05-01-preview' = [for (virtualGatewayPublicIpName, index) in virtualGatewayPipName_var: if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId)) || (!empty(eventHubAuthorizationRuleId)) || (!empty(eventHubName))) {
   name: '${virtualGatewayPublicIpName}-diagnosticSettings'
   properties: {
-    storageAccountId: (empty(diagnosticStorageAccountId) ? json('null') : diagnosticStorageAccountId)
-    workspaceId: (empty(workspaceId) ? json('null') : workspaceId)
-    eventHubAuthorizationRuleId: (empty(eventHubAuthorizationRuleId) ? json('null') : eventHubAuthorizationRuleId)
-    eventHubName: (empty(eventHubName) ? json('null') : eventHubName)
-    metrics: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? json('null') : diagnosticsMetrics)
-    logs: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? json('null') : publicIpDiagnosticsLogs)
+    storageAccountId: !empty(diagnosticStorageAccountId) ? diagnosticStorageAccountId : null
+    workspaceId: !empty(workspaceId) ? workspaceId : null
+    eventHubAuthorizationRuleId: !empty(eventHubAuthorizationRuleId) ? eventHubAuthorizationRuleId : null
+    eventHubName: !empty(eventHubName) ? eventHubName : null
+    metrics: diagnosticsMetrics
+    logs: publicIpDiagnosticsLogs
   }
   scope: virtualGatewayPublicIP[index]
 }]
@@ -335,21 +320,21 @@ resource virtualNetworkGatewayPublicIp_diagnosticSettings 'Microsoft.Insights/di
 // VNET Gateway
 // ============
 resource virtualNetworkGateway 'Microsoft.Network/virtualNetworkGateways@2021-02-01' = {
-  name: virtualNetworkGatewayName
+  name: name
   location: location
   tags: tags
   properties: {
-    ipConfigurations: (activeActive_var ? activeActiveIpConfiguration : activePassiveIpConfiguration)
+    ipConfigurations: activeActive_var ? activeActiveIpConfiguration : activePassiveIpConfiguration
     activeActive: activeActive_var
     enableBgp: enableBgp_var
-    bgpSettings: ((virtualNetworkGatewayType == 'ExpressRoute') ? json('null') : bgpSettings)
+    bgpSettings: virtualNetworkGatewayType == 'ExpressRoute' ? null : bgpSettings
     sku: {
       name: virtualNetworkGatewaySku
       tier: virtualNetworkGatewaySku
     }
     gatewayType: virtualNetworkGatewayType
     vpnType: vpnType_var
-    vpnClientConfiguration: (empty(vpnClientAddressPoolPrefix) ? json('null') : vpnClientConfiguration)
+    vpnClientConfiguration: empty(vpnClientAddressPoolPrefix) ? null : vpnClientConfiguration
   }
   dependsOn: [
     virtualGatewayPublicIP
@@ -360,34 +345,41 @@ resource virtualNetworkGateway_lock 'Microsoft.Authorization/locks@2016-09-01' =
   name: '${virtualNetworkGateway.name}-${lock}-lock'
   properties: {
     level: lock
-    notes: (lock == 'CanNotDelete') ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
+    notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: virtualNetworkGateway
 }
 
-resource virtualNetworkGateway_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2017-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId)) || (!empty(eventHubAuthorizationRuleId)) || (!empty(eventHubName))) {
+resource virtualNetworkGateway_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = if (!empty(diagnosticStorageAccountId) || !empty(workspaceId) || !empty(eventHubAuthorizationRuleId) || !empty(eventHubName)) {
   name: '${virtualNetworkGateway.name}-diagnosticSettings'
   properties: {
-    storageAccountId: (empty(diagnosticStorageAccountId) ? json('null') : diagnosticStorageAccountId)
-    workspaceId: (empty(workspaceId) ? json('null') : workspaceId)
-    eventHubAuthorizationRuleId: (empty(eventHubAuthorizationRuleId) ? json('null') : eventHubAuthorizationRuleId)
-    eventHubName: (empty(eventHubName) ? json('null') : eventHubName)
-    metrics: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? json('null') : diagnosticsMetrics)
-    logs: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? json('null') : virtualNetworkGatewayDiagnosticsLogs)
+    storageAccountId: !empty(diagnosticStorageAccountId) ? diagnosticStorageAccountId : null
+    workspaceId: !empty(workspaceId) ? workspaceId : null
+    eventHubAuthorizationRuleId: !empty(eventHubAuthorizationRuleId) ? eventHubAuthorizationRuleId : null
+    eventHubName: !empty(eventHubName) ? eventHubName : null
+    metrics: diagnosticsMetrics
+    logs: virtualNetworkGatewayDiagnosticsLogs
   }
   scope: virtualNetworkGateway
 }
 
-module virtualNetworkGateway_rbac './.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
-  name: 'rbac-${deployment().name}${index}'
+module virtualNetworkGateway_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+  name: '${uniqueString(deployment().name, location)}-VNetGateway-Rbac-${index}'
   params: {
-    roleAssignmentObj: roleAssignment
-    builtInRoleNames: builtInRoleNames
-    resourceName: virtualNetworkGateway.name
+    principalIds: roleAssignment.principalIds
+    roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
+    resourceId: virtualNetworkGateway.id
   }
 }]
 
+@description('The resource group the virtual network gateway was deployed')
 output virtualNetworkGatewayResourceGroup string = resourceGroup().name
+
+@description('The name of the virtual network gateway')
 output virtualNetworkGatewayName string = virtualNetworkGateway.name
+
+@description('The resource ID of the virtual network gateway')
 output virtualNetworkGatewayResourceId string = virtualNetworkGateway.id
+
+@description('Shows if the virtual network gateway is configured in active-active mode')
 output activeActive bool = virtualNetworkGateway.properties.activeActive

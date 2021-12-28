@@ -2,8 +2,8 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "localNetworkGatewayName": {
-            "value": "sxx-az-lng-weu-x-001"
+        "name": {
+            "value": "sxx-az-lng-x-001"
         },
         "localAddressPrefixes": {
             "value": [
@@ -19,15 +19,12 @@
         "localBgpPeeringAddress": {
             "value": "192.168.1.5"
         },
-        "fqdn": {
-            "value": "abc"
-        },
         "roleAssignments": {
             "value": [
                 {
                     "roleDefinitionIdOrName": "Reader",
                     "principalIds": [
-                        "5545f7a0-51f4-46af-b3b4-baecf5176a56"
+                        "<<deploymentSpId>>"
                     ]
                 }
             ]

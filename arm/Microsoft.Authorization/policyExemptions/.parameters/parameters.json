@@ -2,14 +2,14 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "policyExemptionName": {
-            "value": "test-policy-exempt"
+        "name": {
+            "value": "sxx-pexe-loc-rg"
         },
         "displayName": {
             "value": "[Test] policy exempt"
         },
         "policyAssignmentId": {
-            "value": "/subscriptions/<<subscriptionId>>/providers/Microsoft.Authorization/policyAssignments/Addatagtoresources"
+            "value": "/subscriptions/<<subscriptionId>>/providers/Microsoft.Authorization/policyAssignments/adp-sxx-pass-loc-rg"
         },
         "exemptionCategory": {
             "value": "Waiver"
@@ -20,7 +20,7 @@
             }
         },
         "expiresOn": {
-            "value": "2023-10-02T03:57:00.000Z"
+            "value": "2025-10-02T03:57:00.000Z"
         },
         "subscriptionId": {
             "value": "<<subscriptionId>>"

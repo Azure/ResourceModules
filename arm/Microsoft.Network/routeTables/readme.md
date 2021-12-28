@@ -1,26 +1,26 @@
-# RouteTables `[Microsoft.Network/routeTables]`
+# Route Tables `[Microsoft.Network/routeTables]`
 
-This template deploys User Defined Route Tables.
+This module deploys a user defined route table.
 
 ## Resource types
 
-| Resource Type | Api Version |
+| Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
+| `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
 | `Microsoft.Network/routeTables` | 2021-02-01 |
-| `Microsoft.Network/routeTables/providers/roleAssignments` | 2021-04-01-preview |
 
 ## Parameters
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `disableBgpRoutePropagation` | bool |  |  | Optional. Switch to disable BGP route propagation. |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
+| `name` | string |  |  | Required. Name given for the hub route table. |
 | `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
 | `routes` | array | `[]` |  | Optional. An Array of Routes to be established within the hub route table. |
-| `routeTableName` | string |  |  | Required. Name given for the hub route table. |
 | `tags` | object | `{object}` |  | Optional. Tags of the resource. |
 
 ### Parameter Usage: `routes`
@@ -71,13 +71,6 @@ Here's an example of specifying a few routes:
 "roleAssignments": {
     "value": [
         {
-            "roleDefinitionIdOrName": "Desktop Virtualization User",
-            "principalIds": [
-                "12345678-1234-1234-1234-123456789012", // object 1
-                "78945612-1234-1234-1234-123456789012" // object 2
-            ]
-        },
-        {
             "roleDefinitionIdOrName": "Reader",
             "principalIds": [
                 "12345678-1234-1234-1234-123456789012", // object 1
@@ -113,13 +106,14 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 ## Outputs
 
-| Output Name | Type |
-| :-- | :-- |
-| `routeTablesName` | string |
-| `routeTablesResourceGroup` | string |
-| `routeTablesResourceId` | string |
+| Output Name | Type | Description |
+| :-- | :-- | :-- |
+| `routeTableName` | string | The name of the route table |
+| `routeTableResourceGroup` | string | The resource group the route table was deployed into |
+| `routeTableResourceId` | string | The resource ID of the route table |
 
 ## Template references
 
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-04-01-preview/roleAssignments)
 - [Routetables](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-02-01/routeTables)

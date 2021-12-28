@@ -11,7 +11,7 @@ var privateEndpoint_var = {
     privateEndpoint.service
   ]
   privateDnsZoneResourceIds: (contains(privateEndpoint, 'privateDnsZoneResourceIds') ? privateEndpoint.privateDnsZoneResourceIds : [])
-  customDnsConfigs: (contains(privateEndpoint, 'customDnsConfigs') ? (empty(privateEndpoint.customDnsConfigs) ? json('null') : privateEndpoint.customDnsConfigs) : json('null'))
+  customDnsConfigs: (contains(privateEndpoint, 'customDnsConfigs') ? (empty(privateEndpoint.customDnsConfigs) ? null : privateEndpoint.customDnsConfigs) : null)
 }
 
 resource privateEndpoint_resource 'Microsoft.Network/privateEndpoints@2021-05-01' = {

@@ -8,16 +8,10 @@ param location string = resourceGroup().location
 @description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or it\'s fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'')
 param roleAssignments array = []
 
-@allowed([
-  'None'
-  'SystemAssigned'
-  'SystemAssigned,UserAssigned'
-  'UserAssigned'
-])
-@description('Optional. Type of managed service identity.')
-param managedServiceIdentity string = 'None'
+@description('Optional. Enables system assigned managed identity on the resource.')
+param systemAssignedIdentity bool = false
 
-@description('Optional. Mandatory \'managedServiceIdentity\' contains UserAssigned. The identy to assign to the resource.')
+@description('Optional. The ID(s) to assign to the resource.')
 param userAssignedIdentities object = {}
 
 @allowed([
@@ -59,6 +53,9 @@ param vNetId string = ''
 @description('Optional. Configuration Details for private endpoints.')
 param privateEndpoints array = []
 
+@description('Optional. The Storage Account ManagementPolicies Rules.')
+param managementPolicyRules array = []
+
 @description('Optional. Networks ACLs, this value contains IPs to whitelist and/or Subnet information.')
 param networkAcls object = {}
 
@@ -85,17 +82,25 @@ param allowBlobPublicAccess bool = true
 @description('Optional. Set the minimum TLS version on request to storage.')
 param minimumTlsVersion string = 'TLS1_2'
 
-@description('Optional. If true, enables move to archive tier and auto-delete')
-param enableArchiveAndDelete bool = false
-
 @description('Optional. If true, enables Hierarchical Namespace for the storage account')
 param enableHierarchicalNamespace bool = false
 
-@description('Optional. Set up the amount of days after which the blobs will be moved to archive tier')
-param moveToArchiveAfter int = 30
+@description('Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.')
+@minValue(0)
+@maxValue(365)
+param diagnosticLogsRetentionInDays int = 365
 
-@description('Optional. Set up the amount of days after which the blobs will be deleted')
-param deleteBlobsAfter int = 1096
+@description('Optional. Resource ID of the diagnostic storage account.')
+param diagnosticStorageAccountId string = ''
+
+@description('Optional. Resource ID of a log analytics workspace.')
+param workspaceId string = ''
+
+@description('Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.')
+param eventHubAuthorizationRuleId string = ''
+
+@description('Optional. Name of the event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.')
+param eventHubName string = ''
 
 @allowed([
   'CanNotDelete'
@@ -108,41 +113,58 @@ param lock string = 'NotSpecified'
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
 @description('Generated. Do not provide a value! This date value is used to generate a SAS token to access the modules.')
 param basetime string = utcNow('u')
 
+@description('Optional. The name of metrics that will be streamed.')
+@allowed([
+  'Transaction'
+])
+param metricsToEnable array = [
+  'Transaction'
+]
+
+var diagnosticsMetrics = [for metric in metricsToEnable: {
+  category: metric
+  timeGrain: null
+  enabled: true
+  retentionPolicy: {
+    enabled: true
+    days: diagnosticLogsRetentionInDays
+  }
+}]
+
 var virtualNetworkRules = [for index in range(0, (empty(networkAcls) ? 0 : length(networkAcls.virtualNetworkRules))): {
   id: '${vNetId}/subnets/${networkAcls.virtualNetworkRules[index].subnet}'
 }]
 var networkAcls_var = {
-  bypass: (empty(networkAcls) ? json('null') : networkAcls.bypass)
-  defaultAction: (empty(networkAcls) ? json('null') : networkAcls.defaultAction)
-  virtualNetworkRules: (empty(networkAcls) ? json('null') : virtualNetworkRules)
-  ipRules: (empty(networkAcls) ? json('null') : ((length(networkAcls.ipRules) == 0) ? json('null') : networkAcls.ipRules))
+  bypass: (empty(networkAcls) ? null : networkAcls.bypass)
+  defaultAction: (empty(networkAcls) ? null : networkAcls.defaultAction)
+  virtualNetworkRules: (empty(networkAcls) ? null : virtualNetworkRules)
+  ipRules: (empty(networkAcls) ? null : ((length(networkAcls.ipRules) == 0) ? null : networkAcls.ipRules))
 }
 var azureFilesIdentityBasedAuthentication_var = azureFilesIdentityBasedAuthentication
 
 var maxNameLength = 24
 var uniqueStoragenameUntrim = '${uniqueString('Storage Account${basetime}')}'
 var uniqueStoragename = length(uniqueStoragenameUntrim) > maxNameLength ? substring(uniqueStoragenameUntrim, 0, maxNameLength) : uniqueStoragenameUntrim
-var storageAccountName_var = empty(name) ? uniqueStoragename : name
 
 var saBaseProperties = {
   encryption: {
     keySource: 'Microsoft.Storage'
     services: {
-      blob: (((storageAccountKind == 'BlockBlobStorage') || (storageAccountKind == 'BlobStorage') || (storageAccountKind == 'StorageV2') || (storageAccountKind == 'Storage')) ? json('{"enabled": true}') : json('null'))
-      file: (((storageAccountKind == 'FileStorage') || (storageAccountKind == 'StorageV2') || (storageAccountKind == 'Storage')) ? json('{"enabled": true}') : json('null'))
+      blob: (((storageAccountKind == 'BlockBlobStorage') || (storageAccountKind == 'BlobStorage') || (storageAccountKind == 'StorageV2') || (storageAccountKind == 'Storage')) ? json('{"enabled": true}') : null)
+      file: (((storageAccountKind == 'FileStorage') || (storageAccountKind == 'StorageV2') || (storageAccountKind == 'Storage')) ? json('{"enabled": true}') : null)
     }
   }
-  accessTier: storageAccountAccessTier
+  accessTier: (storageAccountKind == 'Storage') ? null : storageAccountAccessTier
   supportsHttpsTrafficOnly: true
-  isHnsEnabled: ((!enableHierarchicalNamespace) ? json('null') : enableHierarchicalNamespace)
+  isHnsEnabled: ((!enableHierarchicalNamespace) ? null : enableHierarchicalNamespace)
   minimumTlsVersion: minimumTlsVersion
-  networkAcls: (empty(networkAcls) ? json('null') : networkAcls_var)
+  networkAcls: (empty(networkAcls) ? null : networkAcls_var)
   allowBlobPublicAccess: allowBlobPublicAccess
 }
 var saOptIdBasedAuthProperties = {
@@ -150,62 +172,40 @@ var saOptIdBasedAuthProperties = {
 }
 var saProperties = (empty(azureFilesIdentityBasedAuthentication) ? saBaseProperties : union(saBaseProperties, saOptIdBasedAuthProperties))
 
+var identityType = systemAssignedIdentity ? (!empty(userAssignedIdentities) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned') : (!empty(userAssignedIdentities) ? 'UserAssigned' : 'None')
+
+var identity = identityType != 'None' ? {
+  type: identityType
+  userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
+} : null
+
 module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   name: 'pid-${cuaId}'
   params: {}
 }
 
 resource storageAccount 'Microsoft.Storage/storageAccounts@2021-06-01' = {
-  name: storageAccountName_var
+  name: !empty(name) ? name : uniqueStoragename
   location: location
   kind: storageAccountKind
   sku: {
     name: storageAccountSku
   }
-  identity: {
-    type: managedServiceIdentity
-    userAssignedIdentities: (empty(userAssignedIdentities) ? json('null') : userAssignedIdentities)
-  }
+  identity: identity
   tags: tags
   properties: saProperties
+}
 
-  // lifecycle policy
-  resource storageAccount_managementPolicies 'managementPolicies@2019-06-01' = if (enableArchiveAndDelete) {
-    name: 'default'
-    properties: {
-      policy: {
-        rules: [
-          {
-            enabled: true
-            name: 'retention-policy'
-            type: 'Lifecycle'
-            definition: {
-              actions: {
-                baseBlob: {
-                  tierToArchive: {
-                    daysAfterModificationGreaterThan: moveToArchiveAfter
-                  }
-                  delete: {
-                    daysAfterModificationGreaterThan: deleteBlobsAfter
-                  }
-                }
-                snapshot: {
-                  delete: {
-                    daysAfterCreationGreaterThan: deleteBlobsAfter
-                  }
-                }
-              }
-              filters: {
-                blobTypes: [
-                  'blockBlob'
-                ]
-              }
-            }
-          }
-        ]
-      }
-    }
+resource storageAccount_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId)) || (!empty(eventHubAuthorizationRuleId)) || (!empty(eventHubName))) {
+  name: '${storageAccount.name}-diagnosticSettings'
+  properties: {
+    storageAccountId: empty(diagnosticStorageAccountId) ? null : diagnosticStorageAccountId
+    workspaceId: empty(workspaceId) ? null : workspaceId
+    eventHubAuthorizationRuleId: empty(eventHubAuthorizationRuleId) ? null : eventHubAuthorizationRuleId
+    eventHubName: empty(eventHubName) ? null : eventHubName
+    metrics: diagnosticsMetrics
   }
+  scope: storageAccount
 }
 
 resource storageAccount_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
@@ -220,8 +220,9 @@ resource storageAccount_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lo
 module storageAccount_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-Storage-Rbac-${index}'
   params: {
-    roleAssignmentObj: roleAssignment
-    resourceName: storageAccount.name
+    principalIds: roleAssignment.principalIds
+    roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
+    resourceId: storageAccount.id
   }
 }]
 
@@ -235,8 +236,17 @@ module storageAccount_privateEndpoints '.bicep/nested_privateEndpoint.bicep' = [
   }
 }]
 
+// Lifecycle Policy
+module storageAccount_managementPolicies 'managementPolicies/deploy.bicep' = if (!empty(managementPolicyRules)) {
+  name: '${uniqueString(deployment().name, location)}-Storage-ManagementPolicies'
+  params: {
+    storageAccountName: storageAccount.name
+    rules: managementPolicyRules
+  }
+}
+
 // Containers
-module storageAccount_blobService 'blobServices/deploy.bicep' = if (!empty(blobServices)) {
+module storageAccount_blobServices 'blobServices/deploy.bicep' = if (!empty(blobServices)) {
   name: '${uniqueString(deployment().name, location)}-Storage-BlobServices'
   params: {
     storageAccountName: storageAccount.name
@@ -244,6 +254,13 @@ module storageAccount_blobService 'blobServices/deploy.bicep' = if (!empty(blobS
     automaticSnapshotPolicyEnabled: contains(blobServices, 'automaticSnapshotPolicyEnabled') ? blobServices.automaticSnapshotPolicyEnabled : false
     deleteRetentionPolicy: contains(blobServices, 'deleteRetentionPolicy') ? blobServices.deleteRetentionPolicy : true
     deleteRetentionPolicyDays: contains(blobServices, 'deleteRetentionPolicyDays') ? blobServices.deleteRetentionPolicyDays : 7
+    diagnosticLogsRetentionInDays: contains(blobServices, 'diagnosticLogsRetentionInDays') ? blobServices.diagnosticLogsRetentionInDays : 365
+    diagnosticStorageAccountId: contains(blobServices, 'diagnosticStorageAccountId') ? blobServices.diagnosticStorageAccountId : ''
+    eventHubAuthorizationRuleId: contains(blobServices, 'eventHubAuthorizationRuleId') ? blobServices.eventHubAuthorizationRuleId : ''
+    eventHubName: contains(blobServices, 'eventHubName') ? blobServices.eventHubName : ''
+    logsToEnable: contains(blobServices, 'logsToEnable') ? blobServices.logsToEnable : []
+    metricsToEnable: contains(blobServices, 'metricsToEnable') ? blobServices.metricsToEnable : []
+    workspaceId: contains(blobServices, 'workspaceId') ? blobServices.workspaceId : ''
   }
 }
 
@@ -252,12 +269,19 @@ module storageAccount_fileServices 'fileServices/deploy.bicep' = if (!empty(file
   name: '${uniqueString(deployment().name, location)}-Storage-FileServices'
   params: {
     storageAccountName: storageAccount.name
+    diagnosticLogsRetentionInDays: contains(fileServices, 'diagnosticLogsRetentionInDays') ? fileServices.diagnosticLogsRetentionInDays : 365
+    diagnosticStorageAccountId: contains(fileServices, 'diagnosticStorageAccountId') ? fileServices.diagnosticStorageAccountId : ''
+    eventHubAuthorizationRuleId: contains(fileServices, 'eventHubAuthorizationRuleId') ? fileServices.eventHubAuthorizationRuleId : ''
+    eventHubName: contains(fileServices, 'eventHubName') ? fileServices.eventHubName : ''
+    logsToEnable: contains(fileServices, 'logsToEnable') ? fileServices.logsToEnable : []
+    metricsToEnable: contains(fileServices, 'metricsToEnable') ? fileServices.metricsToEnable : []
     protocolSettings: contains(fileServices, 'protocolSettings') ? fileServices.protocolSettings : {}
     shareDeleteRetentionPolicy: contains(fileServices, 'shareDeleteRetentionPolicy') ? fileServices.shareDeleteRetentionPolicy : {
       enabled: true
       days: 7
     }
     shares: contains(fileServices, 'shares') ? fileServices.shares : []
+    workspaceId: contains(fileServices, 'workspaceId') ? fileServices.workspaceId : ''
   }
 }
 
@@ -266,7 +290,14 @@ module storageAccount_queueServices 'queueServices/deploy.bicep' = if (!empty(qu
   name: '${uniqueString(deployment().name, location)}-Storage-QueueServices'
   params: {
     storageAccountName: storageAccount.name
+    diagnosticLogsRetentionInDays: contains(queueServices, 'diagnosticLogsRetentionInDays') ? queueServices.diagnosticLogsRetentionInDays : 365
+    diagnosticStorageAccountId: contains(queueServices, 'diagnosticStorageAccountId') ? queueServices.diagnosticStorageAccountId : ''
+    eventHubAuthorizationRuleId: contains(queueServices, 'eventHubAuthorizationRuleId') ? queueServices.eventHubAuthorizationRuleId : ''
+    eventHubName: contains(queueServices, 'eventHubName') ? queueServices.eventHubName : ''
+    logsToEnable: contains(queueServices, 'logsToEnable') ? queueServices.logsToEnable : []
+    metricsToEnable: contains(queueServices, 'metricsToEnable') ? queueServices.metricsToEnable : []
     queues: contains(queueServices, 'queues') ? queueServices.queues : []
+    workspaceId: contains(queueServices, 'workspaceId') ? queueServices.workspaceId : ''
   }
 }
 
@@ -275,11 +306,18 @@ module storageAccount_tableServices 'tableServices/deploy.bicep' = if (!empty(ta
   name: '${uniqueString(deployment().name, location)}-Storage-TableServices'
   params: {
     storageAccountName: storageAccount.name
+    diagnosticLogsRetentionInDays: contains(tableServices, 'diagnosticLogsRetentionInDays') ? tableServices.diagnosticLogsRetentionInDays : 365
+    diagnosticStorageAccountId: contains(tableServices, 'diagnosticStorageAccountId') ? tableServices.diagnosticStorageAccountId : ''
+    eventHubAuthorizationRuleId: contains(tableServices, 'eventHubAuthorizationRuleId') ? tableServices.eventHubAuthorizationRuleId : ''
+    eventHubName: contains(tableServices, 'eventHubName') ? tableServices.eventHubName : ''
+    logsToEnable: contains(tableServices, 'logsToEnable') ? tableServices.logsToEnable : []
+    metricsToEnable: contains(tableServices, 'metricsToEnable') ? tableServices.metricsToEnable : []
     tables: contains(tableServices, 'tables') ? tableServices.tables : []
+    workspaceId: contains(tableServices, 'workspaceId') ? tableServices.workspaceId : ''
   }
 }
 
-@description('The resource Id of the deployed storage account')
+@description('The resource ID of the deployed storage account')
 output storageAccountResourceId string = storageAccount.id
 
 @description('The name of the deployed storage account')
@@ -289,7 +327,7 @@ output storageAccountName string = storageAccount.name
 output storageAccountResourceGroup string = resourceGroup().name
 
 @description('The primary blob endpoint reference if blob services are deployed.')
-output storageAccountPrimaryBlobEndpoint string = (!empty(blobServices) && contains(storageAccount_blobService, 'blobContainers')) ? '' : reference('Microsoft.Storage/storageAccounts/${storageAccount.name}', '2019-04-01').primaryEndpoints.blob
+output storageAccountPrimaryBlobEndpoint string = (!empty(blobServices) && contains(storageAccount_blobServices, 'blobContainers')) ? '' : reference('Microsoft.Storage/storageAccounts/${storageAccount.name}', '2019-04-01').primaryEndpoints.blob
 
-@description('The resource id of the assigned identity, if any')
-output assignedIdentityID string = (contains(managedServiceIdentity, 'SystemAssigned') ? reference(storageAccount.id, '2019-06-01', 'full').identity.principalId : '')
+@description('The principal ID of the system assigned identity.')
+output systemAssignedPrincipalId string = systemAssignedIdentity ? storageAccount.identity.principalId : ''

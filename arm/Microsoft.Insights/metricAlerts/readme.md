@@ -1,13 +1,13 @@
-# Metric Alert `[Microsoft.Insights/metricAlerts]`
+# Metric Alerts `[Microsoft.Insights/metricAlerts]`
 
-This module deploys an Alert based on metrics
+This module deploys an alert based on metrics.
 
 ## Resource types
 
-| Resource Type | Api Version |
+| Resource Type | API Version |
 | :-- | :-- |
+| `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
 | `Microsoft.Insights/metricAlerts` | 2018-03-01 |
-| `Microsoft.Insights/metricAlerts/providers/roleAssignments` | 2021-04-01-preview |
 
 ## Parameters
 
@@ -16,15 +16,15 @@ This module deploys an Alert based on metrics
 | `actions` | array | `[]` |  | Optional. The list of actions to take when alert triggers. |
 | `alertCriteriaType` | string | `Microsoft.Azure.Monitor.MultipleResourceMultipleMetricCriteria` | `[Microsoft.Azure.Monitor.SingleResourceMultipleMetricCriteria, Microsoft.Azure.Monitor.MultipleResourceMultipleMetricCriteria, Microsoft.Azure.Monitor.WebtestLocationAvailabilityCriteria]` | Optional. Maps to the 'odata.type' field. Specifies the type of the alert criteria. |
 | `alertDescription` | string |  |  | Optional. Description of the alert. |
-| `alertName` | string |  |  | Required. The name of the Alert. |
 | `autoMitigate` | bool | `True` |  | Optional. The flag that indicates whether the alert should be auto resolved or not. |
 | `criterias` | array |  |  | Required. Criterias to trigger the alert. Array of 'Microsoft.Azure.Monitor.SingleResourceMultipleMetricCriteria' or 'Microsoft.Azure.Monitor.MultipleResourceMultipleMetricCriteria' objects |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `enabled` | bool | `True` |  | Optional. Indicates whether this alert is enabled. |
 | `evaluationFrequency` | string | `PT5M` | `[PT1M, PT5M, PT15M, PT30M, PT1H]` | Optional. how often the metric alert is evaluated represented in ISO 8601 duration format. |
 | `location` | string | `global` |  | Optional. Location for all resources. |
+| `name` | string |  |  | Required. The name of the alert. |
 | `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
-| `scopes` | array | `[[subscription().id]]` |  | Optional. the list of resource id's that this metric alert is scoped to. |
+| `scopes` | array | `[[subscription().id]]` |  | Optional. the list of resource IDs that this metric alert is scoped to. |
 | `severity` | int | `3` | `[0, 1, 2, 3, 4]` | Optional. The severity of the alert. |
 | `tags` | object | `{object}` |  | Optional. Tags of the resource. |
 | `targetResourceRegion` | string |  |  | Optional. The region of the target resource(s) on which the alert is created/updated. Mandatory for MultipleResourceMultipleMetricCriteria. |
@@ -119,13 +119,6 @@ The following sample can be use both for Single and Multiple criterias. The othe
 "roleAssignments": {
     "value": [
         {
-            "roleDefinitionIdOrName": "Desktop Virtualization User",
-            "principalIds": [
-                "12345678-1234-1234-1234-123456789012", // object 1
-                "78945612-1234-1234-1234-123456789012" // object 2
-            ]
-        },
-        {
             "roleDefinitionIdOrName": "Reader",
             "principalIds": [
                 "12345678-1234-1234-1234-123456789012", // object 1
@@ -167,12 +160,13 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 ## Outputs
 
-| Output Name | Type |
-| :-- | :-- |
-| `deploymentResourceGroup` | string |
-| `metricAlertName` | string |
-| `metricAlertResourceId` | string |
+| Output Name | Type | Description |
+| :-- | :-- | :-- |
+| `metricAlertName` | string | The name of the metric alert |
+| `metricAlertResourceGroup` | string | The resource group the metric alert was deployed into |
+| `metricAlertResourceId` | string | The resource ID of the metric alert |
 
 ## Template references
 
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-04-01-preview/roleAssignments)
 - [Metricalerts](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2018-03-01/metricAlerts)

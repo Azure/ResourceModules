@@ -1,0 +1,33 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "name": {
+      "value": "adp-sxx-az-vnet-x-sqlmi"
+    },
+    "addressPrefixes": {
+      "value": [
+        "10.6.0.0/16"
+      ]
+    },
+    "subnets": {
+      "value": [
+        {
+          "name": "sxx-az-subnet-x-sqlmi", // SQLMi subnet
+          "addressPrefix": "10.6.0.0/24",
+          "networkSecurityGroupName": "adp-sxx-az-nsg-x-sqlmi",
+          "routeTableName": "adp-sxx-az-udr-x-sqlmi",
+          "serviceEndpoints": [],
+          "delegations": [
+            {
+              "name": "sqlMiDel",
+              "properties": {
+                "serviceName": "Microsoft.Sql/managedInstances"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

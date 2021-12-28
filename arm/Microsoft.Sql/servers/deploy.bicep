@@ -9,13 +9,13 @@ param administratorLoginPassword string
 param location string = resourceGroup().location
 
 @description('Required. The name of the server.')
-param serverName string
+param name string
 
-@description('Optional. Whether or not ADS should be enabled.')
-param enableADS bool = false
+@description('Optional. Enables system assigned managed identity on the resource.')
+param systemAssignedIdentity bool = false
 
-@description('Required. Whether or not Azure IP\'s are allowed.')
-param allowAzureIps bool = false
+@description('Optional. The ID(s) to assign to the resource.')
+param userAssignedIdentities object = {}
 
 @allowed([
   'CanNotDelete'
@@ -31,60 +31,39 @@ param roleAssignments array = []
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered')
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
-var builtInRoleNames = {
-  'Owner': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '8e3af657-a8ff-443c-a75c-2fe8c4bcb635')
-  'Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b24988ac-6180-42a0-ab88-20f7382dd24c')
-  'Reader': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'acdd72a7-3385-48ef-bd42-f606fba81ae7')
-  'Log Analytics Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '92aaf0da-9dab-42b6-94a3-d43ce8d16293')
-  'Log Analytics Reader': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '73c42c96-874c-492b-b04d-ab87d138a893')
-  'Managed Application Contributor Role': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '641177b8-a67a-45b9-a033-47bc880bb21e')
-  'Managed Application Operator Role': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'c7393b34-138c-406f-901b-d8cf2b17e6ae')
-  'Managed Applications Reader': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b9331d33-8a36-4f8c-b097-4f54124fdb44')
-  'Monitoring Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '749f88d5-cbae-40b8-bcfc-e573ddc772fa')
-  'Monitoring Metrics Publisher': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '3913510d-42f4-4e42-8a64-420c390055eb')
-  'Monitoring Reader': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '43d0d8ad-25c7-4714-9337-8ba259a9fe05')
-  'Reservation Purchaser': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'f7b75c60-3036-4b75-91c3-6b41c27c1689')
-  'Resource Policy Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '36243c78-bf99-498c-9df9-86d9f8d28608')
-  'SQL DB Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '9b7fa17d-e63e-47b0-bb0a-15c516ac86ec')
-  'SQL Security Manager': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '056cd41c-7e88-42e1-933e-88ba6a50c9c3')
-  'SQL Server Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '6d8ee4ec-f05a-4a1d-8b00-a9b17e38b437')
-  'User Access Administrator': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '18d7d88d-d35e-4fb5-a5c3-7773c20a72d9')
-}
+@description('Optional. The databases to create in the server')
+param databases array = []
 
-module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
+@description('Optional. The firewall rules to create in the server')
+param firewallRules array = []
+
+@description('Optional. The security alert policies to create in the server')
+param securityAlertPolicies array = []
+
+var identityType = systemAssignedIdentity ? (!empty(userAssignedIdentities) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned') : (!empty(userAssignedIdentities) ? 'UserAssigned' : 'None')
+
+var identity = identityType != 'None' ? {
+  type: identityType
+  userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
+} : null
+
+module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   name: 'pid-${cuaId}'
   params: {}
 }
 
-resource server 'Microsoft.Sql/servers@2020-02-02-preview' = {
+resource server 'Microsoft.Sql/servers@2021-05-01-preview' = {
   location: location
-  name: serverName
+  name: name
   tags: tags
+  identity: identity
   properties: {
     administratorLogin: administratorLogin
     administratorLoginPassword: administratorLoginPassword
     version: '12.0'
-  }
-
-  resource server_AllowAllWindowsAzureIps 'firewallrules@2021-02-01-preview' = if (allowAzureIps) {
-    name: 'AllowAllWindowsAzureIps'
-    properties: {
-      endIpAddress: '0.0.0.0'
-      startIpAddress: '0.0.0.0'
-    }
-  }
-
-  resource server_Default 'securityAlertPolicies@2021-02-01-preview' = if (enableADS) {
-    name: 'Default'
-    properties: {
-      state: 'Enabled'
-      disabledAlerts: []
-      emailAddresses: []
-      emailAccountAdmins: true
-    }
   }
 }
 
@@ -97,15 +76,79 @@ resource server_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'N
   scope: server
 }
 
-module server_rbac './.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
-  name: 'rbac-${deployment().name}${index}'
+module server_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+  name: '${uniqueString(deployment().name, location)}-Sql-Rbac-${index}'
   params: {
-    roleAssignmentObj: roleAssignment
-    builtInRoleNames: builtInRoleNames
-    resourceName: server.name
+    principalIds: roleAssignment.principalIds
+    roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
+    resourceId: server.id
   }
 }]
 
+module server_databases 'databases/deploy.bicep' = [for (database, index) in databases: {
+  name: '${uniqueString(deployment().name, location)}-Sql-DB-${index}'
+  params: {
+    name: database.name
+    serverName: server.name
+    maxSizeBytes: database.maxSizeBytes
+    tier: database.tier
+    skuName: database.skuName
+    collation: database.collation
+    autoPauseDelay: contains(database, 'autoPauseDelay') ? database.autoPauseDelay : ''
+    diagnosticLogsRetentionInDays: contains(database, 'diagnosticLogsRetentionInDays') ? database.diagnosticLogsRetentionInDays : 365
+    diagnosticStorageAccountId: contains(database, 'diagnosticStorageAccountId') ? database.diagnosticStorageAccountId : ''
+    eventHubAuthorizationRuleId: contains(database, 'eventHubAuthorizationRuleId') ? database.eventHubAuthorizationRuleId : ''
+    eventHubName: contains(database, 'eventHubName') ? database.eventHubName : ''
+    isLedgerOn: contains(database, 'isLedgerOn') ? database.isLedgerOn : false
+    location: contains(database, 'location') ? database.location : server.location
+    logsToEnable: contains(database, 'logsToEnable') ? database.logsToEnable : []
+    licenseType: contains(database, 'licenseType') ? database.licenseType : ''
+    maintenanceConfigurationId: contains(database, 'maintenanceConfigurationId') ? database.maintenanceConfigurationId : ''
+    minCapacity: contains(database, 'minCapacity') ? database.minCapacity : ''
+    metricsToEnable: contains(database, 'metricsToEnable') ? database.metricsToEnable : []
+    highAvailabilityReplicaCount: contains(database, 'highAvailabilityReplicaCount') ? database.highAvailabilityReplicaCount : 0
+    readScale: contains(database, 'readScale') ? database.readScale : 'Disabled'
+    requestedBackupStorageRedundancy: contains(database, 'requestedBackupStorageRedundancy') ? database.requestedBackupStorageRedundancy : ''
+    sampleName: contains(database, 'sampleName') ? database.sampleName : ''
+    tags: contains(database, 'tags') ? database.tags : {}
+    workspaceId: contains(database, 'workspaceId') ? database.workspaceId : ''
+    zoneRedundant: contains(database, 'zoneRedundant') ? database.zoneRedundant : false
+  }
+}]
+
+module server_firewallRules 'firewallRules/deploy.bicep' = [for (firewallRule, index) in firewallRules: {
+  name: '${uniqueString(deployment().name, location)}-Sql-FirewallRules-${index}'
+  params: {
+    name: firewallRule.name
+    serverName: server.name
+    endIpAddress: contains(firewallRule, 'endIpAddress') ? firewallRule.endIpAddress : '0.0.0.0'
+    startIpAddress: contains(firewallRule, 'startIpAddress') ? firewallRule.startIpAddress : '0.0.0.0'
+  }
+}]
+
+module server_securityAlertPolicies 'securityAlertPolicies/deploy.bicep' = [for (securityAlertPolicy, index) in securityAlertPolicies: {
+  name: '${uniqueString(deployment().name, location)}-Sql-SecAlertPolicy-${index}'
+  params: {
+    name: securityAlertPolicy.name
+    serverName: server.name
+    disabledAlerts: contains(securityAlertPolicy, 'disabledAlerts') ? securityAlertPolicy.disabledAlerts : []
+    emailAccountAdmins: contains(securityAlertPolicy, 'emailAccountAdmins') ? securityAlertPolicy.emailAccountAdmins : false
+    emailAddresses: contains(securityAlertPolicy, 'emailAddresses') ? securityAlertPolicy.emailAddresses : []
+    retentionDays: contains(securityAlertPolicy, 'retentionDays') ? securityAlertPolicy.retentionDays : 0
+    state: contains(securityAlertPolicy, 'state') ? securityAlertPolicy.state : 'Disabled'
+    storageAccountAccessKey: contains(securityAlertPolicy, 'storageAccountAccessKey') ? securityAlertPolicy.storageAccountAccessKey : ''
+    storageEndpoint: contains(securityAlertPolicy, 'storageEndpoint') ? securityAlertPolicy.storageEndpoint : ''
+  }
+}]
+
+@description('The name of the deployed SQL server')
 output serverName string = server.name
+
+@description('The resource ID of the deployed SQL server')
 output serverResourceId string = server.id
+
+@description('The resourceGroup of the deployed SQL server')
 output serverResourceGroup string = resourceGroup().name
+
+@description('The principal ID of the system assigned identity.')
+output systemAssignedPrincipalId string = systemAssignedIdentity ? server.identity.principalId : ''

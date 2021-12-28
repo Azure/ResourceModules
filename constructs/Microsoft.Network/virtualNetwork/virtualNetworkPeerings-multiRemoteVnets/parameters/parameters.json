@@ -3,13 +3,13 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "localVnetName": {
-            "value": "sxx-az-vnet-weu-x-004"
+            "value": "sxx-az-vnet-x-004"
         },
         "peeringConfigurations": {
             "value": [
                 {
-                    "peeringName": "sxx-az-peering-weu-x-002-sxx-az-peering-weu-x-003",
-                    "remoteVirtualNetworkId": "/subscriptions/<<subscriptionId>>/resourceGroups/dependencies-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-weu-x-003",
+                    "peeringName": "sxx-az-peering-x-002-sxx-az-peering-x-003",
+                    "remoteVirtualNetworkId": "/subscriptions/<<subscriptionId>>/resourceGroups/dependencies-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-003",
                     "useRemoteGateways": false
                 },
                 {

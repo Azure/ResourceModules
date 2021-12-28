@@ -2,15 +2,88 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "networkWatcherName": {
-            "value": "adp-sxx-az-nw-weu-x-001"
+        "name": {
+            "value": "adp-sxx-az-nw-x-001"
+        },
+        "flowLogs": {
+            "value": [
+                {
+                    "targetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/networkSecurityGroups/adp-sxx-az-nsg-x-001",
+                    "storageId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adpsxxazsaweux001",
+                    "enabled": false
+                },
+                {
+                    "name": "adp-sxx-az-nsg-x-apgw-flowlog",
+                    "targetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/networkSecurityGroups/adp-sxx-az-nsg-x-apgw",
+                    "storageId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adpsxxazsaweux001",
+                    "workspaceResourceId": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-sxx-az-law-x-001",
+                    "formatVersion": 1,
+                    "trafficAnalyticsInterval": 10,
+                    "retentionInDays": 8
+                }
+            ]
+        },
+        "connectionMonitors": {
+            "value": [
+                {
+                    "name": "adp-sxx-az-conn-mon-x-001",
+                    "endpoints": [
+                        {
+                            "name": "sxx-az-subnet-x-001(validation-rg)",
+                            "type": "AzureVM",
+                            "resourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Compute/virtualMachines/adp-vm-001"
+                        },
+                        {
+                            "name": "Office Portal",
+                            "type": "ExternalAddress",
+                            "address": "www.office.com"
+                        }
+                    ],
+                    "testConfigurations": [
+                        {
+                            "name": "HTTP Test",
+                            "testFrequencySec": 30,
+                            "protocol": "Http",
+                            "httpConfiguration": {
+                                "port": 80,
+                                "method": "Get",
+                                "requestHeaders": [],
+                                "validStatusCodeRanges": [
+                                    "200"
+                                ],
+                                "preferHTTPS": false
+                            },
+                            "successThreshold": {
+                                "checksFailedPercent": 5,
+                                "roundTripTimeMs": 100
+                            }
+                        }
+                    ],
+                    "testGroups": [
+                        {
+                            "name": "TestHTTPBing",
+                            "disable": false,
+                            "testConfigurations": [
+                                "HTTP Test"
+                            ],
+                            "sources": [
+                                "sxx-az-subnet-x-001(validation-rg)"
+                            ],
+                            "destinations": [
+                                "Office Portal"
+                            ]
+                        }
+                    ],
+                    "workspaceResourceId": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-sxx-az-law-x-001"
+                }
+            ]
         },
         "roleAssignments": {
             "value": [
                 {
                     "roleDefinitionIdOrName": "Reader",
                     "principalIds": [
-                        "5545f7a0-51f4-46af-b3b4-baecf5176a56"
+                        "<<deploymentSpId>>"
                     ]
                 }
             ]

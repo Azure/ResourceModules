@@ -1,6 +1,6 @@
-# Management groups `[Microsoft.Management/managementGroups]`
+# Management Groups `[Microsoft.Management/managementGroups]`
 
-This template will prepare the Management group structure based on the provided parameter.
+This template will prepare the management group structure based on the provided parameter.
 
 This module has some known **limitations**:
 
@@ -9,7 +9,7 @@ This module has some known **limitations**:
 
 ## Resource types
 
-| Resource Type | Api Version |
+| Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
 | `Microsoft.Management/managementGroups` | 2021-04-01 |
@@ -18,9 +18,9 @@ This module has some known **limitations**:
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `managementGroupId` | string |  |  | Required. The management group id. |
-| `managementGroupName` | string |  |  | Optional. The management group display name. Defaults to managementGroupId.  |
-| `parentId` | string |  |  | Optional. The management group parent id. Defaults to current scope. |
+| `displayName` | string |  |  | Optional. The friendly name of the management group. If no value is passed then this field will be set to the group ID. |
+| `name` | string |  |  | Required. The group ID of the Management group |
+| `parentId` | string |  |  | Optional. The management group parent ID. Defaults to current scope. |
 | `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects to define RBAC on this resource. |
 
 ### Parameter Usage: `roleAssignments`
@@ -28,13 +28,6 @@ This module has some known **limitations**:
 ```json
 "roleAssignments": {
     "value": [
-        {
-            "roleDefinitionIdOrName": "Desktop Virtualization User",
-            "principalIds": [
-                "12345678-1234-1234-1234-123456789012", // object 1
-                "78945612-1234-1234-1234-123456789012" // object 2
-            ]
-        },
         {
             "roleDefinitionIdOrName": "Reader",
             "principalIds": [
@@ -52,17 +45,12 @@ This module has some known **limitations**:
 }
 ```
 
-| Parameter Name           | Type   | Default Value | Possible values | Description                                                                 |
-| :----------------------- | :----- | :------------ | :-------------- | :-------------------------------------------------------------------------- |
-| `roleDefinitionIdOrName` | string |               |                 | Mandatory. The name or the ID of the role to assign to the management group |
-| `principalIds`           | array  |               |                 | Mandatory. An array of principal IDs                                        |
-
 ## Outputs
 
-| Output Name | Type |
-| :-- | :-- |
-| `managementGroupId` | string |
-| `managementGroupName` | string |
+| Output Name | Type | Description |
+| :-- | :-- | :-- |
+| `managementGroupId` | string | The group ID of the management group |
+| `managementGroupName` | string | The name of the management group |
 
 ## Considerations
 
@@ -76,8 +64,8 @@ If owner access is excessive, the following rights roles will grant enough right
 Consider using the following script:
 
 ```powershell
-$PrincipalID = "<The id of the identity here>"
-$TopMGID = "<The id of the management group here>"
+$PrincipalID = "<The object ID of the identity here>"
+$TopMGID = "<The group ID of the management group here>"
 New-AzRoleAssignment -ObjectId $PrincipalID -Scope "/" -RoleDefinitionName "Automation Job Operator"
 New-AzRoleAssignment -ObjectId $PrincipalID -Scope "/providers/Microsoft.Management/managementGroups/$TopMGID" -RoleDefinitionName "Management Group Contributor"
 ```

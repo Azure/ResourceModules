@@ -1,0 +1,24 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": "adp-sxx-az-avdag-x-001"
+        },
+        "location": {
+            "value": "westeurope"
+        },
+        "applicationGroupType": {
+            "value": "RemoteApp"
+        },
+        "hostpoolName": {
+            "value": "adp-sxx-az-avdhp-x-001"
+        },
+        "friendlyName": {
+            "value": "Remote Applications 1"
+        },
+        "description": {
+            "value": "AVD Remote Application Group dependency"
+        }
+    }
+}

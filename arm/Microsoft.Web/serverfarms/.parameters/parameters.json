@@ -2,8 +2,8 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "appServicePlanName": {
-            "value": "sxx-az-asp-weu-x-001"
+        "name": {
+            "value": "sxx-az-asp-x-001"
         },
         "sku": {
             "value": {
@@ -19,7 +19,7 @@
                 {
                     "roleDefinitionIdOrName": "Reader",
                     "principalIds": [
-                        "5545f7a0-51f4-46af-b3b4-baecf5176a56"
+                        "<<deploymentSpId>>"
                     ]
                 }
             ]

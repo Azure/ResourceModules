@@ -2,8 +2,8 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "imageName": {
-            "value": "sxx-az-img-weu-x-001"
+        "name": {
+            "value": "sxx-az-img-x-001"
         },
         "location": {
             "value": "East US"
@@ -15,7 +15,7 @@
             "value": "Linux"
         },
         "osDiskBlobUri": {
-            "value": "https://qrivi75b9q5dgo1fvqpsdd8p.blob.core.windows.net/vhds/sxx-az-imgt-weu-x-001-2021-10-13-14-26-11_20211013164357.vhd"
+            "value": "https://r0jskwdzcal7ss9okmxiyua3.blob.core.windows.net/vhds/48f94fc5-604e-4db2-bca4-e5a09e05b212.vhd"
         },
         "osDiskCaching": {
             "value": "ReadWrite"
@@ -31,7 +31,7 @@
                 {
                     "roleDefinitionIdOrName": "Reader",
                     "principalIds": [
-                        "5545f7a0-51f4-46af-b3b4-baecf5176a56"
+                        "<<deploymentSpId>>"
                     ]
                 }
             ]

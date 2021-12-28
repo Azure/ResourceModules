@@ -1,0 +1,14 @@
+{
+    "parameterFileTokens": {
+        "tokenPrefix": "<<",
+        "tokenSuffix": ">>",
+        "localTokens": {
+            "tokens": [
+                {
+                    "name": "exampleLocalTokenName",
+                    "value": "exampleLocalTokenValue"
+                }
+            ]
+        }
+    }
+}
