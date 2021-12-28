@@ -72,37 +72,37 @@ jobs:
         with:
           modulePath: '${{ inputs.modulePath }}'
 
-  # ####################
-  # # Deployment tests #
-  # ####################
-  # job_module_deploy_validation:
-  #   runs-on: ubuntu-20.04
-  #   name: 'Deployment tests'
-  #   needs:
-  #     - job_module_pester_validation
-  #   strategy:
-  #     fail-fast: false
-  #     matrix:
-  #       parameterFilePaths: ['parameters.json']
-  #   steps:
-  #     - name: 'Checkout'
-  #       uses: actions/checkout@v2
-  #       with:
-  #         fetch-depth: 0
-  #     - name: Set environment variables
-  #       uses: deep-mm/set-variables@v1.0
-  #       with:
-  #         variableFileName: 'global.variables'
-  #     - name: 'Using parameter file [${{ matrix.parameterFilePaths }}]'
-  #       uses: ./.github/actions/templates/validateModuleDeployment
-  #       with:
-  #         templateFilePath: '${{ inputs.modulePath }}/deploy.bicep'
-  #         parameterFilePath: '${{ inputs.modulePath }}/.parameters/${{ matrix.parameterFilePaths }}'
-  #         location: '${{ env.defaultLocation }}'
-  #         resourceGroupName: '${{ env.resourceGroupName }}'
-  #         subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
-  #         managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
-  #         removeDeployment: '${{ inputs.removeDeployment }}'
+  ####################
+  # Deployment tests #
+  ####################
+  job_module_deploy_validation:
+    runs-on: ubuntu-20.04
+    name: 'Deployment tests'
+    needs:
+      - job_module_pester_validation
+    strategy:
+      fail-fast: false
+      matrix:
+        parameterFilePaths: ['parameters.json']
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Set environment variables
+        uses: deep-mm/set-variables@v1.0
+        with:
+          variableFileName: 'global.variables'
+      - name: 'Using parameter file [${{ matrix.parameterFilePaths }}]'
+        uses: ./.github/actions/templates/validateModuleDeployment
+        with:
+          templateFilePath: '${{ inputs.modulePath }}/deploy.bicep'
+          parameterFilePath: '${{ inputs.modulePath }}/.parameters/${{ matrix.parameterFilePaths }}'
+          location: '${{ env.defaultLocation }}'
+          resourceGroupName: '${{ env.resourceGroupName }}'
+          subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
+          managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
+          removeDeployment: '${{ inputs.removeDeployment }}'
 
   # ###############
   # #   Publish   #
