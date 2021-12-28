@@ -29,7 +29,7 @@ on:
     #   ARM_TENANT_ID:
     #      required: true
       DEPLOYMENT_SP_ID:
-    #     required: true
+        required: true
 
 env:
   AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
