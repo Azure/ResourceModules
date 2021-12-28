@@ -21,16 +21,16 @@ on:
         description: 'Custom version to apply. Used only if higher than latest'
         required: false
         default: '0.0.1'
-  push:
-    branches:
-      - main
-    paths:
-      - '.github/actions/templates/**'
-      - '.github/workflows/ms.resources.resourcegroups.yml'
-      - 'arm/Microsoft.Resources/resourceGroups/**'
-      - '!*/**/readme.md'
-      - 'utilities/pipelines/**'
-      - '!utilities/pipelines/dependencies/**'
+  # push:
+  #   branches:
+  #     - main
+  #   paths:
+  #     - '.github/actions/templates/**'
+  #     - '.github/workflows/ms.resources.resourcegroups.yml'
+  #     - 'arm/Microsoft.Resources/resourceGroups/**'
+  #     - '!*/**/readme.md'
+  #     - 'utilities/pipelines/**'
+  #     - '!utilities/pipelines/dependencies/**'
 
 env:
   modulePath: 'arm/Microsoft.Resources/resourceGroups'

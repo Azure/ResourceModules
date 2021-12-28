@@ -38,33 +38,41 @@ env:
   workflowPath: '.github/workflows/ms.resources.resourcegroups.yml'
 
 jobs:
-  ############################
-  #   Set input parameters   #
-  ############################
-  job_set_workflow_param:
-    runs-on: ubuntu-20.04
-    name: 'Set input parameters to output variables'
-    steps:
-      - name: 'Checkout'
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-      - name: 'Set input parameters'
-        id: get-workflow-param
-        uses: ./.github/actions/templates/getWorkflowInput
-        with:
-          workflowPath: '${{ env.workflowPath}}'
-    outputs:
-      removeDeployment: ${{ steps.get-workflow-param.outputs.removeDeployment }}
-      versioningOption: ${{ steps.get-workflow-param.outputs.versioningOption }}
-      customVersion: ${{ steps.get-workflow-param.outputs.customVersion }}
+  # ############################
+  # #   Set input parameters   #
+  # ############################
+  # job_set_workflow_param:
+  #   runs-on: ubuntu-20.04
+  #   name: 'Set input parameters to output variables'
+  #   steps:
+  #     - name: 'Checkout'
+  #       uses: actions/checkout@v2
+  #       with:
+  #         fetch-depth: 0
+  #     - name: 'Set input parameters'
+  #       id: get-workflow-param
+  #       uses: ./.github/actions/templates/getWorkflowInput
+  #       with:
+  #         workflowPath: '${{ env.workflowPath}}'
+  #   outputs:
+  #     removeDeployment: ${{ steps.get-workflow-param.outputs.removeDeployment }}
+  #     versioningOption: ${{ steps.get-workflow-param.outputs.versioningOption }}
+  #     customVersion: ${{ steps.get-workflow-param.outputs.customVersion }}
+
+  # call-workflow-passing-data:
+  #   needs:
+  #   - job_set_workflow_param
+  #   uses: ./.github/workflows/template.module.yml@main
+  #   with:
+  #     modulePath: '${{ env.modulePath}}'
+  #     removeDeployment: '${{ needs.job_set_workflow_param.outputs.removeDeployment }}'
+  #     versioningOption: '${{ needs.job_set_workflow_param.outputs.versioningOption }}'
+  #     customVersion: '${{ needs.job_set_workflow_param.outputs.customVersion }}'
 
   call-workflow-passing-data:
-    needs:
-    - job_set_workflow_param
     uses: ./.github/workflows/template.module.yml@main
     with:
       modulePath: '${{ env.modulePath}}'
-      removeDeployment: '${{ needs.job_set_workflow_param.outputs.removeDeployment }}'
-      versioningOption: '${{ needs.job_set_workflow_param.outputs.versioningOption }}'
-      customVersion: '${{ needs.job_set_workflow_param.outputs.customVersion }}'
+      removeDeployment: 'true'
+      versioningOption: 'patch'
+      customVersion: '0.0.1'
