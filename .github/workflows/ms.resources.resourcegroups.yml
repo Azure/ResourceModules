@@ -85,4 +85,4 @@ jobs:
       # ARM_SUBSCRIPTION_ID: '${{ env.ARM_SUBSCRIPTION_ID }}'
       # ARM_MGMTGROUP_ID: '${{ env.ARM_MGMTGROUP_ID }}'
       # ARM_TENANT_ID: '${{ env.ARM_TENANT_ID }}'
-      DEPLOYMENT_SP_ID: '${{ secrets.DEPLOYMENT_SP_ID }}'
+      DEPLOYMENT_SP_ID: 'example'
