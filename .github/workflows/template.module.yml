@@ -51,27 +51,26 @@ jobs:
       - run: echo ${{ inputs.versioningOption }}
       - run: echo ${{ inputs.customVersion }}
       - run: echo ${{ secrets.DEPLOYMENT_SP_ID }}
-      - run: echo ${{ env.AZURE_CREDENTIALS }}
       - run: echo ${{ env.ARM_SUBSCRIPTION_ID }}
       - run: echo ${{ env.ARM_MGMTGROUP_ID }}
       - run: echo ${{ env.ARM_TENANT_ID }}
       - run: echo ${{ env.DEPLOYMENT_SP_ID }}
 
-  # ####################
-  # #   Pester Tests   #
-  # ####################
-  # job_module_pester_validation:
-  #   runs-on: ubuntu-20.04
-  #   name: 'Pester tests'
-  #   steps:
-  #     - name: 'Checkout'
-  #       uses: actions/checkout@v2
-  #       with:
-  #         fetch-depth: 0
-  #     - name: 'Run tests'
-  #       uses: ./.github/actions/templates/validateModulePester
-  #       with:
-  #         modulePath: '${{ inputs.modulePath }}'
+  ####################
+  #   Pester Tests   #
+  ####################
+  job_module_pester_validation:
+    runs-on: ubuntu-20.04
+    name: 'Pester tests'
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: 'Run tests'
+        uses: ./.github/actions/templates/validateModulePester
+        with:
+          modulePath: '${{ inputs.modulePath }}'
 
   # ####################
   # # Deployment tests #
