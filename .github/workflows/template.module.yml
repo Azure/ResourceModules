@@ -19,17 +19,17 @@ on:
         type: string
         description: 'Custom version to apply. Used only if higher than latest'
         required: true
-    secrets:
-      AZURE_CREDENTIALS:
-        required: true
-      ARM_SUBSCRIPTION_ID:
-        required: true
-      ARM_MGMTGROUP_ID:
-        required: true
-      ARM_TENANT_ID:
-         required: true
-      DEPLOYMENT_SP_ID:
-        required: true
+    # secrets:
+    #   AZURE_CREDENTIALS:
+    #     required: true
+    #   ARM_SUBSCRIPTION_ID:
+    #     required: true
+    #   ARM_MGMTGROUP_ID:
+    #     required: true
+    #   ARM_TENANT_ID:
+    #      required: true
+    #   DEPLOYMENT_SP_ID:
+    #     required: true
 
 env:
   AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
@@ -39,21 +39,33 @@ env:
   DEPLOYMENT_SP_ID: '${{ secrets.DEPLOYMENT_SP_ID }}'
 
 jobs:
-  ####################
-  #   Pester Tests   #
-  ####################
-  job_module_pester_validation:
+  ##################
+  #   Echo Tests   #
+  ##################
+  job_echo_input:
     runs-on: ubuntu-20.04
     name: 'Pester tests'
     steps:
-      - name: 'Checkout'
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-      - name: 'Run tests'
-        uses: ./.github/actions/templates/validateModulePester
-        with:
-          modulePath: '${{ inputs.modulePath }}'
+      - run: echo ${{ inputs.modulePath }}
+      - run: echo ${{ inputs.removeDeployment }}
+      - run: echo ${{ inputs.versioningOption }}
+      - run: echo ${{ inputs.customVersion }}
+
+  # ####################
+  # #   Pester Tests   #
+  # ####################
+  # job_module_pester_validation:
+  #   runs-on: ubuntu-20.04
+  #   name: 'Pester tests'
+  #   steps:
+  #     - name: 'Checkout'
+  #       uses: actions/checkout@v2
+  #       with:
+  #         fetch-depth: 0
+  #     - name: 'Run tests'
+  #       uses: ./.github/actions/templates/validateModulePester
+  #       with:
+  #         modulePath: '${{ inputs.modulePath }}'
 
   # ####################
   # # Deployment tests #
