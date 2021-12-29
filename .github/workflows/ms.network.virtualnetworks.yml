@@ -63,15 +63,15 @@ jobs:
       removeDeployment: ${{ steps.get-workflow-param.outputs.removeDeployment }}
       versioningOption: ${{ steps.get-workflow-param.outputs.versioningOption }}
       customVersion: ${{ steps.get-workflow-param.outputs.customVersion }}
-      repo: 'eriqua/ResourceModules'
+      modulePath: '${{ env.modulePath}}'
 
   call-workflow-passing-data:
     name: 'Template'
     needs:
     - job_set_workflow_param
-    uses: ${{ needs.job_set_workflow_param.outputs.repo }}/.github/workflows/template.module.yml@main
+    uses: eriqua/ResourceModules/.github/workflows/template.module.yml@main
     with:
-      modulePath: 'arm/Microsoft.Network/virtualNetworks'
+      modulePath: '${{ needs.job_set_workflow_param.outputs.modulePath }}'
       removeDeployment: '${{ needs.job_set_workflow_param.outputs.removeDeployment }}'
       versioningOption: '${{ needs.job_set_workflow_param.outputs.versioningOption }}'
       customVersion: '${{ needs.job_set_workflow_param.outputs.customVersion }}'
