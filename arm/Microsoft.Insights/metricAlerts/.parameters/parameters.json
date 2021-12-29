@@ -10,7 +10,7 @@
         },
         "actions": {
             "value": [
-                "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/microsoft.insights/actiongroups/adp-sxx-az-ag-x-001"
+                "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/microsoft.insights/actiongroups/adpq-sxx-az-ag-x-001"
             ]
         },
         "targetResourceType": {

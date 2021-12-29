@@ -79,7 +79,7 @@ The following scenarios are common to when to use a token value in the parameter
 
     ```json
     "remoteVirtualNetworkId": {
-        "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-sxx-az-vnet-x-peer01"
+        "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adpq-sxx-az-vnet-x-peer01"
     }
     ```
 

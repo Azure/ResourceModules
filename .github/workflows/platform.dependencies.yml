@@ -611,10 +611,10 @@ jobs:
     name: 'Deploy key vaults'
     env:
       namespace: 'Microsoft.KeyVault\vaults'
-    # needs:
-    #   - job_deploy_sa
-    #   - job_deploy_evh
-    #   - job_deploy_law
+    needs:
+      - job_deploy_sa
+      - job_deploy_evh
+      - job_deploy_law
     strategy:
       fail-fast: false
       matrix:
@@ -657,7 +657,7 @@ jobs:
             $usernameString = (-join ((65..90) + (97..122) | Get-Random -Count 9 -SetSeed 1 | % {[char]$_ + "$_"})).substring(0,19) # max length
             $passwordString = (New-Guid).Guid.SubString(0,19)
             $vpnSharedKeyString =  (New-Guid).Guid.SubString(0,32)
-            $keyVaultName = 'adp-sxx-az-kv-x-001'
+            $keyVaultName = 'adpq-sxx-az-kv-x-001'
             $userName = ConvertTo-SecureString -String $usernameString -AsPlainText -Force
             $password = ConvertTo-SecureString -String $passwordString -AsPlainText -Force
             $vpnSharedKey = ConvertTo-SecureString -String $vpnSharedKeyString -AsPlainText -Force
@@ -732,7 +732,7 @@ jobs:
             $usernameString = (-join ((65..90) + (97..122) | Get-Random -Count 9 -SetSeed 1 | % {[char]$_ + "$_"})).substring(0,19) # max length
             $passwordString = (New-Guid).Guid.SubString(0,19)
             $vpnSharedKeyString =  (New-Guid).Guid.SubString(0,32)
-            $keyVaultName = 'adp-sxx-az-kv-x-sqlmi'
+            $keyVaultName = 'adpq-sxx-az-kv-x-sqlmi'
             $userName = ConvertTo-SecureString -String $usernameString -AsPlainText -Force
             $password = ConvertTo-SecureString -String $passwordString -AsPlainText -Force
             $vpnSharedKey = ConvertTo-SecureString -String $vpnSharedKeyString -AsPlainText -Force

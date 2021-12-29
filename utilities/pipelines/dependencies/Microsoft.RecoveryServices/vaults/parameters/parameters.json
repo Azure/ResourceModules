@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "adp-sxx-az-rsv-x-001"
+            "value": "adpq-sxx-az-rsv-x-001"
         },
         "diagnosticLogsRetentionInDays": {
             "value": 7

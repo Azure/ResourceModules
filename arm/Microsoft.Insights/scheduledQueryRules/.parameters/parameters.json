@@ -10,7 +10,7 @@
         },
         "scopes": {
             "value": [
-                "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-sxx-az-law-x-001"
+                "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adpq-sxx-az-law-x-001"
             ]
         },
         "evaluationFrequency": {

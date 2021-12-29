@@ -3,7 +3,7 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "name": {
-      "value": "adp-sxx-az-vnet-x-002"
+      "value": "adpq-sxx-az-vnet-x-002"
     },
     "addressPrefixes": {
       "value": [
@@ -15,7 +15,7 @@
         {
           "name": "AzureBastionSubnet", // Bastion subnet
           "addressPrefix": "10.1.5.0/24",
-          "networkSecurityGroupName": "adp-sxx-az-nsg-x-bastion"
+          "networkSecurityGroupName": "adpq-sxx-az-nsg-x-bastion"
         }
       ]
     }

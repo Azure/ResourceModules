@@ -6,7 +6,7 @@
             "value": "sxx-az-appi-x-001"
         },
         "appInsightsWorkspaceResourceId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-sxx-az-law-x-002"
+            "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adpq-sxx-az-law-x-002"
         },
         "roleAssignments": {
             "value": [

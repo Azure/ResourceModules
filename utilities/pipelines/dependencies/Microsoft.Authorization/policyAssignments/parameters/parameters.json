@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "adp-sxx-pass-loc-rg"
+            "value": "adpq-sxx-pass-loc-rg"
         },
         "displayName": {
             "value": "Audit resource location matches resource group location"

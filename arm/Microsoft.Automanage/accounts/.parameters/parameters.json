@@ -6,7 +6,7 @@
             "value": "validation-rg"
         },
         "vmName": {
-            "value": "adp-vm-001"
+            "value": "adpq-vm-001"
         },
         "autoManageAccountResourceGroupName": {
             "value": "validation-rg"

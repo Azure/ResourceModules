@@ -9,7 +9,7 @@
             "value": "RemoteApp"
         },
         "hostpoolName": {
-            "value": "adp-sxx-az-avdhp-x-001"
+            "value": "adpq-sxx-az-avdhp-x-001"
         }
     }
 }
