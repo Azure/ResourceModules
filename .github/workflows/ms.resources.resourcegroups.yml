@@ -74,7 +74,7 @@ jobs:
     - job_set_workflow_param
     uses: eriqua/ResourceModules/.github/workflows/template.module.yml@main
     with:
-      modulePath: '${{ env.modulePath}}'
+      modulePath: '${{ needs.job_set_workflow_param.outputs.modulePath }}'
       removeDeployment: '${{ needs.job_set_workflow_param.outputs.removeDeployment }}'
       versioningOption: '${{ needs.job_set_workflow_param.outputs.versioningOption }}'
       customVersion: '${{ needs.job_set_workflow_param.outputs.customVersion }}'
