@@ -65,6 +65,7 @@ jobs:
       customVersion: ${{ steps.get-workflow-param.outputs.customVersion }}
 
   call-workflow-passing-data:
+    name: 'Template'
     needs:
     - job_set_workflow_param
     uses: eriqua/ResourceModules/.github/workflows/template.module.yml@main
