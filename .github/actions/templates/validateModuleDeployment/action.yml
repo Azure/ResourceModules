@@ -133,6 +133,7 @@ runs:
         foreach ($outputKey in $res.deploymentOutput.Keys) {
             Write-Output ('::set-output name={0}::{1}' -f $outputKey, $res.deploymentOutput[$outputKey].Value)
             Write-Verbose 'Output key: $outputKey' -Verbose
+            Write-Verbose ('Output key2:{0}' -f $outputKey) -Verbose
         }
 
         if ($res.ContainsKey('exception')) {
