@@ -854,7 +854,6 @@ jobs:
         uses: azure/powershell@v1
         with:
           inlineScript: |
-
             # Get msi id
             Write-Verbose "Id of the MSI ${{ needs.job_deploy_msi.outputs.msiPrincipalId }}" -Verbose
           azPSVersion: 'latest'
