@@ -796,6 +796,10 @@ jobs:
             $msiParameters = (ConvertFrom-Json (Get-Content -path $parameterFilePath -Raw)).parameters
             $msiName  = $msiParameters.name.value
             Write-Verbose "Name of the MSI $msiName" -Verbose
+
+            # Get msi id
+            $msiId = (Get-AzADServicePrincipal -DisplayName $msiName).id
+            Write-Verbose "Id of the MSI $msiId" -Verbose
           azPSVersion: 'latest'
 
   job_deploy_rolea:
