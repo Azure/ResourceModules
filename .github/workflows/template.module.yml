@@ -39,22 +39,6 @@ env:
   DEPLOYMENT_SP_ID: '${{ secrets.DEPLOYMENT_SP_ID }}'
 
 jobs:
-  # ##################
-  # #   Echo Tests   #
-  # ##################
-  # job_echo_input:
-  #   runs-on: ubuntu-20.04
-  #   name: 'Echo tests'
-  #   steps:
-  #     - run: echo ${{ inputs.modulePath }}
-  #     - run: echo ${{ inputs.removeDeployment }}
-  #     - run: echo ${{ inputs.versioningOption }}
-  #     - run: echo ${{ inputs.customVersion }}
-  #     - run: echo ${{ secrets.DEPLOYMENT_SP_ID }}
-  #     - run: echo ${{ env.ARM_SUBSCRIPTION_ID }}
-  #     - run: echo ${{ env.ARM_MGMTGROUP_ID }}
-  #     - run: echo ${{ env.ARM_TENANT_ID }}
-  #     - run: echo ${{ env.DEPLOYMENT_SP_ID }}
 
   ####################
   #   Pester Tests   #
