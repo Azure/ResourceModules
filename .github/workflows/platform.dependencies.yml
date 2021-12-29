@@ -770,6 +770,34 @@ jobs:
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
           removeDeployment: '${{ env.removeDeployment }}'
 
+  job_get_msi_id:
+    runs-on: ubuntu-20.04
+    name: 'Get msi id for roleassignment'
+    env:
+      namespace: 'Microsoft.ManagedIdentity\userAssignedIdentities'
+    needs:
+      - job_deploy_msi
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+          enable-AzPSSession: true
+      - name: Run PowerShell
+        uses: azure/powershell@v1
+        with:
+          inlineScript: |
+            # Get msi name
+            $parameterFilePath = Join-Path $env:GITHUB_WORKSPACE '${{ env.dependencyPath }}' '${{ env.namespace }}' 'parameters' 'parameters.json'
+            $msiParameters = (ConvertFrom-Json (Get-Content -path $parameterFilePath -Raw)).parameters
+            $msiName  = $msiParameters.name.value
+            Write-Verbose "Name of the MSI $msiName" -Verbose
+          azPSVersion: 'latest'
+
   job_deploy_rolea:
     runs-on: ubuntu-20.04
     name: 'Deploy role assignments'
