@@ -73,6 +73,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: 'Deploy module'
+        id: deploy-msi-dep
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
@@ -82,6 +83,8 @@ jobs:
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
           removeDeployment: '${{ env.removeDeployment }}'
+    outputs:
+      msiPrincipalId: ${{ steps.deploy-msi-dep.outputs.msiPrincipalId }}
 
   job_deploy_pa:
     runs-on: ubuntu-20.04
@@ -770,37 +773,66 @@ jobs:
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
           removeDeployment: '${{ env.removeDeployment }}'
 
-  job_get_msi_id:
-    runs-on: ubuntu-20.04
-    name: 'Get msi id for roleassignment'
-    env:
-      namespace: 'Microsoft.ManagedIdentity\userAssignedIdentities'
-    needs:
-      - job_deploy_msi
-    steps:
-      - name: 'Checkout'
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-      - name: Azure Login
-        uses: azure/login@v1
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
-          enable-AzPSSession: true
-      - name: Run PowerShell
-        uses: azure/powershell@v1
-        with:
-          inlineScript: |
-            # Get msi name
-            $parameterFilePath = Join-Path $env:GITHUB_WORKSPACE '${{ env.dependencyPath }}' '${{ env.namespace }}' 'parameters' 'parameters.json'
-            $msiParameters = (ConvertFrom-Json (Get-Content -path $parameterFilePath -Raw)).parameters
-            $msiName  = $msiParameters.name.value
-            Write-Verbose "Name of the MSI $msiName" -Verbose
+  # job_get_msi_id:
+  #   runs-on: ubuntu-20.04
+  #   name: 'Get msi id for roleassignment'
+  #   env:
+  #     namespace: 'Microsoft.ManagedIdentity\userAssignedIdentities'
+  #   needs:
+  #     - job_deploy_msi
+  #   steps:
+  #     - name: 'Checkout'
+  #       uses: actions/checkout@v2
+  #       with:
+  #         fetch-depth: 0
+  #     - name: Azure Login
+  #       uses: azure/login@v1
+  #       with:
+  #         creds: ${{ secrets.AZURE_CREDENTIALS }}
+  #         enable-AzPSSession: true
+  #     - name: Run PowerShell
+  #       uses: azure/powershell@v1
+  #       with:
+  #         inlineScript: |
+  #           # Get msi name
+  #           $parameterFilePath = Join-Path $env:GITHUB_WORKSPACE '${{ env.dependencyPath }}' '${{ env.namespace }}' 'parameters' 'parameters.json'
+  #           $msiParameters = (ConvertFrom-Json (Get-Content -path $parameterFilePath -Raw)).parameters
+  #           $msiName  = $msiParameters.name.value
+  #           Write-Verbose "Name of the MSI $msiName" -Verbose
 
-            # Get msi id
-            $msiId = (Get-AzADServicePrincipal -DisplayName $msiName).id
-            Write-Verbose "Id of the MSI $msiId" -Verbose
-          azPSVersion: 'latest'
+  #           # Get msi id
+  #           $msiId = (Get-AzADServicePrincipal -DisplayName $msiName).id
+  #           Write-Verbose "Id of the MSI $msiId" -Verbose
+  #         azPSVersion: 'latest'
+      # - name: 'Replace Parameter File Tokens [${{ inputs.parameterFilePath }}] '
+      #   shell: pwsh
+      #   run: |
+      #     # # Load used functions
+      #     # . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInParameterFile.ps1')
+
+      #     # # Load Settings File
+      #     # $Settings = Get-Content -Path "settings.json" | ConvertFrom-Json
+      #     # # Initialize Default Parameter File Tokens
+      #     # $DefaultParameterFileTokens = @(
+      #     #     @{ Name = 'resourceGroupName'; Value = '${{ inputs.resourceGroupName }}' }
+      #     #     @{ Name = 'subscriptionId'; Value = '${{ inputs.subscriptionId }}' }
+      #     #     @{ Name = 'managementGroupId'; Value = '${{ inputs.managementGroupId }}' }
+      #     #     @{ Name = "tenantId"; Value = '${{ env.ARM_TENANT_ID }}' }
+      #     #     @{ Name = "deploymentSpId"; Value = '${{ env.DEPLOYMENT_SP_ID }}' }
+      #     # )
+
+      #     # $DefaultParameterFileTokens = $DefaultParameterFileTokens | ForEach-Object { [PSCustomObject]$PSItem }
+
+      #     # # Construct Token Function Input
+      #     # $ConvertTokensInputs = @{
+      #     #     ParameterFilePath                 = '${{ inputs.parameterFilePath }}'
+      #     #     DefaultParameterFileTokens        = $DefaultParameterFileTokens
+      #     #     LocalCustomParameterFileTokens    = $Settings.parameterFileTokens.localTokens.tokens
+      #     #     TokenPrefix                       = $Settings.parameterFileTokens.tokenPrefix
+      #     #     TokenSuffix                       = $Settings.parameterFileTokens.tokenSuffix
+      #     # }
+      #     # # Invoke Token Replacement Functionality
+      #     # $null = Convert-TokensInParameterFile @ConvertTokensInputs -Verbose
 
   job_deploy_rolea:
     runs-on: ubuntu-20.04
@@ -818,6 +850,14 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
+      - name: Run PowerShell
+        uses: azure/powershell@v1
+        with:
+          inlineScript: |
+
+            # Get msi id
+            Write-Verbose "Id of the MSI ${{ needs.job_deploy_msi.outputs.msiPrincipalId }}" -Verbose
+          azPSVersion: 'latest'
       - name: 'Deploy module'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
