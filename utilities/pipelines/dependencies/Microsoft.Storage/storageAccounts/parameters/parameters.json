@@ -3,7 +3,7 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "name": {
-      "value": "adpsxxazsaweux001"
+      "value": "adpqsxxazsaweux001"
     },
     "storageAccountKind": {
       "value": "StorageV2"

@@ -50,7 +50,7 @@
             "value": "sxx-az-umi-x-001"
         },
         "sigImageDefinitionId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Compute/galleries/adpsxxazsigweux001/images/adpq-sxx-az-imgd-x-001"
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Compute/galleries/adpqsxxazsigweux001/images/adpq-sxx-az-imgd-x-001"
         },
         "imageReplicationRegions": {
             "value": []
