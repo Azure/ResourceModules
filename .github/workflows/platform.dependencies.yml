@@ -63,7 +63,7 @@ jobs:
         uses: azure/powershell@v1
         with:
           inlineScript: |
-            $deploymentOutput = ${{ steps.rg-deploy.outputs.deploymentOutput }}
+            $deploymentOutput = '${{ steps.rg-deploy.outputs.deploymentOutput }}'
             Write-Verbose $deploymentOutput -Verbose
             $deploymentOutput = "{$deploymentOutput}"
             Write-Verbose $deploymentOutput -Verbose
