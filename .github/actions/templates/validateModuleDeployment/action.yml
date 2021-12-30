@@ -129,11 +129,12 @@ runs:
         # Get deployment name
         Write-Output ('::set-output name={0}::{1}' -f 'deploymentName', $res.deploymentName)
 
+        Write-Verbose ('Output all:{0}' -f $res.deploymentOutput) -Verbose
         # Populate further outputs
         foreach ($outputKey in $res.deploymentOutput.Keys) {
             Write-Output ('::set-output name={0}::{1}' -f $outputKey, $res.deploymentOutput[$outputKey].Value)
-            Write-Verbose 'Output key: $outputKey' -Verbose
-            Write-Verbose ('Output key2:{0}' -f $outputKey) -Verbose
+            Write-Verbose ('Output key:{0}' -f $outputKey) -Verbose
+            Write-Verbose ('Output value:{0}' -f $res.deploymentOutput[$outputKey].Value) -Verbose
         }
 
         if ($res.ContainsKey('exception')) {
