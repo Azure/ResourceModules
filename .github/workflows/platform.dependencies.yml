@@ -61,7 +61,7 @@ jobs:
       - run: echo ${{ steps.rg-deploy.outputs.deploymentOutput }}
       - run: echo ${{ steps.rg-deploy.outputs.deploymentOutput.resourceGroupResourceId }}
       - run: echo ${{ steps.rg-deploy.outputs.deploymentOutput.resourceGroupName }}
-      - run: echo (ConvertFrom-Json ${{ steps.rg-deploy.outputs.deploymentOutput }}.resourceGroupName
+      - run: echo (ConvertFrom-Json ${{ steps.rg-deploy.outputs.deploymentOutput }}).resourceGroupName
       - run: echo (ConvertFrom-Json ${{ steps.rg-deploy.outputs.deploymentOutput }}).resourceGroupResourceId
 
   job2:
