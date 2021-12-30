@@ -141,7 +141,7 @@ runs:
         # # Write-Output ('::set-output name=deploymentOutput::{0}' -f $allOut)
 
         $deploymentOutputHash=@{}
-        $deploymentOutputString='{'
+        # $deploymentOutputString='{'
         # Populate further outputs
         foreach ($outputKey in $res.deploymentOutput.Keys) {
           Write-Output ('::set-output name={0}::{1}' -f $outputKey, $res.deploymentOutput[$outputKey].Value)
@@ -158,12 +158,12 @@ runs:
         # Write-Output ('::set-output name=deploymentOutput::{0}' -f $deploymentOutput)
 
         $deploymentOutputString = $deploymentOutputString.Substring(0,$deploymentOutputString.Length-1)
-        $deploymentOutputString+='}'
+        # $deploymentOutputString+='}'
 
         # $deploymentOutput = $deploymentOutputString
-        Write-Verbose ('Output deploymentOutputString:{0}' -f $deploymentOutputString) -Verbose
-        # Write-Output ('::set-output name=deploymentOutput::[$({0})]' -f $deploymentOutputString)
-        Write-Host "::set-output name=deploymentOutput::[$($deploymentOutputString)]"
+        Write-Verbose "Output deploymentOutputString:{$deploymentOutputString)}" -Verbose
+        # Write-Output ('::set-output name=deploymentOutput::{{0}}' -f $deploymentOutputString)
+        Write-Host "::set-output name=deploymentOutput::{$deploymentOutputString}"
 
         if ($res.ContainsKey('exception')) {
           # Happens only if there is an exception
