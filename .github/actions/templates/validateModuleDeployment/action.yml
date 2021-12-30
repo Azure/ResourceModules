@@ -141,6 +141,7 @@ runs:
         # # Write-Output ('::set-output name=deploymentOutput::{0}' -f $allOut)
 
         $deploymentOutputHash=@{}
+        $deploymentOutputString='{'
         # Populate further outputs
         foreach ($outputKey in $res.deploymentOutput.Keys) {
           Write-Output ('::set-output name={0}::{1}' -f $outputKey, $res.deploymentOutput[$outputKey].Value)
@@ -148,9 +149,18 @@ runs:
           Write-Verbose ('Output value:{0}' -f $res.deploymentOutput[$outputKey].Value) -Verbose
 
           $deploymentOutputHash.add($outputKey,$res.deploymentOutput[$outputKey].Value)
+          $deploymentOutputString+='"'+$outputKey+'":"'+$res.deploymentOutput[$outputKey].Value+'",'
+          $deploymentOutputString+='"{0}":"{1}",' -f $outputKey, $res.deploymentOutput[$outputKey].Value
         }
 
-        $deploymentOutput = $deploymentOutputHash | ConvertTo-Json -Compress -Depth 100
+        # $deploymentOutput = $deploymentOutputHash | ConvertTo-Json -Compress -Depth 100
+        # Write-Verbose ('Output deploymentOutput:{0}' -f $deploymentOutput) -Verbose
+        # Write-Output ('::set-output name=deploymentOutput::{0}' -f $deploymentOutput)
+
+        $deploymentOutputString = $deploymentOutputString.Substring(0,$deploymentOutputString.Length-1)
+        $deploymentOutputString+='}'
+
+        $deploymentOutput = $deploymentOutputString
         Write-Verbose ('Output deploymentOutput:{0}' -f $deploymentOutput) -Verbose
         Write-Output ('::set-output name=deploymentOutput::{0}' -f $deploymentOutput)
 
