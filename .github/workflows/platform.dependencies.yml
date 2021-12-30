@@ -59,6 +59,17 @@ jobs:
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
           removeDeployment: '${{ env.removeDeployment }}'
       - run: echo ${{ steps.rg-deploy.outputs.deploymentOutput }}
+      # - name: Run PowerShell
+      #   uses: azure/powershell@v1
+      #   with:
+      #     inlineScript: |
+      #       $deploymentOutput = '${{ steps.rg-deploy.outputs.deploymentOutput }}'
+      #       Write-Verbose $deploymentOutput -Verbose
+      #       $deploymentOutput = "{$deploymentOutput}"
+      #       Write-Verbose $deploymentOutput -Verbose
+      #       $deploymentOutputConversion = ConvertFrom-Json $deploymentOutput
+      #       Write-Verbose $deploymentOutputConversion.resourceGroupName -Verbose
+      #     azPSVersion: 'latest'
       - name: Run PowerShell
         uses: azure/powershell@v1
         with:
@@ -70,13 +81,6 @@ jobs:
             $deploymentOutputConversion = ConvertFrom-Json $deploymentOutput
             Write-Verbose $deploymentOutputConversion.resourceGroupName -Verbose
           azPSVersion: 'latest'
-      # - run: |
-      #     $deploymentOutput = ${{ steps.rg-deploy.outputs.deploymentOutput }}
-      #     echo $deploymentOutput
-      #     $deploymentOutput = "{$deploymentOutput}"
-      #     echo $deploymentOutput
-      #     $deploymentOutputConversion = ConvertFrom-Json $deploymentOutput
-      #     echo $deploymentOutputConversion.resourceGroupName
 
 
   job2:
