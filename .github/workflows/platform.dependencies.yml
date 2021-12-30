@@ -59,10 +59,14 @@ jobs:
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
           removeDeployment: '${{ env.removeDeployment }}'
       - run: echo ${{ steps.rg-deploy.outputs.deploymentOutput }}
-      - run: echo ${{ steps.rg-deploy.outputs.deploymentOutput.resourceGroupResourceId }}
-      - run: echo ${{ steps.rg-deploy.outputs.deploymentOutput.resourceGroupName }}
-      - run: echo (ConvertFrom-Json ${{ steps.rg-deploy.outputs.deploymentOutput }}).resourceGroupName
-      - run: echo (ConvertFrom-Json ${{ steps.rg-deploy.outputs.deploymentOutput }}).resourceGroupResourceId
+      - run: |
+          $deploymentOutput = ${{ steps.rg-deploy.outputs.deploymentOutput }}
+          echo $deploymentOutput
+          $deploymentOutput = "{$deploymentOutput}"
+          echo $deploymentOutput
+          $deploymentOutputConversion = ConvertFrom-Json $deploymentOutput
+          echo $deploymentOutputConversion.resourceGroupName
+
 
   job2:
     needs: job_deploy_rg
