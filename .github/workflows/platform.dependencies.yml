@@ -56,8 +56,8 @@ jobs:
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
           removeDeployment: '${{ env.removeDeployment }}'
-      - run: echo ${{ steps.rg-deploy.outputs.matrix.resourceGroupResourceId }}
-      - run: echo ${{ steps.rg-deploy.outputs.matrix.resourceGroupName }}
+      - run: echo ${{ steps.rg-deploy.outputs.deploymentOutput.resourceGroupResourceId }}
+      - run: echo ${{ steps.rg-deploy.outputs.deploymentOutput.resourceGroupName }}
 
   job_deploy_msi:
     runs-on: ubuntu-20.04
