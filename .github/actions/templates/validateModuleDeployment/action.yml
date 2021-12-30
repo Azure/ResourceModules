@@ -160,9 +160,9 @@ runs:
         $deploymentOutputString = $deploymentOutputString.Substring(0,$deploymentOutputString.Length-1)
         $deploymentOutputString+='}'
 
-        $deploymentOutput = $deploymentOutputString
-        Write-Verbose ('Output deploymentOutput:{0}' -f $deploymentOutput) -Verbose
-        Write-Output ('::set-output name=deploymentOutput::{0}' -f $deploymentOutput)
+        # $deploymentOutput = $deploymentOutputString
+        Write-Verbose ('Output deploymentOutputString:{0}' -f $deploymentOutputString) -Verbose
+        Write-Output ('::set-output name=deploymentOutput::[$({0})]' -f $deploymentOutputString)
 
         if ($res.ContainsKey('exception')) {
           # Happens only if there is an exception
