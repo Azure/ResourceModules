@@ -25,6 +25,11 @@ inputs:
     default: 'true'
     required: false
 
+outputs:
+  deploymentOutput:
+    description: 'Deployment output matrix'
+    value: ${{ steps.deploy_step.outputs.deploymentOutput }}
+
 runs:
   using: 'composite'
   steps:
@@ -131,7 +136,7 @@ runs:
 
         Write-Verbose ('Output all:{0}' -f $res.deploymentOutput) -Verbose
         $allOut = $res.deploymentOutput | ConvertTo-Json -Compress -Depth 100
-        Write-Verbose ('Output allOut:{0}' -f allOut) -Verbose
+        Write-Verbose ('Output allOut:{0}' -f $allOut) -Verbose
         # Write-Host "::set-output name=matrix::[$($res.deploymentOutput | ConvertTo-Json -Compress -Depth 100)]"
         # Write-Output ('::set-output name=deploymentOutput::{0}' -f   $allOut)
 
