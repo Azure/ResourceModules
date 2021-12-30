@@ -149,7 +149,7 @@ runs:
           Write-Verbose ('Output value:{0}' -f $res.deploymentOutput[$outputKey].Value) -Verbose
 
           $deploymentOutputHash.add($outputKey,$res.deploymentOutput[$outputKey].Value)
-          $deploymentOutputString+='"'+$outputKey+'":"'+$res.deploymentOutput[$outputKey].Value+'",'
+          # $deploymentOutputString+='"'+$outputKey+'":"'+$res.deploymentOutput[$outputKey].Value+'",'
           $deploymentOutputString+='"{0}":"{1}",' -f $outputKey, $res.deploymentOutput[$outputKey].Value
         }
 
