@@ -46,6 +46,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: 'Deploy module'
+        id: rg-deploy
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
@@ -55,6 +56,8 @@ jobs:
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
           removeDeployment: '${{ env.removeDeployment }}'
+      - run: echo ${{ steps.rg-deploy.outputs.matrix.resourceGroupResourceId }}
+      - run: echo ${{ steps.rg-deploy.outputs.matrix.resourceGroupName }}
 
   job_deploy_msi:
     runs-on: ubuntu-20.04
