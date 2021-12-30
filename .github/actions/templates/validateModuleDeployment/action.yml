@@ -134,13 +134,7 @@ runs:
         # Get deployment name
         Write-Output ('::set-output name={0}::{1}' -f 'deploymentName', $res.deploymentName)
 
-        # Write-Verbose ('Output all:{0}' -f $res.deploymentOutput) -Verbose
-        # $allOut = $res.deploymentOutput | ConvertTo-Json -Compress -Depth 100
-        # Write-Verbose ('Output allOut:{0}' -f $allOut) -Verbose
-        # # Write-Host "::set-output name=matrix::[$($res.deploymentOutput | ConvertTo-Json -Compress -Depth 100)]"
-        # # Write-Output ('::set-output name=deploymentOutput::{0}' -f $allOut)
-
-        $deploymentOutputHash=@{}
+        # $deploymentOutputHash=@{}
 
         # Populate further outputs
         foreach ($outputKey in $res.deploymentOutput.Keys) {
@@ -148,21 +142,20 @@ runs:
           Write-Verbose ('Output key:{0}' -f $outputKey) -Verbose
           Write-Verbose ('Output value:{0}' -f $res.deploymentOutput[$outputKey].Value) -Verbose
 
-          $deploymentOutputHash.add($outputKey,$res.deploymentOutput[$outputKey].Value)
-          # $deploymentOutputString+='"'+$outputKey+'":"'+$res.deploymentOutput[$outputKey].Value+'",'
+          # $deploymentOutputHash.add($outputKey,$res.deploymentOutput[$outputKey].Value)
           $deploymentOutputString+='"{0}":"{1}",' -f $outputKey, $res.deploymentOutput[$outputKey].Value
         }
 
-        $deploymentOutput = $deploymentOutputHash | ConvertTo-Json -Compress -Depth 100
-        Write-Verbose "Output deploymentOutput:$deploymentOutput" -Verbose
-        Write-Host "::set-output name=deploymentOutput::$deploymentOutput"
-        # Write-Verbose ('Output deploymentOutput:{0}' -f $deploymentOutput) -Verbose
-        # Write-Output ('::set-output name=deploymentOutput::{0}' -f $deploymentOutput)
+        # $deploymentOutput = $deploymentOutputHash | ConvertTo-Json -Compress -Depth 100
+        # Write-Verbose "Output deploymentOutput:$deploymentOutput" -Verbose
+        # Write-Host "::set-output name=deploymentOutput::$deploymentOutput"
+        # # Write-Verbose ('Output deploymentOutput:{0}' -f $deploymentOutput) -Verbose
+        # # Write-Output ('::set-output name=deploymentOutput::{0}' -f $deploymentOutput)
 
-        # $deploymentOutputString = $deploymentOutputString.Substring(0,$deploymentOutputString.Length-1)
-        # Write-Verbose "Output deploymentOutputString:$deploymentOutputString" -Verbose
-        # # Write-Output ('::set-output name=deploymentOutput::{{0}}' -f $deploymentOutputString)
-        # Write-Host "::set-output name=deploymentOutput::$deploymentOutputString"
+        $deploymentOutputString = $deploymentOutputString.Substring(0,$deploymentOutputString.Length-1)
+        Write-Verbose "Output deploymentOutputString:$deploymentOutputString" -Verbose
+        # Write-Output ('::set-output name=deploymentOutput::{{0}}' -f $deploymentOutputString)
+        Write-Output "::set-output name=deploymentOutput::$deploymentOutputString"
 
         if ($res.ContainsKey('exception')) {
           # Happens only if there is an exception

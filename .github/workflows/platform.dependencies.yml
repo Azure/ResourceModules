@@ -59,17 +59,6 @@ jobs:
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
           removeDeployment: '${{ env.removeDeployment }}'
       - run: echo ${{ steps.rg-deploy.outputs.deploymentOutput }}
-      # - name: Run PowerShell
-      #   uses: azure/powershell@v1
-      #   with:
-      #     inlineScript: |
-      #       $deploymentOutput = '${{ steps.rg-deploy.outputs.deploymentOutput }}'
-      #       Write-Verbose $deploymentOutput -Verbose
-      #       $deploymentOutput = "{$deploymentOutput}"
-      #       Write-Verbose $deploymentOutput -Verbose
-      #       $deploymentOutputConversion = ConvertFrom-Json $deploymentOutput
-      #       Write-Verbose $deploymentOutputConversion.resourceGroupName -Verbose
-      #     azPSVersion: 'latest'
       - name: Run PowerShell
         uses: azure/powershell@v1
         with:
@@ -80,17 +69,25 @@ jobs:
             Write-Verbose $deploymentOutput -Verbose
             $deploymentOutputConversion = ConvertFrom-Json $deploymentOutput
             Write-Verbose $deploymentOutputConversion.resourceGroupName -Verbose
+            Write-Verbose $deploymentOutputConversion.resourceGroupResourceId -Verbose
           azPSVersion: 'latest'
-
 
   job2:
     needs: job_deploy_rg
     runs-on: ubuntu-latest
-    strategy:
-      matrix: ${{fromJson(needs.job_deploy_rg.outputs.deploymentOutput)}}
     steps:
-    - run: echo ${{ matrix.resourceGroupResourceId }}
-    - run: echo ${{ matrix.resourceGroupName }}
+    - name: Run PowerShell
+      uses: azure/powershell@v1
+      with:
+        inlineScript: |
+          $deploymentOutput = '${{ needs.job_deploy_rg.outputs.deploymentOutput }}'
+          Write-Verbose $deploymentOutput -Verbose
+          $deploymentOutput = "{$deploymentOutput}"
+          Write-Verbose $deploymentOutput -Verbose
+          $deploymentOutputConversion = ConvertFrom-Json $deploymentOutput
+          Write-Verbose $deploymentOutputConversion.resourceGroupName -Verbose
+          Write-Verbose $deploymentOutputConversion.resourceGroupResourceId -Verbose
+        azPSVersion: 'latest'
 
   # job_deploy_msi:
   #   runs-on: ubuntu-20.04
