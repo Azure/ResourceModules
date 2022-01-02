@@ -3,7 +3,7 @@
 ## Description
 
 This repository includes a CI platform for and collection of mature and curated [Bicep][Bicep] modules.
-The platform supports both ARM and Bicep and can be leveraged using GitHub actions as well as Azure DevOps workflows.
+The platform supports both ARM and Bicep and can be leveraged using GitHub actions as well as Azure DevOps pipelines.
 
 ## Status
 
