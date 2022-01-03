@@ -27,7 +27,7 @@ on:
     paths:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.synapse.privatelinkhubs.yml'
-      - 'arm/Microsoft.Synapse/privateLinkhHubs/**'
+      - 'arm/Microsoft.Synapse/privateLinkHubs/**'
       - '!*/**/readme.md'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/dependencies/**'
