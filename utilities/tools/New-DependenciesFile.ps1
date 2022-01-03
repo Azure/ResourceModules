@@ -154,7 +154,7 @@ function Set-AzureDevOpsPipeline {
         [string] $ProviderNameShort
     )
 
-    $azureDevOpsPipelineFilePath = (Join-Path $RepoRoot '.azuredevops' 'modulePipelines' ('{0}.{1}.yml' -f $ProviderNameShort, $ModuleName)).ToLower()
+    $azureDevOpsPipelineFilePath = Join-Path $RepoRoot '.azuredevops' 'modulePipelines' ('{0}.{1}.yml' -f $ProviderNameShort, $ModuleName)
     if (-not (Test-Path $azureDevOpsPipelineFilePath)) {
         throw "Azure DevOps pipeline file in path [$azureDevOpsPipelineFilePath] not found."
     }
@@ -226,7 +226,7 @@ function Set-AzureDevOpsPipeline {
             # Process dpeloyment block
             $resourceGroupNameValueExists = $false
             $parameterFileName = Split-Path $pipelineContent[$blockStartIndex].Split(':')[1].Trim() -Leaf
-            $resourceGroupNameValue = "`${{ format(variables.rgPattern, $parameterFileName }}"
+            $resourceGroupNameValue = "`${{ format(variables.rgPattern, $parameterFileName) }}"
             for ($index = $blockStartIndex + 1; $index -le $blockEndindex; $index++) {
                 if (-not [String]::IsNullOrEmpty($pipelineContent[$index]) -and $pipelineContent[$index] -like '*resourceGroupName:*') {
                     # ResourceGroupName parameter already in block. Updating
@@ -240,14 +240,9 @@ function Set-AzureDevOpsPipeline {
                 $newLine = '              resourceGroupName: {0}' -f $resourceGroupNameValue
                 $pipelineContent = $pipelineContent[0..$variablesIndex] + @($newLine) + $pipelineContent[($variablesIndex + 1)..$pipelineContent.Count]
             }
-
-
         }
 
         $deploymentBlocksListIndex++
-    }
-    if ($deploymentBlocksListIndex -ge $pipelineContent.count) {
-        throw "[deploymentBlocks] deploy job parameter not found in workflow file [$azureDevOpsPipelineFilePath]"
     }
 
     # Save result
