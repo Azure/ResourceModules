@@ -400,7 +400,7 @@ jobs:
 
                   $functionInput = @{
                       DeploymentName    = '$(dependencyDeploymentName)'
-                      TemplateFilePath  = $templateFilePath
+                      TemplateFilePath  = $dependencyTemplateFilePath
                       ResourceGroupName = '${{ parameters.resourceGroupName }}'
                       Verbose           = $true
                   }
