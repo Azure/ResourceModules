@@ -185,7 +185,7 @@ function Set-AzureDevOpsPipeline {
 
     $RgPatternExists = $false
     for ($index = $variablesIndex + 1; $index -le $variablesEndIndex; $index++) {
-        if (-not [String]::IsNullOrEmpty($pipelineContent[$index]) -and $pipelineContent[$index].Split(':')[1].Trim() -eq $RgPatternEnvName) {
+        if (-not [String]::IsNullOrEmpty($pipelineContent[$index]) -and $pipelineContent[$index] -like "*$RgPatternEnvName*") {
             # Rg pattern already in file. Updating
             $pipelineContent[$index + 1] = "{0}: '{1}'" -f $pipelineContent[$index + 1].Split(':')[0], $RgPattern
             $RgPatternExists = $true
@@ -213,19 +213,17 @@ function Set-AzureDevOpsPipeline {
     $deploymentBlocksListIndex = $deploymentBlocksStartIndex + 1
     while ($pipelineContent[$deploymentBlocksListIndex] -notlike '*- stage:*' -and $deploymentBlocksListIndex -lt $pipelineContent.count) {
         if ($pipelineContent[$deploymentBlocksListIndex] -like '*- path:*') {
-            $blockStartIndex = $deploymentBlocksListIndex
             # process individual deployment block
-            $blockEndindex = $blockStartIndex + 1
-            while ($pipelineContent[$blockEndindex + 1] -notlike '*- path:*' -and $blockEndindex -lt $pipelineContent.count) {
+            $blockEndindex = $deploymentBlocksListIndex
+            while (-not [String]::IsNullOrEmpty($pipelineContent[$blockEndindex + 1]) -and $pipelineContent[$blockEndindex + 1] -notlike '*- path:*' -and $blockEndindex -lt $pipelineContent.count) {
                 $blockEndindex++
-                $deploymentBlocksListIndex++
             }
 
             # Process dpeloyment block
             $resourceGroupNameValueExists = $false
-            $parameterFileName = Split-Path $pipelineContent[$blockStartIndex].Split(':')[1].Trim() -Leaf
+            $parameterFileName = Split-Path $pipelineContent[$deploymentBlocksListIndex].Split(':')[1].Trim() -Leaf
             $resourceGroupNameValue = "`${{ format(variables.rgPattern, $parameterFileName) }}"
-            for ($index = $blockStartIndex + 1; $index -le $blockEndindex; $index++) {
+            for ($index = $deploymentBlocksListIndex; $index -le $blockEndindex; $index++) {
                 if (-not [String]::IsNullOrEmpty($pipelineContent[$index]) -and $pipelineContent[$index] -like '*resourceGroupName:*') {
                     # ResourceGroupName parameter already in block. Updating
                     $pipelineContent[$index] = "{0}: '{1}'" -f $pipelineContent[$index].Split(':')[0], $resourceGroupNameValue
@@ -235,8 +233,8 @@ function Set-AzureDevOpsPipeline {
             }
             if (-not $resourceGroupNameValueExists) {
                 # ResourceGroupName parameter not yet in block. Adding new
-                $newLine = '              resourceGroupName: {0}' -f $resourceGroupNameValue
-                $pipelineContent = $pipelineContent[0..$variablesIndex] + @($newLine) + $pipelineContent[($variablesIndex + 1)..$pipelineContent.Count]
+                $newLine = "              resourceGroupName: '{0}'" -f $resourceGroupNameValue
+                $pipelineContent = $pipelineContent[0..$blockEndindex] + @($newLine) + $pipelineContent[($blockEndindex + 1)..$pipelineContent.Count]
             }
         }
 
@@ -613,6 +611,7 @@ function New-DependenciesFile {
         if ($IncludeGitHubWorkflow) {
             $setGitHubWorkflowInputObject = @{
                 RepoRoot          = $RepoRoot
+                ModuleName        = $ModuleName
                 RgPatternEnvName  = $RgPatternEnvName
                 RgPattern         = $RgPattern
                 ProviderNameShort = $ProviderNameShort
@@ -624,6 +623,7 @@ function New-DependenciesFile {
         if ($IncludeAzureDevOpsPipeline) {
             $setAzureDevOpsPipelineInputObject = @{
                 RepoRoot          = $RepoRoot
+                ModuleName        = $ModuleName
                 RgPatternEnvName  = $RgPatternEnvName
                 RgPattern         = $RgPattern
                 ProviderNameShort = $ProviderNameShort
