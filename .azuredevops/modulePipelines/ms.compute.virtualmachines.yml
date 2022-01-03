@@ -36,6 +36,8 @@ variables:
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
     value: '/arm/Microsoft.Compute/virtualMachines'
+  - name: rgPattern
+    value: 'test-ms.compute-virtualMachines-{0}-rg'
 
 stages:
   - stage: Validation
@@ -51,9 +53,13 @@ stages:
           removeDeployment: '${{ parameters.removeDeployment }}'
           deploymentBlocks:
             - path: $(modulePath)/.parameters/linux.min.parameters.json
+              resourceGroupName: '${{ format(variables.rgPattern, linux.min.parameters.json) }}'
             - path: $(modulePath)/.parameters/linux.parameters.json
+              resourceGroupName: '${{ format(variables.rgPattern, linux.parameters.json) }}'
             - path: $(modulePath)/.parameters/windows.min.parameters.json
+              resourceGroupName: '${{ format(variables.rgPattern, windows.min.parameters.json) }}'
             - path: $(modulePath)/.parameters/windows.parameters.json
+              resourceGroupName: '${{ format(variables.rgPattern, windows.parameters.json) }}'
 
   - stage: Publishing
     displayName: Publish module

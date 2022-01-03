@@ -70,6 +70,7 @@ runs:
           doNotThrow         = $true
         }
 
+        # Enables us to pass the resource group name as a deployment parameter
         if(-not [String]::IsNullOrEmpty('${{ inputs.resourceGroupName }}')) {
           $resourceGroupName = '${{ inputs.resourceGroupName }}'
           $functionInput['additionalParameters'] = @{

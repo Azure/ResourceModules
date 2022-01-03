@@ -129,8 +129,70 @@ jobs:
                   $moduleRepoRoot = '$(System.DefaultWorkingDirectory)'
                   $parametersRepoRoot = '$(System.DefaultWorkingDirectory)'
                 }
-                Write-Host "##vso[task.setvariable variable=ModuleRepoRoot]$moduleRepoRoot"
+                Write-Host "##vso[task.setvariable variable=moduleRepoRoot]$moduleRepoRoot"
                 Write-Host "##vso[task.setvariable variable=parametersRepoRoot]$parametersRepoRoot"
+
+          # [Dependency deployment] task(s)
+          # -------------------------------
+          - task: AzurePowerShell@5
+            displayName: 'Deploy dependencies for template [${{ deploymentBlock.path }}]'
+            inputs:
+              azureSubscription: ${{ parameters.serviceConnection }}
+              azurePowerShellVersion: ${{ parameters.azurePowerShellVersion }}
+              preferredAzurePowerShellVersion: ${{ parameters.preferredAzurePowerShellVersion }}
+              pwsh: true
+              ScriptType: InlineScript
+              inline: |
+                # Load used functions
+                . (Join-Path '$(moduleRepoRoot)' '$(pipelineFunctionsPath)' 'resourceDeployment' 'New-ModuleDeployment.ps1')
+
+                if(-not [String]::IsNullOrEmpty('${{ deploymentBlock.templateFilePath }}')) {
+                  $templateFilePath = Join-Path '$(moduleRepoRoot)' '${{ deploymentBlock.templateFilePath }}'
+                } else {
+                  # Use default path
+                  $templateFilePath = (Test-Path (Join-Path '$(moduleRepoRoot)' '$(modulePath)' 'deploy.bicep')) ?
+                    (Join-Path '$(moduleRepoRoot)' '$(modulePath)' 'deploy.bicep') :
+                    (Join-Path '$(moduleRepoRoot)' '$(modulePath)' 'deploy.json')
+                }
+
+                $namespacePath = Split-Path $templateFilePath.Replace('/','\').Split('arm\')[1] -Parent # Returns e.g. 'Microsoft.Sql\servers'
+                $templateFileName = '{0}.bicep' -f (Split-Path '${{ deploymentBlock.path }}' -LeafBase)
+                $dependencyTemplateFilePath = Join-Path '$(moduleRepoRoot)' 'arm' '.global' 'moduleDependencies' $namespacePath $templateFileName
+
+                if (-not (Test-Path $dependencyTemplateFilePath)) {
+                  Write-Verbose "No dependency deployment found in path [$dependencyTemplateFilePath]. Skipping deployment" -Verbose
+                  return
+                }
+
+                $functionInput = @{
+                  templateFilePath   = $dependencyTemplateFilePath
+                  location           = '${{ parameters.location }}'
+                  subscriptionId     = '${{ parameters.subscriptionId }}'
+                  managementGroupId  = '${{ parameters.managementGroupId }}'
+                  doNotThrow         = $true
+                }
+
+                # Enables us to pass the resource group name as a deployment parameter
+                if(-not [String]::IsNullOrEmpty('${{ parameters.resourceGroupName }}')) {
+                  $resourceGroupName = '${{ parameters.resourceGroupName }}'
+                  $functionInput['additionalParameters'] = @{
+                    resourceGroupName = $resourceGroupName
+                  }
+                }
+
+                Write-Verbose 'Invoke task with' -Verbose
+                Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
+
+                # Invoke deployment
+                $res = New-ModuleDeployment @functionInput -Verbose
+
+                # Get deployment name
+                Write-Host ('##vso[task.setvariable variable=dependencyDeploymentName]{0}' -f $res.deploymentName)
+
+                if ($res.ContainsKey('exception')) {
+                  # Happens only if there is an exception
+                  throw $res.exception
+                }
 
           # [Agent] Replace tokens
           #-----------------------
@@ -187,9 +249,9 @@ jobs:
                   $templateFilePath = Join-Path '$(moduleRepoRoot)' '${{ deploymentBlock.templateFilePath }}'
                 } else {
                   # Use default path
-                  $templateFilePath = (Test-Path (Join-Path '$(ModuleRepoRoot)' '$(modulePath)' 'deploy.bicep')) ?
-                    (Join-Path '$(ModuleRepoRoot)' '$(modulePath)' 'deploy.bicep') :
-                    (Join-Path '$(ModuleRepoRoot)' '$(modulePath)' 'deploy.json')
+                  $templateFilePath = (Test-Path (Join-Path '$(moduleRepoRoot)' '$(modulePath)' 'deploy.bicep')) ?
+                    (Join-Path '$(moduleRepoRoot)' '$(modulePath)' 'deploy.bicep') :
+                    (Join-Path '$(moduleRepoRoot)' '$(modulePath)' 'deploy.json')
                 }
 
                 # ----------- #
@@ -227,9 +289,9 @@ jobs:
                   $templateFilePath = Join-Path '$(moduleRepoRoot)' '${{ deploymentBlock.templateFilePath }}'
                 } else {
                   # Use default path
-                  $templateFilePath = (Test-Path (Join-Path '$(ModuleRepoRoot)' '$(modulePath)' 'deploy.bicep')) ?
-                    (Join-Path '$(ModuleRepoRoot)' '$(modulePath)' 'deploy.bicep') :
-                    (Join-Path '$(ModuleRepoRoot)' '$(modulePath)' 'deploy.json')
+                  $templateFilePath = (Test-Path (Join-Path '$(moduleRepoRoot)' '$(modulePath)' 'deploy.bicep')) ?
+                    (Join-Path '$(moduleRepoRoot)' '$(modulePath)' 'deploy.bicep') :
+                    (Join-Path '$(moduleRepoRoot)' '$(modulePath)' 'deploy.json')
                 }
 
                 # ----------------- #
@@ -284,14 +346,33 @@ jobs:
                   $templateFilePath = Join-Path '$(moduleRepoRoot)' '${{ deploymentBlock.templateFilePath }}'
                 } else {
                   # Use default path
-                  $templateFilePath = (Test-Path (Join-Path '$(ModuleRepoRoot)' '$(modulePath)' 'deploy.bicep')) ?
-                    (Join-Path '$(ModuleRepoRoot)' '$(modulePath)' 'deploy.bicep') :
-                    (Join-Path '$(ModuleRepoRoot)' '$(modulePath)' 'deploy.json')
+                  $templateFilePath = (Test-Path (Join-Path '$(moduleRepoRoot)' '$(modulePath)' 'deploy.bicep')) ?
+                    (Join-Path '$(moduleRepoRoot)' '$(modulePath)' 'deploy.bicep') :
+                    (Join-Path '$(moduleRepoRoot)' '$(modulePath)' 'deploy.json')
                 }
 
                 if (-not [String]::IsNullOrEmpty('$(deploymentName)')) {
                   $functionInput = @{
                       DeploymentName    = '$(deploymentName)'
+                      TemplateFilePath  = $templateFilePath
+                      ResourceGroupName = '${{ parameters.resourceGroupName }}'
+                      Verbose           = $true
+                  }
+
+                  Write-Verbose 'Invoke task with' -Verbose
+                  Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
+
+                  Initialize-DeploymentRemoval @functionInput
+                }
+
+                if (-not [String]::IsNullOrEmpty('$(dependencyDeploymentName)')) {
+                  $namespacePath = Split-Path $templateFilePath.Replace('/','\').Split('arm\')[1] -Parent # Returns e.g. 'Microsoft.Sql\servers'
+                  $templateFileName = '{0}.bicep' -f (Split-Path '${{ deploymentBlock.path }}' -LeafBase)
+                  # Results in e.g. [C:/resourceModules/arm/.global/moduleDependencies/Microsoft.Sql/servers/parameters.bicep]
+                  $dependencyTemplateFilePath = Join-Path '$(moduleRepoRoot)' 'arm' '.global' 'moduleDependencies' $namespacePath $templateFileName
+
+                  $functionInput = @{
+                      DeploymentName    = '$(dependencyDeploymentName)'
                       TemplateFilePath  = $templateFilePath
                       ResourceGroupName = '${{ parameters.resourceGroupName }}'
                       Verbose           = $true

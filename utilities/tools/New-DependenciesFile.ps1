@@ -9,6 +9,9 @@ Update the GitHub workflow file to leverage the generated dependency file(s)
 .PARAMETER RepoRoot
 Mandatory. The path to the root of the current repository.
 
+.PARAMETER ModuleName
+Mandatory. The name of the module. E.g. 'virtualMachines'
+
 .PARAMETER rgPatternEnvName
 Mandatory. The name of the resource group pattern environment variable to add to the pipeline (e.g. 'rgPattern')
 
@@ -19,7 +22,7 @@ Mandatory. The value for the [rgPatternEnvName] environment variable that is the
 Mandatory. The short version of the provider namespace to operate in (e.g. 'ms.compute')
 
 .EXAMPLE
-Set-GitHubWorkflow -RepoRoot 'C:/resourceModules' -RgPatternEnvName 'rgPattern' -RgPattern 'test-ms.compute-virtualMachines-{0}-rg' -ProviderNameShort 'ms.compute'
+Set-GitHubWorkflow -RepoRoot 'C:/resourceModules' -ModuleName 'virtualMachines' -RgPatternEnvName 'rgPattern' -RgPattern 'test-ms.compute-virtualMachines-{0}-rg' -ProviderNameShort 'ms.compute'
 
 Update the GitHub workflow to leverage the dependency file(s) by adding the provided resource group pattern environment variable
 #>
@@ -29,6 +32,9 @@ function Set-GitHubWorkflow {
     param(
         [Parameter(Mandatory = $true)]
         [string] $RepoRoot,
+
+        [Parameter(Mandatory = $true)]
+        [string] $ModuleName,
 
         [Parameter(Mandatory = $true)]
         [string] $RgPatternEnvName,
@@ -72,13 +78,14 @@ function Set-GitHubWorkflow {
     $RgPatternExists = $false
     for ($index = $envIndex + 1; $index -le $envEndIndex; $index++) {
         if (-not [String]::IsNullOrEmpty($workflowContent[$index]) -and $workflowContent[$index].Split(':')[0].Trim() -eq $RgPatternEnvName) {
-            # Not rg pattern already in file. Updating
+            # Rg pattern already in file. Updating
             $workflowContent[$index] = "{0}: '{1}'" -f $workflowContent[$index].Split(':')[0], $RgPattern
             $RgPatternExists = $true
+            break
         }
     }
     if (-not $RgPatternExists) {
-        # Not rg pattern not yet in file. Adding new
+        # Rg pattern not yet in file. Adding new
         $newLine = "  {0}: '{1}'" -f $RgPatternEnvName, $RgPattern
         $workflowContent = $workflowContent[0..$envIndex] + @($newLine) + $workflowContent[($envIndex + 1)..$workflowContent.Count]
     }
@@ -94,7 +101,7 @@ function Set-GitHubWorkflow {
     }
     $workflowContent[($rgRefIndex)] = "{0}: '{1}'" -f $workflowContent[$rgRefIndex].Split(':')[0], '${{ format(env.rgPattern, matrix.parameterFilePaths) }}'
 
-    # Resut
+    # Save result
     if ($PSCmdlet.ShouldProcess("Workflow file [$gitHubWorkflowFilePath]", 'Update')) {
         $null = Set-Content -Path $gitHubWorkflowFilePath -Value $workflowContent -Force
     }
@@ -110,6 +117,9 @@ Update the Azure DevOps pipeline file to leverage the generated dependency file(
 .PARAMETER RepoRoot
 Mandatory. The path to the root of the current repository.
 
+.PARAMETER ModuleName
+Mandatory. The name of the module. E.g. 'virtualMachines'
+
 .PARAMETER rgPatternEnvName
 Mandatory. The name of the resource group pattern environment variable to add to the pipeline (e.g. 'rgPattern')
 
@@ -120,7 +130,7 @@ Mandatory. The value for the [rgPatternEnvName] environment variable that is the
 Mandatory. The short version of the provider namespace to operate in (e.g. 'ms.compute')
 
 .EXAMPLE
-Set-AzureDevOpsPipeline -RepoRoot 'C:/resourceModules' -RgPatternEnvName 'rgPattern' -RgPattern 'test-ms.compute-virtualMachines-{0}-rg' -ProviderNameShort 'ms.compute'
+Set-AzureDevOpsPipeline -RepoRoot 'C:/resourceModules' -ModuleName 'virtualMachines' -RgPatternEnvName 'rgPattern' -RgPattern 'test-ms.compute-virtualMachines-{0}-rg' -ProviderNameShort 'ms.compute'
 
 Update the Azure DevOps pipeline to leverage the dependency file(s) by adding the provided resource group pattern environment variable
 #>
@@ -132,6 +142,9 @@ function Set-AzureDevOpsPipeline {
         [string] $RepoRoot,
 
         [Parameter(Mandatory = $true)]
+        [string] $ModuleName,
+
+        [Parameter(Mandatory = $true)]
         [string] $RgPatternEnvName,
 
         [Parameter(Mandatory = $true)]
@@ -141,9 +154,106 @@ function Set-AzureDevOpsPipeline {
         [string] $ProviderNameShort
     )
 
-    # TODO: Add once DevOps pipelines are available
+    $azureDevOpsPipelineFilePath = (Join-Path $RepoRoot '.azuredevops' 'modulePipelines' ('{0}.{1}.yml' -f $ProviderNameShort, $ModuleName)).ToLower()
+    if (-not (Test-Path $azureDevOpsPipelineFilePath)) {
+        throw "Azure DevOps pipeline file in path [$azureDevOpsPipelineFilePath] not found."
+    }
 
-    throw 'Not implemented exception [Azure DevOps pipeline file uodate]'
+    # Process content
+    # ---------------
+    # Env
+    # ---
+    $pipelineContent = Get-Content $azureDevOpsPipelineFilePath
+    # Find 'variables:' section index
+    $variablesIndex = 0
+
+    while ($pipelineContent[$variablesIndex] -notlike 'variables:*' -and $variablesIndex -lt $pipelineContent.count) {
+        $variablesIndex++
+    }
+    if ($variablesIndex -ge $pipelineContent.count) {
+        throw "[variables] section not found in pipeline file [$azureDevOpsPipelineFilePath]"
+    }
+
+    # Find end of 'variables:' section index
+    $variablesEndIndex = $variablesIndex + 1
+    while ($pipelineContent[$variablesEndIndex] -notlike 'stages:*' -and $variablesEndIndex -lt $pipelineContent.count) {
+        $variablesEndIndex++
+    }
+    if ($variablesEndIndex -ge $pipelineContent.count) {
+        throw "[stages] section not found in pipeline file [$azureDevOpsPipelineFilePath]"
+    }
+
+    $RgPatternExists = $false
+    for ($index = $variablesIndex + 1; $index -le $variablesEndIndex; $index++) {
+        if (-not [String]::IsNullOrEmpty($pipelineContent[$index]) -and $pipelineContent[$index].Split(':')[1].Trim() -eq $RgPatternEnvName) {
+            # Rg pattern already in file. Updating
+            $pipelineContent[$index + 1] = "{0}: '{1}'" -f $pipelineContent[$index + 1].Split(':')[0], $RgPattern
+            $RgPatternExists = $true
+            break
+        }
+    }
+    if (-not $RgPatternExists) {
+        # Rg pattern not yet in file. Adding new
+        $newLineName = "  - name: '{0}'" -f $RgPatternEnvName
+        $newLineValue = "    value: '{0}'" -f $RgPattern
+        $pipelineContent = $pipelineContent[0..$variablesIndex] + @($newLineName, $newLineValue) + $pipelineContent[($variablesIndex + 1)..$pipelineContent.Count]
+    }
+
+
+
+    # Deploy
+    # ------
+    $deploymentBlocksStartIndex = $variablesEndIndex
+    while ($pipelineContent[$deploymentBlocksStartIndex] -notlike '*deploymentBlocks:*' -and $deploymentBlocksStartIndex -lt $pipelineContent.count) {
+        $deploymentBlocksStartIndex++
+    }
+    if ($deploymentBlocksStartIndex -ge $pipelineContent.count) {
+        throw "[deploymentBlocks] deploy job parameter not found in workflow file [$azureDevOpsPipelineFilePath]"
+    }
+
+    # Add resource group name parameter to each deployment block
+    $deploymentBlocksListIndex = $deploymentBlocksStartIndex + 1
+    while ($pipelineContent[$deploymentBlocksListIndex] -notlike '*- stage:*' -and $deploymentBlocksListIndex -lt $pipelineContent.count) {
+        if ($pipelineContent[$deploymentBlocksListIndex] -like '*- path:*') {
+            $blockStartIndex = $deploymentBlocksListIndex
+            # process individual deployment block
+            $blockEndindex = $blockStartIndex + 1
+            while ($pipelineContent[$blockEndindex + 1] -notlike '*- path:*' -and $blockEndindex -lt $pipelineContent.count) {
+                $blockEndindex++
+                $deploymentBlocksListIndex++
+            }
+
+            # Process dpeloyment block
+            $resourceGroupNameValueExists = $false
+            $parameterFileName = Split-Path $pipelineContent[$blockStartIndex].Split(':')[1].Trim() -Leaf
+            $resourceGroupNameValue = "`${{ format(variables.rgPattern, $parameterFileName }}"
+            for ($index = $blockStartIndex + 1; $index -le $blockEndindex; $index++) {
+                if (-not [String]::IsNullOrEmpty($pipelineContent[$index]) -and $pipelineContent[$index] -like '*resourceGroupName:*') {
+                    # ResourceGroupName parameter already in block. Updating
+                    $pipelineContent[$index] = "{0}: '{1}'" -f $pipelineContent[$index].Split(':')[0], $resourceGroupNameValue
+                    $resourceGroupNameValueExists = $true
+                    break
+                }
+            }
+            if (-not $resourceGroupNameValueExists) {
+                # ResourceGroupName parameter not yet in block. Adding new
+                $newLine = '              resourceGroupName: {0}' -f $resourceGroupNameValue
+                $pipelineContent = $pipelineContent[0..$variablesIndex] + @($newLine) + $pipelineContent[($variablesIndex + 1)..$pipelineContent.Count]
+            }
+
+
+        }
+
+        $deploymentBlocksListIndex++
+    }
+    if ($deploymentBlocksListIndex -ge $pipelineContent.count) {
+        throw "[deploymentBlocks] deploy job parameter not found in workflow file [$azureDevOpsPipelineFilePath]"
+    }
+
+    # Save result
+    if ($PSCmdlet.ShouldProcess("Pipeline file [$azureDevOpsPipelineFilePath]", 'Update')) {
+        $null = Set-Content -Path $azureDevOpsPipelineFilePath -Value $pipelineContent -Force
+    }
 }
 
 <#
