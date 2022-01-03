@@ -161,8 +161,8 @@ function Set-AzureDevOpsPipeline {
 
     # Process content
     # ---------------
-    # Env
-    # ---
+    # Variables
+    # ---------
     $pipelineContent = Get-Content $azureDevOpsPipelineFilePath
     # Find 'variables:' section index
     $variablesIndex = 0
@@ -198,8 +198,6 @@ function Set-AzureDevOpsPipeline {
         $newLineValue = "    value: '{0}'" -f $RgPattern
         $pipelineContent = $pipelineContent[0..$variablesEndIndex] + @($newLineName, $newLineValue) + $pipelineContent[($variablesEndIndex + 1)..$pipelineContent.Count]
     }
-
-
 
     # Deploy
     # ------
