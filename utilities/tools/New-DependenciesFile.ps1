@@ -222,18 +222,18 @@ function Set-AzureDevOpsPipeline {
             # Process dpeloyment block
             $resourceGroupNameValueExists = $false
             $parameterFileName = Split-Path $pipelineContent[$deploymentBlocksListIndex].Split(':')[1].Trim() -Leaf
-            $resourceGroupNameValue = "`${{ format(variables.rgPattern, $parameterFileName) }}"
+            $resourceGroupNameValue = "`${{ format(variables.rgPattern, '$parameterFileName') }}"
             for ($index = $deploymentBlocksListIndex; $index -le $blockEndindex; $index++) {
                 if (-not [String]::IsNullOrEmpty($pipelineContent[$index]) -and $pipelineContent[$index] -like '*resourceGroupName:*') {
                     # ResourceGroupName parameter already in block. Updating
-                    $pipelineContent[$index] = "{0}: '{1}'" -f $pipelineContent[$index].Split(':')[0], $resourceGroupNameValue
+                    $pipelineContent[$index] = '{0}: {1}' -f $pipelineContent[$index].Split(':')[0], $resourceGroupNameValue
                     $resourceGroupNameValueExists = $true
                     break
                 }
             }
             if (-not $resourceGroupNameValueExists) {
                 # ResourceGroupName parameter not yet in block. Adding new
-                $newLine = "              resourceGroupName: '{0}'" -f $resourceGroupNameValue
+                $newLine = '              resourceGroupName: {0}' -f $resourceGroupNameValue
                 $pipelineContent = $pipelineContent[0..$blockEndindex] + @($newLine) + $pipelineContent[($blockEndindex + 1)..$pipelineContent.Count]
             }
         }

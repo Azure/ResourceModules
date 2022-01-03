@@ -36,6 +36,8 @@ variables:
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
     value: '/arm/Microsoft.AnalysisServices/servers'
+  - name: 'rgPattern'
+    value: 'test-ms.analysisservices-servers-{0}-rg'
 
 stages:
   - stage: Validation
@@ -51,7 +53,9 @@ stages:
           removeDeployment: '${{ parameters.removeDeployment }}'
           deploymentBlocks:
             - path: $(modulePath)/.parameters/min.parameters.json
+              resourceGroupName: ${{ format(variables.rgPattern, 'min.parameters.json') }}
             - path: $(modulePath)/.parameters/parameters.json
+              resourceGroupName: ${{ format(variables.rgPattern, 'parameters.json') }}
 
   - stage: Publishing
     displayName: Publish module
