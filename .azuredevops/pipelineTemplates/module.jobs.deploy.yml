@@ -172,12 +172,15 @@ jobs:
                   doNotThrow         = $true
                 }
 
-                # Enables us to pass the resource group name as a deployment parameter
-                if(-not [String]::IsNullOrEmpty('${{ parameters.resourceGroupName }}')) {
-                  $resourceGroupName = '${{ parameters.resourceGroupName }}'
-                  $functionInput['additionalParameters'] = @{
-                    resourceGroupName = $resourceGroupName
-                  }
+                if(-not [String]::IsNullOrEmpty('${{ deploymentBlock.resourceGroupName }}')) {
+                    $resourceGroupName = '${{ deploymentBlock.resourceGroupName }}'
+                } else {
+                    $resourceGroupName = '${{ parameters.resourceGroupName }}'
+                }
+
+                # Pass the resource group name as a deployment parameter to deploy into it
+                $functionInput['additionalParameters'] = @{
+                  resourceGroupName = $resourceGroupName
                 }
 
                 Write-Verbose 'Invoke task with' -Verbose
@@ -245,6 +248,7 @@ jobs:
                 # Load used functions
                 . (Join-Path '$(moduleRepoRoot)' '$(pipelineFunctionsPath)' 'resourceValidation' 'Test-TemplateWithParameterFile.ps1')
 
+                # Determine correct template reference
                 if(-not [String]::IsNullOrEmpty('${{ deploymentBlock.templateFilePath }}')) {
                   $templateFilePath = Join-Path '$(moduleRepoRoot)' '${{ deploymentBlock.templateFilePath }}'
                 } else {
@@ -254,6 +258,13 @@ jobs:
                     (Join-Path '$(moduleRepoRoot)' '$(modulePath)' 'deploy.json')
                 }
 
+                # Get correct resource group
+                if(-not [String]::IsNullOrEmpty('${{ deploymentBlock.resourceGroupName }}')) {
+                    $resourceGroupName = '${{ deploymentBlock.resourceGroupName }}'
+                } else {
+                    $resourceGroupName = '${{ parameters.resourceGroupName }}'
+                }
+
                 # ----------- #
                 # INVOKE TEST #
                 # ----------- #
@@ -261,7 +272,7 @@ jobs:
                   templateFilePath   = $templateFilePath
                   parameterFilePath  = Join-Path '$(ParametersRepoRoot)' '${{ deploymentBlock.path }}'
                   location           = '${{ parameters.location }}'
-                  resourceGroupName  = '${{ parameters.resourceGroupName }}'
+                  resourceGroupName  = $resourceGroupName
                   subscriptionId     = '${{ parameters.subscriptionId }}'
                   managementGroupId  = '${{ parameters.managementGroupId }}'
                 }
@@ -285,6 +296,7 @@ jobs:
                 # Load used functions
                 . (Join-Path '$(moduleRepoRoot)' '$(pipelineFunctionsPath)' 'resourceDeployment' 'New-ModuleDeployment.ps1')
 
+                # Determine correct template reference
                 if(-not [String]::IsNullOrEmpty('${{ deploymentBlock.templateFilePath }}')) {
                   $templateFilePath = Join-Path '$(moduleRepoRoot)' '${{ deploymentBlock.templateFilePath }}'
                 } else {
@@ -294,6 +306,13 @@ jobs:
                     (Join-Path '$(moduleRepoRoot)' '$(modulePath)' 'deploy.json')
                 }
 
+                # Get correct resource group
+                if(-not [String]::IsNullOrEmpty('${{ deploymentBlock.resourceGroupName }}')) {
+                    $resourceGroupName = '${{ deploymentBlock.resourceGroupName }}'
+                } else {
+                    $resourceGroupName = '${{ parameters.resourceGroupName }}'
+                }
+
                 # ----------------- #
                 # INVOKE DEPLOYMENT #
                 # ----------------- #
@@ -301,7 +320,7 @@ jobs:
                   templateFilePath   = $templateFilePath
                   parameterFilePath  = Join-Path '$(parametersRepoRoot)' '${{ deploymentBlock.path }}'
                   location           = '${{ parameters.location }}'
-                  resourceGroupName  = '${{ parameters.resourceGroupName }}'
+                  resourceGroupName  = $resourceGroupName
                   subscriptionId     = '${{ parameters.subscriptionId }}'
                   managementGroupId  = '${{ parameters.managementGroupId }}'
                   doNotThrow         = $true
@@ -342,6 +361,7 @@ jobs:
                 # Load used function
                 . (Join-Path '$(moduleRepoRoot)' '$(pipelineFunctionsPath)' 'resourceRemoval' 'Initialize-DeploymentRemoval.ps1')
 
+                # Determine correct template reference
                 if(-not [String]::IsNullOrEmpty('${{ deploymentBlock.templateFilePath }}')) {
                   $templateFilePath = Join-Path '$(moduleRepoRoot)' '${{ deploymentBlock.templateFilePath }}'
                 } else {
@@ -351,11 +371,18 @@ jobs:
                     (Join-Path '$(moduleRepoRoot)' '$(modulePath)' 'deploy.json')
                 }
 
+                # Determine correct resource group
+                if(-not [String]::IsNullOrEmpty('${{ deploymentBlock.resourceGroupName }}')) {
+                    $resourceGroupName = '${{ deploymentBlock.resourceGroupName }}'
+                } else {
+                    $resourceGroupName = '${{ parameters.resourceGroupName }}'
+                }
+
                 if (-not [String]::IsNullOrEmpty('$(deploymentName)')) {
                   $functionInput = @{
                       DeploymentName    = '$(deploymentName)'
                       TemplateFilePath  = $templateFilePath
-                      ResourceGroupName = '${{ parameters.resourceGroupName }}'
+                      ResourceGroupName = $resourceGroupName
                       Verbose           = $true
                   }
 
