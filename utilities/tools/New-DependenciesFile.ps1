@@ -176,7 +176,7 @@ function Set-AzureDevOpsPipeline {
 
     # Find end of 'variables:' section index
     $variablesEndIndex = $variablesIndex + 1
-    while ($pipelineContent[$variablesEndIndex] -notlike 'stages:*' -and $variablesEndIndex -lt $pipelineContent.count) {
+    while (-not [String]::IsNullOrEmpty($pipelineContent[$variablesEndIndex + 1]) -and $pipelineContent[$variablesEndIndex + 1] -notlike 'stages:*' -and $variablesEndIndex -lt $pipelineContent.count) {
         $variablesEndIndex++
     }
     if ($variablesEndIndex -ge $pipelineContent.count) {
@@ -196,7 +196,7 @@ function Set-AzureDevOpsPipeline {
         # Rg pattern not yet in file. Adding new
         $newLineName = "  - name: '{0}'" -f $RgPatternEnvName
         $newLineValue = "    value: '{0}'" -f $RgPattern
-        $pipelineContent = $pipelineContent[0..$variablesIndex] + @($newLineName, $newLineValue) + $pipelineContent[($variablesIndex + 1)..$pipelineContent.Count]
+        $pipelineContent = $pipelineContent[0..$variablesEndIndex] + @($newLineName, $newLineValue) + $pipelineContent[($variablesEndIndex + 1)..$pipelineContent.Count]
     }
 
 
