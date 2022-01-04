@@ -4,30 +4,30 @@ This module deploys a Synapse Private Link Hubs.
 
 ## Resource Types
 
-| Resource Type                                             | API Version        |
-| :-------------------------------------------------------- | :----------------- |
-| `Microsoft.Authorization/locks`                           | 2016-09-01         |
-| `Microsoft.Authorization/roleAssignments`                 | 2020-04-01-preview |
-| `Microsoft.Network/privateEndpoints`                      | 2021-03-01         |
-| `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | 2021-03-01         |
-| `Microsoft.Synapse/privateLinkHubs`                       | 2021-06-01         |
+| Resource Type | API Version |
+| :-- | :-- |
+| `Microsoft.Authorization/locks` | 2016-09-01 |
+| `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
+| `Microsoft.Network/privateEndpoints` | 2021-03-01 |
+| `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | 2021-03-01 |
+| `Microsoft.Synapse/privateLinkHubs` | 2021-06-01 |
 
 ## Parameters
 
-| Parameter Name     | Type   | Default Value                | Possible Values                          | Description                                                                                                                                                                                                                                                                                                                                                                                                    |
-| :----------------- | :----- | :--------------------------- | :--------------------------------------- | :------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `location`         | string | `[resourceGroup().location]` |                                          | Required. The geo-location where the resource lives.                                                                                                                                                                                                                                                                                                                                                           |
-| `lock`             | string | `NotSpecified`               | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock.                                                                                                                                                                                                                                                                                                                                                                            |
-| `name`             | string |                              |                                          | Required. The name of the Private Link Hub.                                                                                                                                                                                                                                                                                                                                                                    |
-| `privateEndpoints` | array  | `[]`                         |                                          | Optional. Configuration Details for private endpoints.                                                                                                                                                                                                                                                                                                                                                         |
-| `roleAssignments`  | array  | `[]`                         |                                          | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
-| `tags`             | object | `{object}`                   |                                          | Optional. Tags of the resource.                                                                                                                                                                                                                                                                                                                                                                                |
+| Parameter Name | Type | Default Value | Possible Values | Description |
+| :-- | :-- | :-- | :-- | :-- |
+| `location` | string | `[resourceGroup().location]` |  | Optional. The geo-location where the resource lives. |
+| `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
+| `name` | string |  |  | Required. The name of the Private Link Hub. |
+| `privateEndpoints` | array | `[]` |  | Optional. Configuration Details for private endpoints. |
+| `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
+| `tags` | object | `{object}` |  | Optional. Tags of the resource. |
 
 ### Parameter Usage: `privateEndpoints`
 
 To use Private Endpoint the following dependencies must be deployed:
 
-- Destination subnet must be created with the following configuration option - `"privateEndpointNetworkPolicies": "Disabled"`. Setting this option acknowledges that NSG rules are not applied to Private Endpoints (this capability is coming soon). A full example is available in the Virtual Network Module.
+- Destination subnet must be created with the following configuration option - `"privateEndpointNetworkPolicies": "Disabled"`.  Setting this option acknowledges that NSG rules are not applied to Private Endpoints (this capability is coming soon). A full example is available in the Virtual Network Module.
 - Although not strictly required, it is highly recommended to first create a private DNS Zone to host Private Endpoint DNS records. See [Azure Private Endpoint DNS configuration](https://docs.microsoft.com/en-us/azure/private-link/private-endpoint-dns) for more information.
 
 ```json
@@ -100,11 +100,11 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 ## Outputs
 
-| Output Name                   | Type   | Description                                                  |
-| :---------------------------- | :----- | :----------------------------------------------------------- |
-| `privateLinkHubName`          | string | The name of the deployed Synapse Private Link Hub.           |
+| Output Name | Type | Description |
+| :-- | :-- | :-- |
+| `privateLinkHubName` | string | The name of the deployed Synapse Private Link Hub. |
 | `privateLinkHubResourceGroup` | string | The resource group of the deployed Synapse Private Link Hub. |
-| `privateLinkHubResourceId`    | string | The resource ID of the deployed Synapse Private Link Hub.    |
+| `privateLinkHubResourceId` | string | The resource ID of the deployed Synapse Private Link Hub. |
 
 ## Template references
 
