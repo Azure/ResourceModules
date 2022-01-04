@@ -1,7 +1,7 @@
 @description('Required. The name of the Private Link Hub.')
 param name string
 
-@description('Required. The geo-location where the resource lives.')
+@description('Optional. The geo-location where the resource lives.')
 param location string = resourceGroup().location
 
 @description('Optional. Tags of the resource.')
