@@ -1,6 +1,6 @@
 # Synapse PrivateLinkHubs `[Microsoft.Synapse/privateLinkHubs]`
 
-This module deploys Synapse PrivateLinkHubs.
+This module deploys a Synapse Private Link Hubs.
 // TODO: Replace Resource and fill in description
 
 ## Resource Types
