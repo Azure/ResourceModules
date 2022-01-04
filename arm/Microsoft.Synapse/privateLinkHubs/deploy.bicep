@@ -48,7 +48,7 @@ module synapsePrivateLinkHub_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignm
 }]
 
 // Private Endpoints
-module synapsePrivateLinkHub_privateEndpoints '.bicep/nested_privateEndpoint.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
+module privateLinkHub_privateEndpoints '.bicep/nested_privateEndpoint.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
   name: '${uniqueString(deployment().name, location)}-PrivateEndpoint-${index}'
   params: {
     privateEndpointResourceId: synapsePrivateLinkHub.id
