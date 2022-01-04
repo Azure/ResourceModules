@@ -108,7 +108,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
 | `privateLinkHubName` | string | The name of the deployed Synapse Private Link Hub. |
-| `synapsePrivateLinkHubResourceGroup` | string | The resource group of the deployed Synapse Private Link Hub. |
+| `privateLinkHubResourceGroup` | string | The resource group of the deployed Synapse Private Link Hub. |
 | `synapsePrivateLinkHubResourceId` | string | The resource ID of the deployed Synapse Private Link Hub. |
 
 ## Template references
