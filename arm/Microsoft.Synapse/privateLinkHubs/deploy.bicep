@@ -28,7 +28,7 @@ resource privateLinkHub 'Microsoft.Synapse/privateLinkHubs@2021-06-01' = {
 }
 
 // Resource Lock
-resource synapsePrivateLinkHub_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
+resource privateLinkHub_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
   name: '${synapsePrivateLinkHub.name}-${lock}-lock'
   properties: {
     level: lock
