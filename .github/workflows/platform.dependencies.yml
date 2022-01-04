@@ -194,6 +194,8 @@ jobs:
   job_sa_upload_storage_files:
     runs-on: ubuntu-20.04
     name: 'Upload files to storage account'
+    env:
+      namespace: 'Microsoft.Storage\storageAccounts'
     needs:
       - job_deploy_sa
     steps:
@@ -214,14 +216,14 @@ jobs:
             . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'sharedScripts' 'Export-ContentToBlob.ps1')
 
             # Get storage account name
-            $parameterFilePath = Join-Path $env:GITHUB_WORKSPACE '${{ env.dependencyPath }}' 'Microsoft.Storage/storageAccounts' 'parameters' 'parameters.json'
+            $parameterFilePath = Join-Path $env:GITHUB_WORKSPACE '${{ env.dependencyPath }}' '${{ env.namespace }}' 'parameters' 'parameters.json'
             $storageAccountParameters = (ConvertFrom-Json (Get-Content -path $parameterFilePath -Raw)).parameters
 
             # Upload files to storage account
             $functionInput = @{
               ResourceGroupName   = '${{ env.defaultResourceGroupName }}'
               StorageAccountName  = $storageAccountParameters.name.value
-              contentDirectories  = Join-Path $env:GITHUB_WORKSPACE '${{ env.dependencyPath }}' 'Microsoft.Storage/storageAccounts' 'uploads'
+              contentDirectories  = Join-Path $env:GITHUB_WORKSPACE '${{ env.dependencyPath }}' '${{ env.namespace }}' 'uploads'
               targetContainer     = $storageAccountParameters.blobServices.value.containers[0].name
             }
 
@@ -610,6 +612,8 @@ jobs:
   job_deploy_kv_secrets:
     runs-on: ubuntu-20.04
     name: 'Set key vault secrets keys and certificates'
+    env:
+      namespace: 'Microsoft.KeyVault\vaults'
     needs:
       - job_deploy_kv
     steps:
@@ -629,7 +633,12 @@ jobs:
             $usernameString = (-join ((65..90) + (97..122) | Get-Random -Count 9 -SetSeed 1 | % {[char]$_ + "$_"})).substring(0,19) # max length
             $passwordString = (New-Guid).Guid.SubString(0,19)
             $vpnSharedKeyString =  (New-Guid).Guid.SubString(0,32)
-            $keyVaultName = 'adp-sxx-az-kv-x-001'
+
+            # Get key vault name
+            $parameterFilePath = Join-Path $env:GITHUB_WORKSPACE '${{ env.dependencyPath }}' '${{ env.namespace }}' 'parameters' 'parameters.json'
+            $keyVaultParameters = (ConvertFrom-Json (Get-Content -path $parameterFilePath -Raw)).parameters
+            $keyVaultName = $keyVaultParameters.name.value
+
             $userName = ConvertTo-SecureString -String $usernameString -AsPlainText -Force
             $password = ConvertTo-SecureString -String $passwordString -AsPlainText -Force
             $vpnSharedKey = ConvertTo-SecureString -String $vpnSharedKeyString -AsPlainText -Force
