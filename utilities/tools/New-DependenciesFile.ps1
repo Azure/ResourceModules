@@ -575,9 +575,6 @@ Optional. A switch to tell the function to also update the GitHub workflow file 
 .PARAMETER IncludeAzureDevOpsPipeline
 Optional. A switch to tell the function to also update the Azure DevOps pipeline file so that it leverages the dependency file(s).
 
-.PARAMETER IncludeParameterFiles
-Optional. A switch to tell the function to also update all references in the module's parameter files to now reference the dependency resources
-
 .EXAMPLE
 New-DependenciesFile -TemplateFilePath 'C:\Microsoft.Compute\virtualMachines\deploy.bicep' -IncludeGitHubWorkflow -IncludeParameterFiles
 
@@ -594,10 +591,7 @@ function New-DependenciesFile {
         [switch] $IncludeGitHubWorkflow,
 
         [Parameter(Mandatory = $false)]
-        [switch] $IncludeAzureDevOpsPipeline,
-
-        [Parameter(Mandatory = $false)]
-        [switch] $IncludeParameterFiles
+        [switch] $IncludeAzureDevOpsPipeline
     )
 
     begin {
