@@ -29,7 +29,7 @@ resource privateLinkHub 'Microsoft.Synapse/privateLinkHubs@2021-06-01' = {
 
 // Resource Lock
 resource privateLinkHub_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
-  name: '${synapsePrivateLinkHub.name}-${lock}-lock'
+  name: '${privateLinkHub.name}-${lock}-lock'
   properties: {
     level: lock
     notes: (lock == 'CanNotDelete') ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
@@ -43,7 +43,7 @@ module privateLinkHub_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, in
   params: {
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
-    resourceId: synapsePrivateLinkHub.id
+    resourceId: privateLinkHub.id
   }
 }]
 
@@ -51,7 +51,7 @@ module privateLinkHub_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, in
 module privateLinkHub_privateEndpoints '.bicep/nested_privateEndpoint.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
   name: '${uniqueString(deployment().name, location)}-PrivateEndpoint-${index}'
   params: {
-    privateEndpointResourceId: synapsePrivateLinkHub.id
+    privateEndpointResourceId: privateLinkHub.id
     privateEndpointVnetLocation: reference(split(privateEndpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location
     privateEndpointObj: privateEndpoint
     tags: tags
@@ -59,10 +59,10 @@ module privateLinkHub_privateEndpoints '.bicep/nested_privateEndpoint.bicep' = [
 }]
 
 @description('The resource ID of the deployed Synapse Private Link Hub.')
-output privateLinkHubResourceId string = synapsePrivateLinkHub.id
+output privateLinkHubResourceId string = privateLinkHub.id
 
 @description('The name of the deployed Synapse Private Link Hub.')
-output privateLinkHubName string = synapsePrivateLinkHub.name
+output privateLinkHubName string = privateLinkHub.name
 
 @description('The resource group of the deployed Synapse Private Link Hub.')
 output privateLinkHubResourceGroup string = resourceGroup().name

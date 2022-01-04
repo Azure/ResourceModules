@@ -3,10 +3,22 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "name": {
-      "value": "synplh0001"
+      "value": "synplhstandard001"
     },
-    "location": {
-      "value": "westeurope"
+    "roleAssignments": {
+      "value": [
+        {
+          "roleDefinitionIdOrName": "Reader",
+          "principalIds": ["<<deploymentSpId>>"]
+        },
+        {
+          "roleDefinitionIdOrName": "b24988ac-6180-42a0-ab88-20f7382dd24c",
+          "principalIds": ["<<deploymentSpId>>"]
+        }
+      ]
+    },
+    "lock": {
+      "value": "ReadOnly"
     }
   }
 }

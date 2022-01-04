@@ -23,7 +23,7 @@ resource privateLinkHub 'Microsoft.Synapse/privateLinkHubs@2021-06-01' existing 
 }
 
 resource roleAssignment 'Microsoft.Authorization/roleAssignments@2020-04-01-preview' = [for principalId in principalIds: {
-  name: guid(synapsePrivateLinkHub.name, principalId, roleDefinitionIdOrName)
+  name: guid(privateLinkHub.name, principalId, roleDefinitionIdOrName)
   properties: {
     roleDefinitionId: contains(builtInRoleNames, roleDefinitionIdOrName) ? builtInRoleNames[roleDefinitionIdOrName] : roleDefinitionIdOrName
     principalId: principalId
