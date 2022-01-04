@@ -23,7 +23,7 @@ on:
         default: '0.0.1'
   push:
     branches:
-      - main
+      - users/repajta/852_synapse_template
     paths:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.synapse.privatelinkhubs.yml'

@@ -1,5 +1,5 @@
 @description('Required. The name of the Private Link Hub.')
-param name string = 'default'
+param name string
 
 @description('Required. The geo-location where the resource lives.')
 param location string = resourceGroup().location
@@ -7,10 +7,8 @@ param location string = resourceGroup().location
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-var uniqueName = '${uniqueString('synplh${deployment().name}')}'
-
 resource synapse_privateLinkHub 'Microsoft.Synapse/privateLinkHubs@2021-06-01' = {
-  name: (empty(name)) ? uniqueName : name
+  name: name
   location: location
   tags: tags
 }
