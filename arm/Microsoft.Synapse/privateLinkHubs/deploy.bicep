@@ -34,7 +34,7 @@ resource synapsePrivateLinkHub_lock 'Microsoft.Authorization/locks@2016-09-01' =
     level: lock
     notes: (lock == 'CanNotDelete') ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
-  scope: synapsePrivateLinkHub
+  scope: privateLinkHub
 }
 
 // RBAC
