@@ -21,7 +21,7 @@ param roleAssignments array = []
 @description('Optional. Configuration Details for private endpoints.')
 param privateEndpoints array = []
 
-resource synapsePrivateLinkHub 'Microsoft.Synapse/privateLinkHubs@2021-06-01' = {
+resource privateLinkHub 'Microsoft.Synapse/privateLinkHubs@2021-06-01' = {
   name: name
   location: location
   tags: tags
