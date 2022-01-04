@@ -16,9 +16,6 @@
           "principalIds": ["<<deploymentSpId>>"]
         }
       ]
-    },
-    "lock": {
-      "value": "ReadOnly"
     }
   }
 }
