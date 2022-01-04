@@ -28,5 +28,5 @@ resource roleAssignment 'Microsoft.Authorization/roleAssignments@2020-04-01-prev
     roleDefinitionId: contains(builtInRoleNames, roleDefinitionIdOrName) ? builtInRoleNames[roleDefinitionIdOrName] : roleDefinitionIdOrName
     principalId: principalId
   }
-  scope: synapsePrivateLinkHub
+  scope: privateLinkHub
 }]
