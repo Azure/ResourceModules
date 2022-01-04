@@ -62,7 +62,7 @@ module privateLinkHub_privateEndpoints '.bicep/nested_privateEndpoint.bicep' = [
 output privateLinkHubResourceId string = synapsePrivateLinkHub.id
 
 @description('The name of the deployed Synapse Private Link Hub.')
-output synapsePrivateLinkHubName string = synapsePrivateLinkHub.name
+output privateLinkHubName string = synapsePrivateLinkHub.name
 
 @description('The resource group of the deployed Synapse Private Link Hub.')
 output privateLinkHubResourceGroup string = resourceGroup().name
