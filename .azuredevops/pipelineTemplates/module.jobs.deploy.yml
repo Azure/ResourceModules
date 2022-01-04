@@ -172,6 +172,7 @@ jobs:
                   doNotThrow         = $true
                 }
 
+                # Get correct resource group
                 if(-not [String]::IsNullOrEmpty('${{ deploymentBlock.resourceGroupName }}')) {
                     $resourceGroupName = '${{ deploymentBlock.resourceGroupName }}'
                 } else {
@@ -214,9 +215,16 @@ jobs:
                 # Load Settings File
                 $Settings = Get-Content -Path (Join-Path '$(moduleRepoRoot)' 'settings.json') | ConvertFrom-Json
 
+                # Get correct resource group
+                if(-not [String]::IsNullOrEmpty('${{ deploymentBlock.resourceGroupName }}')) {
+                    $resourceGroupName = '${{ deploymentBlock.resourceGroupName }}'
+                } else {
+                    $resourceGroupName = '${{ parameters.resourceGroupName }}'
+                }
+
                 # Initialize Default Parameter File Tokens
                 $DefaultParameterFileTokens = @(
-                    @{ Name = 'resourceGroupName'; Value = '${{ parameters.resourceGroupName }}' }
+                    @{ Name = 'resourceGroupName'; Value = $resourceGroupName }
                     @{ Name = 'subscriptionId';    Value = '${{ parameters.subscriptionId }}' }
                     @{ Name = 'managementGroupId'; Value = '${{ parameters.managementGroupId }}' }
                     @{ Name = "tenantId";          Value = '$(ARM_TENANT_ID)' }
