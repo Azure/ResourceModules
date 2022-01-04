@@ -65,4 +65,4 @@ output privateLinkHubResourceId string = synapsePrivateLinkHub.id
 output synapsePrivateLinkHubName string = synapsePrivateLinkHub.name
 
 @description('The resource group of the deployed Synapse Private Link Hub.')
-output synapsePrivateLinkHubResourceGroup string = resourceGroup().name
+output privateLinkHubResourceGroup string = resourceGroup().name
