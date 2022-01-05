@@ -21,7 +21,7 @@ param defaultDataLakeStorageAccountName string
 param defaultDataLakeStorageFilesystem string
 
 @description('Optional. Create managed private endpoint to the default storage account or not. If Yes is selected, a managed private endpoint connection request is sent to the workspace\'s primary Data Lake Storage Gen2 account for Spark pools to access data. This must be approved by an owner of the storage account.')
-param defaultDataLakeStorageCreateManagedPrivateEndpoint bool
+param defaultDataLakeStorageCreateManagedPrivateEndpoint bool = false
 
 @description('Optional. Double encryption using a customer-managed key.')
 param encrytpion bool = false
