@@ -3,7 +3,7 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "name": {
-      "value": "synwsmininimal001"
+      "value": "synwsmanagedvnet"
     },
     "defaultDataLakeStorageAccountName": {
       "value": "adpsxxazsaweux005"

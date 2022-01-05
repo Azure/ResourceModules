@@ -3,7 +3,7 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "name": {
-      "value": "synwsmininimal001"
+      "value": "synwsmin"
     },
     "defaultDataLakeStorageAccountName": {
       "value": "adpsxxazsaweux004"
