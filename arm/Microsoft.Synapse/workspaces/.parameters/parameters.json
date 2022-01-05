@@ -3,16 +3,21 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "name": {
-      "value": "synplhstandard001"
+      "value": "synwsmininimal001"
+    },
+    "defaultDataLakeStorageAccountName": {
+      "value": "adpsxxazsaweux004"
+    },
+    "defaultDataLakeStorageFilesystem": {
+      "value": "synapsews"
+    },
+    "sqlAdministratorLogin": {
+      "value": "synwsadmin"
     },
     "roleAssignments": {
       "value": [
         {
           "roleDefinitionIdOrName": "Reader",
-          "principalIds": ["<<deploymentSpId>>"]
-        },
-        {
-          "roleDefinitionIdOrName": "b24988ac-6180-42a0-ab88-20f7382dd24c",
           "principalIds": ["<<deploymentSpId>>"]
         }
       ]
