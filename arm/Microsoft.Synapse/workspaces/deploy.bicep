@@ -1,4 +1,5 @@
 // Parameters
+@maxLength(50)
 @description('Required. The name of the Synapse Workspace.')
 param name string
 
@@ -14,8 +15,8 @@ param azureADOnlyAuthentication bool = false
 @description('Optional. AAD object ID of initial workspace admin.')
 param initialWorkspaceAdminObjectId string = ''
 
-@description('Required. The default ADLS Gen2 storage account name.')
-param defaultDataLakeStorageAccountName string
+@description('Optional. ARM resource Id of the default ADLS Gen2 storage account.')
+param defaultDataLakeStorageAccountResourceId string = ''
 
 @description('Required. The default ADLS Gen2 file system.')
 param defaultDataLakeStorageFilesystem string
@@ -143,7 +144,7 @@ resource workspace 'Microsoft.Synapse/workspaces@2021-06-01' = {
       initialWorkspaceAdminObjectId: initialWorkspaceAdminObjectId
     } : null
     defaultDataLakeStorage: {
-      accountUrl: 'https://${defaultDataLakeStorageAccountName}.dfs.core.windows.net'
+      resourceId: defaultDataLakeStorageAccountResourceId
       filesystem: defaultDataLakeStorageFilesystem
       createManagedPrivateEndpoint: (managedVirtualNetwork) ? defaultDataLakeStorageCreateManagedPrivateEndpoint : null
     }
@@ -174,9 +175,6 @@ resource workspace 'Microsoft.Synapse/workspaces@2021-06-01' = {
     sqlAdministratorLoginPassword: (!empty(sqlAdministratorLoginPassword)) ? sqlAdministratorLoginPassword : null
   }
 }
-
-//  Grant the workspace identity data access to the specified Data Lake Storage Gen2 account, using the Storage Blob Data Contributor role
-// TODO
 
 // Resource Lock
 resource workspace_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {

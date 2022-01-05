@@ -3,10 +3,10 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "name": {
-      "value": "synwsencryptwsai001"
+      "value": "sxx-az-synws-encryptwsai-001"
     },
-    "defaultDataLakeStorageAccountName": {
-      "value": "adpsxxazsaweux004"
+    "defaultDataLakeStorageAccountResourceId": {
+      "value": "/subscriptions/a7439831-1cd9-435d-a091-4aa863c96556/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adpsxxazsaweux004"
     },
     "defaultDataLakeStorageFilesystem": {
       "value": "synapsews"

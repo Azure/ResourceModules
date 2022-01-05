@@ -19,7 +19,7 @@ This module deploys Synapse PrivateLinkHubs.
 | :-- | :-- | :-- | :-- | :-- |
 | `allowedAadTenantIdsForLinking` | array | `[]` |  | Optional. Allowed Aad Tenant Ids For Linking. |
 | `azureADOnlyAuthentication` | bool |  |  | Optional. Enable or Disable AzureADOnlyAuthentication on All Workspace subresource |
-| `defaultDataLakeStorageAccountName` | string |  |  | Required. The default ADLS Gen2 storage account name. |
+| `defaultDataLakeStorageAccountResourceId` | string |  |  | Optional. ARM resource Id of the default ADLS Gen2 storage account. |
 | `defaultDataLakeStorageCreateManagedPrivateEndpoint` | bool |  |  | Optional. Create managed private endpoint to the default storage account or not. If Yes is selected, a managed private endpoint connection request is sent to the workspace's primary Data Lake Storage Gen2 account for Spark pools to access data. This must be approved by an owner of the storage account. |
 | `defaultDataLakeStorageFilesystem` | string |  |  | Required. The default ADLS Gen2 file system. |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
