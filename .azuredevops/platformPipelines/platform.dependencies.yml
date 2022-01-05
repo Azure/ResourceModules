@@ -376,7 +376,7 @@ stages:
               templateFilePath: $(templateFilePath)
               displayName: Private Endpoint Key Vault
             - ${{ if eq( parameters.deploySqlMiDependencies, true) }}:
-                - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
+                - path: $(dependencyPath)/$(resourceType)/parameters/sqlmi.parameters.json
                   templateFilePath: $(templateFilePath)
                   displayName: SQLMI key vault
                   jobName: sqlmi_kv
