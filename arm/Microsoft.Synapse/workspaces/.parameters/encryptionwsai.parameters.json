@@ -3,7 +3,7 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "name": {
-      "value": "synwsencryptwsai"
+      "value": "synwsencryptwsai001"
     },
     "defaultDataLakeStorageAccountName": {
       "value": "adpsxxazsaweux004"
