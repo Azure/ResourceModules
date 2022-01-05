@@ -405,34 +405,53 @@ stages:
               azureSubscription: $(serviceConnection)
               ScriptType: 'InlineScript'
               Inline: |
-                $usernameString = (-join ((65..90) + (97..122) | Get-Random -Count 9 -SetSeed 1 | % {[char]$_ + "$_"})).substring(0,19) # max length
-                $passwordString = (New-Guid).Guid.SubString(0,19)
-                $vpnSharedKeyString =  (New-Guid).Guid.SubString(0,32)
-
                 # Get key vault name
                 $parameterFilePath = Join-Path '$(Build.SourcesDirectory)' '$(dependencyPath)' '$(resourceType)' 'parameters' 'parameters.json'
-                $keyVaultParameters = (ConvertFrom-Json (Get-Content -path $parameterFilePath -Raw)).parameters
+                $keyVaultParameters = (ConvertFrom-Json (Get-Content -Path $parameterFilePath -Raw)).parameters
                 $keyVaultName = $keyVaultParameters.name.value
 
+                # Prepare
+                $usernameString = ( -join ((65..90) + (97..122) | Get-Random -Count 9 -SetSeed 1 | ForEach-Object { [char]$_ + "$_" })).substring(0, 19) # max length
                 $userName = ConvertTo-SecureString -String $usernameString -AsPlainText -Force
+                $passwordString = (New-Guid).Guid.SubString(0, 19)
                 $password = ConvertTo-SecureString -String $passwordString -AsPlainText -Force
+                $vpnSharedKeyString = (New-Guid).Guid.SubString(0, 32)
                 $vpnSharedKey = ConvertTo-SecureString -String $vpnSharedKeyString -AsPlainText -Force
-                # VirtualMachines and VMSS
-                Set-AzKeyVaultSecret -VaultName $keyVaultName -Name 'adminUsername' -SecretValue $username
-                Set-AzKeyVaultSecret -VaultName $keyVaultName -Name 'adminPassword' -SecretValue $password
-                # Azure SQLServer
-                Set-AzKeyVaultSecret -VaultName $keyVaultName -Name 'administratorLogin' -SecretValue $username
-                Set-AzKeyVaultSecret -VaultName $keyVaultName -Name 'administratorLoginPassword' -SecretValue $password
-                # VirtualNetworkGateway
-                Set-AzKeyVaultSecret -VaultName $keyVaultName -Name 'vpnSharedKey' -SecretValue $vpnSharedKey
-                # DiskEncryptionSet, VirtualMachines and VMSS
-                az keyvault key create --vault-name $keyVaultName --name 'keyEncryptionKey'
-                # ApplicationGateway
-                $apgwCertPolicy = New-AzKeyVaultCertificatePolicy -SecretContentType 'application/x-pkcs12' -SubjectName 'CN=fabrikam.com' -IssuerName 'Self' -ValidityInMonths 12 -ReuseKeyOnRenewal
-                Add-AzKeyVaultCertificate -VaultName $keyVaultName -Name 'applicationGatewaySslCertificate' -CertificatePolicy $apgwCertPolicy
-                # API management
-                Set-AzKeyVaultSecret -VaultName $keyVaultName -Name 'apimclientid' -SecretValue $username
-                Set-AzKeyVaultSecret -VaultName $keyVaultName -Name 'apimclientsecret' -SecretValue $password
+
+                # Secrets
+                # -------
+                @(
+                  @{ name = 'adminUsername'; secretValue = $username } # VirtualMachines and VMSS
+                  @{ name = 'adminPassword'; secretValue = $password } # VirtualMachines and VMSS
+                  @{ name = 'administratorLogin'; secretValue = $username } # Azure SQLServer
+                  @{ name = 'administratorLoginPassword'; secretValue = $password } # Azure SQLServer
+                  @{ name = 'vpnSharedKey'; secretValue = $vpnSharedKey } # VirtualNetworkGateway
+                  @{ name = 'apimclientid'; secretValue = $username } # API management
+                  @{ name = 'apimclientsecret'; secretValue = $password } # API management
+                ) | ForEach-Object {
+                  $null = Set-AzKeyVaultSecret -VaultName $keyVaultName -Name $_.name -SecretValue $_.secretValue
+                  Write-Verbose ('Added secret [{0}] to key vault [{1}]' -f $_.name, $keyVaultName) -Verbose
+                }
+
+                # Certificats
+                # -----------
+                $certPolicy = New-AzKeyVaultCertificatePolicy -SecretContentType 'application/x-pkcs12' -SubjectName 'CN=fabrikam.com' -IssuerName 'Self' -ValidityInMonths 12 -ReuseKeyOnRenewal
+                @(
+                  @{ name = 'applicationGatewaySslCertificate'; CertificatePolicy = $certPolicy } # ApplicationGateway
+                ) | ForEach-Object {
+                  $null = Add-AzKeyVaultCertificate -VaultName $keyVaultName -Name $_.name -CertificatePolicy $_.CertificatePolicy
+                  Write-Verbose ('Added certificate [{0}] to key vault [{1}]' -f $_.name, $keyVaultName) -Verbose
+                }
+
+                # Keys
+                # ----
+                @(
+                  @{ name = 'keyEncryptionKey'; Destination = 'Software' } # DiskEncryptionSet, VirtualMachines and VMSS
+                ) | ForEach-Object {
+                    $null = Add-AzKeyVaultKey -VaultName $keyVaultName -Name $_.name -Destination $_.Destination
+                    Write-Verbose ('Added key [{0}] to key vault [{1}]' -f $_.name, $keyVaultName) -Verbose
+                }
+
               azurePowerShellVersion: 'LatestVersion'
               pwsh: true
         dependsOn:
