@@ -5,8 +5,8 @@
     "name": {
       "value": "sxx-az-synws-encryptwsai-001"
     },
-    "defaultDataLakeStorageAccountResourceId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adpsxxazsaweux004"
+    "defaultDataLakeStorageAccountName": {
+      "value": "adpsxxazsaweux004"
     },
     "defaultDataLakeStorageFilesystem": {
       "value": "synapsews"
@@ -18,7 +18,7 @@
       "value": true
     },
     "encryptionKeyIdentifier": {
-      "value": "https://carml-keyvault.vault.azure.net/"
+      "value": "https://carml-keyvault.vault.azure.net/synapseEncryptionKey"
     },
     "encryptionKeyName": {
       "value": "synapseEncryptionKey"

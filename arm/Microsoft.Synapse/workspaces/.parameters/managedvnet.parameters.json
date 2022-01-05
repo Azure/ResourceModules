@@ -5,8 +5,8 @@
     "name": {
       "value": "sxx-az-synws-managedvnet-001"
     },
-    "defaultDataLakeStorageAccountResourceId": {
-      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adpsxxazsaweux005"
+    "defaultDataLakeStorageAccountName": {
+      "value": "adpsxxazsaweux005"
     },
     "defaultDataLakeStorageFilesystem": {
       "value": "synapsews"
@@ -21,7 +21,7 @@
       "value": true
     },
     "allowedAadTenantIdsForLinking": {
-      "value": ["Customer Success Unit"]
+      "value": ["449fbe1d-9c99-4509-9014-4fd5cf25b014"]
     }
   }
 }
