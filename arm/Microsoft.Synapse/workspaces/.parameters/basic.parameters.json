@@ -14,9 +14,6 @@
     "sqlAdministratorLogin": {
       "value": "synwsadmin"
     },
-    "azureADOnlyAuthentication": {
-      "value": true
-    },
     "initialWorkspaceAdminObjectId": {
       "value": "<<deploymentSpId>>"
     },
