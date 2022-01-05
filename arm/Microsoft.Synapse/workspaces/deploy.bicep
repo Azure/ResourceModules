@@ -87,6 +87,34 @@ param roleAssignments array = []
 @description('Optional. Configuration Details for private endpoints.')
 param privateEndpoints array = []
 
+@description('Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.')
+@minValue(0)
+@maxValue(365)
+param diagnosticLogsRetentionInDays int = 365
+
+@description('Optional. Resource ID of the diagnostic storage account.')
+param diagnosticStorageAccountId string = ''
+
+@description('Optional. Resource ID of log analytics.')
+param workspaceId string = ''
+
+@description('Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.')
+param eventHubAuthorizationRuleId string = ''
+
+@description('Optional. Name of the event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.')
+param eventHubName string = ''
+
+@description('Optional. The name of logs that will be streamed.')
+@allowed([
+  'SynapseRbacOperations'
+  'GatewayApiRequests'
+  'BuiltinSqlReqsEnded'
+  'IntegrationPipelineRuns'
+  'IntegrationActivityRuns'
+  'IntegrationTriggerRuns'
+])
+param logsToEnable array = []
+
 // Variables
 var identityType = (!empty(userAssignedIdentities) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned')
 
@@ -94,6 +122,15 @@ var identity = {
   type: identityType
   userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
 }
+
+var diagnosticsLogs = [for log in logsToEnable: {
+  category: log
+  enabled: true
+  retentionPolicy: {
+    enabled: true
+    days: diagnosticLogsRetentionInDays
+  }
+}]
 
 resource workspace 'Microsoft.Synapse/workspaces@2021-06-01' = {
   name: name
@@ -171,6 +208,19 @@ module workspace_privateEndpoints '.bicep/nested_privateEndpoint.bicep' = [for (
     tags: tags
   }
 }]
+
+// Diagnostics Settings
+resource workspace_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2021-05-01-preview' = if (!empty(diagnosticStorageAccountId) || !empty(workspaceId) || !empty(eventHubAuthorizationRuleId) || !empty(eventHubName)) {
+  name: '${workspace.name}-diagnosticSettings'
+  properties: {
+    storageAccountId: !empty(diagnosticStorageAccountId) ? diagnosticStorageAccountId : null
+    workspaceId: !empty(workspaceId) ? workspaceId : null
+    eventHubAuthorizationRuleId: !empty(eventHubAuthorizationRuleId) ? eventHubAuthorizationRuleId : null
+    eventHubName: !empty(eventHubName) ? eventHubName : null
+    logs: diagnosticsLogs
+  }
+  scope: workspace
+}
 
 @description('The resource ID of the deployed Synapse Workspace.')
 output workspaceResourceId string = workspace.id
