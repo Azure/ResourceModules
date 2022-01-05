@@ -106,7 +106,7 @@ resource workspace 'Microsoft.Synapse/workspaces@2021-06-01' = {
       initialWorkspaceAdminObjectId: initialWorkspaceAdminObjectId
     } : null
     defaultDataLakeStorage: {
-      accountUrl: '${defaultDataLakeStorageAccountName}.dfs.core.windows.net'
+      accountUrl: 'https://${defaultDataLakeStorageAccountName}.dfs.core.windows.net'
       filesystem: defaultDataLakeStorageFilesystem
       createManagedPrivateEndpoint: (managedVirtualNetwork) ? defaultDataLakeStorageCreateManagedPrivateEndpoint : null
     }
