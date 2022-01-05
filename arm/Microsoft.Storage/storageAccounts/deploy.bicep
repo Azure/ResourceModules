@@ -317,8 +317,6 @@ module storageAccount_tableServices 'tableServices/deploy.bicep' = if (!empty(ta
   }
 }
 
-output storageAccount object = storageAccount
-
 @description('The resource ID of the deployed storage account')
 output storageAccountResourceId string = storageAccount.id
 
@@ -329,7 +327,7 @@ output storageAccountName string = storageAccount.name
 output storageAccountResourceGroup string = resourceGroup().name
 
 @description('The primary blob endpoint reference if blob services are deployed.')
-output storageAccountPrimaryBlobEndpoint string = (!empty(blobServices) && contains(storageAccount_blobServices, 'blobContainers')) ? '' : reference('Microsoft.Storage/storageAccounts/${storageAccount.name}', '2019-04-01').primaryEndpoints.blob
+output storageAccountPrimaryBlobEndpoint string = (!empty(blobServices) && contains(storageAccount_blobServices, 'blobContainers')) ? reference('Microsoft.Storage/storageAccounts/${storageAccount.name}', '2019-04-01').primaryEndpoints.blob : ''
 
 @description('The principal ID of the system assigned identity.')
 output systemAssignedPrincipalId string = systemAssignedIdentity && contains(storageAccount.identity, 'principalId') ? storageAccount.identity.principalId : ''
