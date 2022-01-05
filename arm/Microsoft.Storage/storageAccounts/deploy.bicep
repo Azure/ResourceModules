@@ -319,17 +319,17 @@ module storageAccount_tableServices 'tableServices/deploy.bicep' = if (!empty(ta
 
 output storageAccount object = storageAccount
 
-// @description('The resource ID of the deployed storage account')
-// output storageAccountResourceId string = storageAccount.id
+@description('The resource ID of the deployed storage account')
+output storageAccountResourceId string = storageAccount.id
 
-// @description('The name of the deployed storage account')
-// output storageAccountName string = storageAccount.name
+@description('The name of the deployed storage account')
+output storageAccountName string = storageAccount.name
 
-// @description('The resource group of the deployed storage account')
-// output storageAccountResourceGroup string = resourceGroup().name
+@description('The resource group of the deployed storage account')
+output storageAccountResourceGroup string = resourceGroup().name
 
-// @description('The primary blob endpoint reference if blob services are deployed.')
-// output storageAccountPrimaryBlobEndpoint string = (!empty(blobServices) && contains(storageAccount_blobServices, 'blobContainers')) ? '' : reference('Microsoft.Storage/storageAccounts/${storageAccount.name}', '2019-04-01').primaryEndpoints.blob
+@description('The primary blob endpoint reference if blob services are deployed.')
+output storageAccountPrimaryBlobEndpoint string = (!empty(blobServices) && contains(storageAccount_blobServices, 'blobContainers')) ? '' : reference('Microsoft.Storage/storageAccounts/${storageAccount.name}', '2019-04-01').primaryEndpoints.blob
 
-// @description('The principal ID of the system assigned identity.')
-// output systemAssignedPrincipalId string = systemAssignedIdentity ? storageAccount.identity.principalId : ''
+@description('The principal ID of the system assigned identity.')
+output systemAssignedPrincipalId string = systemAssignedIdentity ? storageAccount.identity.principalId : ''
