@@ -8,6 +8,7 @@ This module deploys Synapse PrivateLinkHubs.
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
 | `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
+| `Microsoft.Insights/diagnosticSettings` | 2021-05-01-preview |
 | `Microsoft.Network/privateEndpoints` | 2021-03-01 |
 | `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | 2021-03-01 |
 | `Microsoft.Synapse/workspaces` | 2021-06-01 |
@@ -21,15 +22,20 @@ This module deploys Synapse PrivateLinkHubs.
 | `defaultDataLakeStorageAccountName` | string |  |  | Required. The default ADLS Gen2 storage account name. |
 | `defaultDataLakeStorageCreateManagedPrivateEndpoint` | bool |  |  | Optional. Create managed private endpoint to the default storage account or not. If Yes is selected, a managed private endpoint connection request is sent to the workspace's primary Data Lake Storage Gen2 account for Spark pools to access data. This must be approved by an owner of the storage account. |
 | `defaultDataLakeStorageFilesystem` | string |  |  | Required. The default ADLS Gen2 file system. |
+| `diagnosticLogsRetentionInDays` | int | `365` |  | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
+| `diagnosticStorageAccountId` | string |  |  | Optional. Resource ID of the diagnostic storage account. |
 | `encryptionKeyIdentifier` | string |  |  | Optional. Key identifier should be in the format of: https://{keyvaultname}.vault.azure.net/keys/{keyname}. |
 | `encryptionKeyName` | string |  |  | Optional. The workspace encryption key name. |
 | `encryptionUserAssignedIdentity` | string |  |  | Optional. The ID of User Assigned Managed identity that will be used to access your customer-managed key stored in key vault. |
 | `encryptionUseSystemAssignedIdentity` | bool |  |  | Optional. Use System Assigned Managed identity that will be used to access your customer-managed key stored in key vault. |
 | `encrytpion` | bool |  |  | Optional. Double encryption using a customer-managed key. |
+| `eventHubAuthorizationRuleId` | string |  |  | Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
+| `eventHubName` | string |  |  | Optional. Name of the event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
 | `initialWorkspaceAdminObjectId` | string |  |  | Optional. AAD object ID of initial workspace admin. |
 | `linkedAccessCheckOnTargetResource` | bool |  |  | Optional. Linked Access Check On Target Resource. |
 | `location` | string | `[resourceGroup().location]` |  | Optional. The geo-location where the resource lives. |
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
+| `logsToEnable` | array | `[]` | `[SynapseRbacOperations, GatewayApiRequests, BuiltinSqlReqsEnded, IntegrationPipelineRuns, IntegrationActivityRuns, IntegrationTriggerRuns]` | Optional. The name of logs that will be streamed. |
 | `managedResourceGroupName` | string |  |  | Optional. Workspace managed resource group. The resource group name uniquely identifies the resource group within the user subscriptionId. The resource group name must be no longer than 90 characters long, and must be alphanumeric characters (Char.IsLetterOrDigit()) and '-', '_', '(', ')' and'.'. Note that the name cannot end with '.' |
 | `managedVirtualNetwork` | bool |  |  | Optional. Enable this to ensure that connection from your workspace to your data sources use Azure Private Links. You can create managed private endpoints to your data sources. |
 | `name` | string |  |  | Required. The name of the Synapse Workspace. |
@@ -40,9 +46,9 @@ This module deploys Synapse PrivateLinkHubs.
 | `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
 | `sqlAdministratorLogin` | string |  |  | Required. Login for administrator access to the workspace's SQL pools. |
 | `sqlAdministratorLoginPassword` | string |  |  | Optional. Password for administrator access to the workspace's SQL pools. If you don't provide a password, one will be automatically generated. You can change the password later. |
-| `systemAssignedIdentity` | bool |  |  | Optional. Enables system assigned managed identity on the resource. |
 | `tags` | object | `{object}` |  | Optional. Tags of the resource. |
 | `userAssignedIdentities` | object | `{object}` |  | Optional. The ID(s) to assign to the resource. |
+| `workspaceId` | string |  |  | Optional. Resource ID of log analytics. |
 
 ### Parameter Usage: `privateEndpoints`
 
@@ -143,6 +149,7 @@ You can specify multiple user assigned identities to a resource by providing add
 
 ## Template references
 
+- [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings)
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
 - [Privateendpoints](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-03-01/privateEndpoints)
 - [Privateendpoints/Privatednszonegroups](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-03-01/privateEndpoints/privateDnsZoneGroups)
