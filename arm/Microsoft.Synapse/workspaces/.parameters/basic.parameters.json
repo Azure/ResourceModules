@@ -47,6 +47,16 @@
     },
     "eventHubName": {
       "value": "adp-sxx-az-evh-x-001"
+    },
+    "logsToEnable": {
+      "value": [
+        "SynapseRbacOperations",
+        "GatewayApiRequests",
+        "BuiltinSqlReqsEnded",
+        "IntegrationPipelineRuns",
+        "IntegrationActivityRuns",
+        "IntegrationTriggerRuns"
+      ]
     }
   }
 }

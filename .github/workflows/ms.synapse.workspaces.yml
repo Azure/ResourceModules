@@ -97,6 +97,7 @@ jobs:
             'basic.parameters.json',
             'encryptionwsai.parameters.json',
             'encryptionwuai.parameters.json',
+            'managedvnet.parameters.json',
           ]
     steps:
       - name: 'Checkout'

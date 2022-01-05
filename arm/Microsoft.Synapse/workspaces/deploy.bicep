@@ -24,7 +24,7 @@ param defaultDataLakeStorageFilesystem string
 param defaultDataLakeStorageCreateManagedPrivateEndpoint bool = false
 
 @description('Optional. Double encryption using a customer-managed key.')
-param encrytpion bool = false
+param encryption bool = false
 
 @description('Optional. Key identifier should be in the format of: https://{keyvaultname}.vault.azure.net/keys/{keyname}.')
 param encryptionKeyIdentifier string = ''
@@ -147,7 +147,7 @@ resource workspace 'Microsoft.Synapse/workspaces@2021-06-01' = {
       filesystem: defaultDataLakeStorageFilesystem
       createManagedPrivateEndpoint: (managedVirtualNetwork) ? defaultDataLakeStorageCreateManagedPrivateEndpoint : null
     }
-    encryption: (encrytpion) ? {
+    encryption: (encryption) ? {
       cmk: {
         kekIdentity: {
           userAssignedIdentity: (!empty(encryptionUserAssignedIdentity)) ? encryptionUserAssignedIdentity : null

@@ -24,11 +24,11 @@ This module deploys Synapse PrivateLinkHubs.
 | `defaultDataLakeStorageFilesystem` | string |  |  | Required. The default ADLS Gen2 file system. |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticStorageAccountId` | string |  |  | Optional. Resource ID of the diagnostic storage account. |
+| `encryption` | bool |  |  | Optional. Double encryption using a customer-managed key. |
 | `encryptionKeyIdentifier` | string |  |  | Optional. Key identifier should be in the format of: https://{keyvaultname}.vault.azure.net/keys/{keyname}. |
 | `encryptionKeyName` | string |  |  | Optional. The workspace encryption key name. |
 | `encryptionUserAssignedIdentity` | string |  |  | Optional. The ID of User Assigned Managed identity that will be used to access your customer-managed key stored in key vault. |
 | `encryptionUseSystemAssignedIdentity` | bool |  |  | Optional. Use System Assigned Managed identity that will be used to access your customer-managed key stored in key vault. |
-| `encrytpion` | bool |  |  | Optional. Double encryption using a customer-managed key. |
 | `eventHubAuthorizationRuleId` | string |  |  | Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `eventHubName` | string |  |  | Optional. Name of the event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
 | `initialWorkspaceAdminObjectId` | string |  |  | Optional. AAD object ID of initial workspace admin. |
