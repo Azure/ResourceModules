@@ -6,7 +6,7 @@
       "value": "sxx-az-synws-min-001"
     },
     "defaultDataLakeStorageAccountResourceId": {
-      "value": "/subscriptions/a7439831-1cd9-435d-a091-4aa863c96556/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adpsxxazsaweux004"
+      "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adpsxxazsaweux004"
     },
     "defaultDataLakeStorageFilesystem": {
       "value": "synapsews"
