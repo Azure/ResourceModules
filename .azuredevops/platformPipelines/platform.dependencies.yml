@@ -365,23 +365,25 @@ stages:
       resourceType: 'Microsoft.KeyVault/vaults'
       templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
     jobs:
-      - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
-        parameters:
-          deploymentBlocks:
-            - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
-              templateFilePath: $(templateFilePath)
-              displayName: Default Key Vault
-              jobName: default_kv
-            - path: $(dependencyPath)/$(resourceType)/parameters/pe.parameters.json
-              templateFilePath: $(templateFilePath)
-              displayName: Private Endpoint Key Vault
-            - ${{ if eq( parameters.deploySqlMiDependencies, true) }}:
-                - path: $(dependencyPath)/$(resourceType)/parameters/sqlmi.parameters.json
-                  templateFilePath: $(templateFilePath)
-                  displayName: SQLMI key vault
-                  jobName: sqlmi_kv
+      #     - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
+      #       parameters:
+      #         deploymentBlocks:
+      #           - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
+      #             templateFilePath: $(templateFilePath)
+      #             displayName: Default Key Vault
+      #             jobName: default_kv
+      #           - path: $(dependencyPath)/$(resourceType)/parameters/pe.parameters.json
+      #             templateFilePath: $(templateFilePath)
+      #             displayName: Private Endpoint Key Vault
+      #           - ${{ if eq( parameters.deploySqlMiDependencies, true) }}:
+      #               - path: $(dependencyPath)/$(resourceType)/parameters/sqlmi.parameters.json
+      #                 templateFilePath: $(templateFilePath)
+      #                 displayName: SQLMI key vault
+      #                 jobName: sqlmi_kv
       - job:
         displayName: Set key vault secrets keys and certificates
+        # dependsOn:
+        #   - default_kv
         pool:
           ${{ if eq(variables['vmImage'], '') }}:
             name: $(poolName)
@@ -453,12 +455,13 @@ stages:
                 }
               azurePowerShellVersion: 'LatestVersion'
               pwsh: true
-        dependsOn:
-          - default_kv
+
       - ${{ if eq( parameters.deploySqlMiDependencies, true) }}:
           - job:
             displayName: Set sqlmi key vault secrets and keys
             condition: eq(${{ parameters.deploySqlMiDependencies }}, true)
+            # dependsOn:
+            #   - sqlmi_kv
             pool:
               ${{ if eq(variables['vmImage'], '') }}:
                 name: $(poolName)
@@ -513,8 +516,7 @@ stages:
                     }
                   azurePowerShellVersion: 'LatestVersion'
                   pwsh: true
-            dependsOn:
-              - sqlmi_kv
+
     # dependsOn:
     #   - deploy_sa
     #   - deploy_evh
