@@ -387,6 +387,22 @@ Set-ModuleReadMe -TemplateFilePath 'C:\deploy.bicep'
 
 Update the readme in path 'C:\readme.md' based on the bicep template in path 'C:\deploy.bicep'
 
+.EXAMPLE
+Set-ModuleReadMe -TemplateFilePath 'C:/Microsoft.Network/loadBalancers/deploy.bicep' -SectionsToRefresh @('Parameters', 'Outputs')
+
+Generate the Module ReadMe only for specific sections. Updates only the sections `Parameters` & `Outputs`. Other sections remain untouched.
+
+.EXAMPLE
+Set-ModuleReadMe -TemplateFilePath 'C:/Microsoft.Network/loadBalancers/deploy.bicep' -ReadMeFilePath 'C:/differentFolder'
+
+Generate the Module ReadMe files into a specific folder path
+
+.EXAMPLE
+$templatePaths = (Get-ChildItem 'C:/Microsoft.Network' -Filter 'deploy.bicep' -Recurse).FullName
+$templatePaths | ForEach-Object { Set-ModuleReadMe -TemplateFilePath $_ }
+
+Generate the Module ReadMe for any template in a folder path
+
 .NOTES
 The script autopopulates the Parameter Usage section of the ReadMe with the matching content in path './moduleReadMeSource'.
 The content is added in case the given template has a parameter that matches the suffix of one of the files in that path.
