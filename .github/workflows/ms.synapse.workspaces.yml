@@ -23,7 +23,7 @@ on:
         default: '0.0.1'
   push:
     branches:
-      - users\repajta\852_synapse_workspace_module
+      - users/repajta/852_synapse_workspace_module
     paths:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.synapse.workspaces.yml'
