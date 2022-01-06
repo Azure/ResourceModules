@@ -12,7 +12,7 @@ param tags object = {}
 @description('Optional. Enable or Disable AzureADOnlyAuthentication on All Workspace subresource')
 param azureADOnlyAuthentication bool = false
 
-@description('Optional. AAD object ID of initial workspace admin.')
+@description('Optional. AAD object Id of initial workspace admin.')
 param initialWorkspaceAdminObjectId string = ''
 
 @description('Required. Name of the default ADLS Gen2 storage account.')
