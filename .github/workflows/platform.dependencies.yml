@@ -580,42 +580,42 @@ jobs:
   #         managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
   #         removeDeployment: '${{ env.removeDeployment }}'
 
-  job_deploy_kv:
-    runs-on: ubuntu-20.04
-    name: 'Deploy key vaults'
-    env:
-      namespace: 'Microsoft.KeyVault\vaults'
-    # needs:
-    #   - job_deploy_sa
-    #   - job_deploy_evh
-    #   - job_deploy_law
-    strategy:
-      fail-fast: false
-      matrix:
-        parameterFilePaths: ['parameters.json', 'pe.parameters.json']
-    steps:
-      - name: 'Checkout'
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-      - name: 'Deploy module'
-        uses: ./.github/actions/templates/validateModuleDeployment
-        with:
-          templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
-          parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
-          location: '${{ env.defaultLocation }}'
-          resourceGroupName: '${{ env.defaultResourceGroupName }}'
-          subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
-          managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
-          removeDeployment: '${{ env.removeDeployment }}'
+  # job_deploy_kv:
+  #   runs-on: ubuntu-20.04
+  #   name: 'Deploy key vaults'
+  #   env:
+  #     namespace: 'Microsoft.KeyVault\vaults'
+  #   needs:
+  #     - job_deploy_sa
+  #     - job_deploy_evh
+  #     - job_deploy_law
+  #   strategy:
+  #     fail-fast: false
+  #     matrix:
+  #       parameterFilePaths: ['parameters.json', 'pe.parameters.json']
+  #   steps:
+  #     - name: 'Checkout'
+  #       uses: actions/checkout@v2
+  #       with:
+  #         fetch-depth: 0
+  #     - name: 'Deploy module'
+  #       uses: ./.github/actions/templates/validateModuleDeployment
+  #       with:
+  #         templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
+  #         parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
+  #         location: '${{ env.defaultLocation }}'
+  #         resourceGroupName: '${{ env.defaultResourceGroupName }}'
+  #         subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
+  #         managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
+  #         removeDeployment: '${{ env.removeDeployment }}'
 
   job_deploy_kv_secrets:
     runs-on: ubuntu-20.04
     name: 'Set key vault secrets keys and certificates'
     env:
       namespace: 'Microsoft.KeyVault\vaults'
-    needs:
-      - job_deploy_kv
+    # needs:
+    #   - job_deploy_kv
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -678,42 +678,42 @@ jobs:
             }
           azPSVersion: 'latest'
 
-  job_deploy_sqlmi_kv:
-    runs-on: ubuntu-20.04
-    name: 'Deploy sqlmi key vault'
-    if: github.event.inputs.deploySqlMiDependencies == 'true'
-    env:
-      namespace: 'Microsoft.KeyVault\vaults'
-    # needs:
-    #   - job_deploy_sa
-    #   - job_deploy_evh
-    #   - job_deploy_law
-    strategy:
-      fail-fast: false
-      matrix:
-        parameterFilePaths: ['sqlmi.parameters.json']
-    steps:
-      - name: 'Checkout'
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-      - name: 'Deploy module'
-        uses: ./.github/actions/templates/validateModuleDeployment
-        with:
-          templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
-          parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
-          location: '${{ env.defaultLocation }}'
-          resourceGroupName: '${{ env.defaultResourceGroupName }}'
-          subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
-          managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
-          removeDeployment: '${{ env.removeDeployment }}'
+  # job_deploy_sqlmi_kv:
+  #   runs-on: ubuntu-20.04
+  #   name: 'Deploy sqlmi key vault'
+  #   if: github.event.inputs.deploySqlMiDependencies == 'true'
+  #   env:
+  #     namespace: 'Microsoft.KeyVault\vaults'
+  #     needs:
+  #       - job_deploy_sa
+  #       - job_deploy_evh
+  #       - job_deploy_law
+  #   strategy:
+  #     fail-fast: false
+  #     matrix:
+  #       parameterFilePaths: ['sqlmi.parameters.json']
+  #   steps:
+  #     - name: 'Checkout'
+  #       uses: actions/checkout@v2
+  #       with:
+  #         fetch-depth: 0
+  #     - name: 'Deploy module'
+  #       uses: ./.github/actions/templates/validateModuleDeployment
+  #       with:
+  #         templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
+  #         parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
+  #         location: '${{ env.defaultLocation }}'
+  #         resourceGroupName: '${{ env.defaultResourceGroupName }}'
+  #         subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
+  #         managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
+  #         removeDeployment: '${{ env.removeDeployment }}'
 
   job_deploy_sqlmi_kv_secrets:
     runs-on: ubuntu-20.04
     name: 'Set sqlmi key vault secrets and keys'
     if: github.event.inputs.deploySqlMiDependencies == 'true'
-    needs:
-      - job_deploy_sqlmi_kv
+    # needs:
+    #   - job_deploy_sqlmi_kv
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
