@@ -19,14 +19,14 @@
                 {
                     "name": "sxx-az-subnet-x-001",
                     "addressPrefix": "10.0.0.0/24",
-                    "networkSecurityGroupName": "adpq-sxx-az-nsg-x-001",
+                    "networkSecurityGroupName": "adp-sxx-az-nsg-x-001",
                     "serviceEndpoints": [
                         "Microsoft.EventHub",
                         "Microsoft.Sql",
                         "Microsoft.Storage",
                         "Microsoft.KeyVault"
                     ],
-                    "routeTableName": "adpq-sxx-az-udr-x-001"
+                    "routeTableName": "adp-sxx-az-udr-x-001"
                 },
                 {
                     "name": "sxx-az-subnet-x-002",
@@ -62,16 +62,16 @@
             "value": 7
         },
         "diagnosticStorageAccountId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adpqsxxazsaweux001"
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adpsxxazsaweux001"
         },
         "workspaceId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adpq-sxx-az-law-x-001"
+            "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-sxx-az-law-x-001"
         },
         "eventHubAuthorizationRuleId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adpq-sxx-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-sxx-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
         },
         "eventHubName": {
-            "value": "adpq-sxx-az-evh-x-001"
+            "value": "adp-sxx-az-evh-x-001"
         }
     }
 }

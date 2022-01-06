@@ -42,11 +42,11 @@
         },
         "userAssignedIdentities": {
             "value": {
-                "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adpq-sxx-az-msi-x-001": {}
+                "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001": {}
             }
         },
         "bootDiagnosticStorageAccountName": {
-            "value": "adpqsxxazsaweux001"
+            "value": "adpsxxazsaweux001"
         },
         "osType": {
             "value": "Linux"
@@ -102,7 +102,7 @@
                             "name": "ipconfig1",
                             "properties": {
                                 "subnet": {
-                                    "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adpq-sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-002"
+                                    "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-002"
                                 }
                             }
                         }
@@ -124,16 +124,16 @@
             "value": 7
         },
         "diagnosticStorageAccountId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adpqsxxazsaweux001"
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adpsxxazsaweux001"
         },
         "workspaceId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adpq-sxx-az-law-x-001"
+            "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-sxx-az-law-x-001"
         },
         "eventHubAuthorizationRuleId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adpq-sxx-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-sxx-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
         },
         "eventHubName": {
-            "value": "adpq-sxx-az-evh-x-001"
+            "value": "adp-sxx-az-evh-x-001"
         },
         "extensionMonitoringAgentConfig": {
             "value": {
@@ -155,10 +155,10 @@
                 "enabled": true,
                 "settings": {
                     "EncryptionOperation": "EnableEncryption",
-                    "KeyVaultURL": "https://adpq-sxx-az-kv-x-001.vault.azure.net/",
-                    "KeyVaultResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adpq-sxx-az-kv-x-001",
-                    "KeyEncryptionKeyURL": "https://adpq-sxx-az-kv-x-001.vault.azure.net/keys/keyEncryptionKey/1dcaf3e93b44433bba0232e9eec54cc7",
-                    "KekVaultResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adpq-sxx-az-kv-x-001",
+                    "KeyVaultURL": "https://adp-sxx-az-kv-x-001.vault.azure.net/",
+                    "KeyVaultResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-sxx-az-kv-x-001",
+                    "KeyEncryptionKeyURL": "https://adp-sxx-az-kv-x-001.vault.azure.net/keys/keyEncryptionKey/1dcaf3e93b44433bba0232e9eec54cc7",
+                    "KekVaultResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-sxx-az-kv-x-001",
                     "KeyEncryptionAlgorithm": "RSA-OAEP",
                     "VolumeType": "All",
                     "ResizeOSDisk": "false"
@@ -170,8 +170,8 @@
                 "enabled": true,
                 "fileData": [
                     {
-                        "uri": "https://adpqsxxazsaweux001.blob.core.windows.net/scripts/scriptExtensionMasterInstaller.ps1",
-                        "storageAccountId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adpqsxxazsaweux001"
+                        "uri": "https://adpsxxazsaweux001.blob.core.windows.net/scripts/scriptExtensionMasterInstaller.ps1",
+                        "storageAccountId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adpsxxazsaweux001"
                     }
                 ],
                 "protectedSettings": {

@@ -9,12 +9,12 @@ Format the provide resource IDs into objects of resourceID, name & type
 Optional. The resource IDs to process
 
 .EXAMPLE
-Get-ResourceIdsAsFormattedObjectList -ResourceIds @('/subscriptions/<subscriptionID>/resourceGroups/test-analysisServices-parameters.json-rg/providers/Microsoft.Storage/storageAccounts/adpqsxxazsaaspar01')
+Get-ResourceIdsAsFormattedObjectList -ResourceIds @('/subscriptions/<subscriptionID>/resourceGroups/test-analysisServices-parameters.json-rg/providers/Microsoft.Storage/storageAccounts/adpsxxazsaaspar01')
 
 Returns an object @{
-    resourceId = '/subscriptions/<subscriptionID>/resourceGroups/test-analysisServices-parameters.json-rg/providers/Microsoft.Storage/storageAccounts/adpqsxxazsaaspar01'
+    resourceId = '/subscriptions/<subscriptionID>/resourceGroups/test-analysisServices-parameters.json-rg/providers/Microsoft.Storage/storageAccounts/adpsxxazsaaspar01'
     type       = 'Microsoft.Storage/storageAccounts'
-    name       = 'adpqsxxazsaaspar01'
+    name       = 'adpsxxazsaaspar01'
 }
 #>
 function Get-ResourceIdsAsFormattedObjectList {

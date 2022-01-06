@@ -9,7 +9,7 @@
             "value": "[Test] policy exempt"
         },
         "policyAssignmentId": {
-            "value": "/subscriptions/<<subscriptionId>>/providers/Microsoft.Authorization/policyAssignments/adpq-sxx-pass-loc-rg"
+            "value": "/subscriptions/<<subscriptionId>>/providers/Microsoft.Authorization/policyAssignments/adp-sxx-pass-loc-rg"
         },
         "exemptionCategory": {
             "value": "Waiver"

@@ -155,7 +155,7 @@ param subnets array = [
 // =========== //
 
 // Resource Group
-module rg 'br:adpqsxxazacrx001.azurecr.io/bicep/modules/microsoft.resources.resourcegroups:0.0.23' = {
+module rg 'br:adpsxxazacrx001.azurecr.io/bicep/modules/microsoft.resources.resourcegroups:0.0.23' = {
   name: 'registry-rg'
   params: {
     name: resourceGroupName
@@ -164,7 +164,7 @@ module rg 'br:adpqsxxazacrx001.azurecr.io/bicep/modules/microsoft.resources.reso
 }
 
 // Network Security Group
-module nsg 'br:adpqsxxazacrx001.azurecr.io/bicep/modules/microsoft.network.networksecuritygroups:0.0.30' = {
+module nsg 'br:adpsxxazacrx001.azurecr.io/bicep/modules/microsoft.network.networksecuritygroups:0.0.30' = {
   name: 'registry-nsg'
   scope: resourceGroup(resourceGroupName)
   params: {
@@ -176,7 +176,7 @@ module nsg 'br:adpqsxxazacrx001.azurecr.io/bicep/modules/microsoft.network.netwo
 }
 
 // Virtual Network
-module vnet 'br:adpqsxxazacrx001.azurecr.io/bicep/modules/microsoft.network.virtualnetworks:0.0.26' = {
+module vnet 'br:adpsxxazacrx001.azurecr.io/bicep/modules/microsoft.network.virtualnetworks:0.0.26' = {
   name: 'registry-vnet'
   scope: resourceGroup(resourceGroupName)
   params: {

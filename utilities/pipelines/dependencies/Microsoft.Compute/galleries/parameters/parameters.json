@@ -3,12 +3,12 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "adpqsxxazsigweux001"
+            "value": "adpsxxazsigweux001"
         },
         "images": {
             "value": [
                 {
-                    "name": "adpq-sxx-az-imgd-x-001",
+                    "name": "adp-sxx-az-imgd-x-001",
                     "osType": "Windows",
                     "osState": "Generalized",
                     "publisher": "MicrosoftWindowsServer",

@@ -28,7 +28,7 @@
                                     "allowedClients": "0.0.0.0/0"
                                 }
                             ],
-                            "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adpq-sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-004",
+                            "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-004",
                             "roleAssignments": [
                                 {
                                     "roleDefinitionIdOrName": "Reader",
@@ -44,7 +44,7 @@
                             "protocolTypes": [
                                 "NFSv3"
                             ],
-                            "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adpq-sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-004"
+                            "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-004"
                         }
                     ],
                     "roleAssignments": [

@@ -51,7 +51,7 @@
                             "name": "ipconfig1",
                             "properties": {
                                 "subnet": {
-                                    "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adpq-sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-002"
+                                    "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-002"
                                 }
                             }
                         }

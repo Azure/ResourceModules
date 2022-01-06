@@ -3,20 +3,20 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "adpq-sxx-az-nw-x-001"
+            "value": "adp-sxx-az-nw-x-001"
         },
         "flowLogs": {
             "value": [
                 {
-                    "targetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/networkSecurityGroups/adpq-sxx-az-nsg-x-001",
-                    "storageId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adpqsxxazsaweux001",
+                    "targetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/networkSecurityGroups/adp-sxx-az-nsg-x-001",
+                    "storageId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adpsxxazsaweux001",
                     "enabled": false
                 },
                 {
-                    "name": "adpq-sxx-az-nsg-x-apgw-flowlog",
-                    "targetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/networkSecurityGroups/adpq-sxx-az-nsg-x-apgw",
-                    "storageId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adpqsxxazsaweux001",
-                    "workspaceResourceId": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adpq-sxx-az-law-x-001",
+                    "name": "adp-sxx-az-nsg-x-apgw-flowlog",
+                    "targetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/networkSecurityGroups/adp-sxx-az-nsg-x-apgw",
+                    "storageId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adpsxxazsaweux001",
+                    "workspaceResourceId": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-sxx-az-law-x-001",
                     "formatVersion": 1,
                     "trafficAnalyticsInterval": 10,
                     "retentionInDays": 8
@@ -26,12 +26,12 @@
         "connectionMonitors": {
             "value": [
                 {
-                    "name": "adpq-sxx-az-conn-mon-x-001",
+                    "name": "adp-sxx-az-conn-mon-x-001",
                     "endpoints": [
                         {
                             "name": "sxx-az-subnet-x-001(validation-rg)",
                             "type": "AzureVM",
-                            "resourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Compute/virtualMachines/adpq-vm-001"
+                            "resourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Compute/virtualMachines/adp-vm-001"
                         },
                         {
                             "name": "Office Portal",
@@ -74,7 +74,7 @@
                             ]
                         }
                     ],
-                    "workspaceResourceId": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adpq-sxx-az-law-x-001"
+                    "workspaceResourceId": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-sxx-az-law-x-001"
                 }
             ]
         },

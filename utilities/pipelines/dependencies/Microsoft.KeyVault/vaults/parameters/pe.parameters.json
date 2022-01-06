@@ -3,13 +3,13 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "name": {
-      "value": "adpq-sxx-az-kv-x-pe"
+      "value": "adp-sxx-az-kv-x-pe"
     },
     "accessPolicies": {
       "value": [
         {
           "tenantId": "<<tenantId>>",
-          "objectId": "cf33fea8-b30f-424f-ab73-c48d99e0b222", // adding adpq-sxx-az-msi-x-001 to get secrets
+          "objectId": "cf33fea8-b30f-424f-ab73-c48d99e0b222", // adding adp-sxx-az-msi-x-001 to get secrets
           "permissions": {
             "keys": [],
             "secrets": [

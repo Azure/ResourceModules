@@ -3,12 +3,12 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "name": {
-      "value": "adpq-sxx-az-evhns-x-001"
+      "value": "adp-sxx-az-evhns-x-001"
     },
     "eventHubs": {
       "value": [
         {
-          "name": "adpq-sxx-az-evh-x-001",
+          "name": "adp-sxx-az-evh-x-001",
           "authorizationRules": [
             {
               "name": "RootManageSharedAccessKey",
