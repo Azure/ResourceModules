@@ -28,362 +28,366 @@ variables:
     value: 'validation-rg'
 
 stages:
-  # - stage: deploy_rg
-  #   displayName: Deploy resource group
-  #   variables:
-  #     resourceType: 'Microsoft.Resources/resourceGroups'
-  #     templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
-  #   jobs:
-  #     - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
-  #       parameters:
-  #         deploymentBlocks:
-  #           - path: $(dependencyPath)/$(resourceType)/parameters/validation.parameters.json
-  #             templateFilePath: $(templateFilePath)
-  #             displayName: Validation Resource Group
+  - stage: deploy_rg
+    displayName: Deploy resource group
+    variables:
+      resourceType: 'Microsoft.Resources/resourceGroups'
+      templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
+    jobs:
+      - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
+        parameters:
+          deploymentBlocks:
+            - path: $(dependencyPath)/$(resourceType)/parameters/validation.parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: Validation Resource Group
 
-  # - stage: deploy_msi
-  #   displayName: Deploy user assigned identity
-  #   variables:
-  #     resourceType: 'Microsoft.ManagedIdentity/userAssignedIdentities'
-  #     templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
-  #   jobs:
-  #     - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
-  #       parameters:
-  #         deploymentBlocks:
-  #           - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
-  #             templateFilePath: $(templateFilePath)
-  #             displayName: User Assigned Identity
-  #   dependsOn:
-  #     - deploy_rg
+  - stage: deploy_msi
+    displayName: Deploy user assigned identity
+    dependsOn:
+      - deploy_rg
+    variables:
+      resourceType: 'Microsoft.ManagedIdentity/userAssignedIdentities'
+      templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
+    jobs:
+      - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
+        parameters:
+          deploymentBlocks:
+            - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: User Assigned Identity
 
-  # - stage: deploy_pa
-  #   displayName: Deploy policy assignment
-  #   variables:
-  #     resourceType: 'Microsoft.Authorization/policyAssignments'
-  #     templateFilePath: $(modulesPath)/$(resourceType)/.bicep/nested_policyAssignments_sub.bicep
-  #   jobs:
-  #     - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
-  #       parameters:
-  #         deploymentBlocks:
-  #           - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
-  #             templateFilePath: $(templateFilePath)
-  #             displayName: Policy assignment
-  #   dependsOn:
-  #     - deploy_rg
+  - stage: deploy_pa
+    displayName: Deploy policy assignment
+    dependsOn:
+      - deploy_rg
+    variables:
+      resourceType: 'Microsoft.Authorization/policyAssignments'
+      templateFilePath: $(modulesPath)/$(resourceType)/.bicep/nested_policyAssignments_sub.bicep
+    jobs:
+      - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
+        parameters:
+          deploymentBlocks:
+            - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: Policy assignment
 
-  # - stage: deploy_evh
-  #   displayName: Deploy event hub
-  #   variables:
-  #     resourceType: 'Microsoft.EventHub/namespaces'
-  #     templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
-  #   jobs:
-  #     - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
-  #       parameters:
-  #         deploymentBlocks:
-  #           - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
-  #             templateFilePath: $(templateFilePath)
-  #             displayName: EventHub
-  #   dependsOn:
-  #     - deploy_rg
+  - stage: deploy_evh
+    displayName: Deploy event hub
+    dependsOn:
+      - deploy_rg
+    variables:
+      resourceType: 'Microsoft.EventHub/namespaces'
+      templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
+    jobs:
+      - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
+        parameters:
+          deploymentBlocks:
+            - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: EventHub
 
-  # - stage: deploy_law
-  #   displayName: Deploy log analytics workspace
-  #   variables:
-  #     resourceType: 'Microsoft.OperationalInsights/workspaces'
-  #     templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
-  #   jobs:
-  #     - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
-  #       parameters:
-  #         deploymentBlocks:
-  #           - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
-  #             templateFilePath: $(templateFilePath)
-  #             displayName: Default LAW
-  #           - path: $(dependencyPath)/$(resourceType)/parameters/appi.parameters.json
-  #             templateFilePath: $(templateFilePath)
-  #             displayName: AppInsights LAW
-  #   dependsOn:
-  #     - deploy_rg
+  - stage: deploy_law
+    displayName: Deploy log analytics workspace
+    dependsOn:
+      - deploy_rg
+    variables:
+      resourceType: 'Microsoft.OperationalInsights/workspaces'
+      templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
+    jobs:
+      - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
+        parameters:
+          deploymentBlocks:
+            - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: Default LAW
+            - path: $(dependencyPath)/$(resourceType)/parameters/appi.parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: AppInsights LAW
 
-  # - stage: deploy_sa
-  #   displayName: Deploy storage account
-  #   variables:
-  #     resourceType: 'Microsoft.Storage/storageAccounts'
-  #     templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
-  #   jobs:
-  #     - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
-  #       parameters:
-  #         deploymentBlocks:
-  #           - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
-  #             templateFilePath: $(templateFilePath)
-  #             displayName: Default storage account
-  #             jobName: default_sa
-  #           - path: $(dependencyPath)/$(resourceType)/parameters/law.parameters.json
-  #             templateFilePath: $(templateFilePath)
-  #             displayName: LAW storage account
-  #           - path: $(dependencyPath)/$(resourceType)/parameters/fa.parameters.json
-  #             templateFilePath: $(templateFilePath)
-  #             displayName: FunctionApp storage account
-  #     - job:
-  #       displayName: Upload files to storage account
-  #       pool:
-  #         ${{ if eq(variables['vmImage'], '') }}:
-  #           name: $(poolName)
-  #         ${{ if eq(variables['poolName'], '') }}:
-  #           vmImage: $(vmImage)
-  #       steps:
-  #         - task: PowerShell@2
-  #           displayName: 'Setup agent'
-  #           inputs:
-  #             targetType: inline
-  #             pwsh: true
-  #             script: |
-  #               # Load used functions
-  #               . (Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
+  - stage: deploy_sa
+    displayName: Deploy storage account
+    dependsOn:
+      - deploy_rg
+    variables:
+      resourceType: 'Microsoft.Storage/storageAccounts'
+      templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
+    jobs:
+      - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
+        parameters:
+          deploymentBlocks:
+            - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: Default storage account
+              jobName: default_sa
+            - path: $(dependencyPath)/$(resourceType)/parameters/law.parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: LAW storage account
+            - path: $(dependencyPath)/$(resourceType)/parameters/fa.parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: FunctionApp storage account
+      - job:
+        displayName: Upload files to storage account
+        dependsOn:
+          - default_sa
+        pool:
+          ${{ if eq(variables['vmImage'], '') }}:
+            name: $(poolName)
+          ${{ if eq(variables['poolName'], '') }}:
+            vmImage: $(vmImage)
+        steps:
+          - task: PowerShell@2
+            displayName: 'Setup agent'
+            inputs:
+              targetType: inline
+              pwsh: true
+              script: |
+                # Load used functions
+                . (Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
 
-  #               # Set agent up
-  #               Set-EnvironmentOnAgent
-  #         - task: AzurePowerShell@5
-  #           displayName: Upload files to storage account
-  #           inputs:
-  #             azureSubscription: $(serviceConnection)
-  #             ScriptType: 'InlineScript'
-  #             Inline: |
-  #               # Load used functions
-  #               . (Join-Path '$(Build.SourcesDirectory)' 'utilities' 'pipelines' 'sharedScripts' 'Export-ContentToBlob.ps1')
+                # Set agent up
+                Set-EnvironmentOnAgent
+          - task: AzurePowerShell@5
+            displayName: Upload files to storage account
+            inputs:
+              azureSubscription: $(serviceConnection)
+              ScriptType: 'InlineScript'
+              Inline: |
+                # Load used functions
+                . (Join-Path '$(Build.SourcesDirectory)' 'utilities' 'pipelines' 'sharedScripts' 'Export-ContentToBlob.ps1')
 
-  #               # Get storage account name
-  #               $parameterFilePath = Join-Path '$(Build.SourcesDirectory)' '$(dependencyPath)' '$(resourceType)' 'parameters' 'parameters.json'
-  #               $storageAccountParameters = (ConvertFrom-Json (Get-Content -path $parameterFilePath -Raw)).parameters
+                # Get storage account name
+                $parameterFilePath = Join-Path '$(Build.SourcesDirectory)' '$(dependencyPath)' '$(resourceType)' 'parameters' 'parameters.json'
+                $storageAccountParameters = (ConvertFrom-Json (Get-Content -path $parameterFilePath -Raw)).parameters
 
-  #               # Upload files to storage account
-  #               $functionInput = @{
-  #                 ResourceGroupName   = '$(defaultResourceGroupName)'
-  #                 StorageAccountName  = $storageAccountParameters.name.value
-  #                 contentDirectories  = Join-Path '$(Build.SourcesDirectory)' $(dependencyPath) '$(resourceType)' 'uploads'
-  #                 targetContainer     = $storageAccountParameters.blobServices.value.containers[0].name
-  #               }
+                # Upload files to storage account
+                $functionInput = @{
+                  ResourceGroupName   = '$(defaultResourceGroupName)'
+                  StorageAccountName  = $storageAccountParameters.name.value
+                  contentDirectories  = Join-Path '$(Build.SourcesDirectory)' $(dependencyPath) '$(resourceType)' 'uploads'
+                  targetContainer     = $storageAccountParameters.blobServices.value.containers[0].name
+                }
 
-  #               Write-Verbose "Invoke task with" -Verbose
-  #               Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
+                Write-Verbose "Invoke task with" -Verbose
+                Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
-  #               Export-ContentToBlob @functionInput -Verbose
-  #             azurePowerShellVersion: 'LatestVersion'
-  #             pwsh: true
-  #       dependsOn:
-  #         - default_sa
-  #   dependsOn:
-  #     - deploy_rg
+                Export-ContentToBlob @functionInput -Verbose
+              azurePowerShellVersion: 'LatestVersion'
+              pwsh: true
 
-  # - stage: deploy_sig
-  #   displayName: Deploy shared image gallery and definition
-  #   variables:
-  #     resourceType: 'Microsoft.Compute/galleries'
-  #     templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
-  #   jobs:
-  #     - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
-  #       parameters:
-  #         deploymentBlocks:
-  #           - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
-  #             templateFilePath: $(templateFilePath)
-  #             displayName: Default SIG and SID
-  #   dependsOn:
-  #     - deploy_rg
+  - stage: deploy_sig
+    displayName: Deploy shared image gallery and definition
+    dependsOn:
+      - deploy_rg
+    variables:
+      resourceType: 'Microsoft.Compute/galleries'
+      templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
+    jobs:
+      - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
+        parameters:
+          deploymentBlocks:
+            - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: Default SIG and SID
 
-  # - stage: deploy_ag
-  #   displayName: Deploy action groups
-  #   variables:
-  #     resourceType: 'Microsoft.Insights/actionGroups'
-  #     templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
-  #   jobs:
-  #     - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
-  #       parameters:
-  #         deploymentBlocks:
-  #           - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
-  #             templateFilePath: $(templateFilePath)
-  #             displayName: Default Action Group
-  #   dependsOn:
-  #     - deploy_rg
+  - stage: deploy_ag
+    displayName: Deploy action groups
+    dependsOn:
+      - deploy_rg
+    variables:
+      resourceType: 'Microsoft.Insights/actionGroups'
+      templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
+    jobs:
+      - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
+        parameters:
+          deploymentBlocks:
+            - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: Default Action Group
 
-  # - stage: deploy_asg
-  #   displayName: Deploy application security groups
-  #   variables:
-  #     resourceType: 'Microsoft.Network/applicationSecurityGroups'
-  #     templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
-  #   jobs:
-  #     - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
-  #       parameters:
-  #         deploymentBlocks:
-  #           - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
-  #             templateFilePath: $(templateFilePath)
-  #             displayName: Default Application Security Groups
-  #   dependsOn:
-  #     - deploy_rg
+  - stage: deploy_asg
+    displayName: Deploy application security groups
+    dependsOn:
+      - deploy_rg
+    variables:
+      resourceType: 'Microsoft.Network/applicationSecurityGroups'
+      templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
+    jobs:
+      - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
+        parameters:
+          deploymentBlocks:
+            - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: Default Application Security Groups
 
-  # - stage: deploy_udr
-  #   displayName: Deploy route tables
-  #   variables:
-  #     resourceType: 'Microsoft.Network/routeTables'
-  #     templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
-  #   jobs:
-  #     - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
-  #       parameters:
-  #         deploymentBlocks:
-  #           - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
-  #             templateFilePath: $(templateFilePath)
-  #             displayName: Default User Defined Routes
-  #           - ${{ if eq( parameters.deploySqlMiDependencies, true) }}:
-  #               - path: $(dependencyPath)/$(resourceType)/parameters/sqlMi.parameters.json
-  #                 templateFilePath: $(templateFilePath)
-  #                 displayName: SQLMI User Defined Routes
-  #   dependsOn:
-  #     - deploy_rg
+  - stage: deploy_udr
+    displayName: Deploy route tables
+    dependsOn:
+      - deploy_rg
+    variables:
+      resourceType: 'Microsoft.Network/routeTables'
+      templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
+    jobs:
+      - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
+        parameters:
+          deploymentBlocks:
+            - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: Default User Defined Routes
+            - ${{ if eq( parameters.deploySqlMiDependencies, true) }}:
+                - path: $(dependencyPath)/$(resourceType)/parameters/sqlMi.parameters.json
+                  templateFilePath: $(templateFilePath)
+                  displayName: SQLMI User Defined Routes
 
-  # - stage: deploy_nsg
-  #   displayName: Deploy network security groups
-  #   variables:
-  #     resourceType: 'Microsoft.Network/networkSecurityGroups'
-  #     templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
-  #   jobs:
-  #     - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
-  #       parameters:
-  #         deploymentBlocks:
-  #           - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
-  #             templateFilePath: $(templateFilePath)
-  #             displayName: Default NSG
-  #           - path: $(dependencyPath)/$(resourceType)/parameters/apgw.parameters.json
-  #             templateFilePath: $(templateFilePath)
-  #             displayName: App Gateway NSG
-  #           - path: $(dependencyPath)/$(resourceType)/parameters/ase.parameters.json
-  #             templateFilePath: $(templateFilePath)
-  #             displayName: ASE NSG
-  #           - path: $(dependencyPath)/$(resourceType)/parameters/bastion.parameters.json
-  #             templateFilePath: $(templateFilePath)
-  #             displayName: Bastion NSG
-  #           - ${{ if eq( parameters.deploySqlMiDependencies, true) }}:
-  #               - path: $(dependencyPath)/$(resourceType)/parameters/sqlmi.parameters.json
-  #                 templateFilePath: $(templateFilePath)
-  #                 displayName: SQLMI NSG
-  #   dependsOn:
-  #     - deploy_sa
-  #     - deploy_evh
-  #     - deploy_law
+  - stage: deploy_nsg
+    displayName: Deploy network security groups
+    dependsOn:
+      - deploy_sa
+      - deploy_evh
+      - deploy_law
+    variables:
+      resourceType: 'Microsoft.Network/networkSecurityGroups'
+      templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
+    jobs:
+      - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
+        parameters:
+          deploymentBlocks:
+            - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: Default NSG
+            - path: $(dependencyPath)/$(resourceType)/parameters/apgw.parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: App Gateway NSG
+            - path: $(dependencyPath)/$(resourceType)/parameters/ase.parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: ASE NSG
+            - path: $(dependencyPath)/$(resourceType)/parameters/bastion.parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: Bastion NSG
+            - ${{ if eq( parameters.deploySqlMiDependencies, true) }}:
+                - path: $(dependencyPath)/$(resourceType)/parameters/sqlmi.parameters.json
+                  templateFilePath: $(templateFilePath)
+                  displayName: SQLMI NSG
 
-  # - stage: deploy_pip
-  #   displayName: Deploy public IP addresses
-  #   variables:
-  #     resourceType: 'Microsoft.Network\publicIPAddresses'
-  #     templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
-  #   jobs:
-  #     - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
-  #       parameters:
-  #         deploymentBlocks:
-  #           - path: $(dependencyPath)/$(resourceType)/parameters/apgw.parameters.json
-  #             templateFilePath: $(templateFilePath)
-  #             displayName: App Gateway Public IP
-  #           - path: $(dependencyPath)/$(resourceType)/parameters/bas.parameters.json
-  #             templateFilePath: $(templateFilePath)
-  #             displayName: Bastion Public IP
-  #           - path: $(dependencyPath)/$(resourceType)/parameters/lb.parameters.json
-  #             templateFilePath: $(templateFilePath)
-  #             displayName: Load balancer Public IP
-  #   dependsOn:
-  #     - deploy_sa
-  #     - deploy_evh
-  #     - deploy_law
+  - stage: deploy_pip
+    displayName: Deploy public IP addresses
+    dependsOn:
+      - deploy_sa
+      - deploy_evh
+      - deploy_law
+    variables:
+      resourceType: 'Microsoft.Network\publicIPAddresses'
+      templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
+    jobs:
+      - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
+        parameters:
+          deploymentBlocks:
+            - path: $(dependencyPath)/$(resourceType)/parameters/apgw.parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: App Gateway Public IP
+            - path: $(dependencyPath)/$(resourceType)/parameters/bas.parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: Bastion Public IP
+            - path: $(dependencyPath)/$(resourceType)/parameters/lb.parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: Load balancer Public IP
 
-  # - stage: deploy_appi
-  #   displayName: Deploy application insight
-  #   variables:
-  #     resourceType: 'Microsoft.Insights/components'
-  #     templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
-  #   jobs:
-  #     - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
-  #       parameters:
-  #         deploymentBlocks:
-  #           - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
-  #             templateFilePath: $(templateFilePath)
-  #             displayName: Default Application Insights
-  #   dependsOn:
-  #     - deploy_sa
-  #     - deploy_evh
-  #     - deploy_law
+  - stage: deploy_appi
+    displayName: Deploy application insight
+    dependsOn:
+      - deploy_sa
+      - deploy_evh
+      - deploy_law
+    variables:
+      resourceType: 'Microsoft.Insights/components'
+      templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
+    jobs:
+      - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
+        parameters:
+          deploymentBlocks:
+            - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: Default Application Insights
 
-  # - stage: deploy_aut
-  #   displayName: Deploy automation account
-  #   variables:
-  #     resourceType: 'Microsoft.Automation/automationAccounts'
-  #     templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
-  #   jobs:
-  #     - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
-  #       parameters:
-  #         deploymentBlocks:
-  #           - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
-  #             templateFilePath: $(templateFilePath)
-  #             displayName: Default Automation Account
-  #   dependsOn:
-  #     - deploy_sa
-  #     - deploy_evh
-  #     - deploy_law
+  - stage: deploy_aut
+    displayName: Deploy automation account
+    dependsOn:
+      - deploy_sa
+      - deploy_evh
+      - deploy_law
+    variables:
+      resourceType: 'Microsoft.Automation/automationAccounts'
+      templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
+    jobs:
+      - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
+        parameters:
+          deploymentBlocks:
+            - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: Default Automation Account
 
-  # - stage: deploy_avdhp
-  #   displayName: Deploy AVD host pool
-  #   variables:
-  #     resourceType: 'Microsoft.DesktopVirtualization/hostpools'
-  #     templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
-  #   jobs:
-  #     - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
-  #       parameters:
-  #         deploymentBlocks:
-  #           - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
-  #             templateFilePath: $(templateFilePath)
-  #             displayName: Default AVD Host Pool
-  #   dependsOn:
-  #     - deploy_sa
-  #     - deploy_evh
-  #     - deploy_law
+  - stage: deploy_avdhp
+    displayName: Deploy AVD host pool
+    dependsOn:
+      - deploy_sa
+      - deploy_evh
+      - deploy_law
+    variables:
+      resourceType: 'Microsoft.DesktopVirtualization/hostpools'
+      templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
+    jobs:
+      - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
+        parameters:
+          deploymentBlocks:
+            - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: Default AVD Host Pool
 
-  # - stage: deploy_rsv
-  #   displayName: Deploy recovery services vault
-  #   variables:
-  #     resourceType: 'Microsoft.RecoveryServices/vaults'
-  #     templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
-  #   jobs:
-  #     - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
-  #       parameters:
-  #         deploymentBlocks:
-  #           - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
-  #             templateFilePath: $(templateFilePath)
-  #             displayName: Default recovery services vault
-  #   dependsOn:
-  #     - deploy_sa
-  #     - deploy_evh
-  #     - deploy_law
+  - stage: deploy_rsv
+    displayName: Deploy recovery services vault
+    dependsOn:
+      - deploy_sa
+      - deploy_evh
+      - deploy_law
+    variables:
+      resourceType: 'Microsoft.RecoveryServices/vaults'
+      templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
+    jobs:
+      - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
+        parameters:
+          deploymentBlocks:
+            - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: Default recovery services vault
 
   - stage: deploy_kv
     displayName: Deploy key vaults
+    dependsOn:
+      - deploy_sa
+      - deploy_evh
+      - deploy_law
     variables:
       resourceType: 'Microsoft.KeyVault/vaults'
       templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
     jobs:
-      #     - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
-      #       parameters:
-      #         deploymentBlocks:
-      #           - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
-      #             templateFilePath: $(templateFilePath)
-      #             displayName: Default Key Vault
-      #             jobName: default_kv
-      #           - path: $(dependencyPath)/$(resourceType)/parameters/pe.parameters.json
-      #             templateFilePath: $(templateFilePath)
-      #             displayName: Private Endpoint Key Vault
-      #           - ${{ if eq( parameters.deploySqlMiDependencies, true) }}:
-      #               - path: $(dependencyPath)/$(resourceType)/parameters/sqlmi.parameters.json
-      #                 templateFilePath: $(templateFilePath)
-      #                 displayName: SQLMI key vault
-      #                 jobName: sqlmi_kv
+      - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
+        parameters:
+          deploymentBlocks:
+            - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: Default Key Vault
+              jobName: default_kv
+            - path: $(dependencyPath)/$(resourceType)/parameters/pe.parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: Private Endpoint Key Vault
+            - ${{ if eq( parameters.deploySqlMiDependencies, true) }}:
+                - path: $(dependencyPath)/$(resourceType)/parameters/sqlmi.parameters.json
+                  templateFilePath: $(templateFilePath)
+                  displayName: SQLMI key vault
+                  jobName: sqlmi_kv
       - job:
         displayName: Set key vault secrets keys and certificates
-        # dependsOn:
-        #   - default_kv
+        dependsOn:
+          - default_kv
         pool:
           ${{ if eq(variables['vmImage'], '') }}:
             name: $(poolName)
@@ -460,8 +464,8 @@ stages:
           - job:
             displayName: Set sqlmi key vault secrets and keys
             condition: eq(${{ parameters.deploySqlMiDependencies }}, true)
-            # dependsOn:
-            #   - sqlmi_kv
+            dependsOn:
+              - sqlmi_kv
             pool:
               ${{ if eq(variables['vmImage'], '') }}:
                 name: $(poolName)
@@ -517,105 +521,100 @@ stages:
                   azurePowerShellVersion: 'LatestVersion'
                   pwsh: true
 
-    # dependsOn:
-    #   - deploy_sa
-    #   - deploy_evh
-    #   - deploy_law
+  - stage: deploy_avdag
+    displayName: Deploy AVD application group
+    dependsOn:
+      - deploy_avdhp
+    variables:
+      resourceType: 'Microsoft.DesktopVirtualization/applicationgroups'
+      templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
+    jobs:
+      - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
+        parameters:
+          deploymentBlocks:
+            - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: Default Application Group
 
-  # - stage: deploy_avdag
-  #   displayName: Deploy AVD application group
-  #   variables:
-  #     resourceType: 'Microsoft.DesktopVirtualization/applicationgroups'
-  #     templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
-  #   jobs:
-  #     - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
-  #       parameters:
-  #         deploymentBlocks:
-  #           - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
-  #             templateFilePath: $(templateFilePath)
-  #             displayName: Default Application Group
-  #   dependsOn:
-  #     - deploy_avdhp
+  - stage: deploy_rolea
+    displayName: Deploy role assignments
+    dependsOn:
+      - deploy_msi
+    variables:
+      resourceType: 'Microsoft.Authorization\roleAssignments'
+      templateFilePath: $(modulesPath)/$(resourceType)/.bicep/nested_rbac_sub.bicep
+    jobs:
+      - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
+        parameters:
+          deploymentBlocks:
+            - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: MSI Role Assignment
 
-  # - stage: deploy_rolea
-  #   displayName: Deploy role assignments
-  #   variables:
-  #     resourceType: 'Microsoft.Authorization\roleAssignments'
-  #     templateFilePath: $(modulesPath)/$(resourceType)/.bicep/nested_rbac_sub.bicep
-  #   jobs:
-  #     - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
-  #       parameters:
-  #         deploymentBlocks:
-  #           - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
-  #             templateFilePath: $(templateFilePath)
-  #             displayName: MSI Role Assignment
-  #   dependsOn:
-  #     - deploy_msi
+  - stage: deploy_vnet
+    displayName: Deploy virtual networks
+    dependsOn:
+      - deploy_nsg
+      - ${{ if eq( parameters.deploySqlMiDependencies, true) }}:
+          - deploy_udr
+    variables:
+      resourceType: 'Microsoft.Network/virtualNetworks'
+      templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
+    jobs:
+      - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
+        parameters:
+          deploymentBlocks:
+            - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: Default Virtual Network
+            - path: $(dependencyPath)/$(resourceType)/parameters/1.bastion.parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: Bastion Virtual Network
+            - path: $(dependencyPath)/$(resourceType)/parameters/2.vnetpeer01.parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: VNET PEering 1 Virtual Network
+            - path: $(dependencyPath)/$(resourceType)/parameters/3.vnetpeer02.parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: VNET Peering 2 Virtual Network
+            - path: $(dependencyPath)/$(resourceType)/parameters/4.azfw.parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: Azure Firewall Virtual Network
+            - path: $(dependencyPath)/$(resourceType)/parameters/5.aks.parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: AKS Virtual Network
+            - ${{ if eq( parameters.deploySqlMiDependencies, true) }}:
+                - path: $(dependencyPath)/$(resourceType)/parameters/6.sqlmi.parameters.json
+                  templateFilePath: $(templateFilePath)
+                  displayName: SQL MI Virtual Network
 
-  # - stage: deploy_vnet
-  #   displayName: Deploy virtual networks
-  #   variables:
-  #     resourceType: 'Microsoft.Network/virtualNetworks'
-  #     templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
-  #   jobs:
-  #     - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
-  #       parameters:
-  #         deploymentBlocks:
-  #           - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
-  #             templateFilePath: $(templateFilePath)
-  #             displayName: Default Virtual Network
-  #           - path: $(dependencyPath)/$(resourceType)/parameters/1.bastion.parameters.json
-  #             templateFilePath: $(templateFilePath)
-  #             displayName: Bastion Virtual Network
-  #           - path: $(dependencyPath)/$(resourceType)/parameters/2.vnetpeer01.parameters.json
-  #             templateFilePath: $(templateFilePath)
-  #             displayName: VNET PEering 1 Virtual Network
-  #           - path: $(dependencyPath)/$(resourceType)/parameters/3.vnetpeer02.parameters.json
-  #             templateFilePath: $(templateFilePath)
-  #             displayName: VNET Peering 2 Virtual Network
-  #           - path: $(dependencyPath)/$(resourceType)/parameters/4.azfw.parameters.json
-  #             templateFilePath: $(templateFilePath)
-  #             displayName: Azure Firewall Virtual Network
-  #           - path: $(dependencyPath)/$(resourceType)/parameters/5.aks.parameters.json
-  #             templateFilePath: $(templateFilePath)
-  #             displayName: AKS Virtual Network
-  #           - ${{ if eq( parameters.deploySqlMiDependencies, true) }}:
-  #               - path: $(dependencyPath)/$(resourceType)/parameters/6.sqlmi.parameters.json
-  #                 templateFilePath: $(templateFilePath)
-  #                 displayName: SQL MI Virtual Network
-  #   dependsOn:
-  #     - deploy_nsg
-  #     - ${{ if eq( parameters.deploySqlMiDependencies, true) }}:
-  #         - deploy_udr
+  - stage: deploy_dnszone
+    displayName: Deploy private DNS zones
+    dependsOn:
+      - deploy_vnet
+    variables:
+      resourceType: 'Microsoft.Network/privateDnsZones'
+      templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
+    jobs:
+      - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
+        parameters:
+          deploymentBlocks:
+            - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: Default Private DNS Zones
 
-  # - stage: deploy_dnszone
-  #   displayName: Deploy private DNS zones
-  #   variables:
-  #     resourceType: 'Microsoft.Network/privateDnsZones'
-  #     templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
-  #   jobs:
-  #     - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
-  #       parameters:
-  #         deploymentBlocks:
-  #           - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
-  #             templateFilePath: $(templateFilePath)
-  #             displayName: Default Private DNS Zones
-  #   dependsOn:
-  #     - deploy_vnet
-
-  # - stage: deploy_vm
-  #   displayName: Deploy virtual machines
-  #   variables:
-  #     resourceType: 'Microsoft.Compute/virtualMachines'
-  #     templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
-  #   jobs:
-  #     - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
-  #       parameters:
-  #         deploymentBlocks:
-  #           - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
-  #             templateFilePath: $(templateFilePath)
-  #             displayName: Default Virtual Machine
-  #   dependsOn:
-  #     - deploy_vnet
-  #     - deploy_rsv
-  #     - deploy_kv
+  - stage: deploy_vm
+    displayName: Deploy virtual machines
+    dependsOn:
+      - deploy_vnet
+      - deploy_rsv
+      - deploy_kv
+    variables:
+      resourceType: 'Microsoft.Compute/virtualMachines'
+      templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
+    jobs:
+      - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
+        parameters:
+          deploymentBlocks:
+            - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: Default Virtual Machine
