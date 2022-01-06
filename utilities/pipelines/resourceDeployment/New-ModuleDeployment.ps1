@@ -1,4 +1,68 @@
 #region helper
+
+<#
+.SYNOPSIS
+If a deployment failed, get its error message
+
+.DESCRIPTION
+If a deployment failed, get its error message based on the deployment name in the given scope
+
+.PARAMETER DeploymentScope
+Mandatory. The scope to fetch the deployment from (e.g. resourcegroup, tenant,...)
+
+.PARAMETER DeploymentName
+Mandatory. The name of the deployment to search for (e.g. 'storageAccounts-20220105T0701282538Z')
+
+.PARAMETER ResourceGroupName
+Optional. The resource group to search the deployment in, if the scope is 'resourcegroup'
+
+.EXAMPLE
+Get-ErrorMessageForScope -DeploymentScope 'resourcegroup' -DeploymentName 'storageAccounts-20220105T0701282538Z' -ResourceGroupName 'validation-rg'
+
+Get the error message of any failed deployment into resource group 'validation-rg' that has the name 'storageAccounts-20220105T0701282538Z'
+
+.EXAMPLE
+Get-ErrorMessageForScope -DeploymentScope 'subscription' -DeploymentName 'resourcegroups-20220106T0401282538Z'
+
+Get the error message of any failed deployment into the current subscription that has the name 'storageAccounts-20220105T0701282538Z'
+#>
+function Get-ErrorMessageForScope {
+
+    [CmdletBinding()]
+    param (
+        [Parameter(Mandatory)]
+        [string] $DeploymentScope,
+
+        [Parameter(Mandatory)]
+        [string] $DeploymentName,
+
+        [Parameter(Mandatory = $false)]
+        [string] $ResourceGroupName = ''
+    )
+
+    switch ($deploymentScope) {
+        'resourcegroup' {
+            $deployments = Get-AzResourceGroupDeploymentOperation -DeploymentName $deploymentName -ResourceGroupName $resourceGroupName
+            break
+        }
+        'subscription' {
+            $deployments = Get-AzDeploymentOperation -DeploymentName $deploymentName
+            break
+        }
+        'managementgroup' {
+            $deployments = Get-AzManagementGroupDeploymentOperation -DeploymentName $deploymentName
+            break
+        }
+        'tenant' {
+            $deployments = Get-AzTenantDeploymentOperation -DeploymentName $deploymentName
+            break
+        }
+    }
+    if ($deployments) {
+        return ($deployments | Where-Object { $_.ProvisioningState -ne 'Succeeded' }).StatusMessage
+    }
+}
+
 <#
 .SYNOPSIS
 Run a template deployment using a given parameter file
@@ -194,9 +258,22 @@ function New-DeploymentWithParameterFile {
             } catch {
                 if ($retryCount -ge $retryLimit) {
                     if ($doNotThrow) {
+
+                        # In case a deployment failes but not throws an exception (i.e. the exception message is empty) we try to fetch it via the deployment name
+                        if ([String]::IsNullOrEmpty($PSitem.Exception.Message)) {
+                            $errorInputObject = @{
+                                DeploymentScope   = $deploymentScope
+                                DeploymentName    = $deploymentName
+                                ResourceGroupName = $resourceGroupName
+                            }
+                            $exceptionMessage = Get-ErrorMessageForScope @errorInputObject
+                        } else {
+                            $exceptionMessage = $PSitem.Exception.Message
+                        }
+
                         return @{
                             DeploymentName = $deploymentName
-                            Exception      = $PSitem.Exception.Message
+                            Exception      = $exceptionMessage
                         }
                     } else {
                         throw $PSitem.Exception.Message
