@@ -714,6 +714,8 @@ jobs:
     if: github.event.inputs.deploySqlMiDependencies == 'true'
     # needs:
     #   - job_deploy_sqlmi_kv
+    env:
+      namespace: 'Microsoft.KeyVault\vaults'
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
