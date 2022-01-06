@@ -93,18 +93,19 @@ Note that, for the deployments we have to account for certain [prerequisites](#p
 
 #### Removal
 
-The removal phase is strongly coupled with the previous deployment phase. Fundamentally, we want to remove any test-deployed resource after its test concluded. If we would not, we would generate unnecessary costs and may temper with any subsequent test. Some resources may require a dedicated logic to be removed. This logic should be stored alongside the generally utilized removal script in the `.utilities/pipelines/resourceRemoval` folder and be referenced by the `Initialize-DeploymentRemoval.ps1` script that orchestrates the removal.
+The removal phase takes care of removing all resources deployed as part of the previous deployment phase. The reason is twofold: keeping validation subscriptions costs down and allow deployments from scratch at every run.
 
-Most of the removal scripts rely on the deployment name used during the preceding deployment step. Based on this name in combination with the template file path, the removal script find the corresponding deployment and removes all contained resources.
+For additional details on how removal works please refer to the dedicated [Removal action](PipelineRemovalAction) page.
 
 ### Publish
 
 The publish phase concludes each module's pipeline. If all previous tests succeeded (i.e. no phase failed) and the pipeline was executed in the [main\|master] branch, a new module version is published to all configured target locations. Currently we support
 - _template specs_
 - _private bicep registry_
+- _universal artifacts_ (_Azure DevOps_ only)
 
 By the time of this writing, the publishing experience works as follows:
-1. A user can optionally specific a specific version in the module's pipeline file, or during runtime. If the user does not, a default version is used
+1. A user can optionally specify a version in the module's pipeline file, or during runtime. If the user does not, a default version is used
 1. No matter what publishing location we enabled, the corresponding logic will
    1. Fetch the latest version of this module in the target location (if available)
    1. Compare it with any specified custom version the user optionally provided
@@ -162,6 +163,7 @@ The primary pipeline variable file hosts the fundamental pipeline configuration 
 | - | - | - |
 | `bicepRegistryName` | "adpsxxazacrx001" | The container registry to publish bicep templates to |
 | `bicepRegistryRGName` | "artifacts-rg" | The resource group of the container registry to publish bicep templates to. Is used to create a new container registry if not yet existing |
+| `bicepRegistryRGName` | "artifacts-rg" | The location of the resource group of the container registry to publish bicep templates to. Is used to create a new resource group if not yet existing |
 | `bicepRegistryDoPublish` | "true" | A central switch to enable/disable publishing to the private bicep registry |
 
 ### Tokens Replacement
@@ -391,3 +393,7 @@ While they look very similar they have specific areas in which they differ:
       - name: modulePath
         value: '/arm/Microsoft.AnalysisServices/servers'
   ```
+
+#### Azure DevOps Artifacts
+
+For _Azure DevOps_ we offer also the option to publish to _Azure DevOps_ universal packages. As the code is already available in the pipeline's publish template (`.azuredevops/pipelineTemplates/module.jobs.publish.yml`) you only have to specify the required information in the shared global variables file (`.azuredevops/pipelineVariables/global.variables.yml`) to enable the feature. For detailed information please refer to the variable file's `Publish: Universal packages settings` section.

@@ -94,7 +94,9 @@ function Invoke-ResourceRemoval {
             # Actual removal
             # --------------
             $null = Remove-AzResource -ResourceId $resourceId -Force -ErrorAction 'Stop'
+            break
         }
+        ### CODE LOCATION: Add custom removal action here
         Default {
             $null = Remove-AzResource -ResourceId $resourceId -Force -ErrorAction 'Stop'
         }

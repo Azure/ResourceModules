@@ -7,9 +7,6 @@ Update the given ReadMe file with the latest module table
 .DESCRIPTION
 Update the given ReadMe file with the latest module table.
 You can specify the columns to be generated.
-Note that the ReadMe file should have the following lines right before & after the table to enable the replacement of the correct area:
-- '<!-- ModuleTableStartMarker -->'
-- '<!-- ModuleTableEndMarker -->'
 
 .PARAMETER FilePath
 Mandatory. The path to the ReadMe file to update

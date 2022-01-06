@@ -34,7 +34,7 @@ Optional. A Hashtable Parameter that contains custom tokens to be replaced in th
 .EXAMPLE
 
 $TestModuleLocallyInput = @{
-    templateFilePath                    = 'Microsoft.Network\applicationSecurityGroups'
+    templateFilePath              = 'Microsoft.Network\applicationSecurityGroups'
     PesterTest                    = $true
     DeploymentTest                = $true
     ValidationTest                = $false

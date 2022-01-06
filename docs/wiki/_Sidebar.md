@@ -9,6 +9,7 @@
 - [Testing](./Testing)
   - [Design](./TestingDesign)
   - [Usage](./TestingUsage)
+- [Utilities](./Utilities)
 - [Pipelines](./Pipelines)
   - [Design](./PipelinesDesign)
   - [Usage](./PipelinesUsage)
