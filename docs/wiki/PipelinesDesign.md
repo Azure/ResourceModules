@@ -102,6 +102,7 @@ For additional details on how removal works please refer to the dedicated [Remov
 The publish phase concludes each module's pipeline. If all previous tests succeeded (i.e. no phase failed) and the pipeline was executed in the [main\|master] branch, a new module version is published to all configured target locations. Currently we support
 - _template specs_
 - _private bicep registry_
+- _universal artifacts_ (_Azure DevOps_ only)
 
 By the time of this writing, the publishing experience works as follows:
 1. A user can optionally specify a version in the module's pipeline file, or during runtime. If the user does not, a default version is used
@@ -392,3 +393,7 @@ While they look very similar they have specific areas in which they differ:
       - name: modulePath
         value: '/arm/Microsoft.AnalysisServices/servers'
   ```
+
+#### Azure DevOps Artifacts
+
+For _Azure DevOps_ we offer also the option to publish to _Azure DevOps_ universal packages. As the code is already available in the pipeline's publish template (`.azuredevops/pipelineTemplates/module.jobs.publish.yml`) you only have to specify the required information in the shared global variables file (`.azuredevops/pipelineVariables/global.variables.yml`) to enable the feature. For detailed information please refer to the variable file's `Publish: Universal packages settings` section.

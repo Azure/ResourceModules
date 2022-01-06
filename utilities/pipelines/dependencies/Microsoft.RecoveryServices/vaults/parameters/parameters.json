@@ -248,6 +248,16 @@
                 "storageModelType": "GeoRedundant",
                 "crossRegionRestoreFlag": true
             }
+        },
+        "roleAssignments": {
+            "value": [
+                {
+                    "roleDefinitionIdOrName": "Reader",
+                    "principalIds": [
+                        "cf33fea8-b30f-424f-ab73-c48d99e0b222" // The object ID of the deployed MSI
+                    ]
+                }
+            ]
         }
     }
 }

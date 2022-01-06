@@ -19,6 +19,7 @@
         "osDisk": {
             "value": {
                 "createOption": "fromImage",
+                "deleteOption": "Delete",
                 "diskSizeGB": "128",
                 "managedDisk": {
                     "storageAccountType": "Premium_LRS"

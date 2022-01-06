@@ -1,4 +1,4 @@
-name: 'Network: LoadBalancers'
+name: 'Synapse: PrivateLinkHubs'
 
 on:
   workflow_dispatch:
@@ -26,15 +26,15 @@ on:
       - main
     paths:
       - '.github/actions/templates/**'
-      - '.github/workflows/ms.network.loadbalancers.yml'
-      - 'arm/Microsoft.Network/loadBalancers/**'
+      - '.github/workflows/ms.synapse.privatelinkhubs.yml'
+      - 'arm/Microsoft.Synapse/privateLinkHubs/**'
       - '!*/**/readme.md'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/dependencies/**'
 
 env:
-  modulePath: 'arm/Microsoft.Network/loadBalancers'
-  workflowPath: '.github/workflows/ms.network.loadbalancers.yml'
+  modulePath: 'arm/Microsoft.Synapse/privateLinkHubs'
+  workflowPath: '.github/workflows/ms.synapse.privatelinkhubs.yml'
   AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
   ARM_SUBSCRIPTION_ID: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
   ARM_MGMTGROUP_ID: '${{ secrets.ARM_MGMTGROUP_ID }}'
@@ -143,5 +143,4 @@ jobs:
           templateSpecsDoPublish: '${{ env.templateSpecsDoPublish }}'
           bicepRegistryName: '${{ env.bicepRegistryName }}'
           bicepRegistryRGName: '${{ env.bicepRegistryRGName }}'
-          bicepRegistryRgLocation: '${{ env.bicepRegistryRgLocation }}'
           bicepRegistryDoPublish: '${{ env.bicepRegistryDoPublish }}'

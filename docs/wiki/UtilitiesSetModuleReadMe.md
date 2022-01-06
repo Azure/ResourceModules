@@ -12,7 +12,6 @@ For further information about the parameter usage blocks, please refer to the [s
 - [How it works](#what-it-does)
   - [Special case: 'Parameter Usage' section](#special-case-parameter-usage-section)
 - [How to use it](#how-to-use-it)
-  - [Examples](#examples)
 
 ---
 # Location

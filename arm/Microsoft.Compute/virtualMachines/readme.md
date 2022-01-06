@@ -126,6 +126,7 @@ This module deploys one Virtual Machine with one or multiple nics and optionally
  "osDisk": {
     "value": {
         "createOption": "fromImage",
+        "deleteOption": "Delete", // Optional. Can be 'Delete' or 'Detach'
         "diskSizeGB": "128",
         "managedDisk": {
             "storageAccountType": "Premium_LRS"
@@ -141,6 +142,7 @@ This module deploys one Virtual Machine with one or multiple nics and optionally
     "value": [{
         "caching": "ReadOnly",
         "createOption": "Empty",
+        "deleteOption": "Delete", // Optional. Can be 'Delete' or 'Detach'
         "diskSizeGB": "256",
         "managedDisk": {
             "storageAccountType": "Premium_LRS"
@@ -231,6 +233,7 @@ The field `nicSuffix` and `subnetId` are mandatory. If `enablePublicIP` is set t
   "value": [
     {
       "nicSuffix": "-nic-01",
+      "deleteOption": "Delete", // Optional. Can be 'Delete' or 'Detach'
       "ipConfigurations": [
         {
           "name": "ipconfig1",
@@ -512,11 +515,11 @@ You can specify multiple user assigned identities to a resource by providing add
 
 ## Template references
 
-- [Locks ](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-04-01-preview/roleAssignments)
-- [Virtualmachines](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Compute/2021-07-01/virtualMachines)
-- [Virtualmachines/Extensions](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Compute/2021-07-01/virtualMachines/extensions)
 - [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings)
+- [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
 - [Networkinterfaces](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-03-01/networkInterfaces)
 - [Publicipaddresses](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-03-01/publicIPAddresses)
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-04-01-preview/roleAssignments)
 - [Vaults/Backupfabrics/Protectioncontainers/Protecteditems](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2021-06-01/vaults/backupFabrics/protectionContainers/protectedItems)
+- [Virtualmachines](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Compute/2021-07-01/virtualMachines)
+- [Virtualmachines/Extensions](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Compute/2021-07-01/virtualMachines/extensions)
