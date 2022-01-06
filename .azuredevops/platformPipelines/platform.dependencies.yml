@@ -6,6 +6,8 @@ parameters:
     type: boolean
     default: false
 
+trigger: none
+
 # trigger:
 #   batch: true
 #   branches:
