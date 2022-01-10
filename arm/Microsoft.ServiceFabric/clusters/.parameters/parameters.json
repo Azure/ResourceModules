@@ -134,13 +134,15 @@
         "notifications": {
             "value": [
                 {
-                    "isEnabled": true,
-                    "notificationCategory": "",
-                    "notificationLevel": "",
+                    "isEnabled": true, // Required. Indicates if the notification is enabled.
+                    "notificationCategory": "WaveProgress", // Required. The category of notification. Possible values include: "WaveProgress".
+                    "notificationLevel": "Critical", // Required. The level of notification. Possible values include: "Critical", "All".
                     "notificationTargets": [
                         {
-                            "notificationChannel": "",
-                            "receivers": ""
+                            "notificationChannel": "EmailUser", // Required. The notification channel indicates the type of receivers subscribed to the notification, either user or subscription. Possible values include: "EmailUser", "EmailSubscription".
+                            "receivers": [
+                                "SomeReceiver" // Required. List of targets that subscribe to the notification.
+                            ]
                         }
                     ]
                 }
