@@ -30,7 +30,7 @@ param addOnFeatures array = []
 @description('Required. Number of unused versions per application type to keep.')
 param maxUnusedVersionsToKeep int = 3
 
-@description('Optional. Object containing Azure active directory client application ID, cluster application ID and tenant ID.')
+@description('Optional. The settings to enable AAD authentication on the cluster..')
 param azureActiveDirectory object = {}
 
 @description('Optional. Describes the certificate details like thumbprint of the primary certificate, thumbprint of the secondary certificate and the local certificate store location')
@@ -132,31 +132,13 @@ param waveUpgradePaused bool = false
 @description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or it\'s fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'')
 param roleAssignments array = []
 
-@description('Optional. Array of Service Fabric cluster applications.')
-param applications array = []
-
 @description('Optional. Array of Service Fabric cluster application types.')
 param applicationTypes array = []
-
-var azureActiveDirectory_var = {
-  clientApplication: contains(azureActiveDirectory, 'clientApplication') ? azureActiveDirectory.clientApplication : null
-  clusterApplication: contains(azureActiveDirectory, 'clusterApplication') ? azureActiveDirectory.clusterApplication : null
-  tenantId: contains(azureActiveDirectory, 'tenantId') ? azureActiveDirectory.tenantId : null
-}
 
 var certificate_var = {
   thumbprint: contains(certificate, 'thumbprint') ? certificate.thumbprint : null
   thumbprintSecondary: contains(certificate, 'thumbprintSecondary') ? certificate.thumbprintSecondary : null
   x509StoreName: contains(certificate, 'x509StoreName') ? certificate.x509StoreName : null
-}
-
-var certificateCommonNamesList_var = [for certificateCommonName in items(certificateCommonNames): {
-  commonNames: contains(certificateCommonName.key, 'commonNames') ? certificateCommonName.value.commonNames : []
-}]
-
-var certificateCommonNames_var = {
-  commonNames: contains(certificateCommonNames, 'commonNames') ? certificateCommonNamesList_var : null
-  x509StoreName: contains(certificateCommonNames, 'x509StoreName') ? certificateCommonNames.x509StoreName : null
 }
 
 var clientCertificateCommonNames_var = [for clientCertificateCommonName in clientCertificateCommonNames: {
@@ -236,17 +218,17 @@ var upgradeDescription_var = union({
     maxPercentUpgradeDomainDeltaUnhealthyNodes: contains(upgradeDescription, 'maxPercentUpgradeDomainDeltaUnhealthyNodes') ? upgradeDescription.maxPercentUpgradeDomainDeltaUnhealthyNodes : 0
   }
   forceRestart: contains(upgradeDescription, 'forceRestart') ? upgradeDescription.forceRestart : false
-  healthCheckRetryTimeout: contains(upgradeDescription, 'healthCheckRetryTimeout') ? upgradeDescription.healthCheckRetryTimeout : '00:30:00'
-  healthCheckStableDuration: contains(upgradeDescription, 'healthCheckStableDuration') ? upgradeDescription.healthCheckStableDuration : '01:00:00'
-  healthCheckWaitDuration: contains(upgradeDescription, 'healthCheckWaitDuration') ? upgradeDescription.healthCheckWaitDuration : '00:15:00'
-  upgradeDomainTimeout: contains(upgradeDescription, 'upgradeDomainTimeout') ? upgradeDescription.upgradeDomainTimeout : '01:00:00'
-  upgradeReplicaSetCheckTimeout: contains(upgradeDescription, 'upgradeReplicaSetCheckTimeout') ? upgradeDescription.upgradeReplicaSetCheckTimeout : '03:00:00'
+  healthCheckRetryTimeout: contains(upgradeDescription, 'healthCheckRetryTimeout') ? upgradeDescription.healthCheckRetryTimeout : '00:45:00'
+  healthCheckStableDuration: contains(upgradeDescription, 'healthCheckStableDuration') ? upgradeDescription.healthCheckStableDuration : '00:01:00'
+  healthCheckWaitDuration: contains(upgradeDescription, 'healthCheckWaitDuration') ? upgradeDescription.healthCheckWaitDuration : '00:00:30'
+  upgradeDomainTimeout: contains(upgradeDescription, 'upgradeDomainTimeout') ? upgradeDescription.upgradeDomainTimeout : '02:00:00'
+  upgradeReplicaSetCheckTimeout: contains(upgradeDescription, 'upgradeReplicaSetCheckTimeout') ? upgradeDescription.upgradeReplicaSetCheckTimeout : '1.00:00:00'
   upgradeTimeout: contains(upgradeDescription, 'upgradeTimeout') ? upgradeDescription.upgradeTimeout : '02:00:00'
 }, contains(upgradeDescription, 'healthPolicy') ? {
   healthPolicy: {
     applicationHealthPolicies: contains(upgradeDescription.healthPolicy, 'applicationHealthPolicies') ? upgradeDescription.healthPolicy.applicationHealthPolicies : {}
-    maxPercentUnhealthyApplications: contains(upgradeDescription.healthPolicy, 'maxPercentUnhealthyApplications') ? upgradeDescription.healthPolicy.maxPercentUnhealthyApplications : 10
-    maxPercentUnhealthyNodes: contains(upgradeDescription.healthPolicy, 'maxPercentUnhealthyNodes') ? upgradeDescription.healthPolicy.maxPercentUnhealthyNodes : 10
+    maxPercentUnhealthyApplications: contains(upgradeDescription.healthPolicy, 'maxPercentUnhealthyApplications') ? upgradeDescription.healthPolicy.maxPercentUnhealthyApplications : 0
+    maxPercentUnhealthyNodes: contains(upgradeDescription.healthPolicy, 'maxPercentUnhealthyNodes') ? upgradeDescription.healthPolicy.maxPercentUnhealthyNodes : 0
   }
 } : {})
 
@@ -265,9 +247,16 @@ resource serviceFabricCluster 'Microsoft.ServiceFabric/clusters@2021-06-01' = {
     applicationTypeVersionsCleanupPolicy: {
       maxUnusedVersionsToKeep: maxUnusedVersionsToKeep
     }
-    azureActiveDirectory: !empty(azureActiveDirectory) ? azureActiveDirectory_var : null
+    azureActiveDirectory: !empty(azureActiveDirectory) ? {
+      clientApplication: contains(azureActiveDirectory, 'clientApplication') ? azureActiveDirectory.clientApplication : null
+      clusterApplication: contains(azureActiveDirectory, 'clusterApplication') ? azureActiveDirectory.clusterApplication : null
+      tenantId: contains(azureActiveDirectory, 'tenantId') ? azureActiveDirectory.tenantId : null
+    } : null
     certificate: !empty(certificate) ? certificate_var : null
-    certificateCommonNames: !empty(certificateCommonNames) ? certificateCommonNames_var : null
+    certificateCommonNames: !empty(certificateCommonNames.commonNames) ? {
+      commonNames: certificateCommonNames.commonNames
+      x509StoreName: contains(certificateCommonNames, 'certificateCommonNamesx509StoreName') ? certificateCommonNames.certificateCommonNamesx509StoreName : null
+    } : null
     clientCertificateCommonNames: !empty(clientCertificateCommonNames) ? clientCertificateCommonNames_var : null
     clientCertificateThumbprints: !empty(clientCertificateThumbprints) ? clientCertificateThumbprints_var : null
     clusterCodeVersion: !empty(clusterCodeVersion) ? clusterCodeVersion : null

@@ -27,40 +27,49 @@
         //         "tenantId": ""
         //     }
         // },
-        "certificate": {
-            "value": {
-                "thumbprint": "0AC113D5E1D94C401DDEB0EE2B1B96CC130",
-                //"thumbprintSecondary": "",
-                "x509StoreName": "My"
-            }
-        },
-        // "certificateCommonNames": {
+        // "certificate": { // Mutual exclusive with the other cert specs
         //     "value": {
-        //         "commonNames": [
-        //             {
-        //                 "certificateCommonName": "",
-        //                 "certificateIssuerThumbprint": ""
-        //             }
-        //         ],
-        //         "x509StoreName": ""
+        //         "thumbprint": "0AC113D5E1D94C401DDEB0EE2B1B96CC130",
+        //         "x509StoreName": "My"
         //     }
         // },
-        // "clientCertificateCommonNames": {
-        //     "value": [{
-        //         "certificateCommonName": "",
-        //         "certificateIssuerThumbprint": "",
-        //         "isAdmin": ""
-        //     }]
-        // },
-        // "clientCertificateThumbprints": {
-        //     "value": [{
-        //         "certificateThumbprint": "",
-        //         "isAdmin": ""
-        //     }]
-        // },
-        // "clusterCodeVersion": {
-        //     "value": "8.1.329.9590"
-        // },
+        "certificateCommonNames": {
+            "value": {
+                "commonNames": [
+                    {
+                        "certificateCommonName": "certcommon",
+                        "certificateIssuerThumbprint": "0AC113D5E1D94C401DDEB0EE2B1B96CC130"
+                    }
+                ],
+                "x509StoreName": ""
+            }
+        },
+        "clientCertificateCommonNames": {
+            "value": [
+                {
+                    "certificateCommonName": "clientcommoncert1",
+                    "certificateIssuerThumbprint": "0AC113D5E1D94C401DDEB0EE2B1B96CC130",
+                    "isAdmin": false
+                },
+                {
+                    "certificateCommonName": "clientcommoncert2",
+                    "certificateIssuerThumbprint": "0AC113D5E1D94C401DDEB0EE2B1B96CC131",
+                    "isAdmin": false
+                }
+            ]
+        },
+        "clientCertificateThumbprints": {
+            "value": [
+                {
+                    "certificateThumbprint": "0AC113D5E1D94C401DDEB0EE2B1B96CC130",
+                    "isAdmin": false
+                },
+                {
+                    "certificateThumbprint": "0AC113D5E1D94C401DDEB0EE2B1B96CC131",
+                    "isAdmin": false
+                }
+            ]
+        },
         // "diagnosticsStorageAccountConfig": {
         //     "value": {
         //         "blobEndpoint": "",
@@ -82,6 +91,16 @@
                         }
                     ]
                 }
+                // ,
+                // {
+                //     "name": "ManagedIdentityTokenService",
+                //     "parameters": [
+                //         {
+                //             "name": "IsEnabled",
+                //             "value": "true"
+                //         }
+                //     ]
+                // }
             ]
         },
         "managementEndpoint": {
@@ -123,9 +142,26 @@
         //         }]
         //     }]
         // },
-        // "upgradeDescription": {
-        //     "value": {}
-        // },
+        "upgradeDescription": {
+            "value": {
+                "forceRestart": false,
+                "upgradeReplicaSetCheckTimeout": "1.00:00:00",
+                "healthCheckWaitDuration": "00:00:30",
+                "healthCheckStableDuration": "00:01:00",
+                "healthCheckRetryTimeout": "00:45:00",
+                "upgradeTimeout": "02:00:00",
+                "upgradeDomainTimeout": "02:00:00",
+                "healthPolicy": {
+                    "maxPercentUnhealthyNodes": 0,
+                    "maxPercentUnhealthyApplications": 0
+                },
+                "deltaHealthPolicy": {
+                    "maxPercentDeltaUnhealthyNodes": 0,
+                    "maxPercentUpgradeDomainDeltaUnhealthyNodes": 0,
+                    "maxPercentDeltaUnhealthyApplications": 0
+                }
+            }
+        },
         "reliabilityLevel": {
             "value": "Silver"
         },
@@ -141,13 +177,14 @@
                     ]
                 }
             ]
-        },
-        "applicationTypes": {
-            "value": [
-                {
-                    "name": "WordCount"
-                }
-            ]
         }
+        // ,
+        // "applicationTypes": { // not idempotent?
+        //     "value": [
+        //         {
+        //             "name": "WordCount"
+        //         }
+        //     ]
+        // }
     }
 }
