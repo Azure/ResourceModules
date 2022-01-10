@@ -56,7 +56,7 @@ runs:
         )
 
         # Set agent up
-        Set-EnvironmentOnAgent -Modules $Modules
+        Set-EnvironmentOnAgent -PSModules $Modules
 
     - name: Azure Login
       uses: Azure/login@v1

@@ -122,7 +122,7 @@ jobs:
             )
 
             # Set agent up
-            Set-EnvironmentOnAgent -Modules $Modules
+            Set-EnvironmentOnAgent -PSModules $Modules
 
       # [Module Pester Test] task(s)
       #-----------------------------

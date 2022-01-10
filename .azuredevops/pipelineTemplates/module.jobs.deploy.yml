@@ -127,7 +127,7 @@ jobs:
                 }
 
                 # Set agent up
-                Set-EnvironmentOnAgent -Modules $Modules
+                Set-EnvironmentOnAgent -PSModules $Modules
 
           # [Multi Repo] Support task
           #--------------------------

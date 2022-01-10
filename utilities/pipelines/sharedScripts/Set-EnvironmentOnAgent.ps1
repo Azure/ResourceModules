@@ -80,10 +80,22 @@ Configure the current agent with e.g. the necessary PowerShell modules.
 
 .PARAMETER Modules
 Optional. The PowerShell modules that should be installed on the agent. Installs default set if not provided.
-@{
-    Name = 'Name'
-    Version = '1.0.0' # Optional
-}
+
+@(
+    @{ Name = 'Az.Accounts' },
+    @{ Name = 'Az.Compute' },
+    @{ Name = 'Az.Resources' },
+    @{ Name = 'Az.ContainerRegistry' },
+    @{ Name = 'Az.KeyVault' },
+    @{ Name = 'Az.RecoveryServices' },
+    @{ Name = 'Az.Monitor' },
+    @{ Name = 'Az.CognitiveServices' },
+    @{ Name = 'Az.OperationalInsights' },
+    @{
+        Name = 'Pester'
+        Version = '5.3.0' # Version is optional
+    }
+)
 
 .EXAMPLE
 Set-EnvironmentOnAgent
@@ -95,20 +107,7 @@ function Set-EnvironmentOnAgent {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $false)]
-        [Hashtable[]] $Modules = @(
-            @{ Name = 'Az.Accounts' },
-            @{ Name = 'Az.Compute' },
-            @{ Name = 'Az.Resources' },
-            @{ Name = 'Az.NetAppFiles' },
-            @{ Name = 'Az.Network' },
-            @{ Name = 'Az.ContainerRegistry' },
-            @{ Name = 'Az.KeyVault' },
-            @{ Name = 'Az.RecoveryServices' },
-            @{ Name = 'Az.Monitor' },
-            @{ Name = 'Az.CognitiveServices' },
-            @{ Name = 'Az.OperationalInsights' },
-            @{ Name = 'Pester'; Version = '5.3.0' }
-        )
+        [Hashtable[]] $PSModules = @()
     )
 
     ###########################
