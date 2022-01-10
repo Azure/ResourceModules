@@ -213,4 +213,4 @@ output acrResourceGroup string = resourceGroup().name
 output acrResourceId string = registry.id
 
 @description('The principal ID of the system assigned identity.')
-output systemAssignedPrincipalId string = systemAssignedIdentity ? registry.identity.principalId : ''
+output systemAssignedPrincipalId string = systemAssignedIdentity && contains(registry.identity, 'principalId') ? registry.identity.principalId : ''

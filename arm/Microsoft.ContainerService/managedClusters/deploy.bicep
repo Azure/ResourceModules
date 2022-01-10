@@ -421,4 +421,4 @@ output azureKubernetesServiceName string = managedCluster.name
 output controlPlaneFQDN string = (aksClusterEnablePrivateCluster ? managedCluster.properties.privateFQDN : managedCluster.properties.fqdn)
 
 @description('The principal ID of the system assigned identity.')
-output systemAssignedPrincipalId string = systemAssignedIdentity ? managedCluster.identity.principalId : ''
+output systemAssignedPrincipalId string = systemAssignedIdentity && contains(managedCluster.identity, 'principalId') ? managedCluster.identity.principalId : ''
