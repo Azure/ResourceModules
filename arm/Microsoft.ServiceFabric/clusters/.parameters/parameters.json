@@ -5,20 +5,17 @@
         "name": {
             "value": "sxx-az-sfc-weu-x-001"
         },
-        "location": {
-            "value": "centralIndia"
-        },
         "tags": {
             "value": {
                 "resourceType": "Service Fabric",
                 "clusterName": "sxx-az-sfc-weu-x-001"
             }
         },
-        "lock": {
-            "value": "CanNotDelete"
-        },
         "addOnFeatures": {
-            "value": ["DnsService", "RepairManager"]
+            "value": [
+                "DnsService",
+                "RepairManager"
+            ]
         },
         "maxUnusedVersionsToKeep": {
             "value": 2
@@ -75,39 +72,45 @@
         //     }
         // },
         "fabricSettings": {
-            "value": [{
-                "name": "Security",
-                "parameters": [{
-                    "name": "ClusterProtectionLevel",
-                    "value": "EncryptAndSign"
-                }]
-            }]
+            "value": [
+                {
+                    "name": "Security",
+                    "parameters": [
+                        {
+                            "name": "ClusterProtectionLevel",
+                            "value": "EncryptAndSign"
+                        }
+                    ]
+                }
+            ]
         },
         "managementEndpoint": {
-            "value": "https://sxx-az-sfc-weu-x-001.centralindia.cloudapp.azure.com:19080"
+            "value": "https://sxx-az-sfc-weu-x-001.westeurope.cloudapp.azure.com:19080"
         },
         "nodeTypes": {
-            "value": [{
-                "applicationPorts": {
-                    "endPort": 30000,
-                    "startPort": 20000
-                },
-                "capacities": {},
-                "clientConnectionEndpointPort": 19000,
-                "durabilityLevel": "Silver",
-                "ephemeralPorts": {
-                    "endPort": 65534,
-                    "startPort": 49152
-                },
-                "httpGatewayEndpointPort": 19080,
-                "isPrimary": true,
-                "isStateless": false,
-                "multipleAvailabilityZones": false,
-                "name": "001Node01",
-                "placementProperties": {},
-                "reverseProxyEndpointPort": "",
-                "vmInstanceCount": 5
-            }]
+            "value": [
+                {
+                    "applicationPorts": {
+                        "endPort": 30000,
+                        "startPort": 20000
+                    },
+                    "capacities": {},
+                    "clientConnectionEndpointPort": 19000,
+                    "durabilityLevel": "Silver",
+                    "ephemeralPorts": {
+                        "endPort": 65534,
+                        "startPort": 49152
+                    },
+                    "httpGatewayEndpointPort": 19080,
+                    "isPrimary": true,
+                    "isStateless": false,
+                    "multipleAvailabilityZones": false,
+                    "name": "001Node01",
+                    "placementProperties": {},
+                    "reverseProxyEndpointPort": "",
+                    "vmInstanceCount": 5
+                }
+            ]
         },
         // "notifications": {
         //     "value": [{
@@ -120,6 +123,9 @@
         //         }]
         //     }]
         // },
+        // "upgradeDescription": {
+        //     "value": {}
+        // },
         "reliabilityLevel": {
             "value": "Silver"
         },
@@ -127,100 +133,91 @@
             "value": "Linux"
         },
         "roleAssignments": {
-            "value": [{
-                "roleDefinitionIdOrName": "Reader",
-                "principalIds": [
-                    "6bffd5f5-80d9-435c-903e-78354538a902"
-                ]
-            }]
+            "value": [
+                {
+                    "roleDefinitionIdOrName": "Reader",
+                    "principalIds": [
+                        "e58511af-4da2-449c-a5cd-6a10271cfb83"
+                    ]
+                }
+            ]
+        },
+        "applications": {
+            "value": [
+                {
+                    "name": "serviceFabricClusterApplication01",
+                    "identity": {
+                        "type": "None",
+                        "userAssignedIdentities": {}
+                    },
+                    "managedIdentities": [
+                        {
+                            "name": "Identity_Friendly_Name",
+                            "principalId": "e58511af-4da2-449c-a5cd-6a10271cfb83"
+                        }
+                    ],
+                    "maximumNodes": 2,
+                    "metrics": [
+                        {
+                            "maximumCapacity": null,
+                            "name": null,
+                            "reservationCapacity": null,
+                            "totalApplicationCapacity": null
+                        }
+                    ],
+                    "minimumNodes": null,
+                    "parameters": {},
+                    "removeApplicationCapacity": "",
+                    "typeName": "DotNetCore",
+                    "typeVersion": "VersionOne",
+                    "upgradePolicy": {
+                        "applicationHealthPolicy": {
+                            "considerWarningAsError": "",
+                            "defaultServiceTypeHealthPolicy": {
+                                "maxPercentUnhealthyPartitionsPerService": null,
+                                "maxPercentUnhealthyReplicasPerPartition": null,
+                                "maxPercentUnhealthyServices": null
+                            },
+                            "maxPercentUnhealthyDeployedApplications": null,
+                            "serviceTypeHealthPolicyMap": {}
+                        },
+                        "forceRestart": "",
+                        "recreateApplication": "",
+                        "rollingUpgradeMonitoringPolicy": {
+                            "failureAction": null,
+                            "healthCheckRetryTimeout": null,
+                            "healthCheckStableDuration": null,
+                            "healthCheckWaitDuration": null,
+                            "upgradeDomainTimeout": null,
+                            "upgradeTimeout": null
+                        },
+                        "upgradeMode": "UnmonitoredAuto",
+                        "upgradeReplicaSetCheckTimeout": null
+                    },
+                    "services": {
+                        "value": [
+                            {
+                                "name": "Service01",
+                                "correlationScheme": [
+                                    {
+                                        "scheme": "Invalid",
+                                        "serviceName": "fabric:service01"
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                }
+            ]
         } //,
-        // "applications": {
-        //     "value": [
-        //         {
-        //             "name": "serviceFabricClusterApplication01",
-        //             "identity": {
-        //                 "type": "None",
-        //                 "userAssignedIdentities": {}
-        //             },
-        //             "properties": {
-        //                 "managedIdentities": [
-        //                     {
-        //                         "name": "Identity_Friendly_Name",
-        //                         "principalId": "6bffd5f5-80d9-435c-903e-78354538a902"
-        //                     }
-        //                 ],
-        //                 "maximumNodes": 2,
-        //                     "metrics": [
-        //                         {
-        //                             "maximumCapacity": null,
-        //                             "name": null,
-        //                             "reservationCapacity": null,
-        //                             "totalApplicationCapacity": null
-        //                         }
-        //                     ],
-        //                 "minimumNodes": null,
-        //                 "parameters": {},
-        //                 "removeApplicationCapacity": "",
-        //                 "typeName": "DotNetCore",
-        //                 "typeVersion": "VersionOne",
-        //                 "upgradePolicy": {
-        //                     "applicationHealthPolicy": {
-        //                         "considerWarningAsError": "",
-        //                         "defaultServiceTypeHealthPolicy": {
-        //                             "maxPercentUnhealthyPartitionsPerService": null,
-        //                             "maxPercentUnhealthyReplicasPerPartition": null,
-        //                             "maxPercentUnhealthyServices": null
-        //                         },
-        //                         "maxPercentUnhealthyDeployedApplications": null,
-        //                         "serviceTypeHealthPolicyMap": {}
-        //                     },
-        //                     "forceRestart": "",
-        //                     "recreateApplication": "",
-        //                     "rollingUpgradeMonitoringPolicy": {
-        //                         "failureAction": null,
-        //                         "healthCheckRetryTimeout": null,
-        //                         "healthCheckStableDuration": null,
-        //                         "healthCheckWaitDuration": null,
-        //                         "upgradeDomainTimeout": null,
-        //                         "upgradeTimeout": null
-        //                     },
-        //                     "upgradeMode": "UnmonitoredAuto",
-        //                     "upgradeReplicaSetCheckTimeout": null
-        //                 }
-        //             },
-        //             "services": {
-        //                 "value": [
-        //                     {
-        //                         "name": "Service01",
-        //                         "properties": {
-        //                             "provisioningState": "Default",
-        //                             "correlationScheme": [
-        //                                 {
-        //                                     "scheme": "Invalid",
-        //                                     "serviceName": "fabric:service01"
-        //                                 }
-        //                             ]
-        //                         }
-        //                     }
-        //                 ]
-        //             }
-        //         }
-        //     ]
-        // },
         // "applicationTypes": {
         //     "value": [
         //         {
         //             "name": "DotNetCore",
-        //             "properties": {
-        //                 "provisioningState": "Default"
-        //             },
         //             "versions": [
         //                 {
-        //                     "name": "VersionOne",
-        //                     "properties": {
-        //                         "provisioningState": "Default",
-        //                         "appPackageUrl": "https://github.com/Azure-Samples/service-fabric-wordcount/blob/master/WordCountV1.sfpkg"
-        //                     }
+        //                     "name": "VersionTwo",
+        //                     "appPackageUrl": "https://github.com/Azure-Samples/service-fabric-wordcount/raw/master/WordCountV2.sfpkg"
         //                 }
         //             ]
         //         }

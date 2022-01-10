@@ -7,14 +7,8 @@ param name string = 'defaultApplicationType'
 @description('Optional. Array of Versions to create.')
 param versions array = []
 
-@description('Optional. Location for all resources.')
-param location string = resourceGroup().location
-
 @description('Optional. Tags of the resource.')
 param tags object = {}
-
-@description('Optional. The application type name properties.')
-param properties object = {}
 
 @description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
@@ -31,16 +25,17 @@ resource serviceFabricCluster 'Microsoft.ServiceFabric/clusters@2021-06-01' exis
 resource applicationTypes 'Microsoft.ServiceFabric/clusters/applicationTypes@2021-06-01' = {
   name: name
   parent: serviceFabricCluster
-  location: location
   tags: tags
-  properties: !empty(properties) ? properties : {}
 }
 
 module applicationTypes_versions 'versions/deploy.bicep' = [for (version, index) in versions: {
   name: '${deployment().name}-SFC-Versions-${index}'
   params: {
-    appPackageUrl: contains(versions, 'appPackageUrl') ? version.appPackageUrl : null
-    name: contains(versions, 'applicationTypeVersionName') ? version.applicationTypeVersionName : null
+    applicationTypeName: name
+    serviceFabricClusterName: serviceFabricClusterName
+    tags: contains(versions, 'tags') ? version.tags : {}
+    appPackageUrl: version.appPackageUrl
+    name: contains(versions, 'name') ? version.name : 'default'
   }
 }]
 

@@ -228,7 +228,7 @@ var reverseProxyCertificateCommonNames_var = {
   x509StoreName: contains(reverseProxyCertificateCommonNames, 'x509StoreName') ? reverseProxyCertificateCommonNames.x509StoreName : null
 }
 
-var upgradeDescription_var = {
+var upgradeDescription_var = union({
   deltaHealthPolicy: {
     applicationDeltaHealthPolicies: contains(upgradeDescription, 'applicationDeltaHealthPolicies') ? upgradeDescription.applicationDeltaHealthPolicies : {}
     maxPercentDeltaUnhealthyApplications: contains(upgradeDescription, 'maxPercentDeltaUnhealthyApplications') ? upgradeDescription.maxPercentDeltaUnhealthyApplications : 0
@@ -239,15 +239,16 @@ var upgradeDescription_var = {
   healthCheckRetryTimeout: contains(upgradeDescription, 'healthCheckRetryTimeout') ? upgradeDescription.healthCheckRetryTimeout : '00:30:00'
   healthCheckStableDuration: contains(upgradeDescription, 'healthCheckStableDuration') ? upgradeDescription.healthCheckStableDuration : '01:00:00'
   healthCheckWaitDuration: contains(upgradeDescription, 'healthCheckWaitDuration') ? upgradeDescription.healthCheckWaitDuration : '00:15:00'
+  upgradeDomainTimeout: contains(upgradeDescription, 'upgradeDomainTimeout') ? upgradeDescription.upgradeDomainTimeout : '01:00:00'
+  upgradeReplicaSetCheckTimeout: contains(upgradeDescription, 'upgradeReplicaSetCheckTimeout') ? upgradeDescription.upgradeReplicaSetCheckTimeout : '03:00:00'
+  upgradeTimeout: contains(upgradeDescription, 'upgradeTimeout') ? upgradeDescription.upgradeTimeout : '02:00:00'
+}, contains(upgradeDescription, 'healthPolicy') ? {
   healthPolicy: {
     applicationHealthPolicies: contains(upgradeDescription.healthPolicy, 'applicationHealthPolicies') ? upgradeDescription.healthPolicy.applicationHealthPolicies : {}
     maxPercentUnhealthyApplications: contains(upgradeDescription.healthPolicy, 'maxPercentUnhealthyApplications') ? upgradeDescription.healthPolicy.maxPercentUnhealthyApplications : 10
     maxPercentUnhealthyNodes: contains(upgradeDescription.healthPolicy, 'maxPercentUnhealthyNodes') ? upgradeDescription.healthPolicy.maxPercentUnhealthyNodes : 10
   }
-  upgradeDomainTimeout: contains(upgradeDescription, 'upgradeDomainTimeout') ? upgradeDescription.upgradeDomainTimeout : '01:00:00'
-  upgradeReplicaSetCheckTimeout: contains(upgradeDescription, 'upgradeReplicaSetCheckTimeout') ? upgradeDescription.upgradeReplicaSetCheckTimeout : '03:00:00'
-  upgradeTimeout: contains(upgradeDescription, 'upgradeTimeout') ? upgradeDescription.upgradeTimeout : '02:00:00'
-}
+} : {})
 
 module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   name: 'pid-${cuaId}'
@@ -318,8 +319,7 @@ module serviceFabricCluster_applicationTypes 'applicationTypes/deploy.bicep' = [
   params: {
     name: applicationType.name
     serviceFabricClusterName: serviceFabricCluster.name
-    properties: contains(applicationType, 'properties') ? applicationType.properties : {}
-    tags: tags
+    tags: contains(applicationType, 'tags') ? applicationType.tags : {}
     versions: contains(applicationType, 'versions') ? applicationType.versions : []
   }
 }]
@@ -331,9 +331,17 @@ module serviceFabricCluster_applications 'applications/deploy.bicep' = [for appl
     serviceFabricClusterName: serviceFabricCluster.name
     name: contains(application, 'name') ? application.name : 'defaultApplication'
     identity: contains(application, 'identity') ? application.identity : {}
-    properties: contains(application, 'properties') ? application.properties : {}
+    managedIdentities: contains(application, 'managedIdentities') ? application.managedIdentities : []
     services: contains(application, 'applicationsServices') ? application.applicationsServices : []
-    tags: tags
+    tags: contains(application, 'tags') ? application.tags : {}
+    minimumNodes: contains(application, 'minimumNodes') ? application.minimumNodes : 0
+    maximumNodes: contains(application, 'maximumNodes') ? application.maximumNodes : 0
+    metrics: contains(application, 'metrics') ? application.metrics : []
+    parameters: contains(application, 'parameters') ? application.parameters : {}
+    removeApplicationCapacity: contains(application, 'removeApplicationCapacity') ? application.removeApplicationCapacity : false
+    typeName: contains(application, 'typeName') ? application.typeName : ''
+    typeVersion: contains(application, 'typeVersion') ? application.typeVersion : ''
+    upgradePolicy: contains(application, 'upgradePolicy') ? application.upgradePolicy : {}
   }
   dependsOn: [
     serviceFabricCluster_applicationTypes
@@ -342,9 +350,6 @@ module serviceFabricCluster_applications 'applications/deploy.bicep' = [for appl
 
 @description('The Service Fabric Cluster name.')
 output clusterName string = serviceFabricCluster.name
-
-@description('The Service Fabric Cluster object.')
-output clusterObject object = serviceFabricCluster
 
 @description('The Service Fabric Cluster resource group.')
 output clusterResourceGroup string = resourceGroup().name
