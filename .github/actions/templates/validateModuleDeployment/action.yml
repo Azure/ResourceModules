@@ -50,7 +50,7 @@ runs:
             #@{ Name = 'Az.KeyVault' },
             #@{ Name = 'Az.RecoveryServices' },
             #@{ Name = 'Az.Monitor' },
-            #@{ Name = 'Az.CognitiveServices' },
+            @{ Name = 'Az.CognitiveServices' },
             #@{ Name = 'Az.OperationalInsights' }
           )
         }
