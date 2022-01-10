@@ -54,7 +54,7 @@ runs:
             #@{ Name = 'Az.OperationalInsights' }
           )
         }
-        Set-EnvironmentOnAgent
+        Set-EnvironmentOnAgent -Modules $Modules
     - name: Azure Login
       uses: Azure/login@v1
       with:
