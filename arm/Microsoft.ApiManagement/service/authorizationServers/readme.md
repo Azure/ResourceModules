@@ -41,10 +41,10 @@ The following resources are required to be able to deploy this resource.
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `authorizationServerName` | string | The name of the API management service authorization server |
-| `authorizationServerResourceGroup` | string | The resource group the API management service authorization server was deployed into |
-| `authorizationServerResourceId` | string | The resource ID of the API management service authorization server |
+| `name` | string | The name of the API management service authorization server |
+| `resourceGroupName` | string | The resource group the API management service authorization server was deployed into |
+| `resourceId` | string | The resource ID of the API management service authorization server |
 
 ## Template references
 
-- [Service/Authorizationservers](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2020-06-01-preview/service/authorizationServers)
+- [Service/Authorizationservers](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/service/authorizationServers)

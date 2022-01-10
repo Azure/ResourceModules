@@ -81,13 +81,13 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `analysisServicesName` | string | The name of the analysis service |
-| `analysisServicesResourceGroup` | string | The resource group the analysis service was deployed into |
-| `analysisServicesResourceId` | string | The resource ID of the analysis service |
+| `name` | string | The name of the analysis service |
+| `resourceGroupName` | string | The resource group the analysis service was deployed into |
+| `resourceId` | string | The resource ID of the analysis service |
 
 ## Template references
 
-- [Servers](https://docs.microsoft.com/en-us/azure/templates/Microsoft.AnalysisServices/2017-08-01/servers)
+- [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings)
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
 - [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-04-01-preview/roleAssignments)
-- [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings)
+- [Servers](https://docs.microsoft.com/en-us/azure/templates/Microsoft.AnalysisServices/2017-08-01/servers)

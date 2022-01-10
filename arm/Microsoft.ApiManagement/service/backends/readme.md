@@ -122,10 +122,10 @@ The following resources are required to be able to deploy this resource.
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `backendName` | string | The name of the API management service backend |
-| `backendResourceGroup` | string | The resource group the API management service backend was deployed into |
-| `backendResourceId` | string | The resource ID of the API management service backend |
+| `name` | string | The name of the API management service backend |
+| `resourceGroupName` | string | The resource group the API management service backend was deployed into |
+| `resourceId` | string | The resource ID of the API management service backend |
 
 ## Template references
 
-- [Service/Backends](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2020-06-01-preview/service/backends)
+- [Service/Backends](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/service/backends)

@@ -65,11 +65,11 @@ The following resources are required to be able to deploy this resource.
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `apiName` | string | The name of the API management service API |
-| `apiResourceGroup` | string | The resource group the API management service API was deployed to |
-| `apiResourceId` | string | The resource ID of the API management service API |
+| `name` | string | The name of the API management service API |
+| `resourceGroupName` | string | The resource group the API management service API was deployed to |
+| `resourceId` | string | The resource ID of the API management service API |
 
 ## Template references
 
-- [Service/Apis](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2020-06-01-preview/service/apis)
-- [Service/Apis/Policies](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2020-06-01-preview/service/apis/policies)
+- [Service/Apis](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/service/apis)
+- [Service/Apis/Policies](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/service/apis/policies)

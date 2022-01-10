@@ -32,10 +32,10 @@ The following resources are required to be able to deploy this resource.
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `subscriptionName` | string | The name of the API management service subscription |
-| `subscriptionResourceGroup` | string | The resource group the API management service subscription was deployed into |
-| `subscriptionResourceId` | string | The resource ID of the API management service subscription |
+| `name` | string | The name of the API management service subscription |
+| `resourceGroupName` | string | The resource group the API management service subscription was deployed into |
+| `resourceId` | string | The resource ID of the API management service subscription |
 
 ## Template references
 
-- [Service/Subscriptions](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2020-06-01-preview/service/subscriptions)
+- [Service/Subscriptions](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/service/subscriptions)

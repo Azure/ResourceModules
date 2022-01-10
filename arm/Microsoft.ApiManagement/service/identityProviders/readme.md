@@ -31,10 +31,10 @@ This module deploys API Management Service Identity Provider.
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `identityProviderName` | string | The name of the API management service identity provider |
-| `identityProviderResourceGroup` | string | The resource group the API management service identity provider was deployed into |
-| `identityProviderResourceId` | string | The resource ID of the API management service identity provider |
+| `name` | string | The name of the API management service identity provider |
+| `resourceGroupName` | string | The resource group the API management service identity provider was deployed into |
+| `resourceId` | string | The resource ID of the API management service identity provider |
 
 ## Template references
 
-- [Service/Identityproviders](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2020-06-01-preview/service/identityProviders)
+- [Service/Identityproviders](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/service/identityProviders)
