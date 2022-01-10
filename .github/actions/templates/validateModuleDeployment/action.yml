@@ -38,8 +38,8 @@ runs:
 
         # Define PS modules to install on the runner
         $Modules = @(
-            @{ Name = 'Az.Resources' },
-            @{ Name = 'Az.Accounts' }
+            @{ Name = 'Az.Accounts' },
+            @{ Name = 'Az.Resources' }
         )
 
         # Additional PS modules need to be installed for the removal step in case it is enabled
