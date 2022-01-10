@@ -36,12 +36,13 @@ runs:
         # Load used functions
         . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
 
-        # Set agent up
-        Write-Verbose "inputs.removeDeployment: ${{ inputs.removeDeployment}}" -Verbose
+        # Define PS modules to install on the runner
         $Modules = @(
             @{ Name = 'Az.Resources' },
             @{ Name = 'Az.Accounts' }
         )
+
+        # Additional PS modules need to be installed for the removal step in case it is enabled
         if ('${{ inputs.removeDeployment}}' -eq 'true') {
           $Modules+= @(
             @{ Name = 'Az.CognitiveServices' },
@@ -50,10 +51,10 @@ runs:
             @{ Name = 'Az.Monitor' },
             @{ Name = 'Az.OperationalInsights' },
             @{ Name = 'Az.RecoveryServices' }
-            #@{ Name = 'Az.Network' },
-            #@{ Name = 'Az.ContainerRegistry' },
           )
         }
+
+        # Set agent up
         Set-EnvironmentOnAgent -Modules $Modules
     - name: Azure Login
       uses: Azure/login@v1
