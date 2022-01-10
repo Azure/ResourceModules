@@ -72,17 +72,6 @@
                 }
             ]
         },
-        "reverseProxyCertificateCommonNames": {
-            "value": {
-                "commonNames": [
-                    {
-                        "certificateCommonName": "carml.com",
-                        "certificateIssuerThumbprint": "12529211F8F14C90AFA9532AD79A6F2CA1C00622"
-                    }
-                ],
-                "x509StoreName": "My"
-            }
-        },
         "diagnosticsStorageAccountConfig": {
             "value": {
                 "blobEndpoint": "https://adpsxxazsaweux001.blob.core.windows.net/",
@@ -161,14 +150,14 @@
         "notifications": {
             "value": [
                 {
-                    "isEnabled": true, // Required. Indicates if the notification is enabled.
-                    "notificationCategory": "WaveProgress", // Required. The category of notification. Possible values include: "WaveProgress".
-                    "notificationLevel": "Critical", // Required. The level of notification. Possible values include: "Critical", "All".
+                    "isEnabled": true,
+                    "notificationCategory": "WaveProgress",
+                    "notificationLevel": "Critical",
                     "notificationTargets": [
                         {
-                            "notificationChannel": "EmailUser", // Required. The notification channel indicates the type of receivers subscribed to the notification, either user or subscription. Possible values include: "EmailUser", "EmailSubscription".
+                            "notificationChannel": "EmailUser",
                             "receivers": [
-                                "SomeReceiver" // Required. List of targets that subscribe to the notification.
+                                "SomeReceiver"
                             ]
                         }
                     ]
