@@ -115,8 +115,14 @@ jobs:
             # Load used functions
             . (Join-Path '$(moduleRepoRoot)' 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
 
+            # Define PS modules to install on the runner
+            $Modules = @(
+                # @{ Name = 'Pester'; Version = '5.3.0' }
+                @{ Name = 'Az.Resources' }
+            )
+
             # Set agent up
-            Set-EnvironmentOnAgent
+            Set-EnvironmentOnAgent -Modules $Modules
 
       # [Module Pester Test] task(s)
       #-----------------------------

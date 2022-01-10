@@ -108,8 +108,14 @@ jobs:
             # Load used functions
             . (Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
 
+            # Define PS modules to install on the runner
+            $Modules = @(
+                @{ Name = 'Az.Resources' },
+                @{ Name = 'Az.ContainerRegistry' }
+            )
+
             # Set agent up
-            Set-EnvironmentOnAgent
+            Set-EnvironmentOnAgent -Modules $Modules
 
       # [Multi Repo] Support task
       #--------------------------
