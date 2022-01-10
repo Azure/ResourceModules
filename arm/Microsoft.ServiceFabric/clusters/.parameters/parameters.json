@@ -131,17 +131,21 @@
                 }
             ]
         },
-        // "notifications": {
-        //     "value": [{
-        //         "isEnabled": "",
-        //         "notificationCategory": "",
-        //         "notificationLevel": "",
-        //         "notificationTargets": [{
-        //             "notificationChannel": "",
-        //             "receivers": ""
-        //         }]
-        //     }]
-        // },
+        "notifications": {
+            "value": [
+                {
+                    "isEnabled": true,
+                    "notificationCategory": "",
+                    "notificationLevel": "",
+                    "notificationTargets": [
+                        {
+                            "notificationChannel": "",
+                            "receivers": ""
+                        }
+                    ]
+                }
+            ]
+        },
         "upgradeDescription": {
             "value": {
                 "forceRestart": false,
