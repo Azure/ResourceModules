@@ -65,7 +65,7 @@ var upgradePolicy_var = union({
   recreateApplication: contains(upgradePolicy, 'recreateApplication') ? upgradePolicy.recreateApplication : false
   upgradeMode: contains(upgradePolicy, 'upgradeMode') ? upgradePolicy.upgradeMode : 'Invalid'
   upgradeReplicaSetCheckTimeout: contains(upgradePolicy, 'upgradeReplicaSetCheckTimeout') ? upgradePolicy.upgradeReplicaSetCheckTimeout : null
-}, contains(upgradePolicy, 'rollingUpgradeMonitoringPolicy') ? {
+}, (contains(upgradePolicy, 'rollingUpgradeMonitoringPolicy') ? {
   rollingUpgradeMonitoringPolicy: {
     failureAction: contains(upgradePolicy.rollingUpgradeMonitoringPolicy, 'failureAction') ? upgradePolicy.rollingUpgradeMonitoringPolicy.failureAction : 'Manual'
     healthCheckRetryTimeout: contains(upgradePolicy.rollingUpgradeMonitoringPolicy, 'healthCheckRetryTimeout') ? upgradePolicy.rollingUpgradeMonitoringPolicy.healthCheckRetryTimeout : null
@@ -74,19 +74,19 @@ var upgradePolicy_var = union({
     upgradeDomainTimeout: contains(upgradePolicy.rollingUpgradeMonitoringPolicy, 'upgradeDomainTimeout') ? upgradePolicy.rollingUpgradeMonitoringPolicy.upgradeDomainTimeout : null
     upgradeTimeout: contains(upgradePolicy.rollingUpgradeMonitoringPolicy, 'upgradeTimeout') ? upgradePolicy.rollingUpgradeMonitoringPolicy.upgradeTimeout : null
   }
-} : {}, contains(upgradePolicy, 'applicationHealthPolicy') ? union({
-  applicationHealthPolicy: {
+} : {}), (contains(upgradePolicy, 'applicationHealthPolicy') ? {
+  applicationHealthPolicy: union({
     considerWarningAsError: contains(upgradePolicy.applicationHealthPolicy, 'considerWarningAsError') ? upgradePolicy.applicationHealthPolicy.considerWarningAsError : false
     maxPercentUnhealthyDeployedApplications: contains(upgradePolicy.applicationHealthPolicy, 'maxPercentUnhealthyDeployedApplications') ? upgradePolicy.applicationHealthPolicy.maxPercentUnhealthyDeployedApplications : 0
     serviceTypeHealthPolicyMap: contains(upgradePolicy.applicationHealthPolicy, 'serviceTypeHealthPolicyMap') ? upgradePolicy.applicationHealthPolicy.serviceTypeHealthPolicyMap : {}
-  }
-}, contains(upgradePolicy.applicationHealthPolicy, 'defaultServiceTypeHealthPolicy') ? {
-  defaultServiceTypeHealthPolicy: {
-    maxPercentUnhealthyPartitionsPerService: contains(upgradePolicy.applicationHealthPolicy.defaultServiceTypeHealthPolicy, 'maxPercentUnhealthyPartitionsPerService') ? upgradePolicy.applicationHealthPolicy.defaultServiceTypeHealthPolicy.maxPercentUnhealthyPartitionsPerService : 0
-    maxPercentUnhealthyReplicasPerPartition: contains(upgradePolicy.applicationHealthPolicy.defaultServiceTypeHealthPolicy, 'maxPercentUnhealthyReplicasPerPartition') ? upgradePolicy.applicationHealthPolicy.defaultServiceTypeHealthPolicy.maxPercentUnhealthyReplicasPerPartition : 0
-    maxPercentUnhealthyServices: contains(upgradePolicy.applicationHealthPolicy.defaultServiceTypeHealthPolicy, 'maxPercentUnhealthyServices') ? upgradePolicy.applicationHealthPolicy.defaultServiceTypeHealthPolicy.maxPercentUnhealthyServices : 0
-  }
-} : {}) : {})
+  }, (contains(upgradePolicy.applicationHealthPolicy, 'defaultServiceTypeHealthPolicy') ? {
+    defaultServiceTypeHealthPolicy: {
+      maxPercentUnhealthyPartitionsPerService: contains(upgradePolicy.applicationHealthPolicy.defaultServiceTypeHealthPolicy, 'maxPercentUnhealthyPartitionsPerService') ? upgradePolicy.applicationHealthPolicy.defaultServiceTypeHealthPolicy.maxPercentUnhealthyPartitionsPerService : 0
+      maxPercentUnhealthyReplicasPerPartition: contains(upgradePolicy.applicationHealthPolicy.defaultServiceTypeHealthPolicy, 'maxPercentUnhealthyReplicasPerPartition') ? upgradePolicy.applicationHealthPolicy.defaultServiceTypeHealthPolicy.maxPercentUnhealthyReplicasPerPartition : 0
+      maxPercentUnhealthyServices: contains(upgradePolicy.applicationHealthPolicy.defaultServiceTypeHealthPolicy, 'maxPercentUnhealthyServices') ? upgradePolicy.applicationHealthPolicy.defaultServiceTypeHealthPolicy.maxPercentUnhealthyServices : 0
+    }
+  } : {}))
+} : {}))
 
 module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   name: 'pid-${cuaId}'

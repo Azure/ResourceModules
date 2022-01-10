@@ -145,7 +145,7 @@
         "applications": {
             "value": [
                 {
-                    "name": "serviceFabricClusterApplication01",
+                    "name": "Voting",
                     "identity": {
                         "type": "None",
                         "userAssignedIdentities": {}
@@ -165,11 +165,9 @@
                             "totalApplicationCapacity": null
                         }
                     ],
-                    "minimumNodes": null,
-                    "parameters": {},
-                    "removeApplicationCapacity": "",
-                    "typeName": "DotNetCore",
-                    "typeVersion": "VersionOne",
+                    "removeApplicationCapacity": false,
+                    "typeName": "VotingType",
+                    "typeVersion": "1.0.0",
                     "upgradePolicy": {
                         "applicationHealthPolicy": {
                             "considerWarningAsError": "",
@@ -209,19 +207,20 @@
                     }
                 }
             ]
-        } //,
-        // "applicationTypes": {
-        //     "value": [
-        //         {
-        //             "name": "DotNetCore",
-        //             "versions": [
-        //                 {
-        //                     "name": "VersionTwo",
-        //                     "appPackageUrl": "https://github.com/Azure-Samples/service-fabric-wordcount/raw/master/WordCountV2.sfpkg"
-        //                 }
-        //             ]
-        //         }
-        //     ]
-        // }
+        },
+        "applicationTypes": {
+            "value": [
+                {
+                    "name": "VotingType",
+                    "versions": [
+                        {
+                            "name": "1.0.0",
+                            // "appPackageUrl": "https://github.com/Azure-Samples/service-fabric-wordcount/raw/master/WordCountV2.sfpkg"
+                            "appPackageUrl": "https://servicefabricapps.blob.core.windows.net/apps/Voting.sfpkg"
+                        }
+                    ]
+                }
+            ]
+        }
     }
 }
