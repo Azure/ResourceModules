@@ -5,12 +5,6 @@
         "name": {
             "value": "sxx-az-sfc-min-001"
         },
-        // "certificate": { // Mutual exclusive with the other cert specs
-        //     "value": {
-        //         "thumbprint": "0AC113D5E1D94C401DDEB0EE2B1B96CC130",
-        //         "x509StoreName": "My"
-        //     }
-        // },
         "managementEndpoint": {
             "value": "https://sxx-az-sfc-weu-x-001.westeurope.cloudapp.azure.com:19080"
         },
