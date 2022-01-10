@@ -22,13 +22,13 @@
         "maxUnusedVersionsToKeep": {
             "value": 2
         },
-        // "azureActiveDirectory": {
-        //     "value": {
-        //         "clientApplication": "",
-        //         "clusterApplication": "",
-        //         "tenantId": ""
-        //     }
-        // },
+        "azureActiveDirectory": {
+            "value": {
+                "clientApplication": "e58511af-4da2-449c-a5cd-6a10271cfb83",
+                "clusterApplication": "cf33fea8-b30f-424f-ab73-c48d99e0b222",
+                "tenantId": "449fbe1d-9c99-4509-9014-4fd5cf25b014"
+            }
+        },
         // "certificate": { // Mutual exclusive with the other cert specs
         //     "value": {
         //         "thumbprint": "0AC113D5E1D94C401DDEB0EE2B1B96CC130",
