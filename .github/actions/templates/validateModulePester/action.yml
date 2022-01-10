@@ -18,7 +18,8 @@ runs:
 
         # Set agent up
         $Modules = @(
-            @{ Name = 'Pester'; Version = '5.3.0' }
+            # @{ Name = 'Pester'; Version = '5.3.0' }
+            @{ Name = 'Az.Resources' }
         )
         Set-EnvironmentOnAgent -Modules $Modules
 
