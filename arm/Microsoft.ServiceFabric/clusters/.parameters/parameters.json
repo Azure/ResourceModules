@@ -70,16 +70,15 @@
                 }
             ]
         },
-        // "diagnosticsStorageAccountConfig": {
-        //     "value": {
-        //         "blobEndpoint": "",
-        //         "protectedAccountKeyName": "",
-        //         "protectedAccountKeyName2": "",
-        //         "queueEndpoint": "",
-        //         "storageAccountName": "",
-        //         "tableEndpoint": ""
-        //     }
-        // },
+        "diagnosticsStorageAccountConfig": {
+            "value": {
+                "blobEndpoint": "https://adpsxxazsaweux001.blob.core.windows.net/",
+                "protectedAccountKeyName": "StorageAccountKey1",
+                "queueEndpoint": "https://adpsxxazsaweux001.queue.core.windows.net/",
+                "storageAccountName": "adpsxxazsaweux001",
+                "tableEndpoint": "https://adpsxxazsaweux001.table.core.windows.net/"
+            }
+        },
         "fabricSettings": {
             "value": [
                 {
@@ -91,16 +90,6 @@
                         }
                     ]
                 }
-                // ,
-                // {
-                //     "name": "ManagedIdentityTokenService",
-                //     "parameters": [
-                //         {
-                //             "name": "IsEnabled",
-                //             "value": "true"
-                //         }
-                //     ]
-                // }
             ]
         },
         "managementEndpoint": {
