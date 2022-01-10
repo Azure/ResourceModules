@@ -135,12 +135,6 @@ param roleAssignments array = []
 @description('Optional. Array of Service Fabric cluster application types.')
 param applicationTypes array = []
 
-var certificate_var = {
-  thumbprint: contains(certificate, 'thumbprint') ? certificate.thumbprint : null
-  thumbprintSecondary: contains(certificate, 'thumbprintSecondary') ? certificate.thumbprintSecondary : null
-  x509StoreName: contains(certificate, 'x509StoreName') ? certificate.x509StoreName : null
-}
-
 var clientCertificateCommonNames_var = [for clientCertificateCommonName in clientCertificateCommonNames: {
   certificateCommonName: contains(clientCertificateCommonName, 'certificateCommonName') ? clientCertificateCommonName.certificateCommonName : null
   certificateIssuerThumbprint: contains(clientCertificateCommonName, 'certificateIssuerThumbprint') ? clientCertificateCommonName.certificateIssuerThumbprint : null
@@ -151,15 +145,6 @@ var clientCertificateThumbprints_var = [for clientCertificateThumbprint in clien
   certificateThumbprint: contains(clientCertificateThumbprint, 'certificateThumbprint') ? clientCertificateThumbprint.certificateThumbprint : null
   isAdmin: contains(clientCertificateThumbprint, 'isAdmin') ? clientCertificateThumbprint.isAdmin : false
 }]
-
-var diagnosticsStorageAccountConfig_var = {
-  blobEndpoint: contains(diagnosticsStorageAccountConfig, 'blobEndpoint') ? diagnosticsStorageAccountConfig.blobEndpoint : null
-  protectedAccountKeyName: contains(diagnosticsStorageAccountConfig, 'protectedAccountKeyName') ? diagnosticsStorageAccountConfig.protectedAccountKeyName : null
-  protectedAccountKeyName2: contains(diagnosticsStorageAccountConfig, 'protectedAccountKeyName2') ? diagnosticsStorageAccountConfig.protectedAccountKeyName2 : null
-  queueEndpoint: contains(diagnosticsStorageAccountConfig, 'queueEndpoint') ? diagnosticsStorageAccountConfig.queueEndpoint : null
-  storageAccountName: contains(diagnosticsStorageAccountConfig, 'storageAccountName') ? diagnosticsStorageAccountConfig.storageAccountName : null
-  tableEndpoint: contains(diagnosticsStorageAccountConfig, 'tableEndpoint') ? diagnosticsStorageAccountConfig.tableEndpoint : null
-}
 
 var fabricSettings_var = [for fabricSetting in fabricSettings: {
   name: contains(fabricSetting, 'name') ? fabricSetting.name : null
@@ -194,21 +179,6 @@ var notifications_var = [for notification in notifications: {
   notificationLevel: contains(notification, 'notificationLevel') ? notification.notificationLevel : 'All'
   notificationTargets: contains(notification, 'notificationTargets') ? notification.notificationTargets : []
 }]
-
-var reverseProxyCertificate_var = {
-  thumbprint: contains(reverseProxyCertificate, 'thumbprint') ? reverseProxyCertificate.thumbprint : null
-  thumbprintSecondary: contains(reverseProxyCertificate, 'thumbprintSecondary') ? reverseProxyCertificate.thumbprintSecondary : null
-  x509StoreName: contains(reverseProxyCertificate, 'x509StoreName') ? reverseProxyCertificate.x509StoreName : null
-}
-
-var reverseProxyCertificateCommonNamesList_var = [for reverseProxyCertificateCommonName in items(reverseProxyCertificateCommonNames): {
-  commonNames: contains(reverseProxyCertificateCommonName.key, 'commonNames') ? reverseProxyCertificateCommonName.value.commonNames : []
-}]
-
-var reverseProxyCertificateCommonNames_var = {
-  commonNames: contains(reverseProxyCertificateCommonNames, 'commonNames') ? reverseProxyCertificateCommonNamesList_var : []
-  x509StoreName: contains(reverseProxyCertificateCommonNames, 'x509StoreName') ? reverseProxyCertificateCommonNames.x509StoreName : null
-}
 
 var upgradeDescription_var = union({
   deltaHealthPolicy: {
@@ -252,15 +222,26 @@ resource serviceFabricCluster 'Microsoft.ServiceFabric/clusters@2021-06-01' = {
       clusterApplication: contains(azureActiveDirectory, 'clusterApplication') ? azureActiveDirectory.clusterApplication : null
       tenantId: contains(azureActiveDirectory, 'tenantId') ? azureActiveDirectory.tenantId : null
     } : null
-    certificate: !empty(certificate) ? certificate_var : null
-    certificateCommonNames: !empty(certificateCommonNames.commonNames) ? {
-      commonNames: certificateCommonNames.commonNames
+    certificate: !empty(certificate) ? {
+      thumbprint: contains(certificate, 'thumbprint') ? certificate.thumbprint : null
+      thumbprintSecondary: contains(certificate, 'thumbprintSecondary') ? certificate.thumbprintSecondary : null
+      x509StoreName: contains(certificate, 'x509StoreName') ? certificate.x509StoreName : null
+    } : null
+    certificateCommonNames: !empty(certificateCommonNames) ? {
+      commonNames: contains(certificateCommonNames, 'commonNames') ? certificateCommonNames.commonNames : null
       x509StoreName: contains(certificateCommonNames, 'certificateCommonNamesx509StoreName') ? certificateCommonNames.certificateCommonNamesx509StoreName : null
     } : null
     clientCertificateCommonNames: !empty(clientCertificateCommonNames) ? clientCertificateCommonNames_var : null
     clientCertificateThumbprints: !empty(clientCertificateThumbprints) ? clientCertificateThumbprints_var : null
     clusterCodeVersion: !empty(clusterCodeVersion) ? clusterCodeVersion : null
-    diagnosticsStorageAccountConfig: !empty(diagnosticsStorageAccountConfig) ? diagnosticsStorageAccountConfig_var : null
+    diagnosticsStorageAccountConfig: !empty(diagnosticsStorageAccountConfig) ? {
+      blobEndpoint: contains(diagnosticsStorageAccountConfig, 'blobEndpoint') ? diagnosticsStorageAccountConfig.blobEndpoint : null
+      protectedAccountKeyName: contains(diagnosticsStorageAccountConfig, 'protectedAccountKeyName') ? diagnosticsStorageAccountConfig.protectedAccountKeyName : null
+      protectedAccountKeyName2: contains(diagnosticsStorageAccountConfig, 'protectedAccountKeyName2') ? diagnosticsStorageAccountConfig.protectedAccountKeyName2 : null
+      queueEndpoint: contains(diagnosticsStorageAccountConfig, 'queueEndpoint') ? diagnosticsStorageAccountConfig.queueEndpoint : null
+      storageAccountName: contains(diagnosticsStorageAccountConfig, 'storageAccountName') ? diagnosticsStorageAccountConfig.storageAccountName : null
+      tableEndpoint: contains(diagnosticsStorageAccountConfig, 'tableEndpoint') ? diagnosticsStorageAccountConfig.tableEndpoint : null
+    } : null
     eventStoreServiceEnabled: eventStoreServiceEnabled
     fabricSettings: !empty(fabricSettings) ? fabricSettings_var : null
     infrastructureServiceManager: infrastructureServiceManager
@@ -268,8 +249,15 @@ resource serviceFabricCluster 'Microsoft.ServiceFabric/clusters@2021-06-01' = {
     nodeTypes: !empty(nodeTypes) ? nodeTypes_var : []
     notifications: !empty(notifications) ? notifications_var : null
     reliabilityLevel: !empty(reliabilityLevel) ? reliabilityLevel : 'None'
-    reverseProxyCertificate: !empty(reverseProxyCertificate) ? reverseProxyCertificate_var : null
-    reverseProxyCertificateCommonNames: !empty(reverseProxyCertificateCommonNames) ? reverseProxyCertificateCommonNames_var : null
+    reverseProxyCertificate: !empty(reverseProxyCertificate) ? {
+      thumbprint: contains(reverseProxyCertificate, 'thumbprint') ? reverseProxyCertificate.thumbprint : null
+      thumbprintSecondary: contains(reverseProxyCertificate, 'thumbprintSecondary') ? reverseProxyCertificate.thumbprintSecondary : null
+      x509StoreName: contains(reverseProxyCertificate, 'x509StoreName') ? reverseProxyCertificate.x509StoreName : null
+    } : null
+    reverseProxyCertificateCommonNames: !empty(reverseProxyCertificateCommonNames) ? {
+      commonNames: contains(reverseProxyCertificateCommonNames, 'commonNames') ? reverseProxyCertificateCommonNames.commonNames : null
+      x509StoreName: contains(reverseProxyCertificateCommonNames, 'x509StoreName') ? reverseProxyCertificateCommonNames.x509StoreName : null
+    } : null
     sfZonalUpgradeMode: !empty(sfZonalUpgradeMode) ? sfZonalUpgradeMode : null
     upgradeDescription: !empty(upgradeDescription) ? upgradeDescription_var : null
     upgradeMode: !empty(upgradeMode) ? upgradeMode : null

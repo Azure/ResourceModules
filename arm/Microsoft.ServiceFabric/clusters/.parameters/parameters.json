@@ -3,12 +3,12 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "sxx-az-sfc-weu-x-001"
+            "value": "sxx-az-sfc-x-001"
         },
         "tags": {
             "value": {
                 "resourceType": "Service Fabric",
-                "clusterName": "sxx-az-sfc-weu-x-001"
+                "clusterName": "sxx-az-sfc-x-001"
             }
         },
         "addOnFeatures": {
@@ -71,6 +71,17 @@
                     "isAdmin": false
                 }
             ]
+        },
+        "reverseProxyCertificateCommonNames": {
+            "value": {
+                "commonNames": [
+                    {
+                        "certificateCommonName": "carml.com",
+                        "certificateIssuerThumbprint": "12529211F8F14C90AFA9532AD79A6F2CA1C00622"
+                    }
+                ],
+                "x509StoreName": "My"
+            }
         },
         "diagnosticsStorageAccountConfig": {
             "value": {
@@ -201,10 +212,10 @@
             ]
         }
         // ,
-        // "applicationTypes": { // not idempotent?
+        // "applicationTypes": {
         //     "value": [
         //         {
-        //             "name": "WordCount"
+        //             "name": "WordCount" // not idempotent
         //         }
         //     ]
         // }
