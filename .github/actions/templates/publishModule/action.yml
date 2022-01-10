@@ -50,7 +50,11 @@ runs:
         . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
 
         # Set agent up
-        Set-EnvironmentOnAgent
+        $Modules = @(
+            @{ Name = 'Az.Resources' },
+            @{ Name = 'Az.ContainerRegistry' }
+        )
+        Set-EnvironmentOnAgent -Modules $Modules
 
     - name: Azure Login
       uses: Azure/login@v1

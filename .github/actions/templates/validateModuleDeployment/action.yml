@@ -38,20 +38,19 @@ runs:
 
         # Set agent up
         $Modules = @(
-            @{ Name = 'Az.Resources' }
+            @{ Name = 'Az.Resources' },
+            @{ Name = 'Az.Accounts' }
         )
         if (${{ inputs.removeDeployment }}) {
           $Modules+= @(
-            #@{ Name = 'Az.Accounts' },
-            #@{ Name = 'Az.Compute' },
-            #@{ Name = 'Az.NetAppFiles' },
+            @{ Name = 'Az.CognitiveServices' },
+            @{ Name = 'Az.Compute' },
+            @{ Name = 'Az.KeyVault' },
+            @{ Name = 'Az.Monitor' },
+            @{ Name = 'Az.OperationalInsights' },
+            @{ Name = 'Az.RecoveryServices' }
             #@{ Name = 'Az.Network' },
             #@{ Name = 'Az.ContainerRegistry' },
-            #@{ Name = 'Az.KeyVault' },
-            #@{ Name = 'Az.RecoveryServices' },
-            #@{ Name = 'Az.Monitor' },
-            @{ Name = 'Az.CognitiveServices' }
-            #@{ Name = 'Az.OperationalInsights' }
           )
         }
         Set-EnvironmentOnAgent -Modules $Modules
