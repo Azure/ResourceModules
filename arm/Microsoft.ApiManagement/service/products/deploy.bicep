@@ -73,13 +73,13 @@ module group 'groups/deploy.bicep' = [for (group, index) in groups: {
 }]
 
 @description('The resource ID of the API management service product')
-output productResourceId string = product.id
+output resourceId string = product.id
 
 @description('The name of the API management service product')
-output productName string = product.name
+output name string = product.name
 
 @description('The resource group the API management service product was deployed into')
-output productResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name
 
 @description('The Resources IDs of the API management service product APIs')
 output productApisResourceIds array = [for productApi in apis: resourceId('Microsoft.ApiManagement/service/products/apis', apiManagementServiceName, name, productApi.name)]

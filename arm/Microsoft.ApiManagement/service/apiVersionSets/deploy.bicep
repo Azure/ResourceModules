@@ -26,10 +26,10 @@ resource apiVersionSet 'Microsoft.ApiManagement/service/apiVersionSets@2020-06-0
 }
 
 @description('The resource ID of the API Version set')
-output apiVersionSetResourceId string = apiVersionSet.id
+output resourceId string = apiVersionSet.id
 
 @description('The name of the API Version set')
-output apiVersionSetName string = apiVersionSet.name
+output name string = apiVersionSet.name
 
 @description('The resource group the API Version set was deployed into')
-output apiVersionSetResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name

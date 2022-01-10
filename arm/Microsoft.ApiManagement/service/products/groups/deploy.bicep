@@ -29,10 +29,10 @@ resource group 'Microsoft.ApiManagement/service/products/groups@2020-06-01-previ
 }
 
 @description('The resource ID of the product group')
-output groupResourceId string = group.id
+output resourceId string = group.id
 
 @description('The name of the product group')
-output groupName string = group.name
+output name string = group.name
 
 @description('The resource group the product group was deployed into')
-output groupResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name
