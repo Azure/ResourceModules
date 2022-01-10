@@ -320,32 +320,7 @@ module serviceFabricCluster_applicationTypes 'applicationTypes/deploy.bicep' = [
     name: applicationType.name
     serviceFabricClusterName: serviceFabricCluster.name
     tags: contains(applicationType, 'tags') ? applicationType.tags : {}
-    versions: contains(applicationType, 'versions') ? applicationType.versions : []
   }
-}]
-
-// Service Fabric cluster applications
-module serviceFabricCluster_applications 'applications/deploy.bicep' = [for application in applications: {
-  name: '${uniqueString(deployment().name, location)}-SFC-${application.name}'
-  params: {
-    serviceFabricClusterName: serviceFabricCluster.name
-    name: contains(application, 'name') ? application.name : 'defaultApplication'
-    identity: contains(application, 'identity') ? application.identity : {}
-    managedIdentities: contains(application, 'managedIdentities') ? application.managedIdentities : []
-    services: contains(application, 'applicationsServices') ? application.applicationsServices : []
-    tags: contains(application, 'tags') ? application.tags : {}
-    minimumNodes: contains(application, 'minimumNodes') ? application.minimumNodes : 0
-    maximumNodes: contains(application, 'maximumNodes') ? application.maximumNodes : 0
-    metrics: contains(application, 'metrics') ? application.metrics : []
-    parameters: contains(application, 'parameters') ? application.parameters : {}
-    removeApplicationCapacity: contains(application, 'removeApplicationCapacity') ? application.removeApplicationCapacity : false
-    typeName: contains(application, 'typeName') ? application.typeName : ''
-    typeVersion: contains(application, 'typeVersion') ? application.typeVersion : ''
-    upgradePolicy: contains(application, 'upgradePolicy') ? application.upgradePolicy : {}
-  }
-  dependsOn: [
-    serviceFabricCluster_applicationTypes
-  ]
 }]
 
 @description('The Service Fabric Cluster name.')

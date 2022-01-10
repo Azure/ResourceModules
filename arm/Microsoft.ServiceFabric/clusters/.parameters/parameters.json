@@ -142,83 +142,10 @@
                 }
             ]
         },
-        "applications": {
-            "value": [
-                {
-                    "name": "Voting",
-                    "identity": {
-                        "type": "None",
-                        "userAssignedIdentities": {}
-                    },
-                    "managedIdentities": [
-                        {
-                            "name": "Identity_Friendly_Name",
-                            "principalId": "e58511af-4da2-449c-a5cd-6a10271cfb83"
-                        }
-                    ],
-                    "maximumNodes": 2,
-                    "metrics": [
-                        {
-                            "maximumCapacity": null,
-                            "name": null,
-                            "reservationCapacity": null,
-                            "totalApplicationCapacity": null
-                        }
-                    ],
-                    "removeApplicationCapacity": false,
-                    "typeName": "VotingType",
-                    "typeVersion": "1.0.0",
-                    "upgradePolicy": {
-                        "applicationHealthPolicy": {
-                            "considerWarningAsError": "",
-                            "defaultServiceTypeHealthPolicy": {
-                                "maxPercentUnhealthyPartitionsPerService": null,
-                                "maxPercentUnhealthyReplicasPerPartition": null,
-                                "maxPercentUnhealthyServices": null
-                            },
-                            "maxPercentUnhealthyDeployedApplications": null,
-                            "serviceTypeHealthPolicyMap": {}
-                        },
-                        "forceRestart": "",
-                        "recreateApplication": "",
-                        "rollingUpgradeMonitoringPolicy": {
-                            "failureAction": null,
-                            "healthCheckRetryTimeout": null,
-                            "healthCheckStableDuration": null,
-                            "healthCheckWaitDuration": null,
-                            "upgradeDomainTimeout": null,
-                            "upgradeTimeout": null
-                        },
-                        "upgradeMode": "UnmonitoredAuto",
-                        "upgradeReplicaSetCheckTimeout": null
-                    },
-                    "services": {
-                        "value": [
-                            {
-                                "name": "Service01",
-                                "correlationScheme": [
-                                    {
-                                        "scheme": "Invalid",
-                                        "serviceName": "fabric:service01"
-                                    }
-                                ]
-                            }
-                        ]
-                    }
-                }
-            ]
-        },
         "applicationTypes": {
             "value": [
                 {
-                    "name": "VotingType",
-                    "versions": [
-                        {
-                            "name": "1.0.0",
-                            // "appPackageUrl": "https://github.com/Azure-Samples/service-fabric-wordcount/raw/master/WordCountV2.sfpkg"
-                            "appPackageUrl": "https://servicefabricapps.blob.core.windows.net/apps/Voting.sfpkg"
-                        }
-                    ]
+                    "name": "WordCount"
                 }
             ]
         }
