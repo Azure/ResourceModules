@@ -17,7 +17,10 @@ runs:
         . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
 
         # Set agent up
-        Set-EnvironmentOnAgent
+        $Modules = @(
+            @{ Name = 'Pester'; Version = '5.3.0' }
+        )
+        Set-EnvironmentOnAgent -Modules $Modules
 
     - name: Azure Login
       uses: Azure/login@v1
