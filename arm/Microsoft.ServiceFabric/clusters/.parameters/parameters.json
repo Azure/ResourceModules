@@ -13,8 +13,10 @@
         },
         "addOnFeatures": {
             "value": [
+                "RepairManager",
                 "DnsService",
-                "RepairManager"
+                "BackupRestoreService",
+                "ResourceMonitorService"
             ]
         },
         "maxUnusedVersionsToKeep": {
@@ -89,6 +91,15 @@
                             "value": "EncryptAndSign"
                         }
                     ]
+                },
+                {
+                    "name": "UpgradeService",
+                    "parameters": [
+                        {
+                            "name": "AppPollIntervalInSeconds",
+                            "value": "60"
+                        }
+                    ]
                 }
             ]
         },
@@ -113,9 +124,25 @@
                     "isPrimary": true,
                     "isStateless": false,
                     "multipleAvailabilityZones": false,
-                    "name": "001Node01",
+                    "name": "Node01",
                     "placementProperties": {},
                     "reverseProxyEndpointPort": "",
+                    "vmInstanceCount": 5
+                },
+                {
+                    "applicationPorts": {
+                        "endPort": 30000,
+                        "startPort": 20000
+                    },
+                    "clientConnectionEndpointPort": 19000,
+                    "durabilityLevel": "Bronze",
+                    "ephemeralPorts": {
+                        "endPort": 64000,
+                        "startPort": 49000
+                    },
+                    "httpGatewayEndpointPort": 19007,
+                    "isPrimary": true,
+                    "name": "Node02",
                     "vmInstanceCount": 5
                 }
             ]
