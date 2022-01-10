@@ -41,7 +41,7 @@ runs:
             @{ Name = 'Az.Resources' },
             @{ Name = 'Az.Accounts' }
         )
-        if (${{ inputs.removeDeployment == 'true'}}) {
+        if (${{ inputs.removeDeployment}} == 'true') {
           $Modules+= @(
             @{ Name = 'Az.CognitiveServices' },
             @{ Name = 'Az.Compute' },
