@@ -288,4 +288,4 @@ output serviceBusNamespaceName string = serviceBusNamespace.name
 output serviceBusConnectionString string = 'Endpoint=sb://${serviceBusNamespace.name}.servicebus.windows.net/;SharedAccessKeyName=${listkeys(resourceId('Microsoft.ServiceBus/namespaces/authorizationRules', serviceBusNamespace.name, 'RootManageSharedAccessKey'), '2017-04-01').primaryKey}'
 
 @description('The principal ID of the system assigned identity.')
-output systemAssignedPrincipalId string = systemAssignedIdentity ? serviceBusNamespace.identity.principalId : ''
+output systemAssignedPrincipalId string = systemAssignedIdentity && contains(serviceBusNamespace.identity, 'principalId') ? serviceBusNamespace.identity.principalId : ''

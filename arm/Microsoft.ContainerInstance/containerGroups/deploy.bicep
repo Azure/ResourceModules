@@ -126,4 +126,4 @@ output containerGroupResourceGroup string = resourceGroup().name
 output containerGroupIPv4Address string = containergroup.properties.ipAddress.ip
 
 @description('The principal ID of the system assigned identity.')
-output systemAssignedPrincipalId string = systemAssignedIdentity ? containergroup.identity.principalId : ''
+output systemAssignedPrincipalId string = systemAssignedIdentity && contains(containergroup.identity, 'principalId') ? containergroup.identity.principalId : ''

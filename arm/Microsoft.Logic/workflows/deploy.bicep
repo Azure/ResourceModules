@@ -221,4 +221,4 @@ output logicAppResourceGroup string = resourceGroup().name
 output logicAppResourceId string = logicApp.id
 
 @description('The principal ID of the system assigned identity.')
-output systemAssignedPrincipalId string = systemAssignedIdentity ? logicApp.identity.principalId : ''
+output systemAssignedPrincipalId string = systemAssignedIdentity && contains(logicApp.identity, 'principalId') ? logicApp.identity.principalId : ''
