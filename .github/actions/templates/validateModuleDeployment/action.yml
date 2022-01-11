@@ -152,11 +152,8 @@ runs:
         # Get deployment name
         Write-Output ('::set-output name={0}::{1}' -f 'deploymentName', $res.deploymentName)
 
-        # Populate further outputs
+        # Populate action output
         $deploymentOutputHash=@{}
-
-        $depOut = $res.deploymentOutput | ConvertTo-Json -Compress -Depth 100
-        Write-Verbose "Deployment output: $depOut" -Verbose
 
         foreach ($outputKey in $res.deploymentOutput.Keys) {
           Write-Output ('::set-output name={0}::{1}' -f $outputKey, $res.deploymentOutput[$outputKey].Value)
