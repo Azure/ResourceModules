@@ -78,7 +78,7 @@ Configure the current agent
 .DESCRIPTION
 Configure the current agent with e.g. the necessary PowerShell modules.
 
-.PARAMETER Modules
+.PARAMETER PSModules
 Optional. The PowerShell modules that should be installed on the agent.
 
 @(
@@ -93,7 +93,7 @@ Optional. The PowerShell modules that should be installed on the agent.
     @{ Name = 'Az.OperationalInsights' },
     @{
         Name = 'Pester'
-        Version = '5.3.0' # Version is optional
+        Version = '5.3.1' # Version is optional
     }
 )
 
