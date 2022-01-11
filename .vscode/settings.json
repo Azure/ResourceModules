@@ -1,45 +1,43 @@
 {
-    "[bicep]": {
-        "editor.insertSpaces": true,
-        "editor.tabSize": 2
-    },
-    "[markdown]": {
-        "files.encoding": "utf8"
-    },
-    "[powershell]": {
-        "editor.insertSpaces": true,
-        "editor.tabSize": 4,
-        "files.encoding": "utf8bom"
-    },
-    "[yaml]": {
-        "editor.insertSpaces": true,
-        "editor.tabSize": 2
-    },
-    "editor.formatOnPaste": true,
-    "editor.formatOnSave": true,
+  "[bicep]": {
     "editor.insertSpaces": true,
-    "files.insertFinalNewline": true,
-    "files.trimTrailingWhitespace": true,
-    "markdown.extension.orderedList.marker": "one",
-    "markdown.extension.tableFormatter.enabled": false,
-    "markdownlint.config": {
-        "MD034": true
-    },
-    "powershell.codeFormatting.autoCorrectAliases": true,
-    "powershell.codeFormatting.newLineAfterCloseBrace": false,
-    "powershell.codeFormatting.pipelineIndentationStyle": "IncreaseIndentationForFirstPipeline",
-    "powershell.codeFormatting.preset": "OTBS",
-    "powershell.codeFormatting.trimWhitespaceAroundPipe": true,
-    "powershell.codeFormatting.useConstantStrings": true,
-    "powershell.codeFormatting.useCorrectCasing": true,
-    "powershell.codeFormatting.whitespaceBetweenParameters": true,
-    "spellright.documentTypes": [
-        "markdown",
-        "latex",
-        "plaintext"
-    ],
-    "spellright.language": [
-        "en"
-    ],
-    "yaml.format.singleQuote": true
+    "editor.tabSize": 2
+  },
+  "[markdown]": {
+    "files.encoding": "utf8"
+  },
+  "[powershell]": {
+    "editor.insertSpaces": true,
+    "editor.tabSize": 4,
+    "files.encoding": "utf8bom"
+  },
+  "[yaml]": {
+    "editor.insertSpaces": true,
+    "editor.tabSize": 2
+  },
+  "editor.formatOnPaste": true,
+  "editor.formatOnSave": true,
+  "editor.insertSpaces": true,
+  "files.insertFinalNewline": true,
+  "files.trimTrailingWhitespace": true,
+  "markdown.extension.orderedList.marker": "one",
+  "markdown.extension.tableFormatter.enabled": false,
+  "markdownlint.config": {
+    "MD034": true,
+    "MD028": false,
+    "MD025": {
+      "front_matter_title": ""
+    }
+  },
+  "powershell.codeFormatting.autoCorrectAliases": true,
+  "powershell.codeFormatting.newLineAfterCloseBrace": false,
+  "powershell.codeFormatting.pipelineIndentationStyle": "IncreaseIndentationForFirstPipeline",
+  "powershell.codeFormatting.preset": "OTBS",
+  "powershell.codeFormatting.trimWhitespaceAroundPipe": true,
+  "powershell.codeFormatting.useConstantStrings": true,
+  "powershell.codeFormatting.useCorrectCasing": true,
+  "powershell.codeFormatting.whitespaceBetweenParameters": true,
+  "spellright.documentTypes": ["markdown", "latex", "plaintext"],
+  "spellright.language": ["en"],
+  "yaml.format.singleQuote": true
 }

@@ -11,7 +11,8 @@ This section gives you an overview of how to interact with the platform pipeline
   - [Operate the module pipelines](#operate-the-module-pipelines)
   - [Operate the dependency pipelines](#operate-the-dependency-pipeline)
 - [DevOps-Tool-specific](#devops-tool-specific-guidance)
-  - [GitHub Workflows](#github-workflows)
+  - [GitHub workflows](#github-workflows)
+  - [Azure DevOps pipelines](#azure-devops-pipelines)
 
 ---
 
@@ -71,13 +72,13 @@ To add a new module pipeline we recommend to create a copy of a currently existi
 
 This section will give you guidance on how to operate the pipelines on a specific DevOps platform (for example GitHub or Azure DevOps).
 
-## GitHub Workflows
+## GitHub workflows
 
-This section focuses on GitHub Actions & Workflows.
+This section focuses on _GitHub_ Actions & Workflows.
 
 ### Trigger a pipeline
 
-To trigger a pipeline in GitHub, first navigate to the 'Actions' tab in your repository.
+To trigger a pipeline in _GitHub_, first navigate to the 'Actions' tab in your repository.
 
 <img src="./media/ghActionsTab.png" alt="Actions tab" height="100">
 
@@ -85,9 +86,59 @@ then select the pipeline of your choice from the list on the left, followed by '
 
 <img src="./media/gHtriggerPipeline.png" alt="Run workflow" height="350">
 
-Depending on the pipeline you selected you may have additional input parameters you can provide aside from the branch:
-- [Module pipeline](./TestingDesign#module-pipeline-inputs) inputs
+Depending on the pipeline you selected you may have additional input parameters you can provide aside from the branch. An outline can be found [here](./PipelinesDesign#module-pipeline-inputs).
 
 ### Register a pipeline
 
-To register a pipeline in GitHub you have to create the workflow file (`.yml`) and store it inside the folder `.github/workflows`. Once merged to [main\|master], GitHub will automatically list the new workflow in the 'Actions' tab.
+To register a workflow in _GitHub_ you have to create the workflow file (`.yml`) and store it inside the folder `.github/workflows`.
+> ***Note:*** Once merged to [main\|master], GitHub will automatically list the new workflow in the 'Actions' tab.
+
+## Azure DevOps pipelines
+
+This sections focuses on _Azure DevOps_ pipelines.
+
+### Trigger a pipeline
+
+To trigger a pipeline in _Azure DevOps_, first navigate to the 'Pipelines' section (blue rocket) and select the pipeline you want to trigger.
+
+<img src="./media/pipelineStart.png" alt="Pipeline start step 1" height="200">
+
+Once selected, click on the 'Run pipeline' button on the top right.
+
+<img src="./media/pipelineStart2.png" alt="Pipeline start step 2" height="60">
+
+Now you can trigger the pipeline by selecting the 'Run' button on the bottom right.
+
+<img src="./media/pipelineStart3.png" alt="Pipeline start step 3" height="400">
+
+Depending on the pipeline you selected you may have additional input parameters you can provide aside from the branch. An outline can be found [here](./PipelinesDesign#module-pipeline-inputs).
+
+### Register a YAML pipeline
+
+To register a pipeline in _Azure DevOps_ you first have to create a workflow file (.yml) and upload it to a repository of your choice (e.g. in _Azure DevOps_ or _GitHub_).
+
+Then, navigate to the 'Pipelines' section (blue rocket) and select the 'New pipeline' button on the top right.
+
+<img src="./media/pipelineNew.png" alt="Register new pipeline step 1" height="200">
+
+Next, select the repository-type you stored your template in. _Azure DevOps_ will then try to fetch all repositories you have access to.
+
+<img src="./media/pipelineNew2.png" alt="Register new pipeline step 2" height="300">
+
+Now we have to select the particular repository to get the pipeline file from.
+
+<img src="./media/pipelineNew3.png" alt="Register new pipeline step 3" height="240">
+
+Following, choose 'Existing Azure Pipelines YAML file' on the bottom of the list.
+
+<img src="./media/pipelineNew4.png" alt="Register new pipeline step 4" height="430">
+
+The previous action will open a new blade that asks you for the branch you stored the pipeline file in (e.g. `master`) and then asks for the relative path (from root of the repository) of the pipeline file.
+
+<img src="./media/pipelineNew5.png" alt="Register new pipeline step 5" height="240">
+
+Finally, _Azure DevOps_ should show you the pipeline file you created. The last thing you have to do is to either select 'Run' on the top right (which will save & run the pipeline), or click the little arrow next to it and just save the pipeline.
+
+Once saved you can also re-name / move the pipeline in the same view. However, this only works once you saved the pipeline at least once.
+
+<img src="./media/pipelineNew6.png" alt="Register new pipeline step 6" height="180">

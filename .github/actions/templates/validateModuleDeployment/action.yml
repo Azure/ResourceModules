@@ -1,0 +1,181 @@
+name: 'Deploy module'
+description: 'Deploy module'
+
+inputs:
+  templateFilePath:
+    description: 'The path to the template file to use for deployment'
+    required: true
+  parameterFilePath:
+    description: 'The path to the parameter file to use for deployment'
+    required: true
+  location:
+    description: 'The location to use for deployment'
+    required: true
+  resourceGroupName:
+    description: 'The resource group to deploy to'
+    required: false
+  subscriptionId:
+    description: 'The subscriptionId to deploy to'
+    required: false
+  managementGroupId:
+    description: 'The managementGroupId to deploy to'
+    required: false
+  removeDeployment:
+    description: 'Set "true" to set module up for removal'
+    default: 'true'
+    required: false
+
+runs:
+  using: 'composite'
+  steps:
+    # [Setup] task(s)
+    # ---------------
+    - name: 'Setup agent'
+      shell: pwsh
+      run: |
+        # Load used functions
+        . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
+
+        # Define PS modules to install on the runner
+        $Modules = @(
+            @{ Name = 'Az.Accounts' },
+            @{ Name = 'Az.Resources' }
+        )
+
+        # Additional PS modules need to be installed for the removal step in case it is enabled
+        if ('${{ inputs.removeDeployment}}' -eq 'true') {
+          $Modules += @(
+            @{ Name = 'Az.CognitiveServices' },
+            @{ Name = 'Az.Compute' },
+            @{ Name = 'Az.KeyVault' },
+            @{ Name = 'Az.Monitor' },
+            @{ Name = 'Az.OperationalInsights' },
+            @{ Name = 'Az.RecoveryServices' }
+          )
+        }
+
+        # Set agent up
+        Set-EnvironmentOnAgent -PSModules $Modules
+    - name: Azure Login
+      uses: Azure/login@v1
+      with:
+        creds: ${{ env.AZURE_CREDENTIALS }}
+        enable-AzPSSession: true
+
+    # [Token replacement] task(s)
+    # ---------------------------
+    - name: 'Replace Parameter File Tokens [${{ inputs.parameterFilePath }}] '
+      shell: pwsh
+      run: |
+        # Load used functions
+        . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInParameterFile.ps1')
+
+        # Load Settings File
+        $Settings = Get-Content -Path "settings.json" | ConvertFrom-Json
+        # Initialize Default Parameter File Tokens
+        $DefaultParameterFileTokens = @(
+            @{ Name = 'resourceGroupName'; Value = '${{ inputs.resourceGroupName }}' }
+            @{ Name = 'subscriptionId'; Value = '${{ inputs.subscriptionId }}' }
+            @{ Name = 'managementGroupId'; Value = '${{ inputs.managementGroupId }}' }
+            @{ Name = "tenantId"; Value = '${{ env.ARM_TENANT_ID }}' }
+            @{ Name = "deploymentSpId"; Value = '${{ env.DEPLOYMENT_SP_ID }}' }
+        )
+
+        $DefaultParameterFileTokens = $DefaultParameterFileTokens | ForEach-Object { [PSCustomObject]$PSItem }
+
+        # Construct Token Function Input
+        $ConvertTokensInputs = @{
+            ParameterFilePath                 = '${{ inputs.parameterFilePath }}'
+            DefaultParameterFileTokens        = $DefaultParameterFileTokens
+            LocalCustomParameterFileTokens    = $Settings.parameterFileTokens.localTokens.tokens
+            TokenPrefix                       = $Settings.parameterFileTokens.tokenPrefix
+            TokenSuffix                       = $Settings.parameterFileTokens.tokenSuffix
+        }
+        # Invoke Token Replacement Functionality
+        $null = Convert-TokensInParameterFile @ConvertTokensInputs -Verbose
+
+    # [Deployment validation] task(s)
+    # -------------------------------
+    - name: 'Validate [${{ inputs.templateFilePath }}]'
+      shell: pwsh
+      run: |
+        # Load used functions
+        . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourceValidation' 'Test-TemplateWithParameterFile.ps1')
+
+        # ----------- #
+        # INVOKE TEST #
+        # ----------- #
+        $functionInput = @{
+          templateFilePath   = '${{ inputs.templateFilePath }}'
+          parameterFilePath  = '${{ inputs.parameterFilePath }}'
+          location           = '${{ inputs.location }}'
+          resourceGroupName  = '${{ inputs.resourceGroupName }}'
+          subscriptionId     = '${{ inputs.subscriptionId }}'
+          managementGroupId  = '${{ inputs.managementGroupId }}'
+        }
+
+        Write-Verbose "Invoke task with" -Verbose
+        Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
+
+        Test-TemplateWithParameterFile @functionInput -Verbose
+
+    # [Deployment execution] task(s)
+    # ------------------------------
+    - name: 'Deploy [${{ inputs.templateFilePath }}] with parameters [${{ inputs.parameterFilePath }}]'
+      shell: pwsh
+      id: deploy_step
+      run: |
+        # Load used functions
+        . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourceDeployment' 'New-ModuleDeployment.ps1')
+
+        $functionInput = @{
+          templateFilePath   = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.templateFilePath }}'
+          parameterFilePath  = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.parameterFilePath }}'
+          location           = '${{ inputs.location }}'
+          resourceGroupName  = '${{ inputs.resourceGroupName }}'
+          subscriptionId     = '${{ inputs.subscriptionId }}'
+          managementGroupId  = '${{ inputs.managementGroupId }}'
+          doNotThrow         = $true
+        }
+
+        Write-Verbose "Invoke task with" -Verbose
+        Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
+
+        # Invoke deployment
+        $res = New-ModuleDeployment @functionInput -Verbose
+
+        # Get deployment name
+        Write-Output ('::set-output name={0}::{1}' -f 'deploymentName', $res.deploymentName)
+
+        # Populate further outputs
+        foreach ($outputKey in $res.deploymentOutput.Keys) {
+            Write-Output ('::set-output name={0}::{1}' -f $outputKey, $res.deploymentOutput[$outputKey].Value)
+        }
+
+        if ($res.ContainsKey('exception')) {
+          # Happens only if there is an exception
+          throw $res.exception
+        }
+
+    # [Deployment removal] task(s)
+    # ----------------------------
+    - name: 'Remove [${{ inputs.templateFilePath }}] from parameters [${{ inputs.parameterFilePath }}]'
+      shell: pwsh
+      if: ${{ always() && inputs.removeDeployment == 'true' && steps.deploy_step.outputs.deploymentName != '' }}
+      run: |
+        # Load used function
+        . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourceRemoval' 'Initialize-DeploymentRemoval.ps1')
+
+        if (-not [String]::IsNullOrEmpty('${{ steps.deploy_step.outputs.deploymentName }}')) {
+          $functionInput = @{
+            DeploymentName    = '${{ steps.deploy_step.outputs.deploymentName }}'
+            TemplateFilePath  = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.templateFilePath }}'
+            ResourceGroupName = '${{ inputs.resourceGroupName }}'
+            Verbose           = $true
+          }
+
+          Write-Verbose 'Invoke task with' -Verbose
+          Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
+
+          Initialize-DeploymentRemoval @functionInput
+        }

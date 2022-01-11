@@ -340,7 +340,40 @@ module managedCluster_agentPools 'agentPools/deploy.bicep' = [for (agentPool, in
   params: {
     managedClusterName: managedCluster.name
     name: agentPool.name
-    agentPoolProperties: agentPool.properties
+    availabilityZones: contains(agentPool, 'availabilityZones') ? agentPool.availabilityZones : []
+    count: contains(agentPool, 'count') ? agentPool.count : 1
+    sourceResourceId: contains(agentPool, 'sourceResourceId') ? agentPool.sourceResourceId : ''
+    enableAutoScaling: contains(agentPool, 'enableAutoScaling') ? agentPool.enableAutoScaling : false
+    enableEncryptionAtHost: contains(agentPool, 'enableEncryptionAtHost') ? agentPool.enableEncryptionAtHost : false
+    enableFIPS: contains(agentPool, 'enableFIPS') ? agentPool.enableFIPS : false
+    enableNodePublicIP: contains(agentPool, 'enableNodePublicIP') ? agentPool.enableNodePublicIP : false
+    enableUltraSSD: contains(agentPool, 'enableUltraSSD') ? agentPool.enableUltraSSD : false
+    gpuInstanceProfile: contains(agentPool, 'gpuInstanceProfile') ? agentPool.gpuInstanceProfile: ''
+    kubeletDiskType: contains(agentPool, 'kubeletDiskType') ? agentPool.kubeletDiskType : ''
+    maxCount: contains(agentPool, 'maxCount') ? agentPool.maxCount : -1
+    maxPods: contains(agentPool, 'maxPods') ? agentPool.maxPods : -1
+    minCount: contains(agentPool, 'minCount') ? agentPool.minCount : -1
+    mode: contains(agentPool, 'mode') ? agentPool.mode: ''
+    nodeLabels: contains(agentPool, 'nodeLabels') ? agentPool.nodeLabels : {}
+    nodePublicIpPrefixId: contains(agentPool, 'nodePublicIpPrefixId') ? agentPool.nodePublicIpPrefixId: ''
+    nodeTaints: contains(agentPool, 'nodeTaints') ? agentPool.nodeTaints : []
+    orchestratorVersion: contains(agentPool, 'orchestratorVersion') ? agentPool.orchestratorVersion: ''
+    osDiskSizeGB: contains(agentPool, 'osDiskSizeGB') ? agentPool.osDiskSizeGB: -1
+    osDiskType: contains(agentPool, 'osDiskType') ? agentPool.osDiskType: ''
+    osSku: contains(agentPool, 'osSku') ? agentPool.osSku : ''
+    osType: contains(agentPool, 'osType') ? agentPool.osType : 'Linux'
+    podSubnetId: contains(agentPool, 'podSubnetId') ? agentPool.podSubnetId : ''
+    proximityPlacementGroupId: contains(agentPool, 'proximityPlacementGroupId') ? agentPool.proximityPlacementGroupId : ''
+    scaleDownMode: contains(agentPool, 'scaleDownMode') ? agentPool.scaleDownMode: 'Delete'
+    scaleSetEvictionPolicy: contains(agentPool, 'scaleSetEvictionPolicy') ? agentPool.scaleSetEvictionPolicy : 'Delete'
+    scaleSetPriority: contains(agentPool, 'scaleSetPriority') ? agentPool.scaleSetPriority : ''
+    spotMaxPrice: contains(agentPool, 'spotMaxPrice') ? agentPool.spotMaxPrice : -1
+    tags: contains(agentPool, 'tags') ? agentPool.tags : {}
+    type: contains(agentPool, 'type') ? agentPool.type : ''
+    maxSurge: contains(agentPool, 'maxSurge') ? agentPool.maxSurge : ''
+    vmSize: contains(agentPool, 'vmSize') ? agentPool.vmSize : 'Standard_D2s_v3'
+    vnetSubnetId: contains(agentPool, 'vnetSubnetId') ? agentPool.vnetSubnetId : ''
+    workloadRuntime: contains(agentPool, 'workloadRuntime') ? agentPool.workloadRuntime : ''
   }
 }]
 
@@ -353,15 +386,15 @@ resource managedCluster_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lo
   scope: managedCluster
 }
 
-resource managedCluster_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2017-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId)) || (!empty(eventHubAuthorizationRuleId)) || (!empty(eventHubName))) {
+resource managedCluster_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId)) || (!empty(eventHubAuthorizationRuleId)) || (!empty(eventHubName))) {
   name: '${managedCluster.name}-diagnosticSettings'
   properties: {
-    storageAccountId: (empty(diagnosticStorageAccountId) ? null : diagnosticStorageAccountId)
-    workspaceId: (empty(workspaceId) ? null : workspaceId)
-    eventHubAuthorizationRuleId: (empty(eventHubAuthorizationRuleId) ? null : eventHubAuthorizationRuleId)
-    eventHubName: (empty(eventHubName) ? null : eventHubName)
-    metrics: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? null : diagnosticsMetrics)
-    logs: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? null : diagnosticsLogs)
+    storageAccountId: !empty(diagnosticStorageAccountId) ? diagnosticStorageAccountId : null
+    workspaceId: !empty(workspaceId) ? workspaceId : null
+    eventHubAuthorizationRuleId: !empty(eventHubAuthorizationRuleId) ? eventHubAuthorizationRuleId : null
+    eventHubName: !empty(eventHubName) ? eventHubName : null
+    metrics: diagnosticsMetrics
+    logs: diagnosticsLogs
   }
   scope: managedCluster
 }
@@ -388,4 +421,4 @@ output azureKubernetesServiceName string = managedCluster.name
 output controlPlaneFQDN string = (aksClusterEnablePrivateCluster ? managedCluster.properties.privateFQDN : managedCluster.properties.fqdn)
 
 @description('The principal ID of the system assigned identity.')
-output systemAssignedPrincipalId string = systemAssignedIdentity ? managedCluster.identity.principalId : ''
+output systemAssignedPrincipalId string = systemAssignedIdentity && contains(managedCluster.identity, 'principalId') ? managedCluster.identity.principalId : ''

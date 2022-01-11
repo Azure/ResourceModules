@@ -343,6 +343,7 @@ resource virtualMachine 'Microsoft.Compute/virtualMachines@2021-07-01' = {
       osDisk: {
         name: '${name}-disk-os-01'
         createOption: osDisk.createOption
+        deleteOption: contains(osDisk, 'deleteOption') ? osDisk.deleteOption : 'Delete'
         diskSizeGB: osDisk.diskSizeGB
         managedDisk: {
           storageAccountType: osDisk.managedDisk.storageAccountType
@@ -353,6 +354,7 @@ resource virtualMachine 'Microsoft.Compute/virtualMachines@2021-07-01' = {
         name: '${name}-disk-data-${padLeft((index + 1), 2, '0')}'
         diskSizeGB: dataDisk.diskSizeGB
         createOption: dataDisk.createOption
+        deleteOption: contains(dataDisk, 'deleteOption') ? dataDisk.deleteOption : 'Delete'
         caching: dataDisk.caching
         managedDisk: {
           storageAccountType: dataDisk.managedDisk.storageAccountType
@@ -378,6 +380,7 @@ resource virtualMachine 'Microsoft.Compute/virtualMachines@2021-07-01' = {
     networkProfile: {
       networkInterfaces: [for (nicConfiguration, index) in nicConfigurations: {
         properties: {
+          deleteOption: contains(nicConfiguration, 'deleteOption') ? nicConfiguration.deleteOption : 'Delete'
           primary: index == 0 ? true : false
         }
         id: resourceId('Microsoft.Network/networkInterfaces', '${name}${nicConfiguration.nicSuffix}')
@@ -586,4 +589,4 @@ output virtualMachineResourceId string = virtualMachine.id
 output virtualMachineResourceGroup string = resourceGroup().name
 
 @description('The principal ID of the system assigned identity.')
-output systemAssignedPrincipalId string = systemAssignedIdentity ? virtualMachine.identity.principalId : ''
+output systemAssignedPrincipalId string = systemAssignedIdentity && contains(virtualMachine.identity, 'principalId') ? virtualMachine.identity.principalId : ''

@@ -53,7 +53,7 @@ var diagnosticsLogs = [for log in logsToEnable: {
   }
 }]
 
-resource diagnosticSetting 'Microsoft.Insights/diagnosticSettings@2017-05-01-preview' = {
+resource diagnosticSetting 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = {
   name: name
   properties: {
     storageAccountId: (empty(diagnosticStorageAccountId) ? null : diagnosticStorageAccountId)

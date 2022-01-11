@@ -95,16 +95,23 @@ module server_databases 'databases/deploy.bicep' = [for (database, index) in dat
     skuName: database.skuName
     collation: database.collation
     autoPauseDelay: contains(database, 'autoPauseDelay') ? database.autoPauseDelay : ''
+    diagnosticLogsRetentionInDays: contains(database, 'diagnosticLogsRetentionInDays') ? database.diagnosticLogsRetentionInDays : 365
+    diagnosticStorageAccountId: contains(database, 'diagnosticStorageAccountId') ? database.diagnosticStorageAccountId : ''
+    eventHubAuthorizationRuleId: contains(database, 'eventHubAuthorizationRuleId') ? database.eventHubAuthorizationRuleId : ''
+    eventHubName: contains(database, 'eventHubName') ? database.eventHubName : ''
     isLedgerOn: contains(database, 'isLedgerOn') ? database.isLedgerOn : false
     location: contains(database, 'location') ? database.location : server.location
+    logsToEnable: contains(database, 'logsToEnable') ? database.logsToEnable : []
     licenseType: contains(database, 'licenseType') ? database.licenseType : ''
     maintenanceConfigurationId: contains(database, 'maintenanceConfigurationId') ? database.maintenanceConfigurationId : ''
     minCapacity: contains(database, 'minCapacity') ? database.minCapacity : ''
+    metricsToEnable: contains(database, 'metricsToEnable') ? database.metricsToEnable : []
     highAvailabilityReplicaCount: contains(database, 'highAvailabilityReplicaCount') ? database.highAvailabilityReplicaCount : 0
     readScale: contains(database, 'readScale') ? database.readScale : 'Disabled'
     requestedBackupStorageRedundancy: contains(database, 'requestedBackupStorageRedundancy') ? database.requestedBackupStorageRedundancy : ''
     sampleName: contains(database, 'sampleName') ? database.sampleName : ''
     tags: contains(database, 'tags') ? database.tags : {}
+    workspaceId: contains(database, 'workspaceId') ? database.workspaceId : ''
     zoneRedundant: contains(database, 'zoneRedundant') ? database.zoneRedundant : false
   }
 }]
@@ -144,4 +151,4 @@ output serverResourceId string = server.id
 output serverResourceGroup string = resourceGroup().name
 
 @description('The principal ID of the system assigned identity.')
-output systemAssignedPrincipalId string = systemAssignedIdentity ? server.identity.principalId : ''
+output systemAssignedPrincipalId string = systemAssignedIdentity && contains(server.identity, 'principalId') ? server.identity.principalId : ''

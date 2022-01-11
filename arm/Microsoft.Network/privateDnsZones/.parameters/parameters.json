@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "sxx.az-privdns-x-001"
+            "value": "sxx-az-privdns-x-001.com"
         },
         "roleAssignments": {
             "value": [
