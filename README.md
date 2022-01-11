@@ -2,7 +2,8 @@
 
 ## Description
 
-This repository includes a collection of advanced and curated Modules consisting of [Bicep][Bicep] templates.
+This repository includes a CI platform for and collection of mature and curated [Bicep][Bicep] modules.
+The platform supports both ARM and Bicep and can be leveraged using GitHub actions as well as Azure DevOps pipelines.
 
 ## Status
 
@@ -30,7 +31,7 @@ This repository includes a collection of advanced and curated Modules consisting
 | [Action Groups](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Insights/actionGroups) | [!['Insights: ActionGroups'](https://github.com/Azure/ResourceModules/actions/workflows/ms.insights.actiongroups.yml/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.insights.actiongroups.yml) |
 | [Activity Log Alerts](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Insights/activityLogAlerts) | [!['Insights: ActivityLogAlerts'](https://github.com/Azure/ResourceModules/actions/workflows/ms.insights.activitylogalerts.yml/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.insights.activitylogalerts.yml) |
 | [Activity Logs](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Insights/diagnosticSettings) | [!['Insights: DiagnosticSettings'](https://github.com/Azure/ResourceModules/actions/workflows/ms.insights.diagnosticsettings.yml/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.insights.diagnosticsettings.yml) |
-| [Analysis Services](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.AnalysisServices/servers) | [!['AnalysisServices: Servers'](https://github.com/Azure/ResourceModules/actions/workflows/ms.analysisservices.servers.yml/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.analysisservices.servers.yml) |
+| [Analysis Services Server](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.AnalysisServices/servers) | [!['AnalysisServices: Servers'](https://github.com/Azure/ResourceModules/actions/workflows/ms.analysisservices.servers.yml/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.analysisservices.servers.yml) |
 | [API Connections](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Web/connections) | [!['Web: Connections'](https://github.com/Azure/ResourceModules/actions/workflows/ms.web.connections.yml/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.web.connections.yml) |
 | [API Management Services](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.ApiManagement/service) | [!['ApiManagement: Service'](https://github.com/Azure/ResourceModules/actions/workflows/ms.apimanagement.service.yml/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.apimanagement.service.yml) |
 | [App Service Environments](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Web/hostingEnvironments) | [!['Web: HostingEnvironments'](https://github.com/Azure/ResourceModules/actions/workflows/ms.web.hostingenvironments.yml/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.web.hostingenvironments.yml) |
@@ -78,6 +79,7 @@ This repository includes a collection of advanced and curated Modules consisting
 | [Management Groups](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Management/managementGroups) | [!['Management: ManagementGroups'](https://github.com/Azure/ResourceModules/actions/workflows/ms.management.managementgroups.yml/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.management.managementgroups.yml) |
 | [Metric Alerts](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Insights/metricAlerts) | [!['Insights: MetricAlerts'](https://github.com/Azure/ResourceModules/actions/workflows/ms.insights.metricalerts.yml/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.insights.metricalerts.yml) |
 | [NAT Gateways](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Network/natGateways) | [!['Network: NatGateways'](https://github.com/Azure/ResourceModules/actions/workflows/ms.network.natgateways.yml/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.network.natgateways.yml) |
+| [Network Firewall Policies](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Network/firewallPolicies) | [!['Network: FirewallPolicies'](https://github.com/Azure/ResourceModules/actions/workflows/ms.network.firewallpolicies.yml/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.network.firewallpolicies.yml) |
 | [Network Security Groups](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Network/networkSecurityGroups) | [!['Network: NetworkSecurityGroups'](https://github.com/Azure/ResourceModules/actions/workflows/ms.network.networksecuritygroups.yml/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.network.networksecuritygroups.yml) |
 | [Network Watchers](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Network/networkWatchers) | [!['Network: NetworkWatchers'](https://github.com/Azure/ResourceModules/actions/workflows/ms.network.networkwatchers.yml/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.network.networkwatchers.yml) |
 | [Policy Assignments](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Authorization/policyAssignments) | [!['Authorization: PolicyAssignments'](https://github.com/Azure/ResourceModules/actions/workflows/ms.authorization.policyassignments.yml/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.authorization.policyassignments.yml) |
@@ -100,6 +102,7 @@ This repository includes a collection of advanced and curated Modules consisting
 | [SQL Managed Instances](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Sql/managedInstances) | [!['Sql: ManagedInstances'](https://github.com/Azure/ResourceModules/actions/workflows/ms.sql.managedinstances.yml/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.sql.managedinstances.yml) |
 | [SQL Servers](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Sql/servers) | [!['Sql: Servers'](https://github.com/Azure/ResourceModules/actions/workflows/ms.sql.servers.yml/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.sql.servers.yml) |
 | [Storage Accounts](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Storage/storageAccounts) | [!['Storage: StorageAccounts'](https://github.com/Azure/ResourceModules/actions/workflows/ms.storage.storageaccounts.yml/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.storage.storageaccounts.yml) |
+| [Synapse PrivateLinkHubs](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Synapse/privateLinkHubs) | [!['Synapse: PrivateLinkHubs'](https://github.com/Azure/ResourceModules/actions/workflows/ms.synapse.privatelinkhubs.yml/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.synapse.privatelinkhubs.yml) |
 | [Traffic Manager Profiles](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Network/trafficmanagerprofiles) | [!['Network: TrafficManagerProfiles'](https://github.com/Azure/ResourceModules/actions/workflows/ms.network.trafficmanagerprofiles.yml/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.network.trafficmanagerprofiles.yml) |
 | [User Assigned Identities](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.ManagedIdentity/userAssignedIdentities) | [!['ManagedIdentity: UserAssignedIdentities'](https://github.com/Azure/ResourceModules/actions/workflows/ms.managedidentity.userassignedidentities.yml/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.managedidentity.userassignedidentities.yml) |
 | [Virtual Machine Scale Sets](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Compute/virtualMachineScaleSets) | [!['Compute: VirtualMachineScaleSets'](https://github.com/Azure/ResourceModules/actions/workflows/ms.compute.virtualmachinescalesets.yml/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.compute.virtualmachinescalesets.yml) |
@@ -110,13 +113,11 @@ This repository includes a collection of advanced and curated Modules consisting
 | [Virtual WANs](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Network/virtualWans) | [!['Network: VirtualWans'](https://github.com/Azure/ResourceModules/actions/workflows/ms.network.virtualwans.yml/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.network.virtualwans.yml) |
 | [Web/Function Apps](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Web/sites) | [!['Web: Sites'](https://github.com/Azure/ResourceModules/actions/workflows/ms.web.sites.yml/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.web.sites.yml) |
 
-<!-- ## Contributors
+## Tooling
 
-Contributors names and contact info
-
-* [@segraef](<https://twitter.com/segraef>)
-
--->
+| Name | Status | Docs |
+| - | - | - |
+| [ConvertTo-ARMTemplate](https://github.com/Azure/ResourceModules/blob/main/utilities/tools/ConvertTo-ARMTemplate.ps1) | [![.Platform: Test - ConvertTo-ARMTemplate.ps1](https://github.com/Azure/ResourceModules/actions/workflows/platform.convertToArmTemplate.tests.yml/badge.svg?branch=main)](https://github.com/Azure/ResourceModules/actions/workflows/platform.convertToArmTemplate.tests.yml) | [link](https://github.com/Azure/ResourceModules/wiki/UtilitiesConvertToARMTemplate) |
 
 ## Contributing
 

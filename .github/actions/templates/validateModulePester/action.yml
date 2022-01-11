@@ -1,0 +1,119 @@
+name: 'Execute Pester module tests'
+description: 'Execute Pester module tests (if any)'
+
+inputs:
+  modulePath:
+    description: 'The path to the module folder'
+    required: true
+    default: ''
+
+runs:
+  using: 'composite'
+  steps:
+    - name: 'Setup agent'
+      shell: pwsh
+      run: |
+        # Load used functions
+        . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
+
+        # Define PS modules to install on the runner
+        $Modules = @(
+            # This is the latest tested Pester version. Uncomment the next line in case of a future breaking change in the default version installed on the runner.
+            # @{ Name = 'Pester'; Version = '5.3.1' }
+            @{ Name = 'Az.Resources' }
+        )
+
+        # Set agent up
+        Set-EnvironmentOnAgent -PSModules $Modules
+
+    - name: Azure Login
+      uses: Azure/login@v1
+      with:
+        creds: ${{ env.AZURE_CREDENTIALS }}
+        enable-AzPSSession: true
+
+    # [Module Pester Test] task(s)
+    #-----------------------------
+    - name: 'Run global tests via Pester'
+      shell: pwsh
+      run: |
+        $moduleFolderPaths = @(Join-Path $env:GITHUB_WORKSPACE "${{ inputs.modulePath }}")
+        $moduleFolderPaths += (Get-ChildItem $moduleFolderPaths -Recurse -Directory -Force).FullName | Where-Object {
+          (Get-ChildItem $_ -File -Depth 0 -Include @('deploy.json', 'deploy.bicep') -Force).Count -gt 0
+        }
+        Write-Verbose "Execute tests in path(s):" -Verbose
+        foreach($moduleFolderPath in $moduleFolderPaths) {
+          Write-Verbose "- [($moduleFolderPath]" -Verbose
+        }
+
+        # --------------------- #
+        # Invoke Pester test(s) #
+        # --------------------- #
+        Invoke-Pester -Configuration @{
+          Run        = @{
+            Container = New-PesterContainer -Path 'arm/.global/global.module.tests.ps1' -Data @{
+              moduleFolderPaths = $moduleFolderPaths
+            }
+          }
+          Filter     = @{
+            ExcludeTag = 'ApiCheck'
+          }
+          TestResult = @{
+            TestSuiteName = 'Global Module Tests'
+            OutputPath    = 'arm/.global/global-testResults.xml'
+            OutputFormat  = 'JUnitXml'
+            Enabled       = $true
+          }
+          Output     = @{
+            Verbosity = 'Detailed'
+          }
+        }
+
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action@v1
+      if: always()
+      with:
+        files: arm/.global/global-testResults.xml
+
+    # [Module Pester Test] task(s)
+    #-----------------------------
+    - name: 'Run API tests via Pester'
+      shell: pwsh
+      run: |
+        $moduleFolderPaths = @(Join-Path $env:GITHUB_WORKSPACE "${{ inputs.modulePath }}")
+        $moduleFolderPaths += (Get-ChildItem $moduleFolderPaths -Recurse -Directory -Force).FullName | Where-Object {
+          (Get-ChildItem $_ -File -Depth 0 -Include @('deploy.json', 'deploy.bicep') -Force).Count -gt 0
+        }
+        Write-Verbose "Execute tests in path(s):" -Verbose
+        foreach($moduleFolderPath in $moduleFolderPaths) {
+          Write-Verbose "- [($moduleFolderPath]" -Verbose
+        }
+
+        # --------------------- #
+        # Invoke Pester test(s) #
+        # --------------------- #
+        Invoke-Pester -Configuration @{
+          Run        = @{
+            Container = New-PesterContainer -Path 'arm/.global/global.module.tests.ps1' -Data @{
+              moduleFolderPaths = $moduleFolderPaths
+            }
+          }
+          Filter     = @{
+            Tag = 'ApiCheck'
+          }
+          TestResult = @{
+            TestSuiteName = 'Global Module API Tests'
+            OutputPath    = 'arm/.global/api-testResults.xml'
+            OutputFormat  = 'JUnitXml'
+            Enabled       = $true
+          }
+          Output     = @{
+            Verbosity = 'Detailed'
+          }
+        }
+
+    - name: Publish Test Results
+      uses: EnricoMi/publish-unit-test-result-action@v1
+      if: always()
+      with:
+        files: arm/.global/api-testResults.xml

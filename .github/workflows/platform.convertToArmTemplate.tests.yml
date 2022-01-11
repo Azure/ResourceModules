@@ -1,0 +1,50 @@
+name: '.Platform: Test - ConvertTo-ARMTemplate.ps1'
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'utilities/tools/ConvertTo-ARMTemplate.ps1'
+      - 'utilities/tools/tests/ConvertTo-ARMTemplate**'
+
+jobs:
+  job_test_convert:
+    runs-on: ubuntu-latest
+    name: 'Test with parameter'
+    strategy:
+      fail-fast: false
+      matrix:
+        tags: ['Default', 'ConvertChildren', 'Skip']
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: 'Run Pester tests'
+        shell: pwsh
+        run: |
+          Invoke-Pester -Configuration @{
+            Run        = @{
+              Path = @(
+                Join-Path "$env:GITHUB_WORKSPACE" 'utilities' 'tools' 'tests' 'ConvertTo-ARMTemplate.Tests.ps1'
+              )
+            }
+            Filter     = @{
+              Tag = '${{ matrix.tags }}'
+            }
+            TestResult = @{
+              TestSuiteName = 'Conversion Tests'
+              OutputPath    = Join-Path "$env:GITHUB_WORKSPACE" 'utilities' 'tools' 'tests' 'conversion-testResults-${{ matrix.tags }}.xml'
+              OutputFormat  = 'JUnitXml'
+              Enabled       = $true
+            }
+            Output     = @{
+              Verbosity = 'Detailed'
+            }
+          }
+      - name: Publish Test Results
+        uses: EnricoMi/publish-unit-test-result-action@v1
+        if: always()
+        with:
+          files: 'utilities/tools/tests/conversion-testResults-${{ matrix.tags }}.xml'

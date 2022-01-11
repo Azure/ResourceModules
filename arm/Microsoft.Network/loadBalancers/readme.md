@@ -8,27 +8,31 @@ This module deploys a load balancer.
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
 | `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
-| `Microsoft.Insights/diagnosticSettings` | 2017-05-01-preview |
+| `Microsoft.Insights/diagnosticSettings` | 2021-05-01-preview |
 | `Microsoft.Network/loadBalancers` | 2021-02-01 |
+| `Microsoft.Network/loadBalancers/backendAddressPools` | 2021-05-01 |
+| `Microsoft.Network/loadBalancers/inboundNatRules` | 2021-05-01 |
 
 ## Parameters
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `backendAddressPools` | array |  |  | Required. Collection of backend address pools used by a load balancer. |
+| `backendAddressPools` | _[backendAddressPools](backendAddressPools/readme.md)_ array | `[]` |  | Optional. Collection of backend address pools used by a load balancer. |
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticStorageAccountId` | string |  |  | Optional. Resource ID of the diagnostic storage account. |
 | `eventHubAuthorizationRuleId` | string |  |  | Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `eventHubName` | string |  |  | Optional. Name of the event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
 | `frontendIPConfigurations` | array |  |  | Required. Array of objects containing all frontend IP configurations |
+| `inboundNatRules` | _[inboundNatRules](inboundNatRules/readme.md)_ array | `[]` |  | Optional. Collection of inbound NAT Rules used by a load balancer. Defining inbound NAT rules on your load balancer is mutually exclusive with defining an inbound NAT pool. Inbound NAT pools are referenced from virtual machine scale sets. NICs that are associated with individual virtual machines cannot reference an Inbound NAT pool. They have to reference individual inbound NAT rules. |
 | `loadBalancerSku` | string | `Standard` | `[Basic, Standard]` | Optional. Name of a load balancer SKU. |
-| `loadBalancingRules` | array |  |  | Required. Array of objects containing all load balancing rules |
+| `loadBalancingRules` | array | `[]` |  | Optional. Array of objects containing all load balancing rules |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
 | `metricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | Optional. The name of metrics that will be streamed. |
 | `name` | string |  |  | Required. The Proximity Placement Groups Name |
-| `probes` | array |  |  | Required. Array of objects containing all probes, these are references in the load balancing rules |
+| `outboundRules` | array | `[]` |  | Optional. The outbound rules. |
+| `probes` | array | `[]` |  | Optional. Array of objects containing all probes, these are references in the load balancing rules |
 | `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
 | `tags` | object | `{object}` |  | Optional. Tags of the resource. |
 | `workspaceId` | string |  |  | Optional. Resource ID of log analytics. |
@@ -212,7 +216,9 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 ## Template references
 
+- [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings)
+- [Loadbalancers](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-02-01/loadBalancers)
+- [Loadbalancers/Backendaddresspools](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/loadBalancers/backendAddressPools)
+- [Loadbalancers/Inboundnatrules](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/loadBalancers/inboundNatRules)
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
 - [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-04-01-preview/roleAssignments)
-- [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2017-05-01-preview/diagnosticSettings)
-- [Loadbalancers](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-02-01/loadBalancers)

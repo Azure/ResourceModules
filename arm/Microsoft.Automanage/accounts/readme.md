@@ -32,5 +32,4 @@ This module deploys an Automanage account and associates VM with it.
 
 ## Template references
 
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-04-01-preview/roleAssignments)
-- [Accounts](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Automanage/2020-06-30-preview/accounts)
+- [Define resources with Bicep and ARM templates](https://docs.microsoft.com/en-us/azure/templates)

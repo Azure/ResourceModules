@@ -5,7 +5,7 @@ param storageAccountName string
 @description('Optional. Name of the blob service.')
 param blobServicesName string = 'default'
 
-@description('The name of the storage container to deploy')
+@description('Required. The name of the storage container to deploy')
 param name string
 
 @description('Optional. Name of the immutable policy.')
@@ -16,10 +16,10 @@ param immutabilityPolicyName string = 'default'
   'Blob'
   'None'
 ])
-@description('Specifies whether data in the container may be accessed publicly and the level of access.')
+@description('Optional. Specifies whether data in the container may be accessed publicly and the level of access.')
 param publicAccess string = 'None'
 
-@description('Configure immutability policy.')
+@description('Optional. Configure immutability policy.')
 param immutabilityPolicyProperties object = {}
 
 @description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or it\'s fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'')

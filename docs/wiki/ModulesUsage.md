@@ -70,7 +70,7 @@ New-AzResourceGroup -Name 'ExampleGroup' -Location "Central US"
 $inputObject = @{
  DeploymentName    = 'ExampleDeployment'
  ResourceGroupName = 'ExampleGroup'
- TemplateUri       = 'https://raw.githubusercontent.com/arm/ResourceModules/main/arm/Microsoft.KeyVault/vaults/deploy.json'
+ TemplateUri       = 'https://raw.githubusercontent.com/Azure/ResourceModules/main/arm/Microsoft.KeyVault/vaults/deploy.bicep'
 }
 New-AzResourceGroupDeployment @inputObject
 ```
@@ -83,7 +83,7 @@ az group create --name 'ExampleGroup' --location "Central US"
 $inputObject = @(
     '--name',           'ExampleDeployment',
     '--resource-group', 'ExampleGroup',
-    '--template-uri',   'https://raw.githubusercontent.com/arm/ResourceModules/main/arm/Microsoft.KeyVault/vaults/deploy.json',
+    '--template-uri',   'https://raw.githubusercontent.com/Azure/ResourceModules/main/arm/Microsoft.KeyVault/vaults/deploy.bicep',
     '--parameters',     'storageAccountType=Standard_GRS',
 )
 az deployment group create @inputObject
@@ -107,12 +107,21 @@ In an enterprise environment, the recommended approach is to store these templat
 
 ### ***Example with a private bicep registry***
 
-The following example shows how you could orchestrate a deployment of multiple resources using modules from a private bicep registry. In this example we will deploy a NSG and use the same in a subsequent VNET deployment.
+The following example shows how you could orchestrate a deployment of multiple resources using modules from a private bicep registry. In this example we will deploy a resource group with a contained NSG and use the same in a subsequent VNET deployment.
 
 ```bicep
+targetScope = 'subscription'
+
 // ================ //
 // Input Parameters //
 // ================ //
+
+// RG parameters
+@description('Required. The name of the resource group to deploy')
+param resourceGroupName string = 'validation-rg'
+
+@description('Optional. The location to deploy into')
+param location string = deployment().location
 
 // NSG parameters
 @description('Required. The name of the vnet to deploy')
@@ -145,23 +154,39 @@ param subnets array = [
 // Deployments //
 // =========== //
 
-// Network Security Group
-module nsg 'br:adpsxxazacrx001.azurecr.io/bicep/modules/microsoft.network.networksecuritygroups:1.0.1' = {
-  name: 'registry-nsg'
+// Resource Group
+module rg 'br:adpsxxazacrx001.azurecr.io/bicep/modules/microsoft.resources.resourcegroups:0.0.23' = {
+  name: 'registry-rg'
   params: {
-    networkSecurityGroupName: networkSecurityGroupName
+    name: resourceGroupName
+    location: location
   }
 }
-// Virtual Network
-module vnet 'br:adpsxxazacrx001.azurecr.io/bicep/modules/microsoft.network.virtualnetworks:1.0.0' = {
-  name: 'registry-vnet'
+
+// Network Security Group
+module nsg 'br:adpsxxazacrx001.azurecr.io/bicep/modules/microsoft.network.networksecuritygroups:0.0.30' = {
+  name: 'registry-nsg'
+  scope: resourceGroup(resourceGroupName)
   params: {
-    vNetName: vnetName
-    vNetAddressPrefixes: vNetAddressPrefixes
+    name: networkSecurityGroupName
+  }
+  dependsOn: [
+    rg
+  ]
+}
+
+// Virtual Network
+module vnet 'br:adpsxxazacrx001.azurecr.io/bicep/modules/microsoft.network.virtualnetworks:0.0.26' = {
+  name: 'registry-vnet'
+  scope: resourceGroup(resourceGroupName)
+  params: {
+    name: vnetName
+    addressPrefixes: vNetAddressPrefixes
     subnets: subnets
   }
   dependsOn: [
     nsg
+    rg
   ]
 }
 ```
@@ -233,7 +258,7 @@ resource nsg 'Microsoft.Resources/deployments@2021-01-01' = {
       id: nsgTemplate.id
     }
     parameters: {
-      networkSecurityGroupName: {
+      name: {
         value: networkSecurityGroupName
       }
     }
@@ -249,10 +274,10 @@ resource vnet 'Microsoft.Resources/deployments@2021-01-01' = {
       id: vnetTemplate.id
     }
     parameters: {
-      vnetName: {
+      name: {
         value: vnetName
       }
-      vNetAddressPrefixes: {
+      addressPrefixes: {
         value: vNetAddressPrefixes
       }
       subnets: {

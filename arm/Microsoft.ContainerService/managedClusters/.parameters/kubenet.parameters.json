@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "sxx-az-aks-kubenet"
+            "value": "sxx-az-aks-kubenet-001"
         },
         "primaryAgentPoolProfile": {
             "value": [
@@ -34,55 +34,51 @@
             "value": [
                 {
                     "name": "userpool1",
-                    "properties": {
-                        "vmSize": "Standard_DS2_v2",
-                        "osDiskSizeGB": 128,
-                        "count": 2,
-                        "osType": "Linux",
-                        "maxCount": 3,
-                        "minCount": 1,
-                        "enableAutoScaling": true,
-                        "scaleSetPriority": "Regular",
-                        "scaleSetEvictionPolicy": "Delete",
-                        "nodeLabels": {},
-                        "nodeTaints": [
-                            "CriticalAddonsOnly=true:NoSchedule"
-                        ],
-                        "type": "VirtualMachineScaleSets",
-                        "availabilityZones": [
-                            "1"
-                        ],
-                        "minPods": 2,
-                        "maxPods": 30,
-                        "storageProfile": "ManagedDisks",
-                        "mode": "User"
-                    }
+                    "vmSize": "Standard_DS2_v2",
+                    "osDiskSizeGB": 128,
+                    "count": 2,
+                    "osType": "Linux",
+                    "maxCount": 3,
+                    "minCount": 1,
+                    "enableAutoScaling": true,
+                    "scaleSetPriority": "Regular",
+                    "scaleSetEvictionPolicy": "Delete",
+                    "nodeLabels": {},
+                    "nodeTaints": [
+                        "CriticalAddonsOnly=true:NoSchedule"
+                    ],
+                    "type": "VirtualMachineScaleSets",
+                    "availabilityZones": [
+                        "1"
+                    ],
+                    "minPods": 2,
+                    "maxPods": 30,
+                    "storageProfile": "ManagedDisks",
+                    "mode": "User"
                 },
                 {
                     "name": "userpool2",
-                    "properties": {
-                        "vmSize": "Standard_DS2_v2",
-                        "osDiskSizeGB": 128,
-                        "count": 2,
-                        "osType": "Linux",
-                        "maxCount": 3,
-                        "minCount": 1,
-                        "enableAutoScaling": true,
-                        "scaleSetPriority": "Regular",
-                        "scaleSetEvictionPolicy": "Delete",
-                        "nodeLabels": {},
-                        "nodeTaints": [
-                            "CriticalAddonsOnly=true:NoSchedule"
-                        ],
-                        "type": "VirtualMachineScaleSets",
-                        "availabilityZones": [
-                            "1"
-                        ],
-                        "minPods": 2,
-                        "maxPods": 30,
-                        "storageProfile": "ManagedDisks",
-                        "mode": "User"
-                    }
+                    "vmSize": "Standard_DS2_v2",
+                    "osDiskSizeGB": 128,
+                    "count": 2,
+                    "osType": "Linux",
+                    "maxCount": 3,
+                    "minCount": 1,
+                    "enableAutoScaling": true,
+                    "scaleSetPriority": "Regular",
+                    "scaleSetEvictionPolicy": "Delete",
+                    "nodeLabels": {},
+                    "nodeTaints": [
+                        "CriticalAddonsOnly=true:NoSchedule"
+                    ],
+                    "type": "VirtualMachineScaleSets",
+                    "availabilityZones": [
+                        "1"
+                    ],
+                    "minPods": 2,
+                    "maxPods": 30,
+                    "storageProfile": "ManagedDisks",
+                    "mode": "User"
                 }
             ]
         },
