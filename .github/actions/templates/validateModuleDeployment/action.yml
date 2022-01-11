@@ -44,7 +44,7 @@ runs:
 
         # Additional PS modules need to be installed for the removal step in case it is enabled
         if ('${{ inputs.removeDeployment}}' -eq 'true') {
-          $Modules+= @(
+          $Modules += @(
             @{ Name = 'Az.CognitiveServices' },
             @{ Name = 'Az.Compute' },
             @{ Name = 'Az.KeyVault' },
