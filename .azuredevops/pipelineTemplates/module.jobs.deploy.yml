@@ -116,7 +116,7 @@ jobs:
 
                 # Additional PS modules need to be installed for the removal step in case it is enabled
                 if ('${{ parameters.removeDeployment}}' -eq 'true') {
-                  $Modules+= @(
+                  $Modules += @(
                     @{ Name = 'Az.CognitiveServices' },
                     @{ Name = 'Az.Compute' },
                     @{ Name = 'Az.KeyVault' },
