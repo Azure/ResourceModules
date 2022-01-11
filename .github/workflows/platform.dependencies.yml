@@ -801,6 +801,13 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
+      - name: Get msi principal ID output
+        uses: azure/powershell@v1
+        with:
+          inlineScript: |
+            $msiPrincipalId = '${{ needs.job_deploy_msi.outputs.msiPrincipalId }}'
+            Write-Verbose $msiPrincipalId -Verbose
+          azPSVersion: 'latest'
       - name: 'Deploy module'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
