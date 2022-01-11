@@ -1,4 +1,4 @@
-@description('Required. Name of the Serivce Fabric cluster.')
+@description('Required. Name of the Service Fabric cluster.')
 param serviceFabricClusterName string = ''
 
 @description('Optional. Application type name.')

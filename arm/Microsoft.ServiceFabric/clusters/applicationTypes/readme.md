@@ -1,7 +1,6 @@
-# ServiceFabric Clusters ApplicationTypes `[Microsoft.ServiceFabric/clusters/applicationTypes]`
+# ServiceFabric Cluster Application Type `[Microsoft.ServiceFabric/clusters/applicationTypes]`
 
-This module deploys ServiceFabric Clusters ApplicationTypes.
-// TODO: Replace Resource and fill in description
+This module deploys a ServiceFabric cluster application type.
 
 ## Resource Types
 
@@ -15,12 +14,8 @@ This module deploys ServiceFabric Clusters ApplicationTypes.
 | :-- | :-- | :-- | :-- | :-- |
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `name` | string | `defaultApplicationType` |  | Optional. Application type name. |
-| `serviceFabricClusterName` | string |  |  | Required. Name of the Serivce Fabric cluster. |
+| `serviceFabricClusterName` | string |  |  | Required. Name of the Service Fabric cluster. |
 | `tags` | object | `{object}` |  | Optional. Tags of the resource. |
-
-### Parameter Usage: `<ParameterPlaceholder>`
-
-// TODO: Fill in Parameter usage
 
 ### Parameter Usage: `tags`
 
