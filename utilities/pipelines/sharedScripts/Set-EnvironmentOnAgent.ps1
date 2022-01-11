@@ -79,7 +79,7 @@ Configure the current agent
 Configure the current agent with e.g. the necessary PowerShell modules.
 
 .PARAMETER Modules
-Optional. The PowerShell modules that should be installed on the agent. Installs default set if not provided.
+Optional. The PowerShell modules that should be installed on the agent.
 
 @(
     @{ Name = 'Az.Accounts' },
