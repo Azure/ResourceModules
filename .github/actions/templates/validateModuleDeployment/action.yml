@@ -162,7 +162,7 @@ runs:
 
         $deploymentOutput = $deploymentOutputHash | ConvertTo-Json -Compress -Depth 100
         Write-Verbose "Deployment output: $deploymentOutput" -Verbose
-        Write-Output ('::set-output name={0}::{1}' -f 'deploymentOutput', $deploymentOutput')
+        Write-Output ('::set-output name={0}::{1}' -f 'deploymentOutput', $deploymentOutput)
 
         if ($res.ContainsKey('exception')) {
           # Happens only if there is an exception
