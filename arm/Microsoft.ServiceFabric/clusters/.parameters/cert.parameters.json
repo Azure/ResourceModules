@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "sxx-az-sfc-min-001"
+            "value": "sxx-az-sfc-cert-001"
         },
         "managementEndpoint": {
             "value": "https://sxx-az-sfc-min-001.westeurope.cloudapp.azure.com:19080"

@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "sxx-az-sfc-x-001"
+            "value": "sxx-az-sfc-full-001"
         },
         "tags": {
             "value": {
