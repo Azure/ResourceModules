@@ -27,7 +27,7 @@ inputs:
 
 outputs:
   deploymentOutput:
-    description: 'Deployment output in json form'
+    description: 'Deployment output in json format'
     value: ${{ steps.deploy_step.outputs.deploymentOutput }}
 
 runs:
