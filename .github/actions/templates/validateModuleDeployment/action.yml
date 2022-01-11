@@ -155,6 +155,9 @@ runs:
         # Populate further outputs
         $deploymentOutputHash=@{}
 
+        $depOut = $res.deploymentOutput | ConvertTo-Json -Compress -Depth 100
+        Write-Verbose "Deployment output: $depOut" -Verbose
+
         foreach ($outputKey in $res.deploymentOutput.Keys) {
           Write-Output ('::set-output name={0}::{1}' -f $outputKey, $res.deploymentOutput[$outputKey].Value)
           $deploymentOutputHash.add($outputKey,$res.deploymentOutput[$outputKey].Value)
