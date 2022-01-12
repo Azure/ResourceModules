@@ -434,8 +434,8 @@ stages:
                   @{ name = 'administratorLogin'; secretValue = $username } # Azure SQLServer
                   @{ name = 'administratorLoginPassword'; secretValue = $password } # Azure SQLServer
                   @{ name = 'vpnSharedKey'; secretValue = $vpnSharedKey } # VirtualNetworkGateway
-                  @{ name = 'apimclientid'; secretValue = $username } # API management
-                  @{ name = 'apimclientsecret'; secretValue = $password } # API management
+                  @{ name = 'apimClientId'; secretValue = $username } # API management
+                  @{ name = 'apimClientSecret'; secretValue = $password } # API management
                 ) | ForEach-Object {
                   $null = Set-AzKeyVaultSecret -VaultName $keyVaultName -Name $_.name -SecretValue $_.secretValue
                   Write-Verbose ('Added secret [{0}] to key vault [{1}]' -f $_.name, $keyVaultName) -Verbose
