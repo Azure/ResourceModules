@@ -231,7 +231,7 @@ jobs:
           #---------------------
           - task: AzurePowerShell@5
             displayName: 'Deploy [${{ deploymentBlock.path }}] via connection [${{ parameters.serviceConnection }}]'
-            name: DeployModule
+            name: 'DeployModule'
             inputs:
               azureSubscription: ${{ parameters.serviceConnection }}
               azurePowerShellVersion: ${{ parameters.azurePowerShellVersion }}
