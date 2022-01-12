@@ -227,4 +227,4 @@ output recoveryServicesVaultResourceGroup string = resourceGroup().name
 output recoveryServicesVaultName string = rsv.name
 
 @description('The principal ID of the system assigned identity.')
-output systemAssignedPrincipalId string = systemAssignedIdentity ? rsv.identity.principalId : ''
+output systemAssignedPrincipalId string = systemAssignedIdentity && contains(rsv.identity, 'principalId') ? rsv.identity.principalId : ''

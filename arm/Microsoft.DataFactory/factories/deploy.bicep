@@ -211,4 +211,4 @@ output dataFactoryResourceId string = dataFactory.id
 output dataFactoryResourceGroup string = resourceGroup().name
 
 @description('The principal ID of the system assigned identity.')
-output systemAssignedPrincipalId string = systemAssignedIdentity ? dataFactory.identity.principalId : ''
+output systemAssignedPrincipalId string = systemAssignedIdentity && contains(dataFactory.identity, 'principalId') ? dataFactory.identity.principalId : ''

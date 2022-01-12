@@ -14,7 +14,7 @@ variables:
   vstsOrganization: servicescode
   vstsProject: '$(System.TeamProject)'
   modulesRepository: ResourceModules # The repository hosting the deployment code (i.e. 'Components'). MUST be provided as a variable with every pipeline
-  modulePath: arm/$(moduleName) # only use in module pielines
+  modulePath: arm/$(moduleName) # only use in module pipelines
   pipelineFunctionsPath: 'utilities/pipelines'
 
   ######################################

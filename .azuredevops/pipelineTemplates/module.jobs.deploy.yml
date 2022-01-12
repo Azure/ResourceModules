@@ -108,8 +108,26 @@ jobs:
                 # Load used functions
                 . (Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
 
+                # Define PS modules to install on the runner
+                $Modules = @(
+                    @{ Name = 'Az.Accounts' },
+                    @{ Name = 'Az.Resources' }
+                )
+
+                # Additional PS modules need to be installed for the removal step in case it is enabled
+                if ('${{ parameters.removeDeployment}}' -eq 'true') {
+                  $Modules += @(
+                    @{ Name = 'Az.CognitiveServices' },
+                    @{ Name = 'Az.Compute' },
+                    @{ Name = 'Az.KeyVault' },
+                    @{ Name = 'Az.Monitor' },
+                    @{ Name = 'Az.OperationalInsights' },
+                    @{ Name = 'Az.RecoveryServices' }
+                  )
+                }
+
                 # Set agent up
-                Set-EnvironmentOnAgent
+                Set-EnvironmentOnAgent -PSModules $Modules
 
           # [Multi Repo] Support task
           #--------------------------
@@ -268,7 +286,7 @@ jobs:
           #------------------
           - task: AzurePowerShell@5
             displayName: 'Remove deployed resources via [${{ parameters.serviceConnection }}]'
-            condition: and(eq( '${{ parameters.removeDeployment }}', 'true'), not(eq(variables['deploymentName'],'')))
+            condition: and(succeededOrFailed(), eq( '${{ parameters.removeDeployment }}', 'true'), not(eq(variables['deploymentName'],'')))
             inputs:
               azureSubscription: ${{ parameters.serviceConnection }}
               azurePowerShellVersion: ${{ parameters.azurePowerShellVersion }}

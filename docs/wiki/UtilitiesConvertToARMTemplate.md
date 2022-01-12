@@ -11,7 +11,6 @@ This page documents the conversion utility and how to use it.
 - [Location](#location)
 - [How it works](#what-it-does)
 - [How to use it](#how-to-use-it)
-  - [Examples](#examples)
 
 ---
 # Location

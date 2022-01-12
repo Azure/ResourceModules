@@ -9,7 +9,6 @@ Use this script to format a given raw 'Roles' table from Azure to the format req
 - [Location](#location)
 - [How it works](#what-it-does)
 - [How to use it](#how-to-use-it)
-  - [Examples](#examples)
 
 ---
 # Location
