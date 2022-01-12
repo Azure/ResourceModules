@@ -502,7 +502,7 @@ stages:
                     $passwordString = (New-Guid).Guid.SubString(0, 19)
                     $password = ConvertTo-SecureString -String $passwordString -AsPlainText -Force
 
-                    # Secrets
+                    # Set secrets
                     # -------
                     @(
                       @{ name = 'administratorLogin'; secretValue = $username } # SQLManagedInstances
