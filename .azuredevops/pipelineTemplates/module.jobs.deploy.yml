@@ -272,10 +272,22 @@ jobs:
                 # Get deployment name
                 Write-Host ('##vso[task.setvariable variable=deploymentName]{0}' -f $res.deploymentName)
 
-                # Populate further outputs
+                # # Populate further outputs
+                # foreach ($outputKey in $res.deploymentOutput.Keys) {
+                #     Write-Output ('##vso[task.setvariable variable={0}]{1}' -f $outputKey, $res.deploymentOutput[$outputKey].Value)
+                # }
+
+                # Populate pipeline output
+                $deploymentOutputHash=@{}
+
                 foreach ($outputKey in $res.deploymentOutput.Keys) {
-                    Write-Output ('##vso[task.setvariable variable={0}]{1}' -f $outputKey, $res.deploymentOutput[$outputKey].Value)
+                  Write-Output ('##vso[task.setvariable variable={0}]{1}' -f $outputKey, $res.deploymentOutput[$outputKey].Value)
+                  $deploymentOutputHash.add($outputKey,$res.deploymentOutput[$outputKey].Value)
                 }
+
+                $deploymentOutput = $deploymentOutputHash | ConvertTo-Json -Compress -Depth 100
+                Write-Verbose "Deployment output: $deploymentOutput" -Verbose
+                Write-Output ('##vso[task.setvariable variable={0}]{1}' -f 'deploymentOutput', $deploymentOutput)
 
                 if ($res.ContainsKey('exception')) {
                   # Happens only if there is an exception
