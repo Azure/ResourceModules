@@ -635,7 +635,7 @@ jobs:
             $keyVaultParameters = (ConvertFrom-Json (Get-Content -Path $parameterFilePath -Raw)).parameters
             $keyVaultName = $keyVaultParameters.name.value
 
-            # Prepare
+            # Generate values
             $usernameString = ( -join ((65..90) + (97..122) | Get-Random -Count 9 -SetSeed 1 | ForEach-Object { [char]$_ + "$_" })).substring(0, 19) # max length
             $userName = ConvertTo-SecureString -String $usernameString -AsPlainText -Force
             $passwordString = (New-Guid).Guid.SubString(0, 19)
