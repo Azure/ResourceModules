@@ -36,11 +36,11 @@ The following resources are required to be able to deploy this resource.
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `productApisResourceIds` | array | The Resources IDs of the API management service product APIs |
-| `productGroupsResourceIds` | array | The Resources IDs of the API management service product groups |
-| `productName` | string | The name of the API management service product |
-| `productResourceGroup` | string | The resource group the API management service product was deployed into |
-| `productResourceId` | string | The resource ID of the API management service product |
+| `apisResourceIds` | array | The Resources IDs of the API management service product APIs |
+| `groupsResourceIds` | array | The Resources IDs of the API management service product groups |
+| `name` | string | The name of the API management service product |
+| `resourceGroupName` | string | The resource group the API management service product was deployed into |
+| `resourceId` | string | The resource ID of the API management service product |
 
 ## Template references
 
