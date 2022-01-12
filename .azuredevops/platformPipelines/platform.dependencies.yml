@@ -451,7 +451,7 @@ stages:
                   Write-Verbose ('Added certificate [{0}] to key vault [{1}]' -f $_.name, $keyVaultName) -Verbose
                 }
 
-                # Keys
+                # Set keys
                 # ----
                 @(
                   @{ name = 'keyEncryptionKey'; Destination = 'Software' } # DiskEncryptionSet, VirtualMachines and VMSS
