@@ -410,8 +410,13 @@ stages:
                 # Load used functions
                 . (Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
 
+                # Define PS modules to install on the runner
+                $Modules = @(
+                    @{ Name = 'Az.KeyVault' }
+                )
+
                 # Set agent up
-                Set-EnvironmentOnAgent
+                Set-EnvironmentOnAgent -PSModules $Modules
           - task: AzurePowerShell@5
             displayName: Set key vault secrets keys and certificates
             inputs:
