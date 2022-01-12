@@ -98,7 +98,7 @@
             ]
         },
         "managementEndpoint": {
-            "value": "https://sxx-az-sfc-weu-x-001.westeurope.cloudapp.azure.com:19080"
+            "value": "https://sxx-az-sfc-full-001.westeurope.cloudapp.azure.com:19080"
         },
         "nodeTypes": {
             "value": [
