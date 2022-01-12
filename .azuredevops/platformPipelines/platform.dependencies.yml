@@ -426,7 +426,7 @@ stages:
                 $vpnSharedKeyString = (New-Guid).Guid.SubString(0, 32)
                 $vpnSharedKey = ConvertTo-SecureString -String $vpnSharedKeyString -AsPlainText -Force
 
-                # Secrets
+                # Set secrets
                 # -------
                 @(
                   @{ name = 'adminUsername'; secretValue = $username } # VirtualMachines and VMSS
