@@ -582,7 +582,7 @@ module virtualMachine_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, in
 @description('The name of the VM.')
 output name string = virtualMachine.name
 
-@description('The Resource ID of the VM.')
+@description('The resource ID of the VM.')
 output ResourceId string = virtualMachine.id
 
 @description('The name of the Resource Group the VM was created in.')
