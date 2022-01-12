@@ -203,6 +203,19 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
+      - name: 'Setup agent'
+        shell: pwsh
+        run: |
+          # Load used functions
+          . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
+
+          # Define PS modules to install on the runner
+          $Modules = @(
+              @{ Name = 'Az.Storage' }
+          )
+
+          # Set agent up
+          Set-EnvironmentOnAgent -PSModules $Modules
       - name: Azure Login
         uses: azure/login@v1
         with:
@@ -621,6 +634,19 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
+      - name: 'Setup agent'
+        shell: pwsh
+        run: |
+          # Load used functions
+          . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
+
+          # Define PS modules to install on the runner
+          $Modules = @(
+              @{ Name = 'Az.KeyVault' }
+          )
+
+          # Set agent up
+          Set-EnvironmentOnAgent -PSModules $Modules
       - name: Azure Login
         uses: azure/login@v1
         with:
@@ -721,6 +747,19 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
+      - name: 'Setup agent'
+        shell: pwsh
+        run: |
+          # Load used functions
+          . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
+
+          # Define PS modules to install on the runner
+          $Modules = @(
+              @{ Name = 'Az.KeyVault' }
+          )
+
+          # Set agent up
+          Set-EnvironmentOnAgent -PSModules $Modules
       - name: Azure Login
         uses: azure/login@v1
         with:
