@@ -51,7 +51,7 @@ stages:
           removeDeployment: '${{ parameters.removeDeployment }}'
           deploymentBlocks:
             - path: $(modulePath)/.parameters/parameters.json
-          defaultJobTimeoutInMinutes: 360
+          defaultJobTimeoutInMinutes: 180
 
   - stage: Publishing
     displayName: Publish module
