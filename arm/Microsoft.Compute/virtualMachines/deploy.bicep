@@ -580,13 +580,13 @@ module virtualMachine_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, in
 }]
 
 @description('The name of the VM.')
-output name string = virtualMachine.name
+output virtualMachineName string = virtualMachine.name
 
 @description('The resource ID of the VM.')
-output ResourceId string = virtualMachine.id
+output virtualMachineResourceId string = virtualMachine.id
 
 @description('The name of the resource group the VM was created in.')
-output ResourceGroup string = resourceGroup().name
+output virtualMachineResourceGroup string = resourceGroup().name
 
 @description('The principal ID of the system assigned identity.')
 output systemAssignedPrincipalId string = systemAssignedIdentity && contains(virtualMachine.identity, 'principalId') ? virtualMachine.identity.principalId : ''
