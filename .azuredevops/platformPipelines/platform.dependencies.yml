@@ -65,7 +65,6 @@ stages:
     - job: print_msi_job
       variables:
         varFromStageA: $[ stageDependencies.deploy_msi.default_msi_job.outputs['DeployModule.deploymentOutput'] ]
-      name: ValidateVar
       steps:
       - checkout: none
       - script: |
