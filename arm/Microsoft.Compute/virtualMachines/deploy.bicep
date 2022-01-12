@@ -585,7 +585,7 @@ output name string = virtualMachine.name
 @description('The resource ID of the VM.')
 output ResourceId string = virtualMachine.id
 
-@description('The name of the Resource Group the VM was created in.')
+@description('The name of the resource group the VM was created in.')
 output ResourceGroup string = resourceGroup().name
 
 @description('The principal ID of the system assigned identity.')
