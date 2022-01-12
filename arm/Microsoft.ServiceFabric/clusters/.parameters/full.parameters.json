@@ -8,7 +8,7 @@
         "tags": {
             "value": {
                 "resourceType": "Service Fabric",
-                "clusterName": "sxx-az-sfc-x-001"
+                "clusterName": "sxx-az-sfc-full-001"
             }
         },
         "addOnFeatures": {
