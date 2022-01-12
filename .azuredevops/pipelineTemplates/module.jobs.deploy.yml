@@ -231,6 +231,7 @@ jobs:
           #---------------------
           - task: AzurePowerShell@5
             displayName: 'Deploy [${{ deploymentBlock.path }}] via connection [${{ parameters.serviceConnection }}]'
+            name: DeployModule
             inputs:
               azureSubscription: ${{ parameters.serviceConnection }}
               azurePowerShellVersion: ${{ parameters.azurePowerShellVersion }}
@@ -287,7 +288,7 @@ jobs:
 
                 $deploymentOutput = $deploymentOutputHash | ConvertTo-Json -Compress -Depth 100
                 Write-Verbose "Deployment output: $deploymentOutput" -Verbose
-                Write-Output ('##vso[task.setvariable variable={0}]{1}' -f 'deploymentOutput', $deploymentOutput)
+                Write-Output ('##vso[task.setvariable variable={0};isOutput=true]{1}' -f 'deploymentOutput', $deploymentOutput)
 
                 if ($res.ContainsKey('exception')) {
                   # Happens only if there is an exception
