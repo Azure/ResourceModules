@@ -437,4 +437,4 @@ output serviceResourceId string = apiManagementService.id
 output serviceResourceGroup string = resourceGroup().name
 
 @description('The principal ID of the system assigned identity.')
-output systemAssignedPrincipalId string = systemAssignedIdentity ? apiManagementService.identity.principalId : ''
+output systemAssignedPrincipalId string = systemAssignedIdentity && contains(apiManagementService.identity, 'principalId') ? apiManagementService.identity.principalId : ''

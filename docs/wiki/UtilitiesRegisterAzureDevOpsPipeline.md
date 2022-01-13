@@ -9,12 +9,11 @@ Use this script to automatically register all specified Azure DevOps pipelines i
 - [Location](#location)
 - [How it works](#what-it-does)
 - [How to use it](#how-to-use-it)
-  - [Examples](#examples)
 
 ---
 # Location
 
-You can find the script under `/utilities/tools/Register-AzureDevOpsPipeline.ps1`
+You can find the script under `/utilities/tools/AzureDevOps/Register-AzureDevOpsPipeline.ps1`
 
 # How it works
 

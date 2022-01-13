@@ -302,4 +302,4 @@ output namespaceConnectionString string = listkeys(authRuleResourceId, '2017-04-
 output sharedAccessPolicyPrimaryKey string = listkeys(authRuleResourceId, '2017-04-01').primaryKey
 
 @description('The principal ID of the system assigned identity.')
-output systemAssignedPrincipalId string = systemAssignedIdentity ? eventHubNamespace.identity.principalId : ''
+output systemAssignedPrincipalId string = systemAssignedIdentity && contains(eventHubNamespace.identity, 'principalId') ? eventHubNamespace.identity.principalId : ''

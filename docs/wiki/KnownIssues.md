@@ -33,7 +33,3 @@ We have yet to implement the full set of parameter files we need in order to tes
 # Pipeline specific
 
 This section outlines known issues that currently affect our pipelines.
-
-## Azure DevOps Dependency pipeline
-
-There is currently no dependency pipeline for our Azure DevOps solution.

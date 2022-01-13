@@ -337,4 +337,4 @@ output managedInstanceResourceId string = managedInstance.id
 output managedInstanceResourceGroup string = resourceGroup().name
 
 @description('The principal ID of the system assigned identity.')
-output systemAssignedPrincipalId string = systemAssignedIdentity ? managedInstance.identity.principalId : ''
+output systemAssignedPrincipalId string = systemAssignedIdentity && contains(managedInstance.identity, 'principalId') ? managedInstance.identity.principalId : ''

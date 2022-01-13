@@ -151,4 +151,4 @@ output serverResourceId string = server.id
 output serverResourceGroup string = resourceGroup().name
 
 @description('The principal ID of the system assigned identity.')
-output systemAssignedPrincipalId string = systemAssignedIdentity ? server.identity.principalId : ''
+output systemAssignedPrincipalId string = systemAssignedIdentity && contains(server.identity, 'principalId') ? server.identity.principalId : ''

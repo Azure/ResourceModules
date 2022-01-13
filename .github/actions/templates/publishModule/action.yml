@@ -49,8 +49,15 @@ runs:
         # Load used functions
         . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
 
+        # Define PS modules to install on the runner
+        $Modules = @(
+            @{ Name = 'Az.Accounts' },
+            @{ Name = 'Az.ContainerRegistry' },
+            @{ Name = 'Az.Resources' }
+        )
+
         # Set agent up
-        Set-EnvironmentOnAgent
+        Set-EnvironmentOnAgent -PSModules $Modules
 
     - name: Azure Login
       uses: Azure/login@v1

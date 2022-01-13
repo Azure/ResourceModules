@@ -6,7 +6,7 @@ This module deploys recovery services vault backup config.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.RecoveryServices/vaults/backupconfig` | 2021-08-01 |
+| `Microsoft.RecoveryServices/vaults/backupconfig` | 2021-10-01 |
 
 ## Parameters
 
