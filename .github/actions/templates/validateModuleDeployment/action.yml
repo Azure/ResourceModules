@@ -152,7 +152,7 @@ runs:
         # Get deployment name
         Write-Output ('::set-output name={0}::{1}' -f 'deploymentName', $res.deploymentName)
 
-        # Populate action output
+        # Populate further outputs
         $deploymentOutputHash=@{}
 
         foreach ($outputKey in $res.deploymentOutput.Keys) {

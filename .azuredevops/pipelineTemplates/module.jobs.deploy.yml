@@ -273,7 +273,7 @@ jobs:
                 # Get deployment name
                 Write-Host ('##vso[task.setvariable variable=deploymentName]{0}' -f $res.deploymentName)
 
-                # Populate pipeline output
+                # Populate further outputs
                 $deploymentOutputHash=@{}
 
                 foreach ($outputKey in $res.deploymentOutput.Keys) {
