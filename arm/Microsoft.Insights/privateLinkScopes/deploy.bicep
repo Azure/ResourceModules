@@ -49,7 +49,7 @@ module privateLinkScope_scopedResource 'scopedResources/deploy.bicep' = [for (sc
   }
 }]
 
-resource privateLinkScope_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
+resource privateLinkScope_lock 'Microsoft.Authorization/locks@2020-05-01' = if (lock != 'NotSpecified') {
   name: '${privateLinkScope.name}-${lock}-lock'
   scope: privateLinkScope
   properties: {

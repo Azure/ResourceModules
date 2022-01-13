@@ -42,7 +42,7 @@ module autoManageAccount '.bicep/nested_autoManageAccount.bicep' = {
   }
 }
 
-resource autoManageAccount_permissions_contributor 'Microsoft.Authorization/roleAssignments@2020-04-01-preview' = {
+resource autoManageAccount_permissions_contributor 'Microsoft.Authorization/roleAssignments@2021-04-01-preview' = {
   name: guid(autoManageAccountResourceGroupName, name, contributor)
   properties: {
     roleDefinitionId: contributor
@@ -51,7 +51,7 @@ resource autoManageAccount_permissions_contributor 'Microsoft.Authorization/role
   }
 }
 
-resource autoManageAccount_permissions_resourcePolicyContributor 'Microsoft.Authorization/roleAssignments@2020-04-01-preview' = {
+resource autoManageAccount_permissions_resourcePolicyContributor 'Microsoft.Authorization/roleAssignments@2021-04-01-preview' = {
   name: guid(autoManageAccountResourceGroupName, name, resourcePolicyContributor)
   properties: {
     roleDefinitionId: resourcePolicyContributor

@@ -40,7 +40,7 @@ resource container 'Microsoft.Storage/storageAccounts/blobServices/containers@20
   name: '${split(resourceId, '/')[8]}/${split(resourceId, '/')[10]}/${split(resourceId, '/')[12]}'
 }
 
-resource roleAssignment 'Microsoft.Authorization/roleAssignments@2020-04-01-preview' = [for principalId in principalIds: {
+resource roleAssignment 'Microsoft.Authorization/roleAssignments@2021-04-01-preview' = [for principalId in principalIds: {
   name: guid(container.name, principalId, roleDefinitionIdOrName)
   properties: {
     roleDefinitionId: contains(builtInRoleNames, roleDefinitionIdOrName) ? builtInRoleNames[roleDefinitionIdOrName] : roleDefinitionIdOrName

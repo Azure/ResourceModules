@@ -6,7 +6,7 @@ This module deploys a deployment script.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/locks` | 2016-09-01 |
+| `Microsoft.Authorization/locks` | 2020-05-01 |
 | `Microsoft.Resources/deploymentScripts` | 2020-10-01 |
 
 ## Parameters
@@ -78,5 +78,5 @@ This module requires a User Assigned Identity (MSI, managed service identity) to
 
 ## Template references
 
-- [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
 - [Deploymentscripts](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Resources/2020-10-01/deploymentScripts)
+- [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks)

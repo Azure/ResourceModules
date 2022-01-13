@@ -43,4 +43,4 @@ For remaining properties, see [FirewallPolicyRule objects](https://docs.microsof
 
 ## Template references
 
-- [Firewallpolicies/Rulegroups](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-04-01/firewallPolicies/ruleGroups)
+- ['firewallPolicies/ruleGroups' Parent Documentation](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/firewallPolicies)

@@ -42,7 +42,7 @@ resource routeTable 'Microsoft.Network/routeTables@2021-02-01' = {
   }
 }
 
-resource routeTable_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
+resource routeTable_lock 'Microsoft.Authorization/locks@2020-05-01' = if (lock != 'NotSpecified') {
   name: '${routeTable.name}-${lock}-lock'
   properties: {
     level: lock

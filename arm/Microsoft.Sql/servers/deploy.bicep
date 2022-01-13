@@ -67,7 +67,7 @@ resource server 'Microsoft.Sql/servers@2021-05-01-preview' = {
   }
 }
 
-resource server_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
+resource server_lock 'Microsoft.Authorization/locks@2020-05-01' = if (lock != 'NotSpecified') {
   name: '${server.name}-${lock}-lock'
   properties: {
     level: lock
@@ -97,8 +97,8 @@ module server_databases 'databases/deploy.bicep' = [for (database, index) in dat
     autoPauseDelay: contains(database, 'autoPauseDelay') ? database.autoPauseDelay : ''
     diagnosticLogsRetentionInDays: contains(database, 'diagnosticLogsRetentionInDays') ? database.diagnosticLogsRetentionInDays : 365
     diagnosticStorageAccountId: contains(database, 'diagnosticStorageAccountId') ? database.diagnosticStorageAccountId : ''
-    eventHubAuthorizationRuleId: contains(database, 'eventHubAuthorizationRuleId') ? database.eventHubAuthorizationRuleId : ''
-    eventHubName: contains(database, 'eventHubName') ? database.eventHubName : ''
+    diagnosticEventHubAuthorizationRuleId: contains(database, 'diagnosticEventHubAuthorizationRuleId') ? database.diagnosticEventHubAuthorizationRuleId : ''
+    diagnosticEventHubName: contains(database, 'diagnosticEventHubName') ? database.diagnosticEventHubName : ''
     isLedgerOn: contains(database, 'isLedgerOn') ? database.isLedgerOn : false
     location: contains(database, 'location') ? database.location : server.location
     logsToEnable: contains(database, 'logsToEnable') ? database.logsToEnable : []
@@ -111,7 +111,7 @@ module server_databases 'databases/deploy.bicep' = [for (database, index) in dat
     requestedBackupStorageRedundancy: contains(database, 'requestedBackupStorageRedundancy') ? database.requestedBackupStorageRedundancy : ''
     sampleName: contains(database, 'sampleName') ? database.sampleName : ''
     tags: contains(database, 'tags') ? database.tags : {}
-    workspaceId: contains(database, 'workspaceId') ? database.workspaceId : ''
+    diagnosticWorkspaceId: contains(database, 'diagnosticWorkspaceId') ? database.diagnosticWorkspaceId : ''
     zoneRedundant: contains(database, 'zoneRedundant') ? database.zoneRedundant : false
   }
 }]

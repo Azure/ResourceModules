@@ -113,7 +113,7 @@ resource connection 'Microsoft.Network/connections@2021-02-01' = {
   }
 }
 
-resource connection_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
+resource connection_lock 'Microsoft.Authorization/locks@2020-05-01' = if (lock != 'NotSpecified') {
   name: '${connection.name}-${lock}-lock'
   properties: {
     level: lock

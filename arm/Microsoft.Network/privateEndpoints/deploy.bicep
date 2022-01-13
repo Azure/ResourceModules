@@ -68,7 +68,7 @@ module privateEndpoint_privateDnsZoneGroups 'privateDnsZoneGroups/deploy.bicep' 
   }
 }]
 
-resource privateEndpoint_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
+resource privateEndpoint_lock 'Microsoft.Authorization/locks@2020-05-01' = if (lock != 'NotSpecified') {
   name: '${privateEndpoint.name}-${lock}-lock'
   properties: {
     level: lock

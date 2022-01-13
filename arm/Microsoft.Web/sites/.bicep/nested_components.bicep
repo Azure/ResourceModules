@@ -15,7 +15,7 @@ param appInsightsType string = 'web'
 param appInsightsRequestSource string = 'rest'
 
 @description('Required. Resource ID of the log analytics workspace which the data will be ingested to. This property is required to create an application with this API version. Applications from older versions will not have this property.')
-param  workspaceResourceId string
+param workspaceResourceId string
 
 @description('Optional. The network access type for accessing Application Insights ingestion. - Enabled or Disabled.')
 @allowed([
@@ -48,7 +48,6 @@ param lock string = 'NotSpecified'
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-
 resource appInsights 'Microsoft.Insights/components@2020-02-02' = {
   name: name
   location: location
@@ -57,13 +56,13 @@ resource appInsights 'Microsoft.Insights/components@2020-02-02' = {
   properties: {
     Application_Type: appInsightsType
     Request_Source: appInsightsRequestSource
-    WorkspaceResourceId:  workspaceResourceId
+    WorkspaceResourceId: workspaceResourceId
     publicNetworkAccessForIngestion: appInsightsPublicNetworkAccessForIngestion
     publicNetworkAccessForQuery: appInsightsPublicNetworkAccessForQuery
   }
 }
 
-resource appInsights_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
+resource appInsights_lock 'Microsoft.Authorization/locks@2020-05-01' = if (lock != 'NotSpecified') {
   name: '${appInsights.name}-${lock}-lock'
   properties: {
     level: lock

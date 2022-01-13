@@ -5,7 +5,7 @@
 | Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/policyAssignments` | 2021-06-01 |
-| `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
+| `Microsoft.Authorization/roleAssignments` | 2021-04-01-preview |
 
 ## Parameters
 
@@ -75,4 +75,4 @@ To deploy resource to a Resource Group, provide the `subscriptionId` and `resour
 ## Template references
 
 - [Policyassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2021-06-01/policyAssignments)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-04-01-preview/roleAssignments)
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2021-04-01-preview/roleAssignments)

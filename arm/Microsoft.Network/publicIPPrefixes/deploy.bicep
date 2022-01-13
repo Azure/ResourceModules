@@ -45,7 +45,7 @@ resource publicIpPrefix 'Microsoft.Network/publicIPPrefixes@2021-02-01' = {
   }
 }
 
-resource publicIpPrefix_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
+resource publicIpPrefix_lock 'Microsoft.Authorization/locks@2020-05-01' = if (lock != 'NotSpecified') {
   name: '${publicIpPrefix.name}-${lock}-lock'
   properties: {
     level: lock
