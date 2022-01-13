@@ -106,4 +106,4 @@ output name string = authorizationServer.outputs.name
 output resourceId string = authorizationServer.outputs.resourceId
 
 @description('The resource group the API management service authorization server was deployed into')
-output resourceGroupName string = authorizationServer.outputs.authorizationServerResourceGroup
+output resourceGroupName string = authorizationServer.outputs.resourceGroupName
