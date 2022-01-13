@@ -30,11 +30,11 @@ Optional. The path to the GitHub workflows folder to crawl from
 Defaults to: '.github/workflows'
 
 .EXAMPLE
-Set-DevOpsPipelineFiles
+Set-DevOpsPipelineFile
 
 Generate all Azure DevOps pipeline files in the default DevOps pipeline folder based on the workflows files in the default workflows folder based on the provided default template
 #>
-function Set-DevOpsPipelineFiles {
+function Set-DevOpsPipelineFile {
 
 
     [CmdletBinding(SupportsShouldProcess)]
