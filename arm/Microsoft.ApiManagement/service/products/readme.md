@@ -36,7 +36,7 @@ The following resources are required to be able to deploy this resource.
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `apisResourceIds` | array | The Resources IDs of the API management service product APIs |
+| `apiResourceIds` | array | The Resources IDs of the API management service product APIs |
 | `groupResourceIds` | array | The Resources IDs of the API management service product groups |
 | `name` | string | The name of the API management service product |
 | `resourceGroupName` | string | The resource group the API management service product was deployed into |
