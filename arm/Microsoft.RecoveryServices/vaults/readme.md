@@ -9,7 +9,7 @@ This module deploys a recovery service vault.
 | `Microsoft.Authorization/locks` | 2016-09-01 |
 | `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
 | `Microsoft.Insights/diagnosticSettings` | 2021-05-01-preview |
-| `Microsoft.RecoveryServices/vaults` | 2021-08-01 |
+| `Microsoft.RecoveryServices/vaults` | 2021-12-01 |
 | `Microsoft.RecoveryServices/vaults/backupconfig` | 2021-08-01 |
 | `Microsoft.RecoveryServices/vaults/backupFabrics/protectionContainers` | 2021-08-01 |
 | `Microsoft.RecoveryServices/vaults/backupPolicies` | 2021-08-01 |
