@@ -57,7 +57,6 @@ stages:
             - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
               templateFilePath: $(templateFilePath)
               displayName: User Assigned Identity
-              jobName: default_msi_job
 
   - stage: deploy_pa
     displayName: Deploy policy assignment
