@@ -111,7 +111,7 @@ resource server 'Microsoft.AnalysisServices/servers@2017-08-01' = {
   }
 }
 
-resource server_lock 'Microsoft.Authorization/locks@2020-05-01' = if (lock != 'NotSpecified') {
+resource server_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
   name: '${server.name}-${lock}-lock'
   properties: {
     level: lock

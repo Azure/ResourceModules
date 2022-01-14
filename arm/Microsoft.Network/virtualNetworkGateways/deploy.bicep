@@ -294,7 +294,7 @@ resource virtualGatewayPublicIP 'Microsoft.Network/publicIPAddresses@2021-02-01'
 }]
 
 @batchSize(1)
-resource virtualGatewayPublicIP_lock 'Microsoft.Authorization/locks@2020-05-01' = [for (virtualGatewayPublicIpName, index) in virtualGatewayPipName_var: if (lock != 'NotSpecified') {
+resource virtualGatewayPublicIP_lock 'Microsoft.Authorization/locks@2017-04-01' = [for (virtualGatewayPublicIpName, index) in virtualGatewayPipName_var: if (lock != 'NotSpecified') {
   name: '${virtualGatewayPublicIpName}-${lock}-lock'
   properties: {
     level: lock
@@ -341,7 +341,7 @@ resource virtualNetworkGateway 'Microsoft.Network/virtualNetworkGateways@2021-02
   ]
 }
 
-resource virtualNetworkGateway_lock 'Microsoft.Authorization/locks@2020-05-01' = if (lock != 'NotSpecified') {
+resource virtualNetworkGateway_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
   name: '${virtualNetworkGateway.name}-${lock}-lock'
   properties: {
     level: lock

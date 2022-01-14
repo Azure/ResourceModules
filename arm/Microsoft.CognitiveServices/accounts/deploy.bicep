@@ -180,7 +180,7 @@ resource cognitiveServices 'Microsoft.CognitiveServices/accounts@2017-04-18' = {
   }
 }
 
-resource cognitiveServices_lock 'Microsoft.Authorization/locks@2020-05-01' = if (lock != 'NotSpecified') {
+resource cognitiveServices_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
   name: '${cognitiveServices.name}-${lock}-lock'
   properties: {
     level: lock

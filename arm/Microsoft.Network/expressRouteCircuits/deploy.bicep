@@ -164,7 +164,7 @@ resource expressRouteCircuits 'Microsoft.Network/expressRouteCircuits@2021-02-01
   }
 }
 
-resource expressRouteCircuits_lock 'Microsoft.Authorization/locks@2020-05-01' = if (lock != 'NotSpecified') {
+resource expressRouteCircuits_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
   name: '${expressRouteCircuits.name}-${lock}-lock'
   properties: {
     level: lock
@@ -205,4 +205,4 @@ output expressRouteCircuitResourceGroup string = resourceGroup().name
 output expressRouteCircuitName string = expressRouteCircuits.name
 
 @description('The service key of the express route circuit')
-output expressRouteCircuitServiceKey string = reference(expressRouteCircuits.id, '2020-05-01').serviceKey
+output expressRouteCircuitServiceKey string = reference(expressRouteCircuits.id, '2017-04-01').serviceKey

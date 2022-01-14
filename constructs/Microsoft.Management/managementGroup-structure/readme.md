@@ -11,7 +11,7 @@ This module has some known **limitations**:
 
 |Resource Type|ApiVersion|
 |:--|:--|
-|`Microsoft.Management/managementGroups`|2020-05-01|
+|`Microsoft.Management/managementGroups`|2017-04-01|
 |`Microsoft.Resources/deployments`|2020-06-01|
 
 ## Parameters

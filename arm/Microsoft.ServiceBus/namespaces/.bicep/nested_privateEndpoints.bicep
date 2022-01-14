@@ -35,7 +35,7 @@ resource privateEndpoint_name 'Microsoft.Network/privateEndpoints@2021-05-01' = 
     customDnsConfigs: privateEndpoint_var.customDnsConfigs
   }
 
-  resource privateEndpoint_name_default 'privateDnsZoneGroups@2020-05-01' = if (!empty(privateEndpoint_var.privateDnsZoneResourceIds)) {
+  resource privateEndpoint_name_default 'privateDnsZoneGroups@2017-04-01' = if (!empty(privateEndpoint_var.privateDnsZoneResourceIds)) {
     name: 'default'
     properties: {
       privateDnsZoneConfigs: [for j in range(0, length(privateEndpoint_var.privateDnsZoneResourceIds)): {

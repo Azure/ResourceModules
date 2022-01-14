@@ -139,7 +139,7 @@ resource publicIP 'Microsoft.Network/publicIPAddresses@2021-02-01' = if (natGate
   }
 }
 
-resource publicIP_lock 'Microsoft.Authorization/locks@2020-05-01' = if (lock != 'NotSpecified') {
+resource publicIP_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
   name: '${publicIP.name}-${lock}-lock'
   properties: {
     level: lock
@@ -174,7 +174,7 @@ resource natGateway 'Microsoft.Network/natGateways@2021-02-01' = {
   zones: zones
 }
 
-resource natGateway_lock 'Microsoft.Authorization/locks@2020-05-01' = if (lock != 'NotSpecified') {
+resource natGateway_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
   name: '${natGateway.name}-${lock}-lock'
   properties: {
     level: lock

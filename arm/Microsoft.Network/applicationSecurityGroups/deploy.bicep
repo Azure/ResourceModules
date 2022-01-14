@@ -33,7 +33,7 @@ resource applicationSecurityGroup 'Microsoft.Network/applicationSecurityGroups@2
   properties: {}
 }
 
-resource applicationSecurityGroup_lock 'Microsoft.Authorization/locks@2020-05-01' = if (lock != 'NotSpecified') {
+resource applicationSecurityGroup_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
   name: '${applicationSecurityGroup.name}-${lock}-lock'
   properties: {
     level: lock

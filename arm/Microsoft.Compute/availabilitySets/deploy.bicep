@@ -52,7 +52,7 @@ resource availabilitySet 'Microsoft.Compute/availabilitySets@2021-04-01' = {
   }
 }
 
-resource availabilitySet_lock 'Microsoft.Authorization/locks@2020-05-01' = if (lock != 'NotSpecified') {
+resource availabilitySet_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
   name: '${availabilitySet.name}-${lock}-lock'
   properties: {
     level: lock

@@ -67,7 +67,7 @@ resource server 'Microsoft.Sql/servers@2021-05-01-preview' = {
   }
 }
 
-resource server_lock 'Microsoft.Authorization/locks@2020-05-01' = if (lock != 'NotSpecified') {
+resource server_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
   name: '${server.name}-${lock}-lock'
   properties: {
     level: lock

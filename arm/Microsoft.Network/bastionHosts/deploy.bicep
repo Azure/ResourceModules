@@ -129,7 +129,7 @@ resource azureBastion 'Microsoft.Network/bastionHosts@2021-02-01' = {
   }
 }
 
-resource azureBastion_lock 'Microsoft.Authorization/locks@2020-05-01' = if (lock != 'NotSpecified') {
+resource azureBastion_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
   name: '${azureBastion.name}-${lock}-lock'
   properties: {
     level: lock

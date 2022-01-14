@@ -43,7 +43,7 @@ resource gallery 'Microsoft.Compute/galleries@2020-09-30' = {
   }
 }
 
-resource gallery_lock 'Microsoft.Authorization/locks@2020-05-01' = if (lock != 'NotSpecified') {
+resource gallery_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
   name: '${gallery.name}-${lock}-lock'
   properties: {
     level: lock

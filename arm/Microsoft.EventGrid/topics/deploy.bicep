@@ -99,7 +99,7 @@ resource eventGrid 'Microsoft.EventGrid/topics@2020-06-01' = {
   }
 }
 
-resource eventGrid_lock 'Microsoft.Authorization/locks@2020-05-01' = if (lock != 'NotSpecified') {
+resource eventGrid_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
   name: '${eventGrid.name}-${lock}-lock'
   properties: {
     level: lock

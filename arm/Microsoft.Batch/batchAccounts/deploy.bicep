@@ -82,7 +82,7 @@ resource batchAccount 'Microsoft.Batch/batchAccounts@2020-09-01' = {
   properties: {}
 }
 
-resource batchAccount_lock 'Microsoft.Authorization/locks@2020-05-01' = if (lock != 'NotSpecified') {
+resource batchAccount_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
   name: '${batchAccount.name}-${lock}-lock'
   properties: {
     level: lock

@@ -6,7 +6,7 @@ This module deploys an image template that can be consumed by the Azure Image Bu
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/locks` | 2020-05-01 |
+| `Microsoft.Authorization/locks` | 2017-04-01 |
 | `Microsoft.Authorization/roleAssignments` | 2021-04-01-preview |
 | `Microsoft.VirtualMachineImages/imageTemplates` | 2020-02-14 |
 
@@ -119,5 +119,5 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 ## Template references
 
 - [Define resources with Bicep and ARM templates](https://docs.microsoft.com/en-us/azure/templates)
-- [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-05-01/locks)
+- [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
 - [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2021-04-01-preview/roleAssignments)

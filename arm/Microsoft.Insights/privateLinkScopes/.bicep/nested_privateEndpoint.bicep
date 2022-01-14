@@ -35,7 +35,7 @@ resource privateEndpoint 'Microsoft.Network/privateEndpoints@2021-03-01' = {
     customDnsConfigs: privateEndpoint_var.customDnsConfigs
   }
 
-  resource privateDnsZoneGroups 'privateDnsZoneGroups@2020-05-01' = {
+  resource privateDnsZoneGroups 'privateDnsZoneGroups@2017-04-01' = {
     name: 'default'
     properties: {
       privateDnsZoneConfigs: [for privateDnsZoneResourceId in privateEndpoint_var.privateDnsZoneResourceIds: {

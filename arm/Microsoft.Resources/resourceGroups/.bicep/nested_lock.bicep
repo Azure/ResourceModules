@@ -16,7 +16,7 @@ var lockNotes = {
 
 var lockName = empty(name) ? '${level}-lock' : name
 
-resource lock 'Microsoft.Authorization/locks@2020-05-01' = if (level != 'NotSpecified') {
+resource lock 'Microsoft.Authorization/locks@2017-04-01' = if (level != 'NotSpecified') {
   name: lockName
   properties: {
     level: level

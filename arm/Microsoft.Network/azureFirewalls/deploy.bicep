@@ -166,7 +166,7 @@ resource azureFirewallPip 'Microsoft.Network/publicIPAddresses@2021-02-01' = {
   }
 }
 
-resource azureFirewallPip_lock 'Microsoft.Authorization/locks@2020-05-01' = if (lock != 'NotSpecified') {
+resource azureFirewallPip_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
   name: '${azureFirewallPip.name}-${lock}-lock'
   properties: {
     level: lock
@@ -221,7 +221,7 @@ resource azureFirewall 'Microsoft.Network/azureFirewalls@2021-03-01' = {
   }
 }
 
-resource azureFirewall_lock 'Microsoft.Authorization/locks@2020-05-01' = if (lock != 'NotSpecified') {
+resource azureFirewall_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
   name: '${azureFirewall.name}-${lock}-lock'
   properties: {
     level: lock

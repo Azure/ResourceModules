@@ -146,7 +146,7 @@ The locks extension can be added as a `resource` to the resource template direct
 @description('Optional. Specify the type of lock.')
 param lock string = 'NotSpecified'
 
-resource <mainResource>_lock 'Microsoft.Authorization/locks@2020-05-01' = if (lock != 'NotSpecified') {
+resource <mainResource>_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
   name: '${<mainResource>.name}-${lock}-lock'
   properties: {
     level: lock

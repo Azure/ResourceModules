@@ -216,7 +216,7 @@ module app_appsettings 'config/deploy.bicep' = {
   }
 }
 
-resource app_lock 'Microsoft.Authorization/locks@2020-05-01' = if (lock != 'NotSpecified') {
+resource app_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
   name: '${app.name}-${lock}-lock'
   properties: {
     level: lock

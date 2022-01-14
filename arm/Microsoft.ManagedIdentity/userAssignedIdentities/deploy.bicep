@@ -32,7 +32,7 @@ resource userMsi 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-11-30' =
   tags: tags
 }
 
-resource userMsi_lock 'Microsoft.Authorization/locks@2020-05-01' = if (lock != 'NotSpecified') {
+resource userMsi_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
   name: '${userMsi.name}-${lock}-lock'
   properties: {
     level: lock

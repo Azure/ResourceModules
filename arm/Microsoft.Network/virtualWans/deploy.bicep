@@ -76,7 +76,7 @@ resource virtualWan 'Microsoft.Network/virtualWans@2021-03-01' = {
   }
 }
 
-resource virtualWan_lock 'Microsoft.Authorization/locks@2020-05-01' = if (lock != 'NotSpecified') {
+resource virtualWan_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
   name: '${virtualWan.name}-${lock}-lock'
   properties: {
     level: lock
@@ -96,7 +96,7 @@ resource virtualHub 'Microsoft.Network/virtualHubs@2021-03-01' = {
   }
 }
 
-resource virtualHub_lock 'Microsoft.Authorization/locks@2020-05-01' = if (lock != 'NotSpecified') {
+resource virtualHub_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
   name: '${virtualHub.name}-${lock}-lock'
   properties: {
     level: lock
@@ -127,7 +127,7 @@ resource vpnSite 'Microsoft.Network/vpnSites@2021-03-01' = {
   }
 }
 
-resource vpnSite_lock 'Microsoft.Authorization/locks@2020-05-01' = if (lock != 'NotSpecified') {
+resource vpnSite_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
   name: '${vpnSite.name}-${lock}-lock'
   properties: {
     level: lock
@@ -161,7 +161,7 @@ resource vpnGateway 'Microsoft.Network/vpnGateways@2021-03-01' = {
   }
 }
 
-resource vpnGateway_lock 'Microsoft.Authorization/locks@2020-05-01' = if (lock != 'NotSpecified') {
+resource vpnGateway_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
   name: '${vpnGateway.name}-${lock}-lock'
   properties: {
     level: lock

@@ -157,7 +157,7 @@ resource appServiceEnvironment 'Microsoft.Web/hostingEnvironments@2021-02-01' = 
   }
 }
 
-resource appServiceEnvironment_lock 'Microsoft.Authorization/locks@2020-05-01' = if (lock != 'NotSpecified') {
+resource appServiceEnvironment_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
   name: '${appServiceEnvironment.name}-${lock}-lock'
   properties: {
     level: lock

@@ -391,7 +391,7 @@ resource applicationGateway 'Microsoft.Network/applicationGateways@2021-03-01' =
   dependsOn: []
 }
 
-resource applicationGateway_lock 'Microsoft.Authorization/locks@2020-05-01' = if (lock != 'NotSpecified') {
+resource applicationGateway_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
   name: '${applicationGateway.name}-${lock}-lock'
   properties: {
     level: lock

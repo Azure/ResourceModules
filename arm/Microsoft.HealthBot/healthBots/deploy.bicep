@@ -39,7 +39,7 @@ resource azureHealthBot 'Microsoft.HealthBot/healthBots@2020-12-08' = {
   properties: {}
 }
 
-resource azureHealthBot_lock 'Microsoft.Authorization/locks@2020-05-01' = if (lock != 'NotSpecified') {
+resource azureHealthBot_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
   name: '${azureHealthBot.name}-${lock}-lock'
   properties: {
     level: lock

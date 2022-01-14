@@ -159,7 +159,7 @@ resource registry 'Microsoft.ContainerRegistry/registries@2020-11-01-preview' = 
   }
 }
 
-resource registry_lock 'Microsoft.Authorization/locks@2020-05-01' = if (lock != 'NotSpecified') {
+resource registry_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
   name: '${registry.name}-${lock}-lock'
   properties: {
     level: lock

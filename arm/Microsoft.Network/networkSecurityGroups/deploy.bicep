@@ -93,7 +93,7 @@ resource networkSecurityGroup 'Microsoft.Network/networkSecurityGroups@2021-02-0
   }
 }
 
-resource networkSecurityGroup_lock 'Microsoft.Authorization/locks@2020-05-01' = if (lock != 'NotSpecified') {
+resource networkSecurityGroup_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
   name: '${networkSecurityGroup.name}-${lock}-lock'
   properties: {
     level: lock

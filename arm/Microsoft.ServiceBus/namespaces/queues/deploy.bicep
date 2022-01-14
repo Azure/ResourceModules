@@ -121,7 +121,7 @@ module queue_authorizationRules 'authorizationRules/deploy.bicep' = [for (author
   }
 }]
 
-resource queue_lock 'Microsoft.Authorization/locks@2020-05-01' = if (lock != 'NotSpecified') {
+resource queue_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
   name: '${queue.name}-${lock}-lock'
   properties: {
     level: lock

@@ -234,7 +234,7 @@ module serviceBusNamespace_queues 'queues/deploy.bicep' = [for (queue, index) in
   }
 }]
 
-resource serviceBusNamespace_lock 'Microsoft.Authorization/locks@2020-05-01' = if (lock != 'NotSpecified') {
+resource serviceBusNamespace_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
   name: '${serviceBusNamespace.name}-${lock}-lock'
   properties: {
     level: lock

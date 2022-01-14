@@ -138,7 +138,7 @@ resource trafficManagerProfile 'Microsoft.Network/trafficmanagerprofiles@2018-08
   }
 }
 
-resource trafficManagerProfile_lock 'Microsoft.Authorization/locks@2020-05-01' = if (lock != 'NotSpecified') {
+resource trafficManagerProfile_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
   name: '${trafficManagerProfile.name}-${lock}-lock'
   properties: {
     level: lock
