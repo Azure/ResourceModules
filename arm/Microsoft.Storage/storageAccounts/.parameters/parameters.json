@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "sxxazsaweux001"
+            "value": "sxxazsax001"
         },
         "storageAccountSku": {
             "value": "Standard_LRS"
