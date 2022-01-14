@@ -6,7 +6,7 @@ This module deploys API Management Service Authorization Servers.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.ApiManagement/service/authorizationServers` | 2020-06-01-preview |
+| `Microsoft.ApiManagement/service/authorizationServers` | 2021-08-01 |
 
 ### Resource dependency
 
@@ -47,4 +47,4 @@ The following resources are required to be able to deploy this resource.
 
 ## Template references
 
-- [Service/Authorizationservers](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/service/authorizationServers)
+- [Service/Authorizationservers](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2021-08-01/service/authorizationServers)

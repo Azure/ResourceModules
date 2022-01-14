@@ -28,4 +28,4 @@ This module deploys load balancer backend address pools.
 
 ## Template references
 
-- [Loadbalancers/Backendaddresspools](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/loadBalancers/backendAddressPools)
+- [Loadbalancers/Backendaddresspools](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/loadBalancers/backendAddressPools)

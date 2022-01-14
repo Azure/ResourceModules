@@ -10,9 +10,9 @@ param ipConfigurationArray array
 param lock string
 param diagnosticStorageAccountId string
 param diagnosticLogsRetentionInDays int
-param workspaceId string
-param eventHubAuthorizationRuleId string
-param eventHubName string
+param diagnosticWorkspaceId string
+param diagnosticEventHubAuthorizationRuleId string
+param diagnosticEventHubName string
 param pipMetricsToEnable array
 param pipLogsToEnable array
 param metricsToEnable array
@@ -47,9 +47,9 @@ module networkInterface_publicIPConfigurations 'nested_networkInterface_publicIP
     location: location
     diagnosticStorageAccountId: diagnosticStorageAccountId
     diagnosticLogsRetentionInDays: diagnosticLogsRetentionInDays
-    workspaceId: workspaceId
-    eventHubAuthorizationRuleId: eventHubAuthorizationRuleId
-    eventHubName: eventHubName
+    diagnosticWorkspaceId: diagnosticWorkspaceId
+    diagnosticEventHubAuthorizationRuleId: diagnosticEventHubAuthorizationRuleId
+    diagnosticEventHubName: diagnosticEventHubName
     metricsToEnable: pipMetricsToEnable
     logsToEnable: pipLogsToEnable
     lock: lock
@@ -94,13 +94,13 @@ resource networkInterface_lock 'Microsoft.Authorization/locks@2017-04-01' = if (
   scope: networkInterface
 }
 
-resource networkInterface_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId)) || (!empty(eventHubAuthorizationRuleId)) || (!empty(eventHubName))) {
+resource networkInterface_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(diagnosticWorkspaceId)) || (!empty(diagnosticEventHubAuthorizationRuleId)) || (!empty(diagnosticEventHubName))) {
   name: '${networkInterface.name}-diagnosticSettings'
   properties: {
     storageAccountId: !empty(diagnosticStorageAccountId) ? diagnosticStorageAccountId : null
-    workspaceId: !empty(workspaceId) ? workspaceId : null
-    eventHubAuthorizationRuleId: !empty(eventHubAuthorizationRuleId) ? eventHubAuthorizationRuleId : null
-    eventHubName: !empty(eventHubName) ? eventHubName : null
+    workspaceId: !empty(diagnosticWorkspaceId) ? diagnosticWorkspaceId : null
+    eventHubAuthorizationRuleId: !empty(diagnosticEventHubAuthorizationRuleId) ? diagnosticEventHubAuthorizationRuleId : null
+    eventHubName: !empty(diagnosticEventHubName) ? diagnosticEventHubName : null
     metrics: diagnosticsMetrics
   }
   scope: networkInterface

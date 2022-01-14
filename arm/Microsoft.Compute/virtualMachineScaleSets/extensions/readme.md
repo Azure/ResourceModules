@@ -31,7 +31,7 @@ This module deploys a virtual machine scale set extension.
 | :-- | :-- | :-- |
 | `extensionName` | string | The name of the extension |
 | `extensionResourceGroup` | string | The name of the Resource Group the extension was created in. |
-| `extensionResourceId` | string | The resource ID of the extension |
+| `extensionResourceId` | string | The Resource ID of the extension |
 
 ## Template references
 
