@@ -855,7 +855,7 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - name: 'Replace msi principal ID in parameter file'
+      - name: 'Get msi principal ID and replace token in parameter file'
         shell: pwsh
         run: |
           # Load used functions
@@ -875,7 +875,6 @@ jobs:
           $ConvertTokensInputs = @{
               ParameterFilePath                 = '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
               DefaultParameterFileTokens        = $DefaultParameterFileTokens
-              LocalCustomParameterFileTokens    = $Settings.parameterFileTokens.localTokens.tokens
               TokenPrefix                       = $Settings.parameterFileTokens.tokenPrefix
               TokenSuffix                       = $Settings.parameterFileTokens.tokenSuffix
           }
