@@ -15,7 +15,7 @@ module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
-resource rsv 'Microsoft.RecoveryServices/vaults@2021-12-01' existing = {
+resource rsv 'Microsoft.RecoveryServices/vaults@2021-11-15' existing = {
   name: recoveryVaultName
 }
 
