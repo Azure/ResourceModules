@@ -867,6 +867,7 @@ jobs:
           # Initialize Default Parameter File Tokens
           $DefaultParameterFileTokens = @(
               @{ Name = 'msiPrincipalId'; Value = '${{ needs.job_deploy_msi.outputs.msiPrincipalId }}' }
+              @{ Name = 'subscriptionId'; Value = '${{ secrets.ARM_SUBSCRIPTION_ID }}' }
           )
           $DefaultParameterFileTokens = $DefaultParameterFileTokens | ForEach-Object { [PSCustomObject]$PSItem }
 
