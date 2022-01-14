@@ -130,11 +130,11 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
-resource rsv 'Microsoft.RecoveryServices/vaults@2021-08-01' = {
+resource rsv 'Microsoft.RecoveryServices/vaults@2021-12-01' = {
   name: name
   location: location
   tags: tags
-  identity: identity
+  identity: any(identity)
   sku: {
     name: 'RS0'
     tier: 'Standard'
