@@ -881,6 +881,7 @@ jobs:
           $ConvertTokensInputs = @{
               ParameterFilePath                 = '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
               DefaultParameterFileTokens        = $DefaultParameterFileTokens
+              LocalCustomParameterFileTokens    = $Settings.parameterFileTokens.localTokens.tokens
               TokenPrefix                       = $Settings.parameterFileTokens.tokenPrefix
               TokenSuffix                       = $Settings.parameterFileTokens.tokenSuffix
           }
