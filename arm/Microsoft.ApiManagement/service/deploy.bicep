@@ -28,11 +28,11 @@ param disableGateway bool = false
 @description('Optional. Property only meant to be used for Consumption SKU Service. This enforces a client certificate to be presented on each request to the gateway. This also enables the ability to authenticate the certificate in the policy on the gateway.')
 param enableClientCertificate bool = false
 
-@description('Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.')
-param eventHubAuthorizationRuleId string = ''
+@description('Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.')
+param diagnosticEventHubAuthorizationRuleId string = ''
 
-@description('Optional. Name of the event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.')
-param eventHubName string = ''
+@description('Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.')
+param diagnosticEventHubName string = ''
 
 @description('Optional. Custom hostname configuration of the API Management service.')
 param hostnameConfigurations array = []
@@ -103,8 +103,8 @@ param tags object = {}
 ])
 param virtualNetworkType string = 'None'
 
-@description('Optional. Resource ID of log analytics.')
-param workspaceId string = ''
+@description('Optional. Resource ID of the diagnostic log analytics workspace.')
+param diagnosticWorkspaceId string = ''
 
 @description('Optional. A list of availability zones denoting where the resource needs to come from.')
 param zones array = []
@@ -181,7 +181,7 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
-resource apiManagementService 'Microsoft.ApiManagement/service@2020-12-01' = {
+resource apiManagementService 'Microsoft.ApiManagement/service@2021-08-01' = {
   name: name
   location: location
   tags: tags
@@ -396,7 +396,7 @@ module subscriptions_resource 'subscriptions/deploy.bicep' = [for (subscription,
   }
 }]
 
-resource apiManagementService_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
+resource apiManagementService_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
   name: '${apiManagementService.name}-${lock}-lock'
   properties: {
     level: lock
@@ -405,13 +405,13 @@ resource apiManagementService_lock 'Microsoft.Authorization/locks@2016-09-01' = 
   scope: apiManagementService
 }
 
-resource apiManagementService_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = if (!empty(diagnosticStorageAccountId) || !empty(workspaceId) || !empty(eventHubAuthorizationRuleId) || !empty(eventHubName)) {
+resource apiManagementService_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = if (!empty(diagnosticStorageAccountId) || !empty(diagnosticWorkspaceId) || !empty(diagnosticEventHubAuthorizationRuleId) || !empty(diagnosticEventHubName)) {
   name: '${apiManagementService.name}-diagnosticSettings'
   properties: {
     storageAccountId: !empty(diagnosticStorageAccountId) ? diagnosticStorageAccountId : null
-    workspaceId: !empty(workspaceId) ? workspaceId : null
-    eventHubAuthorizationRuleId: !empty(eventHubAuthorizationRuleId) ? eventHubAuthorizationRuleId : null
-    eventHubName: !empty(eventHubName) ? eventHubName : null
+    workspaceId: !empty(diagnosticWorkspaceId) ? diagnosticWorkspaceId : null
+    eventHubAuthorizationRuleId: !empty(diagnosticEventHubAuthorizationRuleId) ? diagnosticEventHubAuthorizationRuleId : null
+    eventHubName: !empty(diagnosticEventHubName) ? diagnosticEventHubName : null
     metrics: diagnosticsMetrics
     logs: diagnosticsLogs
   }

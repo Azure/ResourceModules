@@ -39,7 +39,7 @@ resource account 'Microsoft.CognitiveServices/accounts@2017-04-18' existing = {
   name: last(split(resourceId, '/'))
 }
 
-resource roleAssignment 'Microsoft.Authorization/roleAssignments@2020-04-01-preview' = [for principalId in principalIds: {
+resource roleAssignment 'Microsoft.Authorization/roleAssignments@2021-04-01-preview' = [for principalId in principalIds: {
   name: guid(account.name, principalId, roleDefinitionIdOrName)
   properties: {
     roleDefinitionId: contains(builtInRoleNames, roleDefinitionIdOrName) ? builtInRoleNames[roleDefinitionIdOrName] : roleDefinitionIdOrName

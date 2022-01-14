@@ -6,7 +6,7 @@ This module deploys API Management Service Backends.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.ApiManagement/service/backends` | 2020-06-01-preview |
+| `Microsoft.ApiManagement/service/backends` | 2021-08-01 |
 
 ### Resource dependency
 
@@ -128,4 +128,4 @@ The following resources are required to be able to deploy this resource.
 
 ## Template references
 
-- [Service/Backends](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2020-06-01-preview/service/backends)
+- [Service/Backends](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2021-08-01/service/backends)

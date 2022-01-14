@@ -6,7 +6,7 @@ This module deploys an Alert based on Activity Log.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
+| `Microsoft.Authorization/roleAssignments` | 2021-04-01-preview |
 | `Microsoft.Insights/activityLogAlerts` | 2020-10-01 |
 
 ## Parameters
@@ -178,5 +178,5 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 ## Template references
 
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-04-01-preview/roleAssignments)
 - [Activitylogalerts](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2020-10-01/activityLogAlerts)
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2021-04-01-preview/roleAssignments)

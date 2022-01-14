@@ -36,4 +36,4 @@ This module deploys load balancers inbound NAT rules.
 
 ## Template references
 
-- [Loadbalancers/Inboundnatrules](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/loadBalancers/inboundNatRules)
+- [Loadbalancers/Inboundnatrules](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/loadBalancers/inboundNatRules)

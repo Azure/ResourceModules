@@ -6,9 +6,9 @@ This module deploys API Management Service Products.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.ApiManagement/service/products` | 2020-06-01-preview |
-| `Microsoft.ApiManagement/service/products/apis` | 2020-06-01-preview |
-| `Microsoft.ApiManagement/service/products/groups` | 2020-06-01-preview |
+| `Microsoft.ApiManagement/service/products` | 2021-08-01 |
+| `Microsoft.ApiManagement/service/products/apis` | 2021-08-01 |
+| `Microsoft.ApiManagement/service/products/groups` | 2021-08-01 |
 
 ### Resource dependency
 
@@ -44,6 +44,6 @@ The following resources are required to be able to deploy this resource.
 
 ## Template references
 
-- [Service/Products](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2020-06-01-preview/service/products)
-- [Service/Products/Apis](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2020-06-01-preview/service/products/apis)
-- [Service/Products/Groups](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2020-06-01-preview/service/products/groups)
+- [Service/Products](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2021-08-01/service/products)
+- [Service/Products/Apis](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2021-08-01/service/products/apis)
+- [Service/Products/Groups](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2021-08-01/service/products/groups)

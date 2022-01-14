@@ -6,8 +6,8 @@ This module deploys an app service environment.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/locks` | 2016-09-01 |
-| `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
+| `Microsoft.Authorization/locks` | 2017-04-01 |
+| `Microsoft.Authorization/roleAssignments` | 2021-04-01-preview |
 | `Microsoft.Insights/diagnosticSettings` | 2021-05-01-preview |
 | `Microsoft.Web/hostingEnvironments` | 2021-02-01 |
 
@@ -18,12 +18,13 @@ This module deploys an app service environment.
 | `apiManagementAccountId` | string |  |  | Optional. API Management Account associated with the App Service Environment. |
 | `clusterSettings` | array | `[]` |  | Optional. Custom settings for changing the behavior of the App Service Environment |
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
+| `diagnosticEventHubAuthorizationRuleId` | string |  |  | Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
+| `diagnosticEventHubName` | string |  |  | Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticStorageAccountId` | string |  |  | Optional. Resource ID of the diagnostic storage account. |
+| `diagnosticWorkspaceId` | string |  |  | Optional. Resource ID of the diagnostic log analytics workspace. |
 | `dnsSuffix` | string |  |  | Optional. DNS suffix of the App Service Environment. |
 | `dynamicCacheEnabled` | bool |  |  | Optional. True/false indicating whether the App Service Environment is suspended. The environment can be suspended e.g. when the management endpoint is no longer available(most likely because NSG blocked the incoming traffic). |
-| `eventHubAuthorizationRuleId` | string |  |  | Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
-| `eventHubName` | string |  |  | Optional. Name of the event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
 | `frontEndScaleFactor` | int | `15` |  | Optional. Scale factor for frontends. |
 | `hasLinuxWorkers` | bool |  |  | Optional. Flag that displays whether an ASE has linux workers or not |
 | `internalLoadBalancingMode` | string | `None` | `[None, Web, Publishing]` | Optional. Specifies which endpoints to serve internally in the Virtual Network for the App Service Environment. - None, Web, Publishing, Web,Publishing |
@@ -42,7 +43,6 @@ This module deploys an app service environment.
 | `tags` | object | `{object}` |  | Optional. Resource tags. |
 | `userWhitelistedIpRanges` | array | `[]` |  | Optional. User added ip ranges to whitelist on ASE db - string |
 | `workerPools` | array | `[]` |  | Optional. Description of worker pools with worker size IDs, VM sizes, and number of workers in each pool.. |
-| `workspaceId` | string |  |  | Optional. Resource ID of log analytics. |
 
 ### Parameter Usage: `roleAssignments`
 
@@ -141,7 +141,7 @@ workerPools can have two properties workerSize and workerCount:
 
 ## Template references
 
-- [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-04-01-preview/roleAssignments)
 - [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings)
 - [Hostingenvironments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Web/2021-02-01/hostingEnvironments)
+- [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2021-04-01-preview/roleAssignments)

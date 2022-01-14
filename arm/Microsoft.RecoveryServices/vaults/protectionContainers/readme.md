@@ -24,9 +24,9 @@ This module deploys a Protection Container for a Recovery Services Vault
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `protectionContainerResourceId` | string | The resource ID of the Protection Container. |
 | `protectionContainerName` | string | The Name of the Protection Container. |
 | `protectionContainerResourceGroup` | string | The name of the Resource Group the Protection Container was created in. |
+| `protectionContainerResourceId` | string | The resource ID of the Protection Container. |
 
 ## Template references
 
