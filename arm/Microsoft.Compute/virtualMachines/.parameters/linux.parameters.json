@@ -120,6 +120,9 @@
                 "enabled": true
             }
         },
+        "monitoringWorkspaceId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-sxx-az-law-x-001"
+        },
         "extensionDependencyAgentConfig": {
             "value": {
                 "enabled": true
