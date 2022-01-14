@@ -60,8 +60,8 @@ jobs:
     name: 'Deploy user assigned identity'
     env:
       namespace: 'Microsoft.ManagedIdentity\userAssignedIdentities'
-    needs:
-      - job_deploy_rg
+    # needs:
+    #   - job_deploy_rg
     outputs:
       msiPrincipalId: ${{ steps.deploy-msi-out.outputs.msiPrincipalId }}
     strategy:
