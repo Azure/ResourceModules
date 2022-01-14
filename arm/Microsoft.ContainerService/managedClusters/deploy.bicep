@@ -284,7 +284,7 @@ resource managedCluster 'Microsoft.ContainerService/managedClusters@2021-07-01' 
       omsagent: {
         enabled: omsAgentEnabled && !empty(monitoringWorkspaceId)
         config: {
-          logAnalyticsWorkspaceResourceID: ((!empty(monitoringWorkspaceId)) ? monitoringWorkspaceId : null)
+          logAnalyticsWorkspaceResourceID: !empty(monitoringWorkspaceId) ? monitoringWorkspaceId : null
         }
       }
       aciConnectorLinux: {
