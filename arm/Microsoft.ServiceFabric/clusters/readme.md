@@ -17,7 +17,7 @@ This module deploys a service fabric cluster.
 | :-- | :-- | :-- | :-- | :-- |
 | `addOnFeatures` | array | `[]` | `[BackupRestoreService, DnsService, RepairManager, ResourceMonitorService]` | Optional. The list of add-on features to enable in the cluster. |
 | `applicationTypes` | _[applicationTypes](applicationTypes/readme.md)_ array | `[]` |  | Optional. Array of Service Fabric cluster application types. |
-| `azureActiveDirectory` | object | `{object}` |  | Optional. The settings to enable AAD authentication on the cluster.. |
+| `azureActiveDirectory` | object | `{object}` |  | Optional. The settings to enable AAD authentication on the cluster. |
 | `certificate` | object | `{object}` |  | Optional. Describes the certificate details like thumbprint of the primary certificate, thumbprint of the secondary certificate and the local certificate store location |
 | `certificateCommonNames` | object | `{object}` |  | Optional. Describes a list of server certificates referenced by common name that are used to secure the cluster. |
 | `clientCertificateCommonNames` | array | `[]` |  | Optional. The list of client certificates referenced by common name that are allowed to manage the cluster. |

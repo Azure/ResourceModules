@@ -30,7 +30,7 @@ param addOnFeatures array = []
 @description('Required. Number of unused versions per application type to keep.')
 param maxUnusedVersionsToKeep int = 3
 
-@description('Optional. The settings to enable AAD authentication on the cluster..')
+@description('Optional. The settings to enable AAD authentication on the cluster.')
 param azureActiveDirectory object = {}
 
 @description('Optional. Describes the certificate details like thumbprint of the primary certificate, thumbprint of the secondary certificate and the local certificate store location')
