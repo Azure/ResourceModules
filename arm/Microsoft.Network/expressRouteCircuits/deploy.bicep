@@ -205,4 +205,4 @@ output expressRouteCircuitResourceGroup string = resourceGroup().name
 output expressRouteCircuitName string = expressRouteCircuits.name
 
 @description('The service key of the express route circuit')
-output expressRouteCircuitServiceKey string = reference(expressRouteCircuits.id, '2017-04-01').serviceKey
+output expressRouteCircuitServiceKey string = reference(expressRouteCircuits.id, '2021-02-01').serviceKey
