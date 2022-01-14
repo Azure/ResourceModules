@@ -6,6 +6,7 @@ This module deploys API Management Service Products.
 
 | Resource Type | API Version |
 | :-- | :-- |
+| `Microsoft.ApiManagement/service` | 2021-08-01 |
 | `Microsoft.ApiManagement/service/products` | 2021-08-01 |
 | `Microsoft.ApiManagement/service/products/apis` | 2021-08-01 |
 | `Microsoft.ApiManagement/service/products/groups` | 2021-08-01 |
