@@ -282,7 +282,7 @@ resource managedCluster 'Microsoft.ContainerService/managedClusters@2021-07-01' 
         enabled: httpApplicationRoutingEnabled
       }
       omsagent: {
-        enabled: (omsAgentEnabled && (!empty(monitoringWorkspaceId)))
+        enabled: omsAgentEnabled && !empty(monitoringWorkspaceId)
         config: {
           logAnalyticsWorkspaceResourceID: ((!empty(monitoringWorkspaceId)) ? monitoringWorkspaceId : null)
         }
