@@ -8,6 +8,7 @@ This module deploys an API management service.
 | :-- | :-- |
 | `Microsoft.ApiManagement/service` | 2021-08-01 |
 | `Microsoft.ApiManagement/service/apis` | 2021-08-01 |
+| `Microsoft.ApiManagement/service/apis/policies` | 2021-08-01 |
 | `Microsoft.ApiManagement/service/apiVersionSets` | 2021-08-01 |
 | `Microsoft.ApiManagement/service/authorizationServers` | 2021-08-01 |
 | `Microsoft.ApiManagement/service/backends` | 2021-08-01 |
@@ -17,6 +18,8 @@ This module deploys an API management service.
 | `Microsoft.ApiManagement/service/policies` | 2021-08-01 |
 | `Microsoft.ApiManagement/service/portalsettings` | 2021-08-01 |
 | `Microsoft.ApiManagement/service/products` | 2021-08-01 |
+| `Microsoft.ApiManagement/service/products/apis` | 2021-08-01 |
+| `Microsoft.ApiManagement/service/products/groups` | 2021-08-01 |
 | `Microsoft.ApiManagement/service/subscriptions` | 2021-08-01 |
 | `Microsoft.Authorization/locks` | 2017-04-01 |
 | `Microsoft.Authorization/roleAssignments` | 2021-04-01-preview |
