@@ -504,7 +504,7 @@ While exceptions might be needed, the following guidance should be followed as m
 - At a minimum, reference the following:
   - `name`
   - `resourceId`
-  - `resourceGroup` for resources deployed at resource group scope
+  - `resourceGroupName` for resources deployed at resource group scope
   - `systemAssignedPrincipalId` for all resources supporting a managed identity
 - Add a `@description('...')` annotation with meaningful description to each output.
 
