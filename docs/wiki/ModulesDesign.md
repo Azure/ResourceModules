@@ -500,12 +500,12 @@ While exceptions might be needed, the following guidance should be followed as m
 
 ## Outputs
 
-- Output names are in camelCase, i.e `storageAccountResourceId`
+- Output names are in camelCase, i.e `resourceId`
 - At a minimum, reference the following:
-  - `<resourceReference>Name`, e.g. `storageAccountName`.
-  - `<resourceReference>ResourceId`, e.g. `storageAccountResourceId`.
-  - `<resourceReference>ResourceGroup` for resources deployed at resource group scope, e.g. `storageAccountResourceGroup`.
-  - `systemAssignedPrincipalId` for all resources supporting a managed identity.
+  - `name`
+  - `resourceId`
+  - `resourceGroup` for resources deployed at resource group scope
+  - `systemAssignedPrincipalId` for all resources supporting a managed identity
 - Add a `@description('...')` annotation with meaningful description to each output.
 
 ---
