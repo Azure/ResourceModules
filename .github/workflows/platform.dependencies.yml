@@ -869,7 +869,7 @@ jobs:
               @{ Name = 'msiPrincipalId'; Value = '${{ needs.job_deploy_msi.outputs.msiPrincipalId }}' }
               # @{ Name = 'subscriptionId'; Value = '${{ secrets.ARM_SUBSCRIPTION_ID }}' }
           )
-          $DefaultParameterFileTokens = $DefaultParameterFileTokens | ForEach-Object { [PSCustomObject]$PSItem }
+          # $DefaultParameterFileTokens = $DefaultParameterFileTokens | ForEach-Object { [PSCustomObject]$PSItem }
 
           # Construct Token Function Input
           $ConvertTokensInputs = @{
