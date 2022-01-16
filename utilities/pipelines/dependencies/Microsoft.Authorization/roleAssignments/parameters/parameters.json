@@ -6,7 +6,7 @@
       "value": "Contributor"
     },
     "principalId": {
-      "value": "<<msiPrincipalID>>" // The object ID of the deployed MSI
+      "value": "<<msiPrincipalID>>" // The object ID of the deployed MSI. Replaced by the pipeline
     },
     "subscriptionId": {
       "value": "<<subscriptionId>>"

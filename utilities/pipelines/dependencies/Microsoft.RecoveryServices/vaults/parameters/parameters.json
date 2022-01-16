@@ -254,7 +254,7 @@
                 {
                     "roleDefinitionIdOrName": "Reader",
                     "principalIds": [
-                        "<<msiPrincipalID>>" // The object ID of the deployed MSI
+                        "<<msiPrincipalID>>" // The object ID of the deployed MSI. Replaced by the pipeline
                     ]
                 }
             ]

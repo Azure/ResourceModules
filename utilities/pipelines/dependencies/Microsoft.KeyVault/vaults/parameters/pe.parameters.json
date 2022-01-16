@@ -9,7 +9,7 @@
       "value": [
         {
           "tenantId": "<<tenantId>>",
-          "objectId": "<<msiPrincipalID>>", // The object ID of the deployed MSI
+          "objectId": "<<msiPrincipalID>>", // The object ID of the deployed MSI. Replaced by the pipeline
           "permissions": {
             "keys": [],
             "secrets": [
