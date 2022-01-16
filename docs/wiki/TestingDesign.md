@@ -114,7 +114,7 @@ Since also dependency resources are in turn subject to dependencies with each ot
 **Second level resources**: This group of resources has a dependency only on the resource group which will host them. Resources in this group can be deployed in parallel.
 
   1. User assigned identity: This resource is leveraged by the [role assignment], [key vault] and [recovery services vault] dependency resources.
-      > **Note**: The object ID of the [user assigned identity] is needed by several dependency parameter files. However, before running the dependency pipeline for the first time, the [user assigned identity] resource does not exist yet, thus its object ID is unknown. For this reason, instead of the object ID value, some dependency parameter files contain an `"<<msiPrincipalId>>"` token, for which the correct value is retrieved and replaced by the pipeline at runtime.
+      > **Note**: The object ID of the [user assigned identity] is needed by several dependency parameter files. However, before running the dependency pipeline for the first time, the [user assigned identity] resource does not exist yet, thus its object ID is unknown. For this reason, instead of the object ID value, some dependency parameter files contain the `"<<msiPrincipalId>>"` token, for which the correct value is retrieved and replaced by the pipeline at runtime.
   1. Policy assignment: This resource is leveraged by the [policy exemption] resource.
   1. Log analytics workspace: This resource is leveraged by all resources supporting diagnostic settings on LAW.
   1. Storage account: This resource is leveraged by all resources supporting diagnostic settings on a storage account.
