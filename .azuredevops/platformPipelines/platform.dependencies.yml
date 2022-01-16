@@ -75,7 +75,8 @@ stages:
               targetType: inline
               pwsh: true
               script: |
-                $msiPrincipalId = (ConvertFrom-Json $deploymentOutput).msiPrincipalId
+                # Write-Verbose $(deploymentOutput) -Verbose
+                $msiPrincipalId = (ConvertFrom-Json $(deploymentOutput)).msiPrincipalId
                 Write-Verbose "msiPrincipalId: $msiPrincipalId" -Verbose
                 Write-Output ('##vso[task.setvariable variable={0};isOutput=true]{1}' -f 'msiPrincipalId', $msiPrincipalId)
 
