@@ -576,34 +576,59 @@ jobs:
   #         managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
   #         removeDeployment: '${{ env.removeDeployment }}'
 
-  # job_deploy_rsv:
-  #   runs-on: ubuntu-20.04
-  #   name: 'Deploy recovery services vault'
-  #   env:
-  #     namespace: 'Microsoft.RecoveryServices\vaults'
-  #   needs:
-  #     - job_deploy_sa
-  #     - job_deploy_evh
-  #     - job_deploy_law
-  #   strategy:
-  #     fail-fast: false
-  #     matrix:
-  #       parameterFilePaths: ['parameters.json']
-  #   steps:
-  #     - name: 'Checkout'
-  #       uses: actions/checkout@v2
-  #       with:
-  #         fetch-depth: 0
-  #     - name: 'Deploy module'
-  #       uses: ./.github/actions/templates/validateModuleDeployment
-  #       with:
-  #         templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
-  #         parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
-  #         location: '${{ env.defaultLocation }}'
-  #         resourceGroupName: '${{ env.defaultResourceGroupName }}'
-  #         subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
-  #         managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
-  #         removeDeployment: '${{ env.removeDeployment }}'
+  job_deploy_rsv:
+    runs-on: ubuntu-20.04
+    name: 'Deploy recovery services vault'
+    env:
+      namespace: 'Microsoft.RecoveryServices\vaults'
+    needs:
+      - job_deploy_msi
+      # - job_deploy_sa
+      # - job_deploy_evh
+      # - job_deploy_law
+    strategy:
+      fail-fast: false
+      matrix:
+        parameterFilePaths: ['parameters.json']
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: 'Get msi principal ID and replace token in parameter file'
+        shell: pwsh
+        run: |
+          # Load used functions
+          . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInParameterFile.ps1')
+
+          # Load Settings File
+          $Settings = Get-Content -Path "settings.json" | ConvertFrom-Json
+
+          # Initialize Default Parameter File Tokens
+          $OtherCustomParameterFileTokens = @(
+              @{ Name = 'msiPrincipalId'; Value = '${{ needs.job_deploy_msi.outputs.msiPrincipalId }}' }
+          )
+
+          # Construct Token Function Input
+          $ConvertTokensInputs = @{
+              ParameterFilePath                 = '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
+              OtherCustomParameterFileTokens    = $OtherCustomParameterFileTokens
+              TokenPrefix                       = $Settings.parameterFileTokens.tokenPrefix
+              TokenSuffix                       = $Settings.parameterFileTokens.tokenSuffix
+          }
+
+          # Invoke Token Replacement Functionality
+          $null = Convert-TokensInParameterFile @ConvertTokensInputs -Verbose
+      - name: 'Deploy module'
+        uses: ./.github/actions/templates/validateModuleDeployment
+        with:
+          templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
+          parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
+          location: '${{ env.defaultLocation }}'
+          resourceGroupName: '${{ env.defaultResourceGroupName }}'
+          subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
+          managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
+          removeDeployment: '${{ env.removeDeployment }}'
 
   job_deploy_kv:
     runs-on: ubuntu-20.04
@@ -741,35 +766,60 @@ jobs:
   #           }
   #         azPSVersion: 'latest'
 
-  # job_deploy_sqlmi_kv:
-  #   runs-on: ubuntu-20.04
-  #   name: 'Deploy sqlmi key vault'
-  #   if: github.event.inputs.deploySqlMiDependencies == 'true'
-  #   env:
-  #     namespace: 'Microsoft.KeyVault\vaults'
-  #   needs:
-  #     - job_deploy_sa
-  #     - job_deploy_evh
-  #     - job_deploy_law
-  #   strategy:
-  #     fail-fast: false
-  #     matrix:
-  #       parameterFilePaths: ['sqlmi.parameters.json']
-  #   steps:
-  #     - name: 'Checkout'
-  #       uses: actions/checkout@v2
-  #       with:
-  #         fetch-depth: 0
-  #     - name: 'Deploy module'
-  #       uses: ./.github/actions/templates/validateModuleDeployment
-  #       with:
-  #         templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
-  #         parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
-  #         location: '${{ env.defaultLocation }}'
-  #         resourceGroupName: '${{ env.defaultResourceGroupName }}'
-  #         subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
-  #         managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
-  #         removeDeployment: '${{ env.removeDeployment }}'
+  job_deploy_sqlmi_kv:
+    runs-on: ubuntu-20.04
+    name: 'Deploy sqlmi key vault'
+    if: github.event.inputs.deploySqlMiDependencies == 'true'
+    env:
+      namespace: 'Microsoft.KeyVault\vaults'
+    needs:
+      - job_deploy_msi
+      # - job_deploy_sa
+      # - job_deploy_evh
+      # - job_deploy_law
+    strategy:
+      fail-fast: false
+      matrix:
+        parameterFilePaths: ['sqlmi.parameters.json']
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: 'Get msi principal ID and replace token in parameter file'
+        shell: pwsh
+        run: |
+          # Load used functions
+          . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInParameterFile.ps1')
+
+          # Load Settings File
+          $Settings = Get-Content -Path "settings.json" | ConvertFrom-Json
+
+          # Initialize Default Parameter File Tokens
+          $OtherCustomParameterFileTokens = @(
+              @{ Name = 'msiPrincipalId'; Value = '${{ needs.job_deploy_msi.outputs.msiPrincipalId }}' }
+          )
+
+          # Construct Token Function Input
+          $ConvertTokensInputs = @{
+              ParameterFilePath                 = '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
+              OtherCustomParameterFileTokens    = $OtherCustomParameterFileTokens
+              TokenPrefix                       = $Settings.parameterFileTokens.tokenPrefix
+              TokenSuffix                       = $Settings.parameterFileTokens.tokenSuffix
+          }
+
+          # Invoke Token Replacement Functionality
+          $null = Convert-TokensInParameterFile @ConvertTokensInputs -Verbose
+      - name: 'Deploy module'
+        uses: ./.github/actions/templates/validateModuleDeployment
+        with:
+          templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
+          parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
+          location: '${{ env.defaultLocation }}'
+          resourceGroupName: '${{ env.defaultResourceGroupName }}'
+          subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
+          managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
+          removeDeployment: '${{ env.removeDeployment }}'
 
   # job_deploy_sqlmi_kv_secrets:
   #   runs-on: ubuntu-20.04
