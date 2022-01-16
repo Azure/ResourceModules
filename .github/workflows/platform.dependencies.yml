@@ -865,16 +865,14 @@ jobs:
           $Settings = Get-Content -Path "settings.json" | ConvertFrom-Json
 
           # Initialize Default Parameter File Tokens
-          $DefaultParameterFileTokens = @(
+          $OtherCustomParameterFileTokens = @(
               @{ Name = 'msiPrincipalId'; Value = '${{ needs.job_deploy_msi.outputs.msiPrincipalId }}' }
-              # @{ Name = 'subscriptionId'; Value = '${{ secrets.ARM_SUBSCRIPTION_ID }}' }
           )
-          # $DefaultParameterFileTokens = $DefaultParameterFileTokens | ForEach-Object { [PSCustomObject]$PSItem }
 
           # Construct Token Function Input
           $ConvertTokensInputs = @{
               ParameterFilePath                 = '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
-              DefaultParameterFileTokens        = $DefaultParameterFileTokens
+              OtherCustomParameterFileTokens    = $OtherCustomParameterFileTokens
               TokenPrefix                       = $Settings.parameterFileTokens.tokenPrefix
               TokenSuffix                       = $Settings.parameterFileTokens.tokenSuffix
           }
