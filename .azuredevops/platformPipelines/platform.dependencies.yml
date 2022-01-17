@@ -598,7 +598,7 @@ stages:
           deploymentBlocks:
             - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
               templateFilePath: $(templateFilePath)
-              displayName: Default MSI Role Assignment
+              displayName: MSI Role Assignment
               customParameterFileTokens: '[{"Name":"msiPrincipalId","Value":"$(msiPrincipalId)"}]'
 
   - stage: deploy_vnet
