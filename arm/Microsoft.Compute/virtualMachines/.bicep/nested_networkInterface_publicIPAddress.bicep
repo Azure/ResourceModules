@@ -34,10 +34,6 @@ var diagnosticsMetrics = [for metric in metricsToEnable: {
   }
 }]
 
-var publicIPPrefix = {
-  id: publicIPPrefixId
-}
-
 resource publicIpAddress 'Microsoft.Network/publicIPAddresses@2021-03-01' = {
   name: publicIPAddressName
   location: location
@@ -48,7 +44,9 @@ resource publicIpAddress 'Microsoft.Network/publicIPAddresses@2021-03-01' = {
   }
   properties: {
     publicIPAllocationMethod: publicIPAllocationMethod
-    publicIPPrefix: ((!empty(publicIPPrefixId)) ? publicIPPrefix : null)
+    publicIPPrefix: !empty(publicIPPrefixId) ? {
+      id: publicIPPrefixId
+    } : null
   }
 }
 
@@ -84,8 +82,10 @@ module publicIpAddress_rbac 'nested_networkInterface_publicIPAddress_rbac.bicep'
 }]
 
 @description('The name of the Resource Group the public IP address was deployed.')
-output publicIPAddressResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name
+
 @description('The name of the public IP address.')
-output publicIPAddressName string = publicIpAddress.name
+output name string = publicIpAddress.name
+
 @description('The Resource ID of the public IP address.')
-output publicIPAddressResourceId string = publicIpAddress.id
+output resourceId string = publicIpAddress.id

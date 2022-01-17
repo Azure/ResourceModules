@@ -24,10 +24,10 @@ resource configurationProfileAssignment 'Microsoft.Automanage/configurationProfi
 }
 
 @description('The resource ID of the configuration profile assignment')
-output configurationProfileAssignmentResourceId string = configurationProfileAssignment.id
+output resourceId string = configurationProfileAssignment.id
 
 @description('The name of the configuration profile assignment')
-output configurationProfileAssignmentName string = configurationProfileAssignment.name
+output name string = configurationProfileAssignment.name
 
 @description('The resource group the configuration profile assignment was deployed into')
-output configurationProfileAssignmentResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name
