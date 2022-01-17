@@ -58,7 +58,7 @@ stages:
               templateFilePath: $(templateFilePath)
               displayName: User Assigned Identity
               jobName: job_deploy_msi
-      - job:
+      - job: job_set_msi_id
         displayName: Set msi principal ID output
         dependsOn:
           - job_deploy_msi
@@ -576,6 +576,18 @@ stages:
   #             templateFilePath: $(templateFilePath)
   #             displayName: Default Application Group
 
+  - stage: print_msi
+    dependsOn: deploy_msi
+    jobs:
+    - job: print_msi_job
+      variables:
+        varFromStageA: $[ stageDependencies.deploy_msi.job_set_msi_id.outputs['print_msi_prinId.msiPrincipalId'] ]
+      steps:
+      - checkout: none
+      - script: |
+          echo "This Job will print value from deploy_msi stage"
+          echo $(varFromStageA)
+
   - stage: deploy_rolea
     displayName: Deploy role assignments
     dependsOn:
@@ -583,9 +595,8 @@ stages:
     variables:
       resourceType: 'Microsoft.Authorization/roleAssignments'
       templateFilePath: $(modulesPath)/$(resourceType)/.bicep/nested_rbac_sub.bicep
-
     jobs:
-      - job: job_get_msi
+      - job: job_get_msi_id
         displayName: Get msi principal ID output
         pool:
           ${{ if eq(variables['vmImage'], '') }}:
@@ -593,7 +604,7 @@ stages:
           ${{ if eq(variables['poolName'], '') }}:
             vmImage: $(vmImage)
         variables:
-          msiPrincipalId: $[ stageDependencies.deploy_msi.job_deploy_msi.outputs['print_msi_prinId.msiPrincipalId'] ]
+          msiPrincipalId: $[ stageDependencies.deploy_msi.job_set_msi_id.outputs['print_msi_prinId.msiPrincipalId'] ]
         steps:
           - task: PowerShell@2
             name: print_custom_token
@@ -622,11 +633,11 @@ stages:
 
                 # # Invoke Token Replacement Functionality
 
-                Write-Verbose "msiPrincipalId: '$(msiPrincipalId)'" -Verbose
-                $msiPrincipalId = '$(msiPrincipalId)'
+                # Write-Verbose "msiPrincipalId: '$(msiPrincipalId)'" -Verbose
+                # $msiPrincipalId = '$(msiPrincipalId)'
                 # Initialize Additional Custom Parameter File Tokens for Token Replacement Functionality
                 $otherCustomParameterFileTokens = @(
-                    @{ Name = 'msiPrincipalId'; Value = $msiPrincipalId }
+                    @{ Name = 'msiPrincipalId'; Value = '$(msiPrincipalId)' }
                 )
 
                 $customParameterFileTokens = $otherCustomParameterFileTokens | ConvertTo-Json
@@ -638,9 +649,9 @@ stages:
             - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
               templateFilePath: $(templateFilePath)
               displayName: Default MSI Role Assignment
-              customParameterFileTokens: $[ dependencies.job_get_msi.outputs['print_custom_token.customParameterFileTokens'] ]
+              customParameterFileTokens: $[ dependencies.job_get_msi_id.outputs['print_custom_token.customParameterFileTokens'] ]
               # customParameterFileTokens: '[{"name":"msiPrincipalId","value":"msiPrincipalIdddd"}]'
-          # customParameterFileTokens: $[ dependencies.job_get_msi.outputs['print_custom_token.customParameterFileTokens'] ]
+          # customParameterFileTokens: $[ dependencies.job_get_msi_id.outputs['print_custom_token.customParameterFileTokens'] ]
 
 
   # - stage: deploy_vnet
