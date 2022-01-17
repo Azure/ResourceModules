@@ -649,7 +649,7 @@ stages:
             - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
               templateFilePath: $(templateFilePath)
               displayName: Default MSI Role Assignment
-              customParameterFileTokens: $(msiPrincipalId)
+              customParameterFileTokens: '$(msiPrincipalId)'
               # customParameterFileTokens: '[{"name":"msiPrincipalId","value":"msiPrincipalIdddd"}]'
           # customParameterFileTokens: $[ dependencies.job_get_msi_id.outputs['print_custom_token.customParameterFileTokens'] ]
 
