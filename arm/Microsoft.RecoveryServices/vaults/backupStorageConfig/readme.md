@@ -12,7 +12,7 @@ This module deploys the Backup Storage Configuration for the Recovery Service Va
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `crossRegionRestoreFlag` | bool | `True` |  | Optional. Opt in details of Cross Region Restore feature |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
+| `telemetryCuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `name` | string | `vaultstorageconfig` |  | Optional. The name of the backup storage config |
 | `recoveryVaultName` | string |  |  | Required. Name of the Azure Recovery Service Vault |
 | `storageModelType` | string | `GeoRedundant` | `[GeoRedundant, LocallyRedundant, ReadAccessGeoZoneRedundant, ZoneRedundant]` | Optional. Change Vault Storage Type (Works if vault has not registered any backup instance) |

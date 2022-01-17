@@ -2,7 +2,7 @@
 param apiManagementServiceName string
 
 @description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
-param cuaId string = ''
+param telemetryCuaId string = ''
 
 @description('Optional. Used to enable the deployment of the identityProviders child resource.')
 param enableIdentityProviders bool = false
@@ -51,8 +51,8 @@ param name string
 
 var isAadB2C = (identityProviderType == 'aadB2C')
 
-resource pid_cuaId 'Microsoft.Resources/deployments@2021-04-01' = if (!empty(cuaId)) {
-  name: 'pid-${cuaId}'
+resource pid_cuaId 'Microsoft.Resources/deployments@2021-04-01' = if (!empty(telemetryCuaId)) {
+  name: 'pid-${telemetryCuaId}'
   properties: {
     mode: 'Incremental'
     template: {

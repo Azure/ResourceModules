@@ -12,7 +12,7 @@ This module deploys recovery services vault backup config.
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
+| `telemetryCuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `enhancedSecurityState` | string | `Enabled` | `[Disabled, Enabled]` | Optional. Enable this setting to protect hybrid backups against accidental deletes and add additional layer of authentication for critical operations. |
 | `name` | string | `vaultconfig` |  | Optional. Name of the Azure Recovery Service Vault Backup Policy |
 | `recoveryVaultName` | string |  |  | Required. Name of the Azure Recovery Service Vault |

@@ -12,7 +12,7 @@ This module deploys a collection within a MongoDB.
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
+| `telemetryCuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `databaseAccountName` | string |  |  | Required. Name of the Cosmos DB database account. |
 | `indexes` | array |  |  | Required. Indexes for the collection |
 | `mongodbDatabaseName` | string |  |  | Required. Name of the mongodb database |

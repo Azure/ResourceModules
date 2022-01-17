@@ -249,7 +249,7 @@ param availabilityZones array = []
 param tags object = {}
 
 @description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
-param cuaId string = ''
+param telemetryCuaId string = ''
 
 @description('Optional. The chosen OS type')
 @allowed([
@@ -326,8 +326,8 @@ var identity = identityType != 'None' ? {
   userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
 } : null
 
-resource pid_cuaId 'Microsoft.Resources/deployments@2021-04-01' = if (!empty(cuaId)) {
-  name: 'pid-${cuaId}'
+resource pid_cuaId 'Microsoft.Resources/deployments@2021-04-01' = if (!empty(telemetryCuaId)) {
+  name: 'pid-${telemetryCuaId}'
   properties: {
     mode: 'Incremental'
     template: {

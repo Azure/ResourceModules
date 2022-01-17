@@ -16,7 +16,7 @@ This module deploys an Alert based on Activity Log.
 | `actions` | array | `[]` |  | Optional. The list of actions to take when alert triggers. |
 | `alertDescription` | string |  |  | Optional. Description of the alert. |
 | `conditions` | array |  |  | Required. The condition that will cause this alert to activate. Array of objects |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
+| `telemetryCuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `enabled` | bool | `True` |  | Optional. Indicates whether this alert is enabled. |
 | `location` | string | `global` |  | Optional. Location for all resources. |
 | `name` | string |  |  | Required. The name of the alert. |

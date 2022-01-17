@@ -17,7 +17,7 @@ This module deploys Network Firewall Policies.
 | `basePolicyResourceId` | string |  |  | Optional. Resource ID of the base policy. |
 | `bypassTrafficSettings` | array | `[]` |  | Optional. List of rules for traffic to bypass. |
 | `certificateName` | string |  |  | Optional. Name of the CA certificate. |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
+| `telemetryCuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `defaultWorkspaceId` | string |  |  | Optional. Default Log Analytics Resource ID for Firewall Policy Insights. |
 | `enableProxy` | bool |  |  | Optional. Enable DNS Proxy on Firewalls attached to the Firewall Policy. |
 | `fqdns` | array | `[]` |  | Optional. List of FQDNs for the ThreatIntel Allowlist. |

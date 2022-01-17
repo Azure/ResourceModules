@@ -47,10 +47,10 @@ param storageType string = 'GeoRedundant'
 param storageTypeState string = 'Locked'
 
 @description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
-param cuaId string = ''
+param telemetryCuaId string = ''
 
-module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
-  name: 'pid-${cuaId}'
+module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(telemetryCuaId)) {
+  name: 'pid-${telemetryCuaId}'
   params: {}
 }
 

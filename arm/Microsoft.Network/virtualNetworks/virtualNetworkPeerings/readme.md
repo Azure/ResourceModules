@@ -22,7 +22,7 @@ The following resources are required to be able to deploy this resource.
 | `allowForwardedTraffic` | bool | `True` |  | Optional. Whether the forwarded traffic from the VMs in the local virtual network will be allowed/disallowed in remote virtual network. Default is true |
 | `allowGatewayTransit` | bool |  |  | Optional. If gateway links can be used in remote virtual networking to link to this virtual network. Default is false |
 | `allowVirtualNetworkAccess` | bool | `True` |  | Optional. Whether the VMs in the local virtual network space would be able to access the VMs in remote virtual network space. Default is true |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
+| `telemetryCuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `doNotVerifyRemoteGateways` | bool | `True` |  | Optional. If we need to verify the provisioning state of the remote gateway. Default is true |
 | `localVnetName` | string |  |  | Required. The Name of the Virtual Network to add the peering to. |
 | `name` | string | `[format('{0}-{1}', parameters('localVnetName'), last(split(parameters('remoteVirtualNetworkId'), '/')))]` |  | Optional. The Name of Vnet Peering resource. If not provided, default value will be localVnetName-remoteVnetName |

@@ -15,7 +15,7 @@ This template deploys volumes in a capacity pool of an Azure NetApp files.
 | :-- | :-- | :-- | :-- | :-- |
 | `capacityPoolName` | string |  |  | Required. The name of the capacity pool. |
 | `creationToken` | string | `[parameters('name')]` |  | Optional. A unique file path for the volume. This is the name of the volume export. A volume is mounted using the export path. File path must start with an alphabetical character and be unique within the subscription. |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
+| `telemetryCuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `exportPolicyRules` | array | `[]` |  | Optional. Export policy rules. |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location of the pool volume. |
 | `name` | string |  |  | Required. The name of the pool volume. |

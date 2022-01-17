@@ -56,7 +56,7 @@ param roleAssignments array = []
 param tags object = {}
 
 @description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
-param cuaId string = ''
+param telemetryCuaId string = ''
 
 @description('Optional. Collection of inbound NAT Rules used by a load balancer. Defining inbound NAT rules on your load balancer is mutually exclusive with defining an inbound NAT pool. Inbound NAT pools are referenced from virtual machine scale sets. NICs that are associated with individual virtual machines cannot reference an Inbound NAT pool. They have to reference individual inbound NAT rules.')
 param inboundNatRules array = []
@@ -155,8 +155,8 @@ var diagnosticsMetrics = [for metric in metricsToEnable: {
   }
 }]
 
-resource pid_cuaId 'Microsoft.Resources/deployments@2021-04-01' = if (!empty(cuaId)) {
-  name: 'pid-${cuaId}'
+resource pid_cuaId 'Microsoft.Resources/deployments@2021-04-01' = if (!empty(telemetryCuaId)) {
+  name: 'pid-${telemetryCuaId}'
   properties: {
     mode: 'Incremental'
     template: {

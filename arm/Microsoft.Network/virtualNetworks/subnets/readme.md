@@ -15,7 +15,7 @@ This module deploys a virtual network subnet.
 | `addressPrefix` | string |  |  | Required. The address prefix for the subnet. |
 | `addressPrefixes` | array | `[]` |  | Optional. List of address prefixes for the subnet. |
 | `applicationGatewayIpConfigurations` | array | `[]` |  | Optional. Application gateway IP configurations of virtual network resource. |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
+| `telemetryCuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `delegations` | array | `[]` |  | Optional. The delegations to enable on the subnet |
 | `ipAllocations` | array | `[]` |  | Optional. Array of IpAllocation which reference this subnet |
 | `name` | string |  |  | Optional. The Name of the subnet resource. |

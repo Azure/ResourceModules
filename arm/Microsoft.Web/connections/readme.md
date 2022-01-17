@@ -17,7 +17,7 @@ This module deploys an Azure API connection.
 | `alternativeParameterValues` | object | `{object}` |  | Optional. Alternative parameter values. |
 | `connectionApi` | object | `{object}` |  | Optional. Specific values for some API connections. |
 | `connectionKind` | string |  |  | Required. Connection Kind. Example: 'V1' when using blobs. It can change depending on the resource. |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered. |
+| `telemetryCuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered. |
 | `customParameterValues` | object | `{object}` |  | Optional. Customized parameter values for specific connections. |
 | `displayName` | string |  |  | Required. Display name connection. Example: 'blobconnection' when using blobs. It can change depending on the resource. |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location of the deployment. |

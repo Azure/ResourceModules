@@ -54,7 +54,7 @@ param roleAssignments array = []
 param tags object = {}
 
 @description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
-param cuaId string = ''
+param telemetryCuaId string = ''
 
 @description('Optional. The name of logs that will be streamed.')
 @allowed([
@@ -93,8 +93,8 @@ var diagnosticsMetrics = [for metric in metricsToEnable: {
   }
 }]
 
-resource pid_cuaId 'Microsoft.Resources/deployments@2021-04-01' = if (!empty(cuaId)) {
-  name: 'pid-${cuaId}'
+resource pid_cuaId 'Microsoft.Resources/deployments@2021-04-01' = if (!empty(telemetryCuaId)) {
+  name: 'pid-${telemetryCuaId}'
   properties: {
     mode: 'Incremental'
     template: {

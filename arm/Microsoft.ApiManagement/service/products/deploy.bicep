@@ -5,7 +5,7 @@ param apiManagementServiceName string
 param approvalRequired bool = false
 
 @description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
-param cuaId string = ''
+param telemetryCuaId string = ''
 
 @description('Optional. Product description. May include HTML formatting tags.')
 param productDescription string = ''
@@ -31,8 +31,8 @@ param subscriptionsLimit int = 1
 @description('Optional. Product terms of use. Developers trying to subscribe to the product will be presented and required to accept these terms before they can complete the subscription process.')
 param terms string = ''
 
-resource pid_cuaId 'Microsoft.Resources/deployments@2021-04-01' = if (!empty(cuaId)) {
-  name: 'pid-${cuaId}'
+resource pid_cuaId 'Microsoft.Resources/deployments@2021-04-01' = if (!empty(telemetryCuaId)) {
+  name: 'pid-${telemetryCuaId}'
   properties: {
     mode: 'Incremental'
     template: {

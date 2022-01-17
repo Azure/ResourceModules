@@ -12,7 +12,7 @@ This template deploys Virtual Network Peering.
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
+| `telemetryCuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `localVnetName` | string |  |  | Required. The Name of the Virtual Network to add the peering to. |
 | `peeringConfigurations` | array | `[]` |  | Optional. Optional. The list of remote networks to peering peer with, including the configuration. |
 

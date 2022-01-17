@@ -61,7 +61,7 @@ param lock string = 'NotSpecified'
 param tags object = {}
 
 @description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
-param cuaId string = ''
+param telemetryCuaId string = ''
 
 var localVirtualNetworkGatewayId = resourceId(resourceGroup().name, 'Microsoft.Network/virtualNetworkGateways', localVirtualNetworkGatewayName)
 var remoteEntitySubscriptionId_var = (empty(remoteEntitySubscriptionId) ? subscription().subscriptionId : remoteEntitySubscriptionId)
@@ -88,8 +88,8 @@ var customIPSecPolicy_var = [
   }
 ]
 
-resource pid_cuaId 'Microsoft.Resources/deployments@2021-04-01' = if (!empty(cuaId)) {
-  name: 'pid-${cuaId}'
+resource pid_cuaId 'Microsoft.Resources/deployments@2021-04-01' = if (!empty(telemetryCuaId)) {
+  name: 'pid-${telemetryCuaId}'
   properties: {
     mode: 'Incremental'
     template: {

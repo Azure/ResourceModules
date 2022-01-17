@@ -94,7 +94,7 @@ param captureDescriptionSizeLimitInBytes int = 314572800
 param captureDescriptionSkipEmptyArchives bool = false
 
 @description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
-param cuaId string = ''
+param telemetryCuaId string = ''
 
 var eventHubPropertiesSimple = {
   messageRetentionInDays: messageRetentionInDays
@@ -122,8 +122,8 @@ var eventHubPropertiesWithCapture = {
   }
 }
 
-resource pid_cuaId 'Microsoft.Resources/deployments@2021-04-01' = if (!empty(cuaId)) {
-  name: 'pid-${cuaId}'
+resource pid_cuaId 'Microsoft.Resources/deployments@2021-04-01' = if (!empty(telemetryCuaId)) {
+  name: 'pid-${telemetryCuaId}'
   properties: {
     mode: 'Incremental'
     template: {

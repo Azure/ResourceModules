@@ -13,7 +13,7 @@ This template deploys a virtual network gateway connection.
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
+| `telemetryCuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `customIPSecPolicy` | object | `{object}` |  | Optional. The IPSec Policies to be considered by this connection |
 | `enableBgp` | bool |  |  | Optional. Value to specify if BGP is enabled or not |
 | `localVirtualNetworkGatewayName` | string |  |  | Required. Specifies the local Virtual Network Gateway name |

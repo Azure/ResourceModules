@@ -36,7 +36,7 @@ This module deploys an API management service.
 | `backends` | _[backends](backends/readme.md)_ array | `[]` |  | Optional. Backends. |
 | `caches` | _[caches](caches/readme.md)_ array | `[]` |  | Optional. Caches. |
 | `certificates` | array | `[]` |  | Optional. List of Certificates that need to be installed in the API Management service. Max supported certificates that can be installed is 10. |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
+| `telemetryCuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `customProperties` | object | `{object}` |  | Optional. Custom properties of the API Management service. |
 | `diagnosticEventHubAuthorizationRuleId` | string |  |  | Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string |  |  | Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |

@@ -17,7 +17,7 @@ This module deploys an Action Group.
 | `automationRunbookReceivers` | array | `[]` |  | Optional. The list of AutomationRunbook receivers that are part of this action group. |
 | `azureAppPushReceivers` | array | `[]` |  | Optional. The list of AzureAppPush receivers that are part of this action group. |
 | `azureFunctionReceivers` | array | `[]` |  | Optional. The list of function receivers that are part of this action group. |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
+| `telemetryCuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `emailReceivers` | array | `[]` |  | Optional. The list of email receivers that are part of this action group. |
 | `enabled` | bool | `True` |  | Optional. Indicates whether this action group is enabled. If an action group is not enabled, then none of its receivers will receive communications. |
 | `groupShortName` | string |  |  | Required. The short name of the action group. |

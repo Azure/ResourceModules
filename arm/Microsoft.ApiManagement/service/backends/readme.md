@@ -21,7 +21,7 @@ The following resources are required to be able to deploy this resource.
 | `apiManagementServiceName` | string |  |  | Required. The name of the of the API Management service. |
 | `backendDescription` | string |  |  | Optional. Backend Description. |
 | `credentials` | object | `{object}` |  | Optional. Backend Credentials Contract Properties. |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
+| `telemetryCuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `name` | string |  |  | Required. Backend Name. |
 | `protocol` | string | `http` |  | Optional. Backend communication protocol. - http or soap |
 | `proxy` | object | `{object}` |  | Optional. Backend Proxy Contract Properties |

@@ -13,7 +13,7 @@ This module deploys a backup short-term retention policies for SQL Managed Insta
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
+| `telemetryCuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `databaseName` | string |  |  | Required. The name of the SQL managed instance database |
 | `managedInstanceName` | string |  |  | Required. Name of the SQL managed instance. |
 | `name` | string |  |  | Required. The name of the Short Term Retention backup policy. For example "default". |

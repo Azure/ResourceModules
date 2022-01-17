@@ -18,7 +18,7 @@ This module deploys a Logic App resource.
 | `actionsAccessControlConfiguration` | object | `{object}` |  | Optional. The access control configuration for workflow actions. |
 | `connectorEndpointsConfiguration` | object | `{object}` |  | Optional. The endpoints configuration:  Access endpoint and outgoing IP addresses for the connector. |
 | `contentsAccessControlConfiguration` | object | `{object}` |  | Optional. The access control configuration for accessing workflow run contents. |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered. |
+| `telemetryCuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered. |
 | `definitionParameters` | object | `{object}` |  | Optional. Parameters for the definition template. |
 | `diagnosticEventHubAuthorizationRuleId` | string |  |  | Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string |  |  | Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |

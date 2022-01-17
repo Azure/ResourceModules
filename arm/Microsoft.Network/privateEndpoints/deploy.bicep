@@ -31,10 +31,10 @@ param roleAssignments array = []
 param tags object = {}
 
 @description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
-param cuaId string = ''
+param telemetryCuaId string = ''
 
-module pid_cuaId '.bicep/nested_pid.bicep' = if (!empty(cuaId)) {
-  name: 'pid-${cuaId}'
+module pid_cuaId '.bicep/nested_pid.bicep' = if (!empty(telemetryCuaId)) {
+  name: 'pid-${telemetryCuaId}'
   params: {}
 }
 

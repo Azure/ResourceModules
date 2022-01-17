@@ -10,7 +10,7 @@
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
+| `telemetryCuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `databaseAccountName` | string |  |  | Required. Name of the Database Account |
 | `kind` | string | `Hash` | `[Hash, MultiHash, Range]` | Optional. Indicates the kind of algorithm used for partitioning |
 | `name` | string |  |  | Required. Name of the container. |

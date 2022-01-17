@@ -31,7 +31,7 @@ SQL Managed Instance is deployed on a virtual network. This network is required 
 | `administratorLoginPassword` | secureString |  |  | Required. The password given to the admin user. |
 | `administratorsObj` | _[administrators](administrators/readme.md)_ object | `{object}` |  | Optional. The administrator configuration |
 | `collation` | string | `SQL_Latin1_General_CP1_CI_AS` |  | Optional. Collation of the managed instance. |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
+| `telemetryCuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `databases` | _[databases](databases/readme.md)_ array | `[]` |  | Optional. Databases to create in this server. |
 | `diagnosticEventHubAuthorizationRuleId` | string |  |  | Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string |  |  | Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |

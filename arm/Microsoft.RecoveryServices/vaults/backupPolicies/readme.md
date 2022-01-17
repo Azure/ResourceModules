@@ -13,7 +13,7 @@ This module deploys a Backup Policy for a Recovery Services Vault
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `backupPolicyProperties` | object |  |  | Required. Configuration of the Azure Recovery Service Vault Backup Policy |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
+| `telemetryCuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `name` | string |  |  | Required. Name of the Azure Recovery Service Vault Backup Policy |
 | `recoveryVaultName` | string |  |  | Required. Name of the Azure Recovery Service Vault |
 

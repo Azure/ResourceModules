@@ -81,7 +81,7 @@ param lock string = 'NotSpecified'
 param tags object = {}
 
 @description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
-param cuaId string = ''
+param telemetryCuaId string = ''
 
 @description('Optional. The type of preferred application group type, default to Desktop Application Group')
 @allowed([
@@ -129,8 +129,8 @@ var diagnosticsLogs = [for log in logsToEnable: {
 
 var tokenExpirationTime = dateTimeAdd(baseTime, tokenValidityLength)
 
-resource pid_cuaId 'Microsoft.Resources/deployments@2021-04-01' = if (!empty(cuaId)) {
-  name: 'pid-${cuaId}'
+resource pid_cuaId 'Microsoft.Resources/deployments@2021-04-01' = if (!empty(telemetryCuaId)) {
+  name: 'pid-${telemetryCuaId}'
   properties: {
     mode: 'Incremental'
     template: {

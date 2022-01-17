@@ -15,7 +15,7 @@ param serverKeyType string = 'ServiceManaged'
 param uri string = ''
 
 @description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
-param cuaId string = ''
+param telemetryCuaId string = ''
 
 var splittedKeyUri = split(uri, '/')
 
@@ -23,8 +23,8 @@ var splittedKeyUri = split(uri, '/')
 // MUST match the pattern '<keyVaultName>_<keyName>_<keyVersion>'
 var serverKeyName = empty(uri) ? 'ServiceManaged' : '${split(splittedKeyUri[2], '.')[0]}_${splittedKeyUri[4]}_${splittedKeyUri[5]}'
 
-module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
-  name: 'pid-${cuaId}'
+module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(telemetryCuaId)) {
+  name: 'pid-${telemetryCuaId}'
   params: {}
 }
 

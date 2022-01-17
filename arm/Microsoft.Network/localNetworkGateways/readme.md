@@ -14,7 +14,7 @@ This module deploys a local network gateway.
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
+| `telemetryCuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `fqdn` | string |  |  | Optional. FQDN of local network gateway. |
 | `localAddressPrefixes` | array |  |  | Required. List of the local (on-premises) IP address ranges |
 | `localAsn` | string |  |  | Optional. The BGP speaker's ASN. Not providing this value will automatically disable BGP on this Local Network Gateway resource. |

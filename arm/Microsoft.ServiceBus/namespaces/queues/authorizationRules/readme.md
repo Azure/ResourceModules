@@ -12,7 +12,7 @@ This module deploys an authorization rule for a service bus namespace queue.
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
+| `telemetryCuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `name` | string |  |  | Required. The name of the service bus namepace queue |
 | `namespaceName` | string |  |  | Required. The name of the parent service bus namespace |
 | `queueName` | string |  |  | Required. The name of the parent service bus namespace queue |

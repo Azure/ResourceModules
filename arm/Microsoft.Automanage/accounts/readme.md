@@ -16,7 +16,7 @@ This module deploys an Automanage account and associates VM with it.
 | :-- | :-- | :-- | :-- | :-- |
 | `autoManageAccountResourceGroupName` | string | `[format('{0}_group', replace(subscription().displayName, ' ', ''))]` |  | Optional. The resource group name where automanage will be created |
 | `configurationProfile` | string | `Production` | `[Production, Dev/Test]` | Optional. The configuration profile of automanage |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered. |
+| `telemetryCuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered. |
 | `location` | string | `[deployment().location]` |  | Optional. The location of automanage |
 | `name` | string | `[format('{0}-AutoManage', replace(subscription().displayName, ' ', ''))]` |  | Optional. The name of automanage account |
 | `vmName` | string |  |  | Required. The name of the VM to be associated |

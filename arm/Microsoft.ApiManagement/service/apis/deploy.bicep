@@ -33,7 +33,7 @@ param apiVersionDescription string = ''
 param authenticationSettings object = {}
 
 @description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
-param cuaId string = ''
+param telemetryCuaId string = ''
 
 @description('Optional. Description of the API. May include HTML formatting tags.')
 param apiDescription string = ''
@@ -94,8 +94,8 @@ param value string = ''
 @description('Optional. Criteria to limit import of WSDL to a subset of the document.')
 param wsdlSelector object = {}
 
-resource pid_cuaId 'Microsoft.Resources/deployments@2021-04-01' = if (!empty(cuaId)) {
-  name: 'pid-${cuaId}'
+resource pid_cuaId 'Microsoft.Resources/deployments@2021-04-01' = if (!empty(telemetryCuaId)) {
+  name: 'pid-${telemetryCuaId}'
   properties: {
     mode: 'Incremental'
     template: {

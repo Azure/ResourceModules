@@ -12,7 +12,7 @@ This template deploys a linked service for a Log Analytics workspace.
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
+| `telemetryCuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `logAnalyticsWorkspaceName` | string |  |  | Required. Name of the Log Analytics workspace |
 | `name` | string |  |  | Required. Name of the link |
 | `resourceId` | string |  |  | Required. The resource ID of the resource that will be linked to the workspace. This should be used for linking resources which require read access. |

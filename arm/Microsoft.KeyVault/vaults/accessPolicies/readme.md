@@ -13,7 +13,7 @@ This module deploys key vault access policies.
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `accessPolicies` | array | `[]` |  | Optional. An array of 0 to 16 identities that have access to the key vault. All identities in the array must use the same tenant ID as the key vault's tenant ID. |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
+| `telemetryCuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `keyVaultName` | string |  |  | Required. The name of the key vault |
 | `name` | string | `add` |  | Optional. The access policy deployment |
 

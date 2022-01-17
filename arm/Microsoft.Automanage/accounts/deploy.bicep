@@ -23,13 +23,13 @@ param vmName string
 param configurationProfile string = 'Production'
 
 @description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered.')
-param cuaId string = ''
+param telemetryCuaId string = ''
 
 var contributor = subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b24988ac-6180-42a0-ab88-20f7382dd24c')
 var resourcePolicyContributor = subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '36243c78-bf99-498c-9df9-86d9f8d28608')
 
-module pidName '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
-  name: 'pid-${cuaId}'
+module pidName '.bicep/nested_cuaId.bicep' = if (!empty(telemetryCuaId)) {
+  name: 'pid-${telemetryCuaId}'
   params: {}
 }
 

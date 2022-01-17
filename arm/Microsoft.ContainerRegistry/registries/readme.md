@@ -19,7 +19,7 @@ Azure Container Registry is a managed, private Docker registry service based on 
 | :-- | :-- | :-- | :-- | :-- |
 | `acrAdminUserEnabled` | bool |  |  | Optional. Enable admin user that have push / pull permission to the registry. |
 | `acrSku` | string | `Basic` | `[Basic, Standard, Premium]` | Optional. Tier of your Azure container registry. |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
+| `telemetryCuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `dataEndpointEnabled` | bool |  |  | Optional. Enable a single data endpoint per region for serving data. Not relevant in case of disabled public access. |
 | `diagnosticEventHubAuthorizationRuleId` | string |  |  | Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string |  |  | Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |

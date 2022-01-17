@@ -12,7 +12,7 @@ This module can be used to deploy a management policies into a storage account.
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
+| `telemetryCuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `name` | string | `default` |  | Optional. The name of the storage container to deploy |
 | `rules` | array |  |  | Required. The Storage Account ManagementPolicies Rules |
 | `storageAccountName` | string |  |  | Required. Name of the Storage Account. |

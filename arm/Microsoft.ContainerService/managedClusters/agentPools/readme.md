@@ -14,7 +14,7 @@ This module deploys an Agent Pool for a Container Service Managed Cluster
 | :-- | :-- | :-- | :-- | :-- |
 | `availabilityZones` | array | `[]` |  | Optional. The list of Availability zones to use for nodes. This can only be specified if the AgentPoolType property is "VirtualMachineScaleSets".	 |
 | `count` | int | `1` |  | Optional. Desired Number of agents (VMs) specified to host docker containers. Allowed values must be in the range of 0 to 1000 (inclusive) for user pools and in the range of 1 to 1000 (inclusive) for system pools. The default value is 1. |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
+| `telemetryCuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `enableAutoScaling` | bool |  | `[True, False]` | Optional. Whether to enable auto-scaler |
 | `enableEncryptionAtHost` | bool |  | `[True, False]` | Optional. This is only supported on certain VM sizes and in certain Azure regions. For more information, see: /azure/aks/enable-host-encryption	 |
 | `enableFIPS` | bool |  | `[True, False]` | Optional. See Add a FIPS-enabled node pool (https://docs.microsoft.com/en-us/azure/aks/use-multiple-node-pools#add-a-fips-enabled-node-pool-preview) for more details. |

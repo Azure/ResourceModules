@@ -42,7 +42,7 @@ param trafficAnalyticsInterval int = 60
 param retentionInDays int = 365
 
 @description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
-param cuaId string = ''
+param telemetryCuaId string = ''
 
 var flowAnalyticsConfiguration = !empty(workspaceResourceId) && enabled == true ? {
   networkWatcherFlowAnalyticsConfiguration: {
@@ -56,8 +56,8 @@ var flowAnalyticsConfiguration = !empty(workspaceResourceId) && enabled == true 
   }
 }
 
-resource pid_cuaId 'Microsoft.Resources/deployments@2021-04-01' = if (!empty(cuaId)) {
-  name: 'pid-${cuaId}'
+resource pid_cuaId 'Microsoft.Resources/deployments@2021-04-01' = if (!empty(telemetryCuaId)) {
+  name: 'pid-${telemetryCuaId}'
   properties: {
     mode: 'Incremental'
     template: {

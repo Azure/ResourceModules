@@ -8,7 +8,7 @@ param apiName string
 param name string = 'policy'
 
 @description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
-param cuaId string = ''
+param telemetryCuaId string = ''
 
 @description('Optional. Format of the policyContent.')
 @allowed([
@@ -22,8 +22,8 @@ param format string = 'xml'
 @description('Required. Contents of the Policy as defined by the format.')
 param value string
 
-resource pid_cuaId 'Microsoft.Resources/deployments@2021-04-01' = if (!empty(cuaId)) {
-  name: 'pid-${cuaId}'
+resource pid_cuaId 'Microsoft.Resources/deployments@2021-04-01' = if (!empty(telemetryCuaId)) {
+  name: 'pid-${telemetryCuaId}'
   properties: {
     mode: 'Incremental'
     template: {

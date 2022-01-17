@@ -15,7 +15,7 @@
 | `appInsightsPublicNetworkAccessForQuery` | string | `Enabled` | `[Enabled, Disabled]` | Optional. The network access type for accessing Application Insights query. - Enabled or Disabled |
 | `appInsightsType` | string | `web` | `[web, other]` | Optional. Application type |
 | `appInsightsWorkspaceResourceId` | string |  |  | Required. Resource ID of the log analytics workspace which the data will be ingested to. This property is required to create an application with this API version. Applications from older versions will not have this property. |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
+| `telemetryCuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `kind` | string |  |  | Optional. The kind of application that this component refers to, used to customize UI. This value is a freeform string, values should typically be one of the following: web, ios, other, store, java, phone. |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all Resources |
 | `name` | string |  |  | Required. Name of the Application Insights |

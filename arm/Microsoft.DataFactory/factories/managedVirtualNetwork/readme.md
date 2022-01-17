@@ -12,7 +12,7 @@ This module deploys a Managed Virtual Network for an Azure Data Factory
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
+| `telemetryCuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `dataFactoryName` | string |  |  | Required. The name of the Azure Data Factory |
 | `name` | string |  |  | Required. The name of the Managed Virtual Network |
 

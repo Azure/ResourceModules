@@ -20,7 +20,7 @@ This template deploys a log analytics workspace.
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
+| `telemetryCuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `dailyQuotaGb` | int | `-1` |  | Optional. The workspace daily quota for ingestion. |
 | `dataRetention` | int | `365` |  | Required. Number of days data will be retained for |
 | `dataSources` | _[dataSources](dataSources/readme.md)_ array | `[]` |  | Optional. LAW data sources to configure. |

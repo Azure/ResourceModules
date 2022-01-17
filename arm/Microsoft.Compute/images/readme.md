@@ -13,7 +13,7 @@ This module deploys a compute image.
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
+| `telemetryCuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `hyperVGeneration` | string | `V1` |  | Optional. Gets the HyperVGenerationType of the VirtualMachine created from the image. - V1 or V2 |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
 | `name` | string |  |  | Required. The name of the image. |

@@ -12,7 +12,7 @@ This module deploys load balancer backend address pools.
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
+| `telemetryCuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `loadBalancerBackendAddresses` | array | `[]` |  | Optional. An array of backend addresses. |
 | `loadBalancerName` | string |  |  | Required. The name of the parent load balancer |
 | `name` | string |  |  | Required. The name of the backend address pool |

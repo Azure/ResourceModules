@@ -18,7 +18,7 @@ This module deploys an Azure virtual desktop application group.
 | :-- | :-- | :-- | :-- | :-- |
 | `applicationGroupType` | string |  | `[RemoteApp, Desktop]` | Required. The type of the Application Group to be created. Allowed values: RemoteApp or Desktop |
 | `applications` | _[applications](applications/readme.md)_ array | `[]` |  | Optional. List of applications to be created in the Application Group. |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
+| `telemetryCuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `description` | string |  |  | Optional. The description of the Application Group to be created. |
 | `diagnosticEventHubAuthorizationRuleId` | string |  |  | Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string |  |  | Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |

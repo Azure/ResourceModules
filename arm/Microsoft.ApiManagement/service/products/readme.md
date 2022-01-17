@@ -23,7 +23,7 @@ The following resources are required to be able to deploy this resource.
 | `apiManagementServiceName` | string |  |  | Required. The name of the of the API Management service. |
 | `apis` | _[apis](apis/readme.md)_ array | `[]` |  | Optional. Array of Product APIs. |
 | `approvalRequired` | bool |  |  | Optional. Whether subscription approval is required. If false, new subscriptions will be approved automatically enabling developers to call the products APIs immediately after subscribing. If true, administrators must manually approve the subscription before the developer can any of the products APIs. Can be present only if subscriptionRequired property is present and has a value of false. |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
+| `telemetryCuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `groups` | _[groups](groups/readme.md)_ array | `[]` |  | Optional. Array of Product Groups. |
 | `name` | string |  |  | Required. Product Name. |
 | `productDescription` | string |  |  | Optional. Product description. May include HTML formatting tags. |

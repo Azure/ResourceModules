@@ -12,7 +12,7 @@ This module deploys an administrator for the SQL managed instance
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
+| `telemetryCuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `login` | string |  |  | Required. Login name of the managed instance administrator. |
 | `managedInstanceName` | string |  |  | Required. Name of the SQL managed instance. |
 | `name` | string | `ActiveDirectory` |  | Optional. The name of the managed instance administrator |

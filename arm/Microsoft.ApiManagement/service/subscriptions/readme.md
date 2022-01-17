@@ -20,7 +20,7 @@ The following resources are required to be able to deploy this resource.
 | :-- | :-- | :-- | :-- | :-- |
 | `allowTracing` | bool | `True` |  | Optional. Determines whether tracing can be enabled. |
 | `apiManagementServiceName` | string |  |  | Required. The name of the of the API Management service. |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
+| `telemetryCuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `name` | string |  |  | Required. Subscription name. |
 | `ownerId` | string |  |  | Optional. User (user ID path) for whom subscription is being created in form /users/{userId} |
 | `primaryKey` | string |  |  | Optional. Primary subscription key. If not specified during request key will be generated automatically. |

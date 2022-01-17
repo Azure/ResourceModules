@@ -17,7 +17,7 @@ The top-level resource in Azure Container Instances is the container group. A co
 | :-- | :-- | :-- | :-- | :-- |
 | `containername` | string |  |  | Required. Name for the container. |
 | `cpuCores` | int | `2` |  | Optional. The number of CPU cores to allocate to the container. |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
+| `telemetryCuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `environmentVariables` | array | `[]` |  | Optional. Envrionment variables of the container group. |
 | `image` | string |  |  | Required. Name of the image. |
 | `imageRegistryCredentials` | array | `[]` |  | Optional. The image registry credentials by which the container group is created from. |

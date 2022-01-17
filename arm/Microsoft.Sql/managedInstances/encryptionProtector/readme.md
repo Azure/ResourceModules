@@ -13,7 +13,7 @@ This module deploys an encryption protector for a SQL managed instance.
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `autoRotationEnabled` | bool |  |  | Optional. Key auto rotation opt-in flag |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
+| `telemetryCuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `managedInstanceName` | string |  |  | Required. Name of the SQL managed instance. |
 | `name` | string | `current` |  | Required. The name of the encryptionProtector |
 | `serverKeyName` | string |  |  | Required. The name of the SQL managed instance key. |

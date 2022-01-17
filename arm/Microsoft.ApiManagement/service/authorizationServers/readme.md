@@ -26,7 +26,7 @@ The following resources are required to be able to deploy this resource.
 | `clientId` | secureString |  |  | Required. Client or app ID registered with this authorization server. |
 | `clientRegistrationEndpoint` | string |  |  | Optional. Optional reference to a page where client or app registration for this authorization server is performed. Contains absolute URL to entity being referenced. |
 | `clientSecret` | secureString |  |  | Required. Client or app secret registered with this authorization server. This property will not be filled on 'GET' operations! Use '/listSecrets' POST request to get the value. |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
+| `telemetryCuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `defaultScope` | string |  |  | Optional. Access token scope that is going to be requested by default. Can be overridden at the API level. Should be provided in the form of a string containing space-delimited values. |
 | `grantTypes` | array |  |  | Required. Form of an authorization grant, which the client uses to request the access token. - authorizationCode, implicit, resourceOwnerPassword, clientCredentials |
 | `name` | string |  |  | Required. Identifier of the authorization server. |

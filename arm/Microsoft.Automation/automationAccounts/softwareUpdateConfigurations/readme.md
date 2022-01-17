@@ -15,7 +15,7 @@ This module deploys an Azure Automation Account Software update Configuration.
 | `automationAccountName` | string |  |  | Required. Name of the parent Automation Account |
 | `azureVirtualMachines` | array | `[]` |  | Optional. List of azure resource IDs for azure virtual machines in scope for the deployment schedule. |
 | `baseTime` | string | `[utcNow('u')]` |  | Generated. Do not touch. Is used to provide the base time for time comparison for startTime. If startTime is specified in HH:MM format, baseTime is used to check if the provided startTime has passed, adding one day before setting the deployment schedule. |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
+| `telemetryCuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `excludeUpdates` | array | `[]` |  | Optional. KB numbers or Linux packages excluded in the deployment schedule. |
 | `expiryTime` | string |  |  | Optional. The end time of the deployment schedule in ISO 8601 format. YYYY-MM-DDTHH:MM:SS, 2021-12-31T23:00:00 |
 | `expiryTimeOffsetMinutes` | int |  |  | Optional. The expiry time's offset in minutes. |

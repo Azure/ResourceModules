@@ -15,7 +15,7 @@ This module deployes a blob container
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `blobServicesName` | string | `default` |  | Optional. Name of the blob service. |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
+| `telemetryCuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `immutabilityPolicyName` | string | `default` |  | Optional. Name of the immutable policy. |
 | `immutabilityPolicyProperties` | object | `{object}` |  | Optional. Configure immutability policy. |
 | `name` | string |  |  | Required. The name of the storage container to deploy |
