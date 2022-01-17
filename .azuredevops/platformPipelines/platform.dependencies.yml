@@ -59,7 +59,7 @@ stages:
               displayName: User Assigned Identity
               jobName: job_deploy_msi
               # customParameterFileTokens: "[{\"name\":\"value\"}]"
-              customParameterFileTokens: '[{"name":"msiPrincipalId","value":"msiPrincipalIdValue"}]'
+              customParameterFileTokens: '[{"Name":"msiPrincipalId","Value":"$(templateFilePath)"}]'
       - job: job_set_msi_id
         displayName: Set msi principal ID output
         dependsOn:
