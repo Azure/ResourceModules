@@ -372,48 +372,56 @@ stages:
   #             templateFilePath: $(templateFilePath)
   #             displayName: Default AVD Host Pool
 
-  # - stage: deploy_rsv
-  #   displayName: Deploy recovery services vault
-  #   dependsOn:
-  #     - deploy_sa
-  #     - deploy_evh
-  #     - deploy_law
-  #   variables:
-  #     resourceType: 'Microsoft.RecoveryServices/vaults'
-  #     templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
-  #   jobs:
-  #     - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
-  #       parameters:
-  #         deploymentBlocks:
-  #           - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
-  #             templateFilePath: $(templateFilePath)
-  #             displayName: Default recovery services vault
+  - stage: deploy_rsv
+    displayName: Deploy recovery services vault
+    dependsOn:
+      - deploy_sa
+      - deploy_evh
+      - deploy_law
+      - deploy_msi
+    variables:
+      resourceType: 'Microsoft.RecoveryServices/vaults'
+      templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
+      msiPrincipalId: $[ stageDependencies.deploy_msi.job_set_msi_id.outputs['print_msi_prinId.msiPrincipalId'] ]
+    jobs:
+      - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
+        parameters:
+          deploymentBlocks:
+            - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: Default recovery services vault
+              customParameterFileTokens: '[{"Name":"msiPrincipalId","Value":"$(msiPrincipalId)"}]'
 
-  # - stage: deploy_kv
-  #   displayName: Deploy key vaults
-  #   dependsOn:
-  #     - deploy_sa
-  #     - deploy_evh
-  #     - deploy_law
-  #   variables:
-  #     resourceType: 'Microsoft.KeyVault/vaults'
-  #     templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
-  #   jobs:
-  #     - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
-  #       parameters:
-  #         deploymentBlocks:
-  #           - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
-  #             templateFilePath: $(templateFilePath)
-  #             displayName: Default Key Vault
-  #             jobName: default_kv
-  #           - path: $(dependencyPath)/$(resourceType)/parameters/pe.parameters.json
-  #             templateFilePath: $(templateFilePath)
-  #             displayName: Private Endpoint Key Vault
-  #           - ${{ if eq( parameters.deploySqlMiDependencies, true) }}:
-  #               - path: $(dependencyPath)/$(resourceType)/parameters/sqlmi.parameters.json
-  #                 templateFilePath: $(templateFilePath)
-  #                 displayName: SQLMI key vault
-  #                 jobName: sqlmi_kv
+  - stage: deploy_kv
+    displayName: Deploy key vaults
+    dependsOn:
+      - deploy_sa
+      - deploy_evh
+      - deploy_law
+      - deploy_msi
+    variables:
+      resourceType: 'Microsoft.KeyVault/vaults'
+      templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
+      msiPrincipalId: $[ stageDependencies.deploy_msi.job_set_msi_id.outputs['print_msi_prinId.msiPrincipalId'] ]
+    jobs:
+      - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
+        parameters:
+          deploymentBlocks:
+            - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: Default Key Vault
+              jobName: default_kv
+              customParameterFileTokens: '[{"Name":"msiPrincipalId","Value":"$(msiPrincipalId)"}]'
+            - path: $(dependencyPath)/$(resourceType)/parameters/pe.parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: Private Endpoint Key Vault
+              customParameterFileTokens: '[{"Name":"msiPrincipalId","Value":"$(msiPrincipalId)"}]'
+            - ${{ if eq( parameters.deploySqlMiDependencies, true) }}:
+                - path: $(dependencyPath)/$(resourceType)/parameters/sqlmi.parameters.json
+                  templateFilePath: $(templateFilePath)
+                  displayName: SQLMI key vault
+                  jobName: sqlmi_kv
+                  customParameterFileTokens: '[{"Name":"msiPrincipalId","Value":"$(msiPrincipalId)"}]'
   #     - job:
   #       displayName: Set key vault secrets keys and certificates
   #       dependsOn:
