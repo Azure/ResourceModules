@@ -178,6 +178,7 @@ jobs:
                 ) | ForEach-Object { [PSCustomObject]$PSItem }
 
                 # Get additional Custom Parameter File Tokens from input
+                Write-Verbose "OtherCustomParameterFileTokens: '${{ parameters.customParameterFileTokens }}'" -Verbose
                 $OtherCustomParameterFileTokens = '${{ parameters.customParameterFileTokens }}' | ConvertFrom-Json
 
                 # Construct Token Function Input
