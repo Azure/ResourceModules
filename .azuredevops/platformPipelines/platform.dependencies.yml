@@ -626,7 +626,7 @@ stages:
           deploymentBlocks:
             - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
               templateFilePath: $(templateFilePath)
-              displayName: MSI Role Assignment
+              displayName: Default Role Assignment
 
 
   # - stage: deploy_vnet
