@@ -622,10 +622,11 @@ stages:
 
                 # # Invoke Token Replacement Functionality
 
-                Write-Verbose "msiPrincipalId: $(msiPrincipalId)" -Verbose
+                Write-Verbose "msiPrincipalId: '$(msiPrincipalId)'" -Verbose
+                $msiPrincipalId = '$(msiPrincipalId)'
                 # Initialize Additional Custom Parameter File Tokens for Token Replacement Functionality
                 $otherCustomParameterFileTokens = @(
-                    @{ Name = 'msiPrincipalId'; Value = '$(msiPrincipalId)' }
+                    @{ Name = 'msiPrincipalId'; Value = $msiPrincipalId }
                 )
 
                 $customParameterFileTokens = $otherCustomParameterFileTokens | ConvertTo-Json
