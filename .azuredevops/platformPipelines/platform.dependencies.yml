@@ -576,18 +576,6 @@ stages:
   #             templateFilePath: $(templateFilePath)
   #             displayName: Default Application Group
 
-  - stage: print_msi
-    dependsOn: deploy_msi
-    jobs:
-    - job: print_msi_job
-      variables:
-        varFromStageA: $[ stageDependencies.deploy_msi.job_set_msi_id.outputs['print_msi_prinId.msiPrincipalId'] ]
-      steps:
-      - checkout: none
-      - script: |
-          echo "This Job will print value from deploy_msi stage"
-          echo $(varFromStageA)
-
   - stage: deploy_rolea
     displayName: Deploy role assignments
     dependsOn:
@@ -595,58 +583,8 @@ stages:
     variables:
       resourceType: 'Microsoft.Authorization/roleAssignments'
       templateFilePath: $(modulesPath)/$(resourceType)/.bicep/nested_rbac_sub.bicep
-      # msiPrincipalId: $[ dependencies.deploy_msi.outputs['job_set_msi_id.print_msi_prinId.msiPrincipalId'] ]
       msiPrincipalId: $[ stageDependencies.deploy_msi.job_set_msi_id.outputs['print_msi_prinId.msiPrincipalId'] ]
-      # dependencies.STAGE.outputs['JOB.TASK.VARIABLE']
     jobs:
-      - job: job_get_msi_id
-        displayName: Get msi principal ID output
-        pool:
-          ${{ if eq(variables['vmImage'], '') }}:
-            name: $(poolName)
-          ${{ if eq(variables['poolName'], '') }}:
-            vmImage: $(vmImage)
-        variables:
-          # msiPrincipalId: $[ stageDependencies.deploy_msi.job_set_msi_id.outputs['print_msi_prinId.msiPrincipalId'] ]
-          msiPrincipalId: $(msiPrincipalId)
-        steps:
-          - task: PowerShell@2
-            name: print_custom_token
-            inputs:
-              targetType: inline
-              pwsh: true
-              script: |
-                # # Load used functions
-                # . (Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInParameterFile.ps1')
-
-                # # Load Settings File
-                # $Settings = Get-Content -Path "settings.json" | ConvertFrom-Json
-
-                # # Initialize Default Parameter File Tokens
-                # $OtherCustomParameterFileTokens = @(
-                #     @{ Name = 'msiPrincipalId'; Value = '$(msiPrincipalId)' }
-                # )
-
-                # # Construct Token Function Input
-                # $ConvertTokensInputs = @{
-                #     ParameterFilePath                 = Join-Path '$(System.DefaultWorkingDirectory)' '$(dependencyPath)/$(resourceType)/parameters/parameters.json'
-                #     OtherCustomParameterFileTokens    = $OtherCustomParameterFileTokens
-                #     TokenPrefix                       = $Settings.parameterFileTokens.tokenPrefix
-                #     TokenSuffix                       = $Settings.parameterFileTokens.tokenSuffix
-                # }
-
-                # # Invoke Token Replacement Functionality
-
-                # Write-Verbose "msiPrincipalId: '$(msiPrincipalId)'" -Verbose
-                # $msiPrincipalId = '$(msiPrincipalId)'
-                # Initialize Additional Custom Parameter File Tokens for Token Replacement Functionality
-                $otherCustomParameterFileTokens = @(
-                    @{ Name = 'msiPrincipalId'; Value = '$(msiPrincipalId)' }
-                )
-
-                $customParameterFileTokens = $otherCustomParameterFileTokens | ConvertTo-Json
-                Write-Verbose "customParameterFileTokens: $customParameterFileTokens" -Verbose
-                Write-Output ('##vso[task.setvariable variable={0};isOutput=true]{1}' -f 'customParameterFileTokens', $customParameterFileTokens)
       - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
         parameters:
           deploymentBlocks:
@@ -654,14 +592,6 @@ stages:
               templateFilePath: $(templateFilePath)
               displayName: Default MSI Role Assignment
               customParameterFileTokens: '[{"Name":"msiPrincipalId","Value":"$(msiPrincipalId)"}]'
-              # customParameterFileTokens: $(msiPrincipalId)
-              # customParameterFileTokens: \[\{"name":"msiPrincipalId","value":"msiPrincipalIdddd"\}\]
-              # customParameterFileTokens: >
-              #   [
-              #   { "name": "msiPrincipalId",
-              #   "value": "msiPrincipalIdValue" }
-              #   ]
-          # customParameterFileTokens: $[ dependencies.job_get_msi_id.outputs['print_custom_token.customParameterFileTokens'] ]
 
 
   # - stage: deploy_vnet
