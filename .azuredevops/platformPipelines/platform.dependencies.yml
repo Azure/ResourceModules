@@ -58,6 +58,7 @@ stages:
               templateFilePath: $(templateFilePath)
               displayName: User Assigned Identity
               jobName: job_deploy_msi
+              customParameterFileTokens: [{"name":"value"}]
       - job: job_set_msi_id
         displayName: Set msi principal ID output
         dependsOn:
@@ -653,7 +654,7 @@ stages:
             - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
               templateFilePath: $(templateFilePath)
               displayName: Default MSI Role Assignment
-              customParameterFileTokens: \[\]
+              customParameterFileTokens: $(msiPrincipalId)
               # customParameterFileTokens: $(msiPrincipalId)
               # customParameterFileTokens: \[\{"name":"msiPrincipalId","value":"msiPrincipalIdddd"\}\]
               # customParameterFileTokens: >
