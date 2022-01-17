@@ -20,6 +20,9 @@
     "encryptionKeyVaultName": {
       "value": "carml-keyvault"
     },
+    "encryptionKeyVaultResourceGroupName": {
+      "value": "platform-core-rg"
+    },
     "encryptionKeyName": {
       "value": "synapseEncryptionKey"
     },

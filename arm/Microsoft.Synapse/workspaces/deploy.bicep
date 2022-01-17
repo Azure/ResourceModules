@@ -120,12 +120,19 @@ param eventHubName string = ''
   'IntegrationActivityRuns'
   'IntegrationTriggerRuns'
 ])
-param logsToEnable array = []
+param logsToEnable array = [
+  'SynapseRbacOperations'
+  'GatewayApiRequests'
+  'BuiltinSqlReqsEnded'
+  'IntegrationPipelineRuns'
+  'IntegrationActivityRuns'
+  'IntegrationTriggerRuns'
+]
 
 // Variables
-var userAssignedIdentitiesUnion = union(userAssignedIdentities, {
+var userAssignedIdentitiesUnion = union(userAssignedIdentities, !empty(encryptionUserAssignedIdentity) ? {
   '${encryptionUserAssignedIdentity}': {}
-})
+} : {})
 
 var identityType = (!empty(userAssignedIdentitiesUnion) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned')
 
@@ -188,17 +195,21 @@ resource workspace 'Microsoft.Synapse/workspaces@2021-06-01' = {
   }
 }
 
-// [Workspace encryption] - Assign Workspace System Identity Keyvault Crypto Reader at Encryption Keyvault
-module workspace_cmk_rbac '.bicep/nested_cmkRbac.bicep' = if (encryptionActivateWorkspace) {
-  name: '${workspace.name}-cmk-rbac'
-  params: {
-    keyvaultName: encryptionKeyVaultName
-    workspaceIdentity: workspace.identity.principalId
-  }
+// Workspace encryption - Assign Workspace System Identity Keyvault Crypto Reader at Encryption Keyvault
+resource keyVault 'Microsoft.KeyVault/vaults@2019-09-01' existing = if (encryptionActivateWorkspace) {
+  name: encryptionKeyVaultName
   scope: az.resourceGroup(encryptionKeyVaultResourceGroupName, encryptionKeyVaultName)
 }
 
-// [Workspace encryption] - Activate Workspace
+resource roleAssignment 'Microsoft.Authorization/roleAssignments@2021-04-01-preview' = if (encryptionActivateWorkspace) {
+  name: guid(keyVault.name, workspace.name, 'Key Vault Crypto User')
+  properties: {
+    roleDefinitionId: 'Key Vault Crypto User'
+    principalId: workspace.identity.principalId
+  }
+}
+
+// Workspace encryption - Activate Workspace
 module workspace_cmk 'keys/deploy.bicep' = if (encryptionActivateWorkspace) {
   name: '${workspace.name}-cmk-activation'
   params: {

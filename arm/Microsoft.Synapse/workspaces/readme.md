@@ -39,7 +39,7 @@ This module deploys Synapse PrivateLinkHubs.
 | `linkedAccessCheckOnTargetResource` | bool |  |  | Optional. Linked Access Check On Target Resource. |
 | `location` | string | `[resourceGroup().location]` |  | Optional. The geo-location where the resource lives. |
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
-| `logsToEnable` | array | `[]` | `[SynapseRbacOperations, GatewayApiRequests, BuiltinSqlReqsEnded, IntegrationPipelineRuns, IntegrationActivityRuns, IntegrationTriggerRuns]` | Optional. The name of logs that will be streamed. |
+| `logsToEnable` | array | `[SynapseRbacOperations, GatewayApiRequests, BuiltinSqlReqsEnded, IntegrationPipelineRuns, IntegrationActivityRuns, IntegrationTriggerRuns]` | `[SynapseRbacOperations, GatewayApiRequests, BuiltinSqlReqsEnded, IntegrationPipelineRuns, IntegrationActivityRuns, IntegrationTriggerRuns]` | Optional. The name of logs that will be streamed. |
 | `managedResourceGroupName` | string |  |  | Optional. Workspace managed resource group. The resource group name uniquely identifies the resource group within the user subscriptionId. The resource group name must be no longer than 90 characters long, and must be alphanumeric characters (Char.IsLetterOrDigit()) and '-', '_', '(', ')' and'.'. Note that the name cannot end with '.' |
 | `managedVirtualNetwork` | bool |  |  | Optional. Enable this to ensure that connection from your workspace to your data sources use Azure Private Links. You can create managed private endpoints to your data sources. |
 | `name` | string |  |  | Required. The name of the Synapse Workspace. |
