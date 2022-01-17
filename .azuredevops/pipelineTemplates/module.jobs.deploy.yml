@@ -214,12 +214,20 @@ jobs:
                 # INVOKE TEST #
                 # ----------- #
                 $functionInput = @{
-                  templateFilePath   = $templateFilePath
-                  parameterFilePath  = Join-Path '$(ParametersRepoRoot)' '${{ deploymentBlock.path }}'
-                  location           = '${{ parameters.location }}'
-                  resourceGroupName  = '${{ parameters.resourceGroupName }}'
-                  subscriptionId     = '${{ parameters.subscriptionId }}'
-                  managementGroupId  = '${{ parameters.managementGroupId }}'
+                  templateFilePath     = $templateFilePath
+                  parameterFilePath    = Join-Path '$(ParametersRepoRoot)' '${{ deploymentBlock.path }}'
+                  location             = '${{ parameters.location }}'
+                  resourceGroupName    = '${{ parameters.resourceGroupName }}'
+                  subscriptionId       = '${{ parameters.subscriptionId }}'
+                  managementGroupId    = '${{ parameters.managementGroupId }}'
+                  additionalParameters = @{}
+                }
+
+                $projectSettings = Get-Content -Path 'settings.json' | ConvertFrom-Json
+                if (-not [String]::IsNullOrEmpty($projectSettings.telemetryCuaId)) {
+                    $functionInput['additionalParameters'] += @{
+                        telemetryCuaId = $projectSettings.telemetryCuaId
+                    }
                 }
 
                 Write-Verbose "Invoke task with" -Verbose
@@ -255,13 +263,21 @@ jobs:
                 # INVOKE DEPLOYMENT #
                 # ----------------- #
                 $functionInput = @{
-                  templateFilePath   = $templateFilePath
-                  parameterFilePath  = Join-Path '$(parametersRepoRoot)' '${{ deploymentBlock.path }}'
-                  location           = '${{ parameters.location }}'
-                  resourceGroupName  = '${{ parameters.resourceGroupName }}'
-                  subscriptionId     = '${{ parameters.subscriptionId }}'
-                  managementGroupId  = '${{ parameters.managementGroupId }}'
-                  doNotThrow         = $true
+                  templateFilePath     = $templateFilePath
+                  parameterFilePath    = Join-Path '$(parametersRepoRoot)' '${{ deploymentBlock.path }}'
+                  location             = '${{ parameters.location }}'
+                  resourceGroupName    = '${{ parameters.resourceGroupName }}'
+                  subscriptionId       = '${{ parameters.subscriptionId }}'
+                  managementGroupId    = '${{ parameters.managementGroupId }}'
+                  doNotThrow           = $true
+                  additionalParameters = @{}
+                }
+
+                $projectSettings = Get-Content -Path 'settings.json' | ConvertFrom-Json
+                if (-not [String]::IsNullOrEmpty($projectSettings.telemetryCuaId)) {
+                    $functionInput['additionalParameters'] += @{
+                        telemetryCuaId = $projectSettings.telemetryCuaId
+                    }
                 }
 
                 Write-Verbose "Invoke task with" -Verbose

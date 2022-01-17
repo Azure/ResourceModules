@@ -111,12 +111,20 @@ runs:
         # INVOKE TEST #
         # ----------- #
         $functionInput = @{
-          templateFilePath   = '${{ inputs.templateFilePath }}'
-          parameterFilePath  = '${{ inputs.parameterFilePath }}'
-          location           = '${{ inputs.location }}'
-          resourceGroupName  = '${{ inputs.resourceGroupName }}'
-          subscriptionId     = '${{ inputs.subscriptionId }}'
-          managementGroupId  = '${{ inputs.managementGroupId }}'
+          templateFilePath     = '${{ inputs.templateFilePath }}'
+          parameterFilePath    = '${{ inputs.parameterFilePath }}'
+          location             = '${{ inputs.location }}'
+          resourceGroupName    = '${{ inputs.resourceGroupName }}'
+          subscriptionId       = '${{ inputs.subscriptionId }}'
+          managementGroupId    = '${{ inputs.managementGroupId }}'
+          additionalParameters = @{}
+        }
+
+        $projectSettings = Get-Content -Path 'settings.json' | ConvertFrom-Json
+        if (-not [String]::IsNullOrEmpty($projectSettings.telemetryCuaId)) {
+            $functionInput['additionalParameters'] += @{
+                telemetryCuaId = $projectSettings.telemetryCuaId
+            }
         }
 
         Write-Verbose "Invoke task with" -Verbose
@@ -134,13 +142,21 @@ runs:
         . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourceDeployment' 'New-ModuleDeployment.ps1')
 
         $functionInput = @{
-          templateFilePath   = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.templateFilePath }}'
-          parameterFilePath  = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.parameterFilePath }}'
-          location           = '${{ inputs.location }}'
-          resourceGroupName  = '${{ inputs.resourceGroupName }}'
-          subscriptionId     = '${{ inputs.subscriptionId }}'
-          managementGroupId  = '${{ inputs.managementGroupId }}'
-          doNotThrow         = $true
+          templateFilePath     = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.templateFilePath }}'
+          parameterFilePath    = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.parameterFilePath }}'
+          location             = '${{ inputs.location }}'
+          resourceGroupName    = '${{ inputs.resourceGroupName }}'
+          subscriptionId       = '${{ inputs.subscriptionId }}'
+          managementGroupId    = '${{ inputs.managementGroupId }}'
+          doNotThrow           = $true
+          additionalParameters = @{}
+        }
+
+        $projectSettings = Get-Content -Path 'settings.json' | ConvertFrom-Json
+        if (-not [String]::IsNullOrEmpty($projectSettings.telemetryCuaId)) {
+            $functionInput['additionalParameters'] += @{
+                telemetryCuaId = $projectSettings.telemetryCuaId
+            }
         }
 
         Write-Verbose "Invoke task with" -Verbose
