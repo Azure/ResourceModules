@@ -71,6 +71,7 @@ stages:
           deploymentOutput: $[ dependencies.job_deploy_msi.outputs['DeployModule.deploymentOutput'] ]
         steps:
           - task: PowerShell@2
+            name: print_msi_prinId
             inputs:
               targetType: inline
               pwsh: true
@@ -575,20 +576,57 @@ stages:
   #             templateFilePath: $(templateFilePath)
   #             displayName: Default Application Group
 
-  # - stage: deploy_rolea
-  #   displayName: Deploy role assignments
-  #   dependsOn:
-  #     - deploy_msi
-  #   variables:
-  #     resourceType: 'Microsoft.Authorization\roleAssignments'
-  #     templateFilePath: $(modulesPath)/$(resourceType)/.bicep/nested_rbac_sub.bicep
-  #   jobs:
-  #     - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
-  #       parameters:
-  #         deploymentBlocks:
-  #           - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
-  #             templateFilePath: $(templateFilePath)
-  #             displayName: MSI Role Assignment
+  - stage: deploy_rolea
+    displayName: Deploy role assignments
+    dependsOn:
+      - deploy_msi
+    variables:
+      resourceType: 'Microsoft.Authorization\roleAssignments'
+      templateFilePath: $(modulesPath)/$(resourceType)/.bicep/nested_rbac_sub.bicep
+      varFromStageA: $[ stageDependencies.deploy_msi.default_msi_job.outputs['DeployModule.deploymentOutput'] ]
+    jobs:
+      - job:
+        displayName: Set msi principal ID output
+        pool:
+          ${{ if eq(variables['vmImage'], '') }}:
+            name: $(poolName)
+          ${{ if eq(variables['poolName'], '') }}:
+            vmImage: $(vmImage)
+        variables:
+          msiPrincipalId: $[ stageDependencies.deploy_msi.job_deploy_msi.outputs['print_msi_prinId.msiPrincipalId'] ]
+        steps:
+          - task: PowerShell@2
+            inputs:
+              targetType: inline
+              pwsh: true
+              script: |
+                # Load used functions
+                . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInParameterFile.ps1')
+
+                # Load Settings File
+                $Settings = Get-Content -Path "settings.json" | ConvertFrom-Json
+
+                # Initialize Default Parameter File Tokens
+                $OtherCustomParameterFileTokens = @(
+                    @{ Name = 'msiPrincipalId'; Value = '$msiPrincipalId' }
+                )
+
+                # Construct Token Function Input
+                $ConvertTokensInputs = @{
+                    ParameterFilePath                 = '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
+                    OtherCustomParameterFileTokens    = $OtherCustomParameterFileTokens
+                    TokenPrefix                       = $Settings.parameterFileTokens.tokenPrefix
+                    TokenSuffix                       = $Settings.parameterFileTokens.tokenSuffix
+                }
+
+                # Invoke Token Replacement Functionality
+                $null = Convert-TokensInParameterFile @ConvertTokensInputs -Verbose
+      - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
+        parameters:
+          deploymentBlocks:
+            - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: MSI Role Assignment
 
 
   # - stage: deploy_vnet
