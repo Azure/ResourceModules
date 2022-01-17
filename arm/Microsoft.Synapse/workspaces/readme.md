@@ -30,6 +30,7 @@ This module deploys Synapse PrivateLinkHubs.
 | `encryptionActivateWorkspace` | bool |  |  | Optional. Activate workspace by adding the system managed identity in the KeyVault containing the customer managed key and activating the workspace. |
 | `encryptionKeyName` | string |  |  | Optional. The encryption key name in KeyVault. |
 | `encryptionKeyVaultName` | string |  |  | Optional. Keyvault where the encryption key is stored. |
+| `encryptionKeyVaultResourceGroupName` | string |  |  | Optional. Keyvault resource group name. |
 | `encryptionUserAssignedIdentity` | string |  |  | Optional. The ID of User Assigned Managed identity that will be used to access your customer-managed key stored in key vault. |
 | `encryptionUseSystemAssignedIdentity` | bool |  |  | Optional. Use System Assigned Managed identity that will be used to access your customer-managed key stored in key vault. |
 | `eventHubAuthorizationRuleId` | string |  |  | Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
