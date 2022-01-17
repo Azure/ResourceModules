@@ -13,10 +13,11 @@ This module deploys Synapse Workspaces Keys.
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `isActiveCMK` | bool |  |  | Used to activate the workspace after a customer managed key is provided. |
-| `keyVaultUrl` | string |  |  | The Key Vault Url of the workspace key. |
-| `name` | string |  |  | Encryption key name. |
-| `workspaceName` | string |  |  | Synapse workspace name. |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
+| `isActiveCMK` | bool |  |  | Required. Used to activate the workspace after a customer managed key is provided. |
+| `keyVaultUrl` | string |  |  | Required. The Key Vault Url of the workspace key. |
+| `name` | string |  |  | Required. Encryption key name. |
+| `workspaceName` | string |  |  | Required. Synapse workspace name. |
 
 ### Parameter Usage: `<ParameterPlaceholder>`
 

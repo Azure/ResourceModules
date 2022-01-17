@@ -1,14 +1,22 @@
-@description('Encryption key name.')
+@description('Required. Encryption key name.')
 param name string
 
-@description('Synapse workspace name.')
+@description('Required. Synapse workspace name.')
 param workspaceName string
 
-@description('Used to activate the workspace after a customer managed key is provided.')
+@description('Required. Used to activate the workspace after a customer managed key is provided.')
 param isActiveCMK bool
 
-@description('The Key Vault Url of the workspace key.')
+@description('Required. The Key Vault Url of the workspace key.')
 param keyVaultUrl string
+
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
+param cuaId string = ''
+
+module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
+  name: 'pid-${cuaId}'
+  params: {}
+}
 
 resource workspace 'Microsoft.Synapse/workspaces@2021-06-01' existing = {
   name: workspaceName
