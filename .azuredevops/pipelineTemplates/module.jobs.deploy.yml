@@ -180,8 +180,8 @@ jobs:
                 # Get additional Custom Parameter File Tokens from input
                 Write-Verbose 'OtherCustomParameterFileTokens: ${{ deploymentBlock.customParameterFileTokens }}' -Verbose
 
-                $OtherCustomParameterFileTokens = @()
-                # $OtherCustomParameterFileTokens2 = '${{  deploymentBlock.customParameterFileTokens }}' | ConvertFrom-Json
+                # $OtherCustomParameterFileTokens = @()
+                $OtherCustomParameterFileTokens = '${{  deploymentBlock.customParameterFileTokens }}' | ConvertFrom-Json
 
                 # Construct Token Function Input
                 $ConvertTokensInputs = @{
