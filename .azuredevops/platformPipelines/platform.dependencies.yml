@@ -58,7 +58,7 @@ stages:
               templateFilePath: $(templateFilePath)
               displayName: User Assigned Identity
               jobName: job_deploy_msi
-              customParameterFileTokens: [{"name":"value"}]
+              customParameterFileTokens: '[{"name":"value"}]'
       - job: job_set_msi_id
         displayName: Set msi principal ID output
         dependsOn:
