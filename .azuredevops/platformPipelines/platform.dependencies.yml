@@ -595,6 +595,8 @@ stages:
     variables:
       resourceType: 'Microsoft.Authorization/roleAssignments'
       templateFilePath: $(modulesPath)/$(resourceType)/.bicep/nested_rbac_sub.bicep
+      msiPrincipalId: $[ dependencies.deploy_msi.outputs['job_set_msi_id.print_msi_prinId.msiPrincipalId'] ]
+      # dependencies.STAGE.outputs['JOB.TASK.VARIABLE']
     jobs:
       - job: job_get_msi_id
         displayName: Get msi principal ID output
@@ -603,8 +605,8 @@ stages:
             name: $(poolName)
           ${{ if eq(variables['poolName'], '') }}:
             vmImage: $(vmImage)
-        variables:
-          msiPrincipalId: $[ stageDependencies.deploy_msi.job_set_msi_id.outputs['print_msi_prinId.msiPrincipalId'] ]
+        # variables:
+        #   msiPrincipalId: $[ stageDependencies.deploy_msi.job_set_msi_id.outputs['print_msi_prinId.msiPrincipalId'] ]
         steps:
           - task: PowerShell@2
             name: print_custom_token
@@ -650,7 +652,8 @@ stages:
               templateFilePath: $(templateFilePath)
               displayName: Default MSI Role Assignment
               # customParameterFileTokens: '$(msiPrincipalId)'
-              customParameterFileTokens: '[{"name":"msiPrincipalId","value":"msiPrincipalIdddd"}]'
+              # customParameterFileTokens: '[{\"name\":\"msiPrincipalId\",\"value\":\"msiPrincipalIdddd\"}]'
+              customParameterFileTokens: '[{\"name\":\"msiPrincipalId\",\"value\":\"msiPrincipalIdddd\"}]'
           # customParameterFileTokens: $[ dependencies.job_get_msi_id.outputs['print_custom_token.customParameterFileTokens'] ]
 
 
