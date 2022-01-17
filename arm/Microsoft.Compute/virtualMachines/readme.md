@@ -522,18 +522,19 @@ You can specify multiple user assigned identities to a resource by providing add
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
+| `name` | string | The name of the VM. |
+| `resourceGroupName` | string | The name of the resource group the VM was created in. |
+| `resourceId` | string | The resource ID of the VM. |
 | `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
-| `virtualMachineName` | string | The name of the VM. |
-| `virtualMachineResourceGroup` | string | The name of the Resource Group the VM was created in. |
-| `virtualMachineResourceId` | string | The Resource ID of the VM. |
 
 ## Template references
 
+- [Define resources with Bicep and ARM templates](https://docs.microsoft.com/en-us/azure/templates)
 - [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings)
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
 - [Networkinterfaces](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-03-01/networkInterfaces)
 - [Publicipaddresses](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-03-01/publicIPAddresses)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2021-04-01-preview/roleAssignments)
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)
 - [Vaults/Backupfabrics/Protectioncontainers/Protecteditems](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2021-06-01/vaults/backupFabrics/protectionContainers/protectedItems)
 - [Virtualmachines](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Compute/2021-07-01/virtualMachines)
 - [Virtualmachines/Extensions](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Compute/2021-07-01/virtualMachines/extensions)
