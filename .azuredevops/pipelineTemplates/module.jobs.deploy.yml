@@ -62,7 +62,6 @@ parameters:
   managementGroupId: '$(ARM_MGMTGROUP_ID)'
   parametersRepository: '$(Build.Repository.Name)'
   modulesRepository: '$(modulesRepository)'
-  customParameterFileTokens: ''
   # Azure PowerShell Version parameters
   azurePowerShellVersion: '$(azurePowerShellVersion)'
   preferredAzurePowerShellVersion: '$(preferredAzurePowerShellVersion)'
