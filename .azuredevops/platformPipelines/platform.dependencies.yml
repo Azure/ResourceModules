@@ -595,7 +595,8 @@ stages:
     variables:
       resourceType: 'Microsoft.Authorization/roleAssignments'
       templateFilePath: $(modulesPath)/$(resourceType)/.bicep/nested_rbac_sub.bicep
-      msiPrincipalId: $[ dependencies.deploy_msi.outputs['job_set_msi_id.print_msi_prinId.msiPrincipalId'] ]
+      # msiPrincipalId: $[ dependencies.deploy_msi.outputs['job_set_msi_id.print_msi_prinId.msiPrincipalId'] ]
+      msiPrincipalId: $[ stageDependencies.deploy_msi.job_set_msi_id.outputs['print_msi_prinId.msiPrincipalId'] ]
       # dependencies.STAGE.outputs['JOB.TASK.VARIABLE']
     jobs:
       - job: job_get_msi_id
