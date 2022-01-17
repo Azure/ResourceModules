@@ -645,12 +645,14 @@ stages:
                 Write-Output ('##vso[task.setvariable variable={0};isOutput=true]{1}' -f 'customParameterFileTokens', $customParameterFileTokens)
       - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
         parameters:
+          variables:
+            customParameterFileTokens: $[ dependencies.job_get_msi_id.outputs['print_custom_token.customParameterFileTokens'] ]
           deploymentBlocks:
             - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
               templateFilePath: $(templateFilePath)
               displayName: Default MSI Role Assignment
-              customParameterFileTokens: '$(msiPrincipalId)'
-              # customParameterFileTokens: '[{"name":"msiPrincipalId","value":"msiPrincipalIdddd"}]'
+              # customParameterFileTokens: '$(msiPrincipalId)'
+              customParameterFileTokens: '[{"name":"msiPrincipalId","value":"msiPrincipalIdddd"}]'
           # customParameterFileTokens: $[ dependencies.job_get_msi_id.outputs['print_custom_token.customParameterFileTokens'] ]
 
 
