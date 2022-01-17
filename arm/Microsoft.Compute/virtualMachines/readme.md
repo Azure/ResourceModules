@@ -7,7 +7,7 @@ This module deploys one Virtual Machine with one or multiple nics and optionally
 | Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2017-04-01 |
-| `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
+| `Microsoft.Authorization/roleAssignments` | 2021-04-01-preview |
 | `Microsoft.Compute/virtualMachines` | 2021-07-01 |
 | `Microsoft.Compute/virtualMachines/extensions` | 2021-07-01 |
 | `Microsoft.Insights/diagnosticSettings` | 2021-05-01-preview |
@@ -36,14 +36,15 @@ This module deploys one Virtual Machine with one or multiple nics and optionally
 | `customData` | string |  |  | Optional. Custom data associated to the VM, this value will be automatically converted into base64 to account for the expected VM format. |
 | `dataDisks` | array | `[]` |  | Optional. Specifies the data disks. |
 | `dedicatedHostId` | string |  |  | Optional. Specifies resource ID about the dedicated host that the virtual machine resides in. |
+| `diagnosticEventHubAuthorizationRuleId` | string |  |  | Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
+| `diagnosticEventHubName` | string |  |  | Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticStorageAccountId` | string |  |  | Optional. Resource ID of the diagnostic storage account. |
+| `diagnosticWorkspaceId` | string |  |  | Optional. Resource ID of the diagnostic log analytics workspace. |
 | `disablePasswordAuthentication` | bool |  |  | Optional. Specifies whether password authentication should be disabled. |
 | `enableAutomaticUpdates` | bool | `True` |  | Optional. Indicates whether Automatic Updates is enabled for the Windows virtual machine. Default value is true. For virtual machine scale sets, this property can be updated and updates will take effect on OS reprovisioning. |
 | `enableEvictionPolicy` | bool |  |  | Optional. Specifies the eviction policy for the low priority virtual machine. Will result in 'Deallocate' eviction policy. |
 | `enableServerSideEncryption` | bool |  |  | Optional. Specifies if Windows VM disks should be encrypted with Server-side encryption + Customer managed Key. |
-| `eventHubAuthorizationRuleId` | string |  |  | Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
-| `eventHubName` | string |  |  | Optional. Name of the event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
 | `extensionAntiMalwareConfig` | object | `{object}` |  | Optional. The configuration for the [Anti Malware] extension. Must at least contain the ["enabled": true] property to be executed |
 | `extensionCustomScriptConfig` | object | `{object}` |  | Optional. The configuration for the [Custom Script] extension. Must at least contain the ["enabled": true] property to be executed |
 | `extensionDependencyAgentConfig` | object | `{object}` |  | Optional. The configuration for the [Dependency Agent] extension. Must at least contain the ["enabled": true] property to be executed |
@@ -58,6 +59,7 @@ This module deploys one Virtual Machine with one or multiple nics and optionally
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
 | `maxPriceForLowPriorityVm` | string |  |  | Optional. Specifies the maximum price you are willing to pay for a low priority VM/VMSS. This price is in US Dollars. |
+| `monitoringWorkspaceId` | string |  |  | Optional. Resource ID of the monitoring log analytics workspace. Must be set when extensionMonitoringAgentConfig is set to true. |
 | `name` | string | `[take(toLower(uniqueString(resourceGroup().name)), 10)]` |  | Optional. The name of the virtual machine to be created. You should use a unique prefix to reduce name collisions in Active Directory. If no value is provided, a 10 character long unique string will be generated based on the Resource Group's name. |
 | `nicConfigurations` | array |  |  | Required. Configures NICs and PIPs. |
 | `nicMetricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | Optional. The name of metrics that will be streamed. |
@@ -81,7 +83,6 @@ This module deploys one Virtual Machine with one or multiple nics and optionally
 | `vmPriority` | string | `Regular` | `[Regular, Low, Spot]` | Optional. Specifies the priority for the virtual machine. |
 | `vmSize` | string | `Standard_D2s_v3` |  | Optional. Specifies the size for the VMs |
 | `winRM` | object | `{object}` |  | Optional. Specifies the Windows Remote Management listeners. This enables remote Windows PowerShell. - WinRMConfiguration object. |
-| `workspaceId` | string |  |  | Optional. Resource ID of log analytics. |
 
 ### Parameter Usage: `imageReference`
 
@@ -126,6 +127,7 @@ This module deploys one Virtual Machine with one or multiple nics and optionally
  "osDisk": {
     "value": {
         "createOption": "fromImage",
+        "deleteOption": "Delete", // Optional. Can be 'Delete' or 'Detach'
         "diskSizeGB": "128",
         "managedDisk": {
             "storageAccountType": "Premium_LRS"
@@ -141,6 +143,7 @@ This module deploys one Virtual Machine with one or multiple nics and optionally
     "value": [{
         "caching": "ReadOnly",
         "createOption": "Empty",
+        "deleteOption": "Delete", // Optional. Can be 'Delete' or 'Detach'
         "diskSizeGB": "256",
         "managedDisk": {
             "storageAccountType": "Premium_LRS"
@@ -231,6 +234,7 @@ The field `nicSuffix` and `subnetId` are mandatory. If `enablePublicIP` is set t
   "value": [
     {
       "nicSuffix": "-nic-01",
+      "deleteOption": "Delete", // Optional. Can be 'Delete' or 'Detach'
       "ipConfigurations": [
         {
           "name": "ipconfig1",
@@ -512,11 +516,11 @@ You can specify multiple user assigned identities to a resource by providing add
 
 ## Template references
 
-- [Locks ](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-04-01-preview/roleAssignments)
-- [Virtualmachines](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Compute/2021-07-01/virtualMachines)
-- [Virtualmachines/Extensions](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Compute/2021-07-01/virtualMachines/extensions)
 - [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings)
+- [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
 - [Networkinterfaces](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-03-01/networkInterfaces)
 - [Publicipaddresses](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-03-01/publicIPAddresses)
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2021-04-01-preview/roleAssignments)
 - [Vaults/Backupfabrics/Protectioncontainers/Protecteditems](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2021-06-01/vaults/backupFabrics/protectionContainers/protectedItems)
+- [Virtualmachines](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Compute/2021-07-01/virtualMachines)
+- [Virtualmachines/Extensions](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Compute/2021-07-01/virtualMachines/extensions)

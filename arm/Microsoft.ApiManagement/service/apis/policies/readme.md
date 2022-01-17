@@ -6,7 +6,7 @@ This module deploys API Management Service APIs policies.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.ApiManagement/service/apis/policies` | 2020-06-01-preview |
+| `Microsoft.ApiManagement/service/apis/policies` | 2021-08-01 |
 
 ## Parameters
 
@@ -29,4 +29,4 @@ This module deploys API Management Service APIs policies.
 
 ## Template references
 
-- [Service/Apis/Policies](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2020-06-01-preview/service/apis/policies)
+- [Service/Apis/Policies](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2021-08-01/service/apis/policies)

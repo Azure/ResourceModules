@@ -29,6 +29,8 @@ on:
       - '.github/workflows/ms.desktopvirtualization.hostpools.yml'
       - 'arm/Microsoft.DesktopVirtualization/hostpools/**'
       - '!*/**/readme.md'
+      - 'utilities/pipelines/**'
+      - '!utilities/pipelines/dependencies/**'
 
 env:
   modulePath: 'arm/Microsoft.DesktopVirtualization/hostpools'
@@ -141,4 +143,5 @@ jobs:
           templateSpecsDoPublish: '${{ env.templateSpecsDoPublish }}'
           bicepRegistryName: '${{ env.bicepRegistryName }}'
           bicepRegistryRGName: '${{ env.bicepRegistryRGName }}'
+          bicepRegistryRgLocation: '${{ env.bicepRegistryRgLocation }}'
           bicepRegistryDoPublish: '${{ env.bicepRegistryDoPublish }}'

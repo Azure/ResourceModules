@@ -29,6 +29,8 @@ on:
       - '.github/workflows/ms.authorization.roleassignments.yml'
       - 'arm/Microsoft.Authorization/roleAssignments/**'
       - '!*/**/readme.md'
+      - 'utilities/pipelines/**'
+      - '!utilities/pipelines/dependencies/**'
 
 env:
   modulePath: 'arm/Microsoft.Authorization/roleAssignments'
@@ -145,4 +147,5 @@ jobs:
           templateSpecsDoPublish: '${{ env.templateSpecsDoPublish }}'
           bicepRegistryName: '${{ env.bicepRegistryName }}'
           bicepRegistryRGName: '${{ env.bicepRegistryRGName }}'
+          bicepRegistryRgLocation: '${{ env.bicepRegistryRgLocation }}'
           bicepRegistryDoPublish: '${{ env.bicepRegistryDoPublish }}'

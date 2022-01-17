@@ -29,6 +29,8 @@ on:
       - '.github/workflows/ms.sql.managedinstances.yml'
       - 'arm/Microsoft.Sql/managedInstances/**'
       - '!*/**/readme.md'
+      - 'utilities/pipelines/**'
+      - '!utilities/pipelines/dependencies/**'
 
 env:
   modulePath: 'arm/Microsoft.Sql/managedInstances'
@@ -141,4 +143,5 @@ jobs:
           templateSpecsDoPublish: '${{ env.templateSpecsDoPublish }}'
           bicepRegistryName: '${{ env.bicepRegistryName }}'
           bicepRegistryRGName: '${{ env.bicepRegistryRGName }}'
+          bicepRegistryRgLocation: '${{ env.bicepRegistryRgLocation }}'
           bicepRegistryDoPublish: '${{ env.bicepRegistryDoPublish }}'

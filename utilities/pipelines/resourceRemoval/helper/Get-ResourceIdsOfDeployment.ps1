@@ -51,8 +51,9 @@ function Get-ResourceIdsOfDeploymentInner {
         'resourcegroup' {
             if (Get-AzResourceGroup -Name $resourceGroupName -ErrorAction 'SilentlyContinue') {
                 [array]$deploymentTargets = (Get-AzResourceGroupDeploymentOperation -DeploymentName $name -ResourceGroupName $resourceGroupName).TargetResource | Where-Object { $_ -ne $null }
-                foreach ($deployment in ($deploymentTargets | Where-Object { $_ -notmatch '/deployments/' } )) {
-                    [array]$resultSet += $deployment
+                foreach ($resourceId in ($deploymentTargets | Where-Object { $_ -notmatch '/deployments/' } )) {
+                    Write-Verbose ('Found resource [{0}]' -f $resourceId) -Verbose
+                    [array]$resultSet += $resourceId
                 }
                 foreach ($deployment in ($deploymentTargets | Where-Object { $_ -match '/deployments/' } )) {
                     $name = Split-Path $deployment -Leaf
@@ -68,6 +69,7 @@ function Get-ResourceIdsOfDeploymentInner {
         'subscription' {
             [array]$deploymentTargets = (Get-AzDeploymentOperation -DeploymentName $name).TargetResource | Where-Object { $_ -ne $null }
             foreach ($deployment in ($deploymentTargets | Where-Object { $_ -notmatch '/deployments/' } )) {
+                Write-Verbose ('Found deployment [{0}]' -f $deployment) -Verbose
                 [array]$resultSet += $deployment
             }
             foreach ($deployment in ($deploymentTargets | Where-Object { $_ -match '/deployments/' } )) {
@@ -86,6 +88,7 @@ function Get-ResourceIdsOfDeploymentInner {
         'managementgroup' {
             [array]$deploymentTargets = (Get-AzManagementGroupDeploymentOperation -DeploymentName $name).TargetResource | Where-Object { $_ -ne $null }
             foreach ($deployment in ($deploymentTargets | Where-Object { $_ -notmatch '/deployments/' } )) {
+                Write-Verbose ('Found deployment [{0}]' -f $deployment) -Verbose
                 [array]$resultSet += $deployment
             }
             foreach ($deployment in ($deploymentTargets | Where-Object { $_ -match '/deployments/' } )) {
@@ -102,6 +105,7 @@ function Get-ResourceIdsOfDeploymentInner {
         'tenant' {
             [array]$deploymentTargets = (Get-AzTenantDeploymentOperation -DeploymentName $name).TargetResource | Where-Object { $_ -ne $null }
             foreach ($deployment in ($deploymentTargets | Where-Object { $_ -notmatch '/deployments/' } )) {
+                Write-Verbose ('Found deployment [{0}]' -f $deployment) -Verbose
                 [array]$resultSet += $deployment
             }
             foreach ($deployment in ($deploymentTargets | Where-Object { $_ -match '/deployments/' } )) {

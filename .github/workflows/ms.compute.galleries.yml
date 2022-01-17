@@ -29,6 +29,8 @@ on:
       - '.github/workflows/ms.compute.galleries.yml'
       - 'arm/Microsoft.Compute/galleries/**'
       - '!*/**/readme.md'
+      - 'utilities/pipelines/**'
+      - '!utilities/pipelines/dependencies/**'
 
 env:
   modulePath: 'arm/Microsoft.Compute/galleries'
@@ -141,4 +143,5 @@ jobs:
           templateSpecsDoPublish: '${{ env.templateSpecsDoPublish }}'
           bicepRegistryName: '${{ env.bicepRegistryName }}'
           bicepRegistryRGName: '${{ env.bicepRegistryRGName }}'
+          bicepRegistryRgLocation: '${{ env.bicepRegistryRgLocation }}'
           bicepRegistryDoPublish: '${{ env.bicepRegistryDoPublish }}'

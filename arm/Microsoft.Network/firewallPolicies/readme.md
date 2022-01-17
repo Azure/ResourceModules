@@ -21,7 +21,7 @@ This module deploys Network Firewall Policies.
 | `defaultWorkspaceId` | string |  |  | Optional. Default Log Analytics Resource ID for Firewall Policy Insights. |
 | `enableProxy` | bool |  |  | Optional. Enable DNS Proxy on Firewalls attached to the Firewall Policy. |
 | `fqdns` | array | `[]` |  | Optional. List of FQDNs for the ThreatIntel Allowlist. |
-| `insightsIsEnabled ` | bool |  |  | Optional. A flag to indicate if the insights are enabled on the policy. |
+| `insightsIsEnabled` | bool |  |  | Optional. A flag to indicate if the insights are enabled on the policy. |
 | `ipAddresses` | array | `[]` |  | Optional. List of IP addresses for the ThreatIntel Allowlist. |
 | `keyVaultSecretId` | string |  |  | Optional. Secret Id of (base-64 encoded unencrypted pfx) Secret or Certificate object stored in KeyVault.	 |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
@@ -81,6 +81,6 @@ You can specify multiple user assigned identities to a resource by providing add
 
 ## Template references
 
+- ['firewallPolicies/ruleGroups' Parent Documentation](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/firewallPolicies)
 - [Firewallpolicies](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-03-01/firewallPolicies)
 - [Firewallpolicies/Rulecollectiongroups](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-03-01/firewallPolicies/ruleCollectionGroups)
-- [Firewallpolicies/Rulegroups](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-04-01/firewallPolicies/ruleGroups)

@@ -16,7 +16,7 @@ This module deploys a virtual machine scale set extension.
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution id (GUID). This GUID must be previously registered |
 | `enableAutomaticUpgrade` | bool |  |  | Required. Indicates whether the extension should be automatically upgraded by the platform if there is a newer version of the extension available |
 | `forceUpdateTag` | string |  |  | Optional. How the extension handler should be forced to update even if the extension configuration has not changed |
-| `name` | string |  |  | Required. The name of the virtual machine extension |
+| `name` | string |  |  | Required. The name of the virtual machine scale set extension |
 | `protectedSettings` | secureObject | `{object}` |  | Optional. Any object that contains the extension specific protected settings |
 | `publisher` | string |  |  | Required. The name of the extension handler publisher |
 | `settings` | object | `{object}` |  | Optional. Any object that contains the extension specific settings |
@@ -29,9 +29,9 @@ This module deploys a virtual machine scale set extension.
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `extensionId` | string | The ResourceId of the extension |
 | `extensionName` | string | The name of the extension |
 | `extensionResourceGroup` | string | The name of the Resource Group the extension was created in. |
+| `extensionResourceId` | string | The Resource ID of the extension |
 
 ## Template references
 

@@ -7,8 +7,8 @@ This module deploys an analysis service server.
 | Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.AnalysisServices/servers` | 2017-08-01 |
-| `Microsoft.Authorization/locks` | 2016-09-01 |
-| `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
+| `Microsoft.Authorization/locks` | 2017-04-01 |
+| `Microsoft.Authorization/roleAssignments` | 2021-04-01-preview |
 | `Microsoft.Insights/diagnosticSettings` | 2021-05-01-preview |
 
 ### Resource dependency
@@ -22,10 +22,11 @@ The following resources are required to be able to deploy this resource.
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
+| `diagnosticEventHubAuthorizationRuleId` | string |  |  | Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
+| `diagnosticEventHubName` | string |  |  | Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticStorageAccountId` | string |  |  | Optional. Resource ID of the diagnostic storage account. |
-| `eventHubAuthorizationRuleId` | string |  |  | Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
-| `eventHubName` | string |  |  | Optional. Name of the event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
+| `diagnosticWorkspaceId` | string |  |  | Optional. Resource ID of the diagnostic log analytics workspace. |
 | `firewallSettings` | object | `{object}` |  | Optional. The inbound firewall rules to define on the server. If not specified, firewall is disabled. |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all Resources. |
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
@@ -36,7 +37,6 @@ The following resources are required to be able to deploy this resource.
 | `skuCapacity` | int | `1` |  | Optional. The total number of query replica scale-out instances. |
 | `skuName` | string | `S0` |  | Optional. The sku name of the Azure Analysis Services server to create. |
 | `tags` | object | `{object}` |  | Optional. Tags of the resource. |
-| `workspaceId` | string |  |  | Optional. Resource ID of log analytics. |
 
 ### Parameter Usage: `tags`
 
@@ -87,7 +87,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 ## Template references
 
-- [Servers](https://docs.microsoft.com/en-us/azure/templates/Microsoft.AnalysisServices/2017-08-01/servers)
-- [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-04-01-preview/roleAssignments)
 - [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings)
+- [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2021-04-01-preview/roleAssignments)
+- [Servers](https://docs.microsoft.com/en-us/azure/templates/Microsoft.AnalysisServices/2017-08-01/servers)

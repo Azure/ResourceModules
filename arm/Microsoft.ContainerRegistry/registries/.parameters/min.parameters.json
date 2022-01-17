@@ -3,10 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "adpsxxazacrx001"
-        },
-        "acrAdminUserEnabled": {
-            "value": false
+            "value": "sxxazacrmin001"
         }
     }
 }

@@ -113,7 +113,8 @@ Since also dependency resources are in turn subject to dependencies with each ot
 
 **Second level resources**: This group of resources has a dependency only on the resource group which will host them. Resources in this group can be deployed in parallel.
 
-  1. User assigned identity: This resource is leveraged as a test identity by all resources supporting RBAC.
+  1. User assigned identity: This resource is leveraged by all dependency resources
+      > **Note**: The object ID of the [user assigned identity] must be set in several dependency parameter files. However, when you first run the pipeline, this object ID will be unknown. It is hence recommended to either manually create the MSI beforehand - or - run the pipeline without the ID once (which will cause the pipeline to fail during the ID's usage, but **after** the MSI was deployed), then update the value in the parameter files and finally re-run the pipeline.
   1. Policy assignment: This resource is leveraged by the [policy exemption] resource.
   1. Log analytics workspace: This resource is leveraged by all resources supporting diagnostic settings on LAW.
   1. Storage account: This resource is leveraged by all resources supporting diagnostic settings on a storage account.

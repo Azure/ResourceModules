@@ -115,8 +115,15 @@ jobs:
             # Load used functions
             . (Join-Path '$(moduleRepoRoot)' 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
 
+            # Define PS modules to install on the runner
+            $Modules = @(
+                # This is the latest tested Pester version. Uncomment the next line in case of a future breaking change in the default version installed on the runner.
+                # @{ Name = 'Pester'; Version = '5.3.1' }
+                @{ Name = 'Az.Resources' }
+            )
+
             # Set agent up
-            Set-EnvironmentOnAgent
+            Set-EnvironmentOnAgent -PSModules $Modules
 
       # [Module Pester Test] task(s)
       #-----------------------------
@@ -129,10 +136,19 @@ jobs:
           ScriptType: InlineScript
           pwsh: true
           inline: |
+            $moduleFolderPaths = @(Join-Path '$(moduleRepoRoot)' '${{ parameters.modulePath }}')
+            $moduleFolderPaths += (Get-ChildItem $moduleFolderPaths -Recurse -Directory -Force).FullName | Where-Object {
+              (Get-ChildItem $_ -File -Depth 0 -Include @('deploy.json', 'deploy.bicep') -Force).Count -gt 0
+            }
+            Write-Verbose "Execute tests in path(s):" -Verbose
+            foreach($moduleFolderPath in $moduleFolderPaths) {
+              Write-Verbose "- [($moduleFolderPath]" -Verbose
+            }
+
             Invoke-Pester -Configuration @{
               Run        = @{
                 Container = New-PesterContainer -Path (Join-Path '$(moduleRepoRoot)' 'arm' '.global' 'global.module.tests.ps1') -Data @{
-                  moduleFolderPaths = Join-Path '$(moduleRepoRoot)' '${{ parameters.modulePath }}'
+                  moduleFolderPaths = $moduleFolderPaths
                 }
               }
               Filter     = @{
@@ -225,10 +241,19 @@ jobs:
           ScriptType: InlineScript
           pwsh: true
           inline: |
+            $moduleFolderPaths = @(Join-Path '$(moduleRepoRoot)' '${{ parameters.modulePath }}')
+            $moduleFolderPaths += (Get-ChildItem $moduleFolderPaths -Recurse -Directory -Force).FullName | Where-Object {
+              (Get-ChildItem $_ -File -Depth 0 -Include @('deploy.json', 'deploy.bicep') -Force).Count -gt 0
+            }
+            Write-Verbose "Execute tests in path(s):" -Verbose
+            foreach($moduleFolderPath in $moduleFolderPaths) {
+              Write-Verbose "- [($moduleFolderPath]" -Verbose
+            }
+
             Invoke-Pester -Configuration @{
               Run        = @{
                 Container = New-PesterContainer -Path (Join-Path '$(moduleRepoRoot)' 'arm' '.global' 'global.module.tests.ps1') -Data @{
-                  moduleFolderPaths = Join-Path '$(moduleRepoRoot)' '${{ parameters.modulePath }}'
+                  moduleFolderPaths = $moduleFolderPaths
                 }
               }
               Filter     = @{

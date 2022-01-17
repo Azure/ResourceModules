@@ -6,7 +6,7 @@ This module deploys a scheduled query rule.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
+| `Microsoft.Authorization/roleAssignments` | 2021-04-01-preview |
 | `Microsoft.Insights/scheduledQueryRules` | 2021-02-01-preview |
 
 ## Parameters
@@ -82,5 +82,5 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 ## Template references
 
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-04-01-preview/roleAssignments)
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2021-04-01-preview/roleAssignments)
 - [Scheduledqueryrules](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-02-01-preview/scheduledQueryRules)

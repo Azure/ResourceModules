@@ -49,6 +49,8 @@ function Initialize-DeploymentRemoval {
             'Microsoft.Resources/resourceGroups',
             'Microsoft.Compute/virtualMachines'
         )
+        Write-Verbose ('Template file path: [{0}]' -f $templateFilePath) -Verbose
+        Write-Verbose ('Module name: [{0}]' -f $moduleName) -Verbose
 
         foreach ($deploymentName in $deploymentNames) {
             Write-Verbose ('Handling resource removal with deployment name [{0}]' -f $deploymentName) -Verbose
@@ -70,6 +72,14 @@ function Initialize-DeploymentRemoval {
                     )
                     break
                 }
+                'workspaces' {
+                    $removalSequence += @(
+                        'Microsoft.OperationsManagement/solutions',
+                        'Microsoft.OperationalInsights/workspaces/linkedServices'
+                    )
+                    break
+                }
+                ### CODE LOCATION: Add custom removal sequence here
             }
 
             # Invoke removal

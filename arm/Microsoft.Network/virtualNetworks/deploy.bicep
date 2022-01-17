@@ -28,14 +28,14 @@ param diagnosticLogsRetentionInDays int = 365
 @description('Optional. Resource ID of the diagnostic storage account.')
 param diagnosticStorageAccountId string = ''
 
-@description('Optional. Resource ID of log analytics.')
-param workspaceId string = ''
+@description('Optional. Resource ID of the diagnostic log analytics workspace.')
+param diagnosticWorkspaceId string = ''
 
-@description('Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.')
-param eventHubAuthorizationRuleId string = ''
+@description('Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.')
+param diagnosticEventHubAuthorizationRuleId string = ''
 
-@description('Optional. Name of the event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.')
-param eventHubName string = ''
+@description('Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.')
+param diagnosticEventHubName string = ''
 
 @allowed([
   'CanNotDelete'
@@ -116,6 +116,9 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2021-03-01' = {
       name: subnet.name
       properties: {
         addressPrefix: subnet.addressPrefix
+        delegations: contains(subnet, 'delegations') ? subnet.delegations : null
+        privateEndpointNetworkPolicies: contains(subnet, 'privateEndpointNetworkPolicies') ? subnet.privateEndpointNetworkPolicies : null
+        privateLinkServiceNetworkPolicies: contains(subnet, 'privateLinkServiceNetworkPolicies') ? subnet.privateLinkServiceNetworkPolicies : null
       }
     }]
   }
@@ -164,7 +167,7 @@ module virtualNetwork_peering_local 'virtualNetworkPeerings/deploy.bicep' = [for
 // Remote to local peering (reverse)
 module virtualNetwork_peering_remote 'virtualNetworkPeerings/deploy.bicep' = [for (peering, index) in virtualNetworkPeerings: if (contains(peering, 'remotePeeringEnabled') ? peering.remotePeeringEnabled == true : false) {
   name: '${uniqueString(deployment().name, location)}-virtualNetworkPeering-remote-${index}'
-  scope: resourceGroup(split(peering.remoteVirtualNetworkId, '/')[4])
+  scope: resourceGroup(split(peering.remoteVirtualNetworkId, '/')[2], split(peering.remoteVirtualNetworkId, '/')[4])
   params: {
     localVnetName: last(split(peering.remoteVirtualNetworkId, '/'))
     remoteVirtualNetworkId: virtualNetwork.id
@@ -180,7 +183,7 @@ module virtualNetwork_peering_remote 'virtualNetworkPeerings/deploy.bicep' = [fo
   ]
 }]
 
-resource virtualNetwork_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
+resource virtualNetwork_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
   name: '${virtualNetwork.name}-${lock}-lock'
   properties: {
     level: lock
@@ -189,13 +192,13 @@ resource virtualNetwork_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lo
   scope: virtualNetwork
 }
 
-resource appServiceEnvironment_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = if (!empty(diagnosticStorageAccountId) || !empty(workspaceId) || !empty(eventHubAuthorizationRuleId) || !empty(eventHubName)) {
+resource appServiceEnvironment_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = if (!empty(diagnosticStorageAccountId) || !empty(diagnosticWorkspaceId) || !empty(diagnosticEventHubAuthorizationRuleId) || !empty(diagnosticEventHubName)) {
   name: '${virtualNetwork.name}-diagnosticSettings'
   properties: {
     storageAccountId: !empty(diagnosticStorageAccountId) ? diagnosticStorageAccountId : null
-    workspaceId: !empty(workspaceId) ? workspaceId : null
-    eventHubAuthorizationRuleId: !empty(eventHubAuthorizationRuleId) ? eventHubAuthorizationRuleId : null
-    eventHubName: !empty(eventHubName) ? eventHubName : null
+    workspaceId: !empty(diagnosticWorkspaceId) ? diagnosticWorkspaceId : null
+    eventHubAuthorizationRuleId: !empty(diagnosticEventHubAuthorizationRuleId) ? diagnosticEventHubAuthorizationRuleId : null
+    eventHubName: !empty(diagnosticEventHubName) ? diagnosticEventHubName : null
     metrics: diagnosticsMetrics
     logs: diagnosticsLogs
   }

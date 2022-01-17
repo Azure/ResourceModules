@@ -16,8 +16,15 @@ runs:
         # Load used functions
         . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
 
+        # Define PS modules to install on the runner
+        $Modules = @(
+            # This is the latest tested Pester version. Uncomment the next line in case of a future breaking change in the default version installed on the runner.
+            # @{ Name = 'Pester'; Version = '5.3.1' }
+            @{ Name = 'Az.Resources' }
+        )
+
         # Set agent up
-        Set-EnvironmentOnAgent
+        Set-EnvironmentOnAgent -PSModules $Modules
 
     - name: Azure Login
       uses: Azure/login@v1
@@ -30,13 +37,22 @@ runs:
     - name: 'Run global tests via Pester'
       shell: pwsh
       run: |
+        $moduleFolderPaths = @(Join-Path $env:GITHUB_WORKSPACE "${{ inputs.modulePath }}")
+        $moduleFolderPaths += (Get-ChildItem $moduleFolderPaths -Recurse -Directory -Force).FullName | Where-Object {
+          (Get-ChildItem $_ -File -Depth 0 -Include @('deploy.json', 'deploy.bicep') -Force).Count -gt 0
+        }
+        Write-Verbose "Execute tests in path(s):" -Verbose
+        foreach($moduleFolderPath in $moduleFolderPaths) {
+          Write-Verbose "- [($moduleFolderPath]" -Verbose
+        }
+
         # --------------------- #
-        # INVOKE PESTER TEST(S) #
+        # Invoke Pester test(s) #
         # --------------------- #
         Invoke-Pester -Configuration @{
           Run        = @{
             Container = New-PesterContainer -Path 'arm/.global/global.module.tests.ps1' -Data @{
-              moduleFolderPaths = Join-Path $env:GITHUB_WORKSPACE "${{ inputs.modulePath }}"
+              moduleFolderPaths = $moduleFolderPaths
             }
           }
           Filter     = @{
@@ -64,13 +80,22 @@ runs:
     - name: 'Run API tests via Pester'
       shell: pwsh
       run: |
+        $moduleFolderPaths = @(Join-Path $env:GITHUB_WORKSPACE "${{ inputs.modulePath }}")
+        $moduleFolderPaths += (Get-ChildItem $moduleFolderPaths -Recurse -Directory -Force).FullName | Where-Object {
+          (Get-ChildItem $_ -File -Depth 0 -Include @('deploy.json', 'deploy.bicep') -Force).Count -gt 0
+        }
+        Write-Verbose "Execute tests in path(s):" -Verbose
+        foreach($moduleFolderPath in $moduleFolderPaths) {
+          Write-Verbose "- [($moduleFolderPath]" -Verbose
+        }
+
         # --------------------- #
         # Invoke Pester test(s) #
         # --------------------- #
         Invoke-Pester -Configuration @{
           Run        = @{
             Container = New-PesterContainer -Path 'arm/.global/global.module.tests.ps1' -Data @{
-              moduleFolderPaths = Join-Path $env:GITHUB_WORKSPACE "${{ inputs.modulePath }}"
+              moduleFolderPaths = $moduleFolderPaths
             }
           }
           Filter     = @{

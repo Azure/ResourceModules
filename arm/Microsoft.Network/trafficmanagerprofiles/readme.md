@@ -6,8 +6,8 @@ This module deploys a traffic manager profile.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/locks` | 2016-09-01 |
-| `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
+| `Microsoft.Authorization/locks` | 2017-04-01 |
+| `Microsoft.Authorization/roleAssignments` | 2021-04-01-preview |
 | `Microsoft.Insights/diagnosticSettings` | 2021-05-01-preview |
 | `Microsoft.Network/trafficmanagerprofiles` | 2018-08-01 |
 
@@ -16,11 +16,12 @@ This module deploys a traffic manager profile.
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
+| `diagnosticEventHubAuthorizationRuleId` | string |  |  | Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
+| `diagnosticEventHubName` | string |  |  | Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticStorageAccountId` | string |  |  | Optional. Resource ID of the diagnostic storage account. |
+| `diagnosticWorkspaceId` | string |  |  | Optional. Resource ID of the diagnostic log analytics workspace. |
 | `endpoints` | array | `[]` |  | Optional. The list of endpoints in the Traffic Manager profile. |
-| `eventHubAuthorizationRuleId` | string |  |  | Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
-| `eventHubName` | string |  |  | Optional. Name of the event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
 | `logsToEnable` | array | `[ProbeHealthStatusEvents]` | `[ProbeHealthStatusEvents]` | Optional. The name of logs that will be streamed. |
 | `maxReturn` | int | `1` |  | Optional. Maximum number of endpoints to be returned for MultiValue routing type. |
@@ -34,7 +35,6 @@ This module deploys a traffic manager profile.
 | `trafficRoutingMethod` | string | `Performance` | `[Performance, Priority, Weighted, Geographic, MultiValue, Subnet]` | Optional. The traffic routing method of the Traffic Manager profile. |
 | `trafficViewEnrollmentStatus` | string | `Disabled` | `[Disabled, Enabled]` | Optional. Indicates whether Traffic View is 'Enabled' or 'Disabled' for the Traffic Manager profile. Null, indicates 'Disabled'. Enabling this feature will increase the cost of the Traffic Manage profile. |
 | `ttl` | int | `60` |  | Optional. The DNS Time-To-Live (TTL), in seconds. This informs the local DNS resolvers and DNS clients how long to cache DNS responses provided by this Traffic Manager profile. |
-| `workspaceId` | string |  |  | Optional. Resource ID of log analytics. |
 
 ### Parameter Usage: `monitorConfig`
 
@@ -123,7 +123,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 ## Template references
 
-- [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-04-01-preview/roleAssignments)
 - [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings)
+- [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2021-04-01-preview/roleAssignments)
 - [Trafficmanagerprofiles](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2018-08-01/trafficmanagerprofiles)
