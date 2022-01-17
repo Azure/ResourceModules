@@ -27,10 +27,10 @@ param defaultDataLakeStorageCreateManagedPrivateEndpoint bool = false
 @description('Optional. Double encryption using a customer-managed key.')
 param encryption bool = false
 
-@description('Optional. Key identifier should be in the format of: https://{keyvaultname}.vault.azure.net/keys/{keyname}.')
-param encryptionKeyIdentifier string = ''
+@description('Optional. Keyvault where the encryption key is stored.')
+param encryptionKeyVaultName string = ''
 
-@description('Optional. The workspace encryption key name.')
+@description('Optional. The encryption key name in KeyVault.')
 param encryptionKeyName string = ''
 
 @description('Optional. Use System Assigned Managed identity that will be used to access your customer-managed key stored in key vault.')
@@ -38,6 +38,9 @@ param encryptionUseSystemAssignedIdentity bool = false
 
 @description('Optional. The ID of User Assigned Managed identity that will be used to access your customer-managed key stored in key vault.')
 param encryptionUserAssignedIdentity string = ''
+
+@description('Optional. Activate workspace by adding the system managed identity in the KeyVault containing the customer managed key and activating the workspace.')
+param encryptionActivateWorkspace bool = false
 
 @maxLength(90)
 @description('Optional. Workspace managed resource group. The resource group name uniquely identifies the resource group within the user subscriptionId. The resource group name must be no longer than 90 characters long, and must be alphanumeric characters (Char.IsLetterOrDigit()) and \'-\', \'_\', \'(\', \')\' and\'.\'. Note that the name cannot end with \'.\'')
@@ -117,12 +120,18 @@ param eventHubName string = ''
 param logsToEnable array = []
 
 // Variables
-var identityType = (!empty(userAssignedIdentities) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned')
+var userAssignedIdentitiesUnion = union(userAssignedIdentities, {
+  '${encryptionUserAssignedIdentity}': {}
+})
+
+var identityType = (!empty(userAssignedIdentitiesUnion) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned')
 
 var identity = {
   type: identityType
-  userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
+  userAssignedIdentities: !empty(userAssignedIdentitiesUnion) ? userAssignedIdentitiesUnion : null
 }
+
+var keyVaultUrl = 'https://${encryptionKeyVaultName}.vault.azure.net/keys/${encryptionKeyName}'
 
 var diagnosticsLogs = [for log in logsToEnable: {
   category: log
@@ -155,7 +164,7 @@ resource workspace 'Microsoft.Synapse/workspaces@2021-06-01' = {
           useSystemAssignedIdentity: (encryptionUseSystemAssignedIdentity) ? true : false
         }
         key: {
-          keyVaultUrl: encryptionKeyIdentifier
+          keyVaultUrl: keyVaultUrl
           name: encryptionKeyName
         }
       }
@@ -173,6 +182,31 @@ resource workspace 'Microsoft.Synapse/workspaces@2021-06-01' = {
     } : null
     sqlAdministratorLogin: sqlAdministratorLogin
     sqlAdministratorLoginPassword: (!empty(sqlAdministratorLoginPassword)) ? sqlAdministratorLoginPassword : null
+  }
+}
+
+// [Workspace encryption] - Assign Workspace System Identity Keyvault Crypto Reader at Encryption Keyvault
+resource keyVault 'Microsoft.KeyVault/vaults@2019-09-01' existing = if (encryptionActivateWorkspace) {
+  name: encryptionKeyVaultName
+}
+
+resource roleAssignment 'Microsoft.Authorization/roleAssignments@2021-04-01-preview' = if (encryptionActivateWorkspace) {
+  name: guid(keyVault.name, workspace.name, 'Key Vault Crypto User')
+  properties: {
+    roleDefinitionId: 'Key Vault Crypto User'
+    principalId: workspace.identity.principalId
+  }
+  scope: keyVault
+}
+
+// [Workspace encryption] - Activate Workspace
+module workspace_key 'keys/deploy.bicep' = if (encryptionActivateWorkspace) {
+  name: '${workspace.name}-${encryptionKeyName}-key'
+  params: {
+    isActiveCMK: true
+    keyVaultUrl: keyVaultUrl
+    name: encryptionKeyName
+    workspaceName: workspace.name
   }
 }
 

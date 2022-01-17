@@ -17,13 +17,16 @@
     "encryption": {
       "value": true
     },
-    "encryptionKeyIdentifier": {
-      "value": "https://carml-keyvault.vault.azure.net/keys/synapseEncryptionKey"
+    "encryptionKeyVaultName": {
+      "value": "carml-keyvault"
     },
     "encryptionKeyName": {
       "value": "synapseEncryptionKey"
     },
     "encryptionUseSystemAssignedIdentity": {
+      "value": true
+    },
+    "encryptionActivateWorkspace": {
       "value": true
     }
   }

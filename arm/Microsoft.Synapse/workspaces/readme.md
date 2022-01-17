@@ -7,11 +7,13 @@ This module deploys Synapse PrivateLinkHubs.
 | Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2016-09-01 |
+| `Microsoft.Authorization/roleAssignments` | 2021-04-01-preview |
 | `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
 | `Microsoft.Insights/diagnosticSettings` | 2021-05-01-preview |
 | `Microsoft.Network/privateEndpoints` | 2021-03-01 |
 | `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | 2021-03-01 |
 | `Microsoft.Synapse/workspaces` | 2021-06-01 |
+| `Microsoft.Synapse/workspaces/keys` | 2021-06-01 |
 
 ## Parameters
 
@@ -25,13 +27,14 @@ This module deploys Synapse PrivateLinkHubs.
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticStorageAccountId` | string |  |  | Optional. Resource ID of the diagnostic storage account. |
 | `encryption` | bool |  |  | Optional. Double encryption using a customer-managed key. |
-| `encryptionKeyIdentifier` | string |  |  | Optional. Key identifier should be in the format of: https://{keyvaultname}.vault.azure.net/keys/{keyname}. |
-| `encryptionKeyName` | string |  |  | Optional. The workspace encryption key name. |
+| `encryptionActivateWorkspace` | bool |  |  | Optional. Activate workspace by adding the system managed identity in the KeyVault containing the customer managed key and activating the workspace. |
+| `encryptionKeyName` | string |  |  | Optional. The encryption key name in KeyVault. |
+| `encryptionKeyVaultName` | string |  |  | Optional. Keyvault where the encryption key is stored. |
 | `encryptionUserAssignedIdentity` | string |  |  | Optional. The ID of User Assigned Managed identity that will be used to access your customer-managed key stored in key vault. |
 | `encryptionUseSystemAssignedIdentity` | bool |  |  | Optional. Use System Assigned Managed identity that will be used to access your customer-managed key stored in key vault. |
 | `eventHubAuthorizationRuleId` | string |  |  | Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `eventHubName` | string |  |  | Optional. Name of the event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
-| `initialWorkspaceAdminObjectId` | string |  |  | Optional. AAD object ID of initial workspace admin. |
+| `initialWorkspaceAdminObjectId` | string |  |  | Optional. AAD object Id of initial workspace admin. |
 | `linkedAccessCheckOnTargetResource` | bool |  |  | Optional. Linked Access Check On Target Resource. |
 | `location` | string | `[resourceGroup().location]` |  | Optional. The geo-location where the resource lives. |
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
@@ -154,4 +157,6 @@ You can specify multiple user assigned identities to a resource by providing add
 - [Privateendpoints](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-03-01/privateEndpoints)
 - [Privateendpoints/Privatednszonegroups](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-03-01/privateEndpoints/privateDnsZoneGroups)
 - [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-04-01-preview/roleAssignments)
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)
 - [Workspaces](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Synapse/2021-06-01/workspaces)
+- [Workspaces/Keys](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Synapse/2021-06-01/workspaces/keys)

@@ -17,19 +17,14 @@
     "encryption": {
       "value": true
     },
-    "encryptionKeyIdentifier": {
-      "value": "https://carml-keyvault.vault.azure.net/keys/synapseEncryptionKey"
+    "encryptionKeyVaultName": {
+      "value": "carml-keyvault"
     },
     "encryptionKeyName": {
       "value": "synapseEncryptionKey"
     },
     "encryptionUserAssignedIdentity": {
       "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001"
-    },
-    "userAssignedIdentities": {
-      "value": {
-        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001": {}
-      }
     }
   }
 }
