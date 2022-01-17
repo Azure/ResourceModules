@@ -39,7 +39,7 @@ resource ipGroup 'Microsoft.Network/ipGroups@2021-02-01' = {
   }
 }
 
-resource ipGroup_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
+resource ipGroup_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
   name: '${ipGroup.name}-${lock}-lock'
   properties: {
     level: lock

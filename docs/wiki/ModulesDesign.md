@@ -76,7 +76,7 @@ Microsoft.Sql
   └─ databases [child-module/resource]
 ```
 
-In this folder we recommend to place the child-resource-template alongside a ReadMe (that can be generated via the `.github\workflows\scripts\Set-ModuleReadMe.ps1` script) and optionally further nest additional folders for it's child-resources.
+In this folder we recommend to place the child-resource-template alongside a ReadMe (that can be generated via the [Set-ModuleReadMe](./UtilitiesSetModuleReadMe) script) and optionally further nest additional folders for it's child-resources.
 
 The parent template should reference all it's direct child-templates to allow for an end-to-end deployment experience while allowing any user to also reference 'just' the child-resource itself. In the case of the SQL-server example the server template would reference the database module and encapsulate it it in a loop to allow for the deployment of n-amount of databases. For example
 
@@ -146,7 +146,7 @@ The locks extension can be added as a `resource` to the resource template direct
 @description('Optional. Specify the type of lock.')
 param lock string = 'NotSpecified'
 
-resource <mainResource>_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
+resource <mainResource>_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
   name: '${<mainResource>.name}-${lock}-lock'
   properties: {
     level: lock
@@ -180,7 +180,7 @@ module <mainResource>_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, in
 Here you specify the platform roles available for the main resource.
 
 The `builtInRoleNames` variable contains the list of applicable roles for the specific resource to which the nested_rbac.bicep module applies.
->**Note**: You can find a helper script `Get-FormattedRBACRoles.ps1` in the `utilities\tools` folder of the repository. You can use this script to extract a formatted list of RBAC roles used in the CARML modules based on the RBAC lists in Azure.
+>**Note**: You use the helper script [Get-FormattedRBACRoles.ps1](./UtilitiesGetFormattedRBACRoleList) to extract a formatted list of RBAC roles used in the CARML modules based on the RBAC lists in Azure.
 
 The element requires you to provide both the `principalIds` & `roleDefinitionOrIdName` to assign to the principal IDs. Also, the `resourceId` is target resource's resource ID that allows us to reference it as an `existing` resource. Note, the implementation of the `split` in the resource reference becomes longer the deeper you go in the child-resource hierarchy.
 
@@ -194,7 +194,6 @@ var builtInRoleNames = {
   'Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b24988ac-6180-42a0-ab88-20f7382dd24c')
   'Reader': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'acdd72a7-3385-48ef-bd42-f606fba81ae7')
   // <optionalAdditionalRoles>
-  // You can find a helper script `Get-FormattedRBACRoles.ps1` in the `tools` folder of the repository to fetch the roles.
 
 }
 
@@ -207,7 +206,7 @@ resource <mainResource> '<mainResourceProviderNamespace>/<resourceType>@<resourc
   // name: '${split(resourceId,'/')[8]}/${split(resourceId,'/')[10]}/${split(resourceId,'/')[12]'
 }
 
-resource roleAssignment 'Microsoft.Authorization/roleAssignments@2020-04-01-preview' = [for principalId in principalIds: {
+resource roleAssignment 'Microsoft.Authorization/roleAssignments@2021-04-01-preview' = [for principalId in principalIds: {
   name: guid(<mainResource>.name, principalId, roleDefinitionIdOrName)
   properties: {
     roleDefinitionId: contains(builtInRoleNames, roleDefinitionIdOrName) ? builtInRoleNames[roleDefinitionIdOrName] : roleDefinitionIdOrName
@@ -230,14 +229,14 @@ param diagnosticLogsRetentionInDays int = 365
 @description('Optional. Resource ID of the diagnostic storage account.')
 param diagnosticStorageAccountId string = ''
 
-@description('Optional. Resource ID of log analytics.')
-param workspaceId string = ''
+@description('Optional. Resource ID of the diagnostic log analytics workspace.')
+param diagnosticWorkspaceId string = ''
 
-@description('Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.')
-param eventHubAuthorizationRuleId string = ''
+@description('Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.')
+param diagnosticEventHubAuthorizationRuleId string = ''
 
-@description('Optional. Name of the event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.')
-param eventHubName string = ''
+@description('Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.')
+param diagnosticEventHubName string = ''
 
 @description('Optional. The name of logs that will be streamed.')
 @allowed([
@@ -274,13 +273,13 @@ var diagnosticsMetrics = [for metric in metricsToEnable: {
   }
 }]
 
-resource <mainResource>_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2021-05-01-preview' = if (!empty(diagnosticStorageAccountId) || !empty(workspaceId) || !empty(eventHubAuthorizationRuleId) || !empty(eventHubName)) {
+resource <mainResource>_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2021-05-01-preview' = if (!empty(diagnosticStorageAccountId) || !empty(diagnosticWorkspaceId) || !empty(diagnosticEventHubAuthorizationRuleId) || !empty(diagnosticEventHubName)) {
   name: '${<mainResource>.name}-diagnosticSettings'
   properties: {
     storageAccountId: !empty(diagnosticStorageAccountId) ? diagnosticStorageAccountId : null
-    workspaceId: !empty(workspaceId) ? workspaceId : null
-    eventHubAuthorizationRuleId: !empty(eventHubAuthorizationRuleId) ? eventHubAuthorizationRuleId : null
-    eventHubName: !empty(eventHubName) ? eventHubName : null
+    workspaceId: !empty(diagnosticWorkspaceId) ? diagnosticWorkspaceId : null
+    eventHubAuthorizationRuleId: !empty(diagnosticEventHubAuthorizationRuleId) ? diagnosticEventHubAuthorizationRuleId : null
+    eventHubName: !empty(diagnosticEventHubName) ? diagnosticEventHubName : null
     metrics: diagnosticsMetrics
     logs: diagnosticsLogs
   }
@@ -499,17 +498,14 @@ While exceptions might be needed, the following guidance should be followed as m
   > name: '${deployment().name}-Table-${index}'
   > ```
 
-
-
-
 ## Outputs
 
-- Output names are in camelCase, i.e `storageAccountResourceId`
+- Output names are in camelCase, i.e `resourceId`
 - At a minimum, reference the following:
-  - `<resourceReference>Name`, e.g. `storageAccountName`.
-  - `<resourceReference>ResourceId`, e.g. `storageAccountResourceId`.
-  - `<resourceReference>ResourceGroup` for resources deployed at resource group scope, e.g. `storageAccountResourceGroup`.
-  - `systemAssignedPrincipalId` for all resources supporting a managed identity.
+  - `name`
+  - `resourceId`
+  - `resourceGroupName` for resources deployed at resource group scope
+  - `systemAssignedPrincipalId` for all resources supporting a managed identity
 - Add a `@description('...')` annotation with meaningful description to each output.
 
 ---
@@ -527,7 +523,7 @@ Its primary components are in order:
 - A **Template references** section listing relevant resources [ARM template reference](https://docs.microsoft.com/en-us/azure/templates).
 
 Note the following recommendations
-- Use our module generation script `Set-ModuleReadMe` that will do most of the work for you. Currently you can find it at 'utilities\tools\Set-ModuleReadMe.ps1'. Just load the file and invoke the function like this `Set-ModuleReadMe -TemplateFilePath '<pathToModule>/deploy.bicep'`
+- Use our module ReadMe generation script [Set-ModuleReadMe](./UtilitiesSetModuleReadMe) that will do most of the work for you.
 - It is not recommended to describe how to use child resources in the parent readme file (for example 'How to define a [container] entry for the [storage account]'). Instead it is recommended to reference the child resource's ReadMe instead (for example 'container/readme.md').
 
 # Parameter files

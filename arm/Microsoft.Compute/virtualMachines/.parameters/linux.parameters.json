@@ -27,6 +27,7 @@
         "osDisk": {
             "value": {
                 "createOption": "fromImage",
+                "deleteOption": "Delete",
                 "diskSizeGB": "128",
                 "managedDisk": {
                     "storageAccountType": "Premium_LRS"
@@ -51,6 +52,7 @@
             "value": [
                 {
                     "nicSuffix": "-nic-01",
+                    "deleteOption": "Delete",
                     "ipConfigurations": [
                         {
                             "name": "ipconfig01",
@@ -79,89 +81,73 @@
                 }
             ]
         },
-        // "backupVaultName": {
-        //     "value": "adp-sxx-az-rsv-x-001"
-        // },
-        // "backupVaultResourceGroup": {
-        //     "value": "validation-rg"
-        // },
-        // "backupPolicyName": {
-        //     "value": "VMpolicy"
-        // },
-        // "roleAssignments": {
-        //     "value": [
-        //         {
-        //             "roleDefinitionIdOrName": "Reader",
-        //             "principalIds": [
-        //                 "<<deploymentSpId>>"
-        //             ]
-        //         }
-        //     ]
-        // },
-        // "diagnosticLogsRetentionInDays": {
-        //     "value": 7
-        // },
-        // "diagnosticStorageAccountId": {
-        //     "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adpsxxazsaweux001"
-        // },
-        // "workspaceId": {
-        //     "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-sxx-az-law-x-001"
-        // },
-        // "eventHubAuthorizationRuleId": {
-        //     "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-sxx-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
-        // },
-        // "eventHubName": {
-        //     "value": "adp-sxx-az-evh-x-001"
-        // },
-        // "extensionMonitoringAgentConfig": {
-        //     "value": {
-        //         "enabled": true
-        //     }
-        // },
-        // "extensionDependencyAgentConfig": {
-        //     "value": {
-        //         "enabled": true
-        //     }
-        // },
-        // "extensionNetworkWatcherAgentConfig": {
-        //     "value": {
-        //         "enabled": true
-        //     }
-        // },
-        // "extensionDiskEncryptionConfig": {
-        //     "value": {
-        //         "enabled": true,
-        //         "settings": {
-        //             "EncryptionOperation": "EnableEncryption",
-        //             "KeyVaultURL": "https://adp-sxx-az-kv-x-001.vault.azure.net/",
-        //             "KeyVaultResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-sxx-az-kv-x-001",
-        //             "KeyEncryptionKeyURL": "https://adp-sxx-az-kv-x-001.vault.azure.net/keys/keyEncryptionKey/1dcaf3e93b44433bba0232e9eec54cc7",
-        //             "KekVaultResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-sxx-az-kv-x-001",
-        //             "KeyEncryptionAlgorithm": "RSA-OAEP",
-        //             "VolumeType": "All",
-        //             "ResizeOSDisk": "false"
-        //         }
-        //     }
-        // },
-        // "extensionDSCConfig": {
-        //     "value": {
-        //         "enabled": false
-        //     }
-        // },
-        // "extensionCustomScriptConfig": {
-        //     "value": {
-        //         "enabled": true,
-        //         "fileData": [
-        //             {
-        //                 "uri": "https://adpsxxazsaweux001.blob.core.windows.net/scripts/scriptExtensionMasterInstaller.ps1",
-        //                 "storageAccountId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adpsxxazsaweux001"
-        //             }
-        //         ],
-        //         "protectedSettings": {
-        //             "commandToExecute": "sudo apt-get update"
-        //         }
-        //     }
-        // }
+        "diagnosticLogsRetentionInDays": {
+            "value": 7
+        },
+        "diagnosticStorageAccountId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adpsxxazsax001"
+        },
+        "diagnosticWorkspaceId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-sxx-az-law-x-001"
+        },
+        "diagnosticEventHubAuthorizationRuleId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-sxx-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
+        },
+        "diagnosticEventHubName": {
+            "value": "adp-sxx-az-evh-x-001"
+        },
+        "extensionMonitoringAgentConfig": {
+            "value": {
+                "enabled": true
+            }
+        },
+        "monitoringWorkspaceId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-sxx-az-law-x-001"
+        },
+        "extensionDependencyAgentConfig": {
+            "value": {
+                "enabled": true
+            }
+        },
+        "extensionNetworkWatcherAgentConfig": {
+            "value": {
+                "enabled": true
+            }
+        },
+        "extensionDiskEncryptionConfig": {
+            "value": {
+                "enabled": true,
+                "settings": {
+                    "EncryptionOperation": "EnableEncryption",
+                    "KeyVaultURL": "https://adp-sxx-az-kv-x-001.vault.azure.net/",
+                    "KeyVaultResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-sxx-az-kv-x-001",
+                    "KeyEncryptionKeyURL": "https://adp-sxx-az-kv-x-001.vault.azure.net/keys/keyEncryptionKey/1dcaf3e93b44433bba0232e9eec54cc7", // ID must be updated for new keys
+                    "KekVaultResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-sxx-az-kv-x-001",
+                    "KeyEncryptionAlgorithm": "RSA-OAEP",
+                    "VolumeType": "All",
+                    "ResizeOSDisk": "false"
+                }
+            }
+        },
+        "extensionDSCConfig": {
+            "value": {
+                "enabled": false
+            }
+        },
+        "extensionCustomScriptConfig": {
+            "value": {
+                "enabled": true,
+                "fileData": [
+                    {
+                        "uri": "https://adpsxxazsax001.blob.core.windows.net/scripts/scriptExtensionMasterInstaller.ps1",
+                        "storageAccountId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adpsxxazsax001"
+                    }
+                ],
+                "protectedSettings": {
+                    "commandToExecute": "sudo apt-get update"
+                }
+            }
+        },
         "configurationProfileAssignments": {
             "value": [
                 "/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction"

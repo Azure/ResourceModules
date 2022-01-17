@@ -162,6 +162,9 @@ param extensionMonitoringAgentConfig object = {
   enabled: false
 }
 
+@description('Optional. Resource ID of the monitoring log analytics workspace. Must be set when extensionMonitoringAgentConfig is set to true.')
+param monitoringWorkspaceId string = ''
+
 @description('Optional. The configuration for the [Dependency Agent] extension. Must at least contain the ["enabled": true] property to be executed')
 param extensionDependencyAgentConfig object = {
   enabled: false
@@ -200,14 +203,14 @@ param diagnosticLogsRetentionInDays int = 365
 @description('Optional. Resource ID of the diagnostic storage account.')
 param diagnosticStorageAccountId string = ''
 
-@description('Optional. Resource ID of log analytics.')
-param workspaceId string = ''
+@description('Optional. Resource ID of the diagnostic log analytics workspace.')
+param diagnosticWorkspaceId string = ''
 
-@description('Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.')
-param eventHubAuthorizationRuleId string = ''
+@description('Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.')
+param diagnosticEventHubAuthorizationRuleId string = ''
 
-@description('Optional. Name of the event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.')
-param eventHubName string = ''
+@description('Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.')
+param diagnosticEventHubName string = ''
 
 @allowed([
   'CanNotDelete'
@@ -320,9 +323,9 @@ module virtualMachine_nic '.bicep/nested_networkInterface.bicep' = [for (nicConf
     lock: lock
     diagnosticStorageAccountId: diagnosticStorageAccountId
     diagnosticLogsRetentionInDays: diagnosticLogsRetentionInDays
-    workspaceId: workspaceId
-    eventHubAuthorizationRuleId: eventHubAuthorizationRuleId
-    eventHubName: eventHubName
+    diagnosticWorkspaceId: diagnosticWorkspaceId
+    diagnosticEventHubAuthorizationRuleId: diagnosticEventHubAuthorizationRuleId
+    diagnosticEventHubName: diagnosticEventHubName
     metricsToEnable: nicMetricsToEnable
     pipMetricsToEnable: pipMetricsToEnable
     pipLogsToEnable: pipLogsToEnable
@@ -346,6 +349,7 @@ resource virtualMachine 'Microsoft.Compute/virtualMachines@2021-07-01' = {
       osDisk: {
         name: '${name}-disk-os-01'
         createOption: osDisk.createOption
+        deleteOption: contains(osDisk, 'deleteOption') ? osDisk.deleteOption : 'Delete'
         diskSizeGB: osDisk.diskSizeGB
         managedDisk: {
           storageAccountType: osDisk.managedDisk.storageAccountType
@@ -356,6 +360,7 @@ resource virtualMachine 'Microsoft.Compute/virtualMachines@2021-07-01' = {
         name: '${name}-disk-data-${padLeft((index + 1), 2, '0')}'
         diskSizeGB: dataDisk.diskSizeGB
         createOption: dataDisk.createOption
+        deleteOption: contains(dataDisk, 'deleteOption') ? dataDisk.deleteOption : 'Delete'
         caching: dataDisk.caching
         managedDisk: {
           storageAccountType: dataDisk.managedDisk.storageAccountType
@@ -381,6 +386,7 @@ resource virtualMachine 'Microsoft.Compute/virtualMachines@2021-07-01' = {
     networkProfile: {
       networkInterfaces: [for (nicConfiguration, index) in nicConfigurations: {
         properties: {
+          deleteOption: contains(nicConfiguration, 'deleteOption') ? nicConfiguration.deleteOption : 'Delete'
           primary: index == 0 ? true : false
         }
         id: resourceId('Microsoft.Network/networkInterfaces', '${name}${nicConfiguration.nicSuffix}')
@@ -444,9 +450,9 @@ module vm_microsoftAntiMalwareExtension 'extensions/deploy.bicep' = if (extensio
   }
 }
 
-resource vm_logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2021-06-01' existing = if (!empty(workspaceId)) {
-  name: last(split(workspaceId, '/'))
-  scope: resourceGroup(split(workspaceId, '/')[2], split(workspaceId, '/')[4])
+resource vm_logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2021-06-01' existing = if (!empty(monitoringWorkspaceId)) {
+  name: last(split(monitoringWorkspaceId, '/'))
+  scope: resourceGroup(split(monitoringWorkspaceId, '/')[2], split(monitoringWorkspaceId, '/')[4])
 }
 
 module vm_microsoftMonitoringAgentExtension 'extensions/deploy.bicep' = if (extensionMonitoringAgentConfig.enabled) {
@@ -460,10 +466,10 @@ module vm_microsoftMonitoringAgentExtension 'extensions/deploy.bicep' = if (exte
     autoUpgradeMinorVersion: contains(extensionMonitoringAgentConfig, 'autoUpgradeMinorVersion') ? extensionMonitoringAgentConfig.autoUpgradeMinorVersion : true
     enableAutomaticUpgrade: contains(extensionMonitoringAgentConfig, 'enableAutomaticUpgrade') ? extensionMonitoringAgentConfig.enableAutomaticUpgrade : false
     settings: {
-      workspaceId: !empty(workspaceId) ? reference(vm_logAnalyticsWorkspace.id, vm_logAnalyticsWorkspace.apiVersion).customerId : ''
+      workspaceId: !empty(monitoringWorkspaceId) ? reference(vm_logAnalyticsWorkspace.id, vm_logAnalyticsWorkspace.apiVersion).customerId : ''
     }
     protectedSettings: {
-      workspaceKey: !empty(workspaceId) ? vm_logAnalyticsWorkspace.listKeys().primarySharedKey : ''
+      workspaceKey: !empty(monitoringWorkspaceId) ? vm_logAnalyticsWorkspace.listKeys().primarySharedKey : ''
     }
   }
 }
@@ -589,11 +595,11 @@ module virtualMachine_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, in
 @description('The name of the VM.')
 output virtualMachineName string = virtualMachine.name
 
-@description('The Resource ID of the VM.')
+@description('The resource ID of the VM.')
 output virtualMachineResourceId string = virtualMachine.id
 
-@description('The name of the Resource Group the VM was created in.')
+@description('The name of the resource group the VM was created in.')
 output virtualMachineResourceGroup string = resourceGroup().name
 
 @description('The principal ID of the system assigned identity.')
-output systemAssignedPrincipalId string = systemAssignedIdentity ? virtualMachine.identity.principalId : ''
+output systemAssignedPrincipalId string = systemAssignedIdentity && contains(virtualMachine.identity, 'principalId') ? virtualMachine.identity.principalId : ''

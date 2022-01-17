@@ -33,6 +33,10 @@
             "value": "artifacts-rg"
         },
         {
+            "name": "bicepRegistryRgLocation",
+            "value": "WestEurope"
+        },
+        {
             "name": "bicepRegistryDoPublish",
             "value": "true"
         }

@@ -2,7 +2,8 @@
 
 ## Description
 
-This repository includes a collection of advanced and curated Modules consisting of [Bicep][Bicep] templates.
+This repository includes a CI platform for and collection of mature and curated [Bicep][Bicep] modules.
+The platform supports both ARM and Bicep and can be leveraged using GitHub actions as well as Azure DevOps pipelines.
 
 ## Status
 
@@ -101,6 +102,7 @@ This repository includes a collection of advanced and curated Modules consisting
 | [SQL Managed Instances](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Sql/managedInstances) | [!['Sql: ManagedInstances'](https://github.com/Azure/ResourceModules/actions/workflows/ms.sql.managedinstances.yml/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.sql.managedinstances.yml) |
 | [SQL Servers](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Sql/servers) | [!['Sql: Servers'](https://github.com/Azure/ResourceModules/actions/workflows/ms.sql.servers.yml/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.sql.servers.yml) |
 | [Storage Accounts](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Storage/storageAccounts) | [!['Storage: StorageAccounts'](https://github.com/Azure/ResourceModules/actions/workflows/ms.storage.storageaccounts.yml/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.storage.storageaccounts.yml) |
+| [Synapse PrivateLinkHubs](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Synapse/privateLinkHubs) | [!['Synapse: PrivateLinkHubs'](https://github.com/Azure/ResourceModules/actions/workflows/ms.synapse.privatelinkhubs.yml/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.synapse.privatelinkhubs.yml) |
 | [Traffic Manager Profiles](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Network/trafficmanagerprofiles) | [!['Network: TrafficManagerProfiles'](https://github.com/Azure/ResourceModules/actions/workflows/ms.network.trafficmanagerprofiles.yml/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.network.trafficmanagerprofiles.yml) |
 | [User Assigned Identities](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.ManagedIdentity/userAssignedIdentities) | [!['ManagedIdentity: UserAssignedIdentities'](https://github.com/Azure/ResourceModules/actions/workflows/ms.managedidentity.userassignedidentities.yml/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.managedidentity.userassignedidentities.yml) |
 | [Virtual Machine Scale Sets](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Compute/virtualMachineScaleSets) | [!['Compute: VirtualMachineScaleSets'](https://github.com/Azure/ResourceModules/actions/workflows/ms.compute.virtualmachinescalesets.yml/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.compute.virtualmachinescalesets.yml) |
@@ -111,13 +113,11 @@ This repository includes a collection of advanced and curated Modules consisting
 | [Virtual WANs](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Network/virtualWans) | [!['Network: VirtualWans'](https://github.com/Azure/ResourceModules/actions/workflows/ms.network.virtualwans.yml/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.network.virtualwans.yml) |
 | [Web/Function Apps](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Web/sites) | [!['Web: Sites'](https://github.com/Azure/ResourceModules/actions/workflows/ms.web.sites.yml/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.web.sites.yml) |
 
-<!-- ## Contributors
+## Tooling
 
-Contributors names and contact info
-
-* [@segraef](<https://twitter.com/segraef>)
-
--->
+| Name | Status | Docs |
+| - | - | - |
+| [ConvertTo-ARMTemplate](https://github.com/Azure/ResourceModules/blob/main/utilities/tools/ConvertTo-ARMTemplate.ps1) | [![.Platform: Test - ConvertTo-ARMTemplate.ps1](https://github.com/Azure/ResourceModules/actions/workflows/platform.convertToArmTemplate.tests.yml/badge.svg?branch=main)](https://github.com/Azure/ResourceModules/actions/workflows/platform.convertToArmTemplate.tests.yml) | [link](https://github.com/Azure/ResourceModules/wiki/UtilitiesConvertToARMTemplate) |
 
 ## Contributing
 
