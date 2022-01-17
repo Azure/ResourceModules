@@ -653,7 +653,11 @@ stages:
               displayName: Default MSI Role Assignment
               # customParameterFileTokens: '$(msiPrincipalId)'
               # customParameterFileTokens: '[{\"name\":\"msiPrincipalId\",\"value\":\"msiPrincipalIdddd\"}]'
-              customParameterFileTokens: '[{\"name\":\"msiPrincipalId\",\"value\":\"msiPrincipalIdddd\"}]'
+              customParameterFileTokens: >
+                [
+                { "name": "msiPrincipalId",
+                "value": "$(msiPrincipalId)" }
+                ]
           # customParameterFileTokens: $[ dependencies.job_get_msi_id.outputs['print_custom_token.customParameterFileTokens'] ]
 
 
