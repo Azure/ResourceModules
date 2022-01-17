@@ -644,8 +644,6 @@ stages:
                 Write-Verbose "customParameterFileTokens: $customParameterFileTokens" -Verbose
                 Write-Output ('##vso[task.setvariable variable={0};isOutput=true]{1}' -f 'customParameterFileTokens', $customParameterFileTokens)
       - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
-        variables:
-          customParameterFileTokens: $[ dependencies.job_get_msi_id.outputs['print_custom_token.customParameterFileTokens'] ]
         parameters:
           deploymentBlocks:
             - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
