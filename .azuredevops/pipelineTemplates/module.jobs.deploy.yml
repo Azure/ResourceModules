@@ -62,6 +62,7 @@ parameters:
   managementGroupId: '$(ARM_MGMTGROUP_ID)'
   parametersRepository: '$(Build.Repository.Name)'
   modulesRepository: '$(modulesRepository)'
+  customParameterFileTokens: ''
   # Azure PowerShell Version parameters
   azurePowerShellVersion: '$(azurePowerShellVersion)'
   preferredAzurePowerShellVersion: '$(preferredAzurePowerShellVersion)'
@@ -176,10 +177,14 @@ jobs:
                     @{ Name = "deploymentSpId";    Value = '$(DEPLOYMENT_SP_ID)' }
                 ) | ForEach-Object { [PSCustomObject]$PSItem }
 
+                # Get additional Custom Parameter File Tokens from input
+                $OtherCustomParameterFileTokens = '${{ parameters.customParameterFileTokens }}' | ConvertFrom-Json
+
                 # Construct Token Function Input
                 $ConvertTokensInputs = @{
                     ParameterFilePath                 = Join-Path '$(parametersRepoRoot)' '${{ deploymentBlock.path }}'
                     DefaultParameterFileTokens        = $DefaultParameterFileTokens
+                    OtherCustomParameterFileTokens    = $OtherCustomParameterFileTokens
                     LocalCustomParameterFileTokens    = $Settings.parameterFileTokens.localTokens.tokens
                     TokenPrefix                       = $Settings.parameterFileTokens.tokenPrefix
                     TokenSuffix                       = $Settings.parameterFileTokens.tokenSuffix
