@@ -375,9 +375,9 @@ stages:
   - stage: deploy_rsv
     displayName: Deploy recovery services vault
     dependsOn:
-      - deploy_sa
-      - deploy_evh
-      - deploy_law
+      # - deploy_sa
+      # - deploy_evh
+      # - deploy_law
       - deploy_msi
     variables:
       resourceType: 'Microsoft.RecoveryServices/vaults'
@@ -395,9 +395,9 @@ stages:
   - stage: deploy_kv
     displayName: Deploy key vaults
     dependsOn:
-      - deploy_sa
-      - deploy_evh
-      - deploy_law
+      # - deploy_sa
+      # - deploy_evh
+      # - deploy_law
       - deploy_msi
     variables:
       resourceType: 'Microsoft.KeyVault/vaults'
