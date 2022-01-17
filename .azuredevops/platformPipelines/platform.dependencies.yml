@@ -634,8 +634,8 @@ stages:
             - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
               templateFilePath: $(templateFilePath)
               displayName: Default MSI Role Assignment
-              # customParameterFileTokens: '$(customParameterFileTokens)'
-              customParameterFileTokens: $[ dependencies.job_get_msi.outputs['print_custom_token.customParameterFileTokens'] ]
+              customParameterFileTokens: '[{"name":"msiPrincipalId","value":"msiPrincipalIdddd"}]'
+              # customParameterFileTokens: $[ dependencies.job_get_msi.outputs['print_custom_token.customParameterFileTokens'] ]
 
 
   # - stage: deploy_vnet
