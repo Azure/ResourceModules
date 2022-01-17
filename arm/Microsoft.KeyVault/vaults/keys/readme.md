@@ -14,7 +14,7 @@ This module deploys a key vault key.
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `attributesEnabled` | bool | `True` |  | Optional. Determines whether the object is enabled. |
-| `attributesExp` | int |  |  | Required. Expiry date in seconds since 1970-01-01T00:00:00Z. |
+| `attributesExp` | int | `-1` |  | Optional. Expiry date in seconds since 1970-01-01T00:00:00Z. Security recommendation is to set expiration date whenever possible.|
 | `attributesNbf` | int | `-1` |  | Optional. Not before date in seconds since 1970-01-01T00:00:00Z. |
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `curveName` | string | `P-256` | `[P-256, P-256K, P-384, P-521]` | Optional. The elliptic curve name. |
