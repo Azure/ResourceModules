@@ -605,8 +605,9 @@ stages:
             name: $(poolName)
           ${{ if eq(variables['poolName'], '') }}:
             vmImage: $(vmImage)
-        # variables:
-        #   msiPrincipalId: $[ stageDependencies.deploy_msi.job_set_msi_id.outputs['print_msi_prinId.msiPrincipalId'] ]
+        variables:
+          # msiPrincipalId: $[ stageDependencies.deploy_msi.job_set_msi_id.outputs['print_msi_prinId.msiPrincipalId'] ]
+          msiPrincipalId: $(msiPrincipalId)
         steps:
           - task: PowerShell@2
             name: print_custom_token
@@ -651,13 +652,13 @@ stages:
             - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
               templateFilePath: $(templateFilePath)
               displayName: Default MSI Role Assignment
-              # customParameterFileTokens: '$(msiPrincipalId)'
+              customParameterFileTokens: $(msiPrincipalId)
               # customParameterFileTokens: '[{\"name\":\"msiPrincipalId\",\"value\":\"msiPrincipalIdddd\"}]'
-              customParameterFileTokens: >
-                [
-                { "name": "msiPrincipalId",
-                "value": "$(msiPrincipalId)" }
-                ]
+              # customParameterFileTokens: >
+              #   [
+              #   { "name": "msiPrincipalId",
+              #   "value": "$(msiPrincipalId)" }
+              #   ]
           # customParameterFileTokens: $[ dependencies.job_get_msi_id.outputs['print_custom_token.customParameterFileTokens'] ]
 
 
