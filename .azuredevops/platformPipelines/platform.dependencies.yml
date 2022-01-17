@@ -620,6 +620,7 @@ stages:
 
                 # # Invoke Token Replacement Functionality
 
+                Write-Verbose "msiPrincipalId: $(msiPrincipalId)" -Verbose
                 # Initialize Additional Custom Parameter File Tokens for Token Replacement Functionality
                 $otherCustomParameterFileTokens = @(
                     @{ Name = 'msiPrincipalId'; Value = '$(msiPrincipalId)' }
