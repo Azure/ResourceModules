@@ -583,7 +583,7 @@ stages:
     variables:
       resourceType: 'Microsoft.Authorization/roleAssignments'
       templateFilePath: $(modulesPath)/$(resourceType)/.bicep/nested_rbac_sub.bicep
-      msiPrincipalId: $[ stageDependencies.deploy_msi.job_deploy_msi.outputs['print_msi_prinId.msiPrincipalId'] ]
+
     jobs:
       - job: job_get_msi
         displayName: Get msi principal ID output
@@ -592,6 +592,8 @@ stages:
             name: $(poolName)
           ${{ if eq(variables['poolName'], '') }}:
             vmImage: $(vmImage)
+        variables:
+          msiPrincipalId: $[ stageDependencies.deploy_msi.job_deploy_msi.outputs['print_msi_prinId.msiPrincipalId'] ]
         steps:
           - task: PowerShell@2
             name: print_custom_token
