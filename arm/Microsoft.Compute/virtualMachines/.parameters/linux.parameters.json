@@ -81,6 +81,25 @@
                 }
             ]
         },
+        "backupVaultName": {
+            "value": "adp-sxx-az-rsv-x-001"
+        },
+        "backupVaultResourceGroup": {
+            "value": "validation-rg"
+        },
+        "backupPolicyName": {
+            "value": "VMpolicy"
+        },
+        "roleAssignments": {
+            "value": [
+                {
+                    "roleDefinitionIdOrName": "Reader",
+                    "principalIds": [
+                        "<<deploymentSpId>>"
+                    ]
+                }
+            ]
+        },
         "diagnosticLogsRetentionInDays": {
             "value": 7
         },
