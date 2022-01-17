@@ -581,7 +581,7 @@ stages:
     dependsOn:
       - deploy_msi
     variables:
-      resourceType: 'Microsoft.Authorization\roleAssignments'
+      resourceType: 'Microsoft.Authorization/roleAssignments'
       templateFilePath: $(modulesPath)/$(resourceType)/.bicep/nested_rbac_sub.bicep
       varFromStageA: $[ stageDependencies.deploy_msi.default_msi_job.outputs['DeployModule.deploymentOutput'] ]
     jobs:
@@ -613,7 +613,7 @@ stages:
 
                 # Construct Token Function Input
                 $ConvertTokensInputs = @{
-                    ParameterFilePath                 = '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
+                    ParameterFilePath                 = Join-Path '$(System.DefaultWorkingDirectory)' '$(dependencyPath)/$(resourceType)/parameters/parameters.json'
                     OtherCustomParameterFileTokens    = $OtherCustomParameterFileTokens
                     TokenPrefix                       = $Settings.parameterFileTokens.tokenPrefix
                     TokenSuffix                       = $Settings.parameterFileTokens.tokenSuffix
