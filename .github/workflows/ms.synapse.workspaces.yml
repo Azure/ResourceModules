@@ -23,7 +23,7 @@ on:
         default: '0.0.1'
   push:
     branches:
-      - users/repajta/852_synapse_workspace_module
+      - main
     paths:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.synapse.workspaces.yml'
@@ -87,19 +87,18 @@ jobs:
     name: 'Deployment tests'
     needs:
       - job_set_workflow_param
-      # - job_module_pester_validation
+      - job_module_pester_validation
     strategy:
       fail-fast: false
       matrix:
         parameterFilePaths:
-          # [
-          #   'min.parameters.json',
-          #   'basic.parameters.json',
-          #   'encryptionwsai.parameters.json',
-          #   'encryptionwuai.parameters.json',
-          #   'managedvnet.parameters.json',
-          # ]
-          ['encryptionwsai.parameters.json']
+          [
+            'min.parameters.json',
+            'basic.parameters.json',
+            'encryptionwsai.parameters.json',
+            'encryptionwuai.parameters.json',
+            'managedvnet.parameters.json',
+          ]
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
