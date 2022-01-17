@@ -601,14 +601,14 @@ stages:
               pwsh: true
               script: |
                 # Load used functions
-                . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInParameterFile.ps1')
+                . (Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInParameterFile.ps1')
 
                 # Load Settings File
                 $Settings = Get-Content -Path "settings.json" | ConvertFrom-Json
 
                 # Initialize Default Parameter File Tokens
                 $OtherCustomParameterFileTokens = @(
-                    @{ Name = 'msiPrincipalId'; Value = '$msiPrincipalId' }
+                    @{ Name = 'msiPrincipalId'; Value = '$(msiPrincipalId)' }
                 )
 
                 # Construct Token Function Input
