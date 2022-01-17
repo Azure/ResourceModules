@@ -32,9 +32,6 @@
         },
         "diagnosticEventHubName": {
             "value": "adp-sxx-az-evh-x-001"
-        },
-        "cuaId": {
-            "value": "22db5af3-9894-4061-9385-2b7e6cdae862"
         }
     }
 }

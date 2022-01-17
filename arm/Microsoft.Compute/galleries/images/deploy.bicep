@@ -94,9 +94,16 @@ param roleAssignments array = []
 @description('Optional. Tags for all resources.')
 param tags object = {}
 
-module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
+resource pid_cuaId 'Microsoft.Resources/deployments@2021-04-01' = if (!empty(cuaId)) {
   name: 'pid-${cuaId}'
-  params: {}
+  properties: {
+    mode: 'Incremental'
+    template: {
+      '$schema': 'https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#'
+      contentVersion: '1.0.0.0'
+      resources: []
+    }
+  }
 }
 
 resource gallery 'Microsoft.Compute/galleries@2020-09-30' existing = {
