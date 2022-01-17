@@ -202,7 +202,7 @@ resource keyVault 'Microsoft.KeyVault/vaults@2019-09-01' existing = if (encrypti
 }
 
 // Assign role Key Vault Crypto User
-resource roleAssignment 'Microsoft.Authorization/roleAssignments@2021-04-01-preview' = if (encryptionActivateWorkspace) {
+resource workspace_cmk_rbac 'Microsoft.Authorization/roleAssignments@2021-04-01-preview' = if (encryptionActivateWorkspace) {
   name: guid(keyVault.name, workspace.name, '12338af0-0e69-4776-bea7-57ae8d297424')
   properties: {
     roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '12338af0-0e69-4776-bea7-57ae8d297424')
@@ -219,6 +219,9 @@ module workspace_cmk 'keys/deploy.bicep' = if (encryptionActivateWorkspace) {
     name: encryptionKeyName
     workspaceName: workspace.name
   }
+  dependsOn: [
+    workspace_cmk_rbac
+  ]
 }
 
 // Resource Lock
