@@ -87,5 +87,5 @@ output resourceGroupName string = resourceGroup().name
 @description('The name of the public IP address.')
 output name string = publicIpAddress.name
 
-@description('The Resource ID of the public IP address.')
+@description('The resource ID of the public IP address.')
 output resourceId string = publicIpAddress.id
