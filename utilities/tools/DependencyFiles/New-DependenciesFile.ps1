@@ -254,9 +254,6 @@ Update or add a dependency template for a given parameter file
 .DESCRIPTION
 Update or add a dependency template for a given parameter file on a best effort basis.
 
-.PARAMETER RepoRoot
-Mandatory. The path to the root of the current repository.
-
 .PARAMETER ProviderName
 Mandatory. The name of the provider namespace to process
 
@@ -267,7 +264,7 @@ Mandatory. The resource type of the module to process
 Mandatory. The path the the parameter file to generate the dependency file for
 
 .EXAMPLE
-Set-DependencyTemplate -RepoRoot 'C:/resourceModules' -ProviderName 'Microsoft.Compute' -moduleName 'virtualMachines' -ParameterFilePath 'C:/resourceModules/arm/Microsoft.Compute/VirtualMachines/virtualMachines/min.parameters.json'
+Set-DependencyTemplate -ProviderName 'Microsoft.Compute' -moduleName 'virtualMachines' -ParameterFilePath 'C:/resourceModules/arm/Microsoft.Compute/VirtualMachines/virtualMachines/min.parameters.json'
 
 Update or create a dependency template for the parmeter file 'min.parameter.json' for module 'Microsoft.Compute/virtualMachines'
 #>
@@ -275,9 +272,6 @@ function Set-DependencyTemplate {
 
     [CmdletBinding(SupportsShouldProcess)]
     param (
-        [Parameter(Mandatory = $true)]
-        [string] $RepoRoot,
-
         [Parameter(Mandatory = $true)]
         [string] $ProviderName,
 
@@ -288,8 +282,8 @@ function Set-DependencyTemplate {
         [string] $ParameterFilePath
     )
 
-    $templatesDirectory = Join-Path $RepoRoot 'utilities' 'pipelines' 'moduleDependencies' $ProviderName $ModuleName
-    $TemplateFilePath = Join-Path $templatesDirectory ('{0}.bicep' -f (Split-Path $ParameterFilePath -LeafBase))
+    $templatesDirectory = Split-Path $ParameterFilePath -Parent
+    $TemplateFilePath = Join-Path $templatesDirectory ('dep.{0}.bicep' -f (Split-Path $ParameterFilePath -LeafBase))
 
     # Check exected folder
     if (-not (Test-Path $templatesDirectory)) {
@@ -638,7 +632,6 @@ function New-DependenciesFile {
         $parameterFiles = Get-ChildItem (Join-Path $modulePath '.parameters') -Filter '*.json'
         foreach ($ParameterFilePath in $parameterFiles.FullName) {
             $dependencyTemplateInputObject = @{
-                RepoRoot          = $RepoRoot
                 ProviderName      = $ProviderName
                 ModuleName        = $ModuleName
                 ParameterFilePath = $ParameterFilePath
