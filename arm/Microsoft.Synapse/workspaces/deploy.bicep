@@ -196,11 +196,17 @@ resource workspace 'Microsoft.Synapse/workspaces@2021-06-01' = {
 }
 
 // Workspace encryption - Assign Synapse Workspace MSI access to encryption key
+resource keyVault 'Microsoft.KeyVault/vaults@2019-09-01' existing = {
+  name: encryptionKeyVaultName
+  scope: az.resourceGroup(encryptionKeyVaultResourceGroupName)
+}
+
 module workspace_cmk_rbac '.bicep/nested_cmkRbac.bicep' = if (encryptionActivateWorkspace) {
   name: '${workspace.name}-cmk-rbac'
   params: {
     workspaceIdentity: workspace.identity.principalId
     keyvaultName: encryptionKeyVaultName
+    usesRbacAuthorization: keyVault.properties.enableRbacAuthorization
   }
   scope: az.resourceGroup(encryptionKeyVaultResourceGroupName)
 }
