@@ -3,11 +3,11 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "sxx-az-imgt-x-001"
+            "value": "adp-sxx-az-imgt-x-001"
         },
-        "location": {
-            "value": "eastus"
-        },
+        // "location": {
+        //     "value": "eastus"
+        // },
         "userMsiName": {
             "value": "adp-sxx-az-msi-x-001"
         },
