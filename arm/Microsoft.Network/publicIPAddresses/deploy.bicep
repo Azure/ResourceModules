@@ -4,14 +4,36 @@ param name string
 @description('Optional. Resource ID of the Public IP Prefix object. This is only needed if you want your Public IPs created in a PIP Prefix.')
 param publicIPPrefixResourceId string = ''
 
-@description('Optional. The public IP address allocation method. - Static or Dynamic.')
+@description('Optional. The public IP address allocation method.')
+@allowed([
+  'Dynamic'
+  'Static'
+])
 param publicIPAllocationMethod string = 'Dynamic'
 
-@description('Optional. Public IP Address sku Name')
+@description('Optional. Name of a public IP address SKU.')
+@allowed([
+  'Basic'
+  'Standard'
+])
 param skuName string = 'Basic'
 
-@description('Optional. Public IP Address pricing tier')
+@description('Optional. Tier of a public IP address SKU.')
+@allowed([
+  'Global'
+  'Regional'
+])
 param skuTier string = 'Regional'
+
+@description('Optional. A list of availability zones denoting the IP allocated for the resource needs to come from.')
+param zones array = []
+
+@description('Optional. IP address version.')
+@allowed([
+  'IPv4'
+  'IPv6'
+])
+param publicIPAddressVersion string = 'IPv4'
 
 @description('Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.')
 @minValue(0)
@@ -98,7 +120,7 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
-resource publicIpAddress 'Microsoft.Network/publicIPAddresses@2021-02-01' = {
+resource publicIpAddress 'Microsoft.Network/publicIPAddresses@2021-05-01' = {
   name: name
   location: location
   tags: tags
@@ -106,8 +128,9 @@ resource publicIpAddress 'Microsoft.Network/publicIPAddresses@2021-02-01' = {
     name: skuName
     tier: skuTier
   }
+  zones: zones
   properties: {
-    publicIPAddressVersion: 'IPv4'
+    publicIPAddressVersion: publicIPAddressVersion
     publicIPAllocationMethod: publicIPAllocationMethod
     publicIPPrefix: !empty(publicIPPrefixResourceId) ? publicIPPrefix : null
     idleTimeoutInMinutes: 4
