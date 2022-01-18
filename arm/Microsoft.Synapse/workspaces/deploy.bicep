@@ -211,7 +211,7 @@ module workspace_cmk_rbac '.bicep/nested_cmkRbac.bicep' = if (encryptionActivate
   scope: az.resourceGroup(encryptionKeyVaultResourceGroupName)
 }
 
-// Workspace encryption -  Activate Workspace
+// Workspace encryption - Activate Workspace
 module workspace_cmk 'keys/deploy.bicep' = if (encryptionActivateWorkspace) {
   name: '${workspace.name}-cmk-activation'
   params: {
