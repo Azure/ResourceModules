@@ -11,6 +11,13 @@
         "publicIPAllocationMethod": {
             "value": "Static"
         },
+        "zones": {
+            "value": [
+                "1",
+                "2",
+                "3"
+            ]
+        },
         "roleAssignments": {
             "value": [
                 {
