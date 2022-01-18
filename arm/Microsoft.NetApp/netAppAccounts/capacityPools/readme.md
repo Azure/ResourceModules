@@ -6,7 +6,7 @@ This template deploys capacity pools in an Azure NetApp Files.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
+| `Microsoft.Authorization/roleAssignments` | 2021-04-01-preview |
 | `Microsoft.NetApp/netAppAccounts/capacityPools` | 2021-06-01 |
 | `Microsoft.NetApp/netAppAccounts/capacityPools/volumes` | 2021-06-01 |
 
@@ -75,6 +75,6 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 ## Template references
 
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-04-01-preview/roleAssignments)
 - [Netappaccounts/Capacitypools](https://docs.microsoft.com/en-us/azure/templates/Microsoft.NetApp/2021-06-01/netAppAccounts/capacityPools)
 - [Netappaccounts/Capacitypools/Volumes](https://docs.microsoft.com/en-us/azure/templates/Microsoft.NetApp/2021-06-01/netAppAccounts/capacityPools/volumes)
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2021-04-01-preview/roleAssignments)

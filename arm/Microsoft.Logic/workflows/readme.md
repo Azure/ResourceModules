@@ -6,8 +6,8 @@ This module deploys a Logic App resource.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/locks` | 2016-09-01 |
-| `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
+| `Microsoft.Authorization/locks` | 2017-04-01 |
+| `Microsoft.Authorization/roleAssignments` | 2021-04-01-preview |
 | `Microsoft.Insights/diagnosticSettings` | 2021-05-01-preview |
 | `Microsoft.Logic/workflows` | 2019-05-01 |
 
@@ -20,10 +20,11 @@ This module deploys a Logic App resource.
 | `contentsAccessControlConfiguration` | object | `{object}` |  | Optional. The access control configuration for accessing workflow run contents. |
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered. |
 | `definitionParameters` | object | `{object}` |  | Optional. Parameters for the definition template. |
+| `diagnosticEventHubAuthorizationRuleId` | string |  |  | Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
+| `diagnosticEventHubName` | string |  |  | Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticStorageAccountId` | string |  |  | Optional. Resource ID of the diagnostic storage account. |
-| `eventHubAuthorizationRuleId` | string |  |  | Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
-| `eventHubName` | string |  |  | Optional. Name of the event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
+| `diagnosticWorkspaceId` | string |  |  | Optional. Resource ID of the diagnostic log analytics workspace. |
 | `integrationAccount` | object | `{object}` |  | Optional. The integration account. |
 | `integrationServiceEnvironment` | object | `{object}` |  | Optional. The integration service environment. |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
@@ -45,7 +46,6 @@ This module deploys a Logic App resource.
 | `workflowParameters` | object | `{object}` |  | Optional. The definitions for one or more parameters that pass the values to use at your logic app's runtime. |
 | `workflowStaticResults` | object | `{object}` |  | Optional. The definitions for one or more static results returned by actions as mock outputs when static results are enabled on those actions. In each action definition, the runtimeConfiguration.staticResult.name attribute references the corresponding definition inside staticResults. |
 | `workflowTriggers` | object | `{object}` |  | Optional. The definitions for one or more triggers that instantiate your workflow. You can define more than one trigger, but only with the Workflow Definition Language, not visually through the Logic Apps Designer. |
-| `workspaceId` | string |  |  | Optional. Resource ID of log analytics. |
 
 ### Parameter Usage `<accessControl>AccessControlConfiguration`
 
@@ -162,7 +162,7 @@ You can specify multiple user assigned identities to a resource by providing add
 
 ## Template references
 
-- [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-04-01-preview/roleAssignments)
 - [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings)
+- [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2021-04-01-preview/roleAssignments)
 - [Workflows](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Logic/2019-05-01/workflows)

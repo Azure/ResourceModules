@@ -6,7 +6,7 @@ This module deploys API Management Subscriptions.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.ApiManagement/service/subscriptions` | 2020-06-01-preview |
+| `Microsoft.ApiManagement/service/subscriptions` | 2021-08-01 |
 
 ### Resource dependency
 
@@ -38,4 +38,4 @@ The following resources are required to be able to deploy this resource.
 
 ## Template references
 
-- [Service/Subscriptions](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2020-06-01-preview/service/subscriptions)
+- [Service/Subscriptions](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2021-08-01/service/subscriptions)

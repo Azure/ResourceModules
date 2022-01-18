@@ -65,7 +65,7 @@ resource localNetworkGateway 'Microsoft.Network/localNetworkGateways@2021-02-01'
   }
 }
 
-resource localNetworkGateway_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
+resource localNetworkGateway_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
   name: '${localNetworkGateway.name}-${lock}-lock'
   properties: {
     level: lock

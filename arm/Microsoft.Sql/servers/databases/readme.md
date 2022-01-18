@@ -16,10 +16,11 @@ This module deploys an Azure SQL Server.
 | `autoPauseDelay` | string |  |  | Optional. Time in minutes after which database is automatically paused. |
 | `collation` | string |  |  | Optional. The collation of the database. |
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
+| `diagnosticEventHubAuthorizationRuleId` | string |  |  | Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
+| `diagnosticEventHubName` | string |  |  | Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticStorageAccountId` | string |  |  | Optional. Resource ID of the diagnostic storage account. |
-| `eventHubAuthorizationRuleId` | string |  |  | Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
-| `eventHubName` | string |  |  | Optional. Name of the event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
+| `diagnosticWorkspaceId` | string |  |  | Optional. Resource ID of the diagnostic log analytics workspace. |
 | `highAvailabilityReplicaCount` | int |  |  | Optional. The number of readonly secondary replicas associated with the database. |
 | `isLedgerOn` | bool |  |  | Optional. Whether or not this database is a ledger database, which means all tables in the database are ledger tables. Note: the value of this property cannot be changed after the database has been created. |
 | `licenseType` | string |  |  | Optional. The license type to apply for this database. |
@@ -37,7 +38,6 @@ This module deploys an Azure SQL Server.
 | `skuName` | string |  |  | Required. The name of the SKU. |
 | `tags` | object | `{object}` |  | Optional. Tags of the resource. |
 | `tier` | string |  |  | Optional. The tier or edition of the particular SKU. |
-| `workspaceId` | string |  |  | Optional. Resource ID of log analytics. |
 | `zoneRedundant` | bool |  |  | Optional. Whether or not this database is zone redundant. |
 
 ### Parameter Usage: `tags`

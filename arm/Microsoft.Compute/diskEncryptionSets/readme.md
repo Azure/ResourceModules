@@ -6,7 +6,7 @@ This template deploys a disk encryption set.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
+| `Microsoft.Authorization/roleAssignments` | 2021-04-01-preview |
 | `Microsoft.Compute/diskEncryptionSets` | 2021-04-01 |
 | `Microsoft.KeyVault/vaults/accessPolicies` | 2021-06-01-preview |
 
@@ -76,5 +76,5 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 ## Template references
 
 - [Diskencryptionsets](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Compute/2021-04-01/diskEncryptionSets)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-04-01-preview/roleAssignments)
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2021-04-01-preview/roleAssignments)
 - [Vaults/Accesspolicies](https://docs.microsoft.com/en-us/azure/templates/Microsoft.KeyVault/2021-06-01-preview/vaults/accessPolicies)

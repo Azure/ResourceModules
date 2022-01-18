@@ -25,6 +25,7 @@ If you're unfamiliar with Infrastructure as Code, or wonder how you can use the 
   - [Register Azure DevOps pipelines script](./UtilitiesRegisterAzureDevOpsPipeline)
   - [Set Module ReadMe script](./UtilitiesSetModuleReadMe)
   - [Get formatted RBAC roles script](./UtilitiesGetFormattedRBACRoleList)
+  - [GitHub readMe module table update script](./UtilitiesSetGitHubReadMeModuleTable.md)
 - [Pipelines](./Pipelines)
   - [Design](./PipelinesDesign)
     - [Parameter File Tokens](./ParameterFileTokens)

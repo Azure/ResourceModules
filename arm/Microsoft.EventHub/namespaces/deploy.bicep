@@ -57,14 +57,14 @@ param diagnosticLogsRetentionInDays int = 365
 @description('Optional. Resource ID of the diagnostic storage account.')
 param diagnosticStorageAccountId string = ''
 
-@description('Optional. Resource ID of log analytics.')
-param workspaceId string = ''
+@description('Optional. Resource ID of the diagnostic log analytics workspace.')
+param diagnosticWorkspaceId string = ''
 
-@description('Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.')
-param eventHubAuthorizationRuleId string = ''
+@description('Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.')
+param diagnosticEventHubAuthorizationRuleId string = ''
 
-@description('Optional. Name of the event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.')
-param eventHubName string = ''
+@description('Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.')
+param diagnosticEventHubName string = ''
 
 @allowed([
   'CanNotDelete'
@@ -192,7 +192,7 @@ resource eventHubNamespace 'Microsoft.EventHub/namespaces@2021-06-01-preview' = 
   }
 }
 
-resource eventHubNamespace_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
+resource eventHubNamespace_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
   name: '${eventHubNamespace.name}-${lock}-lock'
   properties: {
     level: lock
@@ -201,13 +201,13 @@ resource eventHubNamespace_lock 'Microsoft.Authorization/locks@2016-09-01' = if 
   scope: eventHubNamespace
 }
 
-resource eventHubNamespace_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId))) {
+resource eventHubNamespace_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(diagnosticWorkspaceId)) || (!empty(diagnosticEventHubAuthorizationRuleId)) || (!empty(diagnosticEventHubName))) {
   name: '${eventHubNamespace.name}-diagnosticSettings'
   properties: {
     storageAccountId: !empty(diagnosticStorageAccountId) ? diagnosticStorageAccountId : null
-    workspaceId: !empty(workspaceId) ? workspaceId : null
-    eventHubAuthorizationRuleId: !empty(eventHubAuthorizationRuleId) ? eventHubAuthorizationRuleId : null
-    eventHubName: !empty(eventHubName) ? eventHubName : null
+    workspaceId: !empty(diagnosticWorkspaceId) ? diagnosticWorkspaceId : null
+    eventHubAuthorizationRuleId: !empty(diagnosticEventHubAuthorizationRuleId) ? diagnosticEventHubAuthorizationRuleId : null
+    eventHubName: !empty(diagnosticEventHubName) ? diagnosticEventHubName : null
     metrics: diagnosticsMetrics
     logs: diagnosticsLogs
   }
@@ -295,11 +295,5 @@ output namespaceResourceId string = eventHubNamespace.id
 @description('The resource group where the namespace is deployed.')
 output namespaceResourceGroup string = resourceGroup().name
 
-@description('The connection string to the namespace.')
-output namespaceConnectionString string = listkeys(authRuleResourceId, '2017-04-01').primaryConnectionString
-
-@description('The shared access policy primary key.')
-output sharedAccessPolicyPrimaryKey string = listkeys(authRuleResourceId, '2017-04-01').primaryKey
-
 @description('The principal ID of the system assigned identity.')
-output systemAssignedPrincipalId string = systemAssignedIdentity ? eventHubNamespace.identity.principalId : ''
+output systemAssignedPrincipalId string = systemAssignedIdentity && contains(eventHubNamespace.identity, 'principalId') ? eventHubNamespace.identity.principalId : ''

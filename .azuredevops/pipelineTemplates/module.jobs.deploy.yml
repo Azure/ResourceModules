@@ -108,8 +108,26 @@ jobs:
                 # Load used functions
                 . (Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
 
+                # Define PS modules to install on the runner
+                $Modules = @(
+                    @{ Name = 'Az.Accounts' },
+                    @{ Name = 'Az.Resources' }
+                )
+
+                # Additional PS modules need to be installed for the removal step in case it is enabled
+                if ('${{ parameters.removeDeployment}}' -eq 'true') {
+                  $Modules += @(
+                    @{ Name = 'Az.CognitiveServices' },
+                    @{ Name = 'Az.Compute' },
+                    @{ Name = 'Az.KeyVault' },
+                    @{ Name = 'Az.Monitor' },
+                    @{ Name = 'Az.OperationalInsights' },
+                    @{ Name = 'Az.RecoveryServices' }
+                  )
+                }
+
                 # Set agent up
-                Set-EnvironmentOnAgent
+                Set-EnvironmentOnAgent -PSModules $Modules
 
           # [Multi Repo] Support task
           #--------------------------
@@ -213,6 +231,7 @@ jobs:
           #---------------------
           - task: AzurePowerShell@5
             displayName: 'Deploy [${{ deploymentBlock.path }}] via connection [${{ parameters.serviceConnection }}]'
+            name: 'DeployModule'
             inputs:
               azureSubscription: ${{ parameters.serviceConnection }}
               azurePowerShellVersion: ${{ parameters.azurePowerShellVersion }}
@@ -255,9 +274,16 @@ jobs:
                 Write-Host ('##vso[task.setvariable variable=deploymentName]{0}' -f $res.deploymentName)
 
                 # Populate further outputs
+                $deploymentOutputHash=@{}
+
                 foreach ($outputKey in $res.deploymentOutput.Keys) {
-                    Write-Output ('##vso[task.setvariable variable={0}]{1}' -f $outputKey, $res.deploymentOutput[$outputKey].Value)
+                  Write-Output ('##vso[task.setvariable variable={0}]{1}' -f $outputKey, $res.deploymentOutput[$outputKey].Value)
+                  $deploymentOutputHash.add($outputKey,$res.deploymentOutput[$outputKey].Value)
                 }
+
+                $deploymentOutput = $deploymentOutputHash | ConvertTo-Json -Compress -Depth 100
+                Write-Verbose "Deployment output: $deploymentOutput" -Verbose
+                Write-Output ('##vso[task.setvariable variable={0};isOutput=true]{1}' -f 'deploymentOutput', $deploymentOutput)
 
                 if ($res.ContainsKey('exception')) {
                   # Happens only if there is an exception

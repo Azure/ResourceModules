@@ -6,7 +6,7 @@ This module deploys API Management Service Identity Provider.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.ApiManagement/service/identityProviders` | 2020-06-01-preview |
+| `Microsoft.ApiManagement/service/identityProviders` | 2021-08-01 |
 
 ## Parameters
 
@@ -37,4 +37,4 @@ This module deploys API Management Service Identity Provider.
 
 ## Template references
 
-- [Service/Identityproviders](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2020-06-01-preview/service/identityProviders)
+- [Service/Identityproviders](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2021-08-01/service/identityProviders)

@@ -23,7 +23,7 @@ resource dataFactory 'Microsoft.DataFactory/factories@2018-06-01' existing = {
   name: last(split(resourceId, '/'))
 }
 
-resource roleAssignment 'Microsoft.Authorization/roleAssignments@2020-04-01-preview' = [for principalId in principalIds: {
+resource roleAssignment 'Microsoft.Authorization/roleAssignments@2021-04-01-preview' = [for principalId in principalIds: {
   name: guid(dataFactory.name, principalId, roleDefinitionIdOrName)
   properties: {
     roleDefinitionId: contains(builtInRoleNames, roleDefinitionIdOrName) ? builtInRoleNames[roleDefinitionIdOrName] : roleDefinitionIdOrName
