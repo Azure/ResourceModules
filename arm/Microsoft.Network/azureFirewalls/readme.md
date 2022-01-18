@@ -17,7 +17,6 @@ This module deploys a firewall.
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `applicationRuleCollections` | array | `[]` |  | Optional. Collection of application rule collections used by Azure Firewall. |
-| `availabilityZones` | array | `[1, 2, 3]` |  | Optional. Zone numbers e.g. 1,2,3. |
 | `azureFirewallPipName` | string |  |  | Optional. Specifies the name of the Public IP used by Azure Firewall. If it's not provided, a '-pip' suffix will be appended to the Firewall's name. |
 | `azureSkuName` | string | `AZFW_VNet` | `[AZFW_VNet, AZFW_Hub]` | Optional. Name of an Azure Firewall SKU. |
 | `azureSkuTier` | string | `Standard` | `[Standard, Premium]` | Optional. Tier of an Azure Firewall. |
@@ -41,6 +40,7 @@ This module deploys a firewall.
 | `tags` | object | `{object}` |  | Optional. Tags of the Azure Firewall resource. |
 | `threatIntelMode` | string | `Deny` | `[Alert, Deny, Off]` | Optional. The operation mode for Threat Intel. |
 | `vNetId` | string |  |  | Required. Shared services Virtual Network resource ID |
+| `zones` | array | `[1, 2, 3]` |  | Optional. Zone numbers e.g. 1,2,3. |
 
 ### Parameter Usage: `roleAssignments`
 
@@ -105,4 +105,4 @@ The `networkRuleCollections` parameter accepts a JSON Array of AzureFirewallNetw
 - [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings)
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
 - [Publicipaddresses](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-02-01/publicIPAddresses)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2021-04-01-preview/roleAssignments)
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)

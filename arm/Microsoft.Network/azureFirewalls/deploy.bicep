@@ -65,7 +65,7 @@ param diagnosticEventHubName string = ''
 param location string = resourceGroup().location
 
 @description('Optional. Zone numbers e.g. 1,2,3.')
-param availabilityZones array = [
+param zones array = [
   '1'
   '2'
   '3'
@@ -166,7 +166,7 @@ resource azureFirewallPip 'Microsoft.Network/publicIPAddresses@2021-02-01' = {
   sku: {
     name: 'Standard'
   }
-  zones: availabilityZones
+  zones: zones
   properties: {
     publicIPAllocationMethod: 'Static'
     publicIPAddressVersion: 'IPv4'
@@ -199,7 +199,7 @@ resource azureFirewallPip_diagnosticSettings 'Microsoft.Insights/diagnosticSetti
 resource azureFirewall 'Microsoft.Network/azureFirewalls@2021-05-01' = {
   name: name
   location: location
-  zones: length(availabilityZones) == 0 ? null : availabilityZones
+  zones: length(zones) == 0 ? null : zones
   tags: tags
   properties: {
     threatIntelMode: threatIntelMode
