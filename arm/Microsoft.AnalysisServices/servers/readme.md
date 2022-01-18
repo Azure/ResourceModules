@@ -81,9 +81,9 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `analysisServicesName` | string | The name of the analysis service |
-| `analysisServicesResourceGroup` | string | The resource group the analysis service was deployed into |
-| `analysisServicesResourceId` | string | The resource ID of the analysis service |
+| `name` | string | The name of the analysis service |
+| `resourceGroupName` | string | The resource group the analysis service was deployed into |
+| `resourceId` | string | The resource ID of the analysis service |
 
 ## Template references
 
