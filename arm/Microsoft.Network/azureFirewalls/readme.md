@@ -9,7 +9,7 @@ This module deploys a firewall.
 | `Microsoft.Authorization/locks` | 2017-04-01 |
 | `Microsoft.Authorization/roleAssignments` | 2021-04-01-preview |
 | `Microsoft.Insights/diagnosticSettings` | 2021-05-01-preview |
-| `Microsoft.Network/azureFirewalls` | 2021-03-01 |
+| `Microsoft.Network/azureFirewalls` | 2021-05-01 |
 | `Microsoft.Network/publicIPAddresses` | 2021-02-01 |
 
 ## Parameters
@@ -27,8 +27,8 @@ This module deploys a firewall.
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticStorageAccountId` | string |  |  | Optional. Diagnostic Storage Account resource identifier |
 | `diagnosticWorkspaceId` | string |  |  | Optional. Log Analytics workspace resource identifier |
-| `enableDnsProxy` | bool |  |  | Optional. Enable the preview feature for DNS proxy. |
 | `firewallLogsToEnable` | array | `[AzureFirewallApplicationRule, AzureFirewallNetworkRule, AzureFirewallDnsProxy]` | `[AzureFirewallApplicationRule, AzureFirewallNetworkRule, AzureFirewallDnsProxy]` | Optional. The name of firewall logs that will be streamed. |
+| `firewallPolicyId` | string |  |  | Optional. Resource ID of the Firewall Policy that should be attached. |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
 | `metricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | Optional. The name of metrics that will be streamed. |
@@ -39,6 +39,7 @@ This module deploys a firewall.
 | `publicIPPrefixId` | string |  |  | Optional. Resource ID of the Public IP Prefix object. This is only needed if you want your Public IPs created in a PIP Prefix. |
 | `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
 | `tags` | object | `{object}` |  | Optional. Tags of the Azure Firewall resource. |
+| `threatIntelMode` | string | `Deny` | `[Alert, Deny, Off]` | Optional. The operation mode for Threat Intel. |
 | `vNetId` | string |  |  | Required. Shared services Virtual Network resource ID |
 
 ### Parameter Usage: `roleAssignments`
@@ -100,7 +101,7 @@ The `networkRuleCollections` parameter accepts a JSON Array of AzureFirewallNetw
 
 ## Template references
 
-- [Azurefirewalls](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-03-01/azureFirewalls)
+- [Azurefirewalls](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/azureFirewalls)
 - [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings)
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
 - [Publicipaddresses](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-02-01/publicIPAddresses)

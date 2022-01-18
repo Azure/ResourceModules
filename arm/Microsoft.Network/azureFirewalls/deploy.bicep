@@ -15,9 +15,6 @@ param azureSkuName string = 'AZFW_VNet'
 ])
 param azureSkuTier string = 'Standard'
 
-@description('Optional. Enable the preview feature for DNS proxy.')
-param enableDnsProxy bool = false
-
 @description('Optional. Collection of application rule collections used by Azure Firewall.')
 param applicationRuleCollections array = []
 
@@ -35,6 +32,17 @@ param azureFirewallPipName string = ''
 
 @description('Optional. Resource ID of the Public IP Prefix object. This is only needed if you want your Public IPs created in a PIP Prefix.')
 param publicIPPrefixId string = ''
+
+@description('Optional. Resource ID of the Firewall Policy that should be attached.')
+param firewallPolicyId string = ''
+
+@allowed([
+  'Alert'
+  'Deny'
+  'Off'
+])
+@description('Optional. The operation mode for Threat Intel.')
+param threatIntelMode string = 'Deny'
 
 @description('Optional. Diagnostic Storage Account resource identifier')
 param diagnosticStorageAccountId string = ''
@@ -188,13 +196,16 @@ resource azureFirewallPip_diagnosticSettings 'Microsoft.Insights/diagnosticSetti
   scope: azureFirewallPip
 }
 
-resource azureFirewall 'Microsoft.Network/azureFirewalls@2021-03-01' = {
+resource azureFirewall 'Microsoft.Network/azureFirewalls@2021-05-01' = {
   name: name
   location: location
   zones: length(availabilityZones) == 0 ? null : availabilityZones
   tags: tags
   properties: {
-    threatIntelMode: 'Deny'
+    threatIntelMode: threatIntelMode
+    firewallPolicy: empty(firewallPolicyId) ? null : {
+      id: firewallPolicyId
+    }
     ipConfigurations: [
       {
         name: 'IpConf'
@@ -211,9 +222,6 @@ resource azureFirewall 'Microsoft.Network/azureFirewalls@2021-03-01' = {
     sku: {
       name: azureSkuName
       tier: azureSkuTier
-    }
-    additionalProperties: {
-      'Network.DNS.EnableProxy': string(enableDnsProxy)
     }
     applicationRuleCollections: applicationRuleCollections
     natRuleCollections: natRuleCollections
