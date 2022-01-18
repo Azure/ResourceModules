@@ -12,8 +12,8 @@ param tags object = {}
 @description('Optional. Enable or Disable AzureADOnlyAuthentication on All Workspace subresource')
 param azureADOnlyAuthentication bool = false
 
-@description('Optional. AAD object Id of initial workspace admin.')
-param initialWorkspaceAdminObjectId string = ''
+@description('Optional. AAD object ID of initial workspace admin.')
+param initialWorkspaceAdminObjectID string = ''
 
 @description('Required. Name of the default ADLS Gen2 storage account.')
 param defaultDataLakeStorageAccountName string
@@ -69,7 +69,7 @@ param preventDataExfiltration bool = false
 param publicNetworkAccess string = 'Enabled'
 
 @description('Optional. Purview Resource ID.')
-param purviewResourceId string = ''
+param purviewResourceID string = ''
 
 @description('Required. Login for administrator access to the workspace\'s SQL pools.')
 param sqlAdministratorLogin string
@@ -100,13 +100,13 @@ param privateEndpoints array = []
 param diagnosticLogsRetentionInDays int = 365
 
 @description('Optional. Resource ID of the diagnostic storage account.')
-param diagnosticStorageAccountId string = ''
+param diagnosticStorageAccountID string = ''
 
 @description('Optional. Resource ID of log analytics.')
-param workspaceId string = ''
+param workspaceID string = ''
 
 @description('Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.')
-param eventHubAuthorizationRuleId string = ''
+param eventHubAuthorizationRuleID string = ''
 
 @description('Optional. Name of the event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.')
 param eventHubName string = ''
@@ -159,8 +159,8 @@ resource workspace 'Microsoft.Synapse/workspaces@2021-06-01' = {
   tags: tags
   properties: {
     azureADOnlyAuthentication: (azureADOnlyAuthentication) ? azureADOnlyAuthentication : null
-    cspWorkspaceAdminProperties: (!empty(initialWorkspaceAdminObjectId)) ? {
-      initialWorkspaceAdminObjectId: initialWorkspaceAdminObjectId
+    cspWorkspaceAdminProperties: (!empty(initialWorkspaceAdminObjectID)) ? {
+      initialWorkspaceAdminObjectId: initialWorkspaceAdminObjectID
     } : null
     defaultDataLakeStorage: {
       accountUrl: 'https://${defaultDataLakeStorageAccountName}.dfs.core.windows.net'
@@ -187,8 +187,8 @@ resource workspace 'Microsoft.Synapse/workspaces@2021-06-01' = {
       preventDataExfiltration: preventDataExfiltration
     } : null
     publicNetworkAccess: (managedVirtualNetwork) ? publicNetworkAccess : null
-    purviewConfiguration: (!empty(purviewResourceId)) ? {
-      purviewResourceId: purviewResourceId
+    purviewConfiguration: (!empty(purviewResourceID)) ? {
+      purviewResourceId: purviewResourceID
     } : null
     sqlAdministratorLogin: sqlAdministratorLogin
     sqlAdministratorLoginPassword: (!empty(sqlAdministratorLoginPassword)) ? sqlAdministratorLoginPassword : null
@@ -251,12 +251,12 @@ module workspace_privateEndpoints '.bicep/nested_privateEndpoint.bicep' = [for (
 }]
 
 // Diagnostics Settings
-resource workspace_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2021-05-01-preview' = if (!empty(diagnosticStorageAccountId) || !empty(workspaceId) || !empty(eventHubAuthorizationRuleId) || !empty(eventHubName)) {
+resource workspace_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2021-05-01-preview' = if (!empty(diagnosticStorageAccountID) || !empty(workspaceID) || !empty(eventHubAuthorizationRuleID) || !empty(eventHubName)) {
   name: '${workspace.name}-diagnosticSettings'
   properties: {
-    storageAccountId: !empty(diagnosticStorageAccountId) ? diagnosticStorageAccountId : null
-    workspaceId: !empty(workspaceId) ? workspaceId : null
-    eventHubAuthorizationRuleId: !empty(eventHubAuthorizationRuleId) ? eventHubAuthorizationRuleId : null
+    storageAccountId: !empty(diagnosticStorageAccountID) ? diagnosticStorageAccountID : null
+    workspaceId: !empty(workspaceID) ? workspaceID : null
+    eventHubAuthorizationRuleId: !empty(eventHubAuthorizationRuleID) ? eventHubAuthorizationRuleID : null
     eventHubName: !empty(eventHubName) ? eventHubName : null
     logs: diagnosticsLogs
   }
@@ -264,7 +264,7 @@ resource workspace_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@202
 }
 
 @description('The resource ID of the deployed Synapse Workspace.')
-output workspaceResourceId string = workspace.id
+output workspaceResourceID string = workspace.id
 
 @description('The name of the deployed Synapse Workspace.')
 output workspaceName string = workspace.name
