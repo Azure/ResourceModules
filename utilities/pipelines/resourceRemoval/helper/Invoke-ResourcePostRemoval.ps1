@@ -38,6 +38,7 @@ function Invoke-ResourcePostRemoval {
                     $null = Remove-AzKeyVault -ResourceId $matchingKeyVault.Id -InRemovedState -Force -Location $matchingKeyVault.Location
                 }
             }
+            break
         }
         'Microsoft.CognitiveServices/accounts' {
             $resourceGroupName = $resourceId.Split('/')[4]
@@ -49,6 +50,7 @@ function Invoke-ResourcePostRemoval {
                     $null = Remove-AzCognitiveServicesAccount -InRemovedState -Force -Location $matchingAccount.Location -ResourceGroupName $resourceGroupName -Name $matchingAccount.AccountName
                 }
             }
+            break
         }
         'Microsoft.ApiManagement/service' {
             $subscriptionId = $resourceId.Split('/')[2]
@@ -73,6 +75,31 @@ function Invoke-ResourcePostRemoval {
                     $null = Invoke-AzRestMethod @purgeRequestInputObject
                 }
             }
+            break
+        }
+        'Microsoft.OperationalInsights/workspaces' {
+            $subscriptionId = $resourceId.Split('/')[2]
+            $resourceGroupName = $resourceId.Split('/')[4]
+            $resourceName = Split-Path $ResourceId -Leaf
+            # Fetch service in soft-delete state
+            $getPath = '/subscriptions/{0}/providers/Microsoft.OperationalInsights/deletedWorkspaces?api-version=2020-03-01-preview' -f $subscriptionId
+            $getRequestInputObject = @{
+                Method = 'GET'
+                Path   = $getPath
+            }
+            $softDeletedService = ((Invoke-AzRestMethod @getRequestInputObject).Content | ConvertFrom-Json).value | Where-Object { $_.id -eq $resourceId -and $_.name -eq $resourceName }
+            if ($softDeletedService) {
+                # Recover service
+                $location = $softDeletedService.location
+                if ($PSCmdlet.ShouldProcess(('Log analytics workspace [{0}]' -f $resourceId), 'Recover')) {
+                    $recoveredWorkspace = New-AzOperationalInsightsWorkspace -ResourceGroupName $resourceGroupName -Name $resourceName -Location $location
+                }
+                # Purge service
+                if ($PSCmdlet.ShouldProcess(('Log analytics workspace with ID [{0}]' -f $resourceId), 'Purge')) {
+                    $recoveredWorkspace | Remove-AzOperationalInsightsWorkspace -ForceDelete -Force
+                }
+            }
+            break
         }
         'Microsoft.RecoveryServices/vaults/backupFabrics/protectionContainers/protectedItems' {
             # Remove protected VM
@@ -108,6 +135,8 @@ function Invoke-ResourcePostRemoval {
 
             # Undo a potential soft delete state change
             $null = Set-AzRecoveryServicesVaultProperty -VaultId $vaultId -SoftDeleteFeatureState $softDeleteStatus.TrimEnd('d')
+            break
         }
+        ### CODE LOCATION: Add custom post-removal operation here
     }
 }
