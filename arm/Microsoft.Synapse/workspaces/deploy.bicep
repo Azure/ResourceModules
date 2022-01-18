@@ -195,22 +195,7 @@ resource workspace 'Microsoft.Synapse/workspaces@2021-06-01' = {
   }
 }
 
-// // Workspace encryption - Assign Workspace System Identity Keyvault Crypto Reader at Encryption Keyvault
-// resource keyVault 'Microsoft.KeyVault/vaults@2019-09-01' existing = if (encryptionActivateWorkspace) {
-//   name: encryptionKeyVaultName
-//   scope: az.resourceGroup(encryptionKeyVaultResourceGroupName, encryptionKeyVaultName)
-// }
-
-// // Assign role Key Vault Crypto User
-// resource workspace_cmk_rbac 'Microsoft.Authorization/roleAssignments@2021-04-01-preview' = if (encryptionActivateWorkspace) {
-//   name: guid(workspace.name, deployment().name)
-//   properties: {
-//     roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '12338af0-0e69-4776-bea7-57ae8d297424')
-//     principalId: workspace.identity.principalId
-//   }
-//   scope: keyVault
-// }
-
+// Workspace encryption - Assign Synapse Workspace MSI access to encryption key
 module workspace_cmk_rbac '.bicep/nested_cmkRbac.bicep' = if (encryptionActivateWorkspace) {
   name: '${workspace.name}-cmk-rbac'
   params: {
