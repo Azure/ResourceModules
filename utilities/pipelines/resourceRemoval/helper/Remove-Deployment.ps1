@@ -60,7 +60,7 @@ function Remove-Deployment {
 
         # Load helper
         . (Join-Path (Get-Item -Path $PSScriptRoot).parent.parent.FullName 'sharedScripts' 'Get-ScopeOfTemplateFile.ps1')
-        . (Join-Path (Split-Path $PSScriptRoot -Parent) 'helper' 'Get-ResourceIdsOfDeployment.ps1')
+        . (Join-Path (Split-Path $PSScriptRoot -Parent) 'helper' 'Get-DeploymentTargetResourceList.ps1')
         . (Join-Path (Split-Path $PSScriptRoot -Parent) 'helper' 'Get-ResourceIdsAsFormattedObjectList.ps1')
         . (Join-Path (Split-Path $PSScriptRoot -Parent) 'helper' 'Get-OrderedResourcesList.ps1')
         . (Join-Path (Split-Path $PSScriptRoot -Parent) 'helper' 'Get-DependencyResourceNameList.ps1')
@@ -85,17 +85,17 @@ function Remove-Deployment {
             Scope             = $deploymentScope
             ResourceGroupName = $resourceGroupName
         }
-        [array] $deploymentResourceIds = Get-ResourceIdsOfDeployment @deploymentsInputObject -Verbose
-        Write-Verbose ('Total number of deployments after fetching deployments [{0}]' -f $deploymentResourceIds.Count) -Verbose
+        [array] $deployedTargetResources = Get-DeploymentTargetResourceList @deploymentsInputObject -Verbose
+        Write-Verbose ('Total number of deployments after fetching deployments [{0}]' -f $deployedTargetResources.Count) -Verbose
 
         # Pre-Filter & order items
         # ========================
-        $rawResourceIdsToRemove = $deploymentResourceIds | Sort-Object -Property { $_.Split('/').Count } -Descending | Select-Object -Unique
-        Write-Verbose ('Total number of deployments after pre-filtering (duplicates) & ordering items [{0}]' -f $rawResourceIdsToRemove.Count) -Verbose
+        $rawTargetResourceIdsToRemove = $deployedTargetResources | Sort-Object -Property { $_.Split('/').Count } -Descending | Select-Object -Unique
+        Write-Verbose ('Total number of deployments after pre-filtering (duplicates) & ordering items [{0}]' -f $rawTargetResourceIdsToRemove.Count) -Verbose
 
         # Format items
         # ============
-        [array] $resourcesToRemove = Get-ResourceIdsAsFormattedObjectList -ResourceIds $rawResourceIdsToRemove
+        [array] $resourcesToRemove = Get-ResourceIdsAsFormattedObjectList -ResourceIds $rawTargetResourceIdsToRemove
         Write-Verbose ('Total number of deployments after formatting items [{0}]' -f $resourcesToRemove.Count) -Verbose
 
         # Filter all dependency resources
