@@ -51,7 +51,7 @@ var eventHubNamespaceParameters = {
 // =========== //
 
 // Resource Group
-module resourceGroup '../../../../Microsoft.Resources/resourceGroups/deploy.bicep' = {
+module resourceGroup '../../../Microsoft.Resources/resourceGroups/deploy.bicep' = {
   name: '${uniqueString(deployment().name, location)}-rg'
   params: {
     name: resourceGroupName
@@ -60,7 +60,7 @@ module resourceGroup '../../../../Microsoft.Resources/resourceGroups/deploy.bice
 }
 
 // Storage Accounts
-module diagnoticStorageAccount '../../../../Microsoft.Storage/storageAccounts/deploy.bicep' = {
+module diagnoticStorageAccount '../../../Microsoft.Storage/storageAccounts/deploy.bicep' = {
   name: '${uniqueString(deployment().name, location)}-sa'
   scope: az.resourceGroup(resourceGroupName)
   params: {
@@ -75,7 +75,7 @@ module diagnoticStorageAccount '../../../../Microsoft.Storage/storageAccounts/de
 }
 
 // Log Analytics Workspace
-module logAnalyticsWorkspace '../../../../Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
+module logAnalyticsWorkspace '../../../Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
   name: '${uniqueString(deployment().name, location)}-oms'
   scope: az.resourceGroup(resourceGroupName)
   params: {
@@ -87,7 +87,7 @@ module logAnalyticsWorkspace '../../../../Microsoft.OperationalInsights/workspac
 }
 
 // Event Hub Namespace
-module eventHubNamespace '../../../../Microsoft.EventHub/namespaces/deploy.bicep' = {
+module eventHubNamespace '../../../Microsoft.EventHub/namespaces/deploy.bicep' = {
   name: '${uniqueString(deployment().name, location)}-ehn'
   scope: az.resourceGroup(resourceGroupName)
   params: {

@@ -173,9 +173,9 @@ jobs:
                     (Join-Path '$(moduleRepoRoot)' '$(modulePath)' 'deploy.json')
                 }
 
-                $namespacePath = Split-Path $templateFilePath.Replace('/','\').Split('arm\')[1] -Parent # Returns e.g. 'Microsoft.Sql\servers'
-                $templateFileName = '{0}.bicep' -f (Split-Path '${{ deploymentBlock.path }}' -LeafBase)
-                $dependencyTemplateFilePath = Join-Path '$(moduleRepoRoot)' 'arm' '.global' 'moduleDependencies' $namespacePath $templateFileName
+                $templateFolderPath = Split-Path (Join-Path '$(parametersRepoRoot)' '${{ deploymentBlock.path }}') -Parent
+                $templateFileName = 'dep.{0}.bicep' -f (Split-Path '${{ deploymentBlock.path }}' -LeafBase)
+                $dependencyTemplateFilePath = Join-Path '$(moduleRepoRoot)' $templateFolderPath $templateFileName
 
                 if (-not (Test-Path $dependencyTemplateFilePath)) {
                   Write-Verbose "No dependency deployment found in path [$dependencyTemplateFilePath]. Skipping deployment" -Verbose
@@ -427,10 +427,9 @@ jobs:
                 }
 
                 if (-not [String]::IsNullOrEmpty('$(dependencyDeploymentName)')) {
-                  $namespacePath = Split-Path $templateFilePath.Replace('/','\').Split('arm\')[1] -Parent # Returns e.g. 'Microsoft.Sql\servers'
-                  $templateFileName = '{0}.bicep' -f (Split-Path '${{ deploymentBlock.path }}' -LeafBase)
-                  # Results in e.g. [C:/resourceModules/arm/.global/moduleDependencies/Microsoft.Sql/servers/parameters.bicep]
-                  $dependencyTemplateFilePath = Join-Path '$(moduleRepoRoot)' 'arm' '.global' 'moduleDependencies' $namespacePath $templateFileName
+                  $templateFolderPath = Split-Path (Join-Path '$(parametersRepoRoot)' '${{ deploymentBlock.path }}') -Parent
+                  $templateFileName = 'dep.{0}.bicep' -f (Split-Path '${{ deploymentBlock.path }}' -LeafBase)
+                  $dependencyTemplateFilePath = Join-Path '$(moduleRepoRoot)' $templateFolderPath $templateFileName
 
                   $functionInput = @{
                       DeploymentName    = '$(dependencyDeploymentName)'

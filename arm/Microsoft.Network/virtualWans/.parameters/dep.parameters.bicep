@@ -17,7 +17,7 @@ var location = deployment().location
 // =========== //
 
 // Resource Group
-module resourceGroup '../../../../Microsoft.Resources/resourceGroups/deploy.bicep' = {
+module resourceGroup '../../../Microsoft.Resources/resourceGroups/deploy.bicep' = {
   name: '${uniqueString(deployment().name, location)}-rg'
   params: {
     name: resourceGroupName
