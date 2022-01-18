@@ -1,6 +1,6 @@
-# Synapse PrivateLinkHubs `[Microsoft.Synapse/workspaces]`
+# Synapse Workspaces `[Microsoft.Synapse/workspaces]`
 
-This module deploys Synapse PrivateLinkHubs.
+This module deploys Synapse Workspaces.
 
 ## Resource Types
 
@@ -10,6 +10,7 @@ This module deploys Synapse PrivateLinkHubs.
 | `Microsoft.Authorization/roleAssignments` | 2021-04-01-preview |
 | `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
 | `Microsoft.Insights/diagnosticSettings` | 2021-05-01-preview |
+| `Microsoft.KeyVault/vaults/accessPolicies` | 2021-06-01-preview |
 | `Microsoft.Network/privateEndpoints` | 2021-03-01 |
 | `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | 2021-03-01 |
 | `Microsoft.Synapse/workspaces` | 2021-06-01 |
@@ -52,7 +53,7 @@ This module deploys Synapse PrivateLinkHubs.
 | `sqlAdministratorLoginPassword` | string |  |  | Optional. Password for administrator access to the workspace's SQL pools. If you don't provide a password, one will be automatically generated. You can change the password later. |
 | `tags` | object | `{object}` |  | Optional. Tags of the resource. |
 | `userAssignedIdentities` | object | `{object}` |  | Optional. The ID(s) to assign to the resource. |
-| `workspaceID` | string |  |  | Optional. Resource ID of log analytics. |
+| `workspaceID` | string |  |  | Optional. Resource ID of log analytics. |w
 
 ### Parameter Usage: `privateEndpoints`
 
@@ -159,5 +160,6 @@ You can specify multiple user assigned identities to a resource by providing add
 - [Privateendpoints/Privatednszonegroups](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-03-01/privateEndpoints/privateDnsZoneGroups)
 - [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-04-01-preview/roleAssignments)
 - [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)
+- [Vaults/Accesspolicies](https://docs.microsoft.com/en-us/azure/templates/Microsoft.KeyVault/2021-06-01-preview/vaults/accessPolicies)
 - [Workspaces](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Synapse/2021-06-01/workspaces)
 - [Workspaces/Keys](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Synapse/2021-06-01/workspaces/keys)
