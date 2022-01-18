@@ -10,7 +10,7 @@ param tags object = {}
 @description('Optional. Determines whether the object is enabled.')
 param attributesEnabled bool = true
 
-@description('Optional. Expiry date in seconds since 1970-01-01T00:00:00Z.')
+@description('Optional. Expiry date in seconds since 1970-01-01T00:00:00Z. For security reasons, it is recommended to set an expiration date whenever possible.')
 param attributesExp int = -1
 
 @description('Optional. Not before date in seconds since 1970-01-01T00:00:00Z.')
