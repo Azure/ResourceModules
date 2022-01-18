@@ -10,14 +10,12 @@ This module deploys a firewall.
 | `Microsoft.Authorization/roleAssignments` | 2021-04-01-preview |
 | `Microsoft.Insights/diagnosticSettings` | 2021-05-01-preview |
 | `Microsoft.Network/azureFirewalls` | 2021-05-01 |
-| `Microsoft.Network/publicIPAddresses` | 2021-02-01 |
 
 ## Parameters
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `applicationRuleCollections` | array | `[]` |  | Optional. Collection of application rule collections used by Azure Firewall. |
-| `azureFirewallPipName` | string |  |  | Optional. Specifies the name of the Public IP used by Azure Firewall. If it's not provided, a '-pip' suffix will be appended to the Firewall's name. |
 | `azureSkuName` | string | `AZFW_VNet` | `[AZFW_VNet, AZFW_Hub]` | Optional. Name of an Azure Firewall SKU. |
 | `azureSkuTier` | string | `Standard` | `[Standard, Premium]` | Optional. Tier of an Azure Firewall. |
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
@@ -28,18 +26,16 @@ This module deploys a firewall.
 | `diagnosticWorkspaceId` | string |  |  | Optional. Log Analytics workspace resource identifier |
 | `firewallLogsToEnable` | array | `[AzureFirewallApplicationRule, AzureFirewallNetworkRule, AzureFirewallDnsProxy]` | `[AzureFirewallApplicationRule, AzureFirewallNetworkRule, AzureFirewallDnsProxy]` | Optional. The name of firewall logs that will be streamed. |
 | `firewallPolicyId` | string |  |  | Optional. Resource ID of the Firewall Policy that should be attached. |
+| `ipConfigurations` | array |  |  | Required. List of IP Configurations. |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
 | `metricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | Optional. The name of metrics that will be streamed. |
 | `name` | string |  |  | Required. Name of the Azure Firewall. |
 | `natRuleCollections` | array | `[]` |  | Optional. Collection of NAT rule collections used by Azure Firewall. |
 | `networkRuleCollections` | array | `[]` |  | Optional. Collection of network rule collections used by Azure Firewall. |
-| `publicIPLogsToEnable` | array | `[DDoSProtectionNotifications, DDoSMitigationReports, DDoSMitigationFlowLogs]` | `[DDoSProtectionNotifications, DDoSMitigationReports, DDoSMitigationFlowLogs]` | Optional. The name of public IP logs that will be streamed. |
-| `publicIPPrefixId` | string |  |  | Optional. Resource ID of the Public IP Prefix object. This is only needed if you want your Public IPs created in a PIP Prefix. |
 | `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
 | `tags` | object | `{object}` |  | Optional. Tags of the Azure Firewall resource. |
 | `threatIntelMode` | string | `Deny` | `[Alert, Deny, Off]` | Optional. The operation mode for Threat Intel. |
-| `vNetId` | string |  |  | Required. Shared services Virtual Network resource ID |
 | `zones` | array | `[1, 2, 3]` |  | Optional. Zone numbers e.g. 1,2,3. |
 
 ### Parameter Usage: `roleAssignments`
@@ -88,7 +84,6 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | `applicationRuleCollections` | array | List of Application Rule Collections |
 | `azureFirewallName` | string | The name of the Azure firewall |
 | `azureFirewallPrivateIp` | string | The private IP of the Azure Firewall |
-| `azureFirewallPublicIp` | string | The public IP of the Azure Firewall |
 | `azureFirewallResourceGroup` | string | The resource group the azure firewall was deployed into |
 | `azureFirewallResourceId` | string | The resource ID of the Azure firewall |
 | `natRuleCollections` | array | Collection of NAT rule collections used by Azure Firewall |
@@ -104,5 +99,4 @@ The `networkRuleCollections` parameter accepts a JSON Array of AzureFirewallNetw
 - [Azurefirewalls](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/azureFirewalls)
 - [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings)
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
-- [Publicipaddresses](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-02-01/publicIPAddresses)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2021-04-01-preview/roleAssignments)

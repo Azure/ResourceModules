@@ -24,14 +24,8 @@ param networkRuleCollections array = []
 @description('Optional. Collection of NAT rule collections used by Azure Firewall.')
 param natRuleCollections array = []
 
-@description('Required. Shared services Virtual Network resource ID')
-param vNetId string
-
-@description('Optional. Specifies the name of the Public IP used by Azure Firewall. If it\'s not provided, a \'-pip\' suffix will be appended to the Firewall\'s name.')
-param azureFirewallPipName string = ''
-
-@description('Optional. Resource ID of the Public IP Prefix object. This is only needed if you want your Public IPs created in a PIP Prefix.')
-param publicIPPrefixId string = ''
+@description('Required. List of IP Configurations.')
+param ipConfigurations array
 
 @description('Optional. Resource ID of the Firewall Policy that should be attached.')
 param firewallPolicyId string = ''
@@ -43,6 +37,13 @@ param firewallPolicyId string = ''
 ])
 @description('Optional. The operation mode for Threat Intel.')
 param threatIntelMode string = 'Deny'
+
+@description('Optional. Zone numbers e.g. 1,2,3.')
+param zones array = [
+  '1'
+  '2'
+  '3'
+]
 
 @description('Optional. Diagnostic Storage Account resource identifier')
 param diagnosticStorageAccountId string = ''
@@ -64,13 +65,6 @@ param diagnosticEventHubName string = ''
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
 
-@description('Optional. Zone numbers e.g. 1,2,3.')
-param zones array = [
-  '1'
-  '2'
-  '3'
-]
-
 @allowed([
   'CanNotDelete'
   'NotSpecified'
@@ -88,12 +82,6 @@ param tags object = {}
 @description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
-var publicIPPrefix = {
-  id: publicIPPrefixId
-}
-var azureFirewallSubnetId = '${vNetId}/subnets/AzureFirewallSubnet'
-var azureFirewallPipId = azureFirewallPip.id
-
 @description('Optional. The name of firewall logs that will be streamed.')
 @allowed([
   'AzureFirewallApplicationRule'
@@ -106,18 +94,6 @@ param firewallLogsToEnable array = [
   'AzureFirewallDnsProxy'
 ]
 
-@description('Optional. The name of public IP logs that will be streamed.')
-@allowed([
-  'DDoSProtectionNotifications'
-  'DDoSMitigationReports'
-  'DDoSMitigationFlowLogs'
-])
-param publicIPLogsToEnable array = [
-  'DDoSProtectionNotifications'
-  'DDoSMitigationReports'
-  'DDoSMitigationFlowLogs'
-]
-
 @description('Optional. The name of metrics that will be streamed.')
 @allowed([
   'AllMetrics'
@@ -126,16 +102,19 @@ param metricsToEnable array = [
   'AllMetrics'
 ]
 
-var diagnosticsLogsAzureFirewall = [for log in firewallLogsToEnable: {
-  category: log
-  enabled: true
-  retentionPolicy: {
-    enabled: true
-    days: diagnosticLogsRetentionInDays
+var ipConfigurations_var = [for ipConfiguration in ipConfigurations: {
+  name: ipConfiguration.name
+  properties: {
+    publicIPAddress: empty(ipConfiguration.publicIPAddressResourceId) ? null : {
+      id: ipConfiguration.publicIPAddressResourceId
+    }
+    subnet: empty(ipConfiguration.subnetResourceId) ? null : {
+      id: ipConfiguration.subnetResourceId
+    }
   }
 }]
 
-var diagnosticsLogsPublicIp = [for log in publicIPLogsToEnable: {
+var diagnosticsLogsAzureFirewall = [for log in firewallLogsToEnable: {
   category: log
   enabled: true
   retentionPolicy: {
@@ -159,43 +138,6 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
-resource azureFirewallPip 'Microsoft.Network/publicIPAddresses@2021-02-01' = {
-  name: !empty(azureFirewallPipName) ? azureFirewallPipName : '${name}-pip'
-  location: location
-  tags: tags
-  sku: {
-    name: 'Standard'
-  }
-  zones: zones
-  properties: {
-    publicIPAllocationMethod: 'Static'
-    publicIPAddressVersion: 'IPv4'
-    publicIPPrefix: !empty(publicIPPrefixId) ? publicIPPrefix : null
-  }
-}
-
-resource azureFirewallPip_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
-  name: '${azureFirewallPip.name}-${lock}-lock'
-  properties: {
-    level: lock
-    notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
-  }
-  scope: azureFirewallPip
-}
-
-resource azureFirewallPip_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = if (!empty(diagnosticStorageAccountId) || !empty(diagnosticWorkspaceId) || !empty(diagnosticEventHubAuthorizationRuleId) || !empty(diagnosticEventHubName)) {
-  name: '${azureFirewallPip.name}-diagnosticSettings'
-  properties: {
-    storageAccountId: !empty(diagnosticStorageAccountId) ? diagnosticStorageAccountId : null
-    workspaceId: !empty(diagnosticWorkspaceId) ? diagnosticWorkspaceId : null
-    eventHubAuthorizationRuleId: !empty(diagnosticEventHubAuthorizationRuleId) ? diagnosticEventHubAuthorizationRuleId : null
-    eventHubName: !empty(diagnosticEventHubName) ? diagnosticEventHubName : null
-    metrics: diagnosticsMetrics
-    logs: diagnosticsLogsPublicIp
-  }
-  scope: azureFirewallPip
-}
-
 resource azureFirewall 'Microsoft.Network/azureFirewalls@2021-05-01' = {
   name: name
   location: location
@@ -206,19 +148,7 @@ resource azureFirewall 'Microsoft.Network/azureFirewalls@2021-05-01' = {
     firewallPolicy: empty(firewallPolicyId) ? null : {
       id: firewallPolicyId
     }
-    ipConfigurations: [
-      {
-        name: 'IpConf'
-        properties: {
-          subnet: {
-            id: azureFirewallSubnetId
-          }
-          publicIPAddress: {
-            id: azureFirewallPipId
-          }
-        }
-      }
-    ]
+    ipConfigurations: ipConfigurations_var
     sku: {
       name: azureSkuName
       tier: azureSkuTier
@@ -271,9 +201,6 @@ output azureFirewallResourceGroup string = resourceGroup().name
 
 @description('The private IP of the Azure Firewall')
 output azureFirewallPrivateIp string = azureFirewall.properties.ipConfigurations[0].properties.privateIPAddress
-
-@description('The public IP of the Azure Firewall')
-output azureFirewallPublicIp string = azureFirewallPip.properties.ipAddress
 
 @description('List of Application Rule Collections')
 output applicationRuleCollections array = applicationRuleCollections

@@ -12,6 +12,15 @@
                 "3"
             ]
         },
+        "ipConfigurations": {
+            "value": [
+                {
+                    "name": "ipConfig01",
+                    "publicIPAddressResourceId": "",
+                    "subnetResourceId": ""
+                }
+            ]
+        },
         "applicationRuleCollections": {
             "value": [
                 {
