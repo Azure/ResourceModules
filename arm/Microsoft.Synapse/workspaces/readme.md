@@ -55,12 +55,6 @@ This module deploys Synapse PrivateLinkHubs.
 | `userAssignedIdentities` | object | `{object}` |  | Optional. The ID(s) to assign to the resource. |
 | `workspaceID` | string |  |  | Optional. Resource ID of log analytics. |
 
-<<<<<<< HEAD
-| `workspaceID` | string |  |  | Optional. Resource ID of log analytics. |
-=======
-| `workspaceID` | string |  |  | Optional. Resource ID of log analytics. |w
->>>>>>> parent of 8cf78a0a (Removed changes)
-
 ### Parameter Usage: `privateEndpoints`
 
 To use Private Endpoint the following dependencies must be deployed:
