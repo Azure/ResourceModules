@@ -195,7 +195,7 @@ resource workspace 'Microsoft.Synapse/workspaces@2021-06-01' = {
   }
 }
 
-// Workspace encryption - Assign Synapse Workspace MSI access to encryption key
+// Workspace encryption -  Assign Synapse Workspace MSI access to encryption key
 resource keyVault 'Microsoft.KeyVault/vaults@2019-09-01' existing = {
   name: encryptionKeyVaultName
   scope: az.resourceGroup(encryptionKeyVaultResourceGroupName)
