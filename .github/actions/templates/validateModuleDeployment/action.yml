@@ -183,6 +183,7 @@ runs:
             DeploymentName    = '${{ steps.deploy_step.outputs.deploymentName }}'
             TemplateFilePath  = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.templateFilePath }}'
             ResourceGroupName = '${{ inputs.resourceGroupName }}'
+            ManagementGroupId = '${{ inputs.managementGroupId }}'
             Verbose           = $true
           }
 

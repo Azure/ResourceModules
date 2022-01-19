@@ -320,6 +320,7 @@ jobs:
                       DeploymentName    = '$(deploymentName)'
                       TemplateFilePath  = $templateFilePath
                       ResourceGroupName = '${{ parameters.resourceGroupName }}'
+                      ManagementGroupId = '${{ parameters.managementGroupId }}'
                       Verbose           = $true
                   }
 
