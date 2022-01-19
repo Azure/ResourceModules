@@ -1,7 +1,6 @@
 # Synapse Workspaces Keys `[Microsoft.Synapse/workspaces/keys]`
 
 This module deploys Synapse Workspaces Keys.
-// TODO: Replace Resource and fill in description
 
 ## Resource Types
 
@@ -18,10 +17,6 @@ This module deploys Synapse Workspaces Keys.
 | `keyVaultUrl` | string |  |  | Required. The Key Vault Url of the workspace key. |
 | `name` | string |  |  | Required. Encryption key name. |
 | `workspaceName` | string |  |  | Required. Synapse workspace name. |
-
-### Parameter Usage: `<ParameterPlaceholder>`
-
-// TODO: Fill in Parameter usage
 
 ## Outputs
 

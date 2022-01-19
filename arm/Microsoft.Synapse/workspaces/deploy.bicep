@@ -134,7 +134,7 @@ var userAssignedIdentitiesUnion = union(userAssignedIdentities, !empty(encryptio
   '${encryptionUserAssignedIdentity}': {}
 } : {})
 
-var identityType = (!empty(userAssignedIdentitiesUnion) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned')
+var identityType = !empty(userAssignedIdentitiesUnion) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned'
 
 var identity = {
   type: identityType
@@ -158,20 +158,20 @@ resource workspace 'Microsoft.Synapse/workspaces@2021-06-01' = {
   identity: identity
   tags: tags
   properties: {
-    azureADOnlyAuthentication: (azureADOnlyAuthentication) ? azureADOnlyAuthentication : null
-    cspWorkspaceAdminProperties: (!empty(initialWorkspaceAdminObjectID)) ? {
+    azureADOnlyAuthentication: azureADOnlyAuthentication ? azureADOnlyAuthentication : null
+    cspWorkspaceAdminProperties: !empty(initialWorkspaceAdminObjectID) ? {
       initialWorkspaceAdminObjectId: initialWorkspaceAdminObjectID
     } : null
     defaultDataLakeStorage: {
       accountUrl: 'https://${defaultDataLakeStorageAccountName}.dfs.core.windows.net'
       filesystem: defaultDataLakeStorageFilesystem
-      createManagedPrivateEndpoint: (managedVirtualNetwork) ? defaultDataLakeStorageCreateManagedPrivateEndpoint : null
+      createManagedPrivateEndpoint: managedVirtualNetwork ? defaultDataLakeStorageCreateManagedPrivateEndpoint : null
     }
-    encryption: (encryption) ? {
+    encryption: encryption ? {
       cmk: {
         kekIdentity: {
-          userAssignedIdentity: (!empty(encryptionUserAssignedIdentity)) ? encryptionUserAssignedIdentity : null
-          useSystemAssignedIdentity: (encryptionUseSystemAssignedIdentity) ? true : false
+          userAssignedIdentity: !empty(encryptionUserAssignedIdentity) ? encryptionUserAssignedIdentity : null
+          useSystemAssignedIdentity: encryptionUseSystemAssignedIdentity ? true : false
         }
         key: {
           keyVaultUrl: keyVaultUrl
@@ -179,19 +179,19 @@ resource workspace 'Microsoft.Synapse/workspaces@2021-06-01' = {
         }
       }
     } : null
-    managedResourceGroupName: (!empty(managedResourceGroupName)) ? managedResourceGroupName : null
-    managedVirtualNetwork: (managedVirtualNetwork) ? 'default' : null
-    managedVirtualNetworkSettings: (managedVirtualNetwork) ? {
+    managedResourceGroupName: !empty(managedResourceGroupName) ? managedResourceGroupName : null
+    managedVirtualNetwork: managedVirtualNetwork ? 'default' : null
+    managedVirtualNetworkSettings: managedVirtualNetwork ? {
       allowedAadTenantIdsForLinking: allowedAadTenantIdsForLinking
       linkedAccessCheckOnTargetResource: linkedAccessCheckOnTargetResource
       preventDataExfiltration: preventDataExfiltration
     } : null
-    publicNetworkAccess: (managedVirtualNetwork) ? publicNetworkAccess : null
-    purviewConfiguration: (!empty(purviewResourceID)) ? {
+    publicNetworkAccess: managedVirtualNetwork ? publicNetworkAccess : null
+    purviewConfiguration: !empty(purviewResourceID) ? {
       purviewResourceId: purviewResourceID
     } : null
     sqlAdministratorLogin: sqlAdministratorLogin
-    sqlAdministratorLoginPassword: (!empty(sqlAdministratorLoginPassword)) ? sqlAdministratorLoginPassword : null
+    sqlAdministratorLoginPassword: !empty(sqlAdministratorLoginPassword) ? sqlAdministratorLoginPassword : null
   }
 }
 
