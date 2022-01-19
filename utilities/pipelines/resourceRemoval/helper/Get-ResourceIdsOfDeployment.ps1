@@ -76,6 +76,7 @@ function Get-ResourceIdsOfDeploymentInner {
                 # In case we already have any such resources in the list, we should remove them
                 [array]$resultSet = $resultSet | Where-Object { $_ -notmatch "/resourceGroups/$resourceGroupName/" }
             }
+            break
         }
         'subscription' {
             [array]$deploymentTargets = (Get-AzDeploymentOperation -DeploymentName $name).TargetResource | Where-Object { $_ -ne $null }
@@ -95,6 +96,7 @@ function Get-ResourceIdsOfDeploymentInner {
                     [array]$resultSet += Get-ResourceIdsOfDeploymentInner -name (Split-Path $deployment -Leaf) -Scope 'subscription'
                 }
             }
+            break
         }
         'managementgroup' {
             [array]$deploymentTargets = (Get-AzManagementGroupDeploymentOperation -DeploymentName $name -ManagementGroupId $ManagementGroupId).TargetResource | Where-Object { $_ -ne $null }
@@ -104,7 +106,7 @@ function Get-ResourceIdsOfDeploymentInner {
             }
             foreach ($deployment in ($deploymentTargets | Where-Object { $_ -match '/deployments/' } )) {
                 [array]$resultSet = $resultSet | Where-Object { $_ -ne $deployment }
-                if ($deployment -match '/managementGroup/') {
+                if ($deployment -match '/subscriptions/') {
                     # Subscription Level Child Deployments
                     [array]$resultSet += Get-ResourceIdsOfDeploymentInner -Name (Split-Path $deployment -Leaf) -Scope 'subscription'
                 } else {
@@ -112,6 +114,7 @@ function Get-ResourceIdsOfDeploymentInner {
                     [array]$resultSet += Get-ResourceIdsOfDeploymentInner -name (Split-Path $deployment -Leaf) -scope 'managementgroup' -ManagementGroupId $ManagementGroupId
                 }
             }
+            break
         }
         'tenant' {
             [array]$deploymentTargets = (Get-AzTenantDeploymentOperation -DeploymentName $name).TargetResource | Where-Object { $_ -ne $null }
@@ -121,7 +124,7 @@ function Get-ResourceIdsOfDeploymentInner {
             }
             foreach ($deployment in ($deploymentTargets | Where-Object { $_ -match '/deployments/' } )) {
                 [array]$resultSet = $resultSet | Where-Object { $_ -ne $deployment }
-                if ($deployment -match '/tenant/') {
+                if ($deployment -match '/managementgroups/') {
                     # Management Group Level Child Deployments
                     [array]$resultSet += Get-ResourceIdsOfDeploymentInner -Name (Split-Path $deployment -Leaf) -scope 'managementgroup' -ManagementGroupId $ManagementGroupId
                 } else {
@@ -129,6 +132,7 @@ function Get-ResourceIdsOfDeploymentInner {
                     [array]$resultSet += Get-ResourceIdsOfDeploymentInner -name (Split-Path $deployment -Leaf)
                 }
             }
+            break
         }
     }
     return $resultSet
