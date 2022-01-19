@@ -66,18 +66,18 @@ jobs:
   ####################
   #   Pester Tests   #
   ####################
-  job_module_pester_validation:
-    runs-on: ubuntu-20.04
-    name: 'Pester tests'
-    steps:
-      - name: 'Checkout'
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-      - name: 'Run tests'
-        uses: ./.github/actions/templates/validateModulePester
-        with:
-          modulePath: '${{ env.modulePath }}'
+  # job_module_pester_validation:
+  #   runs-on: ubuntu-20.04
+  #   name: 'Pester tests'
+  #   steps:
+  #     - name: 'Checkout'
+  #       uses: actions/checkout@v2
+  #       with:
+  #         fetch-depth: 0
+  #     - name: 'Run tests'
+  #       uses: ./.github/actions/templates/validateModulePester
+  #       with:
+  #         modulePath: '${{ env.modulePath }}'
 
   ####################
   # Deployment tests #
