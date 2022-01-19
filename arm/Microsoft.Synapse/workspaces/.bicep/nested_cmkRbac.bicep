@@ -14,11 +14,13 @@ resource workspace_cmk_rbac 'Microsoft.Authorization/roleAssignments@2021-04-01-
     roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '12338af0-0e69-4776-bea7-57ae8d297424')
     principalId: workspaceIdentity
   }
+  scope: keyVault
 }
 
 // Assign Acess Policy for Keys
 resource workspace_cmk_accessPolicy 'Microsoft.KeyVault/vaults/accessPolicies@2021-06-01-preview' = if (!usesRbacAuthorization) {
-  name: guid(deployment().name)
+  name: 'add'
+  parent: keyVault
   properties: {
     accessPolicies: [
       {
