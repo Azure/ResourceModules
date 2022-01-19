@@ -86,7 +86,7 @@ function Remove-Deployment {
             ResourceGroupName = $resourceGroupName
         }
         [array] $deployedTargetResources = Get-DeploymentTargetResourceList @deploymentsInputObject -Verbose
-        Write-Verbose ('Total number of deployments after fetching deployments [{0}]' -f $deployedTargetResources.Count) -Verbose
+        Write-Verbose ('Total number of deployment target resources after fetching deployments [{0}]' -f $deployedTargetResources.Count) -Verbose
 
         # Pre-Filter & order items
         # ========================
