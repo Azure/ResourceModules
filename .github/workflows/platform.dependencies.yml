@@ -91,7 +91,7 @@ jobs:
           inlineScript: |
             $deploymentOutput = '${{ steps.deploy_msi.outputs.deploymentOutput }}'
             $msiPrincipalId = (ConvertFrom-Json $deploymentOutput).msiPrincipalId
-            Write-Output ('::set-output name=msiPrincipalId::{0}' -f $msiPrincipalId)
+            Write-Output ('::set-output name={0}::{1}' -f 'msiPrincipalId', $msiPrincipalId)
           azPSVersion: 'latest'
 
   job_deploy_pa:
