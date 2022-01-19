@@ -26,7 +26,7 @@ This module deploys Synapse Workspaces.
 | `defaultDataLakeStorageCreateManagedPrivateEndpoint` | bool |  |  | Optional. Create managed private endpoint to the default storage account or not. If Yes is selected, a managed private endpoint connection request is sent to the workspace's primary Data Lake Storage Gen2 account for Spark pools to access data. This must be approved by an owner of the storage account. |
 | `defaultDataLakeStorageFilesystem` | string |  |  | Required. The default ADLS Gen2 file system. |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
-| `diagnosticStorageAccountId` | string |  |  | Optional. Resource ID of the diagnostic storage account. |
+| `diagnosticStorageAccountID` | string |  |  | Optional. Resource ID of the diagnostic storage account. |
 | `encryption` | bool |  |  | Optional. Double encryption using a customer-managed key. |
 | `encryptionActivateWorkspace` | bool |  |  | Optional. Activate workspace by adding the system managed identity in the KeyVault containing the customer managed key and activating the workspace. |
 | `encryptionKeyName` | string |  |  | Optional. The encryption key name in KeyVault. |
@@ -34,9 +34,9 @@ This module deploys Synapse Workspaces.
 | `encryptionKeyVaultResourceGroupName` | string |  |  | Optional. Keyvault resource group name. |
 | `encryptionUserAssignedIdentity` | string |  |  | Optional. The ID of User Assigned Managed identity that will be used to access your customer-managed key stored in key vault. |
 | `encryptionUseSystemAssignedIdentity` | bool |  |  | Optional. Use System Assigned Managed identity that will be used to access your customer-managed key stored in key vault. |
-| `eventHubAuthorizationRuleId` | string |  |  | Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
+| `eventHubAuthorizationRuleID` | string |  |  | Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `eventHubName` | string |  |  | Optional. Name of the event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
-| `initialWorkspaceAdminObjectId` | string |  |  | Optional. AAD object ID of initial workspace admin. |
+| `initialWorkspaceAdminObjectID` | string |  |  | Optional. AAD object ID of initial workspace admin. |
 | `linkedAccessCheckOnTargetResource` | bool |  |  | Optional. Linked Access Check On Target Resource. |
 | `location` | string | `[resourceGroup().location]` |  | Optional. The geo-location where the resource lives. |
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
@@ -47,13 +47,13 @@ This module deploys Synapse Workspaces.
 | `preventDataExfiltration` | bool |  |  | Optional. Prevent Data Exfiltration. |
 | `privateEndpoints` | array | `[]` |  | Optional. Configuration Details for private endpoints. |
 | `publicNetworkAccess` | string | `Enabled` | `[Enabled, Disabled]` | Optional. Enable or Disable public network access to workspace. |
-| `purviewResourceId` | string |  |  | Optional. Purview Resource ID. |
+| `purviewResourceID` | string |  |  | Optional. Purview Resource ID. |
 | `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
 | `sqlAdministratorLogin` | string |  |  | Required. Login for administrator access to the workspace's SQL pools. |
 | `sqlAdministratorLoginPassword` | string |  |  | Optional. Password for administrator access to the workspace's SQL pools. If you don't provide a password, one will be automatically generated. You can change the password later. |
 | `tags` | object | `{object}` |  | Optional. Tags of the resource. |
 | `userAssignedIdentities` | object | `{object}` |  | Optional. The ID(s) to assign to the resource. |
-| `workspaceId` | string |  |  | Optional. Resource ID of log analytics. |
+| `workspaceID` | string |  |  | Optional. Resource ID of log analytics. |w
 
 ### Parameter Usage: `privateEndpoints`
 
@@ -150,7 +150,7 @@ You can specify multiple user assigned identities to a resource by providing add
 | `workspaceConnectivityEndpoints` | object | Connectivity endpoints. |
 | `workspaceName` | string | The name of the deployed Synapse Workspace. |
 | `workspaceResourceGroup` | string | The resource group of the deployed Synapse Workspace. |
-| `workspaceResourceId` | string | The resource ID of the deployed Synapse Workspace. |
+| `workspaceResourceID` | string | The resource ID of the deployed Synapse Workspace. |
 
 ## Template references
 
