@@ -189,7 +189,7 @@ function Get-DeploymentTargetResourceList {
     } while ($searchRetryCount -le $searchRetryLimit)
 
     if (-not $targetResources) {
-        throw "No deployment found for [$name]"
+        throw "No deployment target resources found for [$name]"
     }
 
     return $targetResources
