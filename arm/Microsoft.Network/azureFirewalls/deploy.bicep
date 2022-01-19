@@ -105,10 +105,10 @@ param metricsToEnable array = [
 var ipConfigurations_var = [for ipConfiguration in ipConfigurations: {
   name: ipConfiguration.name
   properties: {
-    publicIPAddress: empty(ipConfiguration.publicIPAddressResourceId) ? null : {
+    publicIPAddress: !contains(ipConfiguration, 'publicIPAddressResourceId') ? null : {
       id: ipConfiguration.publicIPAddressResourceId
     }
-    subnet: empty(ipConfiguration.subnetResourceId) ? null : {
+    subnet: !contains(ipConfiguration, 'subnetResourceId') ? null : {
       id: ipConfiguration.subnetResourceId
     }
   }
