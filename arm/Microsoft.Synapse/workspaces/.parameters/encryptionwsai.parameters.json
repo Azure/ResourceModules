@@ -18,10 +18,10 @@
       "value": true
     },
     "encryptionKeyVaultName": {
-      "value": "carml-keyvault"
+      "value": "adp-sxx-az-kv-x-001"
     },
     "encryptionKeyVaultResourceGroupName": {
-      "value": "platform-core-rg"
+      "value": "validation-rg"
     },
     "encryptionKeyName": {
       "value": "synapseEncryptionKey"
