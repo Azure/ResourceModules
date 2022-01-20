@@ -85,13 +85,13 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
 | `applicationRuleCollections` | array | List of Application Rule Collections |
-| `azureFirewallName` | string | The name of the Azure firewall |
-| `azureFirewallPrivateIp` | string | The private IP of the Azure Firewall |
-| `azureFirewallPublicIp` | string | The public IP of the Azure Firewall |
-| `azureFirewallResourceGroup` | string | The resource group the azure firewall was deployed into |
-| `azureFirewallResourceId` | string | The resource ID of the Azure firewall |
+| `name` | string | The name of the Azure firewall |
 | `natRuleCollections` | array | Collection of NAT rule collections used by Azure Firewall |
 | `networkRuleCollections` | array | List of Network Rule Collections |
+| `privateIp` | string | The private IP of the Azure Firewall |
+| `publicIp` | string | The public IP of the Azure Firewall |
+| `resourceGroupName` | string | The resource group the azure firewall was deployed into |
+| `resourceId` | string | The resource ID of the Azure firewall |
 
 ## Considerations
 
@@ -104,4 +104,4 @@ The `networkRuleCollections` parameter accepts a JSON Array of AzureFirewallNetw
 - [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings)
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
 - [Publicipaddresses](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-02-01/publicIPAddresses)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2021-04-01-preview/roleAssignments)
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)

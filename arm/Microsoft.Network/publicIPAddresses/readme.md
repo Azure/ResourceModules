@@ -76,13 +76,13 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `publicIPAddressName` | string | The name of the public IP adress |
-| `publicIPAddressResourceGroup` | string | The resource group the public IP adress was deployed into |
-| `publicIPAddressResourceId` | string | The resource ID of the public IP adress |
+| `name` | string | The name of the public IP adress |
+| `resourceGroupName` | string | The resource group the public IP adress was deployed into |
+| `resourceId` | string | The resource ID of the public IP adress |
 
 ## Template references
 
 - [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings)
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
 - [Publicipaddresses](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/publicIPAddresses)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2021-04-01-preview/roleAssignments)
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)

@@ -64,10 +64,10 @@ module publicIpPrefix_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, in
 }]
 
 @description('The resource ID of the public IP prefix')
-output publicIpPrefixResourceId string = publicIpPrefix.id
+output resourceId string = publicIpPrefix.id
 
 @description('The resource group the public IP prefix was deployed into')
-output publicIpPrefixResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name
 
 @description('The name of the public IP prefix')
-output publicIpPrefixName string = publicIpPrefix.name
+output name string = publicIpPrefix.name
