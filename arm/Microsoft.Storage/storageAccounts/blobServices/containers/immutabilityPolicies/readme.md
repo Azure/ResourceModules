@@ -12,11 +12,11 @@ This module deployes an Immutability Policy for a blob container
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `allowProtectedAppendWrites` | bool | `True` |  | This property can only be changed for unlocked time-based retention policies. When enabled, new blocks can be written to an append blob while maintaining immutability protection and compliance. Only new blocks can be added and any existing blocks cannot be modified or deleted. This property cannot be changed with ExtendImmutabilityPolicy API |
+| `allowProtectedAppendWrites` | bool | `True` |  | Optional. This property can only be changed for unlocked time-based retention policies. When enabled, new blocks can be written to an append blob while maintaining immutability protection and compliance. Only new blocks can be added and any existing blocks cannot be modified or deleted. This property cannot be changed with ExtendImmutabilityPolicy API |
 | `blobServicesName` | string | `default` |  | Optional. Name of the blob service. |
 | `containerName` | string |  |  | Required. Name of the container to apply the policy to |
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
-| `immutabilityPeriodSinceCreationInDays` | int | `365` |  | The immutability period for the blobs in the container since the policy creation, in days. |
+| `immutabilityPeriodSinceCreationInDays` | int | `365` |  | Optional. The immutability period for the blobs in the container since the policy creation, in days. |
 | `name` | string | `default` |  | Optional. Name of the immutable policy. |
 | `storageAccountName` | string |  |  | Required. Name of the Storage Account. |
 

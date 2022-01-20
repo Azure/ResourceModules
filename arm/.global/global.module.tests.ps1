@@ -1,7 +1,7 @@
 #Requires -Version 7
 
 param (
-    [array] $moduleFolderPaths = ((Get-ChildItem (Split-Path (Get-Location) -Parent) -Recurse -Directory -Force).FullName | Where-Object {
+    [array] $moduleFolderPaths = ((Get-ChildItem (Split-Path $PSScriptRoot -Parent) -Recurse -Directory -Force).FullName | Where-Object {
         (Get-ChildItem $_ -File -Depth 0 -Include @('deploy.json', 'deploy.bicep') -Force).Count -gt 0
         })
 )
@@ -45,7 +45,11 @@ Describe 'File/folder tests' -Tag Modules {
 
         It '[<moduleFolderName>] Module should contain a [.parameters] folder' -TestCases $moduleFolderTestCases {
             param( [string] $moduleFolderPath )
-            (Test-Path (Join-Path -Path $moduleFolderPath '.parameters')) | Should -Be $true
+            if ((Split-Path (Split-Path $moduleFolderPath -Parent) -Leaf) -like 'Microsoft.*') {
+                (Test-Path (Join-Path -Path $moduleFolderPath '.parameters')) | Should -Be $true
+            } else {
+                $true | Should -Be $true
+            }
         }
 
         It '[<moduleFolderName>] Module should contain a [version.json] file' -TestCases $moduleFolderTestCases {
@@ -58,9 +62,11 @@ Describe 'File/folder tests' -Tag Modules {
 
         $folderTestCases = [System.Collections.ArrayList]@()
         foreach ($moduleFolderPath in $moduleFolderPaths) {
-            $folderTestCases += @{
-                moduleFolderName = $moduleFolderPath.Replace('\', '/').Split('/arm/')[1]
-                moduleFolderPath = $moduleFolderPath
+            if (Test-Path (Join-Path $moduleFolderPath '.paramateres')) {
+                $folderTestCases += @{
+                    moduleFolderName = $moduleFolderPath.Replace('\', '/').Split('/arm/')[1]
+                    moduleFolderPath = $moduleFolderPath
+                }
             }
         }
 
@@ -407,16 +413,18 @@ Describe 'Deployment template tests' -Tag Template {
             $TemplateFile_AllParameterNames = $templateFile_Parameters.Keys | Sort-Object
             $TemplateFile_RequiredParametersNames = ($templateFile_Parameters.Keys | Where-Object { -not $templateFile_Parameters[$_].ContainsKey('defaultValue') }) | Sort-Object
 
-            $ParameterFilePaths = (Get-ChildItem (Join-Path -Path $moduleFolderPath -ChildPath '.parameters' -AdditionalChildPath '*parameters.json') -Recurse -Force).FullName
-            foreach ($ParameterFilePath in $ParameterFilePaths) {
-                $parameterFile_AllParameterNames = ((Get-Content $ParameterFilePath) | ConvertFrom-Json -AsHashtable).parameters.Keys | Sort-Object
-                $parameterFileTestCases += @{
-                    parameterFile_Path                   = $ParameterFilePath
-                    parameterFile_Name                   = Split-Path $ParameterFilePath -Leaf
-                    parameterFile_AllParameterNames      = $parameterFile_AllParameterNames
-                    templateFile_AllParameterNames       = $TemplateFile_AllParameterNames
-                    templateFile_RequiredParametersNames = $TemplateFile_RequiredParametersNames
-                    tokenSettings                        = $Settings.parameterFileTokens
+            if (Test-Path (Join-Path $moduleFolderPath '.parameters')) {
+                $ParameterFilePaths = (Get-ChildItem (Join-Path -Path $moduleFolderPath -ChildPath '.parameters' -AdditionalChildPath '*parameters.json') -Recurse -Force).FullName
+                foreach ($ParameterFilePath in $ParameterFilePaths) {
+                    $parameterFile_AllParameterNames = ((Get-Content $ParameterFilePath) | ConvertFrom-Json -AsHashtable).parameters.Keys | Sort-Object
+                    $parameterFileTestCases += @{
+                        parameterFile_Path                   = $ParameterFilePath
+                        parameterFile_Name                   = Split-Path $ParameterFilePath -Leaf
+                        parameterFile_AllParameterNames      = $parameterFile_AllParameterNames
+                        templateFile_AllParameterNames       = $TemplateFile_AllParameterNames
+                        templateFile_RequiredParametersNames = $TemplateFile_RequiredParametersNames
+                        tokenSettings                        = $Settings.parameterFileTokens
+                    }
                 }
             }
 

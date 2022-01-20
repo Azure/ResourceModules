@@ -17,6 +17,9 @@ Mandatory. ResourceGroup of the private bicep registry to publish to.
 .PARAMETER ModuleVersion
 Required. Version of the module to publish.
 
+.PARAMETER bicepRegistryRgLocation
+Optional. The location of the resourceGroup the private bicep registry is deployed to. Required if the resource group is not yet existing.
+
 .EXAMPLE
 Publish-ModuleToPrivateBicepRegistry -TemplateFilePath 'C:/KeyVault/deploy.json' -BicepRegistryRgName 'artifacts-rg' -ModuleVersion '3.0.0-alpha'
 
@@ -31,6 +34,9 @@ function Publish-ModuleToPrivateBicepRegistry {
 
         [Parameter(Mandatory)]
         [string] $BicepRegistryRgName,
+
+        [Parameter(Mandatory = $false)]
+        [string] $bicepRegistryRgLocation,
 
         [Parameter(Mandatory)]
         [string] $BicepRegistryName,
@@ -49,6 +55,13 @@ function Publish-ModuleToPrivateBicepRegistry {
         #############################
         if ((Split-Path $TemplateFilePath -Extension) -ne '.bicep') {
             throw "The template in path [$TemplateFilePath] is no bicep template."
+        }
+
+        # Resource Group
+        if (-not (Get-AzResourceGroup -Name $bicepRegistryRgName -ErrorAction 'SilentlyContinue')) {
+            if ($PSCmdlet.ShouldProcess("Resource group [$bicepRegistryRgName] to location [$bicepRegistryRgLocation]", 'Deploy')) {
+                New-AzResourceGroup -Name $bicepRegistryRgName -Location $bicepRegistryRgLocation
+            }
         }
 
         # Registry

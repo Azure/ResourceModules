@@ -68,7 +68,7 @@ resource netAppAccount 'Microsoft.NetApp/netAppAccounts@2021-04-01' = {
   }
 }
 
-resource netAppAccount_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
+resource netAppAccount_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
   name: '${netAppAccount.name}-${lock}-lock'
   properties: {
     level: lock

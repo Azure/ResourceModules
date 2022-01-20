@@ -6,7 +6,7 @@ This module deploys private dns zone virtual network links.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Network/privateDnsZones/virtualNetworkLinks` | 2018-09-01 |
+| `Microsoft.Network/privateDnsZones/virtualNetworkLinks` | 2020-06-01 |
 
 ## Parameters
 
@@ -14,7 +14,7 @@ This module deploys private dns zone virtual network links.
 | :-- | :-- | :-- | :-- | :-- |
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `location` | string | `global` |  | Optional. The location of the PrivateDNSZone. Should be global. |
-| `name` | string | `[last(split(parameters('virtualNetworkResourceId'), '/'))]` |  | Optional. The name of the virtual network link. |
+| `name` | string | `[format('{0}-vnetlink', last(split(parameters('virtualNetworkResourceId'), '/')))]` |  | Optional. The name of the virtual network link. |
 | `privateDnsZoneName` | string |  |  | Required. Private DNS zone name. |
 | `registrationEnabled` | bool |  |  | Optional. Is auto-registration of virtual machine records in the virtual network in the Private DNS zone enabled? |
 | `tags` | object | `{object}` |  | Optional. Tags of the resource. |
@@ -47,4 +47,4 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 ## Template references
 
-- [Privatednszones/Virtualnetworklinks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2018-09-01/privateDnsZones/virtualNetworkLinks)
+- [Privatednszones/Virtualnetworklinks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-06-01/privateDnsZones/virtualNetworkLinks)

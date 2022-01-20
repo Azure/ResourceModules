@@ -4,14 +4,36 @@ param name string
 @description('Optional. Resource ID of the Public IP Prefix object. This is only needed if you want your Public IPs created in a PIP Prefix.')
 param publicIPPrefixResourceId string = ''
 
-@description('Optional. The public IP address allocation method. - Static or Dynamic.')
+@description('Optional. The public IP address allocation method.')
+@allowed([
+  'Dynamic'
+  'Static'
+])
 param publicIPAllocationMethod string = 'Dynamic'
 
-@description('Optional. Public IP Address sku Name')
+@description('Optional. Name of a public IP address SKU.')
+@allowed([
+  'Basic'
+  'Standard'
+])
 param skuName string = 'Basic'
 
-@description('Optional. Public IP Address pricing tier')
+@description('Optional. Tier of a public IP address SKU.')
+@allowed([
+  'Global'
+  'Regional'
+])
 param skuTier string = 'Regional'
+
+@description('Optional. A list of availability zones denoting the IP allocated for the resource needs to come from.')
+param zones array = []
+
+@description('Optional. IP address version.')
+@allowed([
+  'IPv4'
+  'IPv6'
+])
+param publicIPAddressVersion string = 'IPv4'
 
 @description('Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.')
 @minValue(0)
@@ -21,14 +43,14 @@ param diagnosticLogsRetentionInDays int = 365
 @description('Optional. Resource ID of the diagnostic storage account.')
 param diagnosticStorageAccountId string = ''
 
-@description('Optional. Resource ID of log analytics.')
-param workspaceId string = ''
+@description('Optional. Resource ID of the diagnostic log analytics workspace.')
+param diagnosticWorkspaceId string = ''
 
-@description('Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.')
-param eventHubAuthorizationRuleId string = ''
+@description('Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.')
+param diagnosticEventHubAuthorizationRuleId string = ''
 
-@description('Optional. Name of the event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.')
-param eventHubName string = ''
+@description('Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.')
+param diagnosticEventHubName string = ''
 
 @allowed([
   'CanNotDelete'
@@ -98,7 +120,7 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
-resource publicIpAddress 'Microsoft.Network/publicIPAddresses@2021-02-01' = {
+resource publicIpAddress 'Microsoft.Network/publicIPAddresses@2021-05-01' = {
   name: name
   location: location
   tags: tags
@@ -106,8 +128,9 @@ resource publicIpAddress 'Microsoft.Network/publicIPAddresses@2021-02-01' = {
     name: skuName
     tier: skuTier
   }
+  zones: zones
   properties: {
-    publicIPAddressVersion: 'IPv4'
+    publicIPAddressVersion: publicIPAddressVersion
     publicIPAllocationMethod: publicIPAllocationMethod
     publicIPPrefix: !empty(publicIPPrefixResourceId) ? publicIPPrefix : null
     idleTimeoutInMinutes: 4
@@ -115,7 +138,7 @@ resource publicIpAddress 'Microsoft.Network/publicIPAddresses@2021-02-01' = {
   }
 }
 
-resource publicIpAddress_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
+resource publicIpAddress_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
   name: '${publicIpAddress.name}-${lock}-lock'
   properties: {
     level: lock
@@ -124,15 +147,15 @@ resource publicIpAddress_lock 'Microsoft.Authorization/locks@2016-09-01' = if (l
   scope: publicIpAddress
 }
 
-resource publicIpAddress_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = if (!empty(diagnosticStorageAccountId) || !empty(workspaceId) || !empty(eventHubAuthorizationRuleId) || !empty(eventHubName)) {
+resource publicIpAddress_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = if (!empty(diagnosticStorageAccountId) || !empty(diagnosticWorkspaceId) || !empty(diagnosticEventHubAuthorizationRuleId) || !empty(diagnosticEventHubName)) {
   name: '${publicIpAddress.name}-diagnosticSettings'
   properties: {
-    storageAccountId: empty(diagnosticStorageAccountId) ? null : diagnosticStorageAccountId
-    workspaceId: empty(workspaceId) ? null : workspaceId
-    eventHubAuthorizationRuleId: empty(eventHubAuthorizationRuleId) ? null : eventHubAuthorizationRuleId
-    eventHubName: empty(eventHubName) ? null : eventHubName
-    metrics: empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName) ? null : diagnosticsMetrics
-    logs: empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName) ? null : diagnosticsLogs
+    storageAccountId: !empty(diagnosticStorageAccountId) ? diagnosticStorageAccountId : null
+    workspaceId: !empty(diagnosticWorkspaceId) ? diagnosticWorkspaceId : null
+    eventHubAuthorizationRuleId: !empty(diagnosticEventHubAuthorizationRuleId) ? diagnosticEventHubAuthorizationRuleId : null
+    eventHubName: !empty(diagnosticEventHubName) ? diagnosticEventHubName : null
+    metrics: diagnosticsMetrics
+    logs: diagnosticsLogs
   }
   scope: publicIpAddress
 }

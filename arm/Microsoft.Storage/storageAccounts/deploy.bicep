@@ -85,6 +85,23 @@ param minimumTlsVersion string = 'TLS1_2'
 @description('Optional. If true, enables Hierarchical Namespace for the storage account')
 param enableHierarchicalNamespace bool = false
 
+@description('Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.')
+@minValue(0)
+@maxValue(365)
+param diagnosticLogsRetentionInDays int = 365
+
+@description('Optional. Resource ID of the diagnostic storage account.')
+param diagnosticStorageAccountId string = ''
+
+@description('Optional. Resource ID of the diagnostic log analytics workspace.')
+param diagnosticWorkspaceId string = ''
+
+@description('Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.')
+param diagnosticEventHubAuthorizationRuleId string = ''
+
+@description('Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.')
+param diagnosticEventHubName string = ''
+
 @allowed([
   'CanNotDelete'
   'NotSpecified'
@@ -101,6 +118,24 @@ param cuaId string = ''
 
 @description('Generated. Do not provide a value! This date value is used to generate a SAS token to access the modules.')
 param basetime string = utcNow('u')
+
+@description('Optional. The name of metrics that will be streamed.')
+@allowed([
+  'Transaction'
+])
+param metricsToEnable array = [
+  'Transaction'
+]
+
+var diagnosticsMetrics = [for metric in metricsToEnable: {
+  category: metric
+  timeGrain: null
+  enabled: true
+  retentionPolicy: {
+    enabled: true
+    days: diagnosticLogsRetentionInDays
+  }
+}]
 
 var virtualNetworkRules = [for index in range(0, (empty(networkAcls) ? 0 : length(networkAcls.virtualNetworkRules))): {
   id: '${vNetId}/subnets/${networkAcls.virtualNetworkRules[index].subnet}'
@@ -161,7 +196,19 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-06-01' = {
   properties: saProperties
 }
 
-resource storageAccount_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
+resource storageAccount_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(diagnosticWorkspaceId)) || (!empty(diagnosticEventHubAuthorizationRuleId)) || (!empty(diagnosticEventHubName))) {
+  name: '${storageAccount.name}-diagnosticSettings'
+  properties: {
+    storageAccountId: empty(diagnosticStorageAccountId) ? null : diagnosticStorageAccountId
+    workspaceId: empty(diagnosticWorkspaceId) ? null : diagnosticWorkspaceId
+    eventHubAuthorizationRuleId: empty(diagnosticEventHubAuthorizationRuleId) ? null : diagnosticEventHubAuthorizationRuleId
+    eventHubName: empty(diagnosticEventHubName) ? null : diagnosticEventHubName
+    metrics: diagnosticsMetrics
+  }
+  scope: storageAccount
+}
+
+resource storageAccount_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
   name: '${storageAccount.name}-${lock}-lock'
   properties: {
     level: lock
@@ -207,6 +254,13 @@ module storageAccount_blobServices 'blobServices/deploy.bicep' = if (!empty(blob
     automaticSnapshotPolicyEnabled: contains(blobServices, 'automaticSnapshotPolicyEnabled') ? blobServices.automaticSnapshotPolicyEnabled : false
     deleteRetentionPolicy: contains(blobServices, 'deleteRetentionPolicy') ? blobServices.deleteRetentionPolicy : true
     deleteRetentionPolicyDays: contains(blobServices, 'deleteRetentionPolicyDays') ? blobServices.deleteRetentionPolicyDays : 7
+    diagnosticLogsRetentionInDays: contains(blobServices, 'diagnosticLogsRetentionInDays') ? blobServices.diagnosticLogsRetentionInDays : 365
+    diagnosticStorageAccountId: contains(blobServices, 'diagnosticStorageAccountId') ? blobServices.diagnosticStorageAccountId : ''
+    diagnosticEventHubAuthorizationRuleId: contains(blobServices, 'diagnosticEventHubAuthorizationRuleId') ? blobServices.diagnosticEventHubAuthorizationRuleId : ''
+    diagnosticEventHubName: contains(blobServices, 'diagnosticEventHubName') ? blobServices.diagnosticEventHubName : ''
+    logsToEnable: contains(blobServices, 'logsToEnable') ? blobServices.logsToEnable : []
+    metricsToEnable: contains(blobServices, 'metricsToEnable') ? blobServices.metricsToEnable : []
+    diagnosticWorkspaceId: contains(blobServices, 'diagnosticWorkspaceId') ? blobServices.diagnosticWorkspaceId : ''
   }
 }
 
@@ -215,12 +269,19 @@ module storageAccount_fileServices 'fileServices/deploy.bicep' = if (!empty(file
   name: '${uniqueString(deployment().name, location)}-Storage-FileServices'
   params: {
     storageAccountName: storageAccount.name
+    diagnosticLogsRetentionInDays: contains(fileServices, 'diagnosticLogsRetentionInDays') ? fileServices.diagnosticLogsRetentionInDays : 365
+    diagnosticStorageAccountId: contains(fileServices, 'diagnosticStorageAccountId') ? fileServices.diagnosticStorageAccountId : ''
+    diagnosticEventHubAuthorizationRuleId: contains(fileServices, 'diagnosticEventHubAuthorizationRuleId') ? fileServices.diagnosticEventHubAuthorizationRuleId : ''
+    diagnosticEventHubName: contains(fileServices, 'diagnosticEventHubName') ? fileServices.diagnosticEventHubName : ''
+    logsToEnable: contains(fileServices, 'logsToEnable') ? fileServices.logsToEnable : []
+    metricsToEnable: contains(fileServices, 'metricsToEnable') ? fileServices.metricsToEnable : []
     protocolSettings: contains(fileServices, 'protocolSettings') ? fileServices.protocolSettings : {}
     shareDeleteRetentionPolicy: contains(fileServices, 'shareDeleteRetentionPolicy') ? fileServices.shareDeleteRetentionPolicy : {
       enabled: true
       days: 7
     }
     shares: contains(fileServices, 'shares') ? fileServices.shares : []
+    diagnosticWorkspaceId: contains(fileServices, 'diagnosticWorkspaceId') ? fileServices.diagnosticWorkspaceId : ''
   }
 }
 
@@ -229,7 +290,14 @@ module storageAccount_queueServices 'queueServices/deploy.bicep' = if (!empty(qu
   name: '${uniqueString(deployment().name, location)}-Storage-QueueServices'
   params: {
     storageAccountName: storageAccount.name
+    diagnosticLogsRetentionInDays: contains(queueServices, 'diagnosticLogsRetentionInDays') ? queueServices.diagnosticLogsRetentionInDays : 365
+    diagnosticStorageAccountId: contains(queueServices, 'diagnosticStorageAccountId') ? queueServices.diagnosticStorageAccountId : ''
+    diagnosticEventHubAuthorizationRuleId: contains(queueServices, 'diagnosticEventHubAuthorizationRuleId') ? queueServices.diagnosticEventHubAuthorizationRuleId : ''
+    diagnosticEventHubName: contains(queueServices, 'diagnosticEventHubName') ? queueServices.diagnosticEventHubName : ''
+    logsToEnable: contains(queueServices, 'logsToEnable') ? queueServices.logsToEnable : []
+    metricsToEnable: contains(queueServices, 'metricsToEnable') ? queueServices.metricsToEnable : []
     queues: contains(queueServices, 'queues') ? queueServices.queues : []
+    diagnosticWorkspaceId: contains(queueServices, 'diagnosticWorkspaceId') ? queueServices.diagnosticWorkspaceId : ''
   }
 }
 
@@ -238,7 +306,14 @@ module storageAccount_tableServices 'tableServices/deploy.bicep' = if (!empty(ta
   name: '${uniqueString(deployment().name, location)}-Storage-TableServices'
   params: {
     storageAccountName: storageAccount.name
+    diagnosticLogsRetentionInDays: contains(tableServices, 'diagnosticLogsRetentionInDays') ? tableServices.diagnosticLogsRetentionInDays : 365
+    diagnosticStorageAccountId: contains(tableServices, 'diagnosticStorageAccountId') ? tableServices.diagnosticStorageAccountId : ''
+    diagnosticEventHubAuthorizationRuleId: contains(tableServices, 'diagnosticEventHubAuthorizationRuleId') ? tableServices.diagnosticEventHubAuthorizationRuleId : ''
+    diagnosticEventHubName: contains(tableServices, 'diagnosticEventHubName') ? tableServices.diagnosticEventHubName : ''
+    logsToEnable: contains(tableServices, 'logsToEnable') ? tableServices.logsToEnable : []
+    metricsToEnable: contains(tableServices, 'metricsToEnable') ? tableServices.metricsToEnable : []
     tables: contains(tableServices, 'tables') ? tableServices.tables : []
+    diagnosticWorkspaceId: contains(tableServices, 'diagnosticWorkspaceId') ? tableServices.diagnosticWorkspaceId : ''
   }
 }
 
@@ -252,7 +327,7 @@ output storageAccountName string = storageAccount.name
 output storageAccountResourceGroup string = resourceGroup().name
 
 @description('The primary blob endpoint reference if blob services are deployed.')
-output storageAccountPrimaryBlobEndpoint string = (!empty(blobServices) && contains(storageAccount_blobServices, 'blobContainers')) ? '' : reference('Microsoft.Storage/storageAccounts/${storageAccount.name}', '2019-04-01').primaryEndpoints.blob
+output storageAccountPrimaryBlobEndpoint string = !empty(blobServices) && contains(blobServices, 'containers') ? reference('Microsoft.Storage/storageAccounts/${storageAccount.name}', '2019-04-01').primaryEndpoints.blob : ''
 
 @description('The principal ID of the system assigned identity.')
-output systemAssignedPrincipalId string = systemAssignedIdentity ? storageAccount.identity.principalId : ''
+output systemAssignedPrincipalId string = systemAssignedIdentity && contains(storageAccount.identity, 'principalId') ? storageAccount.identity.principalId : ''

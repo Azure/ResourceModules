@@ -19,66 +19,18 @@
                 {
                     "name": "sxx-az-subnet-x-001",
                     "addressPrefix": "10.0.0.0/24",
-                    "networkSecurityGroupName": "",
-                    "routeTableName": "",
+                    "networkSecurityGroupName": "adp-sxx-az-nsg-x-001",
                     "serviceEndpoints": [
-                        {
-                            "service": "Microsoft.EventHub"
-                        },
-                        {
-                            "service": "Microsoft.Sql"
-                        },
-                        {
-                            "service": "Microsoft.Storage"
-                        },
-                        {
-                            "service": "Microsoft.KeyVault"
-                        }
+                        "Microsoft.EventHub",
+                        "Microsoft.Sql",
+                        "Microsoft.Storage",
+                        "Microsoft.KeyVault"
                     ],
-                    "delegations": []
+                    "routeTableName": "adp-sxx-az-udr-x-001"
                 },
                 {
                     "name": "sxx-az-subnet-x-002",
-                    "addressPrefix": "10.0.1.0/24",
-                    "networkSecurityGroupName": "",
-                    "routeTableName": "",
-                    "serviceEndpoints": [
-                        {
-                            "service": "Microsoft.EventHub"
-                        },
-                        {
-                            "service": "Microsoft.Sql"
-                        },
-                        {
-                            "service": "Microsoft.Storage"
-                        },
-                        {
-                            "service": "Microsoft.KeyVault"
-                        }
-                    ],
-                    "delegations": []
-                },
-                {
-                    "name": "sxx-az-subnet-x-003",
-                    "addressPrefix": "10.0.2.0/24",
-                    "networkSecurityGroupName": "",
-                    "routeTableName": "",
-                    "serviceEndpoints": [],
-                    "delegations": [
-                        {
-                            "name": "sqlMiDel",
-                            "properties": {
-                                "serviceName": "Microsoft.Sql/managedInstances"
-                            }
-                        }
-                    ]
-                },
-                {
-                    "name": "sxx-az-subnet-x-004",
                     "addressPrefix": "10.0.3.0/24",
-                    "networkSecurityGroupName": "",
-                    "routeTableName": "",
-                    "serviceEndpoints": [],
                     "delegations": [
                         {
                             "name": "netappDel",
@@ -89,29 +41,9 @@
                     ]
                 },
                 {
-                    "name": "AzureFirewallSubnet",
-                    "addressPrefix": "10.0.4.0/24",
-                    "networkSecurityGroupName": "",
-                    "routeTableName": "",
-                    "serviceEndpoints": [],
-                    "delegations": []
-                },
-                {
-                    "name": "AzureBastionSubnet",
-                    "addressPrefix": "10.0.5.0/24",
-                    "networkSecurityGroupName": "",
-                    "routeTableName": "",
-                    "serviceEndpoints": [],
-                    "delegations": []
-                },
-                {
-                    "name": "sxx-az-subnet-x-005",
+                    "name": "sxx-az-subnet-x-003",
                     "addressPrefix": "10.0.6.0/24",
-                    "networkSecurityGroupName": "",
-                    "routeTableName": "",
-                    "serviceEndpoints": [],
-                    "delegations": [],
-                    "privateEndpointNetworkPolicies": "Disabled", // This property must be set to disabled for subnets that contain private endpoints. It confirms that NSGs rules will not apply to private endpoints (currently not supported). Default Value when not specified is "Enabled".
+                    "privateEndpointNetworkPolicies": "Disabled",
                     "privateLinkServiceNetworkPolicies": "Enabled"
                 }
             ]
@@ -130,15 +62,15 @@
             "value": 7
         },
         "diagnosticStorageAccountId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adpsxxazsaweux001"
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adpsxxazsax001"
         },
-        "workspaceId": {
+        "diagnosticWorkspaceId": {
             "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-sxx-az-law-x-001"
         },
-        "eventHubAuthorizationRuleId": {
+        "diagnosticEventHubAuthorizationRuleId": {
             "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-sxx-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
         },
-        "eventHubName": {
+        "diagnosticEventHubName": {
             "value": "adp-sxx-az-evh-x-001"
         }
     }

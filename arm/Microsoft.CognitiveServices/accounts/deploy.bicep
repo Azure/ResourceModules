@@ -61,14 +61,14 @@ param diagnosticLogsRetentionInDays int = 365
 @description('Optional. Resource ID of the diagnostic storage account.')
 param diagnosticStorageAccountId string = ''
 
-@description('Optional. Resource ID of log analytics.')
-param workspaceId string = ''
+@description('Optional. Resource ID of the diagnostic log analytics workspace.')
+param diagnosticWorkspaceId string = ''
 
-@description('Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.')
-param eventHubAuthorizationRuleId string = ''
+@description('Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.')
+param diagnosticEventHubAuthorizationRuleId string = ''
 
-@description('Optional. Name of the event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.')
-param eventHubName string = ''
+@description('Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.')
+param diagnosticEventHubName string = ''
 
 @description('Optional. Subdomain name used for token-based authentication. Required if \'networkAcls\' are set.')
 param customSubDomainName string = ''
@@ -180,7 +180,7 @@ resource cognitiveServices 'Microsoft.CognitiveServices/accounts@2017-04-18' = {
   }
 }
 
-resource cognitiveServices_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
+resource cognitiveServices_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
   name: '${cognitiveServices.name}-${lock}-lock'
   properties: {
     level: lock
@@ -189,15 +189,15 @@ resource cognitiveServices_lock 'Microsoft.Authorization/locks@2016-09-01' = if 
   scope: cognitiveServices
 }
 
-resource cognitiveServices_diagnosticSettingName 'Microsoft.Insights/diagnosticsettings@2021-05-01-preview' = {
+resource cognitiveServices_diagnosticSettingName 'Microsoft.Insights/diagnosticsettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(diagnosticWorkspaceId)) || (!empty(diagnosticEventHubAuthorizationRuleId)) || (!empty(diagnosticEventHubName))) {
   name: '${cognitiveServices.name}-diagnosticSettings'
   properties: {
-    storageAccountId: (empty(diagnosticStorageAccountId) ? null : diagnosticStorageAccountId)
-    workspaceId: (empty(workspaceId) ? null : workspaceId)
-    eventHubAuthorizationRuleId: (empty(eventHubAuthorizationRuleId) ? null : eventHubAuthorizationRuleId)
-    eventHubName: (empty(eventHubName) ? null : eventHubName)
-    metrics: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? null : diagnosticsMetrics)
-    logs: ((empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName)) ? null : diagnosticsLogs)
+    storageAccountId: !empty(diagnosticStorageAccountId) ? diagnosticStorageAccountId : null
+    workspaceId: !empty(diagnosticWorkspaceId) ? diagnosticWorkspaceId : null
+    eventHubAuthorizationRuleId: !empty(diagnosticEventHubAuthorizationRuleId) ? diagnosticEventHubAuthorizationRuleId : null
+    eventHubName: !empty(diagnosticEventHubName) ? diagnosticEventHubName : null
+    metrics: diagnosticsMetrics
+    logs: diagnosticsLogs
   }
   scope: cognitiveServices
 }
@@ -234,4 +234,4 @@ output cognitiveServicesResourceGroup string = resourceGroup().name
 output cognitiveServicesEndpoint string = cognitiveServices.properties.endpoint
 
 @description('The principal ID of the system assigned identity.')
-output systemAssignedPrincipalId string = systemAssignedIdentity ? cognitiveServices.identity.principalId : ''
+output systemAssignedPrincipalId string = systemAssignedIdentity && contains(cognitiveServices.identity, 'principalId') ? cognitiveServices.identity.principalId : ''
