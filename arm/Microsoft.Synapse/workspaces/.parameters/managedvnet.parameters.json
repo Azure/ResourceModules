@@ -1,0 +1,27 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "name": {
+      "value": "sxx-az-synws-managedvnet-001"
+    },
+    "defaultDataLakeStorageAccountName": {
+      "value": "adpsxxazsaweux005"
+    },
+    "defaultDataLakeStorageFilesystem": {
+      "value": "synapsews"
+    },
+    "sqlAdministratorLogin": {
+      "value": "synwsadmin"
+    },
+    "managedVirtualNetwork": {
+      "value": true
+    },
+    "preventDataExfiltration": {
+      "value": true
+    },
+    "allowedAadTenantIdsForLinking": {
+      "value": ["449fbe1d-9c99-4509-9014-4fd5cf25b014"]
+    }
+  }
+}

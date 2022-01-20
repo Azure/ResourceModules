@@ -187,7 +187,13 @@ jobs:
       fail-fast: false
       matrix:
         parameterFilePaths:
-          ['fa.parameters.json', 'law.parameters.json', 'parameters.json']
+          [
+            'fa.parameters.json',
+            'law.parameters.json',
+            'parameters.json',
+            'synapse01.parameters.json',
+            'synapse02.parameters.json',
+          ]
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
