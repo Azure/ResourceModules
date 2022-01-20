@@ -59,10 +59,10 @@ param virtualWanId string
 param vpnGatewayId string = ''
 
 @description('Optional. Route tables to create for the virtual hub.')
-param routeTables array = []
+param hubRouteTables array = []
 
 @description('Optional. Virtual network connections to create for the virtual hub.')
-param virtualNetworkConnections array = []
+param hubVirtualNetworkConnections array = []
 
 @description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
@@ -109,7 +109,7 @@ resource virtualHub 'Microsoft.Network/virtualHubs@2021-05-01' = {
   }
 }
 
-module virtualHub_routeTables 'hubRouteTables/deploy.bicep' = [for (routeTable, index) in routeTables: {
+module virtualHub_routeTables 'hubRouteTables/deploy.bicep' = [for (routeTable, index) in hubRouteTables: {
   name: '${uniqueString(deployment().name, location)}-routeTable-${index}'
   params: {
     virtualHubName: virtualHub.name
@@ -119,7 +119,7 @@ module virtualHub_routeTables 'hubRouteTables/deploy.bicep' = [for (routeTable, 
   }
 }]
 
-module virtualHub_hubVirtualNetworkConnections 'hubVirtualNetworkConnections/deploy.bicep' = [for (virtualNetworkConnection, index) in virtualNetworkConnections: {
+module virtualHub_hubVirtualNetworkConnections 'hubVirtualNetworkConnections/deploy.bicep' = [for (virtualNetworkConnection, index) in hubVirtualNetworkConnections: {
   name: '${uniqueString(deployment().name, location)}-connection-${index}'
   params: {
     virtualHubName: virtualHub.name

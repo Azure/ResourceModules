@@ -7,6 +7,7 @@ This module deploys a virtual hub.
 | Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Network/virtualHubs` | 2021-05-01 |
+| `Microsoft.Network/virtualHubs/hubRouteTables` | 2021-05-01 |
 | `Microsoft.Network/virtualHubs/hubVirtualNetworkConnections` | 2021-05-01 |
 
 ## Parameters
@@ -18,6 +19,7 @@ This module deploys a virtual hub.
 | `azureFirewallId` | string |  |  | Optional. Resource ID of the Azure Firewall to link to |
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `expressRouteGatewayId` | string |  |  | Optional. Resource ID of the Express Route Gateway to link to |
+| `hubRouteTables` | _[hubRouteTables](hubRouteTables/readme.md)_ array | `[]` |  | Optional. Route tables to create for the virtual hub. |
 | `hubVirtualNetworkConnections` | _[hubVirtualNetworkConnections](hubVirtualNetworkConnections/readme.md)_ array | `[]` |  | Optional. Virtual network connections to create for the virtual hub. |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
 | `name` | string |  |  | Required. The virtual hub name. |
@@ -62,4 +64,5 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 ## Template references
 
 - [Virtualhubs](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/virtualHubs)
+- [Virtualhubs/Hubroutetables](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/virtualHubs/hubRouteTables)
 - [Virtualhubs/Hubvirtualnetworkconnections](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/virtualHubs/hubVirtualNetworkConnections)

@@ -11,14 +11,14 @@
         "virtualWanId": {
             "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualWans/sxx-az-vw-x-001"
         },
-        "routeTables": {
+        "hubRouteTables": {
             "value": [
                 {
                     "name": "routeTable1"
                 }
             ]
         },
-        "virtualNetworkConnections": {
+        "hubVirtualNetworkConnections": {
             "value": [
                 {
                     "name": "connection1",
