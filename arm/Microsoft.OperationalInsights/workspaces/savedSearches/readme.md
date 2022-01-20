@@ -44,9 +44,9 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `savedSearchName` | string | The name of the deployed saved search |
-| `savedSearchResourceGroup` | string | The resource group where the saved search is deployed |
-| `savedSearchResourceId` | string | The resource ID of the deployed saved search |
+| `name` | string | The name of the deployed saved search |
+| `resourceGroupName` | string | The resource group where the saved search is deployed |
+| `resourceId` | string | The resource ID of the deployed saved search |
 
 ## Template references
 

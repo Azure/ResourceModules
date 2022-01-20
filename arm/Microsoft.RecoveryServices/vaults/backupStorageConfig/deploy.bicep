@@ -38,10 +38,10 @@ resource backupStorageConfig 'Microsoft.RecoveryServices/vaults/backupstoragecon
 }
 
 @description('The name of the backup storage config')
-output backupStorageConfigName string = backupStorageConfig.name
+output name string = backupStorageConfig.name
 
 @description('The resource ID of the backup storage config')
-output backupStorageConfigResourceId string = backupStorageConfig.id
+output resourceId string = backupStorageConfig.id
 
 @description('The name of the Resource Group the backup storage configuration was created in.')
-output backupStorageConfigResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name

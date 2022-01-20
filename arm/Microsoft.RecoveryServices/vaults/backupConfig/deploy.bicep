@@ -72,10 +72,10 @@ resource backupConfig 'Microsoft.RecoveryServices/vaults/backupconfig@2021-10-01
 }
 
 @description('The name of the backup config')
-output backupConfigName string = backupConfig.name
+output name string = backupConfig.name
 
 @description('The resource ID of the backup config')
-output backupConfigResourceId string = backupConfig.id
+output resourceId string = backupConfig.id
 
 @description('The name of the resource group the backup config was created in.')
-output backupConfigResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name
