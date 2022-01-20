@@ -9,7 +9,7 @@
             "value": "10.0.0.0/16"
         },
         "virtualWanId": {
-            "value": "/subscriptions/a7439831-1cd9-435d-a091-4aa863c96556/resourceGroups/validation-rg/providers/Microsoft.Network/virtualWans/sxx-az-vw-x-001"
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualWans/sxx-az-vw-x-001"
         }
     }
 }

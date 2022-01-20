@@ -58,8 +58,11 @@ param virtualWanId string
 @description('Optional. Resource ID of the VPN Gateway to link to')
 param vpnGatewayId string = ''
 
+@description('Optional. Route tables to create for the virtual hub.')
+param routeTables array = []
+
 @description('Optional. Virtual network connections to create for the virtual hub.')
-param hubVirtualNetworkConnections array = []
+param virtualNetworkConnections array = []
 
 @description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
@@ -106,15 +109,28 @@ resource virtualHub 'Microsoft.Network/virtualHubs@2021-05-01' = {
   }
 }
 
-module virtualHub_hubVirtualNetworkConnections 'hubVirtualNetworkConnections/deploy.bicep' = [for (hubVirtualNetworkConnection, index) in hubVirtualNetworkConnections: {
+module virtualHub_routeTables 'hubRouteTables/deploy.bicep' = [for (routeTable, index) in routeTables: {
+  name: '${uniqueString(deployment().name, location)}-routeTable-${index}'
+  params: {
+    virtualHubName: virtualHub.name
+    name: routeTable.name
+    labels: contains(routeTable, 'labels') ? routeTable.labels : []
+    routes: contains(routeTable, 'routes') ? routeTable.routes : []
+  }
+}]
+
+module virtualHub_hubVirtualNetworkConnections 'hubVirtualNetworkConnections/deploy.bicep' = [for (virtualNetworkConnection, index) in virtualNetworkConnections: {
   name: '${uniqueString(deployment().name, location)}-connection-${index}'
   params: {
     virtualHubName: virtualHub.name
-    name: hubVirtualNetworkConnection.name
-    enableInternetSecurity: contains(hubVirtualNetworkConnection, 'enableInternetSecurity') ? hubVirtualNetworkConnection.enableInternetSecurity : true
-    remoteVirtualNetworkId: hubVirtualNetworkConnection.remoteVirtualNetworkId
-    routingConfiguration: contains(hubVirtualNetworkConnection, 'routingConfiguration') ? hubVirtualNetworkConnection.routingConfiguration : {}
+    name: virtualNetworkConnection.name
+    enableInternetSecurity: contains(virtualNetworkConnection, 'enableInternetSecurity') ? virtualNetworkConnection.enableInternetSecurity : true
+    remoteVirtualNetworkId: virtualNetworkConnection.remoteVirtualNetworkId
+    routingConfiguration: contains(virtualNetworkConnection, 'routingConfiguration') ? virtualNetworkConnection.routingConfiguration : {}
   }
+  dependsOn: [
+    virtualHub_routeTables
+  ]
 }]
 
 @description('The resource group the virtual hub was deployed into')

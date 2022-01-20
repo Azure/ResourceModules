@@ -6,28 +6,35 @@
             "value": "sxx-az-vHub-x-001"
         },
         "addressPrefix": {
-            "value": "10.0.0.0/16"
+            "value": "10.1.0.0/16"
         },
         "virtualWanId": {
-            "value": "/subscriptions/a7439831-1cd9-435d-a091-4aa863c96556/resourceGroups/validation-rg/providers/Microsoft.Network/virtualWans/sxx-az-vw-x-001"
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualWans/sxx-az-vw-x-001"
         },
-        "hubVirtualNetworkConnections": {
+        "routeTables": {
+            "value": [
+                {
+                    "name": "routeTable1"
+                }
+            ]
+        },
+        "virtualNetworkConnections": {
             "value": [
                 {
                     "name": "connection1",
-                    "remoteVirtualNetworkId": "/subscriptions/a7439831-1cd9-435d-a091-4aa863c96556/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/alsehrHubVnet",
+                    "remoteVirtualNetworkId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/alsehrHubVnet",
                     "routingConfiguration": {
                         "associatedRouteTable": {
-                            "id": ""
+                            "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualHubs/sxx-az-vHub-x-001/hubRouteTables/routeTable1"
                         },
                         "propagatedRouteTables": {
                             "ids": [
                                 {
-                                    "id": ""
+                                    "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualHubs/sxx-az-vHub-x-001/hubRouteTables/routeTable1"
                                 }
                             ],
                             "labels": [
-                                ""
+                                "none"
                             ]
                         }
                     }

@@ -24,6 +24,7 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 resource virtualHub 'Microsoft.Network/virtualHubs@2021-05-01' existing = {
   name: virtualHubName
 }
+
 resource hubVirtualNetworkConnection 'Microsoft.Network/virtualHubs/hubVirtualNetworkConnections@2021-05-01' = {
   name: name
   parent: virtualHub
