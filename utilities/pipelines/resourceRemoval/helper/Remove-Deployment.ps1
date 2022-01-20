@@ -22,7 +22,7 @@ Optional. The time to wait in between the search for resources via their remove 
 Optional. The deployment name to use for the removal
 
 .PARAMETER TemplateFilePath
-Optional. The path to the deployment file
+Mandatory. The path to the deployment file
 
 .PARAMETER RemovalSequence
 Optional. The order of resource types to apply for deletion
@@ -60,7 +60,7 @@ function Remove-Deployment {
 
         # Load helper
         . (Join-Path (Get-Item -Path $PSScriptRoot).parent.parent.FullName 'sharedScripts' 'Get-ScopeOfTemplateFile.ps1')
-        . (Join-Path (Split-Path $PSScriptRoot -Parent) 'helper' 'Get-ResourceIdsOfDeployment.ps1')
+        . (Join-Path (Split-Path $PSScriptRoot -Parent) 'helper' 'Get-DeploymentTargetResourceList.ps1')
         . (Join-Path (Split-Path $PSScriptRoot -Parent) 'helper' 'Get-ResourceIdsAsFormattedObjectList.ps1')
         . (Join-Path (Split-Path $PSScriptRoot -Parent) 'helper' 'Get-OrderedResourcesList.ps1')
         . (Join-Path (Split-Path $PSScriptRoot -Parent) 'helper' 'Get-DependencyResourceNameList.ps1')
@@ -85,28 +85,34 @@ function Remove-Deployment {
             Scope             = $deploymentScope
             ResourceGroupName = $resourceGroupName
         }
-        $deploymentResourceIds = Get-ResourceIdsOfDeployment @deploymentsInputObject -Verbose
-        Write-Verbose ('Total number of deployments after fetching deployments [{0}]' -f $deploymentResourceIds.Count) -Verbose
+        [array] $deployedTargetResources = Get-DeploymentTargetResourceList @deploymentsInputObject -Verbose
+        Write-Verbose ('Total number of deployment target resources after fetching deployments [{0}]' -f $deployedTargetResources.Count) -Verbose
 
         # Pre-Filter & order items
         # ========================
-        $rawResourceIdsToRemove = $deploymentResourceIds | Sort-Object -Property { $_.Split('/').Count } -Descending | Select-Object -Unique
-        Write-Verbose ('Total number of deployments after pre-filtering & ordering items [{0}]' -f $rawResourceIdsToRemove.Count) -Verbose
+        $rawTargetResourceIdsToRemove = $deployedTargetResources | Sort-Object -Property { $_.Split('/').Count } -Descending | Select-Object -Unique
+        Write-Verbose ('Total number of deployment target resources  after pre-filtering (duplicates) & ordering items [{0}]' -f $rawTargetResourceIdsToRemove.Count) -Verbose
 
         # Format items
         # ============
-        $resourcesToRemove = Get-ResourceIdsAsFormattedObjectList -ResourceIds $rawResourceIdsToRemove
-        Write-Verbose ('Total number of deployments after formatting items [{0}]' -f $resourcesToRemove.Count) -Verbose
+        [array] $resourcesToRemove = Get-ResourceIdsAsFormattedObjectList -ResourceIds $rawTargetResourceIdsToRemove
+        Write-Verbose ('Total number of deployment target resources after formatting items [{0}]' -f $resourcesToRemove.Count) -Verbose
 
         # Filter all dependency resources
         # ===============================
         $dependencyResourceNames = Get-DependencyResourceNameList
-        $resourcesToRemove = $resourcesToRemove | Where-Object { (Split-Path $_.resourceId -Leaf) -notin $dependencyResourceNames }
+
+        if ($resourcesToIgnore = $resourcesToRemove | Where-Object { (Split-Path $_.resourceId -Leaf) -in $dependencyResourceNames }) {
+            Write-Verbose 'Resources excluded from removal:' -Verbose
+            $resourcesToIgnore | ForEach-Object { Write-Verbose ('- Ignore [{0}]' -f $_.resourceId) -Verbose }
+        }
+
+        [array] $resourcesToRemove = $resourcesToRemove | Where-Object { (Split-Path $_.resourceId -Leaf) -notin $dependencyResourceNames }
         Write-Verbose ('Total number of deployments after filtering all dependency resources [{0}]' -f $resourcesToRemove.Count) -Verbose
 
         # Order resources
         # ===============
-        $resourcesToRemove = Get-OrderedResourcesList -ResourcesToOrder $resourcesToRemove -Order $RemovalSequence
+        [array] $resourcesToRemove = Get-OrderedResourcesList -ResourcesToOrder $resourcesToRemove -Order $RemovalSequence
         Write-Verbose ('Total number of deployments after final ordering of resources [{0}]' -f $resourcesToRemove.Count) -Verbose
 
         # Remove resources

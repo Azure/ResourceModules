@@ -6,7 +6,7 @@ This module deploys API Management Service Product Groups.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.ApiManagement/service/products/groups` | 2020-06-01-preview |
+| `Microsoft.ApiManagement/service/products/groups` | 2021-08-01 |
 
 ## Parameters
 
@@ -21,10 +21,10 @@ This module deploys API Management Service Product Groups.
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `groupName` | string | The name of the product group |
-| `groupResourceGroup` | string | The resource group the product group was deployed into |
-| `groupResourceId` | string | The resource ID of the product group |
+| `name` | string | The name of the product group |
+| `resourceGroupName` | string | The resource group the product group was deployed into |
+| `resourceId` | string | The resource ID of the product group |
 
 ## Template references
 
-- [Service/Products/Groups](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2020-06-01-preview/service/products/groups)
+- [Service/Products/Groups](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2021-08-01/service/products/groups)

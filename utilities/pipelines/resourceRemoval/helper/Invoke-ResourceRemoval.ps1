@@ -66,6 +66,10 @@ function Invoke-ResourceRemoval {
             $null = Remove-AzResource -ResourceId $resourceId -Force -ErrorAction 'Stop'
             break
         }
+        'Microsoft.RecoveryServices/vaults/backupstorageconfig' {
+            # Not a 'resource' that can be removed, but represents settings on the RSV. The config is deleted with the RSV
+            break
+        }
         'Microsoft.RecoveryServices/vaults' {
             # Pre-Removal
             # -----------
@@ -94,7 +98,9 @@ function Invoke-ResourceRemoval {
             # Actual removal
             # --------------
             $null = Remove-AzResource -ResourceId $resourceId -Force -ErrorAction 'Stop'
+            break
         }
+        ### CODE LOCATION: Add custom removal action here
         Default {
             $null = Remove-AzResource -ResourceId $resourceId -Force -ErrorAction 'Stop'
         }

@@ -25,6 +25,11 @@ inputs:
     default: 'true'
     required: false
 
+outputs:
+  deploymentOutput:
+    description: 'The module deployment output in json format'
+    value: ${{ steps.deploy_step.outputs.deploymentOutput }}
+
 runs:
   using: 'composite'
   steps:
@@ -36,8 +41,26 @@ runs:
         # Load used functions
         . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
 
+        # Define PS modules to install on the runner
+        $Modules = @(
+            @{ Name = 'Az.Accounts' },
+            @{ Name = 'Az.Resources' }
+        )
+
+        # Additional PS modules need to be installed for the removal step in case it is enabled
+        if ('${{ inputs.removeDeployment}}' -eq 'true') {
+          $Modules += @(
+            @{ Name = 'Az.CognitiveServices' },
+            @{ Name = 'Az.Compute' },
+            @{ Name = 'Az.KeyVault' },
+            @{ Name = 'Az.Monitor' },
+            @{ Name = 'Az.OperationalInsights' },
+            @{ Name = 'Az.RecoveryServices' }
+          )
+        }
+
         # Set agent up
-        Set-EnvironmentOnAgent
+        Set-EnvironmentOnAgent -PSModules $Modules
     - name: Azure Login
       uses: Azure/login@v1
       with:
@@ -130,9 +153,16 @@ runs:
         Write-Output ('::set-output name={0}::{1}' -f 'deploymentName', $res.deploymentName)
 
         # Populate further outputs
+        $deploymentOutputHash=@{}
+
         foreach ($outputKey in $res.deploymentOutput.Keys) {
-            Write-Output ('::set-output name={0}::{1}' -f $outputKey, $res.deploymentOutput[$outputKey].Value)
+          Write-Output ('::set-output name={0}::{1}' -f $outputKey, $res.deploymentOutput[$outputKey].Value)
+          $deploymentOutputHash.add($outputKey,$res.deploymentOutput[$outputKey].Value)
         }
+
+        $deploymentOutput = $deploymentOutputHash | ConvertTo-Json -Compress -Depth 100
+        Write-Verbose "Deployment output: $deploymentOutput" -Verbose
+        Write-Output ('::set-output name={0}::{1}' -f 'deploymentOutput', $deploymentOutput)
 
         if ($res.ContainsKey('exception')) {
           # Happens only if there is an exception

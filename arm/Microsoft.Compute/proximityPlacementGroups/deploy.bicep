@@ -42,7 +42,7 @@ resource proximityPlacementGroup 'Microsoft.Compute/proximityPlacementGroups@202
   }
 }
 
-resource proximityPlacementGroup_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
+resource proximityPlacementGroup_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
   name: '${proximityPlacementGroup.name}-${lock}-lock'
   properties: {
     level: lock

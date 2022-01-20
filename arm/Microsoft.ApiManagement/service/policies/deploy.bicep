@@ -24,11 +24,11 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
-resource service 'Microsoft.ApiManagement/service@2021-04-01-preview' existing = {
+resource service 'Microsoft.ApiManagement/service@2021-08-01' existing = {
   name: apiManagementServiceName
 }
 
-resource policy 'Microsoft.ApiManagement/service/policies@2020-06-01-preview' = {
+resource policy 'Microsoft.ApiManagement/service/policies@2021-08-01' = {
   name: name
   parent: service
   properties: {
@@ -38,10 +38,10 @@ resource policy 'Microsoft.ApiManagement/service/policies@2020-06-01-preview' = 
 }
 
 @description('The resource ID of the API management service policy')
-output policyResourceId string = policy.id
+output resourceId string = policy.id
 
 @description('The name of the API management service policy')
-output policyName string = policy.name
+output name string = policy.name
 
 @description('The resource group the API management service policy was deployed into')
-output policyResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name

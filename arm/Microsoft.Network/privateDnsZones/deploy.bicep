@@ -47,7 +47,7 @@ module privateDnsZone_virtualNetworkLinks 'virtualNetworkLinks/deploy.bicep' = [
   }
 }]
 
-resource privateDnsZone_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
+resource privateDnsZone_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
   name: '${privateDnsZone.name}-${lock}-lock'
   properties: {
     level: lock

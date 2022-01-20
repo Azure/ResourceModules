@@ -4,7 +4,7 @@ parameters:
   - name: removeDeployment
     displayName: Remove deployed module
     type: boolean
-    default: false # Deployment does not support tags
+    default: true
   - name: versioningOption
     displayName: The mode to handle the version increments [major|minor|patch]
     type: string

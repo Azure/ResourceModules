@@ -7,7 +7,7 @@ on:
         type: boolean
         description: 'Remove deployed module'
         required: false
-        default: 'false' # Deployment does not support tags
+        default: 'true'
       versioningOption:
         type: choice
         description: 'The mode to handle the version increments [major|minor|patch]'
@@ -143,4 +143,5 @@ jobs:
           templateSpecsDoPublish: '${{ env.templateSpecsDoPublish }}'
           bicepRegistryName: '${{ env.bicepRegistryName }}'
           bicepRegistryRGName: '${{ env.bicepRegistryRGName }}'
+          bicepRegistryRgLocation: '${{ env.bicepRegistryRgLocation }}'
           bicepRegistryDoPublish: '${{ env.bicepRegistryDoPublish }}'
