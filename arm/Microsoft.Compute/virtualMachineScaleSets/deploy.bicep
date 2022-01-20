@@ -347,7 +347,9 @@ resource vmss 'Microsoft.Compute/virtualMachineScaleSets@2021-04-01' = {
   identity: identity
   zones: availabilityZones
   properties: {
-    proximityPlacementGroup: !empty(proximityPlacementGroupName) ? json('{"id":"${resourceId('Microsoft.Compute/proximityPlacementGroups', proximityPlacementGroup.name)}"}') : null
+    proximityPlacementGroup: !empty(proximityPlacementGroupName) ? {
+      id: az.resourceId('Microsoft.Compute/proximityPlacementGroups', proximityPlacementGroup.name)
+    } : null
     upgradePolicy: {
       mode: upgradePolicyMode
       rollingUpgradePolicy: {
@@ -615,13 +617,13 @@ module vmss_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in ro
 }]
 
 @description('The resource ID of the virtual machine scale set')
-output vmssResourceIds string = vmss.id
+output resourceId string = vmss.id
 
 @description('The resource group of the virtual machine scale set')
-output vmssResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name
 
 @description('The name of the virtual machine scale set')
-output vmssName string = vmss.name
+output name string = vmss.name
 
 @description('The principal ID of the system assigned identity.')
 output systemAssignedPrincipalId string = systemAssignedIdentity && contains(vmss.identity, 'principalId') ? vmss.identity.principalId : ''

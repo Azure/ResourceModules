@@ -222,16 +222,16 @@ module cognitiveServices_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment,
 }]
 
 @description('The name of the cognitive services account')
-output cognitiveServicesName string = cognitiveServices.name
+output name string = cognitiveServices.name
 
 @description('The resource ID of the cognitive services account')
-output cognitiveServicesResourceId string = cognitiveServices.id
+output resourceId string = cognitiveServices.id
 
 @description('The resource group the cognitive services account was deployed into')
-output cognitiveServicesResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name
 
 @description('The service endpoint of the cognitive services account')
-output cognitiveServicesEndpoint string = cognitiveServices.properties.endpoint
+output endpoint string = cognitiveServices.properties.endpoint
 
 @description('The principal ID of the system assigned identity.')
 output systemAssignedPrincipalId string = systemAssignedIdentity && contains(cognitiveServices.identity, 'principalId') ? cognitiveServices.identity.principalId : ''

@@ -92,10 +92,10 @@ module galleries_images 'images/deploy.bicep' = [for (image, index) in images: {
 }]
 
 @description('The resource ID of the deployed image gallery')
-output galleryResourceId string = gallery.id
+output resourceId string = gallery.id
 
 @description('The resource group of the deployed image gallery')
-output galleryResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name
 
 @description('The name of the deployed image gallery')
-output galleryName string = gallery.name
+output name string = gallery.name
