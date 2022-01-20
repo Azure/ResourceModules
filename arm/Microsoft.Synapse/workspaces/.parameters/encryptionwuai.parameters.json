@@ -1,0 +1,33 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "name": {
+      "value": "sxx-az-synws-encryptwuai-001"
+    },
+    "defaultDataLakeStorageAccountName": {
+      "value": "adpsxxazsaweux004"
+    },
+    "defaultDataLakeStorageFilesystem": {
+      "value": "synapsews"
+    },
+    "sqlAdministratorLogin": {
+      "value": "synwsadmin"
+    },
+    "encryption": {
+      "value": true
+    },
+    "encryptionKeyVaultName": {
+      "value": "adp-sxx-az-kv-x-001"
+    },
+    "encryptionKeyVaultResourceGroupName": {
+      "value": "validation-rg"
+    },
+    "encryptionKeyName": {
+      "value": "synapseEncryptionKey"
+    },
+    "encryptionUserAssignedIdentity": {
+      "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001"
+    }
+  }
+}
