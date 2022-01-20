@@ -63,39 +63,34 @@ runs:
       run: |
         # Workaround until composite actions support conditions
         # Once available, remove this if and enable the step condition
-        if('${{ inputs.templateSpecsDoPublish }}' -eq 'true') {
+        # Load used functions
+        . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourcePublish' 'Get-ModulesToUpdate.ps1')
+        . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourcePublish' 'Publish-ModuleToTemplateSpec.ps1')
 
-          # Load used functions
-          . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourcePublish' 'Get-ModulesToUpdate.ps1')
-          . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourcePublish' 'Publish-ModuleToTemplateSpec.ps1')
+        $functionInput = @{
+          TemplateFilePath = Join-Path $env:GITHUB_WORKSPACE "${{ inputs.templateFilePath }}"
+        }
 
+        Write-Output "Invoke task with"
+        Write-Output ($functionInput | ConvertTo-Json | Out-String)
+
+        # Get the modified child resources
+        $ModulesToUpdate = Get-ModulesToUpdate @functionInput -Verbose
+
+        # Publish the modified child resources
+        foreach ($ModuleToUpdate in $ModulesToUpdate) {
           $functionInput = @{
-            TemplateFilePath = Join-Path $env:GITHUB_WORKSPACE "${{ inputs.templateFilePath }}"
+            templateFilePath         = $ModuleToUpdate.TemplateFilePath
+            templateSpecsRgName      = '${{ inputs.templateSpecsRgName }}'
+            templateSpecsRgLocation  = '${{ inputs.templateSpecsRgLocation }}'
+            templateSpecsDescription = '${{ inputs.templateSpecsDescription }}'
+            ModuleVersion            = $ModuleToUpdate.Version
           }
 
-          Write-Output "Invoke task with"
-          Write-Output ($functionInput | ConvertTo-Json | Out-String)
+          Write-Verbose "Invoke task with" -Verbose
+          Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
-          # Get the modified child resources
-          $ModulesToUpdate = Get-ModulesToUpdate @functionInput -Verbose
-
-          # Publish the modified child resources
-          foreach ($ModuleToUpdate in $ModulesToUpdate) {
-            $functionInput = @{
-              templateFilePath         = $ModuleToUpdate.TemplateFilePath
-              templateSpecsRgName      = '${{ inputs.templateSpecsRgName }}'
-              templateSpecsRgLocation  = '${{ inputs.templateSpecsRgLocation }}'
-              templateSpecsDescription = '${{ inputs.templateSpecsDescription }}'
-              ModuleVersion            = $ModuleToUpdate.Version
-            }
-
-            Write-Verbose "Invoke task with" -Verbose
-            Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
-
-            Publish-ModuleToTemplateSpec @functionInput -Verbose
-          }
-        } else {
-          Write-Output "Pipeline is configured to not publish to TemplateSpecs"
+          Publish-ModuleToTemplateSpec @functionInput -Verbose
         }
 
     - name: 'Publish module to private bicep registry'
