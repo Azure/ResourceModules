@@ -24,9 +24,9 @@ This module deploys a site config resource.
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `configName` | string | The name of the site config. |
-| `configResourceGroup` | string | The resource group the site config was deployed into. |
-| `configResourceId` | string | The resource ID of the site config. |
+| `name` | string | The name of the site config. |
+| `resourceGroupName` | string | The resource group the site config was deployed into. |
+| `resourceId` | string | The resource ID of the site config. |
 
 ## Template references
 

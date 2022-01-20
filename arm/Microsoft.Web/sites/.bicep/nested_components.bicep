@@ -72,10 +72,10 @@ resource appInsights_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock 
 }
 
 @description('The name of the application insights component.')
-output appInsightsName string = appInsights.name
+output name string = appInsights.name
 
 @description('The resource ID of the application insights component.')
-output appInsightsResourceId string = appInsights.id
+output resourceId string = appInsights.id
 
 @description('The resource group the application insights component was deployed into.')
-output appInsightsResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name
