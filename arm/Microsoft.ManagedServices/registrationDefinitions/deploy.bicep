@@ -44,13 +44,13 @@ module registrationAssignment_rg '.bicep/nested_registrationAssignment.bicep' = 
 }
 
 @description('The name of the registration definition')
-output registrationDefinitionName string = registrationDefinition.name
+output name string = registrationDefinition.name
 
 @description('The resource ID of the registration definition')
-output registrationDefinitionResourceId string = registrationDefinition.id
+output resourceId string = registrationDefinition.id
 
 @description('The subscription the registration definition was deployed into')
-output registrationDefinitionSubscription string = subscription().displayName
+output subscriptionName string = subscription().displayName
 
 @description('The registration assignment resource ID')
-output registrationAssignmentId string = empty(resourceGroupName) ? registrationAssignment_sub.id : registrationAssignment_rg.outputs.registrationAssignmentId
+output registrationAssignmentId string = empty(resourceGroupName) ? registrationAssignment_sub.id : registrationAssignment_rg.outputs.resourceId

@@ -24,8 +24,8 @@ This module deploys a subscription wide export of the activity log.
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `diagnosticResourceId` | string | The resource ID of the diagnostic settings |
-| `diagnosticsName` | string | The name of the diagnostic settings |
+| `name` | string | The name of the diagnostic settings |
+| `resourceId` | string | The resource ID of the diagnostic settings |
 | `subscriptionName` | string | The name of the subscription to deploy into |
 
 ## Template references

@@ -49,8 +49,8 @@ This module has some known **limitations**:
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `managementGroupId` | string | The group ID of the management group |
-| `managementGroupName` | string | The name of the management group |
+| `name` | string | The name of the management group |
+| `resourceId` | string | The resource ID of the management group |
 
 ## Considerations
 
@@ -73,4 +73,4 @@ New-AzRoleAssignment -ObjectId $PrincipalID -Scope "/providers/Microsoft.Managem
 ## Template references
 
 - [Managementgroups](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Management/2021-04-01/managementGroups)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2021-04-01-preview/roleAssignments)
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)
