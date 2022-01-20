@@ -36,10 +36,10 @@ resource securityAlertPolicy 'Microsoft.Sql/managedInstances/securityAlertPolici
 }
 
 @description('The name of the deployed security alert policy')
-output securityAlertPolicyName string = securityAlertPolicy.name
+output name string = securityAlertPolicy.name
 
 @description('The resource ID of the deployed security alert policy')
-output securityAlertPolicyResourceId string = securityAlertPolicy.id
+output resourceId string = securityAlertPolicy.id
 
 @description('The resource group of the deployed security alert policy')
 output securityAlertPolicyResourceGroupName string = resourceGroup().name
