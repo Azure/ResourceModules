@@ -71,8 +71,8 @@ runs:
           TemplateFilePath = Join-Path $env:GITHUB_WORKSPACE "${{ inputs.templateFilePath }}"
         }
 
-        Write-Output "Invoke task with"
-        Write-Output ($functionInput | ConvertTo-Json | Out-String)
+        Write-Verbose "Invoke task with" -Verbose
+        Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
         # Get the modified child resources
         $ModulesToUpdate = Get-ModulesToUpdate @functionInput -Verbose
