@@ -91,10 +91,10 @@ module policyExemption_rg '.bicep/nested_policyExemptions_rg.bicep' = if (empty(
 }
 
 @sys.description('Policy Exemption Name')
-output policyExemptionName string = !empty(managementGroupId) ? policyExemption_mg.outputs.policyExemptionName : (!empty(resourceGroupName) ? policyExemption_rg.outputs.policyExemptionName : policyExemption_sub.outputs.policyExemptionName)
+output name string = !empty(managementGroupId) ? policyExemption_mg.outputs.name : (!empty(resourceGroupName) ? policyExemption_rg.outputs.name : policyExemption_sub.outputs.name)
 
 @sys.description('Policy Exemption resource ID')
-output policyExemptionResourceId string = !empty(managementGroupId) ? policyExemption_mg.outputs.policyExemptionId : (!empty(resourceGroupName) ? policyExemption_rg.outputs.policyExemptionId : policyExemption_sub.outputs.policyExemptionId)
+output resourceId string = !empty(managementGroupId) ? policyExemption_mg.outputs.resourceId : (!empty(resourceGroupName) ? policyExemption_rg.outputs.resourceId : policyExemption_sub.outputs.resourceId)
 
 @sys.description('Policy Exemption Scope')
-output policyExemptionScope string = !empty(managementGroupId) ? policyExemption_mg.outputs.policyExemptionScope : (!empty(resourceGroupName) ? policyExemption_rg.outputs.policyExemptionScope : policyExemption_sub.outputs.policyExemptionScope)
+output scope string = !empty(managementGroupId) ? policyExemption_mg.outputs.scope : (!empty(resourceGroupName) ? policyExemption_rg.outputs.scope : policyExemption_sub.outputs.scope)

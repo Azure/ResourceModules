@@ -64,9 +64,9 @@ To deploy resource to a Resource Group, provide the `subscriptionId` and `resour
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `policyExemptionName` | string | Policy Exemption Name |
-| `policyExemptionResourceId` | string | Policy Exemption resource ID |
-| `policyExemptionScope` | string | Policy Exemption Scope |
+| `name` | string | Policy Exemption Name |
+| `resourceId` | string | Policy Exemption resource ID |
+| `scope` | string | Policy Exemption Scope |
 
 ## Considerations
 
