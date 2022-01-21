@@ -1,6 +1,6 @@
-# ServiceFabric Clusters `[Microsoft.ServiceFabric/clusters]`
+# ServiceFabric Cluster `[Microsoft.ServiceFabric/clusters]`
 
-This module deploys a service fabric cluster
+This module deploys a service fabric cluster.
 
 ## Resource Types
 
@@ -9,19 +9,15 @@ This module deploys a service fabric cluster
 | `Microsoft.Authorization/locks` | 2016-09-01 |
 | `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
 | `Microsoft.ServiceFabric/clusters` | 2021-06-01 |
-| `Microsoft.ServiceFabric/clusters/applications` | 2021-06-01 |
-| `Microsoft.ServiceFabric/clusters/applications/services` | 2021-06-01 |
 | `Microsoft.ServiceFabric/clusters/applicationTypes` | 2021-06-01 |
-| `Microsoft.ServiceFabric/clusters/applicationTypes/versions` | 2021-06-01 |
 
 ## Parameters
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `addOnFeatures` | array | `[]` | `[BackupRestoreService, DnsService, RepairManager, ResourceMonitorService]` | Optional. The list of add-on features to enable in the cluster. |
-| `applications` | _[applications](applications/readme.md)_ array | `[]` |  | Optional. Array of Service Fabric cluster applications. |
 | `applicationTypes` | _[applicationTypes](applicationTypes/readme.md)_ array | `[]` |  | Optional. Array of Service Fabric cluster application types. |
-| `azureActiveDirectory` | object | `{object}` |  | Optional. Object containing Azure active directory client application ID, cluster application ID and tenant ID. |
+| `azureActiveDirectory` | object | `{object}` |  | Optional. The settings to enable AAD authentication on the cluster. |
 | `certificate` | object | `{object}` |  | Optional. Describes the certificate details like thumbprint of the primary certificate, thumbprint of the secondary certificate and the local certificate store location |
 | `certificateCommonNames` | object | `{object}` |  | Optional. Describes a list of server certificates referenced by common name that are used to secure the cluster. |
 | `clientCertificateCommonNames` | array | `[]` |  | Optional. The list of client certificates referenced by common name that are allowed to manage the cluster. |
@@ -39,7 +35,7 @@ This module deploys a service fabric cluster
 | `name` | string |  |  | Required. Name of the Service Fabric cluster. |
 | `nodeTypes` | array | `[]` |  | Required. The list of node types in the cluster. |
 | `notifications` | array | `[]` |  | Optional. Indicates a list of notification channels for cluster events. |
-| `reliabilityLevel` | string | `None` | `[Bronze, Gold, None, Platinum, Silver]` | Optional. The reliability level sets the replica set size of system services. Learn about ReliabilityLevel (https://docs.microsoft.com/en-us/azure/service-fabric/service-fabric-cluster-capacity). - None - Run the System services with a target replica set count of 1. This should only be used for test clusters. - Bronze - Run the System services with a target replica set count of 3. This should only be used for test clusters. - Silver - Run the System services with a target replica set count of 5. - Gold - Run the System services with a target replica set count of 7. - Platinum - Run the System services with a target replica set count of 9. |
+| `reliabilityLevel` | string |  | `[Bronze, Gold, None, Platinum, Silver]` | Optional. The reliability level sets the replica set size of system services. Learn about ReliabilityLevel (https://docs.microsoft.com/en-us/azure/service-fabric/service-fabric-cluster-capacity). - None - Run the System services with a target replica set count of 1. This should only be used for test clusters. - Bronze - Run the System services with a target replica set count of 3. This should only be used for test clusters. - Silver - Run the System services with a target replica set count of 5. - Gold - Run the System services with a target replica set count of 7. - Platinum - Run the System services with a target replica set count of 9. |
 | `reverseProxyCertificate` | object | `{object}` |  | Optional. Describes the certificate details. |
 | `reverseProxyCertificateCommonNames` | object | `{object}` |  | Optional. Describes a list of server certificates referenced by common name that are used to secure the cluster. |
 | `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or it's fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
@@ -54,6 +50,27 @@ This module deploys a service fabric cluster
 | `vmssZonalUpgradeMode` | string | `Hierarchical` | `[Hierarchical, Parallel]` | Optional. This property defines the upgrade mode for the virtual machine scale set, it is mandatory if a node type with multiple Availability Zones is added. |
 | `waveUpgradePaused` | bool |  |  | Optional. Boolean to pause automatic runtime version upgrades to the cluster. |
 
+### Parameter Usage: `notifications`
+
+```json
+"notifications": {
+    "value": [
+        {
+            "isEnabled": true, // Required. Indicates if the notification is enabled.
+            "notificationCategory": "WaveProgress", // Required. The category of notification. Possible values include: "WaveProgress".
+            "notificationLevel": "Critical", // Required. The level of notification. Possible values include: "Critical", "All".
+            "notificationTargets": [
+                {
+                    "notificationChannel": "EmailUser", // Required. The notification channel indicates the type of receivers subscribed to the notification, either user or subscription. Possible values include: "EmailUser", "EmailSubscription".
+                    "receivers": [
+                        "SomeReceiver" // Required. List of targets that subscribe to the notification.
+                    ]
+                }
+            ]
+        }
+    ]
+}
+```
 
 ### Parameter Usage: `roleAssignments`
 
@@ -99,17 +116,13 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
 | `clusterEndpoint` | string | The Service Fabric Cluster endpoint. |
-| `clusterId` | string | The Service Fabric Cluster resource ID. |
 | `clusterName` | string | The Service Fabric Cluster name. |
-| `clusterObject` | object | The Service Fabric Cluster object. |
 | `clusterResourceGroup` | string | The Service Fabric Cluster resource group. |
+| `clusterResourceId` | string | The Service Fabric Cluster resource ID. |
 
 ## Template references
 
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
 - [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-04-01-preview/roleAssignments)
 - [Clusters](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ServiceFabric/2021-06-01/clusters)
-- [Clusters/Applications](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ServiceFabric/2021-06-01/clusters/applications)
-- [Clusters/Applications/Services](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ServiceFabric/2021-06-01/clusters/applications/services)
 - [Clusters/Applicationtypes](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ServiceFabric/2021-06-01/clusters/applicationTypes)
-- [Clusters/Applicationtypes/Versions](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ServiceFabric/2021-06-01/clusters/applicationTypes/versions)

@@ -30,7 +30,7 @@ param addOnFeatures array = []
 @description('Required. Number of unused versions per application type to keep.')
 param maxUnusedVersionsToKeep int = 3
 
-@description('Optional. Object containing Azure active directory client application ID, cluster application ID and tenant ID.')
+@description('Optional. The settings to enable AAD authentication on the cluster.')
 param azureActiveDirectory object = {}
 
 @description('Optional. Describes the certificate details like thumbprint of the primary certificate, thumbprint of the secondary certificate and the local certificate store location')
@@ -132,32 +132,8 @@ param waveUpgradePaused bool = false
 @description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or it\'s fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'')
 param roleAssignments array = []
 
-@description('Optional. Array of Service Fabric cluster applications.')
-param applications array = []
-
 @description('Optional. Array of Service Fabric cluster application types.')
 param applicationTypes array = []
-
-var azureActiveDirectory_var = {
-  clientApplication: contains(azureActiveDirectory, 'clientApplication') ? azureActiveDirectory.clientApplication : null
-  clusterApplication: contains(azureActiveDirectory, 'clusterApplication') ? azureActiveDirectory.clusterApplication : null
-  tenantId: contains(azureActiveDirectory, 'tenantId') ? azureActiveDirectory.tenantId : null
-}
-
-var certificate_var = {
-  thumbprint: contains(certificate, 'thumbprint') ? certificate.thumbprint : null
-  thumbprintSecondary: contains(certificate, 'thumbprintSecondary') ? certificate.thumbprintSecondary : null
-  x509StoreName: contains(certificate, 'x509StoreName') ? certificate.x509StoreName : null
-}
-
-var certificateCommonNamesList_var = [for certificateCommonName in items(certificateCommonNames): {
-  commonNames: contains(certificateCommonName.key, 'commonNames') ? certificateCommonName.value.commonNames : []
-}]
-
-var certificateCommonNames_var = {
-  commonNames: contains(certificateCommonNames, 'commonNames') ? certificateCommonNamesList_var : null
-  x509StoreName: contains(certificateCommonNames, 'x509StoreName') ? certificateCommonNames.x509StoreName : null
-}
 
 var clientCertificateCommonNames_var = [for clientCertificateCommonName in clientCertificateCommonNames: {
   certificateCommonName: contains(clientCertificateCommonName, 'certificateCommonName') ? clientCertificateCommonName.certificateCommonName : null
@@ -169,15 +145,6 @@ var clientCertificateThumbprints_var = [for clientCertificateThumbprint in clien
   certificateThumbprint: contains(clientCertificateThumbprint, 'certificateThumbprint') ? clientCertificateThumbprint.certificateThumbprint : null
   isAdmin: contains(clientCertificateThumbprint, 'isAdmin') ? clientCertificateThumbprint.isAdmin : false
 }]
-
-var diagnosticsStorageAccountConfig_var = {
-  blobEndpoint: contains(diagnosticsStorageAccountConfig, 'blobEndpoint') ? diagnosticsStorageAccountConfig.blobEndpoint : null
-  protectedAccountKeyName: contains(diagnosticsStorageAccountConfig, 'protectedAccountKeyName') ? diagnosticsStorageAccountConfig.protectedAccountKeyName : null
-  protectedAccountKeyName2: contains(diagnosticsStorageAccountConfig, 'protectedAccountKeyName2') ? diagnosticsStorageAccountConfig.protectedAccountKeyName2 : null
-  queueEndpoint: contains(diagnosticsStorageAccountConfig, 'queueEndpoint') ? diagnosticsStorageAccountConfig.queueEndpoint : null
-  storageAccountName: contains(diagnosticsStorageAccountConfig, 'storageAccountName') ? diagnosticsStorageAccountConfig.storageAccountName : null
-  tableEndpoint: contains(diagnosticsStorageAccountConfig, 'tableEndpoint') ? diagnosticsStorageAccountConfig.tableEndpoint : null
-}
 
 var fabricSettings_var = [for fabricSetting in fabricSettings: {
   name: contains(fabricSetting, 'name') ? fabricSetting.name : null
@@ -213,22 +180,7 @@ var notifications_var = [for notification in notifications: {
   notificationTargets: contains(notification, 'notificationTargets') ? notification.notificationTargets : []
 }]
 
-var reverseProxyCertificate_var = {
-  thumbprint: contains(reverseProxyCertificate, 'thumbprint') ? reverseProxyCertificate.thumbprint : null
-  thumbprintSecondary: contains(reverseProxyCertificate, 'thumbprintSecondary') ? reverseProxyCertificate.thumbprintSecondary : null
-  x509StoreName: contains(reverseProxyCertificate, 'x509StoreName') ? reverseProxyCertificate.x509StoreName : null
-}
-
-var reverseProxyCertificateCommonNamesList_var = [for reverseProxyCertificateCommonName in items(reverseProxyCertificateCommonNames): {
-  commonNames: contains(reverseProxyCertificateCommonName.key, 'commonNames') ? reverseProxyCertificateCommonName.value.commonNames : []
-}]
-
-var reverseProxyCertificateCommonNames_var = {
-  commonNames: contains(reverseProxyCertificateCommonNames, 'commonNames') ? reverseProxyCertificateCommonNamesList_var : []
-  x509StoreName: contains(reverseProxyCertificateCommonNames, 'x509StoreName') ? reverseProxyCertificateCommonNames.x509StoreName : null
-}
-
-var upgradeDescription_var = {
+var upgradeDescription_var = union({
   deltaHealthPolicy: {
     applicationDeltaHealthPolicies: contains(upgradeDescription, 'applicationDeltaHealthPolicies') ? upgradeDescription.applicationDeltaHealthPolicies : {}
     maxPercentDeltaUnhealthyApplications: contains(upgradeDescription, 'maxPercentDeltaUnhealthyApplications') ? upgradeDescription.maxPercentDeltaUnhealthyApplications : 0
@@ -236,18 +188,19 @@ var upgradeDescription_var = {
     maxPercentUpgradeDomainDeltaUnhealthyNodes: contains(upgradeDescription, 'maxPercentUpgradeDomainDeltaUnhealthyNodes') ? upgradeDescription.maxPercentUpgradeDomainDeltaUnhealthyNodes : 0
   }
   forceRestart: contains(upgradeDescription, 'forceRestart') ? upgradeDescription.forceRestart : false
-  healthCheckRetryTimeout: contains(upgradeDescription, 'healthCheckRetryTimeout') ? upgradeDescription.healthCheckRetryTimeout : '00:30:00'
-  healthCheckStableDuration: contains(upgradeDescription, 'healthCheckStableDuration') ? upgradeDescription.healthCheckStableDuration : '01:00:00'
-  healthCheckWaitDuration: contains(upgradeDescription, 'healthCheckWaitDuration') ? upgradeDescription.healthCheckWaitDuration : '00:15:00'
+  healthCheckRetryTimeout: contains(upgradeDescription, 'healthCheckRetryTimeout') ? upgradeDescription.healthCheckRetryTimeout : '00:45:00'
+  healthCheckStableDuration: contains(upgradeDescription, 'healthCheckStableDuration') ? upgradeDescription.healthCheckStableDuration : '00:01:00'
+  healthCheckWaitDuration: contains(upgradeDescription, 'healthCheckWaitDuration') ? upgradeDescription.healthCheckWaitDuration : '00:00:30'
+  upgradeDomainTimeout: contains(upgradeDescription, 'upgradeDomainTimeout') ? upgradeDescription.upgradeDomainTimeout : '02:00:00'
+  upgradeReplicaSetCheckTimeout: contains(upgradeDescription, 'upgradeReplicaSetCheckTimeout') ? upgradeDescription.upgradeReplicaSetCheckTimeout : '1.00:00:00'
+  upgradeTimeout: contains(upgradeDescription, 'upgradeTimeout') ? upgradeDescription.upgradeTimeout : '02:00:00'
+}, contains(upgradeDescription, 'healthPolicy') ? {
   healthPolicy: {
     applicationHealthPolicies: contains(upgradeDescription.healthPolicy, 'applicationHealthPolicies') ? upgradeDescription.healthPolicy.applicationHealthPolicies : {}
-    maxPercentUnhealthyApplications: contains(upgradeDescription.healthPolicy, 'maxPercentUnhealthyApplications') ? upgradeDescription.healthPolicy.maxPercentUnhealthyApplications : 10
-    maxPercentUnhealthyNodes: contains(upgradeDescription.healthPolicy, 'maxPercentUnhealthyNodes') ? upgradeDescription.healthPolicy.maxPercentUnhealthyNodes : 10
+    maxPercentUnhealthyApplications: contains(upgradeDescription.healthPolicy, 'maxPercentUnhealthyApplications') ? upgradeDescription.healthPolicy.maxPercentUnhealthyApplications : 0
+    maxPercentUnhealthyNodes: contains(upgradeDescription.healthPolicy, 'maxPercentUnhealthyNodes') ? upgradeDescription.healthPolicy.maxPercentUnhealthyNodes : 0
   }
-  upgradeDomainTimeout: contains(upgradeDescription, 'upgradeDomainTimeout') ? upgradeDescription.upgradeDomainTimeout : '01:00:00'
-  upgradeReplicaSetCheckTimeout: contains(upgradeDescription, 'upgradeReplicaSetCheckTimeout') ? upgradeDescription.upgradeReplicaSetCheckTimeout : '03:00:00'
-  upgradeTimeout: contains(upgradeDescription, 'upgradeTimeout') ? upgradeDescription.upgradeTimeout : '02:00:00'
-}
+} : {})
 
 module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   name: 'pid-${cuaId}'
@@ -264,13 +217,31 @@ resource serviceFabricCluster 'Microsoft.ServiceFabric/clusters@2021-06-01' = {
     applicationTypeVersionsCleanupPolicy: {
       maxUnusedVersionsToKeep: maxUnusedVersionsToKeep
     }
-    azureActiveDirectory: !empty(azureActiveDirectory) ? azureActiveDirectory_var : null
-    certificate: !empty(certificate) ? certificate_var : null
-    certificateCommonNames: !empty(certificateCommonNames) ? certificateCommonNames_var : null
+    azureActiveDirectory: !empty(azureActiveDirectory) ? {
+      clientApplication: contains(azureActiveDirectory, 'clientApplication') ? azureActiveDirectory.clientApplication : null
+      clusterApplication: contains(azureActiveDirectory, 'clusterApplication') ? azureActiveDirectory.clusterApplication : null
+      tenantId: contains(azureActiveDirectory, 'tenantId') ? azureActiveDirectory.tenantId : null
+    } : null
+    certificate: !empty(certificate) ? {
+      thumbprint: contains(certificate, 'thumbprint') ? certificate.thumbprint : null
+      thumbprintSecondary: contains(certificate, 'thumbprintSecondary') ? certificate.thumbprintSecondary : null
+      x509StoreName: contains(certificate, 'x509StoreName') ? certificate.x509StoreName : null
+    } : null
+    certificateCommonNames: !empty(certificateCommonNames) ? {
+      commonNames: contains(certificateCommonNames, 'commonNames') ? certificateCommonNames.commonNames : null
+      x509StoreName: contains(certificateCommonNames, 'certificateCommonNamesx509StoreName') ? certificateCommonNames.certificateCommonNamesx509StoreName : null
+    } : null
     clientCertificateCommonNames: !empty(clientCertificateCommonNames) ? clientCertificateCommonNames_var : null
     clientCertificateThumbprints: !empty(clientCertificateThumbprints) ? clientCertificateThumbprints_var : null
     clusterCodeVersion: !empty(clusterCodeVersion) ? clusterCodeVersion : null
-    diagnosticsStorageAccountConfig: !empty(diagnosticsStorageAccountConfig) ? diagnosticsStorageAccountConfig_var : null
+    diagnosticsStorageAccountConfig: !empty(diagnosticsStorageAccountConfig) ? {
+      blobEndpoint: contains(diagnosticsStorageAccountConfig, 'blobEndpoint') ? diagnosticsStorageAccountConfig.blobEndpoint : null
+      protectedAccountKeyName: contains(diagnosticsStorageAccountConfig, 'protectedAccountKeyName') ? diagnosticsStorageAccountConfig.protectedAccountKeyName : null
+      protectedAccountKeyName2: contains(diagnosticsStorageAccountConfig, 'protectedAccountKeyName2') ? diagnosticsStorageAccountConfig.protectedAccountKeyName2 : null
+      queueEndpoint: contains(diagnosticsStorageAccountConfig, 'queueEndpoint') ? diagnosticsStorageAccountConfig.queueEndpoint : null
+      storageAccountName: contains(diagnosticsStorageAccountConfig, 'storageAccountName') ? diagnosticsStorageAccountConfig.storageAccountName : null
+      tableEndpoint: contains(diagnosticsStorageAccountConfig, 'tableEndpoint') ? diagnosticsStorageAccountConfig.tableEndpoint : null
+    } : null
     eventStoreServiceEnabled: eventStoreServiceEnabled
     fabricSettings: !empty(fabricSettings) ? fabricSettings_var : null
     infrastructureServiceManager: infrastructureServiceManager
@@ -278,8 +249,15 @@ resource serviceFabricCluster 'Microsoft.ServiceFabric/clusters@2021-06-01' = {
     nodeTypes: !empty(nodeTypes) ? nodeTypes_var : []
     notifications: !empty(notifications) ? notifications_var : null
     reliabilityLevel: !empty(reliabilityLevel) ? reliabilityLevel : 'None'
-    reverseProxyCertificate: !empty(reverseProxyCertificate) ? reverseProxyCertificate_var : null
-    reverseProxyCertificateCommonNames: !empty(reverseProxyCertificateCommonNames) ? reverseProxyCertificateCommonNames_var : null
+    reverseProxyCertificate: !empty(reverseProxyCertificate) ? {
+      thumbprint: contains(reverseProxyCertificate, 'thumbprint') ? reverseProxyCertificate.thumbprint : null
+      thumbprintSecondary: contains(reverseProxyCertificate, 'thumbprintSecondary') ? reverseProxyCertificate.thumbprintSecondary : null
+      x509StoreName: contains(reverseProxyCertificate, 'x509StoreName') ? reverseProxyCertificate.x509StoreName : null
+    } : null
+    reverseProxyCertificateCommonNames: !empty(reverseProxyCertificateCommonNames) ? {
+      commonNames: contains(reverseProxyCertificateCommonNames, 'commonNames') ? reverseProxyCertificateCommonNames.commonNames : null
+      x509StoreName: contains(reverseProxyCertificateCommonNames, 'x509StoreName') ? reverseProxyCertificateCommonNames.x509StoreName : null
+    } : null
     sfZonalUpgradeMode: !empty(sfZonalUpgradeMode) ? sfZonalUpgradeMode : null
     upgradeDescription: !empty(upgradeDescription) ? upgradeDescription_var : null
     upgradeMode: !empty(upgradeMode) ? upgradeMode : null
@@ -318,33 +296,12 @@ module serviceFabricCluster_applicationTypes 'applicationTypes/deploy.bicep' = [
   params: {
     name: applicationType.name
     serviceFabricClusterName: serviceFabricCluster.name
-    properties: contains(applicationType, 'properties') ? applicationType.properties : {}
-    tags: tags
-    versions: contains(applicationType, 'versions') ? applicationType.versions : []
+    tags: contains(applicationType, 'tags') ? applicationType.tags : {}
   }
-}]
-
-// Service Fabric cluster applications
-module serviceFabricCluster_applications 'applications/deploy.bicep' = [for application in applications: {
-  name: '${uniqueString(deployment().name, location)}-SFC-${application.name}'
-  params: {
-    serviceFabricClusterName: serviceFabricCluster.name
-    name: contains(application, 'name') ? application.name : 'defaultApplication'
-    identity: contains(application, 'identity') ? application.identity : {}
-    properties: contains(application, 'properties') ? application.properties : {}
-    services: contains(application, 'applicationsServices') ? application.applicationsServices : []
-    tags: tags
-  }
-  dependsOn: [
-    serviceFabricCluster_applicationTypes
-  ]
 }]
 
 @description('The Service Fabric Cluster name.')
 output clusterName string = serviceFabricCluster.name
-
-@description('The Service Fabric Cluster object.')
-output clusterObject object = serviceFabricCluster
 
 @description('The Service Fabric Cluster resource group.')
 output clusterResourceGroup string = resourceGroup().name
