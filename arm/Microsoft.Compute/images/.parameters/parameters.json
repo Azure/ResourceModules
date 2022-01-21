@@ -12,7 +12,7 @@
             "value": "Windows"
         },
         "osDiskBlobUri": {
-            "value": "https://adpsxxazsax001.blob.core.windows.net/vhds/adp-sxx-az-imgt-x-001.vhd"
+            "value": "https://adpsxxazsax001.blob.core.windows.net/vhds/adp-emptyvhd.vhd"
         },
         "osDiskCaching": {
             "value": "ReadWrite"
