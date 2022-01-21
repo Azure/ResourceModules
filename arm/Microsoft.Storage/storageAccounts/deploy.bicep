@@ -50,13 +50,13 @@ param azureFilesIdentityBasedAuthentication object = {}
 @description('Optional. Virtual Network Identifier used to create a service endpoint.')
 param vNetId string = ''
 
-@description('Optional. Configuration Details for private endpoints.')
+@description('Optional. Configuration Details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible')
 param privateEndpoints array = []
 
 @description('Optional. The Storage Account ManagementPolicies Rules.')
 param managementPolicyRules array = []
 
-@description('Optional. Networks ACLs, this value contains IPs to whitelist and/or Subnet information.')
+@description('Optional. Networks ACLs, this value contains IPs to whitelist and/or Subnet information. For security reasons, it is recommended to set the DefaultAction Deny')
 param networkAcls object = {}
 
 @description('Optional. Blob service and containers to deploy')
