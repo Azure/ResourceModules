@@ -62,6 +62,8 @@ jobs:
       namespace: 'Microsoft.ManagedIdentity\userAssignedIdentities'
     needs:
       - job_deploy_rg
+    outputs:
+      msiPrincipalId: ${{ steps.print_msi_prinId.outputs.msiPrincipalId }}
     strategy:
       fail-fast: false
       matrix:
@@ -72,6 +74,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: 'Deploy module'
+        id: deploy_msi
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
@@ -81,6 +84,15 @@ jobs:
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
           removeDeployment: '${{ env.removeDeployment }}'
+      - name: Set msi principal ID output
+        id: print_msi_prinId
+        uses: azure/powershell@v1
+        with:
+          inlineScript: |
+            $deploymentOutput = '${{ steps.deploy_msi.outputs.deploymentOutput }}'
+            $msiPrincipalId = (ConvertFrom-Json $deploymentOutput).msiPrincipalId
+            Write-Output ('::set-output name={0}::{1}' -f 'msiPrincipalId', $msiPrincipalId)
+          azPSVersion: 'latest'
 
   job_deploy_pa:
     runs-on: ubuntu-20.04
@@ -573,6 +585,7 @@ jobs:
       - job_deploy_sa
       - job_deploy_evh
       - job_deploy_law
+      - job_deploy_msi
     strategy:
       fail-fast: false
       matrix:
@@ -592,6 +605,7 @@ jobs:
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
           removeDeployment: '${{ env.removeDeployment }}'
+          customParameterFileTokens: '[{"Name":"msiPrincipalId","Value":"${{ needs.job_deploy_msi.outputs.msiPrincipalId }}"}]'
 
   job_deploy_kv:
     runs-on: ubuntu-20.04
@@ -602,6 +616,7 @@ jobs:
       - job_deploy_sa
       - job_deploy_evh
       - job_deploy_law
+      - job_deploy_msi
     strategy:
       fail-fast: false
       matrix:
@@ -621,6 +636,7 @@ jobs:
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
           removeDeployment: '${{ env.removeDeployment }}'
+          customParameterFileTokens: '[{"Name":"msiPrincipalId","Value":"${{ needs.job_deploy_msi.outputs.msiPrincipalId }}"}]'
 
   job_deploy_kv_secrets:
     runs-on: ubuntu-20.04
@@ -714,6 +730,7 @@ jobs:
       - job_deploy_sa
       - job_deploy_evh
       - job_deploy_law
+      - job_deploy_msi
     strategy:
       fail-fast: false
       matrix:
@@ -733,6 +750,7 @@ jobs:
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
           removeDeployment: '${{ env.removeDeployment }}'
+          customParameterFileTokens: '[{"Name":"msiPrincipalId","Value":"${{ needs.job_deploy_msi.outputs.msiPrincipalId }}"}]'
 
   job_deploy_sqlmi_kv_secrets:
     runs-on: ubuntu-20.04
@@ -853,6 +871,7 @@ jobs:
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
           removeDeployment: '${{ env.removeDeployment }}'
+          customParameterFileTokens: '[{"Name":"msiPrincipalId","Value":"${{ needs.job_deploy_msi.outputs.msiPrincipalId }}"}]'
 
   job_deploy_vnet:
     runs-on: ubuntu-20.04

@@ -57,6 +57,29 @@ stages:
             - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
               templateFilePath: $(templateFilePath)
               displayName: User Assigned Identity
+              jobName: job_deploy_msi
+      - job: job_set_msi_id
+        displayName: Set msi principal ID output
+        dependsOn:
+          - job_deploy_msi
+        pool:
+          ${{ if eq(variables['vmImage'], '') }}:
+            name: $(poolName)
+          ${{ if eq(variables['poolName'], '') }}:
+            vmImage: $(vmImage)
+        variables:
+          deploymentOutput: $[ dependencies.job_deploy_msi.outputs['DeployModule.deploymentOutput'] ]
+        steps:
+          - task: PowerShell@2
+            name: print_msi_prinId
+            inputs:
+              targetType: inline
+              pwsh: true
+              script: |
+                # Write-Verbose $(deploymentOutput) -Verbose
+                $msiPrincipalId = (ConvertFrom-Json '$(deploymentOutput)').msiPrincipalId
+                Write-Verbose "msiPrincipalId: $msiPrincipalId" -Verbose
+                Write-Output ('##vso[task.setvariable variable={0};isOutput=true]{1}' -f 'msiPrincipalId', $msiPrincipalId)
 
   - stage: deploy_pa
     displayName: Deploy policy assignment
@@ -355,9 +378,11 @@ stages:
       - deploy_sa
       - deploy_evh
       - deploy_law
+      - deploy_msi
     variables:
       resourceType: 'Microsoft.RecoveryServices/vaults'
       templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
+      msiPrincipalId: $[ stageDependencies.deploy_msi.job_set_msi_id.outputs['print_msi_prinId.msiPrincipalId'] ]
     jobs:
       - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
         parameters:
@@ -365,6 +390,7 @@ stages:
             - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
               templateFilePath: $(templateFilePath)
               displayName: Default recovery services vault
+              customParameterFileTokens: '[{"Name":"msiPrincipalId","Value":"$(msiPrincipalId)"}]'
 
   - stage: deploy_kv
     displayName: Deploy key vaults
@@ -372,9 +398,11 @@ stages:
       - deploy_sa
       - deploy_evh
       - deploy_law
+      - deploy_msi
     variables:
       resourceType: 'Microsoft.KeyVault/vaults'
       templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
+      msiPrincipalId: $[ stageDependencies.deploy_msi.job_set_msi_id.outputs['print_msi_prinId.msiPrincipalId'] ]
     jobs:
       - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
         parameters:
@@ -383,14 +411,17 @@ stages:
               templateFilePath: $(templateFilePath)
               displayName: Default Key Vault
               jobName: default_kv
+              customParameterFileTokens: '[{"Name":"msiPrincipalId","Value":"$(msiPrincipalId)"}]'
             - path: $(dependencyPath)/$(resourceType)/parameters/pe.parameters.json
               templateFilePath: $(templateFilePath)
               displayName: Private Endpoint Key Vault
+              customParameterFileTokens: '[{"Name":"msiPrincipalId","Value":"$(msiPrincipalId)"}]'
             - ${{ if eq( parameters.deploySqlMiDependencies, true) }}:
                 - path: $(dependencyPath)/$(resourceType)/parameters/sqlmi.parameters.json
                   templateFilePath: $(templateFilePath)
                   displayName: SQLMI key vault
                   jobName: sqlmi_kv
+                  customParameterFileTokens: '[{"Name":"msiPrincipalId","Value":"$(msiPrincipalId)"}]'
       - job:
         displayName: Set key vault secrets keys and certificates
         dependsOn:
@@ -558,8 +589,9 @@ stages:
     dependsOn:
       - deploy_msi
     variables:
-      resourceType: 'Microsoft.Authorization\roleAssignments'
+      resourceType: 'Microsoft.Authorization/roleAssignments'
       templateFilePath: $(modulesPath)/$(resourceType)/.bicep/nested_rbac_sub.bicep
+      msiPrincipalId: $[ stageDependencies.deploy_msi.job_set_msi_id.outputs['print_msi_prinId.msiPrincipalId'] ]
     jobs:
       - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
         parameters:
@@ -567,6 +599,7 @@ stages:
             - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
               templateFilePath: $(templateFilePath)
               displayName: MSI Role Assignment
+              customParameterFileTokens: '[{"Name":"msiPrincipalId","Value":"$(msiPrincipalId)"}]'
 
   - stage: deploy_vnet
     displayName: Deploy virtual networks
