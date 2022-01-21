@@ -27,8 +27,8 @@ This module deploys budgets for subscriptions.
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `budgetName` | string | The name of the budget |
-| `budgetResourceId` | string | The resource ID of the budget |
+| `name` | string | The name of the budget |
+| `resourceId` | string | The resource ID of the budget |
 | `subscriptionName` | string | The subscription the budget was deployed into |
 
 ## Template references

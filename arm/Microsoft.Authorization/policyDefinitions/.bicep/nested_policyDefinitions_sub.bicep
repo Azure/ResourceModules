@@ -46,10 +46,10 @@ resource policyDefinition 'Microsoft.Authorization/policyDefinitions@2021-06-01'
 }
 
 @sys.description('Policy Definition Name')
-output policyDefinitionName string = policyDefinition.name
+output name string = policyDefinition.name
 
 @sys.description('Policy Definition resource ID')
-output policyDefinitionResourceId string = subscriptionResourceId(subscriptionId, 'Microsoft.Authorization/policyDefinitions', policyDefinition.name)
+output resourceId string = subscriptionResourceId(subscriptionId, 'Microsoft.Authorization/policyDefinitions', policyDefinition.name)
 
 @sys.description('Policy Definition Role Definition IDs')
 output roleDefinitionIds array = (contains(policyDefinition.properties.policyRule.then, 'details') ? ((contains(policyDefinition.properties.policyRule.then.details, 'roleDefinitionIds') ? policyDefinition.properties.policyRule.then.details.roleDefinitionIds : [])) : [])

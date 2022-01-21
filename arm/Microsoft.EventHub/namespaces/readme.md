@@ -142,9 +142,9 @@ You can specify multiple user assigned identities to a resource by providing add
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `namespace` | string | The name of the eventspace. |
-| `namespaceResourceGroup` | string | The resource group where the namespace is deployed. |
-| `namespaceResourceId` | string | The resource ID of the eventspace. |
+| `name` | string | The name of the eventspace. |
+| `resourceGroupName` | string | The resource group where the namespace is deployed. |
+| `resourceId` | string | The resource ID of the eventspace. |
 | `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
 
 ## Template references

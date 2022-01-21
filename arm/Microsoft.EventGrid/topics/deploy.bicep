@@ -141,10 +141,10 @@ module eventGrid_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) 
 }]
 
 @description('The name of the event grid topic')
-output eventGridName string = eventGrid.name
+output name string = eventGrid.name
 
 @description('The resource ID of the event grid')
-output eventGridResourceId string = eventGrid.id
+output resourceId string = eventGrid.id
 
 @description('The name of the resource group the event grid was deployed into')
-output eventGridResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name
