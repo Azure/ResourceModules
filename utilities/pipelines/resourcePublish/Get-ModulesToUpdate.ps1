@@ -127,9 +127,9 @@ function Get-TemplateFileToUpdate {
         Find-TemplateFile -Path $_.FullName -Verbose
     } | Sort-Object -Property FullName -Unique -Descending
 
-    if ($TemplateFilesToUpdate.Count -eq 0) {
+    <# if ($TemplateFilesToUpdate.Count -eq 0) {
         throw 'No template file found in the modified module.'
-    }
+    } #>
 
     Write-Verbose ('Modified modules found: [{0}]' -f $TemplateFilesToUpdate.count)
     $TemplateFilesToUpdate | ForEach-Object {
