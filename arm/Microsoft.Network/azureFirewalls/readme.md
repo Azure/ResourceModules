@@ -24,11 +24,11 @@ This module deploys a firewall.
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticStorageAccountId` | string |  |  | Optional. Diagnostic Storage Account resource identifier |
 | `diagnosticWorkspaceId` | string |  |  | Optional. Log Analytics workspace resource identifier |
-| `firewallLogsToEnable` | array | `[AzureFirewallApplicationRule, AzureFirewallNetworkRule, AzureFirewallDnsProxy]` | `[AzureFirewallApplicationRule, AzureFirewallNetworkRule, AzureFirewallDnsProxy]` | Optional. The name of firewall logs that will be streamed. |
 | `firewallPolicyId` | string |  |  | Optional. Resource ID of the Firewall Policy that should be attached. |
 | `ipConfigurations` | array |  |  | Required. List of IP Configurations. |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
+| `logsToEnable` | array | `[AzureFirewallApplicationRule, AzureFirewallNetworkRule, AzureFirewallDnsProxy]` | `[AzureFirewallApplicationRule, AzureFirewallNetworkRule, AzureFirewallDnsProxy]` | Optional. The name of firewall logs that will be streamed. |
 | `metricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | Optional. The name of metrics that will be streamed. |
 | `name` | string |  |  | Required. Name of the Azure Firewall. |
 | `natRuleCollections` | array | `[]` |  | Optional. Collection of NAT rule collections used by Azure Firewall. |
@@ -99,4 +99,4 @@ The `networkRuleCollections` parameter accepts a JSON Array of AzureFirewallNetw
 - [Azurefirewalls](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/azureFirewalls)
 - [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings)
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2021-04-01-preview/roleAssignments)
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)

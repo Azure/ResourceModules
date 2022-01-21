@@ -88,7 +88,7 @@ param cuaId string = ''
   'AzureFirewallNetworkRule'
   'AzureFirewallDnsProxy'
 ])
-param firewallLogsToEnable array = [
+param logsToEnable array = [
   'AzureFirewallApplicationRule'
   'AzureFirewallNetworkRule'
   'AzureFirewallDnsProxy'
@@ -114,7 +114,7 @@ var ipConfigurations_var = [for ipConfiguration in ipConfigurations: {
   }
 }]
 
-var diagnosticsLogsAzureFirewall = [for log in firewallLogsToEnable: {
+var diagnosticsLogs = [for log in logsToEnable: {
   category: log
   enabled: true
   retentionPolicy: {
@@ -176,7 +176,7 @@ resource azureFirewall_diagnosticSettings 'Microsoft.Insights/diagnosticSettings
     eventHubAuthorizationRuleId: !empty(diagnosticEventHubAuthorizationRuleId) ? diagnosticEventHubAuthorizationRuleId : null
     eventHubName: !empty(diagnosticEventHubName) ? diagnosticEventHubName : null
     metrics: diagnosticsMetrics
-    logs: diagnosticsLogsAzureFirewall
+    logs: diagnosticsLogs
   }
   scope: azureFirewall
 }
