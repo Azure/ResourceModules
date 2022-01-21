@@ -63,7 +63,7 @@ jobs:
     needs:
       - job_deploy_rg
     outputs:
-      msiPrincipalId: ${{ steps.print_msi_prinId.outputs.principalId }}
+      msiPrincipalId: ${{ steps.print_msi_prinId.outputs.msiPrincipalId }}
     strategy:
       fail-fast: false
       matrix:
@@ -90,7 +90,8 @@ jobs:
         with:
           inlineScript: |
             $deploymentOutput = '${{ steps.deploy_msi.outputs.deploymentOutput }}'
-            $msiPrincipalId = (ConvertFrom-Json $deploymentOutput).msiPrincipalId
+            $msiPrincipalId = (ConvertFrom-Json $deploymentOutput).principalId
+            Write-Verbose "msiPrincipalId: $msiPrincipalId" -Verbose
             Write-Output ('::set-output name={0}::{1}' -f 'msiPrincipalId', $msiPrincipalId)
           azPSVersion: 'latest'
 
@@ -605,7 +606,7 @@ jobs:
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
           removeDeployment: '${{ env.removeDeployment }}'
-          customParameterFileTokens: '[{"Name":"msiPrincipalId","Value":"${{ needs.job_deploy_msi.outputs.principalId }}"}]'
+          customParameterFileTokens: '[{"Name":"msiPrincipalId","Value":"${{ needs.job_deploy_msi.outputs.msiPrincipalId }}"}]'
 
   job_deploy_kv:
     runs-on: ubuntu-20.04
@@ -636,7 +637,7 @@ jobs:
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
           removeDeployment: '${{ env.removeDeployment }}'
-          customParameterFileTokens: '[{"Name":"msiPrincipalId","Value":"${{ needs.job_deploy_msi.outputs.principalId }}"}]'
+          customParameterFileTokens: '[{"Name":"msiPrincipalId","Value":"${{ needs.job_deploy_msi.outputs.msiPrincipalId }}"}]'
 
   job_deploy_kv_secrets:
     runs-on: ubuntu-20.04
@@ -750,7 +751,7 @@ jobs:
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
           removeDeployment: '${{ env.removeDeployment }}'
-          customParameterFileTokens: '[{"Name":"msiPrincipalId","Value":"${{ needs.job_deploy_msi.outputs.principalId }}"}]'
+          customParameterFileTokens: '[{"Name":"msiPrincipalId","Value":"${{ needs.job_deploy_msi.outputs.msiPrincipalId }}"}]'
 
   job_deploy_sqlmi_kv_secrets:
     runs-on: ubuntu-20.04
@@ -871,7 +872,7 @@ jobs:
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
           removeDeployment: '${{ env.removeDeployment }}'
-          customParameterFileTokens: '[{"Name":"msiPrincipalId","Value":"${{ needs.job_deploy_msi.outputs.principalId }}"}]'
+          customParameterFileTokens: '[{"Name":"msiPrincipalId","Value":"${{ needs.job_deploy_msi.outputs.msiPrincipalId }}"}]'
 
   job_deploy_vnet:
     runs-on: ubuntu-20.04
