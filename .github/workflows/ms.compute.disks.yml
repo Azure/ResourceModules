@@ -22,7 +22,7 @@ on:
         required: false
         default: '0.0.1'
   push:
-    branches: [main, users/masanzde/diskmodule]
+    branches: [main, users/masanzde/disks-module]
     paths:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.compute.disks.yml'
