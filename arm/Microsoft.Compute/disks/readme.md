@@ -1,7 +1,6 @@
 # Compute Disks `[Microsoft.Compute/disks]`
 
-This module deploys Compute Disks.
-// TODO: Replace Resource and fill in description
+This template deploys a disk
 
 ## Resource Types
 
@@ -41,10 +40,6 @@ This module deploys Compute Disks.
 | `storageAccountId` | string |  |  | Optional. Required if create option is Import. The Azure Resource Manager identifier of the storage account containing the blob to import as a disk |
 | `tags` | object | `{object}` |  | Optional. Tags of the availability set resource. |
 | `uploadSizeBytes` | int | `20972032` |  | Optional. If create option is Upload, this is the size of the contents of the upload including the VHD footer. |
-
-### Parameter Usage: `<ParameterPlaceholder>`
-
-// TODO: Fill in Parameter usage
 
 ### Parameter Usage: `roleAssignments`
 
@@ -98,3 +93,10 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 - [Disks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Compute/2021-08-01/disks)
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
 - [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)
+
+
+## Template references
+
+- [Disks](https://docs.microsoft.com/en-us/azure/templates/microsoft.compute/2021-08-01/disks?tabs=bicep)
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2021-04-01-preview/roleAssignments)
+- [Locks](https://docs.microsoft.com/en-us/azure/templates/microsoft.authorization/2017-04-01/locks?tabs=bicep)
