@@ -48,10 +48,10 @@ resource collection 'Microsoft.DocumentDB/databaseAccounts/mongodbDatabases/coll
 }
 
 @description('The name of the mongodb database.')
-output collectionName string = collection.name
+output name string = collection.name
 
 @description('The resource ID of the mongodb database.')
-output collectionResourceId string = collection.id
+output resourceId string = collection.id
 
 @description('The name of the resource group the mongodb database was created in.')
-output collectionResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name

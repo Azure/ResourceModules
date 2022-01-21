@@ -40,9 +40,9 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `containerName` | string | The name of the container. |
-| `containerResourceGroup` | string | The name of the resource group the container was created in. |
-| `containerResourceId` | string | The resource ID of the container. |
+| `name` | string | The name of the container. |
+| `resourceGroupName` | string | The name of the resource group the container was created in. |
+| `resourceId` | string | The resource ID of the container. |
 
 ## Template references
 

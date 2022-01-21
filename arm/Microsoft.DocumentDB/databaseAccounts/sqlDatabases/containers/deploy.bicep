@@ -59,10 +59,10 @@ resource container 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases/container
 }
 
 @description('The name of the container.')
-output containerName string = container.name
+output name string = container.name
 
 @description('The resource ID of the container.')
-output containerResourceId string = container.id
+output resourceId string = container.id
 
 @description('The name of the resource group the container was created in.')
-output containerResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name

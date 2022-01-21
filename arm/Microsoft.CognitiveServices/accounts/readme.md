@@ -187,10 +187,10 @@ You can specify multiple user assigned identities to a resource by providing add
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `cognitiveServicesEndpoint` | string | The service endpoint of the cognitive services account |
-| `cognitiveServicesName` | string | The name of the cognitive services account |
-| `cognitiveServicesResourceGroup` | string | The resource group the cognitive services account was deployed into |
-| `cognitiveServicesResourceId` | string | The resource ID of the cognitive services account |
+| `endpoint` | string | The service endpoint of the cognitive services account |
+| `name` | string | The name of the cognitive services account |
+| `resourceGroupName` | string | The resource group the cognitive services account was deployed into |
+| `resourceId` | string | The resource ID of the cognitive services account |
 | `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
 
 ## Considerations
@@ -205,4 +205,4 @@ You can specify multiple user assigned identities to a resource by providing add
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
 - [Privateendpoints](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/privateEndpoints)
 - [Privateendpoints/Privatednszonegroups](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-02-01/privateEndpoints/privateDnsZoneGroups)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2021-04-01-preview/roleAssignments)
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)
