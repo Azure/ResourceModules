@@ -9,7 +9,7 @@
             "value": "UltraSSD_LRS"
         },
         "diskSizeGB": {
-            "value": 128
+            "value": 256
         },
         "logicalSectorSize": {
             "value": 512
