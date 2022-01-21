@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "sxxazsax001ee"
+            "value": "sxxazsax001"
         },
         "storageAccountSku": {
             "value": "Standard_LRS"
@@ -39,6 +39,7 @@
                 "ipRules": []
             }
         },
+        "requireInfrastructureEncryption": true,
         "blobServices": {
             "value": {
                 "diagnosticLogsRetentionInDays": 7,
