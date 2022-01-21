@@ -5,11 +5,20 @@
         "name": {
             "value": "sxx-az-azfw-x-001"
         },
-        "availabilityZones": {
+        "zones": {
             "value": [
                 "1",
                 "2",
                 "3"
+            ]
+        },
+        "ipConfigurations": {
+            "value": [
+                {
+                    "name": "ipConfig01",
+                    "publicIPAddressResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/publicIPAddresses/adp-sxx-az-pip-x-fw",
+                    "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-sxx-az-vnet-x-azfw/subnets/AzureFirewallSubnet"
+                }
             ]
         },
         "applicationRuleCollections": {
@@ -96,9 +105,6 @@
                     }
                 }
             ]
-        },
-        "vNetId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-sxx-az-vnet-x-azfw"
         },
         "roleAssignments": {
             "value": [

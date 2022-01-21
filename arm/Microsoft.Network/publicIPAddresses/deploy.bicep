@@ -169,11 +169,14 @@ module publicIpAddress_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, i
   }
 }]
 
-@description('The resource group the public IP adress was deployed into')
+@description('The resource group the public IP address was deployed into')
 output publicIPAddressResourceGroup string = resourceGroup().name
 
-@description('The name of the public IP adress')
+@description('The name of the public IP address')
 output publicIPAddressName string = publicIpAddress.name
 
-@description('The resource ID of the public IP adress')
+@description('The resource ID of the public IP address')
 output publicIPAddressResourceId string = publicIpAddress.id
+
+@description('The public IP address of the of the public IP address resource')
+output publicIpAddress string = publicIpAddress.properties.ipAddress
