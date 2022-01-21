@@ -3,10 +3,16 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "sxx-az-disk-x-001"
+            "value": "sxx-az-disk-x-002"
         },
         "sku": {
             "value": "Standard_LRS"
+        },
+        "createOption": {
+            "value": "FromImage"
+        },
+        "imageReferenceId": {
+            "value": "/Subscriptions/<<subscriptionId>>/Providers/Microsoft.Compute/Locations/westeurope/Publishers/MicrosoftWindowsServer/ArtifactTypes/VMImage/Offers/WindowsServer/Skus/2016-Datacenter/Versions/14393.4906.2112080838"
         },
         "roleAssignments": {
             "value": [
