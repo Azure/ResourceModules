@@ -134,7 +134,7 @@ resource disk 'Microsoft.Compute/disks@2021-08-01' = {
   properties: {
     burstingEnabled: burstingEnabled
     completionPercent: completionPercent
-    creationData: createOption == 'Empty' ? {} : {
+    creationData: {
       createOption: createOption
       imageReference: createOption != 'FromImage' ? null : {
         id: imageReferenceId
