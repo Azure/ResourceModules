@@ -166,6 +166,11 @@
                     "commandToExecute": "sudo apt-get update"
                 }
             }
+        },
+        "configurationProfileAssignments": {
+            "value": [
+                "/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction"
+            ]
         }
     }
 }

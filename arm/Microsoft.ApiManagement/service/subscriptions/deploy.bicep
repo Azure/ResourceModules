@@ -49,10 +49,10 @@ resource subscription 'Microsoft.ApiManagement/service/subscriptions@2021-08-01'
 }
 
 @description('The resource ID of the API management service subscription')
-output subscriptionResourceId string = subscription.id
+output resourceId string = subscription.id
 
 @description('The name of the API management service subscription')
-output subscriptionName string = subscription.name
+output name string = subscription.name
 
 @description('The resource group the API management service subscription was deployed into')
-output subscriptionResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name

@@ -69,10 +69,10 @@ module policyDefinition_sub '.bicep/nested_policyDefinitions_sub.bicep' = if (em
 }
 
 @sys.description('Policy Definition Name')
-output policyDefinitionName string = !empty(managementGroupId) ? policyDefinition_mg.outputs.policyDefinitionName : policyDefinition_sub.outputs.policyDefinitionName
+output name string = !empty(managementGroupId) ? policyDefinition_mg.outputs.name : policyDefinition_sub.outputs.name
 
 @sys.description('Policy Definition resource ID')
-output policyDefinitionResourceId string = !empty(managementGroupId) ? policyDefinition_mg.outputs.policyDefinitionResourceId : policyDefinition_sub.outputs.policyDefinitionResourceId
+output resourceId string = !empty(managementGroupId) ? policyDefinition_mg.outputs.resourceId : policyDefinition_sub.outputs.resourceId
 
 @sys.description('Policy Definition Role Definition IDs')
 output roleDefinitionIds array = !empty(managementGroupId) ? policyDefinition_mg.outputs.roleDefinitionIds : policyDefinition_sub.outputs.roleDefinitionIds

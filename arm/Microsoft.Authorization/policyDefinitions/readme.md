@@ -47,8 +47,8 @@ To deploy resource to an Azure Subscription, provide the `subscriptionId` as an 
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `policyDefinitionName` | string | Policy Definition Name |
-| `policyDefinitionResourceId` | string | Policy Definition resource ID |
+| `name` | string | Policy Definition Name |
+| `resourceId` | string | Policy Definition resource ID |
 | `roleDefinitionIds` | array | Policy Definition Role Definition IDs |
 
 ## Template references

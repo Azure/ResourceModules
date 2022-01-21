@@ -40,10 +40,10 @@ resource cache 'Microsoft.ApiManagement/service/caches@2021-08-01' = {
 }
 
 @description('The resource ID of the API management service cache')
-output cacheResourceId string = cache.id
+output resourceId string = cache.id
 
 @description('The name of the API management service cache')
-output cacheResourceName string = cache.name
+output name string = cache.name
 
 @description('The resource group the API management service cache was deployed into')
-output cacheResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name
