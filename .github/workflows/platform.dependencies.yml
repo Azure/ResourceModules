@@ -309,6 +309,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: 'Deploy module'
+        id: deploy_imgt
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
@@ -323,7 +324,7 @@ jobs:
         with:
           inlineScript: |
             Write-Verbose "Retrieving command to run" -Verbose
-            $deploymentOutput = '${{ steps.deploy_msi.outputs.deploymentOutput }}'
+            $deploymentOutput = '${{ steps.deploy_imgt.outputs.deploymentOutput }}'
             $RunThisCommand = (ConvertFrom-Json $deploymentOutput).runThisCommand
             $ImageTemplateName = (ConvertFrom-Json $deploymentOutput).imageTemplateName
             $ResourceGroupName = (ConvertFrom-Json $deploymentOutput).imageTemplateResourceGroup
