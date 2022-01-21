@@ -74,7 +74,7 @@ param diskMBpsReadWrite int = 0
 param hyperVGeneration string = 'V2'
 
 @description('Optional. The maximum number of VMs that can attach to the disk at the same time. Default value is 0.')
-param maxShares int = 0
+param maxShares int = 1
 
 @allowed([
   'AllowAll'
