@@ -6,10 +6,25 @@
             "value": "sxx-az-disk-x-001"
         },
         "sku": {
-            "value": "Standard_LRS"
+            "value": "UltraSSD_LRS"
         },
         "diskSizeGB": {
-            "value": 1
+            "value": 128
+        },
+        "logicalSectorSize": {
+            "value": 512
+        },
+        "diskIOPSReadWrite": {
+            "value": 500
+        },
+        "diskMBpsReadWrite": {
+            "value": 60
+        },
+        "osType": {
+            "value": "Windows"
+        },
+        "publicNetworkAccess": {
+            "value": "Enabled"
         },
         "roleAssignments": {
             "value": [

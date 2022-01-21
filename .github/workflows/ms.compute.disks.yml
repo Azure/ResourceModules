@@ -93,6 +93,7 @@ jobs:
       matrix:
         parameterFilePaths:
           [
+            'parameters.json',
             'min.parameters.json',
             'image.parameters.json',
             'import.parameters.json',
