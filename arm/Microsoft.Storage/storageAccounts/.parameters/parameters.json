@@ -11,6 +11,9 @@
         "allowBlobPublicAccess": {
             "value": false
         },
+        "requireInfrastructureEncryption": {
+            "value": true
+        },
         "privateEndpoints": {
             "value": [
                 {
@@ -39,7 +42,6 @@
                 "ipRules": []
             }
         },
-        "requireInfrastructureEncryption": true,
         "blobServices": {
             "value": {
                 "diagnosticLogsRetentionInDays": 7,
