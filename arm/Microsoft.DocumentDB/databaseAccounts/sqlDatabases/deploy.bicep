@@ -51,10 +51,10 @@ module container 'containers/deploy.bicep' = [for container in containers: {
 }]
 
 @description('The name of the SQL database.')
-output sqlDatabaseName string = sqlDatabase.name
+output name string = sqlDatabase.name
 
 @description('The resource ID of the SQL database.')
-output sqlDatabaseResourceId string = sqlDatabase.id
+output resourceId string = sqlDatabase.id
 
 @description('The name of the resource group the SQL database was created in.')
-output sqlDatabaseResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name

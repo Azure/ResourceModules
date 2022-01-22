@@ -14,7 +14,7 @@ This module deploys Role Assignments.
 | :-- | :-- | :-- | :-- | :-- |
 | `condition` | string |  |  | Optional. The conditions on the role assignment. This limits the resources it can be assigned to |
 | `conditionVersion` | string | `2.0` | `[2.0]` | Optional. Version of the condition. Currently accepted value is "2.0" |
-| `delegatedManagedIdentityResourceId` | string |  |  | Optional. ID of the delegated managed identity resource |
+| `delegatedManagedIdentityResourceId` | string |  |  | Optional. Id of the delegated managed identity resource |
 | `description` | string |  |  | Optional. Description of role assignment |
 | `location` | string | `[deployment().location]` |  | Optional. Location for all resources. |
 | `managementGroupId` | string |  |  | Optional. Group ID of the Management Group to assign the RBAC role to. If no Subscription is provided, the module deploys at management group level, therefore assigns the provided RBAC role to the management group. |
@@ -65,9 +65,9 @@ To deploy resource to a Resource Group, provide the `subscriptionId` and `resour
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `roleAssignmentName` | string | The GUID of the Role Assignment |
-| `roleAssignmentResourceId` | string | The resource ID of the Role Assignment |
-| `roleAssignmentScope` | string | The scope this Role Assignment applies to |
+| `name` | string | The GUID of the Role Assignment |
+| `resourceId` | string | The resource ID of the Role Assignment |
+| `scope` | string | The scope this Role Assignment applies to |
 
 ## Considerations
 
@@ -75,4 +75,4 @@ This module can be deployed at the management group, subscription or resource gr
 
 ## Template references
 
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2021-04-01-preview/roleAssignments)
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)

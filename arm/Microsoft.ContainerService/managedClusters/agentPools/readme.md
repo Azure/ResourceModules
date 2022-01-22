@@ -71,9 +71,9 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `agentPoolName` | string | The name of the agent pool |
-| `agentPoolResourceGroup` | string | The resource group the agent pool was deployed into. |
-| `agentPoolResourceId` | string | The resource ID of the agent pool |
+| `name` | string | The name of the agent pool |
+| `resourceGroupName` | string | The resource group the agent pool was deployed into. |
+| `resourceId` | string | The resource ID of the agent pool |
 
 ## Template references
 

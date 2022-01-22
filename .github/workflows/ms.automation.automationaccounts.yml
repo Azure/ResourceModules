@@ -108,7 +108,7 @@ jobs:
   ###############
   job_publish_module:
     name: 'Publish module'
-    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master' || github.event.inputs.prerelease == 'true' || ('${{ github.event.inputs.prerelease }}' == 'true')
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master' || github.event.inputs.prerelease == 'true'
     runs-on: ubuntu-20.04
     needs:
       - job_set_workflow_param

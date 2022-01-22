@@ -1,0 +1,22 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "name": {
+      "value": "adp-sxx-az-pip-x-fw"
+    },
+    "skuName": {
+      "value": "Standard"
+    },
+    "publicIPAllocationMethod": {
+      "value": "Static"
+    },
+    "zones": {
+      "value": [
+        "1",
+        "2",
+        "3"
+      ]
+    }
+  }
+}

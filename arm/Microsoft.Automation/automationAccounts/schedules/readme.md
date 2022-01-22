@@ -28,9 +28,9 @@ This module deploys an Azure Automation Account Schedule.
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `scheduleName` | string | The name of the deployed schedule |
-| `scheduleResourceGroup` | string | The resource group of the deployed schedule |
-| `scheduleResourceId` | string | The resource ID of the deployed schedule |
+| `name` | string | The name of the deployed schedule |
+| `resourceGroupName` | string | The resource group of the deployed schedule |
+| `resourceId` | string | The resource ID of the deployed schedule |
 
 ## Template references
 

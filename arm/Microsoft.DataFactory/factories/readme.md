@@ -97,9 +97,9 @@ You can specify multiple user assigned identities to a resource by providing add
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `dataFactoryName` | string | The Name of the Azure Data Factory instance. |
-| `dataFactoryResourceGroup` | string | The name of the Resource Group with the Data factory. |
-| `dataFactoryResourceId` | string | The Resource ID of the Data factory. |
+| `name` | string | The Name of the Azure Data Factory instance. |
+| `resourceGroupName` | string | The name of the Resource Group with the Data factory. |
+| `resourceId` | string | The Resource ID of the Data factory. |
 | `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
 
 ## Template references
@@ -109,4 +109,4 @@ You can specify multiple user assigned identities to a resource by providing add
 - [Factories/Integrationruntimes](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DataFactory/2018-06-01/factories/integrationRuntimes)
 - [Factories/Managedvirtualnetworks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DataFactory/2018-06-01/factories/managedVirtualNetworks)
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2021-04-01-preview/roleAssignments)
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)

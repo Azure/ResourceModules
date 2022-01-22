@@ -47,9 +47,9 @@ This module deploys a variable to an Azure Automation Account.
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `variableName` | string | The name of the deployed variable |
-| `variableResourceGroup` | string | The resource group of the deployed variable |
-| `variableResourceId` | string | The resource ID of the deployed variable |
+| `name` | string | The name of the deployed variable |
+| `resourceGroupName` | string | The resource group of the deployed variable |
+| `resourceId` | string | The resource ID of the deployed variable |
 
 ## Template references
 

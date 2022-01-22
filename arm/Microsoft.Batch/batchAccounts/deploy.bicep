@@ -105,10 +105,10 @@ resource batchAccount_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@
 }
 
 @description('The name of the batch account')
-output batchAccountName string = batchAccount.name
+output name string = batchAccount.name
 
 @description('The resource ID of the batch account')
-output batchAccountResourceId string = batchAccount.id
+output resourceId string = batchAccount.id
 
 @description('The resource group the batch account was deployed into')
-output batchAccountResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name

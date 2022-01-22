@@ -46,9 +46,9 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `batchAccountName` | string | The name of the batch account |
-| `batchAccountResourceGroup` | string | The resource group the batch account was deployed into |
-| `batchAccountResourceId` | string | The resource ID of the batch account |
+| `name` | string | The name of the batch account |
+| `resourceGroupName` | string | The resource group the batch account was deployed into |
+| `resourceId` | string | The resource ID of the batch account |
 
 ## Template references
 

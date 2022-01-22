@@ -176,10 +176,15 @@ jobs:
                     @{ Name = "deploymentSpId";    Value = '$(DEPLOYMENT_SP_ID)' }
                 ) | ForEach-Object { [PSCustomObject]$PSItem }
 
+                # Get additional Custom Parameter File Tokens from input
+                Write-Verbose 'Additional Custom Parameter File Tokens: ${{ deploymentBlock.customParameterFileTokens }}' -Verbose
+                $OtherCustomParameterFileTokens = '${{  deploymentBlock.customParameterFileTokens }}' | ConvertFrom-Json
+
                 # Construct Token Function Input
                 $ConvertTokensInputs = @{
                     ParameterFilePath                 = Join-Path '$(parametersRepoRoot)' '${{ deploymentBlock.path }}'
                     DefaultParameterFileTokens        = $DefaultParameterFileTokens
+                    OtherCustomParameterFileTokens    = $OtherCustomParameterFileTokens
                     LocalCustomParameterFileTokens    = $Settings.parameterFileTokens.localTokens.tokens
                     TokenPrefix                       = $Settings.parameterFileTokens.tokenPrefix
                     TokenSuffix                       = $Settings.parameterFileTokens.tokenSuffix
