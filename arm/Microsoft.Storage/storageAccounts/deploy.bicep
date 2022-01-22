@@ -74,7 +74,7 @@ param queueServices object = {}
 @description('Optional. Table service and tables to create.')
 param tableServices object = {}
 
-@description('Optional. Indicates whether public access is enabled for all blobs or containers in the storage account.')
+@description('Optional. Indicates whether public access is enabled for all blobs or containers in the storage account. For security reasons, it is recommended to set it to false.')
 param allowBlobPublicAccess bool = true
 
 @allowed([
@@ -158,7 +158,6 @@ var uniqueStoragename = length(uniqueStoragenameUntrim) > maxNameLength ? substr
 var saBaseProperties = {
   encryption: {
     keySource: 'Microsoft.Storage'
-    requireInfrastructureEncryption: requireInfrastructureEncryption
     services: {
       blob: (((storageAccountKind == 'BlockBlobStorage') || (storageAccountKind == 'BlobStorage') || (storageAccountKind == 'StorageV2') || (storageAccountKind == 'Storage')) ? json('{"enabled": true}') : null)
       file: (((storageAccountKind == 'FileStorage') || (storageAccountKind == 'StorageV2') || (storageAccountKind == 'Storage')) ? json('{"enabled": true}') : null)
@@ -170,6 +169,7 @@ var saBaseProperties = {
   minimumTlsVersion: minimumTlsVersion
   networkAcls: (empty(networkAcls) ? null : networkAcls_var)
   allowBlobPublicAccess: allowBlobPublicAccess
+  requireInfrastructureEncryption: requireInfrastructureEncryption
 }
 var saOptIdBasedAuthProperties = {
   azureFilesIdentityBasedAuthentication: azureFilesIdentityBasedAuthentication_var
