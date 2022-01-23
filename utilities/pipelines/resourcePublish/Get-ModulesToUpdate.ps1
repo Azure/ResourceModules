@@ -233,7 +233,7 @@ function Get-GitDistance {
 
 <#
 .SYNOPSIS
-Gets the version file from the corresponding deploy.bicep/json file.
+Gets the version from the version file from the corresponding deploy.bicep/json file.
 
 .DESCRIPTION
 Gets the version file from the corresponding deploy.bicep/json file.
@@ -243,13 +243,13 @@ The file needs to be in the same folder as the template file itself.
 Path to a deploy.bicep/json file.
 
 .EXAMPLE
-Get-ModuleVersion -TemplateFilePath 'C:\Repos\Azure\ResourceModules\arm\Microsoft.Storage\storageAccounts\tableServices\tables\deploy.bicep'
+Get-ModuleVersionFromFile -TemplateFilePath 'C:\Repos\Azure\ResourceModules\arm\Microsoft.Storage\storageAccounts\tableServices\tables\deploy.bicep'
 
 0.3
 
 Get the version file from the specified deploy.bicep file.
 #>
-function Get-ModuleVersion {
+function Get-ModuleVersionFromFile {
 
     [CmdletBinding()]
     param (
@@ -296,7 +296,7 @@ function Get-NewModuleVersion {
         [string] $TemplateFilePath
     )
 
-    $Version = Get-ModuleVersion -TemplateFilePath $TemplateFilePath
+    $Version = Get-ModuleVersionFromFile -TemplateFilePath $TemplateFilePath
     $Patch = Get-GitDistance
     $NewVersion = "$Version.$Patch"
 
