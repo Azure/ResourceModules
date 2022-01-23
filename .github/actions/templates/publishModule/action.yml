@@ -78,10 +78,10 @@ runs:
         # Publish the modified child resources
         foreach ($ModuleToUpdate in $ModulesToUpdate) {
           $functionInput = @{
-            templateFilePath         = $ModuleToUpdate.TemplateFilePath
-            templateSpecsRgName      = '${{ inputs.templateSpecsRgName }}'
-            templateSpecsRgLocation  = '${{ inputs.templateSpecsRgLocation }}'
-            templateSpecsDescription = '${{ inputs.templateSpecsDescription }}'
+            TemplateFilePath         = $ModuleToUpdate.TemplateFilePath
+            TemplateSpecsRgName      = '${{ inputs.templateSpecsRgName }}'
+            TemplateSpecsRgLocation  = '${{ inputs.templateSpecsRgLocation }}'
+            TemplateSpecsDescription = '${{ inputs.templateSpecsDescription }}'
             ModuleVersion            = $ModuleToUpdate.Version
           }
 
@@ -115,7 +115,7 @@ runs:
             TemplateFilePath        = $ModuleToUpdate.TemplateFilePath
             BicepRegistryName       = '${{ inputs.bicepRegistryName }}'
             BicepRegistryRgName     = '${{ inputs.bicepRegistryRgName }}'
-            bicepRegistryRgLocation = '${{ inputs.bicepRegistryRgLocation }}'
+            BicepRegistryRgLocation = '${{ inputs.bicepRegistryRgLocation }}'
             ModuleVersion           = $ModuleToUpdate.Version
           }
 

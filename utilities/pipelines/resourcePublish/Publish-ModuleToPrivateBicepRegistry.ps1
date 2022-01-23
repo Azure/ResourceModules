@@ -14,11 +14,11 @@ Mandatory. Name of the private bicep registry to publish to.
 .PARAMETER BicepRegistryRgName
 Mandatory. ResourceGroup of the private bicep registry to publish to.
 
+.PARAMETER BicepRegistryRgLocation
+Optional. The location of the resourceGroup the private bicep registry is deployed to. Required if the resource group is not yet existing.
+
 .PARAMETER ModuleVersion
 Required. Version of the module to publish.
-
-.PARAMETER bicepRegistryRgLocation
-Optional. The location of the resourceGroup the private bicep registry is deployed to. Required if the resource group is not yet existing.
 
 .EXAMPLE
 Publish-ModuleToPrivateBicepRegistry -TemplateFilePath 'C:/KeyVault/deploy.json' -BicepRegistryRgName 'artifacts-rg' -ModuleVersion '3.0.0-alpha'
@@ -33,13 +33,13 @@ function Publish-ModuleToPrivateBicepRegistry {
         [string] $TemplateFilePath,
 
         [Parameter(Mandatory)]
+        [string] $BicepRegistryName,
+
+        [Parameter(Mandatory)]
         [string] $BicepRegistryRgName,
 
         [Parameter(Mandatory = $false)]
-        [string] $bicepRegistryRgLocation,
-
-        [Parameter(Mandatory)]
-        [string] $BicepRegistryName,
+        [string] $BicepRegistryRgLocation,
 
         [Parameter(Mandatory)]
         [string] $ModuleVersion
@@ -58,9 +58,9 @@ function Publish-ModuleToPrivateBicepRegistry {
         }
 
         # Resource Group
-        if (-not (Get-AzResourceGroup -Name $bicepRegistryRgName -ErrorAction 'SilentlyContinue')) {
-            if ($PSCmdlet.ShouldProcess("Resource group [$bicepRegistryRgName] to location [$bicepRegistryRgLocation]", 'Deploy')) {
-                New-AzResourceGroup -Name $bicepRegistryRgName -Location $bicepRegistryRgLocation
+        if (-not (Get-AzResourceGroup -Name $BicepRegistryRgName -ErrorAction 'SilentlyContinue')) {
+            if ($PSCmdlet.ShouldProcess("Resource group [$BicepRegistryRgName] to location [$BicepRegistryRgLocation]", 'Deploy')) {
+                New-AzResourceGroup -Name $BicepRegistryRgName -Location $BicepRegistryRgLocation
             }
         }
 
