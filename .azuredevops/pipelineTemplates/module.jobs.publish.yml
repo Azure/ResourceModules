@@ -14,7 +14,7 @@
 ##---------------------------------------------##
 ##
 ## By default it uses the variables specified in the below [parameters] section. However, you can overwrite these variables in the
-##    referencing pipeline by providing the paramater explicitly.
+##    referencing pipeline by providing the parameter explicitly.
 ##
 ## NOTE: If you don't need to overwrite a shared value, you can IGNORE this section
 ##
