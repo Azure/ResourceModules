@@ -145,6 +145,5 @@ function Initialize-UniversalArtifactPublish {
 
     end {
         Write-Debug ('{0} exited' -f $MyInvocation.MyCommand)
-
     }
 }
