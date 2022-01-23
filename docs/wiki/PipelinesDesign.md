@@ -99,6 +99,8 @@ For additional details on how removal works please refer to the dedicated [Remov
 
 ### Publish
 
+<!-- TODO: Update with updated publish logic -->
+
 The publish phase concludes each module's pipeline. If all previous tests succeeded (i.e. no phase failed) and the pipeline was executed in the [main\|master] branch, a new module version is published to all configured target locations. Currently we support
 - _template specs_
 - _private bicep registry_

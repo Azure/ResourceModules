@@ -138,6 +138,7 @@ jobs:
 
       # [Universal Artifact-feed publish] task(s)
       #------------------------------------------
+      #  TODO: Add support for powershell driven array (New module versioning approach)
       - powershell: |
           # Load used functions
           . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Initialize-UniversalArtifactPublish.ps1')
