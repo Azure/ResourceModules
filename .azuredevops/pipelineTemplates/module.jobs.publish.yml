@@ -26,8 +26,6 @@
 ##   | poolName                        | '$(poolName)'                        | You can provide either a [poolname] or [vmImage] to run the job on                                      | 'Custom Deployment Pool'          |
 ##   | vmImage                         | '$(vmImage)'                         | You can provide either a [poolname] or [vmImage] to run the job on                                      | 'ubuntu20.04'                     |
 ##   | defaultJobTimeoutInMinutes      | 120                                  | The timeout for the job in this pipeline                                                                | 120                               |
-##   | versionOption                   | '$(versionOption)'                   | The mode to handle the version increments [major|minor|patch|custom].                                   | 'patch'                           |
-##   | moduleVersion                   | '$(moduleVersion)'                   | The version to enforce if [versionOption] is set to [custom]                                            | '1.0.0'                           |
 ##   | modulePath                      | '$(modulePath)'                      | The path to the module to deploy. E.g. [c:/KeyVault]                                                    | 'c:/KeyVault'                     |
 ##   | templateSpecsRGName             | '$(templateSpecsRGName)'             | Required to publish to template spec. ResourceGroup of the template spec to publish to                  | 'mgmt-rg'                         |
 ##   | templateSpecsRGLocation         | '$(templateSpecsRGLocation)'         | Required to publish to template spec. Location of the template spec resource group                      | 'West Europe'                     |
@@ -56,8 +54,6 @@ parameters:
 
   # Logic-related parameters
   ## Module-related
-  versionOption: '$(versionOption)'
-  moduleVersion: '$(moduleVersion)'
   modulePath: '$(modulePath)'
 
   ## TemplateSpec-related
@@ -211,21 +207,34 @@ jobs:
           ScriptType: InlineScript
           inline: |
             # Load used functions
+            . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Get-ModulesToUpdate.ps1')
             . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Publish-ModuleToTemplateSpec.ps1')
 
             $functionInput = @{
-              templateFilePath         = Join-Path '$(ENVMODULEPATH)' 'deploy.bicep'
-              templateSpecsRgName      = '${{ parameters.templateSpecsRgName }}'
-              templateSpecsRgLocation  = '${{ parameters.templateSpecsRgLocation }}'
-              templateSpecsDescription = '${{ parameters.templateSpecsDescription }}'
-              customVersion            = '${{ parameters.customVersion }}'
-              versioningOption         = '${{ parameters.versioningOption }}'
+              TemplateFilePath = Join-Path '$(ENVMODULEPATH)' 'deploy.bicep'
             }
 
             Write-Verbose "Invoke task with" -Verbose
             Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
-            Publish-ModuleToTemplateSpec @functionInput -Verbose
+            # Get the modified child resources
+            $ModulesToUpdate = Get-ModulesToUpdate @functionInput -Verbose
+
+            # Publish the modified child resources
+            foreach ($ModuleToUpdate in $ModulesToUpdate) {
+              $functionInput = @{
+                TemplateFilePath         = $ModuleToUpdate.TemplateFilePath
+                TemplateSpecsRgName      = '${{ parameters.templateSpecsRgName }}'
+                TemplateSpecsRgLocation  = '${{ parameters.templateSpecsRgLocation }}'
+                TemplateSpecsDescription = '${{ parameters.templateSpecsDescription }}'
+                ModuleVersion            = $ModuleToUpdate.Version
+              }
+
+              Write-Verbose "Invoke task with" -Verbose
+              Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
+
+              Publish-ModuleToTemplateSpec @functionInput -Verbose
+            }
 
       # [private bicep registry publish] task(s)
       #-------------------------------------------
@@ -244,18 +253,31 @@ jobs:
           ScriptType: InlineScript
           inline: |
             # Load used functions
+            . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Get-ModulesToUpdate.ps1')
             . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Publish-ModuleToPrivateBicepRegistry.ps1')
 
             $functionInput = @{
-              templateFilePath        = Join-Path '$(ENVMODULEPATH)' 'deploy.bicep'
-              bicepRegistryName       = '${{ parameters.bicepRegistryName }}'
-              bicepRegistryRgName     = '${{ parameters.bicepRegistryRgName }}'
-              bicepRegistryRgLocation = '${{ parameters.bicepRegistryRgLocation }}'
-              customVersion           = '${{ parameters.customVersion }}'
-              versioningOption        = '${{ parameters.versioningOption }}'
+              TemplateFilePath = Join-Path '$(ENVMODULEPATH)' 'deploy.bicep'
             }
 
             Write-Verbose "Invoke task with" -Verbose
             Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
-            Publish-ModuleToPrivateBicepRegistry @functionInput -Verbose
+            # Get the modified child resources
+            $ModulesToUpdate = Get-ModulesToUpdate @functionInput -Verbose
+
+            # Publish the modified child resources
+            foreach ($ModuleToUpdate in $ModulesToUpdate) {
+              $functionInput = @{
+                BicepRegistryName       = '${{ parameters.bicepRegistryName }}'
+                BicepRegistryRgName     = '${{ parameters.bicepRegistryRgName }}'
+                BicepRegistryRgLocation = '${{ parameters.bicepRegistryRgLocation }}'
+                ModuleVersion            = $ModuleToUpdate.Version
+              }
+
+              Write-Verbose "Invoke task with" -Verbose
+              Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
+
+              Publish-ModuleToPrivateBicepRegistry @functionInput -Verbose
+            }
+
