@@ -196,7 +196,7 @@ output resourceId string = azureFirewall.id
 @description('The name of the Azure firewall')
 output name string = azureFirewall.name
 
-@description('The resource group the azure firewall was deployed into')
+@description('The resource group the Azure firewall was deployed into')
 output resourceGroupName string = resourceGroup().name
 
 @description('The private IP of the Azure firewall')
