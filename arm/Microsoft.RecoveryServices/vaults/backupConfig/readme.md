@@ -26,10 +26,10 @@ This module deploys recovery services vault backup config.
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `backupConfigName` | string | The name of the backup config |
-| `backupConfigResourceGroup` | string | The name of the resource group the backup config was created in. |
-| `backupConfigResourceId` | string | The resource ID of the backup config |
+| `name` | string | The name of the backup config |
+| `resourceGroupName` | string | The name of the resource group the backup config was created in. |
+| `resourceId` | string | The resource ID of the backup config |
 
 ## Template references
 
-- [Vaults/Backupconfig](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2021-08-01/vaults/backupconfig)
+- [Vaults/Backupconfig](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2021-10-01/vaults/backupconfig)

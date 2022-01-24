@@ -5,17 +5,14 @@
         "name": {
             "value": "sxx-az-img-x-001"
         },
-        "location": {
-            "value": "East US"
-        },
         "osAccountType": {
             "value": "Premium_LRS"
         },
         "osType": {
-            "value": "Linux"
+            "value": "Windows"
         },
         "osDiskBlobUri": {
-            "value": "https://r0jskwdzcal7ss9okmxiyua3.blob.core.windows.net/vhds/48f94fc5-604e-4db2-bca4-e5a09e05b212.vhd"
+            "value": "https://adpsxxazsax001.blob.core.windows.net/vhds/adp-sxx-az-imgt-x-001.vhd"
         },
         "osDiskCaching": {
             "value": "ReadWrite"

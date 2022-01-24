@@ -36,7 +36,7 @@ module managementGroup_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, i
 }]
 
 @description('The name of the management group')
-output managementGroupName string = managementGroup.name
+output name string = managementGroup.name
 
-@description('The group ID of the management group')
-output managementGroupId string = managementGroup.id
+@description('The resource ID of the management group')
+output resourceId string = managementGroup.id

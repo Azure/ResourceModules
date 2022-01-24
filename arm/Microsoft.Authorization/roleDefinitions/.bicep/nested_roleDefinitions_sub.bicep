@@ -43,10 +43,10 @@ resource roleDefinition 'Microsoft.Authorization/roleDefinitions@2018-01-01-prev
 }
 
 @sys.description('The GUID of the Role Definition')
-output roleDefinitionName string = roleDefinition.name
+output name string = roleDefinition.name
 
 @sys.description('The scope this Role Definition applies to')
-output roleDefinitionScope string = subscription().id
+output scope string = subscription().id
 
 @sys.description('The resource ID of the Role Definition')
-output roleDefinitionResourceId string = subscriptionResourceId(subscriptionId, 'Microsoft.Authorization/roleDefinitions', roleDefinition.name)
+output resourceId string = subscriptionResourceId(subscriptionId, 'Microsoft.Authorization/roleDefinitions', roleDefinition.name)

@@ -28,7 +28,6 @@ This module deploys Network Firewall Policies.
 | `mode` | string | `Off` | `[Alert, Deny, Off]` | Optional. The configuring of intrusion detection. |
 | `name` | string |  |  | Required. Name of the Firewall Policy. |
 | `privateRanges` | array | `[]` |  | Optional. List of private IP addresses/IP address ranges to not be SNAT. |
-| `requireProxyForNetworkRules` | bool |  |  | Optional. FQDNs in Network Rules are supported when set to true. |
 | `retentionDays` | int | `365` |  | Optional. Number of days the insights should be enabled on the policy. |
 | `ruleCollectionGroups` | _[ruleCollectionGroups](ruleCollectionGroups/readme.md)_ array | `[]` |  | Optional. Rule collection groups. |
 | `ruleGroups` | _[ruleGroups](ruleGroups/readme.md)_ array | `[]` |  | Optional. Rule groups. |
@@ -75,9 +74,9 @@ You can specify multiple user assigned identities to a resource by providing add
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `firewallPolicyName` | string | The name of the deployed firewall policy |
-| `firewallPolicyResourceGroup` | string | The resource group of the deployed firewall policy |
-| `firewallPolicyResourceId` | string | The resource ID of the deployed firewall policy |
+| `name` | string | The name of the deployed firewall policy |
+| `resourceGroupName` | string | The resource group of the deployed firewall policy |
+| `resourceId` | string | The resource ID of the deployed firewall policy |
 
 ## Template references
 

@@ -28,14 +28,6 @@ var diagnosticsMetrics = [for metric in metricsToEnable: {
   }
 }]
 
-var dnsServersValues = {
-  dnsServers: dnsServers
-}
-
-var networkSecurityGroup = {
-  id: networkSecurityGroupId
-}
-
 module networkInterface_publicIPConfigurations 'nested_networkInterface_publicIPAddress.bicep' = [for (ipConfiguration, index) in ipConfigurationArray: if (contains(ipConfiguration, 'pipconfiguration')) {
   name: '${deployment().name}-PIP-${index}'
   params: {
@@ -65,8 +57,12 @@ resource networkInterface 'Microsoft.Network/networkInterfaces@2021-03-01' = {
   properties: {
     enableIPForwarding: enableIPForwarding
     enableAcceleratedNetworking: enableAcceleratedNetworking
-    dnsSettings: !empty(dnsServers) ? dnsServersValues : null
-    networkSecurityGroup: !empty(networkSecurityGroupId) ? networkSecurityGroup : null
+    dnsSettings: !empty(dnsServers) ? {
+      dnsServers: dnsServers
+    } : null
+    networkSecurityGroup: !empty(networkSecurityGroupId) ? {
+      id: networkSecurityGroupId
+    } : null
     ipConfigurations: [for (ipConfiguration, index) in ipConfigurationArray: {
       name: !empty(ipConfiguration.name) ? ipConfiguration.name : null
       properties: {

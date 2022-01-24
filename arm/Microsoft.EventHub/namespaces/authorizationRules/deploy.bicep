@@ -33,10 +33,10 @@ resource authorizationRule 'Microsoft.EventHub/namespaces/AuthorizationRules@201
 }
 
 @description('The name of the authorization rule.')
-output authorizationRuleName string = authorizationRule.name
+output name string = authorizationRule.name
 
 @description('The resource ID of the authorization rule.')
-output authorizationRuleResourceId string = authorizationRule.id
+output resourceId string = authorizationRule.id
 
 @description('The name of the resource group the authorization rule was created in.')
-output authorizationRuleResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name

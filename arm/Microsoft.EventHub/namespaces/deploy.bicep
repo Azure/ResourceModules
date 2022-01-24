@@ -130,8 +130,6 @@ var maxNameLength = 50
 var uniqueEventHubNamespaceUntrim = uniqueString('EventHub Namespace${baseTime}')
 var uniqueEventHubNamespace = length(uniqueEventHubNamespaceUntrim) > maxNameLength ? substring(uniqueEventHubNamespaceUntrim, 0, maxNameLength) : uniqueEventHubNamespaceUntrim
 var name_var = empty(name) ? uniqueEventHubNamespace : name
-var defaultSASKeyName = 'RootManageSharedAccessKey'
-var authRuleResourceId = resourceId('Microsoft.EventHub/namespaces/authorizationRules', name_var, defaultSASKeyName)
 var maximumThroughputUnits_var = !isAutoInflateEnabled ? 0 : maximumThroughputUnits
 var virtualNetworkRules = [for index in range(0, (empty(networkAcls) ? 0 : length(networkAcls.virtualNetworkRules))): {
   id: '${vNetId}/subnets/${networkAcls.virtualNetworkRules[index].subnet}'
@@ -287,13 +285,13 @@ module eventHubNamespace_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment,
 }]
 
 @description('The name of the eventspace.')
-output namespace string = eventHubNamespace.name
+output name string = eventHubNamespace.name
 
 @description('The resource ID of the eventspace.')
-output namespaceResourceId string = eventHubNamespace.id
+output resourceId string = eventHubNamespace.id
 
 @description('The resource group where the namespace is deployed.')
-output namespaceResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name
 
 @description('The principal ID of the system assigned identity.')
 output systemAssignedPrincipalId string = systemAssignedIdentity && contains(eventHubNamespace.identity, 'principalId') ? eventHubNamespace.identity.principalId : ''

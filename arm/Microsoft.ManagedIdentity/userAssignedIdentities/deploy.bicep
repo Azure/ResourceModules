@@ -51,13 +51,13 @@ module userMsi_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in
 }]
 
 @description('The name of the user assigned identity')
-output msiName string = userMsi.name
+output name string = userMsi.name
 
 @description('The resource ID of the user assigned identity')
-output msiResourceId string = userMsi.id
+output resourceId string = userMsi.id
 
 @description('The principal ID of the user assigned identity')
-output msiPrincipalId string = userMsi.properties.principalId
+output principalId string = userMsi.properties.principalId
 
 @description('The resource group the user assigned identity was deployed into')
-output msiResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name

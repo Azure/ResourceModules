@@ -91,8 +91,10 @@ module roleAssignment_rg '.bicep/nested_rbac_rg.bicep' = if (empty(managementGro
 }
 
 @sys.description('The GUID of the Role Assignment')
-output roleAssignmentName string = !empty(managementGroupId) ? roleAssignment_mg.outputs.roleAssignmentName : (!empty(resourceGroupName) ? roleAssignment_rg.outputs.roleAssignmentName : roleAssignment_sub.outputs.roleAssignmentName)
+output name string = !empty(managementGroupId) ? roleAssignment_mg.outputs.name : (!empty(resourceGroupName) ? roleAssignment_rg.outputs.name : roleAssignment_sub.outputs.name)
+
 @sys.description('The resource ID of the Role Assignment')
-output roleAssignmentResourceId string = !empty(managementGroupId) ? roleAssignment_mg.outputs.roleAssignmentResourceId : (!empty(resourceGroupName) ? roleAssignment_rg.outputs.roleAssignmentResourceId : roleAssignment_sub.outputs.roleAssignmentResourceId)
+output resourceId string = !empty(managementGroupId) ? roleAssignment_mg.outputs.resourceId : (!empty(resourceGroupName) ? roleAssignment_rg.outputs.resourceId : roleAssignment_sub.outputs.resourceId)
+
 @sys.description('The scope this Role Assignment applies to')
-output roleAssignmentScope string = !empty(managementGroupId) ? roleAssignment_mg.outputs.roleAssignmentScope : (!empty(resourceGroupName) ? roleAssignment_rg.outputs.roleAssignmentScope : roleAssignment_sub.outputs.roleAssignmentScope)
+output scope string = !empty(managementGroupId) ? roleAssignment_mg.outputs.scope : (!empty(resourceGroupName) ? roleAssignment_rg.outputs.scope : roleAssignment_sub.outputs.scope)

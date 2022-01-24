@@ -89,20 +89,20 @@ var loadBalancingRules_var = [for loadBalancingRule in loadBalancingRules: {
   name: loadBalancingRule.name
   properties: {
     backendAddressPool: {
-      id: resourceId('Microsoft.Network/loadBalancers/backendAddressPools', name, loadBalancingRule.backendAddressPoolName)
+      id: az.resourceId('Microsoft.Network/loadBalancers/backendAddressPools', name, loadBalancingRule.backendAddressPoolName)
     }
     backendPort: loadBalancingRule.backendPort
     disableOutboundSnat: contains(loadBalancingRule, 'disableOutboundSnat') ? loadBalancingRule.disableOutboundSnat : true
     enableFloatingIP: contains(loadBalancingRule, 'enableFloatingIP') ? loadBalancingRule.enableFloatingIP : false
     enableTcpReset: contains(loadBalancingRule, 'enableTcpReset') ? loadBalancingRule.enableTcpReset : false
     frontendIPConfiguration: {
-      id: resourceId('Microsoft.Network/loadBalancers/frontendIPConfigurations', name, loadBalancingRule.frontendIPConfigurationName)
+      id: az.resourceId('Microsoft.Network/loadBalancers/frontendIPConfigurations', name, loadBalancingRule.frontendIPConfigurationName)
     }
     frontendPort: loadBalancingRule.frontendPort
     idleTimeoutInMinutes: contains(loadBalancingRule, 'idleTimeoutInMinutes') ? loadBalancingRule.idleTimeoutInMinutes : 4
     loadDistribution: contains(loadBalancingRule, 'loadDistribution') ? loadBalancingRule.loadDistribution : 'Default'
     probe: {
-      id: '${resourceId('Microsoft.Network/loadBalancers', name)}/probes/${loadBalancingRule.probeName}'
+      id: '${az.resourceId('Microsoft.Network/loadBalancers', name)}/probes/${loadBalancingRule.probeName}'
     }
     protocol: contains(loadBalancingRule, 'protocol') ? loadBalancingRule.protocol : 'Tcp'
   }
@@ -113,11 +113,11 @@ var outboundRules_var = [for outboundRule in outboundRules: {
   properties: {
     frontendIPConfigurations: [
       {
-        id: resourceId('Microsoft.Network/loadBalancers/frontendIPConfigurations', name, outboundRule.frontendIPConfigurationName)
+        id: az.resourceId('Microsoft.Network/loadBalancers/frontendIPConfigurations', name, outboundRule.frontendIPConfigurationName)
       }
     ]
     backendAddressPool: {
-      id: resourceId('Microsoft.Network/loadBalancers/backendAddressPools', name, outboundRule.backendAddressPoolName)
+      id: az.resourceId('Microsoft.Network/loadBalancers/backendAddressPools', name, outboundRule.backendAddressPoolName)
     }
     protocol: contains(outboundRule, 'protocol') ? outboundRule.protocol : 'All'
     allocatedOutboundPorts: contains(outboundRule, 'allocatedOutboundPorts') ? outboundRule.allocatedOutboundPorts : 63984
@@ -238,10 +238,10 @@ module loadBalancer_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, inde
 }]
 
 @description('The name of the load balancer')
-output loadBalancerName string = loadBalancer.name
+output name string = loadBalancer.name
 
 @description('The resource ID of the load balancer')
-output loadBalancerResourceId string = loadBalancer.id
+output resourceId string = loadBalancer.id
 
 @description('The resource group the load balancer was deployed into')
-output loadBalancerResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name

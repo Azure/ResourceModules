@@ -34,10 +34,10 @@ resource solution 'Microsoft.OperationsManagement/solutions@2015-11-01-preview' 
 }
 
 @description('The name of the deployed solution')
-output solutionName string = solution.name
+output name string = solution.name
 
 @description('The resource ID of the deployed solution')
-output solutionResourceId string = solution.id
+output resourceId string = solution.id
 
 @description('The resource group where the solution is deployed')
-output solutionResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name
