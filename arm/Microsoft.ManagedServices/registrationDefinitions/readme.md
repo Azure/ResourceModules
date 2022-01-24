@@ -60,7 +60,7 @@ remote/managing tenant.
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The name of the registration definition |
-| `registrationAssignmentId` | string | The registration assignment resource ID |
+| `assignmentResourceId` | string | The registration assignment resource ID |
 | `resourceId` | string | The resource ID of the registration definition |
 | `subscriptionName` | string | The subscription the registration definition was deployed into |
 
