@@ -11,9 +11,6 @@
         "enableRbacAuthorization": {
             "value": false
         },
-        "fakeParem": {
-            "value": "asdasd"
-        },
         "privateEndpoints": {
             "value": [
                 {
