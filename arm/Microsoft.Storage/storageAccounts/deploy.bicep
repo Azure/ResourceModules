@@ -60,7 +60,7 @@ param managementPolicyRules array = []
 param networkAcls object = {}
 
 @description('Optional. A boolean indicating whether or not the service applies a secondary layer of encryption with platform managed keys for data at rest. For security reasons, it is recommended to set it to true.')
-param requireInfrastructureEncryption bool = false
+param requireInfrastructureEncryption bool = true
 
 @description('Optional. Blob service and containers to deploy')
 param blobServices object = {}
@@ -75,7 +75,7 @@ param queueServices object = {}
 param tableServices object = {}
 
 @description('Optional. Indicates whether public access is enabled for all blobs or containers in the storage account. For security reasons, it is recommended to set it to false.')
-param allowBlobPublicAccess bool = true
+param allowBlobPublicAccess bool = false
 
 @allowed([
   'TLS1_0'
