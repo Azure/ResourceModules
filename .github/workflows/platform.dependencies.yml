@@ -181,33 +181,33 @@ jobs:
   #         managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
   #         removeDeployment: '${{ env.removeDeployment }}'
 
-  # job_deploy_sa:
-  #   runs-on: ubuntu-20.04
-  #   name: 'Deploy storage account'
-  #   env:
-  #     namespace: 'Microsoft.Storage\storageAccounts'
-  #   needs:
-  #     - job_deploy_rg
-  #   strategy:
-  #     fail-fast: false
-  #     matrix:
-  #       parameterFilePaths:
-  #         ['fa.parameters.json', 'law.parameters.json', 'parameters.json']
-  #   steps:
-  #     - name: 'Checkout'
-  #       uses: actions/checkout@v2
-  #       with:
-  #         fetch-depth: 0
-  #     - name: 'Deploy module'
-  #       uses: ./.github/actions/templates/validateModuleDeployment
-  #       with:
-  #         templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
-  #         parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
-  #         location: '${{ env.defaultLocation }}'
-  #         resourceGroupName: '${{ env.defaultResourceGroupName }}'
-  #         subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
-  #         managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
-  #         removeDeployment: '${{ env.removeDeployment }}'
+  job_deploy_sa:
+    runs-on: ubuntu-20.04
+    name: 'Deploy storage account'
+    env:
+      namespace: 'Microsoft.Storage\storageAccounts'
+    needs:
+      - job_deploy_rg
+    strategy:
+      fail-fast: false
+      matrix:
+        parameterFilePaths:
+          ['fa.parameters.json', 'law.parameters.json', 'parameters.json']
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: 'Deploy module'
+        uses: ./.github/actions/templates/validateModuleDeployment
+        with:
+          templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
+          parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
+          location: '${{ env.defaultLocation }}'
+          resourceGroupName: '${{ env.defaultResourceGroupName }}'
+          subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
+          managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
+          removeDeployment: '${{ env.removeDeployment }}'
 
   # job_sa_upload_storage_files:
   #   runs-on: ubuntu-20.04
