@@ -67,10 +67,10 @@ module activityLogAlert_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, 
 }]
 
 @description('The name of the activity log alert')
-output activityLogAlertName string = activityLogAlert.name
+output name string = activityLogAlert.name
 
 @description('The resource ID of the activity log alert')
-output activityLogAlertResourceId string = activityLogAlert.id
+output resourceId string = activityLogAlert.id
 
 @description('The resource group the activity log alert was deployed into')
-output activityLogAlertResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name

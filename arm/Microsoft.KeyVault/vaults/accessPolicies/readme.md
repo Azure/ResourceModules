@@ -47,9 +47,9 @@ This module deploys key vault access policies.
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `accessPolicyName` | string | The name of the access policies assignment |
-| `accessPolicyResourceGroup` | string | The name of the resource group the access policies assignment was created in. |
-| `accessPolicyResourceId` | string | The resource ID of the access policies assignment |
+| `name` | string | The name of the access policies assignment |
+| `resourceGroupName` | string | The name of the resource group the access policies assignment was created in. |
+| `resourceId` | string | The resource ID of the access policies assignment |
 
 ## Template references
 
