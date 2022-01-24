@@ -76,10 +76,10 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `publicIpAddress` | string | The public IP address of the of the public IP address resource |
-| `publicIPAddressName` | string | The name of the public IP address |
-| `publicIPAddressResourceGroup` | string | The resource group the public IP address was deployed into |
-| `publicIPAddressResourceId` | string | The resource ID of the public IP address |
+| `ipAddress` | string | The public IP address of the of the public IP address resource |
+| `name` | string | The name of the public IP address |
+| `resourceGroupName` | string | The resource group the public IP address was deployed into |
+| `resourceId` | string | The resource ID of the public IP address |
 
 ## Template references
 

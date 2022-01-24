@@ -215,16 +215,16 @@ module virtualNetwork_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, in
 }]
 
 @description('The resource group the virtual network was deployed into')
-output virtualNetworkResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name
 
 @description('The resource ID of the virtual network')
-output virtualNetworkResourceId string = virtualNetwork.id
+output resourceId string = virtualNetwork.id
 
 @description('The name of the virtual network')
-output virtualNetworkName string = virtualNetwork.name
+output name string = virtualNetwork.name
 
 @description('The names of the deployed subnets')
 output subnetNames array = [for subnet in subnets: subnet.name]
 
 @description('The resource IDs of the deployed subnets')
-output subnetResourceIds array = [for subnet in subnets: resourceId('Microsoft.Network/virtualNetworks/subnets', name, subnet.name)]
+output subnetResourceIds array = [for subnet in subnets: az.resourceId('Microsoft.Network/virtualNetworks/subnets', name, subnet.name)]

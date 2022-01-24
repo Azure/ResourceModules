@@ -172,10 +172,10 @@ module firewallPolicy_ruleGroups 'ruleGroups/deploy.bicep' = [for (ruleGroup, in
 }]
 
 @description('The name of the deployed firewall policy')
-output firewallPolicyName string = firewallPolicy.name
+output name string = firewallPolicy.name
 
 @description('The resource ID of the deployed firewall policy')
-output firewallPolicyResourceId string = firewallPolicy.id
+output resourceId string = firewallPolicy.id
 
 @description('The resource group of the deployed firewall policy')
-output firewallPolicyResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name

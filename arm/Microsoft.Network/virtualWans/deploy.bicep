@@ -180,10 +180,10 @@ module virtualWan_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index)
 }]
 
 @description('The name of the virtual WAN')
-output virtualWanName string = virtualWan.name
+output name string = virtualWan.name
 
 @description('The resource ID of the virtual WAN')
-output virtualWanResourceId string = virtualWan.id
+output resourceId string = virtualWan.id
 
 @description('The resource group the virtual WAN was deployed into')
-output virtualWanResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name
