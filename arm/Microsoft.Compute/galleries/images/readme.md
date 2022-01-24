@@ -82,11 +82,11 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `imageName` | string | The name of the image |
-| `imageResourceGroup` | string | The resource group the image was deployed into |
-| `imageResourceId` | string | The resource ID of the image |
+| `name` | string | The name of the image |
+| `resourceGroupName` | string | The resource group the image was deployed into |
+| `resourceId` | string | The resource ID of the image |
 
 ## Template references
 
 - [Galleries/Images](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Compute/2020-09-30/galleries/images)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2021-04-01-preview/roleAssignments)
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)

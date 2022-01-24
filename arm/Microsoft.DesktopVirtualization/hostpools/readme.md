@@ -119,9 +119,9 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `hostPoolName` | string | The name of the AVD host pool |
-| `hostPoolResourceGroup` | string | The resource group the AVD host pool was deployed into |
-| `hostPoolResourceId` | string | The resource ID of the AVD host pool |
+| `name` | string | The name of the AVD host pool |
+| `resourceGroupName` | string | The resource group the AVD host pool was deployed into |
+| `resourceId` | string | The resource ID of the AVD host pool |
 | `tokenExpirationTime` | string | The expiration time for the registration token |
 
 ## Template references
@@ -129,4 +129,4 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 - [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings)
 - [Hostpools](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DesktopVirtualization/2021-07-12/hostPools)
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2021-04-01-preview/roleAssignments)
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)

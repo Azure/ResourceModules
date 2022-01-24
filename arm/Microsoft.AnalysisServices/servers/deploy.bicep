@@ -143,10 +143,10 @@ module server_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in 
 }]
 
 @description('The name of the analysis service')
-output analysisServicesName string = server.name
+output name string = server.name
 
 @description('The resource ID of the analysis service')
-output analysisServicesResourceId string = server.id
+output resourceId string = server.id
 
 @description('The resource group the analysis service was deployed into')
-output analysisServicesResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name

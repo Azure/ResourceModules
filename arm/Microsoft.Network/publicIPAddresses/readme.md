@@ -7,7 +7,7 @@
 | `Microsoft.Authorization/locks` | 2017-04-01 |
 | `Microsoft.Authorization/roleAssignments` | 2021-04-01-preview |
 | `Microsoft.Insights/diagnosticSettings` | 2021-05-01-preview |
-| `Microsoft.Network/publicIPAddresses` | 2021-02-01 |
+| `Microsoft.Network/publicIPAddresses` | 2021-05-01 |
 
 ## Parameters
 
@@ -24,12 +24,14 @@
 | `logsToEnable` | array | `[DDoSProtectionNotifications, DDoSMitigationFlowLogs, DDoSMitigationReports]` | `[DDoSProtectionNotifications, DDoSMitigationFlowLogs, DDoSMitigationReports]` | Optional. The name of logs that will be streamed. |
 | `metricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | Optional. The name of metrics that will be streamed. |
 | `name` | string |  |  | Required. The name of the Public IP Address |
-| `publicIPAllocationMethod` | string | `Dynamic` |  | Optional. The public IP address allocation method. - Static or Dynamic. |
+| `publicIPAddressVersion` | string | `IPv4` | `[IPv4, IPv6]` | Optional. IP address version. |
+| `publicIPAllocationMethod` | string | `Dynamic` | `[Dynamic, Static]` | Optional. The public IP address allocation method. |
 | `publicIPPrefixResourceId` | string |  |  | Optional. Resource ID of the Public IP Prefix object. This is only needed if you want your Public IPs created in a PIP Prefix. |
 | `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
-| `skuName` | string | `Basic` |  | Optional. Public IP Address sku Name |
-| `skuTier` | string | `Regional` |  | Optional. Public IP Address pricing tier |
+| `skuName` | string | `Basic` | `[Basic, Standard]` | Optional. Name of a public IP address SKU. |
+| `skuTier` | string | `Regional` | `[Global, Regional]` | Optional. Tier of a public IP address SKU. |
 | `tags` | object | `{object}` |  | Optional. Tags of the resource. |
+| `zones` | array | `[]` |  | Optional. A list of availability zones denoting the IP allocated for the resource needs to come from. |
 
 ### Parameter Usage: `tags`
 
@@ -74,13 +76,14 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `publicIPAddressName` | string | The name of the public IP adress |
-| `publicIPAddressResourceGroup` | string | The resource group the public IP adress was deployed into |
-| `publicIPAddressResourceId` | string | The resource ID of the public IP adress |
+| `publicIpAddress` | string | The public IP address of the of the public IP address resource |
+| `publicIPAddressName` | string | The name of the public IP address |
+| `publicIPAddressResourceGroup` | string | The resource group the public IP address was deployed into |
+| `publicIPAddressResourceId` | string | The resource ID of the public IP address |
 
 ## Template references
 
 - [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings)
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
-- [Publicipaddresses](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-02-01/publicIPAddresses)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2021-04-01-preview/roleAssignments)
+- [Publicipaddresses](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/publicIPAddresses)
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)
