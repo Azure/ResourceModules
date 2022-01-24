@@ -22,7 +22,7 @@
             "value": [
                 {
                     "name": "connection1",
-                    "remoteVirtualNetworkId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/alsehrHubVnet",
+                    "remoteVirtualNetworkId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-sxx-az-vnet-x-vHub",
                     "routingConfiguration": {
                         "associatedRouteTable": {
                             "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualHubs/sxx-az-vHub-x-001/hubRouteTables/routeTable1"

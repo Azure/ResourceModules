@@ -472,7 +472,12 @@ jobs:
       fail-fast: false
       matrix:
         parameterFilePaths:
-          ['apgw.parameters.json', 'bas.parameters.json', 'lb.parameters.json', 'fw.parameters.json']
+          [
+            'apgw.parameters.json',
+            'bas.parameters.json',
+            'lb.parameters.json',
+            'fw.parameters.json',
+          ]
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -890,6 +895,7 @@ jobs:
             '3.vnetpeer02.parameters.json',
             '4.azfw.parameters.json',
             '5.aks.parameters.json',
+            '7.virtualHubConnection.parameters.json',
             'parameters.json',
           ]
     steps:
