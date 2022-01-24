@@ -20,9 +20,6 @@
         "osDiskSizeGB": {
             "value": 127
         },
-        "subnetId": {
-            "value": ""
-        },
         "imageSource": {
             "value": {
                 "type": "PlatformImage",
@@ -40,27 +37,8 @@
                 }
             ]
         },
-        "managedImageName": {
-            "value": "sxx-az-mi-x-001"
-        },
         "unManagedImageName": {
-            "value": "sxx-az-umi-x-001"
-        },
-        "sigImageDefinitionId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Compute/galleries/adpsxxazsigweux001/images/adp-sxx-az-imgd-x-001"
-        },
-        "imageReplicationRegions": {
-            "value": []
-        },
-        "roleAssignments": {
-            "value": [
-                {
-                    "roleDefinitionIdOrName": "Reader",
-                    "principalIds": [
-                        "<<deploymentSpId>>"
-                    ]
-                }
-            ]
+            "value": "adp-sxx-az-umi-x-001"
         }
     }
 }

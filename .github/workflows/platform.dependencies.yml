@@ -329,7 +329,8 @@ jobs:
             $ImageTemplateName = (ConvertFrom-Json $deploymentOutput).imageTemplateName
             $ResourceGroupName = (ConvertFrom-Json $deploymentOutput).imageTemplateResourceGroup
             Write-Verbose "Trigger new image creation with command $RunThisCommand" -Verbose
-            $RunThisCommand
+
+            # Start-AzImageBuilderTemplate -ImageTemplateName $ImageTemplateName -ResourceGroupName $ResourceGroupName
             # $ImageTemplateName = 'adp-sxx-az-imgt-x-001-2022-01-18-18-48-33'
             # $ResourceGroupName = 'validation-rg'
 
