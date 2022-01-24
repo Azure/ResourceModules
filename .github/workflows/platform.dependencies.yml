@@ -342,7 +342,8 @@ jobs:
     name: 'Trigger vhd build and store it to a storage account blob container'
     if: github.event.inputs.deployVhdDependencies == 'true'
     env:
-      namespace: 'Microsoft.VirtualMachineImages\imageTemplates'
+      imgtNamespace: 'Microsoft.VirtualMachineImages\imageTemplates'
+      saNamespace: 'Microsoft.Storage\storageAccounts'
     needs:
       - job_deploy_imgt
       # - job_deploy_sa
@@ -377,7 +378,38 @@ jobs:
             Write-Verbose "Retrieving output from previous job" -Verbose
             $imageTemplateName = '${{ needs.job_deploy_imgt.outputs.imageTemplateName }}'
             $imageTemplateResourceGroup = '${{ needs.job_deploy_imgt.outputs.imageTemplateResourceGroup }}'
+
             Write-Verbose "Trigger new image creation with imageTemplateName $imageTemplateName and imageTemplateResourceGroup $imageTemplateResourceGroup" -Verbose
+            Start-AzImageBuilderTemplate -ImageTemplateName $imageTemplateName -ResourceGroupName $imageTemplateResourceGroup
+          azPSVersion: 'latest'
+      - name: 'Copy baked vhd to a storage account'
+        uses: azure/powershell@v1
+        with:
+          inlineScript: |
+            Write-Verbose "Retrieving output from previous job" -Verbose
+            $imageTemplateName = '${{ needs.job_deploy_imgt.outputs.imageTemplateName }}'
+            $imageTemplateResourceGroup = '${{ needs.job_deploy_imgt.outputs.imageTemplateResourceGroup }}'
+
+            # Get source storage account parameters
+            $imgtRunOutput = Get-AzImageBuilderRunOutput -ImageTemplateName $imageTemplateName -ResourceGroupName $imageTemplateResourceGroup | Where-Object ArtifactUri -NE $null
+            $sourceUri = $imgtRunOutput.ArtifactUri
+            $sourceStorageAccountName = $sourceUri.Split('//')[1].Split('.')[0]
+            $sourceStorageAccount = Get-AzStorageAccount | Where-Object StorageAccountName -EQ $sourceStorageAccountName
+            $sourceStorageAccountContext = $sourceStorageAccount.Context
+            $sourceStorageAccountRGName = $sourceStorageAccount.ResourceGroupName
+            Write-Verbose "Retrieving artifact uri $sourceUri stored in resource group $sourceStorageAccountRGName" -Verbose
+
+            # Get destination storage account parameters
+            $parameterFilePath = Join-Path $env:GITHUB_WORKSPACE '${{ env.dependencyPath }}' '${{ env.saNamespace }}' 'parameters' 'parameters.json'
+            $storageAccountParameters = (ConvertFrom-Json (Get-Content -path $parameterFilePath -Raw)).parameters
+            $destinationStorageAccountName = $storageAccountParameters.name.value
+            Write-Verbose "Destination storage account name $destinationStorageAccountName" -Verbose
+
+            # Get image template parameters
+            $parameterFilePath = Join-Path $env:GITHUB_WORKSPACE '${{ env.dependencyPath }}' '${{ env.imgtNamespace }}' 'parameters' 'parameters.json'
+            $imageTemplateParameters = (ConvertFrom-Json (Get-Content -path $parameterFilePath -Raw)).parameters
+            $destinationBlobName = $imageTemplateParameters.name.value
+            Write-Verbose "Destination blob name $destinationBlobName" -Verbose
 
             # Write-Verbose "Retrieving command to run" -Verbose
             # $deploymentOutput = '${{ steps.deploy_imgt.outputs.deploymentOutput }}'
