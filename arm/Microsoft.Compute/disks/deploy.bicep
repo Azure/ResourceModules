@@ -179,10 +179,10 @@ module disk_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in ro
 }]
 
 @description('The resource group the  disk was deployed into')
-output diskResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name
 
 @description('The resource ID of the disk')
-output diskResourceId string = disk.id
+output resourceId string = disk.id
 
 @description('The name of the disk')
-output diskResourceName string = disk.name
+output name string = disk.name

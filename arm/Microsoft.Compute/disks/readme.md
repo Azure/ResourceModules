@@ -84,9 +84,9 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `diskResourceGroup` | string | The resource group the  disk was deployed into |
-| `diskResourceId` | string | The resource ID of the disk |
-| `diskResourceName` | string | The name of the disk |
+| `name` | string | The name of the disk |
+| `resourceGroupName` | string | The resource group the  disk was deployed into |
+| `resourceId` | string | The resource ID of the disk |
 
 ## Template references
 

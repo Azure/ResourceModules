@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "sxx-az-disk-x-003"
+            "value": "sxx-az-disk-import-001"
         },
         "sku": {
             "value": "Standard_LRS"
