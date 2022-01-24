@@ -199,7 +199,7 @@ output name string = azureFirewall.name
 @description('The resource group the azure firewall was deployed into')
 output resourceGroupName string = resourceGroup().name
 
-@description('The private IP of the Azure Firewall')
+@description('The private IP of the Azure firewall')
 output privateIp string = azureFirewall.properties.ipConfigurations[0].properties.privateIPAddress
 
 @description('List of Application Rule Collections')
