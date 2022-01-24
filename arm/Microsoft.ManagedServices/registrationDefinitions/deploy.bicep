@@ -53,4 +53,4 @@ output resourceId string = registrationDefinition.id
 output subscriptionName string = subscription().displayName
 
 @description('The registration assignment resource ID')
-output registrationAssignmentId string = empty(resourceGroupName) ? registrationAssignment_sub.id : registrationAssignment_rg.outputs.resourceId
+output assignmentResourceId string = empty(resourceGroupName) ? registrationAssignment_sub.id : registrationAssignment_rg.outputs.resourceId
