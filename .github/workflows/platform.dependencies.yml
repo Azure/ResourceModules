@@ -297,9 +297,9 @@ jobs:
     if: github.event.inputs.deployVhdDependencies == 'true'
     env:
       namespace: 'Microsoft.VirtualMachineImages\imageTemplates'
-    needs:
-      - job_deploy_msi
-      - job_deploy_sig
+    # needs:
+    #   - job_deploy_msi
+    #   - job_deploy_sig
     outputs:
       imageTemplateName: ${{ steps.print_imgt_output.outputs.imageTemplateName }}
       imageTemplateResourceGroup: ${{ steps.print_imgt_output.outputs.imageTemplateResourceGroup }}
@@ -345,7 +345,7 @@ jobs:
       namespace: 'Microsoft.VirtualMachineImages\imageTemplates'
     needs:
       - job_deploy_imgt
-      - job_deploy_sa
+      # - job_deploy_sa
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -375,8 +375,8 @@ jobs:
         with:
           inlineScript: |
             Write-Verbose "Retrieving output from previous job" -Verbose
-            $imageTemplateName = ${{ needs.job_deploy_imgt.outputs.imageTemplateName }}
-            $imageTemplateResourceGroup = ${{ needs.job_deploy_imgt.outputs.imageTemplateResourceGroup }}
+            $imageTemplateName = '${{ needs.job_deploy_imgt.outputs.imageTemplateName }}'
+            $imageTemplateResourceGroup = '${{ needs.job_deploy_imgt.outputs.imageTemplateResourceGroup }}'
             Write-Verbose "Trigger new image creation with imageTemplateName $imageTemplateName and imageTemplateResourceGroup $imageTemplateResourceGroup" -Verbose
 
             # Write-Verbose "Retrieving command to run" -Verbose
