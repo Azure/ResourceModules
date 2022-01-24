@@ -81,9 +81,9 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `natGatewayName` | string | The name of the NAT Gateway |
-| `natGatewayResourceGroup` | string | The resource group the NAT Gateway was deployed into |
-| `natGatewayResourceId` | string | The resource ID of the NAT Gateway |
+| `name` | string | The name of the NAT Gateway |
+| `resourceGroupName` | string | The resource group the NAT Gateway was deployed into |
+| `resourceId` | string | The resource ID of the NAT Gateway |
 
 ## Template references
 
@@ -91,4 +91,4 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
 - [Natgateways](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-02-01/natGateways)
 - [Publicipaddresses](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-02-01/publicIPAddresses)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2021-04-01-preview/roleAssignments)
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)

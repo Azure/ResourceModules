@@ -66,10 +66,10 @@ module privateDnsZone_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, in
 }]
 
 @description('The resource group the private DNS zone was deployed into')
-output privateDnsZoneResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name
 
 @description('The name of the private DNS zone')
-output privateDnsZoneName string = privateDnsZone.name
+output name string = privateDnsZone.name
 
 @description('The resource ID of the private DNS zone')
-output privateDnsZoneResourceId string = privateDnsZone.id
+output resourceId string = privateDnsZone.id

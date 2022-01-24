@@ -196,13 +196,13 @@ module expressRouteCircuits_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignme
 }]
 
 @description('The resource ID of express route curcuit')
-output expressRouteCircuitResourceId string = expressRouteCircuits.id
+output resourceId string = expressRouteCircuits.id
 
 @description('The resource group the express route curcuit was deployed into')
-output expressRouteCircuitResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name
 
 @description('The name of express route curcuit')
-output expressRouteCircuitName string = expressRouteCircuits.name
+output name string = expressRouteCircuits.name
 
 @description('The service key of the express route circuit')
-output expressRouteCircuitServiceKey string = reference(expressRouteCircuits.id, '2021-02-01').serviceKey
+output serviceKey string = reference(expressRouteCircuits.id, '2021-02-01').serviceKey

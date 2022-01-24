@@ -65,7 +65,7 @@ resource inboundNatRule 'Microsoft.Network/loadBalancers/inboundNatRules@2021-05
     frontendPort: frontendPort
     backendPort: backendPort
     backendAddressPool: !empty(backendAddressPoolName) ? {
-      id: resourceId('Microsoft.Network/loadBalancers/backendAddressPools', name, backendAddressPoolName)
+      id: az.resourceId('Microsoft.Network/loadBalancers/backendAddressPools', name, backendAddressPoolName)
     } : null
     enableFloatingIP: enableFloatingIP
     enableTcpReset: enableTcpReset
@@ -81,10 +81,10 @@ resource inboundNatRule 'Microsoft.Network/loadBalancers/inboundNatRules@2021-05
 }
 
 @description('The name of the inbound NAT rule')
-output inboundNatRuleName string = inboundNatRule.name
+output name string = inboundNatRule.name
 
 @description('The resource ID of the inbound NAT rule')
-output inboundNatRuleResourceId string = inboundNatRule.id
+output resourceId string = inboundNatRule.id
 
 @description('The resource group the inbound NAT rule was deployed into')
-output inboundNatRuleResourceGroupName string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name

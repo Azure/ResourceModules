@@ -95,7 +95,8 @@ jobs:
         with:
           inlineScript: |
             $deploymentOutput = '${{ steps.deploy_msi.outputs.deploymentOutput }}'
-            $msiPrincipalId = (ConvertFrom-Json $deploymentOutput).msiPrincipalId
+            $msiPrincipalId = (ConvertFrom-Json $deploymentOutput).principalId
+            Write-Verbose "msiPrincipalId: $msiPrincipalId" -Verbose
             Write-Output ('::set-output name={0}::{1}' -f 'msiPrincipalId', $msiPrincipalId)
           azPSVersion: 'latest'
 
@@ -398,17 +399,20 @@ jobs:
   #         managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
   #         removeDeployment: '${{ env.removeDeployment }}'
 
-  # job_deploy_udr:
+  # job_deploy_pip:
   #   runs-on: ubuntu-20.04
-  #   name: 'Deploy route tables'
+  #   name: 'Deploy public IP addresses'
   #   env:
-  #     namespace: 'Microsoft.Network\routeTables'
+  #     namespace: 'Microsoft.Network\publicIPAddresses'
   #   needs:
-  #     - job_deploy_rg
+  #     - job_deploy_sa
+  #     - job_deploy_evh
+  #     - job_deploy_law
   #   strategy:
   #     fail-fast: false
   #     matrix:
-  #       parameterFilePaths: ['parameters.json']
+  #       parameterFilePaths:
+  #         ['apgw.parameters.json', 'bas.parameters.json', 'lb.parameters.json', 'fw.parameters.json']
   #   steps:
   #     - name: 'Checkout'
   #       uses: actions/checkout@v2

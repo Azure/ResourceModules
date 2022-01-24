@@ -226,10 +226,10 @@ resource agentPool 'Microsoft.ContainerService/managedClusters/agentPools@2021-0
 }
 
 @description('The name of the agent pool')
-output agentPoolName string = agentPool.name
+output name string = agentPool.name
 
 @description('The resource ID of the agent pool')
-output agentPoolResourceId string = agentPool.id
+output resourceId string = agentPool.id
 
 @description('The resource group the agent pool was deployed into.')
-output agentPoolResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name

@@ -64,12 +64,12 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `applicationSecurityGroupName` | string | The name of the application security group |
-| `applicationSecurityGroupResourceGroup` | string | The resource group the application security group was deployed into |
-| `applicationSecurityGroupResourceId` | string | The resource ID of the application security group |
+| `name` | string | The name of the application security group |
+| `resourceGroupName` | string | The resource group the application security group was deployed into |
+| `resourceId` | string | The resource ID of the application security group |
 
 ## Template references
 
 - [Applicationsecuritygroups](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-02-01/applicationSecurityGroups)
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2021-04-01-preview/roleAssignments)
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)

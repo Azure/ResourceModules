@@ -67,11 +67,11 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `secretName` | string | The name of the secret. |
-| `secretResourceGroup` | string | The name of the resource group the secret was created in. |
-| `secretResourceId` | string | The resource ID of the secret. |
+| `name` | string | The name of the secret. |
+| `resourceGroupName` | string | The name of the resource group the secret was created in. |
+| `resourceId` | string | The resource ID of the secret. |
 
 ## Template references
 
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2021-04-01-preview/roleAssignments)
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)
 - [Vaults/Secrets](https://docs.microsoft.com/en-us/azure/templates/Microsoft.KeyVault/2019-09-01/vaults/secrets)

@@ -42,10 +42,10 @@ resource virtualNetworkLink 'Microsoft.Network/privateDnsZones/virtualNetworkLin
 }
 
 @description('The name of the deployed virtual network link')
-output virtualNetworkLinkName string = virtualNetworkLink.name
+output name string = virtualNetworkLink.name
 
 @description('The resource ID of the deployed virtual network link')
-output virtualNetworkLinkResourceId string = virtualNetworkLink.id
+output resourceId string = virtualNetworkLink.id
 
 @description('The resource group of the deployed virtual network link')
-output virtualNetworkLinkResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name

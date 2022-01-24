@@ -71,10 +71,10 @@ module availabilitySet_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, i
 }]
 
 @description('The resource group the availability set was deployed into')
-output availabilitySetResourceName string = availabilitySet.name
+output name string = availabilitySet.name
 
 @description('The resource ID of the availability set')
-output availabilitySetResourceId string = availabilitySet.id
+output resourceId string = availabilitySet.id
 
 @description('The name of the availability set')
-output availabilitySetResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name

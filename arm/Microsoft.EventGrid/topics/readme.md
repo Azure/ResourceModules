@@ -113,9 +113,9 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `eventGridName` | string | The name of the event grid topic |
-| `eventGridResourceGroup` | string | The name of the resource group the event grid was deployed into |
-| `eventGridResourceId` | string | The resource ID of the event grid |
+| `name` | string | The name of the event grid topic |
+| `resourceGroupName` | string | The name of the resource group the event grid was deployed into |
+| `resourceId` | string | The resource ID of the event grid |
 
 ## Template references
 
@@ -123,5 +123,5 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
 - [Privateendpoints](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/privateEndpoints)
 - [Privateendpoints/Privatednszonegroups](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-02-01/privateEndpoints/privateDnsZoneGroups)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2021-04-01-preview/roleAssignments)
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)
 - [Topics](https://docs.microsoft.com/en-us/azure/templates/Microsoft.EventGrid/2020-06-01/topics)
