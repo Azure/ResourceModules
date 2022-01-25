@@ -4,7 +4,7 @@ param encryptionKeyName string
 param workspaceName string
 param workspacePrincipalId string
 
-var keyVaultUrl = 'https://${encryptionKeyVaultName}.vault.azure.net/keys/${encryptionKeyName}'
+var keyVaultUrl = 'https://${encryptionKeyVaultName}${environment().suffixes.keyvaultDns}/keys/${encryptionKeyName}'
 
 resource keyVault 'Microsoft.KeyVault/vaults@2019-09-01' existing = {
   name: encryptionKeyVaultName
