@@ -167,7 +167,7 @@ var nodeTypes_var = [for nodeType in nodeTypes: {
   isPrimary: contains(nodeType, 'isPrimary') ? nodeType.isPrimary : null
   isStateless: contains(nodeType, 'isStateless') ? nodeType.isStateless : null
   multipleAvailabilityZones: contains(nodeType, 'multipleAvailabilityZones') ? nodeType.multipleAvailabilityZones : null
-  name: !empty(nodeType.name) ? nodeType.name : 'Node00'
+  name: contains(nodeType, 'name') ? nodeType.name : 'Node00'
   placementProperties: contains(nodeType, 'placementProperties') ? nodeType.placementProperties : null
   reverseProxyEndpointPort: contains(nodeType, 'reverseProxyEndpointPort') ? nodeType.reverseProxyEndpointPort : null
   vmInstanceCount: contains(nodeType, 'vmInstanceCount') ? nodeType.vmInstanceCount : 1
