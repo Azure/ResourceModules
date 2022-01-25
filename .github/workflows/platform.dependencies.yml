@@ -297,9 +297,9 @@ jobs:
     if: github.event.inputs.deployVhdDependencies == 'true'
     env:
       namespace: 'Microsoft.VirtualMachineImages\imageTemplates'
-    # needs:
-    #   - job_deploy_msi
-    #   - job_deploy_sig
+    needs:
+      - job_deploy_msi
+      - job_deploy_sig
     outputs:
       imageTemplateName: ${{ steps.print_imgt_output.outputs.imageTemplateName }}
       imageTemplateResourceGroup: ${{ steps.print_imgt_output.outputs.imageTemplateResourceGroup }}
@@ -346,7 +346,7 @@ jobs:
       saNamespace: 'Microsoft.Storage\storageAccounts'
     needs:
       - job_deploy_imgt
-      # - job_deploy_sa
+      - job_deploy_sa
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -412,6 +412,7 @@ jobs:
             $parameterFilePath = Join-Path $env:GITHUB_WORKSPACE '${{ env.dependencyPath }}' '${{ env.imgtNamespace }}' 'parameters' 'parameters.json'
             $imageTemplateParameters = (ConvertFrom-Json (Get-Content -path $parameterFilePath -Raw)).parameters
             $destinationBlobName = $imageTemplateParameters.name.value
+            $destinationBlobName = "$destinationBlobName.vhd"
             Write-Verbose "Destination blob name $destinationBlobName" -Verbose
 
             $resourceActionInputObject = @{
