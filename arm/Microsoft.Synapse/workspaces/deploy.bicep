@@ -252,13 +252,13 @@ resource workspace_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@202
 }
 
 @description('The resource ID of the deployed Synapse Workspace.')
-output workspaceResourceID string = workspace.id
+output resourceID string = workspace.id
 
 @description('The name of the deployed Synapse Workspace.')
-output workspaceName string = workspace.name
+output name string = workspace.name
 
 @description('The resource group of the deployed Synapse Workspace.')
-output workspaceResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name
 
 @description('Connectivity endpoints.')
-output workspaceConnectivityEndpoints object = workspace.properties.connectivityEndpoints
+output connectivityEndpoints object = workspace.properties.connectivityEndpoints
