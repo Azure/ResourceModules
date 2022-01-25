@@ -38,4 +38,4 @@ output name string = key.name
 output resourceId string = key.id
 
 @description('The resource group of the deployed key')
-output keyResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name
