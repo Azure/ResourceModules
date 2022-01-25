@@ -1,6 +1,6 @@
 # Synapse Workspaces Keys `[Microsoft.Synapse/workspaces/keys]`
 
-This module deploys Synapse Workspaces Keys.
+This module deploys a Synapse Workspaces Key.
 
 ## Resource Types
 

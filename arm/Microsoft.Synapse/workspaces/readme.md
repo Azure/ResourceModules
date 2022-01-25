@@ -1,4 +1,4 @@
-# Synapse Workspace `[Microsoft.Synapse/workspaces]`
+# Synapse Workspaces `[Microsoft.Synapse/workspaces]`
 
 This module deploys a Synapse Workspace.
 

@@ -141,7 +141,7 @@ var identity = {
   userAssignedIdentities: !empty(userAssignedIdentitiesUnion) ? userAssignedIdentitiesUnion : null
 }
 
-var keyVaultUrl = 'https://${encryptionKeyVaultName}.vault.azure.net/keys/${encryptionKeyName}'
+var keyVaultUrl = 'https://${encryptionKeyVaultName}${environment().suffixes.keyvaultDns}/keys/${encryptionKeyName}'
 
 var diagnosticsLogs = [for log in logsToEnable: {
   category: log
