@@ -1,6 +1,6 @@
-# Synapse PrivateLinkHubs `[Microsoft.Synapse/workspaces]`
+# Synapse Workspace `[Microsoft.Synapse/workspaces]`
 
-This module deploys Synapse PrivateLinkHubs.
+This module deploys a Synapse Workspace.
 
 ## Resource Types
 
