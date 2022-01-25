@@ -35,7 +35,7 @@ resource key 'Microsoft.Synapse/workspaces/keys@2021-06-01' = {
 output name string = key.name
 
 @description('The resource ID of the deployed key')
-output keyResourceId string = key.id
+output resourceId string = key.id
 
 @description('The resource group of the deployed key')
 output keyResourceGroup string = resourceGroup().name
