@@ -3,14 +3,14 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "sxx-az-ma-x-001"
+            "value": "<<namePrefix>>-az-ma-x-001"
         },
         "windowSize": {
             "value": "PT15M"
         },
         "actions": {
             "value": [
-                "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/microsoft.insights/actiongroups/adp-sxx-az-ag-x-001"
+                "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/microsoft.insights/actiongroups/adp-<<namePrefix>>-az-ag-x-001"
             ]
         },
         "targetResourceType": {

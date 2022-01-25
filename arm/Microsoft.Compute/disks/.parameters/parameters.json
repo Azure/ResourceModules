@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "sxx-az-disk-x-001"
+            "value": "<<namePrefix>>-az-disk-x-001"
         },
         "sku": {
             "value": "UltraSSD_LRS"
