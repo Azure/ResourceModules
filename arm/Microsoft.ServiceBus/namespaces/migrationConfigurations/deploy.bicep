@@ -34,10 +34,10 @@ resource migrationConfiguration 'Microsoft.ServiceBus/namespaces/migrationConfig
 }
 
 @description('The name of the migration configuration.')
-output migrationConfigurationName string = migrationConfiguration.name
+output name string = migrationConfiguration.name
 
 @description('The Resource ID of the migration configuration')
-output migrationConfigurationResourceId string = migrationConfiguration.id
+output resourceId string = migrationConfiguration.id
 
 @description('The name of the Resource Group the migration configuration was created in.')
-output migrationConfigurationResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name

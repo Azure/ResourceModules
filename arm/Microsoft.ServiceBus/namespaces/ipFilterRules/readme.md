@@ -23,9 +23,9 @@ This module deploys IP filter rules for a service bus namespace
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `ipFilterRuleName` | string | The name of the IP filter rule. |
-| `ipFilterRuleResourceGroup` | string | The name of the Resource Group the IP filter rule was created in. |
-| `ipFilterRuleResourceId` | string | The Resource ID of the IP filter rule. |
+| `name` | string | The name of the IP filter rule. |
+| `resourceGroupName` | string | The name of the Resource Group the IP filter rule was created in. |
+| `resourceId` | string | The Resource ID of the IP filter rule. |
 
 ## Template references
 

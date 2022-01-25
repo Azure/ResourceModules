@@ -132,7 +132,7 @@ resource imageTemplate 'Microsoft.VirtualMachineImages/imageTemplates@2020-02-14
   identity: {
     type: 'UserAssigned'
     userAssignedIdentities: {
-      '${resourceId(userMsiResourceGroup, 'Microsoft.ManagedIdentity/userAssignedIdentities', userMsiName)}': {}
+      '${az.resourceId(userMsiResourceGroup, 'Microsoft.ManagedIdentity/userAssignedIdentities', userMsiName)}': {}
     }
   }
   properties: {
@@ -167,13 +167,13 @@ module imageTemplate_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, ind
 }]
 
 @description('The resource ID of the image template')
-output imageTemplateResourceId string = imageTemplate.id
+output resourceId string = imageTemplate.id
 
 @description('The resource group the image template was deployed into')
-output imageTemplateResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name
 
 @description('The name of the image template')
-output imageTemplateName string = imageTemplate.name
+output name string = imageTemplate.name
 
 @description('The command to run in order to trigger the image build')
 output runThisCommand string = 'Invoke-AzResourceAction -ResourceName ${imageTemplate.name} -ResourceGroupName ${resourceGroup().name} -ResourceType Microsoft.VirtualMachineImages/imageTemplates -Action Run -Force'
