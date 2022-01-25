@@ -404,6 +404,9 @@ jobs:
             $storageAccountParameters = (ConvertFrom-Json (Get-Content -path $parameterFilePath -Raw)).parameters
             $destinationStorageAccountName = $storageAccountParameters.name.value
             Write-Verbose "Destination storage account name $destinationStorageAccountName" -Verbose
+            $destinationContainerName = 'vhds'
+            $destinationStorageAccount = Get-AzStorageAccount | Where-Object StorageAccountName -EQ $destinationStorageAccountName
+            $destinationStorageAccountContext = $destinationStorageAccount.Context
 
             # Get image template parameters
             $parameterFilePath = Join-Path $env:GITHUB_WORKSPACE '${{ env.dependencyPath }}' '${{ env.imgtNamespace }}' 'parameters' 'parameters.json'
@@ -411,25 +414,16 @@ jobs:
             $destinationBlobName = $imageTemplateParameters.name.value
             Write-Verbose "Destination blob name $destinationBlobName" -Verbose
 
-            # Write-Verbose "Retrieving command to run" -Verbose
-            # $deploymentOutput = '${{ steps.deploy_imgt.outputs.deploymentOutput }}'
-            # $RunThisCommand = (ConvertFrom-Json $deploymentOutput).runThisCommand
-            # $ImageTemplateName = (ConvertFrom-Json $deploymentOutput).imageTemplateName
-            # $ResourceGroupName = (ConvertFrom-Json $deploymentOutput).imageTemplateResourceGroup
-            # Write-Verbose "Trigger new image creation with command $RunThisCommand" -Verbose
-
-            # Start-AzImageBuilderTemplate -ImageTemplateName $ImageTemplateName -ResourceGroupName $ResourceGroupName
-            # $ImageTemplateName = 'adp-sxx-az-imgt-x-001-2022-01-18-18-48-33'
-            # $ResourceGroupName = 'validation-rg'
-
-            # $resourceActionInputObject = @{
-            #     ResourceName      = $ImageTemplateName
-            #     ResourceGroupName = $ResourceGroupName
-            #     ResourceType      = 'Microsoft.VirtualMachineImages/imageTemplates'
-            #     Action            = 'Run'
-            #     Force             = $true
-            # }
-            # Invoke-AzResourceAction @resourceActionInputObject
+            $resourceActionInputObject = @{
+                AbsoluteUri   = $sourceUri
+                Context       = $sourceStorageAccountContext
+                DestContext   = $destinationStorageAccountContext
+                DestBlob      = $destinationBlobName
+                DestContainer = $destinationContainerName
+                Force         = $true
+            }
+            Write-Verbose "Copying blob" -Verbose
+            Start-AzStorageBlobCopy @resourceActionInputObject
           azPSVersion: 'latest'
 
   # job_deploy_ag:
