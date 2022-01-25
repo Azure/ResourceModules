@@ -386,11 +386,21 @@ jobs:
         uses: azure/powershell@v1
         with:
           inlineScript: |
-            Write-Verbose "Retrieving output from previous job" -Verbose
+            # Retrieving parameters from previous job outputs and parameter files
+            Write-Verbose "Retrieving parameters from previous job outputs" -Verbose
             $imageTemplateName = '${{ needs.job_deploy_imgt.outputs.imageTemplateName }}'
             $imageTemplateResourceGroup = '${{ needs.job_deploy_imgt.outputs.imageTemplateResourceGroup }}'
 
-            # Get source storage account parameters
+            Write-Verbose "Retrieving parameters from storage account parameter files" -Verbose
+            $parameterFilePath = Join-Path $env:GITHUB_WORKSPACE '${{ env.dependencyPath }}' '${{ env.saNamespace }}' 'parameters' 'parameters.json'
+            $storageAccountParameters = (ConvertFrom-Json (Get-Content -path $parameterFilePath -Raw)).parameters
+
+            Write-Verbose "Retrieving parameters from image template parameter files" -Verbose
+            $parameterFilePath = Join-Path $env:GITHUB_WORKSPACE '${{ env.dependencyPath }}' '${{ env.imgtNamespace }}' 'parameters' 'parameters.json'
+            $imageTemplateParameters = (ConvertFrom-Json (Get-Content -path $parameterFilePath -Raw)).parameters
+
+            # Initializing parameters before the blob copy
+            Write-Verbose "Initializing source storage account parameters before the blob copy" -Verbose
             $imgtRunOutput = Get-AzImageBuilderRunOutput -ImageTemplateName $imageTemplateName -ResourceGroupName $imageTemplateResourceGroup | Where-Object ArtifactUri -NE $null
             $sourceUri = $imgtRunOutput.ArtifactUri
             $sourceStorageAccountName = $sourceUri.Split('//')[1].Split('.')[0]
@@ -399,22 +409,17 @@ jobs:
             $sourceStorageAccountRGName = $sourceStorageAccount.ResourceGroupName
             Write-Verbose "Retrieving artifact uri $sourceUri stored in resource group $sourceStorageAccountRGName" -Verbose
 
-            # Get destination storage account parameters
-            $parameterFilePath = Join-Path $env:GITHUB_WORKSPACE '${{ env.dependencyPath }}' '${{ env.saNamespace }}' 'parameters' 'parameters.json'
-            $storageAccountParameters = (ConvertFrom-Json (Get-Content -path $parameterFilePath -Raw)).parameters
+            Write-Verbose "Initializing destination storage account parameters before the blob copy" -Verbose
             $destinationStorageAccountName = $storageAccountParameters.name.value
-            Write-Verbose "Destination storage account name $destinationStorageAccountName" -Verbose
-            $destinationContainerName = 'vhds'
             $destinationStorageAccount = Get-AzStorageAccount | Where-Object StorageAccountName -EQ $destinationStorageAccountName
             $destinationStorageAccountContext = $destinationStorageAccount.Context
-
-            # Get image template parameters
-            $parameterFilePath = Join-Path $env:GITHUB_WORKSPACE '${{ env.dependencyPath }}' '${{ env.imgtNamespace }}' 'parameters' 'parameters.json'
-            $imageTemplateParameters = (ConvertFrom-Json (Get-Content -path $parameterFilePath -Raw)).parameters
+            $destinationContainerName = 'vhds'
             $destinationBlobName = $imageTemplateParameters.name.value
             $destinationBlobName = "$destinationBlobName.vhd"
-            Write-Verbose "Destination blob name $destinationBlobName" -Verbose
+            Write-Verbose "Planning for destination blob name $destinationBlobName in container $destinationContainerName and storage account $destinationStorageAccountName" -Verbose
 
+            # Copying the vhd to a destination blob container
+            Write-Verbose "Copying the vhd to a destination blob container" -Verbose
             $resourceActionInputObject = @{
                 AbsoluteUri   = $sourceUri
                 Context       = $sourceStorageAccountContext
@@ -423,7 +428,6 @@ jobs:
                 DestContainer = $destinationContainerName
                 Force         = $true
             }
-            Write-Verbose "Copying blob" -Verbose
             Start-AzStorageBlobCopy @resourceActionInputObject
           azPSVersion: 'latest'
 
