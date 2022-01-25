@@ -258,7 +258,7 @@ output resourceID string = workspace.id
 output name string = workspace.name
 
 @description('The resource group of the deployed Synapse Workspace.')
-output workspaceResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name
 
 @description('Connectivity endpoints.')
 output workspaceConnectivityEndpoints object = workspace.properties.connectivityEndpoints
