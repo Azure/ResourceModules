@@ -261,4 +261,4 @@ output name string = workspace.name
 output resourceGroupName string = resourceGroup().name
 
 @description('Connectivity endpoints.')
-output workspaceConnectivityEndpoints object = workspace.properties.connectivityEndpoints
+output connectivityEndpoints object = workspace.properties.connectivityEndpoints
