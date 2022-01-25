@@ -47,10 +47,10 @@ resource immutabilityPolicy 'Microsoft.Storage/storageAccounts/blobServices/cont
 }
 
 @description('The name of the deployed immutability policy.')
-output immutabilityPolicyName string = immutabilityPolicy.name
+output name string = immutabilityPolicy.name
 
 @description('The resource ID of the deployed immutability policy.')
-output immutabilityPolicyResourceId string = immutabilityPolicy.id
+output resourceId string = immutabilityPolicy.id
 
 @description('The resource group of the deployed immutability policy.')
-output immutabilityPolicyResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name

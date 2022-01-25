@@ -310,7 +310,7 @@ module managedInstance_encryptionProtector 'encryptionProtector/deploy.bicep' = 
   name: '${uniqueString(deployment().name, location)}-SqlMi-EncryProtector'
   params: {
     managedInstanceName: managedInstance.name
-    serverKeyName: contains(encryptionProtectorObj, 'serverKeyName') ? encryptionProtectorObj.serverKeyName : managedInstance_key[0].outputs.keyName
+    serverKeyName: contains(encryptionProtectorObj, 'serverKeyName') ? encryptionProtectorObj.serverKeyName : managedInstance_key[0].outputs.name
     name: contains(encryptionProtectorObj, 'name') ? encryptionProtectorObj.serverKeyType : 'current'
     serverKeyType: contains(encryptionProtectorObj, 'serverKeyType') ? encryptionProtectorObj.serverKeyType : 'ServiceManaged'
     autoRotationEnabled: contains(encryptionProtectorObj, 'autoRotationEnabled') ? encryptionProtectorObj.autoRotationEnabled : true
@@ -328,13 +328,13 @@ module managedInstance_administrator 'administrators/deploy.bicep' = if (!empty(
 }
 
 @description('The name of the deployed managed instance')
-output managedInstanceName string = managedInstance.name
+output name string = managedInstance.name
 
 @description('The resource ID of the deployed managed instance')
-output managedInstanceResourceId string = managedInstance.id
+output resourceId string = managedInstance.id
 
 @description('The resource group of the deployed managed instance')
-output managedInstanceResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name
 
 @description('The principal ID of the system assigned identity.')
 output systemAssignedPrincipalId string = systemAssignedIdentity && contains(managedInstance.identity, 'principalId') ? managedInstance.identity.principalId : ''

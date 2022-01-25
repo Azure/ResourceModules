@@ -86,12 +86,12 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `appServicePlanName` | string | The name of the app service plan |
-| `appServicePlanResourceGroup` | string | The resource group the app service plan was deployed into |
-| `appServicePlanResourceId` | string | The resource ID of the app service plan |
+| `name` | string | The name of the app service plan |
+| `resourceGroupName` | string | The resource group the app service plan was deployed into |
+| `resourceId` | string | The resource ID of the app service plan |
 
 ## Template references
 
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2021-04-01-preview/roleAssignments)
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)
 - [Serverfarms](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Web/2021-02-01/serverfarms)

@@ -46,11 +46,11 @@ This module deployes a storage account queue
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `queueName` | string | The name of the deployed queue |
-| `queueResourceGroup` | string | The resource group of the deployed queue |
-| `queueResourceId` | string | The resource ID of the deployed queue |
+| `name` | string | The name of the deployed queue |
+| `resourceGroupName` | string | The resource group of the deployed queue |
+| `resourceId` | string | The resource ID of the deployed queue |
 
 ## Template references
 
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2021-04-01-preview/roleAssignments)
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)
 - [Storageaccounts/Queueservices/Queues](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Storage/2019-06-01/storageAccounts/queueServices/queues)
