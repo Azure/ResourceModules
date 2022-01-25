@@ -252,7 +252,7 @@ resource workspace_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@202
 }
 
 @description('The resource ID of the deployed Synapse Workspace.')
-output workspaceResourceID string = workspace.id
+output resourceID string = workspace.id
 
 @description('The name of the deployed Synapse Workspace.')
 output workspaceName string = workspace.name
