@@ -163,7 +163,7 @@ resource workspace 'Microsoft.Synapse/workspaces@2021-06-01' = {
       initialWorkspaceAdminObjectId: initialWorkspaceAdminObjectID
     } : null
     defaultDataLakeStorage: {
-      accountUrl: 'https://${defaultDataLakeStorageAccountName}.dfs.core.windows.net'
+      accountUrl: 'https://${defaultDataLakeStorageAccountName}.dfs.${environment().suffixes.storage}'
       filesystem: defaultDataLakeStorageFilesystem
       createManagedPrivateEndpoint: managedVirtualNetwork ? defaultDataLakeStorageCreateManagedPrivateEndpoint : null
     }
@@ -195,6 +195,7 @@ resource workspace 'Microsoft.Synapse/workspaces@2021-06-01' = {
   }
 }
 
+// Workspace encryption with customer managed keys
 module workspace_cmk '.bicep/nested_cmk.bicep' = if (encryptionActivateWorkspace) {
   name: '${deployment().name}-cmk'
   params: {
@@ -205,36 +206,6 @@ module workspace_cmk '.bicep/nested_cmk.bicep' = if (encryptionActivateWorkspace
     workspacePrincipalId: workspace.identity.principalId
   }
 }
-
-// // Workspace encryption - Assign Synapse Workspace MSI access to encryption key
-// resource keyVault 'Microsoft.KeyVault/vaults@2019-09-01' existing = if (encryptionActivateWorkspace) {
-//   name: encryptionKeyVaultName
-//   scope: az.resourceGroup(encryptionKeyVaultResourceGroupName)
-// }
-
-// module workspace_cmk_rbac '.bicep/nested_cmkRbac.bicep' = if (encryptionActivateWorkspace) {
-//   name: '${workspace.name}-cmk-rbac'
-//   params: {
-//     workspaceIdentity: workspace.identity.principalId
-//     keyvaultName: encryptionKeyVaultName
-//     usesRbacAuthorization: keyVault.properties.enableRbacAuthorization
-//   }
-//   scope: az.resourceGroup(encryptionKeyVaultResourceGroupName)
-// }
-
-// // Workspace encryption - Activate Workspace
-// module workspace_cmk 'keys/deploy.bicep' = if (encryptionActivateWorkspace) {
-//   name: '${workspace.name}-cmk-activation'
-//   params: {
-//     isActiveCMK: true
-//     keyVaultUrl: keyVaultUrl
-//     name: encryptionKeyName
-//     workspaceName: workspace.name
-//   }
-//   dependsOn: [
-//     workspace_cmk_rbac
-//   ]
-// }
 
 // Resource Lock
 resource workspace_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
