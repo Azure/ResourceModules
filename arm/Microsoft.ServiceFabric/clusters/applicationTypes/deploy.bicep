@@ -26,10 +26,10 @@ resource applicationTypes 'Microsoft.ServiceFabric/clusters/applicationTypes@202
 }
 
 @description('The resource name of the Application type.')
-output applicationTypeName string = applicationTypes.name
+output name string = applicationTypes.name
 
 @description('The resource group of the Application type.')
-output applicationTypeResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name
 
 @description('The resource ID of the Application type.')
-output applicationTypeResourceID string = applicationTypes.id
+output resourceID string = applicationTypes.id

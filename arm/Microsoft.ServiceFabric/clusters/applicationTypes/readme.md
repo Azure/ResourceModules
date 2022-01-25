@@ -38,9 +38,9 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `applicationTypeName` | string | The resource name of the Application type. |
-| `applicationTypeResourceGroup` | string | The resource group of the Application type. |
-| `applicationTypeResourceID` | string | The resource ID of the Application type. |
+| `name` | string | The resource name of the Application type. |
+| `resourceGroupName` | string | The resource group of the Application type. |
+| `resourceID` | string | The resource ID of the Application type. |
 
 ## Template references
 

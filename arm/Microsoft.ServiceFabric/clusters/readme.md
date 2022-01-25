@@ -115,14 +115,14 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `clusterEndpoint` | string | The Service Fabric Cluster endpoint. |
-| `clusterName` | string | The Service Fabric Cluster name. |
-| `clusterResourceGroup` | string | The Service Fabric Cluster resource group. |
-| `clusterResourceId` | string | The Service Fabric Cluster resource ID. |
+| `endpoint` | string | The Service Fabric Cluster endpoint. |
+| `name` | string | The Service Fabric Cluster name. |
+| `resourceGroupName` | string | The Service Fabric Cluster resource group. |
+| `resourceId` | string | The Service Fabric Cluster resource ID. |
 
 ## Template references
 
-- [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-04-01-preview/roleAssignments)
 - [Clusters](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ServiceFabric/2021-06-01/clusters)
 - [Clusters/Applicationtypes](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ServiceFabric/2021-06-01/clusters/applicationTypes)
+- [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-04-01-preview/roleAssignments)

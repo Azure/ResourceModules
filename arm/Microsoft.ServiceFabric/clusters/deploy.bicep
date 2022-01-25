@@ -301,13 +301,13 @@ module serviceFabricCluster_applicationTypes 'applicationTypes/deploy.bicep' = [
 }]
 
 @description('The Service Fabric Cluster name.')
-output clusterName string = serviceFabricCluster.name
+output name string = serviceFabricCluster.name
 
 @description('The Service Fabric Cluster resource group.')
-output clusterResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name
 
 @description('The Service Fabric Cluster resource ID.')
-output clusterResourceId string = serviceFabricCluster.id
+output resourceId string = serviceFabricCluster.id
 
 @description('The Service Fabric Cluster endpoint.')
-output clusterEndpoint string = serviceFabricCluster.properties.clusterEndpoint
+output endpoint string = serviceFabricCluster.properties.clusterEndpoint
