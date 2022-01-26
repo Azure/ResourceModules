@@ -41,12 +41,12 @@ stages:
   - stage: Validation
     displayName: Pester tests
     jobs:
-      - template: /.azuredevops/pipelineTemplates/module.jobs.validate.yml
+      - template: /.azuredevops/pipelineTemplates/jobs.validateModulePester.yml
 
   - stage: Deployment
     displayName: Deployment tests
     jobs:
-      - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
+      - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
         parameters:
           removeDeployment: '${{ parameters.removeDeployment }}'
           deploymentBlocks:
@@ -58,7 +58,7 @@ stages:
     displayName: Publish module
     condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
     jobs:
-      - template: /.azuredevops/pipelineTemplates/module.jobs.publish.yml
+      - template: /.azuredevops/pipelineTemplates/jobs.publishModule.yml
         parameters:
           versioningOption: '${{ parameters.versioningOption }}'
           customVersion: '${{ parameters.customVersion }}'

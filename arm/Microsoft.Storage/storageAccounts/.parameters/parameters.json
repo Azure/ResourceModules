@@ -11,6 +11,37 @@
         "allowBlobPublicAccess": {
             "value": false
         },
+        "requireInfrastructureEncryption": {
+            "value": true
+        },
+        "privateEndpoints": {
+            "value": [
+                {
+                    "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-005-privateEndpoints",
+                    "service": "blob"
+                },
+                {
+                    "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-005-privateEndpoints",
+                    "service": "table"
+                },
+                {
+                    "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-005-privateEndpoints",
+                    "service": "queue"
+                },
+                {
+                    "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-005-privateEndpoints",
+                    "service": "file"
+                }
+            ]
+        },
+        "networkAcls": {
+            "value": {
+                "bypass": "AzureServices",
+                "defaultAction": "Deny",
+                "virtualNetworkRules": [],
+                "ipRules": []
+            }
+        },
         "blobServices": {
             "value": {
                 "diagnosticLogsRetentionInDays": 7,

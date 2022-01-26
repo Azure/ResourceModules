@@ -40,10 +40,10 @@ resource encryptionProtector 'Microsoft.Sql/managedInstances/encryptionProtector
 }
 
 @description('The name of the deployed managed instance')
-output encryptionProtectorName string = encryptionProtector.name
+output name string = encryptionProtector.name
 
 @description('The resource ID of the deployed managed instance')
-output encryptionProtectorResourceId string = encryptionProtector.id
+output resourceId string = encryptionProtector.id
 
 @description('The resource group of the deployed managed instance')
-output encryptionProtectorResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name

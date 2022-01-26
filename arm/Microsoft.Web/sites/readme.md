@@ -177,9 +177,9 @@ You can specify multiple user assigned identities to a resource by providing add
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `siteName` | string | The name of the site. |
-| `siteResourceGroup` | string | The resource group the site was deployed into. |
-| `siteResourceId` | string | The resource ID of the site. |
+| `name` | string | The name of the site. |
+| `resourceGroupName` | string | The resource group the site was deployed into. |
+| `resourceId` | string | The resource ID of the site. |
 | `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
 
 ## Template references
@@ -190,6 +190,6 @@ You can specify multiple user assigned identities to a resource by providing add
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
 - [Privateendpoints](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-03-01/privateEndpoints)
 - [Privateendpoints/Privatednszonegroups](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-03-01/privateEndpoints/privateDnsZoneGroups)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2021-04-01-preview/roleAssignments)
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)
 - [Serverfarms](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Web/2021-02-01/serverfarms)
 - [Sites](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Web/2020-12-01/sites)

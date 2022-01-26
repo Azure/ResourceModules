@@ -111,13 +111,13 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `imageTemplateName` | string | The name of the image template |
-| `imageTemplateResourceGroup` | string | The resource group the image template was deployed into |
-| `imageTemplateResourceId` | string | The resource ID of the image template |
+| `name` | string | The name of the image template |
+| `resourceGroupName` | string | The resource group the image template was deployed into |
+| `resourceId` | string | The resource ID of the image template |
 | `runThisCommand` | string | The command to run in order to trigger the image build |
 
 ## Template references
 
 - [Define resources with Bicep and ARM templates](https://docs.microsoft.com/en-us/azure/templates)
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2021-04-01-preview/roleAssignments)
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)

@@ -42,10 +42,10 @@ resource key 'Microsoft.Sql/managedInstances/keys@2021-05-01-preview' = {
 }
 
 @description('The name of the deployed managed instance')
-output keyName string = key.name
+output name string = key.name
 
 @description('The resource ID of the deployed managed instance')
-output keyResourceId string = key.id
+output resourceId string = key.id
 
 @description('The resource group of the deployed managed instance')
-output keyResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name
