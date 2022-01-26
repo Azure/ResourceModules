@@ -15,7 +15,6 @@
             "value": [
                 {
                     "name": "VMpolicy",
-                    "type": "Microsoft.RecoveryServices/vaults/backupPolicies",
                     "properties": {
                         "backupManagementType": "AzureIaasVM",
                         "instantRPDetails": {},
@@ -97,7 +96,6 @@
                 },
                 {
                     "name": "sqlpolicy",
-                    "type": "Microsoft.RecoveryServices/vaults/backupPolicies",
                     "properties": {
                         "backupManagementType": "AzureWorkload",
                         "workLoadType": "SQLDataBase",
@@ -216,7 +214,6 @@
                 },
                 {
                     "name": "filesharepolicy",
-                    "type": "Microsoft.RecoveryServices/vaults/backupPolicies",
                     "properties": {
                         "backupManagementType": "AzureStorage",
                         "workloadType": "AzureFileShare",
