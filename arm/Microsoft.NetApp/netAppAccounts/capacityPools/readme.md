@@ -69,12 +69,12 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `capacityPoolName` | string | The name of the Capacity Pool. |
-| `capacityPoolResourceGroup` | string | The name of the Resource Group the Capacity Pool was created in. |
-| `capacityPoolResourceId` | string | The resource ID of the Capacity Pool. |
+| `name` | string | The name of the Capacity Pool. |
+| `resourceGroupName` | string | The name of the Resource Group the Capacity Pool was created in. |
+| `resourceId` | string | The resource ID of the Capacity Pool. |
 
 ## Template references
 
 - [Netappaccounts/Capacitypools](https://docs.microsoft.com/en-us/azure/templates/Microsoft.NetApp/2021-06-01/netAppAccounts/capacityPools)
 - [Netappaccounts/Capacitypools/Volumes](https://docs.microsoft.com/en-us/azure/templates/Microsoft.NetApp/2021-06-01/netAppAccounts/capacityPools/volumes)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2021-04-01-preview/roleAssignments)
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)

@@ -1,10 +1,10 @@
-name: '<PipelineName>'
+name: 'Service Fabric - Clusters'
 
 parameters:
   - name: removeDeployment
     displayName: Remove deployed module
     type: boolean
-    default: <removeFlag>
+    default: true
   - name: versioningOption
     displayName: The mode to handle the version increments [major|minor|patch]
     type: string
@@ -16,7 +16,7 @@ parameters:
   - name: customVersion
     displayName: Custom version to apply. Used only if higher than latest
     type: string
-    default: '<versionFlag>'
+    default: '0.0.1'
 
 trigger:
   batch: true
@@ -25,9 +25,9 @@ trigger:
       - main
   paths:
     include:
-      - '/.azuredevops/modulePipelines/<PipelineFileName>'
+      - '/.azuredevops/modulePipelines/ms.servicefabric.clusters.yml'
       - '/.azuredevops/pipelineTemplates/module.*.yml'
-      - '/<RelativeModuleFolderPath>/*'
+      - '/Microsoft.ServiceFabric/clusters/*'
     exclude:
       - '/**/*.md'
 
@@ -35,7 +35,7 @@ variables:
   - template: '/.azuredevops/pipelineVariables/global.variables.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/<RelativeModuleFolderPath>'
+    value: '/arm/Microsoft.ServiceFabric/clusters'
 
 stages:
   - stage: Validation
@@ -49,7 +49,9 @@ stages:
       - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
         parameters:
           removeDeployment: '${{ parameters.removeDeployment }}'
-          deploymentBlocks: <PipelineParamterPaths>
+          deploymentBlocks:
+            - path: $(modulePath)/.parameters/min.parameters.json
+            - path: $(modulePath)/.parameters/parameters.json
 
   - stage: Publishing
     displayName: Publish module

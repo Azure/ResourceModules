@@ -32,10 +32,10 @@ resource ruleCollectionGroup 'Microsoft.Network/firewallPolicies/ruleCollectionG
 }
 
 @description('The name of the deployed rule collection group')
-output ruleCollectionGroupName string = ruleCollectionGroup.name
+output name string = ruleCollectionGroup.name
 
 @description('The resource ID of the deployed rule collection group')
-output ruleCollectionGroupResourceId string = ruleCollectionGroup.id
+output resourceId string = ruleCollectionGroup.id
 
 @description('The resource group of the deployed rule collection group')
-output ruleCollectionGroupResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name

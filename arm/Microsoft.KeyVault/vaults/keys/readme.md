@@ -69,11 +69,11 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `keyName` | string | The name of the key. |
-| `keyResourceGroup` | string | The name of the resource group the key was created in. |
-| `keyResourceId` | string | The resource ID of the key. |
+| `name` | string | The name of the key. |
+| `resourceGroupName` | string | The name of the resource group the key was created in. |
+| `resourceId` | string | The resource ID of the key. |
 
 ## Template references
 
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2021-04-01-preview/roleAssignments)
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)
 - [Vaults/Keys](https://docs.microsoft.com/en-us/azure/templates/Microsoft.KeyVault/2019-09-01/vaults/keys)

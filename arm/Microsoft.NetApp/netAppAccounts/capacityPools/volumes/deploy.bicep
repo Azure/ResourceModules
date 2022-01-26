@@ -79,10 +79,10 @@ module volume_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in 
 }]
 
 @description('The name of the Volume.')
-output volumeName string = volume.name
+output name string = volume.name
 
 @description('The Resource ID of the Volume.')
-output volumeResourceId string = volume.id
+output resourceId string = volume.id
 
 @description('The name of the Resource Group the Volume was created in.')
-output volumeResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name

@@ -125,12 +125,12 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `connectionName` | string | The name of the connection |
-| `connectionResourceGroup` | string | The resource group the connection was deployed into |
-| `connectionResourceId` | string | The resource ID of the connection |
+| `name` | string | The name of the connection |
+| `resourceGroupName` | string | The resource group the connection was deployed into |
+| `resourceId` | string | The resource ID of the connection |
 
 ## Template references
 
 - [Connections](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Web/2016-06-01/connections)
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2021-04-01-preview/roleAssignments)
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)

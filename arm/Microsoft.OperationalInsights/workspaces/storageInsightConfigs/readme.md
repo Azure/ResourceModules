@@ -41,9 +41,9 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `storageinsightconfigName` | string | The name of the storage insights configuration |
-| `storageinsightconfigResourceGroup` | string | The resource group where the storage insight configuration is deployed |
-| `storageinsightconfigResourceId` | string | The resource ID of the deployed storage insights configuration |
+| `name` | string | The name of the storage insights configuration |
+| `resourceGroupName` | string | The resource group where the storage insight configuration is deployed |
+| `resourceId` | string | The resource ID of the deployed storage insights configuration |
 
 ## Template references
 

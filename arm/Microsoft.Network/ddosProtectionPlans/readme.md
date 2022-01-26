@@ -64,12 +64,12 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `ddosProtectionPlanName` | string | The name of the DDOS protection plan |
-| `ddosProtectionPlanResourceGroup` | string | The resource group the DDOS protection plan was deployed into |
-| `ddosProtectionPlanResourceId` | string | The resource ID of the DDOS protection plan |
+| `name` | string | The name of the DDOS protection plan |
+| `resourceGroupName` | string | The resource group the DDOS protection plan was deployed into |
+| `resourceId` | string | The resource ID of the DDOS protection plan |
 
 ## Template references
 
 - [Ddosprotectionplans](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-02-01/ddosProtectionPlans)
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2021-04-01-preview/roleAssignments)
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)

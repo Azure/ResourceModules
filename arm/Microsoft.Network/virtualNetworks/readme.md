@@ -111,17 +111,17 @@ The network security group and route table resources must reside in the same res
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
+| `name` | string | The name of the virtual network |
+| `resourceGroupName` | string | The resource group the virtual network was deployed into |
+| `resourceId` | string | The resource ID of the virtual network |
 | `subnetNames` | array | The names of the deployed subnets |
 | `subnetResourceIds` | array | The resource IDs of the deployed subnets |
-| `virtualNetworkName` | string | The name of the virtual network |
-| `virtualNetworkResourceGroup` | string | The resource group the virtual network was deployed into |
-| `virtualNetworkResourceId` | string | The resource ID of the virtual network |
 
 ## Template references
 
 - [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings)
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2021-04-01-preview/roleAssignments)
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)
 - [Virtualnetworks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-03-01/virtualNetworks)
 - [Virtualnetworks/Subnets](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-03-01/virtualNetworks/subnets)
 - [Virtualnetworks/Virtualnetworkpeerings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-02-01/virtualNetworks/virtualNetworkPeerings)

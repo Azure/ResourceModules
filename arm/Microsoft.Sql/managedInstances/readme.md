@@ -135,9 +135,9 @@ You can specify multiple user assigned identities to a resource by providing add
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `managedInstanceName` | string | The name of the deployed managed instance |
-| `managedInstanceResourceGroup` | string | The resource group of the deployed managed instance |
-| `managedInstanceResourceId` | string | The resource ID of the deployed managed instance |
+| `name` | string | The name of the deployed managed instance |
+| `resourceGroupName` | string | The resource group of the deployed managed instance |
+| `resourceId` | string | The resource ID of the deployed managed instance |
 | `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
 
 ## Template references
@@ -153,4 +153,4 @@ You can specify multiple user assigned identities to a resource by providing add
 - [Managedinstances/Keys](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Sql/2021-05-01-preview/managedInstances/keys)
 - [Managedinstances/Securityalertpolicies](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Sql/2017-03-01-preview/managedInstances/securityAlertPolicies)
 - [Managedinstances/Vulnerabilityassessments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Sql/2021-02-01-preview/managedInstances/vulnerabilityAssessments)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2021-04-01-preview/roleAssignments)
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)
