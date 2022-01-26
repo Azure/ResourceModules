@@ -22,13 +22,14 @@ la---          08.12.2021    15:50           7133 Script.ps1
 Get modified files between previous and current commit.
 #>
 function Get-ModifiedFiles {
+    # BUG: When developing, the current logic will require you to modify the deploy.bicep/json file for it to register the change.
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $false)]
         [string] $Commit = 'HEAD',
 
         [Parameter(Mandatory = $false)]
-        [string] $CompareCommit = ''
+        [string] $CompareCommit = 'HEAD^'
     )
 
     Write-Verbose "Gathering modified files between [$Commit] and [$CompareCommit]"
