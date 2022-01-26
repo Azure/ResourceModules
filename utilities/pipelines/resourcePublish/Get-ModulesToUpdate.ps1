@@ -306,7 +306,8 @@ function Get-NewModuleVersion {
     if (($CurrentBranch -ne 'main') -or ($CurrentBranch -ne 'master') ) {
         $PreRelease = $CurrentBranch -replace '[^a-zA-Z0-9\.\-_]'
         Write-Verbose "PreRelease: $PreRelease" -Verbose
-        $NewVersion = "$NewVersion-Preview-$PreRelease"
+        $NewVersion = "$NewVersion-Preview"
+        #$NewVersion = "$NewVersion-Preview-$PreRelease"
     }
 
     return $NewVersion
