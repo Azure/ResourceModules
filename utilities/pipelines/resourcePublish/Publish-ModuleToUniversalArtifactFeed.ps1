@@ -89,22 +89,22 @@ function Publish-ModuleToUniversalArtifactFeed {
         if ($PSCmdlet.ShouldProcess("Universal Package Feed entry [$universalPackageModuleName] version [$ModuleVersion] to feed [$VstsOrganization/$VstsFeedProject/$VstsFeedName]", 'Publish')) {
             $env:AZURE_DEVOPS_EXT_PAT = $BearerToken
             $inputObject = @(
-                '--organization', "'$VstsOrganization'",
-                '--feed', "'$VstsFeedName'",
-                '--scope', "'$feedScope'",
-                '--name', "'$universalPackageModuleName'",
-                '--version', "'$ModuleVersion'",
-                '--path', "'$ModuleFolderPath'",
-                '--description', "'$universalPackageModuleName Module'",
+                '--organization', "$VstsOrganization",
+                '--feed', "$VstsFeedName",
+                '--scope', "$feedScope",
+                '--name', "$universalPackageModuleName",
+                '--version', "$ModuleVersion",
+                '--path', "$ModuleFolderPath",
+                '--description', "$universalPackageModuleName Module",
                 '--verbose'
             )
             if (-not [string]::IsNullOrEmpty($VstsFeedProject)) {
-                $inputObject += @('--project', "'$VstsFeedProject'")
+                $inputObject += @('--project', "$VstsFeedProject")
             }
 
             Write-Verbose 'The command to publish to the feed is:' -Verbose
-            Write-Verbose $command -Verbose
             $command = "az artifacts universal publish $($inputObject -join ' ')"
+            Write-Verbose $command -Verbose
 
             az artifacts universal publish @inputObject
 
