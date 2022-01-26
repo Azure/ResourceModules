@@ -301,8 +301,10 @@ function Get-NewModuleVersion {
     $NewVersion = "$Version.$Patch"
 
     $CurrentBranch = git branch --show-current
+    Write-Verbose "Current branch: $CurrentBranch" -Verbose
     if (($CurrentBranch -ne 'main') -or ($CurrentBranch -ne 'master') ) {
         $PreRelease = $CurrentBranch -replace '[^a-zA-Z0-9\.\-_]'
+        Write-Verbose "PreRelease: $PreRelease" -Verbose
         $NewVersion = "$NewVersion-Preview-$PreRelease"
     }
 
