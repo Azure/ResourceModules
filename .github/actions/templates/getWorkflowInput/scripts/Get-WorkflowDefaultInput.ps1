@@ -88,6 +88,7 @@ function Get-WorkflowDefaultInput {
             param (
                 [Parameter(Mandatory)]
                 [string] $InputName,
+                
                 [Parameter(Mandatory)]
                 [string[]] $Content
             )
@@ -121,8 +122,6 @@ function Get-WorkflowDefaultInput {
 
         $workflowParameters = @{
             removeDeployment = Get-DefaultValue -InputName 'removeDeployment' -Content $workflowContent -Verbose
-            versioningOption = Get-DefaultValue -InputName 'versioningOption' -Content $workflowContent -Verbose
-            customVersion    = Get-DefaultValue -InputName 'customVersion' -Content $workflowContent -Verbose
         }
 
         Write-Verbose 'Get workflow default input complete'
@@ -135,11 +134,3 @@ function Get-WorkflowDefaultInput {
         Write-Debug ('{0} exited' -f $MyInvocation.MyCommand)
     }
 }
-
-
-$Test = @'
-One
-Two
-Three
-Four
-'@

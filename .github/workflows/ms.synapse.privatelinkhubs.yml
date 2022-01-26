@@ -52,8 +52,6 @@ jobs:
           workflowPath: '${{ env.workflowPath}}'
     outputs:
       removeDeployment: ${{ steps.get-workflow-param.outputs.removeDeployment }}
-      versioningOption: ${{ steps.get-workflow-param.outputs.versioningOption }}
-      customVersion: ${{ steps.get-workflow-param.outputs.customVersion }}
 
   ####################
   #   Pester Tests   #
