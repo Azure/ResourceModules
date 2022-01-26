@@ -50,7 +50,7 @@ function Publish-ModuleToUniversalArtifactFeed {
         [string] $VstsFeedName,
 
         [Parameter(Mandatory = $false)]
-        [string] $Token = $env:TOKEN,
+        [string] $BearerToken = $env:TOKEN,
 
         [Parameter(Mandatory)]
         [string] $ModuleVersion
@@ -87,7 +87,7 @@ function Publish-ModuleToUniversalArtifactFeed {
         ##    Publish to Universal Package Feed    ##
         #############################################
         if ($PSCmdlet.ShouldProcess("Universal Package Feed entry [$universalPackageModuleName] version [$ModuleVersion] to feed [$VstsOrganization/$VstsFeedProject/$VstsFeedName]", 'Publish')) {
-            "$Token" | az devops login
+            "$BearerToken" | az devops login
             $inputObject = @(
                 '--organization', "'$VstsOrganization'",
                 '--feed', "'$VstsFeedName'",
