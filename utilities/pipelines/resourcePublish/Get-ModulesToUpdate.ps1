@@ -28,10 +28,8 @@ function Get-ModifiedFiles {
         [string] $Commit = 'HEAD',
 
         [Parameter(Mandatory = $false)]
-        [string] $CompareCommit = 'main'
+        [string] $CompareCommit = ''
     )
-
-    git branch -a
 
     Write-Verbose "Gathering modified files between [$Commit] and [$CompareCommit]"
     $Diff = git diff --name-only --diff-filter=AM $Commit $CompareCommit
@@ -380,6 +378,8 @@ function Get-ModulesToUpdate {
         [Parameter(Mandatory)]
         [string] $TemplateFilePath
     )
+
+    git branch -a
 
     $ModuleFolderPath = Split-Path $TemplateFilePath -Parent
     $TemplateFilesToUpdate = Get-TemplateFileToUpdate -ModuleFolderPath $ModuleFolderPath | Sort-Object FullName -Descending
