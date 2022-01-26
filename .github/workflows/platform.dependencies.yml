@@ -485,20 +485,17 @@ jobs:
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
           removeDeployment: '${{ env.removeDeployment }}'
 
-  job_deploy_pip:
+  job_deploy_udr:
     runs-on: ubuntu-20.04
-    name: 'Deploy public IP addresses'
+    name: 'Deploy route tables'
     env:
-      namespace: 'Microsoft.Network\publicIPAddresses'
+      namespace: 'Microsoft.Network\routeTables'
     needs:
-      - job_deploy_sa
-      - job_deploy_evh
-      - job_deploy_law
+      - job_deploy_rg
     strategy:
       fail-fast: false
       matrix:
-        parameterFilePaths:
-          ['apgw.parameters.json', 'bas.parameters.json', 'lb.parameters.json', 'fw.parameters.json']
+        parameterFilePaths: ['parameters.json']
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -621,7 +618,7 @@ jobs:
       fail-fast: false
       matrix:
         parameterFilePaths:
-          ['apgw.parameters.json', 'bas.parameters.json', 'lb.parameters.json']
+          ['apgw.parameters.json', 'bas.parameters.json', 'lb.parameters.json', 'fw.parameters.json']
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
