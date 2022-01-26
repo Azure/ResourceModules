@@ -8,21 +8,26 @@ The template spec is set up if not already existing.
 
 .PARAMETER TemplateFilePath
 Mandatory. Path to the module deployment file from root.
+Example: 'C:\arm\Microsoft.KeyVault\vaults\deploy.bicep'
+
+.PARAMETER ModuleVersion
+Required. Version of the module to publish, following SemVer convention.
+Example: '1.0.0', '2.1.5-alpha.1', '0.0.5-beta.1'
 
 .PARAMETER TemplateSpecsRgName
 Mandatory. ResourceGroup of the template spec to publish to.
+Example: 'artifacts-rg'
 
 .PARAMETER TemplateSpecsRgLocation
 Mandatory. Location of the template spec resource group.
+Example: 'West Europe'
 
 .PARAMETER TemplateSpecsDescription
 Mandatory. The description of the parent template spec.
-
-.PARAMETER ModuleVersion
-Required. Version of the module to publish.
+Example: 'iacs key vault'
 
 .EXAMPLE
-Publish-ModuleToTemplateSpec -TemplateFilePath 'C:/KeyVault/deploy.json' -TemplateSpecsRgName 'artifacts-rg' -TemplateSpecsRgLocation 'West Europe' -TemplateSpecsDescription 'iacs key vault' -ModuleVersion '3.0.0-alpha'
+Publish-ModuleToTemplateSpec -TemplateFilePath 'C:\arm\Microsoft.KeyVault\vaults\deploy.bicep' -ModuleVersion '3.0.0-alpha' -TemplateSpecsRgName 'artifacts-rg' -TemplateSpecsRgLocation 'West Europe' -TemplateSpecsDescription 'iacs key vault'
 
 Try to publish the KeyVault module with version 3.0.0 to a template spec called KeyVault based on a value provided in the UI
 #>
@@ -34,16 +39,16 @@ function Publish-ModuleToTemplateSpec {
         [string] $TemplateFilePath,
 
         [Parameter(Mandatory)]
+        [string] $ModuleVersion,
+
+        [Parameter(Mandatory)]
         [string] $TemplateSpecsRgName,
 
         [Parameter(Mandatory)]
         [string] $TemplateSpecsRgLocation,
 
         [Parameter(Mandatory)]
-        [string] $TemplateSpecsDescription,
-
-        [Parameter(Mandatory)]
-        [string] $ModuleVersion
+        [string] $TemplateSpecsDescription
     )
 
     begin {

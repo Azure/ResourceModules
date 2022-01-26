@@ -7,21 +7,26 @@ Publish a new version of a given module to a private bicep registry
 
 .PARAMETER TemplateFilePath
 Mandatory. Path to the module deployment file from root.
+Example: 'C:\arm\Microsoft.KeyVault\vaults\deploy.bicep'
+
+.PARAMETER ModuleVersion
+Required. Version of the module to publish, following SemVer convention.
+Example: '1.0.0', '2.1.5-alpha.1', '0.0.5-beta.1'
 
 .PARAMETER BicepRegistryName
 Mandatory. Name of the private bicep registry to publish to.
+Example: 'adpsxxazacrx001'
 
 .PARAMETER BicepRegistryRgName
 Mandatory. ResourceGroup of the private bicep registry to publish to.
+Example: 'artifacts-rg'
 
 .PARAMETER BicepRegistryRgLocation
 Optional. The location of the resourceGroup the private bicep registry is deployed to. Required if the resource group is not yet existing.
-
-.PARAMETER ModuleVersion
-Required. Version of the module to publish.
+Example: 'West Europe'
 
 .EXAMPLE
-Publish-ModuleToPrivateBicepRegistry -TemplateFilePath 'C:/KeyVault/deploy.json' -BicepRegistryRgName 'artifacts-rg' -ModuleVersion '3.0.0-alpha'
+Publish-ModuleToPrivateBicepRegistry -TemplateFilePath 'C:\arm\Microsoft.KeyVault\vaults\deploy.bicep' -ModuleVersion '3.0.0-alpha' -BicepRegistryName 'adpsxxazacrx001' -BicepRegistryRgName 'artifacts-rg'
 
 Try to publish the KeyVault module with version 3.0.0-alpha to a private bicep registry called KeyVault based on a value provided in the UI
 #>
@@ -33,16 +38,16 @@ function Publish-ModuleToPrivateBicepRegistry {
         [string] $TemplateFilePath,
 
         [Parameter(Mandatory)]
+        [string] $ModuleVersion,
+
+        [Parameter(Mandatory)]
         [string] $BicepRegistryName,
 
         [Parameter(Mandatory)]
         [string] $BicepRegistryRgName,
 
         [Parameter(Mandatory = $false)]
-        [string] $BicepRegistryRgLocation,
-
-        [Parameter(Mandatory)]
-        [string] $ModuleVersion
+        [string] $BicepRegistryRgLocation
     )
 
     begin {
