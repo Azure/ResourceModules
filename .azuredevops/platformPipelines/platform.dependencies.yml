@@ -5,6 +5,10 @@ parameters:
     displayName: Enable SqlMi dependencies deployment
     type: boolean
     default: false
+  - name: deployVhdDependencies
+    displayName: Enable deployment of a vhd stored in a blob container
+    type: boolean
+    default: false
 
 trigger: none
 
@@ -220,11 +224,11 @@ stages:
               displayName: Default SIG and SID
 
   - stage: deploy_imgt
-    displayName: Deploy user assigned identity
-    dependsOn:
-      - deploy_msi
-      - deploy_sig
-      - deploy_sa
+    displayName: Deploy image template
+    # dependsOn:
+    #   - deploy_msi
+    #   - deploy_sig
+    #   - deploy_sa
     variables:
       resourceType: 'Microsoft.VirtualMachineImages\imageTemplates'
       saResourceType: 'Microsoft.Storage\storageAccounts'
@@ -235,7 +239,7 @@ stages:
           deploymentBlocks:
             - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
               templateFilePath: $(templateFilePath)
-              displayName: User Assigned Identity
+              displayName: Image template
               jobName: job_deploy_imgt
       # - job: job_print_imgt_output
       #   displayName: Set image template output
@@ -271,6 +275,8 @@ stages:
             name: $(poolName)
           ${{ if eq(variables['poolName'], '') }}:
             vmImage: $(vmImage)
+        variables:
+          deploymentOutput: $[ dependencies.job_deploy_imgt.outputs['DeployModule.deploymentOutput'] ]
         steps:
           - task: PowerShell@2
             displayName: 'Setup agent'
@@ -306,7 +312,7 @@ stages:
               azurePowerShellVersion: 'LatestVersion'
               pwsh: true
           - task: AzurePowerShell@5
-            displayName: Trigger building new image
+            displayName: Copy baked vhd to a storage account
             inputs:
               azureSubscription: $(serviceConnection)
               ScriptType: 'InlineScript'
