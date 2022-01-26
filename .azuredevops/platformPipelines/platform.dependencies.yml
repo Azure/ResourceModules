@@ -225,6 +225,7 @@ stages:
 
   - stage: deploy_imgt
     displayName: Deploy image template
+    condition: eq(parameters.deployVhdDependencies, 'true')
     dependsOn:
       - deploy_msi
       - deploy_sig
