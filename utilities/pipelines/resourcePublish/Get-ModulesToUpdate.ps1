@@ -22,7 +22,8 @@ la---          08.12.2021    15:50           7133 Script.ps1
 Get modified files between previous and current commit.
 #>
 function Get-ModifiedFiles {
-
+    # TODO: On custom branch this will only compare the last commit, maybe worth testing this with 'main' branch?
+    # https://devconnected.com/how-to-compare-two-git-branches/
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $false)]
@@ -65,7 +66,6 @@ la---          05.12.2021    22:45           1230 deploy.bicep
 Gets the closest deploy.bicep/json file to the current directory.
 #>
 function Find-TemplateFile {
-
     [CmdletBinding()]
     param (
         [Parameter(Mandatory)]
@@ -301,7 +301,7 @@ function Get-NewModuleVersion {
     $NewVersion = "$Version.$Patch"
 
     $CurrentBranch = git branch --show-current
-    if ($CurrentBranch -ne 'main') {
+    if (($CurrentBranch -ne 'main') -or ($CurrentBranch -ne 'master') ) {
         $PreRelease = $CurrentBranch -replace '[^a-zA-Z0-9\.\-_]'
         $NewVersion = "$NewVersion-Preview-$PreRelease"
     }
