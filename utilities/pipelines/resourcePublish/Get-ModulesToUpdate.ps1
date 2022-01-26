@@ -308,7 +308,7 @@ function Get-NewModuleVersion {
 
     $CurrentBranch = git symbolic-ref --short 'HEAD'
     #$CurrentBranch = git branch --show-current
-    crrent branch: $CurrentBranch" -Verbose
+    Write-Verbose "Current branch: $CurrentBranch" -Verbose
     if (($CurrentBranch -ne 'main') -or ($CurrentBranch -ne 'master') ) {
         $PreRelease = $CurrentBranch -replace '[^a-zA-Z0-9\.\-_]'
         Write-Verbose "PreRelease: $PreRelease" -Verbose
