@@ -28,8 +28,10 @@ function Get-ModifiedFiles {
         [string] $Commit = 'HEAD',
 
         [Parameter(Mandatory = $false)]
-        [string] $CompareCommit = 'refs/remote/origin/main'
+        [string] $CompareCommit = 'main'
     )
+
+    git branch -a
 
     Write-Verbose "Gathering modified files between [$Commit] and [$CompareCommit]"
     $Diff = git diff --name-only --diff-filter=AM $Commit $CompareCommit
