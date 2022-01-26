@@ -224,33 +224,9 @@ function Get-GitDistance {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $false)]
-        [string] $Commit = 'HEAD',
+        [string] $Commit = 'HEAD'
 
-        [Parameter(Mandatory = $false)]
-        [string] $CompareCommit = "^main"
     )
-
-    #From ^main (first parent) - 79 - 80 - 81 - 82
-    [int](git rev-list --count $Commit ^main --first-parent) + 1
-
-    #From main - 92 - 93 - 94 - 95
-    [int](git rev-list --count $Commit ^main) + 1
-
-    #From main^ (first parent) - 697 - 698 - 699 - 700
-    [int](git rev-list --count $Commit main --first-parent) + 1
-
-    #From main - 797 - 798 - 799
-    [int](git rev-list --count HEAD main) + 1
-    [int](git rev-list --count $Commit) + 1
-
-    #On main - 705 - 705
-    [int](git rev-list --count main) + 1
-
-    #On main (first parent) - 619 - 619
-    [int](git rev-list --count main --first-parent) + 1
-
-    #From origin (first parent) - 420 - 421 - 422 - 423
-    [int](git rev-list --count $Commit --first-parent) + 1
 
     return [int](git rev-list --count $Commit) + 1
 }
