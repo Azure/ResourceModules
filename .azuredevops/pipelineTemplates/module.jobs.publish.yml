@@ -30,8 +30,9 @@
 ##   | templateSpecsRGName             | '$(templateSpecsRGName)'             | Required to publish to template spec. ResourceGroup of the template spec to publish to                  | 'mgmt-rg'                         |
 ##   | templateSpecsRGLocation         | '$(templateSpecsRGLocation)'         | Required to publish to template spec. Location of the template spec resource group                      | 'West Europe'                     |
 ##   | templateSpecsDescription        | '$(templateSpecsDescription)'        | Required to publish to template spec. Description of the template spec to publish to                    | 'IaCs module'                     |
+##   | vstsFeedToken                   | '$(vstsFeedToken)'                   | Required to publish to a DevOps feed. Token with access to the feed to publish to.                      | '...'                             |
 ##   | vstsFeedName                    | '$(vstsFeedName)'                    | Required to publish to a DevOps feed. Name to the feed to publish to.                                   | 'modules'                         |
-##   | vstsProject                     | '$(System.TeamProject)'              | Required to publish to a DevOps feed. Name of the project hosting the artifacts feed. May be empty.     | 'iacs'                            |
+##   | vstsFeedProject                 | '$(vstsFeedProject)'                 | Required to publish to a DevOps feed. Name of the project hosting the artifacts feed. May be empty.     | 'iacs'                            |
 ##   | bicepRegistryName               | '$(bicepRegistryName)'               | Required to publish to the private bicep registry. Name of the hosting container registry               | 'adpsxxazacrx001'                 |
 ##   | bicepRegistryRGName             | '$(bicepRegistryRGName)'             | Required to publish to the private bicep registry. Resource group of the hosting container registry     | 'artifacts-rg'                    |
 ##   | bicepRegistryRgLocation         | '$(bicepRegistryRgLocation)'         | Required to publish to the private bicep registry. Location of the RG of the hosting container registry | 'West Europe'                     |
@@ -57,16 +58,20 @@ parameters:
   modulePath: '$(modulePath)'
 
   ## TemplateSpec-related
+  templateSpecsDoPublish: '$(templateSpecsDoPublish)'
   templateSpecsRGName: '$(templateSpecsRGName)'
   templateSpecsRGLocation: '$(templateSpecsRGLocation)'
   templateSpecsDescription: '$(templateSpecsDescription)'
 
   ## Artifact-Feed-related
-  vstsFeedName: '$(vstsFeedName)'
-  vstsProject: '$(System.TeamProject)'
+  artifactsFeedDoPublish: '$(artifactsFeedDoPublish)'
   vstsOrganization: '$(vstsOrganization)'
+  vstsFeedProject: '$(vstsFeedProject)'
+  vstsFeedName: '$(vstsFeedName)'
+  vstsFeedToken: '$(vstsFeedToken)'
 
   ## Private-Bicep-Registry-related
+  bicepRegistryDoPublish: '$(bicepRegistryDoPublish)'
   bicepRegistryName: '$(bicepRegistryName)'
   bicepRegistryRGName: '$(bicepRegistryRGName)'
   bicepRegistryRgLocation: '$(bicepRegistryRgLocation)'
@@ -138,58 +143,55 @@ jobs:
 
       # [Universal Artifact-feed publish] task(s)
       #------------------------------------------
-      #  TODO: Add support for powershell driven array (New module versioning approach)
-      - powershell: |
-          # Load used functions
-          . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Initialize-UniversalArtifactPublish.ps1')
-
-          $functionInput = @{
-            templateFilePath = Join-Path '$(ENVMODULEPATH)' 'deploy.bicep'
-            vstsOrganization = '${{ parameters.vstsOrganization }}'
-            vstsProject      = '${{ parameters.vstsProject }}'
-            vstsFeedName     = '${{ parameters.vstsFeedName }}'
-            customVersion    = '${{ parameters.customVersion }}'
-            versioningOption = '${{ parameters.versioningOption }}'
-          }
-
-          Write-Verbose "Invoke task with" -Verbose
-          Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
-
-          $output = Initialize-UniversalArtifactPublish @functionInput -Verbose
-
-          # Write output value(s) into pipeline environment
-          $output.Keys | ForEach-Object {
-            Write-Host ("Publishing variable [{0}] with value [{1}] to pipeline environment" -f $_, $output[$_])
-            Write-Host ("##vso[task.setVariable variable={0}]{1}" -f $_, $output[$_])
-          }
-        displayName: 'Prepare publish to artifacts feed'
+      - task: PowerShell@2
+        displayName: 'Publish module to artifacts feed'
         condition: and(
           eq(variables['artifactsFeedDoPublish'], true),
           succeeded()
           )
         enabled: true
-        env:
-          TOKEN: $(system.accesstoken)
-
-      - task: UniversalPackages@0
-        condition: and(
-          eq(variables['artifactsFeedDoPublish'], true),
-          succeeded()
-          )
-        displayName: Publish Universal Package
         inputs:
-          command: publish
-          publishDirectory: '$(ENVMODULEPATH)'
-          ${{ if eq(parameters.vstsProject, '') }}:
-            vstsFeedPublish: '${{ parameters.vstsFeedName }}'
-          ${{ if ne(parameters.vstsProject, '') }}:
-            vstsFeedPublish: '${{ parameters.vstsProject }}/${{ parameters.vstsFeedName }}'
-          vstsFeedPackagePublish: '$(universalPackageModuleName)' # Published via [Initialize-UniversalArtifactPublish] invocation
-          versionOption: '$(publishingMode)' # Published via [Initialize-UniversalArtifactPublish] invocation
-          versionPublish: '$(newVersionObject)' # Published via [Initialize-UniversalArtifactPublish] invocation
-          packagePublishDescription: '$(universalPackageModuleName) Module'
-          verbosity: 'error'
-        enabled: true
+          targetType: inline
+          pwsh: true
+          script: |
+            # Load used functions
+            . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Get-ModulesToUpdate.ps1')
+            . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Publish-ModuleToUniversalArtifactFeed.ps1')
+
+            #Prioritizing the bicep file
+            $TemplateFilePath = Join-Path '$(ENVMODULEPATH)' 'deploy.bicep'
+            if (-not (Test-Path $TemplateFilePath)) {
+              $TemplateFilePath = Join-Path -Path $FolderPath -ChildPath 'deploy.json'
+            }
+
+            $functionInput = @{
+              TemplateFilePath = $TemplateFilePath
+            }
+
+            Write-Verbose "Invoke Get-ModulesToUpdate with" -Verbose
+            Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
+
+            # Get the modified child resources
+            $ModulesToUpdate = Get-ModulesToUpdate @functionInput -Verbose
+
+            # Publish the modified child resources
+            foreach ($ModuleToUpdate in $ModulesToUpdate) {
+              $functionInput = @{
+                TemplateFilePath = $ModuleToUpdate.TemplateFilePath
+                VstsOrganization = '${{ parameters.vstsOrganization }}'
+                VstsFeedProject  = '${{ parameters.vstsFeedProject }}'
+                VstsFeedName     = '${{ parameters.vstsFeedName }}'
+                ModuleVersion    = $ModuleToUpdate.Version
+                BearerToken      = $env:TOKEN
+              }
+
+              Write-Verbose "Invoke Publish-ModuleToUniversalArtifactFeed with" -Verbose
+              Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
+
+              Publish-ModuleToUniversalArtifactFeed @functionInput -Verbose
+            }
+        env:
+          TOKEN: $(vstsFeedToken)
 
       # [template-spec publish] task(s)
       #--------------------------------
@@ -211,11 +213,17 @@ jobs:
             . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Get-ModulesToUpdate.ps1')
             . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Publish-ModuleToTemplateSpec.ps1')
 
-            $functionInput = @{
-              TemplateFilePath = Join-Path '$(ENVMODULEPATH)' 'deploy.bicep'
+            #Prioritizing the bicep file
+            $TemplateFilePath = Join-Path '$(ENVMODULEPATH)' 'deploy.bicep'
+            if (-not (Test-Path $TemplateFilePath)) {
+              $TemplateFilePath = Join-Path -Path $FolderPath -ChildPath 'deploy.json'
             }
 
-            Write-Verbose "Invoke task with" -Verbose
+            $functionInput = @{
+              TemplateFilePath = $TemplateFilePath
+            }
+
+            Write-Verbose "Invoke Get-ModulesToUpdate with" -Verbose
             Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
             # Get the modified child resources
@@ -231,7 +239,7 @@ jobs:
                 ModuleVersion            = $ModuleToUpdate.Version
               }
 
-              Write-Verbose "Invoke task with" -Verbose
+              Write-Verbose "Invoke Publish-ModuleToTemplateSpec with" -Verbose
               Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
               Publish-ModuleToTemplateSpec @functionInput -Verbose
@@ -257,11 +265,17 @@ jobs:
             . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Get-ModulesToUpdate.ps1')
             . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Publish-ModuleToPrivateBicepRegistry.ps1')
 
-            $functionInput = @{
-              TemplateFilePath = Join-Path '$(ENVMODULEPATH)' 'deploy.bicep'
+            #Prioritizing the bicep file
+            $TemplateFilePath = Join-Path '$(ENVMODULEPATH)' 'deploy.bicep'
+            if (-not (Test-Path $TemplateFilePath)) {
+              $TemplateFilePath = Join-Path -Path $FolderPath -ChildPath 'deploy.json'
             }
 
-            Write-Verbose "Invoke task with" -Verbose
+            $functionInput = @{
+              TemplateFilePath = $TemplateFilePath
+            }
+
+            Write-Verbose "Invoke Get-ModulesToUpdate with" -Verbose
             Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
             # Get the modified child resources
@@ -270,15 +284,15 @@ jobs:
             # Publish the modified child resources
             foreach ($ModuleToUpdate in $ModulesToUpdate) {
               $functionInput = @{
+                TemplateFilePath         = $ModuleToUpdate.TemplateFilePath
                 BicepRegistryName       = '${{ parameters.bicepRegistryName }}'
                 BicepRegistryRgName     = '${{ parameters.bicepRegistryRgName }}'
                 BicepRegistryRgLocation = '${{ parameters.bicepRegistryRgLocation }}'
                 ModuleVersion            = $ModuleToUpdate.Version
               }
 
-              Write-Verbose "Invoke task with" -Verbose
+              Write-Verbose "Invoke Publish-ModuleToPrivateBicepRegistry with" -Verbose
               Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
               Publish-ModuleToPrivateBicepRegistry @functionInput -Verbose
             }
-
