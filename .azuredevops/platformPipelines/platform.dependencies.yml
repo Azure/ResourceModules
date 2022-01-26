@@ -223,12 +223,13 @@ stages:
   #             templateFilePath: $(templateFilePath)
   #             displayName: Default SIG and SID
 
-  - stage: deploy_imgt
-    displayName: Deploy image template
     # dependsOn:
     #   - deploy_msi
     #   - deploy_sig
     #   - deploy_sa
+
+  - stage: deploy_imgt
+    displayName: Deploy image template
     variables:
       resourceType: 'Microsoft.VirtualMachineImages\imageTemplates'
       saResourceType: 'Microsoft.Storage\storageAccounts'
