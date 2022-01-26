@@ -301,10 +301,13 @@ function Get-NewModuleVersion {
     $NewVersion = "$Version.$Patch"
 
     Write-Verbose "git symbolic-ref --short 'HEAD'"
-    git symbolic-ref --short 'HEAD'
+    git symbolic-ref --short
 
     Write-Verbose "git branch --show-current"
     git branch --show-current
+
+    Write-Verbose "git rev-list"
+    git rev-list
 
     $CurrentBranch = git symbolic-ref --short 'HEAD'
     #$CurrentBranch = git branch --show-current
