@@ -7,9 +7,8 @@ param location string = resourceGroup().location
 @description('Required. An Array of 1 or more IP Address Prefixes for the Virtual Network.')
 param addressPrefixes array
 
-@description('Required. An Array of subnets to deploy to the Virual Network.')
-@minLength(1)
-param subnets array
+@description('Optional. An Array of subnets to deploy to the Virtual Network.')
+param subnets array = []
 
 @description('Optional. DNS Servers associated to the Virtual Network.')
 param dnsServers array = []

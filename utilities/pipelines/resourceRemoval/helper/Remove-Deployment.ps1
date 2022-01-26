@@ -10,7 +10,10 @@ Requires the resource in question to be tagged with 'removeModule = <moduleName>
 Mandatory. The name of the module to remove
 
 .PARAMETER ResourceGroupName
-Mandatory. The resource group of the resource to remove
+Optional. The resource group of the resource to remove
+
+.PARAMETER ManagementGroupId
+Optional. The ID of the management group to fetch deployments from. Relevant for management-group level deployments.
 
 .PARAMETER SearchRetryLimit
 Optional. The maximum times to retry the search for resources via their removal tag
@@ -38,6 +41,9 @@ function Remove-Deployment {
     param (
         [Parameter(Mandatory = $false)]
         [string] $ResourceGroupName,
+
+        [Parameter(Mandatory = $false)]
+        [string] $ManagementGroupId,
 
         [Parameter(Mandatory = $true)]
         [string] $DeploymentName,
@@ -81,9 +87,14 @@ function Remove-Deployment {
         # Fetch deployments
         # =================
         $deploymentsInputObject = @{
-            Name              = $deploymentName
-            Scope             = $deploymentScope
-            ResourceGroupName = $resourceGroupName
+            Name  = $deploymentName
+            Scope = $deploymentScope
+        }
+        if (-not [String]::IsNullOrEmpty($resourceGroupName)) {
+            $deploymentsInputObject['resourceGroupName'] = $resourceGroupName
+        }
+        if (-not [String]::IsNullOrEmpty($ManagementGroupId)) {
+            $deploymentsInputObject['ManagementGroupId'] = $ManagementGroupId
         }
         [array] $deployedTargetResources = Get-DeploymentTargetResourceList @deploymentsInputObject -Verbose
         Write-Verbose ('Total number of deployment target resources after fetching deployments [{0}]' -f $deployedTargetResources.Count) -Verbose
