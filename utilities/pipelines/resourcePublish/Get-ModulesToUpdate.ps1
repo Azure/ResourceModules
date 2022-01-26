@@ -300,32 +300,15 @@ function Get-NewModuleVersion {
     $Patch = Get-GitDistance
     $NewVersion = "$Version.$Patch"
 
-    Write-Verbose "git symbolic-ref --short 'HEAD'"
-    git symbolic-ref HEAD --short
-
-    Write-Verbose 'git branch HEAD --show-current'
-    git branch HEAD --show-current
-
-    Write-Verbose 'git branch --show-current HEAD'
-    git branch --show-current HEAD
-
-    Write-Verbose "git rev-parse --abbrev-ref HEAD"
-    git rev-parse --abbrev-ref origin/HEAD
-
-    Write-Verbose "git rev-parse HEAD --abbrev-ref"
-    git rev-parse HEAD --abbrev-ref
-
-    Write-Verbose "git rev-list"
-    git rev-list
-
     $CurrentBranch = git symbolic-ref --short 'HEAD'
     #$CurrentBranch = git branch --show-current
-    Write-Verbose "Current branch: $CurrentBranch" -Verbose
+    Write-Verbose "Current branch: [$CurrentBranch]" -Verbose
     if (($CurrentBranch -ne 'main') -or ($CurrentBranch -ne 'master') ) {
         $PreRelease = $CurrentBranch -replace '[^a-zA-Z0-9\.\-_]'
-        Write-Verbose "PreRelease: $PreRelease" -Verbose
+        Write-Verbose "PreRelease: [$PreRelease]" -Verbose
         $NewVersion = "$NewVersion-preview".ToLower()
         #$NewVersion = "$NewVersion-Preview-$PreRelease"
+        Write-Verbose "New version: [$NewVersion]" -Verbose
     }
 
     return $NewVersion
@@ -355,8 +338,6 @@ function Get-ModulesToUpdate {
         [Parameter(Mandatory)]
         [string] $TemplateFilePath
     )
-
-    git branch -a
 
     $ModuleFolderPath = Split-Path $TemplateFilePath -Parent
     $TemplateFilesToUpdate = Get-TemplateFileToUpdate -ModuleFolderPath $ModuleFolderPath | Sort-Object FullName -Descending
