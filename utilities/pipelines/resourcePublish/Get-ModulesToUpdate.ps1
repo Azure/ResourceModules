@@ -14,7 +14,7 @@ main
 
 #>
 function Get-GitDefaultBranch {
-    return (git rev-parse --abbrev-ref origin/HEAD).split('/')[-1]
+    return (git rev-parse --abbrev-ref 'origin/HEAD').split('/')[-1]
 }
 
 <#
@@ -42,7 +42,7 @@ function Get-ModifiedFiles {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $false)]
-        [string] $Commit = 'HEAD^',
+        [string] $Commit = 'HEAD',
 
         [Parameter(Mandatory = $false)]
         [string] $CompareCommit = (Get-GitDefaultBranch)
