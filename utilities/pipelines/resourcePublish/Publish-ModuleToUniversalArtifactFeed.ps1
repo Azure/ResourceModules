@@ -13,7 +13,7 @@ Example: 'C:\arm\Microsoft.KeyVault\vaults\deploy.bicep'
 Required. Version of the module to publish, following SemVer convention.
 Example: '1.0.0', '2.1.5-alpha.1', '0.0.5-beta.1'
 
-.PARAMETER VstsOrganization
+.PARAMETER vstsOrganizationUri
 Mandatory. Azure DevOps organization URL hosting the artifacts feed.
 Example: 'https://dev.azure.com/fabrikam/'.
 
@@ -29,7 +29,7 @@ Example: 'Artifacts'.
 Optional. The bearer token to use to authenticate the request. If not provided it MUST be existing in your environment as `$env:TOKEN`
 
 .EXAMPLE
-Publish-ModuleToUniversalArtifactFeed -TemplateFilePath 'C:\arm\Microsoft.KeyVault\vaults\deploy.bicep' -ModuleVersion '3.0.0-alpha' -VstsOrganization 'https://dev.azure.com/fabrikam' -VstsProject 'IaC' -VstsFeedName 'Artifacts'
+Publish-ModuleToUniversalArtifactFeed -TemplateFilePath 'C:\arm\Microsoft.KeyVault\vaults\deploy.bicep' -ModuleVersion '3.0.0-alpha' -vstsOrganizationUri 'https://dev.azure.com/fabrikam' -VstsProject 'IaC' -VstsFeedName 'Artifacts'
 
 Try to publish the KeyVault module with version 3.0.0-alpha to a Universal Package Feed called KeyVault in the feed called 'Artifacts' under the project 'IaC'.
 #>
@@ -41,7 +41,7 @@ function Publish-ModuleToUniversalArtifactFeed {
         [string] $TemplateFilePath,
 
         [Parameter(Mandatory)]
-        [string] $VstsOrganization,
+        [string] $VstsOrganizationUri,
 
         [Parameter(Mandatory = $false)]
         [string] $VstsFeedProject = '',
@@ -86,10 +86,10 @@ function Publish-ModuleToUniversalArtifactFeed {
         #############################################
         ##    Publish to Universal Package Feed    ##
         #############################################
-        if ($PSCmdlet.ShouldProcess("Universal Package Feed entry [$universalPackageModuleName] version [$ModuleVersion] to feed [$VstsOrganization/$VstsFeedProject/$VstsFeedName]", 'Publish')) {
+        if ($PSCmdlet.ShouldProcess("Universal Package Feed entry [$universalPackageModuleName] version [$ModuleVersion] to feed [$VstsOrganizationUri/$VstsFeedProject/$VstsFeedName]", 'Publish')) {
             $env:AZURE_DEVOPS_EXT_PAT = $BearerToken
             $inputObject = @(
-                '--organization', "$VstsOrganization",
+                '--organization', "$VstsOrganizationUri",
                 '--feed', "$VstsFeedName",
                 '--scope', "$feedScope",
                 '--name', "$universalPackageModuleName",

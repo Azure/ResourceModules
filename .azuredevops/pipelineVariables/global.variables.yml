@@ -12,6 +12,7 @@ variables:
   ######################################
 
   vstsOrganization: servicescode
+  vstsOrganizationURI: '$(System.CollectionUri)' # The URI of the TFS collection or Azure DevOps organization. For example: https://dev.azure.com/fabrikam/.
   vstsProject: '$(System.TeamProject)'
   modulesRepository: ResourceModules # The repository hosting the deployment code (i.e. 'Components'). MUST be provided as a variable with every pipeline
   modulePath: arm/$(moduleName) # only use in module pipelines
