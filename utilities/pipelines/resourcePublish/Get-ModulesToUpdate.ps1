@@ -2,6 +2,23 @@
 
 <#
 .SYNOPSIS
+Get the default branch for the current project.
+
+.DESCRIPTION
+Get the default branch for the current project.
+
+.EXAMPLE
+Get-GitDefaultBranch
+
+main
+
+#>
+function Get-GitDefaultBranch {
+    return (git rev-parse --abbrev-ref origin/HEAD).split('/')[-1]
+}
+
+<#
+.SYNOPSIS
 Get modified files between two commits.
 
 .PARAMETER Commit
@@ -22,15 +39,13 @@ la---          08.12.2021    15:50           7133 Script.ps1
 Get modified files between previous and current commit.
 #>
 function Get-ModifiedFiles {
-    # TODO: On custom branch this will only compare the last commit, maybe worth testing this with 'main' branch?
-    # https://devconnected.com/how-to-compare-two-git-branches/
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $false)]
         [string] $Commit = 'HEAD^',
 
         [Parameter(Mandatory = $false)]
-        [string] $CompareCommit = 'HEAD'
+        [string] $CompareCommit = (Get-GitDefaultBranch)
     )
 
     Write-Verbose "Gathering modified files between [$Commit] and [$CompareCommit]"
@@ -225,10 +240,35 @@ function Get-GitDistance {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $false)]
-        [string] $Commit = 'HEAD'
+        [string] $Commit = 'HEAD',
+
+        [Parameter(Mandatory = $false)]
+        [string] $CompareCommit = "^$(Get-GitDefaultBranch)"
     )
 
-    return (git rev-list $Commit --count)
+    #From ^main (first parent) - 79 - 80 - 81 - 82
+    [int](git rev-list --count $Commit ^$(Get-GitDefaultBranch) --first-parent) + 1
+
+    #From main - 92 - 93 - 94 - 95
+    [int](git rev-list --count $Commit ^$(Get-GitDefaultBranch)) + 1
+
+    #From main^ (first parent) - 697 - 698 - 699 - 700
+    [int](git rev-list --count $Commit $(Get-GitDefaultBranch) --first-parent) + 1
+
+    #From main - 797 - 798 - 799
+    [int](git rev-list --count HEAD $(Get-GitDefaultBranch)) + 1
+    [int](git rev-list --count $Commit) + 1
+
+    #On main - 705 - 705
+    [int](git rev-list --count $(Get-GitDefaultBranch)) + 1
+
+    #On main (first parent) - 619 - 619
+    [int](git rev-list --count $(Get-GitDefaultBranch) --first-parent) + 1
+
+    #From origin (first parent) - 420 - 421 - 422 - 423
+    [int](git rev-list --count $Commit --first-parent) + 1
+
+    return [int](git rev-list --count $Commit) + 1
 }
 
 <#
@@ -301,10 +341,19 @@ function Get-NewModuleVersion {
     $NewVersion = "$Version.$Patch"
 
     Write-Verbose "git symbolic-ref --short 'HEAD'"
-    git symbolic-ref --short
+    git symbolic-ref HEAD --short
 
-    Write-Verbose "git branch --show-current"
-    git branch --show-current
+    Write-Verbose 'git branch HEAD --show-current'
+    git branch HEAD --show-current
+
+    Write-Verbose 'git branch --show-current HEAD'
+    git branch --show-current HEAD
+
+    Write-Verbose "git rev-parse --abbrev-ref HEAD"
+    git rev-parse --abbrev-ref origin/HEAD
+
+    Write-Verbose "git rev-parse HEAD --abbrev-ref"
+    git rev-parse HEAD --abbrev-ref
 
     Write-Verbose "git rev-list"
     git rev-list
