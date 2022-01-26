@@ -28,7 +28,7 @@ function Get-ModifiedFiles {
         [string] $Commit = 'HEAD',
 
         [Parameter(Mandatory = $false)]
-        [string] $CompareCommit = 'main'
+        [string] $CompareCommit = 'refs/remote/origin/main'
     )
 
     Write-Verbose "Gathering modified files between [$Commit] and [$CompareCommit]"
