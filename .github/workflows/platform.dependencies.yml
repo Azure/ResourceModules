@@ -329,8 +329,8 @@ jobs:
         with:
           inlineScript: |
             $deploymentOutput = '${{ steps.deploy_imgt.outputs.deploymentOutput }}'
-            $imageTemplateName = (ConvertFrom-Json $deploymentOutput).imageTemplateName
-            $imageTemplateResourceGroup = (ConvertFrom-Json $deploymentOutput).imageTemplateResourceGroup
+            $imageTemplateName = (ConvertFrom-Json $deploymentOutput).name
+            $imageTemplateResourceGroup = (ConvertFrom-Json $deploymentOutput).resourceGroupName
             Write-Verbose "imageTemplateName: $imageTemplateName" -Verbose
             Write-Verbose "imageTemplateResourceGroup: $imageTemplateResourceGroup" -Verbose
             Write-Output ('::set-output name={0}::{1}' -f 'imageTemplateName', $imageTemplateName)
