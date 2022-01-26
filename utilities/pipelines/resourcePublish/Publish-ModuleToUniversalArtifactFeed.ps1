@@ -78,7 +78,7 @@ function Publish-ModuleToUniversalArtifactFeed {
         ###########################
         $feedScope = 'organization'
 
-        if ([string]::IsNullOrEmpty($VstsFeedProject)) {
+        if (-not [string]::IsNullOrEmpty($VstsFeedProject)) {
             $feedScope = 'project'
         }
         Write-Verbose "The package feed scope is [$feedScope]" -Verbose
@@ -98,14 +98,15 @@ function Publish-ModuleToUniversalArtifactFeed {
                 '--description', "'$universalPackageModuleName Module'",
                 '--verbose'
             )
-            if (![string]::IsNullOrEmpty($VstsFeedProject)) {
+            if (-not [string]::IsNullOrEmpty($VstsFeedProject)) {
                 $inputObject += @('--project', "'$VstsFeedProject'")
             }
 
             Write-Verbose 'The command to publish to the feed is:' -Verbose
+            Write-Verbose $command -Verbose
             $command = "az artifacts universal publish $($inputObject -join ' ')"
 
-            Invoke-Expression -Command $command
+            az artifacts universal publish @inputObject
 
         }
         Write-Verbose 'Publish complete'
