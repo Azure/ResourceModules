@@ -34,6 +34,7 @@ param storageAccountId string = ''
 ])
 param functionsWorkerRuntime string = ''
 
+
 @description('Optional. Version if the function extension.')
 param functionsExtensionVersion string = '~3'
 
