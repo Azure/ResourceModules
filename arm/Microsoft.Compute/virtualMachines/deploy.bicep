@@ -14,13 +14,6 @@ param encryptionAtHost bool = true
 @description('Optional. Specifies the SecurityType of the virtual machine. It is set as TrustedLaunch to enable UefiSettings.')
 param securityType string = ''
 
-
-@description('Optional. Specifies the size for the VMs')
-param secureBootEnabled bool = false
-
-@description('Optional. Specifies the size for the VMs')
-param vTpmEnabled bool = false
-
 @description('Required. OS image reference. In case of marketplace images, it\'s the combination of the publisher, offer, sku, version attributes. In case of custom images it\'s the resource ID of the custom image.')
 param imageReference object
 
