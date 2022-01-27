@@ -173,6 +173,7 @@ jobs:
                     (Join-Path '$(moduleRepoRoot)' '$(modulePath)' 'deploy.json')
                 }
 
+                # TODO: Update to latest folder
                 $templateFolderPath = Split-Path (Join-Path '$(parametersRepoRoot)' '${{ deploymentBlock.path }}') -Parent
                 $templateFileName = 'dep.{0}.bicep' -f (Split-Path '${{ deploymentBlock.path }}' -LeafBase)
                 $dependencyTemplateFilePath = Join-Path '$(moduleRepoRoot)' $templateFolderPath $templateFileName
