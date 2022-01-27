@@ -1,4 +1,4 @@
-name: 'Automanage: Accounts'
+name: 'Service Fabric: Clusters'
 
 on:
   workflow_dispatch:
@@ -26,15 +26,15 @@ on:
       - main
     paths:
       - '.github/actions/templates/**'
-      - '.github/workflows/ms.automanage.accounts.yml'
-      - 'arm/Microsoft.Automanage/accounts/**'
+      - '.github/workflows/ms.servicefabric.clusters.yml'
+      - 'arm/Microsoft.ServiceFabric/clusters/**'
       - '!*/**/readme.md'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/dependencies/**'
 
 env:
-  modulePath: 'arm/Microsoft.Automanage/accounts'
-  workflowPath: '.github/workflows/ms.automanage.accounts.yml'
+  modulePath: 'arm/Microsoft.ServiceFabric/clusters'
+  workflowPath: '.github/workflows/ms.servicefabric.clusters.yml'
   AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
   ARM_SUBSCRIPTION_ID: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
   ARM_MGMTGROUP_ID: '${{ secrets.ARM_MGMTGROUP_ID }}'
@@ -91,7 +91,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        parameterFilePaths: ['parameters.json']
+        parameterFilePaths: ['min.parameters.json', 'parameters.json']
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2

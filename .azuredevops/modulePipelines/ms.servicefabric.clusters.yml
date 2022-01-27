@@ -1,4 +1,4 @@
-name: 'Automanage - Accounts'
+name: 'Service Fabric - Clusters'
 
 parameters:
   - name: removeDeployment
@@ -25,9 +25,9 @@ trigger:
       - main
   paths:
     include:
-      - '/.azuredevops/modulePipelines/ms.automanage.accounts.yml'
+      - '/.azuredevops/modulePipelines/ms.servicefabric.clusters.yml'
       - '/.azuredevops/pipelineTemplates/module.*.yml'
-      - '/arm/Microsoft.Automanage/accounts/*'
+      - '/Microsoft.ServiceFabric/clusters/*'
     exclude:
       - '/**/*.md'
 
@@ -35,28 +35,29 @@ variables:
   - template: '/.azuredevops/pipelineVariables/global.variables.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/arm/Microsoft.Automanage/accounts'
+    value: '/arm/Microsoft.ServiceFabric/clusters'
 
 stages:
   - stage: Validation
     displayName: Pester tests
     jobs:
-      - template: /.azuredevops/pipelineTemplates/jobs.validateModulePester.yml
+      - template: /.azuredevops/pipelineTemplates/module.jobs.validate.yml
 
   - stage: Deployment
     displayName: Deployment tests
     jobs:
-      - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
+      - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
         parameters:
           removeDeployment: '${{ parameters.removeDeployment }}'
           deploymentBlocks:
+            - path: $(modulePath)/.parameters/min.parameters.json
             - path: $(modulePath)/.parameters/parameters.json
 
   - stage: Publishing
     displayName: Publish module
     condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
     jobs:
-      - template: /.azuredevops/pipelineTemplates/jobs.publishModule.yml
+      - template: /.azuredevops/pipelineTemplates/module.jobs.publish.yml
         parameters:
           versioningOption: '${{ parameters.versioningOption }}'
           customVersion: '${{ parameters.customVersion }}'

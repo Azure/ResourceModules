@@ -9,14 +9,6 @@
             "value": [
                 "10.0.0.0/16"
             ]
-        },
-        "subnets": {
-            "value": [
-                {
-                    "name": "default",
-                    "addressPrefix": "10.0.0.0/16"
-                }
-            ]
         }
     }
 }
