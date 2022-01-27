@@ -182,11 +182,23 @@ stages:
               azureSubscription: $(serviceConnection)
               ScriptType: 'InlineScript'
               Inline: |
+
+                $parameterFilePath = Join-Path '$(Build.SourcesDirectory)' '$(dependencyPath)' '$(resourceType)' 'parameters' 'parameters.json'
                 # Load used functions
                 . (Join-Path '$(Build.SourcesDirectory)' 'utilities' 'pipelines' 'sharedScripts' 'Export-ContentToBlob.ps1')
+                . (Join-Path '$(Build.SourcesDirectory)' 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInParameterFile.ps1')
+
+                # Replace Tokens in Parameter File
+                $Settings = Get-Content -Path (Join-Path '$(Build.SourcesDirectory)' 'settings.json') | ConvertFrom-Json
+                $ConvertTokensInputs = @{
+                    ParameterFilePath                 = $parameterFilePath
+                    LocalCustomParameterFileTokens    = $Settings.parameterFileTokens.localTokens.tokens
+                    TokenPrefix                       = $Settings.parameterFileTokens.tokenPrefix
+                    TokenSuffix                       = $Settings.parameterFileTokens.tokenSuffix
+                }
+                $null = Convert-TokensInParameterFile @ConvertTokensInputs -Verbose
 
                 # Get storage account name
-                $parameterFilePath = Join-Path '$(Build.SourcesDirectory)' '$(dependencyPath)' '$(resourceType)' 'parameters' 'parameters.json'
                 $storageAccountParameters = (ConvertFrom-Json (Get-Content -path $parameterFilePath -Raw)).parameters
 
                 # Upload files to storage account
@@ -457,8 +469,22 @@ stages:
               azureSubscription: $(serviceConnection)
               ScriptType: 'InlineScript'
               Inline: |
-                # Get key vault name
+
                 $parameterFilePath = Join-Path '$(Build.SourcesDirectory)' '$(dependencyPath)' '$(resourceType)' 'parameters' 'parameters.json'
+                # Load used functions
+                . (Join-Path '$(Build.SourcesDirectory)' 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInParameterFile.ps1')
+
+                # Replace Tokens in Parameter File
+                $Settings = Get-Content -Path (Join-Path '$(Build.SourcesDirectory)' 'settings.json') | ConvertFrom-Json
+                $ConvertTokensInputs = @{
+                    ParameterFilePath                 = $parameterFilePath
+                    LocalCustomParameterFileTokens    = $Settings.parameterFileTokens.localTokens.tokens
+                    TokenPrefix                       = $Settings.parameterFileTokens.tokenPrefix
+                    TokenSuffix                       = $Settings.parameterFileTokens.tokenSuffix
+                }
+                $null = Convert-TokensInParameterFile @ConvertTokensInputs -Verbose
+
+                # Get key vault name
                 $keyVaultParameters = (ConvertFrom-Json (Get-Content -Path $parameterFilePath -Raw)).parameters
                 $keyVaultName = $keyVaultParameters.name.value
 
@@ -540,8 +566,22 @@ stages:
                   azureSubscription: $(serviceConnection)
                   ScriptType: 'InlineScript'
                   Inline: |
-                    # Get key vault name
+
                     $parameterFilePath = Join-Path '$(Build.SourcesDirectory)' '$(dependencyPath)' '$(resourceType)' 'parameters' 'sqlmi.parameters.json'
+                    # Load used functions
+                    . (Join-Path '$(Build.SourcesDirectory)' 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInParameterFile.ps1')
+
+                    # Replace Tokens in Parameter File
+                    $Settings = Get-Content -Path (Join-Path '$(Build.SourcesDirectory)' 'settings.json') | ConvertFrom-Json
+                    $ConvertTokensInputs = @{
+                        ParameterFilePath                 = $parameterFilePath
+                        LocalCustomParameterFileTokens    = $Settings.parameterFileTokens.localTokens.tokens
+                        TokenPrefix                       = $Settings.parameterFileTokens.tokenPrefix
+                        TokenSuffix                       = $Settings.parameterFileTokens.tokenSuffix
+                    }
+                    $null = Convert-TokensInParameterFile @ConvertTokensInputs -Verbose
+
+                    # Get key vault name
                     $keyVaultParameters = (ConvertFrom-Json (Get-Content -Path $parameterFilePath -Raw)).parameters
                     $keyVaultName = $keyVaultParameters.name.value
 
