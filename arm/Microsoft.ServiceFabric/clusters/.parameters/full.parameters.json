@@ -3,12 +3,12 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "sxx-az-sfc-full-001"
+            "value": "<<namePrefix>>-az-sfc-full-001"
         },
         "tags": {
             "value": {
                 "resourceType": "Service Fabric",
-                "clusterName": "sxx-az-sfc-full-001"
+                "clusterName": "<<namePrefix>>-az-sfc-full-001"
             }
         },
         "addOnFeatures": {
@@ -68,11 +68,11 @@
         },
         "diagnosticsStorageAccountConfig": {
             "value": {
-                "blobEndpoint": "https://adpsxxazsaweux001.blob.core.windows.net/",
+                "blobEndpoint": "https://adp<<namePrefix>>azsaweux001.blob.core.windows.net/",
                 "protectedAccountKeyName": "StorageAccountKey1",
-                "queueEndpoint": "https://adpsxxazsaweux001.queue.core.windows.net/",
-                "storageAccountName": "adpsxxazsaweux001",
-                "tableEndpoint": "https://adpsxxazsaweux001.table.core.windows.net/"
+                "queueEndpoint": "https://adp<<namePrefix>>azsaweux001.queue.core.windows.net/",
+                "storageAccountName": "adp<<namePrefix>>azsaweux001",
+                "tableEndpoint": "https://adp<<namePrefix>>azsaweux001.table.core.windows.net/"
             }
         },
         "fabricSettings": {
@@ -98,7 +98,7 @@
             ]
         },
         "managementEndpoint": {
-            "value": "https://sxx-az-sfc-full-001.westeurope.cloudapp.azure.com:19080"
+            "value": "https://<<namePrefix>>-az-sfc-full-001.westeurope.cloudapp.azure.com:19080"
         },
         "nodeTypes": {
             "value": [
