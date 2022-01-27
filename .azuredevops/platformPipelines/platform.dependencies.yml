@@ -242,31 +242,6 @@ stages:
               templateFilePath: $(templateFilePath)
               displayName: Image template
               jobName: job_deploy_imgt
-      - job: job_print_imgt_output
-        displayName: Set image template output
-        dependsOn:
-          - job_deploy_imgt
-        pool:
-          ${{ if eq(variables['vmImage'], '') }}:
-            name: $(poolName)
-          ${{ if eq(variables['poolName'], '') }}:
-            vmImage: $(vmImage)
-        variables:
-          deploymentOutput: $[ dependencies.job_deploy_imgt.outputs['DeployModule.deploymentOutput'] ]
-        steps:
-          - task: PowerShell@2
-            name: print_imgt_output
-            inputs:
-              targetType: inline
-              pwsh: true
-              script: |
-                # Write-Verbose $(deploymentOutput) -Verbose
-                $imageTemplateName = (ConvertFrom-Json '$(deploymentOutput)').name
-                $imageTemplateResourceGroup = (ConvertFrom-Json '$(deploymentOutput)').resourceGroupName
-                Write-Verbose "imageTemplateName: $imageTemplateName" -Verbose
-                Write-Verbose "imageTemplateResourceGroup: $imageTemplateResourceGroup" -Verbose
-                Write-Output ('##vso[task.setvariable variable={0};isOutput=true]{1}' -f 'imageTemplateName', $imageTemplateName)
-                Write-Output ('##vso[task.setvariable variable={0};isOutput=true]{1}' -f 'imageTemplateResourceGroup', $imageTemplateResourceGroup)
       - job:
         displayName: Trigger vhd build and store it to a storage account blob container
         dependsOn:
