@@ -238,11 +238,23 @@ jobs:
         uses: azure/powershell@v1
         with:
           inlineScript: |
+
+            $parameterFilePath = Join-Path $env:GITHUB_WORKSPACE '${{ env.dependencyPath }}' '${{ env.namespace }}' 'parameters' 'parameters.json'
             # Load used functions
             . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'sharedScripts' 'Export-ContentToBlob.ps1')
+            . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInParameterFile.ps1')
+
+            # Replace Tokens in Parameter File
+            $Settings = Get-Content -Path "settings.json" | ConvertFrom-Json
+            $ConvertTokensInputs = @{
+                ParameterFilePath                 = $parameterFilePath
+                LocalCustomParameterFileTokens    = $Settings.parameterFileTokens.localTokens.tokens
+                TokenPrefix                       = $Settings.parameterFileTokens.tokenPrefix
+                TokenSuffix                       = $Settings.parameterFileTokens.tokenSuffix
+            }
+            $null = Convert-TokensInParameterFile @ConvertTokensInputs -Verbose
 
             # Get storage account name
-            $parameterFilePath = Join-Path $env:GITHUB_WORKSPACE '${{ env.dependencyPath }}' '${{ env.namespace }}' 'parameters' 'parameters.json'
             $storageAccountParameters = (ConvertFrom-Json (Get-Content -path $parameterFilePath -Raw)).parameters
 
             # Upload files to storage account
@@ -473,7 +485,12 @@ jobs:
       fail-fast: false
       matrix:
         parameterFilePaths:
-          ['apgw.parameters.json', 'bas.parameters.json', 'lb.parameters.json', 'fw.parameters.json']
+          [
+            'apgw.parameters.json',
+            'bas.parameters.json',
+            'lb.parameters.json',
+            'fw.parameters.json',
+          ]
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -673,8 +690,22 @@ jobs:
         uses: azure/powershell@v1
         with:
           inlineScript: |
-            # Get key vault name
+
             $parameterFilePath = Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'dependencies' '${{ env.namespace }}' 'parameters' 'parameters.json'
+            # Load used functions
+            . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInParameterFile.ps1')
+
+            # Replace Tokens in Parameter File
+            $Settings = Get-Content -Path "settings.json" | ConvertFrom-Json
+            $ConvertTokensInputs = @{
+                ParameterFilePath                 = $parameterFilePath
+                LocalCustomParameterFileTokens    = $Settings.parameterFileTokens.localTokens.tokens
+                TokenPrefix                       = $Settings.parameterFileTokens.tokenPrefix
+                TokenSuffix                       = $Settings.parameterFileTokens.tokenSuffix
+            }
+            $null = Convert-TokensInParameterFile @ConvertTokensInputs -Verbose
+
+            # Get key vault name
             $keyVaultParameters = (ConvertFrom-Json (Get-Content -Path $parameterFilePath -Raw)).parameters
             $keyVaultName = $keyVaultParameters.name.value
 
@@ -779,6 +810,7 @@ jobs:
 
           # Set agent up
           Set-EnvironmentOnAgent -PSModules $Modules
+
       - name: Azure Login
         uses: azure/login@v1
         with:
@@ -788,8 +820,22 @@ jobs:
         uses: azure/powershell@v1
         with:
           inlineScript: |
-            # Get key vault name
+
             $parameterFilePath = Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'dependencies' '${{ env.namespace }}' 'parameters' 'sqlmi.parameters.json'
+            # Load used functions
+            . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInParameterFile.ps1')
+
+            # Replace Tokens in Parameter File
+            $Settings = Get-Content -Path "settings.json" | ConvertFrom-Json
+            $ConvertTokensInputs = @{
+                ParameterFilePath                 = $parameterFilePath
+                LocalCustomParameterFileTokens    = $Settings.parameterFileTokens.localTokens.tokens
+                TokenPrefix                       = $Settings.parameterFileTokens.tokenPrefix
+                TokenSuffix                       = $Settings.parameterFileTokens.tokenSuffix
+            }
+            $null = Convert-TokensInParameterFile @ConvertTokensInputs -Verbose
+
+            # Get key vault name
             $keyVaultParameters = (ConvertFrom-Json (Get-Content -Path $parameterFilePath -Raw)).parameters
             $keyVaultName = $keyVaultParameters.name.value
 
