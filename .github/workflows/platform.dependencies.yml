@@ -298,7 +298,7 @@ jobs:
     env:
       namespace: 'Microsoft.VirtualMachineImages\imageTemplates'
     needs:
-      - job_deploy_msi
+      - job_deploy_rolea
       - job_deploy_sig
     outputs:
       imageTemplateName: ${{ steps.print_imgt_output.outputs.imageTemplateName }}

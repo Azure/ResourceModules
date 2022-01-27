@@ -227,7 +227,7 @@ stages:
     displayName: Deploy image template
     condition: and(succeeded(), eq('${{ parameters.deployVhdDependencies }}', true))
     dependsOn:
-      - deploy_msi
+      - deploy_rolea
       - deploy_sig
       - deploy_sa
     variables:
