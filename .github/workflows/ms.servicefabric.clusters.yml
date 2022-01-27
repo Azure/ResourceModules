@@ -91,7 +91,12 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        parameterFilePaths: ['min.parameters.json', 'parameters.json']
+        parameterFilePaths:
+          [
+            'min.parameters.json',
+            'full.parameters.json',
+            'cert.parameters.json',
+          ]
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
