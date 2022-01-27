@@ -8,6 +8,19 @@ param vmComputerNamesTransformation string = 'none'
 @description('Optional. Specifies the size for the VMs')
 param vmSize string = 'Standard_D2s_v3'
 
+@description('Optional. This property can be used by user in the request to enable or disable the Host Encryption for the virtual machine or virtual machine scale set. This will enable the encryption for all the disks including Resource/Temp disk at host itself. For security reasons, it is recommended to set encryptionAtHost to True.')
+param encryptionAtHost bool = true
+
+@description('Optional. Specifies the SecurityType of the virtual machine. It is set as TrustedLaunch to enable UefiSettings.')
+param securityType string = ''
+
+
+@description('Optional. Specifies the size for the VMs')
+param secureBootEnabled bool = false
+
+@description('Optional. Specifies the size for the VMs')
+param vTpmEnabled bool = false
+
 @description('Required. OS image reference. In case of marketplace images, it\'s the combination of the publisher, offer, sku, version attributes. In case of custom images it\'s the resource ID of the custom image.')
 param imageReference object
 
@@ -343,6 +356,11 @@ resource virtualMachine 'Microsoft.Compute/virtualMachines@2021-07-01' = {
   properties: {
     hardwareProfile: {
       vmSize: vmSize
+    }
+    securityProfile: {
+      encryptionAtHost: encryptionAtHost
+      securityType: securityType
+     
     }
     storageProfile: {
       imageReference: imageReference
