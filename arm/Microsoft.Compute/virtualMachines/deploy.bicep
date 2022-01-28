@@ -29,10 +29,6 @@ param plan object = {}
 @description('Required. Specifies the OS disk.')
 param osDisk object
 
-
-@description('Optional. Managed disk encryption set resource ID. For security reasons, a managed disk encryption set should be provided.')
-param diskEncryptionSetId string = ''
-
 @description('Optional. Specifies the data disks.')
 param dataDisks array = []
 
@@ -378,9 +374,7 @@ resource virtualMachine 'Microsoft.Compute/virtualMachines@2021-07-01' = {
         diskSizeGB: osDisk.diskSizeGB
         managedDisk: {
           storageAccountType: osDisk.managedDisk.storageAccountType
-          diskEncryptionSet: !empty(diskEncryptionSetId) ? {
-            id: diskEncryptionSetId
-          } : null
+          diskEncryptionSet: contains(osDisk.managedDisk, 'diskEncryptionSet') ? osDisk.managedDisk.diskEncryptionSet : null
         }
       }
       dataDisks: [for (dataDisk, index) in dataDisks: {
