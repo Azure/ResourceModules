@@ -40,6 +40,9 @@
         "osType": {
             "value": "Windows"
         },
+        "encryptionAtHost": {
+            "value": false
+        },
         "imageReference": {
             "value": {
                 "publisher": "MicrosoftWindowsServer",
