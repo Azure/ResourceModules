@@ -22,7 +22,7 @@ param imageReference object
 @description('Optional. Specifies information about the marketplace image used to create the virtual machine. This element is only used for marketplace images. Before you can use a marketplace image from an API, you must enable the image for programmatic use.')
 param plan object = {}
 
-@description('Required. Specifies the OS disk.')
+@description('Required. Specifies the OS disk. For security reasons, it is recommended to specify DiskEncryptionSet into the osDisk object.')
 param osDisk object
 
 @description('Optional. Specifies the data disks.')
