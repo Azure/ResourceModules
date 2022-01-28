@@ -5,6 +5,9 @@
         "name": {
             "value": "sxx-vm-win-001"
         },
+        "encryptionAtHost": {
+            "value": false
+        },
         "imageReference": {
             "value": {
                 "publisher": "MicrosoftWindowsServer",
