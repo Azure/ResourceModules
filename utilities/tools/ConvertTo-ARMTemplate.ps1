@@ -173,29 +173,33 @@ if (-not $SkipPipelineUpdate) {
 
     # GitHub workflow files
     $ghWorkflowFolderPath = Join-Path -Path $rootPath -ChildPath '.github\workflows'
-    $ghWorkflowFilesToUpdate = Get-ChildItem -Path $ghWorkflowFolderPath -Filter 'ms.*.yml' -File -Force
-    Write-Verbose ('Update workflow files - Processing [{0}] file(s)' -f $ghWorkflowFilesToUpdate.count)
-    if ($PSCmdlet.ShouldProcess(('[{0}] ms.*.yml file(s) in path [{1}]' -f $ghWorkflowFilesToUpdate.Count, $ghWorkflowFolderPath), 'Set-Content')) {
-        # parallelism is not supported on GitHub runners
-        #$ghWorkflowFilesToUpdate | ForEach-Object -ThrottleLimit $env:NUMBER_OF_PROCESSORS -Parallel {
-        $ghWorkflowFilesToUpdate | ForEach-Object {
-            $content = $_ | Get-Content
-            $content = $content -replace 'templateFilePath:(.*).bicep', 'templateFilePath:$1.json'
-            $_ | Set-Content -Value $content
+    if (Test-Path -Path $ghWorkflowFolderPath) {
+        $ghWorkflowFilesToUpdate = Get-ChildItem -Path $ghWorkflowFolderPath -Filter 'ms.*.yml' -File -Force
+        Write-Verbose ('Update workflow files - Processing [{0}] file(s)' -f $ghWorkflowFilesToUpdate.count)
+        if ($PSCmdlet.ShouldProcess(('[{0}] ms.*.yml file(s) in path [{1}]' -f $ghWorkflowFilesToUpdate.Count, $ghWorkflowFolderPath), 'Set-Content')) {
+            # parallelism is not supported on GitHub runners
+            #$ghWorkflowFilesToUpdate | ForEach-Object -ThrottleLimit $env:NUMBER_OF_PROCESSORS -Parallel {
+            $ghWorkflowFilesToUpdate | ForEach-Object {
+                $content = $_ | Get-Content
+                $content = $content -replace 'templateFilePath:(.*).bicep', 'templateFilePath:$1.json'
+                $_ | Set-Content -Value $content
+            }
         }
     }
 
     # Azure DevOps Pipelines
     $adoPipelineFolderPath = Join-Path -Path $rootPath -ChildPath '.azuredevops\modulePipelines'
-    $adoPipelineFilesToUpdate = Get-ChildItem -Path $adoPipelineFolderPath -Filter 'ms.*.yml' -File -Force
-    Write-Verbose ('Update Azure DevOps pipeline files - Processing [{0}] file(s)' -f $adoPipelineFilesToUpdate.count)
-    if ($PSCmdlet.ShouldProcess(('[{0}] ms.*.yml file(s) in path [{1}]' -f $adoPipelineFilesToUpdate.Count, $adoPipelineFolderPath), 'Set-Content')) {
-        # parallelism is not supported on GitHub runners
-        #$adoPipelineFilesToUpdate | ForEach-Object -ThrottleLimit $env:NUMBER_OF_PROCESSORS -Parallel {
-        $adoPipelineFilesToUpdate | ForEach-Object {
-            $content = $_ | Get-Content
-            $content = $content -replace 'templateFilePath:(.*).bicep', 'templateFilePath:$1.json'
-            $_ | Set-Content -Value $content
+    if (Test-Path -Path $adoPipelineFolderPath) {
+        $adoPipelineFilesToUpdate = Get-ChildItem -Path $adoPipelineFolderPath -Filter 'ms.*.yml' -File -Force
+        Write-Verbose ('Update Azure DevOps pipeline files - Processing [{0}] file(s)' -f $adoPipelineFilesToUpdate.count)
+        if ($PSCmdlet.ShouldProcess(('[{0}] ms.*.yml file(s) in path [{1}]' -f $adoPipelineFilesToUpdate.Count, $adoPipelineFolderPath), 'Set-Content')) {
+            # parallelism is not supported on GitHub runners
+            #$adoPipelineFilesToUpdate | ForEach-Object -ThrottleLimit $env:NUMBER_OF_PROCESSORS -Parallel {
+            $adoPipelineFilesToUpdate | ForEach-Object {
+                $content = $_ | Get-Content
+                $content = $content -replace 'templateFilePath:(.*).bicep', 'templateFilePath:$1.json'
+                $_ | Set-Content -Value $content
+            }
         }
     }
 
