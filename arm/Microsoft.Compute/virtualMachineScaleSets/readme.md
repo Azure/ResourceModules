@@ -46,6 +46,7 @@ The following resources are required to be able to deploy this resource.
 | `enableAutomaticUpdates` | bool | `True` |  | Optional. Indicates whether Automatic Updates is enabled for the Windows virtual machine. Default value is true. For virtual machine scale sets, this property can be updated and updates will take effect on OS reprovisioning. |
 | `enableEvictionPolicy` | bool |  |  | Optional. Specifies the eviction policy for the low priority virtual machine. Will result in 'Deallocate' eviction policy. |
 | `enableServerSideEncryption` | bool |  |  | Optional. Specifies if Windows VM disks should be encrypted with Server-side encryption + Customer managed Key. |
+| `encryptionAtHost` | bool | `True` |  | Optional. This property can be used by user in the request to enable or disable the Host Encryption for the virtual machine scale set. This will enable the encryption for all the disks including Resource/Temp disk at host itself. For security reasons, it is recommended to set encryptionAtHost to True. Restrictions: Cannot be enabled if Azure Disk Encryption (guest-VM encryption using bitlocker/DM-Crypt) is enabled on your VM Scale sets. |
 | `extensionAntiMalwareConfig` | object | `{object}` |  | Optional. The configuration for the [Anti Malware] extension. Must at least contain the ["enabled": true] property to be executed |
 | `extensionCustomScriptConfig` | object | `{object}` |  | Optional. The configuration for the [Custom Script] extension. Must at least contain the ["enabled": true] property to be executed |
 | `extensionDependencyAgentConfig` | object | `{object}` |  | Optional. The configuration for the [Dependency Agent] extension. Must at least contain the ["enabled": true] property to be executed |
@@ -83,6 +84,8 @@ The following resources are required to be able to deploy this resource.
 | `scaleSetFaultDomain` | int | `2` |  | Optional. Fault Domain count for each placement group. |
 | `scheduledEventsProfile` | object | `{object}` |  | Optional. Specifies Scheduled Event related configurations |
 | `secrets` | array | `[]` |  | Optional. Specifies set of certificates that should be installed onto the virtual machines in the scale set. |
+| `securityType` | string |  | `TrustedLaunch` | Optional. Specifies the SecurityType of the virtual machine scale set. It is set as TrustedLaunch to enable UefiSettings. |
+| `secureBootEnabled` | bool |  `False`  | | Optional. Specifies whether secure boot should be enabled on the virtual machine scale set. This parameter is part of the UefiSettings. SecurityType should be set to TrustedLaunch to enable UefiSettings. |
 | `singlePlacementGroup` | bool | `True` |  | Optional. When true this limits the scale set to a single placement group, of max size 100 virtual machines. NOTE: If singlePlacementGroup is true, it may be modified to false. However, if singlePlacementGroup is false, it may not be modified to true. |
 | `skuCapacity` | int | `1` |  | Optional. The initial instance count of scale set VMs. |
 | `skuName` | string |  |  | Required. The SKU size of the VMs. |
@@ -94,6 +97,7 @@ The following resources are required to be able to deploy this resource.
 | `userAssignedIdentities` | object | `{object}` |  | Optional. The ID(s) to assign to the resource. |
 | `vmNamePrefix` | string | `vmssvm` |  | Optional. Specifies the computer name prefix for all of the virtual machines in the scale set. |
 | `vmPriority` | string | `Regular` | `[Regular, Low, Spot]` | Optional. Specifies the priority for the virtual machine. |
+| `vTpmEnabled` | bool | `False` |  | Optional. Specifies whether vTPM should be enabled on the virtual machine scale set. This parameter is part of the UefiSettings.  SecurityType should be set to TrustedLaunch to enable UefiSettings. |
 | `winRM` | object | `{object}` |  | Optional. Specifies the Windows Remote Management listeners. This enables remote Windows PowerShell. - WinRMConfiguration object. |
 | `zoneBalance` | bool |  |  | Optional. Whether to force strictly even Virtual Machine distribution cross x-zones in case there is zone outage. |
 
