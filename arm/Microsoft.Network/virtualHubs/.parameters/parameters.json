@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "sxx-az-vHub-x-001"
+            "value": "sxx-az-vhub-x-001"
         },
         "addressPrefix": {
             "value": "10.1.0.0/16"
