@@ -66,13 +66,6 @@ if ($ConvertChildren) {
 #region Remove existing deploy.json files
 Write-Verbose 'Remove existing deploy.json files'
 
-
-# Use case: New module is brought in and needs to be converted to json
-
-# Suggestion: Skip JSON
-# Suggestion: Provide path on the script on what to convert
-# Suggestion: Only remove if bicep exists
-
 if (Test-Path -Path (Join-Path -Path $armFolderPath -ChildPath 'deploy.bicep')) {
     $JsonFilesToRemove = Get-ChildItem -Path $armFolderPath -Filter 'deploy.json' -Recurse -Force -File
     Write-Verbose "Remove existing deploy.json files - Remove [$($JsonFilesToRemove.count)] file(s)"
