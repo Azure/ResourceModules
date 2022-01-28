@@ -3,7 +3,7 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "name": {
-      "value": "adp-sxx-az-vnet-x-vHub"
+      "value": "adp-sxx-az-vnet-x-vhub"
     },
     "addressPrefixes": {
       "value": [
