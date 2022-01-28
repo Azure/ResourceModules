@@ -91,7 +91,10 @@
                     "createOption": "Empty",
                     "diskSizeGB": "128",
                     "managedDisk": {
-                        "storageAccountType": "Premium_LRS"
+                        "storageAccountType": "Premium_LRS",
+                        "diskEncryptionSet": {
+                            "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Compute/diskEncryptionSets/adp-sxx-az-des-x-001"
+                        }
                     }
                 }
             ]

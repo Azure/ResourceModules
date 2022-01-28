@@ -140,7 +140,7 @@ This module deploys one Virtual Machine with one or multiple nics and optionally
             "storageAccountType": "Premium_LRS",
              "diskEncryptionSet": {
                         "id": "/subscriptions/<subscriptionId>/resourceGroups/<resourceGroupName>/providers/Microsoft.Compute/diskEncryptionSets/<desName>"
-                    }
+              }
         }
     }
 }

@@ -144,7 +144,10 @@ The following resources are required to be able to deploy this resource.
         "createOption": "fromImage",
         "diskSizeGB": "128",
         "managedDisk": {
-            "storageAccountType": "Premium_LRS"
+            "storageAccountType": "Premium_LRS",
+            "diskEncryptionSet": {
+                        "id": "/subscriptions/<subscriptionId>/resourceGroups/<resourceGroupName>/providers/Microsoft.Compute/diskEncryptionSets/<desName>"
+              }
         }
     }
 }
