@@ -50,6 +50,27 @@ param enableRequestBuffering bool = false
 @description('Optional. Enable response buffering.')
 param enableResponseBuffering bool = false
 
+@description('Optional. Http listeners of the application gateway resource.')
+param httpListeners array = []
+
+@description('Optional. Load distribution policies of the application gateway resource.')
+param loadDistributionPolicies array = []
+
+@description('Optional. PrivateLink configurations on application gateway.')
+param privateLinkConfigurations array = []
+
+@description('Optional. Probes of the application gateway resource.')
+param probes array = []
+
+@description('Optional. Redirect configurations of the application gateway resource.')
+param redirectConfigurations array = []
+
+@description('Optional. Request routing rules of the application gateway resource.')
+param requestRoutingRules array = []
+
+@description('Optional. Rewrite rules for the application gateway resource.	')
+param rewriteRuleSets array = []
+
 @description('Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.')
 @minValue(0)
 @maxValue(365)
@@ -162,209 +183,13 @@ resource applicationGateway 'Microsoft.Network/applicationGateways@2021-05-01' =
       enableRequestBuffering: enableRequestBuffering
       enableResponseBuffering: enableResponseBuffering
     }
-    httpListeners: [
-      {
-        id: 'string'
-        name: 'string'
-        properties: {
-          customErrorConfigurations: [
-            {
-              customErrorPageUrl: 'string'
-              statusCode: 'string'
-            }
-          ]
-          firewallPolicy: {
-            id: 'string'
-          }
-          frontendIPConfiguration: {
-            id: 'string'
-          }
-          frontendPort: {
-            id: 'string'
-          }
-          hostName: 'string'
-          hostNames: [
-            'string'
-          ]
-          protocol: 'string'
-          requireServerNameIndication: bool
-          sslCertificate: {
-            id: 'string'
-          }
-          sslProfile: {
-            id: 'string'
-          }
-        }
-      }
-    ]
-    loadDistributionPolicies: [
-      {
-        id: 'string'
-        name: 'string'
-        properties: {
-          loadDistributionAlgorithm: 'string'
-          loadDistributionTargets: [
-            {
-              id: 'string'
-              name: 'string'
-              properties: {
-                backendAddressPool: {
-                  id: 'string'
-                }
-                weightPerServer: int
-              }
-            }
-          ]
-        }
-      }
-    ]
-    privateLinkConfigurations: [
-      {
-        id: 'string'
-        name: 'string'
-        properties: {
-          ipConfigurations: [
-            {
-              id: 'string'
-              name: 'string'
-              properties: {
-                primary: bool
-                privateIPAddress: 'string'
-                privateIPAllocationMethod: 'string'
-                subnet: {
-                  id: 'string'
-                }
-              }
-            }
-          ]
-        }
-      }
-    ]
-    probes: [
-      {
-        id: 'string'
-        name: 'string'
-        properties: {
-          host: 'string'
-          interval: int
-          match: {
-            body: 'string'
-            statusCodes: [
-              'string'
-            ]
-          }
-          minServers: int
-          path: 'string'
-          pickHostNameFromBackendHttpSettings: bool
-          port: int
-          protocol: 'string'
-          timeout: int
-          unhealthyThreshold: int
-        }
-      }
-    ]
-    redirectConfigurations: [
-      {
-        id: 'string'
-        name: 'string'
-        properties: {
-          includePath: bool
-          includeQueryString: bool
-          pathRules: [
-            {
-              id: 'string'
-            }
-          ]
-          redirectType: 'string'
-          requestRoutingRules: [
-            {
-              id: 'string'
-            }
-          ]
-          targetListener: {
-            id: 'string'
-          }
-          targetUrl: 'string'
-          urlPathMaps: [
-            {
-              id: 'string'
-            }
-          ]
-        }
-      }
-    ]
-    requestRoutingRules: [
-      {
-        id: 'string'
-        name: 'string'
-        properties: {
-          backendAddressPool: {
-            id: 'string'
-          }
-          backendHttpSettings: {
-            id: 'string'
-          }
-          httpListener: {
-            id: 'string'
-          }
-          loadDistributionPolicy: {
-            id: 'string'
-          }
-          priority: int
-          redirectConfiguration: {
-            id: 'string'
-          }
-          rewriteRuleSet: {
-            id: 'string'
-          }
-          ruleType: 'string'
-          urlPathMap: {
-            id: 'string'
-          }
-        }
-      }
-    ]
-    rewriteRuleSets: [
-      {
-        id: 'string'
-        name: 'string'
-        properties: {
-          rewriteRules: [
-            {
-              actionSet: {
-                requestHeaderConfigurations: [
-                  {
-                    headerName: 'string'
-                    headerValue: 'string'
-                  }
-                ]
-                responseHeaderConfigurations: [
-                  {
-                    headerName: 'string'
-                    headerValue: 'string'
-                  }
-                ]
-                urlConfiguration: {
-                  modifiedPath: 'string'
-                  modifiedQueryString: 'string'
-                  reroute: bool
-                }
-              }
-              conditions: [
-                {
-                  ignoreCase: bool
-                  negate: bool
-                  pattern: 'string'
-                  variable: 'string'
-                }
-              ]
-              name: 'string'
-              ruleSequence: int
-            }
-          ]
-        }
-      }
-    ]
+    httpListeners: httpListeners
+    loadDistributionPolicies: loadDistributionPolicies
+    privateLinkConfigurations: privateLinkConfigurations
+    probes: probes
+    redirectConfigurations: redirectConfigurations
+    requestRoutingRules: requestRoutingRules
+    rewriteRuleSets: rewriteRuleSets
     sku: {
       capacity: int
       name: 'string'
