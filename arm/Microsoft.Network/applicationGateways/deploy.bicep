@@ -1,81 +1,8 @@
-@description('Required. The name to be used for the Application Gateway.')
+@description('Required. Name of the Application Gateway.')
+@maxLength(24)
 param name string
 
-@description('Optional. The name of the SKU for the Application Gateway.')
-@allowed([
-  'Standard_Small'
-  'Standard_Medium'
-  'Standard_Large'
-  'WAF_Medium'
-  'WAF_Large'
-  'Standard_v2'
-  'WAF_v2'
-])
-param sku string = 'WAF_Medium'
-
-@description('Optional. The number of Application instances to be configured.')
-@minValue(1)
-@maxValue(10)
-param capacity int = 2
-
-@description('Optional. Enables HTTP/2 support.')
-param http2Enabled bool = true
-
-@description('Required. PublicIP Resource ID used in Public Frontend.')
-param frontendPublicIpResourceId string
-
-@metadata({
-  description: 'Optional. The private IP within the Application Gateway subnet to be used as frontend private address.'
-  limitations: 'The IP must be available in the configured subnet. If empty, allocation method will be set to dynamic. Once a method (static or dynamic) has been configured, it cannot be changed'
-})
-param frontendPrivateIpAddress string = ''
-
-@description('Required. The name of the Virtual Network where the Application Gateway will be deployed.')
-param vNetName string
-
-@description('Required. The name of Gateway Subnet Name where the Application Gateway will be deployed.')
-param subnetName string
-
-@description('Optional. The name of the Virtual Network Resource Group where the Application Gateway will be deployed.')
-param vNetResourceGroup string = resourceGroup().name
-
-@description('Optional. The Subscription ID of the Virtual Network where the Application Gateway will be deployed.')
-param vNetSubscriptionId string = subscription().subscriptionId
-
-@description('Optional. The ID(s) to assign to the resource.')
-param userAssignedIdentities object = {}
-
-@description('Optional. Application Gateway IP configuration name.')
-param gatewayIpConfigurationName string = 'gatewayIpConfiguration01'
-
-@description('Optional. SSL certificate reference name for a certificate stored in the Key Vault to configure the HTTPS listeners.')
-param sslCertificateName string = 'sslCertificate01'
-
-@description('Optional. Secret ID of the SSL certificate stored in the Key Vault that will be used to configure the HTTPS listeners.')
-param sslCertificateKeyVaultSecretId string = ''
-
-@description('Required. The backend pools to be configured.')
-param backendPools array
-
-@description('Required. The backend HTTP settings to be configured. These HTTP settings will be used to rewrite the incoming HTTP requests for the backend pools.')
-param backendHttpConfigurations array
-
-@description('Optional. The backend HTTP settings probes to be configured.')
-param probes array = []
-
-@description('Required. The frontend http listeners to be configured.')
-param frontendHttpListeners array = []
-
-@description('Required. The frontend HTTPS listeners to be configured.')
-param frontendHttpsListeners array = []
-
-@description('Optional. The http redirects to be configured. Each redirect will route http traffic to a predefined frontEnd HTTPS listener.')
-param frontendHttpRedirects array = []
-
-@description('Required. The routing rules to be configured. These rules will be used to route requests from frontend listeners to backend pools using a backend HTTP configuration.')
-param routingRules array
-
-@description('Optional. Location for all Resources.')
+@description('Optional. Location for all resources.')
 param location string = resourceGroup().location
 
 @description('Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.')
@@ -83,34 +10,17 @@ param location string = resourceGroup().location
 @maxValue(365)
 param diagnosticLogsRetentionInDays int = 365
 
-@description('Optional. Resource ID of the diagnostic storage account.')
+@description('Optional. Resource ID of the diagnostic storage account. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub')
 param diagnosticStorageAccountId string = ''
 
-@description('Optional. Resource ID of the diagnostic log analytics workspace.')
+@description('Optional. Resource ID of the diagnostic log analytics workspace. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub')
 param diagnosticWorkspaceId string = ''
 
-@description('Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.')
+@description('Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. ')
 param diagnosticEventHubAuthorizationRuleId string = ''
 
-@description('Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.')
+@description('Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub')
 param diagnosticEventHubName string = ''
-
-@allowed([
-  'CanNotDelete'
-  'NotSpecified'
-  'ReadOnly'
-])
-@description('Optional. Specify the type of lock.')
-param lock string = 'NotSpecified'
-
-@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'')
-param roleAssignments array = []
-
-@description('Optional. Tags of the resource.')
-param tags object = {}
-
-@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered.')
-param cuaId string = ''
 
 @description('Optional. The name of logs that will be streamed.')
 @allowed([
@@ -151,244 +61,510 @@ var diagnosticsMetrics = [for metric in metricsToEnable: {
   }
 }]
 
-var applicationGatewayResourceId = az.resourceId('Microsoft.Network/applicationGateways', name)
-var subnetResourceId = az.resourceId(vNetSubscriptionId, vNetResourceGroup, 'Microsoft.Network/virtualNetworks/subnets', vNetName, subnetName)
-var frontendPublicIPConfigurationName = 'public'
-var frontendPrivateIPConfigurationName = 'private'
-var frontendPrivateIPDynamicConfiguration = {
-  privateIPAllocationMethod: 'Dynamic'
-  subnet: {
-    id: subnetResourceId
-  }
-}
-var frontendPrivateIPStaticConfiguration = {
-  privateIPAllocationMethod: 'Static'
-  privateIPAddress: frontendPrivateIpAddress
-  subnet: {
-    id: subnetResourceId
-  }
-}
-var redirectConfigurationsHttpRedirectNamePrefix = 'httpRedirect'
-var httpListenerhttpRedirectNamePrefix = 'httpRedirect'
-var requestRoutingRuleHttpRedirectNamePrefix = 'httpRedirect'
-var wafConfiguration = {
-  enabled: true
-  firewallMode: 'Detection'
-  ruleSetType: 'OWASP'
-  ruleSetVersion: '3.0'
-  disabledRuleGroups: []
-  requestBodyCheck: true
-  maxRequestBodySizeInKb: '128'
-}
-var sslCertificates = [
-  {
-    name: sslCertificateName
-    properties: {
-      keyVaultSecretId: sslCertificateKeyVaultSecretId
-    }
-  }
-]
-var frontendPorts = concat((empty(frontendHttpListeners) ? frontendHttpListeners : frontendHttpPorts), (empty(frontendHttpsListeners) ? frontendHttpsListeners : frontendHttpsPorts), (empty(frontendHttpRedirects) ? frontendHttpRedirects : frontendHttpRedirectPorts))
-var httpListeners = concat((empty(frontendHttpListeners) ? frontendHttpListeners : frontendHttpListeners_var), (empty(frontendHttpsListeners) ? frontendHttpsListeners : frontendHttpsListeners_var), (empty(frontendHttpRedirects) ? frontendHttpRedirects : frontendHttpRedirects_var))
-var redirectConfigurations = (empty(frontendHttpRedirects) ? frontendHttpRedirects : httpRedirectConfigurations)
-var requestRoutingRules = concat(httpsRequestRoutingRules, (empty(frontendHttpRedirects) ? frontendHttpRedirects : httpRequestRoutingRules))
+@allowed([
+  'CanNotDelete'
+  'NotSpecified'
+  'ReadOnly'
+])
+@description('Optional. Specify the type of lock.')
+param lock string = 'NotSpecified'
 
-var identityType = !empty(userAssignedIdentities) ? 'UserAssigned' : 'None'
+@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'')
+param roleAssignments array = []
 
-var identity = identityType != 'None' ? {
-  type: identityType
-  userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
-} : null
+@description('Optional. Resource tags.')
+param tags object = {}
 
-var backendAddressPools = [for backendPool in backendPools: {
-  name: backendPool.backendPoolName
-  type: 'Microsoft.Network/applicationGateways/backendAddressPools'
-  properties: {
-    backendAddresses: contains(backendPool, 'BackendAddresses') ? backendPool.BackendAddresses : []
-  }
-}]
-var probes_var = [for probe in probes: {
-  name: '${probe.backendHttpConfigurationName}Probe'
-  type: 'Microsoft.Network/applicationGateways/probes'
-  properties: {
-    protocol: probe.protocol
-    host: probe.host
-    path: probe.path
-    interval: contains(probe, 'interval') ? probe.interval : 30
-    timeout: contains(probe, 'timeout') ? probe.timeout : 30
-    unhealthyThreshold: contains(probe, 'timeout') ? probe.unhealthyThreshold : 3
-    minServers: contains(probe, 'timeout') ? probe.minServers : 0
-    match: {
-      body: contains(probe, 'timeout') ? probe.body : ''
-      statusCodes: probe.statusCodes
-    }
-  }
-}]
-var backendHttpConfigurations_var = [for backendHttpConfiguration in backendHttpConfigurations: {
-  name: backendHttpConfiguration.backendHttpConfigurationName
-  properties: {
-    port: backendHttpConfiguration.port
-    protocol: backendHttpConfiguration.protocol
-    cookieBasedAffinity: backendHttpConfiguration.cookieBasedAffinity
-    pickHostNameFromBackendAddress: backendHttpConfiguration.pickHostNameFromBackendAddress
-    probeEnabled: backendHttpConfiguration.probeEnabled
-    probe: bool(backendHttpConfiguration.probeEnabled) ? json('{"id": "${applicationGatewayResourceId}/probes/${backendHttpConfiguration.backendHttpConfigurationName}Probe"}') : null
-  }
-}]
-var frontendHttpsPorts = [for frontendHttpsListener in frontendHttpsListeners: {
-  name: 'port${frontendHttpsListener.port}'
-  properties: {
-    Port: frontendHttpsListener.port
-  }
-}]
-var frontendHttpsListeners_var = [for frontendHttpsListener in frontendHttpsListeners: {
-  name: frontendHttpsListener.frontendListenerName
-  properties: {
-    FrontendIPConfiguration: {
-      id: '${applicationGatewayResourceId}/frontendIPConfigurations/${frontendHttpsListener.frontendIPType}'
-    }
-    FrontendPort: {
-      id: '${applicationGatewayResourceId}/frontendPorts/port${frontendHttpsListener.port}'
-    }
-    Protocol: 'https'
-    SslCertificate: {
-      id: '${applicationGatewayResourceId}/sslCertificates/${sslCertificateName}'
-    }
-  }
-}]
-var frontendHttpPorts = [for frontendHttpListener in frontendHttpListeners: {
-  name: 'port${frontendHttpListener.port}'
-  properties: {
-    Port: frontendHttpListener.port
-  }
-}]
-var frontendHttpListeners_var = [for frontendHttpListener in frontendHttpListeners: {
-  name: frontendHttpListener.frontendListenerName
-  properties: {
-    FrontendIPConfiguration: {
-      id: '${applicationGatewayResourceId}/frontendIPConfigurations/${frontendHttpListener.frontendIPType}'
-    }
-    FrontendPort: {
-      id: '${applicationGatewayResourceId}/frontendPorts/port${frontendHttpListener.port}'
-    }
-    Protocol: 'http'
-  }
-}]
-var httpsRequestRoutingRules = [for routingRule in routingRules: {
-  name: '${routingRule.frontendListenerName}-${routingRule.backendHttpConfigurationName}-${routingRule.backendHttpConfigurationName}'
-  properties: {
-    RuleType: 'Basic'
-    httpListener: {
-      id: '${applicationGatewayResourceId}/httpListeners/${routingRule.frontendListenerName}'
-    }
-    backendAddressPool: {
-      id: '${applicationGatewayResourceId}/backendAddressPools/${routingRule.backendPoolName}'
-    }
-    backendHttpSettings: {
-      id: '${applicationGatewayResourceId}/backendHttpSettingsCollection/${routingRule.backendHttpConfigurationName}'
-    }
-  }
-}]
-var frontendHttpRedirectPorts = [for frontendHttpRedirect in frontendHttpRedirects: {
-  name: 'port${frontendHttpRedirect.port}'
-  properties: {
-    Port: frontendHttpRedirect.port
-  }
-}]
-var frontendHttpRedirects_var = [for frontendHttpRedirect in frontendHttpRedirects: {
-  name: '${httpListenerhttpRedirectNamePrefix}${frontendHttpRedirect.port}'
-  properties: {
-    FrontendIPConfiguration: {
-      id: '${applicationGatewayResourceId}/frontendIPConfigurations/${frontendHttpRedirect.frontendIPType}'
-    }
-    FrontendPort: {
-      id: '${applicationGatewayResourceId}/frontendPorts/port${frontendHttpRedirect.port}'
-    }
-    Protocol: 'http'
-  }
-}]
-var httpRequestRoutingRules = [for frontendHttpRedirect in frontendHttpRedirects: {
-  name: '${requestRoutingRuleHttpRedirectNamePrefix}${frontendHttpRedirect.port}-${frontendHttpRedirect.frontendListenerName}'
-  properties: {
-    RuleType: 'Basic'
-    httpListener: {
-      id: '${applicationGatewayResourceId}/httpListeners/${httpListenerhttpRedirectNamePrefix}${frontendHttpRedirect.port}'
-    }
-    redirectConfiguration: {
-      id: '${applicationGatewayResourceId}/redirectConfigurations/${redirectConfigurationsHttpRedirectNamePrefix}${frontendHttpRedirect.port}'
-    }
-  }
-}]
-var httpRedirectConfigurations = [for frontendHttpRedirect in frontendHttpRedirects: {
-  name: '${redirectConfigurationsHttpRedirectNamePrefix}${frontendHttpRedirect.port}'
-  properties: {
-    redirectType: 'Permanent'
-    includePath: true
-    includeQueryString: true
-    requestRoutingRules: [
-      {
-        id: '${applicationGatewayResourceId}/requestRoutingRules/${requestRoutingRuleHttpRedirectNamePrefix}${frontendHttpRedirect.port}-${frontendHttpRedirect.frontendListenerName}'
-      }
-    ]
-    targetListener: {
-      id: '${applicationGatewayResourceId}/httpListeners/${frontendHttpRedirect.frontendListenerName}'
-    }
-  }
-}]
+@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
+param cuaId string = ''
 
 module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   name: 'pid-${cuaId}'
   params: {}
 }
 
-resource applicationGateway 'Microsoft.Network/applicationGateways@2021-03-01' = {
+resource applicationGateway 'Microsoft.Network/applicationGateways@2021-05-01' = {
   name: name
   location: location
-  identity: identity
   tags: tags
+  identity: {
+    type: 'string'
+    userAssignedIdentities: {}
+  }
   properties: {
-    sku: {
-      name: sku
-      tier: endsWith(sku, 'v2') ? sku : substring(sku, 0, indexOf(sku, '_'))
-      capacity: capacity
-    }
-    gatewayIPConfigurations: [
+    authenticationCertificates: [
       {
-        name: gatewayIpConfigurationName
+        id: 'string'
+        name: 'string'
         properties: {
-          subnet: {
-            id: subnetResourceId
-          }
+          data: 'string'
         }
       }
     ]
+    autoscaleConfiguration: {
+      maxCapacity: int
+      minCapacity: int
+    }
+    backendAddressPools: [
+      {
+        id: 'string'
+        name: 'string'
+        properties: {
+          backendAddresses: [
+            {
+              fqdn: 'string'
+              ipAddress: 'string'
+            }
+          ]
+        }
+      }
+    ]
+    backendHttpSettingsCollection: [
+      {
+        id: 'string'
+        name: 'string'
+        properties: {
+          affinityCookieName: 'string'
+          authenticationCertificates: [
+            {
+              id: 'string'
+            }
+          ]
+          connectionDraining: {
+            drainTimeoutInSec: int
+            enabled: bool
+          }
+          cookieBasedAffinity: 'string'
+          hostName: 'string'
+          path: 'string'
+          pickHostNameFromBackendAddress: bool
+          port: int
+          probe: {
+            id: 'string'
+          }
+          probeEnabled: bool
+          protocol: 'string'
+          requestTimeout: int
+          trustedRootCertificates: [
+            {
+              id: 'string'
+            }
+          ]
+        }
+      }
+    ]
+    customErrorConfigurations: [
+      {
+        customErrorPageUrl: 'string'
+        statusCode: 'string'
+      }
+    ]
+    enableFips: bool
+    enableHttp2: bool
+    firewallPolicy: {
+      id: 'string'
+    }
+    forceFirewallPolicyAssociation: bool
     frontendIPConfigurations: [
       {
-        name: frontendPrivateIPConfigurationName
-        type: 'Microsoft.Network/applicationGateways/frontendIPConfigurations'
-        properties: empty(frontendPrivateIpAddress) ? frontendPrivateIPDynamicConfiguration : frontendPrivateIPStaticConfiguration
-      }
-      {
-        name: frontendPublicIPConfigurationName
+        id: 'string'
+        name: 'string'
         properties: {
+          privateIPAddress: 'string'
+          privateIPAllocationMethod: 'string'
+          privateLinkConfiguration: {
+            id: 'string'
+          }
           publicIPAddress: {
-            id: frontendPublicIpResourceId
+            id: 'string'
+          }
+          subnet: {
+            id: 'string'
           }
         }
       }
     ]
-    sslCertificates: empty(sslCertificateKeyVaultSecretId) ? null : sslCertificates
-    backendAddressPools: backendAddressPools
-    probes: probes_var
-    backendHttpSettingsCollection: backendHttpConfigurations_var
-    frontendPorts: frontendPorts
-    httpListeners: httpListeners
-    redirectConfigurations: redirectConfigurations
-    requestRoutingRules: requestRoutingRules
-    enableHttp2: http2Enabled
-    webApplicationFirewallConfiguration: startsWith(sku, 'WAF') ? wafConfiguration : null
+    frontendPorts: [
+      {
+        id: 'string'
+        name: 'string'
+        properties: {
+          port: int
+        }
+      }
+    ]
+    gatewayIPConfigurations: [
+      {
+        id: 'string'
+        name: 'string'
+        properties: {
+          subnet: {
+            id: 'string'
+          }
+        }
+      }
+    ]
+    globalConfiguration: {
+      enableRequestBuffering: bool
+      enableResponseBuffering: bool
+    }
+    httpListeners: [
+      {
+        id: 'string'
+        name: 'string'
+        properties: {
+          customErrorConfigurations: [
+            {
+              customErrorPageUrl: 'string'
+              statusCode: 'string'
+            }
+          ]
+          firewallPolicy: {
+            id: 'string'
+          }
+          frontendIPConfiguration: {
+            id: 'string'
+          }
+          frontendPort: {
+            id: 'string'
+          }
+          hostName: 'string'
+          hostNames: [
+            'string'
+          ]
+          protocol: 'string'
+          requireServerNameIndication: bool
+          sslCertificate: {
+            id: 'string'
+          }
+          sslProfile: {
+            id: 'string'
+          }
+        }
+      }
+    ]
+    loadDistributionPolicies: [
+      {
+        id: 'string'
+        name: 'string'
+        properties: {
+          loadDistributionAlgorithm: 'string'
+          loadDistributionTargets: [
+            {
+              id: 'string'
+              name: 'string'
+              properties: {
+                backendAddressPool: {
+                  id: 'string'
+                }
+                weightPerServer: int
+              }
+            }
+          ]
+        }
+      }
+    ]
+    privateLinkConfigurations: [
+      {
+        id: 'string'
+        name: 'string'
+        properties: {
+          ipConfigurations: [
+            {
+              id: 'string'
+              name: 'string'
+              properties: {
+                primary: bool
+                privateIPAddress: 'string'
+                privateIPAllocationMethod: 'string'
+                subnet: {
+                  id: 'string'
+                }
+              }
+            }
+          ]
+        }
+      }
+    ]
+    probes: [
+      {
+        id: 'string'
+        name: 'string'
+        properties: {
+          host: 'string'
+          interval: int
+          match: {
+            body: 'string'
+            statusCodes: [
+              'string'
+            ]
+          }
+          minServers: int
+          path: 'string'
+          pickHostNameFromBackendHttpSettings: bool
+          port: int
+          protocol: 'string'
+          timeout: int
+          unhealthyThreshold: int
+        }
+      }
+    ]
+    redirectConfigurations: [
+      {
+        id: 'string'
+        name: 'string'
+        properties: {
+          includePath: bool
+          includeQueryString: bool
+          pathRules: [
+            {
+              id: 'string'
+            }
+          ]
+          redirectType: 'string'
+          requestRoutingRules: [
+            {
+              id: 'string'
+            }
+          ]
+          targetListener: {
+            id: 'string'
+          }
+          targetUrl: 'string'
+          urlPathMaps: [
+            {
+              id: 'string'
+            }
+          ]
+        }
+      }
+    ]
+    requestRoutingRules: [
+      {
+        id: 'string'
+        name: 'string'
+        properties: {
+          backendAddressPool: {
+            id: 'string'
+          }
+          backendHttpSettings: {
+            id: 'string'
+          }
+          httpListener: {
+            id: 'string'
+          }
+          loadDistributionPolicy: {
+            id: 'string'
+          }
+          priority: int
+          redirectConfiguration: {
+            id: 'string'
+          }
+          rewriteRuleSet: {
+            id: 'string'
+          }
+          ruleType: 'string'
+          urlPathMap: {
+            id: 'string'
+          }
+        }
+      }
+    ]
+    rewriteRuleSets: [
+      {
+        id: 'string'
+        name: 'string'
+        properties: {
+          rewriteRules: [
+            {
+              actionSet: {
+                requestHeaderConfigurations: [
+                  {
+                    headerName: 'string'
+                    headerValue: 'string'
+                  }
+                ]
+                responseHeaderConfigurations: [
+                  {
+                    headerName: 'string'
+                    headerValue: 'string'
+                  }
+                ]
+                urlConfiguration: {
+                  modifiedPath: 'string'
+                  modifiedQueryString: 'string'
+                  reroute: bool
+                }
+              }
+              conditions: [
+                {
+                  ignoreCase: bool
+                  negate: bool
+                  pattern: 'string'
+                  variable: 'string'
+                }
+              ]
+              name: 'string'
+              ruleSequence: int
+            }
+          ]
+        }
+      }
+    ]
+    sku: {
+      capacity: int
+      name: 'string'
+      tier: 'string'
+    }
+    sslCertificates: [
+      {
+        id: 'string'
+        name: 'string'
+        properties: {
+          data: 'string'
+          keyVaultSecretId: 'string'
+          password: 'string'
+        }
+      }
+    ]
+    sslPolicy: {
+      cipherSuites: [
+        'string'
+      ]
+      disabledSslProtocols: [
+        'string'
+      ]
+      minProtocolVersion: 'string'
+      policyName: 'string'
+      policyType: 'string'
+    }
+    sslProfiles: [
+      {
+        id: 'string'
+        name: 'string'
+        properties: {
+          clientAuthConfiguration: {
+            verifyClientCertIssuerDN: bool
+          }
+          sslPolicy: {
+            cipherSuites: [
+              'string'
+            ]
+            disabledSslProtocols: [
+              'string'
+            ]
+            minProtocolVersion: 'string'
+            policyName: 'string'
+            policyType: 'string'
+          }
+          trustedClientCertificates: [
+            {
+              id: 'string'
+            }
+          ]
+        }
+      }
+    ]
+    trustedClientCertificates: [
+      {
+        id: 'string'
+        name: 'string'
+        properties: {
+          data: 'string'
+        }
+      }
+    ]
+    trustedRootCertificates: [
+      {
+        id: 'string'
+        name: 'string'
+        properties: {
+          data: 'string'
+          keyVaultSecretId: 'string'
+        }
+      }
+    ]
+    urlPathMaps: [
+      {
+        id: 'string'
+        name: 'string'
+        properties: {
+          defaultBackendAddressPool: {
+            id: 'string'
+          }
+          defaultBackendHttpSettings: {
+            id: 'string'
+          }
+          defaultLoadDistributionPolicy: {
+            id: 'string'
+          }
+          defaultRedirectConfiguration: {
+            id: 'string'
+          }
+          defaultRewriteRuleSet: {
+            id: 'string'
+          }
+          pathRules: [
+            {
+              id: 'string'
+              name: 'string'
+              properties: {
+                backendAddressPool: {
+                  id: 'string'
+                }
+                backendHttpSettings: {
+                  id: 'string'
+                }
+                firewallPolicy: {
+                  id: 'string'
+                }
+                loadDistributionPolicy: {
+                  id: 'string'
+                }
+                paths: [
+                  'string'
+                ]
+                redirectConfiguration: {
+                  id: 'string'
+                }
+                rewriteRuleSet: {
+                  id: 'string'
+                }
+              }
+            }
+          ]
+        }
+      }
+    ]
+    webApplicationFirewallConfiguration: {
+      disabledRuleGroups: [
+        {
+          ruleGroupName: 'string'
+          rules: [
+            int
+          ]
+        }
+      ]
+      enabled: bool
+      exclusions: [
+        {
+          matchVariable: 'string'
+          selector: 'string'
+          selectorMatchOperator: 'string'
+        }
+      ]
+      fileUploadLimitInMb: int
+      firewallMode: 'string'
+      maxRequestBodySize: int
+      maxRequestBodySizeInKb: int
+      requestBodyCheck: bool
+      ruleSetType: 'string'
+      ruleSetVersion: 'string'
+    }
   }
-  dependsOn: []
+  zones: [
+    'string'
+  ]
 }
 
 resource applicationGateway_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
