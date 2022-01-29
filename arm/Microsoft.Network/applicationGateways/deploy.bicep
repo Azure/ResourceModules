@@ -5,6 +5,51 @@ param name string
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
 
+@description('Optional. The ID(s) to assign to the resource.')
+param userAssignedIdentities object = {}
+
+@description('Optional. Authentication certificates of the application gateway resource.')
+param authenticationCertificates array = []
+
+@description('Optional. Upper bound on number of Application Gateway capacity.')
+param autoscaleMaxCapacity int = 10
+
+@description('Optional. Lower bound on number of Application Gateway capacity.')
+param autoscaleMinCapacity int = 0
+
+@description('Optional. Backend address pool of the application gateway resource.')
+param backendAddressPools array = []
+
+@description('Optional. Backend http settings of the application gateway resource.')
+param backendHttpSettingsCollection array = []
+
+@description('Optional. Custom error configurations of the application gateway resource.')
+param customErrorConfigurations array = []
+
+@description('Optional. Whether FIPS is enabled on the application gateway resource.')
+param enableFips bool = false
+
+@description('Optional. Whether HTTP2 is enabled on the application gateway resource.')
+param enableHttp2 bool = false
+
+@description('Optional. The resource Id of an associated firewall policy.')
+param firewallPolicyId string = ''
+
+@description('Optional. Frontend IP addresses of the application gateway resource.')
+param frontendIPConfigurations array = []
+
+@description('Optional. Frontend ports of the application gateway resource.')
+param frontendPorts array = []
+
+@description('Optional. Subnets of the application gateway resource.')
+param gatewayIPConfigurations array = []
+
+@description('Optional. Enable request buffering.')
+param enableRequestBuffering bool = false
+
+@description('Optional. Enable response buffering.')
+param enableResponseBuffering bool = false
+
 @description('Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.')
 @minValue(0)
 @maxValue(365)
@@ -41,6 +86,13 @@ param logsToEnable array = [
 param metricsToEnable array = [
   'AllMetrics'
 ]
+
+var identityType = !empty(userAssignedIdentities) ? 'UserAssigned' : 'None'
+
+var identity = identityType != 'None' ? {
+  type: identityType
+  userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
+} : null
 
 var diagnosticsLogs = [for log in logsToEnable: {
   category: log
@@ -87,126 +139,28 @@ resource applicationGateway 'Microsoft.Network/applicationGateways@2021-05-01' =
   name: name
   location: location
   tags: tags
-  identity: {
-    type: 'string'
-    userAssignedIdentities: {}
-  }
+  identity: identity
   properties: {
-    authenticationCertificates: [
-      {
-        id: 'string'
-        name: 'string'
-        properties: {
-          data: 'string'
-        }
-      }
-    ]
+    authenticationCertificates: authenticationCertificates
     autoscaleConfiguration: {
-      maxCapacity: int
-      minCapacity: int
+      maxCapacity: autoscaleMaxCapacity
+      minCapacity: autoscaleMinCapacity
     }
-    backendAddressPools: [
-      {
-        id: 'string'
-        name: 'string'
-        properties: {
-          backendAddresses: [
-            {
-              fqdn: 'string'
-              ipAddress: 'string'
-            }
-          ]
-        }
-      }
-    ]
-    backendHttpSettingsCollection: [
-      {
-        id: 'string'
-        name: 'string'
-        properties: {
-          affinityCookieName: 'string'
-          authenticationCertificates: [
-            {
-              id: 'string'
-            }
-          ]
-          connectionDraining: {
-            drainTimeoutInSec: int
-            enabled: bool
-          }
-          cookieBasedAffinity: 'string'
-          hostName: 'string'
-          path: 'string'
-          pickHostNameFromBackendAddress: bool
-          port: int
-          probe: {
-            id: 'string'
-          }
-          probeEnabled: bool
-          protocol: 'string'
-          requestTimeout: int
-          trustedRootCertificates: [
-            {
-              id: 'string'
-            }
-          ]
-        }
-      }
-    ]
-    customErrorConfigurations: [
-      {
-        customErrorPageUrl: 'string'
-        statusCode: 'string'
-      }
-    ]
-    enableFips: bool
-    enableHttp2: bool
-    firewallPolicy: {
-      id: 'string'
-    }
-    forceFirewallPolicyAssociation: bool
-    frontendIPConfigurations: [
-      {
-        id: 'string'
-        name: 'string'
-        properties: {
-          privateIPAddress: 'string'
-          privateIPAllocationMethod: 'string'
-          privateLinkConfiguration: {
-            id: 'string'
-          }
-          publicIPAddress: {
-            id: 'string'
-          }
-          subnet: {
-            id: 'string'
-          }
-        }
-      }
-    ]
-    frontendPorts: [
-      {
-        id: 'string'
-        name: 'string'
-        properties: {
-          port: int
-        }
-      }
-    ]
-    gatewayIPConfigurations: [
-      {
-        id: 'string'
-        name: 'string'
-        properties: {
-          subnet: {
-            id: 'string'
-          }
-        }
-      }
-    ]
+    backendAddressPools: backendAddressPools
+    backendHttpSettingsCollection: backendHttpSettingsCollection
+    customErrorConfigurations: customErrorConfigurations
+    enableFips: enableFips
+    enableHttp2: enableHttp2
+    firewallPolicy: empty(firewallPolicyId) ? {
+      id: firewallPolicyId
+    } : null
+    forceFirewallPolicyAssociation: !empty(firewallPolicyId)
+    frontendIPConfigurations: frontendIPConfigurations
+    frontendPorts: frontendPorts
+    gatewayIPConfigurations: gatewayIPConfigurations
     globalConfiguration: {
-      enableRequestBuffering: bool
-      enableResponseBuffering: bool
+      enableRequestBuffering: enableRequestBuffering
+      enableResponseBuffering: enableResponseBuffering
     }
     httpListeners: [
       {
