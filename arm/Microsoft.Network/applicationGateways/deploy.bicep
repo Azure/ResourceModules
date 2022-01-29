@@ -71,6 +71,112 @@ param requestRoutingRules array = []
 @description('Optional. Rewrite rules for the application gateway resource.	')
 param rewriteRuleSets array = []
 
+@description('Optional. The name of the SKU for the Application Gateway.')
+@allowed([
+  'Standard_Small'
+  'Standard_Medium'
+  'Standard_Large'
+  'WAF_Medium'
+  'WAF_Large'
+  'Standard_v2'
+  'WAF_v2'
+])
+param sku string = 'WAF_Medium'
+
+@description('Optional. The number of Application instances to be configured.')
+@minValue(1)
+@maxValue(10)
+param capacity int = 2
+
+@description('Optional. SSL certificates of the application gateway resource.')
+param sslCertificates array = []
+
+@description('Optional. Ssl cipher suites to be enabled in the specified order to application gateway.')
+@allowed([
+  'TLS_DHE_DSS_WITH_3DES_EDE_CBC_SHA'
+  'TLS_DHE_DSS_WITH_AES_128_CBC_SHA'
+  'TLS_DHE_DSS_WITH_AES_128_CBC_SHA256'
+  'TLS_DHE_DSS_WITH_AES_256_CBC_SHA'
+  'TLS_DHE_DSS_WITH_AES_256_CBC_SHA256'
+  'TLS_DHE_RSA_WITH_AES_128_CBC_SHA'
+  'TLS_DHE_RSA_WITH_AES_128_GCM_SHA256'
+  'TLS_DHE_RSA_WITH_AES_256_CBC_SHA'
+  'TLS_DHE_RSA_WITH_AES_256_GCM_SHA384'
+  'TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA'
+  'TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256'
+  'TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256'
+  'TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA'
+  'TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA384'
+  'TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384'
+  'TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA'
+  'TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256'
+  'TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256'
+  'TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA'
+  'TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384'
+  'TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384'
+  'TLS_RSA_WITH_3DES_EDE_CBC_SHA'
+  'TLS_RSA_WITH_AES_128_CBC_SHA'
+  'TLS_RSA_WITH_AES_128_CBC_SHA256'
+  'TLS_RSA_WITH_AES_128_GCM_SHA256'
+  'TLS_RSA_WITH_AES_256_CBC_SHA'
+  'TLS_RSA_WITH_AES_256_CBC_SHA256'
+  'TLS_RSA_WITH_AES_256_GCM_SHA384'
+])
+param sslPolicyCipherSuites array = [
+  'TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384'
+  'TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256'
+]
+
+@description('Optional. Ssl protocols to be disabled on application gateway.')
+@allowed([
+  'TLSv1_0'
+  'TLSv1_1'
+  'TLSv1_2'
+])
+param sslPolicyDisabledSslProtocols array = []
+
+@description('Optional. Ssl protocol enums.')
+@allowed([
+  'TLSv1_0'
+  'TLSv1_1'
+  'TLSv1_2'
+])
+param sslPolicyMinProtocolVersion string = 'TLSv1_2'
+
+@description('Optional. Ssl predefined policy name enums.')
+@allowed([
+  'AppGwSslPolicy20150501'
+  'AppGwSslPolicy20170401'
+  'AppGwSslPolicy20170401S'
+  ''
+])
+param sslPolicyName string = ''
+
+@description('Optional. Type of Ssl Policy.')
+@allowed([
+  'Custom'
+  'Predefined'
+])
+param sslPolicyType string = 'Custom'
+
+@description('Optional. SSL profiles of the application gateway resource.')
+param sslProfiles array = []
+
+@description('Optional. Trusted client certificates of the application gateway resource.')
+param trustedClientCertificates array = []
+
+@description('Optional. Trusted Root certificates of the application gateway resource.')
+param trustedRootCertificates array = []
+
+@description('Optional. URL path map of the application gateway resource.')
+param urlPathMaps array = []
+
+@description('Optional. Application gateway web application firewall configuration.')
+param webApplicationFirewallConfiguration object = {}
+
+@description('Optional. A list of availability zones denoting where the resource needs to come from.')
+param zones array = []
+
 @description('Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.')
 @minValue(0)
 @maxValue(365)
@@ -191,159 +297,50 @@ resource applicationGateway 'Microsoft.Network/applicationGateways@2021-05-01' =
     requestRoutingRules: requestRoutingRules
     rewriteRuleSets: rewriteRuleSets
     sku: {
-      capacity: int
-      name: 'string'
-      tier: 'string'
+      name: sku
+      tier: endsWith(sku, 'v2') ? sku : substring(sku, 0, indexOf(sku, '_'))
+      capacity: capacity
     }
-    sslCertificates: [
-      {
-        id: 'string'
-        name: 'string'
-        properties: {
-          data: 'string'
-          keyVaultSecretId: 'string'
-          password: 'string'
-        }
-      }
-    ]
+    sslCertificates: sslCertificates
     sslPolicy: {
-      cipherSuites: [
-        'string'
-      ]
-      disabledSslProtocols: [
-        'string'
-      ]
-      minProtocolVersion: 'string'
-      policyName: 'string'
-      policyType: 'string'
+      cipherSuites: sslPolicyCipherSuites
+      disabledSslProtocols: sslPolicyDisabledSslProtocols
+      minProtocolVersion: sslPolicyMinProtocolVersion
+      policyName: sslPolicyName
+      policyType: sslPolicyType
     }
-    sslProfiles: [
-      {
-        id: 'string'
-        name: 'string'
-        properties: {
-          clientAuthConfiguration: {
-            verifyClientCertIssuerDN: bool
-          }
-          sslPolicy: {
-            cipherSuites: [
-              'string'
-            ]
-            disabledSslProtocols: [
-              'string'
-            ]
-            minProtocolVersion: 'string'
-            policyName: 'string'
-            policyType: 'string'
-          }
-          trustedClientCertificates: [
-            {
-              id: 'string'
-            }
-          ]
-        }
-      }
-    ]
-    trustedClientCertificates: [
-      {
-        id: 'string'
-        name: 'string'
-        properties: {
-          data: 'string'
-        }
-      }
-    ]
-    trustedRootCertificates: [
-      {
-        id: 'string'
-        name: 'string'
-        properties: {
-          data: 'string'
-          keyVaultSecretId: 'string'
-        }
-      }
-    ]
-    urlPathMaps: [
-      {
-        id: 'string'
-        name: 'string'
-        properties: {
-          defaultBackendAddressPool: {
-            id: 'string'
-          }
-          defaultBackendHttpSettings: {
-            id: 'string'
-          }
-          defaultLoadDistributionPolicy: {
-            id: 'string'
-          }
-          defaultRedirectConfiguration: {
-            id: 'string'
-          }
-          defaultRewriteRuleSet: {
-            id: 'string'
-          }
-          pathRules: [
-            {
-              id: 'string'
-              name: 'string'
-              properties: {
-                backendAddressPool: {
-                  id: 'string'
-                }
-                backendHttpSettings: {
-                  id: 'string'
-                }
-                firewallPolicy: {
-                  id: 'string'
-                }
-                loadDistributionPolicy: {
-                  id: 'string'
-                }
-                paths: [
-                  'string'
-                ]
-                redirectConfiguration: {
-                  id: 'string'
-                }
-                rewriteRuleSet: {
-                  id: 'string'
-                }
-              }
-            }
-          ]
-        }
-      }
-    ]
-    webApplicationFirewallConfiguration: {
-      disabledRuleGroups: [
-        {
-          ruleGroupName: 'string'
-          rules: [
-            int
-          ]
-        }
-      ]
-      enabled: bool
-      exclusions: [
-        {
-          matchVariable: 'string'
-          selector: 'string'
-          selectorMatchOperator: 'string'
-        }
-      ]
-      fileUploadLimitInMb: int
-      firewallMode: 'string'
-      maxRequestBodySize: int
-      maxRequestBodySizeInKb: int
-      requestBodyCheck: bool
-      ruleSetType: 'string'
-      ruleSetVersion: 'string'
-    }
+    sslProfiles: sslProfiles
+    trustedClientCertificates: trustedClientCertificates
+    trustedRootCertificates: trustedRootCertificates
+    urlPathMaps: urlPathMaps
+    webApplicationFirewallConfiguration: webApplicationFirewallConfiguration
+    // {
+    //   disabledRuleGroups: [
+    //     {
+    //       ruleGroupName: 'string'
+    //       rules: [
+    //         int
+    //       ]
+    //     }
+    //   ]
+    //   enabled: bool
+    //   exclusions: [
+    //     {
+    //       matchVariable: 'string'
+    //       selector: 'string'
+    //       selectorMatchOperator: 'string'
+    //     }
+    //   ]
+    //   fileUploadLimitInMb: int
+    //   firewallMode: 'string'
+    //   maxRequestBodySize: int
+    //   maxRequestBodySizeInKb: int
+    //   requestBodyCheck: bool
+    //   ruleSetType: 'string'
+    //   ruleSetVersion: 'string'
+    // }
   }
-  zones: [
-    'string'
-  ]
+  zones: zones
 }
 
 resource applicationGateway_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
