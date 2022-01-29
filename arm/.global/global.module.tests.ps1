@@ -771,10 +771,9 @@ Describe 'Deployment template tests' -Tag Template {
             foreach ($ParameterFileTestCase in $ParameterFileTestCases) {
                 $ParameterFileTokenName = -join ($ParameterFileTestCase.tokenSettings.tokenPrefix, 'namePrefix', $ParameterFileTestCase.tokenSettings.tokenSuffix)
                 $ParameterFileContent = Get-Content -Path $ParameterFileTestCase.parameterFile_Path
-                $namePrefixTokenCount = ($ParameterFileContent | Select-String -Pattern "$ParameterFileTokenName" -AllMatches).Matches.Count
                 $namePrefixValue = $ParameterFileTestCase.tokenSettings.localTokens.tokens | Where-Object -Property name -EQ 'namePrefix' | Select-Object -ExpandProperty value
                 $namePrefixValueCount = ($ParameterFileContent | Select-String -Pattern "$namePrefixValue" -AllMatches).Matches.Count
-                ($namePrefixTokenCount -gt 0) -and ($namePrefixValueCount -eq 0) | Should -Be $true -Because ("Parameter file should contain the token: $ParameterFileTokenName instead of value: $namePrefixValue")
+                $namePrefixValueCount -eq 0 | Should -Be $true -Because ("Parameter file should contain the token: $ParameterFileTokenName instead of value: $namePrefixValue")
             }
         }
     }
