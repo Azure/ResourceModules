@@ -11,7 +11,7 @@ Optional. A git reference to base the comparison on.
 A git reference to compare with.
 
 .EXAMPLE
-Get-ModifiedFile -Commit "HEAD^" -CompareCommit "HEAD"
+Get-ModifiedFileList -Commit "HEAD^" -CompareCommit "HEAD"
 
     Directory: C:\Repo\Azure\ResourceModules\utilities\pipelines\resourcePublish
 
@@ -21,7 +21,7 @@ la---          08.12.2021    15:50           7133 Script.ps1
 
 Get modified files between previous and current commit.
 #>
-function Get-ModifiedFile {
+function Get-ModifiedFileList {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $false)]
@@ -117,7 +117,7 @@ function Get-TemplateFileToUpdate {
         [string] $ModuleFolderPath
     )
 
-    $ModifiedFiles = Get-ModifiedFile -Verbose
+    $ModifiedFiles = Get-ModifiedFileList -Verbose
     Write-Verbose "Looking for modified files under: [$ModuleFolderPath]"
     $ModifiedModuleFiles = $ModifiedFiles | Where-Object { $_.FullName -like "*$ModuleFolderPath*" }
 
