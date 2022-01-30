@@ -210,7 +210,7 @@ function Get-ParentModuleTemplateFile {
 Get the number of commits following the specified commit.
 
 .PARAMETER Commit
-A specified git reference to get commit counts on.
+Optional. A specified git reference to get commit counts on.
 
 .EXAMPLE
 Get-GitDistance -Commit origin/main.
