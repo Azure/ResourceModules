@@ -44,6 +44,48 @@ function Get-ModifiedFileList {
 
 <#
 .SYNOPSIS
+Get the name of the current checked out branch.
+
+.DESCRIPTION
+Get the name of the current checked out branch. If git cannot find it, best effort based on environment variables is used.
+
+.EXAMPLE
+Get-CurrentBranch
+
+feature-branch-1
+
+Get the name of the current checked out branch.
+
+#>
+function Get-GitBranchName {
+    [CmdletBinding()]
+    param ()
+
+    # Get branch name from Git
+    try {
+        Write-Verbose "Git: Using git command 'git branch --show-current'" -Verbose
+        $BranchName = git branch --show-current
+    } catch {
+        Write-Verbose 'Git: No name found.' -Verbose
+    }
+
+    # If git could not get name, try GitHub variable
+    if ([string]::IsNullOrEmpty($BranchName) -and (Test-Path env:GITHUB_REF_NAME)) {
+        Write-Verbose "GitHub: Using environment variable 'GITHUB_REF_NAME': [$env:GITHUB_REF_NAME]" -Verbose
+        $BranchName = $env:GITHUB_REF_NAME
+    }
+
+    # If git could not get name, try Azure DevOps variable
+    if ([string]::IsNullOrEmpty($BranchName) -and (Test-Path env:BUILD_SOURCEBRANCHNAME)) {
+        Write-Verbose "Azure DevOps: Using environment variable 'BUILD_SOURCEBRANCHNAME': [$env:BUILD_SOURCEBRANCHNAME]" -Verbose
+        $BranchName = $env:BUILD_SOURCEBRANCHNAME
+    }
+
+    return $BranchName
+}
+
+<#
+.SYNOPSIS
 Find the closest deploy.bicep/json file to the current directory/file.
 
 .DESCRIPTION
@@ -299,14 +341,13 @@ function Get-NewModuleVersion {
     $Patch = Get-GitDistance
     $NewVersion = "$Version.$Patch"
 
-    $CurrentBranch = git symbolic-ref --short 'HEAD'
-    #$CurrentBranch = git branch --show-current
-    Write-Verbose "Current branch: [$CurrentBranch]" -Verbose
-    if (($CurrentBranch -ne 'main') -or ($CurrentBranch -ne 'master') ) {
-        $PreRelease = $CurrentBranch -replace '[^a-zA-Z0-9\.\-_]'
+    $BranchName = Get-GitBranchName -Verbose
+
+    Write-Verbose "Current branch: [$BranchName]" -Verbose
+    if (($BranchName -ne 'main') -or ($BranchName -ne 'master') ) {
+        $PreRelease = $BranchName -replace '[^a-zA-Z0-9\.\-_]'
         Write-Verbose "PreRelease: [$PreRelease]" -Verbose
         $NewVersion = "$NewVersion-prerelease".ToLower()
-        #$NewVersion = "$NewVersion-prerelease-$PreRelease"
         Write-Verbose "New version: [$NewVersion]" -Verbose
     }
 
