@@ -51,7 +51,7 @@ Find the closest deploy.bicep/json file to the current directory/file.
 This function will search the current directory and all parent directories for a deploy.bicep/json file.
 
 .PARAMETER Path
-Path to the folder/file that should be searched
+Required. Path to the folder/file that should be searched
 
 .EXAMPLE
 Find-TemplateFile -Path "C:\Repos\Azure\ResourceModules\arm\Microsoft.Storage\storageAccounts\tableServices\tables\.bicep\nested_cuaId.bicep"
