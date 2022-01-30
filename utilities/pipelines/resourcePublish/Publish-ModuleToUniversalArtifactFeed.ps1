@@ -1,9 +1,9 @@
 <#
 .SYNOPSIS
-Publish a new version of a given module to a DevOps artifact feed
+Publish a new version of a given module to an Azure DevOps artifact feed
 
 .DESCRIPTION
-Publish a new version of a given module to a DevOps artifact feed
+Publish a new version of a given module to an Azure DevOps artifact feed
 
 .PARAMETER TemplateFilePath
 Mandatory. Path to the module deployment file from root.
