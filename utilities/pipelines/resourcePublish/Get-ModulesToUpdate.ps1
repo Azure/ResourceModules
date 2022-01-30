@@ -8,7 +8,7 @@ Get modified files between two commits.
 Optional. A git reference to base the comparison on.
 
 .PARAMETER CompareCommit
-A git reference to compare with.
+Optional. A git reference to compare with.
 
 .EXAMPLE
 Get-ModifiedFile -Commit "HEAD^" -CompareCommit "HEAD"
