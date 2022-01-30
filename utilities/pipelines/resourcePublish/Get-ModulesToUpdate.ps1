@@ -160,7 +160,7 @@ function Get-TemplateFileToUpdate {
     )
 
     $ModifiedFiles = Get-ModifiedFileList -Verbose
-    Write-Verbose "Looking for modified files under: [$ModuleFolderPath]"
+    Write-Verbose "Looking for modified files under: [$ModuleFolderPath]" -Verbose
     $ModifiedModuleFiles = $ModifiedFiles | Where-Object { $_.FullName -like "*$ModuleFolderPath*" }
 
     $TemplateFilesToUpdate = $ModifiedModuleFiles | ForEach-Object {
@@ -168,12 +168,12 @@ function Get-TemplateFileToUpdate {
     } | Sort-Object -Property FullName -Unique -Descending
 
     if ($TemplateFilesToUpdate.Count -eq 0) {
-        Write-Verbose 'No template file found in the modified module.'
+        Write-Verbose 'No template file found in the modified module.' -Verbose
     }
 
-    Write-Verbose ('Modified modules found: [{0}]' -f $TemplateFilesToUpdate.count)
+    Write-Verbose ('Modified modules found: [{0}]' -f $TemplateFilesToUpdate.count) -Verbose
     $TemplateFilesToUpdate | ForEach-Object {
-        Write-Verbose " - $($_.FullName)"
+        Write-Verbose " - $($_.FullName)" -Verbose
     }
 
     return $TemplateFilesToUpdate
@@ -231,11 +231,11 @@ function Get-ParentModuleTemplateFile {
     }
 
     if (-not (Test-Path -Path $ParentTemplateFilePath)) {
-        Write-Verbose "No parent template file found at: [$ParentTemplateFilePath]"
+        Write-Verbose "No parent template file found at: [$ParentTemplateFilePath]" -Verbose
         return
     }
 
-    Write-Verbose "Parent template file found at: [$ParentTemplateFilePath]"
+    Write-Verbose "Parent template file found at: [$ParentTemplateFilePath]" -Verbose
     $ParentTemplateFilesToUpdate = [System.Collections.ArrayList]@()
     $ParentTemplateFilesToUpdate += $ParentTemplateFilePath | Get-Item
 
@@ -349,7 +349,7 @@ function Get-NewModuleVersion {
         Write-Verbose "PreRelease: [$PreRelease]" -Verbose
         $NewVersion = "$NewVersion-prerelease".ToLower()
     }
-    
+
     Write-Verbose "New version: [$NewVersion]" -Verbose
 
     return $NewVersion
@@ -393,7 +393,7 @@ function Get-ModulesToUpdate {
         }
 
         $ParentTemplateFilesToUpdate = Get-ParentModuleTemplateFile -TemplateFilePath $TemplateFileToUpdate.FullName -Recurse
-        Write-Verbose "Found [$($ParentTemplateFilesToUpdate.count)] parent template files to update"
+        Write-Verbose "Found [$($ParentTemplateFilesToUpdate.count)] parent template files to update" -Verbose
         foreach ($ParentTemplateFileToUpdate in $ParentTemplateFilesToUpdate) {
             $ParentModuleVersion = Get-NewModuleVersion -TemplateFilePath $ParentTemplateFileToUpdate.FullName
 
@@ -406,9 +406,9 @@ function Get-ModulesToUpdate {
 
     $ModulesToUpdate = $ModulesToUpdate | Sort-Object TemplateFilePath -Descending -Unique
 
-    Write-Verbose 'Update the following modules:'
+    Write-Verbose 'Update the following modules:'-Verbose
     $ModulesToUpdate | ForEach-Object {
-        Write-Verbose (' - [{0}] [{1}] ' -f $_.Version, $_.TemplateFilePath)
+        Write-Verbose (' - [{0}] [{1}] ' -f $_.Version, $_.TemplateFilePath) -Verbose
     }
 
     return $ModulesToUpdate
