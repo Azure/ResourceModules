@@ -324,7 +324,7 @@ Generates a hashtable with template file paths to update with a new version.
 Generates a hashtable with template file paths to update with a new version.
 
 .PARAMETER TemplateFilePath
-Path to a deploy.bicep/json file.
+Required. Path to a deploy.bicep/json file.
 
 .EXAMPLE
 Get-ModulesToUpdate -TemplateFilePath 'C:\Repos\Azure\ResourceModules\arm\Microsoft.Storage\storageAccounts\tableServices\tables\deploy.bicep'
