@@ -368,10 +368,21 @@ Generates a hashtable with template file paths to update with a new version.
 Mandatory. Path to a deploy.bicep/json file.
 
 .EXAMPLE
-Get-ModulesToUpdate -TemplateFilePath 'C:\Repos\Azure\ResourceModules\arm\Microsoft.Storage\storageAccounts\tableServices\tables\deploy.bicep'
+Get-ModulesToUpdate -TemplateFilePath 'C:\Repos\Azure\ResourceModules\arm\Microsoft.Storage\storageAccounts\deploy.bicep'
 
 
-#TODO: Generates a hashtable with template file paths to update with a new version.
+Name               Value
+----               -----
+TemplateFilePath   C:\Repos\Azure\ResourceModules\arm\Microsoft.Storage\storageAccounts\fileServices\shares\deploy.bicep
+Version            0.3.848-prerelease
+TemplateFilePath   C:\Repos\Azure\ResourceModules\arm\Microsoft.Storage\storageAccounts\fileServices\deploy.bicep
+Version            0.3.848-prerelease
+TemplateFilePath   C:\Repos\Azure\ResourceModules\arm\Microsoft.Storage\storageAccounts\deploy.bicep
+Version            0.3.848-prerelease
+
+Generates a hashtable with template file paths to update and their new versions.
+
+
 #>#
 function Get-ModulesToUpdate {
 
