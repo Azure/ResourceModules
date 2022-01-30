@@ -145,7 +145,7 @@ Gets the parent deploy.bicep/json file(s) to the changed files in the module fol
 Gets the parent deploy.bicep/json file(s) to the changed files in the module folder structure.
 
 .PARAMETER TemplateFilePath
-Path to a deploy.bicep/json file.
+Required. Path to a deploy.bicep/json file.
 
 .PARAMETER Recurse
 Optional. If true, the function will recurse up the folder structure to find the closest deploy.bicep/json file.
