@@ -19,6 +19,7 @@ param firewallSettings object = {
   enablePowerBIService: true
 }
 
+
 @description('Optional. Location for all Resources.')
 param location string = resourceGroup().location
 
