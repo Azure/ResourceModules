@@ -5,7 +5,7 @@
 Get modified files between two commits.
 
 .PARAMETER Commit
-A git reference to base the comparison on.
+Optional. A git reference to base the comparison on.
 
 .PARAMETER CompareCommit
 A git reference to compare with.
