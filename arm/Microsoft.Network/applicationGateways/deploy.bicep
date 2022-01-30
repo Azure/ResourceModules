@@ -12,10 +12,10 @@ param userAssignedIdentities object = {}
 param authenticationCertificates array = []
 
 @description('Optional. Upper bound on number of Application Gateway capacity.')
-param autoscaleMaxCapacity int = 10
+param autoscaleMaxCapacity int = -1
 
 @description('Optional. Lower bound on number of Application Gateway capacity.')
-param autoscaleMinCapacity int = 0
+param autoscaleMinCapacity int = -1
 
 @description('Optional. Backend address pool of the application gateway resource.')
 param backendAddressPools array = []
@@ -127,13 +127,13 @@ param sslPolicyCipherSuites array = [
   'TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256'
 ]
 
-@description('Optional. Ssl protocols to be disabled on application gateway.')
-@allowed([
-  'TLSv1_0'
-  'TLSv1_1'
-  'TLSv1_2'
-])
-param sslPolicyDisabledSslProtocols array = []
+// @description('Optional. Ssl protocols to be disabled on application gateway.')
+// @allowed([
+//   'TLSv1_0'
+//   'TLSv1_1'
+//   'TLSv1_2'
+// ])
+// param sslPolicyDisabledSslProtocols array = []
 
 @description('Optional. Ssl protocol enums.')
 @allowed([
@@ -269,16 +269,16 @@ resource applicationGateway 'Microsoft.Network/applicationGateways@2021-05-01' =
   identity: identity
   properties: {
     authenticationCertificates: authenticationCertificates
-    autoscaleConfiguration: {
+    autoscaleConfiguration: autoscaleMaxCapacity > 0 && autoscaleMinCapacity > 0 ? {
       maxCapacity: autoscaleMaxCapacity
       minCapacity: autoscaleMinCapacity
-    }
+    } : null
     backendAddressPools: backendAddressPools
     backendHttpSettingsCollection: backendHttpSettingsCollection
     customErrorConfigurations: customErrorConfigurations
-    enableFips: enableFips
+    //enableFips: enableFips ? enableFips : null
     enableHttp2: enableHttp2
-    firewallPolicy: empty(firewallPolicyId) ? {
+    firewallPolicy: !empty(firewallPolicyId) ? {
       id: firewallPolicyId
     } : null
     forceFirewallPolicyAssociation: !empty(firewallPolicyId)
@@ -299,14 +299,14 @@ resource applicationGateway 'Microsoft.Network/applicationGateways@2021-05-01' =
     sku: {
       name: sku
       tier: endsWith(sku, 'v2') ? sku : substring(sku, 0, indexOf(sku, '_'))
-      capacity: capacity
+      capacity: autoscaleMaxCapacity > 0 && autoscaleMinCapacity > 0 ? null : capacity
     }
     sslCertificates: sslCertificates
     sslPolicy: {
       cipherSuites: sslPolicyCipherSuites
-      disabledSslProtocols: sslPolicyDisabledSslProtocols
+      // disabledSslProtocols: sslPolicyDisabledSslProtocols
       minProtocolVersion: sslPolicyMinProtocolVersion
-      policyName: sslPolicyName
+      policyName: empty(sslPolicyName) ? null : sslPolicyName
       policyType: sslPolicyType
     }
     sslProfiles: sslProfiles
