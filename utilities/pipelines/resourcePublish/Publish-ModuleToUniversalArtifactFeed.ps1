@@ -1,9 +1,9 @@
 <#
 .SYNOPSIS
-Publish a new version of a given module to a artifact feed
+Publish a new version of a given module to an Azure DevOps artifact feed as a universal package.
 
 .DESCRIPTION
-Publish a new version of a given module to aDartifact feed
+Publish a new version of a given module to an Azure DevOps artifact feed as a universal package.
 
 .PARAMETER TemplateFilePath
 Mandatory. Path to the module deployment file from root.
@@ -13,7 +13,7 @@ Example: 'C:\arm\Microsoft.KeyVault\vaults\deploy.bicep'
 Mandatory. Version of the module to publish, following SemVer convention.
 Example: '1.0.0', '2.1.5-alpha.1', '0.0.5-beta.1'
 
-.PARAMETER vstsOrganizationUri
+.PARAMETER VstsOrganizationUri
 Mandatory. Azure DevOps organization URL hosting the artifacts feed.
 Example: 'https://dev.azure.com/fabrikam/'.
 
@@ -31,7 +31,7 @@ Optional. The bearer token to use to authenticate the request. If not provided i
 .EXAMPLE
 Publish-ModuleToUniversalArtifactFeed -TemplateFilePath 'C:\arm\Microsoft.KeyVault\vaults\deploy.bicep' -ModuleVersion '3.0.0-alpha' -vstsOrganizationUri 'https://dev.azure.com/fabrikam' -VstsProject 'IaC' -VstsFeedName 'Artifacts'
 
-Try to publish the KeyVault module with version 3.0.0-alpha to a Universal Package Feed called KeyVault in the feed called 'Artifacts' under the project 'IaC'.
+Try to publish the KeyVault module with version 3.0.0-alpha to a Universal Package Feed called 'Artifacts' under the project 'IaC'.
 #>
 function Publish-ModuleToUniversalArtifactFeed {
 

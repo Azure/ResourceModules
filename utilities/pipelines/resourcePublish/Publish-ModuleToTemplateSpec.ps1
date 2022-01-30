@@ -29,7 +29,7 @@ Example: 'iacs key vault'
 .EXAMPLE
 Publish-ModuleToTemplateSpec -TemplateFilePath 'C:\arm\Microsoft.KeyVault\vaults\deploy.bicep' -ModuleVersion '3.0.0-alpha' -TemplateSpecsRgName 'artifacts-rg' -TemplateSpecsRgLocation 'West Europe' -TemplateSpecsDescription 'iacs key vault'
 
-Try to publish the KeyVault module with version 3.0.0 to a template spec called KeyVault based on a value provided in the UI
+Try to publish the KeyVault module with version 3.0.0-alpha to a template spec in resource group 'artifacts-rg'.
 #>
 function Publish-ModuleToTemplateSpec {
 

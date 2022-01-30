@@ -28,7 +28,7 @@ Example: 'West Europe'
 .EXAMPLE
 Publish-ModuleToPrivateBicepRegistry -TemplateFilePath 'C:\arm\Microsoft.KeyVault\vaults\deploy.bicep' -ModuleVersion '3.0.0-alpha' -BicepRegistryName 'adpsxxazacrx001' -BicepRegistryRgName 'artifacts-rg'
 
-Try to publish the KeyVault module with version .0.0-alpha o a private bicep registry called KeKeyVVult value provided in the UI
+Try to publish the KeyVault module with version 3.0.0-alpha to a private bicep registry called 'adpsxxazacrx001' in resource group 'artifacts-rg'.
 #>
 function Publish-ModuleToPrivateBicepRegistry {
 
