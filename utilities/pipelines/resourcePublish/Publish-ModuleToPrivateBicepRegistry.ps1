@@ -10,7 +10,7 @@ Mandatory. Path to the module deployment file from root.
 Example: 'C:\arm\Microsoft.KeyVault\vaults\deploy.bicep'
 
 .PARAMETER ModuleVersion
-Required. Version of the module to publish, following SemVer convention.
+Mandatory. Version of the module to publish, following SemVer convention.
 Example: '1.0.0', '2.1.5-alpha.1', '0.0.5-beta.1'
 
 .PARAMETER BicepRegistryName
@@ -28,7 +28,7 @@ Example: 'West Europe'
 .EXAMPLE
 Publish-ModuleToPrivateBicepRegistry -TemplateFilePath 'C:\arm\Microsoft.KeyVault\vaults\deploy.bicep' -ModuleVersion '3.0.0-alpha' -BicepRegistryName 'adpsxxazacrx001' -BicepRegistryRgName 'artifacts-rg'
 
-Try to publish the KeyVault module with version '3.0.0-alpha' to a private bicep registry called 'adpsxxazacrx001' based on a value provided in the UI
+Try to publish the KeyVault module with version .0.0-alpha o a private bicep registry called KeKeyVVult value provided in the UI
 #>
 function Publish-ModuleToPrivateBicepRegistry {
 

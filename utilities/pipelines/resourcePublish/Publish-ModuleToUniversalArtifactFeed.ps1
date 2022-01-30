@@ -1,19 +1,19 @@
 <#
 .SYNOPSIS
-Publish a new version of a given module to an Azure DevOps artifact feed
+Publish a new version of a given module to a artifact feed
 
 .DESCRIPTION
-Publish a new version of a given module to an Azure DevOps artifact feed
+Publish a new version of a given module to aDartifact feed
 
 .PARAMETER TemplateFilePath
 Mandatory. Path to the module deployment file from root.
 Example: 'C:\arm\Microsoft.KeyVault\vaults\deploy.bicep'
 
 .PARAMETER ModuleVersion
-Required. Version of the module to publish, following SemVer convention.
+Mandatory. Version of the module to publish, following SemVer convention.
 Example: '1.0.0', '2.1.5-alpha.1', '0.0.5-beta.1'
 
-.PARAMETER VstsOrganizationUri
+.PARAMETER vstsOrganizationUri
 Mandatory. Azure DevOps organization URL hosting the artifacts feed.
 Example: 'https://dev.azure.com/fabrikam/'.
 

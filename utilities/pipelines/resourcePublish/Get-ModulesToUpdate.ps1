@@ -92,7 +92,7 @@ Find the closest deploy.bicep/json file to the current directory/file.
 This function will search the current directory and all parent directories for a deploy.bicep/json file.
 
 .PARAMETER Path
-Required. Path to the folder/file that should be searched
+Mandatory. Path to the folder/file that should be searched
 
 .EXAMPLE
 Find-TemplateFile -Path "C:\Repos\Azure\ResourceModules\arm\Microsoft.Storage\storageAccounts\tableServices\tables\.bicep\nested_cuaId.bicep"
@@ -139,7 +139,7 @@ Find the closest deploy.bicep/json file to the changed files in the module folde
 Find the closest deploy.bicep/json file to the changed files in the module folder structure.
 
 .PARAMETER ModuleFolderPath
-Required. Path to the main/parent module folder.
+Mandatory. Path to the main/parent module folder.
 
 .EXAMPLE
 Get-TemplateFileToUpdate -ModuleFolderPath "C:\Repos\Azure\ResourceModules\arm\Microsoft.Storage\storageAccounts\"
@@ -187,7 +187,7 @@ Gets the parent deploy.bicep/json file(s) to the changed files in the module fol
 Gets the parent deploy.bicep/json file(s) to the changed files in the module folder structure.
 
 .PARAMETER TemplateFilePath
-Required. Path to a deploy.bicep/json file.
+Mandatory. Path to a deploy.bicep/json file.
 
 .PARAMETER Recurse
 Optional. If true, the function will recurse up the folder structure to find the closest deploy.bicep/json file.
@@ -281,7 +281,7 @@ Gets the version file from the corresponding deploy.bicep/json file.
 The file needs to be in the same folder as the template file itself.
 
 .PARAMETER TemplateFilePath
-Required. Path to a deploy.bicep/json file.
+Mandatory. Path to a deploy.bicep/json file.
 
 .EXAMPLE
 Get-ModuleVersionFromFile -TemplateFilePath 'C:\Repos\Azure\ResourceModules\arm\Microsoft.Storage\storageAccounts\tableServices\tables\deploy.bicep'
@@ -320,7 +320,7 @@ Major and minor version numbers are gathered from the version.json file.
 Patch version number is calculated based on the git commit count on the branch.
 
 .PARAMETER TemplateFilePath
-Required. Path to a deploy.bicep/json file.
+Mandatory. Path to a deploy.bicep/json file.
 
 .EXAMPLE
 Get-NewModuleVersion -TemplateFilePath 'C:\Repos\Azure\ResourceModules\arm\Microsoft.Storage\storageAccounts\tableServices\tables\deploy.bicep'
@@ -365,7 +365,7 @@ Generates a hashtable with template file paths to update with a new version.
 Generates a hashtable with template file paths to update with a new version.
 
 .PARAMETER TemplateFilePath
-Required. Path to a deploy.bicep/json file.
+Mandatory. Path to a deploy.bicep/json file.
 
 .EXAMPLE
 Get-ModulesToUpdate -TemplateFilePath 'C:\Repos\Azure\ResourceModules\arm\Microsoft.Storage\storageAccounts\tableServices\tables\deploy.bicep'

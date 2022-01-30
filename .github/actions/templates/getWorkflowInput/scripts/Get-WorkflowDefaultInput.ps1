@@ -42,7 +42,7 @@ function Get-WorkflowDefaultInput {
         function Get-LineIndentation {
             [CmdletBinding()]
             param (
-                [Parameter()]
+                [Parameter(Mandatory = $false)]
                 [string] $Line
             )
             begin {}
@@ -88,7 +88,7 @@ function Get-WorkflowDefaultInput {
             param (
                 [Parameter(Mandatory)]
                 [string] $InputName,
-                
+
                 [Parameter(Mandatory)]
                 [string[]] $Content
             )

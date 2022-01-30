@@ -11,7 +11,7 @@ Mandatory. Path to the module deployment file from root.
 Example: 'C:\arm\Microsoft.KeyVault\vaults\deploy.bicep'
 
 .PARAMETER ModuleVersion
-Required. Version of the module to publish, following SemVer convention.
+Mandatory. Version of the module to publish, following SemVer convention.
 Example: '1.0.0', '2.1.5-alpha.1', '0.0.5-beta.1'
 
 .PARAMETER TemplateSpecsRgName
