@@ -138,12 +138,12 @@ For both the [simulated deployment validation](#simulated-deployment-validation)
 
 To use the platform pipelines you need several secrets set up in your DevOps platform. Contrary to the pipeline variables we describe in the [subsequent section](#pipeline-variables) these following variables are considered sensitive.
 
-| Secret Name           | Example                                | Description                                                                                                                                                                          |
-| --------------------- | -------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `ARM_MGMTGROUP_ID`    | `de33a0e7-64d9-4a94-8fe9-b018cedf1e05` | The group ID of the management group to test deploy modules of that level in.                                                                                                        |
-| `ARM_SUBSCRIPTION_ID` | `d0312b25-9160-4550-914f-8738d9b5caf5` | The subscription ID of the subscription to test deploy modules of that level in.                                                                                                     |
-| `ARM_TENANT_ID`       | `9734cec9-4384-445b-bbb6-767e7be6e5ec` | The tenant ID of the tenant to test deploy modules of that level in.                                                                                                                 |
-| `DEPLOYMENT_SP_ID`    | `de33a0e7-64d9-4a94-8fe9-b018cedf1e05` | This is the Principal (Object ID) for the Service Principal used as the Azure service connection. It is used for Default Role Assignments when Modules are being deployed into Azure |
+| Secret Name | Example | Description |
+| - | - | - |
+| `ARM_MGMTGROUP_ID` | `de33a0e7-64d9-4a94-8fe9-b018cedf1e05` | The group ID of the management group to test deploy modules of that level in. |
+| `ARM_SUBSCRIPTION_ID` | `d0312b25-9160-4550-914f-8738d9b5caf5` | The subscription ID of the subscription to test deploy modules of that level in. |
+| `ARM_TENANT_ID` | `9734cec9-4384-445b-bbb6-767e7be6e5ec` | The tenant ID of the tenant to test deploy modules of that level in. |
+| `DEPLOYMENT_SP_ID` | `de33a0e7-64d9-4a94-8fe9-b018cedf1e05` | This is the Principal (Object ID) for the Service Principal used as the Azure service connection. It is used for Default Role Assignments when Modules are being deployed into Azure |
 
 The location where to set these secrets up depends on the DevOps platform you use. Also, there may be additional platform-specific secrets to set up. For further information please refer to [this section](#devops-tool-specific-considerations).
 
@@ -153,28 +153,28 @@ The primary pipeline variable file hosts the fundamental pipeline configuration 
 
 #### **_General_**
 
-| Variable Name       | Example Value   | Description                                                                                                                     |
-| ------------------- | --------------- | ------------------------------------------------------------------------------------------------------------------------------- |
-| `defaultLocation`   | "WestEurope"    | The default location to deploy resources to. If no location is specified in the deploying parameter file, this location is used |
-| `resourceGroupName` | "validation-rg" | The resource group to deploy all resources for validation to                                                                    |
+| Variable Name | Example Value | Description |
+| - | - | - |
+| `defaultLocation` | "WestEurope" | The default location to deploy resources to. If no location is specified in the deploying parameter file, this location is used |
+| `resourceGroupName` | "validation-rg" | The resource group to deploy all resources for validation to |
 
 #### **_Template-specs specific (publishing)_**
 
-| Variable Name              | Example Value                                                       | Description                                                                                                               |
-| -------------------------- | ------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
-| `templateSpecsRGName`      | "artifacts-rg"                                                      | The resource group to host the created template-specs                                                                     |
-| `templateSpecsRGLocation`  | "WestEurope"                                                        | The location of the resource group to host the template-specs. Is used to create a new resource group if not yet existing |
-| `templateSpecsDescription` | "This is a module from the [Common Azure Resource Modules Library]" | A description to add to the published template specs                                                                      |
-| `templateSpecsDoPublish`   | "true"                                                              | A central switch to enable/disable publishing to template-specs                                                           |
+| Variable Name | Example Value | Description |
+| - | - | - |
+| `templateSpecsRGName` | "artifacts-rg" | The resource group to host the created template-specs |
+| `templateSpecsRGLocation` | "WestEurope" | The location of the resource group to host the template-specs. Is used to create a new resource group if not yet existing |
+| `templateSpecsDescription` | "This is a module from the [Common Azure Resource Modules Library]" | A description to add to the published template specs |
+| `templateSpecsDoPublish` | "true" | A central switch to enable/disable publishing to template-specs |
 
 #### **_Private bicep registry specific (publishing)_**
 
-| Variable Name            | Example Value     | Description                                                                                                                                            |
-| ------------------------ | ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `bicepRegistryName`      | "adpsxxazacrx001" | The container registry to publish bicep templates to                                                                                                   |
-| `bicepRegistryRGName`    | "artifacts-rg"    | The resource group of the container registry to publish bicep templates to. Is used to create a new container registry if not yet existing             |
-| `bicepRegistryRGName`    | "artifacts-rg"    | The location of the resource group of the container registry to publish bicep templates to. Is used to create a new resource group if not yet existing |
-| `bicepRegistryDoPublish` | "true"            | A central switch to enable/disable publishing to the private bicep registry                                                                            |
+| Variable Name | Example Value | Description |
+| - | - | - |
+| `bicepRegistryName` | "adpsxxazacrx001" | The container registry to publish bicep templates to |
+| `bicepRegistryRGName` | "artifacts-rg" | The resource group of the container registry to publish bicep templates to. Is used to create a new container registry if not yet existing |
+| `bicepRegistryRGName` | "artifacts-rg" | The location of the resource group of the container registry to publish bicep templates to. Is used to create a new resource group if not yet existing |
+| `bicepRegistryDoPublish` | "true" | A central switch to enable/disable publishing to the private bicep registry |
 
 ### Tokens Replacement
 
@@ -245,25 +245,25 @@ The GitHub repository secrets can be set up in the repositories _'Settings'_ as 
 
 For _GitHub_ in particular we need the following secrets in addition to those described in the shared [pipeline secrets](#pipeline-secrets) section:
 
-| Secret Name                | Example                                                                                                                                                                                                | Description                                                                                                                                                                                                                                           |
-| -------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `AZURE_CREDENTIALS`        | `{"clientId": "4ce8ce4c-cac0-48eb-b815-65e5763e2929", "clientSecret": "<placeholder>", "subscriptionId": "d0312b25-9160-4550-914f-8738d9b5caf5", "tenantId": "9734cec9-4384-445b-bbb6-767e7be6e5ec" }` | The login credentials of the [deployment principal](./GettingStarted#platform-principal) to use to log into the target Azure environment to test in. The format is described [here](https://github.com/Azure/login#configure-deployment-credentials). |
-| `PLATFORM_REPO_UPDATE_PAT` | `<placeholder>`                                                                                                                                                                                        | A PAT with enough permissions assigned to it to push into the main branch. This PAT is leveraged by pipelines that automatically generate ReadMe files to keep them up to date                                                                        |
+| Secret Name | Example | Description |
+| - | - | - |
+| `AZURE_CREDENTIALS` | `{"clientId": "4ce8ce4c-cac0-48eb-b815-65e5763e2929", "clientSecret": "<placeholder>", "subscriptionId": "d0312b25-9160-4550-914f-8738d9b5caf5", "tenantId": "9734cec9-4384-445b-bbb6-767e7be6e5ec" }` | The login credentials of the [deployment principal](./GettingStarted#platform-principal) to use to log into the target Azure environment to test in. The format is described [here](https://github.com/Azure/login#configure-deployment-credentials). |
+| `PLATFORM_REPO_UPDATE_PAT` | `<placeholder>` | A PAT with enough permissions assigned to it to push into the main branch. This PAT is leveraged by pipelines that automatically generate ReadMe files to keep them up to date |
 
 ### **GitHub Component:** Variable file
 
 The [pipeline configuration file](#pipeline-variables) can be found at `.github/variables/global.variables.json`.
 
-### **GitHub Component:** Composite Actions\*\*
+### **GitHub Component:** Composite Actions
 
 We use several composite actions to perform various tasks shared by our module workflows:
 
-| Composite Action              | Description                                                                                                                                                                                                                                                                                                                                                                       |
-| ----------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **validateModulePester**      | This action performs [static tests](#static-module-validation) for a module using Pester, including API versions focused tests to avoid those become stale overtime.                                                                                                                                                                                                              |
-| **validateModuleDeployment:** | This action performs the following tasks: <li> A [simulated deployment](#simulated-deployment-validation) using a provided parameter file. <li>An [actual deployment](#test-deploy) to Azure using a provided parameter file. <li>The [removal](#removal) of the test-deployed resources                                                                                          |
-| **publishModule:**            | This action is capable of [publishing](#publish) the given template to a location specified in the pipeline [variable file](#github-component-variable-file).                                                                                                                                                                                                                     |
-| **getWorkflowInput:**         | This action allows us to fetch workflow input values from the module's workflow file, even if the pipeline was not triggered via a `workflow_dispatch` action. Without it we would not be able to process the contained information and would need to duplicate the configuration as workflow variables. Such input values are for example the removal switch `removeDeployment`. |
+| Composite Action | Description |
+| - | - |
+| **validateModulePester** | This action performs [static tests](#static-module-validation) for a module using Pester, including API versions focused tests to avoid those become stale overtime. |
+| **validateModuleDeployment:** | This action performs the following tasks: <li> A [simulated deployment](#simulated-deployment-validation) using a provided parameter file. <li>An [actual deployment](#test-deploy) to Azure using a provided parameter file. <li>The [removal](#removal) of the test-deployed resources |
+| **publishModule:** | This action is capable of [publishing](#publish) the given template to a location specified in the pipeline [variable file](#github-component-variable-file). |
+| **getWorkflowInput:** | This action allows us to fetch workflow input values from the module's workflow file, even if the pipeline was not triggered via a `workflow_dispatch` action. Without it we would not be able to process the contained information and would need to duplicate the configuration as workflow variables. Such input values are for example the removal switch `removeDeployment`. |
 
 ### **GitHub Component:** Workflows
 
@@ -286,10 +286,10 @@ Comparing multiple workflows you'll notice they are almost identical, yet differ
     branches:
       - main
     paths:
-      - ".github/actions/templates/**"
-      - ".github/workflows/ms.network.virtualwans.yml"
-      - "arm/Microsoft.Network/virtualWans/**"
-      - "!arm/Microsoft.Network/virtualWans/readme.md"
+      - '.github/actions/templates/**'
+      - '.github/workflows/ms.network.virtualwans.yml'
+      - 'arm/Microsoft.Network/virtualWans/**'
+      - '!arm/Microsoft.Network/virtualWans/readme.md'
   ```
 
 - The **_environment variables_**
@@ -303,8 +303,8 @@ Comparing multiple workflows you'll notice they are almost identical, yet differ
 
   ```yaml
   env:
-    modulePath: "arm/Microsoft.Network/virtualWans"
-    workflowPath: ".github/workflows/ms.network.virtualwans.yml"
+    modulePath: 'arm/Microsoft.Network/virtualWans'
+    workflowPath: '.github/workflows/ms.network.virtualwans.yml'
   ```
 
 ## Azure DevOps Pipelines
@@ -329,7 +329,7 @@ The variable group can be set up under _Pipelines: Library_ as described [here](
 
 ```yaml
 variables:
-  - group: "PLATFORM_VARIABLES"
+  - group: 'PLATFORM_VARIABLES'
 ```
 
 ### **Azure DevOps Component:** Variable file
@@ -338,15 +338,14 @@ The variable file is a source controlled configuration file to control the behav
 
 This file is divided into multiple categories of variables used in the pipelines:
 
-| Section                                      | Description                                                                                                                                                     |
-| -------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Agent settings**                           | Contains information of the agent and service connection to use                                                                                                 |
-| **Source**                                   | Contains information about the Azure DevOps instance itself, including some important folder paths                                                              |
-| **Validation deployment settings**           | Contains the default deployment information to use in the pipeline. For example, the default location to deploy resources to                                    |
-| **Publish: Template-Spec settings**          | Contains the required information to publish to template-specs, including a switch to toggle the publishing to template specs on or off                         |
-| **Publish: Universal packages settings**     | Contains the required information to publish to universal packages, including a switch to toggle the publishing to universal packages on or off                 |
-| **Publish: Private Bicep Registry settings** | Contains the required information to publish to the private bicep registry, including a switch to toggle the publishing to the private bicep registry on or off |
-| **Azure PowerShell Version**                 | Contains information about the default PowerShell version to use in the pipeline                                                                                |
+| Section | Description |
+| - | - |
+| **Agent settings** | Contains information of the agent and service connection to use |
+| **Source** | Contains information about the Azure DevOps instance itself, including some important folder paths |
+| **Validation deployment settings** | Contains the default deployment information to use in the pipeline. For example, the default location to deploy resources to |
+| **Publish: Template-Spec settings** | Contains the required information to publish to template-specs, including a switch to toggle the publishing to template specs on or off |
+| **Publish: Universal packages settings** | Contains the required information to publish to universal packages, including a switch to toggle the publishing to universal packages on or off |
+| **Azure PowerShell Version** | Contains information about the default PowerShell version to use in the pipeline |
 
 More information about the contained variables can be found in the linked file itself.
 
@@ -369,7 +368,7 @@ These are the individual end-to-end pipelines we have for each module. Leveragin
 While they look very similar they have specific areas in which they differ:
 
 - The **_path filters_** of the pipeline trigger:
-  Purpose | Example |
+  | Purpose | Example |
   | - | - |
   | Include the templates | `- '/.azuredevops/pipelineTemplates/module.*.yml'` |
   | Include the relative path to the pipeline itself | `- '/.azuredevops/modulePipelines/ms.analysisservices.servers.yml' ` |
@@ -386,11 +385,11 @@ While they look very similar they have specific areas in which they differ:
         - main
     paths:
       include:
-        - "/.azuredevops/modulePipelines/ms.analysisservices.servers.yml"
-        - "/.azuredevops/pipelineTemplates/module.*.yml"
-        - "/arm/Microsoft.AnalysisServices/servers/*"
+        - '/.azuredevops/modulePipelines/ms.analysisservices.servers.yml'
+        - '/.azuredevops/pipelineTemplates/module.*.yml'
+        - '/arm/Microsoft.AnalysisServices/servers/*'
       exclude:
-        - "/**/*.md"
+        - '/**/*.md'
   ```
 
   > **_Note:_** By the time of this writing, wildcards are temporarily not supported by Azure DevOps
@@ -407,10 +406,10 @@ While they look very similar they have specific areas in which they differ:
 
   ```yaml
   variables:
-    - template: "/.azuredevops/pipelineVariables/global.variables.yml"
-    - group: "PLATFORM_VARIABLES"
+    - template: '/.azuredevops/pipelineVariables/global.variables.yml'
+    - group: 'PLATFORM_VARIABLES'
     - name: modulePath
-      value: "/arm/Microsoft.AnalysisServices/servers"
+      value: '/arm/Microsoft.AnalysisServices/servers'
   ```
 
 #### Azure DevOps Artifacts
