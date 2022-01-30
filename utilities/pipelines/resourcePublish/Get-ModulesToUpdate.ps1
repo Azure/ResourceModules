@@ -279,7 +279,7 @@ Major and minor version numbers are gathered from the version.json file.
 Patch version number is calculated based on the git commit count on the branch.
 
 .PARAMETER TemplateFilePath
-Path to a deploy.bicep/json file.
+Required. Path to a deploy.bicep/json file.
 
 .EXAMPLE
 Get-NewModuleVersion -TemplateFilePath 'C:\Repos\Azure\ResourceModules\arm\Microsoft.Storage\storageAccounts\tableServices\tables\deploy.bicep'
