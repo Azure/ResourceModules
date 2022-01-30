@@ -125,7 +125,7 @@ The publishing works as follows:
 
 1. The script `utilities/pipelines/resourcePublish/Get-ModulesToUpdate.ps1` gets all changed module files including child modules and handles the logic of propagating the appropriate module version to be used:
    1. The major (`x.0`) and minor (`0.x`) version are set based on the file `version.json` in the module folder.
-   1. The patch (`0.0.x`) version is calculated based on the number of commits on the `HEAD` ref. This Will cause the patch version to never reset to 0 with major and/or minor increment, as specified for [semver](https://semver.org/).
+   1. The patch (`0.0.x`) version is calculated based on the number of commits on the `HEAD` ref. This will cause the patch version to never reset to 0 with major and/or minor increment, as specified for [semver](https://semver.org/).
 
 ## Shared concepts
 
