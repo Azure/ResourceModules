@@ -8,7 +8,7 @@ Get modified files between two commits.
 Optional. A git reference to base the comparison on.
 
 .PARAMETER CompareCommit
-A git reference to compare with.
+Optional. A git reference to compare with.
 
 .EXAMPLE
 Get-ModifiedFileList -Commit "HEAD^" -CompareCommit "HEAD"
@@ -97,7 +97,7 @@ Find the closest deploy.bicep/json file to the changed files in the module folde
 Find the closest deploy.bicep/json file to the changed files in the module folder structure.
 
 .PARAMETER ModuleFolderPath
-Path to the main/parent module folder.
+Required. Path to the main/parent module folder.
 
 .EXAMPLE
 Get-TemplateFileToUpdate -ModuleFolderPath "C:\Repos\Azure\ResourceModules\arm\Microsoft.Storage\storageAccounts\"
@@ -145,7 +145,7 @@ Gets the parent deploy.bicep/json file(s) to the changed files in the module fol
 Gets the parent deploy.bicep/json file(s) to the changed files in the module folder structure.
 
 .PARAMETER TemplateFilePath
-Path to a deploy.bicep/json file.
+Required. Path to a deploy.bicep/json file.
 
 .PARAMETER Recurse
 Optional. If true, the function will recurse up the folder structure to find the closest deploy.bicep/json file.
@@ -239,7 +239,7 @@ Gets the version file from the corresponding deploy.bicep/json file.
 The file needs to be in the same folder as the template file itself.
 
 .PARAMETER TemplateFilePath
-Path to a deploy.bicep/json file.
+Required. Path to a deploy.bicep/json file.
 
 .EXAMPLE
 Get-ModuleVersionFromFile -TemplateFilePath 'C:\Repos\Azure\ResourceModules\arm\Microsoft.Storage\storageAccounts\tableServices\tables\deploy.bicep'
