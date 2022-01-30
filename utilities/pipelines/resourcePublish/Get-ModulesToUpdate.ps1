@@ -11,7 +11,7 @@ Optional. A git reference to base the comparison on.
 A git reference to compare with.
 
 .EXAMPLE
-Get-ModifiedFiles -Commit "HEAD^" -CompareCommit "HEAD"
+Get-ModifiedFile -Commit "HEAD^" -CompareCommit "HEAD"
 
     Directory: C:\Repo\Azure\ResourceModules\utilities\pipelines\resourcePublish
 
@@ -21,8 +21,7 @@ la---          08.12.2021    15:50           7133 Script.ps1
 
 Get modified files between previous and current commit.
 #>
-function Get-ModifiedFiles {
-    # BUG: When developing, the current logic will require you to modify the deploy.bicep/json file for it to register the change.
+function Get-ModifiedFile {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory = $false)]
@@ -118,7 +117,7 @@ function Get-TemplateFileToUpdate {
         [string] $ModuleFolderPath
     )
 
-    $ModifiedFiles = Get-ModifiedFiles -Verbose
+    $ModifiedFiles = Get-ModifiedFile -Verbose
     Write-Verbose "Looking for modified files under: [$ModuleFolderPath]"
     $ModifiedModuleFiles = $ModifiedFiles | Where-Object { $_.FullName -like "*$ModuleFolderPath*" }
 
@@ -330,6 +329,7 @@ Required. Path to a deploy.bicep/json file.
 Get-ModulesToUpdate -TemplateFilePath 'C:\Repos\Azure\ResourceModules\arm\Microsoft.Storage\storageAccounts\tableServices\tables\deploy.bicep'
 
 
+#TODO: Generates a hashtable with template file paths to update with a new version.
 #>#
 function Get-ModulesToUpdate {
 
