@@ -23,6 +23,10 @@
           {
             "name": "scripts",
             "publicAccess": "None"
+          },
+          {
+            "name": "vhds",
+            "publicAccess": "None"
           }
         ]
       }
