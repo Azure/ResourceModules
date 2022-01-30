@@ -118,6 +118,39 @@ The publishing works as follows:
    1. The major (`x.0`) and minor (`0.x`) version are set based on the file `version.json` in the module folder.
    1. The patch (`0.0.x`) version is calculated based on the number of commits on the `HEAD` ref. This will cause the patch version to never reset to 0 with major and/or minor increment, as specified for [semver](https://semver.org/).
 
+**Example scenario**
+
+Lets look at an example run where we would do a patch change on the `fileShares` module:
+1. A new branch is created for further development of the fileShare module.
+2. Bug-fixes, documentation, and security updates are added to the fileShare module by the author. The `version.json` file is not changed in either the child or parent module folders.
+3. The author runs a manual workflow based on their development branch, with the 'publish pre-release' option enabled.
+4. A prerelease run of publishing triggers after test and validation of the module.
+   - For the child and parent modules, the module version's major and minor version is read from the `version.json` file in the module folder respectively.
+   - The patch is calculated based on the total number of commits in history on the branch (independent on the module).
+   - As the pipeline is not running based on the 'default branch', a prerelease segment (`-prerelease`) is added to the version.
+   - The version results in being `0.3.501-prerelease`. The child and parent modules may have different major and minor versions, but the patch version will be the same in this case. Other unmodified child modules of `storageAccount` will not be republished and remain with the existin version.
+5. Sequential commits on the branch and runs of the module pipeline, with the 'publish pre-release' option enabled results in the following versions being published:
+   - `0.3.502-prerelease`
+   - `0.3.503-prerelease`
+   - ...
+   - `0.3.506-prerelease`
+6. When the branch is merged to the default branch, the only thing that changes is the patch version and the removal of the `-prerelease` segment.
+   - The number of commits will at this point be calculated based on the number of commits on the default branch.
+   - Assuming the development branch started from commit 500 on the default branch, and the author added 6 commits on the development branch, the prerelease versions will reach `0.3.506-prerelease`.
+   - Meanwhile, there can be changes (let's say 2 squashed PR merges) on the default branch that is pushing its number of commits in history further.
+   - If the PR for the changes to `fileShare` is squash merged as commit number 503, the patch version on the child and parent module is then `503`, resulting in a version `0.3.503` being published.
+
+```
+                  \         \
+C499 -> C500 ---> C501 ---> C502 ---> C503 (503)
+        \                            /
+         D1 --> D2 --> D3 ... --> D6
+        (501)  (502)  (503)      (506)
+```
+`Cx` - Commits on main,
+`Dx` - Commits on development branch,
+`(x)` - Calculated patch version
+
 ## Shared concepts
 
 There are several concepts that are shared among the phases. Most notably
