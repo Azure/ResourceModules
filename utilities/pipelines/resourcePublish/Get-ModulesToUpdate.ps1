@@ -149,7 +149,7 @@ Gets the parent deploy.bicep/json file(s) to the changed files in the module fol
 Path to a deploy.bicep/json file.
 
 .PARAMETER Recurse
-If true, the function will recurse up the folder structure to find the closest deploy.bicep/json file.
+Optional. If true, the function will recurse up the folder structure to find the closest deploy.bicep/json file.
 
 .EXAMPLE
 Get-ParentModuleTemplateFile -TemplateFilePath 'C:\Repos\Azure\ResourceModules\arm\Microsoft.Storage\storageAccounts\tableServices\tables\deploy.bicep' -Recurse
