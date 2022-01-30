@@ -32,12 +32,12 @@ function Get-ModifiedFiles {
         [string] $CompareCommit = 'HEAD^'
     )
 
-    Write-Verbose "Gathering modified files between [$Commit] and [$CompareCommit]"
+    Write-Verbose "Gathering modified files between [$Commit] and [$CompareCommit]" -Verbose
     $Diff = git diff --name-only --diff-filter=AM $Commit $CompareCommit
     $ModifiedFiles = $Diff | Get-Item
-    Write-Verbose 'The following files have been modified:'
+    Write-Verbose 'The following files have been modified:' -Verbose
     $ModifiedFiles | ForEach-Object {
-        Write-Verbose (' - [{0}]' -f $_.FullName)
+        Write-Verbose (' - [{0}]' -f $_.FullName) -Verbose
     }
 
     return $ModifiedFiles
