@@ -13,7 +13,7 @@ Example: 'C:\arm\Microsoft.KeyVault\vaults\deploy.bicep'
 Required. Version of the module to publish, following SemVer convention.
 Example: '1.0.0', '2.1.5-alpha.1', '0.0.5-beta.1'
 
-.PARAMETER vstsOrganizationUri
+.PARAMETER VstsOrganizationUri
 Mandatory. Azure DevOps organization URL hosting the artifacts feed.
 Example: 'https://dev.azure.com/fabrikam/'.
 
