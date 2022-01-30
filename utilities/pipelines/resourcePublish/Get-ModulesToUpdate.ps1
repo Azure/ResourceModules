@@ -239,7 +239,7 @@ Gets the version file from the corresponding deploy.bicep/json file.
 The file needs to be in the same folder as the template file itself.
 
 .PARAMETER TemplateFilePath
-Path to a deploy.bicep/json file.
+Required. Path to a deploy.bicep/json file.
 
 .EXAMPLE
 Get-ModuleVersionFromFile -TemplateFilePath 'C:\Repos\Azure\ResourceModules\arm\Microsoft.Storage\storageAccounts\tableServices\tables\deploy.bicep'
