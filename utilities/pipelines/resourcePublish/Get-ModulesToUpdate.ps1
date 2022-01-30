@@ -348,8 +348,9 @@ function Get-NewModuleVersion {
         $PreRelease = $BranchName -replace '[^a-zA-Z0-9\.\-_]'
         Write-Verbose "PreRelease: [$PreRelease]" -Verbose
         $NewVersion = "$NewVersion-prerelease".ToLower()
-        Write-Verbose "New version: [$NewVersion]" -Verbose
     }
+    
+    Write-Verbose "New version: [$NewVersion]" -Verbose
 
     return $NewVersion
 }
