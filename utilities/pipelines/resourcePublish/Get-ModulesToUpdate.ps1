@@ -97,7 +97,7 @@ Find the closest deploy.bicep/json file to the changed files in the module folde
 Find the closest deploy.bicep/json file to the changed files in the module folder structure.
 
 .PARAMETER ModuleFolderPath
-Path to the main/parent module folder.
+Required. Path to the main/parent module folder.
 
 .EXAMPLE
 Get-TemplateFileToUpdate -ModuleFolderPath "C:\Repos\Azure\ResourceModules\arm\Microsoft.Storage\storageAccounts\"
