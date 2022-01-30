@@ -5,6 +5,10 @@ parameters:
     displayName: Enable SqlMi dependencies deployment
     type: boolean
     default: false
+  - name: deployVhdDependencies
+    displayName: Enable deployment of a vhd stored in a blob container
+    type: boolean
+    default: false
 
 trigger: none
 
@@ -230,6 +234,123 @@ stages:
             - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
               templateFilePath: $(templateFilePath)
               displayName: Default SIG and SID
+
+  - stage: deploy_imgt
+    displayName: Deploy image template
+    condition: and(succeeded(), eq('${{ parameters.deployVhdDependencies }}', true))
+    dependsOn:
+      - deploy_rolea
+      - deploy_sig
+      - deploy_sa
+    variables:
+      resourceType: 'Microsoft.VirtualMachineImages\imageTemplates'
+      saResourceType: 'Microsoft.Storage\storageAccounts'
+      templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
+    jobs:
+      - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
+        parameters:
+          deploymentBlocks:
+            - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: Image template
+              jobName: job_deploy_imgt
+      - job:
+        displayName: Trigger vhd build and store it to a storage account blob container
+        dependsOn:
+          - job_deploy_imgt
+        pool:
+          ${{ if eq(variables['vmImage'], '') }}:
+            name: $(poolName)
+          ${{ if eq(variables['poolName'], '') }}:
+            vmImage: $(vmImage)
+        variables:
+          deploymentOutput: $[ dependencies.job_deploy_imgt.outputs['DeployModule.deploymentOutput'] ]
+        steps:
+          - task: PowerShell@2
+            displayName: 'Setup agent'
+            inputs:
+              targetType: inline
+              pwsh: true
+              script: |
+                # Load used functions
+                . (Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
+
+                # Define PS modules to install on the runner
+                $Modules = @(
+                    @{ Name = 'Az.ImageBuilder' },
+                    @{ Name = 'Az.Storage' }
+                )
+
+                # Set agent up
+                Set-EnvironmentOnAgent -PSModules $Modules
+          - task: AzurePowerShell@5
+            displayName: Trigger building new image
+            inputs:
+              azureSubscription: $(serviceConnection)
+              ScriptType: 'InlineScript'
+              Inline: |
+                # Retrieving parameters from previous job outputs
+                Write-Verbose "Retrieving parameters from previous job outputs" -Verbose
+                $imageTemplateName = (ConvertFrom-Json '$(deploymentOutput)').name
+                $imageTemplateResourceGroup = (ConvertFrom-Json '$(deploymentOutput)').resourceGroupName
+
+                # Trigger new image creation
+                Write-Verbose "Trigger new image creation with imageTemplateName $imageTemplateName and imageTemplateResourceGroup $imageTemplateResourceGroup" -Verbose
+                Start-AzImageBuilderTemplate -ImageTemplateName $imageTemplateName -ResourceGroupName $imageTemplateResourceGroup
+              azurePowerShellVersion: 'LatestVersion'
+              pwsh: true
+          - task: AzurePowerShell@5
+            displayName: Copy baked vhd to a storage account
+            inputs:
+              azureSubscription: $(serviceConnection)
+              ScriptType: 'InlineScript'
+              Inline: |
+                # Retrieving parameters from previous job outputs and parameter files
+                Write-Verbose "Retrieving parameters from previous job outputs" -Verbose
+                $imageTemplateName = (ConvertFrom-Json '$(deploymentOutput)').name
+                $imageTemplateResourceGroup = (ConvertFrom-Json '$(deploymentOutput)').resourceGroupName
+
+                Write-Verbose "Retrieving parameters from storage account parameter files" -Verbose
+                $parameterFilePath = Join-Path '$(Build.SourcesDirectory)' '$(dependencyPath)' '$(saResourceType)' 'parameters' 'parameters.json'
+                $storageAccountParameters = (ConvertFrom-Json (Get-Content -path $parameterFilePath -Raw)).parameters
+
+                Write-Verbose "Retrieving parameters from image template parameter files" -Verbose
+                $parameterFilePath = Join-Path '$(Build.SourcesDirectory)' '$(dependencyPath)' '$(resourceType)' 'parameters' 'parameters.json'
+                $imageTemplateParameters = (ConvertFrom-Json (Get-Content -path $parameterFilePath -Raw)).parameters
+
+                # Initializing parameters before the blob copy
+                Write-Verbose "Initializing source storage account parameters before the blob copy" -Verbose
+                $imgtRunOutput = Get-AzImageBuilderRunOutput -ImageTemplateName $imageTemplateName -ResourceGroupName $imageTemplateResourceGroup | Where-Object ArtifactUri -NE $null
+                $sourceUri = $imgtRunOutput.ArtifactUri
+                $sourceStorageAccountName = $sourceUri.Split('//')[1].Split('.')[0]
+                $sourceStorageAccount = Get-AzStorageAccount | Where-Object StorageAccountName -EQ $sourceStorageAccountName
+                $sourceStorageAccountContext = $sourceStorageAccount.Context
+                $sourceStorageAccountRGName = $sourceStorageAccount.ResourceGroupName
+                Write-Verbose "Retrieving artifact uri $sourceUri stored in resource group $sourceStorageAccountRGName" -Verbose
+
+                Write-Verbose "Initializing destination storage account parameters before the blob copy" -Verbose
+                $destinationStorageAccountName = $storageAccountParameters.name.value
+                $destinationStorageAccount = Get-AzStorageAccount | Where-Object StorageAccountName -EQ $destinationStorageAccountName
+                $destinationStorageAccountContext = $destinationStorageAccount.Context
+                $destinationContainerName = 'vhds'
+                $destinationBlobName = $imageTemplateParameters.name.value
+                $destinationBlobName = "$destinationBlobName.vhd"
+                Write-Verbose "Planning for destination blob name $destinationBlobName in container $destinationContainerName and storage account $destinationStorageAccountName" -Verbose
+
+                # Copying the vhd to a destination blob container
+                Write-Verbose "Copying the vhd to a destination blob container" -Verbose
+                $resourceActionInputObject = @{
+                    AbsoluteUri   = $sourceUri
+                    Context       = $sourceStorageAccountContext
+                    DestContext   = $destinationStorageAccountContext
+                    DestBlob      = $destinationBlobName
+                    DestContainer = $destinationContainerName
+                    Force         = $true
+                }
+                Start-AzStorageBlobCopy @resourceActionInputObject
+              azPSVersion: 'latest'
+              azurePowerShellVersion: 'LatestVersion'
+              pwsh: true
 
   - stage: deploy_ag
     displayName: Deploy action groups
