@@ -98,13 +98,10 @@ function Publish-ModuleToUniversalArtifactFeed {
                 '--description', "$universalPackageModuleName Module",
                 '--verbose'
             )
+
             if (-not [string]::IsNullOrEmpty($VstsFeedProject)) {
                 $inputObject += @('--project', "$VstsFeedProject")
             }
-
-            Write-Verbose 'The command to publish to the feed is:' -Verbose
-            $command = "az artifacts universal publish $($inputObject -join ' ')"
-            Write-Verbose $command -Verbose
 
             az artifacts universal publish @inputObject
 

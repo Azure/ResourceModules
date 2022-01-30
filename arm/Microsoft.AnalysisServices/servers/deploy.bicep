@@ -40,8 +40,8 @@ param diagnosticEventHubAuthorizationRuleId string = ''
 param diagnosticEventHubName string = ''
 
 @allowed([
-  'NotSpecified'
   'CanNotDelete'
+  'NotSpecified'
   'ReadOnly'
 ])
 @description('Optional. Specify the type of lock.')
