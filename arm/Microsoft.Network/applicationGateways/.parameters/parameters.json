@@ -97,6 +97,9 @@
                         "frontendPort": {
                             "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationGateways/sxx-az-apgw-x-001/frontendPorts/public443"
                         },
+                        "sslCertificate": {
+                            "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationGateways/sxx-az-apgw-x-001/sslCertificates/sxx-az-apgw-x-001-ssl-certificate"
+                        },
                         "protocol": "https"
                     }
                 },
