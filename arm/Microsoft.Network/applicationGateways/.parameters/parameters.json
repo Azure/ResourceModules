@@ -106,8 +106,14 @@
                 {
                     "name": "private4433",
                     "properties": {
+                        "frontendIPConfiguration": {
+                            "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationGateways/sxx-az-apgw-x-001/frontendIPConfigurations/apw-frontend-ip-configuration"
+                        },
                         "frontendPort": {
                             "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationGateways/sxx-az-apgw-x-001/frontendPorts/private4433"
+                        },
+                        "sslCertificate": {
+                            "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationGateways/sxx-az-apgw-x-001/sslCertificates/sxx-az-apgw-x-001-ssl-certificate"
                         },
                         "protocol": "https"
                     }
