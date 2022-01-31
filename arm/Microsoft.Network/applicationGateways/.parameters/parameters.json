@@ -123,38 +123,38 @@
         },
         "redirectConfigurations": {
             "value": [
-                {
-                    "name": "public443",
-                    "properties": {
-                        "includePath": true,
-                        "includeQueryString": true,
-                        "redirectType": "Permanent",
-                        "requestRoutingRules": [
-                            {
-                                "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationGateways/sxx-az-apgw-x-001/requestRoutingRules/apw-routing-rule-public443"
-                            }
-                        ],
-                        "targetListener": {
-                            "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationGateways/sxx-az-apgw-x-001/httpListeners/public443"
-                        }
-                    }
-                },
-                {
-                    "name": "private4433",
-                    "properties": {
-                        "includePath": true,
-                        "includeQueryString": true,
-                        "redirectType": "Permanent",
-                        "requestRoutingRules": [
-                            {
-                                "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationGateways/sxx-az-apgw-x-001/requestRoutingRules/apw-routing-rule-private4433"
-                            }
-                        ],
-                        "targetListener": {
-                            "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationGateways/sxx-az-apgw-x-001/httpListeners/private4433"
-                        }
-                    }
-                }
+                // {
+                //     "name": "public443",
+                //     "properties": {
+                //         "includePath": true,
+                //         "includeQueryString": true,
+                //         "redirectType": "Permanent",
+                //         "requestRoutingRules": [
+                //             {
+                //                 "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationGateways/sxx-az-apgw-x-001/requestRoutingRules/apw-routing-rule-public443"
+                //             }
+                //         ],
+                //         "targetListener": {
+                //             "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationGateways/sxx-az-apgw-x-001/httpListeners/public443"
+                //         }
+                //     }
+                // },
+                // {
+                //     "name": "private4433",
+                //     "properties": {
+                //         "includePath": true,
+                //         "includeQueryString": true,
+                //         "redirectType": "Permanent",
+                //         "requestRoutingRules": [
+                //             {
+                //                 "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationGateways/sxx-az-apgw-x-001/requestRoutingRules/apw-routing-rule-private4433"
+                //             }
+                //         ],
+                //         "targetListener": {
+                //             "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationGateways/sxx-az-apgw-x-001/httpListeners/private4433"
+                //         }
+                //     }
+                // }
             ]
         },
         "requestRoutingRules": {
