@@ -1,0 +1,161 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": "sxx-az-apgw-x-001"
+        },
+        "sku": {
+            "value": "WAF_v2"
+        },
+        "vNetName": {
+            "value": "adp-sxx-az-vnet-x-001"
+        },
+        "subnetName": {
+            "value": "sxx-az-subnet-x-007"
+        },
+        "vNetResourceGroup": {
+            "value": "validation-rg"
+        },
+        "frontendPrivateIpAddress": {
+            "value": "10.0.8.6"
+        },
+        "frontendPublicIpResourceId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/publicIPAddresses/adp-sxx-az-pip-x-apgw"
+        },
+        "userAssignedIdentities": {
+            "value": {
+                "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001": {}
+            }
+        },
+        "sslCertificateKeyVaultSecretId": {
+            "value": "https://adp-sxx-az-kv-x-001.vault.azure.net/secrets/applicationGatewaySslCertificate/5b09a47d080943bb93d00f4dc45244a1"
+        },
+        "backendPools": {
+            "value": [
+                {
+                    "backendPoolName": "appServiceBackendPool",
+                    "backendAddresses": [
+                        {
+                            "fqdn": "aghapp.azurewebsites.net"
+                        }
+                    ]
+                },
+                {
+                    "backendPoolName": "privateVmBackendPool",
+                    "backendAddresses": [
+                        {
+                            "ipAddress": "10.0.0.4"
+                        }
+                    ]
+                }
+            ]
+        },
+        "backendHttpConfigurations": {
+            "value": [
+                {
+                    "backendHttpConfigurationName": "appServiceBackendHttpsSetting",
+                    "port": 443,
+                    "protocol": "https",
+                    "cookieBasedAffinity": "Disabled",
+                    "pickHostNameFromBackendAddress": true,
+                    "probeEnabled": false
+                },
+                {
+                    "backendHttpConfigurationName": "privateVmHttpSetting",
+                    "port": 80,
+                    "protocol": "http",
+                    "cookieBasedAffinity": "Disabled",
+                    "pickHostNameFromBackendAddress": false,
+                    "probeEnabled": true
+                }
+            ]
+        },
+        "probes": {
+            "value": [
+                {
+                    "backendHttpConfigurationName": "privateVmHttpSetting",
+                    "protocol": "http",
+                    "host": "10.0.0.4",
+                    "path": "/",
+                    "interval": 60,
+                    "timeout": 15,
+                    "unhealthyThreshold": 5,
+                    "minServers": 3,
+                    "body": "",
+                    "statusCodes": [
+                        "200",
+                        "401"
+                    ]
+                }
+            ]
+        },
+        "frontendHttpsListeners": {
+            "value": [
+                {
+                    "frontendListenerName": "public443",
+                    "frontendIPType": "Public",
+                    "port": 443
+                },
+                {
+                    "frontendListenerName": "private4433",
+                    "frontendIPType": "Private",
+                    "port": 4433
+                }
+            ]
+        },
+        "frontendHttpRedirects": {
+            "value": [
+                {
+                    "frontendIPType": "Public",
+                    "port": 80,
+                    "frontendListenerName": "public443"
+                },
+                {
+                    "frontendIPType": "Private",
+                    "port": 8080,
+                    "frontendListenerName": "private4433"
+                }
+            ]
+        },
+        "routingRules": {
+            "value": [
+                {
+                    "frontendListenerName": "public443",
+                    "backendPoolName": "appServiceBackendPool",
+                    "backendHttpConfigurationName": "appServiceBackendHttpsSetting"
+                },
+                {
+                    "frontendListenerName": "private4433",
+                    "backendPoolName": "privateVmBackendPool",
+                    "backendHttpConfigurationName": "privateVmHttpSetting"
+                }
+            ]
+        },
+        "roleAssignments": {
+            "value": [
+                {
+                    "roleDefinitionIdOrName": "Reader",
+                    "principalIds": [
+                        "<<deploymentSpId>>"
+                    ]
+                }
+            ]
+        },
+        "diagnosticLogsRetentionInDays": {
+            "value": 7
+        },
+        "diagnosticStorageAccountId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adpsxxazsax001"
+        },
+        "diagnosticWorkspaceId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-sxx-az-law-x-001"
+        },
+        "diagnosticEventHubAuthorizationRuleId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-sxx-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
+        },
+        "diagnosticEventHubName": {
+            "value": "adp-sxx-az-evh-x-001"
+        }
+    }
+}
