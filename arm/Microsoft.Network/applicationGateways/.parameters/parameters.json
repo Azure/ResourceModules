@@ -86,29 +86,31 @@
                 }
             ]
         },
-        "httpListeners": [
-            {
-                "name": "public443",
-                "properties": {
-                    "frontendIPConfiguration": {
-                        "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationGateways/sxx-az-apgw-x-001/frontendIPConfigurations/apw-frontend-ip-configuration"
-                    },
-                    "frontendPort": {
-                        "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationGateways/sxx-az-apgw-x-001/frontendPorts/public443"
-                    },
-                    "protocol": "https"
+        "httpListeners": {
+            "value": [
+                {
+                    "name": "public443",
+                    "properties": {
+                        "frontendIPConfiguration": {
+                            "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationGateways/sxx-az-apgw-x-001/frontendIPConfigurations/apw-frontend-ip-configuration"
+                        },
+                        "frontendPort": {
+                            "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationGateways/sxx-az-apgw-x-001/frontendPorts/public443"
+                        },
+                        "protocol": "https"
+                    }
+                },
+                {
+                    "name": "private4433",
+                    "properties": {
+                        "frontendPort": {
+                            "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationGateways/sxx-az-apgw-x-001/frontendPorts/private4433"
+                        },
+                        "protocol": "https"
+                    }
                 }
-            },
-            {
-                "name": "private4433",
-                "properties": {
-                    "frontendPort": {
-                        "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationGateways/sxx-az-apgw-x-001/frontendPorts/private4433"
-                    },
-                    "protocol": "https"
-                }
-            }
-        ],
+            ]
+        },
         "gatewayIPConfigurations": {
             "value": [
                 {
