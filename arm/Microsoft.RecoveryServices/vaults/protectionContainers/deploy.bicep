@@ -54,7 +54,7 @@ resource protectionContainer 'Microsoft.RecoveryServices/vaults/backupFabrics/pr
     sourceResourceId: !empty(sourceResourceId) ? sourceResourceId : null
     friendlyName: !empty(friendlyName) ? friendlyName : null
     backupManagementType: !empty(backupManagementType) ? backupManagementType : null
-    containerType: !empty(containerType) ? containerType : null
+    containerType: !empty(containerType) ? any(containerType) : null
   }
 }
 
