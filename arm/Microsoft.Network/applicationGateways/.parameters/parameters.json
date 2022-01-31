@@ -191,40 +191,40 @@
                 }
             ]
         },
-        "requestRoutingRules": {
-            "value": [
-                {
-                    "name": "apw-routing-rule-public443",
-                    "properties": {
-                        "ruleType": "Basic",
-                        "httpListener": {
-                            "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationGateways/sxx-az-apgw-x-001/httpListeners/public443"
-                        } //,
-                        // "backendAddressPool": {
-                        //     "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationGateways/sxx-az-apgw-x-001/backendAddressPools/appServiceBackendPool"
-                        // },
-                        // "backendHttpSettings": {
-                        //     "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationGateways/sxx-az-apgw-x-001/backendHttpSettingsCollection/appServiceBackendHttpsSetting"
-                        // }
-                    }
-                },
-                {
-                    "name": "apw-routing-rule-private4433",
-                    "properties": {
-                        "ruleType": "Basic",
-                        "httpListener": {
-                            "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationGateways/sxx-az-apgw-x-001/httpListeners/private4433"
-                        },
-                        "backendAddressPool": {
-                            "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationGateways/sxx-az-apgw-x-001/backendAddressPools/privateVmBackendPool"
-                        },
-                        "backendHttpSettings": {
-                            "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationGateways/sxx-az-apgw-x-001/backendHttpSettingsCollection/privateVmHttpSetting"
-                        }
-                    }
-                }
-            ]
-        },
+        // "requestRoutingRules": {
+        //     "value": [
+        //         {
+        //             "name": "apw-routing-rule-public443",
+        //             "properties": {
+        //                 "ruleType": "Basic",
+        //                 "httpListener": {
+        //                     "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationGateways/sxx-az-apgw-x-001/httpListeners/public443"
+        //                 },
+        //                 "backendAddressPool": {
+        //                     "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationGateways/sxx-az-apgw-x-001/backendAddressPools/appServiceBackendPool"
+        //                 },
+        //                 "backendHttpSettings": {
+        //                     "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationGateways/sxx-az-apgw-x-001/backendHttpSettingsCollection/appServiceBackendHttpsSetting"
+        //                 }
+        //             }
+        //         },
+        //         {
+        //             "name": "apw-routing-rule-private4433",
+        //             "properties": {
+        //                 "ruleType": "Basic",
+        //                 "httpListener": {
+        //                     "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationGateways/sxx-az-apgw-x-001/httpListeners/private4433"
+        //                 },
+        //                 "backendAddressPool": {
+        //                     "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationGateways/sxx-az-apgw-x-001/backendAddressPools/privateVmBackendPool"
+        //                 },
+        //                 "backendHttpSettings": {
+        //                     "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationGateways/sxx-az-apgw-x-001/backendHttpSettingsCollection/privateVmHttpSetting"
+        //                 }
+        //             }
+        //         }
+        //     ]
+        // },
         "sku": {
             "value": "WAF_v2"
         },
