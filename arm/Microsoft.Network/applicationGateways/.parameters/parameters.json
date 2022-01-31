@@ -200,9 +200,9 @@
                         "httpListener": {
                             "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationGateways/sxx-az-apgw-x-001/httpListeners/public443"
                         },
-                        "backendAddressPool": {
-                            "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationGateways/sxx-az-apgw-x-001/backendAddressPools/appServiceBackendPool"
-                        },
+                        // "backendAddressPool": {
+                        //     "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationGateways/sxx-az-apgw-x-001/backendAddressPools/appServiceBackendPool"
+                        // },
                         "backendHttpSettings": {
                             "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationGateways/sxx-az-apgw-x-001/backendHttpSettingsCollection/appServiceBackendHttpsSetting"
                         }
