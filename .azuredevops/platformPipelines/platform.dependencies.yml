@@ -305,6 +305,18 @@ stages:
               azureSubscription: $(serviceConnection)
               ScriptType: 'InlineScript'
               Inline: |
+
+                # Load used functions
+                . (Join-Path '$(Build.SourcesDirectory)' 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInParameterFile.ps1')
+
+                # Prepare Replace Tokens in Parameter File
+                $Settings = Get-Content -Path (Join-Path '$(Build.SourcesDirectory)' 'settings.json') | ConvertFrom-Json
+                $ConvertTokensInputs = @{
+                    LocalCustomParameterFileTokens    = $Settings.parameterFileTokens.localTokens.tokens
+                    TokenPrefix                       = $Settings.parameterFileTokens.tokenPrefix
+                    TokenSuffix                       = $Settings.parameterFileTokens.tokenSuffix
+                }
+
                 # Retrieving parameters from previous job outputs and parameter files
                 Write-Verbose "Retrieving parameters from previous job outputs" -Verbose
                 $imageTemplateName = (ConvertFrom-Json '$(deploymentOutput)').name
@@ -312,10 +324,12 @@ stages:
 
                 Write-Verbose "Retrieving parameters from storage account parameter files" -Verbose
                 $parameterFilePath = Join-Path '$(Build.SourcesDirectory)' '$(dependencyPath)' '$(saResourceType)' 'parameters' 'parameters.json'
+                $null = Convert-TokensInParameterFile @ConvertTokensInputs -ParameterFilePath $parameterFilePath -Verbose
                 $storageAccountParameters = (ConvertFrom-Json (Get-Content -path $parameterFilePath -Raw)).parameters
 
                 Write-Verbose "Retrieving parameters from image template parameter files" -Verbose
                 $parameterFilePath = Join-Path '$(Build.SourcesDirectory)' '$(dependencyPath)' '$(resourceType)' 'parameters' 'parameters.json'
+                $null = Convert-TokensInParameterFile @ConvertTokensInputs -ParameterFilePath $parameterFilePath -Verbose
                 $imageTemplateParameters = (ConvertFrom-Json (Get-Content -path $parameterFilePath -Raw)).parameters
 
                 # Initializing parameters before the blob copy
