@@ -121,12 +121,12 @@ The publishing works as follows:
 **Example scenario**
 
 Lets look at an example run where we would do a patch change on the `fileShares` module:
-1. A new branch is created for further development of the fileShare module.
-2. Bug-fixes, documentation, and security updates are added to the fileShare module by the author. The `version.json` file is not changed in either the child or parent module folders.
+1. A new branch is created for further development of the `fileShare` module. Let's assume the new branch started from commit `500` on the default branch and the `version.json` of the `fileShare` module contains major and minor `0.3`.
+2. Bug-fixes, documentation, and security updates are added to the `fileShare` module by the author. The `version.json` file is not changed in either the child or parent module folders.
 3. The author runs a manual workflow based on their development branch, with the 'publish pre-release' option enabled.
 4. A prerelease run of publishing triggers after test and validation of the module.
-   - For the child and parent modules, the module version's major and minor version is read from the `version.json` file in the module folder respectively.
-   - The patch is calculated based on the total number of commits in history on the branch (independent on the module).
+   - For the child and parent modules, the module version's major and minor version is read from the `version.json` file in the module folder respectively. Being unchanged, it still contains the version `0.3`.
+   - The patch is calculated based on the total number of commits in history on the branch (independent on the module). The new branch started from commit `500` on the default branch and 1 commit has been pushed, so the total number of commits on the new branch is `501`.
    - As the pipeline is not running based on the 'default branch', a prerelease segment (`-prerelease`) is added to the version.
    - The version results in being `0.3.501-prerelease`. The child and parent modules may have different major and minor versions, but the patch version will be the same in this case. Other unmodified child modules of `storageAccount` will not be republished and remain with the existing version.
 5. Sequential commits on the branch and runs of the module pipeline, with the 'publish pre-release' option enabled results in the following versions being published:
