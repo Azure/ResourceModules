@@ -267,7 +267,7 @@ resource applicationGateway 'Microsoft.Network/applicationGateways@2021-05-01' =
   location: location
   tags: tags
   identity: identity
-  properties: {
+  properties: union({
     authenticationCertificates: authenticationCertificates
     autoscaleConfiguration: autoscaleMaxCapacity > 0 && autoscaleMinCapacity > 0 ? {
       maxCapacity: autoscaleMaxCapacity
@@ -276,7 +276,6 @@ resource applicationGateway 'Microsoft.Network/applicationGateways@2021-05-01' =
     backendAddressPools: backendAddressPools
     backendHttpSettingsCollection: backendHttpSettingsCollection
     customErrorConfigurations: customErrorConfigurations
-    //enableFips: enableFips ? enableFips : null
     enableHttp2: enableHttp2
     firewallPolicy: !empty(firewallPolicyId) ? {
       id: firewallPolicyId
@@ -339,7 +338,9 @@ resource applicationGateway 'Microsoft.Network/applicationGateways@2021-05-01' =
     //   ruleSetType: 'string'
     //   ruleSetVersion: 'string'
     // }
-  }
+  }, (enableFips ? {
+    enableFips: enableFips
+  } : {}), {})
   zones: zones
 }
 
