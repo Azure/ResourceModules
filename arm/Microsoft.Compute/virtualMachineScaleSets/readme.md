@@ -69,7 +69,7 @@ The following resources are required to be able to deploy this resource.
 | `monitoringWorkspaceId` | string |  |  | Optional. Resource ID of the monitoring log analytics workspace. |
 | `name` | string |  |  | Required. Name of the VMSS. |
 | `nicConfigurations` | array | `[]` |  | Required. Configures NICs and PIPs. |
-| `osDisk` | object |  |  | Required. Specifies the OS disk. For security reasons, it is recommended to specify DiskEncryptionSet into the osDisk object.|
+| `osDisk` | object |  |  | Required. Specifies the OS disk. For security reasons, it is recommended to specify DiskEncryptionSet into the osDisk object. Restrictions: DiskEncryptionSet cannot be enabled if Azure Disk Encryption (guest-VM encryption using bitlocker/DM-Crypt) is enabled on your VM Scale sets.|
 | `osType` | string |  | `[Windows, Linux]` | Optional. The chosen OS type |
 | `overprovision` | bool |  |  | Optional. Specifies whether the Virtual Machine Scale Set should be overprovisioned. |
 | `pauseTimeBetweenBatches` | string | `PT0S` |  | Optional. The wait time between completing the update for all virtual machines in one batch and starting the next batch. The time duration should be specified in ISO 8601 format |
@@ -145,7 +145,7 @@ The following resources are required to be able to deploy this resource.
         "diskSizeGB": "128",
         "managedDisk": {
             "storageAccountType": "Premium_LRS",
-            "diskEncryptionSet": {
+            "diskEncryptionSet": { // Restrictions: DiskEncryptionSet cannot be enabled if Azure Disk Encryption (guest-VM encryption using bitlocker/DM-Crypt) is enabled on your VM Scale sets.
                         "id": "/subscriptions/<subscriptionId>/resourceGroups/<resourceGroupName>/providers/Microsoft.Compute/diskEncryptionSets/<desName>"
               }
         }
