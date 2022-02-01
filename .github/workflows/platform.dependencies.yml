@@ -984,7 +984,7 @@ jobs:
             # Load used functions
             . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInParameterFile.ps1')
 
-            # Replace Tokens in Parameter File
+            # Replace tokens in parameter file
             $Settings = Get-Content -Path "settings.json" | ConvertFrom-Json
             $ConvertTokensInputs = @{
                 ParameterFilePath                 = $parameterFilePath
