@@ -768,19 +768,6 @@ Describe 'Deployment template tests' -Tag Template {
                 $TenantIdKeyCount -eq $TenantIdValueCount | Should -Be $true -Because ("Parameter file should not contain the Tenant ID guid, instead should reference a token value '$ParameterFileTokenName'")
             }
         }
-
-        It '[<moduleFolderName>] [Tokens] Parameter files, resource name should contain the namePrefix token' -TestCases $deploymentFolderTestCases {
-            param (
-                [hashtable[]] $ParameterFileTestCases
-            )
-            foreach ($ParameterFileTestCase in $ParameterFileTestCases) {
-                $ParameterFileTokenName = -join ($ParameterFileTestCase.tokenSettings.tokenPrefix, 'namePrefix', $ParameterFileTestCase.tokenSettings.tokenSuffix)
-                $ParameterFileContent = Get-Content -Path $ParameterFileTestCase.parameterFile_Path
-                $namePrefixValue = $ParameterFileTestCase.tokenSettings.localTokens.tokens | Where-Object -Property name -EQ 'namePrefix' | Select-Object -ExpandProperty value
-                $namePrefixValueCount = ($ParameterFileContent | Select-String -Pattern "$namePrefixValue" -AllMatches).Matches.Count
-                $namePrefixValueCount -eq 0 | Should -Be $true -Because ("Parameter file should contain the token: $ParameterFileTokenName instead of value: $namePrefixValue")
-            }
-        }
     }
 }
 
