@@ -25,7 +25,7 @@ The following resources are required to be able to deploy this resource:
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `telemetryCuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
+| `enableDefaultTelemetry` | bool |  |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `groupId` | array |  |  | Required. Subtype(s) of the connection to be created. The allowed values depend on the type serviceResourceId refers to. |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all Resources. |
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |

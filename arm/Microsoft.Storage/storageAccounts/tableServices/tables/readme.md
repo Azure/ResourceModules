@@ -12,7 +12,7 @@ This module deploys a storage account table
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `telemetryCuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
+| `enableDefaultTelemetry` | bool |  |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `name` | string |  |  | Required. Name of the table. |
 | `storageAccountName` | string |  |  | Required. Name of the Storage Account. |
 | `tableServicesName` | string | `default` |  | Optional. The name of the table service |

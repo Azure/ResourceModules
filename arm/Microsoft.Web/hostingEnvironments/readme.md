@@ -17,7 +17,6 @@ This module deploys an app service environment.
 | :-- | :-- | :-- | :-- | :-- |
 | `apiManagementAccountId` | string |  |  | Optional. API Management Account associated with the App Service Environment. |
 | `clusterSettings` | array | `[]` |  | Optional. Custom settings for changing the behavior of the App Service Environment |
-| `telemetryCuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `diagnosticEventHubAuthorizationRuleId` | string |  |  | Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string |  |  | Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
@@ -25,6 +24,7 @@ This module deploys an app service environment.
 | `diagnosticWorkspaceId` | string |  |  | Optional. Resource ID of the diagnostic log analytics workspace. |
 | `dnsSuffix` | string |  |  | Optional. DNS suffix of the App Service Environment. |
 | `dynamicCacheEnabled` | bool |  |  | Optional. True/false indicating whether the App Service Environment is suspended. The environment can be suspended e.g. when the management endpoint is no longer available(most likely because NSG blocked the incoming traffic). |
+| `enableDefaultTelemetry` | bool |  |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `frontEndScaleFactor` | int | `15` |  | Optional. Scale factor for frontends. |
 | `hasLinuxWorkers` | bool |  |  | Optional. Flag that displays whether an ASE has linux workers or not |
 | `internalLoadBalancingMode` | string | `None` | `[None, Web, Publishing]` | Optional. Specifies which endpoints to serve internally in the Virtual Network for the App Service Environment. - None, Web, Publishing, Web,Publishing |

@@ -19,6 +19,7 @@ This module has some known **limitations**:
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `displayName` | string |  |  | Optional. The friendly name of the management group. If no value is passed then this field will be set to the group ID. |
+| `enableDefaultTelemetry` | bool |  |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `name` | string |  |  | Required. The group ID of the Management group |
 | `parentId` | string |  |  | Optional. The management group parent ID. Defaults to current scope. |
 | `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects to define RBAC on this resource. |

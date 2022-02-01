@@ -20,8 +20,8 @@ This module deploys a SQL server.
 | :-- | :-- | :-- | :-- | :-- |
 | `administratorLogin` | string |  |  | Required. Administrator username for the server. |
 | `administratorLoginPassword` | secureString |  |  | Required. The administrator login password. |
-| `telemetryCuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `databases` | _[databases](databases/readme.md)_ array | `[]` |  | Optional. The databases to create in the server |
+| `enableDefaultTelemetry` | bool |  |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `firewallRules` | _[firewallRules](firewallRules/readme.md)_ array | `[]` |  | Optional. The firewall rules to create in the server |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |

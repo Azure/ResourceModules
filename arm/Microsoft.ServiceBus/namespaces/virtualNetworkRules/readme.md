@@ -12,7 +12,7 @@ This module deploys a virtual network rule for a service bus namespace.
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `telemetryCuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
+| `enableDefaultTelemetry` | bool |  |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `name` | string | `[format('{0}-vnr', parameters('namespaceName'))]` |  | Optional. The name of the virtual network rule |
 | `namespaceName` | string |  |  | Required. Name of the parent Service Bus Namespace for the Service Bus Queue. |
 | `virtualNetworkSubnetId` | string |  |  | Required. Resource ID of Virtual Network Subnet |

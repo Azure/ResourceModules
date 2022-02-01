@@ -15,7 +15,7 @@ This module deploys an Azure compute gallery (formerly known as shared image gal
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `telemetryCuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
+| `enableDefaultTelemetry` | bool |  |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `galleryDescription` | string |  |  | Optional. Description of the Azure Shared Image Gallery |
 | `images` | _[images](images/readme.md)_ array | `[]` |  | Optional. Images to create |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |

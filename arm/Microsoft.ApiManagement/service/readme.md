@@ -36,7 +36,6 @@ This module deploys an API management service.
 | `backends` | _[backends](backends/readme.md)_ array | `[]` |  | Optional. Backends. |
 | `caches` | _[caches](caches/readme.md)_ array | `[]` |  | Optional. Caches. |
 | `certificates` | array | `[]` |  | Optional. List of Certificates that need to be installed in the API Management service. Max supported certificates that can be installed is 10. |
-| `telemetryCuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `customProperties` | object | `{object}` |  | Optional. Custom properties of the API Management service. |
 | `diagnosticEventHubAuthorizationRuleId` | string |  |  | Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string |  |  | Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
@@ -45,6 +44,7 @@ This module deploys an API management service.
 | `diagnosticWorkspaceId` | string |  |  | Optional. Resource ID of the diagnostic log analytics workspace. |
 | `disableGateway` | bool |  |  | Optional. Property only valid for an API Management service deployed in multiple locations. This can be used to disable the gateway in master region. |
 | `enableClientCertificate` | bool |  |  | Optional. Property only meant to be used for Consumption SKU Service. This enforces a client certificate to be presented on each request to the gateway. This also enables the ability to authenticate the certificate in the policy on the gateway. |
+| `enableDefaultTelemetry` | bool |  |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `hostnameConfigurations` | array | `[]` |  | Optional. Custom hostname configuration of the API Management service. |
 | `identityProviders` | _[identityProviders](identityProviders/readme.md)_ array | `[]` |  | Optional. Identity providers. |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all Resources. |

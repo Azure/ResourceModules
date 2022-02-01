@@ -13,8 +13,8 @@ This template deploys a saved search for a Log Analytics workspace.
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `category` | string |  |  | Required. Query category. |
-| `telemetryCuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `displayName` | string |  |  | Required. Display name for the search. |
+| `enableDefaultTelemetry` | bool |  |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `functionAlias` | string |  |  | Optional. The function alias if query serves as a function.. |
 | `functionParameters` | string |  |  | Optional. The optional function parameters if query serves as a function. Value should be in the following format: "param-name1:type1 = default_value1, param-name2:type2 = default_value2". For more examples and proper syntax please refer to /azure/kusto/query/functions/user-defined-functions. |
 | `logAnalyticsWorkspaceName` | string |  |  | Required. Name of the Log Analytics workspace |

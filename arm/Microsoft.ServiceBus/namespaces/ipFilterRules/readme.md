@@ -13,7 +13,7 @@ This module deploys IP filter rules for a service bus namespace
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `action` | string |  | `[Accept]` | Required. The IP Filter Action |
-| `telemetryCuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
+| `enableDefaultTelemetry` | bool |  |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `filterName` | string |  |  | Required. IP Filter name |
 | `ipMask` | string |  |  | Required. IP Mask |
 | `name` | string | `[parameters('filterName')]` |  | Optional. The name of the ip filter rule |

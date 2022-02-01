@@ -20,7 +20,6 @@ This template deploys a log analytics workspace.
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `telemetryCuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `dailyQuotaGb` | int | `-1` |  | Optional. The workspace daily quota for ingestion. |
 | `dataRetention` | int | `365` |  | Required. Number of days data will be retained for |
 | `dataSources` | _[dataSources](dataSources/readme.md)_ array | `[]` |  | Optional. LAW data sources to configure. |
@@ -29,6 +28,7 @@ This template deploys a log analytics workspace.
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticStorageAccountId` | string |  |  | Optional. Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string |  |  | Optional. Resource ID of a log analytics workspace. |
+| `enableDefaultTelemetry` | bool |  |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `gallerySolutions` | array | `[]` |  | Optional. LAW gallerySolutions from the gallery. |
 | `linkedServices` | _[linkedServices](linkedServices/readme.md)_ array | `[]` |  | Optional. List of services to be linked. |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |

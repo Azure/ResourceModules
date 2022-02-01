@@ -18,12 +18,12 @@ This template deploys an application gateway.
 | `backendHttpConfigurations` | array |  |  | Required. The backend HTTP settings to be configured. These HTTP settings will be used to rewrite the incoming HTTP requests for the backend pools. |
 | `backendPools` | array |  |  | Required. The backend pools to be configured. |
 | `capacity` | int | `2` |  | Optional. The number of Application instances to be configured. |
-| `telemetryCuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered. |
 | `diagnosticEventHubAuthorizationRuleId` | string |  |  | Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string |  |  | Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticStorageAccountId` | string |  |  | Optional. Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string |  |  | Optional. Resource ID of the diagnostic log analytics workspace. |
+| `enableDefaultTelemetry` | bool |  |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `frontendHttpListeners` | array | `[]` |  | Required. The frontend http listeners to be configured. |
 | `frontendHttpRedirects` | array | `[]` |  | Optional. The http redirects to be configured. Each redirect will route http traffic to a predefined frontEnd HTTPS listener. |
 | `frontendHttpsListeners` | array | `[]` |  | Required. The frontend HTTPS listeners to be configured. |

@@ -14,7 +14,7 @@ This module deploys a site config resource.
 | :-- | :-- | :-- | :-- | :-- |
 | `appInsightId` | string |  |  | Optional. Resource ID of the app insight to leverage for this resource. |
 | `appName` | string |  |  | Required. Name of the site parent resource. |
-| `telemetryCuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered. |
+| `enableDefaultTelemetry` | bool |  |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `functionsExtensionVersion` | string | `~3` |  | Optional. Version of the function extension. |
 | `functionsWorkerRuntime` | string |  | `[dotnet, node, python, java, powershell, ]` | Optional. Runtime of the function worker. |
 | `name` | string |  | `[appsettings]` | Required. Name of the site config. |

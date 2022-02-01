@@ -12,10 +12,10 @@ This module deploys an SQL Server Security Alert Policy.
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `telemetryCuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `disabledAlerts` | array | `[]` |  | Optional. Specifies an array of alerts that are disabled. Allowed values are: Sql_Injection, Sql_Injection_Vulnerability, Access_Anomaly, Data_Exfiltration, Unsafe_Action, Brute_Force. |
 | `emailAccountAdmins` | bool |  |  | Optional. Specifies that the alert is sent to the account administrators. |
 | `emailAddresses` | array | `[]` |  | Optional. Specifies an array of email addresses to which the alert is sent. |
+| `enableDefaultTelemetry` | bool |  |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `name` | string |  |  | Required. The name of the Security Alert Policy. |
 | `retentionDays` | int |  |  | Optional. Specifies the number of days to keep in the Threat Detection audit logs. |
 | `serverName` | string |  |  | Required. The Name of SQL Server |

@@ -14,8 +14,8 @@ This module deploys a MongoDB within a CosmosDB account.
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `collections` | _[collections](collections/readme.md)_ array | `[]` |  | Optional. Collections in the mongodb database |
-| `telemetryCuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `databaseAccountName` | string |  |  | Required. Name of the Cosmos DB database account. |
+| `enableDefaultTelemetry` | bool |  |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `name` | string |  |  | Required. Name of the mongodb database |
 | `tags` | object | `{object}` |  | Optional. Tags of the resource. |
 | `throughput` | int | `400` |  | Optional. Name of the mongodb database |

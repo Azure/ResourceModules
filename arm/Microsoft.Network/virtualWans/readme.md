@@ -19,8 +19,8 @@ This template deploys a virtual WAN.
 | :-- | :-- | :-- | :-- | :-- |
 | `addressPrefix` | string | `192.168.0.0/24` |  | Optional. The hub address prefix. This address prefix will be used as the address prefix for the hub vnet |
 | `connectionName` | string | `SampleVpnsiteVpnGwConnection` |  | Optional. Name of the vpnconnection. A vpn connection is established between a vpnsite and a vpn gateway. |
-| `telemetryCuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `enableBgp` | string | `false` | `[true, false]` | Optional. his needs to be set to true if BGP needs to enabled on the vpn connection. |
+| `enableDefaultTelemetry` | bool |  |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location where all resources will be created. |
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
 | `name` | string |  |  | Required. Name of the Virtual Wan. |

@@ -13,7 +13,7 @@ This template deploys a storage insights configuration for a Log Analytics works
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `containers` | array | `[]` |  | Optional. The names of the blob containers that the workspace should read. |
-| `telemetryCuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
+| `enableDefaultTelemetry` | bool |  |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `logAnalyticsWorkspaceName` | string |  |  | Required. Name of the Log Analytics workspace. |
 | `name` | string | `[format('{0}-stinsconfig', last(split(parameters('storageAccountId'), '/')))]` |  | Optional. The name of the storage insights config |
 | `storageAccountId` | string |  |  | Required. The Azure Resource Manager ID of the storage account resource. |
