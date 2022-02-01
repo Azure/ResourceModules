@@ -52,8 +52,8 @@ param lock string = 'NotSpecified'
 @sys.description('Optional. Tags of the resource.')
 param tags object = {}
 
-@sys.description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
-param telemetryCuaId string = ''
+@sys.description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+param enableDefaultTelemetry bool = false
 
 @sys.description('Optional. The name of logs that will be streamed.')
 @allowed([

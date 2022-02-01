@@ -10,8 +10,8 @@ param connectionKind string
 @description('Required. Connection name for connection. Example: \'azureblob\' when using blobs.  It can change depending on the resource.')
 param name string
 
-@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered.')
-param telemetryCuaId string = ''
+@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+param enableDefaultTelemetry bool = false
 
 @description('Optional. Customized parameter values for specific connections.')
 param customParameterValues object = {}

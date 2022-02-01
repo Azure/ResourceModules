@@ -28,8 +28,8 @@ The following resources are required to be able to deploy this resource.
 | `apiVersionDescription` | string |  |  | Optional. Description of the API Version. |
 | `apiVersionSetId` | string |  |  | Optional. Indicates the Version identifier of the API version set |
 | `authenticationSettings` | object | `{object}` |  | Optional. Collection of authentication settings included into this API. |
-| `telemetryCuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `displayName` | string |  |  | Required. API name. Must be 1 to 300 characters long. |
+| `enableDefaultTelemetry` | bool |  |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `format` | string | `openapi` | `[wadl-xml, wadl-link-json, swagger-json, swagger-link-json, wsdl, wsdl-link, openapi, openapi+json, openapi-link, openapi+json-link]` | Optional. Format of the Content in which the API is getting imported. |
 | `isCurrent` | bool | `True` |  | Optional. Indicates if API revision is current API revision. |
 | `name` | string |  |  | Required. API revision identifier. Must be unique in the current API Management service instance. Non-current revision has ;rev=n as a suffix where n is the revision number. |
