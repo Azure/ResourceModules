@@ -11,6 +11,22 @@
         "enableRbacAuthorization": {
             "value": false
         },
+        "privateEndpoints": {
+            "value": [
+                {
+                    "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-005-privateEndpoints",
+                    "service": "vault"
+                }
+            ]
+        },
+        "networkAcls": {
+            "value": {
+                "bypass": "AzureServices",
+                "defaultAction": "Deny",
+                "virtualNetworkRules": [],
+                "ipRules": []
+            }
+        },
         "roleAssignments": {
             "value": [
                 {
@@ -27,6 +43,7 @@
                     "name": "secretName",
                     "value": "secretValue",
                     "contentType": "Something",
+                    "attributesExp": 1702648632,
                     "attributesNbf": 10000,
                     "roleAssignments": [
                         {
@@ -43,6 +60,7 @@
             "value": [
                 {
                     "name": "keyName",
+                    "attributesExp": 1702648632,
                     "attributesNbf": 10000,
                     "roleAssignments": [
                         {
@@ -90,15 +108,15 @@
             "value": 7
         },
         "diagnosticStorageAccountId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adpsxxazsaweux001"
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adpsxxazsax001"
         },
-        "workspaceId": {
+        "diagnosticWorkspaceId": {
             "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-sxx-az-law-x-001"
         },
-        "eventHubAuthorizationRuleId": {
+        "diagnosticEventHubAuthorizationRuleId": {
             "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-sxx-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
         },
-        "eventHubName": {
+        "diagnosticEventHubName": {
             "value": "adp-sxx-az-evh-x-001"
         }
     }

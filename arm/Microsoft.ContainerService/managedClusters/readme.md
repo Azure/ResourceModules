@@ -6,8 +6,8 @@ This module deploys Azure Kubernetes Cluster (AKS).
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/locks` | 2016-09-01 |
-| `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
+| `Microsoft.Authorization/locks` | 2017-04-01 |
+| `Microsoft.Authorization/roleAssignments` | 2021-04-01-preview |
 | `Microsoft.ContainerService/managedClusters` | 2021-07-01 |
 | `Microsoft.ContainerService/managedClusters/agentPools` | 2021-08-01 |
 | `Microsoft.Insights/diagnosticSettings` | 2021-05-01-preview |
@@ -51,10 +51,11 @@ This module deploys Azure Kubernetes Cluster (AKS).
 | `azurePolicyEnabled` | bool | `True` |  | Optional. Specifies whether the azurepolicy add-on is enabled or not. |
 | `azurePolicyVersion` | string | `v2` |  | Optional. Specifies the azure policy version to use. |
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
+| `diagnosticEventHubAuthorizationRuleId` | string |  |  | Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
+| `diagnosticEventHubName` | string |  |  | Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticStorageAccountId` | string |  |  | Optional. Resource ID of the diagnostic storage account. |
-| `eventHubAuthorizationRuleId` | string |  |  | Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
-| `eventHubName` | string |  |  | Optional. Name of the event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
+| `diagnosticWorkspaceId` | string |  |  | Optional. Resource ID of the diagnostic log analytics workspace. |
 | `httpApplicationRoutingEnabled` | bool |  |  | Optional. Specifies whether the httpApplicationRouting add-on is enabled or not. |
 | `kubeDashboardEnabled` | bool |  |  | Optional. Specifies whether the kubeDashboard add-on is enabled or not. |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Specifies the location of AKS cluster. It picks up Resource Group's location by default. |
@@ -62,6 +63,7 @@ This module deploys Azure Kubernetes Cluster (AKS).
 | `logsToEnable` | array | `[kube-apiserver, kube-audit, kube-controller-manager, kube-scheduler, cluster-autoscaler]` | `[kube-apiserver, kube-audit, kube-controller-manager, kube-scheduler, cluster-autoscaler]` | Optional. The name of logs that will be streamed. |
 | `managedOutboundIPCount` | int |  |  | Optional. Outbound IP Count for the Load balancer. |
 | `metricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | Optional. The name of metrics that will be streamed. |
+| `monitoringWorkspaceId` | string |  |  | Optional. Resource ID of the monitoring log analytics workspace. |
 | `name` | string |  |  | Required. Specifies the name of the AKS cluster. |
 | `nodeResourceGroup` | string | `[format('{0}_aks_{1}_nodes', resourceGroup().name, parameters('name'))]` |  | Optional. Name of the resource group containing agent pool nodes. |
 | `omsAgentEnabled` | bool | `True` |  | Optional. Specifies whether the OMS agent is enabled. |
@@ -70,7 +72,6 @@ This module deploys Azure Kubernetes Cluster (AKS).
 | `systemAssignedIdentity` | bool |  |  | Optional. Enables system assigned managed identity on the resource. |
 | `tags` | object | `{object}` |  | Optional. Tags of the resource. |
 | `userAssignedIdentities` | object | `{object}` |  | Optional. The ID(s) to assign to the resource. |
-| `workspaceId` | string |  |  | Optional. Resource ID of log analytics. |
 
 ### Parameter Usage: `roleAssignments`
 
@@ -198,16 +199,16 @@ You can specify multiple user assigned identities to a resource by providing add
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `azureKubernetesServiceName` | string | The name of the managed cluster |
-| `azureKubernetesServiceResourceGroup` | string | The resource group the managed cluster was deployed into |
-| `azureKubernetesServiceResourceId` | string | The resource ID of the managed cluster |
 | `controlPlaneFQDN` | string | The control plane FQDN of the managed cluster |
+| `name` | string | The name of the managed cluster |
+| `resourceGroupName` | string | The resource group the managed cluster was deployed into |
+| `resourceId` | string | The resource ID of the managed cluster |
 | `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
 
 ## Template references
 
 - [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings)
-- [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
+- [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
 - [Managedclusters](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ContainerService/2021-07-01/managedClusters)
 - [Managedclusters/Agentpools](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ContainerService/2021-08-01/managedClusters/agentPools)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-04-01-preview/roleAssignments)
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)

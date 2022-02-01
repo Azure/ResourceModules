@@ -47,7 +47,7 @@ module privateDnsZone_virtualNetworkLinks 'virtualNetworkLinks/deploy.bicep' = [
   }
 }]
 
-resource privateDnsZone_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
+resource privateDnsZone_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
   name: '${privateDnsZone.name}-${lock}-lock'
   properties: {
     level: lock
@@ -66,10 +66,10 @@ module privateDnsZone_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, in
 }]
 
 @description('The resource group the private DNS zone was deployed into')
-output privateDnsZoneResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name
 
 @description('The name of the private DNS zone')
-output privateDnsZoneName string = privateDnsZone.name
+output name string = privateDnsZone.name
 
 @description('The resource ID of the private DNS zone')
-output privateDnsZoneResourceId string = privateDnsZone.id
+output resourceId string = privateDnsZone.id

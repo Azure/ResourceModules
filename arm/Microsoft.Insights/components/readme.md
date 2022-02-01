@@ -4,7 +4,7 @@
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
+| `Microsoft.Authorization/roleAssignments` | 2021-04-01-preview |
 | `Microsoft.Insights/components` | 2020-02-02 |
 
 ## Parameters
@@ -65,12 +65,12 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `appInsightsAppId` | string | The application ID of the application insights component |
-| `appInsightsName` | string | The name of the application insights component |
-| `appInsightsResourceGroup` | string | The resource group the application insights component was deployed into |
-| `appInsightsResourceId` | string | The resource ID of the application insights component |
+| `applicationId` | string | The application ID of the application insights component |
+| `name` | string | The name of the application insights component |
+| `resourceGroupName` | string | The resource group the application insights component was deployed into |
+| `resourceId` | string | The resource ID of the application insights component |
 
 ## Template references
 
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-04-01-preview/roleAssignments)
 - [Components](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2020-02-02/components)
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)

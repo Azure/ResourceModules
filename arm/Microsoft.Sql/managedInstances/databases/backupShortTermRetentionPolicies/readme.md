@@ -23,9 +23,9 @@ This module deploys a backup short-term retention policies for SQL Managed Insta
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `backupShortTermRetentionPolicyName` | string | The name of the deployed database backup short-term retention policy |
-| `backupShortTermRetentionPolicyResourceGroup` | string | The resource group of the deployed database backup short-term retention policy |
-| `backupShortTermRetentionPolicyResourceId` | string | The resource ID of the deployed database backup short-term retention policy |
+| `name` | string | The name of the deployed database backup short-term retention policy |
+| `resourceGroupName` | string | The resource group of the deployed database backup short-term retention policy |
+| `resourceId` | string | The resource ID of the deployed database backup short-term retention policy |
 
 ## Template references
 

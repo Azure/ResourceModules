@@ -3,7 +3,7 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "name": {
-      "value": "adpsxxazsaweux001"
+      "value": "adpsxxazsax001"
     },
     "storageAccountKind": {
       "value": "StorageV2"
@@ -22,6 +22,10 @@
         "containers": [
           {
             "name": "scripts",
+            "publicAccess": "None"
+          },
+          {
+            "name": "vhds",
             "publicAccess": "None"
           }
         ]

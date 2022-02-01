@@ -54,11 +54,11 @@ module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
-resource rsv 'Microsoft.RecoveryServices/vaults@2021-08-01' existing = {
+resource rsv 'Microsoft.RecoveryServices/vaults@2021-12-01' existing = {
   name: recoveryVaultName
 }
 
-resource backupConfig 'Microsoft.RecoveryServices/vaults/backupconfig@2021-08-01' = {
+resource backupConfig 'Microsoft.RecoveryServices/vaults/backupconfig@2021-10-01' = {
   name: name
   parent: rsv
   properties: {
@@ -72,10 +72,10 @@ resource backupConfig 'Microsoft.RecoveryServices/vaults/backupconfig@2021-08-01
 }
 
 @description('The name of the backup config')
-output backupConfigName string = backupConfig.name
+output name string = backupConfig.name
 
 @description('The resource ID of the backup config')
-output backupConfigResourceId string = backupConfig.id
+output resourceId string = backupConfig.id
 
 @description('The name of the resource group the backup config was created in.')
-output backupConfigResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name

@@ -80,14 +80,14 @@ param diagnosticLogsRetentionInDays int = 365
 @description('Optional. Resource ID of the diagnostic storage account.')
 param diagnosticStorageAccountId string = ''
 
-@description('Optional. Resource ID of a log analytics workspace.')
-param workspaceId string = ''
+@description('Optional. Resource ID of the diagnostic log analytics workspace.')
+param diagnosticWorkspaceId string = ''
 
-@description('Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.')
-param eventHubAuthorizationRuleId string = ''
+@description('Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.')
+param diagnosticEventHubAuthorizationRuleId string = ''
 
-@description('Optional. Name of the event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.')
-param eventHubName string = ''
+@description('Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.')
+param diagnosticEventHubName string = ''
 
 @allowed([
   'CanNotDelete'
@@ -212,7 +212,7 @@ resource managedInstance 'Microsoft.Sql/managedInstances@2021-05-01-preview' = {
   }
 }
 
-resource managedInstance_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
+resource managedInstance_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
   name: '${managedInstance.name}-${lock}-lock'
   properties: {
     level: lock
@@ -221,13 +221,13 @@ resource managedInstance_lock 'Microsoft.Authorization/locks@2016-09-01' = if (l
   scope: managedInstance
 }
 
-resource managedInstance_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId)) || (!empty(eventHubAuthorizationRuleId)) || (!empty(eventHubName))) {
+resource managedInstance_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(diagnosticWorkspaceId)) || (!empty(diagnosticEventHubAuthorizationRuleId)) || (!empty(diagnosticEventHubName))) {
   name: '${managedInstance.name}-diagnosticSettings'
   properties: {
     storageAccountId: !empty(diagnosticStorageAccountId) ? diagnosticStorageAccountId : null
-    workspaceId: !empty(workspaceId) ? workspaceId : null
-    eventHubAuthorizationRuleId: !empty(eventHubAuthorizationRuleId) ? eventHubAuthorizationRuleId : null
-    eventHubName: !empty(eventHubName) ? eventHubName : null
+    workspaceId: !empty(diagnosticWorkspaceId) ? diagnosticWorkspaceId : null
+    eventHubAuthorizationRuleId: !empty(diagnosticEventHubAuthorizationRuleId) ? diagnosticEventHubAuthorizationRuleId : null
+    eventHubName: !empty(diagnosticEventHubName) ? diagnosticEventHubName : null
     metrics: diagnosticsMetrics
     logs: diagnosticsLogs
   }
@@ -253,8 +253,8 @@ module managedInstance_databases 'databases/deploy.bicep' = [for (database, inde
     createMode: contains(database, 'createMode') ? database.createMode : 'Default'
     diagnosticLogsRetentionInDays: contains(database, 'diagnosticLogsRetentionInDays') ? database.diagnosticLogsRetentionInDays : 365
     diagnosticStorageAccountId: contains(database, 'diagnosticStorageAccountId') ? database.diagnosticStorageAccountId : ''
-    eventHubAuthorizationRuleId: contains(database, 'eventHubAuthorizationRuleId') ? database.eventHubAuthorizationRuleId : ''
-    eventHubName: contains(database, 'eventHubName') ? database.eventHubName : ''
+    diagnosticEventHubAuthorizationRuleId: contains(database, 'diagnosticEventHubAuthorizationRuleId') ? database.diagnosticEventHubAuthorizationRuleId : ''
+    diagnosticEventHubName: contains(database, 'diagnosticEventHubName') ? database.diagnosticEventHubName : ''
     location: contains(database, 'location') ? database.location : managedInstance.location
     lock: contains(database, 'lock') ? database.lock : lock
     longTermRetentionBackupResourceId: contains(database, 'longTermRetentionBackupResourceId') ? database.longTermRetentionBackupResourceId : ''
@@ -265,7 +265,7 @@ module managedInstance_databases 'databases/deploy.bicep' = [for (database, inde
     storageContainerSasToken: contains(database, 'storageContainerSasToken') ? database.storageContainerSasToken : ''
     storageContainerUri: contains(database, 'storageContainerUri') ? database.storageContainerUri : ''
     tags: contains(database, 'tags') ? database.tags : {}
-    workspaceId: contains(database, 'workspaceId') ? database.workspaceId : ''
+    diagnosticWorkspaceId: contains(database, 'diagnosticWorkspaceId') ? database.diagnosticWorkspaceId : ''
     backupShortTermRetentionPoliciesObj: contains(database, 'backupShortTermRetentionPolicies') ? database.backupShortTermRetentionPolicies : {}
     backupLongTermRetentionPoliciesObj: contains(database, 'backupLongTermRetentionPolicies') ? database.backupLongTermRetentionPolicies : {}
   }
@@ -310,7 +310,7 @@ module managedInstance_encryptionProtector 'encryptionProtector/deploy.bicep' = 
   name: '${uniqueString(deployment().name, location)}-SqlMi-EncryProtector'
   params: {
     managedInstanceName: managedInstance.name
-    serverKeyName: contains(encryptionProtectorObj, 'serverKeyName') ? encryptionProtectorObj.serverKeyName : managedInstance_key[0].outputs.keyName
+    serverKeyName: contains(encryptionProtectorObj, 'serverKeyName') ? encryptionProtectorObj.serverKeyName : managedInstance_key[0].outputs.name
     name: contains(encryptionProtectorObj, 'name') ? encryptionProtectorObj.serverKeyType : 'current'
     serverKeyType: contains(encryptionProtectorObj, 'serverKeyType') ? encryptionProtectorObj.serverKeyType : 'ServiceManaged'
     autoRotationEnabled: contains(encryptionProtectorObj, 'autoRotationEnabled') ? encryptionProtectorObj.autoRotationEnabled : true
@@ -328,13 +328,13 @@ module managedInstance_administrator 'administrators/deploy.bicep' = if (!empty(
 }
 
 @description('The name of the deployed managed instance')
-output managedInstanceName string = managedInstance.name
+output name string = managedInstance.name
 
 @description('The resource ID of the deployed managed instance')
-output managedInstanceResourceId string = managedInstance.id
+output resourceId string = managedInstance.id
 
 @description('The resource group of the deployed managed instance')
-output managedInstanceResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name
 
 @description('The principal ID of the system assigned identity.')
-output systemAssignedPrincipalId string = systemAssignedIdentity ? managedInstance.identity.principalId : ''
+output systemAssignedPrincipalId string = systemAssignedIdentity && contains(managedInstance.identity, 'principalId') ? managedInstance.identity.principalId : ''

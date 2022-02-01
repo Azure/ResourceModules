@@ -40,7 +40,7 @@ resource networkWatcher 'Microsoft.Network/networkWatchers@2021-02-01' = {
   properties: {}
 }
 
-resource networkWatcher_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
+resource networkWatcher_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
   name: '${networkWatcher.name}-${lock}-lock'
   properties: {
     level: lock
@@ -87,10 +87,10 @@ module networkWatcher_flowLogs 'flowLogs/deploy.bicep' = [for (flowLog, index) i
 }]
 
 @description('The name of the deployed network watcher')
-output networkWatcherName string = networkWatcher.name
+output name string = networkWatcher.name
 
 @description('The resource ID of the deployed network watcher')
-output networkWatcherResourceId string = networkWatcher.id
+output resourceId string = networkWatcher.id
 
 @description('The resource group the network watcher was deployed into')
-output networkWatcherResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name

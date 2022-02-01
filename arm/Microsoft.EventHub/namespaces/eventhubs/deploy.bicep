@@ -137,7 +137,7 @@ resource eventHub 'Microsoft.EventHub/namespaces/eventhubs@2021-06-01-preview' =
   properties: captureDescriptionEnabled ? eventHubPropertiesWithCapture : eventHubPropertiesSimple
 }
 
-resource eventHub_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
+resource eventHub_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
   name: '${eventHub.name}-${lock}-lock'
   properties: {
     level: lock
@@ -176,13 +176,13 @@ module eventHub_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) i
 }]
 
 @description('The name of the event hub.')
-output eventhubName string = eventHub.name
+output name string = eventHub.name
 
 @description('The resource ID of the event hub.')
 output eventHubId string = eventHub.id
 
 @description('The resource group the event hub was deployed into.')
-output eventHubResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name
 
 @description('The authentication rule resource ID of the event hub.')
-output authRuleResourceId string = resourceId('Microsoft.EventHub/namespaces/authorizationRules', namespaceName, 'RootManageSharedAccessKey')
+output resourceId string = az.resourceId('Microsoft.EventHub/namespaces/authorizationRules', namespaceName, 'RootManageSharedAccessKey')

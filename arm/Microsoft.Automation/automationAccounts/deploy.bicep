@@ -46,14 +46,14 @@ param diagnosticLogsRetentionInDays int = 365
 @description('Optional. Resource ID of the diagnostic storage account.')
 param diagnosticStorageAccountId string = ''
 
-@description('Optional. Resource ID of log analytics.')
-param workspaceId string = ''
+@description('Optional. Resource ID of the diagnostic log analytics workspace.')
+param diagnosticWorkspaceId string = ''
 
-@description('Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.')
-param eventHubAuthorizationRuleId string = ''
+@description('Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.')
+param diagnosticEventHubAuthorizationRuleId string = ''
 
-@description('Optional. Name of the event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.')
-param eventHubName string = ''
+@description('Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.')
+param diagnosticEventHubName string = ''
 
 @description('Optional. Enables system assigned managed identity on the resource.')
 param systemAssignedIdentity bool = false
@@ -212,7 +212,7 @@ module automationAccount_linkedService '.bicep/nested_linkedService.bicep' = if 
   name: '${uniqueString(deployment().name, location)}-AutoAccount-LinkedService'
   params: {
     name: 'automation'
-    logAnalyticsWorkspaceName: '${last(split(linkedWorkspaceId, '/'))}'
+    logAnalyticsWorkspaceName: last(split(linkedWorkspaceId, '/'))
     resourceId: automationAccount.id
     tags: tags
   }
@@ -226,7 +226,7 @@ module automationAccount_solutions '.bicep/nested_solution.bicep' = [for (galler
   params: {
     name: gallerySolution
     location: location
-    logAnalyticsWorkspaceName: '${last(split(linkedWorkspaceId, '/'))}'
+    logAnalyticsWorkspaceName: last(split(linkedWorkspaceId, '/'))
   }
   // This is to support solution to law in different subscription and resource group than the automation account.
   // The current scope is used by default if no linked service is intended to be created.
@@ -287,22 +287,22 @@ module automationAccount_softwareUpdateConfigurations 'softwareUpdateConfigurati
   ]
 }]
 
-resource automationAccount_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
+resource automationAccount_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
   name: '${automationAccount.name}-AutoAccount-${lock}-lock'
   properties: {
     level: lock
-    notes: (lock == 'CanNotDelete') ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
+    notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: automationAccount
 }
 
-resource automationAccount_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId)) || (!empty(eventHubAuthorizationRuleId)) || (!empty(eventHubName))) {
+resource automationAccount_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(diagnosticWorkspaceId)) || (!empty(diagnosticEventHubAuthorizationRuleId)) || (!empty(diagnosticEventHubName))) {
   name: '${automationAccount.name}-AutoAccount-diagnosticSettings'
   properties: {
     storageAccountId: !empty(diagnosticStorageAccountId) ? diagnosticStorageAccountId : null
-    workspaceId: !empty(workspaceId) ? workspaceId : null
-    eventHubAuthorizationRuleId: !empty(eventHubAuthorizationRuleId) ? eventHubAuthorizationRuleId : null
-    eventHubName: !empty(eventHubName) ? eventHubName : null
+    workspaceId: !empty(diagnosticWorkspaceId) ? diagnosticWorkspaceId : null
+    eventHubAuthorizationRuleId: !empty(diagnosticEventHubAuthorizationRuleId) ? diagnosticEventHubAuthorizationRuleId : null
+    eventHubName: !empty(diagnosticEventHubName) ? diagnosticEventHubName : null
     metrics: diagnosticsMetrics
     logs: diagnosticsLogs
   }
@@ -313,13 +313,10 @@ module automationAccount_privateEndpoints '.bicep/nested_privateEndpoint.bicep' 
   name: '${uniqueString(deployment().name, location)}-AutoAccount-PrivateEndpoint-${index}'
   params: {
     privateEndpointResourceId: automationAccount.id
-    privateEndpointVnetLocation: (empty(privateEndpoints) ? 'dummy' : reference(split(endpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location)
+    privateEndpointVnetLocation: !empty(privateEndpoints) ? reference(split(endpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location : 'dummy'
     privateEndpointObj: endpoint
     tags: tags
   }
-  dependsOn: [
-    automationAccount
-  ]
 }]
 
 module automationAccount_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
@@ -332,13 +329,13 @@ module automationAccount_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment,
 }]
 
 @description('The name of the deployed automation account')
-output automationAccountName string = automationAccount.name
+output name string = automationAccount.name
 
 @description('The resource ID of the deployed automation account')
-output automationAccountResourceId string = automationAccount.id
+output resourceId string = automationAccount.id
 
 @description('The resource group of the deployed automation account')
-output automationAccountResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name
 
 @description('The principal ID of the system assigned identity.')
-output systemAssignedPrincipalId string = systemAssignedIdentity ? automationAccount.identity.principalId : ''
+output systemAssignedPrincipalId string = systemAssignedIdentity && contains(automationAccount.identity, 'principalId') ? automationAccount.identity.principalId : ''

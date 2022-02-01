@@ -6,7 +6,7 @@ This template deploys volumes in a capacity pool of an Azure NetApp files.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
+| `Microsoft.Authorization/roleAssignments` | 2021-04-01-preview |
 | `Microsoft.NetApp/netAppAccounts/capacityPools/volumes` | 2021-06-01 |
 
 ## Parameters
@@ -52,11 +52,11 @@ This template deploys volumes in a capacity pool of an Azure NetApp files.
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `volumeName` | string | The name of the Volume. |
-| `volumeResourceGroup` | string | The name of the Resource Group the Volume was created in. |
-| `volumeResourceId` | string | The Resource ID of the Volume. |
+| `name` | string | The name of the Volume. |
+| `resourceGroupName` | string | The name of the Resource Group the Volume was created in. |
+| `resourceId` | string | The Resource ID of the Volume. |
 
 ## Template references
 
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-04-01-preview/roleAssignments)
 - [Netappaccounts/Capacitypools/Volumes](https://docs.microsoft.com/en-us/azure/templates/Microsoft.NetApp/2021-06-01/netAppAccounts/capacityPools/volumes)
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)

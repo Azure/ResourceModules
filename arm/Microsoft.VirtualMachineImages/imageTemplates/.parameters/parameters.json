@@ -5,9 +5,6 @@
         "name": {
             "value": "sxx-az-imgt-x-001"
         },
-        "location": {
-            "value": "eastus"
-        },
         "userMsiName": {
             "value": "adp-sxx-az-msi-x-001"
         },

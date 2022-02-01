@@ -104,7 +104,7 @@ resource containergroup 'Microsoft.ContainerInstance/containerGroups@2021-03-01'
   }
 }
 
-resource containergroup_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
+resource containergroup_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
   name: '${containergroup.name}-${lock}-lock'
   properties: {
     level: lock
@@ -114,16 +114,16 @@ resource containergroup_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lo
 }
 
 @description('The name of the container group')
-output containerGroupName string = containergroup.name
+output name string = containergroup.name
 
 @description('The resource ID of the container group')
-output containerGroupResourceId string = containergroup.id
+output resourceId string = containergroup.id
 
 @description('The resource group the container group was deployed into')
-output containerGroupResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name
 
 @description('The IPv4 address of the container group')
-output containerGroupIPv4Address string = containergroup.properties.ipAddress.ip
+output iPv4Address string = containergroup.properties.ipAddress.ip
 
 @description('The principal ID of the system assigned identity.')
-output systemAssignedPrincipalId string = systemAssignedIdentity ? containergroup.identity.principalId : ''
+output systemAssignedPrincipalId string = systemAssignedIdentity && contains(containergroup.identity, 'principalId') ? containergroup.identity.principalId : ''

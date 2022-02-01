@@ -84,10 +84,10 @@ module actionGroup_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index
 }]
 
 @description('The resource group the action group was deployed into')
-output actionGroupResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name
 
 @description('The name of the action group ')
-output actionGroupName string = actionGroup.name
+output name string = actionGroup.name
 
 @description('The resource ID of the action group ')
-output actionGroupResourceId string = actionGroup.id
+output resourceId string = actionGroup.id

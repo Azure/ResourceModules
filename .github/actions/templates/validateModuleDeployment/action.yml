@@ -20,6 +20,9 @@ inputs:
   managementGroupId:
     description: 'The managementGroupId to deploy to'
     required: false
+  customParameterFileTokens:
+    description: 'Additional parameter file token pairs in json format. e.g. [{"Name":"tokenName","Value":"tokenValue"}]'
+    required: false
   removeDeployment:
     description: 'Set "true" to set module up for removal'
     default: 'true'
@@ -27,7 +30,7 @@ inputs:
 
 outputs:
   deploymentOutput:
-    description: 'Deployment output matrix'
+    description: 'The module deployment output in json format'
     value: ${{ steps.deploy_step.outputs.deploymentOutput }}
 
 runs:
@@ -41,8 +44,26 @@ runs:
         # Load used functions
         . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
 
+        # Define PS modules to install on the runner
+        $Modules = @(
+            @{ Name = 'Az.Accounts' },
+            @{ Name = 'Az.Resources' }
+        )
+
+        # Additional PS modules need to be installed for the removal step in case it is enabled
+        if ('${{ inputs.removeDeployment}}' -eq 'true') {
+          $Modules += @(
+            @{ Name = 'Az.CognitiveServices' },
+            @{ Name = 'Az.Compute' },
+            @{ Name = 'Az.KeyVault' },
+            @{ Name = 'Az.Monitor' },
+            @{ Name = 'Az.OperationalInsights' },
+            @{ Name = 'Az.RecoveryServices' }
+          )
+        }
+
         # Set agent up
-        Set-EnvironmentOnAgent
+        Set-EnvironmentOnAgent -PSModules $Modules
     - name: Azure Login
       uses: Azure/login@v1
       with:
@@ -66,14 +87,17 @@ runs:
             @{ Name = 'managementGroupId'; Value = '${{ inputs.managementGroupId }}' }
             @{ Name = "tenantId"; Value = '${{ env.ARM_TENANT_ID }}' }
             @{ Name = "deploymentSpId"; Value = '${{ env.DEPLOYMENT_SP_ID }}' }
-        )
+        ) | ForEach-Object { [PSCustomObject]$PSItem }
 
-        $DefaultParameterFileTokens = $DefaultParameterFileTokens | ForEach-Object { [PSCustomObject]$PSItem }
+        # Get additional Custom Parameter File Tokens from input
+        Write-Verbose 'Additional Custom Parameter File Tokens: ${{ inputs.customParameterFileTokens }}' -Verbose
+        $OtherCustomParameterFileTokens = '${{  inputs.customParameterFileTokens }}' | ConvertFrom-Json
 
         # Construct Token Function Input
         $ConvertTokensInputs = @{
             ParameterFilePath                 = '${{ inputs.parameterFilePath }}'
             DefaultParameterFileTokens        = $DefaultParameterFileTokens
+            OtherCustomParameterFileTokens    = $OtherCustomParameterFileTokens
             LocalCustomParameterFileTokens    = $Settings.parameterFileTokens.localTokens.tokens
             TokenPrefix                       = $Settings.parameterFileTokens.tokenPrefix
             TokenSuffix                       = $Settings.parameterFileTokens.tokenSuffix
@@ -137,25 +161,16 @@ runs:
         # $deploymentOutputHash=@{}
 
         # Populate further outputs
+        $deploymentOutputHash=@{}
+
         foreach ($outputKey in $res.deploymentOutput.Keys) {
           Write-Output ('::set-output name={0}::{1}' -f $outputKey, $res.deploymentOutput[$outputKey].Value)
-          Write-Verbose ('Output key:{0}' -f $outputKey) -Verbose
-          Write-Verbose ('Output value:{0}' -f $res.deploymentOutput[$outputKey].Value) -Verbose
-
-          # $deploymentOutputHash.add($outputKey,$res.deploymentOutput[$outputKey].Value)
-          $deploymentOutputString+='"{0}":"{1}",' -f $outputKey, $res.deploymentOutput[$outputKey].Value
+          $deploymentOutputHash.add($outputKey,$res.deploymentOutput[$outputKey].Value)
         }
 
-        # $deploymentOutput = $deploymentOutputHash | ConvertTo-Json -Compress -Depth 100
-        # Write-Verbose "Output deploymentOutput:$deploymentOutput" -Verbose
-        # Write-Host "::set-output name=deploymentOutput::$deploymentOutput"
-        # # Write-Verbose ('Output deploymentOutput:{0}' -f $deploymentOutput) -Verbose
-        # # Write-Output ('::set-output name=deploymentOutput::{0}' -f $deploymentOutput)
-
-        $deploymentOutputString = $deploymentOutputString.Substring(0,$deploymentOutputString.Length-1)
-        Write-Verbose "Output deploymentOutputString:$deploymentOutputString" -Verbose
-        # Write-Output ('::set-output name=deploymentOutput::{{0}}' -f $deploymentOutputString)
-        Write-Output "::set-output name=deploymentOutput::$deploymentOutputString"
+        $deploymentOutput = $deploymentOutputHash | ConvertTo-Json -Compress -Depth 100
+        Write-Verbose "Deployment output: $deploymentOutput" -Verbose
+        Write-Output ('::set-output name={0}::{1}' -f 'deploymentOutput', $deploymentOutput)
 
         if ($res.ContainsKey('exception')) {
           # Happens only if there is an exception
@@ -176,6 +191,7 @@ runs:
             DeploymentName    = '${{ steps.deploy_step.outputs.deploymentName }}'
             TemplateFilePath  = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.templateFilePath }}'
             ResourceGroupName = '${{ inputs.resourceGroupName }}'
+            ManagementGroupId = '${{ inputs.managementGroupId }}'
             Verbose           = $true
           }
 

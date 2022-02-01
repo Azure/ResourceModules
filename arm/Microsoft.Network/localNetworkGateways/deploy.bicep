@@ -65,7 +65,7 @@ resource localNetworkGateway 'Microsoft.Network/localNetworkGateways@2021-02-01'
   }
 }
 
-resource localNetworkGateway_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
+resource localNetworkGateway_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
   name: '${localNetworkGateway.name}-${lock}-lock'
   properties: {
     level: lock
@@ -84,10 +84,10 @@ module localNetworkGateway_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignmen
 }]
 
 @description('The resource ID of the local network gateway')
-output localNetworkGatewayResourceId string = localNetworkGateway.id
+output resourceId string = localNetworkGateway.id
 
 @description('The resource group the local network gateway was deployed into')
-output localNetworkGatewayResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name
 
 @description('The name of the local network gateway')
-output localNetworkGatewayName string = localNetworkGateway.name
+output name string = localNetworkGateway.name

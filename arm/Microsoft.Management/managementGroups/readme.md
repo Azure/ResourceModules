@@ -11,7 +11,7 @@ This module has some known **limitations**:
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
+| `Microsoft.Authorization/roleAssignments` | 2021-04-01-preview |
 | `Microsoft.Management/managementGroups` | 2021-04-01 |
 
 ## Parameters
@@ -49,8 +49,8 @@ This module has some known **limitations**:
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `managementGroupId` | string | The group ID of the management group |
-| `managementGroupName` | string | The name of the management group |
+| `name` | string | The name of the management group |
+| `resourceId` | string | The resource ID of the management group |
 
 ## Considerations
 
@@ -72,5 +72,5 @@ New-AzRoleAssignment -ObjectId $PrincipalID -Scope "/providers/Microsoft.Managem
 
 ## Template references
 
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-04-01-preview/roleAssignments)
 - [Managementgroups](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Management/2021-04-01/managementGroups)
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)

@@ -6,8 +6,8 @@ This module deploys a virtual machine scale set.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/locks` | 2016-09-01 |
-| `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
+| `Microsoft.Authorization/locks` | 2017-04-01 |
+| `Microsoft.Authorization/roleAssignments` | 2021-04-01-preview |
 | `Microsoft.Compute/proximityPlacementGroups` | 2021-04-01 |
 | `Microsoft.Compute/virtualMachineScaleSets` | 2021-04-01 |
 | `Microsoft.Compute/virtualMachineScaleSets/extensions` | 2021-07-01 |
@@ -34,8 +34,11 @@ The following resources are required to be able to deploy this resource.
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `customData` | string |  |  | Optional. Custom data associated to the VM, this value will be automatically converted into base64 to account for the expected VM format. |
 | `dataDisks` | array | `[]` |  | Optional. Specifies the data disks. |
+| `diagnosticEventHubAuthorizationRuleId` | string |  |  | Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
+| `diagnosticEventHubName` | string |  |  | Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticStorageAccountId` | string |  |  | Optional. Resource ID of the diagnostic storage account. |
+| `diagnosticWorkspaceId` | string |  |  | Optional. Resource ID of the diagnostic log analytics workspace. |
 | `disableAutomaticRollback` | bool |  |  | Optional. Whether OS image rollback feature should be disabled. |
 | `disablePasswordAuthentication` | bool |  |  | Optional. Specifies whether password authentication should be disabled. |
 | `doNotRunExtensionsOnOverprovisionedVMs` | bool |  |  | Optional. When Overprovision is enabled, extensions are launched only on the requested number of VMs which are finally kept. This property will hence ensure that the extensions do not run on the extra overprovisioned VMs. |
@@ -43,8 +46,6 @@ The following resources are required to be able to deploy this resource.
 | `enableAutomaticUpdates` | bool | `True` |  | Optional. Indicates whether Automatic Updates is enabled for the Windows virtual machine. Default value is true. For virtual machine scale sets, this property can be updated and updates will take effect on OS reprovisioning. |
 | `enableEvictionPolicy` | bool |  |  | Optional. Specifies the eviction policy for the low priority virtual machine. Will result in 'Deallocate' eviction policy. |
 | `enableServerSideEncryption` | bool |  |  | Optional. Specifies if Windows VM disks should be encrypted with Server-side encryption + Customer managed Key. |
-| `eventHubAuthorizationRuleId` | string |  |  | Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
-| `eventHubName` | string |  |  | Optional. Name of the event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
 | `extensionAntiMalwareConfig` | object | `{object}` |  | Optional. The configuration for the [Anti Malware] extension. Must at least contain the ["enabled": true] property to be executed |
 | `extensionCustomScriptConfig` | object | `{object}` |  | Optional. The configuration for the [Custom Script] extension. Must at least contain the ["enabled": true] property to be executed |
 | `extensionDependencyAgentConfig` | object | `{object}` |  | Optional. The configuration for the [Dependency Agent] extension. Must at least contain the ["enabled": true] property to be executed |
@@ -64,6 +65,7 @@ The following resources are required to be able to deploy this resource.
 | `maxUnhealthyInstancePercent` | int | `20` |  | Optional. The maximum percentage of the total virtual machine instances in the scale set that can be simultaneously unhealthy, either as a result of being upgraded, or by being found in an unhealthy state by the virtual machine health checks before the rolling upgrade aborts. This constraint will be checked prior to starting any batch |
 | `maxUnhealthyUpgradedInstancePercent` | int | `20` |  | Optional. The maximum percentage of the total virtual machine instances in the scale set that can be simultaneously unhealthy, either as a result of being upgraded, or by being found in an unhealthy state by the virtual machine health checks before the rolling upgrade aborts. This constraint will be checked prior to starting any batch. |
 | `metricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | Optional. The name of metrics that will be streamed. |
+| `monitoringWorkspaceId` | string |  |  | Optional. Resource ID of the monitoring log analytics workspace. |
 | `name` | string |  |  | Required. Name of the VMSS. |
 | `nicConfigurations` | array | `[]` |  | Required. Configures NICs and PIPs. |
 | `osDisk` | object |  |  | Required. Specifies the OS disk. |
@@ -93,7 +95,6 @@ The following resources are required to be able to deploy this resource.
 | `vmNamePrefix` | string | `vmssvm` |  | Optional. Specifies the computer name prefix for all of the virtual machines in the scale set. |
 | `vmPriority` | string | `Regular` | `[Regular, Low, Spot]` | Optional. Specifies the priority for the virtual machine. |
 | `winRM` | object | `{object}` |  | Optional. Specifies the Windows Remote Management listeners. This enables remote Windows PowerShell. - WinRMConfiguration object. |
-| `workspaceId` | string |  |  | Optional. Resource ID of log analytics. |
 | `zoneBalance` | bool |  |  | Optional. Whether to force strictly even Virtual Machine distribution cross x-zones in case there is zone outage. |
 
 #### Marketplace images
@@ -415,16 +416,16 @@ You can specify multiple user assigned identities to a resource by providing add
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
+| `name` | string | The name of the virtual machine scale set |
+| `resourceGroupName` | string | The resource group of the virtual machine scale set |
+| `resourceId` | string | The resource ID of the virtual machine scale set |
 | `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
-| `vmssName` | string | The name of the virtual machine scale set |
-| `vmssResourceGroup` | string | The resource group of the virtual machine scale set |
-| `vmssResourceIds` | string | The resource ID of the virtual machine scale set |
 
 ## Template references
 
-- [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-04-01-preview/roleAssignments)
+- [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings)
+- [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
 - [Proximityplacementgroups](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Compute/2021-04-01/proximityPlacementGroups)
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)
 - [Virtualmachinescalesets](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Compute/2021-04-01/virtualMachineScaleSets)
 - [Virtualmachinescalesets/Extensions](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Compute/2021-07-01/virtualMachineScaleSets/extensions)
-- [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings)

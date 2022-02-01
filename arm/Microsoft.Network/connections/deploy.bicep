@@ -63,17 +63,17 @@ param tags object = {}
 @description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
-var localVirtualNetworkGatewayId = resourceId(resourceGroup().name, 'Microsoft.Network/virtualNetworkGateways', localVirtualNetworkGatewayName)
+var localVirtualNetworkGatewayId = az.resourceId(resourceGroup().name, 'Microsoft.Network/virtualNetworkGateways', localVirtualNetworkGatewayName)
 var remoteEntitySubscriptionId_var = (empty(remoteEntitySubscriptionId) ? subscription().subscriptionId : remoteEntitySubscriptionId)
 var remoteEntityResourceGroup_var = (empty(remoteEntityResourceGroup) ? resourceGroup().name : remoteEntityResourceGroup)
 var virtualNetworkGateway2Id = {
-  id: resourceId(remoteEntitySubscriptionId_var, remoteEntityResourceGroup_var, 'Microsoft.Network/virtualNetworkGateways', remoteEntityName)
+  id: az.resourceId(remoteEntitySubscriptionId_var, remoteEntityResourceGroup_var, 'Microsoft.Network/virtualNetworkGateways', remoteEntityName)
 }
 var localNetworkGateway2Id = {
-  id: resourceId(remoteEntitySubscriptionId_var, remoteEntityResourceGroup_var, 'Microsoft.Network/localNetworkGateways', remoteEntityName)
+  id: az.resourceId(remoteEntitySubscriptionId_var, remoteEntityResourceGroup_var, 'Microsoft.Network/localNetworkGateways', remoteEntityName)
 }
 var peer = {
-  id: resourceId(remoteEntitySubscriptionId_var, remoteEntityResourceGroup_var, 'Microsoft.Network/expressRouteCircuits', remoteEntityName)
+  id: az.resourceId(remoteEntitySubscriptionId_var, remoteEntityResourceGroup_var, 'Microsoft.Network/expressRouteCircuits', remoteEntityName)
 }
 var customIPSecPolicy_var = [
   {
@@ -113,7 +113,7 @@ resource connection 'Microsoft.Network/connections@2021-02-01' = {
   }
 }
 
-resource connection_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
+resource connection_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
   name: '${connection.name}-${lock}-lock'
   properties: {
     level: lock
@@ -123,10 +123,10 @@ resource connection_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock !
 }
 
 @description('The resource group the remote connection was deployed into')
-output remoteConnectionResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name
 
 @description('The name of the remote connection')
-output connectionName string = connection.name
+output name string = connection.name
 
 @description('The resource ID of the remote connection')
-output remoteConnectionResourceId string = connection.id
+output resourceId string = connection.id

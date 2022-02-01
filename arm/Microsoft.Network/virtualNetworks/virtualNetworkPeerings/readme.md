@@ -33,9 +33,9 @@ The following resources are required to be able to deploy this resource.
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `virtualNetworkPeeringName` | string | The name of the virtual network peering |
-| `virtualNetworkPeeringResourceGroup` | string | The resource group the virtual network peering was deployed into |
-| `virtualNetworkPeeringResourceId` | string | The resource ID of the virtual network peering |
+| `name` | string | The name of the virtual network peering |
+| `resourceGroupName` | string | The resource group the virtual network peering was deployed into |
+| `resourceId` | string | The resource ID of the virtual network peering |
 
 ## Template references
 

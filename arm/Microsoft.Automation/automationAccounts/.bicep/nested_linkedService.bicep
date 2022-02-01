@@ -22,16 +22,16 @@ resource linkedService 'Microsoft.OperationalInsights/workspaces/linkedServices@
   parent: logAnalyticsWorkspace
   tags: tags
   properties: {
-    resourceId: empty(resourceId) ? null : resourceId
-    writeAccessResourceId: empty(writeAccessResourceId) ? null : writeAccessResourceId
+    resourceId: !empty(resourceId) ? resourceId : null
+    writeAccessResourceId: !empty(writeAccessResourceId) ? writeAccessResourceId : null
   }
 }
 
 @description('The name of the deployed linked service')
-output linkedServiceName string = linkedService.name
+output name string = linkedService.name
 
 @description('The resource ID of the deployed linked service')
-output linkedServiceResourceId string = linkedService.id
+output resourceId string = linkedService.id
 
 @description('The resource group where the linked service is deployed')
-output linkedServiceResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name

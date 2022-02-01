@@ -191,7 +191,7 @@
         {
             "type": "Microsoft.Management/managementGroups",
             "comments": "Fake deployment, used to specify a non-existent dependency. Never deployed",
-            "apiVersion": "2020-05-01",
+            "apiVersion": "2021-04-01",
             "scope": "/",
             "name": "noop",
             "condition": false,
@@ -238,7 +238,7 @@
             ],
 
             "type": "Microsoft.Management/managementGroups",
-            "apiVersion": "2020-05-01",
+            "apiVersion": "2021-04-01",
             "scope": "/",
             "name": "[parameters('mgStructure')[copyIndex('mgLoop')].name]",
             "properties": {
@@ -366,7 +366,7 @@
                                     "resources": [
                                         {
                                             "type": "Microsoft.Management/managementGroups/providers/roleAssignments",
-                                            "apiVersion": "2020-04-01-preview",
+                                            "apiVersion": "2021-04-01-preview",
                                             "name": "[
                                                 concat(
                                                     parameters('MGName'),

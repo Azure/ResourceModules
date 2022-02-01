@@ -22,10 +22,10 @@ This module deploys load balancer backend address pools.
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `inboundNatRuleName` | string | The name of the backend address pool |
-| `inboundNatRuleResourceGroupName` | string | The resource group the backend address pool was deployed into |
-| `inboundNatRuleResourceId` | string | The resource ID of the backend address pool |
+| `name` | string | The name of the backend address pool |
+| `resourceGroupName` | string | The resource group the backend address pool was deployed into |
+| `resourceId` | string | The resource ID of the backend address pool |
 
 ## Template references
 
-- [Loadbalancers/Backendaddresspools](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/loadBalancers/backendAddressPools)
+- [Loadbalancers/Backendaddresspools](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/loadBalancers/backendAddressPools)

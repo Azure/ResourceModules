@@ -30,9 +30,9 @@ This module deploys a virtual machine extension.
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `extensionName` | string | The name of the extension |
-| `extensionResourceGroup` | string | The name of the Resource Group the extension was created in. |
-| `extensionResourceId` | string | The resource ID of the extension |
+| `name` | string | The name of the extension |
+| `resourceGroupName` | string | The name of the Resource Group the extension was created in. |
+| `resourceId` | string | The resource ID of the extension |
 
 ## Template references
 

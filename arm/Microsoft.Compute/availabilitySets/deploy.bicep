@@ -38,21 +38,23 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
-resource availabilitySet 'Microsoft.Compute/availabilitySets@2021-04-01' = {
+resource availabilitySet 'Microsoft.Compute/availabilitySets@2021-07-01' = {
   name: name
   location: location
   tags: tags
   properties: {
     platformFaultDomainCount: availabilitySetFaultDomain
     platformUpdateDomainCount: availabilitySetUpdateDomain
-    proximityPlacementGroup: !empty(proximityPlacementGroupId) ? proximityPlacementGroupId : null
+    proximityPlacementGroup: !empty(proximityPlacementGroupId) ? {
+      id: proximityPlacementGroupId
+    } : null
   }
   sku: {
     name: availabilitySetSku
   }
 }
 
-resource availabilitySet_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
+resource availabilitySet_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
   name: '${availabilitySet.name}-${lock}-lock'
   properties: {
     level: lock
@@ -71,10 +73,10 @@ module availabilitySet_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, i
 }]
 
 @description('The resource group the availability set was deployed into')
-output availabilitySetResourceName string = availabilitySet.name
+output name string = availabilitySet.name
 
 @description('The resource ID of the availability set')
-output availabilitySetResourceId string = availabilitySet.id
+output resourceId string = availabilitySet.id
 
 @description('The name of the availability set')
-output availabilitySetResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name

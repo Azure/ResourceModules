@@ -6,8 +6,8 @@ This template deploys a virtual WAN.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/locks` | 2016-09-01 |
-| `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
+| `Microsoft.Authorization/locks` | 2017-04-01 |
+| `Microsoft.Authorization/roleAssignments` | 2021-04-01-preview |
 | `Microsoft.Network/virtualHubs` | 2021-03-01 |
 | `Microsoft.Network/virtualWans` | 2021-03-01 |
 | `Microsoft.Network/vpnGateways` | 2021-03-01 |
@@ -78,14 +78,14 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `virtualWanName` | string | The name of the virtual WAN |
-| `virtualWanResourceGroup` | string | The resource group the virtual WAN was deployed into |
-| `virtualWanResourceId` | string | The resource ID of the virtual WAN |
+| `name` | string | The name of the virtual WAN |
+| `resourceGroupName` | string | The resource group the virtual WAN was deployed into |
+| `resourceId` | string | The resource ID of the virtual WAN |
 
 ## Template references
 
-- [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-04-01-preview/roleAssignments)
+- [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)
 - [Virtualhubs](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-03-01/virtualHubs)
 - [Virtualwans](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-03-01/virtualWans)
 - [Vpngateways](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-03-01/vpnGateways)

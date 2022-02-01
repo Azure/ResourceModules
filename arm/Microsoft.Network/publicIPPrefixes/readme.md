@@ -6,8 +6,8 @@ This template deploys a public IP prefix.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/locks` | 2016-09-01 |
-| `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
+| `Microsoft.Authorization/locks` | 2017-04-01 |
+| `Microsoft.Authorization/roleAssignments` | 2021-04-01-preview |
 | `Microsoft.Network/publicIPPrefixes` | 2021-02-01 |
 
 ## Parameters
@@ -65,12 +65,12 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `publicIpPrefixName` | string | The name of the public IP prefix |
-| `publicIpPrefixResourceGroup` | string | The resource group the public IP prefix was deployed into |
-| `publicIpPrefixResourceId` | string | The resource ID of the public IP prefix |
+| `name` | string | The name of the public IP prefix |
+| `resourceGroupName` | string | The resource group the public IP prefix was deployed into |
+| `resourceId` | string | The resource ID of the public IP prefix |
 
 ## Template references
 
-- [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-04-01-preview/roleAssignments)
+- [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
 - [Publicipprefixes](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-02-01/publicIPPrefixes)
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)

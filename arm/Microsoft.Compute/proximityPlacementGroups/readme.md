@@ -6,8 +6,8 @@ This template deploys a proximity placement group.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/locks` | 2016-09-01 |
-| `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
+| `Microsoft.Authorization/locks` | 2017-04-01 |
+| `Microsoft.Authorization/roleAssignments` | 2021-04-01-preview |
 | `Microsoft.Compute/proximityPlacementGroups` | 2021-04-01 |
 
 ## Parameters
@@ -65,12 +65,12 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `proximityPlacementGroupName` | string | The name of the proximity placement group |
-| `proximityPlacementGroupResourceGroup` | string | The resource group the proximity placement group was deployed into |
-| `proximityPlacementGroupResourceId` | string | The resourceId the proximity placement group |
+| `name` | string | The name of the proximity placement group |
+| `resourceGroupName` | string | The resource group the proximity placement group was deployed into |
+| `resourceId` | string | The resourceId the proximity placement group |
 
 ## Template references
 
-- [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-04-01-preview/roleAssignments)
+- [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
 - [Proximityplacementgroups](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Compute/2021-04-01/proximityPlacementGroups)
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)

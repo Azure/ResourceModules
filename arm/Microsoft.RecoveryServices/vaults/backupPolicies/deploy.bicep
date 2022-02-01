@@ -15,7 +15,7 @@ module pid_cuaId './.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
-resource rsv 'Microsoft.RecoveryServices/vaults@2021-08-01' existing = {
+resource rsv 'Microsoft.RecoveryServices/vaults@2021-12-01' existing = {
   name: recoveryVaultName
 }
 
@@ -26,10 +26,10 @@ resource backupPolicy 'Microsoft.RecoveryServices/vaults/backupPolicies@2021-08-
 }
 
 @description('The name of the backup policy')
-output backupPolicyName string = backupPolicy.name
+output name string = backupPolicy.name
 
 @description('The resource ID of the backup policy')
-output backupPolicyResourceId string = backupPolicy.id
+output resourceId string = backupPolicy.id
 
 @description('The name of the resource group the backup policy was created in.')
-output backupPolicyResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name
