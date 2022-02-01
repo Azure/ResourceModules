@@ -1,0 +1,30 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": "sxx-az-avs-x-002"
+        },
+        "cuaId": {
+            "value": "7ee5499f-1f22-42bd-8f01-ffee4ce55d56"
+        },
+        "location": {
+            "value": "westeurope"
+        },
+        "lock": {
+            "value": "NotSpecified"
+        },
+        "availabilitySetFaultDomain": {
+            "value": 3
+        },
+        "availabilitySetUpdateDomain": {
+            "value": 4
+        },
+        "availabilitySetSku": {
+            "value": "Classic"
+        },
+        "proximityPlacementGroupId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/dependencies-rg/providers/Microsoft.Compute/proximityPlacementGroups/dependency-ppg"
+        }
+    }
+}
