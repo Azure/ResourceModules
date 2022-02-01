@@ -5,18 +5,10 @@ parameters:
     displayName: Remove deployed module
     type: boolean
     default: false # Required as a dependency + Only one Network Watcher can exist in the same location. If removed, a default would be created in a dedicated RG
-  - name: versioningOption
-    displayName: The mode to handle the version increments [major|minor|patch]
-    type: string
-    default: patch
-    values:
-      - patch
-      - minor
-      - major
-  - name: customVersion
-    displayName: Custom version to apply. Used only if higher than latest
-    type: string
-    default: '0.0.1'
+  - name: prerelease
+    displayName: Publish prerelease module
+    type: boolean
+    default: false
 
 trigger:
   batch: true
@@ -55,9 +47,6 @@ stages:
 
   - stage: Publishing
     displayName: Publish module
-    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
+    condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/main'), eq(variables['Build.SourceBranch'], 'refs/heads/master'), eq('${{ parameters.prerelease }}', 'true')))
     jobs:
       - template: /.azuredevops/pipelineTemplates/jobs.publishModule.yml
-        parameters:
-          versioningOption: '${{ parameters.versioningOption }}'
-          customVersion: '${{ parameters.customVersion }}'
