@@ -3,13 +3,13 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "sxx-az-vhub-min-001"
+            "value": "<<namePrefix>>-az-vhub-min-001"
         },
         "addressPrefix": {
             "value": "10.0.0.0/16"
         },
         "virtualWanId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualWans/sxx-az-vw-x-001"
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualWans/<<namePrefix>>-az-vw-x-001"
         }
     }
 }
