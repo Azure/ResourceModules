@@ -37,9 +37,9 @@ For remaining properties, see [FirewallPolicyRuleCollection objects](https://doc
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `ruleCollectionGroupName` | string | The name of the deployed rule collection group |
-| `ruleCollectionGroupResourceGroup` | string | The resource group of the deployed rule collection group |
-| `ruleCollectionGroupResourceId` | string | The resource ID of the deployed rule collection group |
+| `name` | string | The name of the deployed rule collection group |
+| `resourceGroupName` | string | The resource group of the deployed rule collection group |
+| `resourceId` | string | The resource ID of the deployed rule collection group |
 
 ## Template references
 

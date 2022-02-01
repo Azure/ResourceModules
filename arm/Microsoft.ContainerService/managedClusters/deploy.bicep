@@ -419,13 +419,13 @@ module managedCluster_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, in
 }]
 
 @description('The resource ID of the managed cluster')
-output azureKubernetesServiceResourceId string = managedCluster.id
+output resourceId string = managedCluster.id
 
 @description('The resource group the managed cluster was deployed into')
-output azureKubernetesServiceResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name
 
 @description('The name of the managed cluster')
-output azureKubernetesServiceName string = managedCluster.name
+output name string = managedCluster.name
 
 @description('The control plane FQDN of the managed cluster')
 output controlPlaneFQDN string = (aksClusterEnablePrivateCluster ? managedCluster.properties.privateFQDN : managedCluster.properties.fqdn)

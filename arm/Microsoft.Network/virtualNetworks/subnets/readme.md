@@ -62,11 +62,11 @@ The `privateEndpointNetworkPolicies` property must be set to disabled for subnet
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
+| `name` | string | The name of the virtual network peering |
+| `resourceGroupName` | string | The resource group the virtual network peering was deployed into |
+| `resourceId` | string | The resource ID of the virtual network peering |
 | `subnetAddressPrefix` | string | The address prefix for the subnet |
 | `subnetAddressPrefixes` | array | List of address prefixes for the subnet |
-| `subnetName` | string | The name of the virtual network peering |
-| `subnetResourceGroup` | string | The resource group the virtual network peering was deployed into |
-| `subnetResourceId` | string | The resource ID of the virtual network peering |
 
 ## Template references
 

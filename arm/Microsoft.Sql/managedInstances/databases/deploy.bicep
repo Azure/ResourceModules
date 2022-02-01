@@ -184,10 +184,10 @@ module database_backupLongTermRetentionPolicy 'backupLongTermRetentionPolicies/d
 }
 
 @description('The name of the deployed database')
-output databaseName string = database.name
+output name string = database.name
 
 @description('The resource ID of the deployed database')
-output databaseResourceId string = database.id
+output resourceId string = database.id
 
 @description('The resource group the database was deployed into')
-output databaseResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name

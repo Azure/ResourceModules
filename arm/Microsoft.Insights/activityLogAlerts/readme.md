@@ -172,11 +172,11 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `activityLogAlertName` | string | The name of the activity log alert |
-| `activityLogAlertResourceGroup` | string | The resource group the activity log alert was deployed into |
-| `activityLogAlertResourceId` | string | The resource ID of the activity log alert |
+| `name` | string | The name of the activity log alert |
+| `resourceGroupName` | string | The resource group the activity log alert was deployed into |
+| `resourceId` | string | The resource ID of the activity log alert |
 
 ## Template references
 
 - [Activitylogalerts](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2020-10-01/activityLogAlerts)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2021-04-01-preview/roleAssignments)
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)

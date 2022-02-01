@@ -62,10 +62,10 @@ This module deploys an Event Hub.
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `authRuleResourceId` | string | The authentication rule resource ID of the event hub. |
 | `eventHubId` | string | The resource ID of the event hub. |
-| `eventhubName` | string | The name of the event hub. |
-| `eventHubResourceGroup` | string | The resource group the event hub was deployed into. |
+| `name` | string | The name of the event hub. |
+| `resourceGroupName` | string | The resource group the event hub was deployed into. |
+| `resourceId` | string | The authentication rule resource ID of the event hub. |
 
 ## Template references
 
@@ -73,4 +73,4 @@ This module deploys an Event Hub.
 - [Namespaces/Eventhubs](https://docs.microsoft.com/en-us/azure/templates/Microsoft.EventHub/2021-06-01-preview/namespaces/eventhubs)
 - [Namespaces/Eventhubs/Authorizationrules](https://docs.microsoft.com/en-us/azure/templates/Microsoft.EventHub/2021-06-01-preview/namespaces/eventhubs/authorizationRules)
 - [Namespaces/Eventhubs/Consumergroups](https://docs.microsoft.com/en-us/azure/templates/Microsoft.EventHub/2021-06-01-preview/namespaces/eventhubs/consumergroups)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2021-04-01-preview/roleAssignments)
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)

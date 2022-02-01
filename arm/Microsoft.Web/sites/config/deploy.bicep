@@ -70,10 +70,10 @@ resource config 'Microsoft.Web/sites/config@2021-02-01' = {
 }
 
 @description('The name of the site config.')
-output configName string = config.name
+output name string = config.name
 
 @description('The resource ID of the site config.')
-output configResourceId string = config.id
+output resourceId string = config.id
 
 @description('The resource group the site config was deployed into.')
-output configResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name

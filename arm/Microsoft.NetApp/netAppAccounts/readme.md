@@ -73,9 +73,9 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `netAppAccountName` | string | The name of the NetApp account. |
-| `netAppAccountResourceGroup` | string | The name of the Resource Group the NetApp account was created in. |
-| `netAppAccountResourceId` | string | The Resource ID of the NetApp account. |
+| `name` | string | The name of the NetApp account. |
+| `resourceGroupName` | string | The name of the Resource Group the NetApp account was created in. |
+| `resourceId` | string | The Resource ID of the NetApp account. |
 
 ## Template references
 
@@ -83,4 +83,4 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 - [Netappaccounts](https://docs.microsoft.com/en-us/azure/templates/Microsoft.NetApp/2021-04-01/netAppAccounts)
 - [Netappaccounts/Capacitypools](https://docs.microsoft.com/en-us/azure/templates/Microsoft.NetApp/2021-06-01/netAppAccounts/capacityPools)
 - [Netappaccounts/Capacitypools/Volumes](https://docs.microsoft.com/en-us/azure/templates/Microsoft.NetApp/2021-06-01/netAppAccounts/capacityPools/volumes)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2021-04-01-preview/roleAssignments)
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)

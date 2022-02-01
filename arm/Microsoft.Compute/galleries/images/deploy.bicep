@@ -160,10 +160,10 @@ module galleryImage_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, inde
 }]
 
 @description('The resource group the image was deployed into')
-output imageResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name
 
 @description('The resource ID of the image')
-output imageResourceId string = image.id
+output resourceId string = image.id
 
 @description('The name of the image')
-output imageName string = image.name
+output name string = image.name

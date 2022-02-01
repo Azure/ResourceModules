@@ -39,9 +39,9 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `sqlDatabaseName` | string | The name of the SQL database. |
-| `sqlDatabaseResourceGroup` | string | The name of the resource group the SQL database was created in. |
-| `sqlDatabaseResourceId` | string | The resource ID of the SQL database. |
+| `name` | string | The name of the SQL database. |
+| `resourceGroupName` | string | The name of the resource group the SQL database was created in. |
+| `resourceId` | string | The resource ID of the SQL database. |
 
 ## Template references
 

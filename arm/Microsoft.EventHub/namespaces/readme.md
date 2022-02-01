@@ -40,7 +40,7 @@ This module deploys an event hub namespace.
 | `metricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | Optional. The name of metrics that will be streamed. |
 | `name` | string |  |  | Optional. The name of the event hub namespace. If no name is provided, then unique name will be created. |
 | `networkAcls` | object | `{object}` |  | Optional. Service endpoint object information |
-| `privateEndpoints` | array | `[]` |  | Optional. Configuration Details for private endpoints. |
+| `privateEndpoints` | array | `[]` |  | Optional. Configuration Details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible.|
 | `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
 | `skuCapacity` | int | `1` |  | Optional. Event Hub plan scale-out capacity of the resource |
 | `skuName` | string | `Standard` | `[Basic, Standard]` | Optional. event hub plan SKU name |
@@ -142,9 +142,9 @@ You can specify multiple user assigned identities to a resource by providing add
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `namespace` | string | The name of the eventspace. |
-| `namespaceResourceGroup` | string | The resource group where the namespace is deployed. |
-| `namespaceResourceId` | string | The resource ID of the eventspace. |
+| `name` | string | The name of the eventspace. |
+| `resourceGroupName` | string | The resource group where the namespace is deployed. |
+| `resourceId` | string | The resource ID of the eventspace. |
 | `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
 
 ## Template references

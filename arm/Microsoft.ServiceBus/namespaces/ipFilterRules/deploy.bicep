@@ -49,10 +49,10 @@ resource ipFilterRule 'Microsoft.ServiceBus/namespaces/ipFilterRules@2018-01-01-
 }
 
 @description('The name of the IP filter rule.')
-output ipFilterRuleName string = ipFilterRule.name
+output name string = ipFilterRule.name
 
 @description('The Resource ID of the IP filter rule.')
-output ipFilterRuleResourceId string = ipFilterRule.id
+output resourceId string = ipFilterRule.id
 
 @description('The name of the Resource Group the IP filter rule was created in.')
-output ipFilterRuleResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name

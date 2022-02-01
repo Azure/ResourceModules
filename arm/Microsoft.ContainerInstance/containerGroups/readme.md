@@ -82,10 +82,10 @@ You can specify multiple user assigned identities to a resource by providing add
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `containerGroupIPv4Address` | string | The IPv4 address of the container group |
-| `containerGroupName` | string | The name of the container group |
-| `containerGroupResourceGroup` | string | The resource group the container group was deployed into |
-| `containerGroupResourceId` | string | The resource ID of the container group |
+| `iPv4Address` | string | The IPv4 address of the container group |
+| `name` | string | The name of the container group |
+| `resourceGroupName` | string | The resource group the container group was deployed into |
+| `resourceId` | string | The resource ID of the container group |
 | `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
 
 ## Template references

@@ -68,10 +68,10 @@ module routeTable_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index)
 }]
 
 @description('The resource group the route table was deployed into')
-output routeTableResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name
 
 @description('The name of the route table')
-output routeTableName string = routeTable.name
+output name string = routeTable.name
 
 @description('The resource ID of the route table')
-output routeTableResourceId string = routeTable.id
+output resourceId string = routeTable.id

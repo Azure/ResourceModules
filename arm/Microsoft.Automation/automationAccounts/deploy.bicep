@@ -219,7 +219,7 @@ module automationAccount_linkedService '.bicep/nested_linkedService.bicep' = if 
   name: '${uniqueString(deployment().name, location)}-AutoAccount-LinkedService'
   params: {
     name: 'automation'
-    logAnalyticsWorkspaceName: '${last(split(linkedWorkspaceId, '/'))}'
+    logAnalyticsWorkspaceName: last(split(linkedWorkspaceId, '/'))
     resourceId: automationAccount.id
     tags: tags
   }
@@ -233,7 +233,7 @@ module automationAccount_solutions '.bicep/nested_solution.bicep' = [for (galler
   params: {
     name: gallerySolution
     location: location
-    logAnalyticsWorkspaceName: '${last(split(linkedWorkspaceId, '/'))}'
+    logAnalyticsWorkspaceName: last(split(linkedWorkspaceId, '/'))
   }
   // This is to support solution to law in different subscription and resource group than the automation account.
   // The current scope is used by default if no linked service is intended to be created.
@@ -298,7 +298,7 @@ resource automationAccount_lock 'Microsoft.Authorization/locks@2017-04-01' = if 
   name: '${automationAccount.name}-AutoAccount-${lock}-lock'
   properties: {
     level: lock
-    notes: (lock == 'CanNotDelete') ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
+    notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: automationAccount
 }
@@ -320,13 +320,10 @@ module automationAccount_privateEndpoints '.bicep/nested_privateEndpoint.bicep' 
   name: '${uniqueString(deployment().name, location)}-AutoAccount-PrivateEndpoint-${index}'
   params: {
     privateEndpointResourceId: automationAccount.id
-    privateEndpointVnetLocation: (empty(privateEndpoints) ? 'dummy' : reference(split(endpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location)
+    privateEndpointVnetLocation: !empty(privateEndpoints) ? reference(split(endpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location : 'dummy'
     privateEndpointObj: endpoint
     tags: tags
   }
-  dependsOn: [
-    automationAccount
-  ]
 }]
 
 module automationAccount_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
@@ -339,13 +336,13 @@ module automationAccount_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment,
 }]
 
 @description('The name of the deployed automation account')
-output automationAccountName string = automationAccount.name
+output name string = automationAccount.name
 
 @description('The resource ID of the deployed automation account')
-output automationAccountResourceId string = automationAccount.id
+output resourceId string = automationAccount.id
 
 @description('The resource group of the deployed automation account')
-output automationAccountResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name
 
 @description('The principal ID of the system assigned identity.')
 output systemAssignedPrincipalId string = systemAssignedIdentity && contains(automationAccount.identity, 'principalId') ? automationAccount.identity.principalId : ''

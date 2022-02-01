@@ -55,10 +55,10 @@ module queue_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in r
 }]
 
 @description('The name of the deployed queue')
-output queueName string = queue.name
+output name string = queue.name
 
 @description('The resource ID of the deployed queue')
-output queueResourceId string = queue.id
+output resourceId string = queue.id
 
 @description('The resource group of the deployed queue')
-output queueResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name

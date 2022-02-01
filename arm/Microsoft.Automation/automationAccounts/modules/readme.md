@@ -41,9 +41,9 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `moduleName` | string | The name of the deployed module |
-| `moduleResourceGroup` | string | The resource group of the deployed module |
-| `moduleResourceId` | string | The resource ID of the deployed module |
+| `name` | string | The name of the deployed module |
+| `resourceGroupName` | string | The resource group of the deployed module |
+| `resourceId` | string | The resource ID of the deployed module |
 
 ## Template references
 

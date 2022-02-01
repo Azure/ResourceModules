@@ -54,15 +54,15 @@ resource protectionContainer 'Microsoft.RecoveryServices/vaults/backupFabrics/pr
     sourceResourceId: !empty(sourceResourceId) ? sourceResourceId : null
     friendlyName: !empty(friendlyName) ? friendlyName : null
     backupManagementType: !empty(backupManagementType) ? backupManagementType : null
-    containerType: !empty(containerType) ? containerType : null
+    containerType: !empty(containerType) ? any(containerType) : null
   }
 }
 
 @description('The name of the Resource Group the Protection Container was created in.')
-output protectionContainerResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name
 
 @description('The resource ID of the Protection Container.')
-output protectionContainerResourceId string = protectionContainer.id
+output resourceId string = protectionContainer.id
 
 @description('The Name of the Protection Container.')
-output protectionContainerName string = protectionContainer.name
+output name string = protectionContainer.name

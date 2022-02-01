@@ -162,11 +162,11 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `metricAlertName` | string | The name of the metric alert |
-| `metricAlertResourceGroup` | string | The resource group the metric alert was deployed into |
-| `metricAlertResourceId` | string | The resource ID of the metric alert |
+| `name` | string | The name of the metric alert |
+| `resourceGroupName` | string | The resource group the metric alert was deployed into |
+| `resourceId` | string | The resource ID of the metric alert |
 
 ## Template references
 
 - [Metricalerts](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2018-03-01/metricAlerts)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2021-04-01-preview/roleAssignments)
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)

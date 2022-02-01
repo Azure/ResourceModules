@@ -66,9 +66,9 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `databaseName` | string | The name of the deployed database |
-| `databaseResourceGroup` | string | The resource group the database was deployed into |
-| `databaseResourceId` | string | The resource ID of the deployed database |
+| `name` | string | The name of the deployed database |
+| `resourceGroupName` | string | The resource group the database was deployed into |
+| `resourceId` | string | The resource ID of the deployed database |
 
 ## Template references
 

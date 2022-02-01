@@ -50,9 +50,9 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `dataSourceName` | string | The name of the deployed data source |
-| `dataSourceResourceGroup` | string | The resource group where the data source is deployed |
-| `dataSourceResourceId` | string | The resource ID of the deployed data source |
+| `name` | string | The name of the deployed data source |
+| `resourceGroupName` | string | The resource group where the data source is deployed |
+| `resourceId` | string | The resource ID of the deployed data source |
 
 ## Template references
 

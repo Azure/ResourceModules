@@ -24,9 +24,9 @@ This module deployes an Immutability Policy for a blob container
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `immutabilityPolicyName` | string | The name of the deployed immutability policy. |
-| `immutabilityPolicyResourceGroup` | string | The resource group of the deployed immutability policy. |
-| `immutabilityPolicyResourceId` | string | The resource ID of the deployed immutability policy. |
+| `name` | string | The name of the deployed immutability policy. |
+| `resourceGroupName` | string | The resource group of the deployed immutability policy. |
+| `resourceId` | string | The resource ID of the deployed immutability policy. |
 
 ## Template references
 

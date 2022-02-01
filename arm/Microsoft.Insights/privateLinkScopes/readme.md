@@ -105,9 +105,9 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `privateLinkScopeName` | string | The name of the private link scope |
-| `privateLinkScopeResourceGroup` | string | The resource group the private link scope was deployed into |
-| `privateLinkScopeResourceId` | string | The resource ID of the private link scope |
+| `name` | string | The name of the private link scope |
+| `resourceGroupName` | string | The resource group the private link scope was deployed into |
+| `resourceId` | string | The resource ID of the private link scope |
 
 ## Template references
 
@@ -116,4 +116,4 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 - [Privateendpoints/Privatednszonegroups](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/privateEndpoints/privateDnsZoneGroups)
 - [Privatelinkscopes](https://docs.microsoft.com/en-us/azure/templates/microsoft.insights/2019-10-17-preview/privateLinkScopes)
 - [Privatelinkscopes/Scopedresources](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-07-01-preview/privateLinkScopes/scopedResources)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2021-04-01-preview/roleAssignments)
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)

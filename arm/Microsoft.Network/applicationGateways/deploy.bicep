@@ -151,8 +151,8 @@ var diagnosticsMetrics = [for metric in metricsToEnable: {
   }
 }]
 
-var applicationGatewayResourceId = resourceId('Microsoft.Network/applicationGateways', name)
-var subnetResourceId = resourceId(vNetSubscriptionId, vNetResourceGroup, 'Microsoft.Network/virtualNetworks/subnets', vNetName, subnetName)
+var applicationGatewayResourceId = az.resourceId('Microsoft.Network/applicationGateways', name)
+var subnetResourceId = az.resourceId(vNetSubscriptionId, vNetResourceGroup, 'Microsoft.Network/virtualNetworks/subnets', vNetName, subnetName)
 var frontendPublicIPConfigurationName = 'public'
 var frontendPrivateIPConfigurationName = 'private'
 var frontendPrivateIPDynamicConfiguration = {
@@ -430,10 +430,10 @@ module applicationGateway_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment
 }]
 
 @description('The name of the application gateway')
-output applicationGatewayName string = applicationGateway.name
+output name string = applicationGateway.name
 
 @description('The resource ID of the application gateway')
-output applicationGatewayResourceId string = applicationGateway.id
+output resourceId string = applicationGateway.id
 
 @description('The resource group the application gateway was deployed into')
-output applicationGatewayResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name

@@ -283,13 +283,13 @@ module serviceBusNamespace_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignmen
 }]
 
 @description('The resource ID of the deployed service bus namespace')
-output serviceBusNamespaceResourceId string = serviceBusNamespace.id
+output resourceId string = serviceBusNamespace.id
 
 @description('The resource group of the deployed service bus namespace')
-output serviceBusNamespaceResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name
 
 @description('The name of the deployed service bus namespace')
-output serviceBusNamespaceName string = serviceBusNamespace.name
+output name string = serviceBusNamespace.name
 
 @description('The principal ID of the system assigned identity.')
 output systemAssignedPrincipalId string = systemAssignedIdentity && contains(serviceBusNamespace.identity, 'principalId') ? serviceBusNamespace.identity.principalId : ''

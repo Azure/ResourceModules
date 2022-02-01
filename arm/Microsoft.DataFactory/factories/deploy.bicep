@@ -209,13 +209,13 @@ module dataFactory_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index
 }]
 
 @description('The Name of the Azure Data Factory instance.')
-output dataFactoryName string = dataFactory.name
+output name string = dataFactory.name
 
 @description('The Resource ID of the Data factory.')
-output dataFactoryResourceId string = dataFactory.id
+output resourceId string = dataFactory.id
 
 @description('The name of the Resource Group with the Data factory.')
-output dataFactoryResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name
 
 @description('The principal ID of the system assigned identity.')
 output systemAssignedPrincipalId string = systemAssignedIdentity && contains(dataFactory.identity, 'principalId') ? dataFactory.identity.principalId : ''

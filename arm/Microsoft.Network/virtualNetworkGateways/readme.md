@@ -120,14 +120,14 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
 | `activeActive` | bool | Shows if the virtual network gateway is configured in active-active mode |
-| `virtualNetworkGatewayName` | string | The name of the virtual network gateway |
-| `virtualNetworkGatewayResourceGroup` | string | The resource group the virtual network gateway was deployed |
-| `virtualNetworkGatewayResourceId` | string | The resource ID of the virtual network gateway |
+| `name` | string | The name of the virtual network gateway |
+| `resourceGroupName` | string | The resource group the virtual network gateway was deployed |
+| `resourceId` | string | The resource ID of the virtual network gateway |
 
 ## Template references
 
 - [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings)
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
 - [Publicipaddresses](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-02-01/publicIPAddresses)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2021-04-01-preview/roleAssignments)
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)
 - [Virtualnetworkgateways](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-02-01/virtualNetworkGateways)

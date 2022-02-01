@@ -33,13 +33,13 @@ This module can be used to deploy a file share service into a storage account.
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `fileServicesName` | string | The name of the deployed file share service |
-| `fileServicesResourceGroup` | string | The resource group of the deployed file share service |
-| `fileServicesResourceId` | string | The resource ID of the deployed file share service |
+| `name` | string | The name of the deployed file share service |
+| `resourceGroupName` | string | The resource group of the deployed file share service |
+| `resourceId` | string | The resource ID of the deployed file share service |
 
 ## Template references
 
 - [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2021-04-01-preview/roleAssignments)
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)
 - [Storageaccounts/Fileservices](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Storage/2021-04-01/storageAccounts/fileServices)
 - [Storageaccounts/Fileservices/Shares](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Storage/2019-06-01/storageAccounts/fileServices/shares)

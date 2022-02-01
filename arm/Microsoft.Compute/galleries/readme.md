@@ -67,13 +67,13 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `galleryName` | string | The name of the deployed image gallery |
-| `galleryResourceGroup` | string | The resource group of the deployed image gallery |
-| `galleryResourceId` | string | The resource ID of the deployed image gallery |
+| `name` | string | The name of the deployed image gallery |
+| `resourceGroupName` | string | The resource group of the deployed image gallery |
+| `resourceId` | string | The resource ID of the deployed image gallery |
 
 ## Template references
 
 - [Galleries](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Compute/2020-09-30/galleries)
 - [Galleries/Images](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Compute/2020-09-30/galleries/images)
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2021-04-01-preview/roleAssignments)
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)

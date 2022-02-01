@@ -52,10 +52,10 @@ resource policy 'Microsoft.ApiManagement/service/apis/policies@2021-08-01' = {
 }
 
 @description('The resource ID of the API policy')
-output policyResourceId string = policy.id
+output resourceId string = policy.id
 
 @description('The name of the API policy')
-output policyName string = policy.name
+output name string = policy.name
 
 @description('The resource group the API policy was deployed into')
-output policyResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name

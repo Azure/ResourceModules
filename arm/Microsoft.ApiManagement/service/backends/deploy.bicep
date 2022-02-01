@@ -72,10 +72,10 @@ resource backend 'Microsoft.ApiManagement/service/backends@2021-08-01' = {
 }
 
 @description('The resource ID of the API management service backend')
-output backendResourceId string = backend.id
+output resourceId string = backend.id
 
 @description('The name of the API management service backend')
-output backendName string = backend.name
+output name string = backend.name
 
 @description('The resource group the API management service backend was deployed into')
-output backendResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name

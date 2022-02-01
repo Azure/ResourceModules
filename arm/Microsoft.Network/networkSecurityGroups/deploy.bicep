@@ -131,10 +131,10 @@ module networkSecurityGroup_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignme
 }]
 
 @description('The resource group the network security group was deployed into')
-output networkSecurityGroupResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name
 
 @description('The resource ID of the network security group')
-output networkSecurityGroupResourceId string = networkSecurityGroup.id
+output resourceId string = networkSecurityGroup.id
 
 @description('The name of the network security group')
-output networkSecurityGroupName string = networkSecurityGroup.name
+output name string = networkSecurityGroup.name

@@ -8,6 +8,7 @@ This module deploys one Virtual Machine with one or multiple nics and optionally
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2017-04-01 |
 | `Microsoft.Authorization/roleAssignments` | 2021-04-01-preview |
+| `Microsoft.Automanage/configurationProfileAssignments` | 2021-04-30-preview |
 | `Microsoft.Compute/virtualMachines` | 2021-07-01 |
 | `Microsoft.Compute/virtualMachines/extensions` | 2021-07-01 |
 | `Microsoft.Insights/diagnosticSettings` | 2021-05-01-preview |
@@ -33,6 +34,7 @@ This module deploys one Virtual Machine with one or multiple nics and optionally
 | `bootDiagnosticStorageAccountUri` | string | `[format('.blob.{0}/', environment().suffixes.storage)]` |  | Optional. Storage account boot diagnostic base URI. |
 | `certificatesToBeInstalled` | array | `[]` |  | Optional. Specifies set of certificates that should be installed onto the virtual machine. |
 | `telemetryCuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
+| `configurationProfileAssignments` | array | `[]` |  | Optional. Any VM configuration profile assignments |
 | `customData` | string |  |  | Optional. Custom data associated to the VM, this value will be automatically converted into base64 to account for the expected VM format. |
 | `dataDisks` | array | `[]` |  | Optional. Specifies the data disks. |
 | `dedicatedHostId` | string |  |  | Optional. Specifies resource ID about the dedicated host that the virtual machine resides in. |
@@ -288,6 +290,17 @@ The field `nicSuffix` and `subnetId` are mandatory. If `enablePublicIP` is set t
 }
 ```
 
+### Parameter Usage: `configurationProfileAssignments`
+
+```json
+"configurationProfileAssignments": {
+    "value": [
+          "/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction",
+          "/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesDevTest"
+    ]
+}
+```
+
 ### Parameter Usage: `domainJoinSettings`
 
 ```json
@@ -509,18 +522,19 @@ You can specify multiple user assigned identities to a resource by providing add
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
+| `name` | string | The name of the VM. |
+| `resourceGroupName` | string | The name of the resource group the VM was created in. |
+| `resourceId` | string | The resource ID of the VM. |
 | `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
-| `virtualMachineName` | string | The name of the VM. |
-| `virtualMachineResourceGroup` | string | The name of the Resource Group the VM was created in. |
-| `virtualMachineResourceId` | string | The Resource ID of the VM. |
 
 ## Template references
 
+- [Define resources with Bicep and ARM templates](https://docs.microsoft.com/en-us/azure/templates)
 - [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings)
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
 - [Networkinterfaces](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-03-01/networkInterfaces)
 - [Publicipaddresses](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-03-01/publicIPAddresses)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2021-04-01-preview/roleAssignments)
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)
 - [Vaults/Backupfabrics/Protectioncontainers/Protecteditems](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2021-06-01/vaults/backupFabrics/protectionContainers/protectedItems)
 - [Virtualmachines](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Compute/2021-07-01/virtualMachines)
 - [Virtualmachines/Extensions](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Compute/2021-07-01/virtualMachines/extensions)

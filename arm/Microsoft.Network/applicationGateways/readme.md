@@ -235,13 +235,13 @@ You can specify multiple user assigned identities to a resource by providing add
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `applicationGatewayName` | string | The name of the application gateway |
-| `applicationGatewayResourceGroup` | string | The resource group the application gateway was deployed into |
-| `applicationGatewayResourceId` | string | The resource ID of the application gateway |
+| `name` | string | The name of the application gateway |
+| `resourceGroupName` | string | The resource group the application gateway was deployed into |
+| `resourceId` | string | The resource ID of the application gateway |
 
 ## Template references
 
 - [Applicationgateways](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-03-01/applicationGateways)
 - [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings)
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2021-04-01-preview/roleAssignments)
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)

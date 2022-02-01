@@ -109,9 +109,9 @@ Object continaining the configuration for backup policies. It needs to be proper
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `backupPolicyName` | string | The name of the backup policy |
-| `backupPolicyResourceGroup` | string | The name of the resource group the backup policy was created in. |
-| `backupPolicyResourceId` | string | The resource ID of the backup policy |
+| `name` | string | The name of the backup policy |
+| `resourceGroupName` | string | The name of the resource group the backup policy was created in. |
+| `resourceId` | string | The resource ID of the backup policy |
 
 ## Template references
 

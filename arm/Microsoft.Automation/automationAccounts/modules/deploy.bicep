@@ -49,10 +49,10 @@ resource module 'Microsoft.Automation/automationAccounts/modules@2020-01-13-prev
 }
 
 @description('The name of the deployed module')
-output moduleName string = module.name
+output name string = module.name
 
 @description('The resource ID of the deployed module')
-output moduleResourceId string = module.id
+output resourceId string = module.id
 
 @description('The resource group of the deployed module')
-output moduleResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name

@@ -93,10 +93,10 @@ resource flowLog 'Microsoft.Network/networkWatchers/flowLogs@2021-03-01' = {
   }
 }
 @description('The name of the flow log')
-output flowLogName string = flowLog.name
+output name string = flowLog.name
 
 @description('The resource ID of the flow log')
-output flowLogResourceId string = flowLog.id
+output resourceId string = flowLog.id
 
 @description('The resource group the flow log was deployed into')
-output flowLogResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name

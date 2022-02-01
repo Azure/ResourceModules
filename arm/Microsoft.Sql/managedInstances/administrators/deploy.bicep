@@ -37,10 +37,10 @@ resource administrator 'Microsoft.Sql/managedInstances/administrators@2021-02-01
 }
 
 @description('The name of the deployed managed instance')
-output administratorName string = administrator.name
+output name string = administrator.name
 
 @description('The resource ID of the deployed managed instance')
-output administratorResourceId string = administrator.id
+output resourceId string = administrator.id
 
 @description('The resource group of the deployed managed instance')
-output administratorResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name

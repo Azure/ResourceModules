@@ -75,9 +75,9 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `azureBastionName` | string | The name the Azure Bastion |
-| `azureBastionResourceGroup` | string | The resource group the Azure Bastion was deployed into |
-| `azureBastionResourceId` | string | The resource ID the Azure Bastion |
+| `name` | string | The name the Azure Bastion |
+| `resourceGroupName` | string | The resource group the Azure Bastion was deployed into |
+| `resourceId` | string | The resource ID the Azure Bastion |
 
 ## Template references
 
@@ -85,4 +85,4 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 - [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings)
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
 - [Publicipaddresses](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-02-01/publicIPAddresses)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2021-04-01-preview/roleAssignments)
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)

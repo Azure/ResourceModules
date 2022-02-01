@@ -37,10 +37,10 @@ resource scopedResource 'Microsoft.Insights/privateLinkScopes/scopedResources@20
 }
 
 @description('The name of the resource group where the resource has been deployed')
-output scopedResourceResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name
 
 @description('The resource ID of the deployed scopedResource')
-output scopedResourceResourceId string = scopedResource.id
+output resourceId string = scopedResource.id
 
 @description('The full name of the deployed Scoped Resource')
-output scopedResourceName string = scopedResource.name
+output name string = scopedResource.name

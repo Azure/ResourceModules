@@ -58,10 +58,10 @@ module mongodbDatabase_collections 'collections/deploy.bicep' = [for collection 
 }]
 
 @description('The name of the mongodb database.')
-output mongodbDatabaseName string = mongodbDatabase.name
+output name string = mongodbDatabase.name
 
 @description('The resource ID of the mongodb database.')
-output mongodbDatabaseResourceId string = mongodbDatabase.id
+output resourceId string = mongodbDatabase.id
 
 @description('The name of the resource group the mongodb database was created in.')
-output mongodbDatabaseResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name

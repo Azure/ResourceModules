@@ -127,10 +127,10 @@ resource deploymentScript_lock 'Microsoft.Authorization/locks@2017-04-01' = if (
 }
 
 @description('The resource ID of the deployment script')
-output deploymentScriptResourceId string = deploymentScript.id
+output resourceId string = deploymentScript.id
 
 @description('The resource group the deployment script was deployed into')
-output deploymentScriptResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name
 
 @description('The name of the deployment script')
-output deploymentScriptName string = deploymentScript.name
+output name string = deploymentScript.name

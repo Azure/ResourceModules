@@ -30,9 +30,9 @@ This module deploys load balancers inbound NAT rules.
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `inboundNatRuleName` | string | The name of the inbound NAT rule |
-| `inboundNatRuleResourceGroupName` | string | The resource group the inbound NAT rule was deployed into |
-| `inboundNatRuleResourceId` | string | The resource ID of the inbound NAT rule |
+| `name` | string | The name of the inbound NAT rule |
+| `resourceGroupName` | string | The resource group the inbound NAT rule was deployed into |
+| `resourceId` | string | The resource ID of the inbound NAT rule |
 
 ## Template references
 

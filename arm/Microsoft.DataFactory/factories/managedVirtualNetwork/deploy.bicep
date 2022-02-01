@@ -30,10 +30,10 @@ resource managedVirtualNetwork 'Microsoft.DataFactory/factories/managedVirtualNe
 }
 
 @description('The name of the Resource Group the Managed Virtual Network was created in.')
-output managedVirtualNetworkResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name
 
 @description('The name of the Managed Virtual Network.')
-output managedVirtualNetworkName string = managedVirtualNetwork.name
+output name string = managedVirtualNetwork.name
 
 @description('The resource ID of the Managed Virtual Network.')
-output managedVirtualNetworkResourceId string = managedVirtualNetwork.id
+output resourceId string = managedVirtualNetwork.id

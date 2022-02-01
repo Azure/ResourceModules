@@ -150,10 +150,10 @@ You can specify multiple user assigned identities to a resource by providing add
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `acrLoginServer` | string | The reference to the Azure container registry. |
-| `acrName` | string | The Name of the Azure container registry. |
-| `acrResourceGroup` | string | The name of the Azure container registry. |
-| `acrResourceId` | string | The resource ID of the Azure container registry. |
+| `loginServer` | string | The reference to the Azure container registry. |
+| `name` | string | The Name of the Azure container registry. |
+| `resourceGroupName` | string | The name of the Azure container registry. |
+| `resourceId` | string | The resource ID of the Azure container registry. |
 | `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
 
 ## Template references
@@ -163,4 +163,4 @@ You can specify multiple user assigned identities to a resource by providing add
 - [Privateendpoints](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-02-01/privateEndpoints)
 - [Privateendpoints/Privatednszonegroups](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-02-01/privateEndpoints/privateDnsZoneGroups)
 - [Registries](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ContainerRegistry/2020-11-01-preview/registries)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2021-04-01-preview/roleAssignments)
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)

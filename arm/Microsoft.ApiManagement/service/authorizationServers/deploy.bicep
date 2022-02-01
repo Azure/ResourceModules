@@ -105,10 +105,10 @@ resource authorizationServer 'Microsoft.ApiManagement/service/authorizationServe
 }
 
 @description('The name of the API management service authorization server')
-output authorizationServerName string = authorizationServer.name
+output name string = authorizationServer.name
 
 @description('The resource ID of the API management service authorization server')
-output authorizationServerResourceId string = authorizationServer.id
+output resourceId string = authorizationServer.id
 
 @description('The resource group the API management service authorization server was deployed into')
-output authorizationServerResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name

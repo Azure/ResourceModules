@@ -116,13 +116,13 @@ resource subnet 'Microsoft.Network/virtualNetworks/subnets@2021-03-01' = {
 }
 
 @description('The resource group the virtual network peering was deployed into')
-output subnetResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name
 
 @description('The name of the virtual network peering')
-output subnetName string = subnet.name
+output name string = subnet.name
 
 @description('The resource ID of the virtual network peering')
-output subnetResourceId string = subnet.id
+output resourceId string = subnet.id
 
 @description('The address prefix for the subnet')
 output subnetAddressPrefix string = subnet.properties.addressPrefix

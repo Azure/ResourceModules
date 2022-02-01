@@ -98,10 +98,10 @@ module capacityPool_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, inde
 }]
 
 @description('The name of the Capacity Pool.')
-output capacityPoolName string = capacityPool.name
+output name string = capacityPool.name
 
 @description('The resource ID of the Capacity Pool.')
-output capacityPoolResourceId string = capacityPool.id
+output resourceId string = capacityPool.id
 
 @description('The name of the Resource Group the Capacity Pool was created in.')
-output capacityPoolResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name

@@ -46,10 +46,10 @@ resource policyExemption 'Microsoft.Authorization/policyExemptions@2020-07-01-pr
 }
 
 @sys.description('Policy Exemption Name')
-output policyExemptionName string = policyExemption.name
+output name string = policyExemption.name
 
 @sys.description('Policy Exemption resource ID')
-output policyExemptionId string = extensionResourceId(tenantResourceId('Microsoft.Management/managementGroups', managementGroupId), 'Microsoft.Authorization/policyExemptions', policyExemption.name)
+output resourceId string = extensionResourceId(tenantResourceId('Microsoft.Management/managementGroups', managementGroupId), 'Microsoft.Authorization/policyExemptions', policyExemption.name)
 
 @sys.description('Policy Exemption Scope')
-output policyExemptionScope string = tenantResourceId('Microsoft.Management/managementGroups', managementGroupId)
+output scope string = tenantResourceId('Microsoft.Management/managementGroups', managementGroupId)

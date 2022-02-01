@@ -52,10 +52,10 @@ resource integrationRuntime 'Microsoft.DataFactory/factories/integrationRuntimes
 }
 
 @description('The name of the Resource Group the Integration Runtime was created in.')
-output integrationRuntimeResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name
 
 @description('The name of the Integration Runtime.')
-output integrationRuntimeName string = integrationRuntime.name
+output name string = integrationRuntime.name
 
 @description('The resource ID of the Integration Runtime.')
-output integrationRuntimeResourceId string = integrationRuntime.id
+output resourceId string = integrationRuntime.id

@@ -96,9 +96,9 @@ Occurrences of days within a month.
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `softwareUpdateConfigurationName` | string | The name of the deployed softwareUpdateConfiguration |
-| `softwareUpdateConfigurationResourceGroup` | string | The resource group of the deployed softwareUpdateConfiguration |
-| `softwareUpdateConfigurationResourceId` | string | The resource ID of the deployed softwareUpdateConfiguration |
+| `name` | string | The name of the deployed softwareUpdateConfiguration |
+| `resourceGroupName` | string | The resource group of the deployed softwareUpdateConfiguration |
+| `resourceId` | string | The resource ID of the deployed softwareUpdateConfiguration |
 
 ## Template references
 

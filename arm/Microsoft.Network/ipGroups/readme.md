@@ -65,12 +65,12 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `ipGroupName` | string | The name of the IP group |
-| `ipGroupsResourceGroup` | string | The resource group of the IP group was deployed into |
-| `ipGroupsResourceId` | string | The resource ID of the IP group |
+| `name` | string | The name of the IP group |
+| `resourceGroupName` | string | The resource group of the IP group was deployed into |
+| `resourceId` | string | The resource ID of the IP group |
 
 ## Template references
 
 - [Ipgroups](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-02-01/ipGroups)
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2021-04-01-preview/roleAssignments)
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)

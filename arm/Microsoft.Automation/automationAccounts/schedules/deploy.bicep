@@ -75,10 +75,10 @@ resource schedule 'Microsoft.Automation/automationAccounts/schedules@2020-01-13-
 }
 
 @description('The name of the deployed schedule')
-output scheduleName string = schedule.name
+output name string = schedule.name
 
 @description('The resource ID of the deployed schedule')
-output scheduleResourceId string = schedule.id
+output resourceId string = schedule.id
 
 @description('The resource group of the deployed schedule')
-output scheduleResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name

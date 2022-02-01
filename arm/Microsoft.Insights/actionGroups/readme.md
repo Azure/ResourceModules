@@ -118,11 +118,11 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `actionGroupName` | string | The name of the action group  |
-| `actionGroupResourceGroup` | string | The resource group the action group was deployed into |
-| `actionGroupResourceId` | string | The resource ID of the action group  |
+| `name` | string | The name of the action group  |
+| `resourceGroupName` | string | The resource group the action group was deployed into |
+| `resourceId` | string | The resource ID of the action group  |
 
 ## Template references
 
 - [Actiongroups](https://docs.microsoft.com/en-us/azure/templates/microsoft.insights/2019-06-01/actionGroups)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2021-04-01-preview/roleAssignments)
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)

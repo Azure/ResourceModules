@@ -30,9 +30,9 @@ This module deploys a storage account table service
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `tableServicesName` | string | The name of the deployed table service |
-| `tableServicesResourceGroup` | string | The resource group of the deployed table service |
-| `tableServicesResourceId` | string | The resource ID of the deployed table service |
+| `name` | string | The name of the deployed table service |
+| `resourceGroupName` | string | The resource group of the deployed table service |
+| `resourceId` | string | The resource ID of the deployed table service |
 
 ## Template references
 

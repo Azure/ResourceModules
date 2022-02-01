@@ -46,11 +46,11 @@ This module deploys a storage account file share.
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `fileShareName` | string | The name of the deployed file share |
-| `fileShareResourceGroup` | string | The resource group of the deployed file share |
-| `fileShareResourceId` | string | The resource ID of the deployed file share |
+| `name` | string | The name of the deployed file share |
+| `resourceGroupName` | string | The resource group of the deployed file share |
+| `resourceId` | string | The resource ID of the deployed file share |
 
 ## Template references
 
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2021-04-01-preview/roleAssignments)
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)
 - [Storageaccounts/Fileservices/Shares](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Storage/2019-06-01/storageAccounts/fileServices/shares)

@@ -21,9 +21,9 @@ This module deploys an EventHub Namespace Authorization Rule
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `authorizationRuleName` | string | The name of the authorization rule. |
-| `authorizationRuleResourceGroup` | string | The name of the resource group the authorization rule was created in. |
-| `authorizationRuleResourceId` | string | The resource ID of the authorization rule. |
+| `name` | string | The name of the authorization rule. |
+| `resourceGroupName` | string | The name of the resource group the authorization rule was created in. |
+| `resourceId` | string | The resource ID of the authorization rule. |
 
 ## Template references
 

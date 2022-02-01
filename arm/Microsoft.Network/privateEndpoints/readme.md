@@ -79,13 +79,13 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `privateEndpointName` | string | The name of the private endpoint |
-| `privateEndpointResourceGroup` | string | The resource group the private endpoint was deployed into |
-| `privateEndpointResourceId` | string | The resource ID of the private endpoint |
+| `name` | string | The name of the private endpoint |
+| `resourceGroupName` | string | The resource group the private endpoint was deployed into |
+| `resourceId` | string | The resource ID of the private endpoint |
 
 ## Template references
 
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
 - [Privateendpoints](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-03-01/privateEndpoints)
 - [Privateendpoints/Privatednszonegroups](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-03-01/privateEndpoints/privateDnsZoneGroups)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2021-04-01-preview/roleAssignments)
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)

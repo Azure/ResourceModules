@@ -129,10 +129,10 @@ module metricAlert_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index
 }]
 
 @description('The resource group the metric alert was deployed into')
-output metricAlertResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name
 
 @description('The name of the metric alert')
-output metricAlertName string = metricAlert.name
+output name string = metricAlert.name
 
 @description('The resource ID of the metric alert')
-output metricAlertResourceId string = metricAlert.id
+output resourceId string = metricAlert.id

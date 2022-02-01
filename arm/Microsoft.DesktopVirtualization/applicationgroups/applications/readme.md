@@ -28,9 +28,9 @@ This module deploys AVD Applications.
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `appGroupName` | string | The Name of the Application Group to register the Application in. |
-| `applicationResourceGroup` | string | The name of the Resource Group the AVD Application was created in. |
 | `applicationResourceIds` | string | The resource ID of the deployed Application. |
+| `name` | string | The Name of the Application Group to register the Application in. |
+| `resourceGroupName` | string | The name of the Resource Group the AVD Application was created in. |
 
 ## Template references
 

@@ -149,13 +149,13 @@ module server_securityAlertPolicies 'securityAlertPolicies/deploy.bicep' = [for 
 }]
 
 @description('The name of the deployed SQL server')
-output serverName string = server.name
+output name string = server.name
 
 @description('The resource ID of the deployed SQL server')
-output serverResourceId string = server.id
+output resourceId string = server.id
 
 @description('The resourceGroup of the deployed SQL server')
-output serverResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name
 
 @description('The principal ID of the system assigned identity.')
 output systemAssignedPrincipalId string = systemAssignedIdentity && contains(server.identity, 'principalId') ? server.identity.principalId : ''

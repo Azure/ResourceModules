@@ -21,9 +21,9 @@ This module deploys API Management Service Product APIs.
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `apiName` | string | The name of the product API |
-| `apiResourceGroup` | string | The resource group the product API was deployed into |
-| `apiResourceId` | string | The resource ID of the product API |
+| `name` | string | The name of the product API |
+| `resourceGroupName` | string | The resource group the product API was deployed into |
+| `resourceId` | string | The resource ID of the product API |
 
 ## Template references
 

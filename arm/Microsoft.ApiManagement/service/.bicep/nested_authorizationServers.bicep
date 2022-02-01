@@ -100,10 +100,10 @@ module authorizationServer '../authorizationServers/deploy.bicep' = {
 }
 
 @description('The name of the API management service authorization server')
-output authorizationServerName string = authorizationServer.outputs.authorizationServerName
+output name string = authorizationServer.outputs.name
 
 @description('The resource ID of the API management service authorization server')
-output authorizationServerResourceId string = authorizationServer.outputs.authorizationServerResourceId
+output resourceId string = authorizationServer.outputs.resourceId
 
 @description('The resource group the API management service authorization server was deployed into')
-output authorizationServerResourceGroup string = authorizationServer.outputs.authorizationServerResourceGroup
+output resourceGroupName string = authorizationServer.outputs.resourceGroupName

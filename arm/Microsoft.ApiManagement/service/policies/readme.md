@@ -22,9 +22,9 @@ This module deploys API Management Service Policy.
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `policyName` | string | The name of the API management service policy |
-| `policyResourceGroup` | string | The resource group the API management service policy was deployed into |
-| `policyResourceId` | string | The resource ID of the API management service policy |
+| `name` | string | The name of the API management service policy |
+| `resourceGroupName` | string | The resource group the API management service policy was deployed into |
+| `resourceId` | string | The resource ID of the API management service policy |
 
 ## Template references
 

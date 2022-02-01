@@ -219,13 +219,13 @@ module logicApp_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) i
 }]
 
 @description('The name of the logic app')
-output logicAppName string = logicApp.name
+output name string = logicApp.name
 
 @description('The resource group the logic app was deployed into')
-output logicAppResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name
 
 @description('The resource ID of the logic app')
-output logicAppResourceId string = logicApp.id
+output resourceId string = logicApp.id
 
 @description('The principal ID of the system assigned identity.')
 output systemAssignedPrincipalId string = systemAssignedIdentity && contains(logicApp.identity, 'principalId') ? logicApp.identity.principalId : ''

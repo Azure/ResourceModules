@@ -82,9 +82,9 @@ The shard key and partition kind pair, only support "Hash" partition kind.
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `collectionName` | string | The name of the mongodb database. |
-| `collectionResourceGroup` | string | The name of the resource group the mongodb database was created in. |
-| `collectionResourceId` | string | The resource ID of the mongodb database. |
+| `name` | string | The name of the mongodb database. |
+| `resourceGroupName` | string | The name of the resource group the mongodb database was created in. |
+| `resourceId` | string | The resource ID of the mongodb database. |
 
 ## Template references
 

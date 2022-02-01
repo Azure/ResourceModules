@@ -24,9 +24,9 @@ This module deploys an Azure Automation Account Job Schedule.
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `jobScheduleName` | string | The name of the deployed jobSchedule |
-| `jobScheduleResourceGroup` | string | The resource group of the deployed jobSchedule |
-| `jobScheduleResourceId` | string | The resource ID of the deployed jobSchedule |
+| `name` | string | The name of the deployed job schedule |
+| `resourceGroupName` | string | The resource group of the deployed job schedule |
+| `resourceId` | string | The resource ID of the deployed job schedule |
 
 ## Template references
 

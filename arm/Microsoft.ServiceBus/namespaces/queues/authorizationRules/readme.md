@@ -22,9 +22,9 @@ This module deploys an authorization rule for a service bus namespace queue.
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `authorizationRuleName` | string | The name of the authorization rule. |
-| `authorizationRuleResourceGroup` | string | The name of the Resource Group the authorization rule was created in. |
-| `authorizationRuleResourceId` | string | The Resource ID of the authorization rule. |
+| `name` | string | The name of the authorization rule. |
+| `resourceGroupName` | string | The name of the Resource Group the authorization rule was created in. |
+| `resourceId` | string | The Resource ID of the authorization rule. |
 
 ## Template references
 

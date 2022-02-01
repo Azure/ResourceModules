@@ -195,10 +195,10 @@ module appServiceEnvironment_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignm
 }]
 
 @description('The resource ID of the app service environment')
-output appServiceEnvironmentResourceId string = appServiceEnvironment.id
+output resourceId string = appServiceEnvironment.id
 
 @description('The resource group the app service environment was deployed into')
-output appServiceEnvironmentResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name
 
 @description('The name of the app service environment')
-output appServiceEnvironmentName string = appServiceEnvironment.name
+output name string = appServiceEnvironment.name

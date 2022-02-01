@@ -21,9 +21,9 @@ This module deploys a storage account table
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `tableName` | string | The name of the deployed file share service |
-| `tableResourceGroup` | string | The resource group of the deployed file share service |
-| `tableResourceId` | string | The resource ID of the deployed file share service |
+| `name` | string | The name of the deployed file share service |
+| `resourceGroupName` | string | The resource group of the deployed file share service |
+| `resourceId` | string | The resource ID of the deployed file share service |
 
 ## Template references
 

@@ -179,11 +179,11 @@ var zoneRedundantSkus = [
 var gatewayPipSku = contains(zoneRedundantSkus, virtualNetworkGatewaySku) ? 'Standard' : 'Basic'
 var gatewayPipAllocationMethod = contains(zoneRedundantSkus, virtualNetworkGatewaySku) ? 'Static' : 'Dynamic'
 var gatewaySubnetId = '${vNetResourceId}/subnets/GatewaySubnet'
-var activeActive_var = (virtualNetworkGatewayType == 'ExpressRoute') ? bool('false') : activeActive
+var activeActive_var = virtualNetworkGatewayType == 'ExpressRoute' ? false : activeActive
 
 // Public IP variables
-var gatewayPipName1 = (length(gatewayPipName) == 0) ? '${name}-pip1' : gatewayPipName[0]
-var gatewayPipName2 = activeActive_var ? ((length(gatewayPipName) == 1) ? '${name}-pip2' : gatewayPipName[1]) : ''
+var gatewayPipName1 = length(gatewayPipName) == 0 ? '${name}-pip1' : gatewayPipName[0]
+var gatewayPipName2 = activeActive_var ? (length(gatewayPipName) == 1 ? '${name}-pip2' : gatewayPipName[1]) : ''
 
 var gatewayMultiPipArray = [
   gatewayPipName1
@@ -192,12 +192,12 @@ var gatewayMultiPipArray = [
 var gatewaySinglePipArray = [
   gatewayPipName1
 ]
-var virtualGatewayPipName_var = (!empty(gatewayPipName2)) ? gatewayMultiPipArray : gatewaySinglePipArray
-var gatewayPipId1 = resourceId('Microsoft.Network/publicIPAddresses', gatewayPipName1)
-var gatewayPipId2 = activeActive_var ? resourceId('Microsoft.Network/publicIPAddresses', gatewayPipName2) : resourceId('Microsoft.Network/publicIPAddresses', gatewayPipName1)
+var virtualGatewayPipName_var = !empty(gatewayPipName2) ? gatewayMultiPipArray : gatewaySinglePipArray
+var gatewayPipId1 = az.resourceId('Microsoft.Network/publicIPAddresses', gatewayPipName1)
+var gatewayPipId2 = activeActive_var ? az.resourceId('Microsoft.Network/publicIPAddresses', gatewayPipName2) : az.resourceId('Microsoft.Network/publicIPAddresses', gatewayPipName1)
 
-var enableBgp_var = (virtualNetworkGatewayType == 'ExpressRoute') ? bool('false') : enableBgp
-var vpnType_var = (virtualNetworkGatewayType == 'ExpressRoute') ? 'PolicyBased' : vpnType
+var enableBgp_var = virtualNetworkGatewayType == 'ExpressRoute' ? false : enableBgp
+var vpnType_var = virtualNetworkGatewayType == 'ExpressRoute' ? 'PolicyBased' : vpnType
 var bgpSettings = {
   asn: asn
 }
@@ -266,8 +266,8 @@ var vpnClientConfiguration = {
       vpnClientAddressPoolPrefix
     ]
   }
-  vpnClientRootCertificates: empty(clientRootCertData) ? null : vpnClientRootCertificates
-  vpnClientRevokedCertificates: empty(clientRevokedCertThumbprint) ? null : vpmClientRevokedCertificates
+  vpnClientRootCertificates: !empty(clientRootCertData) ? vpnClientRootCertificates : null
+  vpnClientRevokedCertificates: !empty(clientRevokedCertThumbprint) ? vpmClientRevokedCertificates : null
 }
 
 resource pid_cuaId 'Microsoft.Resources/deployments@2021-04-01' = if (!empty(telemetryCuaId)) {
@@ -295,7 +295,9 @@ resource virtualGatewayPublicIP 'Microsoft.Network/publicIPAddresses@2021-02-01'
   properties: {
     publicIPAllocationMethod: gatewayPipAllocationMethod
     publicIPPrefix: !empty(publicIPPrefixResourceId) ? publicIPPrefix : null
-    dnsSettings: length(virtualGatewayPipName_var) == length(domainNameLabel) ? json('{"domainNameLabel": "${domainNameLabel[index]}"}') : null
+    dnsSettings: length(virtualGatewayPipName_var) == length(domainNameLabel) ? {
+      domainNameLabel: domainNameLabel[index]
+    } : null
   }
   zones: contains(zoneRedundantSkus, virtualNetworkGatewaySku) ? publicIpZones : null
 }]
@@ -341,7 +343,7 @@ resource virtualNetworkGateway 'Microsoft.Network/virtualNetworkGateways@2021-02
     }
     gatewayType: virtualNetworkGatewayType
     vpnType: vpnType_var
-    vpnClientConfiguration: empty(vpnClientAddressPoolPrefix) ? null : vpnClientConfiguration
+    vpnClientConfiguration: !empty(vpnClientAddressPoolPrefix) ? vpnClientConfiguration : null
   }
   dependsOn: [
     virtualGatewayPublicIP
@@ -380,13 +382,13 @@ module virtualNetworkGateway_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignm
 }]
 
 @description('The resource group the virtual network gateway was deployed')
-output virtualNetworkGatewayResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name
 
 @description('The name of the virtual network gateway')
-output virtualNetworkGatewayName string = virtualNetworkGateway.name
+output name string = virtualNetworkGateway.name
 
 @description('The resource ID of the virtual network gateway')
-output virtualNetworkGatewayResourceId string = virtualNetworkGateway.id
+output resourceId string = virtualNetworkGateway.id
 
 @description('Shows if the virtual network gateway is configured in active-active mode')
 output activeActive bool = virtualNetworkGateway.properties.activeActive

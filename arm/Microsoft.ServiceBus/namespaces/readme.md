@@ -142,9 +142,9 @@ You can specify multiple user assigned identities to a resource by providing add
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `serviceBusNamespaceName` | string | The name of the deployed service bus namespace |
-| `serviceBusNamespaceResourceGroup` | string | The resource group of the deployed service bus namespace |
-| `serviceBusNamespaceResourceId` | string | The resource ID of the deployed service bus namespace |
+| `name` | string | The name of the deployed service bus namespace |
+| `resourceGroupName` | string | The resource group of the deployed service bus namespace |
+| `resourceId` | string | The resource ID of the deployed service bus namespace |
 | `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
 
 ## Template references
@@ -161,4 +161,4 @@ You can specify multiple user assigned identities to a resource by providing add
 - [Namespaces/Virtualnetworkrules](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ServiceBus/2018-01-01-preview/namespaces/virtualnetworkrules)
 - [Privateendpoints](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/privateEndpoints)
 - [Privateendpoints/Privatednszonegroups](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/privateEndpoints/privateDnsZoneGroups)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2021-04-01-preview/roleAssignments)
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)

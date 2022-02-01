@@ -225,13 +225,13 @@ module rsv_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in rol
 }]
 
 @description('The resource ID of the recovery services vault')
-output recoveryServicesVaultResourceId string = rsv.id
+output resourceId string = rsv.id
 
 @description('The name of the resource group the recovery services vault was created in')
-output recoveryServicesVaultResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name
 
 @description('The Name of the recovery services vault')
-output recoveryServicesVaultName string = rsv.name
+output name string = rsv.name
 
 @description('The principal ID of the system assigned identity.')
 output systemAssignedPrincipalId string = systemAssignedIdentity && contains(rsv.identity, 'principalId') ? rsv.identity.principalId : ''

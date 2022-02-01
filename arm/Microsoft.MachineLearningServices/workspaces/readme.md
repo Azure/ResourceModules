@@ -119,10 +119,10 @@ To use Private Endpoint the following dependencies must be deployed:
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `machineLearningServiceName` | string | The name of the machine learning service |
-| `machineLearningServiceResourceGroup` | string | The resource group the machine learning service was deployed into |
-| `machineLearningServiceResourceId` | string | The resource ID of the machine learning service |
+| `name` | string | The name of the machine learning service |
 | `principalId` | string | The principal ID of the system assigned identity. |
+| `resourceGroupName` | string | The resource group the machine learning service was deployed into |
+| `resourceId` | string | The resource ID of the machine learning service |
 
 ## Template references
 
@@ -130,5 +130,5 @@ To use Private Endpoint the following dependencies must be deployed:
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
 - [Privateendpoints](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/privateEndpoints)
 - [Privateendpoints/Privatednszonegroups](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-02-01/privateEndpoints/privateDnsZoneGroups)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2021-04-01-preview/roleAssignments)
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)
 - [Workspaces](https://docs.microsoft.com/en-us/azure/templates/Microsoft.MachineLearningServices/2021-04-01/workspaces)

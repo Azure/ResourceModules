@@ -192,13 +192,13 @@ module workspace_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) 
 }]
 
 @description('The resource ID of the machine learning service')
-output machineLearningServiceResourceId string = workspace.id
+output resourceId string = workspace.id
 
 @description('The resource group the machine learning service was deployed into')
-output machineLearningServiceResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name
 
 @description('The name of the machine learning service')
-output machineLearningServiceName string = workspace.name
+output name string = workspace.name
 
 @description('The principal ID of the system assigned identity.')
 output principalId string = systemAssignedIdentity ? workspace.identity.principalId : ''

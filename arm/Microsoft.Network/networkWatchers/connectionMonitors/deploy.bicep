@@ -64,10 +64,10 @@ resource connectionMonitor 'Microsoft.Network/networkWatchers/connectionMonitors
 }
 
 @description('The name of the deployed connection monitor')
-output connectionMonitorName string = connectionMonitor.name
+output name string = connectionMonitor.name
 
 @description('The resource ID of the deployed connection monitor')
-output connectionMonitorResourceId string = connectionMonitor.id
+output resourceId string = connectionMonitor.id
 
 @description('The resource group the connection monitor was deployed into')
-output connectionMonitorResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name

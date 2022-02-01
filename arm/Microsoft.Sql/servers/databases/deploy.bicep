@@ -188,10 +188,10 @@ resource database_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021
 }
 
 @description('The name of the deployed database')
-output databaseName string = database.name
+output name string = database.name
 
 @description('The resource ID of the deployed database')
-output databaseResourceId string = database.id
+output resourceId string = database.id
 
 @description('The resourceGroup of the deployed database')
-output databaseResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name

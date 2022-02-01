@@ -39,10 +39,10 @@ resource managementPolicy 'Microsoft.Storage/storageAccounts/managementPolicies@
 }
 
 @description('The resource ID of the deployed management policy')
-output managementPoliciesResourceId string = managementPolicy.name
+output resourceId string = managementPolicy.name
 
 @description('The name of the deployed management policy')
-output managementPoliciesName string = managementPolicy.name
+output name string = managementPolicy.name
 
 @description('The resource group of the deployed management policy')
-output managementPoliciesResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name

@@ -94,10 +94,10 @@ module networkWatcher_flowLogs 'flowLogs/deploy.bicep' = [for (flowLog, index) i
 }]
 
 @description('The name of the deployed network watcher')
-output networkWatcherName string = networkWatcher.name
+output name string = networkWatcher.name
 
 @description('The resource ID of the deployed network watcher')
-output networkWatcherResourceId string = networkWatcher.id
+output resourceId string = networkWatcher.id
 
 @description('The resource group the network watcher was deployed into')
-output networkWatcherResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name

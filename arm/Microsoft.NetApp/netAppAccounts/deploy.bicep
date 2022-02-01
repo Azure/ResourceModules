@@ -110,10 +110,10 @@ module netAppAccount_capacityPools 'capacityPools/deploy.bicep' = [for (capacity
 }]
 
 @description('The name of the NetApp account.')
-output netAppAccountName string = netAppAccount.name
+output name string = netAppAccount.name
 
 @description('The Resource ID of the NetApp account.')
-output netAppAccountResourceId string = netAppAccount.id
+output resourceId string = netAppAccount.id
 
 @description('The name of the Resource Group the NetApp account was created in.')
-output netAppAccountResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name

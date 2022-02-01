@@ -263,13 +263,13 @@ module mongodbDatabases_resource 'mongodbDatabases/deploy.bicep' = [for mongodbD
 }]
 
 @description('The name of the database account.')
-output databaseAccountName string = databaseAccount.name
+output name string = databaseAccount.name
 
 @description('The resource ID of the database account.')
-output databaseAccountResourceId string = databaseAccount.id
+output resourceId string = databaseAccount.id
 
 @description('The name of the resource group the database account was created in.')
-output databaseAccountResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name
 
 @description('The principal ID of the system assigned identity.')
 output systemAssignedPrincipalId string = systemAssignedIdentity && contains(databaseAccount.identity, 'principalId') ? databaseAccount.identity.principalId : ''

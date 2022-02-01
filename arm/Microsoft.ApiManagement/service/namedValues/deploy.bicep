@@ -53,10 +53,10 @@ resource namedValue 'Microsoft.ApiManagement/service/namedValues@2021-08-01' = {
 }
 
 @description('The resource ID of the named value')
-output namedValueResourceId string = namedValue.id
+output resourceId string = namedValue.id
 
 @description('The name of the named value')
-output namedValueName string = namedValue.name
+output name string = namedValue.name
 
 @description('The resource group the named value was deployed into')
-output namedValueResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name

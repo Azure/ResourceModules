@@ -22,9 +22,9 @@ This module deploys an EventHub Namespace EventHubs Consumer Group
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `consumerGroupName` | string | The name of the consumer group. |
-| `consumerGroupResourceGroup` | string | The name of the resource group the consumer group was created in. |
-| `consumerGroupResourceId` | string | The resource ID of the consumer group. |
+| `name` | string | The name of the consumer group. |
+| `resourceGroupName` | string | The name of the resource group the consumer group was created in. |
+| `resourceId` | string | The resource ID of the consumer group. |
 
 ## Template references
 

@@ -42,10 +42,10 @@ resource consumerGroup 'Microsoft.EventHub/namespaces/eventhubs/consumergroups@2
 }
 
 @description('The name of the consumer group.')
-output consumerGroupName string = consumerGroup.name
+output name string = consumerGroup.name
 
 @description('The resource ID of the consumer group.')
-output consumerGroupResourceId string = consumerGroup.id
+output resourceId string = consumerGroup.id
 
 @description('The name of the resource group the consumer group was created in.')
-output consumerGroupResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name

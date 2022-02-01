@@ -105,13 +105,13 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `databrickName` | string | The name of the deployed databricks workspace |
-| `databrickResourceGroup` | string | The resource group of the deployed databricks workspace |
-| `databrickResourceId` | string | The resource ID of the deployed databricks workspace |
+| `name` | string | The name of the deployed databricks workspace |
+| `resourceGroupName` | string | The resource group of the deployed databricks workspace |
+| `resourceId` | string | The resource ID of the deployed databricks workspace |
 
 ## Template references
 
 - [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings)
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2021-04-01-preview/roleAssignments)
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)
 - [Workspaces](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Databricks/2018-04-01/workspaces)

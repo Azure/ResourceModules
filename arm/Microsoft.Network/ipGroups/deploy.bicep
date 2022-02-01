@@ -65,10 +65,10 @@ module ipGroup_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in
 }]
 
 @description('The resource ID of the IP group')
-output ipGroupsResourceId string = ipGroup.id
+output resourceId string = ipGroup.id
 
 @description('The resource group of the IP group was deployed into')
-output ipGroupsResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name
 
 @description('The name of the IP group')
-output ipGroupName string = ipGroup.name
+output name string = ipGroup.name

@@ -5,6 +5,10 @@ parameters:
     displayName: Enable SqlMi dependencies deployment
     type: boolean
     default: false
+  - name: deployVhdDependencies
+    displayName: Enable deployment of a vhd stored in a blob container
+    type: boolean
+    default: false
 
 trigger: none
 
@@ -15,7 +19,7 @@ trigger: none
 #       - main
 #   paths:
 #     include:
-#       - '.azuredevops/pipelineTemplates/module.jobs.deploy.yml'
+#       - '.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml'
 #       - '.azuredevops/platformPipelines/platform.dependencies.yml'
 #       - 'utilities/pipelines/dependencies/**'
 
@@ -36,7 +40,7 @@ stages:
       resourceType: 'Microsoft.Resources/resourceGroups'
       templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
     jobs:
-      - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
+      - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
         parameters:
           deploymentBlocks:
             - path: $(dependencyPath)/$(resourceType)/parameters/validation.parameters.json
@@ -51,12 +55,35 @@ stages:
       resourceType: 'Microsoft.ManagedIdentity/userAssignedIdentities'
       templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
     jobs:
-      - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
+      - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
         parameters:
           deploymentBlocks:
             - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
               templateFilePath: $(templateFilePath)
               displayName: User Assigned Identity
+              jobName: job_deploy_msi
+      - job: job_set_msi_id
+        displayName: Set msi principal ID output
+        dependsOn:
+          - job_deploy_msi
+        pool:
+          ${{ if eq(variables['vmImage'], '') }}:
+            name: $(poolName)
+          ${{ if eq(variables['poolName'], '') }}:
+            vmImage: $(vmImage)
+        variables:
+          deploymentOutput: $[ dependencies.job_deploy_msi.outputs['DeployModule.deploymentOutput'] ]
+        steps:
+          - task: PowerShell@2
+            name: print_msi_prinId
+            inputs:
+              targetType: inline
+              pwsh: true
+              script: |
+                # Write-Verbose $(deploymentOutput) -Verbose
+                $msiPrincipalId = (ConvertFrom-Json '$(deploymentOutput)').principalId
+                Write-Verbose "msiPrincipalId: $msiPrincipalId" -Verbose
+                Write-Output ('##vso[task.setvariable variable={0};isOutput=true]{1}' -f 'msiPrincipalId', $msiPrincipalId)
 
   - stage: deploy_pa
     displayName: Deploy policy assignment
@@ -66,7 +93,7 @@ stages:
       resourceType: 'Microsoft.Authorization/policyAssignments'
       templateFilePath: $(modulesPath)/$(resourceType)/.bicep/nested_policyAssignments_sub.bicep
     jobs:
-      - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
+      - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
         parameters:
           deploymentBlocks:
             - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
@@ -81,7 +108,7 @@ stages:
       resourceType: 'Microsoft.EventHub/namespaces'
       templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
     jobs:
-      - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
+      - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
         parameters:
           deploymentBlocks:
             - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
@@ -96,7 +123,7 @@ stages:
       resourceType: 'Microsoft.OperationalInsights/workspaces'
       templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
     jobs:
-      - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
+      - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
         parameters:
           deploymentBlocks:
             - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
@@ -114,7 +141,7 @@ stages:
       resourceType: 'Microsoft.Storage/storageAccounts'
       templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
     jobs:
-      - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
+      - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
         parameters:
           deploymentBlocks:
             - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
@@ -189,12 +216,129 @@ stages:
       resourceType: 'Microsoft.Compute/galleries'
       templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
     jobs:
-      - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
+      - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
         parameters:
           deploymentBlocks:
             - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
               templateFilePath: $(templateFilePath)
               displayName: Default SIG and SID
+
+  - stage: deploy_imgt
+    displayName: Deploy image template
+    condition: and(succeeded(), eq('${{ parameters.deployVhdDependencies }}', true))
+    dependsOn:
+      - deploy_rolea
+      - deploy_sig
+      - deploy_sa
+    variables:
+      resourceType: 'Microsoft.VirtualMachineImages\imageTemplates'
+      saResourceType: 'Microsoft.Storage\storageAccounts'
+      templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
+    jobs:
+      - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
+        parameters:
+          deploymentBlocks:
+            - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: Image template
+              jobName: job_deploy_imgt
+      - job:
+        displayName: Trigger vhd build and store it to a storage account blob container
+        dependsOn:
+          - job_deploy_imgt
+        pool:
+          ${{ if eq(variables['vmImage'], '') }}:
+            name: $(poolName)
+          ${{ if eq(variables['poolName'], '') }}:
+            vmImage: $(vmImage)
+        variables:
+          deploymentOutput: $[ dependencies.job_deploy_imgt.outputs['DeployModule.deploymentOutput'] ]
+        steps:
+          - task: PowerShell@2
+            displayName: 'Setup agent'
+            inputs:
+              targetType: inline
+              pwsh: true
+              script: |
+                # Load used functions
+                . (Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
+
+                # Define PS modules to install on the runner
+                $Modules = @(
+                    @{ Name = 'Az.ImageBuilder' },
+                    @{ Name = 'Az.Storage' }
+                )
+
+                # Set agent up
+                Set-EnvironmentOnAgent -PSModules $Modules
+          - task: AzurePowerShell@5
+            displayName: Trigger building new image
+            inputs:
+              azureSubscription: $(serviceConnection)
+              ScriptType: 'InlineScript'
+              Inline: |
+                # Retrieving parameters from previous job outputs
+                Write-Verbose "Retrieving parameters from previous job outputs" -Verbose
+                $imageTemplateName = (ConvertFrom-Json '$(deploymentOutput)').name
+                $imageTemplateResourceGroup = (ConvertFrom-Json '$(deploymentOutput)').resourceGroupName
+
+                # Trigger new image creation
+                Write-Verbose "Trigger new image creation with imageTemplateName $imageTemplateName and imageTemplateResourceGroup $imageTemplateResourceGroup" -Verbose
+                Start-AzImageBuilderTemplate -ImageTemplateName $imageTemplateName -ResourceGroupName $imageTemplateResourceGroup
+              azurePowerShellVersion: 'LatestVersion'
+              pwsh: true
+          - task: AzurePowerShell@5
+            displayName: Copy baked vhd to a storage account
+            inputs:
+              azureSubscription: $(serviceConnection)
+              ScriptType: 'InlineScript'
+              Inline: |
+                # Retrieving parameters from previous job outputs and parameter files
+                Write-Verbose "Retrieving parameters from previous job outputs" -Verbose
+                $imageTemplateName = (ConvertFrom-Json '$(deploymentOutput)').name
+                $imageTemplateResourceGroup = (ConvertFrom-Json '$(deploymentOutput)').resourceGroupName
+
+                Write-Verbose "Retrieving parameters from storage account parameter files" -Verbose
+                $parameterFilePath = Join-Path '$(Build.SourcesDirectory)' '$(dependencyPath)' '$(saResourceType)' 'parameters' 'parameters.json'
+                $storageAccountParameters = (ConvertFrom-Json (Get-Content -path $parameterFilePath -Raw)).parameters
+
+                Write-Verbose "Retrieving parameters from image template parameter files" -Verbose
+                $parameterFilePath = Join-Path '$(Build.SourcesDirectory)' '$(dependencyPath)' '$(resourceType)' 'parameters' 'parameters.json'
+                $imageTemplateParameters = (ConvertFrom-Json (Get-Content -path $parameterFilePath -Raw)).parameters
+
+                # Initializing parameters before the blob copy
+                Write-Verbose "Initializing source storage account parameters before the blob copy" -Verbose
+                $imgtRunOutput = Get-AzImageBuilderRunOutput -ImageTemplateName $imageTemplateName -ResourceGroupName $imageTemplateResourceGroup | Where-Object ArtifactUri -NE $null
+                $sourceUri = $imgtRunOutput.ArtifactUri
+                $sourceStorageAccountName = $sourceUri.Split('//')[1].Split('.')[0]
+                $sourceStorageAccount = Get-AzStorageAccount | Where-Object StorageAccountName -EQ $sourceStorageAccountName
+                $sourceStorageAccountContext = $sourceStorageAccount.Context
+                $sourceStorageAccountRGName = $sourceStorageAccount.ResourceGroupName
+                Write-Verbose "Retrieving artifact uri $sourceUri stored in resource group $sourceStorageAccountRGName" -Verbose
+
+                Write-Verbose "Initializing destination storage account parameters before the blob copy" -Verbose
+                $destinationStorageAccountName = $storageAccountParameters.name.value
+                $destinationStorageAccount = Get-AzStorageAccount | Where-Object StorageAccountName -EQ $destinationStorageAccountName
+                $destinationStorageAccountContext = $destinationStorageAccount.Context
+                $destinationContainerName = 'vhds'
+                $destinationBlobName = $imageTemplateParameters.name.value
+                $destinationBlobName = "$destinationBlobName.vhd"
+                Write-Verbose "Planning for destination blob name $destinationBlobName in container $destinationContainerName and storage account $destinationStorageAccountName" -Verbose
+
+                # Copying the vhd to a destination blob container
+                Write-Verbose "Copying the vhd to a destination blob container" -Verbose
+                $resourceActionInputObject = @{
+                    AbsoluteUri   = $sourceUri
+                    Context       = $sourceStorageAccountContext
+                    DestContext   = $destinationStorageAccountContext
+                    DestBlob      = $destinationBlobName
+                    DestContainer = $destinationContainerName
+                    Force         = $true
+                }
+                Start-AzStorageBlobCopy @resourceActionInputObject
+              azPSVersion: 'latest'
+              azurePowerShellVersion: 'LatestVersion'
+              pwsh: true
 
   - stage: deploy_ag
     displayName: Deploy action groups
@@ -204,7 +348,7 @@ stages:
       resourceType: 'Microsoft.Insights/actionGroups'
       templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
     jobs:
-      - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
+      - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
         parameters:
           deploymentBlocks:
             - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
@@ -219,7 +363,7 @@ stages:
       resourceType: 'Microsoft.Network/applicationSecurityGroups'
       templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
     jobs:
-      - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
+      - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
         parameters:
           deploymentBlocks:
             - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
@@ -234,7 +378,7 @@ stages:
       resourceType: 'Microsoft.Network/routeTables'
       templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
     jobs:
-      - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
+      - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
         parameters:
           deploymentBlocks:
             - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
@@ -255,7 +399,7 @@ stages:
       resourceType: 'Microsoft.Network/networkSecurityGroups'
       templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
     jobs:
-      - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
+      - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
         parameters:
           deploymentBlocks:
             - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
@@ -285,7 +429,7 @@ stages:
       resourceType: 'Microsoft.Network\publicIPAddresses'
       templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
     jobs:
-      - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
+      - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
         parameters:
           deploymentBlocks:
             - path: $(dependencyPath)/$(resourceType)/parameters/apgw.parameters.json
@@ -297,6 +441,9 @@ stages:
             - path: $(dependencyPath)/$(resourceType)/parameters/lb.parameters.json
               templateFilePath: $(templateFilePath)
               displayName: Load balancer Public IP
+            - path: $(dependencyPath)/$(resourceType)/parameters/fw.parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: Firewall Public IP
 
   - stage: deploy_appi
     displayName: Deploy application insight
@@ -308,7 +455,7 @@ stages:
       resourceType: 'Microsoft.Insights/components'
       templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
     jobs:
-      - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
+      - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
         parameters:
           deploymentBlocks:
             - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
@@ -325,7 +472,7 @@ stages:
       resourceType: 'Microsoft.Automation/automationAccounts'
       templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
     jobs:
-      - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
+      - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
         parameters:
           deploymentBlocks:
             - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
@@ -342,7 +489,7 @@ stages:
       resourceType: 'Microsoft.DesktopVirtualization/hostpools'
       templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
     jobs:
-      - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
+      - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
         parameters:
           deploymentBlocks:
             - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
@@ -355,16 +502,19 @@ stages:
       - deploy_sa
       - deploy_evh
       - deploy_law
+      - deploy_msi
     variables:
       resourceType: 'Microsoft.RecoveryServices/vaults'
       templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
+      msiPrincipalId: $[ stageDependencies.deploy_msi.job_set_msi_id.outputs['print_msi_prinId.msiPrincipalId'] ]
     jobs:
-      - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
+      - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
         parameters:
           deploymentBlocks:
             - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
               templateFilePath: $(templateFilePath)
               displayName: Default recovery services vault
+              customParameterFileTokens: '[{"Name":"msiPrincipalId","Value":"$(msiPrincipalId)"}]'
 
   - stage: deploy_kv
     displayName: Deploy key vaults
@@ -372,25 +522,30 @@ stages:
       - deploy_sa
       - deploy_evh
       - deploy_law
+      - deploy_msi
     variables:
       resourceType: 'Microsoft.KeyVault/vaults'
       templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
+      msiPrincipalId: $[ stageDependencies.deploy_msi.job_set_msi_id.outputs['print_msi_prinId.msiPrincipalId'] ]
     jobs:
-      - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
+      - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
         parameters:
           deploymentBlocks:
             - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
               templateFilePath: $(templateFilePath)
               displayName: Default Key Vault
               jobName: default_kv
+              customParameterFileTokens: '[{"Name":"msiPrincipalId","Value":"$(msiPrincipalId)"}]'
             - path: $(dependencyPath)/$(resourceType)/parameters/pe.parameters.json
               templateFilePath: $(templateFilePath)
               displayName: Private Endpoint Key Vault
+              customParameterFileTokens: '[{"Name":"msiPrincipalId","Value":"$(msiPrincipalId)"}]'
             - ${{ if eq( parameters.deploySqlMiDependencies, true) }}:
                 - path: $(dependencyPath)/$(resourceType)/parameters/sqlmi.parameters.json
                   templateFilePath: $(templateFilePath)
                   displayName: SQLMI key vault
                   jobName: sqlmi_kv
+                  customParameterFileTokens: '[{"Name":"msiPrincipalId","Value":"$(msiPrincipalId)"}]'
       - job:
         displayName: Set key vault secrets keys and certificates
         dependsOn:
@@ -546,7 +701,7 @@ stages:
       resourceType: 'Microsoft.DesktopVirtualization/applicationgroups'
       templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
     jobs:
-      - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
+      - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
         parameters:
           deploymentBlocks:
             - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
@@ -558,15 +713,17 @@ stages:
     dependsOn:
       - deploy_msi
     variables:
-      resourceType: 'Microsoft.Authorization\roleAssignments'
+      resourceType: 'Microsoft.Authorization/roleAssignments'
       templateFilePath: $(modulesPath)/$(resourceType)/.bicep/nested_rbac_sub.bicep
+      msiPrincipalId: $[ stageDependencies.deploy_msi.job_set_msi_id.outputs['print_msi_prinId.msiPrincipalId'] ]
     jobs:
-      - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
+      - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
         parameters:
           deploymentBlocks:
             - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
               templateFilePath: $(templateFilePath)
               displayName: MSI Role Assignment
+              customParameterFileTokens: '[{"Name":"msiPrincipalId","Value":"$(msiPrincipalId)"}]'
 
   - stage: deploy_vnet
     displayName: Deploy virtual networks
@@ -578,7 +735,7 @@ stages:
       resourceType: 'Microsoft.Network/virtualNetworks'
       templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
     jobs:
-      - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
+      - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
         parameters:
           deploymentBlocks:
             - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
@@ -612,7 +769,7 @@ stages:
       resourceType: 'Microsoft.Network/privateDnsZones'
       templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
     jobs:
-      - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
+      - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
         parameters:
           deploymentBlocks:
             - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
@@ -629,7 +786,7 @@ stages:
       resourceType: 'Microsoft.Compute/virtualMachines'
       templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
     jobs:
-      - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
+      - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
         parameters:
           deploymentBlocks:
             - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json

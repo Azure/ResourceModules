@@ -101,10 +101,10 @@ module connection_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index)
 }]
 
 @description('The resource ID of the connection')
-output connectionResourceId string = connection.id
+output resourceId string = connection.id
 
 @description('The resource group the connection was deployed into')
-output connectionResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name
 
 @description('The name of the connection')
-output connectionName string = connection.name
+output name string = connection.name

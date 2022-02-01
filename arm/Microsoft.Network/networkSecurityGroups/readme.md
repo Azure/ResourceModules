@@ -152,13 +152,13 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `networkSecurityGroupName` | string | The name of the network security group |
-| `networkSecurityGroupResourceGroup` | string | The resource group the network security group was deployed into |
-| `networkSecurityGroupResourceId` | string | The resource ID of the network security group |
+| `name` | string | The name of the network security group |
+| `resourceGroupName` | string | The resource group the network security group was deployed into |
+| `resourceId` | string | The resource ID of the network security group |
 
 ## Template references
 
 - [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings)
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
 - [Networksecuritygroups](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-02-01/networkSecurityGroups)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2021-04-01-preview/roleAssignments)
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)

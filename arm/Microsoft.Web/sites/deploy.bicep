@@ -201,7 +201,7 @@ resource app 'Microsoft.Web/sites@2020-12-01' = {
   tags: tags
   identity: identity
   properties: {
-    serverFarmId: !empty(appServicePlanId) ? appServicePlanExisting.id : appServicePlan.outputs.appServicePlanResourceId
+    serverFarmId: !empty(appServicePlanId) ? appServicePlanExisting.id : appServicePlan.outputs.resourceId
     httpsOnly: httpsOnly
     hostingEnvironmentProfile: !empty(appServiceEnvironmentId) ? {
       id: appServiceEnvironmentId
@@ -217,7 +217,7 @@ module app_appsettings 'config/deploy.bicep' = {
     name: 'appsettings'
     appName: app.name
     storageAccountId: !empty(storageAccountId) ? storageAccountId : ''
-    appInsightId: !empty(appInsightId) ? appInsightId : !empty(appInsightObject) ? appInsight.outputs.appInsightsResourceId : ''
+    appInsightId: !empty(appInsightId) ? appInsightId : !empty(appInsightObject) ? appInsight.outputs.resourceId : ''
     functionsWorkerRuntime: !empty(functionsWorkerRuntime) ? functionsWorkerRuntime : ''
     functionsExtensionVersion: !empty(functionsExtensionVersion) ? functionsExtensionVersion : '~3'
   }
@@ -265,13 +265,13 @@ module app_privateEndpoint '.bicep/nested_privateEndpoint.bicep' = [for (private
 }]
 
 @description('The name of the site.')
-output siteName string = app.name
+output name string = app.name
 
 @description('The resource ID of the site.')
-output siteResourceId string = app.id
+output resourceId string = app.id
 
 @description('The resource group the site was deployed into.')
-output siteResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name
 
 @description('The principal ID of the system assigned identity.')
 output systemAssignedPrincipalId string = systemAssignedIdentity && contains(app.identity, 'principalId') ? app.identity.principalId : ''

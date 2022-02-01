@@ -208,16 +208,16 @@ module registry_privateEndpoints '.bicep/nested_privateEndpoints.bicep' = [for (
 }]
 
 @description('The Name of the Azure container registry.')
-output acrName string = registry.name
+output name string = registry.name
 
 @description('The reference to the Azure container registry.')
-output acrLoginServer string = reference(registry.id, '2019-05-01').loginServer
+output loginServer string = reference(registry.id, '2019-05-01').loginServer
 
 @description('The name of the Azure container registry.')
-output acrResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name
 
 @description('The resource ID of the Azure container registry.')
-output acrResourceId string = registry.id
+output resourceId string = registry.id
 
 @description('The principal ID of the system assigned identity.')
 output systemAssignedPrincipalId string = systemAssignedIdentity && contains(registry.identity, 'principalId') ? registry.identity.principalId : ''

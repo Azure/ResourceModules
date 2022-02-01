@@ -112,10 +112,10 @@ module tableServices_tables 'tables/deploy.bicep' = [for (tableName, index) in t
 }]
 
 @description('The name of the deployed table service')
-output tableServicesName string = tableServices.name
+output name string = tableServices.name
 
 @description('The resource ID of the deployed table service')
-output tableServicesResourceId string = tableServices.id
+output resourceId string = tableServices.id
 
 @description('The resource group of the deployed table service')
-output tableServicesResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name

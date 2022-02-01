@@ -69,9 +69,9 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `networkWatcherName` | string | The name of the deployed network watcher |
-| `networkWatcherResourceGroup` | string | The resource group the network watcher was deployed into |
-| `networkWatcherResourceId` | string | The resource ID of the deployed network watcher |
+| `name` | string | The name of the deployed network watcher |
+| `resourceGroupName` | string | The resource group the network watcher was deployed into |
+| `resourceId` | string | The resource ID of the deployed network watcher |
 
 ## Template references
 
@@ -79,4 +79,4 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 - [Networkwatchers](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-02-01/networkWatchers)
 - [Networkwatchers/Connectionmonitors](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-03-01/networkWatchers/connectionMonitors)
 - [Networkwatchers/Flowlogs](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-03-01/networkWatchers/flowLogs)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2021-04-01-preview/roleAssignments)
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)

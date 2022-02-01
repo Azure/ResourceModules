@@ -135,13 +135,13 @@ workerPools can have two properties workerSize and workerCount:
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `appServiceEnvironmentName` | string | The name of the app service environment |
-| `appServiceEnvironmentResourceGroup` | string | The resource group the app service environment was deployed into |
-| `appServiceEnvironmentResourceId` | string | The resource ID of the app service environment |
+| `name` | string | The name of the app service environment |
+| `resourceGroupName` | string | The resource group the app service environment was deployed into |
+| `resourceId` | string | The resource ID of the app service environment |
 
 ## Template references
 
 - [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings)
 - [Hostingenvironments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Web/2021-02-01/hostingEnvironments)
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2021-04-01-preview/roleAssignments)
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)

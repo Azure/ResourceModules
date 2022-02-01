@@ -177,10 +177,10 @@ module trafficManagerProfile_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignm
 }]
 
 @description('The resource ID of the traffix manager')
-output trafficManagerResourceId string = trafficManagerProfile.id
+output resourceId string = trafficManagerProfile.id
 
 @description('The resource group the traffix manager was deployed into')
-output trafficManagerResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name
 
 @description('The name of the traffix manager was deployed into')
-output trafficManagerName string = trafficManagerProfile.name
+output name string = trafficManagerProfile.name

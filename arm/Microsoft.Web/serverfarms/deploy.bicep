@@ -108,10 +108,10 @@ module appServicePlan_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, in
 }]
 
 @description('The resource group the app service plan was deployed into')
-output appServicePlanResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name
 
 @description('The name of the app service plan')
-output appServicePlanName string = appServicePlan.name
+output name string = appServicePlan.name
 
 @description('The resource ID of the app service plan')
-output appServicePlanResourceId string = appServicePlan.id
+output resourceId string = appServicePlan.id

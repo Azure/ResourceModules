@@ -75,13 +75,13 @@ module appInsights_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index
 }]
 
 @description('The name of the application insights component')
-output appInsightsName string = appInsights.name
+output name string = appInsights.name
 
 @description('The resource ID of the application insights component')
-output appInsightsResourceId string = appInsights.id
+output resourceId string = appInsights.id
 
 @description('The resource group the application insights component was deployed into')
-output appInsightsResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name
 
 @description('The application ID of the application insights component')
-output appInsightsAppId string = appInsights.properties.AppId
+output applicationId string = appInsights.properties.AppId

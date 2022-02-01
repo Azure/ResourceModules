@@ -20,6 +20,9 @@ inputs:
   managementGroupId:
     description: 'The managementGroupId to deploy to'
     required: false
+  customParameterFileTokens:
+    description: 'Additional parameter file token pairs in json format. e.g. [{"Name":"tokenName","Value":"tokenValue"}]'
+    required: false
   removeDeployment:
     description: 'Set "true" to set module up for removal'
     default: 'true'
@@ -84,14 +87,17 @@ runs:
             @{ Name = 'managementGroupId'; Value = '${{ inputs.managementGroupId }}' }
             @{ Name = "tenantId"; Value = '${{ env.ARM_TENANT_ID }}' }
             @{ Name = "deploymentSpId"; Value = '${{ env.DEPLOYMENT_SP_ID }}' }
-        )
+        ) | ForEach-Object { [PSCustomObject]$PSItem }
 
-        $DefaultParameterFileTokens = $DefaultParameterFileTokens | ForEach-Object { [PSCustomObject]$PSItem }
+        # Get additional Custom Parameter File Tokens from input
+        Write-Verbose 'Additional Custom Parameter File Tokens: ${{ inputs.customParameterFileTokens }}' -Verbose
+        $OtherCustomParameterFileTokens = '${{  inputs.customParameterFileTokens }}' | ConvertFrom-Json
 
         # Construct Token Function Input
         $ConvertTokensInputs = @{
             ParameterFilePath                 = '${{ inputs.parameterFilePath }}'
             DefaultParameterFileTokens        = $DefaultParameterFileTokens
+            OtherCustomParameterFileTokens    = $OtherCustomParameterFileTokens
             LocalCustomParameterFileTokens    = $Settings.parameterFileTokens.localTokens.tokens
             TokenPrefix                       = $Settings.parameterFileTokens.tokenPrefix
             TokenSuffix                       = $Settings.parameterFileTokens.tokenSuffix
@@ -199,6 +205,7 @@ runs:
             DeploymentName    = '${{ steps.deploy_step.outputs.deploymentName }}'
             TemplateFilePath  = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.templateFilePath }}'
             ResourceGroupName = '${{ inputs.resourceGroupName }}'
+            ManagementGroupId = '${{ inputs.managementGroupId }}'
             Verbose           = $true
           }
 

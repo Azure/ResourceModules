@@ -94,13 +94,13 @@ module diskEncryptionSet_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment,
 }]
 
 @description('The resource ID of the disk encryption set')
-output diskEncryptionSetResourceId string = diskEncryptionSet.id
+output resourceId string = diskEncryptionSet.id
 
 @description('The name of the disk encryption set')
-output diskEncryptionSetName string = diskEncryptionSet.name
+output name string = diskEncryptionSet.name
 
 @description('The resource group the disk encryption set was deployed into')
-output diskEncryptionResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name
 
 @description('The principal ID of the disk encryption set')
 output systemAssignedPrincipalId string = diskEncryptionSet.identity.principalId

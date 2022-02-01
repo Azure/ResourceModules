@@ -60,10 +60,10 @@ module ddosProtectionPlan_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment
 }]
 
 @description('The resource group the DDOS protection plan was deployed into')
-output ddosProtectionPlanResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name
 
 @description('The resource ID of the DDOS protection plan')
-output ddosProtectionPlanResourceId string = ddosProtectionPlan.id
+output resourceId string = ddosProtectionPlan.id
 
 @description('The name of the DDOS protection plan')
-output ddosProtectionPlanName string = ddosProtectionPlan.name
+output name string = ddosProtectionPlan.name

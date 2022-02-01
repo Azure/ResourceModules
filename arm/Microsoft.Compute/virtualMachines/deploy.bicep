@@ -260,6 +260,9 @@ param additionalUnattendContent array = []
 @description('Optional. Specifies the Windows Remote Management listeners. This enables remote Windows PowerShell. - WinRMConfiguration object.')
 param winRM object = {}
 
+@description('Optional. Any VM configuration profile assignments')
+param configurationProfileAssignments array = []
+
 var vmComputerNameTransformed = vmComputerNamesTransformation == 'uppercase' ? toUpper(name) : (vmComputerNamesTransformation == 'lowercase' ? toLower(name) : name)
 
 var publicKeysFormatted = [for publicKey in publicKeys: {
@@ -393,7 +396,7 @@ resource virtualMachine 'Microsoft.Compute/virtualMachines@2021-07-01' = {
           deleteOption: contains(nicConfiguration, 'deleteOption') ? nicConfiguration.deleteOption : 'Delete'
           primary: index == 0 ? true : false
         }
-        id: resourceId('Microsoft.Network/networkInterfaces', '${name}${nicConfiguration.nicSuffix}')
+        id: az.resourceId('Microsoft.Network/networkInterfaces', '${name}${nicConfiguration.nicSuffix}')
       }]
     }
     diagnosticsProfile: {
@@ -402,8 +405,8 @@ resource virtualMachine 'Microsoft.Compute/virtualMachines@2021-07-01' = {
         storageUri: !empty(bootDiagnosticStorageAccountName) ? 'https://${bootDiagnosticStorageAccountName}${bootDiagnosticStorageAccountUri}' : null
       }
     }
-    availabilitySet: !empty(availabilitySetName) ? json('{"id":"${resourceId('Microsoft.Compute/availabilitySets', availabilitySetName)}"}') : null
-    proximityPlacementGroup: !empty(proximityPlacementGroupName) ? json('{"id":"${resourceId('Microsoft.Compute/proximityPlacementGroups', proximityPlacementGroupName)}"}') : null
+    availabilitySet: !empty(availabilitySetName) ? json('{"id":"${az.resourceId('Microsoft.Compute/availabilitySets', availabilitySetName)}"}') : null
+    proximityPlacementGroup: !empty(proximityPlacementGroupName) ? json('{"id":"${az.resourceId('Microsoft.Compute/proximityPlacementGroups', proximityPlacementGroupName)}"}') : null
     priority: vmPriority
     evictionPolicy: enableEvictionPolicy ? 'Deallocate' : null
     billingProfile: !empty(vmPriority) && !empty(maxPriceForLowPriorityVm) ? json('{"maxPrice":"${maxPriceForLowPriorityVm}"}') : null
@@ -414,6 +417,14 @@ resource virtualMachine 'Microsoft.Compute/virtualMachines@2021-07-01' = {
     virtualMachine_nic
   ]
 }
+
+module vm_configurationProfileAssignment '.bicep/nested_configurationProfileAssignment.bicep' = [for (configurationProfileAssignment, index) in configurationProfileAssignments: {
+  name: '${uniqueString(deployment().name, location)}-VM-ConfigurationProfileAssignment-${index}'
+  params: {
+    virtualMachineName: virtualMachine.name
+    configurationProfile: configurationProfileAssignment
+  }
+}]
 
 module vm_domainJoinExtension 'extensions/deploy.bicep' = if (extensionDomainJoinConfig.enabled) {
   name: '${uniqueString(deployment().name, location)}-VM-DomainJoin'
@@ -448,7 +459,7 @@ module vm_microsoftAntiMalwareExtension 'extensions/deploy.bicep' = if (extensio
 
 resource vm_logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2021-06-01' existing = if (!empty(monitoringWorkspaceId)) {
   name: last(split(monitoringWorkspaceId, '/'))
-  scope: resourceGroup(split(monitoringWorkspaceId, '/')[2], split(monitoringWorkspaceId, '/')[4])
+  scope: az.resourceGroup(split(monitoringWorkspaceId, '/')[2], split(monitoringWorkspaceId, '/')[4])
 }
 
 module vm_microsoftMonitoringAgentExtension 'extensions/deploy.bicep' = if (extensionMonitoringAgentConfig.enabled) {
@@ -555,16 +566,15 @@ module virtualMachine_backup '.bicep/nested_backup.bicep' = if (!empty(backupVau
   params: {
     backupResourceName: '${backupVaultName}/Azure/iaasvmcontainer;iaasvmcontainerv2;${resourceGroup().name};${virtualMachine.name}/vm;iaasvmcontainerv2;${resourceGroup().name};${virtualMachine.name}'
     protectedItemType: 'Microsoft.Compute/virtualMachines'
-    backupPolicyId: resourceId('Microsoft.RecoveryServices/vaults/backupPolicies', backupVaultName, backupPolicyName)
+    backupPolicyId: az.resourceId('Microsoft.RecoveryServices/vaults/backupPolicies', backupVaultName, backupPolicyName)
     sourceResourceId: virtualMachine.id
   }
-  scope: resourceGroup(backupVaultResourceGroup)
+  scope: az.resourceGroup(backupVaultResourceGroup)
   dependsOn: [
     vm_domainJoinExtension
     vm_microsoftMonitoringAgentExtension
     vm_microsoftAntiMalwareExtension
     vm_networkWatcherAgentExtension
-    vm_dependencyAgentExtension
     vm_dependencyAgentExtension
     vm_desiredStateConfigurationExtension
     vm_customScriptExtension
@@ -590,13 +600,13 @@ module virtualMachine_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, in
 }]
 
 @description('The name of the VM.')
-output virtualMachineName string = virtualMachine.name
+output name string = virtualMachine.name
 
 @description('The resource ID of the VM.')
-output virtualMachineResourceId string = virtualMachine.id
+output resourceId string = virtualMachine.id
 
 @description('The name of the resource group the VM was created in.')
-output virtualMachineResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name
 
 @description('The principal ID of the system assigned identity.')
 output systemAssignedPrincipalId string = systemAssignedIdentity && contains(virtualMachine.identity, 'principalId') ? virtualMachine.identity.principalId : ''
