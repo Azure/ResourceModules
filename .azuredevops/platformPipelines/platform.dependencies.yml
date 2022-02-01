@@ -150,6 +150,12 @@ stages:
             - path: $(dependencyPath)/$(resourceType)/parameters/fa.parameters.json
               templateFilePath: $(templateFilePath)
               displayName: FunctionApp storage account
+            - path: $(dependencyPath)/$(resourceType)/parameters/synapse01.parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: Synapse storage account without network ACLs
+            - path: $(dependencyPath)/$(resourceType)/parameters/synapse02.parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: Synapse storage account with network ACLs
       - job:
         displayName: Upload files to storage account
         dependsOn:
@@ -425,6 +431,11 @@ stages:
                   displayName: SQLMI key vault
                   jobName: sqlmi_kv
                   customParameterFileTokens: '[{"Name":"msiPrincipalId","Value":"$(msiPrincipalId)"}]'
+            - path: $(dependencyPath)/$(resourceType)/parameters/cmk.parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: Synapse keyvault for customer managed encryption
+              jobName: cmk_kv
+              customParameterFileTokens: '[{"Name":"msiPrincipalId","Value":"$(msiPrincipalId)"}]'
       - job:
         displayName: Set key vault secrets keys and certificates
         dependsOn:
