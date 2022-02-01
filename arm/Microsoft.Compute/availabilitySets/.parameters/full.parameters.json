@@ -26,5 +26,5 @@
         "proximityPlacementGroupId": {
             "value": "/subscriptions/<<subscriptionId>>/resourceGroups/dependencies-rg/providers/Microsoft.Compute/proximityPlacementGroups/dependency-ppg"
         }
-    } //
+    }
 }
