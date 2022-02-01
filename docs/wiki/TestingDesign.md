@@ -167,6 +167,7 @@ Since also dependency resources are in turn subject to dependencies with each ot
         >**Note**: This resource is deployed and configured only if sqlmi dependency resources are enabled.
       - '_adp-sxx-az-vnet-x-001_': Hosting multiple subnets to be leveraged by [virtual machine], [virtual machine scale set], [service bus], [azure NetApp files], [azure bastion], [private endpoints], [app service environment] and [application gateway] resources.
   1. AVD application group: This resource is leveraged by the [AVD workspace] resource.
+  1. Azure Image Builder template: This resource triggers the build and distribution of a VHD in a storage account. The VHD file is copied to a known storage account blob container and leveraged by [compute disks] and [compute images] resources.
 
 **Fifth level resources**: This group of resources has a dependency on one or more resources in the groups above.
 

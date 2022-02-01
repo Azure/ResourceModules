@@ -38,14 +38,16 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
-resource availabilitySet 'Microsoft.Compute/availabilitySets@2021-04-01' = {
+resource availabilitySet 'Microsoft.Compute/availabilitySets@2021-07-01' = {
   name: name
   location: location
   tags: tags
   properties: {
     platformFaultDomainCount: availabilitySetFaultDomain
     platformUpdateDomainCount: availabilitySetUpdateDomain
-    proximityPlacementGroup: !empty(proximityPlacementGroupId) ? proximityPlacementGroupId : null
+    proximityPlacementGroup: !empty(proximityPlacementGroupId) ? {
+      id: proximityPlacementGroupId
+    } : null
   }
   sku: {
     name: availabilitySetSku
