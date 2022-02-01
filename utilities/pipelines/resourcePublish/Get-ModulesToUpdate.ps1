@@ -344,8 +344,7 @@ function Get-NewModuleVersion {
     $BranchName = Get-GitBranchName -Verbose
 
     Write-Verbose "Current branch: [$BranchName]" -Verbose
-    if (($BranchName -ne 'main') -or ($BranchName -ne 'master') ) {
-        $PreRelease = $BranchName -replace '[^a-zA-Z0-9\.\-_]'
+    if (! ($BranchName -eq 'main' -or $BranchName -eq 'master')) {
         Write-Verbose "PreRelease: [$PreRelease]" -Verbose
         $NewVersion = "$NewVersion-prerelease".ToLower()
     }
