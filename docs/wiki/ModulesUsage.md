@@ -117,26 +117,26 @@ targetScope = 'subscription'
 // ================ //
 
 // RG parameters
-@description('Required. The name of the resource group to deploy')
+@description('Optional. The name of the resource group to deploy')
 param resourceGroupName string = 'validation-rg'
 
 @description('Optional. The location to deploy into')
 param location string = deployment().location
 
 // NSG parameters
-@description('Required. The name of the vnet to deploy')
+@description('Optional. The name of the vnet to deploy')
 param networkSecurityGroupName string = 'BicepRegistryDemoNsg'
 
 // VNET parameters
-@description('Required. The name of the vnet to deploy')
+@description('Optional. The name of the vnet to deploy')
 param vnetName string = 'BicepRegistryDemoVnet'
 
-@description('Required. An Array of 1 or more IP Address Prefixes for the Virtual Network.')
+@description('Optional. An Array of 1 or more IP Address Prefixes for the Virtual Network.')
 param vNetAddressPrefixes array = [
   '10.0.0.0/16'
 ]
 
-@description('Required. An Array of subnets to deploy to the Virual Network.')
+@description('Optional. An Array of subnets to deploy to the Virual Network.')
 param subnets array = [
   {
     name: 'PrimrarySubnet'
@@ -155,7 +155,7 @@ param subnets array = [
 // =========== //
 
 // Resource Group
-module rg 'br:adpsxxazacrx001.azurecr.io/bicep/modules/microsoft.resources.resourcegroups:0.0.23' = {
+module rg 'br/modules:microsoft.resources.resourcegroups:0.0.12' = {
   name: 'registry-rg'
   params: {
     name: resourceGroupName
@@ -164,7 +164,7 @@ module rg 'br:adpsxxazacrx001.azurecr.io/bicep/modules/microsoft.resources.resou
 }
 
 // Network Security Group
-module nsg 'br:adpsxxazacrx001.azurecr.io/bicep/modules/microsoft.network.networksecuritygroups:0.0.30' = {
+module nsg 'br/modules:microsoft.network.networksecuritygroups:0.0.30' = {
   name: 'registry-nsg'
   scope: resourceGroup(resourceGroupName)
   params: {
@@ -176,7 +176,7 @@ module nsg 'br:adpsxxazacrx001.azurecr.io/bicep/modules/microsoft.network.networ
 }
 
 // Virtual Network
-module vnet 'br:adpsxxazacrx001.azurecr.io/bicep/modules/microsoft.network.virtualnetworks:0.0.26' = {
+module vnet 'br/modules:/microsoft.network.virtualnetworks:0.0.26' = {
   name: 'registry-vnet'
   scope: resourceGroup(resourceGroupName)
   params: {
@@ -201,19 +201,19 @@ The following example shows how you could orchestrate a deployment of multiple r
 // ================ //
 
 // Network Security Group parameters
-@description('Required. The name of the vnet to deploy')
+@description('Optional. The name of the vnet to deploy')
 param networkSecurityGroupName string = 'TemplateSpecDemoNsg'
 
 // Virtual Network parameters
-@description('Required. The name of the vnet to deploy')
+@description('Optional. The name of the vnet to deploy')
 param vnetName string = 'TemplateSpecDemoVnet'
 
-@description('Required. An Array of 1 or more IP Address Prefixes for the Virtual Network.')
+@description('Optional. An Array of 1 or more IP Address Prefixes for the Virtual Network.')
 param vNetAddressPrefixes array = [
   '10.0.0.0/16'
 ]
 
-@description('Required. An Array of subnets to deploy to the Virual Network.')
+@description('Optional. An Array of subnets to deploy to the Virual Network.')
 param subnets array = [
   {
     name: 'PrimrarySubnet'
