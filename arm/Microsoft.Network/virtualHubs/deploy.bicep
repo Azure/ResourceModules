@@ -40,6 +40,10 @@ param securityPartnerProviderId string = ''
 @description('Optional. The Security Provider name.')
 param securityProviderName string = ''
 
+@allowed([
+  'Basic'
+  'Standard'
+])
 @description('Optional. The sku of this VirtualHub.')
 param sku string = 'Standard'
 
