@@ -2,7 +2,7 @@
 ## VALIDATION PIPELINE                                 ##
 #########################################################
 ##
-## This pipeline template contains the logic to validate a given modue's ARM template using the provided parameter file(s)
+## This pipeline template contains the logic to validate a given module's ARM template using the provided parameter file(s)
 ##
 ## Enabled levels of validation
 ## - Resource-Group-Level
