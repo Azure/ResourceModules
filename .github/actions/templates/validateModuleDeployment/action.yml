@@ -127,9 +127,9 @@ runs:
         }
 
         $projectSettings = Get-Content -Path 'settings.json' | ConvertFrom-Json
-        if (-not [String]::IsNullOrEmpty($projectSettings.telemetryCuaId)) {
+        if (-not [String]::IsNullOrEmpty($projectSettings.enableDefaultTelemetry)) {
             $functionInput['additionalParameters'] += @{
-                telemetryCuaId = $projectSettings.telemetryCuaId
+                enableDefaultTelemetry = $projectSettings.enableDefaultTelemetry
             }
         }
 
@@ -159,9 +159,9 @@ runs:
         }
 
         $projectSettings = Get-Content -Path 'settings.json' | ConvertFrom-Json
-        if (-not [String]::IsNullOrEmpty($projectSettings.telemetryCuaId)) {
+        if (-not [String]::IsNullOrEmpty($projectSettings.enableDefaultTelemetry)) {
             $functionInput['additionalParameters'] += @{
-                telemetryCuaId = $projectSettings.telemetryCuaId
+                enableDefaultTelemetry = $projectSettings.enableDefaultTelemetry
             }
         }
 

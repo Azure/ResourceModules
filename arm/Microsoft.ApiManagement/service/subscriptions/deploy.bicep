@@ -4,8 +4,8 @@ param allowTracing bool = true
 @description('Required. The name of the of the API Management service.')
 param apiManagementServiceName string
 
-@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
-param telemetryCuaId string = ''
+@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+param enableDefaultTelemetry bool = false
 
 @description('Optional. User (user ID path) for whom subscription is being created in form /users/{userId}')
 param ownerId string = ''
@@ -25,8 +25,8 @@ param state string = ''
 @description('Required. Subscription name.')
 param name string
 
-resource pid_cuaId 'Microsoft.Resources/deployments@2021-04-01' = if (!empty(telemetryCuaId)) {
-  name: 'pid-${telemetryCuaId}'
+resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
+  name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name)}'
   properties: {
     mode: 'Incremental'
     template: {

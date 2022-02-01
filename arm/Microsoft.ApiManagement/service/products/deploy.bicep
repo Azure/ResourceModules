@@ -4,8 +4,8 @@ param apiManagementServiceName string
 @description('Optional. Whether subscription approval is required. If false, new subscriptions will be approved automatically enabling developers to call the products APIs immediately after subscribing. If true, administrators must manually approve the subscription before the developer can any of the products APIs. Can be present only if subscriptionRequired property is present and has a value of false.')
 param approvalRequired bool = false
 
-@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
-param telemetryCuaId string = ''
+@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+param enableDefaultTelemetry bool = false
 
 @description('Optional. Product description. May include HTML formatting tags.')
 param productDescription string = ''
@@ -31,8 +31,8 @@ param subscriptionsLimit int = 1
 @description('Optional. Product terms of use. Developers trying to subscribe to the product will be presented and required to accept these terms before they can complete the subscription process.')
 param terms string = ''
 
-resource pid_cuaId 'Microsoft.Resources/deployments@2021-04-01' = if (!empty(telemetryCuaId)) {
-  name: 'pid-${telemetryCuaId}'
+resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
+  name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name)}'
   properties: {
     mode: 'Incremental'
     template: {

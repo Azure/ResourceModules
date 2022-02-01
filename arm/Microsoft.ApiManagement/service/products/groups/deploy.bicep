@@ -4,14 +4,14 @@ param apiManagementServiceName string
 @description('Required. The name of the of the Product.')
 param productName string
 
-@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
-param telemetryCuaId string = ''
+@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+param enableDefaultTelemetry bool = false
 
 @description('Required. Name of the product group.')
 param name string
 
-resource pid_cuaId 'Microsoft.Resources/deployments@2021-04-01' = if (!empty(telemetryCuaId)) {
-  name: 'pid-${telemetryCuaId}'
+resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
+  name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name)}'
   properties: {
     mode: 'Incremental'
     template: {

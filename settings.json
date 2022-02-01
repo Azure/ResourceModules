@@ -11,6 +11,6 @@
             ]
         }
     },
-    // Remove or set to empty if no telemetry data is to be collected
-    "telemetryCuaId": "47ed15a6-730a-4827-bcb4-0fd963ffbd82"
+    // Remove or disable if no telemetry data is to be collected
+    "enableDefaultTelemetry": true
 }

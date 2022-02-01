@@ -25,8 +25,8 @@ param roleAssignments array = []
 @description('Optional. Tags for all resources.')
 param tags object = {}
 
-@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
-param telemetryCuaId string = ''
+@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+param enableDefaultTelemetry bool = false
 
 module pidName '.bicep/nested_cuaId.bicep' = if (!empty(telemetryCuaId)) {
   name: 'pid-${telemetryCuaId}'

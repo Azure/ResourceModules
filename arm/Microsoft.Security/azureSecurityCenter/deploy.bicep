@@ -6,6 +6,9 @@ param workspaceId string
 @description('Required. All the VMs in this scope will send their security data to the mentioned workspace unless overridden by a setting with more specific scope.')
 param scope string
 
+@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+param enableDefaultTelemetry bool = false
+
 @description('Optional. Describes what kind of security agent provisioning action to take. - On or Off')
 @allowed([
   'On'
@@ -98,6 +101,18 @@ param openSourceRelationalDatabasesTier string = 'Free'
 
 @description('Optional. Security contact data')
 param securityContactProperties object = {}
+
+resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
+  name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name)}'
+  properties: {
+    mode: 'Incremental'
+    template: {
+      '$schema': 'https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#'
+      contentVersion: '1.0.0.0'
+      resources: []
+    }
+  }
+}
 
 resource autoProvisioningSettings 'Microsoft.Security/autoProvisioningSettings@2017-08-01-preview' = {
   name: 'default'
