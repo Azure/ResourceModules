@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "sxx-az-rsv-min-001"
+            "value": "<<namePrefix>>-az-rsv-min-001"
         }
     }
 }

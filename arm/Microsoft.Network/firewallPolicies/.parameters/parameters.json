@@ -3,12 +3,12 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "sxx-az-fwpol-x-002"
+            "value": "<<namePrefix>>-az-fwpol-x-002"
         },
         "ruleCollectionGroups": {
             "value": [
                 {
-                    "name": "sxx-rule-001",
+                    "name": "<<namePrefix>>-rule-001",
                     "priority": 5000,
                     "ruleCollections": [
                         {

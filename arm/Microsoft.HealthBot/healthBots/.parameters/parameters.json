@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "sxx-az-ahb-x-001"
+            "value": "<<namePrefix>>-az-ahb-x-001"
         },
         "roleAssignments": {
             "value": [

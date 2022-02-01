@@ -3,7 +3,7 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "name": {
-      "value": "adp-sxx-az-kv-x-sqlmi"
+      "value": "adp-<<namePrefix>>-az-kv-x-sqlmi"
     },
     "accessPolicies": {
       "value": [

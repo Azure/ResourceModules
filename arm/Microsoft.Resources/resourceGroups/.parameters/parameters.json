@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "sxx-az-rg-x-001"
+            "value": "<<namePrefix>>-az-rg-x-001"
         },
         "tags": {
             "value": {
