@@ -309,7 +309,7 @@ stages:
                 # Load used functions
                 . (Join-Path '$(Build.SourcesDirectory)' 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInParameterFile.ps1')
 
-                # Prepare Replace Tokens in Parameter File
+                # Prepare replace tokens in parameter file
                 $Settings = Get-Content -Path (Join-Path '$(Build.SourcesDirectory)' 'settings.json') | ConvertFrom-Json
                 $ConvertTokensInputs = @{
                     LocalCustomParameterFileTokens    = $Settings.parameterFileTokens.localTokens.tokens
