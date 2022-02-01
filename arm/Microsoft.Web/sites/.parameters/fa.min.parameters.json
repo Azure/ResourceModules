@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "sxx-az-fa-min-001"
+            "value": "<<namePrefix>>-az-fa-min-001"
         },
         "kind": {
             "value": "functionapp"

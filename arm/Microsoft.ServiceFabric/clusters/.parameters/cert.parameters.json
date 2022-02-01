@@ -3,10 +3,10 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "sxx-az-sfc-cert-001"
+            "value": "<<namePrefix>>-az-sfc-cert-001"
         },
         "managementEndpoint": {
-            "value": "https://sxx-az-sfc-cert-001.westeurope.cloudapp.azure.com:19080"
+            "value": "https://<<namePrefix>>-az-sfc-cert-001.westeurope.cloudapp.azure.com:19080"
         },
         "reliabilityLevel": {
             "value": "None"

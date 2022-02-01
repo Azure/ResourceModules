@@ -3,7 +3,7 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "name": {
-      "value": "adp-sxx-az-vnet-x-aks"
+      "value": "adp-<<namePrefix>>-az-vnet-x-aks"
     },
     "addressPrefixes": {
       "value": [
@@ -15,17 +15,17 @@
         {
           "name": "Primary",
           "addressPrefix": "10.5.0.0/18",
-          "networkSecurityGroupName": "adp-sxx-az-nsg-x-001"
+          "networkSecurityGroupName": "adp-<<namePrefix>>-az-nsg-x-001"
         },
         {
           "name": "Secondary",
           "addressPrefix": "10.5.64.0/18",
-          "networkSecurityGroupName": "adp-sxx-az-nsg-x-001"
+          "networkSecurityGroupName": "adp-<<namePrefix>>-az-nsg-x-001"
         },
         {
           "name": "Tertiary",
           "addressPrefix": "10.5.128.0/18",
-          "networkSecurityGroupName": "adp-sxx-az-nsg-x-001"
+          "networkSecurityGroupName": "adp-<<namePrefix>>-az-nsg-x-001"
         }
       ]
     }
