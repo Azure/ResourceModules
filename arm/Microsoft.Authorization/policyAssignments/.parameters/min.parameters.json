@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "sxx-pass-vm-disk"
+            "value": "<<namePrefix>>-pass-vm-disk"
         },
         "policyDefinitionID": {
             "value": "/providers/Microsoft.Authorization/policyDefinitions/06a78e20-9358-41c9-923c-fb736d382a4d"

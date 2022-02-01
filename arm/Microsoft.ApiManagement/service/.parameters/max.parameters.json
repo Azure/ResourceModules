@@ -3,13 +3,13 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "sxx-az-am-max-001"
+            "value": "<<namePrefix>>-az-am-max-001"
         },
         "publisherEmail": {
             "value": "apimgmt-noreply@mail.windowsazure.com"
         },
         "publisherName": {
-            "value": "sxx-az-amorg-x-001"
+            "value": "<<namePrefix>>-az-amorg-x-001"
         },
         "cuaId": {
             "value": "00000-0-000000"
@@ -40,7 +40,7 @@
                     "grantTypes": [
                         "authorizationCode"
                     ],
-                    "clientCredentialsKeyVaultId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-sxx-az-kv-x-001",
+                    "clientCredentialsKeyVaultId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001",
                     "clientIdSecretName": "apimclientid",
                     "clientSecretSecretName": "apimclientsecret",
                     "clientRegistrationEndpoint": "http://localhost",
@@ -145,7 +145,7 @@
         },
         "userAssignedIdentities": {
             "value": {
-                "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001": {}
+                "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001": {}
             }
         },
         "roleAssignments": {
@@ -162,16 +162,16 @@
             "value": 7
         },
         "diagnosticStorageAccountId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adpsxxazsax001"
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
         },
         "diagnosticWorkspaceId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-sxx-az-law-x-001"
+            "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001"
         },
         "diagnosticEventHubAuthorizationRuleId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-sxx-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
         },
         "diagnosticEventHubName": {
-            "value": "adp-sxx-az-evh-x-001"
+            "value": "adp-<<namePrefix>>-az-evh-x-001"
         }
     }
 }
