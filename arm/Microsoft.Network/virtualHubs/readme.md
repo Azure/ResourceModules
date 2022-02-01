@@ -28,7 +28,7 @@ This module deploys a virtual hub.
 | `routeTableRoutes` | array | `[]` |  | Optional. VirtualHub route tables |
 | `securityPartnerProviderId` | string |  |  | Optional. ID of the Security Partner Provider to link to |
 | `securityProviderName` | string |  |  | Optional. The Security Provider name. |
-| `sku` | string | `Standard` |  | Optional. The sku of this VirtualHub. |
+| `sku` | string | `Standard` | `Basic`,`Standard` | Optional. The sku of this VirtualHub. |
 | `tags` | object | `{object}` |  | Optional. Tags of the resource. |
 | `virtualHubRouteTableV2s` | array | `[]` |  | Optional. List of all virtual hub route table v2s associated with this VirtualHub. |
 | `virtualRouterAsn` | int | `-1` |  | Optional. VirtualRouter ASN. |
