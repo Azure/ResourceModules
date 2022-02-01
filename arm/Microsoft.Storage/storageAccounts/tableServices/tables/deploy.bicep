@@ -30,10 +30,10 @@ resource table 'Microsoft.Storage/storageAccounts/tableServices/tables@2021-06-0
 }
 
 @description('The name of the deployed file share service')
-output tableName string = table.name
+output name string = table.name
 
 @description('The resource ID of the deployed file share service')
-output tableResourceId string = table.id
+output resourceId string = table.id
 
 @description('The resource group of the deployed file share service')
-output tableResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name

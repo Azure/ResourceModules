@@ -47,7 +47,7 @@ module resourceGroup_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, ind
 }]
 
 @description('The name of the resource group')
-output resourceGroupName string = resourceGroup.name
+output name string = resourceGroup.name
 
 @description('The resource ID of the resource group')
-output resourceGroupResourceId string = resourceGroup.id
+output resourceId string = resourceGroup.id

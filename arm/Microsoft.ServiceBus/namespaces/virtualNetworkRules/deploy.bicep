@@ -30,10 +30,10 @@ resource virtualNetworkRule 'Microsoft.ServiceBus/namespaces/virtualNetworkRules
 }
 
 @description('The name of the virtual network rule.')
-output virtualNetworkRuleName string = virtualNetworkRule.name
+output name string = virtualNetworkRule.name
 
 @description('The Resource ID of the virtual network rule.')
-output virtualNetworkRuleResourceId string = virtualNetworkRule.id
+output resourceId string = virtualNetworkRule.id
 
 @description('The name of the Resource Group the virtual network rule was created in.')
-output virtualNetworkRuleResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name

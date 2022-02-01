@@ -32,10 +32,10 @@ resource ruleGroup 'Microsoft.Network/firewallPolicies/ruleGroups@2020-04-01' = 
 }
 
 @description('The name of the deployed rule group')
-output ruleGroupName string = ruleGroup.name
+output name string = ruleGroup.name
 
 @description('The resource ID of the deployed rule group')
-output ruleGroupResourceId string = ruleGroup.id
+output resourceId string = ruleGroup.id
 
 @description('The resource group of the deployed rule group')
-output ruleGroupResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name

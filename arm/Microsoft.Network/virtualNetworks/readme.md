@@ -32,7 +32,7 @@ This template deploys a virtual network (vNet).
 | `metricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | Optional. The name of metrics that will be streamed. |
 | `name` | string |  |  | Required. The Virtual Network (vNet) Name. |
 | `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
-| `subnets` | _[subnets](subnets/readme.md)_ array |  |  | Required. An Array of subnets to deploy to the Virual Network. |
+| `subnets` | _[subnets](subnets/readme.md)_ array | `[]` |  | Optional. An Array of subnets to deploy to the Virtual Network. |
 | `tags` | object | `{object}` |  | Optional. Tags of the resource. |
 | `virtualNetworkPeerings` | _[virtualNetworkPeerings](virtualNetworkPeerings/readme.md)_ array | `[]` |  | Optional. Virtual Network Peerings configurations |
 
@@ -111,17 +111,17 @@ The network security group and route table resources must reside in the same res
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
+| `name` | string | The name of the virtual network |
+| `resourceGroupName` | string | The resource group the virtual network was deployed into |
+| `resourceId` | string | The resource ID of the virtual network |
 | `subnetNames` | array | The names of the deployed subnets |
 | `subnetResourceIds` | array | The resource IDs of the deployed subnets |
-| `virtualNetworkName` | string | The name of the virtual network |
-| `virtualNetworkResourceGroup` | string | The resource group the virtual network was deployed into |
-| `virtualNetworkResourceId` | string | The resource ID of the virtual network |
 
 ## Template references
 
 - [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings)
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2021-04-01-preview/roleAssignments)
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)
 - [Virtualnetworks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-03-01/virtualNetworks)
 - [Virtualnetworks/Subnets](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-03-01/virtualNetworks/subnets)
 - [Virtualnetworks/Virtualnetworkpeerings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-02-01/virtualNetworks/virtualNetworkPeerings)

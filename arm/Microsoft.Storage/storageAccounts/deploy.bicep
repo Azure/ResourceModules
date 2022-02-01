@@ -50,14 +50,17 @@ param azureFilesIdentityBasedAuthentication object = {}
 @description('Optional. Virtual Network Identifier used to create a service endpoint.')
 param vNetId string = ''
 
-@description('Optional. Configuration Details for private endpoints.')
+@description('Optional. Configuration Details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible')
 param privateEndpoints array = []
 
 @description('Optional. The Storage Account ManagementPolicies Rules.')
 param managementPolicyRules array = []
 
-@description('Optional. Networks ACLs, this value contains IPs to whitelist and/or Subnet information.')
+@description('Optional. Networks ACLs, this value contains IPs to whitelist and/or Subnet information. For security reasons, it is recommended to set the DefaultAction Deny')
 param networkAcls object = {}
+
+@description('Optional. A boolean indicating whether or not the service applies a secondary layer of encryption with platform managed keys for data at rest. For security reasons, it is recommended to set it to true.')
+param requireInfrastructureEncryption bool = true
 
 @description('Optional. Blob service and containers to deploy')
 param blobServices object = {}
@@ -71,8 +74,8 @@ param queueServices object = {}
 @description('Optional. Table service and tables to create.')
 param tableServices object = {}
 
-@description('Optional. Indicates whether public access is enabled for all blobs or containers in the storage account.')
-param allowBlobPublicAccess bool = true
+@description('Optional. Indicates whether public access is enabled for all blobs or containers in the storage account. For security reasons, it is recommended to set it to false.')
+param allowBlobPublicAccess bool = false
 
 @allowed([
   'TLS1_0'
@@ -166,6 +169,7 @@ var saBaseProperties = {
   minimumTlsVersion: minimumTlsVersion
   networkAcls: (empty(networkAcls) ? null : networkAcls_var)
   allowBlobPublicAccess: allowBlobPublicAccess
+  requireInfrastructureEncryption: requireInfrastructureEncryption
 }
 var saOptIdBasedAuthProperties = {
   azureFilesIdentityBasedAuthentication: azureFilesIdentityBasedAuthentication_var
@@ -318,16 +322,16 @@ module storageAccount_tableServices 'tableServices/deploy.bicep' = if (!empty(ta
 }
 
 @description('The resource ID of the deployed storage account')
-output storageAccountResourceId string = storageAccount.id
+output resourceId string = storageAccount.id
 
 @description('The name of the deployed storage account')
-output storageAccountName string = storageAccount.name
+output name string = storageAccount.name
 
 @description('The resource group of the deployed storage account')
-output storageAccountResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name
 
 @description('The primary blob endpoint reference if blob services are deployed.')
-output storageAccountPrimaryBlobEndpoint string = !empty(blobServices) && contains(blobServices, 'containers') ? reference('Microsoft.Storage/storageAccounts/${storageAccount.name}', '2019-04-01').primaryEndpoints.blob : ''
+output primaryBlobEndpoint string = !empty(blobServices) && contains(blobServices, 'containers') ? reference('Microsoft.Storage/storageAccounts/${storageAccount.name}', '2019-04-01').primaryEndpoints.blob : ''
 
 @description('The principal ID of the system assigned identity.')
 output systemAssignedPrincipalId string = systemAssignedIdentity && contains(storageAccount.identity, 'principalId') ? storageAccount.identity.principalId : ''

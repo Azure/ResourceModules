@@ -65,10 +65,10 @@ resource diagnosticSetting 'Microsoft.Insights/diagnosticSettings@2021-05-01-pre
 }
 
 @description('The name of the diagnostic settings')
-output diagnosticsName string = diagnosticSetting.name
+output name string = diagnosticSetting.name
 
 @description('The resource ID of the diagnostic settings')
-output diagnosticResourceId string = diagnosticSetting.id
+output resourceId string = diagnosticSetting.id
 
 @description('The name of the subscription to deploy into')
 output subscriptionName string = subscription().displayName

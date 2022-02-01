@@ -107,10 +107,10 @@ module queueServices_queues 'queues/deploy.bicep' = [for (queue, index) in queue
 }]
 
 @description('The name of the deployed file share service')
-output queueServicesName string = queueServices.name
+output name string = queueServices.name
 
 @description('The resource ID of the deployed file share service')
-output queueServicesResourceId string = queueServices.id
+output resourceId string = queueServices.id
 
 @description('The resource group of the deployed file share service')
-output queueServicesResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name

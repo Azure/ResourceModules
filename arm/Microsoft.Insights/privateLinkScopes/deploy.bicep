@@ -78,10 +78,10 @@ module privateLinkScope_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, 
 }]
 
 @description('The name of the private link scope')
-output privateLinkScopeName string = privateLinkScope.name
+output name string = privateLinkScope.name
 
 @description('The resource ID of the private link scope')
-output privateLinkScopeResourceId string = privateLinkScope.id
+output resourceId string = privateLinkScope.id
 
 @description('The resource group the private link scope was deployed into')
-output privateLinkScopeResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name

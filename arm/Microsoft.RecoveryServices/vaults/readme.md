@@ -10,7 +10,7 @@ This module deploys a recovery service vault.
 | `Microsoft.Authorization/roleAssignments` | 2021-04-01-preview |
 | `Microsoft.Insights/diagnosticSettings` | 2021-05-01-preview |
 | `Microsoft.RecoveryServices/vaults` | 2021-12-01 |
-| `Microsoft.RecoveryServices/vaults/backupconfig` | 2021-08-01 |
+| `Microsoft.RecoveryServices/vaults/backupconfig` | 2021-10-01 |
 | `Microsoft.RecoveryServices/vaults/backupFabrics/protectionContainers` | 2021-08-01 |
 | `Microsoft.RecoveryServices/vaults/backupPolicies` | 2021-08-01 |
 | `Microsoft.RecoveryServices/vaults/backupstorageconfig` | 2021-08-01 |
@@ -348,18 +348,18 @@ You can specify multiple user assigned identities to a resource by providing add
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `recoveryServicesVaultName` | string | The Name of the recovery services vault |
-| `recoveryServicesVaultResourceGroup` | string | The name of the resource group the recovery services vault was created in |
-| `recoveryServicesVaultResourceId` | string | The resource ID of the recovery services vault |
+| `name` | string | The Name of the recovery services vault |
+| `resourceGroupName` | string | The name of the resource group the recovery services vault was created in |
+| `resourceId` | string | The resource ID of the recovery services vault |
 | `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
 
 ## Template references
 
 - [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings)
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2021-04-01-preview/roleAssignments)
-- [Vaults](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2021-08-01/vaults)
-- [Vaults/Backupconfig](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2021-08-01/vaults/backupconfig)
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)
+- [Vaults](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/vaults)
+- [Vaults/Backupconfig](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2021-10-01/vaults/backupconfig)
 - [Vaults/Backupfabrics/Protectioncontainers](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2021-08-01/vaults/backupFabrics/protectionContainers)
 - [Vaults/Backuppolicies](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2021-08-01/vaults/backupPolicies)
 - [Vaults/Backupstorageconfig](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2021-08-01/vaults/backupstorageconfig)

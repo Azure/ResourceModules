@@ -40,9 +40,9 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `linkedServiceName` | string | The name of the deployed linked service |
-| `linkedServiceResourceGroup` | string | The resource group where the linked service is deployed |
-| `linkedServiceResourceId` | string | The resource ID of the deployed linked service |
+| `name` | string | The name of the deployed linked service |
+| `resourceGroupName` | string | The resource group where the linked service is deployed |
+| `resourceId` | string | The resource ID of the deployed linked service |
 
 ## Template references
 

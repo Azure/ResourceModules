@@ -91,10 +91,10 @@ module key_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in rol
 }]
 
 @description('The name of the key.')
-output keyName string = key.name
+output name string = key.name
 
 @description('The resource ID of the key.')
-output keyResourceId string = key.id
+output resourceId string = key.id
 
 @description('The name of the resource group the key was created in.')
-output keyResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name
