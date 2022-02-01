@@ -33,10 +33,6 @@ param tags object = {}
 @description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
-var proximityPlacementGroup = {
-  id: proximityPlacementGroupId
-}
-
 module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   name: 'pid-${cuaId}'
   params: {}
@@ -49,7 +45,9 @@ resource availabilitySet 'Microsoft.Compute/availabilitySets@2021-07-01' = {
   properties: {
     platformFaultDomainCount: availabilitySetFaultDomain
     platformUpdateDomainCount: availabilitySetUpdateDomain
-    proximityPlacementGroup: !empty(proximityPlacementGroupId) ? proximityPlacementGroup : null
+    proximityPlacementGroup: !empty(proximityPlacementGroupId) ? {
+      id: proximityPlacementGroupId
+    } : null
   }
   sku: {
     name: availabilitySetSku
