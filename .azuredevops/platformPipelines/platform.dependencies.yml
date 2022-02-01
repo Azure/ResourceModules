@@ -810,6 +810,9 @@ stages:
             - path: $(dependencyPath)/$(resourceType)/parameters/5.aks.parameters.json
               templateFilePath: $(templateFilePath)
               displayName: AKS Virtual Network
+            - path: $(dependencyPath)/$(resourceType)/parameters/7.virtualHubConnection.parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: Virtual Hub Connection Virtual Network
             - ${{ if eq( parameters.deploySqlMiDependencies, true) }}:
                 - path: $(dependencyPath)/$(resourceType)/parameters/6.sqlmi.parameters.json
                   templateFilePath: $(templateFilePath)

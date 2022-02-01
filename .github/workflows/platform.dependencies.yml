@@ -1096,6 +1096,7 @@ jobs:
             '3.vnetpeer02.parameters.json',
             '4.azfw.parameters.json',
             '5.aks.parameters.json',
+            '7.virtualHubConnection.parameters.json',
             'parameters.json',
           ]
     steps:
