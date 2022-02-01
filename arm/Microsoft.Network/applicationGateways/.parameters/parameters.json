@@ -20,7 +20,7 @@
             "maxRequestBodySizeInKb": 128,
             "fileUploadLimitInMb": 100
         },
-        "enableHttp2": true,
+        //"enableHttp2": true,
         "backendAddressPools": {
             "value": [
                 {
