@@ -8,7 +8,7 @@ Azure Container Registry is a managed, private Docker registry service based on 
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2017-04-01 |
 | `Microsoft.Authorization/roleAssignments` | 2021-04-01-preview |
-| `Microsoft.ContainerRegistry/registries` | 2020-11-01-preview |
+| `Microsoft.ContainerRegistry/registries` | 2021-09-01 |
 | `Microsoft.Insights/diagnosticSettings` | 2021-05-01-preview |
 | `Microsoft.Network/privateEndpoints` | 2021-02-01 |
 | `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | 2021-02-01 |
@@ -162,5 +162,5 @@ You can specify multiple user assigned identities to a resource by providing add
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
 - [Privateendpoints](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-02-01/privateEndpoints)
 - [Privateendpoints/Privatednszonegroups](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-02-01/privateEndpoints/privateDnsZoneGroups)
-- [Registries](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ContainerRegistry/2020-11-01-preview/registries)
+- [Registries](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ContainerRegistry/2021-09-01/registries)
 - [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)
