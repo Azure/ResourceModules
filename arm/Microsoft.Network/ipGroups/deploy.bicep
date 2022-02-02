@@ -30,7 +30,7 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
-resource ipGroup 'Microsoft.Network/ipGroups@2021-08-01' = {
+resource ipGroup 'Microsoft.Network/ipGroups@2021-05-01' = {
   name: name
   location: location
   tags: tags
