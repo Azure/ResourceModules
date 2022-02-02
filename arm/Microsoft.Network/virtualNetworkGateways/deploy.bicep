@@ -278,7 +278,7 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 // Public IPs
 // ==========
 @batchSize(1)
-resource virtualGatewayPublicIP 'Microsoft.Network/publicIPAddresses@2021-02-01' = [for (virtualGatewayPublicIpName, index) in virtualGatewayPipName_var: {
+resource virtualGatewayPublicIP 'Microsoft.Network/publicIPAddresses@2021-05-01' = [for (virtualGatewayPublicIpName, index) in virtualGatewayPipName_var: {
   name: virtualGatewayPublicIpName
   location: location
   tags: tags
