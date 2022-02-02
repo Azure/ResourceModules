@@ -130,7 +130,7 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
-resource registry 'Microsoft.ContainerRegistry/registries@2020-11-01-preview' = {
+resource registry 'Microsoft.ContainerRegistry/registries@2021-09-01' = {
   name: name
   location: location
   identity: identity

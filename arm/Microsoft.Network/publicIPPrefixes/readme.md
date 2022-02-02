@@ -8,7 +8,7 @@ This template deploys a public IP prefix.
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2017-04-01 |
 | `Microsoft.Authorization/roleAssignments` | 2021-04-01-preview |
-| `Microsoft.Network/publicIPPrefixes` | 2021-02-01 |
+| `Microsoft.Network/publicIPPrefixes` | 2021-05-01 |
 
 ## Parameters
 
@@ -72,5 +72,5 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 ## Template references
 
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
-- [Publicipprefixes](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-02-01/publicIPPrefixes)
+- [Publicipprefixes](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/publicIPPrefixes)
 - [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)
