@@ -108,7 +108,7 @@ module publicIPAddress '.bicep/nested_publicIPAddress.bicep' = if (empty(publicI
   }
 }
 
-resource azureBastion 'Microsoft.Network/bastionHosts@2021-02-01' = {
+resource azureBastion 'Microsoft.Network/bastionHosts@2021-05-01' = {
   name: name
   location: location
   tags: tags
