@@ -32,7 +32,7 @@ function Get-DependencyResourceNameList {
         $parameterFilePaths += Get-ChildItem -Path $parameterFolderPath -Recurse -Filter '*.json'
     }
 
-    # Replace tokens in parameter file
+    # Replace tokens in dependency parameter files
     $Settings = Get-Content -Path (Join-Path $repoRootPath 'settings.json') | ConvertFrom-Json
     foreach ($parameterFilePath in $parameterFilePaths) {
         $ConvertTokensInputs = @{
