@@ -40,6 +40,7 @@ function Get-DependencyResourceNameList {
             LocalCustomParameterFileTokens = $Settings.parameterFileTokens.localTokens.tokens
             TokenPrefix                    = $Settings.parameterFileTokens.tokenPrefix
             TokenSuffix                    = $Settings.parameterFileTokens.tokenSuffix
+            Verbose                        = $false
         }
         $null = Convert-TokensInParameterFile @ConvertTokensInputs
     }
