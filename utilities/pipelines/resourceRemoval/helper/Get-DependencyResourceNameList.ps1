@@ -40,7 +40,7 @@ function Get-DependencyResourceNameList {
             TokenPrefix                    = $Settings.parameterFileTokens.tokenPrefix
             TokenSuffix                    = $Settings.parameterFileTokens.tokenSuffix
         }
-        $null = Convert-TokensInParameterFile @ConvertTokensInputs -Verbose
+        $null = Convert-TokensInParameterFile @ConvertTokensInputs
     }
 
     $dependencyResourceNames = [System.Collections.ArrayList]@()
