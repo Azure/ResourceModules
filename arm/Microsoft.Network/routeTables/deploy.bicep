@@ -32,7 +32,7 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
-resource routeTable 'Microsoft.Network/routeTables@2021-02-01' = {
+resource routeTable 'Microsoft.Network/routeTables@2021-05-01' = {
   name: name
   location: location
   tags: tags
