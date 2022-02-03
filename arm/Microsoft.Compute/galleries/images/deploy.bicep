@@ -132,9 +132,9 @@ resource image 'Microsoft.Compute/galleries/images@2020-09-30' = {
     privacyStatementUri: privacyStatementUri
     releaseNoteUri: releaseNoteUri
     purchasePlan: {
-      product: empty(productName) ? null : productName
-      name: empty(planName) ? null : planName
-      publisher: empty(planPublisherName) ? null : planPublisherName
+      product: !empty(productName) ? productName : null
+      name: !empty(planName) ? planName : null
+      publisher: !empty(planPublisherName) ? planPublisherName : null
     }
     endOfLifeDate: endOfLife
     disallowed: {
