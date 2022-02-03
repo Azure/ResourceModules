@@ -34,10 +34,10 @@ resource disasterRecoveryConfig 'Microsoft.ServiceBus/namespaces/disasterRecover
 }
 
 @description('The name of the disaster recovery config.')
-output disasterRecoveryConfigName string = disasterRecoveryConfig.name
+output name string = disasterRecoveryConfig.name
 
 @description('The Resource ID of the disaster recovery config.')
-output disasterRecoveryConfigResourceId string = disasterRecoveryConfig.id
+output resourceId string = disasterRecoveryConfig.id
 
 @description('The name of the Resource Group the disaster recovery config was created in.')
-output disasterRecoveryConfigResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name

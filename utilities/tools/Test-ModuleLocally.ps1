@@ -25,8 +25,8 @@ Optional. A Switch Parameter that triggers the Validation of the Module Only wit
 .PARAMETER DeployAllModuleParameterFiles
 Optional. A Boolean Parameter that enables directory based search for parameter files and deploys all of them. If not true, it will only deploy the 'parameters.json' file. Default is false.
 
-.PARAMETER GetParameterFileTokens
-Optional. A Boolean Parameter that enables the search for local custom parameter file tokens. Default is true.
+.PARAMETER SkipParameterFileTokens
+Optional. A Switch Parameter that enables you to skip the search for local custom parameter file tokens.
 
 .PARAMETER AdditionalTokens
 Optional. A Hashtable Parameter that contains custom tokens to be replaced in the paramter files for deployment
@@ -34,7 +34,7 @@ Optional. A Hashtable Parameter that contains custom tokens to be replaced in th
 .EXAMPLE
 
 $TestModuleLocallyInput = @{
-    templateFilePath                    = 'Microsoft.Network\applicationSecurityGroups'
+    templateFilePath              = 'Microsoft.Network\applicationSecurityGroups'
     PesterTest                    = $true
     DeploymentTest                = $true
     ValidationTest                = $false
@@ -102,7 +102,7 @@ function Test-ModuleLocally {
         [bool]$DeployAllModuleParameterFiles = $false,
 
         [parameter(Mandatory = $false)]
-        [bool]$GetParameterFileTokens = $true,
+        [switch]$SkipParameterFileTokens,
 
         [parameter(Mandatory = $false)]
         [psobject]$AdditionalTokens
@@ -122,7 +122,6 @@ function Test-ModuleLocally {
         if ($PesterTest) {
             Write-Verbose "Pester Testing Module: $ModuleName"
             try {
-                Import-Module Pester
                 Invoke-Pester -Configuration @{
                     Run        = @{
                         Container = New-PesterContainer -Path (Join-Path $PSScriptRoot '../..' 'arm/.global/global.module.tests.ps1') -Data @{
@@ -156,7 +155,7 @@ function Test-ModuleLocally {
             ) | ForEach-Object { [PSCustomObject]$PSItem }
 
             # Look for Local Custom Parameter File Tokens (Source Control)
-            if ($GetParameterFileTokens) {
+            if (-not $SkipParameterFileTokens) {
                 # Get Settings JSON File
                 $Settings = Get-Content -Path (Join-Path $PSScriptRoot '../..' 'settings.json') | ConvertFrom-Json
                 # Get Custom Parameter File Tokens (Local)

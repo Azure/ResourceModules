@@ -8,7 +8,7 @@ The top-level resource in Azure Container Instances is the container group. A co
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/locks` | 2016-09-01 |
+| `Microsoft.Authorization/locks` | 2017-04-01 |
 | `Microsoft.ContainerInstance/containerGroups` | 2021-03-01 |
 
 ## Parameters
@@ -82,13 +82,13 @@ You can specify multiple user assigned identities to a resource by providing add
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `containerGroupIPv4Address` | string | The IPv4 address of the container group |
-| `containerGroupName` | string | The name of the container group |
-| `containerGroupResourceGroup` | string | The resource group the container group was deployed into |
-| `containerGroupResourceId` | string | The resource ID of the container group |
+| `iPv4Address` | string | The IPv4 address of the container group |
+| `name` | string | The name of the container group |
+| `resourceGroupName` | string | The resource group the container group was deployed into |
+| `resourceId` | string | The resource ID of the container group |
 | `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
 
 ## Template references
 
-- [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
 - [Containergroups](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ContainerInstance/2021-03-01/containerGroups)
+- [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)

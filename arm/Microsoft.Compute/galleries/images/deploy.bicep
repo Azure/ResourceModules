@@ -132,9 +132,9 @@ resource image 'Microsoft.Compute/galleries/images@2020-09-30' = {
     privacyStatementUri: privacyStatementUri
     releaseNoteUri: releaseNoteUri
     purchasePlan: {
-      product: productName
-      name: planName
-      publisher: planPublisherName
+      product: !empty(productName) ? productName : null
+      name: !empty(planName) ? planName : null
+      publisher: !empty(planPublisherName) ? planPublisherName : null
     }
     endOfLifeDate: endOfLife
     disallowed: {
@@ -153,10 +153,10 @@ module galleryImage_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, inde
 }]
 
 @description('The resource group the image was deployed into')
-output imageResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name
 
 @description('The resource ID of the image')
-output imageResourceId string = image.id
+output resourceId string = image.id
 
 @description('The name of the image')
-output imageName string = image.name
+output name string = image.name

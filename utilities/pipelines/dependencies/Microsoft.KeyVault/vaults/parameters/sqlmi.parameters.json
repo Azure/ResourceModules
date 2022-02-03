@@ -3,7 +3,7 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "name": {
-      "value": "adp-sxx-az-kv-x-sqlmi"
+      "value": "adp-<<namePrefix>>-az-kv-x-sqlmi"
     },
     "accessPolicies": {
       "value": [
@@ -26,7 +26,7 @@
         },
         {
           "tenantId": "<<tenantId>>",
-          "objectId": "cf33fea8-b30f-424f-ab73-c48d99e0b222", // adding adp-sxx-az-msi-x-001 to get secrets
+          "objectId": "<<msiPrincipalID>>", // The object ID of the deployed MSI. Replaced by the pipeline
           "permissions": {
             "keys": [
               "Get",

@@ -35,10 +35,10 @@ resource backupShortTermRetentionPolicy 'Microsoft.Sql/managedInstances/database
 }
 
 @description('The name of the deployed database backup short-term retention policy')
-output backupShortTermRetentionPolicyName string = backupShortTermRetentionPolicy.name
+output name string = backupShortTermRetentionPolicy.name
 
 @description('The resource ID of the deployed database backup short-term retention policy')
-output backupShortTermRetentionPolicyResourceId string = backupShortTermRetentionPolicy.id
+output resourceId string = backupShortTermRetentionPolicy.id
 
 @description('The resource group of the deployed database backup short-term retention policy')
-output backupShortTermRetentionPolicyResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name

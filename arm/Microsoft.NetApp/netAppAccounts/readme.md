@@ -6,8 +6,8 @@ This template deploys Azure NetApp Files.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/locks` | 2016-09-01 |
-| `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
+| `Microsoft.Authorization/locks` | 2017-04-01 |
+| `Microsoft.Authorization/roleAssignments` | 2021-04-01-preview |
 | `Microsoft.NetApp/netAppAccounts` | 2021-04-01 |
 | `Microsoft.NetApp/netAppAccounts/capacityPools` | 2021-06-01 |
 | `Microsoft.NetApp/netAppAccounts/capacityPools/volumes` | 2021-06-01 |
@@ -73,14 +73,14 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `netAppAccountName` | string | The name of the NetApp account. |
-| `netAppAccountResourceGroup` | string | The name of the Resource Group the NetApp account was created in. |
-| `netAppAccountResourceId` | string | The Resource ID of the NetApp account. |
+| `name` | string | The name of the NetApp account. |
+| `resourceGroupName` | string | The name of the Resource Group the NetApp account was created in. |
+| `resourceId` | string | The Resource ID of the NetApp account. |
 
 ## Template references
 
-- [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-04-01-preview/roleAssignments)
+- [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
 - [Netappaccounts](https://docs.microsoft.com/en-us/azure/templates/Microsoft.NetApp/2021-04-01/netAppAccounts)
 - [Netappaccounts/Capacitypools](https://docs.microsoft.com/en-us/azure/templates/Microsoft.NetApp/2021-06-01/netAppAccounts/capacityPools)
 - [Netappaccounts/Capacitypools/Volumes](https://docs.microsoft.com/en-us/azure/templates/Microsoft.NetApp/2021-06-01/netAppAccounts/capacityPools/volumes)
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)

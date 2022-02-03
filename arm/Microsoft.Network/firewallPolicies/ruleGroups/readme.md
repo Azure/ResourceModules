@@ -37,10 +37,10 @@ For remaining properties, see [FirewallPolicyRule objects](https://docs.microsof
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `ruleGroupName` | string | The name of the deployed rule group |
-| `ruleGroupResourceGroup` | string | The resource group of the deployed rule group |
-| `ruleGroupResourceId` | string | The resource ID of the deployed rule group |
+| `name` | string | The name of the deployed rule group |
+| `resourceGroupName` | string | The resource group of the deployed rule group |
+| `resourceId` | string | The resource ID of the deployed rule group |
 
 ## Template references
 
-- [Firewallpolicies/Rulegroups](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-04-01/firewallPolicies/ruleGroups)
+- ['firewallPolicies/ruleGroups' Parent Documentation](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/firewallPolicies)

@@ -6,7 +6,7 @@
       "value": "Contributor"
     },
     "principalId": {
-      "value": "cf33fea8-b30f-424f-ab73-c48d99e0b222"
+      "value": "<<msiPrincipalID>>" // The object ID of the deployed MSI. Replaced by the pipeline
     },
     "subscriptionId": {
       "value": "<<subscriptionId>>"

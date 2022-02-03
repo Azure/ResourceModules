@@ -6,7 +6,7 @@ This module deploys a scheduled query rule.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
+| `Microsoft.Authorization/roleAssignments` | 2021-04-01-preview |
 | `Microsoft.Insights/scheduledQueryRules` | 2021-02-01-preview |
 
 ## Parameters
@@ -76,11 +76,11 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `deploymentResourceGroup` | string | The Resource Group of the created query rule. |
-| `queryAlertName` | string | The Name of the created query rule. |
-| `queryAlertResourceId` | string | The resource ID of the created query rule. |
+| `name` | string | The Name of the created query rule. |
+| `resourceGroupName` | string | The Resource Group of the created query rule. |
+| `resourceId` | string | The resource ID of the created query rule. |
 
 ## Template references
 
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-04-01-preview/roleAssignments)
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)
 - [Scheduledqueryrules](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-02-01-preview/scheduledQueryRules)

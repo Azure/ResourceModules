@@ -6,7 +6,7 @@ This module deploys API Management Service Portal Setting.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.ApiManagement/service/portalsettings` | 2019-12-01 |
+| `Microsoft.ApiManagement/service/portalsettings` | 2021-08-01 |
 
 ## Parameters
 
@@ -21,9 +21,9 @@ This module deploys API Management Service Portal Setting.
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `portalSettingsName` | string | The name of the API management service portal setting |
-| `portalSettingsResourceGroup` | string | The resource group the API management service portal setting was deployed into |
-| `portalSettingsResourceId` | string | The resource ID of the API management service portal setting |
+| `name` | string | The name of the API management service portal setting |
+| `resourceGroupName` | string | The resource group the API management service portal setting was deployed into |
+| `resourceId` | string | The resource ID of the API management service portal setting |
 
 ## Template references
 

@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "sxx-deny-keyvault-public-min"
+            "value": "<<namePrefix>>-deny-keyvault-public-min"
         },
         "policyRule": {
             "value": {

@@ -63,13 +63,13 @@ param diagnosticLogsRetentionInDays int = 365
 param diagnosticStorageAccountId string = ''
 
 @description('Optional. Resource ID of a log analytics workspace.')
-param workspaceId string = ''
+param diagnosticWorkspaceId string = ''
 
-@description('Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.')
-param eventHubAuthorizationRuleId string = ''
+@description('Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.')
+param diagnosticEventHubAuthorizationRuleId string = ''
 
-@description('Optional. Name of the event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.')
-param eventHubName string = ''
+@description('Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.')
+param diagnosticEventHubName string = ''
 
 @allowed([
   'CanNotDelete'
@@ -151,13 +151,13 @@ resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2020-08
   }
 }
 
-resource logAnalyticsWorkspace_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId)) || (!empty(eventHubAuthorizationRuleId)) || (!empty(eventHubName))) {
+resource logAnalyticsWorkspace_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(diagnosticWorkspaceId)) || (!empty(diagnosticEventHubAuthorizationRuleId)) || (!empty(diagnosticEventHubName))) {
   name: '${logAnalyticsWorkspace.name}-diagnosticSettings'
   properties: {
     storageAccountId: !empty(diagnosticStorageAccountId) ? diagnosticStorageAccountId : null
-    workspaceId: !empty(workspaceId) ? workspaceId : null
-    eventHubAuthorizationRuleId: !empty(eventHubAuthorizationRuleId) ? eventHubAuthorizationRuleId : null
-    eventHubName: !empty(eventHubName) ? eventHubName : null
+    workspaceId: !empty(diagnosticWorkspaceId) ? diagnosticWorkspaceId : null
+    eventHubAuthorizationRuleId: !empty(diagnosticEventHubAuthorizationRuleId) ? diagnosticEventHubAuthorizationRuleId : null
+    eventHubName: !empty(diagnosticEventHubName) ? diagnosticEventHubName : null
     metrics: diagnosticsMetrics
     logs: diagnosticsLogs
   }
@@ -230,7 +230,7 @@ module logAnalyticsWorkspace_solutions '.bicep/nested_solutions.bicep' = [for (g
   }
 }]
 
-resource logAnalyticsWorkspace_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
+resource logAnalyticsWorkspace_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
   name: '${logAnalyticsWorkspace.name}-${lock}-lock'
   properties: {
     level: lock
@@ -249,13 +249,13 @@ module logAnalyticsWorkspace_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignm
 }]
 
 @description('The resource ID of the deployed log analytics workspace')
-output logAnalyticsResourceId string = logAnalyticsWorkspace.id
+output resourceId string = logAnalyticsWorkspace.id
 
-@description('The resource group where the log analytics will be deployed')
-output logAnalyticsResourceGroup string = resourceGroup().name
+@description('The resource group of the deployed log analytics workspace')
+output resourceGroupName string = resourceGroup().name
 
 @description('The name of the deployed log analytics workspace')
-output logAnalyticsName string = logAnalyticsWorkspace.name
+output name string = logAnalyticsWorkspace.name
 
 @description('The ID associated with the workspace')
 output logAnalyticsWorkspaceId string = logAnalyticsWorkspace.properties.customerId

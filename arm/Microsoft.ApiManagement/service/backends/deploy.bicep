@@ -42,11 +42,11 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
-resource service 'Microsoft.ApiManagement/service@2021-04-01-preview' existing = {
+resource service 'Microsoft.ApiManagement/service@2021-08-01' existing = {
   name: apiManagementServiceName
 }
 
-resource backend 'Microsoft.ApiManagement/service/backends@2020-06-01-preview' = {
+resource backend 'Microsoft.ApiManagement/service/backends@2021-08-01' = {
   name: name
   parent: service
   properties: {
@@ -65,10 +65,10 @@ resource backend 'Microsoft.ApiManagement/service/backends@2020-06-01-preview' =
 }
 
 @description('The resource ID of the API management service backend')
-output backendResourceId string = backend.id
+output resourceId string = backend.id
 
 @description('The name of the API management service backend')
-output backendName string = backend.name
+output name string = backend.name
 
 @description('The resource group the API management service backend was deployed into')
-output backendResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name

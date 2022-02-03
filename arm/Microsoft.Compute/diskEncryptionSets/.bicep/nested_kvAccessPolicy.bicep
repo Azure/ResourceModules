@@ -27,10 +27,10 @@ resource policies 'Microsoft.KeyVault/vaults/accessPolicies@2021-06-01-preview' 
 }
 
 @description('The name of the resource group the access policies assignment was created in.')
-output accessPolicyResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name
 
 @description('The name of the access policies assignment')
-output accessPolicyName string = policies.name
+output name string = policies.name
 
 @description('The resource ID of the access policies assignment')
-output accessPolicyResourceId string = policies.id
+output resourceId string = policies.id

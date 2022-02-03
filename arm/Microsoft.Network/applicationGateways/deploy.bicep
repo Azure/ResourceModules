@@ -86,14 +86,14 @@ param diagnosticLogsRetentionInDays int = 365
 @description('Optional. Resource ID of the diagnostic storage account.')
 param diagnosticStorageAccountId string = ''
 
-@description('Optional. Resource ID of log analytics.')
-param workspaceId string = ''
+@description('Optional. Resource ID of the diagnostic log analytics workspace.')
+param diagnosticWorkspaceId string = ''
 
-@description('Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.')
-param eventHubAuthorizationRuleId string = ''
+@description('Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.')
+param diagnosticEventHubAuthorizationRuleId string = ''
 
-@description('Optional. Name of the event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.')
-param eventHubName string = ''
+@description('Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.')
+param diagnosticEventHubName string = ''
 
 @allowed([
   'CanNotDelete'
@@ -151,8 +151,8 @@ var diagnosticsMetrics = [for metric in metricsToEnable: {
   }
 }]
 
-var applicationGatewayResourceId = resourceId('Microsoft.Network/applicationGateways', name)
-var subnetResourceId = resourceId(vNetSubscriptionId, vNetResourceGroup, 'Microsoft.Network/virtualNetworks/subnets', vNetName, subnetName)
+var applicationGatewayResourceId = az.resourceId('Microsoft.Network/applicationGateways', name)
+var subnetResourceId = az.resourceId(vNetSubscriptionId, vNetResourceGroup, 'Microsoft.Network/virtualNetworks/subnets', vNetName, subnetName)
 var frontendPublicIPConfigurationName = 'public'
 var frontendPrivateIPConfigurationName = 'private'
 var frontendPrivateIPDynamicConfiguration = {
@@ -391,7 +391,7 @@ resource applicationGateway 'Microsoft.Network/applicationGateways@2021-03-01' =
   dependsOn: []
 }
 
-resource applicationGateway_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
+resource applicationGateway_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
   name: '${applicationGateway.name}-${lock}-lock'
   properties: {
     level: lock
@@ -400,15 +400,15 @@ resource applicationGateway_lock 'Microsoft.Authorization/locks@2016-09-01' = if
   scope: applicationGateway
 }
 
-resource applicationGateway_diagnosticSettingName 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = if (!empty(diagnosticStorageAccountId) || !empty(workspaceId) || !empty(eventHubAuthorizationRuleId) || !empty(eventHubName)) {
+resource applicationGateway_diagnosticSettingName 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = if (!empty(diagnosticStorageAccountId) || !empty(diagnosticWorkspaceId) || !empty(diagnosticEventHubAuthorizationRuleId) || !empty(diagnosticEventHubName)) {
   name: '${applicationGateway.name}-diagnosticSettings'
   properties: {
     storageAccountId: empty(diagnosticStorageAccountId) ? null : diagnosticStorageAccountId
-    workspaceId: empty(workspaceId) ? null : workspaceId
-    eventHubAuthorizationRuleId: empty(eventHubAuthorizationRuleId) ? null : eventHubAuthorizationRuleId
-    eventHubName: empty(eventHubName) ? null : eventHubName
-    metrics: empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName) ? null : diagnosticsMetrics
-    logs: empty(diagnosticStorageAccountId) && empty(workspaceId) && empty(eventHubAuthorizationRuleId) && empty(eventHubName) ? null : diagnosticsLogs
+    workspaceId: empty(diagnosticWorkspaceId) ? null : diagnosticWorkspaceId
+    eventHubAuthorizationRuleId: empty(diagnosticEventHubAuthorizationRuleId) ? null : diagnosticEventHubAuthorizationRuleId
+    eventHubName: empty(diagnosticEventHubName) ? null : diagnosticEventHubName
+    metrics: empty(diagnosticStorageAccountId) && empty(diagnosticWorkspaceId) && empty(diagnosticEventHubAuthorizationRuleId) && empty(diagnosticEventHubName) ? null : diagnosticsMetrics
+    logs: empty(diagnosticStorageAccountId) && empty(diagnosticWorkspaceId) && empty(diagnosticEventHubAuthorizationRuleId) && empty(diagnosticEventHubName) ? null : diagnosticsLogs
   }
   scope: applicationGateway
 }
@@ -423,10 +423,10 @@ module applicationGateway_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment
 }]
 
 @description('The name of the application gateway')
-output applicationGatewayName string = applicationGateway.name
+output name string = applicationGateway.name
 
 @description('The resource ID of the application gateway')
-output applicationGatewayResourceId string = applicationGateway.id
+output resourceId string = applicationGateway.id
 
 @description('The resource group the application gateway was deployed into')
-output applicationGatewayResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name

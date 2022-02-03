@@ -78,10 +78,10 @@ module roleDefinition_rg '.bicep/nested_roleDefinitions_rg.bicep' = if (empty(ma
 }
 
 @sys.description('The GUID of the Role Definition')
-output roleDefinitionName string = !empty(managementGroupId) ? roleDefinition_mg.outputs.roleDefinitionName : (!empty(resourceGroupName) ? roleDefinition_rg.outputs.roleDefinitionName : roleDefinition_sub.outputs.roleDefinitionName)
+output name string = !empty(managementGroupId) ? roleDefinition_mg.outputs.name : (!empty(resourceGroupName) ? roleDefinition_rg.outputs.name : roleDefinition_sub.outputs.name)
 
 @sys.description('The resource ID of the Role Definition')
-output roleDefinitionResourceId string = !empty(managementGroupId) ? roleDefinition_mg.outputs.roleDefinitionResourceId : (!empty(resourceGroupName) ? roleDefinition_rg.outputs.roleDefinitionResourceId : roleDefinition_sub.outputs.roleDefinitionResourceId)
+output resourceId string = !empty(managementGroupId) ? roleDefinition_mg.outputs.resourceId : (!empty(resourceGroupName) ? roleDefinition_rg.outputs.resourceId : roleDefinition_sub.outputs.resourceId)
 
 @sys.description('The scope this Role Definition applies to')
-output roleDefinitionScope string = !empty(managementGroupId) ? roleDefinition_mg.outputs.roleDefinitionScope : (!empty(resourceGroupName) ? roleDefinition_rg.outputs.roleDefinitionScope : roleDefinition_sub.outputs.roleDefinitionScope)
+output roleDefinitionScope string = !empty(managementGroupId) ? roleDefinition_mg.outputs.scope : (!empty(resourceGroupName) ? roleDefinition_rg.outputs.scope : roleDefinition_sub.outputs.scope)

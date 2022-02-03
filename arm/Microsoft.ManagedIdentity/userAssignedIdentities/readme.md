@@ -6,8 +6,8 @@ This module deploys a user assigned identity.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/locks` | 2016-09-01 |
-| `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
+| `Microsoft.Authorization/locks` | 2017-04-01 |
+| `Microsoft.Authorization/roleAssignments` | 2021-04-01-preview |
 | `Microsoft.ManagedIdentity/userAssignedIdentities` | 2018-11-30 |
 
 ## Parameters
@@ -64,13 +64,13 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `msiName` | string | The name of the user assigned identity |
-| `msiPrincipalId` | string | The principal ID of the user assigned identity |
-| `msiResourceGroup` | string | The resource group the user assigned identity was deployed into |
-| `msiResourceId` | string | The resource ID of the user assigned identity |
+| `name` | string | The name of the user assigned identity |
+| `principalId` | string | The principal ID of the user assigned identity |
+| `resourceGroupName` | string | The resource group the user assigned identity was deployed into |
+| `resourceId` | string | The resource ID of the user assigned identity |
 
 ## Template references
 
-- [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-04-01-preview/roleAssignments)
+- [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)
 - [Userassignedidentities](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ManagedIdentity/2018-11-30/userAssignedIdentities)

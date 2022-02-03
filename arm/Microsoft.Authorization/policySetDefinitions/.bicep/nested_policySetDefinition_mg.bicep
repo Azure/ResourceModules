@@ -39,7 +39,7 @@ resource policySetDefinition 'Microsoft.Authorization/policySetDefinitions@2021-
 }
 
 @sys.description('Policy Set Definition Name')
-output policySetDefinitionName string = policySetDefinition.name
+output name string = policySetDefinition.name
 
 @sys.description('Policy Set Definition resource ID')
-output policySetDefinitionResourceId string = extensionResourceId(tenantResourceId('Microsoft.Management/managementGroups', managementGroupId), 'Microsoft.Authorization/policySetDefinitions', policySetDefinition.name)
+output resourceId string = extensionResourceId(tenantResourceId('Microsoft.Management/managementGroups', managementGroupId), 'Microsoft.Authorization/policySetDefinitions', policySetDefinition.name)
