@@ -5,14 +5,6 @@ inputs:
   templateFilePath:
     description: 'The path to the template file to publish'
     required: true
-  versioningOption:
-    description: 'The mode to handle the version increments [major|minor|patch].'
-    default: 'patch'
-    required: false
-  customVersion:
-    description: 'Custom version to apply. Used only if higher than latest'
-    default: '0.0.1'
-    required: false
   templateSpecsRgName:
     description: 'Required to publish to template spec. ResourceGroup of the template spec to publish to'
     required: false
@@ -30,6 +22,9 @@ inputs:
     description: 'Required to publish to private bicep registry. ResourceGroup of the container registry to publish to'
     required: false
   bicepRegistryRgName:
+    description: 'Required to publish to private bicep registry. Name of the container registry resource group'
+    required: false
+  bicepRegistryRgLocation:
     description: 'Required to publish to private bicep registry. Location of the container registry resource group'
     required: false
   bicepRegistryDoPublish:
@@ -46,8 +41,15 @@ runs:
         # Load used functions
         . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
 
+        # Define PS modules to install on the runner
+        $Modules = @(
+            @{ Name = 'Az.Accounts' },
+            @{ Name = 'Az.ContainerRegistry' },
+            @{ Name = 'Az.Resources' }
+        )
+
         # Set agent up
-        Set-EnvironmentOnAgent
+        Set-EnvironmentOnAgent -PSModules $Modules
 
     - name: Azure Login
       uses: Azure/login@v1
@@ -57,55 +59,68 @@ runs:
 
     - name: 'Publish module to template specs'
       shell: pwsh
-      # if: ${{ inputs.templateSpecsDoPublish == 'true' }}
+      if: ${{ inputs.templateSpecsDoPublish == 'true' }}
       run: |
-        # Workaround until composite actions support conditions
-        # Once available, remove this if and enable the step condition
-        if('${{ inputs.templateSpecsDoPublish }}' -eq 'true') {
+        # Load used functions
+        . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourcePublish' 'Get-ModulesToUpdate.ps1')
+        . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourcePublish' 'Publish-ModuleToTemplateSpec.ps1')
 
-          # Load used functions
-          . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourcePublish' 'Publish-ModuleToTemplateSpec.ps1')
+        $functionInput = @{
+          TemplateFilePath = Join-Path $env:GITHUB_WORKSPACE "${{ inputs.templateFilePath }}"
+        }
 
+        Write-Verbose "Invoke task with" -Verbose
+        Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
+
+        # Get the modified child resources
+        $ModulesToUpdate = Get-ModulesToUpdate @functionInput -Verbose
+
+        # Publish the modified child resources
+        foreach ($ModuleToUpdate in $ModulesToUpdate) {
           $functionInput = @{
-            templateFilePath         = Join-Path $env:GITHUB_WORKSPACE "${{ inputs.templateFilePath }}"
-            templateSpecsRgName      = '${{ inputs.templateSpecsRgName }}'
-            templateSpecsRgLocation  = '${{ inputs.templateSpecsRgLocation }}'
-            templateSpecsDescription = '${{ inputs.templateSpecsDescription }}'
-            customVersion            = '${{ inputs.customVersion }}'
-            versioningOption         = '${{ inputs.versioningOption }}'
+            TemplateFilePath         = $ModuleToUpdate.TemplateFilePath
+            TemplateSpecsRgName      = '${{ inputs.templateSpecsRgName }}'
+            TemplateSpecsRgLocation  = '${{ inputs.templateSpecsRgLocation }}'
+            TemplateSpecsDescription = '${{ inputs.templateSpecsDescription }}'
+            ModuleVersion            = $ModuleToUpdate.Version
           }
 
           Write-Verbose "Invoke task with" -Verbose
           Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
           Publish-ModuleToTemplateSpec @functionInput -Verbose
-        } else {
-          Write-Output "Pipeline is configured to not publish to TemplateSpecs"
         }
 
     - name: 'Publish module to private bicep registry'
       shell: pwsh
-      # if: ${{ inputs.bicepRegistryDoPublish == 'true' }}
+      if: ${{ inputs.bicepRegistryDoPublish == 'true' }}
       run: |
-        # Workaround until composite actions support conditions
-        # Once available, remove this if and enable the step condition
-        if('${{ inputs.bicepRegistryDoPublish }}' -eq 'true') {
+        # Load used functions
+        . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourcePublish' 'Get-ModulesToUpdate.ps1')
+        . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourcePublish' 'Publish-ModuleToPrivateBicepRegistry.ps1')
 
-          # Load used functions
-          . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourcePublish' 'Publish-ModuleToPrivateBicepRegistry.ps1')
+        $functionInput = @{
+          TemplateFilePath = Join-Path $env:GITHUB_WORKSPACE "${{ inputs.templateFilePath }}"
+        }
 
+        Write-Verbose "Invoke task with" -Verbose
+        Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
+
+        # Get the modified child resources
+        $ModulesToUpdate = Get-ModulesToUpdate @functionInput -Verbose
+
+        # Publish the modified child resources
+        foreach ($ModuleToUpdate in $ModulesToUpdate) {
           $functionInput = @{
-            templateFilePath    = Join-Path $env:GITHUB_WORKSPACE "${{ inputs.templateFilePath }}"
-            bicepRegistryName   = '${{ inputs.bicepRegistryName }}'
-            bicepRegistryRgName = '${{ inputs.bicepRegistryRgName }}'
-            customVersion       = '${{ inputs.customVersion }}'
-            versioningOption    = '${{ inputs.versioningOption }}'
+            TemplateFilePath        = $ModuleToUpdate.TemplateFilePath
+            BicepRegistryName       = '${{ inputs.bicepRegistryName }}'
+            BicepRegistryRgName     = '${{ inputs.bicepRegistryRgName }}'
+            BicepRegistryRgLocation = '${{ inputs.bicepRegistryRgLocation }}'
+            ModuleVersion           = $ModuleToUpdate.Version
           }
 
           Write-Verbose "Invoke task with" -Verbose
           Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
           Publish-ModuleToPrivateBicepRegistry @functionInput -Verbose
-        } else {
-          Write-Output "Pipeline is configured to not publish to TemplateSpecs"
         }

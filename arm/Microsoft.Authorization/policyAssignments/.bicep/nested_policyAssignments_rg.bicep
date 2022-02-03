@@ -75,7 +75,7 @@ resource policyAssignment 'Microsoft.Authorization/policyAssignments@2021-06-01'
   identity: identity_var
 }
 
-resource roleAssignment 'Microsoft.Authorization/roleAssignments@2020-04-01-preview' = [for roleDefinitionId in roleDefinitionIds: if (!empty(roleDefinitionIds) && identity != 'None') {
+resource roleAssignment 'Microsoft.Authorization/roleAssignments@2021-04-01-preview' = [for roleDefinitionId in roleDefinitionIds: if (!empty(roleDefinitionIds) && identity != 'None') {
   name: guid(subscriptionId, resourceGroupName, roleDefinitionId, location, name)
   properties: {
     roleDefinitionId: roleDefinitionId
@@ -84,10 +84,10 @@ resource roleAssignment 'Microsoft.Authorization/roleAssignments@2020-04-01-prev
 }]
 
 @sys.description('Policy Assignment Name')
-output policyAssignmentName string = policyAssignment.name
+output name string = policyAssignment.name
 
 @sys.description('Policy Assignment principal ID')
-output policyAssignmentPrincipalId string = identity == 'SystemAssigned' ? policyAssignment.identity.principalId : ''
+output principalId string = identity == 'SystemAssigned' ? policyAssignment.identity.principalId : ''
 
 @sys.description('Policy Assignment resource ID')
-output policyAssignmentResourceId string = resourceId(subscriptionId, resourceGroupName, 'Microsoft.Authorization/policyAssignments', policyAssignment.name)
+output resourceId string = az.resourceId(subscriptionId, resourceGroupName, 'Microsoft.Authorization/policyAssignments', policyAssignment.name)

@@ -36,10 +36,18 @@ function Get-ResourceIdsAsFormattedObjectList {
 
         switch ($idElements.Count) {
             { $PSItem -eq 5 } {
-                # subscription level resource group
-                $formattedResources += @{
-                    resourceId = $resourceId
-                    type       = 'Microsoft.Resources/resourceGroups'
+                if ($idElements[3] -eq 'managementGroups') {
+                    # management-group level management group (e.g. '/providers/Microsoft.Management/managementGroups/testMG')
+                    $formattedResources += @{
+                        resourceId = $resourceId
+                        type       = $idElements[2, 3] -join '/'
+                    }
+                } else {
+                    # subscription level resource group (e.g. '/subscriptions/<subId>/resourceGroups/myRG')
+                    $formattedResources += @{
+                        resourceId = $resourceId
+                        type       = 'Microsoft.Resources/resourceGroups'
+                    }
                 }
                 break
             }

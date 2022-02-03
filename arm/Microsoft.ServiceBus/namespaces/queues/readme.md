@@ -6,8 +6,8 @@ This module deploys a queue for a service bus namespace.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/locks` | 2016-09-01 |
-| `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
+| `Microsoft.Authorization/locks` | 2017-04-01 |
+| `Microsoft.Authorization/roleAssignments` | 2021-04-01-preview |
 | `Microsoft.ServiceBus/namespaces/queues` | 2021-06-01-preview |
 | `Microsoft.ServiceBus/namespaces/queues/authorizationRules` | 2017-04-01 |
 
@@ -60,13 +60,13 @@ This module deploys a queue for a service bus namespace.
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `queueName` | string | The name of the deployed queue |
-| `queueResourceGroup` | string | The resource group of the deployed queue |
-| `queueResourceId` | string | The resource ID of the deployed queue |
+| `name` | string | The name of the deployed queue |
+| `resourceGroupName` | string | The resource group of the deployed queue |
+| `resourceId` | string | The resource ID of the deployed queue |
 
 ## Template references
 
-- [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
+- [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
 - [Namespaces/Queues](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ServiceBus/2021-06-01-preview/namespaces/queues)
 - [Namespaces/Queues/Authorizationrules](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ServiceBus/2017-04-01/namespaces/queues/authorizationRules)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-04-01-preview/roleAssignments)
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)

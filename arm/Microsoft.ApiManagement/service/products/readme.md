@@ -6,9 +6,9 @@ This module deploys API Management Service Products.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.ApiManagement/service/products` | 2020-06-01-preview |
-| `Microsoft.ApiManagement/service/products/apis` | 2020-06-01-preview |
-| `Microsoft.ApiManagement/service/products/groups` | 2020-06-01-preview |
+| `Microsoft.ApiManagement/service/products` | 2021-08-01 |
+| `Microsoft.ApiManagement/service/products/apis` | 2021-08-01 |
+| `Microsoft.ApiManagement/service/products/groups` | 2021-08-01 |
 
 ### Resource dependency
 
@@ -36,14 +36,14 @@ The following resources are required to be able to deploy this resource.
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `productApisResourceIds` | array | The Resources IDs of the API management service product APIs |
-| `productGroupsResourceIds` | array | The Resources IDs of the API management service product groups |
-| `productName` | string | The name of the API management service product |
-| `productResourceGroup` | string | The resource group the API management service product was deployed into |
-| `productResourceId` | string | The resource ID of the API management service product |
+| `apiResourceIds` | array | The Resources IDs of the API management service product APIs |
+| `groupResourceIds` | array | The Resources IDs of the API management service product groups |
+| `name` | string | The name of the API management service product |
+| `resourceGroupName` | string | The resource group the API management service product was deployed into |
+| `resourceId` | string | The resource ID of the API management service product |
 
 ## Template references
 
-- [Service/Products](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2020-06-01-preview/service/products)
-- [Service/Products/Apis](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2020-06-01-preview/service/products/apis)
-- [Service/Products/Groups](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2020-06-01-preview/service/products/groups)
+- [Service/Products](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2021-08-01/service/products)
+- [Service/Products/Apis](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2021-08-01/service/products/apis)
+- [Service/Products/Groups](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2021-08-01/service/products/groups)

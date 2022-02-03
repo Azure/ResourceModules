@@ -6,9 +6,9 @@ param skuTier string
 param location string
 param diagnosticStorageAccountId string
 param diagnosticLogsRetentionInDays int
-param workspaceId string
-param eventHubAuthorizationRuleId string
-param eventHubName string
+param diagnosticWorkspaceId string
+param diagnosticEventHubAuthorizationRuleId string
+param diagnosticEventHubName string
 param metricsToEnable array
 param logsToEnable array
 param lock string
@@ -34,11 +34,7 @@ var diagnosticsMetrics = [for metric in metricsToEnable: {
   }
 }]
 
-var publicIPPrefix = {
-  id: publicIPPrefixId
-}
-
-resource publicIpAddress 'Microsoft.Network/publicIPAddresses@2021-03-01' = {
+resource publicIpAddress 'Microsoft.Network/publicIPAddresses@2021-05-01' = {
   name: publicIPAddressName
   location: location
   tags: tags
@@ -48,7 +44,9 @@ resource publicIpAddress 'Microsoft.Network/publicIPAddresses@2021-03-01' = {
   }
   properties: {
     publicIPAllocationMethod: publicIPAllocationMethod
-    publicIPPrefix: ((!empty(publicIPPrefixId)) ? publicIPPrefix : null)
+    publicIPPrefix: !empty(publicIPPrefixId) ? {
+      id: publicIPPrefixId
+    } : null
   }
 }
 
@@ -61,13 +59,13 @@ resource publicIpAddress_lock 'Microsoft.Authorization/locks@2017-04-01' = if (l
   scope: publicIpAddress
 }
 
-resource publicIpAddress_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId)) || (!empty(eventHubAuthorizationRuleId)) || (!empty(eventHubName))) {
+resource publicIpAddress_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(diagnosticWorkspaceId)) || (!empty(diagnosticEventHubAuthorizationRuleId)) || (!empty(diagnosticEventHubName))) {
   name: '${publicIpAddress.name}-diagnosticSettings'
   properties: {
     storageAccountId: !empty(diagnosticStorageAccountId) ? diagnosticStorageAccountId : null
-    workspaceId: !empty(workspaceId) ? workspaceId : null
-    eventHubAuthorizationRuleId: !empty(eventHubAuthorizationRuleId) ? eventHubAuthorizationRuleId : null
-    eventHubName: !empty(eventHubName) ? eventHubName : null
+    workspaceId: !empty(diagnosticWorkspaceId) ? diagnosticWorkspaceId : null
+    eventHubAuthorizationRuleId: !empty(diagnosticEventHubAuthorizationRuleId) ? diagnosticEventHubAuthorizationRuleId : null
+    eventHubName: !empty(diagnosticEventHubName) ? diagnosticEventHubName : null
     metrics: diagnosticsMetrics
     logs: diagnosticsLogs
   }
@@ -83,9 +81,11 @@ module publicIpAddress_rbac 'nested_networkInterface_publicIPAddress_rbac.bicep'
   }
 }]
 
-@description('The name of the Resource Group the public IP address was deployed.')
-output publicIPAddressResourceGroup string = resourceGroup().name
+@description('The name of the resource group the public IP address was deployed.')
+output resourceGroupName string = resourceGroup().name
+
 @description('The name of the public IP address.')
-output publicIPAddressName string = publicIpAddress.name
-@description('The Resource ID of the public IP address.')
-output publicIPAddressResourceId string = publicIpAddress.id
+output name string = publicIpAddress.name
+
+@description('The resource ID of the public IP address.')
+output resourceId string = publicIpAddress.id

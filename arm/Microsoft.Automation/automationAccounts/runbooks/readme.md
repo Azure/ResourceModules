@@ -46,9 +46,9 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `runbookName` | string | The name of the deployed runbook |
-| `runbookResourceGroup` | string | The resource group of the deployed runbook |
-| `runbookResourceId` | string | The resource ID of the deployed runbook |
+| `name` | string | The name of the deployed runbook |
+| `resourceGroupName` | string | The resource group of the deployed runbook |
+| `resourceId` | string | The resource ID of the deployed runbook |
 
 ## Template references
 

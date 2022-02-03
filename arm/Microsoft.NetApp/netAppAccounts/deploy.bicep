@@ -68,7 +68,7 @@ resource netAppAccount 'Microsoft.NetApp/netAppAccounts@2021-04-01' = {
   }
 }
 
-resource netAppAccount_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
+resource netAppAccount_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
   name: '${netAppAccount.name}-${lock}-lock'
   properties: {
     level: lock
@@ -103,10 +103,10 @@ module netAppAccount_capacityPools 'capacityPools/deploy.bicep' = [for (capacity
 }]
 
 @description('The name of the NetApp account.')
-output netAppAccountName string = netAppAccount.name
+output name string = netAppAccount.name
 
 @description('The Resource ID of the NetApp account.')
-output netAppAccountResourceId string = netAppAccount.id
+output resourceId string = netAppAccount.id
 
 @description('The name of the Resource Group the NetApp account was created in.')
-output netAppAccountResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name

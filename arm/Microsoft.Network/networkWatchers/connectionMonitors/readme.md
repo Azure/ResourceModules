@@ -43,9 +43,9 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `connectionMonitorName` | string | The name of the deployed connection monitor |
-| `connectionMonitorResourceGroup` | string | The resource group the connection monitor was deployed into |
-| `connectionMonitorResourceId` | string | The resource ID of the deployed connection monitor |
+| `name` | string | The name of the deployed connection monitor |
+| `resourceGroupName` | string | The resource group the connection monitor was deployed into |
+| `resourceId` | string | The resource ID of the deployed connection monitor |
 
 ## Template references
 

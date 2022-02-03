@@ -20,21 +20,21 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
-resource service 'Microsoft.ApiManagement/service@2021-04-01-preview' existing = {
+resource service 'Microsoft.ApiManagement/service@2021-08-01' existing = {
   name: apiManagementServiceName
 }
 
-resource portalSetting 'Microsoft.ApiManagement/service/portalsettings@2019-12-01' = if (!empty(properties)) {
+resource portalSetting 'Microsoft.ApiManagement/service/portalsettings@2021-08-01' = if (!empty(properties)) {
   name: any(name)
   parent: service
   properties: properties
 }
 
 @description('The resource ID of the API management service portal setting')
-output portalSettingsResourceId string = portalSetting.id
+output resourceId string = portalSetting.id
 
 @description('The name of the API management service portal setting')
-output portalSettingsName string = portalSetting.name
+output name string = portalSetting.name
 
 @description('The resource group the API management service portal setting was deployed into')
-output portalSettingsResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name

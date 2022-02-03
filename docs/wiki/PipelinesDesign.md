@@ -34,6 +34,7 @@ This section gives you an overview of the design principals the pipelines follow
     - [Component: Variable file](#azure-devops-component-variable-file)
     - [Component: Pipeline templates](#azure-devops-component-pipeline-templates)
     - [Component: Pipelines](#azure-devops-component-pipelines)
+
 ---
 
 # Module Pipelines
@@ -47,6 +48,7 @@ This section will give you an overview of the different phases and shared logic 
 ## Module pipeline inputs
 
 Note that the pipeline comes with 4 runtime parameters you can provide when you trigger it:
+
 - `'Branch' dropdown`: A dropdown to select the branch to run the pipeline from
 - `'Remove module' switch`: Can be set to 'true' or 'false' and controls whether the test-deployed resources are removed after testing
 - `Versioning mode`: This option allows you to control the publishing behavior. Depending on the mode you select, a different part of the version is incremented (for example [major|minor|patch]), if no custom version is provided. For further information of how the input is processed see [publishing](#publish).
@@ -93,28 +95,66 @@ Note that, for the deployments we have to account for certain [prerequisites](#p
 
 #### Removal
 
-The removal phase is strongly coupled with the previous deployment phase. Fundamentally, we want to remove any test-deployed resource after its test concluded. If we would not, we would generate unnecessary costs and may temper with any subsequent test. Some resources may require a dedicated logic to be removed. This logic should be stored alongside the generally utilized removal script in the `.utilities/pipelines/resourceRemoval` folder and be referenced by the `Initialize-DeploymentRemoval.ps1` script that orchestrates the removal.
+The removal phase takes care of removing all resources deployed as part of the previous deployment phase. The reason is twofold: keeping validation subscriptions costs down and allow deployments from scratch at every run.
 
-Most of the removal scripts rely on the deployment name used during the preceding deployment step. Based on this name in combination with the template file path, the removal script find the corresponding deployment and removes all contained resources.
+For additional details on how removal works please refer to the dedicated [Removal action](PipelineRemovalAction) page.
 
 ### Publish
 
-The publish phase concludes each module's pipeline. If all previous tests succeeded (i.e. no phase failed) and the pipeline was executed in the [main\|master] branch, a new module version is published to all configured target locations. Currently we support
+The publish phase concludes each module's pipeline. If all previous tests succeeded (i.e. no phase failed) and the pipeline was executed in the `main` or `master` branch, a new module version is published to all configured target locations. Currently we support the following target locations:
+
 - _template specs_
 - _private bicep registry_
+- _universal artifacts_ (_Azure DevOps_ only)
 
-By the time of this writing, the publishing experience works as follows:
-1. A user can optionally specific a specific version in the module's pipeline file, or during runtime. If the user does not, a default version is used
-1. No matter what publishing location we enabled, the corresponding logic will
-   1. Fetch the latest version of this module in the target location (if available)
-   1. Compare it with any specified custom version the user optionally provided
-      - If the custom version is higher, it is used going forward
-      - If it is lower, the fallback mechanism will select a new version based on some default behavior (e.g. increment to the next patch version)
-   1. The identified new version is then used to publish the module to the target location in question
+Besides the execution of a publish, there is also the possibility to set the switch `Publish prerelease module`. This switch makes it possible to publish a pre-release version in every workflow run that is not based on main or master.
+
+> **Note**<br>
+> The `version` used for publishing any artifact will be the same in all three target locations which reduces the maintenance effort.
+
+The publishing works as follows:
+
+1. The script `utilities/pipelines/resourcePublish/Get-ModulesToUpdate.ps1` gets all changed module files including child modules and handles the logic of propagating the appropriate module version to be used:
+   1. The major (`x.0`) and minor (`0.x`) version are set based on the file `version.json` in the module folder.
+   1. The patch (`0.0.x`) version is calculated based on the number of commits on the `HEAD` ref. This will cause the patch version to never reset to 0 with major and/or minor increment, as specified for [semver](https://semver.org/).
+
+**Example scenario**
+
+Lets look at an example run where we would do a patch change on the `fileShares` module:
+1. A new branch is created for further development of the `fileShare` module. Let's assume the new branch started from commit `500` on the default branch and the `version.json` of the `fileShare` module contains major and minor `0.3`.
+2. Bug-fixes, documentation, and security updates are added to the `fileShare` module by the author. The `version.json` file is not changed in either the child or parent module folders.
+3. The author runs a manual workflow based on their development branch, with the 'publish pre-release' option enabled.
+4. A prerelease run of publishing triggers after test and validation of the module.
+   - For the child and parent modules, the module version's major and minor version is read from the `version.json` file in the module folder respectively. Being unchanged, it still contains the version `0.3`.
+   - The patch is calculated based on the total number of commits in history on the branch (independent on the module). The new branch started from commit `500` on the default branch and 1 commit has been pushed, so the total number of commits on the new branch is `501`.
+   - As the pipeline is not running based on the 'default branch', a prerelease segment (`-prerelease`) is added to the version.
+   - The version results in being `0.3.501-prerelease`. The child and parent modules may have different major and minor versions, but the patch version will be the same in this case. Other unmodified child modules of `storageAccount` will not be republished and remain with the existing version.
+5. Sequential commits on the branch and runs of the module pipeline, with the 'publish pre-release' option enabled results in the following versions being published:
+   - `0.3.502-prerelease`
+   - `0.3.503-prerelease`
+   - ...
+   - `0.3.506-prerelease`
+6. When the branch is merged to the default branch, the only thing that changes is the patch version and the removal of the `-prerelease` segment.
+   - The number of commits will at this point be calculated based on the number of commits on the default branch.
+   - Assuming the development branch started from commit 500 on the default branch, and the author added 6 commits on the development branch, the prerelease versions will reach `0.3.506-prerelease`.
+   - Meanwhile, there can be changes (let's say 2 squashed PR merges) on the default branch that is pushing its number of commits in history further.
+   - If the PR for the changes to `fileShare` is squash merged as commit number 503, the patch version on the child and parent module is then `503`, resulting in a version `0.3.503` being published.
+
+```
+                  \         \
+C499 -> C500 ---> C501 ---> C502 ---> C503 (503)
+        \                            /
+         D1 --> D2 --> D3 ... --> D6
+        (501)  (502)  (503)      (506)
+```
+`Cx` - Commits on main,
+`Dx` - Commits on development branch,
+`(x)` - Calculated patch version
 
 ## Shared concepts
 
 There are several concepts that are shared among the phases. Most notably
+
 - [Prerequisites](#prerequisites)
 - [Pipeline secrets](#pipeline-serets)
 - [Pipeline variables](#pipeline-variables)
@@ -123,6 +163,7 @@ There are several concepts that are shared among the phases. Most notably
 ### Prerequisites
 
 For both the [simulated deployment validation](#simulated-deployment-validation) as well as the [test deployment](#test-deployment) we should account for the following prerequisites:
+
 - A _"Sandbox"_ or _"Engineering"_ **validation subscription** (in Azure) has to be used to test if the modules (or other components) are deployable. This subscription must not have connectivity to any on-premises or other Azure networks.
 - An Azure Active Directory [service principal](https://docs.microsoft.com/en-us/azure/active-directory/develop/app-objects-and-service-principals#service-principal-object) (AAD SPN) to authenticate to the validation subscription and run the test deployments of the modules.
 
@@ -143,13 +184,15 @@ The location where to set these secrets up depends on the DevOps platform you us
 
 The primary pipeline variable file hosts the fundamental pipeline configuration and is stored in a different location, based on the [DevOps platform](#devops-tool-specific-considerations). In here you will find and can configure information such as:
 
-#### ***General***
+#### **_General_**
+
 | Variable Name | Example Value | Description |
 | - | - | - |
 | `defaultLocation` | "WestEurope" | The default location to deploy resources to. If no location is specified in the deploying parameter file, this location is used |
 | `resourceGroupName` | "validation-rg" | The resource group to deploy all resources for validation to |
 
-#### ***Template-specs specific (publishing)***
+#### **_Template-specs specific (publishing)_**
+
 | Variable Name | Example Value | Description |
 | - | - | - |
 | `templateSpecsRGName` | "artifacts-rg" | The resource group to host the created template-specs |
@@ -157,11 +200,13 @@ The primary pipeline variable file hosts the fundamental pipeline configuration 
 | `templateSpecsDescription` | "This is a module from the [Common Azure Resource Modules Library]" | A description to add to the published template specs |
 | `templateSpecsDoPublish` | "true" | A central switch to enable/disable publishing to template-specs |
 
-#### ***Private bicep registry specific (publishing)***
+#### **_Private bicep registry specific (publishing)_**
+
 | Variable Name | Example Value | Description |
 | - | - | - |
 | `bicepRegistryName` | "adpsxxazacrx001" | The container registry to publish bicep templates to |
 | `bicepRegistryRGName` | "artifacts-rg" | The resource group of the container registry to publish bicep templates to. Is used to create a new container registry if not yet existing |
+| `bicepRegistryRGName` | "artifacts-rg" | The location of the resource group of the container registry to publish bicep templates to. Is used to create a new resource group if not yet existing |
 | `bicepRegistryDoPublish` | "true" | A central switch to enable/disable publishing to the private bicep registry |
 
 ### Tokens Replacement
@@ -191,6 +236,7 @@ As the modules we test often times have dependencies to other services, we creat
 ### Dependencies pipeline inputs
 
 Note that the pipeline comes with 2 runtime parameters you can provide when you trigger it:
+
 - `'Branch' dropdown`: A dropdown to select the branch to run the pipeline from
 - `'Enable SQL MI dependency deployment' switch`: Can be set to 'true' or 'false' and controls whether the dependencies for the SQL-MI are deployed during execution or not
 
@@ -218,6 +264,7 @@ Depending on what DevOps tool you want to use to host the platform you will find
 ## GitHub Workflows
 
 [GitHub actions & workflows](https://docs.github.com/en/actions) are the CI/CD solution provided by GitHub. To get the platform going, we use the following elements:
+
 - **[GitHub secrets:](#github-component-github-secrets)** We leverage GitHub repository secrets to store central and potentially sensitive information we need to perform deployments and other platform specific actions
 - **[Variable file:](#github-component-variable-file)** This file contains the configuration for all module pipelines in this repository.
 - **[Composite actions:](#github-component-composite-actions)** Composite actions bundle a set of actions for a specific purpose together. They are referenced by module pipelines.
@@ -233,14 +280,14 @@ For _GitHub_ in particular we need the following secrets in addition to those de
 
 | Secret Name | Example | Description |
 | - | - | - |
-| `AZURE_CREDENTIALS` |  `{"clientId": "4ce8ce4c-cac0-48eb-b815-65e5763e2929", "clientSecret": "<placeholder>", "subscriptionId": "d0312b25-9160-4550-914f-8738d9b5caf5", "tenantId": "9734cec9-4384-445b-bbb6-767e7be6e5ec" }` | The login credentials of the [deployment principal](./GettingStarted#platform-principal) to use to log into the target Azure environment to test in. The format is described [here](https://github.com/Azure/login#configure-deployment-credentials). |
+| `AZURE_CREDENTIALS` | `{"clientId": "4ce8ce4c-cac0-48eb-b815-65e5763e2929", "clientSecret": "<placeholder>", "subscriptionId": "d0312b25-9160-4550-914f-8738d9b5caf5", "tenantId": "9734cec9-4384-445b-bbb6-767e7be6e5ec" }` | The login credentials of the [deployment principal](./GettingStarted#platform-principal) to use to log into the target Azure environment to test in. The format is described [here](https://github.com/Azure/login#configure-deployment-credentials). |
 | `PLATFORM_REPO_UPDATE_PAT` | `<placeholder>` | A PAT with enough permissions assigned to it to push into the main branch. This PAT is leveraged by pipelines that automatically generate ReadMe files to keep them up to date |
 
 ### **GitHub Component:** Variable file
 
 The [pipeline configuration file](#pipeline-variables) can be found at `.github/variables/global.variables.json`.
 
-### **GitHub Component:** Composite Actions**
+### **GitHub Component:** Composite Actions
 
 We use several composite actions to perform various tasks shared by our module workflows:
 
@@ -257,7 +304,7 @@ These are the individual end-to-end workflows we have for each module. Leveragin
 
 Comparing multiple workflows you'll notice they are almost identical, yet differ in a few important areas:
 
-- The ***[path filters](https://docs.github.com/en/actions/learn-github-actions/workflow-syntax-for-github-actions)*** of the workflow trigger:
+- The **_[path filters](https://docs.github.com/en/actions/learn-github-actions/workflow-syntax-for-github-actions)_** of the workflow trigger:
   | Purpose | Example |
   | - | - |
   | Include the composite actions | `- '.github/actions/templates/**'` |
@@ -266,17 +313,19 @@ Comparing multiple workflows you'll notice they are almost identical, yet differ
   | Exclude any ReadMe | `- '!*/**/readme.md'` |
 
   Full example
+
   ```yaml
-    push:
-      branches:
-        - main
-      paths:
-        - '.github/actions/templates/**'
-        - '.github/workflows/ms.network.virtualwans.yml'
-        - 'arm/Microsoft.Network/virtualWans/**'
-        - '!arm/Microsoft.Network/virtualWans/readme.md'
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/actions/templates/**'
+      - '.github/workflows/ms.network.virtualwans.yml'
+      - 'arm/Microsoft.Network/virtualWans/**'
+      - '!arm/Microsoft.Network/virtualWans/readme.md'
   ```
-- The ***environment variables***
+
+- The **_environment variables_**
   The environment variables are leveraged by the workflow to fundamentally process the module. We need:
   | Variable | Description | Example |
   | - | - | - |
@@ -284,6 +333,7 @@ Comparing multiple workflows you'll notice they are almost identical, yet differ
   | `workflowPath` | Relative path to the workflow itself | `workflowPath: '.github/workflows/ms.network.virtualwans.yml'` |
 
   Full example
+
   ```yaml
   env:
     modulePath: 'arm/Microsoft.Network/virtualWans'
@@ -339,9 +389,9 @@ To keep the amount of pipeline code at a minimum we make heavy use of pipeline t
 
 | Template Name | Description |
 | - | - |
-| **module.jobs.validate.yml** | This template perform all [static tests](#static-module-validation) for a module using Pester. |
-| **module.jobs.deploy.yml** | This template performs a [test deployment](#simulated-deployment-validation) followed by an [actual deployment](#test-deploy) to Azure using a provided parameter file. Once a deployment completed it [removes](#removal) the resource |
-| **module.jobs.publish.yml** | This template is capable of [publishing](#publish) the given template to a location specified in the pipeline [variable file](#azure-devops-component-variable-file) |
+| **jobs.validateModulePester.yml** | This template perform all [static tests](#static-module-validation) for a module using Pester. |
+| **jobs.validateModuleDeployment.yml** | This template performs a [test deployment](#simulated-deployment-validation) followed by an [actual deployment](#test-deploy) to Azure using a provided parameter file. Once a deployment completed it [removes](#removal) the resource |
+| **jobs.publishModule.yml** | This template is capable of [publishing](#publish) the given template to a location specified in the pipeline [variable file](#azure-devops-component-variable-file) |
 
 Each file can be found in path `.azuredevops/pipelineTemplates`.
 
@@ -351,8 +401,8 @@ These are the individual end-to-end pipelines we have for each module. Leveragin
 
 While they look very similar they have specific areas in which they differ:
 
-- The ***path filters*** of the pipeline trigger:
-   Purpose | Example |
+- The **_path filters_** of the pipeline trigger:
+  | Purpose | Example |
   | - | - |
   | Include the templates | `- '/.azuredevops/pipelineTemplates/module.*.yml'` |
   | Include the relative path to the pipeline itself | `- '/.azuredevops/modulePipelines/ms.analysisservices.servers.yml' ` |
@@ -360,22 +410,25 @@ While they look very similar they have specific areas in which they differ:
   | Exclude any readme | `- '/**/*.md'` |
 
   Full example:
+
   ```yaml
-    trigger:
-      batch: true
-      branches:
-        include:
-          - main
-      paths:
-        include:
-          - '/.azuredevops/modulePipelines/ms.analysisservices.servers.yml'
-          - '/.azuredevops/pipelineTemplates/module.*.yml'
-          - '/arm/Microsoft.AnalysisServices/servers/*'
-        exclude:
-          - '/**/*.md'
+  trigger:
+    batch: true
+    branches:
+      include:
+        - main
+    paths:
+      include:
+        - '/.azuredevops/modulePipelines/ms.analysisservices.servers.yml'
+        - '/.azuredevops/pipelineTemplates/module.*.yml'
+        - '/arm/Microsoft.AnalysisServices/servers/*'
+      exclude:
+        - '/**/*.md'
   ```
-  > ***Note:*** By the time of this writing, wildcards are temporarily not supported by Azure DevOps
-- The ***variables***
+
+  > **_Note:_** By the time of this writing, wildcards are temporarily not supported by Azure DevOps
+
+- The **_variables_**
   The variables are leveraged by the pipelines to fundamentally process the module. We need:
   | Variable | Description | Example |
   | - | - | - |
@@ -384,10 +437,15 @@ While they look very similar they have specific areas in which they differ:
   | `modulePath` | Relative path to the module folder | <code>- name: modulePath<p>&nbsp;&nbsp;value: '/arm/Microsoft.AnalysisServices/servers'</code> |
 
   Full example:
+
   ```yaml
-    variables:
-      - template: '/.azuredevops/pipelineVariables/global.variables.yml'
-      - group: 'PLATFORM_VARIABLES'
-      - name: modulePath
-        value: '/arm/Microsoft.AnalysisServices/servers'
+  variables:
+    - template: '/.azuredevops/pipelineVariables/global.variables.yml'
+    - group: 'PLATFORM_VARIABLES'
+    - name: modulePath
+      value: '/arm/Microsoft.AnalysisServices/servers'
   ```
+
+#### Azure DevOps Artifacts
+
+For _Azure DevOps_ we offer also the option to publish to _Azure DevOps_ universal packages. As the code is already available in the pipeline's publish template (`.azuredevops/pipelineTemplates/jobs.publishModule.yml`) you only have to specify the required information in the shared global variables file (`.azuredevops/pipelineVariables/global.variables.yml`) to enable the feature. For detailed information please refer to the variable file's `Publish: Universal packages settings` section.

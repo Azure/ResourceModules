@@ -6,8 +6,8 @@ This module deploys an Azure virtual desktop workspace.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/locks` | 2016-09-01 |
-| `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
+| `Microsoft.Authorization/locks` | 2017-04-01 |
+| `Microsoft.Authorization/roleAssignments` | 2021-04-01-preview |
 | `Microsoft.DesktopVirtualization/workspaces` | 2021-07-12 |
 | `Microsoft.Insights/diagnosticSettings` | 2021-05-01-preview |
 
@@ -17,10 +17,11 @@ This module deploys an Azure virtual desktop workspace.
 | :-- | :-- | :-- | :-- | :-- |
 | `appGroupResourceIds` | array | `[]` |  | Required. Resource IDs fo the existing Application groups this workspace will group together. |
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
+| `diagnosticEventHubAuthorizationRuleId` | string |  |  | Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
+| `diagnosticEventHubName` | string |  |  | Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticStorageAccountId` | string |  |  | Optional. Resource ID of the diagnostic storage account. |
-| `eventHubAuthorizationRuleId` | string |  |  | Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
-| `eventHubName` | string |  |  | Optional. Name of the event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
+| `diagnosticWorkspaceId` | string |  |  | Optional. Resource ID of the diagnostic log analytics workspace. |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
 | `logsToEnable` | array | `[Checkpoint, Error, Management, Feed]` | `[Checkpoint, Error, Management, Feed]` | Optional. The name of logs that will be streamed. |
@@ -29,7 +30,6 @@ This module deploys an Azure virtual desktop workspace.
 | `tags` | object | `{object}` |  | Optional. Tags of the resource. |
 | `workspaceDescription` | string |  |  | Optional. The description of the Workspace to be created. |
 | `workspaceFriendlyName` | string |  |  | Optional. The friendly name of the Workspace to be created. |
-| `workspaceId` | string |  |  | Optional. Resource ID of log analytics. |
 
 
 ### Parameter Usage: `roleAssignments`
@@ -75,13 +75,13 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `workspaceName` | string | The name of the AVD workspace |
-| `workspaceResourceGroup` | string | The resource group the AVD workspace was deployed into |
-| `workspaceResourceId` | string | The resource ID of the AVD workspace |
+| `name` | string | The name of the AVD workspace |
+| `resourceGroupName` | string | The resource group the AVD workspace was deployed into |
+| `resourceId` | string | The resource ID of the AVD workspace |
 
 ## Template references
 
-- [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-04-01-preview/roleAssignments)
-- [Workspaces](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DesktopVirtualization/2021-07-12/workspaces)
 - [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings)
+- [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)
+- [Workspaces](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DesktopVirtualization/2021-07-12/workspaces)

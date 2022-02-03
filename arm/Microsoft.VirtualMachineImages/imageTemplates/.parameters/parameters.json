@@ -3,13 +3,10 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "sxx-az-imgt-x-001"
-        },
-        "location": {
-            "value": "eastus"
+            "value": "<<namePrefix>>-az-imgt-x-001"
         },
         "userMsiName": {
-            "value": "adp-sxx-az-msi-x-001"
+            "value": "adp-<<namePrefix>>-az-msi-x-001"
         },
         "userMsiResourceGroup": {
             "value": "validation-rg"
@@ -44,13 +41,13 @@
             ]
         },
         "managedImageName": {
-            "value": "sxx-az-mi-x-001"
+            "value": "<<namePrefix>>-az-mi-x-001"
         },
         "unManagedImageName": {
-            "value": "sxx-az-umi-x-001"
+            "value": "<<namePrefix>>-az-umi-x-001"
         },
         "sigImageDefinitionId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Compute/galleries/adpsxxazsigweux001/images/adp-sxx-az-imgd-x-001"
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Compute/galleries/adp<<namePrefix>>azsigweux001/images/adp-<<namePrefix>>-az-imgd-x-001"
         },
         "imageReplicationRegions": {
             "value": []

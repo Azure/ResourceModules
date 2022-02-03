@@ -69,7 +69,7 @@ resource appServicePlan 'Microsoft.Web/serverfarms@2021-02-01' = {
   }
 }
 
-resource appServicePlan_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
+resource appServicePlan_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
   name: '${appServicePlan.name}-${lock}-lock'
   properties: {
     level: lock
@@ -79,10 +79,10 @@ resource appServicePlan_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lo
 }
 
 @description('The name of the app service plan.')
-output appServicePlanName string = appServicePlan.name
+output name string = appServicePlan.name
 
 @description('The resource ID of the app service plan.')
-output appServicePlanResourceId string = appServicePlan.id
+output resourceId string = appServicePlan.id
 
 @description('The resource group the app service plan was deployed into.')
-output appServicePlanResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name
