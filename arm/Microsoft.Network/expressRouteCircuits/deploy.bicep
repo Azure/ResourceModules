@@ -145,7 +145,7 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
-resource expressRouteCircuits 'Microsoft.Network/expressRouteCircuits@2021-02-01' = {
+resource expressRouteCircuits 'Microsoft.Network/expressRouteCircuits@2021-05-01' = {
   name: name
   location: location
   tags: tags

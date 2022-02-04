@@ -32,9 +32,9 @@ function Get-ModifiedFileList {
     )
 
     Write-Verbose "Gathering modified files between [$Commit] and [$CompareCommit]" -Verbose
-    $Diff = git diff --name-only --diff-filter=AM $Commit $CompareCommit
+    $Diff = git diff --name-only --diff-filter=AM $CompareCommit $Commit
     $ModifiedFiles = $Diff | Get-Item
-    Write-Verbose 'The following files have been modified:' -Verbose
+    Write-Verbose 'The following files have been added or modified:' -Verbose
     $ModifiedFiles | ForEach-Object {
         Write-Verbose (' - [{0}]' -f $_.FullName) -Verbose
     }
@@ -344,8 +344,7 @@ function Get-NewModuleVersion {
     $BranchName = Get-GitBranchName -Verbose
 
     Write-Verbose "Current branch: [$BranchName]" -Verbose
-    if (($BranchName -ne 'main') -or ($BranchName -ne 'master') ) {
-        $PreRelease = $BranchName -replace '[^a-zA-Z0-9\.\-_]'
+    if ($BranchName -ne 'main' -and $BranchName -ne 'master') {
         Write-Verbose "PreRelease: [$PreRelease]" -Verbose
         $NewVersion = "$NewVersion-prerelease".ToLower()
     }

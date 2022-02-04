@@ -125,7 +125,7 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 
 // PUBLIC IP
 // =========
-resource publicIP 'Microsoft.Network/publicIPAddresses@2021-02-01' = if (natGatewayPublicIpAddress) {
+resource publicIP 'Microsoft.Network/publicIPAddresses@2021-05-01' = if (natGatewayPublicIpAddress) {
   name: natGatewayPipName_var
   location: location
   tags: tags
@@ -163,7 +163,7 @@ resource publicIP_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021
 
 // NAT GATEWAY
 // ===========
-resource natGateway 'Microsoft.Network/natGateways@2021-02-01' = {
+resource natGateway 'Microsoft.Network/natGateways@2021-05-01' = {
   name: name
   location: location
   tags: tags

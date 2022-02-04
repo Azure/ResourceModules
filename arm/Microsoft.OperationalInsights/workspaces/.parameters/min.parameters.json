@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "sxx-az-la-min-001"
+            "value": "<<namePrefix>>-az-la-min-001"
         }
     }
 }
