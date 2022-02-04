@@ -155,7 +155,7 @@ function Test-ModuleLocally {
             if ((Get-Item -Path $parameterFilePath) -is [System.IO.DirectoryInfo]) {
                 $ModuleParameterFiles = (Get-ChildItem -Path $parameterFilePath).FullName
             } else {
-                $ModuleParameterFiles = @($templateFilePath)
+                $ModuleParameterFiles = @($parameterFilePath)
             }
 
             # Replace parameter file tokens

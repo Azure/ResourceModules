@@ -53,10 +53,11 @@ function Convert-TokenInFile {
     # Swap Value with Name instead
     if ($SwapValueWithName) {
         Write-Verbose "Swapping 'Value' with 'Name'"
-        $TokenNameValueObject | ForEach-Object {
-            $Name = $PSitem.Value
-            $Value = $PSItem.Name
-            $PSitem.Name = $Name; $PSitem.Value = $Value
+        @($TokenNameValueObject.Keys) | ForEach-Object {
+            $newKey = $TokenNameValueObject[$_]
+            $TokenNameValueObject[$newKey] = $_ # Add swapped entry
+            $TokenNameValueObject.Remove($_) # Remove original
+
         }
     }
     # Begin the Replace Function
@@ -71,14 +72,13 @@ function Convert-TokenInFile {
         }
         Write-Verbose "Processing Tokens for file: $FileName"
         # Perform the Replace of Tokens in the File
-        $TokenNameValueObject |
-            ForEach-Object {
-                # If type is secure string
-                if (($PSItem.Value | Get-Member -MemberType Property | Select-Object -ExpandProperty 'TypeName') -eq 'System.Security.SecureString') {
-                    $PSItem.Value = $PSItem.Value | ConvertFrom-SecureString -AsPlainText
-                }
-                $File = $File -replace $PSItem.Name, $PSItem.Value
+        $TokenNameValueObject.Keys | ForEach-Object {
+            # If type is secure string
+            if ($TokenNameValueObject[$_] -is [System.Security.SecureString]) {
+                $TokenNameValueObject[$_] = $TokenNameValueObject[$_] | ConvertFrom-SecureString -AsPlainText
             }
+            $File = $File -replace $_, $TokenNameValueObject[$_]
+        }
         # Set Content
         if ($OutputDirectory -and (Test-Path -Path $OutputDirectory -PathType Container)) {
             # If Specific Output Directory Provided
