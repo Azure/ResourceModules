@@ -3,7 +3,7 @@
         "tokenPrefix": "<<",
         "tokenSuffix": ">>",
         "localTokens": {
-            "namePrefix": "sxx" // A 3-5 character length string, included in the resources names
+            "namePrefix": "sxx" // A 3-4 character length string, included in the resources names
         }
     }
 }

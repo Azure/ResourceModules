@@ -134,20 +134,12 @@ function Test-ModuleLocally {
             Write-Verbose "Pester Testing Module: $ModuleName"
             try {
                 Invoke-Pester -Configuration @{
-                    Run        = @{
+                    Run    = @{
                         Container = New-PesterContainer -Path (Join-Path (Get-Item $PSScriptRoot).Parent.Parent 'arm/.global/global.module.tests.ps1') -Data @{
                             moduleFolderPaths = Split-Path $templateFilePath -Parent
                         }
                     }
-                    Filter     = @{
-                        #ExcludeTag = 'ApiCheck'
-                        #Tag = 'ApiCheck'
-                    }
-                    TestResult = @{
-                        TestSuiteName = 'Global Module Tests'
-                        Enabled       = $false
-                    }
-                    Output     = @{
+                    Output = @{
                         Verbosity = 'Detailed'
                     }
                 }
@@ -239,7 +231,6 @@ function Test-ModuleLocally {
             } catch {
                 Write-Error $_
             } finally {
-
                 # Restore parameter files
                 # -----------------------
                 if (($ValidationTest -or $DeploymentTest) -and $ValidateOrDeployParameters -and -not $RestoreAlreadyTriggered) {
