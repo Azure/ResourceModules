@@ -177,14 +177,14 @@ function Test-ModuleLocally {
             # Tokens in settings.json
             $settingsFilePath = Join-Path $PSScriptRoot '../..' 'settings.json'
             if (Test-Path $settingsFilePath) {
-                $Settings = Get-Content -Path $settingsFilePath -Raw | ConvertFrom-Json
+                $Settings = Get-Content -Path $settingsFilePath -Raw | ConvertFrom-Json -AsHashtable
                 $ConvertTokensInputs += @{
                     TokenPrefix = $Settings.parameterFileTokens.tokenPrefix
                     TokenSuffix = $Settings.parameterFileTokens.tokenSuffix
                 }
 
-                if ($settings.localTokens) {
-                    $ConvertTokensInputs.ParameterFileTokens += $settings.localTokens
+                if ( $Settings.parameterFileTokens.localTokens) {
+                    $ConvertTokensInputs.ParameterFileTokens += $Settings.parameterFileTokens.localTokens
                 }
             }
 
@@ -207,8 +207,8 @@ function Test-ModuleLocally {
                 if ($ValidationTest) {
                     # Loop through test parameter files
                     foreach ($paramFilePath in $moduleParameterFiles) {
-                        Write-Verbose 'Validating module [{0}] with parameter file [{1}]' -f $ModuleName, (Split-Path $paramFilePath -Leaf)
-                        Test-TemplateWithParameterFile @functionInput -TemplateParameterFile $parameterFilePath
+                        Write-Verbose ('Validating module [{0}] with parameter file [{1}]' -f $ModuleName, (Split-Path $paramFilePath -Leaf)) -Verbose
+                        Test-TemplateWithParameterFile @functionInput -ParameterFilePath $parameterFilePath
                     }
                 }
 
@@ -219,9 +219,9 @@ function Test-ModuleLocally {
                     $functionInput['retryLimit'] = 1 # Overwrite default of 3
                     # Loop through test parameter files
                     foreach ($paramFilePath in $moduleParameterFiles) {
-                        Write-Verbose 'Deploy module [{0}] with parameter file [{1}]' -f $ModuleName, (Split-Path $paramFilePath -Leaf)
+                        Write-Verbose ('Deploy module [{0}] with parameter file [{1}]' -f $ModuleName, (Split-Path $paramFilePath -Leaf)) -Verbose
                         if ($PSCmdlet.ShouldProcess(('Module [{0}] with parameter file [{1}]' -f $ModuleName, (Split-Path $paramFilePath -Leaf)), 'Deploy')) {
-                            New-ModuleDeployment @functionInput -TemplateParameterFile $parameterFilePath
+                            New-ModuleDeployment @functionInput -ParameterFilePath $parameterFilePath
                         }
                     }
                 }

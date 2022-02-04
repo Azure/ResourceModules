@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "sxx-az-udr-x-001"
+            "value": "<<namePrefix>>-az-udr-x-001"
         },
         "routes": {
             "value": [

@@ -57,7 +57,6 @@ function Convert-TokenInFile {
             $newKey = $TokenNameValueObject[$_]
             $TokenNameValueObject[$newKey] = $_ # Add swapped entry
             $TokenNameValueObject.Remove($_) # Remove original
-
         }
     }
     # Begin the Replace Function

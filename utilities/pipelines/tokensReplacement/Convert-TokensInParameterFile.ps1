@@ -68,27 +68,27 @@ function Convert-TokensInParameterFile {
 
     process {
         # Combine All Input Token Types, Remove Duplicates and Only Select entries with on empty values
-        $ParameterFileTokens = $ParameterFileTokens | Sort-Object -Unique
-        @($ParameterFileTokens.Keys) | ForEach-Object {
-            if ([String]::IsNullOrEmpty($ParameterFileTokens[$_])) {
-                $ParameterFileTokens.Remove($_)
+        $FilteredParameterFileTokens = ($ParameterFileTokens | Sort-Object -Unique).Clone()
+        @($FilteredParameterFileTokens.Keys) | ForEach-Object {
+            if ([String]::IsNullOrEmpty($FilteredParameterFileTokens[$_])) {
+                $FilteredParameterFileTokens.Remove($_)
             }
         }
-        Write-Verbose ('Using [{0}] tokens' -f $ParameterFileTokens)
+        Write-Verbose ('Using [{0}] tokens' -f $FilteredParameterFileTokens.Keys.Count)
 
         # Apply Prefix and Suffix to Tokens and Prepare Object for Conversion
         Write-Verbose ("Applying Token Prefix '$TokenPrefix' and Token Suffix '$TokenSuffix'")
-        foreach ($ParameterFileTokenName in @($ParameterFileTokens.Keys)) {
+        foreach ($ParameterFileTokenName in @($FilteredParameterFileTokens.Keys)) {
             $newKey = -join ($TokenPrefix, $ParameterFileTokenName, $TokenSuffix)
-            $ParameterFileTokens[$newKey] = $ParameterFileTokens[$ParameterFileTokenName] # Add formatted entry
-            $ParameterFileTokens.Remove($ParameterFileTokenName) # Replace original
+            $FilteredParameterFileTokens[$newKey] = $FilteredParameterFileTokens[$ParameterFileTokenName] # Add formatted entry
+            $FilteredParameterFileTokens.Remove($ParameterFileTokenName) # Replace original
         }
         # Convert Tokens in Parameter Files
         try {
             # Prepare Input to Token Converter Function
             $ConvertTokenListFunctionInput = @{
                 FilePath             = $ParameterFilePath
-                TokenNameValueObject = $ParameterFileTokens
+                TokenNameValueObject = $FilteredParameterFileTokens
                 SwapValueWithName    = $SwapValueWithName
             }
             if ($OutputDirectory) {
