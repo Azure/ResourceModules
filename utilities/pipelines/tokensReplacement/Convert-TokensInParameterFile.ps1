@@ -67,21 +67,21 @@ function Convert-TokensInParameterFile {
     }
 
     process {
+        # Combine All Input Token Types, Remove Duplicates and Only Select entries with on empty values
+        $ParameterFileTokens = $ParameterFileTokens | Sort-Object -Unique
+        @($ParameterFileTokens.Keys) | ForEach-Object {
+            if ([String]::IsNullOrEmpty($ParameterFileTokens[$_])) {
+                $ParameterFileTokens.Remove($_)
+            }
+        }
         Write-Verbose ('Using [{0}] tokens' -f $ParameterFileTokens)
 
-        # Combine All Input Token Types, Remove Duplicates and Only Select Name, Value if they contain other unrequired properties
-        $ParameterFileTokens = $ParameterFileTokens |
-            ForEach-Object { [PSCustomObject] $PSItem } |
-            Sort-Object Name -Unique |
-            Select-Object -Property Name, Value |
-            Where-Object { $null -ne $PSitem.Name -and $null -ne $PSitem.Value
-            }
-
-        Write-Verbose ("All Parameter File Tokens Count: ($($ParameterFileTokens.Count))")
         # Apply Prefix and Suffix to Tokens and Prepare Object for Conversion
         Write-Verbose ("Applying Token Prefix '$TokenPrefix' and Token Suffix '$TokenSuffix'")
-        foreach ($ParameterFileToken in $ParameterFileTokens) {
-            $ParameterFileToken.Name = -join ($TokenPrefix, $ParameterFileToken.Name, $TokenSuffix)
+        foreach ($ParameterFileTokenName in @($ParameterFileTokens.Keys)) {
+            $newKey = -join ($TokenPrefix, $ParameterFileTokenName, $TokenSuffix)
+            $ParameterFileTokens[$newKey] = $ParameterFileTokens[$ParameterFileTokenName] # Add formatted entry
+            $ParameterFileTokens.Remove($ParameterFileTokenName) # Replace original
         }
         # Convert Tokens in Parameter Files
         try {

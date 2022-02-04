@@ -153,7 +153,7 @@ function Test-ModuleLocally {
             # Find Test Parameter Files
             # -------------------------
             if ((Get-Item -Path $parameterFilePath) -is [System.IO.DirectoryInfo]) {
-                $ModuleParameterFiles = Get-ChildItem -Path $parameterFilePath
+                $ModuleParameterFiles = (Get-ChildItem -Path $parameterFilePath).FullName
             } else {
                 $ModuleParameterFiles = @($templateFilePath)
             }
@@ -189,16 +189,16 @@ function Test-ModuleLocally {
             }
 
             # Invoke Token Replacement Functionality and Convert Tokens in Parameter Files
-            $ModuleParameterFiles | ForEach-Object { $null = Convert-TokensInParameterFile @ConvertTokensInputs -ParameterFilePath $_.FullName }
+            $ModuleParameterFiles | ForEach-Object { $null = Convert-TokensInParameterFile @ConvertTokensInputs -ParameterFilePath $_ }
 
             # Deployment & Validation Testing
             # -------------------------------
             $functionInput = @{
                 templateFilePath  = $templateFilePath
-                location          = "$($ValidateOrDeployParameters.Location)"
-                resourceGroupName = "$($ValidateOrDeployParameters.ResourceGroupName)"
-                subscriptionId    = "$($ValidateOrDeployParameters.SubscriptionId)"
-                managementGroupId = "$($ValidateOrDeployParameters.ManagementGroupId)"
+                location          = $ValidateOrDeployParameters.Location
+                resourceGroupName = $ValidateOrDeployParameters.ResourceGroupName
+                subscriptionId    = $ValidateOrDeployParameters.SubscriptionId
+                managementGroupId = $ValidateOrDeployParameters.ManagementGroupId
                 Verbose           = $true
             }
             try {
@@ -230,15 +230,15 @@ function Test-ModuleLocally {
                 # Replace Values with Tokens For Repo Updates and Set Restore Flag to True to Prevent Running Restore Twice
                 # $RestoreAlreadyTriggered = $true
                 # Write-Verbose 'Restoring Tokens'
-                # $ModuleParameterFiles | ForEach-Object { $null = Convert-TokensInParameterFile @ConvertTokensInputs -ParameterFilePath $PSItem.FullName -SwapValueWithName $true }
+                # $ModuleParameterFiles | ForEach-Object { $null = Convert-TokensInParameterFile @ConvertTokensInputs -ParameterFilePath $_ -SwapValueWithName $true }
             } finally {
 
                 # Restore parameter files
                 # -----------------------
-                if (($ValidationTest -or $DeploymentTest) -and $ValidateOrDeployParameters -and !($RestoreAlreadyTriggered)) {
+                if (($ValidationTest -or $DeploymentTest) -and $ValidateOrDeployParameters -and -not $RestoreAlreadyTriggered) {
                     # Replace Values with Tokens For Repo Updates
                     Write-Verbose 'Restoring Tokens'
-                    $ModuleParameterFiles | ForEach-Object { $null = Convert-TokensInParameterFile @ConvertTokensInputs -ParameterFilePath $PSItem.FullName -SwapValueWithName $true }
+                    $ModuleParameterFiles | ForEach-Object { $null = Convert-TokensInParameterFile @ConvertTokensInputs -ParameterFilePath $_ -SwapValueWithName $true }
                 }
             }
         }
