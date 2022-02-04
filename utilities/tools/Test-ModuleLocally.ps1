@@ -11,13 +11,13 @@ subscription Id, principal Id, tenant ID and other parameters that need to be to
 Mandatory. Path to the Bicep/ARM module that is being tested
 
 .PARAMETER parameterFilePath
-Optional. Path to the template file/folder that is to be tested with the template file. Mandatory if the DeploymentTest/ValidationTest switches are set.
+Optional. Path to the template file/folder that is to be tested with the template file. Defaults to the module's default '.parameter' folder. Will be used if the DeploymentTest/ValidationTest switches are set.
 
 .PARAMETER PesterTest
 Optional. A switch parameter that triggers a Pester test for the module
 
 .PARAMETER ValidateOrDeployParameters
-Mandatory. An object consisting of the components that are required when using the Validate test or DeploymentTest switch parameter. See example:
+Optional. An object consisting of the components that are required when using the Validate test or DeploymentTest switch parameter.  Mandatory if the DeploymentTest/ValidationTest switches are set.
 
 .PARAMETER DeploymentTest
 Optional. A switch parameter that triggers the deployment of the module
@@ -34,50 +34,62 @@ Optional. A hashtable parameter that contains custom tokens to be replaced in th
 .EXAMPLE
 
 $TestModuleLocallyInput = @{
-    templateFilePath              = 'Microsoft.Network\applicationSecurityGroups'
-    PesterTest                    = $true
-    DeploymentTest                = $true
-    ValidationTest                = $false
-    ValidateOrDeployParameters    = @{
-        Location          = 'australiaeast'
+    templateFilePath           = 'C:\Microsoft.Network\routeTables\deploy.bicep'
+    parameterFilePath          = 'C:\Microsoft.Network\routeTables\.parameters\parameters.json'
+    PesterTest                 = $false
+    DeploymentTest             = $false
+    ValidationTest             = $true
+    ValidateOrDeployParameters = @{
+        Location          = 'westeurope'
         ResourceGroupName = 'validation-rg'
-        SubscriptionId    = '12345678-1234-1234-1234-123456789123'
-        ManagementGroupId = 'mg-contoso'
+        SubscriptionId    = '00000000-0000-0000-0000-000000000000'
+        ManagementGroupId = '00000000-0000-0000-0000-000000000000'
+        RemoveDeployment  = $false
     }
-    AdditionalTokens      = @(
-        @{ Name = 'deploymentSpId'; Value = '12345678-1234-1234-1234-123456789123' }
-        @{ Name = 'tenantId'; Value = '12345678-1234-1234-1234-123456789123' }
-    )
+    AdditionalTokens           = @{
+        deploymentSpId = '00000000-0000-0000-0000-000000000000'
+    }
 }
-
 Test-ModuleLocally @TestModuleLocallyInput -Verbose
+
+Run a Test-Az*Deployment using a specific parameter-template combination with the provided tokens
 
 .EXAMPLE
 
 $TestModuleLocallyInput = @{
-    templateFilePath                    = 'Microsoft.Network\applicationSecurityGroups'
-    PesterTest                    = $true
-    DeploymentTest                = $true
-    ValidationTest                = $false
-    ValidateOrDeployParameters    = @{
-        Location          = 'australiaeast'
+    templateFilePath           = 'C:\Microsoft.Network\routeTables\deploy.bicep'
+    PesterTest                 = $true
+    DeploymentTest             = $false
+    ValidationTest             = $true
+    ValidateOrDeployParameters = @{
+        Location          = 'westeurope'
         ResourceGroupName = 'validation-rg'
-        SubscriptionId    = '12345678-1234-1234-1234-123456789123'
-        ManagementGroupId = 'mg-contoso'
+        SubscriptionId    = '00000000-0000-0000-0000-000000000000'
+        ManagementGroupId = '00000000-0000-0000-0000-000000000000'
+        RemoveDeployment  = $false
     }
-    GetParameterFileTokens        = $true
-    AdditionalTokens      = @(
-        @{ Name = 'deploymentSpId'; Value = '12345678-1234-1234-1234-123456789123' }
-        @{ Name = 'tenantId'; Value = '12345678-1234-1234-1234-123456789123' }
-    )
+    AdditionalTokens           = @{
+        deploymentSpId = '00000000-0000-0000-0000-000000000000'
+    }
 }
-
 Test-ModuleLocally @TestModuleLocallyInput -Verbose
+
+Run all Pesters test for a given template and a Test-Az*Deployment using each parameter file in the module's parameter folder in combination with the template and the provided tokens
+
+.EXAMPLE
+
+$TestModuleLocallyInput = @{
+    templateFilePath           = 'C:\Microsoft.Network\routeTables\deploy.bicep'
+    parameterFilePath          = 'C:\Microsoft.Network\routeTables\.parameters\parameters.json'
+    PesterTest                 = $true
+}
+Test-ModuleLocally @TestModuleLocallyInput -Verbose
+
+Run all Pester tests for the given template file
 
 .NOTES
 - Make sure you provide the right information in the 'ValidateOrDeployParameters' parameter for this function to work.
-- Ensure you have the ability to perform the deployment operations using your account
-
+- Ensure you have the ability to perform the deployment operations using your account (if planning to test deploy)
 #>
 function Test-ModuleLocally {
 
@@ -89,8 +101,8 @@ function Test-ModuleLocally {
         [Parameter(Mandatory = $false)]
         [string] $parameterFilePath = (Join-Path (Split-Path $templateFilePath -Parent) '.parameters'),
 
-        [Parameter(Mandatory)]
-        [Psobject] $ValidateOrDeployParameters,
+        [Parameter(Mandatory = $false)]
+        [Psobject] $ValidateOrDeployParameters = @{},
 
         [Parameter(Mandatory = $false)]
         [hashtable] $AdditionalTokens = @{},
