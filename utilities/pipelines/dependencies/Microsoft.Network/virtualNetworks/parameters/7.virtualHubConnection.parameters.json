@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "adp-sxx-az-vnet-x-vhub"
+            "value": "adp-<<namePrefix>>-az-vnet-x-vhub"
         },
         "addressPrefixes": {
             "value": [
@@ -15,7 +15,7 @@
                 {
                     "name": "default", // Hub connection subnet
                     "addressPrefix": "10.7.0.0/24",
-                    "networkSecurityGroupName": "adp-sxx-az-nsg-x-001"
+                    "networkSecurityGroupName": "adp-<<namePrefix>>-az-nsg-x-001"
                 }
             ]
         }
