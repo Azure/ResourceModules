@@ -187,7 +187,7 @@ function Test-ModuleLocally {
             }
 
             # Tokens in settings.json
-            $settingsFilePath = Join-Path $PSScriptRoot '../..' 'settings.json'
+            $settingsFilePath = Join-Path (Get-Item $PSScriptRoot).Parent.Parent 'settings.json'
             if (Test-Path $settingsFilePath) {
                 $Settings = Get-Content -Path $settingsFilePath -Raw | ConvertFrom-Json -AsHashtable
                 $ConvertTokensInputs += @{
