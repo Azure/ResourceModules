@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "sxx-scaleset-linux-min-001"
+            "value": "<<namePrefix>>-scaleset-linux-min-001"
         },
         "osDisk": {
             "value": {
@@ -51,7 +51,7 @@
                             "name": "ipconfig1",
                             "properties": {
                                 "subnet": {
-                                    "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-002"
+                                    "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-002"
                                 }
                             }
                         }

@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "sxx-az-disk-min-001"
+            "value": "<<namePrefix>>-az-disk-min-001"
         },
         "sku": {
             "value": "Standard_LRS"

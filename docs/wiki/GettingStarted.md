@@ -13,6 +13,7 @@ This section will give on an overview on how to get started using this repositor
     - [Service Names](#service-names)
     - [Dependencies](#dependencies)
     - [Platform variables & secrets](#platform-variables--secrets)
+    - [Name Prefix Token Replacement](#name-prefix-token-replacement)
   - [**Option 2:** Use it as a local reference to build bicep templates](#option-2-use-it-as-a-local-reference-to-build-bicep-templates)
     - [Clone / download the repository](#clone--download-the-repository)
   - [**Option 3:** Use it as remote reference to reference the bicep templates](#option-3-use-it-as-remote-reference-to-reference-the-bicep-templates)
@@ -141,6 +142,10 @@ As the modules we test oftentimes have dependencies to other services, we create
 
 Several fundamental variables are shared among all pipelines and are stored in a pipeline variable file. In case you want to not only leverage the module templates but actually re-use the implemented pipelines & testing framework as well, you need to set up several [variables](./PipelinesDesign#pipeline-variables) & [secrets](./PipelinesDesign#pipeline-secrets) in your environment.
 
+### Name Prefix Token Replacement
+
+Change the default `namePrefix` token value in the [Settings.json](https://github.com/Azure/ResourceModules/blob/main/settings.json) to a 3-5 character string that is used to distinguish your resources names. The default `namePrefix` token has a value `sxx`. Consider this to be one of the first pull requests you need to perform before running any of the repository pipelines. More information on tokens is provided [below](#parameter-file-tokens).
+
 ## **Option 2:** Use it as a local reference to build bicep templates
 
 Instead of re-using the repository as-is you may opt to just save yourself a copy of the code. This may make sense if you want to have the code for a larger setup that you assemble locally, or you may just want to keep it for reference. To do so, you essentially just have to download the repository like presented in the following:
@@ -187,12 +192,15 @@ The repository contains a [Settings.json](https://github.com/Azure/ResourceModul
 ```json
 "localTokens": {
   "tokens": [
-    {
-      "name": "tokenName",
-            "value": "tokenValue"
+      {
+        "name": "tokenName",
+        "value": "tokenValue",
+        "metadata":{
+          "description":"token description"
         }
+      }
     ]
-},
+}
 ```
 
 Let us say you'd want to use this token inside a Key Vault parameter file, to deploy the key vault with a name that contains this token:

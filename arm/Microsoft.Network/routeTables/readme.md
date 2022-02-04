@@ -8,7 +8,7 @@ This module deploys a user defined route table.
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2017-04-01 |
 | `Microsoft.Authorization/roleAssignments` | 2021-04-01-preview |
-| `Microsoft.Network/routeTables` | 2021-02-01 |
+| `Microsoft.Network/routeTables` | 2021-05-01 |
 
 ## Parameters
 
@@ -116,4 +116,4 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
 - [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)
-- [Routetables](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-02-01/routeTables)
+- [Routetables](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/routeTables)

@@ -13,7 +13,7 @@ This module deploys one Virtual Machine with one or multiple nics and optionally
 | `Microsoft.Compute/virtualMachines/extensions` | 2021-07-01 |
 | `Microsoft.Insights/diagnosticSettings` | 2021-05-01-preview |
 | `Microsoft.Network/networkInterfaces` | 2021-03-01 |
-| `Microsoft.Network/publicIPAddresses` | 2021-03-01 |
+| `Microsoft.Network/publicIPAddresses` | 2021-05-01 |
 | `Microsoft.RecoveryServices/vaults/backupFabrics/protectionContainers/protectedItems` | 2021-06-01 |
 
 ## Parameters
@@ -533,7 +533,7 @@ You can specify multiple user assigned identities to a resource by providing add
 - [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings)
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
 - [Networkinterfaces](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-03-01/networkInterfaces)
-- [Publicipaddresses](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-03-01/publicIPAddresses)
+- [Publicipaddresses](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/publicIPAddresses)
 - [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)
 - [Vaults/Backupfabrics/Protectioncontainers/Protecteditems](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2021-06-01/vaults/backupFabrics/protectionContainers/protectedItems)
 - [Virtualmachines](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Compute/2021-07-01/virtualMachines)

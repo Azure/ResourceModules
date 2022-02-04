@@ -93,7 +93,7 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
-resource connection 'Microsoft.Network/connections@2021-02-01' = {
+resource connection 'Microsoft.Network/connections@2021-05-01' = {
   name: name
   location: location
   tags: tags

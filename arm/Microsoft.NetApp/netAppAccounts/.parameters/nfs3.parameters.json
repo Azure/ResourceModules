@@ -3,12 +3,12 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "sxx-az-anf-nfs3-001"
+            "value": "<<namePrefix>>-az-anf-nfs3-001"
         },
         "capacityPools": {
             "value": [
                 {
-                    "name": "sxx-az-anfcp-x-001",
+                    "name": "<<namePrefix>>-az-anfcp-x-001",
                     "serviceLevel": "Premium",
                     "size": 4398046511104,
                     "volumes": [
@@ -28,7 +28,7 @@
                                     "allowedClients": "0.0.0.0/0"
                                 }
                             ],
-                            "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-004",
+                            "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-004",
                             "roleAssignments": [
                                 {
                                     "roleDefinitionIdOrName": "Reader",
@@ -44,7 +44,7 @@
                             "protocolTypes": [
                                 "NFSv3"
                             ],
-                            "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-004"
+                            "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-004"
                         }
                     ],
                     "roleAssignments": [
@@ -57,7 +57,7 @@
                     ]
                 },
                 {
-                    "name": "sxx-az-anfcp-x-002",
+                    "name": "<<namePrefix>>-az-anfcp-x-002",
                     "serviceLevel": "Premium",
                     "size": 4398046511104,
                     "volumes": [],

@@ -32,7 +32,7 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
-resource publicIpPrefix 'Microsoft.Network/publicIPPrefixes@2021-02-01' = {
+resource publicIpPrefix 'Microsoft.Network/publicIPPrefixes@2021-05-01' = {
   name: name
   location: location
   tags: tags
