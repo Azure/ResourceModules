@@ -80,7 +80,6 @@ Run all Pesters test for a given template and a Test-Az*Deployment using each pa
 
 $TestModuleLocallyInput = @{
     templateFilePath           = 'C:\Microsoft.Network\routeTables\deploy.bicep'
-    parameterFilePath          = 'C:\Microsoft.Network\routeTables\.parameters\parameters.json'
     PesterTest                 = $true
 }
 Test-ModuleLocally @TestModuleLocallyInput -Verbose
