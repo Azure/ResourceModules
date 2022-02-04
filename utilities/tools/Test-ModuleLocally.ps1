@@ -1,35 +1,38 @@
 ﻿
 <#
 .SYNOPSIS
-This Function Helps with Testing A Module Locally
+This function helps with testing a module locally
 
 .DESCRIPTION
-This Function Helps with Testing A Module Locally. Use this Function To perform Pester Testing for a Module and then attempting to deploy it. It Also allows you to use your own
-subscription Id, Principal Id, tenant ID and other parameters that need to be tokenized.
+This function helps with testing a module locally. Use this function To perform Pester testing for a module and then attempting to deploy it. It also allows you to use your own
+subscription Id, principal Id, tenant ID and other parameters that need to be tokenized.
 
 .PARAMETER templateFilePath
 Mandatory. Path to the Bicep/ARM module that is being tested
 
+.PARAMETER parameterFilePath
+Optional. Path to the template file/folder that is to be tested with the template file. Mandatory if the DeploymentTest/ValidationTest switches are set.
+
 .PARAMETER PesterTest
-Optional. A Switch Parameter that triggers a Pester Test for the Module
+Optional. A switch parameter that triggers a Pester test for the module
 
 .PARAMETER ValidateOrDeployParameters
-An Object consisting of the components that are required when using the Validate Test or DeploymentTest Switch parameter. See example:
+Mandatory. An object consisting of the components that are required when using the Validate test or DeploymentTest switch parameter. See example:
 
 .PARAMETER DeploymentTest
-Optional. A Switch Parameter that triggers the Deployment of the Module
+Optional. A switch parameter that triggers the deployment of the module
 
 .PARAMETER ValidationTest
-Optional. A Switch Parameter that triggers the Validation of the Module Only without Deployment
+Optional. A switch parameter that triggers the validation of the module only without deployment
 
-.PARAMETER DeployAllModuleParameterFiles
-Optional. A Boolean Parameter that enables directory based search for parameter files and deploys all of them. If not true, it will only deploy the 'parameters.json' file. Default is false.
+.PARAMETER DeployAllmoduleParameterFiles
+Optional. A boolean parameter that enables directory based search for parameter files and deploys all of them. If not true, it will only deploy the 'parameters.json' file. Default is false.
 
 .PARAMETER SkipParameterFileTokens
-Optional. A Switch Parameter that enables you to skip the search for local custom parameter file tokens.
+Optional. A switch parameter that enables you to skip the search for local custom parameter file tokens.
 
 .PARAMETER AdditionalTokens
-Optional. A Hashtable Parameter that contains custom tokens to be replaced in the paramter files for deployment
+Optional. A hashtable parameter that contains custom tokens to be replaced in the paramter files for deployment
 
 .EXAMPLE
 
@@ -84,28 +87,31 @@ function Test-ModuleLocally {
     [CmdletBinding()]
     param (
         [parameter(Mandatory)]
-        [string]$templateFilePath,
+        [string] $templateFilePath,
 
         [parameter(Mandatory = $false)]
-        [switch]$PesterTest,
+        [string] $parameterFilePath,
+
+        [parameter(Mandatory = $false)]
+        [switch] $PesterTest,
 
         [parameter(Mandatory)]
-        [psobject]$ValidateOrDeployParameters,
+        [psobject] $ValidateOrDeployParameters,
 
         [parameter(Mandatory = $false)]
-        [switch]$DeploymentTest,
+        [switch] $DeploymentTest,
 
         [parameter(Mandatory = $false)]
-        [switch]$ValidationTest,
+        [switch] $ValidationTest,
 
         [parameter(Mandatory = $false)]
-        [bool]$DeployAllModuleParameterFiles = $false,
+        [bool] $DeployAllModuleParameterFiles = $false,
 
         [parameter(Mandatory = $false)]
-        [switch]$SkipParameterFileTokens,
+        [switch] $SkipParameterFileTokens,
 
         [parameter(Mandatory = $false)]
-        [psobject]$AdditionalTokens
+        [psobject] $AdditionalTokens
     )
 
     begin {
@@ -152,7 +158,7 @@ function Test-ModuleLocally {
             $DefaultParameterFileTokens = @(
                 @{ Name = 'subscriptionId'; Value = "$($ValidateOrDeployParameters.SubscriptionId)" }
                 @{ Name = 'managementGroupId'; Value = "$($ValidateOrDeployParameters.ManagementGroupId)" }
-            ) | ForEach-Object { [PSCustomObject]$PSItem }
+            ) | ForEach-Object { [PSCustomObject] $PSItem }
 
             # Look for Local Custom Parameter File Tokens (Source Control)
             if (-not $SkipParameterFileTokens) {
