@@ -238,11 +238,7 @@ function Test-ModuleLocally {
                     }
                 }
             } catch {
-                Write-Error $PSItem.Exception
-                # Replace Values with Tokens For Repo Updates and Set Restore Flag to True to Prevent Running Restore Twice
-                # $RestoreAlreadyTriggered = $true
-                # Write-Verbose 'Restoring Tokens'
-                # $ModuleParameterFiles | ForEach-Object { $null = Convert-TokensInParameterFile @ConvertTokensInputs -ParameterFilePath $_ -SwapValueWithName $true }
+                Write-Error $_
             } finally {
 
                 # Restore parameter files
