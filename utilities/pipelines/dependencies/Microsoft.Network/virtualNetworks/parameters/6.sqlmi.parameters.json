@@ -3,7 +3,7 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "name": {
-      "value": "adp-<<namePrefix>>-az-vnet-x-sqlmi"
+      "value": "adp-sxx-az-vnet-x-sqlmi"
     },
     "addressPrefixes": {
       "value": [
@@ -13,10 +13,10 @@
     "subnets": {
       "value": [
         {
-          "name": "<<namePrefix>>-az-subnet-x-sqlmi", // SQLMi subnet
+          "name": "sxx-az-subnet-x-sqlmi", // SQLMi subnet
           "addressPrefix": "10.6.0.0/24",
-          "networkSecurityGroupName": "adp-<<namePrefix>>-az-nsg-x-sqlmi",
-          "routeTableName": "adp-<<namePrefix>>-az-udr-x-sqlmi",
+          "networkSecurityGroupName": "adp-sxx-az-nsg-x-sqlmi",
+          "routeTableName": "adp-sxx-az-udr-x-sqlmi",
           "serviceEndpoints": [],
           "delegations": [
             {

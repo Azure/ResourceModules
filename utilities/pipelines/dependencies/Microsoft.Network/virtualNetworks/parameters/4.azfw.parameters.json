@@ -3,7 +3,7 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "name": {
-      "value": "adp-<<namePrefix>>-az-vnet-x-azfw"
+      "value": "adp-sxx-az-vnet-x-azfw"
     },
     "addressPrefixes": {
       "value": [

@@ -33,7 +33,7 @@ function Get-DependencyResourceNameList {
     }
 
     # Replace tokens in dependency parameter files
-    $Settings = Get-Content -Path (Join-Path $repoRootPath 'settings.json') | ConvertFrom-Json
+    $Settings = Get-Content -Path (Join-Path $repoRootPath 'settings.json') | ConvertFrom-Json -AsHashtable
     foreach ($parameterFilePath in $parameterFilePaths) {
         $ConvertTokensInputs = @{
             ParameterFilePath   = $parameterFilePath

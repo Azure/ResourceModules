@@ -3,7 +3,7 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "name": {
-      "value": "adp-<<namePrefix>>-az-nsg-x-sqlmi"
+      "value": "adp-sxx-az-nsg-x-sqlmi"
     }
   }
 }

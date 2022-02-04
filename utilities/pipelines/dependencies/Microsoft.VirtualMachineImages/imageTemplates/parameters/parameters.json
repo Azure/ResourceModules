@@ -3,10 +3,10 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "adp-<<namePrefix>>-az-imgt-x-001"
+            "value": "adp-sxx-az-imgt-x-001"
         },
         "userMsiName": {
-            "value": "adp-<<namePrefix>>-az-msi-x-001"
+            "value": "adp-sxx-az-msi-x-001"
         },
         "userMsiResourceGroup": {
             "value": "validation-rg"
@@ -38,7 +38,7 @@
             ]
         },
         "unManagedImageName": {
-            "value": "adp-<<namePrefix>>-az-umi-x-001"
+            "value": "adp-sxx-az-umi-x-001"
         }
     }
 }

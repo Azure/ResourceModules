@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "adp-<<namePrefix>>-az-msi-x-001"
+            "value": "adp-sxx-az-msi-x-001"
         }
     }
 }

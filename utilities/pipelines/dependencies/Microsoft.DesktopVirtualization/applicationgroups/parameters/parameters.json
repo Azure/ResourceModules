@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "adp-<<namePrefix>>-az-avdag-x-001"
+            "value": "adp-sxx-az-avdag-x-001"
         },
         "location": {
             "value": "westeurope"
@@ -12,7 +12,7 @@
             "value": "RemoteApp"
         },
         "hostpoolName": {
-            "value": "adp-<<namePrefix>>-az-avdhp-x-001"
+            "value": "adp-sxx-az-avdhp-x-001"
         },
         "friendlyName": {
             "value": "Remote Applications 1"

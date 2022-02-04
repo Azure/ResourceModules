@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "adp-<<namePrefix>>-az-ag-x-001"
+            "value": "adp-sxx-az-ag-x-001"
         },
         "groupShortName": {
             "value": "azagweux001"
