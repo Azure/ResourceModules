@@ -36,11 +36,11 @@ function Get-DependencyResourceNameList {
     $Settings = Get-Content -Path (Join-Path $repoRootPath 'settings.json') | ConvertFrom-Json
     foreach ($parameterFilePath in $parameterFilePaths) {
         $ConvertTokensInputs = @{
-            ParameterFilePath              = $parameterFilePath
-            LocalCustomParameterFileTokens = $Settings.parameterFileTokens.localTokens.tokens
-            TokenPrefix                    = $Settings.parameterFileTokens.tokenPrefix
-            TokenSuffix                    = $Settings.parameterFileTokens.tokenSuffix
-            Verbose                        = $false
+            ParameterFilePath   = $parameterFilePath
+            ParameterFileTokens = $Settings.parameterFileTokens.localTokens
+            TokenPrefix         = $Settings.parameterFileTokens.tokenPrefix
+            TokenSuffix         = $Settings.parameterFileTokens.tokenSuffix
+            Verbose             = $false
         }
         $null = Convert-TokensInParameterFile @ConvertTokensInputs
     }
