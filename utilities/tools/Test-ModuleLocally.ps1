@@ -93,16 +93,16 @@ function Test-ModuleLocally {
         [Psobject] $ValidateOrDeployParameters,
 
         [Parameter(Mandatory = $false)]
+        [hashtable] $AdditionalTokens = @{},
+
+        [Parameter(Mandatory = $false)]
         [switch] $PesterTest,
 
         [Parameter(Mandatory = $false)]
         [switch] $DeploymentTest,
 
         [Parameter(Mandatory = $false)]
-        [switch] $ValidationTest,
-
-        [Parameter(Mandatory = $false)]
-        [psobject] $AdditionalTokens
+        [switch] $ValidationTest
     )
 
     begin {
@@ -163,10 +163,15 @@ function Test-ModuleLocally {
 
             # Default Tokens
             $ConvertTokensInputs = @{
-                DefaultParameterFileTokens = @(
-                    @{ Name = 'subscriptionId'; Value = $ValidateOrDeployParameters.SubscriptionId }
-                    @{ Name = 'managementGroupId'; Value = $ValidateOrDeployParameters.ManagementGroupId }
-                )
+                ParameterFileTokens = @{
+                    subscriptionId    = $ValidateOrDeployParameters.SubscriptionId
+                    managementGroupId = $ValidateOrDeployParameters.ManagementGroupId
+                }
+            }
+
+            #Add Other Parameter File Tokens (For Testing)
+            if ($AdditionalTokens) {
+                $ConvertTokensInputs.ParameterFileTokens += $AdditionalTokens
             }
 
             # Tokens in settings.json
@@ -174,23 +179,17 @@ function Test-ModuleLocally {
             if (Test-Path $settingsFilePath) {
                 $Settings = Get-Content -Path $settingsFilePath -Raw | ConvertFrom-Json
                 $ConvertTokensInputs += @{
-                    LocalCustomParameterFileTokens = $Settings.parameterFileTokens.localTokens.tokens
-                    TokenPrefix                    = $Settings.parameterFileTokens.tokenPrefix
-                    TokenSuffix                    = $Settings.parameterFileTokens.tokenSuffix
+                    TokenPrefix = $Settings.parameterFileTokens.tokenPrefix
+                    TokenSuffix = $Settings.parameterFileTokens.tokenSuffix
+                }
+
+                if ($settings.localTokens) {
+                    $ConvertTokensInputs.ParameterFileTokens += $settings.localTokens
                 }
             }
-
-            #Add Other Parameter File Tokens (For Testing)
-            if ($AdditionalTokens) {
-                $ConvertTokensInputs += @{
-                    OtherCustomParameterFileTokens = $AdditionalTokens
-                }
-            }
-
 
             # Invoke Token Replacement Functionality and Convert Tokens in Parameter Files
-            $ModuleParameterFiles | ForEach-Object { $null = Convert-TokensInParameterFile @ConvertTokensInputs -ParameterFilePath $PSItem.FullName }
-
+            $ModuleParameterFiles | ForEach-Object { $null = Convert-TokensInParameterFile @ConvertTokensInputs -ParameterFilePath $_.FullName }
 
             # Deployment & Validation Testing
             # -------------------------------

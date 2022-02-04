@@ -43,56 +43,44 @@ function Convert-TokensInParameterFile {
     [CmdletBinding()]
     param (
         [parameter(Mandatory = $true)]
-        [string]$ParameterFilePath,
+        [string] $ParameterFilePath,
 
         [parameter(Mandatory = $false)]
-        [psobject]$DefaultParameterFileTokens,
-
-        [parameter(Mandatory = $false)]
-        [psobject]$LocalCustomParameterFileTokens,
+        [hashtable] $ParameterFileTokens = @(),
 
         [parameter(Mandatory = $true)]
-        [string]$TokenPrefix,
+        [string] $TokenPrefix,
 
         [parameter(Mandatory = $true)]
-        [string]$TokenSuffix,
+        [string] $TokenSuffix,
 
         [parameter(Mandatory = $false)]
-        [psobject]$OtherCustomParameterFileTokens,
+        [bool] $SwapValueWithName = $false,
 
         [parameter(Mandatory = $false)]
-        [bool]$SwapValueWithName = $false,
-
-        [parameter(Mandatory = $false)]
-        [string]$OutputDirectory
+        [string] $OutputDirectory
     )
 
     begin {
         # Load used funtions
         . (Join-Path $PSScriptRoot './helper/Convert-TokenInFile.ps1')
-        $AllCustomParameterFileTokens = @()
     }
 
     process {
-        Write-Verbose "Default Tokens Count: ($($DefaultParameterFileTokens.Count)) Tokens (From Input Parameter)"
-        ## Get Local Custom Parameter File Tokens (Should not Contain Sensitive Information)
-        Write-Verbose "Local Custom Tokens Count: ($($LocalCustomParameterFileTokens.Count)) Tokens (From Settings File)"
-        $AllCustomParameterFileTokens += ($LocalCustomParameterFileTokens | Select-Object -Property Name, Value)
+        Write-Verbose ('Using [{0}] tokens' -f $ParameterFileTokens)
+
         # Combine All Input Token Types, Remove Duplicates and Only Select Name, Value if they contain other unrequired properties
-        $AllCustomParameterFileTokens = $DefaultParameterFileTokens + $LocalCustomParameterFileTokens |
-            ForEach-Object { [PSCustomObject]$PSItem } |
+        $ParameterFileTokens = $ParameterFileTokens |
+            ForEach-Object { [PSCustomObject] $PSItem } |
             Sort-Object Name -Unique |
             Select-Object -Property Name, Value |
-            Where-Object { $null -ne $PSitem.Name -and $null -ne $PSitem.Value }
+            Where-Object { $null -ne $PSitem.Name -and $null -ne $PSitem.Value
+            }
 
-        # Other Custom Parameter File Tokens (Can be used for testing)
-        if ($OtherCustomParameterFileTokens) {
-            $AllCustomParameterFileTokens += $OtherCustomParameterFileTokens | ForEach-Object { [PSCustomObject]$PSItem }
-        }
-        Write-Verbose ("All Parameter File Tokens Count: ($($AllCustomParameterFileTokens.Count))")
+        Write-Verbose ("All Parameter File Tokens Count: ($($ParameterFileTokens.Count))")
         # Apply Prefix and Suffix to Tokens and Prepare Object for Conversion
         Write-Verbose ("Applying Token Prefix '$TokenPrefix' and Token Suffix '$TokenSuffix'")
-        foreach ($ParameterFileToken in $AllCustomParameterFileTokens) {
+        foreach ($ParameterFileToken in $ParameterFileTokens) {
             $ParameterFileToken.Name = -join ($TokenPrefix, $ParameterFileToken.Name, $TokenSuffix)
         }
         # Convert Tokens in Parameter Files
@@ -100,7 +88,7 @@ function Convert-TokensInParameterFile {
             # Prepare Input to Token Converter Function
             $ConvertTokenListFunctionInput = @{
                 FilePath             = $ParameterFilePath
-                TokenNameValueObject = $AllCustomParameterFileTokens
+                TokenNameValueObject = $ParameterFileTokens
                 SwapValueWithName    = $SwapValueWithName
             }
             if ($OutputDirectory) {
@@ -116,6 +104,6 @@ function Convert-TokensInParameterFile {
     }
     end {
         Write-Verbose "Token Replacement Status: $ConversionStatus"
-        return [bool]$ConversionStatus
+        return [bool] $ConversionStatus
     }
 }
