@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "<<namePrefix>>-az-udr-x-001"
+            "value": "sxx-az-udr-x-001"
         },
         "routes": {
             "value": [
@@ -14,16 +14,6 @@
                         "nextHopType": "VirtualAppliance",
                         "nextHopIpAddress": "172.16.0.20"
                     }
-                }
-            ]
-        },
-        "roleAssignments": {
-            "value": [
-                {
-                    "roleDefinitionIdOrName": "Reader",
-                    "principalIds": [
-                        "<<deploymentSpId>>"
-                    ]
                 }
             ]
         }
