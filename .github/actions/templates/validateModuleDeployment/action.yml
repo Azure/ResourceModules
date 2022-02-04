@@ -80,28 +80,32 @@ runs:
 
         # Load Settings File
         $Settings = Get-Content -Path "settings.json" | ConvertFrom-Json
-        # Initialize Default Parameter File Tokens
-        $DefaultParameterFileTokens = @(
-            @{ Name = 'resourceGroupName'; Value = '${{ inputs.resourceGroupName }}' }
-            @{ Name = 'subscriptionId'; Value = '${{ inputs.subscriptionId }}' }
-            @{ Name = 'managementGroupId'; Value = '${{ inputs.managementGroupId }}' }
-            @{ Name = "tenantId"; Value = '${{ env.ARM_TENANT_ID }}' }
-            @{ Name = "deploymentSpId"; Value = '${{ env.DEPLOYMENT_SP_ID }}' }
-        ) | ForEach-Object { [PSCustomObject]$PSItem }
-
-        # Get additional Custom Parameter File Tokens from input
-        Write-Verbose 'Additional Custom Parameter File Tokens: ${{ inputs.customParameterFileTokens }}' -Verbose
-        $OtherCustomParameterFileTokens = '${{  inputs.customParameterFileTokens }}' | ConvertFrom-Json
 
         # Construct Token Function Input
         $ConvertTokensInputs = @{
-            ParameterFilePath                 = '${{ inputs.parameterFilePath }}'
-            DefaultParameterFileTokens        = $DefaultParameterFileTokens
-            OtherCustomParameterFileTokens    = $OtherCustomParameterFileTokens
-            LocalCustomParameterFileTokens    = $Settings.parameterFileTokens.localTokens.tokens
-            TokenPrefix                       = $Settings.parameterFileTokens.tokenPrefix
-            TokenSuffix                       = $Settings.parameterFileTokens.tokenSuffix
+            ParameterFileTokens = @{
+                resourceGroupName = '${{ inputs.resourceGroupName }}'
+                subscriptionId    = '${{ inputs.subscriptionId }}'
+                managementGroupId = '${{ inputs.managementGroupId }}'
+                tenantId          = '${{ env.ARM_TENANT_ID }}'
+                deploymentSpId    = '${{ env.DEPLOYMENT_SP_ID }}'
+            }
+            ParameterFilePath   = '${{ inputs.parameterFilePath }}'
+            TokenPrefix         = $Settings.parameterFileTokens.tokenPrefix
+            TokenSuffix         = $Settings.parameterFileTokens.tokenSuffix
         }
+
+        if ($Settings.parameterFileTokens.localTokens) {
+          Write-Verbose ('Using local tokens [{0}]' -f ($Settings.parameterFileTokens.localTokens.Keys -join ', ')) -Verbose
+          $ConvertTokensInputs.ParameterFileTokens += $Settings.parameterFileTokens.localTokens
+        }
+
+        if(-not [String]::IsNullOrEmpty('${{  inputs.customParameterFileTokens }}')) {
+          $customTokens = '${{  inputs.customParameterFileTokens }}' | ConvertFrom-Json
+          Write-Verbose ('Using custom parameter file tokens [{0}]' -f  ($customTokens.Keys -join ', ')) -Verbose
+          $ConvertTokensInputs.ParameterFileTokens +=  $customTokens
+        }
+
         # Invoke Token Replacement Functionality
         $null = Convert-TokensInParameterFile @ConvertTokensInputs -Verbose
 

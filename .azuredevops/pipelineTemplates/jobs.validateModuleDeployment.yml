@@ -167,28 +167,31 @@ jobs:
                 # Load Settings File
                 $Settings = Get-Content -Path (Join-Path '$(moduleRepoRoot)' 'settings.json') | ConvertFrom-Json
 
-                # Initialize Default Parameter File Tokens
-                $DefaultParameterFileTokens = @(
-                    @{ Name = 'resourceGroupName'; Value = '${{ parameters.resourceGroupName }}' }
-                    @{ Name = 'subscriptionId';    Value = '${{ parameters.subscriptionId }}' }
-                    @{ Name = 'managementGroupId'; Value = '${{ parameters.managementGroupId }}' }
-                    @{ Name = "tenantId";          Value = '$(ARM_TENANT_ID)' }
-                    @{ Name = "deploymentSpId";    Value = '$(DEPLOYMENT_SP_ID)' }
-                ) | ForEach-Object { [PSCustomObject]$PSItem }
-
-                # Get additional Custom Parameter File Tokens from input
-                Write-Verbose 'Additional Custom Parameter File Tokens: ${{ deploymentBlock.customParameterFileTokens }}' -Verbose
-                $OtherCustomParameterFileTokens = '${{  deploymentBlock.customParameterFileTokens }}' | ConvertFrom-Json
-
                 # Construct Token Function Input
                 $ConvertTokensInputs = @{
-                    ParameterFilePath                 = Join-Path '$(parametersRepoRoot)' '${{ deploymentBlock.path }}'
-                    DefaultParameterFileTokens        = $DefaultParameterFileTokens
-                    OtherCustomParameterFileTokens    = $OtherCustomParameterFileTokens
-                    LocalCustomParameterFileTokens    = $Settings.parameterFileTokens.localTokens.tokens
-                    TokenPrefix                       = $Settings.parameterFileTokens.tokenPrefix
-                    TokenSuffix                       = $Settings.parameterFileTokens.tokenSuffix
+                    ParameterFileTokens = @{
+                        resourceGroupName = '${{ parameters.resourceGroupName }}'
+                        subscriptionId    = '${{ parameters.subscriptionId }}'
+                        managementGroupId = '${{ parameters.managementGroupId }}'
+                        tenantId          = '$(ARM_TENANT_ID)'
+                        deploymentSpId    = '$(DEPLOYMENT_SP_ID)'
+                    }
+                    ParameterFilePath   = Join-Path '$(parametersRepoRoot)' '${{ deploymentBlock.path }}'
+                    TokenPrefix         = $Settings.parameterFileTokens.tokenPrefix
+                    TokenSuffix         = $Settings.parameterFileTokens.tokenSuffix
                 }
+
+                if ($Settings.parameterFileTokens.localTokens) {
+                  Write-Verbose ('Using local tokens [{0}]' -f ($Settings.parameterFileTokens.localTokens.Keys -join ', ')) -Verbose
+                  $ConvertTokensInputs.ParameterFileTokens += $Settings.parameterFileTokens.localTokens
+                }
+
+                if(-not [String]::IsNullOrEmpty('${{ deploymentBlock.customParameterFileTokens }}')) {
+                  $customTokens = '${{ deploymentBlock.customParameterFileTokens }}' | ConvertFrom-Json
+                  Write-Verbose ('Using custom parameter file tokens [{0}]' -f  ($customTokens.Keys -join ', ')) -Verbose
+                  $ConvertTokensInputs.ParameterFileTokens +=  $customTokens
+                }
+
                 # Invoke Token Replacement Functionality
                 $null = Convert-TokensInParameterFile @ConvertTokensInputs -Verbose
 

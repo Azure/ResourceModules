@@ -183,7 +183,7 @@ function Test-ModuleLocally {
                     TokenSuffix = $Settings.parameterFileTokens.tokenSuffix
                 }
 
-                if ( $Settings.parameterFileTokens.localTokens) {
+                if ($Settings.parameterFileTokens.localTokens) {
                     $ConvertTokensInputs.ParameterFileTokens += $Settings.parameterFileTokens.localTokens
                 }
             }
