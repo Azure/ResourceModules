@@ -540,7 +540,7 @@ stages:
             - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
               templateFilePath: $(templateFilePath)
               displayName: Default recovery services vault
-              customParameterFileTokens: '[{"Name":"msiPrincipalId","Value":"$(msiPrincipalId)"}]'
+              customParameterFileTokens: '{"msiPrincipalId":"$(msiPrincipalId)"}'
 
   - stage: deploy_kv
     displayName: Deploy key vaults
@@ -561,17 +561,17 @@ stages:
               templateFilePath: $(templateFilePath)
               displayName: Default Key Vault
               jobName: default_kv
-              customParameterFileTokens: '[{"Name":"msiPrincipalId","Value":"$(msiPrincipalId)"}]'
+              customParameterFileTokens: '{"msiPrincipalId":"$(msiPrincipalId)"}'
             - path: $(dependencyPath)/$(resourceType)/parameters/pe.parameters.json
               templateFilePath: $(templateFilePath)
               displayName: Private Endpoint Key Vault
-              customParameterFileTokens: '[{"Name":"msiPrincipalId","Value":"$(msiPrincipalId)"}]'
+              customParameterFileTokens: '{"msiPrincipalId":"$(msiPrincipalId)"}'
             - ${{ if eq( parameters.deploySqlMiDependencies, true) }}:
                 - path: $(dependencyPath)/$(resourceType)/parameters/sqlmi.parameters.json
                   templateFilePath: $(templateFilePath)
                   displayName: SQLMI key vault
                   jobName: sqlmi_kv
-                  customParameterFileTokens: '[{"Name":"msiPrincipalId","Value":"$(msiPrincipalId)"}]'
+                  customParameterFileTokens: '{"msiPrincipalId":"$(msiPrincipalId)"}'
       - job:
         displayName: Set key vault secrets keys and certificates
         dependsOn:
@@ -777,7 +777,7 @@ stages:
             - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
               templateFilePath: $(templateFilePath)
               displayName: MSI Role Assignment
-              customParameterFileTokens: '[{"Name":"msiPrincipalId","Value":"$(msiPrincipalId)"}]'
+              customParameterFileTokens: '{"msiPrincipalId":"$(msiPrincipalId)"}'
 
   - stage: deploy_vnet
     displayName: Deploy virtual networks

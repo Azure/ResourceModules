@@ -782,7 +782,7 @@ jobs:
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
           removeDeployment: '${{ env.removeDeployment }}'
-          customParameterFileTokens: '[{"Name":"msiPrincipalId","Value":"${{ needs.job_deploy_msi.outputs.msiPrincipalId }}"}]'
+          customParameterFileTokens: '{"msiPrincipalId":"${{ needs.job_deploy_msi.outputs.msiPrincipalId }}"}'
 
   job_deploy_kv:
     runs-on: ubuntu-20.04
@@ -813,7 +813,7 @@ jobs:
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
           removeDeployment: '${{ env.removeDeployment }}'
-          customParameterFileTokens: '[{"Name":"msiPrincipalId","Value":"${{ needs.job_deploy_msi.outputs.msiPrincipalId }}"}]'
+          customParameterFileTokens: '{"msiPrincipalId":"${{ needs.job_deploy_msi.outputs.msiPrincipalId }}"}'
 
   job_deploy_kv_secrets:
     runs-on: ubuntu-20.04
@@ -941,7 +941,7 @@ jobs:
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
           removeDeployment: '${{ env.removeDeployment }}'
-          customParameterFileTokens: '[{"Name":"msiPrincipalId","Value":"${{ needs.job_deploy_msi.outputs.msiPrincipalId }}"}]'
+          customParameterFileTokens: '{"msiPrincipalId":"${{ needs.job_deploy_msi.outputs.msiPrincipalId }}"}'
 
   job_deploy_sqlmi_kv_secrets:
     runs-on: ubuntu-20.04
@@ -1077,7 +1077,7 @@ jobs:
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
           removeDeployment: '${{ env.removeDeployment }}'
-          customParameterFileTokens: '[{"Name":"msiPrincipalId","Value":"${{ needs.job_deploy_msi.outputs.msiPrincipalId }}"}]'
+          customParameterFileTokens: '{"msiPrincipalId":"${{ needs.job_deploy_msi.outputs.msiPrincipalId }}"}'
 
   job_deploy_vnet:
     runs-on: ubuntu-20.04

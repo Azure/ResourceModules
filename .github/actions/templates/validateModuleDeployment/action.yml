@@ -21,7 +21,7 @@ inputs:
     description: 'The managementGroupId to deploy to'
     required: false
   customParameterFileTokens:
-    description: 'Additional parameter file token pairs in json format. e.g. [{"Name":"tokenName","Value":"tokenValue"}]'
+    description: 'Additional parameter file token pairs in json format. e.g. {"tokenName":"tokenValue"}'
     required: false
   removeDeployment:
     description: 'Set "true" to set module up for removal'
