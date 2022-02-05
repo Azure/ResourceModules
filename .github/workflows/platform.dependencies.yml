@@ -250,7 +250,7 @@ jobs:
             . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInParameterFile.ps1')
 
             # Replace tokens in parameter file
-            $Settings = Get-Content -Path "settings.json" | ConvertFrom-Json
+            $Settings = Get-Content -Path "settings.json" | ConvertFrom-Json -AsHashTable
             $ConvertTokensInputs = @{
                 ParameterFilePath   = $parameterFilePath
                 ParameterFileTokens = $Settings.parameterFileTokens.localTokens
@@ -403,7 +403,7 @@ jobs:
             . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInParameterFile.ps1')
 
             # Prepare replace tokens in parameter file
-            $Settings = Get-Content -Path "settings.json" | ConvertFrom-Json
+            $Settings = Get-Content -Path "settings.json" | ConvertFrom-Json -AsHashTable
             $ConvertTokensInputs = @{
                 ParameterFileTokens = $Settings.parameterFileTokens.localTokens
                 TokenPrefix         = $Settings.parameterFileTokens.tokenPrefix
@@ -855,7 +855,7 @@ jobs:
             . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInParameterFile.ps1')
 
             # Replace tokens in parameter file
-            $Settings = Get-Content -Path "settings.json" | ConvertFrom-Json
+            $Settings = Get-Content -Path "settings.json" | ConvertFrom-Json -AsHashTable
             $ConvertTokensInputs = @{
                 ParameterFilePath   = $parameterFilePath
                 ParameterFileTokens = $Settings.parameterFileTokens.localTokens
@@ -985,7 +985,7 @@ jobs:
             . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInParameterFile.ps1')
 
             # Replace tokens in parameter file
-            $Settings = Get-Content -Path "settings.json" | ConvertFrom-Json
+            $Settings = Get-Content -Path "settings.json" | ConvertFrom-Json -AsHashTable
             $ConvertTokensInputs = @{
                 ParameterFilePath   = $parameterFilePath
                 ParameterFileTokens = $Settings.parameterFileTokens.localTokens
