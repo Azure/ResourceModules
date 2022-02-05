@@ -8,20 +8,14 @@ This Function aggregates all the different token types (Default and Local) and t
 .PARAMETER ParameterFilePath
 Mandatory. The Path to the Parameter File that contains tokens to be replaced.
 
-.PARAMETER DefaultParameterFileTokens
-Optional. An object containing the default parameter file tokens that are always available.
-
-.PARAMETER LocalCustomParameterFileTokens
-Optional. An object containing the local parameter file tokens to be injected for replacement
+.PARAMETER ParameterFileTokens
+Optional. An object containing the parameter file tokens to set
 
 .PARAMETER TokenPrefix
 Mandatory. The prefix used to identify a token in the parameter file (i.e. <<)
 
 .PARAMETER TokenSuffix
 Mandatory. The suffix used to identify a token in the parameter file (i.e. >>)
-
-.PARAMETER OtherCustomParameterFileTokens
-Optional. An object containing other optional tokens that are to be replaced in the parameter file (used for testing)
 
 .PARAMETER SwapValueWithName
 Optional. A boolean that enables the search for the original value and replaces it with a token. Used to revert configuration. Default is false

@@ -195,10 +195,10 @@ stages:
                 # Replace tokens in parameter file
                 $Settings = Get-Content -Path (Join-Path '$(Build.SourcesDirectory)' 'settings.json') | ConvertFrom-Json
                 $ConvertTokensInputs = @{
-                    ParameterFilePath                 = $parameterFilePath
-                    LocalCustomParameterFileTokens    = $Settings.parameterFileTokens.localTokens.tokens
-                    TokenPrefix                       = $Settings.parameterFileTokens.tokenPrefix
-                    TokenSuffix                       = $Settings.parameterFileTokens.tokenSuffix
+                    ParameterFilePath   = $parameterFilePath
+                    ParameterFileTokens = $Settings.parameterFileTokens.localTokens
+                    TokenPrefix         = $Settings.parameterFileTokens.tokenPrefix
+                    TokenSuffix         = $Settings.parameterFileTokens.tokenSuffix
                 }
                 $null = Convert-TokensInParameterFile @ConvertTokensInputs -Verbose
 
@@ -312,9 +312,9 @@ stages:
                 # Prepare replace tokens in parameter file
                 $Settings = Get-Content -Path (Join-Path '$(Build.SourcesDirectory)' 'settings.json') | ConvertFrom-Json
                 $ConvertTokensInputs = @{
-                    LocalCustomParameterFileTokens    = $Settings.parameterFileTokens.localTokens.tokens
-                    TokenPrefix                       = $Settings.parameterFileTokens.tokenPrefix
-                    TokenSuffix                       = $Settings.parameterFileTokens.tokenSuffix
+                    ParameterFileTokens = $Settings.parameterFileTokens.localTokens
+                    TokenPrefix         = $Settings.parameterFileTokens.tokenPrefix
+                    TokenSuffix         = $Settings.parameterFileTokens.tokenSuffix
                 }
 
                 # Retrieving parameters from previous job outputs and parameter files
@@ -612,10 +612,10 @@ stages:
                 # Replace tokens in parameter file
                 $Settings = Get-Content -Path (Join-Path '$(Build.SourcesDirectory)' 'settings.json') | ConvertFrom-Json
                 $ConvertTokensInputs = @{
-                    ParameterFilePath                 = $parameterFilePath
-                    LocalCustomParameterFileTokens    = $Settings.parameterFileTokens.localTokens.tokens
-                    TokenPrefix                       = $Settings.parameterFileTokens.tokenPrefix
-                    TokenSuffix                       = $Settings.parameterFileTokens.tokenSuffix
+                    ParameterFilePath   = $parameterFilePath
+                    ParameterFileTokens = $Settings.parameterFileTokens.localTokens
+                    TokenPrefix         = $Settings.parameterFileTokens.tokenPrefix
+                    TokenSuffix         = $Settings.parameterFileTokens.tokenSuffix
                 }
                 $null = Convert-TokensInParameterFile @ConvertTokensInputs -Verbose
 
@@ -709,10 +709,10 @@ stages:
                     # Replace tokens in parameter file
                     $Settings = Get-Content -Path (Join-Path '$(Build.SourcesDirectory)' 'settings.json') | ConvertFrom-Json
                     $ConvertTokensInputs = @{
-                        ParameterFilePath                 = $parameterFilePath
-                        LocalCustomParameterFileTokens    = $Settings.parameterFileTokens.localTokens.tokens
-                        TokenPrefix                       = $Settings.parameterFileTokens.tokenPrefix
-                        TokenSuffix                       = $Settings.parameterFileTokens.tokenSuffix
+                        ParameterFilePath   = $parameterFilePath
+                        ParameterFileTokens = $Settings.parameterFileTokens.localTokens
+                        TokenPrefix         = $Settings.parameterFileTokens.tokenPrefix
+                        TokenSuffix         = $Settings.parameterFileTokens.tokenSuffix
                     }
                     $null = Convert-TokensInParameterFile @ConvertTokensInputs -Verbose
 
