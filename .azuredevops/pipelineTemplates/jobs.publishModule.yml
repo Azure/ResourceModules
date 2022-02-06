@@ -106,7 +106,7 @@ jobs:
           targetType: inline
           pwsh: true
           script: |
-            Write-Host "##[group]Setup agent"
+            Write-Output "##[group]Setup agent"
 
             # Load used functions
             . (Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
@@ -121,7 +121,7 @@ jobs:
             # Set agent up
             Set-EnvironmentOnAgent -PSModules $Modules
 
-            Write-Host "##[endgroup]"
+            Write-Output "##[endgroup]"
 
       # [Multi Repo] Support task
       #--------------------------
@@ -131,7 +131,7 @@ jobs:
           targetType: inline
           pwsh: true
           script: |
-            Write-Host "##[group]Handle Multi-Repo Invocation"
+            Write-Output "##[group]Handle Multi-Repo Invocation"
 
             # ---------------------------- #
             # HANDLE MULTI-REPO INVOCATION #
@@ -145,9 +145,9 @@ jobs:
               Write-Verbose "No Multi-Repo Checkout" -Verbose
               $modulePath = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.modulePath }}'
             }
-            Write-Host "##vso[task.setvariable variable=ENVMODULEPATH]$modulePath"
+            Write-Output "##vso[task.setvariable variable=ENVMODULEPATH]$modulePath"
 
-            Write-Host "##[endgroup]"
+            Write-Output "##[endgroup]"
 
       # [Universal Artifact-feed publish] task(s)
       #------------------------------------------
@@ -162,7 +162,7 @@ jobs:
           targetType: inline
           pwsh: true
           script: |
-            Write-Host "##[group]Publish module to artifacts feed"
+            Write-Output "##[group]Publish module to artifacts feed"
 
             # Load used functions
             . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Get-ModulesToUpdate.ps1')
@@ -184,11 +184,11 @@ jobs:
             # Get the modified child resources
             $ModulesToUpdate = Get-ModulesToUpdate @functionInput -Verbose
 
-            Write-Host "##[endgroup]"
+            Write-Output "##[endgroup]"
 
             # Publish the modified child resources
             foreach ($ModuleToUpdate in $ModulesToUpdate) {
-              Write-Host "##[group]- $($ModuleToUpdate.TemplateFilePath)"
+              Write-Output "##[group]- $($ModuleToUpdate.TemplateFilePath)"
 
               $functionInput = @{
                 TemplateFilePath = $ModuleToUpdate.TemplateFilePath
@@ -204,7 +204,7 @@ jobs:
 
               Publish-ModuleToUniversalArtifactFeed @functionInput -Verbose
 
-              Write-Host "##[endgroup]"
+              Write-Output "##[endgroup]"
             }
         env:
           TOKEN: $(vstsFeedToken)
@@ -225,7 +225,7 @@ jobs:
           pwsh: true
           ScriptType: InlineScript
           inline: |
-            Write-Host "##[group]Publish module to template specs"
+            Write-Output "##[group]Publish module to template specs"
 
             # Load used functions
             . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Get-ModulesToUpdate.ps1')
@@ -247,11 +247,11 @@ jobs:
             # Get the modified child resources
             $ModulesToUpdate = Get-ModulesToUpdate @functionInput -Verbose
 
-            Write-Host "##[endgroup]"
+            Write-Output "##[endgroup]"
 
             # Publish the modified child resources
             foreach ($ModuleToUpdate in $ModulesToUpdate) {
-              Write-Host "##[group]- $($ModuleToUpdate.TemplateFilePath)"
+              Write-Output "##[group]- $($ModuleToUpdate.TemplateFilePath)"
 
               $functionInput = @{
                 TemplateFilePath         = $ModuleToUpdate.TemplateFilePath
@@ -266,7 +266,7 @@ jobs:
 
               Publish-ModuleToTemplateSpec @functionInput -Verbose
 
-              Write-Host "##[endgroup]"
+              Write-Output "##[endgroup]"
             }
 
       # [private bicep registry publish] task(s)
@@ -285,7 +285,7 @@ jobs:
           pwsh: true
           ScriptType: InlineScript
           inline: |
-            Write-Host "##[group]Publish module to private bicep registry"
+            Write-Output "##[group]Publish module to private bicep registry"
 
             # Load used functions
             . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Get-ModulesToUpdate.ps1')
@@ -307,11 +307,11 @@ jobs:
             # Get the modified child resources
             $ModulesToUpdate = Get-ModulesToUpdate @functionInput -Verbose
 
-            Write-Host "##[endgroup]"
+            Write-Output "##[endgroup]"
 
             # Publish the modified child resources
             foreach ($ModuleToUpdate in $ModulesToUpdate) {
-              Write-Host "##[group]- $($ModuleToUpdate.TemplateFilePath)"
+              Write-Output "##[group]- $($ModuleToUpdate.TemplateFilePath)"
 
               $functionInput = @{
                 TemplateFilePath         = $ModuleToUpdate.TemplateFilePath
@@ -325,6 +325,6 @@ jobs:
               Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
               Publish-ModuleToPrivateBicepRegistry @functionInput -Verbose
-              
-              Write-Host "##[endgroup]"
+
+              Write-Output "##[endgroup]"
             }

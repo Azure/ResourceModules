@@ -91,7 +91,7 @@ jobs:
           targetType: inline
           pwsh: true
           script: |
-            Write-Host "##[group]Handle Multi-Repo Invocation"
+            Write-Output "##[group]Handle Multi-Repo Invocation"
 
             # Handle multiple-repositories
             if( "${{ join(';',parameters.checkoutRepositories) }}".length -gt 0) {
@@ -103,10 +103,10 @@ jobs:
               $moduleRepoRoot = '$(System.DefaultWorkingDirectory)'
               $parametersRepoRoot = '$(System.DefaultWorkingDirectory)'
             }
-            Write-Host "##vso[task.setvariable variable=ModuleRepoRoot]$moduleRepoRoot"
-            Write-Host "##vso[task.setvariable variable=ParametersRepoRoot]$parametersRepoRoot"
+            Write-Output "##vso[task.setvariable variable=ModuleRepoRoot]$moduleRepoRoot"
+            Write-Output "##vso[task.setvariable variable=ParametersRepoRoot]$parametersRepoRoot"
 
-            Write-Host "##[endgroup]"
+            Write-Output "##[endgroup]"
 
       # [Agent] Prepare environment
       #----------------------------
@@ -116,7 +116,7 @@ jobs:
           targetType: inline
           pwsh: true
           script: |
-            Write-Host "##[group]Setup agent"
+            Write-Output "##[group]Setup agent"
 
             # Load used functions
             . (Join-Path '$(moduleRepoRoot)' 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
@@ -131,7 +131,7 @@ jobs:
             # Set agent up
             Set-EnvironmentOnAgent -PSModules $Modules
 
-            Write-Host "##[endgroup]"
+            Write-Output "##[endgroup]"
 
       # [Module Pester Test] task(s)
       #-----------------------------
@@ -144,7 +144,7 @@ jobs:
           ScriptType: InlineScript
           pwsh: true
           inline: |
-            Write-Host "##[group]Run general tests via (Pester) via connection [${{ parameters.serviceConnection }}]"
+            Write-Output "##[group]Run general tests via (Pester) via connection [${{ parameters.serviceConnection }}]"
 
             $moduleFolderPaths = @(Join-Path '$(moduleRepoRoot)' '${{ parameters.modulePath }}')
             $moduleFolderPaths += (Get-ChildItem $moduleFolderPaths -Recurse -Directory -Force).FullName | Where-Object {
@@ -175,7 +175,7 @@ jobs:
               }
             } -ErrorAction 'Stop'
 
-            Write-Host "##[endgroup]"
+            Write-Output "##[endgroup]"
           errorActionPreference: continue
 
       - task: PublishTestResults@2
@@ -215,7 +215,7 @@ jobs:
           targetType: inline
           pwsh: true
           script: |
-            Write-Host "##[group]Handle Multi-Repo Invocation"
+            Write-Output "##[group]Handle Multi-Repo Invocation"
 
             # Handle multiple-repositories
             if( "${{ join(';',parameters.checkoutRepositories) }}".length -gt 0) {
@@ -227,10 +227,10 @@ jobs:
               $moduleRepoRoot = '$(System.DefaultWorkingDirectory)'
               $parametersRepoRoot = '$(System.DefaultWorkingDirectory)'
             }
-            Write-Host "##vso[task.setvariable variable=ModuleRepoRoot]$moduleRepoRoot"
-            Write-Host "##vso[task.setvariable variable=ParametersRepoRoot]$parametersRepoRoot"
+            Write-Output "##vso[task.setvariable variable=ModuleRepoRoot]$moduleRepoRoot"
+            Write-Output "##vso[task.setvariable variable=ParametersRepoRoot]$parametersRepoRoot"
 
-            Write-Host "##[endgroup]"
+            Write-Output "##[endgroup]"
 
       # [Agent] Prepare environment
       #----------------------------
@@ -240,7 +240,7 @@ jobs:
           targetType: inline
           pwsh: true
           script: |
-            Write-Host "##[group]Setup agent"
+            Write-Output "##[group]Setup agent"
 
             # Load used functions
             . (Join-Path '$(moduleRepoRoot)' 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
@@ -248,7 +248,7 @@ jobs:
             # Set agent up
             Set-EnvironmentOnAgent
 
-            Write-Host "##[endgroup]"
+            Write-Output "##[endgroup]"
 
       # [Module Pester Test] task(s)
       #-----------------------------
@@ -261,7 +261,7 @@ jobs:
           ScriptType: InlineScript
           pwsh: true
           inline: |
-            Write-Host "##[group]Run API tests via (Pester) via connection [${{ parameters.serviceConnection }}]"
+            Write-Output "##[group]Run API tests via (Pester) via connection [${{ parameters.serviceConnection }}]"
 
             $moduleFolderPaths = @(Join-Path '$(moduleRepoRoot)' '${{ parameters.modulePath }}')
             $moduleFolderPaths += (Get-ChildItem $moduleFolderPaths -Recurse -Directory -Force).FullName | Where-Object {
@@ -292,7 +292,7 @@ jobs:
               }
             } -ErrorAction 'Stop'
 
-            Write-Host "##[endgroup]"
+            Write-Output "##[endgroup]"
           errorActionPreference: continue
 
       - task: PublishTestResults@2

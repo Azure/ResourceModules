@@ -105,7 +105,7 @@ jobs:
               targetType: inline
               pwsh: true
               script: |
-                Write-Host "##[group]Setup agent"
+                Write-Output "##[group]Setup agent"
 
                 # Load used functions
                 . (Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
@@ -131,7 +131,7 @@ jobs:
                 # Set agent up
                 Set-EnvironmentOnAgent -PSModules $Modules
 
-                Write-Host "##[endgroup]"
+                Write-Output "##[endgroup]"
 
           # [Multi Repo] Support task
           #--------------------------
@@ -141,7 +141,7 @@ jobs:
               targetType: inline
               pwsh: true
               script: |
-                Write-Host "##[group]Handle Multi-Repo Invocation"
+                Write-Output "##[group]Handle Multi-Repo Invocation"
 
                 # Handle multiple-repositories
                 if( "${{ join(';',parameters.checkoutRepositories) }}".length -gt 0) {
@@ -153,10 +153,10 @@ jobs:
                   $moduleRepoRoot = '$(System.DefaultWorkingDirectory)'
                   $parametersRepoRoot = '$(System.DefaultWorkingDirectory)'
                 }
-                Write-Host "##vso[task.setvariable variable=ModuleRepoRoot]$moduleRepoRoot"
-                Write-Host "##vso[task.setvariable variable=parametersRepoRoot]$parametersRepoRoot"
+                Write-Output "##vso[task.setvariable variable=ModuleRepoRoot]$moduleRepoRoot"
+                Write-Output "##vso[task.setvariable variable=parametersRepoRoot]$parametersRepoRoot"
 
-                Write-Host "##[endgroup]"
+                Write-Output "##[endgroup]"
 
           # [Agent] Replace tokens
           #-----------------------
@@ -169,7 +169,7 @@ jobs:
               ScriptType: InlineScript
               pwsh: true
               inline: |
-                Write-Host "##[group]Replace Tokens [${{ deploymentBlock.path }}] via connection [${{ parameters.serviceConnection }}]"
+                Write-Output "##[group]Replace Tokens [${{ deploymentBlock.path }}] via connection [${{ parameters.serviceConnection }}]"
 
                 # Load used functions
                 . (Join-Path '$(moduleRepoRoot)' 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInParameterFile.ps1')
@@ -202,7 +202,7 @@ jobs:
                 # Invoke Token Replacement Functionality
                 $null = Convert-TokensInParameterFile @ConvertTokensInputs -Verbose
 
-                Write-Host "##[endgroup]"
+                Write-Output "##[endgroup]"
 
           # [Validation] task(s)
           #---------------------
@@ -215,7 +215,7 @@ jobs:
               ScriptType: InlineScript
               pwsh: true
               inline: |
-                Write-Host "##[group]Validate [${{ deploymentBlock.path }}] via connection [${{ parameters.serviceConnection }}]"
+                Write-Output "##[group]Validate [${{ deploymentBlock.path }}] via connection [${{ parameters.serviceConnection }}]"
 
                 # Load used functions
                 . (Join-Path '$(moduleRepoRoot)' '$(pipelineFunctionsPath)' 'resourceValidation' 'Test-TemplateWithParameterFile.ps1')
@@ -246,7 +246,7 @@ jobs:
 
                 Test-TemplateWithParameterFile @functionInput -Verbose
 
-                Write-Host "##[endgroup]"
+                Write-Output "##[endgroup]"
 
           # [Deployment] task(s)
           #---------------------
@@ -260,7 +260,7 @@ jobs:
               pwsh: true
               ScriptType: InlineScript
               inline: |
-                Write-Host "##[group]Deploy [${{ deploymentBlock.path }}] via connection [${{ parameters.serviceConnection }}]"
+                Write-Output "##[group]Deploy [${{ deploymentBlock.path }}] via connection [${{ parameters.serviceConnection }}]"
 
                 # Load used functions
                 . (Join-Path '$(moduleRepoRoot)' '$(pipelineFunctionsPath)' 'resourceDeployment' 'New-ModuleDeployment.ps1')
@@ -313,7 +313,7 @@ jobs:
                   throw $res.exception
                 }
 
-                Write-Host "##[endgroup]"
+                Write-Output "##[endgroup]"
 
           # [Removal] task(s)
           #------------------
@@ -328,7 +328,7 @@ jobs:
               failOnStandardError: false
               pwsh: true
               inline: |
-                Write-Host "##[group]Remove deployed resources via [${{ parameters.serviceConnection }}]"
+                Write-Output "##[group]Remove deployed resources via [${{ parameters.serviceConnection }}]"
 
                 # Load used function
                 . (Join-Path '$(moduleRepoRoot)' '$(pipelineFunctionsPath)' 'resourceRemoval' 'Initialize-DeploymentRemoval.ps1')
@@ -357,4 +357,4 @@ jobs:
                   Initialize-DeploymentRemoval @functionInput
                 }
 
-                Write-Host "##[endgroup]"
+                Write-Output "##[endgroup]"

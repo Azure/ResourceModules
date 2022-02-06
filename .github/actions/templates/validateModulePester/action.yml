@@ -14,7 +14,7 @@ runs:
       shell: pwsh
       run: |
         # Setup agent
-        Write-Host "::group::Setup agent"
+        Write-Output "::group::Setup agent"
 
         # Load used functions
         . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
@@ -29,7 +29,7 @@ runs:
         # Set agent up
         Set-EnvironmentOnAgent -PSModules $Modules
 
-        Write-Host "::endgroup::"
+        Write-Output "::endgroup::"
 
     - name: Azure Login
       uses: Azure/login@v1
@@ -44,7 +44,7 @@ runs:
       shell: pwsh
       run: |
         # Run global tests via Pester
-        Write-Host "::group::Run global tests via Pester"
+        Write-Output "::group::Run global tests via Pester"
 
         $moduleFolderPaths = @(Join-Path $env:GITHUB_WORKSPACE "${{ inputs.modulePath }}")
         $moduleFolderPaths += (Get-ChildItem $moduleFolderPaths -Recurse -Directory -Force).FullName | Where-Object {
@@ -78,7 +78,7 @@ runs:
           }
         }
 
-        Write-Host "::endgroup::"
+        Write-Output "::endgroup::"
 
     - name: Publish Test Results
       uses: EnricoMi/publish-unit-test-result-action@v1
@@ -94,7 +94,7 @@ runs:
       shell: pwsh
       run: |
         # Run API tests via Pester
-        Write-Host "::group::Run API tests via Pester"
+        Write-Output "::group::Run API tests via Pester"
 
         $moduleFolderPaths = @(Join-Path $env:GITHUB_WORKSPACE "${{ inputs.modulePath }}")
         $moduleFolderPaths += (Get-ChildItem $moduleFolderPaths -Recurse -Directory -Force).FullName | Where-Object {
@@ -128,7 +128,7 @@ runs:
           }
         }
 
-        Write-Host "::endgroup::"
+        Write-Output "::endgroup::"
 
     - name: Publish Test Results
       uses: EnricoMi/publish-unit-test-result-action@v1
