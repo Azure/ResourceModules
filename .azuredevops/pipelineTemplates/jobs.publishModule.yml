@@ -27,6 +27,7 @@
 ##   | vmImage                         | '$(vmImage)'                         | You can provide either a [poolname] or [vmImage] to run the job on                                      | 'ubuntu20.04'                     |
 ##   | defaultJobTimeoutInMinutes      | 120                                  | The timeout for the job in this pipeline                                                                | 120                               |
 ##   | modulePath                      | '$(modulePath)'                      | The path to the module to deploy. E.g. [c:/KeyVault]                                                    | 'c:/KeyVault'                     |
+##   | publishAll                      | '$(publishAll)'                      | Publish module and all child modules regardless of being modified                                       | 'true'                            |
 ##   | templateSpecsRGName             | '$(templateSpecsRGName)'             | Required to publish to template spec. ResourceGroup of the template spec to publish to                  | 'mgmt-rg'                         |
 ##   | templateSpecsRGLocation         | '$(templateSpecsRGLocation)'         | Required to publish to template spec. Location of the template spec resource group                      | 'West Europe'                     |
 ##   | templateSpecsDescription        | '$(templateSpecsDescription)'        | Required to publish to template spec. Description of the template spec to publish to                    | 'IaCs module'                     |
@@ -167,7 +168,7 @@ jobs:
 
             $functionInput = @{
               TemplateFilePath = $TemplateFilePath
-              Force            = '${{ parameters.publishAll }}' -match '^(1|true|yes|on|enabled)$'
+              PublishAll            = '${{ parameters.publishAll }}' -match '^(1|true|yes|on|enabled)$'
             }
 
             Write-Verbose "Invoke Get-ModulesToPublish with" -Verbose
@@ -223,7 +224,7 @@ jobs:
 
             $functionInput = @{
               TemplateFilePath = $TemplateFilePath
-              Force            = '$(publishAll)' -match '^(1|true|yes|on|enabled)$'
+              PublishAll            = '$(publishAll)' -match '^(1|true|yes|on|enabled)$'
             }
 
             Write-Verbose "Invoke Get-ModulesToPublish with" -Verbose
@@ -276,7 +277,7 @@ jobs:
 
             $functionInput = @{
               TemplateFilePath = $TemplateFilePath
-              Force            = '$(publishAll)' -match '^(1|true|yes|on|enabled)$'
+              PublishAll            = '$(publishAll)' -match '^(1|true|yes|on|enabled)$'
             }
 
             Write-Verbose "Invoke Get-ModulesToPublish with" -Verbose

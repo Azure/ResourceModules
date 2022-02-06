@@ -371,7 +371,7 @@ Generates a hashtable with template file paths to publish with a new version.
 .PARAMETER TemplateFilePath
 Mandatory. Path to a deploy.bicep/json file.
 
-.PARAMETER Force
+.PARAMETER PublishAll
 Optional. If true, the module will be published regardless of it being modified or not.
 
 .EXAMPLE
@@ -399,12 +399,12 @@ function Get-ModulesToPublish {
         [string] $TemplateFilePath,
 
         [Parameter(Mandatory = $false)]
-        [switch] $Force
+        [switch] $PublishAll
     )
 
     $ModuleFolderPath = Split-Path $TemplateFilePath -Parent
-    if ($Force) {
-        Write-Verbose '[Force] Publishing module and all children.' -Verbose
+    if ($PublishAll) {
+        Write-Verbose '[PublishAll] Publishing module and all children.' -Verbose
         $TemplateFilesToPublish = $ModuleFolderPath | Get-ChildItem -File -Include deploy.* -Recurse -Force
     } else {
         $TemplateFilesToPublish = Get-TemplateFileToPublish -ModuleFolderPath $ModuleFolderPath | Sort-Object FullName -Descending

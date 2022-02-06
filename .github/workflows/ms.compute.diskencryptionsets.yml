@@ -10,12 +10,12 @@ on:
         default: 'true'
       prerelease:
         type: boolean
-        description: 'Publish prerelease module'
+        description: 'Publish prerelease'
         required: false
         default: 'false'
       publishAll:
         type: boolean
-        description: 'Publish all (force)'
+        description: 'Publish module and all child modules'
         required: false
         default: 'false'
   push:

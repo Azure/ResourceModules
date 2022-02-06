@@ -6,11 +6,11 @@ parameters:
     type: boolean
     default: true
   - name: prerelease
-    displayName: Publish prerelease module
+    displayName: Publish prerelease
     type: boolean
     default: false
   - name: publishAll
-    displayName: Publish all (force)
+    displayName: Publish module and all child modules
     type: boolean
     default: false
 
