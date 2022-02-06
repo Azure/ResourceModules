@@ -1,0 +1,54 @@
+name: 'Compute - Disks'
+
+parameters:
+  - name: removeDeployment
+    displayName: Remove deployed module
+    type: boolean
+    default: true
+  - name: prerelease
+    displayName: Publish prerelease module
+    type: boolean
+    default: false
+
+trigger:
+  batch: true
+  branches:
+    include:
+      - main
+  paths:
+    include:
+      - '/.azuredevops/modulePipelines/ms.compute.disks.yml'
+      - '/.azuredevops/pipelineTemplates/module.*.yml'
+      - '/arm/Microsoft.Compute/disks/*'
+    exclude:
+      - '/**/*.md'
+
+variables:
+  - template: '/.azuredevops/pipelineVariables/global.variables.yml'
+  - group: 'PLATFORM_VARIABLES'
+  - name: modulePath
+    value: '/arm/Microsoft.Compute/disks'
+
+stages:
+  - stage: Validation
+    displayName: Pester tests
+    jobs:
+      - template: /.azuredevops/pipelineTemplates/jobs.validateModulePester.yml
+
+  - stage: Deployment
+    displayName: Deployment tests
+    jobs:
+      - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
+        parameters:
+          removeDeployment: '${{ parameters.removeDeployment }}'
+          deploymentBlocks:
+            - path: $(modulePath)/.parameters/parameters.json
+            - path: $(modulePath)/.parameters/min.parameters.json
+            - path: $(modulePath)/.parameters/image.parameters.json
+            - path: $(modulePath)/.parameters/import.parameters.json
+
+  - stage: Publishing
+    displayName: Publish module
+    condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/main'), eq(variables['Build.SourceBranch'], 'refs/heads/master'), eq('${{ parameters.prerelease }}', 'true')))
+    jobs:
+      - template: /.azuredevops/pipelineTemplates/jobs.publishModule.yml
