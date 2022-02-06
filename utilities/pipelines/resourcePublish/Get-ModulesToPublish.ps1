@@ -31,13 +31,13 @@ function Get-ModifiedFileList {
         [string] $CompareCommit = 'HEAD^'
     )
 
-    Write-Verbose "Gathering modified files between [$Commit] and [$CompareCommit]" -Verbose
+    Write-Verbose "Gathering modified files between [$CompareCommit] and [$Commit]" -Verbose
     $Diff = git diff --name-only --diff-filter=AM $CompareCommit $Commit
     $ModifiedFiles = $Diff | Get-Item -Force
-    #Write-Verbose 'The following files have been added or modified:' -Verbose
-    # $ModifiedFiles | ForEach-Object {
-    #     Write-Verbose (' - [{0}]' -f $_.FullName) -Verbose
-    # }
+    Write-Verbose 'The following files have been added or modified:'
+     $ModifiedFiles | ForEach-Object {
+         Write-Verbose (' - [{0}]' -f $_.FullName)
+     }
 
     return $ModifiedFiles
 }
@@ -62,22 +62,22 @@ function Get-GitBranchName {
     param ()
 
     # Get branch name from Git
-    #try {
-    #    Write-Verbose "Git: Using git command 'git branch --show-current'" -Verbose
+    try {
+        Write-Verbose "Git: Using git command 'git branch --show-current'"
     $BranchName = git branch --show-current
-    #} catch {
-    #    Write-Verbose 'Git: No name found.' -Verbose
-    #}
+    } catch {
+        Write-Verbose 'Git: No name found.'
+    }
 
     # If git could not get name, try GitHub variable
     if ([string]::IsNullOrEmpty($BranchName) -and (Test-Path env:GITHUB_REF_NAME)) {
-        #Write-Verbose "GitHub: Using environment variable 'GITHUB_REF_NAME': [$env:GITHUB_REF_NAME]" -Verbose
+        Write-Verbose "GitHub: Using environment variable 'GITHUB_REF_NAME': [$env:GITHUB_REF_NAME]"
         $BranchName = $env:GITHUB_REF_NAME
     }
 
     # If git could not get name, try Azure DevOps variable
     if ([string]::IsNullOrEmpty($BranchName) -and (Test-Path env:BUILD_SOURCEBRANCHNAME)) {
-        #Write-Verbose "Azure DevOps: Using environment variable 'BUILD_SOURCEBRANCHNAME': [$env:BUILD_SOURCEBRANCHNAME]" -Verbose
+        Write-Verbose "Azure DevOps: Using environment variable 'BUILD_SOURCEBRANCHNAME': [$env:BUILD_SOURCEBRANCHNAME]"
         $BranchName = $env:BUILD_SOURCEBRANCHNAME
     }
 
@@ -236,11 +236,11 @@ function Get-ParentModuleTemplateFile {
     $ParentTemplateFileRelPath = $ParentTemplateFileRelPath.Split('/deploy.')[0]
 
     if (-not (Test-Path -Path $ParentTemplateFilePath)) {
-        Write-Verbose "No parent template file found for: [$ParentTemplateFileRelPath]" -Verbose
+        Write-Verbose "No parent template file found for: [$ParentTemplateFileRelPath]"
         return
     }
 
-    Write-Verbose "Parent template file found for: [$ParentTemplateFileRelPath]" -Verbose
+    Write-Verbose "Parent template file found for: [$ParentTemplateFileRelPath]"
     $ParentTemplateFilesToPublish = [System.Collections.ArrayList]@()
     $ParentTemplateFilesToPublish += $ParentTemplateFilePath | Get-Item
 
@@ -404,7 +404,7 @@ function Get-ModulesToPublish {
 
     $ModuleFolderPath = Split-Path $TemplateFilePath -Parent
     if ($PublishAll) {
-        Write-Verbose '[PublishAll] Publishing module and all children.' -Verbose
+        Write-Verbose '[PublishAll] Publish module and all child modules.' -Verbose
         $TemplateFilesToPublish = $ModuleFolderPath | Get-ChildItem -File -Include deploy.* -Recurse -Force
     } else {
         $TemplateFilesToPublish = Get-TemplateFileToPublish -ModuleFolderPath $ModuleFolderPath | Sort-Object FullName -Descending
@@ -435,7 +435,7 @@ function Get-ModulesToPublish {
         }
 
         $ParentTemplateFilesToPublish = Get-ParentModuleTemplateFile -TemplateFilePath $TemplateFileToPublish.FullName -Recurse
-        Write-Verbose "Found [$($ParentTemplateFilesToPublish.count)] parent template files to publish" -Verbose
+        Write-Verbose "Found [$($ParentTemplateFilesToPublish.count)] parent template files to publish"
         foreach ($ParentTemplateFileToPublish in $ParentTemplateFilesToPublish) {
             $ParentModuleVersion = Get-NewModuleVersion -TemplateFilePath $ParentTemplateFileToPublish.FullName
 
