@@ -56,6 +56,7 @@ parameters:
   # Logic-related parameters
   ## Module-related
   modulePath: '$(modulePath)'
+  publishAll: 'false'
 
   ## TemplateSpec-related
   templateSpecsDoPublish: '$(templateSpecsDoPublish)'
@@ -155,7 +156,7 @@ jobs:
           pwsh: true
           script: |
             # Load used functions
-            . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Get-ModulesToUpdate.ps1')
+            . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Get-ModulesToPublish.ps1')
             . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Publish-ModuleToUniversalArtifactFeed.ps1')
 
             #Prioritizing the bicep file
@@ -166,13 +167,14 @@ jobs:
 
             $functionInput = @{
               TemplateFilePath = $TemplateFilePath
+              Force            = '$(publishAll)' -match '^(1|true|yes|on|enabled)$'
             }
 
-            Write-Verbose "Invoke Get-ModulesToUpdate with" -Verbose
+            Write-Verbose "Invoke Get-ModulesToPublish with" -Verbose
             Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
             # Get the modified child resources
-            $ModulesToUpdate = Get-ModulesToUpdate @functionInput -Verbose
+            $ModulesToUpdate = Get-ModulesToPublish @functionInput -Verbose
 
             # Publish the modified child resources
             foreach ($ModuleToUpdate in $ModulesToUpdate) {
@@ -210,7 +212,7 @@ jobs:
           ScriptType: InlineScript
           inline: |
             # Load used functions
-            . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Get-ModulesToUpdate.ps1')
+            . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Get-ModulesToPublish.ps1')
             . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Publish-ModuleToTemplateSpec.ps1')
 
             #Prioritizing the bicep file
@@ -221,13 +223,14 @@ jobs:
 
             $functionInput = @{
               TemplateFilePath = $TemplateFilePath
+              Force            = '$(publishAll)' -match '^(1|true|yes|on|enabled)$'
             }
 
-            Write-Verbose "Invoke Get-ModulesToUpdate with" -Verbose
+            Write-Verbose "Invoke Get-ModulesToPublish with" -Verbose
             Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
             # Get the modified child resources
-            $ModulesToUpdate = Get-ModulesToUpdate @functionInput -Verbose
+            $ModulesToUpdate = Get-ModulesToPublish @functionInput -Verbose
 
             # Publish the modified child resources
             foreach ($ModuleToUpdate in $ModulesToUpdate) {
@@ -262,7 +265,7 @@ jobs:
           ScriptType: InlineScript
           inline: |
             # Load used functions
-            . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Get-ModulesToUpdate.ps1')
+            . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Get-ModulesToPublish.ps1')
             . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Publish-ModuleToPrivateBicepRegistry.ps1')
 
             #Prioritizing the bicep file
@@ -273,13 +276,14 @@ jobs:
 
             $functionInput = @{
               TemplateFilePath = $TemplateFilePath
+              Force            = '$(publishAll)' -match '^(1|true|yes|on|enabled)$'
             }
 
-            Write-Verbose "Invoke Get-ModulesToUpdate with" -Verbose
+            Write-Verbose "Invoke Get-ModulesToPublish with" -Verbose
             Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
             # Get the modified child resources
-            $ModulesToUpdate = Get-ModulesToUpdate @functionInput -Verbose
+            $ModulesToUpdate = Get-ModulesToPublish @functionInput -Verbose
 
             # Publish the modified child resources
             foreach ($ModuleToUpdate in $ModulesToUpdate) {

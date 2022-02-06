@@ -2,6 +2,10 @@ name: 'Publish module'
 description: 'Publish module'
 
 inputs:
+  publishAll:
+    description: 'Publish all (force)'
+    required: false
+    default: 'false'
   templateFilePath:
     description: 'The path to the template file to publish'
     required: true
@@ -62,18 +66,19 @@ runs:
       if: ${{ inputs.templateSpecsDoPublish == 'true' }}
       run: |
         # Load used functions
-        . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourcePublish' 'Get-ModulesToUpdate.ps1')
+        . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourcePublish' 'Get-ModulesToPublish.ps1')
         . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourcePublish' 'Publish-ModuleToTemplateSpec.ps1')
 
         $functionInput = @{
           TemplateFilePath = Join-Path $env:GITHUB_WORKSPACE "${{ inputs.templateFilePath }}"
+          Force            = '${{ inputs.publishAll }}' -match '^(1|true|yes|on|enabled)$'
         }
 
         Write-Verbose "Invoke task with" -Verbose
         Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
         # Get the modified child resources
-        $ModulesToUpdate = Get-ModulesToUpdate @functionInput -Verbose
+        $ModulesToUpdate = Get-ModulesToPublish @functionInput -Verbose
 
         # Publish the modified child resources
         foreach ($ModuleToUpdate in $ModulesToUpdate) {
@@ -96,18 +101,19 @@ runs:
       if: ${{ inputs.bicepRegistryDoPublish == 'true' }}
       run: |
         # Load used functions
-        . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourcePublish' 'Get-ModulesToUpdate.ps1')
+        . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourcePublish' 'Get-ModulesToPublish.ps1')
         . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourcePublish' 'Publish-ModuleToPrivateBicepRegistry.ps1')
 
         $functionInput = @{
           TemplateFilePath = Join-Path $env:GITHUB_WORKSPACE "${{ inputs.templateFilePath }}"
+          Force            = '${{ inputs.publishAll }}' -match '^(1|true|yes|on|enabled)$'
         }
 
         Write-Verbose "Invoke task with" -Verbose
         Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
         # Get the modified child resources
-        $ModulesToUpdate = Get-ModulesToUpdate @functionInput -Verbose
+        $ModulesToUpdate = Get-ModulesToPublish @functionInput -Verbose
 
         # Publish the modified child resources
         foreach ($ModuleToUpdate in $ModulesToUpdate) {
