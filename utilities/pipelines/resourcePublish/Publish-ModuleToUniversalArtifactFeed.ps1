@@ -102,8 +102,12 @@ function Publish-ModuleToUniversalArtifactFeed {
             if (-not [string]::IsNullOrEmpty($VstsFeedProject)) {
                 $inputObject += @('--project', "$VstsFeedProject")
             }
-
-            az artifacts universal publish @inputObject
+            try {
+                az artifacts universal publish @inputObject
+            } catch {
+                Write-Warning "Failed to publish module to Universal Package Feed [$VstsOrganizationUri/$VstsFeedProject/$VstsFeedName]"
+                Write-Warning $_
+            }
 
         }
         Write-Verbose 'Publish complete'
