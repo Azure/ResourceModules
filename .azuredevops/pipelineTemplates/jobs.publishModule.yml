@@ -165,11 +165,11 @@ jobs:
               $TemplateFilePath = Join-Path -Path $FolderPath -ChildPath 'deploy.json'
             }
 
-            Write-Verbose "publishAll is: [ '$(publishAll)' ]"
+            Write-Verbose "publishAll is: [ '${{ parameters.publishAll }}' ]"
 
             $functionInput = @{
               TemplateFilePath = $TemplateFilePath
-              Force            = '$(publishAll)' -match '^(1|true|yes|on|enabled)$'
+              Force            = '${{ parameters.publishAll }}' -match '^(1|true|yes|on|enabled)$'
             }
 
             Write-Verbose "Invoke Get-ModulesToPublish with" -Verbose
