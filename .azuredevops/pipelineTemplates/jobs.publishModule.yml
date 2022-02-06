@@ -165,8 +165,6 @@ jobs:
               $TemplateFilePath = Join-Path -Path $FolderPath -ChildPath 'deploy.json'
             }
 
-            Write-Verbose "publishAll is: [ '${{ parameters.publishAll }}' ]"
-
             $functionInput = @{
               TemplateFilePath = $TemplateFilePath
               Force            = '${{ parameters.publishAll }}' -match '^(1|true|yes|on|enabled)$'
