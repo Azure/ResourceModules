@@ -435,7 +435,7 @@ function Get-ModulesToPublish {
         }
 
         $ParentTemplateFilesToPublish = Get-ParentModuleTemplateFile -TemplateFilePath $TemplateFileToPublish.FullName -Recurse
-        Write-Verbose "Found [$($ParentTemplateFilesToPublish.count)] parent template files to publish"
+        # Write-Verbose "Found [$($ParentTemplateFilesToPublish.count)] parent template files to publish"
         foreach ($ParentTemplateFileToPublish in $ParentTemplateFilesToPublish) {
             $ParentModuleVersion = Get-NewModuleVersion -TemplateFilePath $ParentTemplateFileToPublish.FullName
 
