@@ -38,6 +38,9 @@ runs:
     - name: 'Setup agent'
       shell: pwsh
       run: |
+        # Setup agent
+        Write-Host "::group::Setup agent"
+
         # Load used functions
         . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
 
@@ -51,6 +54,8 @@ runs:
         # Set agent up
         Set-EnvironmentOnAgent -PSModules $Modules
 
+        Write-Host "::endgroup::"
+
     - name: Azure Login
       uses: Azure/login@v1
       with:
@@ -61,6 +66,9 @@ runs:
       shell: pwsh
       if: ${{ inputs.templateSpecsDoPublish == 'true' }}
       run: |
+        # Publish module to template specs
+        Write-Host "::group::Publish module to template specs"
+
         # Load used functions
         . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourcePublish' 'Get-ModulesToUpdate.ps1')
         . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourcePublish' 'Publish-ModuleToTemplateSpec.ps1')
@@ -77,6 +85,7 @@ runs:
 
         # Publish the modified child resources
         foreach ($ModuleToUpdate in $ModulesToUpdate) {
+          Write-Host "::group::- $($ModuleToUpdate.TemplateFilePath)"
           $functionInput = @{
             TemplateFilePath         = $ModuleToUpdate.TemplateFilePath
             TemplateSpecsRgName      = '${{ inputs.templateSpecsRgName }}'
@@ -95,6 +104,8 @@ runs:
       shell: pwsh
       if: ${{ inputs.bicepRegistryDoPublish == 'true' }}
       run: |
+        # Publish module to private bicep registry
+        Write-Host "::group::Publish module to private bicep registry"
         # Load used functions
         . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourcePublish' 'Get-ModulesToUpdate.ps1')
         . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourcePublish' 'Publish-ModuleToPrivateBicepRegistry.ps1')
@@ -111,6 +122,7 @@ runs:
 
         # Publish the modified child resources
         foreach ($ModuleToUpdate in $ModulesToUpdate) {
+          Write-Host "::group::- $($ModuleToUpdate.TemplateFilePath)"
           $functionInput = @{
             TemplateFilePath        = $ModuleToUpdate.TemplateFilePath
             BicepRegistryName       = '${{ inputs.bicepRegistryName }}'

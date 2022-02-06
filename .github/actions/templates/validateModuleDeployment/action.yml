@@ -41,6 +41,9 @@ runs:
     - name: 'Setup agent'
       shell: pwsh
       run: |
+        # Setup agent
+        Write-Host "::group::Setup agent"
+
         # Load used functions
         . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
 
@@ -64,6 +67,9 @@ runs:
 
         # Set agent up
         Set-EnvironmentOnAgent -PSModules $Modules
+
+        Write-Host "::endgroup::"
+
     - name: Azure Login
       uses: Azure/login@v1
       with:
@@ -75,6 +81,9 @@ runs:
     - name: 'Replace Parameter File Tokens [${{ inputs.parameterFilePath }}] '
       shell: pwsh
       run: |
+        # Replace Parameter File Tokens [${{ inputs.parameterFilePath }}]
+        Write-Host "::group::Replace Parameter File Tokens [${{ inputs.parameterFilePath }}]"
+
         # Load used functions
         . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInParameterFile.ps1')
 
@@ -105,11 +114,16 @@ runs:
         # Invoke Token Replacement Functionality
         $null = Convert-TokensInParameterFile @ConvertTokensInputs -Verbose
 
+        Write-Host "::endgroup::"
+
     # [Deployment validation] task(s)
     # -------------------------------
     - name: 'Validate [${{ inputs.templateFilePath }}]'
       shell: pwsh
       run: |
+        # Validate [${{ inputs.templateFilePath }}]
+        Write-Host "::group::Validate [${{ inputs.templateFilePath }}]"
+
         # Load used functions
         . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourceValidation' 'Test-TemplateWithParameterFile.ps1')
 
@@ -130,12 +144,17 @@ runs:
 
         Test-TemplateWithParameterFile @functionInput -Verbose
 
+        Write-Host "::endgroup::"
+
     # [Deployment execution] task(s)
     # ------------------------------
     - name: 'Deploy [${{ inputs.templateFilePath }}] with parameters [${{ inputs.parameterFilePath }}]'
       shell: pwsh
       id: deploy_step
       run: |
+        # Deploy [${{ inputs.templateFilePath }}] with parameters [${{ inputs.parameterFilePath }}]
+        Write-Host "::group::Deploy [${{ inputs.templateFilePath }}] with parameters [${{ inputs.parameterFilePath }}]"
+
         # Load used functions
         . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourceDeployment' 'New-ModuleDeployment.ps1')
 
@@ -175,12 +194,17 @@ runs:
           throw $res.exception
         }
 
+        Write-Host "::endgroup::"
+
     # [Deployment removal] task(s)
     # ----------------------------
     - name: 'Remove [${{ inputs.templateFilePath }}] from parameters [${{ inputs.parameterFilePath }}]'
       shell: pwsh
       if: ${{ always() && inputs.removeDeployment == 'true' && steps.deploy_step.outputs.deploymentName != '' }}
       run: |
+        # Remove [${{ inputs.templateFilePath }}] from parameters [${{ inputs.parameterFilePath }}]
+        Write-Host "::group::Remove [${{ inputs.templateFilePath }}] from parameters [${{ inputs.parameterFilePath }}]"
+
         # Load used function
         . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourceRemoval' 'Initialize-DeploymentRemoval.ps1')
 
@@ -198,3 +222,5 @@ runs:
 
           Initialize-DeploymentRemoval @functionInput
         }
+
+        Write-Host "::endgroup::"

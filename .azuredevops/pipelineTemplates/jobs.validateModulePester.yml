@@ -91,6 +91,8 @@ jobs:
           targetType: inline
           pwsh: true
           script: |
+            Write-Host "##[group]Handle Multi-Repo Invocation"
+
             # Handle multiple-repositories
             if( "${{ join(';',parameters.checkoutRepositories) }}".length -gt 0) {
               Write-Verbose "Multi-Repo Checkout" -Verbose
@@ -104,6 +106,8 @@ jobs:
             Write-Host "##vso[task.setvariable variable=ModuleRepoRoot]$moduleRepoRoot"
             Write-Host "##vso[task.setvariable variable=ParametersRepoRoot]$parametersRepoRoot"
 
+            Write-Host "##[endgroup]"
+
       # [Agent] Prepare environment
       #----------------------------
       - task: PowerShell@2
@@ -112,6 +116,8 @@ jobs:
           targetType: inline
           pwsh: true
           script: |
+            Write-Host "##[group]Setup agent"
+
             # Load used functions
             . (Join-Path '$(moduleRepoRoot)' 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
 
@@ -125,6 +131,8 @@ jobs:
             # Set agent up
             Set-EnvironmentOnAgent -PSModules $Modules
 
+            Write-Host "##[endgroup]"
+
       # [Module Pester Test] task(s)
       #-----------------------------
       - task: AzurePowerShell@5
@@ -136,6 +144,8 @@ jobs:
           ScriptType: InlineScript
           pwsh: true
           inline: |
+            Write-Host "##[group]Run general tests via (Pester) via connection [${{ parameters.serviceConnection }}]"
+
             $moduleFolderPaths = @(Join-Path '$(moduleRepoRoot)' '${{ parameters.modulePath }}')
             $moduleFolderPaths += (Get-ChildItem $moduleFolderPaths -Recurse -Directory -Force).FullName | Where-Object {
               (Get-ChildItem $_ -File -Depth 0 -Include @('deploy.json', 'deploy.bicep') -Force).Count -gt 0
@@ -164,6 +174,8 @@ jobs:
                 Verbosity = 'Detailed'
               }
             } -ErrorAction 'Stop'
+
+            Write-Host "##[endgroup]"
           errorActionPreference: continue
 
       - task: PublishTestResults@2
@@ -203,6 +215,8 @@ jobs:
           targetType: inline
           pwsh: true
           script: |
+            Write-Host "##[group]Handle Multi-Repo Invocation"
+
             # Handle multiple-repositories
             if( "${{ join(';',parameters.checkoutRepositories) }}".length -gt 0) {
               Write-Verbose "Multi-Repo Checkout" -Verbose
@@ -216,6 +230,8 @@ jobs:
             Write-Host "##vso[task.setvariable variable=ModuleRepoRoot]$moduleRepoRoot"
             Write-Host "##vso[task.setvariable variable=ParametersRepoRoot]$parametersRepoRoot"
 
+            Write-Host "##[endgroup]"
+
       # [Agent] Prepare environment
       #----------------------------
       - task: PowerShell@2
@@ -224,11 +240,15 @@ jobs:
           targetType: inline
           pwsh: true
           script: |
+            Write-Host "##[group]Setup agent"
+
             # Load used functions
             . (Join-Path '$(moduleRepoRoot)' 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
 
             # Set agent up
             Set-EnvironmentOnAgent
+
+            Write-Host "##[endgroup]"
 
       # [Module Pester Test] task(s)
       #-----------------------------
@@ -241,6 +261,8 @@ jobs:
           ScriptType: InlineScript
           pwsh: true
           inline: |
+            Write-Host "##[group]Run API tests via (Pester) via connection [${{ parameters.serviceConnection }}]"
+
             $moduleFolderPaths = @(Join-Path '$(moduleRepoRoot)' '${{ parameters.modulePath }}')
             $moduleFolderPaths += (Get-ChildItem $moduleFolderPaths -Recurse -Directory -Force).FullName | Where-Object {
               (Get-ChildItem $_ -File -Depth 0 -Include @('deploy.json', 'deploy.bicep') -Force).Count -gt 0
@@ -269,6 +291,8 @@ jobs:
                 Verbosity = 'Detailed'
               }
             } -ErrorAction 'Stop'
+
+            Write-Host "##[endgroup]"
           errorActionPreference: continue
 
       - task: PublishTestResults@2

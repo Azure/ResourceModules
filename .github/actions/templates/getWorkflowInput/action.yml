@@ -17,6 +17,9 @@ runs:
     - name: Get workflow input parameters
       id: get-input-param-action
       run: |
+        # Get workflow input parameters
+        Write-Host "::group::Get workflow input parameters"
+
         Write-Verbose "The workflow trigger is: ${{ github.event_name }}" -Verbose
 
         # When running from workflow_dispatch event get input values
@@ -41,5 +44,7 @@ runs:
         }
 
         # Output values to be accessed by next jobs
-        Write-Output "::set-output name=removeDeployment::$removeDeployment"
+        Write-Host "::set-output name=removeDeployment::$removeDeployment"
+
+        Write-Host "::endgroup::"
       shell: pwsh
