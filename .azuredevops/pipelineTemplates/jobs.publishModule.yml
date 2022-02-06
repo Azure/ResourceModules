@@ -56,7 +56,7 @@ parameters:
   # Logic-related parameters
   ## Module-related
   modulePath: '$(modulePath)'
-  publishAll: 'false'
+  publishAll: '$(publishAll)'
 
   ## TemplateSpec-related
   templateSpecsDoPublish: '$(templateSpecsDoPublish)'

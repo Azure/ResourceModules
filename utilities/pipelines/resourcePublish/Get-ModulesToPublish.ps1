@@ -404,7 +404,7 @@ function Get-ModulesToPublish {
 
     $ModuleFolderPath = Split-Path $TemplateFilePath -Parent
     if ($Force) {
-        Write-Verbose "[Force] Publishing all modules under the current module" -Verbose
+        Write-Verbose '[Force] Publishing module and all children.' -Verbose
         $TemplateFilesToPublish = $ModuleFolderPath | Get-ChildItem -File -Include deploy.* -Recurse -Force
     } else {
         $TemplateFilesToPublish = Get-TemplateFileToPublish -ModuleFolderPath $ModuleFolderPath | Sort-Object FullName -Descending
@@ -423,13 +423,13 @@ function Get-ModulesToPublish {
 
             # Latest Major,Minor
             $ModulesToPublish += @{
-                Version          = ($ModuleVersion.Split('.')[0..1] -join '.') # + $Prerelease -> 1.2-prerelease
+                Version          = ($ModuleVersion.Split('.')[0..1] -join '.')
                 TemplateFilePath = $TemplateFileToPublish.FullName
             }
 
             # Latest Major
             $ModulesToPublish += @{
-                Version          = ($ModuleVersion.Split('.')[0]) # + $Prerelease -> 1-prerelease
+                Version          = ($ModuleVersion.Split('.')[0])
                 TemplateFilePath = $TemplateFileToPublish.FullName
             }
         }
@@ -463,11 +463,15 @@ function Get-ModulesToPublish {
 
     $ModulesToPublish = $ModulesToPublish | Sort-Object TemplateFilePath, Version -Descending -Unique
 
-    Write-Verbose 'Publish the following modules:'-Verbose
-    $ModulesToPublish | ForEach-Object {
-        $RelPath = ($_.TemplateFilePath).Split('/arm/')[-1]
-        $RelPath = $RelPath.Split('/deploy.')[0]
-        Write-Verbose (' - [{0}] [{1}] ' -f $RelPath, $_.Version) -Verbose
+    if ($ModulesToPublish.count -gt 0) {
+        Write-Verbose 'Publish the following modules:'-Verbose
+        $ModulesToPublish | ForEach-Object {
+            $RelPath = ($_.TemplateFilePath).Split('/arm/')[-1]
+            $RelPath = $RelPath.Split('/deploy.')[0]
+            Write-Verbose (' - [{0}] [{1}] ' -f $RelPath, $_.Version) -Verbose
+        }
+    } else {
+        Write-Verbose 'No modules to publish.'-Verbose
     }
 
     return $ModulesToPublish
