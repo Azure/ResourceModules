@@ -6,7 +6,7 @@
             "tokens": [
                 {
                     "name": "namePrefix",
-                    "value": "sxx",
+                    "value": "ase",
                     "metadata": {
                         "description": "A 3-5 character length string, included in the resources names"
                     }
