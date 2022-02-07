@@ -34,10 +34,6 @@ function Get-ModifiedFileList {
     Write-Verbose "Gathering modified files between [$CompareCommit] and [$Commit]" -Verbose
     $Diff = git diff --name-only --diff-filter=AM $CompareCommit $Commit
     $ModifiedFiles = $Diff | Get-Item -Force
-    # Write-Verbose 'The following files have been added or modified:' -Verbose
-    # $ModifiedFiles | ForEach-Object {
-    #     Write-Verbose (' - [{0}]' -f $_.FullName) -Verbose
-    # }
 
     return $ModifiedFiles
 }
@@ -62,22 +58,15 @@ function Get-GitBranchName {
     param ()
 
     # Get branch name from Git
-    #try {
-    #    Write-Verbose "Git: Using git command 'git branch --show-current'" -Verbose
     $BranchName = git branch --show-current
-    #} catch {
-    #    Write-Verbose 'Git: No name found.' -Verbose
-    #}
 
     # If git could not get name, try GitHub variable
     if ([string]::IsNullOrEmpty($BranchName) -and (Test-Path env:GITHUB_REF_NAME)) {
-        # Write-Verbose "GitHub: Using environment variable 'GITHUB_REF_NAME': [$env:GITHUB_REF_NAME]" -Verbose
         $BranchName = $env:GITHUB_REF_NAME
     }
 
     # If git could not get name, try Azure DevOps variable
     if ([string]::IsNullOrEmpty($BranchName) -and (Test-Path env:BUILD_SOURCEBRANCHNAME)) {
-        # Write-Verbose "Azure DevOps: Using environment variable 'BUILD_SOURCEBRANCHNAME': [$env:BUILD_SOURCEBRANCHNAME]" -Verbose
         $BranchName = $env:BUILD_SOURCEBRANCHNAME
     }
 
@@ -236,11 +225,9 @@ function Get-ParentModuleTemplateFile {
     $ParentTemplateFileRelPath = $ParentTemplateFileRelPath.Split('/deploy.')[0]
 
     if (-not (Test-Path -Path $ParentTemplateFilePath)) {
-        # Write-Verbose "No parent template file found for: [$ParentTemplateFileRelPath]" -Verbose
         return
     }
 
-    # Write-Verbose "Parent template file found for: [$ParentTemplateFileRelPath]" -Verbose
     $ParentTemplateFilesToPublish = [System.Collections.ArrayList]@()
     $ParentTemplateFilesToPublish += $ParentTemplateFilePath | Get-Item
 
@@ -348,13 +335,9 @@ function Get-NewModuleVersion {
 
     $BranchName = Get-GitBranchName -Verbose
 
-    # Write-Verbose "Current branch: [$BranchName]" -Verbose
     if ($BranchName -ne 'main' -and $BranchName -ne 'master') {
-        # Write-Verbose "PreRelease: [$PreRelease]" -Verbose
         $NewVersion = "$NewVersion-prerelease".ToLower()
     }
-
-    # Write-Verbose "New version: [$NewVersion]" -Verbose
 
     return $NewVersion
 }
@@ -435,7 +418,6 @@ function Get-ModulesToPublish {
         }
 
         $ParentTemplateFilesToPublish = Get-ParentModuleTemplateFile -TemplateFilePath $TemplateFileToPublish.FullName -Recurse
-        # Write-Verbose "Found [$($ParentTemplateFilesToPublish.count)] parent template files to publish"
         foreach ($ParentTemplateFileToPublish in $ParentTemplateFilesToPublish) {
             $ParentModuleVersion = Get-NewModuleVersion -TemplateFilePath $ParentTemplateFileToPublish.FullName
 
