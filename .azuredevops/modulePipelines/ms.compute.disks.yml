@@ -58,4 +58,3 @@ stages:
       - template: /.azuredevops/pipelineTemplates/jobs.publishModule.yml
         parameters:
           publishAll: ${{ parameters.publishAll }}
-
