@@ -119,7 +119,6 @@ jobs:
             # Set agent up
             Set-EnvironmentOnAgent -PSModules $Modules
 
-
       # [Multi Repo] Support task
       #--------------------------
       - task: PowerShell@2
@@ -191,7 +190,6 @@ jobs:
 
               Publish-ModuleToUniversalArtifactFeed @functionInput -Verbose
             }
-
         env:
           TOKEN: $(vstsFeedToken)
 

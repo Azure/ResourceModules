@@ -203,7 +203,6 @@ jobs:
               ScriptType: InlineScript
               pwsh: true
               inline: |
-
                 # Load used functions
                 . (Join-Path '$(moduleRepoRoot)' '$(pipelineFunctionsPath)' 'resourceValidation' 'Test-TemplateWithParameterFile.ps1')
 
@@ -245,7 +244,6 @@ jobs:
               pwsh: true
               ScriptType: InlineScript
               inline: |
-
                 # Load used functions
                 . (Join-Path '$(moduleRepoRoot)' '$(pipelineFunctionsPath)' 'resourceDeployment' 'New-ModuleDeployment.ps1')
 
