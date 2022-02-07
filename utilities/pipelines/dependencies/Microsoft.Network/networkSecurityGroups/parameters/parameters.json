@@ -3,7 +3,7 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "name": {
-      "value": "adp-sxx-az-nsg-x-001"
+      "value": "adp-<<namePrefix>>-az-nsg-x-001"
     }
   }
 }

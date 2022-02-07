@@ -69,7 +69,7 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
-resource publicIPAddressExisting 'Microsoft.Network/publicIPAddresses@2021-02-01' existing = if (!empty(publicIPAddressId)) {
+resource publicIPAddressExisting 'Microsoft.Network/publicIPAddresses@2021-05-01' existing = if (!empty(publicIPAddressId)) {
   name: last(split(publicIPAddressId, '/'))
   scope: resourceGroup(split(publicIPAddressId, '/')[2], split(publicIPAddressId, '/')[4])
 }
@@ -108,7 +108,7 @@ module publicIPAddress '.bicep/nested_publicIPAddress.bicep' = if (empty(publicI
   }
 }
 
-resource azureBastion 'Microsoft.Network/bastionHosts@2021-02-01' = {
+resource azureBastion 'Microsoft.Network/bastionHosts@2021-05-01' = {
   name: name
   location: location
   tags: tags

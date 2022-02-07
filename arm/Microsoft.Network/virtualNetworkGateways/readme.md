@@ -9,8 +9,8 @@ This module deploys a virtual network gateway.
 | `Microsoft.Authorization/locks` | 2017-04-01 |
 | `Microsoft.Authorization/roleAssignments` | 2021-04-01-preview |
 | `Microsoft.Insights/diagnosticSettings` | 2021-05-01-preview |
-| `Microsoft.Network/publicIPAddresses` | 2021-02-01 |
-| `Microsoft.Network/virtualNetworkGateways` | 2021-02-01 |
+| `Microsoft.Network/publicIPAddresses` | 2021-05-01 |
+| `Microsoft.Network/virtualNetworkGateways` | 2021-05-01 |
 
 ## Parameters
 
@@ -128,6 +128,6 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 - [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings)
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
-- [Publicipaddresses](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-02-01/publicIPAddresses)
+- [Publicipaddresses](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/publicIPAddresses)
 - [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)
-- [Virtualnetworkgateways](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-02-01/virtualNetworkGateways)
+- [Virtualnetworkgateways](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/virtualNetworkGateways)

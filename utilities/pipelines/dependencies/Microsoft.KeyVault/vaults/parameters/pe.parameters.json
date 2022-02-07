@@ -3,7 +3,7 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "name": {
-      "value": "adp-sxx-az-kv-x-pe"
+      "value": "adp-<<namePrefix>>-az-kv-x-pe"
     },
     "accessPolicies": {
       "value": [

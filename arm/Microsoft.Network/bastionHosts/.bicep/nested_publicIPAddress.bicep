@@ -90,7 +90,7 @@ var publicIPPrefix = {
   id: publicIPPrefixResourceId
 }
 
-resource publicIpAddress 'Microsoft.Network/publicIPAddresses@2021-02-01' = {
+resource publicIpAddress 'Microsoft.Network/publicIPAddresses@2021-05-01' = {
   name: name
   location: location
   tags: tags

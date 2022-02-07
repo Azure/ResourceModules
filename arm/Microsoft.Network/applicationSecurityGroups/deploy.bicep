@@ -26,7 +26,7 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
-resource applicationSecurityGroup 'Microsoft.Network/applicationSecurityGroups@2021-02-01' = {
+resource applicationSecurityGroup 'Microsoft.Network/applicationSecurityGroups@2021-05-01' = {
   name: name
   location: location
   tags: tags

@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "adp-sxx-az-udr-x-sqlmi"
+            "value": "adp-<<namePrefix>>-az-udr-x-sqlmi"
         }
     }
 }
