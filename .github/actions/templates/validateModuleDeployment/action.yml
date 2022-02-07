@@ -41,7 +41,7 @@ runs:
     - name: 'Setup agent'
       shell: pwsh
       run: |
-        # Setup agent
+        # Grouping task logs
         Write-Output "::group::Setup agent"
 
         # Load used functions
@@ -81,7 +81,7 @@ runs:
     - name: 'Replace Parameter File Tokens [${{ inputs.parameterFilePath }}] '
       shell: pwsh
       run: |
-        # Replace Parameter File Tokens [${{ inputs.parameterFilePath }}]
+        # Grouping task logs
         Write-Output "::group::Replace Parameter File Tokens [${{ inputs.parameterFilePath }}]"
 
         # Load used functions
@@ -121,7 +121,7 @@ runs:
     - name: 'Validate [${{ inputs.templateFilePath }}]'
       shell: pwsh
       run: |
-        # Validate [${{ inputs.templateFilePath }}]
+        # Grouping task logs
         Write-Output "::group::Validate [${{ inputs.templateFilePath }}]"
 
         # Load used functions
@@ -152,7 +152,7 @@ runs:
       shell: pwsh
       id: deploy_step
       run: |
-        # Deploy [${{ inputs.templateFilePath }}] with parameters [${{ inputs.parameterFilePath }}]
+        # Grouping task logs
         Write-Output "::group::Deploy [${{ inputs.templateFilePath }}] with parameters [${{ inputs.parameterFilePath }}]"
 
         # Load used functions
@@ -202,7 +202,7 @@ runs:
       shell: pwsh
       if: ${{ always() && inputs.removeDeployment == 'true' && steps.deploy_step.outputs.deploymentName != '' }}
       run: |
-        # Remove [${{ inputs.templateFilePath }}] from parameters [${{ inputs.parameterFilePath }}]
+        # Grouping task logs
         Write-Output "::group::Remove [${{ inputs.templateFilePath }}] from parameters [${{ inputs.parameterFilePath }}]"
 
         # Load used function

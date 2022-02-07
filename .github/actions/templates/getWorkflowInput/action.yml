@@ -17,7 +17,7 @@ runs:
     - name: Get workflow input parameters
       id: get-input-param-action
       run: |
-        # Get workflow input parameters
+        # Grouping task logs
         Write-Output "::group::Get workflow input parameters"
 
         Write-Verbose "The workflow trigger is: ${{ github.event_name }}" -Verbose
