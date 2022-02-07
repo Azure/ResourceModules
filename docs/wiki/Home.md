@@ -1,4 +1,4 @@
-# Common Azure Resource Modules
+# Common Azure Resource Modules Library
 
 The objective of this repository is to provide a template library that can be reused in Infrastructure as Code scenarios, such as landing zone, workloads or individual service deployments.
 
