@@ -15,6 +15,7 @@
         {
           "name": "AzureFirewallSubnet",
           "addressPrefix": "10.4.4.0/24",
+          "networkSecurityGroupName": "adp-<<namePrefix>>-az-nsg-x-001",
           "routeTableName": "",
           "serviceEndpoints": [],
           "delegations": []
