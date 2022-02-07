@@ -105,8 +105,6 @@ jobs:
               targetType: inline
               pwsh: true
               script: |
-                Write-Output "##[group]Setup agent"
-
                 # Load used functions
                 . (Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
 
@@ -131,8 +129,6 @@ jobs:
                 # Set agent up
                 Set-EnvironmentOnAgent -PSModules $Modules
 
-                Write-Output "##[endgroup]"
-
           # [Multi Repo] Support task
           #--------------------------
           - task: PowerShell@2
@@ -141,8 +137,6 @@ jobs:
               targetType: inline
               pwsh: true
               script: |
-                Write-Output "##[group]Handle Multi-Repo Invocation"
-
                 # Handle multiple-repositories
                 if( "${{ join(';',parameters.checkoutRepositories) }}".length -gt 0) {
                   Write-Verbose "Multi-Repo Checkout" -Verbose
@@ -156,8 +150,6 @@ jobs:
                 Write-Output "##vso[task.setvariable variable=ModuleRepoRoot]$moduleRepoRoot"
                 Write-Output "##vso[task.setvariable variable=parametersRepoRoot]$parametersRepoRoot"
 
-                Write-Output "##[endgroup]"
-
           # [Agent] Replace tokens
           #-----------------------
           - task: AzurePowerShell@5
@@ -169,8 +161,6 @@ jobs:
               ScriptType: InlineScript
               pwsh: true
               inline: |
-                Write-Output "##[group]Replace Tokens [${{ deploymentBlock.path }}] via connection [${{ parameters.serviceConnection }}]"
-
                 # Load used functions
                 . (Join-Path '$(moduleRepoRoot)' 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInParameterFile.ps1')
 
@@ -202,8 +192,6 @@ jobs:
                 # Invoke Token Replacement Functionality
                 $null = Convert-TokensInParameterFile @ConvertTokensInputs -Verbose
 
-                Write-Output "##[endgroup]"
-
           # [Validation] task(s)
           #---------------------
           - task: AzurePowerShell@5
@@ -215,7 +203,6 @@ jobs:
               ScriptType: InlineScript
               pwsh: true
               inline: |
-                Write-Output "##[group]Validate [${{ deploymentBlock.path }}] via connection [${{ parameters.serviceConnection }}]"
 
                 # Load used functions
                 . (Join-Path '$(moduleRepoRoot)' '$(pipelineFunctionsPath)' 'resourceValidation' 'Test-TemplateWithParameterFile.ps1')
@@ -246,8 +233,6 @@ jobs:
 
                 Test-TemplateWithParameterFile @functionInput -Verbose
 
-                Write-Output "##[endgroup]"
-
           # [Deployment] task(s)
           #---------------------
           - task: AzurePowerShell@5
@@ -260,7 +245,6 @@ jobs:
               pwsh: true
               ScriptType: InlineScript
               inline: |
-                Write-Output "##[group]Deploy [${{ deploymentBlock.path }}] via connection [${{ parameters.serviceConnection }}]"
 
                 # Load used functions
                 . (Join-Path '$(moduleRepoRoot)' '$(pipelineFunctionsPath)' 'resourceDeployment' 'New-ModuleDeployment.ps1')
@@ -313,8 +297,6 @@ jobs:
                   throw $res.exception
                 }
 
-                Write-Output "##[endgroup]"
-
           # [Removal] task(s)
           #------------------
           - task: AzurePowerShell@5
@@ -328,8 +310,6 @@ jobs:
               failOnStandardError: false
               pwsh: true
               inline: |
-                Write-Output "##[group]Remove deployed resources via [${{ parameters.serviceConnection }}]"
-
                 # Load used function
                 . (Join-Path '$(moduleRepoRoot)' '$(pipelineFunctionsPath)' 'resourceRemoval' 'Initialize-DeploymentRemoval.ps1')
 
@@ -356,5 +336,3 @@ jobs:
 
                   Initialize-DeploymentRemoval @functionInput
                 }
-
-                Write-Output "##[endgroup]"

@@ -106,8 +106,6 @@ jobs:
           targetType: inline
           pwsh: true
           script: |
-            Write-Output "##[group]Setup agent"
-
             # Load used functions
             . (Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
 
@@ -121,7 +119,6 @@ jobs:
             # Set agent up
             Set-EnvironmentOnAgent -PSModules $Modules
 
-            Write-Output "##[endgroup]"
 
       # [Multi Repo] Support task
       #--------------------------
@@ -131,8 +128,6 @@ jobs:
           targetType: inline
           pwsh: true
           script: |
-            Write-Output "##[group]Handle Multi-Repo Invocation"
-
             # ---------------------------- #
             # HANDLE MULTI-REPO INVOCATION #
             # ---------------------------- #
@@ -147,8 +142,6 @@ jobs:
             }
             Write-Output "##vso[task.setvariable variable=ENVMODULEPATH]$modulePath"
 
-            Write-Output "##[endgroup]"
-
       # [Universal Artifact-feed publish] task(s)
       #------------------------------------------
       - task: PowerShell@2
@@ -162,8 +155,6 @@ jobs:
           targetType: inline
           pwsh: true
           script: |
-            Write-Output "##[group]Publish module to artifacts feed"
-
             # Load used functions
             . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Get-ModulesToUpdate.ps1')
             . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Publish-ModuleToUniversalArtifactFeed.ps1')
@@ -201,7 +192,6 @@ jobs:
               Publish-ModuleToUniversalArtifactFeed @functionInput -Verbose
             }
 
-            Write-Output "##[endgroup]"
         env:
           TOKEN: $(vstsFeedToken)
 
@@ -221,8 +211,6 @@ jobs:
           pwsh: true
           ScriptType: InlineScript
           inline: |
-            Write-Output "##[group]Publish module to template specs"
-
             # Load used functions
             . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Get-ModulesToUpdate.ps1')
             . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Publish-ModuleToTemplateSpec.ps1')
@@ -259,8 +247,6 @@ jobs:
               Publish-ModuleToTemplateSpec @functionInput -Verbose
             }
 
-            Write-Output "##[endgroup]"
-
       # [private bicep registry publish] task(s)
       #-------------------------------------------
       - task: AzurePowerShell@5
@@ -277,8 +263,6 @@ jobs:
           pwsh: true
           ScriptType: InlineScript
           inline: |
-            Write-Output "##[group]Publish module to private bicep registry"
-
             # Load used functions
             . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Get-ModulesToUpdate.ps1')
             . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Publish-ModuleToPrivateBicepRegistry.ps1')
@@ -314,5 +298,3 @@ jobs:
 
               Publish-ModuleToPrivateBicepRegistry @functionInput -Verbose
             }
-
-            Write-Output "##[endgroup]"
