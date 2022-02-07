@@ -50,7 +50,6 @@ jobs:
         with:
           fetch-depth: 0
       - name: 'Deploy module'
-        id: rg-deploy
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
@@ -100,6 +99,33 @@ jobs:
             Write-Verbose "msiPrincipalId: $msiPrincipalId" -Verbose
             Write-Output ('::set-output name={0}::{1}' -f 'msiPrincipalId', $msiPrincipalId)
           azPSVersion: 'latest'
+
+  job_deploy_pa:
+    runs-on: ubuntu-20.04
+    name: 'Deploy policy assignment'
+    env:
+      namespace: 'Microsoft.Authorization\policyAssignments'
+    needs:
+      - job_deploy_rg
+    strategy:
+      fail-fast: false
+      matrix:
+        parameterFilePaths: ['parameters.json']
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: 'Deploy module'
+        uses: ./.github/actions/templates/validateModuleDeployment
+        with:
+          templateFilePath: 'arm/${{ env.namespace }}/.bicep/nested_policyAssignments_sub.bicep'
+          parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
+          location: '${{ env.defaultLocation }}'
+          resourceGroupName: '${{ env.defaultResourceGroupName }}'
+          subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
+          managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
+          removeDeployment: '${{ env.removeDeployment }}'
 
   job_deploy_evh:
     runs-on: ubuntu-20.04
@@ -244,17 +270,11 @@ jobs:
               targetContainer     = $storageAccountParameters.blobServices.value.containers[0].name
             }
 
-            # Get storage account name
-            $parameterFilePath = Join-Path $env:GITHUB_WORKSPACE '${{ env.dependencyPath }}' 'Microsoft.Storage/storageAccounts' 'parameters' 'parameters.json'
-            $storageAccountParameters = (ConvertFrom-Json (Get-Content -path $parameterFilePath -Raw)).parameters
+            Write-Verbose "Invoke task with" -Verbose
+            Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
-            # Upload files to storage account
-            $functionInput = @{
-              ResourceGroupName   = '${{ env.resourceGroupName }}'
-              StorageAccountName  = $storageAccountParameters.name.value
-              contentDirectories  = Join-Path $env:GITHUB_WORKSPACE '${{ env.dependencyPath }}' 'Microsoft.Storage/storageAccounts' 'uploads'
-              targetContainer     = $storageAccountParameters.blobServices.value.containers[0].name
-            }
+            Export-ContentToBlob @functionInput -Verbose
+          azPSVersion: 'latest'
 
   job_deploy_sig:
     runs-on: ubuntu-20.04
