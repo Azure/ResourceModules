@@ -37,8 +37,6 @@ env:
 jobs:
   job_deploy_rg:
     runs-on: ubuntu-20.04
-    outputs:
-      deploymentOutput: ${{ steps.rg-deploy.outputs.deploymentOutput }}
     name: 'Deploy resource group'
     env:
       namespace: 'Microsoft.Resources\resourceGroups'
@@ -102,25 +100,6 @@ jobs:
             Write-Verbose "msiPrincipalId: $msiPrincipalId" -Verbose
             Write-Output ('::set-output name={0}::{1}' -f 'msiPrincipalId', $msiPrincipalId)
           azPSVersion: 'latest'
-
-  job2:
-    needs: job_deploy_rg
-    runs-on: ubuntu-latest
-    steps:
-      - name: 'Checkout'
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-      - name: 'Deploy module'
-        uses: ./.github/actions/templates/validateModuleDeployment
-        with:
-          templateFilePath: 'arm/${{ env.namespace }}/.bicep/nested_policyAssignments_sub.bicep'
-          parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
-          location: '${{ env.defaultLocation }}'
-          resourceGroupName: '${{ env.defaultResourceGroupName }}'
-          subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
-          managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
-          removeDeployment: '${{ env.removeDeployment }}'
 
   job_deploy_evh:
     runs-on: ubuntu-20.04
@@ -265,17 +244,17 @@ jobs:
               targetContainer     = $storageAccountParameters.blobServices.value.containers[0].name
             }
 
-  #           # Get storage account name
-  #           $parameterFilePath = Join-Path $env:GITHUB_WORKSPACE '${{ env.dependencyPath }}' 'Microsoft.Storage/storageAccounts' 'parameters' 'parameters.json'
-  #           $storageAccountParameters = (ConvertFrom-Json (Get-Content -path $parameterFilePath -Raw)).parameters
+            # Get storage account name
+            $parameterFilePath = Join-Path $env:GITHUB_WORKSPACE '${{ env.dependencyPath }}' 'Microsoft.Storage/storageAccounts' 'parameters' 'parameters.json'
+            $storageAccountParameters = (ConvertFrom-Json (Get-Content -path $parameterFilePath -Raw)).parameters
 
-  #           # Upload files to storage account
-  #           $functionInput = @{
-  #             ResourceGroupName   = '${{ env.resourceGroupName }}'
-  #             StorageAccountName  = $storageAccountParameters.name.value
-  #             contentDirectories  = Join-Path $env:GITHUB_WORKSPACE '${{ env.dependencyPath }}' 'Microsoft.Storage/storageAccounts' 'uploads'
-  #             targetContainer     = $storageAccountParameters.blobServices.value.containers[0].name
-  #           }
+            # Upload files to storage account
+            $functionInput = @{
+              ResourceGroupName   = '${{ env.resourceGroupName }}'
+              StorageAccountName  = $storageAccountParameters.name.value
+              contentDirectories  = Join-Path $env:GITHUB_WORKSPACE '${{ env.dependencyPath }}' 'Microsoft.Storage/storageAccounts' 'uploads'
+              targetContainer     = $storageAccountParameters.blobServices.value.containers[0].name
+            }
 
   job_deploy_sig:
     runs-on: ubuntu-20.04
