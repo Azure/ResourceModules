@@ -147,8 +147,8 @@ jobs:
                   $moduleRepoRoot = '$(System.DefaultWorkingDirectory)'
                   $parametersRepoRoot = '$(System.DefaultWorkingDirectory)'
                 }
-                Write-Host "##vso[task.setvariable variable=ModuleRepoRoot]$moduleRepoRoot"
-                Write-Host "##vso[task.setvariable variable=parametersRepoRoot]$parametersRepoRoot"
+                Write-Output "##vso[task.setvariable variable=ModuleRepoRoot]$moduleRepoRoot"
+                Write-Output "##vso[task.setvariable variable=parametersRepoRoot]$parametersRepoRoot"
 
           # [Agent] Replace tokens
           #-----------------------
