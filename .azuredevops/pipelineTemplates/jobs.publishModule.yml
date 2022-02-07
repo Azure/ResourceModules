@@ -184,12 +184,8 @@ jobs:
             # Get the modified child resources
             $ModulesToUpdate = Get-ModulesToUpdate @functionInput -Verbose
 
-            Write-Output "##[endgroup]"
-
             # Publish the modified child resources
             foreach ($ModuleToUpdate in $ModulesToUpdate) {
-              Write-Output "##[group]- $($ModuleToUpdate.TemplateFilePath)"
-
               $functionInput = @{
                 TemplateFilePath = $ModuleToUpdate.TemplateFilePath
                 VstsOrganizationUri = '${{ parameters.vstsOrganizationUri }}'
@@ -203,9 +199,9 @@ jobs:
               Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
               Publish-ModuleToUniversalArtifactFeed @functionInput -Verbose
-
-              Write-Output "##[endgroup]"
             }
+
+            Write-Output "##[endgroup]"
         env:
           TOKEN: $(vstsFeedToken)
 
@@ -247,12 +243,8 @@ jobs:
             # Get the modified child resources
             $ModulesToUpdate = Get-ModulesToUpdate @functionInput -Verbose
 
-            Write-Output "##[endgroup]"
-
             # Publish the modified child resources
             foreach ($ModuleToUpdate in $ModulesToUpdate) {
-              Write-Output "##[group]- $($ModuleToUpdate.TemplateFilePath)"
-
               $functionInput = @{
                 TemplateFilePath         = $ModuleToUpdate.TemplateFilePath
                 TemplateSpecsRgName      = '${{ parameters.templateSpecsRgName }}'
@@ -265,9 +257,9 @@ jobs:
               Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
               Publish-ModuleToTemplateSpec @functionInput -Verbose
-
-              Write-Output "##[endgroup]"
             }
+
+            Write-Output "##[endgroup]"
 
       # [private bicep registry publish] task(s)
       #-------------------------------------------
@@ -307,12 +299,8 @@ jobs:
             # Get the modified child resources
             $ModulesToUpdate = Get-ModulesToUpdate @functionInput -Verbose
 
-            Write-Output "##[endgroup]"
-
             # Publish the modified child resources
             foreach ($ModuleToUpdate in $ModulesToUpdate) {
-              Write-Output "##[group]- $($ModuleToUpdate.TemplateFilePath)"
-
               $functionInput = @{
                 TemplateFilePath         = $ModuleToUpdate.TemplateFilePath
                 BicepRegistryName       = '${{ parameters.bicepRegistryName }}'
@@ -325,6 +313,6 @@ jobs:
               Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
               Publish-ModuleToPrivateBicepRegistry @functionInput -Verbose
-
-              Write-Output "##[endgroup]"
             }
+
+            Write-Output "##[endgroup]"

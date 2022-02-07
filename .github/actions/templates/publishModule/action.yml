@@ -38,7 +38,7 @@ runs:
     - name: 'Setup agent'
       shell: pwsh
       run: |
-        # Setup agent
+        # Grouping task logs
         Write-Output "::group::Setup agent"
 
         # Load used functions
@@ -66,7 +66,7 @@ runs:
       shell: pwsh
       if: ${{ inputs.templateSpecsDoPublish == 'true' }}
       run: |
-        # Publish module to template specs
+        # Grouping task logs
         Write-Output "::group::Publish module to template specs"
 
         # Load used functions
@@ -85,7 +85,6 @@ runs:
 
         # Publish the modified child resources
         foreach ($ModuleToUpdate in $ModulesToUpdate) {
-          Write-Output "::group::- $($ModuleToUpdate.TemplateFilePath)"
           $functionInput = @{
             TemplateFilePath         = $ModuleToUpdate.TemplateFilePath
             TemplateSpecsRgName      = '${{ inputs.templateSpecsRgName }}'
@@ -100,12 +99,15 @@ runs:
           Publish-ModuleToTemplateSpec @functionInput -Verbose
         }
 
+        Write-Output "::endgroup::"
+
     - name: 'Publish module to private bicep registry'
       shell: pwsh
       if: ${{ inputs.bicepRegistryDoPublish == 'true' }}
       run: |
-        # Publish module to private bicep registry
+        # Grouping task logs
         Write-Output "::group::Publish module to private bicep registry"
+
         # Load used functions
         . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourcePublish' 'Get-ModulesToUpdate.ps1')
         . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourcePublish' 'Publish-ModuleToPrivateBicepRegistry.ps1')
@@ -122,7 +124,6 @@ runs:
 
         # Publish the modified child resources
         foreach ($ModuleToUpdate in $ModulesToUpdate) {
-          Write-Output "::group::- $($ModuleToUpdate.TemplateFilePath)"
           $functionInput = @{
             TemplateFilePath        = $ModuleToUpdate.TemplateFilePath
             BicepRegistryName       = '${{ inputs.bicepRegistryName }}'
@@ -136,3 +137,5 @@ runs:
 
           Publish-ModuleToPrivateBicepRegistry @functionInput -Verbose
         }
+
+        Write-Output "::endgroup::"
