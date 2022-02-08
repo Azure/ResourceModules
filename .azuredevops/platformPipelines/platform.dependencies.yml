@@ -620,9 +620,16 @@ stages:
                 $Settings = Get-Content -Path (Join-Path '$(Build.SourcesDirectory)' 'settings.json') | ConvertFrom-Json -AsHashTable
                 $ConvertTokensInputs = @{
                     ParameterFilePath   = $parameterFilePath
-                    ParameterFileTokens = $Settings.parameterFileTokens.localTokens
                     TokenPrefix         = $Settings.parameterFileTokens.tokenPrefix
                     TokenSuffix         = $Settings.parameterFileTokens.tokenSuffix
+                }
+                if ($Settings.parameterFileTokens.localTokens) {
+                    $tokenMap = @{}
+                    foreach ($token in $Settings.parameterFileTokens.localTokens) {
+                        $tokenMap += @{$token.name = $token.value }
+                    }
+                    Write-Verbose ('Using local tokens [{0}]' -f ($tokenMap.Keys -join ', ')) -Verbose
+                    $ConvertTokensInputs.ParameterFileTokens = $tokenMap
                 }
                 $null = Convert-TokensInParameterFile @ConvertTokensInputs -Verbose
 
