@@ -166,7 +166,7 @@ function Test-ModuleLocally {
 
             # Default Tokens
             $ConvertTokensInputs = @{
-                ParameterFileTokens = @{
+                Tokens = @{
                     subscriptionId    = $ValidateOrDeployParameters.SubscriptionId
                     managementGroupId = $ValidateOrDeployParameters.ManagementGroupId
                 }
@@ -174,7 +174,7 @@ function Test-ModuleLocally {
 
             #Add Other Parameter File Tokens (For Testing)
             if ($AdditionalTokens) {
-                $ConvertTokensInputs.ParameterFileTokens += $AdditionalTokens
+                $ConvertTokensInputs.Tokens += $AdditionalTokens
             }
 
             # Tokens in settings.json
@@ -187,7 +187,7 @@ function Test-ModuleLocally {
                 }
 
                 if ($Settings.parameterFileTokens.localTokens) {
-                    $ConvertTokensInputs.ParameterFileTokens += $Settings.parameterFileTokens.localTokens
+                    $ConvertTokensInputs.Tokens += $Settings.parameterFileTokens.localTokens
                 }
             }
 

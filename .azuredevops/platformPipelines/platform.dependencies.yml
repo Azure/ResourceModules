@@ -202,10 +202,10 @@ stages:
                 if ($Settings.parameterFileTokens.localTokens) {
                     $tokenMap = @{}
                     foreach ($token in $Settings.parameterFileTokens.localTokens) {
-                        $tokenMap += @{$token.name = $token.value }
+                        $tokenMap += @{ $token.name = $token.value }
                     }
                     Write-Verbose ('Using local tokens [{0}]' -f ($tokenMap.Keys -join ', ')) -Verbose
-                    $ConvertTokensInputs.ParameterFileTokens = $tokenMap
+                    $ConvertTokensInputs.Tokens = $tokenMap
                 }
                 $null = Convert-TokensInParameterFile @ConvertTokensInputs -Verbose
 
@@ -319,9 +319,16 @@ stages:
                 # Prepare replace tokens in parameter file
                 $Settings = Get-Content -Path (Join-Path '$(Build.SourcesDirectory)' 'settings.json') | ConvertFrom-Json -AsHashTable
                 $ConvertTokensInputs = @{
-                    ParameterFileTokens = $Settings.parameterFileTokens.localTokens
-                    TokenPrefix         = $Settings.parameterFileTokens.tokenPrefix
-                    TokenSuffix         = $Settings.parameterFileTokens.tokenSuffix
+                    TokenPrefix  = $Settings.parameterFileTokens.tokenPrefix
+                    TokenSuffix  = $Settings.parameterFileTokens.tokenSuffix
+                }
+                if ($Settings.parameterFileTokens.localTokens) {
+                    $tokenMap = @{}
+                    foreach ($token in $Settings.parameterFileTokens.localTokens) {
+                        $tokenMap += @{ $token.name = $token.value }
+                    }
+                    Write-Verbose ('Using local tokens [{0}]' -f ($tokenMap.Keys -join ', ')) -Verbose
+                    $ConvertTokensInputs.Tokens = $tokenMap
                 }
 
                 # Retrieving parameters from previous job outputs and parameter files
@@ -611,7 +618,6 @@ stages:
               azureSubscription: $(serviceConnection)
               ScriptType: 'InlineScript'
               Inline: |
-
                 $parameterFilePath = Join-Path '$(Build.SourcesDirectory)' '$(dependencyPath)' '$(resourceType)' 'parameters' 'parameters.json'
                 # Load used functions
                 . (Join-Path '$(Build.SourcesDirectory)' 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInParameterFile.ps1')
@@ -626,10 +632,10 @@ stages:
                 if ($Settings.parameterFileTokens.localTokens) {
                     $tokenMap = @{}
                     foreach ($token in $Settings.parameterFileTokens.localTokens) {
-                        $tokenMap += @{$token.name = $token.value }
+                        $tokenMap += @{ $token.name = $token.value }
                     }
                     Write-Verbose ('Using local tokens [{0}]' -f ($tokenMap.Keys -join ', ')) -Verbose
-                    $ConvertTokensInputs.ParameterFileTokens = $tokenMap
+                    $ConvertTokensInputs.Tokens = $tokenMap
                 }
                 $null = Convert-TokensInParameterFile @ConvertTokensInputs -Verbose
 
@@ -724,9 +730,16 @@ stages:
                     $Settings = Get-Content -Path (Join-Path '$(Build.SourcesDirectory)' 'settings.json') | ConvertFrom-Json -AsHashTable
                     $ConvertTokensInputs = @{
                         ParameterFilePath   = $parameterFilePath
-                        ParameterFileTokens = $Settings.parameterFileTokens.localTokens
                         TokenPrefix         = $Settings.parameterFileTokens.tokenPrefix
                         TokenSuffix         = $Settings.parameterFileTokens.tokenSuffix
+                    }
+                    if ($Settings.parameterFileTokens.localTokens) {
+                        $tokenMap = @{}
+                        foreach ($token in $Settings.parameterFileTokens.localTokens) {
+                            $tokenMap += @{ $token.name = $token.value }
+                        }
+                        Write-Verbose ('Using local tokens [{0}]' -f ($tokenMap.Keys -join ', ')) -Verbose
+                        $ConvertTokensInputs.Tokens = $tokenMap
                     }
                     $null = Convert-TokensInParameterFile @ConvertTokensInputs -Verbose
 

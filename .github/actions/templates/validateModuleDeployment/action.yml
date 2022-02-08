@@ -83,7 +83,7 @@ runs:
 
         # Construct Token Function Input
         $ConvertTokensInputs = @{
-            ParameterFileTokens = @{
+            Tokens = @{
                 resourceGroupName = '${{ inputs.resourceGroupName }}'
                 subscriptionId    = '${{ inputs.subscriptionId }}'
                 managementGroupId = '${{ inputs.managementGroupId }}'
@@ -97,18 +97,17 @@ runs:
 
         if ($Settings.parameterFileTokens.localTokens) {
           $tokenMap = @{}
-          $tokenMap = @{}
           foreach ($token in $Settings.parameterFileTokens.localTokens) {
-            $tokenMap += @{$token.name = $token.value }
+            $tokenMap += @{ $token.name = $token.value }
           }
           Write-Verbose ('Using local tokens [{0}]' -f ($tokenMap.Keys -join ', ')) -Verbose
-          $ConvertTokensInputs.ParameterFileTokens += $tokenMap
+          $ConvertTokensInputs.Tokens += $tokenMap
         }
 
         if(-not [String]::IsNullOrEmpty('${{  inputs.customParameterFileTokens }}')) {
-          $customTokens = '${{  inputs.customParameterFileTokens }}' | ConvertFrom-Json -AsHashTable
-          Write-Verbose ('Using custom parameter file tokens [{0}]' -f  ($customTokens.Keys -join ', ')) -Verbose
-          $ConvertTokensInputs.ParameterFileTokens +=  $customTokens
+          $customTokens = '${{ inputs.customParameterFileTokens }}' | ConvertFrom-Json -AsHashTable
+          Write-Verbose ('Using custom parameter file tokens [{0}]' -f ($customTokens.Keys -join ', ')) -Verbose
+          $ConvertTokensInputs.Tokens += $customTokens
         }
 
         # Invoke Token Replacement Functionality

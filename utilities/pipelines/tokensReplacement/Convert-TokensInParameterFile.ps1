@@ -8,7 +8,7 @@ This Function aggregates all the different token types (Default and Local) and t
 .PARAMETER ParameterFilePath
 Mandatory. The Path to the Parameter File that contains tokens to be replaced.
 
-.PARAMETER ParameterFileTokens
+.PARAMETER Tokens
 Optional. An object containing the parameter file tokens to set
 
 .PARAMETER TokenPrefix
@@ -40,7 +40,7 @@ function Convert-TokensInParameterFile {
         [string] $ParameterFilePath,
 
         [parameter(Mandatory = $false)]
-        [hashtable] $ParameterFileTokens = @{},
+        [hashtable] $Tokens = @{},
 
         [parameter(Mandatory = $true)]
         [string] $TokenPrefix,
@@ -62,7 +62,7 @@ function Convert-TokensInParameterFile {
 
     process {
         # Combine All Input Token Types, Remove Duplicates and Only Select entries with on empty values
-        $FilteredParameterFileTokens = ($ParameterFileTokens | Sort-Object -Unique).Clone()
+        $FilteredParameterFileTokens = ($Tokens | Sort-Object -Unique).Clone()
         @($FilteredParameterFileTokens.Keys) | ForEach-Object {
             if ([String]::IsNullOrEmpty($FilteredParameterFileTokens[$_])) {
                 $FilteredParameterFileTokens.Remove($_)

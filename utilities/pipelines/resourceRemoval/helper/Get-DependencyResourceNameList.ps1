@@ -41,16 +41,15 @@ function Get-DependencyResourceNameList {
             TokenSuffix       = $Settings.parameterFileTokens.tokenSuffix
             Verbose           = $false
         }
-        $null = Convert-TokensInParameterFile @ConvertTokensInputs
-    }
-
-    if ($Settings.parameterFileTokens.localTokens) {
-        $tokenMap = @{}
-        foreach ($token in $Settings.parameterFileTokens.localTokens) {
-            $tokenMap += @{$token.name = $token.value }
+        if ($Settings.parameterFileTokens.localTokens) {
+            $tokenMap = @{}
+            foreach ($token in $Settings.parameterFileTokens.localTokens) {
+                $tokenMap += @{ $token.name = $token.value }
+            }
+            Write-Verbose ('Using local tokens [{0}]' -f ($tokenMap.Keys -join ', ')) -Verbose
+            $ConvertTokensInputs.Tokens = $tokenMap
         }
-        Write-Verbose ('Using local tokens [{0}]' -f ($tokenMap.Keys -join ', ')) -Verbose
-        $ConvertTokensInputs.ParameterFileTokens = $tokenMap
+        $null = Convert-TokensInParameterFile @ConvertTokensInputs
     }
 
     $dependencyResourceNames = [System.Collections.ArrayList]@()
