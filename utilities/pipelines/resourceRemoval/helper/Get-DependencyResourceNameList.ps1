@@ -36,13 +36,21 @@ function Get-DependencyResourceNameList {
     $Settings = Get-Content -Path (Join-Path $repoRootPath 'settings.json') | ConvertFrom-Json -AsHashtable
     foreach ($parameterFilePath in $parameterFilePaths) {
         $ConvertTokensInputs = @{
-            ParameterFilePath   = $parameterFilePath
-            ParameterFileTokens = $Settings.parameterFileTokens.localTokens
-            TokenPrefix         = $Settings.parameterFileTokens.tokenPrefix
-            TokenSuffix         = $Settings.parameterFileTokens.tokenSuffix
-            Verbose             = $false
+            ParameterFilePath = $parameterFilePath
+            TokenPrefix       = $Settings.parameterFileTokens.tokenPrefix
+            TokenSuffix       = $Settings.parameterFileTokens.tokenSuffix
+            Verbose           = $false
         }
         $null = Convert-TokensInParameterFile @ConvertTokensInputs
+    }
+
+    if ($Settings.parameterFileTokens.localTokens) {
+        $tokenMap = @{}
+        foreach ($token in $Settings.parameterFileTokens.localTokens) {
+            $tokenMap[$token.Name] = $token.Value
+        }
+        Write-Verbose ('Using local tokens [{0}]' -f ($tokenMap.Keys -join ', ')) -Verbose
+        $ConvertTokensInputs.ParameterFileTokens = $tokenMap
     }
 
     $dependencyResourceNames = [System.Collections.ArrayList]@()

@@ -182,14 +182,18 @@ jobs:
                 }
 
                 if ($Settings.parameterFileTokens.localTokens) {
-                  Write-Verbose ('Using local tokens [{0}]' -f ($Settings.parameterFileTokens.localTokens.Keys -join ', ')) -Verbose
-                  $ConvertTokensInputs.ParameterFileTokens += $Settings.parameterFileTokens.localTokens
+                  $tokenMap = @{}
+                  foreach($token in $Settings.parameterFileTokens.localTokens) {
+                    $tokenMap[$token.Name] = $token.Value
+                  }
+                  Write-Verbose ('Using local tokens [{0}]' -f ($tokenMap.Keys -join ', ')) -Verbose
+                  $ConvertTokensInputs.ParameterFileTokens += $tokenMap
                 }
 
                 if(-not [String]::IsNullOrEmpty('${{ deploymentBlock.customParameterFileTokens }}')) {
                   $customTokens = '${{ deploymentBlock.customParameterFileTokens }}' | ConvertFrom-Json -AsHashTable
                   Write-Verbose ('Using custom parameter file tokens [{0}]' -f  ($customTokens.Keys -join ', ')) -Verbose
-                  $ConvertTokensInputs.ParameterFileTokens +=  $customTokens
+                  $ConvertTokensInputs.ParameterFileTokens += $customTokens
                 }
 
                 # Invoke Token Replacement Functionality

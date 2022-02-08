@@ -40,7 +40,7 @@ function Convert-TokensInParameterFile {
         [string] $ParameterFilePath,
 
         [parameter(Mandatory = $false)]
-        [hashtable] $ParameterFileTokens = @(),
+        [hashtable] $ParameterFileTokens = @{},
 
         [parameter(Mandatory = $true)]
         [string] $TokenPrefix,
