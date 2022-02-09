@@ -7,7 +7,7 @@ This function helps with testing a module locally
 This function helps with testing a module locally. Use this function To perform Pester testing for a module and then attempting to deploy it. It also allows you to use your own
 subscription Id, principal Id, tenant ID and other parameters that need to be tokenized.
 
-.PARAMETER templateFilePath
+.PARAMETER TemplateFilePath
 Mandatory. Path to the Bicep/ARM module that is being tested
 
 .PARAMETER parameterFilePath
@@ -34,7 +34,7 @@ Optional. A hashtable parameter that contains custom tokens to be replaced in th
 .EXAMPLE
 
 $TestModuleLocallyInput = @{
-    templateFilePath           = 'C:\Microsoft.Network\routeTables\deploy.bicep'
+    TemplateFilePath           = 'C:\Microsoft.Network\routeTables\deploy.bicep'
     parameterFilePath          = 'C:\Microsoft.Network\routeTables\.parameters\parameters.json'
     PesterTest                 = $false
     DeploymentTest             = $false
@@ -57,7 +57,7 @@ Run a Test-Az*Deployment using a specific parameter-template combination with th
 .EXAMPLE
 
 $TestModuleLocallyInput = @{
-    templateFilePath           = 'C:\Microsoft.Network\routeTables\deploy.bicep'
+    TemplateFilePath           = 'C:\Microsoft.Network\routeTables\deploy.bicep'
     PesterTest                 = $true
     DeploymentTest             = $false
     ValidationTest             = $true
@@ -79,7 +79,7 @@ Run all Pesters test for a given template and a Test-Az*Deployment using each pa
 .EXAMPLE
 
 $TestModuleLocallyInput = @{
-    templateFilePath           = 'C:\Microsoft.Network\routeTables\deploy.bicep'
+    TemplateFilePath           = 'C:\Microsoft.Network\routeTables\deploy.bicep'
     PesterTest                 = $true
 }
 Test-ModuleLocally @TestModuleLocallyInput -Verbose
@@ -95,10 +95,10 @@ function Test-ModuleLocally {
     [CmdletBinding(SupportsShouldProcess)]
     param (
         [Parameter(Mandatory)]
-        [string] $templateFilePath,
+        [string] $TemplateFilePath,
 
         [Parameter(Mandatory = $false)]
-        [string] $parameterFilePath = (Join-Path (Split-Path $templateFilePath -Parent) '.parameters'),
+        [string] $parameterFilePath = (Join-Path (Split-Path $TemplateFilePath -Parent) '.parameters'),
 
         [Parameter(Mandatory = $false)]
         [Psobject] $ValidateOrDeployParameters = @{},
@@ -117,7 +117,7 @@ function Test-ModuleLocally {
     )
 
     begin {
-        $ModuleName = Split-Path (Split-Path $templateFilePath -Parent) -Leaf
+        $ModuleName = Split-Path (Split-Path $TemplateFilePath -Parent) -Leaf
         Write-Verbose "Running Local Tests for $($ModuleName)"
         # Load Tokens Converter Scripts
         . (Join-Path $PSScriptRoot '../pipelines/tokensReplacement/Convert-TokensInParameterFile.ps1')
@@ -136,7 +136,7 @@ function Test-ModuleLocally {
                 Invoke-Pester -Configuration @{
                     Run    = @{
                         Container = New-PesterContainer -Path (Join-Path (Get-Item $PSScriptRoot).Parent.Parent 'arm/.global/global.module.tests.ps1') -Data @{
-                            moduleFolderPaths = Split-Path $templateFilePath -Parent
+                            moduleFolderPaths = Split-Path $TemplateFilePath -Parent
                         }
                     }
                     Output = @{
@@ -197,7 +197,7 @@ function Test-ModuleLocally {
             # Deployment & Validation Testing
             # -------------------------------
             $functionInput = @{
-                templateFilePath  = $templateFilePath
+                TemplateFilePath  = $TemplateFilePath
                 location          = $ValidateOrDeployParameters.Location
                 resourceGroupName = $ValidateOrDeployParameters.ResourceGroupName
                 subscriptionId    = $ValidateOrDeployParameters.SubscriptionId
