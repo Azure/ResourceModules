@@ -120,7 +120,7 @@ function Test-ModuleLocally {
         $ModuleName = Split-Path (Split-Path $TemplateFilePath -Parent) -Leaf
         Write-Verbose "Running Local Tests for $($ModuleName)"
         # Load Tokens Converter Scripts
-        . (Join-Path $PSScriptRoot '../pipelines/tokensReplacement/Convert-TokensInParameterFile.ps1')
+        . (Join-Path $PSScriptRoot '../pipelines/tokensReplacement/Convert-TokensInFile.ps1')
         # Load Modules Validation / Deployment Scripts
         . (Join-Path $PSScriptRoot '../pipelines/resourceDeployment/New-ModuleDeployment.ps1')
         . (Join-Path $PSScriptRoot '../pipelines/resourceValidation/Test-TemplateWithParameterFile.ps1')
@@ -192,7 +192,7 @@ function Test-ModuleLocally {
             }
 
             # Invoke Token Replacement Functionality and Convert Tokens in Parameter Files
-            $ModuleParameterFiles | ForEach-Object { $null = Convert-TokensInParameterFile @ConvertTokensInputs -ParameterFilePath $_ }
+            $ModuleParameterFiles | ForEach-Object { $null = Convert-TokensInFile @ConvertTokensInputs -ParameterFilePath $_ }
 
             # Deployment & Validation Testing
             # -------------------------------
@@ -236,7 +236,7 @@ function Test-ModuleLocally {
                 if (($ValidationTest -or $DeploymentTest) -and $ValidateOrDeployParameters -and -not $RestoreAlreadyTriggered) {
                     # Replace Values with Tokens For Repo Updates
                     Write-Verbose 'Restoring Tokens'
-                    $ModuleParameterFiles | ForEach-Object { $null = Convert-TokensInParameterFile @ConvertTokensInputs -ParameterFilePath $_ -SwapValueWithName $true }
+                    $ModuleParameterFiles | ForEach-Object { $null = Convert-TokensInFile @ConvertTokensInputs -ParameterFilePath $_ -SwapValueWithName $true }
                 }
             }
         }

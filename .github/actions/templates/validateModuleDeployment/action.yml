@@ -76,23 +76,23 @@ runs:
       shell: pwsh
       run: |
         # Load used functions
-        . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInParameterFile.ps1')
+        . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInFile.ps1')
 
         # Load Settings File
         $Settings = Get-Content -Path "settings.json" | ConvertFrom-Json -AsHashTable
 
         # Construct Token Function Input
         $ConvertTokensInputs = @{
-            Tokens = @{
+            Tokens       = @{
                 resourceGroupName = '${{ inputs.resourceGroupName }}'
                 subscriptionId    = '${{ inputs.subscriptionId }}'
                 managementGroupId = '${{ inputs.managementGroupId }}'
                 tenantId          = '${{ env.ARM_TENANT_ID }}'
                 deploymentSpId    = '${{ env.DEPLOYMENT_SP_ID }}'
             }
-            ParameterFilePath   = '${{ inputs.parameterFilePath }}'
-            TokenPrefix         = $Settings.parameterFileTokens.tokenPrefix
-            TokenSuffix         = $Settings.parameterFileTokens.tokenSuffix
+            FilePath     = '${{ inputs.parameterFilePath }}'
+            TokenPrefix  = $Settings.parameterFileTokens.tokenPrefix
+            TokenSuffix  = $Settings.parameterFileTokens.tokenSuffix
         }
 
         if ($Settings.parameterFileTokens.localTokens) {
@@ -111,7 +111,7 @@ runs:
         }
 
         # Invoke Token Replacement Functionality
-        $null = Convert-TokensInParameterFile @ConvertTokensInputs -Verbose
+        $null = Convert-TokensInFile @ConvertTokensInputs -Verbose
 
     # [Deployment validation] task(s)
     # -------------------------------

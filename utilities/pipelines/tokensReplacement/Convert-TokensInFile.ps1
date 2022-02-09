@@ -5,8 +5,8 @@ This Function Helps with Testing A Module Locally
 .DESCRIPTION
 This Function aggregates all the different token types (Default and Local) and then passes them to the Convert Tokens Script to replace tokens in a parameter file
 
-.PARAMETER ParameterFilePath
-Mandatory. The Path to the Parameter File that contains tokens to be replaced.
+.PARAMETER FilePath
+Mandatory. The Path to the file that contains tokens to be replaced.
 
 .PARAMETER Tokens
 Optional. An object containing the parameter file tokens to set
@@ -37,7 +37,7 @@ function Convert-TokensInParameterFile {
     [CmdletBinding()]
     param (
         [parameter(Mandatory = $true)]
-        [string] $ParameterFilePath,
+        [string] $FilePath,
 
         [parameter(Mandatory = $false)]
         [hashtable] $Tokens = @{},
@@ -62,27 +62,27 @@ function Convert-TokensInParameterFile {
 
     process {
         # Combine All Input Token Types, Remove Duplicates and Only Select entries with on empty values
-        $FilteredParameterFileTokens = ($Tokens | Sort-Object -Unique).Clone()
-        @($FilteredParameterFileTokens.Keys) | ForEach-Object {
-            if ([String]::IsNullOrEmpty($FilteredParameterFileTokens[$_])) {
-                $FilteredParameterFileTokens.Remove($_)
+        $FilteredTokens = ($Tokens | Sort-Object -Unique).Clone()
+        @($FilteredTokens.Keys) | ForEach-Object {
+            if ([String]::IsNullOrEmpty($FilteredTokens[$_])) {
+                $FilteredTokens.Remove($_)
             }
         }
-        Write-Verbose ('Using [{0}] tokens' -f $FilteredParameterFileTokens.Keys.Count)
+        Write-Verbose ('Using [{0}] tokens' -f $FilteredTokens.Keys.Count)
 
         # Apply Prefix and Suffix to Tokens and Prepare Object for Conversion
         Write-Verbose ("Applying Token Prefix '$TokenPrefix' and Token Suffix '$TokenSuffix'")
-        foreach ($ParameterFileTokenName in @($FilteredParameterFileTokens.Keys)) {
-            $newKey = -join ($TokenPrefix, $ParameterFileTokenName, $TokenSuffix)
-            $FilteredParameterFileTokens[$newKey] = $FilteredParameterFileTokens[$ParameterFileTokenName] # Add formatted entry
-            $FilteredParameterFileTokens.Remove($ParameterFileTokenName) # Replace original
+        foreach ($Token in @($FilteredTokens.Keys)) {
+            $newKey = -join ($TokenPrefix, $Token, $TokenSuffix)
+            $FilteredTokens[$newKey] = $FilteredTokens[$Token] # Add formatted entry
+            $FilteredTokens.Remove($Token) # Replace original
         }
         # Convert Tokens in Parameter Files
         try {
             # Prepare Input to Token Converter Function
             $ConvertTokenListFunctionInput = @{
-                FilePath             = $ParameterFilePath
-                TokenNameValueObject = $FilteredParameterFileTokens
+                FilePath             = $FilePath
+                TokenNameValueObject = $FilteredTokens
                 SwapValueWithName    = $SwapValueWithName
             }
             if ($OutputDirectory) {
