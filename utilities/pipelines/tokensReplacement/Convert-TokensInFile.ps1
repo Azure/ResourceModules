@@ -9,7 +9,7 @@ This Function aggregates all the different token types (Default and Local) and t
 Mandatory. The Path to the file that contains tokens to be replaced.
 
 .PARAMETER Tokens
-Optional. An object containing the parameter file tokens to set
+Mandatory. An object containing the parameter file tokens to set
 
 .PARAMETER TokenPrefix
 Mandatory. The prefix used to identify a token in the parameter file (i.e. <<)
@@ -33,14 +33,14 @@ Optional. A string for a custom output directory of the modified parameter file
 - If providing TokenKeyVaultName parameter, ensure you have read access to secrets in the key vault to be able to retrieve the tokens.
 #>
 
-function Convert-TokensInParameterFile {
+function Convert-TokensInFile {
     [CmdletBinding()]
     param (
         [parameter(Mandatory = $true)]
         [string] $FilePath,
 
-        [parameter(Mandatory = $false)]
-        [hashtable] $Tokens = @{},
+        [parameter(Mandatory = $true)]
+        [hashtable] $Tokens,
 
         [parameter(Mandatory = $true)]
         [string] $TokenPrefix,
