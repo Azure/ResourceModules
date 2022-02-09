@@ -667,6 +667,7 @@ jobs:
             'apgw.parameters.json',
             'bas.parameters.json',
             'lb.parameters.json',
+            'lb.min.parameters.json',
             'fw.parameters.json',
           ]
     steps:

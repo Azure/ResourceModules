@@ -483,6 +483,9 @@ stages:
             - path: $(dependencyPath)/$(resourceType)/parameters/lb.parameters.json
               templateFilePath: $(templateFilePath)
               displayName: Load balancer Public IP
+            - path: $(dependencyPath)/$(resourceType)/parameters/lb.min.parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: Min Load balancer Public IP
             - path: $(dependencyPath)/$(resourceType)/parameters/fw.parameters.json
               templateFilePath: $(templateFilePath)
               displayName: Firewall Public IP
