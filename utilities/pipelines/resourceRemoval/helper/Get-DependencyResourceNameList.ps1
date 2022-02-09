@@ -34,26 +34,25 @@ function Get-DependencyResourceNameList {
 
     # Replace tokens in dependency parameter files
     $Settings = Get-Content -Path (Join-Path $repoRootPath 'settings.json') | ConvertFrom-Json -AsHashtable
-    foreach ($parameterFilePath in $parameterFilePaths) {
-        $ConvertTokensInputs = @{
-            FilePath    = $parameterFilePath
-            Tokens      = @{}
-            TokenPrefix = $Settings.parameterFileTokens.tokenPrefix
-            TokenSuffix = $Settings.parameterFileTokens.tokenSuffix
-            Verbose     = $false
-        }
 
-        # Add local tokens
-        if ($Settings.parameterFileTokens.localTokens) {
-            $tokenMap = @{}
-            foreach ($token in $Settings.parameterFileTokens.localTokens) {
-                $tokenMap += @{ $token.name = $token.value }
+    # Add local tokens
+    if ($Settings.parameterFileTokens.localTokens) {
+        $tokenMap = @{}
+        foreach ($token in $Settings.parameterFileTokens.localTokens) {
+            $tokenMap += @{ $token.name = $token.value }
+        }
+        Write-Verbose ('Using local tokens [{0}]' -f ($tokenMap.Keys -join ', '))
+
+        foreach ($parameterFilePath in $parameterFilePaths) {
+            $ConvertTokensInputs = @{
+                FilePath    = $parameterFilePath
+                Tokens      = $tokenMap
+                TokenPrefix = $Settings.parameterFileTokens.tokenPrefix
+                TokenSuffix = $Settings.parameterFileTokens.tokenSuffix
+                Verbose     = $false
             }
-            Write-Verbose ('Using local tokens [{0}]' -f ($tokenMap.Keys -join ', '))
-            $ConvertTokensInputs.Tokens = $tokenMap
+            $null = Convert-TokensInFile @ConvertTokensInputs
         }
-
-        $null = Convert-TokensInFile @ConvertTokensInputs
     }
 
     $dependencyResourceNames = [System.Collections.ArrayList]@()
