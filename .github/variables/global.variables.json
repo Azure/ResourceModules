@@ -2,7 +2,7 @@
     "variables": [
         {
             "name": "defaultLocation",
-            "value": "WestEurope"
+            "value": "WestUS"
         },
         {
             "name": "resourceGroupName",
