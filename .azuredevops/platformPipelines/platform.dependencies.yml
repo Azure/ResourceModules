@@ -209,7 +209,7 @@ stages:
                     $ConvertTokensInputs.Tokens = $tokenMap
                 }
 
-                $null = Convert-TokensInFile @ConvertTokensInputs -Verbose
+                $null = Convert-TokensInFile @ConvertTokensInputs
 
                 # Get storage account name
                 $storageAccountParameters = (ConvertFrom-Json (Get-Content -path $parameterFilePath -Raw)).parameters
@@ -639,7 +639,7 @@ stages:
                     Write-Verbose ('Using local tokens [{0}]' -f ($tokenMap.Keys -join ', ')) -Verbose
                     $ConvertTokensInputs.Tokens = $tokenMap
                 }
-                $null = Convert-TokensInFile @ConvertTokensInputs -Verbose
+                $null = Convert-TokensInFile @ConvertTokensInputs
 
                 # Get key vault name
                 $keyVaultParameters = (ConvertFrom-Json (Get-Content -Path $parameterFilePath -Raw)).parameters
@@ -743,7 +743,7 @@ stages:
                         Write-Verbose ('Using local tokens [{0}]' -f ($tokenMap.Keys -join ', ')) -Verbose
                         $ConvertTokensInputs.Tokens = $tokenMap
                     }
-                    $null = Convert-TokensInFile @ConvertTokensInputs -Verbose
+                    $null = Convert-TokensInFile @ConvertTokensInputs
 
                     # Get key vault name
                     $keyVaultParameters = (ConvertFrom-Json (Get-Content -Path $parameterFilePath -Raw)).parameters

@@ -40,6 +40,7 @@ function Get-DependencyResourceNameList {
             Tokens      = @{}
             TokenPrefix = $Settings.parameterFileTokens.tokenPrefix
             TokenSuffix = $Settings.parameterFileTokens.tokenSuffix
+            Verbose     = $false
         }
 
         # Add local tokens

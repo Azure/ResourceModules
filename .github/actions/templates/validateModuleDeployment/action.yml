@@ -116,7 +116,7 @@ runs:
         }
 
         # Invoke Token Replacement Functionality
-        $null = Convert-TokensInFile @ConvertTokensInputs -Verbose
+        $null = Convert-TokensInFile @ConvertTokensInputs
 
     # [Deployment validation] task(s)
     # -------------------------------

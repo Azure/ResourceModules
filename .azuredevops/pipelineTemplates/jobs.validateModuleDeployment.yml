@@ -177,11 +177,11 @@ jobs:
 
                 # Add defaults
                 $ConvertTokensInputs.Tokens += @{
-                        resourceGroupName = '${{ parameters.resourceGroupName }}'
-                        subscriptionId    = '${{ parameters.subscriptionId }}'
-                        managementGroupId = '${{ parameters.managementGroupId }}'
-                        tenantId          = '$(ARM_TENANT_ID)'
-                        deploymentSpId    = '$(DEPLOYMENT_SP_ID)'
+                  resourceGroupName = '${{ parameters.resourceGroupName }}'
+                  subscriptionId    = '${{ parameters.subscriptionId }}'
+                  managementGroupId = '${{ parameters.managementGroupId }}'
+                  tenantId          = '$(ARM_TENANT_ID)'
+                  deploymentSpId    = '$(DEPLOYMENT_SP_ID)'
                 }
 
                 # Add local tokens
@@ -202,7 +202,7 @@ jobs:
                 }
 
                 # Invoke Token Replacement Functionality
-                $null = Convert-TokensInFile @ConvertTokensInputs -Verbose
+                $null = Convert-TokensInFile @ConvertTokensInputs
 
           # [Validation] task(s)
           #---------------------
