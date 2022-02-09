@@ -26,7 +26,7 @@ This module deploys an Azure virtual desktop workspace.
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
 | `logsToEnable` | array | `[Checkpoint, Error, Management, Feed]` | `[Checkpoint, Error, Management, Feed]` | Optional. The name of logs that will be streamed. |
 | `name` | string |  |  | Required. The name of the workspace to be attach to new Application Group. |
-| `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalIds' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or it's fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
+| `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalIds' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
 | `tags` | object | `{object}` |  | Optional. Tags of the resource. |
 | `workspaceDescription` | string |  |  | Optional. The description of the Workspace to be created. |
 | `workspaceFriendlyName` | string |  |  | Optional. The friendly name of the Workspace to be created. |

@@ -1,4 +1,4 @@
-name: 'Network - Firewallpolicies'
+name: 'Compute - Disks'
 
 parameters:
   - name: removeDeployment
@@ -17,9 +17,9 @@ trigger:
       - main
   paths:
     include:
-      - '/.azuredevops/modulePipelines/ms.network.firewallpolicies.yml'
+      - '/.azuredevops/modulePipelines/ms.compute.disks.yml'
       - '/.azuredevops/pipelineTemplates/module.*.yml'
-      - '/arm/Microsoft.Network/firewallpolicies/*'
+      - '/arm/Microsoft.Compute/disks/*'
     exclude:
       - '/**/*.md'
 
@@ -27,22 +27,25 @@ variables:
   - template: '/.azuredevops/pipelineVariables/global.variables.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/arm/Microsoft.Network/firewallpolicies'
+    value: '/arm/Microsoft.Compute/disks'
 
 stages:
   - stage: Validation
     displayName: Pester tests
     jobs:
-      - template: /.azuredevops/pipelineTemplates/module.jobs.validate.yml
+      - template: /.azuredevops/pipelineTemplates/jobs.validateModulePester.yml
 
   - stage: Deployment
     displayName: Deployment tests
     jobs:
-      - template: /.azuredevops/pipelineTemplates/module.jobs.deploy.yml
+      - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
         parameters:
           removeDeployment: '${{ parameters.removeDeployment }}'
           deploymentBlocks:
             - path: $(modulePath)/.parameters/parameters.json
+            - path: $(modulePath)/.parameters/min.parameters.json
+            - path: $(modulePath)/.parameters/image.parameters.json
+            - path: $(modulePath)/.parameters/import.parameters.json
 
   - stage: Publishing
     displayName: Publish module
