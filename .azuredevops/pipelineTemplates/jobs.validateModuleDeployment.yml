@@ -169,18 +169,22 @@ jobs:
 
                 # Construct Token Function Input
                 $ConvertTokensInputs = @{
-                    Tokens      = @{
-                        resourceGroupName = '${{ parameters.resourceGroupName }}'
-                        subscriptionId    = '${{ parameters.subscriptionId }}'
-                        managementGroupId = '${{ parameters.managementGroupId }}'
-                        tenantId          = '$(ARM_TENANT_ID)'
-                        deploymentSpId    = '$(DEPLOYMENT_SP_ID)'
-                    }
+                    Tokens      = @{}
                     FilePath    = Join-Path '$(parametersRepoRoot)' '${{ deploymentBlock.path }}'
                     TokenPrefix = $Settings.parameterFileTokens.tokenPrefix
                     TokenSuffix = $Settings.parameterFileTokens.tokenSuffix
                 }
 
+                # Add defaults
+                $ConvertTokensInputs.Tokens += @{
+                        resourceGroupName = '${{ parameters.resourceGroupName }}'
+                        subscriptionId    = '${{ parameters.subscriptionId }}'
+                        managementGroupId = '${{ parameters.managementGroupId }}'
+                        tenantId          = '$(ARM_TENANT_ID)'
+                        deploymentSpId    = '$(DEPLOYMENT_SP_ID)'
+                }
+
+                # Add local tokens
                 if ($Settings.parameterFileTokens.localTokens) {
                   $tokenMap = @{}
                   foreach ($token in $Settings.parameterFileTokens.localTokens) {
@@ -190,6 +194,7 @@ jobs:
                   $ConvertTokensInputs.Tokens += $tokenMap
                 }
 
+                # Add custom tokens (passed in via the pipeline)
                 if(-not [String]::IsNullOrEmpty('${{ deploymentBlock.customParameterFileTokens }}')) {
                   $customTokens = '${{ deploymentBlock.customParameterFileTokens }}' | ConvertFrom-Json -AsHashTable
                   Write-Verbose ('Using custom parameter file tokens [{0}]' -f  ($customTokens.Keys -join ', ')) -Verbose

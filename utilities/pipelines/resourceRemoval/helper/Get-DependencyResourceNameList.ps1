@@ -37,9 +37,12 @@ function Get-DependencyResourceNameList {
     foreach ($parameterFilePath in $parameterFilePaths) {
         $ConvertTokensInputs = @{
             FilePath    = $parameterFilePath
+            Tokens      = @{}
             TokenPrefix = $Settings.parameterFileTokens.tokenPrefix
             TokenSuffix = $Settings.parameterFileTokens.tokenSuffix
         }
+
+        # Add local tokens
         if ($Settings.parameterFileTokens.localTokens) {
             $tokenMap = @{}
             foreach ($token in $Settings.parameterFileTokens.localTokens) {
@@ -48,6 +51,7 @@ function Get-DependencyResourceNameList {
             Write-Verbose ('Using local tokens [{0}]' -f ($tokenMap.Keys -join ', '))
             $ConvertTokensInputs.Tokens = $tokenMap
         }
+
         $null = Convert-TokensInFile @ConvertTokensInputs
     }
 

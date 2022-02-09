@@ -186,7 +186,6 @@ stages:
               azureSubscription: $(serviceConnection)
               ScriptType: 'InlineScript'
               Inline: |
-
                 $parameterFilePath = Join-Path '$(Build.SourcesDirectory)' '$(dependencyPath)' '$(resourceType)' 'parameters' 'parameters.json'
                 # Load used functions
                 . (Join-Path '$(Build.SourcesDirectory)' 'utilities' 'pipelines' 'sharedScripts' 'Export-ContentToBlob.ps1')
@@ -199,6 +198,8 @@ stages:
                     TokenPrefix  = $Settings.parameterFileTokens.tokenPrefix
                     TokenSuffix  = $Settings.parameterFileTokens.tokenSuffix
                 }
+
+                # Add local tokens
                 if ($Settings.parameterFileTokens.localTokens) {
                     $tokenMap = @{}
                     foreach ($token in $Settings.parameterFileTokens.localTokens) {
@@ -207,6 +208,7 @@ stages:
                     Write-Verbose ('Using local tokens [{0}]' -f ($tokenMap.Keys -join ', ')) -Verbose
                     $ConvertTokensInputs.Tokens = $tokenMap
                 }
+
                 $null = Convert-TokensInFile @ConvertTokensInputs -Verbose
 
                 # Get storage account name

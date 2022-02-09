@@ -83,18 +83,22 @@ runs:
 
         # Construct Token Function Input
         $ConvertTokensInputs = @{
-            Tokens       = @{
-                resourceGroupName = '${{ inputs.resourceGroupName }}'
-                subscriptionId    = '${{ inputs.subscriptionId }}'
-                managementGroupId = '${{ inputs.managementGroupId }}'
-                tenantId          = '${{ env.ARM_TENANT_ID }}'
-                deploymentSpId    = '${{ env.DEPLOYMENT_SP_ID }}'
-            }
-            FilePath     = '${{ inputs.parameterFilePath }}'
-            TokenPrefix  = $Settings.parameterFileTokens.tokenPrefix
-            TokenSuffix  = $Settings.parameterFileTokens.tokenSuffix
+          Tokens       = @{}
+          FilePath     = '${{ inputs.parameterFilePath }}'
+          TokenPrefix  = $Settings.parameterFileTokens.tokenPrefix
+          TokenSuffix  = $Settings.parameterFileTokens.tokenSuffix
         }
 
+        # Local tokens
+        $ConvertTokensInputs.Tokens += @{
+          resourceGroupName = '${{ inputs.resourceGroupName }}'
+          subscriptionId    = '${{ inputs.subscriptionId }}'
+          managementGroupId = '${{ inputs.managementGroupId }}'
+          tenantId          = '${{ env.ARM_TENANT_ID }}'
+          deploymentSpId    = '${{ env.DEPLOYMENT_SP_ID }}'
+        }
+
+        # Add local tokens
         if ($Settings.parameterFileTokens.localTokens) {
           $tokenMap = @{}
           foreach ($token in $Settings.parameterFileTokens.localTokens) {
@@ -104,6 +108,7 @@ runs:
           $ConvertTokensInputs.Tokens += $tokenMap
         }
 
+        # Add custom tokens (passed in via the pipeline)
         if(-not [String]::IsNullOrEmpty('${{  inputs.customParameterFileTokens }}')) {
           $customTokens = '${{ inputs.customParameterFileTokens }}' | ConvertFrom-Json -AsHashTable
           Write-Verbose ('Using custom parameter file tokens [{0}]' -f ($customTokens.Keys -join ', ')) -Verbose

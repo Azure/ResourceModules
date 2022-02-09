@@ -243,7 +243,6 @@ jobs:
         uses: azure/powershell@v1
         with:
           inlineScript: |
-
             $parameterFilePath = Join-Path $env:GITHUB_WORKSPACE '${{ env.dependencyPath }}' '${{ env.namespace }}' 'parameters' 'parameters.json'
             # Load used functions
             . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'sharedScripts' 'Export-ContentToBlob.ps1')
@@ -253,17 +252,21 @@ jobs:
             $Settings = Get-Content -Path "settings.json" | ConvertFrom-Json -AsHashTable
             $ConvertTokensInputs = @{
                 FilePath    = $parameterFilePath
+                Tokens      = @{}
                 TokenPrefix = $Settings.parameterFileTokens.tokenPrefix
                 TokenSuffix = $Settings.parameterFileTokens.tokenSuffix
             }
+
+            # Add local tokens
             if ($Settings.parameterFileTokens.localTokens) {
                 $tokenMap = @{}
                 foreach ($token in $Settings.parameterFileTokens.localTokens) {
                     $tokenMap += @{ $token.name = $token.value }
                 }
                 Write-Verbose ('Using local tokens [{0}]' -f ($tokenMap.Keys -join ', ')) -Verbose
-                $ConvertTokensInputs.Tokens = $tokenMap
+                $ConvertTokensInputs.Tokens += $tokenMap
             }
+
             $null = Convert-TokensInFile @ConvertTokensInputs -Verbose
 
             # Get storage account name
@@ -405,23 +408,25 @@ jobs:
         uses: azure/powershell@v1
         with:
           inlineScript: |
-
             # Load used functions
             . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInFile.ps1')
 
             # Prepare replace tokens in parameter file
             $Settings = Get-Content -Path "settings.json" | ConvertFrom-Json -AsHashTable
             $ConvertTokensInputs = @{
-                TokenPrefix         = $Settings.parameterFileTokens.tokenPrefix
-                TokenSuffix         = $Settings.parameterFileTokens.tokenSuffix
+                Tokens      = @{}
+                TokenPrefix = $Settings.parameterFileTokens.tokenPrefix
+                TokenSuffix = $Settings.parameterFileTokens.tokenSuffix
             }
+
+            # Add local tokens
             if ($Settings.parameterFileTokens.localTokens) {
                 $tokenMap = @{}
                 foreach ($token in $Settings.parameterFileTokens.localTokens) {
                     $tokenMap += @{ $token.name = $token.value }
                 }
                 Write-Verbose ('Using local tokens [{0}]' -f ($tokenMap.Keys -join ', ')) -Verbose
-                $ConvertTokensInputs.Tokens = $tokenMap
+                $ConvertTokensInputs.Tokens += $tokenMap
             }
 
             # Retrieving parameters from previous job outputs and parameter files
@@ -871,9 +876,10 @@ jobs:
             # Replace tokens in parameter file
             $Settings = Get-Content -Path "settings.json" | ConvertFrom-Json -AsHashTable
             $ConvertTokensInputs = @{
-                ParameterFilePath   = $parameterFilePath
-                TokenPrefix         = $Settings.parameterFileTokens.tokenPrefix
-                TokenSuffix         = $Settings.parameterFileTokens.tokenSuffix
+                FilePath    = $parameterFilePath
+                Tokens      = @{}
+                TokenPrefix = $Settings.parameterFileTokens.tokenPrefix
+                TokenSuffix = $Settings.parameterFileTokens.tokenSuffix
             }
             if ($Settings.parameterFileTokens.localTokens) {
                 $tokenMap = @{}
@@ -881,7 +887,7 @@ jobs:
                     $tokenMap += @{ $token.name = $token.value }
                 }
                 Write-Verbose ('Using local tokens [{0}]' -f ($tokenMap.Keys -join ', ')) -Verbose
-                $ConvertTokensInputs.Tokens = $tokenMap
+                $ConvertTokensInputs.Tokens += $tokenMap
             }
             $null = Convert-TokensInFile @ConvertTokensInputs -Verbose
 
@@ -1000,7 +1006,6 @@ jobs:
         uses: azure/powershell@v1
         with:
           inlineScript: |
-
             $parameterFilePath = Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'dependencies' '${{ env.namespace }}' 'parameters' 'sqlmi.parameters.json'
             # Load used functions
             . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInFile.ps1')
@@ -1009,17 +1014,21 @@ jobs:
             $Settings = Get-Content -Path "settings.json" | ConvertFrom-Json -AsHashTable
             $ConvertTokensInputs = @{
                 FilePath    = $parameterFilePath
+                Tokens      = @{}
                 TokenPrefix = $Settings.parameterFileTokens.tokenPrefix
                 TokenSuffix = $Settings.parameterFileTokens.tokenSuffix
             }
+
+            # Add local tokens
             if ($Settings.parameterFileTokens.localTokens) {
                 $tokenMap = @{}
                 foreach ($token in $Settings.parameterFileTokens.localTokens) {
                     $tokenMap += @{ $token.name = $token.value }
                 }
                 Write-Verbose ('Using local tokens [{0}]' -f ($tokenMap.Keys -join ', ')) -Verbose
-                $ConvertTokensInputs.Tokens = $tokenMap
+                $ConvertTokensInputs.Tokens += $tokenMap
             }
+
             $null = Convert-TokensInFile @ConvertTokensInputs -Verbose
 
             # Get key vault name
