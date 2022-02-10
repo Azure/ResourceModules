@@ -2,16 +2,14 @@
     "parameterFileTokens": {
         "tokenPrefix": "<<",
         "tokenSuffix": ">>",
-        "localTokens": {
-            "tokens": [
-                {
-                    "name": "namePrefix",
-                    "value": "rke",
-                    "metadata": {
-                        "description": "A 3-5 character length string, included in the resources names"
-                    }
+        "localTokens": [
+            {
+                "name": "namePrefix",
+                "value": "rke",
+                "metadata": {
+                    "description": "A 3-5 character length string, included in the resources names"
                 }
-            ]
-        }
+            }
+        ]
     }
 }
