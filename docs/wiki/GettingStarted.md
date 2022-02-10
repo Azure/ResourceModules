@@ -144,7 +144,7 @@ Several fundamental variables are shared among all pipelines and are stored in a
 
 ### Name Prefix Token Replacement
 
-Change the default `namePrefix` token value in the [Settings.json](https://github.com/Azure/ResourceModules/blob/main/settings.json) to a 3-5 character string that is used to distinguish your resources names. The default `namePrefix` token has a value `sxx`. Consider this to be one of the first pull requests you need to perform before running any of the repository pipelines. More information on tokens is provided [below](#parameter-file-tokens).
+Change the default `namePrefix` token value in the [Settings.json](https://github.com/Azure/ResourceModules/blob/main/settings.json) to a 3-5 character string that is used to distinguish your resources names. The default `namePrefix` token has a value `carml`. Consider this to be one of the first pull requests you need to perform before running any of the repository pipelines. More information on tokens is provided [below](#parameter-file-tokens).
 
 ## **Option 2:** Use it as a local reference to build bicep templates
 
