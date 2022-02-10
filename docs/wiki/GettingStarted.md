@@ -119,7 +119,7 @@ Once forked, make sure you update all references to the original repository like
 
 ### Service Names
 
-On of the most important actions you should take from the beginning is to update the parameter files in your module. Though you may not want to use all modules that are available, even the subset you use may currently be configured with resource names that must be globally unique and are already taken. For those it is recommended that you define your own unique naming schema (for example a special prefix) and update the resource names accordingly.
+One of the most important actions you should take from the beginning is to update the parameter files in your module. Though you may not want to use all modules that are available, even the subset you use may currently be configured with resource names that must be globally unique and are already taken. For those it is recommended that you define your own unique naming schema (for example a special prefix) and update the resource names accordingly. Also note that you can make use of the `namePrefix` defined in `/settings.json` file as well. For further information please refer to the [Name Prefix Token Replacement](#Name-Prefix-Token-Replacement) section below..
 
 Please refer to [this list][AzureNames] to check which services have a global scope and must be updated.
 
