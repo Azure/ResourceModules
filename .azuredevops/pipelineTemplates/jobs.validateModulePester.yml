@@ -101,8 +101,8 @@ jobs:
               $moduleRepoRoot = '$(System.DefaultWorkingDirectory)'
               $parametersRepoRoot = '$(System.DefaultWorkingDirectory)'
             }
-            Write-Host "##vso[task.setvariable variable=ModuleRepoRoot]$moduleRepoRoot"
-            Write-Host "##vso[task.setvariable variable=ParametersRepoRoot]$parametersRepoRoot"
+            Write-Output "##vso[task.setvariable variable=ModuleRepoRoot]$moduleRepoRoot"
+            Write-Output "##vso[task.setvariable variable=ParametersRepoRoot]$parametersRepoRoot"
 
       # [Agent] Prepare environment
       #----------------------------
@@ -213,8 +213,8 @@ jobs:
               $moduleRepoRoot = '$(System.DefaultWorkingDirectory)'
               $parametersRepoRoot = '$(System.DefaultWorkingDirectory)'
             }
-            Write-Host "##vso[task.setvariable variable=ModuleRepoRoot]$moduleRepoRoot"
-            Write-Host "##vso[task.setvariable variable=ParametersRepoRoot]$parametersRepoRoot"
+            Write-Output "##vso[task.setvariable variable=ModuleRepoRoot]$moduleRepoRoot"
+            Write-Output "##vso[task.setvariable variable=ParametersRepoRoot]$parametersRepoRoot"
 
       # [Agent] Prepare environment
       #----------------------------
