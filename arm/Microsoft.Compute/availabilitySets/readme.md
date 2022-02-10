@@ -71,6 +71,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | `name` | string | The name of the availability set |
 | `resourceGroupName` | string | The resource group the availability set was deployed into |
 | `resourceId` | string | The resource ID of the availability set |
+| `virtualMachines` | array | A list of references to all virtual machines in the availability set. |
 
 ## Template references
 

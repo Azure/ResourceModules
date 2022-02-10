@@ -80,3 +80,6 @@ output resourceId string = availabilitySet.id
 
 @description('The resource group the availability set was deployed into')
 output resourceGroupName string = resourceGroup().name
+
+@description('A list of references to all virtual machines in the availability set.')
+output virtualMachines array = availabilitySet.properties.virtualMachines
