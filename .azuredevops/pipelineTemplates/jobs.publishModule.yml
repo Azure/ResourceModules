@@ -141,7 +141,7 @@ jobs:
               Write-Verbose "No Multi-Repo Checkout" -Verbose
               $modulePath = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.modulePath }}'
             }
-            Write-Host "##vso[task.setvariable variable=ENVMODULEPATH]$modulePath"
+            Write-Output "##vso[task.setvariable variable=ENVMODULEPATH]$modulePath"
 
       # [Universal Artifact-feed publish] task(s)
       #------------------------------------------
