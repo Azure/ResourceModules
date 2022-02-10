@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "adp-vm-001"
+            "value": "adp-<<namePrefix>>-vm-001"
         },
         "vmSize": {
             "value": "Standard_B1s"
