@@ -4,7 +4,7 @@ This section gives you an overview of how to use the bicep modules.
 
 ---
 
-### _Navigation_
+## _Navigation_
 
 - [Deploy template](#deploy-template)
   - [Deploy local template](#deploy-local-template)
@@ -15,9 +15,16 @@ This section gives you an overview of how to use the bicep modules.
     - [**Remote:** Azure CLI](#remote-azure-cli)
 - [Orchestrate deployment](#orchestrate-deployment)
   - [Template-orchestration](#template-orchestration)
+- [Solution deployment](#solution-deployment)
+  - [Sample solution](#sample-solution)
+    - [Summary](#Summary)
+    - [Repo structure](#repo-structure)
+    - [YAML pipeline](#yaml-pipeline)
+    - [Notes](#notes)
+
 ---
 
-# Deploy template
+## Deploy template
 
 This section shows you how to deploy a bicep template.
 
@@ -91,13 +98,13 @@ az deployment group create @inputObject
 
 ---
 
-# Orchestrate deployment
+## Orchestrate deployment
 
 This section shows you how you can orchestrate a deployment using multiple resource modules
 
 - [Template-orchestration](#template-orchestration)
 
-## Template-orchestration
+### Template-orchestration
 
 The _template-orchestrated_ approach means using a _main_ or so-called _master template_ for deploying resources in Azure. The _master template_ will only contain nested deployments, where the modules – instead of embedding their content into the _master template_ – will be linked from the _master template_.
 
@@ -105,7 +112,7 @@ With this approach, modules need to be stored in an available location, where Az
 
 In an enterprise environment, the recommended approach is to store these templates in a private environment, only accessible by enterprise resources. Thus, only trusted authorities can have access to these files.
 
-### ***Example with a private bicep registry***
+### **Example with a private bicep registry**
 
 The following example shows how you could orchestrate a deployment of multiple resources using modules from a private bicep registry. In this example we will deploy a resource group with a contained NSG and use the same in a subsequent VNET deployment.
 
@@ -117,26 +124,26 @@ targetScope = 'subscription'
 // ================ //
 
 // RG parameters
-@description('Optional. The name of the resource group to deploy')
+@description('Required. The name of the resource group to deploy')
 param resourceGroupName string = 'validation-rg'
 
 @description('Optional. The location to deploy into')
 param location string = deployment().location
 
 // NSG parameters
-@description('Optional. The name of the vnet to deploy')
+@description('Required. The name of the vnet to deploy')
 param networkSecurityGroupName string = 'BicepRegistryDemoNsg'
 
 // VNET parameters
-@description('Optional. The name of the vnet to deploy')
+@description('Required. The name of the vnet to deploy')
 param vnetName string = 'BicepRegistryDemoVnet'
 
-@description('Optional. An Array of 1 or more IP Address Prefixes for the Virtual Network.')
+@description('Required. An Array of 1 or more IP Address Prefixes for the Virtual Network.')
 param vNetAddressPrefixes array = [
   '10.0.0.0/16'
 ]
 
-@description('Optional. An Array of subnets to deploy to the Virual Network.')
+@description('Required. An Array of subnets to deploy to the Virtual Network.')
 param subnets array = [
   {
     name: 'PrimarySubnet'
@@ -155,7 +162,7 @@ param subnets array = [
 // =========== //
 
 // Resource Group
-module rg 'br/modules:microsoft.resources.resourcegroups:0.0.12' = {
+module rg 'br:adpsxxazacrx001.azurecr.io/bicep/modules/microsoft.resources.resourcegroups:0.0.23' = {
   name: 'registry-rg'
   params: {
     name: resourceGroupName
@@ -164,7 +171,7 @@ module rg 'br/modules:microsoft.resources.resourcegroups:0.0.12' = {
 }
 
 // Network Security Group
-module nsg 'br/modules:microsoft.network.networksecuritygroups:0.0.30' = {
+module nsg 'br:adpsxxazacrx001.azurecr.io/bicep/modules/microsoft.network.networksecuritygroups:0.0.30' = {
   name: 'registry-nsg'
   scope: resourceGroup(resourceGroupName)
   params: {
@@ -176,7 +183,7 @@ module nsg 'br/modules:microsoft.network.networksecuritygroups:0.0.30' = {
 }
 
 // Virtual Network
-module vnet 'br/modules:/microsoft.network.virtualnetworks:0.0.26' = {
+module vnet 'br:adpsxxazacrx001.azurecr.io/bicep/modules/microsoft.network.virtualnetworks:0.0.26' = {
   name: 'registry-vnet'
   scope: resourceGroup(resourceGroupName)
   params: {
@@ -191,7 +198,7 @@ module vnet 'br/modules:/microsoft.network.virtualnetworks:0.0.26' = {
 }
 ```
 
-### ***Example with template-specs***
+### **Example with template-specs**
 
 The following example shows how you could orchestrate a deployment of multiple resources using template specs. In this example we will deploy a NSG and use the same in a subsequent VNET deployment.
 
@@ -201,19 +208,19 @@ The following example shows how you could orchestrate a deployment of multiple r
 // ================ //
 
 // Network Security Group parameters
-@description('Optional. The name of the vnet to deploy')
+@description('Required. The name of the vnet to deploy')
 param networkSecurityGroupName string = 'TemplateSpecDemoNsg'
 
 // Virtual Network parameters
-@description('Optional. The name of the vnet to deploy')
+@description('Required. The name of the vnet to deploy')
 param vnetName string = 'TemplateSpecDemoVnet'
 
-@description('Optional. An Array of 1 or more IP Address Prefixes for the Virtual Network.')
+@description('Required. An Array of 1 or more IP Address Prefixes for the Virtual Network.')
 param vNetAddressPrefixes array = [
   '10.0.0.0/16'
 ]
 
-@description('Optional. An Array of subnets to deploy to the Virual Network.')
+@description('Required. An Array of subnets to deploy to the Virtual Network.')
 param subnets array = [
   {
     name: 'PrimarySubnet'
@@ -290,3 +297,192 @@ resource vnet 'Microsoft.Resources/deployments@2021-01-01' = {
   ]
 }
 ```
+
+## Solution deployment
+
+The bicep modules provided by this repo can also be clubbed together to create more complex infrastructures and in the form a completely reusable solutions or products.
+
+### Sample solution
+
+#### Summary
+
+1. Below is an example which uses a _multi-repo_ approach
+1. It fetches the _public_ **Azure/ResourceModules** repo for consuming bicep modules and uses the parameter files present in the _private_ **Contoso/MultiRepoTest** repo for deploying infrastructure
+1. This example is for creating a network hub with following resources -
+    1. First stage: **Deploy resource group**
+        1. Checkout 'Azure/ResourceModules' repo at root of the agent
+        1. Set environment variables for the agent
+        1. Checkout 'contoso/MultiRepoTest' repo containing the parameter files in a nested folder - "MultiRepoTestParentFolder"
+        1. Deploy resource group in target Azure subscription
+    1. Second stage: **Deploy network hub resources**
+        1. Checkout 'Azure/ResourceModules' repo at root of the agent
+        1. Set environment variables for the agent
+        1. Checkout 'contoso/MultiRepoTest' repo containing the parameter files in a nested folder - "MultiRepoTestParentFolder"
+        1. Deploy network security group
+        1. Deploy route table
+        1. Deploy virtual network A
+        1. Deploy virtual network B
+        1. Establish virtual network peering between virtual network A and B
+        1. Establish virtual network peering between virtual network B and A
+
+#### Repo structure
+
+![RepoStructure](/docs/media/MultiRepoTestFolderStructure.png)
+
+#### YAML pipeline
+
+``` YAML
+name: 'Network Hub'
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'network-hub-rg/Parameters/**'
+      - '.github/workflows/network-hub.yml'
+
+env:
+  AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
+  removeDeployment: false
+
+jobs:
+  job_deploy_resource_group:
+    runs-on: ubuntu-20.04
+    name: 'Deploy resource group'
+    steps:
+      - name: 'Checkout ResourceModules repo at the root location'
+        uses: actions/checkout@v2
+        with:
+          repository: 'Azure/ResourceModules'
+          fetch-depth: 0
+
+      - name: 'Set environment variables'
+        uses: deep-mm/set-variables@v1.0
+        with:
+          variableFileName: 'global.variables'
+
+      - name: 'Checkout MultiRepoTest repo in a nested MultiRepoTestParentFolder'
+        uses: actions/checkout@v2
+        with:
+          repository: 'contoso/MultiRepoTest'
+          fetch-depth: 0
+          path: 'MultiRepoTestParentFolder'
+
+      - name: 'Deploy resource group'
+        uses: ./.github/actions/templates/validateModuleDeployment
+        with:
+          templateFilePath: './arm/Microsoft.Resources/resourceGroups/deploy.bicep'
+          parameterFilePath: './MultiRepoTestParentFolder/network-hub-rg/Parameters/ResourceGroup/parameters.json'
+          location: '${{ env.defaultLocation }}'
+          resourceGroupName: '${{ env.resourceGroupName }}'
+          subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
+          managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
+          removeDeployment: $(removeDeployment)
+
+  job_deploy_network_hub_resources:
+    runs-on: ubuntu-20.04
+    name: 'Deploy network hub resources'
+    needs: job_deploy_resource_group
+    steps:
+      - name: 'Checkout ResourceModules repo at the root location'
+        uses: actions/checkout@v2
+        with:
+          repository: 'Azure/ResourceModules'
+          fetch-depth: 0
+
+      - name: 'Set environment variables'
+        uses: deep-mm/set-variables@v1.0
+        with:
+          variableFileName: 'global.variables'
+
+      - name: 'Checkout MultiRepoTest repo in a nested MultiRepoTestParentFolder'
+        uses: actions/checkout@v2
+        with:
+          repository: 'contoso/MultiRepoTest'
+          fetch-depth: 0
+          path: 'MultiRepoTestParentFolder'
+
+      - name: 'Deploy network security group'
+        uses: ./.github/actions/templates/validateModuleDeployment
+        with:
+          templateFilePath: './arm/Microsoft.Network/networkSecurityGroups/deploy.bicep'
+          parameterFilePath: './MultiRepoTestParentFolder/network-hub-rg/Parameters/NetworkSecurityGroups/parameters.json'
+          location: '${{ env.defaultLocation }}'
+          resourceGroupName: '${{ env.resourceGroupName }}'
+          subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
+          managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
+          removeDeployment: $(removeDeployment)
+
+      - name: 'Deploy route table'
+        uses: ./.github/actions/templates/validateModuleDeployment
+        with:
+          templateFilePath: './arm/Microsoft.Network/routeTables/deploy.bicep'
+          parameterFilePath: './MultiRepoTestParentFolder/network-hub-rg/Parameters/RouteTables/parameters.json'
+          location: '${{ env.defaultLocation }}'
+          resourceGroupName: '${{ env.resourceGroupName }}'
+          subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
+          managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
+          removeDeployment: $(removeDeployment)
+
+      - name: 'Deploy virtual network A'
+        uses: ./.github/actions/templates/validateModuleDeployment
+        with:
+          templateFilePath: './arm/Microsoft.Network/virtualNetworks/deploy.bicep'
+          parameterFilePath: './MultiRepoTestParentFolder/network-hub-rg/Parameters/VirtualNetwork/vnet-A.parameters.json'
+          location: '${{ env.defaultLocation }}'
+          resourceGroupName: '${{ env.resourceGroupName }}'
+          subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
+          managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
+          removeDeployment: $(removeDeployment)
+
+      - name: 'Deploy virtual network B'
+        uses: ./.github/actions/templates/validateModuleDeployment
+        with:
+          templateFilePath: './arm/Microsoft.Network/virtualNetworks/deploy.bicep'
+          parameterFilePath: './MultiRepoTestParentFolder/network-hub-rg/Parameters/VirtualNetwork/vnet-B.parameters.json'
+          location: '${{ env.defaultLocation }}'
+          resourceGroupName: '${{ env.resourceGroupName }}'
+          subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
+          managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
+          removeDeployment: $(removeDeployment)
+
+      - name: 'Deploy virtual network peering from VNet A to VNet B'
+        uses: ./.github/actions/templates/validateModuleDeployment
+        with:
+          templateFilePath: './arm/Microsoft.Network/virtualNetworks/virtualNetworkPeerings/deploy.bicep'
+          parameterFilePath: './MultiRepoTestParentFolder/network-hub-rg/Parameters/VirtualNetworkPeering/vneta-to-vnetb-peering.parameters.json'
+          location: '${{ env.defaultLocation }}'
+          resourceGroupName: '${{ env.resourceGroupName }}'
+          subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
+          managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
+          removeDeployment: $(removeDeployment)
+
+      - name: 'Deploy virtual network peering from VNet B to VNet A'
+        uses: ./.github/actions/templates/validateModuleDeployment
+        with:
+          templateFilePath: './arm/Microsoft.Network/virtualNetworks/virtualNetworkPeerings/deploy.bicep'
+          parameterFilePath: './MultiRepoTestParentFolder/network-hub-rg/Parameters/VirtualNetworkPeering/vnetb-to-vneta-peering.parameters.json'
+          location: '${{ env.defaultLocation }}'
+          resourceGroupName: '${{ env.resourceGroupName }}'
+          subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
+          managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
+          removeDeployment: $(removeDeployment)
+```
+
+#### Notes
+
+> 1. 'Azure/ResourceModules' repo has been checked out at the root location intentionally because the `deep-mm/set-variables@v1.0` task expects the _global.variables.json_ file in the _.github/variables/_ location. The GitHub Actions also expect the underlying utility scripts at a specific location
+> 1. 'contoso/MultiRepoTest' repo has been checked out in a nested folder called as "MultiRepoTestParentFolder" to distinguish it from the folders from the other repo in the agent but can be downloaded at the root location too if desired
+> 1. Comparison between IaCS and CARML -
+>
+>    Snippet of Resource Group deployment job from the _Solution_ repo of IaCS -
+>
+>    ![IaCS_RGDeployJob](/docs/media/IaCS_DeployRGJob.png)
+>
+>    | Sr. no. | Topic| IaCS | CARML |
+>    | :-: | :-: | - | - |
+>    | 1. | Authentication to Azure | Done via Service Connection | Done via an environment variable: ```AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}```
+>    | 2. | Repo checkouts | Once specified at the top, _Components_ repo is not required to be downloaded in every job | All the requisite repos need to be downloaded every time in a job to complete successfully. With that, the 'Set environment variables' task also needs to be specified in every job after _Azure/ResourceModules_ repo has been checked out |
+>    | 3. | Way of deployment | Each deployment "job" consists of a 'pipeline.jobs.deploy.yml' _template_ and a target module which are fetched from the _Components_ repo | Here, GitHub Action template called as "validateModuleDeployment" has been used |
+>    | 4. | Passing parameters |  A dedicated 'deploymentBlocks' block is used to supply the parameter file from the local _Solutions_ repo | parameters.json file is directly specified under the "with" keyword which is passed onto the corresponding GitHub action |

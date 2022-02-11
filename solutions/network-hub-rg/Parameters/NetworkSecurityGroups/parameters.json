@@ -1,0 +1,53 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "name": {
+      "value": "sxx-az-nsg-weu-x-001"
+    },
+    "networkSecurityGroupSecurityRules": {
+      "value": [
+        {
+          "name": "Port_8080",
+          "properties": {
+            "description": "Allow inbound access on TCP 8080",
+            "protocol": "*",
+            "sourcePortRange": "*",
+            "destinationPortRange": "8080",
+            "sourceAddressPrefix": "*",
+            "destinationAddressPrefix": "*",
+            "access": "Allow",
+            "priority": 100,
+            "direction": "Inbound",
+            "sourcePortRanges": [],
+            "destinationPortRanges": [],
+            "sourceAddressPrefixes": [],
+            "destinationAddressPrefixes": [],
+            "sourceApplicationSecurityGroupIds": [],
+            "destinationApplicationSecurityGroupIds": []
+          }
+        },
+        {
+          "name": "Port_8081",
+          "properties": {
+            "description": "Allow inbound access on TCP 8081",
+            "protocol": "*",
+            "sourcePortRange": "*",
+            "destinationPortRange": "8081",
+            "sourceAddressPrefix": "*",
+            "destinationAddressPrefix": "*",
+            "access": "Allow",
+            "priority": 101,
+            "direction": "Inbound",
+            "sourcePortRanges": [],
+            "destinationPortRanges": [],
+            "sourceAddressPrefixes": [],
+            "destinationAddressPrefixes": [],
+            "sourceApplicationSecurityGroupIds": [],
+            "destinationApplicationSecurityGroupIds": []
+          }
+        }
+      ]
+    }
+  }
+}
