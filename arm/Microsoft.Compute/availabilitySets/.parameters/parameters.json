@@ -14,9 +14,6 @@
                     ]
                 }
             ]
-        },
-        "proximityPlacementGroupId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Compute/proximityPlacementGroups/adp-<<namePrefix>>-az-ppg-x-001"
         }
     }
 }
