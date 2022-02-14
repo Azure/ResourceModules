@@ -1,6 +1,5 @@
 {
-    "variables": [
-        {
+    "variables": [{
             "name": "defaultLocation",
             "value": "WestEurope"
         },
@@ -26,7 +25,7 @@
         },
         {
             "name": "bicepRegistryName",
-            "value": "adpsxxazacrx001"
+            "value": "graefadpsazacrx"
         },
         {
             "name": "bicepRegistryRGName",
