@@ -80,6 +80,7 @@ resource roleAssignment 'Microsoft.Authorization/roleAssignments@2021-04-01-prev
   properties: {
     roleDefinitionId: roleDefinitionId
     principalId: policyAssignment.identity.principalId
+    principalType: 'ServicePrincipal'
   }
 }]
 
