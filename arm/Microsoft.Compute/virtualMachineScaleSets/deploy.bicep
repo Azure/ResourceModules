@@ -263,7 +263,7 @@ param tags object = {}
 @description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
-@description('Optional. The chosen OS type')
+@description('Required. The chosen OS type')
 @allowed([
   'Windows'
   'Linux'

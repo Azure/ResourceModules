@@ -51,6 +51,11 @@ Describe 'File/folder tests' -Tag Modules {
                 $true | Should -Be $true
             }
         }
+
+        It '[<moduleFolderName>] Module should contain a [version.json] file' -TestCases $moduleFolderTestCases {
+            param( [string] $moduleFolderPath )
+            (Test-Path (Join-Path -Path $moduleFolderPath 'version.json')) | Should -Be $true
+        }
     }
 
     Context '.parameters folder' {

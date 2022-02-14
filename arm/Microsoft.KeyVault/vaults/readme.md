@@ -1,6 +1,6 @@
 # Key Vaults `[Microsoft.KeyVault/vaults]`
 
-This module deploys a key vault and it's child resources.
+This module deploys a key vault and its child resources.
 
 ## Resource types
 

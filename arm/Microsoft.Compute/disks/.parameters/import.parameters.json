@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "sxx-az-disk-import-001"
+            "value": "<<namePrefix>>-az-disk-import-001"
         },
         "sku": {
             "value": "Standard_LRS"
@@ -12,10 +12,10 @@
             "value": "Import"
         },
         "sourceUri": {
-            "value": "https://adpsxxazsax001.blob.core.windows.net/vhds/adp-sxx-az-imgt-x-001.vhd"
+            "value": "https://adp<<namePrefix>>azsax001.blob.core.windows.net/vhds/adp-<<namePrefix>>-az-imgt-x-001.vhd"
         },
         "storageAccountId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adpsxxazsax001"
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
         },
         "roleAssignments": {
             "value": [

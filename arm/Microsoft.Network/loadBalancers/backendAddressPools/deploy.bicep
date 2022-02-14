@@ -18,7 +18,7 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
-resource loadBalancer 'Microsoft.Network/loadBalancers@2021-02-01' existing = {
+resource loadBalancer 'Microsoft.Network/loadBalancers@2021-05-01' existing = {
   name: loadBalancerName
 }
 

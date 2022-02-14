@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "roleName": {
-            "value": "sxx-az-testRole-sub"
+            "value": "<<namePrefix>>-az-testRole-sub"
         },
         "description": {
             "value": "Test Custom Role Definition Standard"
