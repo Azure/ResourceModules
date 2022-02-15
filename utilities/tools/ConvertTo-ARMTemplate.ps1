@@ -99,8 +99,8 @@ if (-not $SkipMetadataCleanup) {
     Write-Verbose "Remove Bicep metadata from json - Processing [$($BicepFilesToConvert.count)] file(s)"
     if ($PSCmdlet.ShouldProcess("[$($BicepFilesToConvert.count)] deploy.bicep file(s) in path [$armFolderPath]", 'Set-Content')) {
         # parallelism is not supported on GitHub runners
-        #$BicepFilesToConvert | ForEach-Object -ThrottleLimit $env:NUMBER_OF_PROCESSORS -Parallel {
-        $BicepFilesToConvert | ForEach-Object {
+        $BicepFilesToConvert | ForEach-Object -ThrottleLimit $env:NUMBER_OF_PROCESSORS -Parallel {
+            #$BicepFilesToConvert | ForEach-Object {
             function Remove-JSONMetadata {
                 <#
             .SYNOPSIS
