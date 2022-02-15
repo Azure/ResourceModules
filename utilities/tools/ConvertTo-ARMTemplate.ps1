@@ -55,6 +55,11 @@ param (
     [switch] $SkipPipelineUpdate
 )
 
+$ThrottleLimit = $env:NUMBER_OF_PROCESSORS
+if ($ThrottleLimit -lt 2) {
+    $ThrottleLimit = 10
+}
+
 $rootPath = Get-Item -Path $Path | Select-Object -ExpandProperty 'FullName'
 $armFolderPath = Join-Path -Path $rootPath -ChildPath 'arm'
 if ($ConvertChildren) {
