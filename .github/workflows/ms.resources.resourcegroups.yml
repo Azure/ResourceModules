@@ -56,51 +56,51 @@ jobs:
   ####################
   #   Pester Tests   #
   ####################
-  job_module_pester_validation:
-    runs-on: ubuntu-20.04
-    name: 'Pester tests'
-    steps:
-      - name: 'Checkout'
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-      - name: 'Run tests'
-        uses: ./.github/actions/templates/validateModulePester
-        with:
-          modulePath: '${{ env.modulePath }}'
+  # job_module_pester_validation:
+  #   runs-on: ubuntu-20.04
+  #   name: 'Pester tests'
+  #   steps:
+  #     - name: 'Checkout'
+  #       uses: actions/checkout@v2
+  #       with:
+  #         fetch-depth: 0
+  #     - name: 'Run tests'
+  #       uses: ./.github/actions/templates/validateModulePester
+  #       with:
+  #         modulePath: '${{ env.modulePath }}'
 
-  ####################
-  # Deployment tests #
-  ####################
-  job_module_deploy_validation:
-    runs-on: ubuntu-20.04
-    name: 'Deployment tests'
-    needs:
-      - job_set_workflow_param
-      - job_module_pester_validation
-    strategy:
-      fail-fast: false
-      matrix:
-        parameterFilePaths: ['parameters.json']
-    steps:
-      - name: 'Checkout'
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-      - name: Set environment variables
-        uses: deep-mm/set-variables@v1.0
-        with:
-          variableFileName: 'global.variables'
-      - name: 'Using parameter file [${{ matrix.parameterFilePaths }}]'
-        uses: ./.github/actions/templates/validateModuleDeployment
-        with:
-          templateFilePath: '${{ env.modulePath }}/deploy.bicep'
-          parameterFilePath: '${{ env.modulePath }}/.parameters/${{ matrix.parameterFilePaths }}'
-          location: '${{ env.defaultLocation }}'
-          resourceGroupName: '${{ env.resourceGroupName }}'
-          subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
-          managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
-          removeDeployment: '${{ needs.job_set_workflow_param.outputs.removeDeployment }}'
+  # ####################
+  # # Deployment tests #
+  # ####################
+  # job_module_deploy_validation:
+  #   runs-on: ubuntu-20.04
+  #   name: 'Deployment tests'
+  #   needs:
+  #     - job_set_workflow_param
+  #     - job_module_pester_validation
+  #   strategy:
+  #     fail-fast: false
+  #     matrix:
+  #       parameterFilePaths: ['parameters.json']
+  #   steps:
+  #     - name: 'Checkout'
+  #       uses: actions/checkout@v2
+  #       with:
+  #         fetch-depth: 0
+  #     - name: Set environment variables
+  #       uses: deep-mm/set-variables@v1.0
+  #       with:
+  #         variableFileName: 'global.variables'
+  #     - name: 'Using parameter file [${{ matrix.parameterFilePaths }}]'
+  #       uses: ./.github/actions/templates/validateModuleDeployment
+  #       with:
+  #         templateFilePath: '${{ env.modulePath }}/deploy.bicep'
+  #         parameterFilePath: '${{ env.modulePath }}/.parameters/${{ matrix.parameterFilePaths }}'
+  #         location: '${{ env.defaultLocation }}'
+  #         resourceGroupName: '${{ env.resourceGroupName }}'
+  #         subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
+  #         managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
+  #         removeDeployment: '${{ needs.job_set_workflow_param.outputs.removeDeployment }}'
 
   ###############
   #   PUBLISH   #
