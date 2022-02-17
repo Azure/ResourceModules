@@ -68,3 +68,6 @@ output name string = routeTable.name
 
 @description('The resource ID of the route table')
 output resourceId string = routeTable.id
+
+@description('The routes of the deployed route table')
+output route array = routeTable.properties.routes
