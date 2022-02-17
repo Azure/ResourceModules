@@ -81,7 +81,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        parameterFilePaths: ['parameters.json']
+        parameterFilePaths: ['parameters.json', 'min.parameters.json']
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
