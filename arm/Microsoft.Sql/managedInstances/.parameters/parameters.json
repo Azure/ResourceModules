@@ -81,15 +81,15 @@
         "keys": {
             "value": [
                 {
-                    "name": "adp-<<namePrefix>>-az-kv-x-sqlmi_keyEncryptionKeySqlMi_4bf367f64c914d8ba698700fb598ad07", // ID must be updated for new keys
-                    "uri": "https://adp-<<namePrefix>>-az-kv-x-sqlmi.vault.azure.net/keys/keyEncryptionKeySqlMi/4bf367f64c914d8ba698700fb598ad07", // ID must be updated for new keys
+                    "name": "adp-<<namePrefix>>-az-kv-x-sqlmi_keyEncryptionKeySqlMi_8f68659b2fdd4293872fb8efa36ddd59",
+                    "uri": "https://adp-<<namePrefix>>-az-kv-x-sqlmi.vault.azure.net/keys/keyEncryptionKeySqlMi/8f68659b2fdd4293872fb8efa36ddd59",
                     "serverKeyType": "AzureKeyVault"
                 }
             ]
         },
         "encryptionProtectorObj": {
             "value": {
-                "serverKeyName": "adp-<<namePrefix>>-az-kv-x-sqlmi_keyEncryptionKeySqlMi_4bf367f64c914d8ba698700fb598ad07", // ID must be updated for new keys
+                "serverKeyName": "adp-<<namePrefix>>-az-kv-x-sqlmi_keyEncryptionKeySqlMi_8f68659b2fdd4293872fb8efa36ddd59",
                 "serverKeyType": "AzureKeyVault"
             }
         },

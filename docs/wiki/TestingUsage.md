@@ -60,13 +60,11 @@ $TestModuleLocallyInput = @{
         SubscriptionId    = '12345678-1234-1234-1234-123456789123'
         ManagementGroupId = 'mg-contoso'
     }
-    AdditionalTokens              = @{
-        'deploymentSpId' = '12345678-1234-1234-1234-123456789123'
-        'tenantId'       = '12345678-1234-1234-1234-123456789123'
-    }
+    AdditionalTokens      = @(
+        @{ Name = 'deploymentSpId'; Value = '12345678-1234-1234-1234-123456789123' }
+        @{ Name = 'tenantId'; Value = '12345678-1234-1234-1234-123456789123' }
+    )
 }
-
-Test-ModuleLocally @TestModuleLocallyInput -Verbose
 ```
 
 > You can use the `Get-Help` cmdlet to show more options on how you can use this script.

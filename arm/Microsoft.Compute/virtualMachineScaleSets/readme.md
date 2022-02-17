@@ -69,7 +69,7 @@ The following resources are required to be able to deploy this resource.
 | `name` | string |  |  | Required. Name of the VMSS. |
 | `nicConfigurations` | array | `[]` |  | Required. Configures NICs and PIPs. |
 | `osDisk` | object |  |  | Required. Specifies the OS disk. |
-| `osType` | string |  | `[Windows, Linux]` | Required. The chosen OS type |
+| `osType` | string |  | `[Windows, Linux]` | Optional. The chosen OS type |
 | `overprovision` | bool |  |  | Optional. Specifies whether the Virtual Machine Scale Set should be overprovisioned. |
 | `pauseTimeBetweenBatches` | string | `PT0S` |  | Optional. The wait time between completing the update for all virtual machines in one batch and starting the next batch. The time duration should be specified in ISO 8601 format |
 | `plan` | object | `{object}` |  | Optional. Specifies information about the marketplace image used to create the virtual machine. This element is only used for marketplace images. Before you can use a marketplace image from an API, you must enable the image for programmatic use. |

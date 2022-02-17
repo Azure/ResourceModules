@@ -139,7 +139,7 @@ param vNetAddressPrefixes array = [
 @description('Optional. An Array of subnets to deploy to the Virual Network.')
 param subnets array = [
   {
-    name: 'PrimarySubnet'
+    name: 'PrimrarySubnet'
     addressPrefix: '10.0.0.0/24'
     networkSecurityGroupName: networkSecurityGroupName
   }
@@ -216,7 +216,7 @@ param vNetAddressPrefixes array = [
 @description('Optional. An Array of subnets to deploy to the Virual Network.')
 param subnets array = [
   {
-    name: 'PrimarySubnet'
+    name: 'PrimrarySubnet'
     addressPrefix: '10.0.0.0/24'
     networkSecurityGroupName: networkSecurityGroupName
   }

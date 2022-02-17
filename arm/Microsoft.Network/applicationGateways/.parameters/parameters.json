@@ -29,7 +29,7 @@
             }
         },
         "sslCertificateKeyVaultSecretId": {
-            "value": "https://adp-<<namePrefix>>-az-kv-x-001.vault.azure.net/secrets/applicationGatewaySslCertificate/9b670bb436e04eae9acd9b93dca269b6" // ID must be updated for new certificates
+            "value": "https://adp-<<namePrefix>>-az-kv-x-001.vault.azure.net/secrets/applicationGatewaySslCertificate/5b09a47d080943bb93d00f4dc45244a1"
         },
         "backendPools": {
             "value": [

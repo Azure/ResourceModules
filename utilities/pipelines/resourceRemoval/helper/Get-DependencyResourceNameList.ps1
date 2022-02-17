@@ -24,7 +24,7 @@ function Get-DependencyResourceNameList {
 
     # Load used function
     $repoRootPath = (Get-Item $PSScriptRoot).Parent.Parent.Parent.Parent.FullName
-    . (Join-Path $repoRootPath 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInFile.ps1')
+    . (Join-Path $repoRootPath 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInParameterFile.ps1')
 
     $parameterFolders = Get-ChildItem -Path $dependencyParameterPath -Recurse -Filter 'parameters' -Directory
     $parameterFilePaths = [System.Collections.ArrayList]@()
@@ -33,26 +33,16 @@ function Get-DependencyResourceNameList {
     }
 
     # Replace tokens in dependency parameter files
-    $Settings = Get-Content -Path (Join-Path $repoRootPath 'settings.json') | ConvertFrom-Json -AsHashtable
-
-    # Add local tokens
-    if ($Settings.parameterFileTokens.localTokens) {
-        $tokenMap = @{}
-        foreach ($token in $Settings.parameterFileTokens.localTokens) {
-            $tokenMap += @{ $token.name = $token.value }
+    $Settings = Get-Content -Path (Join-Path $repoRootPath 'settings.json') | ConvertFrom-Json
+    foreach ($parameterFilePath in $parameterFilePaths) {
+        $ConvertTokensInputs = @{
+            ParameterFilePath              = $parameterFilePath
+            LocalCustomParameterFileTokens = $Settings.parameterFileTokens.localTokens.tokens
+            TokenPrefix                    = $Settings.parameterFileTokens.tokenPrefix
+            TokenSuffix                    = $Settings.parameterFileTokens.tokenSuffix
+            Verbose                        = $false
         }
-        Write-Verbose ('Using local tokens [{0}]' -f ($tokenMap.Keys -join ', '))
-
-        foreach ($parameterFilePath in $parameterFilePaths) {
-            $ConvertTokensInputs = @{
-                FilePath    = $parameterFilePath
-                Tokens      = $tokenMap
-                TokenPrefix = $Settings.parameterFileTokens.tokenPrefix
-                TokenSuffix = $Settings.parameterFileTokens.tokenSuffix
-                Verbose     = $false
-            }
-            $null = Convert-TokensInFile @ConvertTokensInputs
-        }
+        $null = Convert-TokensInParameterFile @ConvertTokensInputs
     }
 
     $dependencyResourceNames = [System.Collections.ArrayList]@()

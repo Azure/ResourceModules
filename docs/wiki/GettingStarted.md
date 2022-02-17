@@ -119,7 +119,7 @@ Once forked, make sure you update all references to the original repository like
 
 ### Service Names
 
-One of the most important actions you should take from the beginning is to update the parameter files in your module. Though you may not want to use all modules that are available, even the subset you use may currently be configured with resource names that must be globally unique and are already taken. For those it is recommended that you define your own unique naming schema (for example a special prefix) and update the resource names accordingly. Also note that you can make use of the `namePrefix` defined in `/settings.json` file as well. For further information please refer to the [Name Prefix Token Replacement](#Name-Prefix-Token-Replacement) section below..
+On of the most important actions you should take from the beginning is to update the parameter files in your module. Though you may not want to use all modules that are available, even the subset you use may currently be configured with resource names that must be globally unique and are already taken. For those it is recommended that you define your own unique naming schema (for example a special prefix) and update the resource names accordingly.
 
 Please refer to [this list][AzureNames] to check which services have a global scope and must be updated.
 
@@ -144,7 +144,7 @@ Several fundamental variables are shared among all pipelines and are stored in a
 
 ### Name Prefix Token Replacement
 
-Change the default `namePrefix` token value in the [Settings.json](https://github.com/Azure/ResourceModules/blob/main/settings.json) to a 3-5 character string that is used to distinguish your resources names. The default `namePrefix` token has a value `carml`. Consider this to be one of the first pull requests you need to perform before running any of the repository pipelines. More information on tokens is provided [below](#parameter-file-tokens).
+Change the default `namePrefix` token value in the [Settings.json](https://github.com/Azure/ResourceModules/blob/main/settings.json) to a 3-5 character string that is used to distinguish your resources names. The default `namePrefix` token has a value `sxx`. Consider this to be one of the first pull requests you need to perform before running any of the repository pipelines. More information on tokens is provided [below](#parameter-file-tokens).
 
 ## **Option 2:** Use it as a local reference to build bicep templates
 

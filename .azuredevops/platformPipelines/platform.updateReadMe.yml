@@ -1,4 +1,4 @@
-name: '.Platform - Update ReadMe Module Tables'
+name: '.Platform: Update ReadMe Module Tables'
 
 trigger:
   batch: true

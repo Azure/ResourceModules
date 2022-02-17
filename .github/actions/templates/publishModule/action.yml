@@ -38,9 +38,6 @@ runs:
     - name: 'Setup agent'
       shell: pwsh
       run: |
-        # Grouping task logs
-        Write-Output "::group::Setup agent"
-
         # Load used functions
         . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
 
@@ -54,8 +51,6 @@ runs:
         # Set agent up
         Set-EnvironmentOnAgent -PSModules $Modules
 
-        Write-Output "::endgroup::"
-
     - name: Azure Login
       uses: Azure/login@v1
       with:
@@ -66,9 +61,6 @@ runs:
       shell: pwsh
       if: ${{ inputs.templateSpecsDoPublish == 'true' }}
       run: |
-        # Grouping task logs
-        Write-Output "::group::Publish module to template specs"
-
         # Load used functions
         . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourcePublish' 'Get-ModulesToUpdate.ps1')
         . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourcePublish' 'Publish-ModuleToTemplateSpec.ps1')
@@ -99,15 +91,10 @@ runs:
           Publish-ModuleToTemplateSpec @functionInput -Verbose
         }
 
-        Write-Output "::endgroup::"
-
     - name: 'Publish module to private bicep registry'
       shell: pwsh
       if: ${{ inputs.bicepRegistryDoPublish == 'true' }}
       run: |
-        # Grouping task logs
-        Write-Output "::group::Publish module to private bicep registry"
-
         # Load used functions
         . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourcePublish' 'Get-ModulesToUpdate.ps1')
         . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourcePublish' 'Publish-ModuleToPrivateBicepRegistry.ps1')
@@ -137,5 +124,3 @@ runs:
 
           Publish-ModuleToPrivateBicepRegistry @functionInput -Verbose
         }
-
-        Write-Output "::endgroup::"

@@ -23,7 +23,7 @@ on:
   #     - 'utilities/pipelines/dependencies/**'
 
 env:
-  defaultLocation: 'EastUS'
+  defaultLocation: 'WestEurope'
   defaultResourceGroupName: 'validation-rg'
   resourceGroupNameArtifacts: 'artifacts-rg'
   removeDeployment: 'false'
@@ -44,33 +44,6 @@ jobs:
       fail-fast: false
       matrix:
         parameterFilePaths: ['validation.parameters.json']
-    steps:
-      - name: 'Checkout'
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-      - name: 'Deploy module'
-        uses: ./.github/actions/templates/validateModuleDeployment
-        with:
-          templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
-          parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
-          location: '${{ env.defaultLocation }}'
-          resourceGroupName: '${{ env.defaultResourceGroupName }}'
-          subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
-          managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
-          removeDeployment: '${{ env.removeDeployment }}'
-
-  job_deploy_ppg:
-    runs-on: ubuntu-20.04
-    name: 'Deploy proximity placement group'
-    env:
-      namespace: 'Microsoft.Compute\proximityPlacementGroups'
-    needs:
-      - job_deploy_rg
-    strategy:
-      fail-fast: false
-      matrix:
-        parameterFilePaths: ['parameters.json']
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -270,31 +243,21 @@ jobs:
         uses: azure/powershell@v1
         with:
           inlineScript: |
+
             $parameterFilePath = Join-Path $env:GITHUB_WORKSPACE '${{ env.dependencyPath }}' '${{ env.namespace }}' 'parameters' 'parameters.json'
             # Load used functions
             . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'sharedScripts' 'Export-ContentToBlob.ps1')
-            . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInFile.ps1')
+            . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInParameterFile.ps1')
 
             # Replace tokens in parameter file
-            $Settings = Get-Content -Path "settings.json" | ConvertFrom-Json -AsHashTable
+            $Settings = Get-Content -Path "settings.json" | ConvertFrom-Json
             $ConvertTokensInputs = @{
-                FilePath    = $parameterFilePath
-                Tokens      = @{}
-                TokenPrefix = $Settings.parameterFileTokens.tokenPrefix
-                TokenSuffix = $Settings.parameterFileTokens.tokenSuffix
+                ParameterFilePath                 = $parameterFilePath
+                LocalCustomParameterFileTokens    = $Settings.parameterFileTokens.localTokens.tokens
+                TokenPrefix                       = $Settings.parameterFileTokens.tokenPrefix
+                TokenSuffix                       = $Settings.parameterFileTokens.tokenSuffix
             }
-
-            # Add local tokens
-            if ($Settings.parameterFileTokens.localTokens) {
-                $tokenMap = @{}
-                foreach ($token in $Settings.parameterFileTokens.localTokens) {
-                    $tokenMap += @{ $token.name = $token.value }
-                }
-                Write-Verbose ('Using local tokens [{0}]' -f ($tokenMap.Keys -join ', ')) -Verbose
-                $ConvertTokensInputs.Tokens += $tokenMap
-            }
-
-            $null = Convert-TokensInFile @ConvertTokensInputs
+            $null = Convert-TokensInParameterFile @ConvertTokensInputs -Verbose
 
             # Get storage account name
             $storageAccountParameters = (ConvertFrom-Json (Get-Content -path $parameterFilePath -Raw)).parameters
@@ -435,25 +398,16 @@ jobs:
         uses: azure/powershell@v1
         with:
           inlineScript: |
+
             # Load used functions
-            . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInFile.ps1')
+            . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInParameterFile.ps1')
 
             # Prepare replace tokens in parameter file
-            $Settings = Get-Content -Path "settings.json" | ConvertFrom-Json -AsHashTable
+            $Settings = Get-Content -Path "settings.json" | ConvertFrom-Json
             $ConvertTokensInputs = @{
-                Tokens      = @{}
-                TokenPrefix = $Settings.parameterFileTokens.tokenPrefix
-                TokenSuffix = $Settings.parameterFileTokens.tokenSuffix
-            }
-
-            # Add local tokens
-            if ($Settings.parameterFileTokens.localTokens) {
-                $tokenMap = @{}
-                foreach ($token in $Settings.parameterFileTokens.localTokens) {
-                    $tokenMap += @{ $token.name = $token.value }
-                }
-                Write-Verbose ('Using local tokens [{0}]' -f ($tokenMap.Keys -join ', ')) -Verbose
-                $ConvertTokensInputs.Tokens += $tokenMap
+                LocalCustomParameterFileTokens    = $Settings.parameterFileTokens.localTokens.tokens
+                TokenPrefix                       = $Settings.parameterFileTokens.tokenPrefix
+                TokenSuffix                       = $Settings.parameterFileTokens.tokenSuffix
             }
 
             # Retrieving parameters from previous job outputs and parameter files
@@ -463,12 +417,12 @@ jobs:
 
             Write-Verbose "Retrieving parameters from storage account parameter files" -Verbose
             $parameterFilePath = Join-Path $env:GITHUB_WORKSPACE '${{ env.dependencyPath }}' '${{ env.saNamespace }}' 'parameters' 'parameters.json'
-            $null = Convert-TokensInFile @ConvertTokensInputs -FilePath $parameterFilePath -Verbose
+            $null = Convert-TokensInParameterFile @ConvertTokensInputs -ParameterFilePath $parameterFilePath -Verbose
             $storageAccountParameters = (ConvertFrom-Json (Get-Content -path $parameterFilePath -Raw)).parameters
 
             Write-Verbose "Retrieving parameters from image template parameter files" -Verbose
             $parameterFilePath = Join-Path $env:GITHUB_WORKSPACE '${{ env.dependencyPath }}' '${{ env.imgtNamespace }}' 'parameters' 'parameters.json'
-            $null = Convert-TokensInFile @ConvertTokensInputs -FilePath $parameterFilePath -Verbose
+            $null = Convert-TokensInParameterFile @ConvertTokensInputs -ParameterFilePath $parameterFilePath -Verbose
             $imageTemplateParameters = (ConvertFrom-Json (Get-Content -path $parameterFilePath -Raw)).parameters
 
             # Initializing parameters before the blob copy
@@ -694,7 +648,6 @@ jobs:
             'apgw.parameters.json',
             'bas.parameters.json',
             'lb.parameters.json',
-            'lb.min.parameters.json',
             'fw.parameters.json',
           ]
     steps:
@@ -829,7 +782,7 @@ jobs:
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
           removeDeployment: '${{ env.removeDeployment }}'
-          customParameterFileTokens: '{"msiPrincipalId":"${{ needs.job_deploy_msi.outputs.msiPrincipalId }}"}'
+          customParameterFileTokens: '[{"Name":"msiPrincipalId","Value":"${{ needs.job_deploy_msi.outputs.msiPrincipalId }}"}]'
 
   job_deploy_kv:
     runs-on: ubuntu-20.04
@@ -860,7 +813,7 @@ jobs:
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
           removeDeployment: '${{ env.removeDeployment }}'
-          customParameterFileTokens: '{"msiPrincipalId":"${{ needs.job_deploy_msi.outputs.msiPrincipalId }}"}'
+          customParameterFileTokens: '[{"Name":"msiPrincipalId","Value":"${{ needs.job_deploy_msi.outputs.msiPrincipalId }}"}]'
 
   job_deploy_kv_secrets:
     runs-on: ubuntu-20.04
@@ -899,25 +852,17 @@ jobs:
 
             $parameterFilePath = Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'dependencies' '${{ env.namespace }}' 'parameters' 'parameters.json'
             # Load used functions
-            . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInFile.ps1')
+            . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInParameterFile.ps1')
 
             # Replace tokens in parameter file
-            $Settings = Get-Content -Path "settings.json" | ConvertFrom-Json -AsHashTable
+            $Settings = Get-Content -Path "settings.json" | ConvertFrom-Json
             $ConvertTokensInputs = @{
-                FilePath    = $parameterFilePath
-                Tokens      = @{}
-                TokenPrefix = $Settings.parameterFileTokens.tokenPrefix
-                TokenSuffix = $Settings.parameterFileTokens.tokenSuffix
+                ParameterFilePath                 = $parameterFilePath
+                LocalCustomParameterFileTokens    = $Settings.parameterFileTokens.localTokens.tokens
+                TokenPrefix                       = $Settings.parameterFileTokens.tokenPrefix
+                TokenSuffix                       = $Settings.parameterFileTokens.tokenSuffix
             }
-            if ($Settings.parameterFileTokens.localTokens) {
-                $tokenMap = @{}
-                foreach ($token in $Settings.parameterFileTokens.localTokens) {
-                    $tokenMap += @{ $token.name = $token.value }
-                }
-                Write-Verbose ('Using local tokens [{0}]' -f ($tokenMap.Keys -join ', ')) -Verbose
-                $ConvertTokensInputs.Tokens += $tokenMap
-            }
-            $null = Convert-TokensInFile @ConvertTokensInputs
+            $null = Convert-TokensInParameterFile @ConvertTokensInputs -Verbose
 
             # Get key vault name
             $keyVaultParameters = (ConvertFrom-Json (Get-Content -Path $parameterFilePath -Raw)).parameters
@@ -996,7 +941,7 @@ jobs:
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
           removeDeployment: '${{ env.removeDeployment }}'
-          customParameterFileTokens: '{"msiPrincipalId":"${{ needs.job_deploy_msi.outputs.msiPrincipalId }}"}'
+          customParameterFileTokens: '[{"Name":"msiPrincipalId","Value":"${{ needs.job_deploy_msi.outputs.msiPrincipalId }}"}]'
 
   job_deploy_sqlmi_kv_secrets:
     runs-on: ubuntu-20.04
@@ -1034,30 +979,20 @@ jobs:
         uses: azure/powershell@v1
         with:
           inlineScript: |
+
             $parameterFilePath = Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'dependencies' '${{ env.namespace }}' 'parameters' 'sqlmi.parameters.json'
             # Load used functions
-            . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInFile.ps1')
+            . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInParameterFile.ps1')
 
             # Replace tokens in parameter file
-            $Settings = Get-Content -Path "settings.json" | ConvertFrom-Json -AsHashTable
+            $Settings = Get-Content -Path "settings.json" | ConvertFrom-Json
             $ConvertTokensInputs = @{
-                FilePath    = $parameterFilePath
-                Tokens      = @{}
-                TokenPrefix = $Settings.parameterFileTokens.tokenPrefix
-                TokenSuffix = $Settings.parameterFileTokens.tokenSuffix
+                ParameterFilePath                 = $parameterFilePath
+                LocalCustomParameterFileTokens    = $Settings.parameterFileTokens.localTokens.tokens
+                TokenPrefix                       = $Settings.parameterFileTokens.tokenPrefix
+                TokenSuffix                       = $Settings.parameterFileTokens.tokenSuffix
             }
-
-            # Add local tokens
-            if ($Settings.parameterFileTokens.localTokens) {
-                $tokenMap = @{}
-                foreach ($token in $Settings.parameterFileTokens.localTokens) {
-                    $tokenMap += @{ $token.name = $token.value }
-                }
-                Write-Verbose ('Using local tokens [{0}]' -f ($tokenMap.Keys -join ', ')) -Verbose
-                $ConvertTokensInputs.Tokens += $tokenMap
-            }
-
-            $null = Convert-TokensInFile @ConvertTokensInputs
+            $null = Convert-TokensInParameterFile @ConvertTokensInputs -Verbose
 
             # Get key vault name
             $keyVaultParameters = (ConvertFrom-Json (Get-Content -Path $parameterFilePath -Raw)).parameters
@@ -1142,7 +1077,7 @@ jobs:
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
           removeDeployment: '${{ env.removeDeployment }}'
-          customParameterFileTokens: '{"msiPrincipalId":"${{ needs.job_deploy_msi.outputs.msiPrincipalId }}"}'
+          customParameterFileTokens: '[{"Name":"msiPrincipalId","Value":"${{ needs.job_deploy_msi.outputs.msiPrincipalId }}"}]'
 
   job_deploy_vnet:
     runs-on: ubuntu-20.04

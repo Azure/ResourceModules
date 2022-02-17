@@ -22,14 +22,14 @@ param workspaceResourceId string
   'Enabled'
   'Disabled'
 ])
-param publicNetworkAccessForIngestion string = 'Enabled'
+param appInsightsPublicNetworkAccessForIngestion string = 'Enabled'
 
 @description('Optional. The network access type for accessing Application Insights query. - Enabled or Disabled.')
 @allowed([
   'Enabled'
   'Disabled'
 ])
-param publicNetworkAccessForQuery string = 'Enabled'
+param appInsightsPublicNetworkAccessForQuery string = 'Enabled'
 
 @description('Optional. The kind of application that this component refers to, used to customize UI. This value is a freeform string, values should typically be one of the following: web, ios, other, store, java, phone.')
 param kind string = ''
@@ -57,8 +57,8 @@ resource appInsights 'Microsoft.Insights/components@2020-02-02' = {
     Application_Type: appInsightsType
     Request_Source: appInsightsRequestSource
     WorkspaceResourceId: workspaceResourceId
-    publicNetworkAccessForIngestion: publicNetworkAccessForIngestion
-    publicNetworkAccessForQuery: publicNetworkAccessForQuery
+    publicNetworkAccessForIngestion: appInsightsPublicNetworkAccessForIngestion
+    publicNetworkAccessForQuery: appInsightsPublicNetworkAccessForQuery
   }
 }
 

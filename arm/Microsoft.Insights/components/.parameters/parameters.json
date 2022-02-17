@@ -5,7 +5,7 @@
         "name": {
             "value": "<<namePrefix>>-az-appi-x-001"
         },
-        "workspaceResourceId": {
+        "appInsightsWorkspaceResourceId": {
             "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-002"
         },
         "roleAssignments": {

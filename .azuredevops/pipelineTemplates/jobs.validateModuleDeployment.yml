@@ -147,8 +147,8 @@ jobs:
                   $moduleRepoRoot = '$(System.DefaultWorkingDirectory)'
                   $parametersRepoRoot = '$(System.DefaultWorkingDirectory)'
                 }
-                Write-Output "##vso[task.setvariable variable=ModuleRepoRoot]$moduleRepoRoot"
-                Write-Output "##vso[task.setvariable variable=parametersRepoRoot]$parametersRepoRoot"
+                Write-Host "##vso[task.setvariable variable=ModuleRepoRoot]$moduleRepoRoot"
+                Write-Host "##vso[task.setvariable variable=parametersRepoRoot]$parametersRepoRoot"
 
           # [Agent] Replace tokens
           #-----------------------
@@ -162,47 +162,35 @@ jobs:
               pwsh: true
               inline: |
                 # Load used functions
-                . (Join-Path '$(moduleRepoRoot)' 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInFile.ps1')
+                . (Join-Path '$(moduleRepoRoot)' 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInParameterFile.ps1')
 
                 # Load Settings File
-                $Settings = Get-Content -Path (Join-Path '$(moduleRepoRoot)' 'settings.json') | ConvertFrom-Json -AsHashTable
+                $Settings = Get-Content -Path (Join-Path '$(moduleRepoRoot)' 'settings.json') | ConvertFrom-Json
+
+                # Initialize Default Parameter File Tokens
+                $DefaultParameterFileTokens = @(
+                    @{ Name = 'resourceGroupName'; Value = '${{ parameters.resourceGroupName }}' }
+                    @{ Name = 'subscriptionId';    Value = '${{ parameters.subscriptionId }}' }
+                    @{ Name = 'managementGroupId'; Value = '${{ parameters.managementGroupId }}' }
+                    @{ Name = "tenantId";          Value = '$(ARM_TENANT_ID)' }
+                    @{ Name = "deploymentSpId";    Value = '$(DEPLOYMENT_SP_ID)' }
+                ) | ForEach-Object { [PSCustomObject]$PSItem }
+
+                # Get additional Custom Parameter File Tokens from input
+                Write-Verbose 'Additional Custom Parameter File Tokens: ${{ deploymentBlock.customParameterFileTokens }}' -Verbose
+                $OtherCustomParameterFileTokens = '${{  deploymentBlock.customParameterFileTokens }}' | ConvertFrom-Json
 
                 # Construct Token Function Input
                 $ConvertTokensInputs = @{
-                    Tokens      = @{}
-                    FilePath    = Join-Path '$(parametersRepoRoot)' '${{ deploymentBlock.path }}'
-                    TokenPrefix = $Settings.parameterFileTokens.tokenPrefix
-                    TokenSuffix = $Settings.parameterFileTokens.tokenSuffix
+                    ParameterFilePath                 = Join-Path '$(parametersRepoRoot)' '${{ deploymentBlock.path }}'
+                    DefaultParameterFileTokens        = $DefaultParameterFileTokens
+                    OtherCustomParameterFileTokens    = $OtherCustomParameterFileTokens
+                    LocalCustomParameterFileTokens    = $Settings.parameterFileTokens.localTokens.tokens
+                    TokenPrefix                       = $Settings.parameterFileTokens.tokenPrefix
+                    TokenSuffix                       = $Settings.parameterFileTokens.tokenSuffix
                 }
-
-                # Add defaults
-                $ConvertTokensInputs.Tokens += @{
-                  resourceGroupName = '${{ parameters.resourceGroupName }}'
-                  subscriptionId    = '${{ parameters.subscriptionId }}'
-                  managementGroupId = '${{ parameters.managementGroupId }}'
-                  tenantId          = '$(ARM_TENANT_ID)'
-                  deploymentSpId    = '$(DEPLOYMENT_SP_ID)'
-                }
-
-                # Add local tokens
-                if ($Settings.parameterFileTokens.localTokens) {
-                  $tokenMap = @{}
-                  foreach ($token in $Settings.parameterFileTokens.localTokens) {
-                    $tokenMap += @{ $token.name = $token.value }
-                  }
-                  Write-Verbose ('Using local tokens [{0}]' -f ($tokenMap.Keys -join ', ')) -Verbose
-                  $ConvertTokensInputs.Tokens += $tokenMap
-                }
-
-                # Add custom tokens (passed in via the pipeline)
-                if(-not [String]::IsNullOrEmpty('${{ deploymentBlock.customParameterFileTokens }}')) {
-                  $customTokens = '${{ deploymentBlock.customParameterFileTokens }}' | ConvertFrom-Json -AsHashTable
-                  Write-Verbose ('Using custom parameter file tokens [{0}]' -f  ($customTokens.Keys -join ', ')) -Verbose
-                  $ConvertTokensInputs.Tokens += $customTokens
-                }
-
                 # Invoke Token Replacement Functionality
-                $null = Convert-TokensInFile @ConvertTokensInputs
+                $null = Convert-TokensInParameterFile @ConvertTokensInputs -Verbose
 
           # [Validation] task(s)
           #---------------------

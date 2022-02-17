@@ -13,9 +13,6 @@ runs:
     - name: 'Setup agent'
       shell: pwsh
       run: |
-        # Grouping task logs
-        Write-Output "::group::Setup agent"
-
         # Load used functions
         . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
 
@@ -29,8 +26,6 @@ runs:
         # Set agent up
         Set-EnvironmentOnAgent -PSModules $Modules
 
-        Write-Output "::endgroup::"
-
     - name: Azure Login
       uses: Azure/login@v1
       with:
@@ -43,9 +38,6 @@ runs:
       id: pester_run_step
       shell: pwsh
       run: |
-        # Grouping task logs
-        Write-Output "::group::Run global tests via Pester"
-
         $moduleFolderPaths = @(Join-Path $env:GITHUB_WORKSPACE "${{ inputs.modulePath }}")
         $moduleFolderPaths += (Get-ChildItem $moduleFolderPaths -Recurse -Directory -Force).FullName | Where-Object {
           (Get-ChildItem $_ -File -Depth 0 -Include @('deploy.json', 'deploy.bicep') -Force).Count -gt 0
@@ -78,8 +70,6 @@ runs:
           }
         }
 
-        Write-Output "::endgroup::"
-
     - name: Publish Test Results
       uses: EnricoMi/publish-unit-test-result-action@v1
       if: always() && !contains('cancelled,skipped', steps.pester_run_step.outcome)
@@ -93,9 +83,6 @@ runs:
       if: always()
       shell: pwsh
       run: |
-        # Grouping task logs
-        Write-Output "::group::Run API tests via Pester"
-
         $moduleFolderPaths = @(Join-Path $env:GITHUB_WORKSPACE "${{ inputs.modulePath }}")
         $moduleFolderPaths += (Get-ChildItem $moduleFolderPaths -Recurse -Directory -Force).FullName | Where-Object {
           (Get-ChildItem $_ -File -Depth 0 -Include @('deploy.json', 'deploy.bicep') -Force).Count -gt 0
@@ -127,8 +114,6 @@ runs:
             Verbosity = 'Detailed'
           }
         }
-
-        Write-Output "::endgroup::"
 
     - name: Publish Test Results
       uses: EnricoMi/publish-unit-test-result-action@v1
