@@ -5,6 +5,9 @@
         "name": {
             "value": "<<namePrefix>>-az-avs-x-001"
         },
+        "proximityPlacementGroupId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Compute/proximityPlacementGroups/adp-<<namePrefix>>-az-ppg-x-001"
+        },
         "roleAssignments": {
             "value": [
                 {
