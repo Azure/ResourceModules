@@ -10,7 +10,7 @@ subscription Id, principal Id, tenant ID and other parameters that need to be to
 .PARAMETER TemplateFilePath
 Mandatory. Path to the Bicep/ARM module that is being tested
 
-.PARAMETER parameterFilePath
+.PARAMETER ParameterFilePath
 Optional. Path to the template file/folder that is to be tested with the template file. Defaults to the module's default '.parameter' folder. Will be used if the DeploymentTest/ValidationTest switches are set.
 
 .PARAMETER PesterTest
@@ -35,7 +35,7 @@ Optional. A hashtable parameter that contains custom tokens to be replaced in th
 
 $TestModuleLocallyInput = @{
     TemplateFilePath           = 'C:\Microsoft.Network\routeTables\deploy.bicep'
-    parameterFilePath          = 'C:\Microsoft.Network\routeTables\.parameters\parameters.json'
+    ParameterFilePath          = 'C:\Microsoft.Network\routeTables\.parameters\parameters.json'
     PesterTest                 = $false
     DeploymentTest             = $false
     ValidationTest             = $true
@@ -187,12 +187,17 @@ function Test-ModuleLocally {
                 }
 
                 if ($Settings.parameterFileTokens.localTokens) {
-                    $ConvertTokensInputs.Tokens += $Settings.parameterFileTokens.localTokens
+                    $tokenMap = @{}
+                    foreach ($token in $Settings.parameterFileTokens.localTokens) {
+                        $tokenMap += @{ $token.name = $token.value }
+                    }
+                    Write-Verbose ('Using local tokens [{0}]' -f ($tokenMap.Keys -join ', ')) -Verbose
+                    $ConvertTokensInputs.Tokens += $tokenMap
                 }
             }
 
             # Invoke Token Replacement Functionality and Convert Tokens in Parameter Files
-            $ModuleParameterFiles | ForEach-Object { $null = Convert-TokensInFile @ConvertTokensInputs -ParameterFilePath $_ }
+            $ModuleParameterFiles | ForEach-Object { $null = Convert-TokensInFile @ConvertTokensInputs -FilePath $_ }
 
             # Deployment & Validation Testing
             # -------------------------------
@@ -211,7 +216,7 @@ function Test-ModuleLocally {
                     # Loop through test parameter files
                     foreach ($paramFilePath in $moduleParameterFiles) {
                         Write-Verbose ('Validating module [{0}] with parameter file [{1}]' -f $ModuleName, (Split-Path $paramFilePath -Leaf)) -Verbose
-                        Test-TemplateWithParameterFile @functionInput -ParameterFilePath $parameterFilePath
+                        Test-TemplateWithParameterFile @functionInput -ParameterFilePath $paramFilePath
                     }
                 }
 
@@ -224,7 +229,7 @@ function Test-ModuleLocally {
                     foreach ($paramFilePath in $moduleParameterFiles) {
                         Write-Verbose ('Deploy module [{0}] with parameter file [{1}]' -f $ModuleName, (Split-Path $paramFilePath -Leaf)) -Verbose
                         if ($PSCmdlet.ShouldProcess(('Module [{0}] with parameter file [{1}]' -f $ModuleName, (Split-Path $paramFilePath -Leaf)), 'Deploy')) {
-                            New-ModuleDeployment @functionInput -ParameterFilePath $parameterFilePath
+                            New-ModuleDeployment @functionInput -ParameterFilePath $paramFilePath
                         }
                     }
                 }
@@ -236,7 +241,7 @@ function Test-ModuleLocally {
                 if (($ValidationTest -or $DeploymentTest) -and $ValidateOrDeployParameters -and -not $RestoreAlreadyTriggered) {
                     # Replace Values with Tokens For Repo Updates
                     Write-Verbose 'Restoring Tokens'
-                    $ModuleParameterFiles | ForEach-Object { $null = Convert-TokensInFile @ConvertTokensInputs -ParameterFilePath $_ -SwapValueWithName $true }
+                    $ModuleParameterFiles | ForEach-Object { $null = Convert-TokensInFile @ConvertTokensInputs -FilePath $_ -SwapValueWithName $true }
                 }
             }
         }

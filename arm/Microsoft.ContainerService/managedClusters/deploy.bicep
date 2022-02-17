@@ -262,7 +262,7 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
-resource managedCluster 'Microsoft.ContainerService/managedClusters@2021-07-01' = {
+resource managedCluster 'Microsoft.ContainerService/managedClusters@2021-10-01' = {
   name: name
   location: location
   tags: (empty(tags) ? null : tags)
@@ -284,7 +284,7 @@ resource managedCluster 'Microsoft.ContainerService/managedClusters@2021-07-01' 
       omsagent: {
         enabled: omsAgentEnabled && !empty(monitoringWorkspaceId)
         config: {
-          logAnalyticsWorkspaceResourceID: !empty(monitoringWorkspaceId) ? monitoringWorkspaceId : null
+          logAnalyticsWorkspaceResourceID: !empty(monitoringWorkspaceId) ? any(monitoringWorkspaceId) : null
         }
       }
       aciConnectorLinux: {
@@ -303,15 +303,15 @@ resource managedCluster 'Microsoft.ContainerService/managedClusters@2021-07-01' 
     enableRBAC: aadProfileEnableAzureRBAC
     nodeResourceGroup: nodeResourceGroup
     networkProfile: {
-      networkPlugin: (empty(aksClusterNetworkPlugin) ? null : aksClusterNetworkPlugin)
-      networkPolicy: (empty(aksClusterNetworkPolicy) ? null : aksClusterNetworkPolicy)
-      podCidr: (empty(aksClusterPodCidr) ? null : aksClusterPodCidr)
-      serviceCidr: (empty(aksClusterServiceCidr) ? null : aksClusterServiceCidr)
-      dnsServiceIP: (empty(aksClusterDnsServiceIP) ? null : aksClusterDnsServiceIP)
-      dockerBridgeCidr: (empty(aksClusterDockerBridgeCidr) ? null : aksClusterDockerBridgeCidr)
+      networkPlugin: !empty(aksClusterNetworkPlugin) ? any(aksClusterNetworkPlugin) : null
+      networkPolicy: !empty(aksClusterNetworkPolicy) ? any(aksClusterNetworkPolicy) : null
+      podCidr: !empty(aksClusterPodCidr) ? aksClusterPodCidr : null
+      serviceCidr: !empty(aksClusterServiceCidr) ? aksClusterServiceCidr : null
+      dnsServiceIP: !empty(aksClusterDnsServiceIP) ? aksClusterDnsServiceIP : null
+      dockerBridgeCidr: !empty(aksClusterDockerBridgeCidr) ? aksClusterDockerBridgeCidr : null
       outboundType: aksClusterOutboundType
       loadBalancerSku: aksClusterLoadBalancerSku
-      loadBalancerProfile: ((managedOutboundIPCount == 0) ? null : lbProfile)
+      loadBalancerProfile: managedOutboundIPCount != 0 ? lbProfile : null
     }
     aadProfile: {
       clientAppID: aadProfileClientAppID

@@ -49,7 +49,7 @@ function Initialize-DeploymentRemoval {
     process {
         $moduleName = Split-Path (Split-Path $templateFilePath -Parent) -LeafBase
 
-        # The intial sequence is a general order-recommendation
+        # The initial sequence is a general order-recommendation
         $removalSequence = @(
             'Microsoft.Insights/diagnosticSettings',
             'Microsoft.Resources/resourceGroups',
