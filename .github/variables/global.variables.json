@@ -2,7 +2,7 @@
     "variables": [
         {
             "name": "defaultLocation",
-            "value": "WestUS"
+            "value": "EastUS"
         },
         {
             "name": "resourceGroupName",
@@ -14,7 +14,7 @@
         },
         {
             "name": "templateSpecsRGLocation",
-            "value": "WestUS"
+            "value": "EastUS"
         },
         {
             "name": "templateSpecsDescription",
@@ -34,7 +34,7 @@
         },
         {
             "name": "bicepRegistryRgLocation",
-            "value": "WestUS"
+            "value": "EastUS"
         },
         {
             "name": "bicepRegistryDoPublish",
