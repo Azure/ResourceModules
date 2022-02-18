@@ -98,7 +98,7 @@ jobs:
       - name: 'Using parameter file [${{ matrix.parameterFilePaths }}]'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
-          templateFilePath: '${{ env.modulePath }}/.bicep/nested_rbac_sub.bicep'
+          templateFilePath: '${{ env.modulePath }}/subscriptions/deploy.bicep'
           parameterFilePath: '${{ env.modulePath }}/.parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.defaultLocation }}'
           resourceGroupName: '${{ env.resourceGroupName }}'

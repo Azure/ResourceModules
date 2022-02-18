@@ -44,7 +44,7 @@ param conditionVersion string = '2.0'
 ])
 param principalType string = ''
 
-module roleAssignment_mg '.bicep/nested_rbac_mg.bicep' = if (!empty(managementGroupId) && empty(subscriptionId) && empty(resourceGroupName)) {
+module roleAssignment_mg 'managementGroups/deploy.bicep' = if (!empty(managementGroupId) && empty(subscriptionId) && empty(resourceGroupName)) {
   name: '${uniqueString(deployment().name, location)}-RoleAssignment-MG-Module'
   scope: managementGroup(managementGroupId)
   params: {
@@ -59,7 +59,7 @@ module roleAssignment_mg '.bicep/nested_rbac_mg.bicep' = if (!empty(managementGr
   }
 }
 
-module roleAssignment_sub '.bicep/nested_rbac_sub.bicep' = if (empty(managementGroupId) && !empty(subscriptionId) && empty(resourceGroupName)) {
+module roleAssignment_sub 'subscriptions/deploy.bicep' = if (empty(managementGroupId) && !empty(subscriptionId) && empty(resourceGroupName)) {
   name: '${uniqueString(deployment().name, location)}-RoleAssignment-Sub-Module'
   scope: subscription(subscriptionId)
   params: {
@@ -74,7 +74,7 @@ module roleAssignment_sub '.bicep/nested_rbac_sub.bicep' = if (empty(managementG
   }
 }
 
-module roleAssignment_rg '.bicep/nested_rbac_rg.bicep' = if (empty(managementGroupId) && !empty(resourceGroupName) && !empty(subscriptionId)) {
+module roleAssignment_rg 'resourceGroups/deploy.bicep' = if (empty(managementGroupId) && !empty(resourceGroupName) && !empty(subscriptionId)) {
   name: '${uniqueString(deployment().name, location)}-RoleAssignment-RG-Module'
   scope: resourceGroup(subscriptionId, resourceGroupName)
   params: {
