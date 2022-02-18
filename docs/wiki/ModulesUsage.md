@@ -162,7 +162,7 @@ param subnets array = [
 // =========== //
 
 // Resource Group
-module rg 'br:adpsxxazacrx001.azurecr.io/bicep/modules/microsoft.resources.resourcegroups:0.0.23' = {
+module rg 'br/modules:microsoft.resources.resourcegroups:0.4.735' = {
   name: 'registry-rg'
   params: {
     name: resourceGroupName
@@ -171,7 +171,7 @@ module rg 'br:adpsxxazacrx001.azurecr.io/bicep/modules/microsoft.resources.resou
 }
 
 // Network Security Group
-module nsg 'br:adpsxxazacrx001.azurecr.io/bicep/modules/microsoft.network.networksecuritygroups:0.0.30' = {
+module nsg 'br/modules:microsoft.network.networksecuritygroups:0.4.735' = {
   name: 'registry-nsg'
   scope: resourceGroup(resourceGroupName)
   params: {
@@ -183,7 +183,7 @@ module nsg 'br:adpsxxazacrx001.azurecr.io/bicep/modules/microsoft.network.networ
 }
 
 // Virtual Network
-module vnet 'br:adpsxxazacrx001.azurecr.io/bicep/modules/microsoft.network.virtualnetworks:0.0.26' = {
+module vnet 'br/modules:microsoft.network.virtualnetworks:0.4.735' = {
   name: 'registry-vnet'
   scope: resourceGroup(resourceGroupName)
   params: {
@@ -198,14 +198,38 @@ module vnet 'br:adpsxxazacrx001.azurecr.io/bicep/modules/microsoft.network.virtu
 }
 ```
 
-### **Example with template-specs**
+The example assumes you are using a [`bicepconfig.json`](https://docs.microsoft.com/en-us/azure/azure-resource-manager/bicep/bicep-config) configuration file like:
+
+```json
+{
+    "moduleAliases": {
+        "br": {
+            "modules": {
+                "registry": "<registryName>.azurecr.io",
+                "modulePath": "bicep/modules"
+            }
+        }
+    }
+}
+```
+
+### ***Example with template-specs***
 
 The following example shows how you could orchestrate a deployment of multiple resources using template specs. In this example we will deploy a NSG and use the same in a subsequent VNET deployment.
 
 ```bicep
+targetScope = 'subscription'
+
 // ================ //
 // Input Parameters //
 // ================ //
+
+// RG parameters
+@description('Optional. The name of the resource group to deploy')
+param resourceGroupName string = 'validation-rg'
+
+@description('Optional. The location to deploy into')
+param location string = deployment().location
 
 // Network Security Group parameters
 @description('Required. The name of the vnet to deploy')
@@ -234,67 +258,59 @@ param subnets array = [
   }
 ]
 
-// ========================= //
-// Template Specs References //
-// ========================= //
-var templateSpecSub = '<<subscriptionId>>'
-var templateSpecRg = 'artifacts-rg'
-
-// Network Security Group
-resource nsgTemplate 'Microsoft.Resources/templateSpecs/versions@2021-05-01' existing = {
-  scope: resourceGroup(templateSpecSub, templateSpecRg)
-  name: 'networkSecurityGroups/1.0.21'
-}
-
-// Virtual Network
-resource vnetTemplate 'Microsoft.Resources/templateSpecs/versions@2021-05-01' existing = {
-  scope: resourceGroup(templateSpecSub, templateSpecRg)
-  name: 'VirtualNetwork/1.0.12'
-}
-
 // =========== //
 // Deployments //
 // =========== //
 
-// Network Security Group
-resource nsg 'Microsoft.Resources/deployments@2021-01-01' = {
-  name: 'nsgDeployment'
-  properties: {
-    mode: 'Incremental'
-    templateLink: {
-      id: nsgTemplate.id
-    }
-    parameters: {
-      name: {
-        value: networkSecurityGroupName
-      }
-    }
+// Resource Group
+module rg 'ts/modules:microsoft.resources.resourcegroups:0.4.735' = {
+  name: 'rgDeployment'
+  params: {
+    name: resourceGroupName
+    location: location
   }
 }
 
+// Network Security Group
+module nsg 'ts/modules:microsoft.network.networksecuritygroups:0.4.735' = {
+  name: 'nsgDeployment'
+  scope: resourceGroup(resourceGroupName)
+  params: {
+    name:  networkSecurityGroupName
+  }
+    dependsOn: [
+    rg
+  ]
+}
+
 // Virtual Network
-resource vnet 'Microsoft.Resources/deployments@2021-01-01' = {
+module vnet 'ts/modules:microsoft.network.virtualnetworks:0.4.735' = {
   name: 'vnetDeployment'
-  properties: {
-    mode: 'Incremental'
-    templateLink: {
-      id: vnetTemplate.id
-    }
-    parameters: {
-      name: {
-        value: vnetName
-      }
-      addressPrefixes: {
-        value: vNetAddressPrefixes
-      }
-      subnets: {
-        value: subnets
-      }
-    }
+  scope: resourceGroup(resourceGroupName)
+  params: {
+    name:  vnetName
+    addressPrefixes: vNetAddressPrefixes
+    subnets : subnets
   }
   dependsOn: [
+    rg
     nsg
   ]
+}
+```
+
+The example assumes you are using a [`bicepconfig.json`](https://docs.microsoft.com/en-us/azure/azure-resource-manager/bicep/bicep-config) configuration file like:
+
+```json
+{
+    "moduleAliases": {
+        "ts": {
+            "modules": {
+                "subscription": "<<subscriptionId>>",
+                "resourceGroup": "artifacts-rg"
+            }
+        }
+    }
 }
 ```
 
