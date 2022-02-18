@@ -486,20 +486,3 @@ jobs:
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
           removeDeployment: $(removeDeployment)
 ```
-
-#### Notes
-
-> 1. 'Azure/ResourceModules' repo has been checked out at the root location intentionally because the `deep-mm/set-variables@v1.0` task expects the _global.variables.json_ file in the _.github/variables/_ location. The GitHub Actions also expect the underlying utility scripts at a specific location
-> 1. 'contoso/MultiRepoTest' repo has been checked out in a nested folder called as "MultiRepoTestParentFolder" to distinguish it from the folders from the other repo in the agent but can be downloaded at the root location too if desired
-> 1. Comparison between IaCS and CARML -
->
->    Snippet of Resource Group deployment job from the _Solution_ repo of IaCS -
->
->    ![IaCS_RGDeployJob](/docs/media/IaCS_DeployRGJob.png)
->
->    | Sr. no. | Topic| IaCS | CARML |
->    | :-: | :-: | - | - |
->    | 1. | Authentication to Azure | Done via Service Connection | Done via an environment variable: ```AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}```
->    | 2. | Repo checkouts | Once specified at the top, _Components_ repo is not required to be downloaded in every job | All the requisite repos need to be downloaded every time in a job to complete successfully. With that, the 'Set environment variables' task also needs to be specified in every job after _Azure/ResourceModules_ repo has been checked out |
->    | 3. | Way of deployment | Each deployment "job" consists of a 'pipeline.jobs.deploy.yml' _template_ and a target module which are fetched from the _Components_ repo | Here, GitHub Action template called as "validateModuleDeployment" has been used |
->    | 4. | Passing parameters |  A dedicated 'deploymentBlocks' block is used to supply the parameter file from the local _Solutions_ repo | parameters.json file is directly specified under the "with" keyword which is passed onto the corresponding GitHub action |
