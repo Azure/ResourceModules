@@ -16,6 +16,9 @@
         "osType": {
             "value": "Linux"
         },
+        "encryptionAtHost": {
+            "value": false
+        },
         "imageReference": {
             "value": {
                 "publisher": "Canonical",
@@ -34,6 +37,7 @@
                 }
             }
         },
+        
         "adminUsername": {
             "value": "localAdminUser"
         },

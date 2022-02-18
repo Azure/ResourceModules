@@ -5,6 +5,9 @@
         "name": {
             "value": "<<namePrefix>>-vm-win-01"
         },
+        "encryptionAtHost": {
+            "value": false
+        },
         "imageReference": {
             "value": {
                 "publisher": "MicrosoftWindowsServer",
@@ -23,9 +26,12 @@
                 "diskSizeGB": "128",
                 "managedDisk": {
                     "storageAccountType": "Premium_LRS"
+                   
                 }
+                
             }
         },
+        
         "adminUsername": {
             "value": "localAdminUser"
         },
