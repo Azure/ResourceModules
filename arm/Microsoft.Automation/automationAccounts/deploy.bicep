@@ -16,7 +16,7 @@ param skuName string = 'Basic'
   'Microsoft.Automation'
   'Microsoft.Keyvault'
 ])
-param encryptionKeySource string = 'Microsoft.Keyvault'
+param encryptionKeySource string = 'Microsoft.Automation'
 
 @description('Optional. The name of key used to encrypt data. This parameter is needed only if you enable Microsoft.Keyvault as encryptionKeySource.')
 param keyName string = ''
