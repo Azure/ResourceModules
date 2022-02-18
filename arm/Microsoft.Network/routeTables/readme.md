@@ -111,7 +111,6 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | `name` | string | The name of the route table |
 | `resourceGroupName` | string | The resource group the route table was deployed into |
 | `resourceId` | string | The resource ID of the route table |
-| `route` | array | The routes of the deployed route table |
 
 ## Template references
 
