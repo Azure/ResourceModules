@@ -15,16 +15,17 @@ This section gives you an overview of how to use the bicep modules.
     - [**Remote:** Azure CLI](#remote-azure-cli)
 - [Orchestrate deployment](#orchestrate-deployment)
   - [Template-orchestration](#template-orchestration)
-- [Solution deployment](#solution-deployment)
-  - [Sample solution](#sample-solution)
-    - [Summary](#Summary)
-    - [Repo structure](#repo-structure)
-    - [YAML pipeline](#yaml-pipeline)
-    - [Notes](#notes)
+  - [Pipeline-orchestration](#pipeline-orchestration)
+    - [Multi Repository approach](#multi-repository-approach)
+      - [Sample solution](#sample-solution)
+        - [Summary](#Summary)
+        - [Repo structure](#repo-structure)
+        - [YAML pipeline](#yaml-pipeline)
+        - [Notes](#notes)
 
 ---
 
-## Deploy template
+# Deploy template
 
 This section shows you how to deploy a bicep template.
 
@@ -98,13 +99,13 @@ az deployment group create @inputObject
 
 ---
 
-## Orchestrate deployment
+# Orchestrate deployment
 
 This section shows you how you can orchestrate a deployment using multiple resource modules
 
 - [Template-orchestration](#template-orchestration)
 
-### Template-orchestration
+## Template-orchestration
 
 The _template-orchestrated_ approach means using a _main_ or so-called _master template_ for deploying resources in Azure. The _master template_ will only contain nested deployments, where the modules – instead of embedding their content into the _master template_ – will be linked from the _master template_.
 
@@ -112,7 +113,7 @@ With this approach, modules need to be stored in an available location, where Az
 
 In an enterprise environment, the recommended approach is to store these templates in a private environment, only accessible by enterprise resources. Thus, only trusted authorities can have access to these files.
 
-### **Example with a private bicep registry**
+### ***Example with a private bicep registry***
 
 The following example shows how you could orchestrate a deployment of multiple resources using modules from a private bicep registry. In this example we will deploy a resource group with a contained NSG and use the same in a subsequent VNET deployment.
 
@@ -124,26 +125,26 @@ targetScope = 'subscription'
 // ================ //
 
 // RG parameters
-@description('Required. The name of the resource group to deploy')
+@description('Optional. The name of the resource group to deploy')
 param resourceGroupName string = 'validation-rg'
 
 @description('Optional. The location to deploy into')
 param location string = deployment().location
 
 // NSG parameters
-@description('Required. The name of the vnet to deploy')
+@description('Optional. The name of the vnet to deploy')
 param networkSecurityGroupName string = 'BicepRegistryDemoNsg'
 
 // VNET parameters
-@description('Required. The name of the vnet to deploy')
+@description('Optional. The name of the vnet to deploy')
 param vnetName string = 'BicepRegistryDemoVnet'
 
-@description('Required. An Array of 1 or more IP Address Prefixes for the Virtual Network.')
+@description('Optional. An Array of 1 or more IP Address Prefixes for the Virtual Network.')
 param vNetAddressPrefixes array = [
   '10.0.0.0/16'
 ]
 
-@description('Required. An Array of subnets to deploy to the Virtual Network.')
+@description('Optional. An Array of subnets to deploy to the Virtual Network.')
 param subnets array = [
   {
     name: 'PrimarySubnet'
@@ -232,19 +233,19 @@ param resourceGroupName string = 'validation-rg'
 param location string = deployment().location
 
 // Network Security Group parameters
-@description('Required. The name of the vnet to deploy')
+@description('Optional. The name of the vnet to deploy')
 param networkSecurityGroupName string = 'TemplateSpecDemoNsg'
 
 // Virtual Network parameters
-@description('Required. The name of the vnet to deploy')
+@description('Optional. The name of the vnet to deploy')
 param vnetName string = 'TemplateSpecDemoVnet'
 
-@description('Required. An Array of 1 or more IP Address Prefixes for the Virtual Network.')
+@description('Optional. An Array of 1 or more IP Address Prefixes for the Virtual Network.')
 param vNetAddressPrefixes array = [
   '10.0.0.0/16'
 ]
 
-@description('Required. An Array of subnets to deploy to the Virtual Network.')
+@description('Optional. An Array of subnets to deploy to the Virtual Network.')
 param subnets array = [
   {
     name: 'PrimarySubnet'
