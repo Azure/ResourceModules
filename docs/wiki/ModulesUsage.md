@@ -349,7 +349,7 @@ The bicep modules provided by this repo can also be clubbed together to create m
 #### YAML pipeline
 
 ``` YAML
-name: 'Network Hub'
+name: 'Multi-Repo solution deployment'
 
 on:
   push:
@@ -364,9 +364,9 @@ env:
   removeDeployment: false
 
 jobs:
-  job_deploy_resource_group:
+  job_deploy_multi_repo_solution:
     runs-on: ubuntu-20.04
-    name: 'Deploy resource group'
+    name: 'Deploy multi-repo solution'
     steps:
       - name: 'Checkout ResourceModules repo at the root location'
         uses: actions/checkout@v2
@@ -397,29 +397,6 @@ jobs:
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
           removeDeployment: $(removeDeployment)
 
-  job_deploy_network_hub_resources:
-    runs-on: ubuntu-20.04
-    name: 'Deploy network hub resources'
-    needs: job_deploy_resource_group
-    steps:
-      - name: 'Checkout ResourceModules repo at the root location'
-        uses: actions/checkout@v2
-        with:
-          repository: 'Azure/ResourceModules'
-          fetch-depth: 0
-
-      - name: 'Set environment variables'
-        uses: deep-mm/set-variables@v1.0
-        with:
-          variableFileName: 'global.variables'
-
-      - name: 'Checkout MultiRepoTest repo in a nested MultiRepoTestParentFolder'
-        uses: actions/checkout@v2
-        with:
-          repository: 'contoso/MultiRepoTest'
-          fetch-depth: 0
-          path: 'MultiRepoTestParentFolder'
-
       - name: 'Deploy network security group'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
@@ -431,55 +408,11 @@ jobs:
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
           removeDeployment: $(removeDeployment)
 
-      - name: 'Deploy route table'
-        uses: ./.github/actions/templates/validateModuleDeployment
-        with:
-          templateFilePath: './arm/Microsoft.Network/routeTables/deploy.bicep'
-          parameterFilePath: './MultiRepoTestParentFolder/network-hub-rg/Parameters/RouteTables/parameters.json'
-          location: '${{ env.defaultLocation }}'
-          resourceGroupName: '${{ env.resourceGroupName }}'
-          subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
-          managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
-          removeDeployment: $(removeDeployment)
-
       - name: 'Deploy virtual network A'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
           templateFilePath: './arm/Microsoft.Network/virtualNetworks/deploy.bicep'
           parameterFilePath: './MultiRepoTestParentFolder/network-hub-rg/Parameters/VirtualNetwork/vnet-A.parameters.json'
-          location: '${{ env.defaultLocation }}'
-          resourceGroupName: '${{ env.resourceGroupName }}'
-          subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
-          managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
-          removeDeployment: $(removeDeployment)
-
-      - name: 'Deploy virtual network B'
-        uses: ./.github/actions/templates/validateModuleDeployment
-        with:
-          templateFilePath: './arm/Microsoft.Network/virtualNetworks/deploy.bicep'
-          parameterFilePath: './MultiRepoTestParentFolder/network-hub-rg/Parameters/VirtualNetwork/vnet-B.parameters.json'
-          location: '${{ env.defaultLocation }}'
-          resourceGroupName: '${{ env.resourceGroupName }}'
-          subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
-          managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
-          removeDeployment: $(removeDeployment)
-
-      - name: 'Deploy virtual network peering from VNet A to VNet B'
-        uses: ./.github/actions/templates/validateModuleDeployment
-        with:
-          templateFilePath: './arm/Microsoft.Network/virtualNetworks/virtualNetworkPeerings/deploy.bicep'
-          parameterFilePath: './MultiRepoTestParentFolder/network-hub-rg/Parameters/VirtualNetworkPeering/vneta-to-vnetb-peering.parameters.json'
-          location: '${{ env.defaultLocation }}'
-          resourceGroupName: '${{ env.resourceGroupName }}'
-          subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
-          managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
-          removeDeployment: $(removeDeployment)
-
-      - name: 'Deploy virtual network peering from VNet B to VNet A'
-        uses: ./.github/actions/templates/validateModuleDeployment
-        with:
-          templateFilePath: './arm/Microsoft.Network/virtualNetworks/virtualNetworkPeerings/deploy.bicep'
-          parameterFilePath: './MultiRepoTestParentFolder/network-hub-rg/Parameters/VirtualNetworkPeering/vnetb-to-vneta-peering.parameters.json'
           location: '${{ env.defaultLocation }}'
           resourceGroupName: '${{ env.resourceGroupName }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
