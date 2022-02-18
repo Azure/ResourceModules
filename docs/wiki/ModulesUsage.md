@@ -323,24 +323,16 @@ The bicep modules provided by this repo can also be clubbed together to create m
 
 #### Summary
 
-1. Below is an example which uses a _multi-repo_ approach
+1. Below is an example which uses a _multi-repository_ approach
 1. It fetches the _public_ **Azure/ResourceModules** repo for consuming bicep modules and uses the parameter files present in the _private_ **Contoso/MultiRepoTest** repo for deploying infrastructure
-1. This example is for creating a network hub with following resources -
-    1. First stage: **Deploy resource group**
+1. This example is creating a Resource group, an NSG and a VNet -
+    1. Job: **Deploy multi-repo solution**
         1. Checkout 'Azure/ResourceModules' repo at root of the agent
         1. Set environment variables for the agent
         1. Checkout 'contoso/MultiRepoTest' repo containing the parameter files in a nested folder - "MultiRepoTestParentFolder"
         1. Deploy resource group in target Azure subscription
-    1. Second stage: **Deploy network hub resources**
-        1. Checkout 'Azure/ResourceModules' repo at root of the agent
-        1. Set environment variables for the agent
-        1. Checkout 'contoso/MultiRepoTest' repo containing the parameter files in a nested folder - "MultiRepoTestParentFolder"
         1. Deploy network security group
-        1. Deploy route table
         1. Deploy virtual network A
-        1. Deploy virtual network B
-        1. Establish virtual network peering between virtual network A and B
-        1. Establish virtual network peering between virtual network B and A
 
 #### Repo structure
 
@@ -419,3 +411,8 @@ jobs:
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
           removeDeployment: $(removeDeployment)
 ```
+
+#### Notes
+
+> 1. 'Azure/ResourceModules' repo has been checked out at the root location intentionally because the `deep-mm/set-variables@v1.0` task expects the _global.variables.json_ file in the _.github/variables/_ location. The GitHub Actions also expect the underlying utility scripts at a specific location
+> 1. 'contoso/MultiRepoTest' repo has been checked out in a nested folder called as "MultiRepoTestParentFolder" to distinguish it from the folders from the other repo in the agent but can be downloaded at the root location too if desired
