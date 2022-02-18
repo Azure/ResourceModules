@@ -4,7 +4,7 @@ This section gives you an overview of how to use the bicep modules.
 
 ---
 
-## _Navigation_
+### _Navigation_
 
 - [Deploy template](#deploy-template)
   - [Deploy local template](#deploy-local-template)
