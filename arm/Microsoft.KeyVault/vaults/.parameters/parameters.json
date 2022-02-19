@@ -3,13 +3,29 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "sxx-az-kv-x-001"
+            "value": "<<namePrefix>>-az-kvlt-x-001"
         },
         "softDeleteRetentionInDays": {
             "value": 7
         },
         "enableRbacAuthorization": {
             "value": false
+        },
+        "privateEndpoints": {
+            "value": [
+                {
+                    "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints",
+                    "service": "vault"
+                }
+            ]
+        },
+        "networkAcls": {
+            "value": {
+                "bypass": "AzureServices",
+                "defaultAction": "Deny",
+                "virtualNetworkRules": [],
+                "ipRules": []
+            }
         },
         "roleAssignments": {
             "value": [
@@ -27,6 +43,7 @@
                     "name": "secretName",
                     "value": "secretValue",
                     "contentType": "Something",
+                    "attributesExp": 1702648632,
                     "attributesNbf": 10000,
                     "roleAssignments": [
                         {
@@ -43,6 +60,7 @@
             "value": [
                 {
                     "name": "keyName",
+                    "attributesExp": 1702648632,
                     "attributesNbf": 10000,
                     "roleAssignments": [
                         {
@@ -90,16 +108,16 @@
             "value": 7
         },
         "diagnosticStorageAccountId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adpsxxazsax001"
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
         },
-        "workspaceId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-sxx-az-law-x-001"
+        "diagnosticWorkspaceId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001"
         },
-        "eventHubAuthorizationRuleId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-sxx-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
+        "diagnosticEventHubAuthorizationRuleId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
         },
-        "eventHubName": {
-            "value": "adp-sxx-az-evh-x-001"
+        "diagnosticEventHubName": {
+            "value": "adp-<<namePrefix>>-az-evh-x-001"
         }
     }
 }

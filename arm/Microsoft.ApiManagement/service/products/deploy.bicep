@@ -36,11 +36,11 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
-resource service 'Microsoft.ApiManagement/service@2021-04-01-preview' existing = {
+resource service 'Microsoft.ApiManagement/service@2021-08-01' existing = {
   name: apiManagementServiceName
 }
 
-resource product 'Microsoft.ApiManagement/service/products@2020-06-01-preview' = {
+resource product 'Microsoft.ApiManagement/service/products@2021-08-01' = {
   name: name
   parent: service
   properties: {
@@ -54,7 +54,7 @@ resource product 'Microsoft.ApiManagement/service/products@2020-06-01-preview' =
   }
 }
 
-module api 'apis/deploy.bicep' = [for (api, index) in apis: {
+module product_apis 'apis/deploy.bicep' = [for (api, index) in apis: {
   name: '${deployment().name}-Api-${index}'
   params: {
     apiManagementServiceName: apiManagementServiceName
@@ -63,7 +63,7 @@ module api 'apis/deploy.bicep' = [for (api, index) in apis: {
   }
 }]
 
-module group 'groups/deploy.bicep' = [for (group, index) in groups: {
+module product_groups 'groups/deploy.bicep' = [for (group, index) in groups: {
   name: '${deployment().name}-Group-${index}'
   params: {
     apiManagementServiceName: apiManagementServiceName
@@ -73,16 +73,16 @@ module group 'groups/deploy.bicep' = [for (group, index) in groups: {
 }]
 
 @description('The resource ID of the API management service product')
-output productResourceId string = product.id
+output resourceId string = product.id
 
 @description('The name of the API management service product')
-output productName string = product.name
+output name string = product.name
 
 @description('The resource group the API management service product was deployed into')
-output productResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name
 
 @description('The Resources IDs of the API management service product APIs')
-output productApisResourceIds array = [for productApi in apis: resourceId('Microsoft.ApiManagement/service/products/apis', apiManagementServiceName, name, productApi.name)]
+output apiResourceIds array = [for index in range(0, length(apis)): product_apis[index].outputs.resourceId]
 
 @description('The Resources IDs of the API management service product groups')
-output productGroupsResourceIds array = [for productGroup in groups: resourceId('Microsoft.ApiManagement/service/products/groups', apiManagementServiceName, name, productGroup.name)]
+output groupResourceIds array = [for index in range(0, length(groups)): product_groups[index].outputs.resourceId]

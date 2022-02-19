@@ -15,21 +15,21 @@ param appInsightsType string = 'web'
 param appInsightsRequestSource string = 'rest'
 
 @description('Required. Resource ID of the log analytics workspace which the data will be ingested to. This property is required to create an application with this API version. Applications from older versions will not have this property.')
-param  workspaceResourceId string
+param workspaceResourceId string
 
 @description('Optional. The network access type for accessing Application Insights ingestion. - Enabled or Disabled.')
 @allowed([
   'Enabled'
   'Disabled'
 ])
-param appInsightsPublicNetworkAccessForIngestion string = 'Enabled'
+param publicNetworkAccessForIngestion string = 'Enabled'
 
 @description('Optional. The network access type for accessing Application Insights query. - Enabled or Disabled.')
 @allowed([
   'Enabled'
   'Disabled'
 ])
-param appInsightsPublicNetworkAccessForQuery string = 'Enabled'
+param publicNetworkAccessForQuery string = 'Enabled'
 
 @description('Optional. The kind of application that this component refers to, used to customize UI. This value is a freeform string, values should typically be one of the following: web, ios, other, store, java, phone.')
 param kind string = ''
@@ -48,7 +48,6 @@ param lock string = 'NotSpecified'
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-
 resource appInsights 'Microsoft.Insights/components@2020-02-02' = {
   name: name
   location: location
@@ -57,13 +56,13 @@ resource appInsights 'Microsoft.Insights/components@2020-02-02' = {
   properties: {
     Application_Type: appInsightsType
     Request_Source: appInsightsRequestSource
-    WorkspaceResourceId:  workspaceResourceId
-    publicNetworkAccessForIngestion: appInsightsPublicNetworkAccessForIngestion
-    publicNetworkAccessForQuery: appInsightsPublicNetworkAccessForQuery
+    WorkspaceResourceId: workspaceResourceId
+    publicNetworkAccessForIngestion: publicNetworkAccessForIngestion
+    publicNetworkAccessForQuery: publicNetworkAccessForQuery
   }
 }
 
-resource appInsights_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
+resource appInsights_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
   name: '${appInsights.name}-${lock}-lock'
   properties: {
     level: lock
@@ -73,10 +72,10 @@ resource appInsights_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock 
 }
 
 @description('The name of the application insights component.')
-output appInsightsName string = appInsights.name
+output name string = appInsights.name
 
 @description('The resource ID of the application insights component.')
-output appInsightsResourceId string = appInsights.id
+output resourceId string = appInsights.id
 
 @description('The resource group the application insights component was deployed into.')
-output appInsightsResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name

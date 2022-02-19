@@ -22,9 +22,9 @@ This module deploys a security alert policy for a SQL managed instance.
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `securityAlertPolicyName` | string | The name of the deployed security alert policy |
-| `securityAlertPolicyResourceGroupName` | string | The resource group of the deployed security alert policy |
-| `securityAlertPolicyResourceId` | string | The resource ID of the deployed security alert policy |
+| `name` | string | The name of the deployed security alert policy |
+| `resourceId` | string | The resource ID of the deployed security alert policy |
+| `resourceGroupName` | string | The resource group of the deployed security alert policy |
 
 ## Template references
 

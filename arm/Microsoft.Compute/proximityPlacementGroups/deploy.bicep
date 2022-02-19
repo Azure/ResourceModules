@@ -42,7 +42,7 @@ resource proximityPlacementGroup 'Microsoft.Compute/proximityPlacementGroups@202
   }
 }
 
-resource proximityPlacementGroup_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
+resource proximityPlacementGroup_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
   name: '${proximityPlacementGroup.name}-${lock}-lock'
   properties: {
     level: lock
@@ -61,10 +61,10 @@ module proximityPlacementGroup_rbac '.bicep/nested_rbac.bicep' = [for (roleAssig
 }]
 
 @description('The name of the proximity placement group')
-output proximityPlacementGroupName string = proximityPlacementGroup.name
+output name string = proximityPlacementGroup.name
 
 @description('The resourceId the proximity placement group')
-output proximityPlacementGroupResourceId string = proximityPlacementGroup.id
+output resourceId string = proximityPlacementGroup.id
 
 @description('The resource group the proximity placement group was deployed into')
-output proximityPlacementGroupResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name

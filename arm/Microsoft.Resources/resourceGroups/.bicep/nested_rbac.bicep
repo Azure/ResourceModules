@@ -178,7 +178,7 @@ var builtInRoleNames = {
   'Workbook Reader': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'b279062a-9be3-42a0-92ae-8b3cf002ec4d')
 }
 
-resource roleAssignment 'Microsoft.Authorization/roleAssignments@2020-04-01-preview' = [for principalId in principalIds: {
+resource roleAssignment 'Microsoft.Authorization/roleAssignments@2021-04-01-preview' = [for principalId in principalIds: {
   name: guid(resourceGroupName, principalId, roleDefinitionIdOrName)
   properties: {
     roleDefinitionId: contains(builtInRoleNames, roleDefinitionIdOrName) ? builtInRoleNames[roleDefinitionIdOrName] : roleDefinitionIdOrName

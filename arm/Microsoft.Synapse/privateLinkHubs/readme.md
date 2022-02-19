@@ -6,8 +6,8 @@ This module deploys Synapse PrivateLinkHubs.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/locks` | 2016-09-01 |
-| `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
+| `Microsoft.Authorization/locks` | 2017-04-01 |
+| `Microsoft.Authorization/roleAssignments` | 2021-04-01-preview |
 | `Microsoft.Network/privateEndpoints` | 2021-03-01 |
 | `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | 2021-03-01 |
 | `Microsoft.Synapse/privateLinkHubs` | 2021-06-01 |
@@ -102,14 +102,14 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `privateLinkHubName` | string | The name of the deployed Synapse Private Link Hub. |
-| `privateLinkHubResourceGroup` | string | The resource group of the deployed Synapse Private Link Hub. |
-| `privateLinkHubResourceId` | string | The resource ID of the deployed Synapse Private Link Hub. |
+| `name` | string | The name of the deployed Synapse Private Link Hub. |
+| `resourceGroupName` | string | The resource group of the deployed Synapse Private Link Hub. |
+| `resourceId` | string | The resource ID of the deployed Synapse Private Link Hub. |
 
 ## Template references
 
-- [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
+- [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
 - [Privateendpoints](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-03-01/privateEndpoints)
 - [Privateendpoints/Privatednszonegroups](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-03-01/privateEndpoints/privateDnsZoneGroups)
 - [Privatelinkhubs](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Synapse/2021-06-01/privateLinkHubs)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-04-01-preview/roleAssignments)
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)

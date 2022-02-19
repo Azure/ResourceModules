@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "adp-sxx-az-rsv-x-001"
+            "value": "adp-<<namePrefix>>-az-rsv-x-001"
         },
         "diagnosticLogsRetentionInDays": {
             "value": 7
@@ -254,7 +254,7 @@
                 {
                     "roleDefinitionIdOrName": "Reader",
                     "principalIds": [
-                        "cf33fea8-b30f-424f-ab73-c48d99e0b222" // The object ID of the deployed MSI
+                        "<<msiPrincipalID>>" // The object ID of the deployed MSI. Replaced by the pipeline
                     ]
                 }
             ]

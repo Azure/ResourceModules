@@ -6,9 +6,9 @@ This template deploys an availability set
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/locks` | 2016-09-01 |
-| `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
-| `Microsoft.Compute/availabilitySets` | 2021-04-01 |
+| `Microsoft.Authorization/locks` | 2017-04-01 |
+| `Microsoft.Authorization/roleAssignments` | 2021-04-01-preview |
+| `Microsoft.Compute/availabilitySets` | 2021-07-01 |
 
 ## Parameters
 
@@ -68,12 +68,12 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `availabilitySetResourceGroup` | string | The name of the availability set |
-| `availabilitySetResourceId` | string | The resource ID of the availability set |
-| `availabilitySetResourceName` | string | The resource group the availability set was deployed into |
+| `name` | string | The name of the availability set |
+| `resourceGroupName` | string | The resource group the availability set was deployed into |
+| `resourceId` | string | The resource ID of the availability set |
 
 ## Template references
 
-- [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-04-01-preview/roleAssignments)
-- [Availabilitysets](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Compute/2021-04-01/availabilitySets)
+- [Availabilitysets](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Compute/2021-07-01/availabilitySets)
+- [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)

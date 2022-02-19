@@ -8,16 +8,28 @@ param vmComputerNamesTransformation string = 'none'
 @description('Optional. Specifies the size for the VMs')
 param vmSize string = 'Standard_D2s_v3'
 
+@description('Optional. This property can be used by user in the request to enable or disable the Host Encryption for the virtual machine. This will enable the encryption for all the disks including Resource/Temp disk at host itself. For security reasons, it is recommended to set encryptionAtHost to True. Restrictions: Cannot be enabled if Azure Disk Encryption (guest-VM encryption using bitlocker/DM-Crypt) is enabled on your VMs.')
+param encryptionAtHost bool = true
+
+@description('Optional. Specifies the SecurityType of the virtual machine. It is set as TrustedLaunch to enable UefiSettings.')
+param securityType string = ''
+
+@description('Optional. Specifies whether secure boot should be enabled on the virtual machine. This parameter is part of the UefiSettings. SecurityType should be set to TrustedLaunch to enable UefiSettings.')
+param secureBootEnabled bool = false
+
+@description('Optional. Specifies whether vTPM should be enabled on the virtual machine. This parameter is part of the UefiSettings.  SecurityType should be set to TrustedLaunch to enable UefiSettings.')
+param vTpmEnabled bool = false
+
 @description('Required. OS image reference. In case of marketplace images, it\'s the combination of the publisher, offer, sku, version attributes. In case of custom images it\'s the resource ID of the custom image.')
 param imageReference object
 
 @description('Optional. Specifies information about the marketplace image used to create the virtual machine. This element is only used for marketplace images. Before you can use a marketplace image from an API, you must enable the image for programmatic use.')
 param plan object = {}
 
-@description('Required. Specifies the OS disk.')
+@description('Required. Specifies the OS disk. For security reasons, it is recommended to specify DiskEncryptionSet into the osDisk object.  Restrictions: DiskEncryptionSet cannot be enabled if Azure Disk Encryption (guest-VM encryption using bitlocker/DM-Crypt) is enabled on your VMs.')
 param osDisk object
 
-@description('Optional. Specifies the data disks.')
+@description('Optional. Specifies the data disks. For security reasons, it is recommended to specify DiskEncryptionSet into the dataDisk object. Restrictions: DiskEncryptionSet cannot be enabled if Azure Disk Encryption (guest-VM encryption using bitlocker/DM-Crypt) is enabled on your VMs.')
 param dataDisks array = []
 
 @description('Optional. The flag that enables or disables a capability to have one or more managed data disks with UltraSSD_LRS storage account type on the VM or VMSS. Managed disks with storage account type UltraSSD_LRS can be added to a virtual machine or virtual machine scale set only if this property is enabled.')
@@ -162,6 +174,9 @@ param extensionMonitoringAgentConfig object = {
   enabled: false
 }
 
+@description('Optional. Resource ID of the monitoring log analytics workspace. Must be set when extensionMonitoringAgentConfig is set to true.')
+param monitoringWorkspaceId string = ''
+
 @description('Optional. The configuration for the [Dependency Agent] extension. Must at least contain the ["enabled": true] property to be executed')
 param extensionDependencyAgentConfig object = {
   enabled: false
@@ -200,14 +215,14 @@ param diagnosticLogsRetentionInDays int = 365
 @description('Optional. Resource ID of the diagnostic storage account.')
 param diagnosticStorageAccountId string = ''
 
-@description('Optional. Resource ID of log analytics.')
-param workspaceId string = ''
+@description('Optional. Resource ID of the diagnostic log analytics workspace.')
+param diagnosticWorkspaceId string = ''
 
-@description('Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.')
-param eventHubAuthorizationRuleId string = ''
+@description('Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.')
+param diagnosticEventHubAuthorizationRuleId string = ''
 
-@description('Optional. Name of the event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.')
-param eventHubName string = ''
+@description('Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.')
+param diagnosticEventHubName string = ''
 
 @allowed([
   'CanNotDelete'
@@ -232,7 +247,7 @@ param baseTime string = utcNow('u')
 @description('Optional. SAS token validity length to use to download files from storage accounts. Usage: \'PT8H\' - valid for 8 hours; \'P5D\' - valid for 5 days; \'P1Y\' - valid for 1 year. When not provided, the SAS token will be valid for 8 hours.')
 param sasTokenValidityLength string = 'PT8H'
 
-@description('Optional. The chosen OS type')
+@description('Required. The chosen OS type')
 @allowed([
   'Windows'
   'Linux'
@@ -256,6 +271,9 @@ param additionalUnattendContent array = []
 
 @description('Optional. Specifies the Windows Remote Management listeners. This enables remote Windows PowerShell. - WinRMConfiguration object.')
 param winRM object = {}
+
+@description('Optional. Any VM configuration profile assignments')
+param configurationProfileAssignments array = []
 
 var vmComputerNameTransformed = vmComputerNamesTransformation == 'uppercase' ? toUpper(name) : (vmComputerNamesTransformation == 'lowercase' ? toLower(name) : name)
 
@@ -317,9 +335,9 @@ module virtualMachine_nic '.bicep/nested_networkInterface.bicep' = [for (nicConf
     lock: lock
     diagnosticStorageAccountId: diagnosticStorageAccountId
     diagnosticLogsRetentionInDays: diagnosticLogsRetentionInDays
-    workspaceId: workspaceId
-    eventHubAuthorizationRuleId: eventHubAuthorizationRuleId
-    eventHubName: eventHubName
+    diagnosticWorkspaceId: diagnosticWorkspaceId
+    diagnosticEventHubAuthorizationRuleId: diagnosticEventHubAuthorizationRuleId
+    diagnosticEventHubName: diagnosticEventHubName
     metricsToEnable: nicMetricsToEnable
     pipMetricsToEnable: pipMetricsToEnable
     pipLogsToEnable: pipLogsToEnable
@@ -338,6 +356,15 @@ resource virtualMachine 'Microsoft.Compute/virtualMachines@2021-07-01' = {
     hardwareProfile: {
       vmSize: vmSize
     }
+    securityProfile: {
+      encryptionAtHost: encryptionAtHost
+      securityType: securityType
+      uefiSettings: securityType == 'TrustedLaunch' ? {
+        secureBootEnabled: secureBootEnabled
+        vTpmEnabled: vTpmEnabled
+      } : null
+    
+    }
     storageProfile: {
       imageReference: imageReference
       osDisk: {
@@ -347,6 +374,7 @@ resource virtualMachine 'Microsoft.Compute/virtualMachines@2021-07-01' = {
         diskSizeGB: osDisk.diskSizeGB
         managedDisk: {
           storageAccountType: osDisk.managedDisk.storageAccountType
+          diskEncryptionSet: contains(osDisk.managedDisk, 'diskEncryptionSet') ? osDisk.managedDisk.diskEncryptionSet : null
         }
       }
       dataDisks: [for (dataDisk, index) in dataDisks: {
@@ -383,7 +411,7 @@ resource virtualMachine 'Microsoft.Compute/virtualMachines@2021-07-01' = {
           deleteOption: contains(nicConfiguration, 'deleteOption') ? nicConfiguration.deleteOption : 'Delete'
           primary: index == 0 ? true : false
         }
-        id: resourceId('Microsoft.Network/networkInterfaces', '${name}${nicConfiguration.nicSuffix}')
+        id: az.resourceId('Microsoft.Network/networkInterfaces', '${name}${nicConfiguration.nicSuffix}')
       }]
     }
     diagnosticsProfile: {
@@ -392,8 +420,8 @@ resource virtualMachine 'Microsoft.Compute/virtualMachines@2021-07-01' = {
         storageUri: !empty(bootDiagnosticStorageAccountName) ? 'https://${bootDiagnosticStorageAccountName}${bootDiagnosticStorageAccountUri}' : null
       }
     }
-    availabilitySet: !empty(availabilitySetName) ? json('{"id":"${resourceId('Microsoft.Compute/availabilitySets', availabilitySetName)}"}') : null
-    proximityPlacementGroup: !empty(proximityPlacementGroupName) ? json('{"id":"${resourceId('Microsoft.Compute/proximityPlacementGroups', proximityPlacementGroupName)}"}') : null
+    availabilitySet: !empty(availabilitySetName) ? json('{"id":"${az.resourceId('Microsoft.Compute/availabilitySets', availabilitySetName)}"}') : null
+    proximityPlacementGroup: !empty(proximityPlacementGroupName) ? json('{"id":"${az.resourceId('Microsoft.Compute/proximityPlacementGroups', proximityPlacementGroupName)}"}') : null
     priority: vmPriority
     evictionPolicy: enableEvictionPolicy ? 'Deallocate' : null
     billingProfile: !empty(vmPriority) && !empty(maxPriceForLowPriorityVm) ? json('{"maxPrice":"${maxPriceForLowPriorityVm}"}') : null
@@ -404,6 +432,14 @@ resource virtualMachine 'Microsoft.Compute/virtualMachines@2021-07-01' = {
     virtualMachine_nic
   ]
 }
+
+module vm_configurationProfileAssignment '.bicep/nested_configurationProfileAssignment.bicep' = [for (configurationProfileAssignment, index) in configurationProfileAssignments: {
+  name: '${uniqueString(deployment().name, location)}-VM-ConfigurationProfileAssignment-${index}'
+  params: {
+    virtualMachineName: virtualMachine.name
+    configurationProfile: configurationProfileAssignment
+  }
+}]
 
 module vm_domainJoinExtension 'extensions/deploy.bicep' = if (extensionDomainJoinConfig.enabled) {
   name: '${uniqueString(deployment().name, location)}-VM-DomainJoin'
@@ -436,9 +472,9 @@ module vm_microsoftAntiMalwareExtension 'extensions/deploy.bicep' = if (extensio
   }
 }
 
-resource vm_logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2021-06-01' existing = if (!empty(workspaceId)) {
-  name: last(split(workspaceId, '/'))
-  scope: resourceGroup(split(workspaceId, '/')[2], split(workspaceId, '/')[4])
+resource vm_logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2021-06-01' existing = if (!empty(monitoringWorkspaceId)) {
+  name: last(split(monitoringWorkspaceId, '/'))
+  scope: az.resourceGroup(split(monitoringWorkspaceId, '/')[2], split(monitoringWorkspaceId, '/')[4])
 }
 
 module vm_microsoftMonitoringAgentExtension 'extensions/deploy.bicep' = if (extensionMonitoringAgentConfig.enabled) {
@@ -452,10 +488,10 @@ module vm_microsoftMonitoringAgentExtension 'extensions/deploy.bicep' = if (exte
     autoUpgradeMinorVersion: contains(extensionMonitoringAgentConfig, 'autoUpgradeMinorVersion') ? extensionMonitoringAgentConfig.autoUpgradeMinorVersion : true
     enableAutomaticUpgrade: contains(extensionMonitoringAgentConfig, 'enableAutomaticUpgrade') ? extensionMonitoringAgentConfig.enableAutomaticUpgrade : false
     settings: {
-      workspaceId: !empty(workspaceId) ? reference(vm_logAnalyticsWorkspace.id, vm_logAnalyticsWorkspace.apiVersion).customerId : ''
+      workspaceId: !empty(monitoringWorkspaceId) ? reference(vm_logAnalyticsWorkspace.id, vm_logAnalyticsWorkspace.apiVersion).customerId : ''
     }
     protectedSettings: {
-      workspaceKey: !empty(workspaceId) ? vm_logAnalyticsWorkspace.listKeys().primarySharedKey : ''
+      workspaceKey: !empty(monitoringWorkspaceId) ? vm_logAnalyticsWorkspace.listKeys().primarySharedKey : ''
     }
   }
 }
@@ -545,16 +581,15 @@ module virtualMachine_backup '.bicep/nested_backup.bicep' = if (!empty(backupVau
   params: {
     backupResourceName: '${backupVaultName}/Azure/iaasvmcontainer;iaasvmcontainerv2;${resourceGroup().name};${virtualMachine.name}/vm;iaasvmcontainerv2;${resourceGroup().name};${virtualMachine.name}'
     protectedItemType: 'Microsoft.Compute/virtualMachines'
-    backupPolicyId: resourceId('Microsoft.RecoveryServices/vaults/backupPolicies', backupVaultName, backupPolicyName)
+    backupPolicyId: az.resourceId('Microsoft.RecoveryServices/vaults/backupPolicies', backupVaultName, backupPolicyName)
     sourceResourceId: virtualMachine.id
   }
-  scope: resourceGroup(backupVaultResourceGroup)
+  scope: az.resourceGroup(backupVaultResourceGroup)
   dependsOn: [
     vm_domainJoinExtension
     vm_microsoftMonitoringAgentExtension
     vm_microsoftAntiMalwareExtension
     vm_networkWatcherAgentExtension
-    vm_dependencyAgentExtension
     vm_dependencyAgentExtension
     vm_desiredStateConfigurationExtension
     vm_customScriptExtension
@@ -580,13 +615,13 @@ module virtualMachine_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, in
 }]
 
 @description('The name of the VM.')
-output virtualMachineName string = virtualMachine.name
+output name string = virtualMachine.name
 
 @description('The resource ID of the VM.')
-output virtualMachineResourceId string = virtualMachine.id
+output resourceId string = virtualMachine.id
 
 @description('The name of the resource group the VM was created in.')
-output virtualMachineResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name
 
 @description('The principal ID of the system assigned identity.')
 output systemAssignedPrincipalId string = systemAssignedIdentity && contains(virtualMachine.identity, 'principalId') ? virtualMachine.identity.principalId : ''

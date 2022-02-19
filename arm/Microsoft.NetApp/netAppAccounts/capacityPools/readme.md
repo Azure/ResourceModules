@@ -6,7 +6,7 @@ This template deploys capacity pools in an Azure NetApp Files.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
+| `Microsoft.Authorization/roleAssignments` | 2021-04-01-preview |
 | `Microsoft.NetApp/netAppAccounts/capacityPools` | 2021-06-01 |
 | `Microsoft.NetApp/netAppAccounts/capacityPools/volumes` | 2021-06-01 |
 
@@ -20,7 +20,7 @@ This template deploys capacity pools in an Azure NetApp Files.
 | `name` | string |  |  | Required. The name of the capacity pool. |
 | `netAppAccountName` | string |  |  | Required. The name of the NetApp account. |
 | `qosType` | string | `Auto` | `[Auto, Manual]` | Optional. The qos type of the pool. |
-| `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or it's fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
+| `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
 | `serviceLevel` | string | `Standard` | `[Premium, Standard, StandardZRS, Ultra]` | Optional. The pool service level. |
 | `size` | int |  |  | Required. Provisioned size of the pool (in bytes). Allowed values are in 4TiB chunks (value must be multiply of 4398046511104). |
 | `tags` | object | `{object}` |  | Optional. Tags for all resources. |
@@ -69,12 +69,12 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `capacityPoolName` | string | The name of the Capacity Pool. |
-| `capacityPoolResourceGroup` | string | The name of the Resource Group the Capacity Pool was created in. |
-| `capacityPoolResourceId` | string | The resource ID of the Capacity Pool. |
+| `name` | string | The name of the Capacity Pool. |
+| `resourceGroupName` | string | The name of the Resource Group the Capacity Pool was created in. |
+| `resourceId` | string | The resource ID of the Capacity Pool. |
 
 ## Template references
 
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-04-01-preview/roleAssignments)
 - [Netappaccounts/Capacitypools](https://docs.microsoft.com/en-us/azure/templates/Microsoft.NetApp/2021-06-01/netAppAccounts/capacityPools)
 - [Netappaccounts/Capacitypools/Volumes](https://docs.microsoft.com/en-us/azure/templates/Microsoft.NetApp/2021-06-01/netAppAccounts/capacityPools/volumes)
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)

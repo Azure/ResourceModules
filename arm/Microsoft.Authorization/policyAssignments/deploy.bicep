@@ -115,10 +115,10 @@ module policyAssignment_rg '.bicep/nested_policyAssignments_rg.bicep' = if (empt
 }
 
 @sys.description('Policy Assignment Name')
-output policyAssignmentName string = !empty(managementGroupId) ? policyAssignment_mg.outputs.policyAssignmentName : (!empty(resourceGroupName) ? policyAssignment_rg.outputs.policyAssignmentName : policyAssignment_sub.outputs.policyAssignmentName)
+output name string = !empty(managementGroupId) ? policyAssignment_mg.outputs.name : (!empty(resourceGroupName) ? policyAssignment_rg.outputs.name : policyAssignment_sub.outputs.name)
 
 @sys.description('Policy Assignment principal ID')
-output policyAssignmentPrincipalId string = !empty(managementGroupId) ? policyAssignment_mg.outputs.policyAssignmentPrincipalId : (!empty(resourceGroupName) ? policyAssignment_rg.outputs.policyAssignmentPrincipalId : policyAssignment_sub.outputs.policyAssignmentPrincipalId)
+output principalId string = !empty(managementGroupId) ? policyAssignment_mg.outputs.principalId : (!empty(resourceGroupName) ? policyAssignment_rg.outputs.principalId : policyAssignment_sub.outputs.principalId)
 
 @sys.description('Policy Assignment resource ID')
-output policyAssignmentResourceId string = !empty(managementGroupId) ? policyAssignment_mg.outputs.policyAssignmentResourceId : (!empty(resourceGroupName) ? policyAssignment_rg.outputs.policyAssignmentResourceId : policyAssignment_sub.outputs.policyAssignmentResourceId)
+output resourceId string = !empty(managementGroupId) ? policyAssignment_mg.outputs.resourceId : (!empty(resourceGroupName) ? policyAssignment_rg.outputs.resourceId : policyAssignment_sub.outputs.resourceId)

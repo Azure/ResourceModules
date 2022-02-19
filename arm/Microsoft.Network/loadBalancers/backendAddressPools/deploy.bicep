@@ -18,7 +18,7 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
-resource loadBalancer 'Microsoft.Network/loadBalancers@2021-02-01' existing = {
+resource loadBalancer 'Microsoft.Network/loadBalancers@2021-05-01' existing = {
   name: loadBalancerName
 }
 
@@ -32,10 +32,10 @@ resource backendAddressPool 'Microsoft.Network/loadBalancers/backendAddressPools
 }
 
 @description('The name of the backend address pool')
-output inboundNatRuleName string = backendAddressPool.name
+output name string = backendAddressPool.name
 
 @description('The resource ID of the backend address pool')
-output inboundNatRuleResourceId string = backendAddressPool.id
+output resourceId string = backendAddressPool.id
 
 @description('The resource group the backend address pool was deployed into')
-output inboundNatRuleResourceGroupName string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name

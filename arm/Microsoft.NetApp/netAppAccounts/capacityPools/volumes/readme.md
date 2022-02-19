@@ -6,7 +6,7 @@ This template deploys volumes in a capacity pool of an Azure NetApp files.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
+| `Microsoft.Authorization/roleAssignments` | 2021-04-01-preview |
 | `Microsoft.NetApp/netAppAccounts/capacityPools/volumes` | 2021-06-01 |
 
 ## Parameters
@@ -21,7 +21,7 @@ This template deploys volumes in a capacity pool of an Azure NetApp files.
 | `name` | string |  |  | Required. The name of the pool volume. |
 | `netAppAccountName` | string |  |  | Required. The name of the NetApp account. |
 | `protocolTypes` | array | `[]` |  | Optional. Set of protocol types. |
-| `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or it's fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
+| `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
 | `serviceLevel` | string | `Standard` | `[Premium, Standard, StandardZRS, Ultra]` | Optional. The pool service level. Must match the one of the parent capacity pool. |
 | `subnetResourceId` | string |  |  | Required. The Azure Resource URI for a delegated subnet. Must have the delegation Microsoft.NetApp/volumes. |
 | `usageThreshold` | int |  |  | Required. Maximum storage quota allowed for a file system in bytes. |
@@ -52,11 +52,11 @@ This template deploys volumes in a capacity pool of an Azure NetApp files.
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `volumeName` | string | The name of the Volume. |
-| `volumeResourceGroup` | string | The name of the Resource Group the Volume was created in. |
-| `volumeResourceId` | string | The Resource ID of the Volume. |
+| `name` | string | The name of the Volume. |
+| `resourceGroupName` | string | The name of the Resource Group the Volume was created in. |
+| `resourceId` | string | The Resource ID of the Volume. |
 
 ## Template references
 
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-04-01-preview/roleAssignments)
 - [Netappaccounts/Capacitypools/Volumes](https://docs.microsoft.com/en-us/azure/templates/Microsoft.NetApp/2021-06-01/netAppAccounts/capacityPools/volumes)
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)

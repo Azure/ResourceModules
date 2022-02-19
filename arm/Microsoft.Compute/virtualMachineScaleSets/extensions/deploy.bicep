@@ -61,10 +61,10 @@ resource extension 'Microsoft.Compute/virtualMachineScaleSets/extensions@2021-07
 }
 
 @description('The name of the extension')
-output extensionName string = extension.name
+output name string = extension.name
 
 @description('The ResourceId of the extension')
-output extensionResourceId string = extension.id
+output resourceId string = extension.id
 
 @description('The name of the Resource Group the extension was created in.')
-output extensionResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name

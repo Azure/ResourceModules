@@ -16,7 +16,7 @@ var lockNotes = {
 
 var lockName = empty(name) ? '${level}-lock' : name
 
-resource lock 'Microsoft.Authorization/locks@2016-09-01' = if (level != 'NotSpecified') {
+resource lock 'Microsoft.Authorization/locks@2017-04-01' = if (level != 'NotSpecified') {
   name: lockName
   properties: {
     level: level
@@ -25,6 +25,7 @@ resource lock 'Microsoft.Authorization/locks@2016-09-01' = if (level != 'NotSpec
 }
 
 @description('The resource ID of the lock')
-output lockResourceId string = lock.id
+output resourceId string = lock.id
+
 @description('The name of the lock')
-output lockName string = lock.name
+output name string = lock.name

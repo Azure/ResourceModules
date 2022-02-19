@@ -21,9 +21,9 @@ This module deploys a private endpoint private DNS zone group
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `privateDnsZoneGroupName` | string | The name of the private endpoint DNS zone group |
-| `privateDnsZoneGroupResourceGroup` | string | The resource group the private endpoint DNS zone group was deployed into |
-| `privateDnsZoneGroupResourceId` | string | The resource ID of the private endpoint DNS zone group |
+| `name` | string | The name of the private endpoint DNS zone group |
+| `resourceGroupName` | string | The resource group the private endpoint DNS zone group was deployed into |
+| `resourceId` | string | The resource ID of the private endpoint DNS zone group |
 
 ## Template references
 

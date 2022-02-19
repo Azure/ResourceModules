@@ -3,7 +3,10 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "sxx-vm-win-001"
+            "value": "<<namePrefix>>-vm-win-01"
+        },
+        "encryptionAtHost": {
+            "value": false
         },
         "imageReference": {
             "value": {
@@ -142,6 +145,9 @@
                 "enabled": true
             }
         },
+        "monitoringWorkspaceId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001"
+        },
         "extensionDependencyAgentConfig": {
             "value": {
                 "enabled": true
@@ -157,10 +163,10 @@
                 "enabled": true,
                 "settings": {
                     "EncryptionOperation": "EnableEncryption",
-                    "KeyVaultURL": "https://adp-sxx-az-kv-x-001.vault.azure.net/",
-                    "KeyVaultResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-sxx-az-kv-x-001",
-                    "KeyEncryptionKeyURL": "https://adp-sxx-az-kv-x-001.vault.azure.net/keys/keyEncryptionKey/1dcaf3e93b44433bba0232e9eec54cc7", // ID must be updated for new keys
-                    "KekVaultResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-sxx-az-kv-x-001",
+                    "KeyVaultURL": "https://adp-<<namePrefix>>-az-kv-x-001.vault.azure.net/",
+                    "KeyVaultResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001",
+                    "KeyEncryptionKeyURL": "https://adp-<<namePrefix>>-az-kv-x-001.vault.azure.net/keys/keyEncryptionKey/bc3bb46d95c64367975d722f473eeae5", // ID must be updated for new keys
+                    "KekVaultResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001",
                     "KeyEncryptionAlgorithm": "RSA-OAEP",
                     "VolumeType": "All",
                     "ResizeOSDisk": "false"
@@ -185,6 +191,11 @@
                     "commandToExecute": "powershell -ExecutionPolicy Unrestricted -Command \"& .\\scriptExtensionMasterInstaller.ps1\""
                 }
             }
+        },
+        "configurationProfileAssignments": {
+            "value": [
+                "/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction"
+            ]
         }
     }
 }

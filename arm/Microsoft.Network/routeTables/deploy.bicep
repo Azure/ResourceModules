@@ -32,7 +32,7 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
-resource routeTable 'Microsoft.Network/routeTables@2021-02-01' = {
+resource routeTable 'Microsoft.Network/routeTables@2021-05-01' = {
   name: name
   location: location
   tags: tags
@@ -42,7 +42,7 @@ resource routeTable 'Microsoft.Network/routeTables@2021-02-01' = {
   }
 }
 
-resource routeTable_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
+resource routeTable_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
   name: '${routeTable.name}-${lock}-lock'
   properties: {
     level: lock
@@ -61,10 +61,10 @@ module routeTable_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index)
 }]
 
 @description('The resource group the route table was deployed into')
-output routeTableResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name
 
 @description('The name of the route table')
-output routeTableName string = routeTable.name
+output name string = routeTable.name
 
 @description('The resource ID of the route table')
-output routeTableResourceId string = routeTable.id
+output resourceId string = routeTable.id

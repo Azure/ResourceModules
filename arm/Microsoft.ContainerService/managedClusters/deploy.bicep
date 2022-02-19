@@ -152,17 +152,20 @@ param autoScalerProfileMaxGracefulTerminationSec string = '600'
 @description('Optional. Resource ID of the diagnostic storage account.')
 param diagnosticStorageAccountId string = ''
 
-@description('Optional. Resource ID of log analytics.')
-param workspaceId string = ''
+@description('Optional. Resource ID of the diagnostic log analytics workspace.')
+param diagnosticWorkspaceId string = ''
 
 @description('Optional. Specifies whether the OMS agent is enabled.')
 param omsAgentEnabled bool = true
 
-@description('Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.')
-param eventHubAuthorizationRuleId string = ''
+@description('Optional. Resource ID of the monitoring log analytics workspace.')
+param monitoringWorkspaceId string = ''
 
-@description('Optional. Name of the event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.')
-param eventHubName string = ''
+@description('Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.')
+param diagnosticEventHubAuthorizationRuleId string = ''
+
+@description('Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.')
+param diagnosticEventHubName string = ''
 
 @description('Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.')
 @minValue(0)
@@ -259,7 +262,7 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
-resource managedCluster 'Microsoft.ContainerService/managedClusters@2021-07-01' = {
+resource managedCluster 'Microsoft.ContainerService/managedClusters@2021-10-01' = {
   name: name
   location: location
   tags: (empty(tags) ? null : tags)
@@ -279,9 +282,9 @@ resource managedCluster 'Microsoft.ContainerService/managedClusters@2021-07-01' 
         enabled: httpApplicationRoutingEnabled
       }
       omsagent: {
-        enabled: (omsAgentEnabled && (!empty(workspaceId)))
+        enabled: omsAgentEnabled && !empty(monitoringWorkspaceId)
         config: {
-          logAnalyticsWorkspaceResourceID: ((!empty(workspaceId)) ? workspaceId : null)
+          logAnalyticsWorkspaceResourceID: !empty(monitoringWorkspaceId) ? any(monitoringWorkspaceId) : null
         }
       }
       aciConnectorLinux: {
@@ -300,15 +303,15 @@ resource managedCluster 'Microsoft.ContainerService/managedClusters@2021-07-01' 
     enableRBAC: aadProfileEnableAzureRBAC
     nodeResourceGroup: nodeResourceGroup
     networkProfile: {
-      networkPlugin: (empty(aksClusterNetworkPlugin) ? null : aksClusterNetworkPlugin)
-      networkPolicy: (empty(aksClusterNetworkPolicy) ? null : aksClusterNetworkPolicy)
-      podCidr: (empty(aksClusterPodCidr) ? null : aksClusterPodCidr)
-      serviceCidr: (empty(aksClusterServiceCidr) ? null : aksClusterServiceCidr)
-      dnsServiceIP: (empty(aksClusterDnsServiceIP) ? null : aksClusterDnsServiceIP)
-      dockerBridgeCidr: (empty(aksClusterDockerBridgeCidr) ? null : aksClusterDockerBridgeCidr)
+      networkPlugin: !empty(aksClusterNetworkPlugin) ? any(aksClusterNetworkPlugin) : null
+      networkPolicy: !empty(aksClusterNetworkPolicy) ? any(aksClusterNetworkPolicy) : null
+      podCidr: !empty(aksClusterPodCidr) ? aksClusterPodCidr : null
+      serviceCidr: !empty(aksClusterServiceCidr) ? aksClusterServiceCidr : null
+      dnsServiceIP: !empty(aksClusterDnsServiceIP) ? aksClusterDnsServiceIP : null
+      dockerBridgeCidr: !empty(aksClusterDockerBridgeCidr) ? aksClusterDockerBridgeCidr : null
       outboundType: aksClusterOutboundType
       loadBalancerSku: aksClusterLoadBalancerSku
-      loadBalancerProfile: ((managedOutboundIPCount == 0) ? null : lbProfile)
+      loadBalancerProfile: managedOutboundIPCount != 0 ? lbProfile : null
     }
     aadProfile: {
       clientAppID: aadProfileClientAppID
@@ -348,23 +351,23 @@ module managedCluster_agentPools 'agentPools/deploy.bicep' = [for (agentPool, in
     enableFIPS: contains(agentPool, 'enableFIPS') ? agentPool.enableFIPS : false
     enableNodePublicIP: contains(agentPool, 'enableNodePublicIP') ? agentPool.enableNodePublicIP : false
     enableUltraSSD: contains(agentPool, 'enableUltraSSD') ? agentPool.enableUltraSSD : false
-    gpuInstanceProfile: contains(agentPool, 'gpuInstanceProfile') ? agentPool.gpuInstanceProfile: ''
+    gpuInstanceProfile: contains(agentPool, 'gpuInstanceProfile') ? agentPool.gpuInstanceProfile : ''
     kubeletDiskType: contains(agentPool, 'kubeletDiskType') ? agentPool.kubeletDiskType : ''
     maxCount: contains(agentPool, 'maxCount') ? agentPool.maxCount : -1
     maxPods: contains(agentPool, 'maxPods') ? agentPool.maxPods : -1
     minCount: contains(agentPool, 'minCount') ? agentPool.minCount : -1
-    mode: contains(agentPool, 'mode') ? agentPool.mode: ''
+    mode: contains(agentPool, 'mode') ? agentPool.mode : ''
     nodeLabels: contains(agentPool, 'nodeLabels') ? agentPool.nodeLabels : {}
-    nodePublicIpPrefixId: contains(agentPool, 'nodePublicIpPrefixId') ? agentPool.nodePublicIpPrefixId: ''
+    nodePublicIpPrefixId: contains(agentPool, 'nodePublicIpPrefixId') ? agentPool.nodePublicIpPrefixId : ''
     nodeTaints: contains(agentPool, 'nodeTaints') ? agentPool.nodeTaints : []
-    orchestratorVersion: contains(agentPool, 'orchestratorVersion') ? agentPool.orchestratorVersion: ''
-    osDiskSizeGB: contains(agentPool, 'osDiskSizeGB') ? agentPool.osDiskSizeGB: -1
-    osDiskType: contains(agentPool, 'osDiskType') ? agentPool.osDiskType: ''
+    orchestratorVersion: contains(agentPool, 'orchestratorVersion') ? agentPool.orchestratorVersion : ''
+    osDiskSizeGB: contains(agentPool, 'osDiskSizeGB') ? agentPool.osDiskSizeGB : -1
+    osDiskType: contains(agentPool, 'osDiskType') ? agentPool.osDiskType : ''
     osSku: contains(agentPool, 'osSku') ? agentPool.osSku : ''
     osType: contains(agentPool, 'osType') ? agentPool.osType : 'Linux'
     podSubnetId: contains(agentPool, 'podSubnetId') ? agentPool.podSubnetId : ''
     proximityPlacementGroupId: contains(agentPool, 'proximityPlacementGroupId') ? agentPool.proximityPlacementGroupId : ''
-    scaleDownMode: contains(agentPool, 'scaleDownMode') ? agentPool.scaleDownMode: 'Delete'
+    scaleDownMode: contains(agentPool, 'scaleDownMode') ? agentPool.scaleDownMode : 'Delete'
     scaleSetEvictionPolicy: contains(agentPool, 'scaleSetEvictionPolicy') ? agentPool.scaleSetEvictionPolicy : 'Delete'
     scaleSetPriority: contains(agentPool, 'scaleSetPriority') ? agentPool.scaleSetPriority : ''
     spotMaxPrice: contains(agentPool, 'spotMaxPrice') ? agentPool.spotMaxPrice : -1
@@ -377,7 +380,7 @@ module managedCluster_agentPools 'agentPools/deploy.bicep' = [for (agentPool, in
   }
 }]
 
-resource managedCluster_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
+resource managedCluster_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
   name: '${managedCluster.name}-${lock}-lock'
   properties: {
     level: lock
@@ -386,13 +389,13 @@ resource managedCluster_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lo
   scope: managedCluster
 }
 
-resource managedCluster_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId)) || (!empty(eventHubAuthorizationRuleId)) || (!empty(eventHubName))) {
+resource managedCluster_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(diagnosticWorkspaceId)) || (!empty(diagnosticEventHubAuthorizationRuleId)) || (!empty(diagnosticEventHubName))) {
   name: '${managedCluster.name}-diagnosticSettings'
   properties: {
     storageAccountId: !empty(diagnosticStorageAccountId) ? diagnosticStorageAccountId : null
-    workspaceId: !empty(workspaceId) ? workspaceId : null
-    eventHubAuthorizationRuleId: !empty(eventHubAuthorizationRuleId) ? eventHubAuthorizationRuleId : null
-    eventHubName: !empty(eventHubName) ? eventHubName : null
+    workspaceId: !empty(diagnosticWorkspaceId) ? diagnosticWorkspaceId : null
+    eventHubAuthorizationRuleId: !empty(diagnosticEventHubAuthorizationRuleId) ? diagnosticEventHubAuthorizationRuleId : null
+    eventHubName: !empty(diagnosticEventHubName) ? diagnosticEventHubName : null
     metrics: diagnosticsMetrics
     logs: diagnosticsLogs
   }
@@ -409,13 +412,13 @@ module managedCluster_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, in
 }]
 
 @description('The resource ID of the managed cluster')
-output azureKubernetesServiceResourceId string = managedCluster.id
+output resourceId string = managedCluster.id
 
 @description('The resource group the managed cluster was deployed into')
-output azureKubernetesServiceResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name
 
 @description('The name of the managed cluster')
-output azureKubernetesServiceName string = managedCluster.name
+output name string = managedCluster.name
 
 @description('The control plane FQDN of the managed cluster')
 output controlPlaneFQDN string = (aksClusterEnablePrivateCluster ? managedCluster.properties.privateFQDN : managedCluster.properties.fqdn)

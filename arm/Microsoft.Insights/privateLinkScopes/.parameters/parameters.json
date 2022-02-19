@@ -3,13 +3,13 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "sxx-az-pls-x-001"
+            "value": "<<namePrefix>>-az-pls-x-001"
         },
         "scopedResources": {
             "value": [
                 {
                     "name": "scoped1",
-                    "linkedResourceId": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-sxx-az-law-x-001"
+                    "linkedResourceId": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001"
                 }
             ]
         },

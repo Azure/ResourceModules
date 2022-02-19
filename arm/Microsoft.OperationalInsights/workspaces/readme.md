@@ -6,8 +6,8 @@ This template deploys a log analytics workspace.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/locks` | 2016-09-01 |
-| `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
+| `Microsoft.Authorization/locks` | 2017-04-01 |
+| `Microsoft.Authorization/roleAssignments` | 2021-04-01-preview |
 | `Microsoft.Insights/diagnosticSettings` | 2021-05-01-preview |
 | `Microsoft.OperationalInsights/workspaces` | 2020-08-01 |
 | `Microsoft.OperationalInsights/workspaces/dataSources` | 2020-08-01 |
@@ -22,12 +22,13 @@ This template deploys a log analytics workspace.
 | :-- | :-- | :-- | :-- | :-- |
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `dailyQuotaGb` | int | `-1` |  | Optional. The workspace daily quota for ingestion. |
-| `dataRetention` | int | `365` |  | Required. Number of days data will be retained for |
+| `dataRetention` | int | `365` |  | Optional. Number of days data will be retained for |
 | `dataSources` | _[dataSources](dataSources/readme.md)_ array | `[]` |  | Optional. LAW data sources to configure. |
+| `diagnosticEventHubAuthorizationRuleId` | string |  |  | Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
+| `diagnosticEventHubName` | string |  |  | Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticStorageAccountId` | string |  |  | Optional. Resource ID of the diagnostic storage account. |
-| `eventHubAuthorizationRuleId` | string |  |  | Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
-| `eventHubName` | string |  |  | Optional. Name of the event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
+| `diagnosticWorkspaceId` | string |  |  | Optional. Resource ID of a log analytics workspace. |
 | `gallerySolutions` | array | `[]` |  | Optional. LAW gallerySolutions from the gallery. |
 | `linkedServices` | _[linkedServices](linkedServices/readme.md)_ array | `[]` |  | Optional. List of services to be linked. |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
@@ -39,11 +40,10 @@ This template deploys a log analytics workspace.
 | `publicNetworkAccessForQuery` | string | `Enabled` | `[Enabled, Disabled]` | Optional. The network access type for accessing Log Analytics query. |
 | `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
 | `savedSearches` | _[savedSearches](savedSearches/readme.md)_ array | `[]` |  | Optional. Kusto Query Language searches to save. |
-| `serviceTier` | string | `PerGB2018` | `[Free, Standalone, PerNode, PerGB2018]` | Required. Service Tier: PerGB2018, Free, Standalone, PerGB or PerNode |
+| `serviceTier` | string | `PerGB2018` | `[Free, Standalone, PerNode, PerGB2018]` | Optional. Service Tier: PerGB2018, Free, Standalone, PerGB or PerNode |
 | `storageInsightsConfigs` | array | `[]` |  | Optional. List of storage accounts to be read by the workspace. |
 | `tags` | object | `{object}` |  | Optional. Tags of the resource. |
 | `useResourcePermissions` | bool |  |  | Optional. Set to 'true' to use resource or workspace permissions and 'false' (or leave empty) to require workspace permissions. |
-| `workspaceId` | string |  |  | Optional. Resource ID of a log analytics workspace. |
 
 ### Parameter Usage: `gallerySolutions`
 
@@ -122,16 +122,16 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `logAnalyticsName` | string | The name of the deployed log analytics workspace |
-| `logAnalyticsResourceGroup` | string | The resource group of the deployed log analytics workspace |
-| `logAnalyticsResourceId` | string | The resource ID of the deployed log analytics workspace |
 | `logAnalyticsWorkspaceId` | string | The ID associated with the workspace |
+| `name` | string | The name of the deployed log analytics workspace |
+| `resourceGroupName` | string | The resource group of the deployed log analytics workspace |
+| `resourceId` | string | The resource ID of the deployed log analytics workspace |
 
 ## Template references
 
 - [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings)
-- [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-04-01-preview/roleAssignments)
+- [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)
 - [Solutions](https://docs.microsoft.com/en-us/azure/templates/Microsoft.OperationsManagement/2015-11-01-preview/solutions)
 - [Workspaces](https://docs.microsoft.com/en-us/azure/templates/Microsoft.OperationalInsights/2020-08-01/workspaces)
 - [Workspaces/Datasources](https://docs.microsoft.com/en-us/azure/templates/Microsoft.OperationalInsights/2020-08-01/workspaces/dataSources)

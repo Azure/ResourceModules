@@ -146,7 +146,7 @@ The locks extension can be added as a `resource` to the resource template direct
 @description('Optional. Specify the type of lock.')
 param lock string = 'NotSpecified'
 
-resource <mainResource>_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
+resource <mainResource>_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
   name: '${<mainResource>.name}-${lock}-lock'
   properties: {
     level: lock
@@ -206,7 +206,7 @@ resource <mainResource> '<mainResourceProviderNamespace>/<resourceType>@<resourc
   // name: '${split(resourceId,'/')[8]}/${split(resourceId,'/')[10]}/${split(resourceId,'/')[12]'
 }
 
-resource roleAssignment 'Microsoft.Authorization/roleAssignments@2020-04-01-preview' = [for principalId in principalIds: {
+resource roleAssignment 'Microsoft.Authorization/roleAssignments@2021-04-01-preview' = [for principalId in principalIds: {
   name: guid(<mainResource>.name, principalId, roleDefinitionIdOrName)
   properties: {
     roleDefinitionId: contains(builtInRoleNames, roleDefinitionIdOrName) ? builtInRoleNames[roleDefinitionIdOrName] : roleDefinitionIdOrName
@@ -229,14 +229,14 @@ param diagnosticLogsRetentionInDays int = 365
 @description('Optional. Resource ID of the diagnostic storage account.')
 param diagnosticStorageAccountId string = ''
 
-@description('Optional. Resource ID of log analytics.')
-param workspaceId string = ''
+@description('Optional. Resource ID of the diagnostic log analytics workspace.')
+param diagnosticWorkspaceId string = ''
 
-@description('Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.')
-param eventHubAuthorizationRuleId string = ''
+@description('Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.')
+param diagnosticEventHubAuthorizationRuleId string = ''
 
-@description('Optional. Name of the event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.')
-param eventHubName string = ''
+@description('Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.')
+param diagnosticEventHubName string = ''
 
 @description('Optional. The name of logs that will be streamed.')
 @allowed([
@@ -273,13 +273,13 @@ var diagnosticsMetrics = [for metric in metricsToEnable: {
   }
 }]
 
-resource <mainResource>_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2021-05-01-preview' = if (!empty(diagnosticStorageAccountId) || !empty(workspaceId) || !empty(eventHubAuthorizationRuleId) || !empty(eventHubName)) {
+resource <mainResource>_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2021-05-01-preview' = if (!empty(diagnosticStorageAccountId) || !empty(diagnosticWorkspaceId) || !empty(diagnosticEventHubAuthorizationRuleId) || !empty(diagnosticEventHubName)) {
   name: '${<mainResource>.name}-diagnosticSettings'
   properties: {
     storageAccountId: !empty(diagnosticStorageAccountId) ? diagnosticStorageAccountId : null
-    workspaceId: !empty(workspaceId) ? workspaceId : null
-    eventHubAuthorizationRuleId: !empty(eventHubAuthorizationRuleId) ? eventHubAuthorizationRuleId : null
-    eventHubName: !empty(eventHubName) ? eventHubName : null
+    workspaceId: !empty(diagnosticWorkspaceId) ? diagnosticWorkspaceId : null
+    eventHubAuthorizationRuleId: !empty(diagnosticEventHubAuthorizationRuleId) ? diagnosticEventHubAuthorizationRuleId : null
+    eventHubName: !empty(diagnosticEventHubName) ? diagnosticEventHubName : null
     metrics: diagnosticsMetrics
     logs: diagnosticsLogs
   }
@@ -500,12 +500,12 @@ While exceptions might be needed, the following guidance should be followed as m
 
 ## Outputs
 
-- Output names are in camelCase, i.e `storageAccountResourceId`
+- Output names are in camelCase, i.e `resourceId`
 - At a minimum, reference the following:
-  - `<resourceReference>Name`, e.g. `storageAccountName`.
-  - `<resourceReference>ResourceId`, e.g. `storageAccountResourceId`.
-  - `<resourceReference>ResourceGroup` for resources deployed at resource group scope, e.g. `storageAccountResourceGroup`.
-  - `systemAssignedPrincipalId` for all resources supporting a managed identity.
+  - `name`
+  - `resourceId`
+  - `resourceGroupName` for resources deployed at resource group scope
+  - `systemAssignedPrincipalId` for all resources supporting a managed identity
 - Add a `@description('...')` annotation with meaningful description to each output.
 
 ---

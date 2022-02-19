@@ -87,13 +87,13 @@ param diagnosticLogsRetentionInDays int = 365
 param diagnosticStorageAccountId string = ''
 
 @description('Optional. Resource ID of log analytics workspace.')
-param workspaceId string = ''
+param diagnosticWorkspaceId string = ''
 
-@description('Optional. Resource ID of the event hub authorization rule for the event hub namespace in which the event hub should be created or streamed to.')
-param eventHubAuthorizationRuleId string = ''
+@description('Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.')
+param diagnosticEventHubAuthorizationRuleId string = ''
 
-@description('Optional. Name of the event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.')
-param eventHubName string = ''
+@description('Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.')
+param diagnosticEventHubName string = ''
 
 @description('Optional. The name of logs that will be streamed.')
 @allowed([
@@ -194,7 +194,7 @@ resource app 'Microsoft.Web/sites@2020-12-01' = {
   tags: tags
   identity: identity
   properties: {
-    serverFarmId: !empty(appServicePlanId) ? appServicePlanExisting.id : appServicePlan.outputs.appServicePlanResourceId
+    serverFarmId: !empty(appServicePlanId) ? appServicePlanExisting.id : appServicePlan.outputs.resourceId
     httpsOnly: httpsOnly
     hostingEnvironmentProfile: !empty(appServiceEnvironmentId) ? {
       id: appServiceEnvironmentId
@@ -210,13 +210,13 @@ module app_appsettings 'config/deploy.bicep' = {
     name: 'appsettings'
     appName: app.name
     storageAccountId: !empty(storageAccountId) ? storageAccountId : ''
-    appInsightId: !empty(appInsightId) ? appInsightId : !empty(appInsightObject) ? appInsight.outputs.appInsightsResourceId : ''
+    appInsightId: !empty(appInsightId) ? appInsightId : !empty(appInsightObject) ? appInsight.outputs.resourceId : ''
     functionsWorkerRuntime: !empty(functionsWorkerRuntime) ? functionsWorkerRuntime : ''
     functionsExtensionVersion: !empty(functionsExtensionVersion) ? functionsExtensionVersion : '~3'
   }
 }
 
-resource app_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
+resource app_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
   name: '${app.name}-${lock}-lock'
   properties: {
     level: lock
@@ -225,13 +225,13 @@ resource app_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotS
   scope: app
 }
 
-resource app_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = if (!empty(diagnosticStorageAccountId) || !empty(workspaceId) || !empty(eventHubAuthorizationRuleId) || !empty(eventHubName)) {
+resource app_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = if (!empty(diagnosticStorageAccountId) || !empty(diagnosticWorkspaceId) || !empty(diagnosticEventHubAuthorizationRuleId) || !empty(diagnosticEventHubName)) {
   name: '${app.name}-diagnosticSettings'
   properties: {
     storageAccountId: !empty(diagnosticStorageAccountId) ? diagnosticStorageAccountId : null
-    workspaceId: !empty(workspaceId) ? workspaceId : null
-    eventHubAuthorizationRuleId: !empty(eventHubAuthorizationRuleId) ? eventHubAuthorizationRuleId : null
-    eventHubName: !empty(eventHubName) ? eventHubName : null
+    workspaceId: !empty(diagnosticWorkspaceId) ? diagnosticWorkspaceId : null
+    eventHubAuthorizationRuleId: !empty(diagnosticEventHubAuthorizationRuleId) ? diagnosticEventHubAuthorizationRuleId : null
+    eventHubName: !empty(diagnosticEventHubName) ? diagnosticEventHubName : null
     metrics: diagnosticsMetrics
     logs: diagnosticsLogs
   }
@@ -258,13 +258,13 @@ module app_privateEndpoint '.bicep/nested_privateEndpoint.bicep' = [for (private
 }]
 
 @description('The name of the site.')
-output siteName string = app.name
+output name string = app.name
 
 @description('The resource ID of the site.')
-output siteResourceId string = app.id
+output resourceId string = app.id
 
 @description('The resource group the site was deployed into.')
-output siteResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name
 
 @description('The principal ID of the system assigned identity.')
 output systemAssignedPrincipalId string = systemAssignedIdentity && contains(app.identity, 'principalId') ? app.identity.principalId : ''

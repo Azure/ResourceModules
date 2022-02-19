@@ -1,6 +1,6 @@
 targetScope = 'managementGroup'
 
-@sys.description('Required. You can provide either the display name of the role definition, or it\'s fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'')
+@sys.description('Required. You can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'')
 param roleDefinitionIdOrName string
 
 @sys.description('Required. The Principal or Object ID of the Security Principal (User, Group, Service Principal, Managed Identity)')
@@ -335,10 +335,10 @@ resource roleAssignment 'Microsoft.Authorization/roleAssignments@2021-04-01-prev
 }
 
 @sys.description('The GUID of the Role Assignment')
-output roleAssignmentName string = roleAssignment.name
+output name string = roleAssignment.name
 
 @sys.description('The resource ID of the Role Assignment')
-output roleAssignmentScope string = tenantResourceId('Microsoft.Management/managementGroups', managementGroupId)
+output scope string = tenantResourceId('Microsoft.Management/managementGroups', managementGroupId)
 
 @sys.description('The scope this Role Assignment applies to')
-output roleAssignmentResourceId string = extensionResourceId(tenantResourceId('Microsoft.Management/managementGroups', managementGroupId), 'Microsoft.Authorization/roleAssignments', roleAssignment.name)
+output resourceId string = extensionResourceId(tenantResourceId('Microsoft.Management/managementGroups', managementGroupId), 'Microsoft.Authorization/roleAssignments', roleAssignment.name)

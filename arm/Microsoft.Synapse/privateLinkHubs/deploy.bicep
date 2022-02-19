@@ -28,7 +28,7 @@ resource privateLinkHub 'Microsoft.Synapse/privateLinkHubs@2021-06-01' = {
 }
 
 // Resource Lock
-resource privateLinkHub_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
+resource privateLinkHub_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
   name: '${privateLinkHub.name}-${lock}-lock'
   properties: {
     level: lock
@@ -59,10 +59,10 @@ module privateLinkHub_privateEndpoints '.bicep/nested_privateEndpoint.bicep' = [
 }]
 
 @description('The resource ID of the deployed Synapse Private Link Hub.')
-output privateLinkHubResourceId string = privateLinkHub.id
+output resourceId string = privateLinkHub.id
 
 @description('The name of the deployed Synapse Private Link Hub.')
-output privateLinkHubName string = privateLinkHub.name
+output name string = privateLinkHub.name
 
 @description('The resource group of the deployed Synapse Private Link Hub.')
-output privateLinkHubResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name

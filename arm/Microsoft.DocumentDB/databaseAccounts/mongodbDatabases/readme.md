@@ -45,9 +45,9 @@ Please reference the documentation for [collections](./collections/readme.md)
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `mongodbDatabaseName` | string | The name of the mongodb database. |
-| `mongodbDatabaseResourceGroup` | string | The name of the resource group the mongodb database was created in. |
-| `mongodbDatabaseResourceId` | string | The resource ID of the mongodb database. |
+| `name` | string | The name of the mongodb database. |
+| `resourceGroupName` | string | The name of the resource group the mongodb database was created in. |
+| `resourceId` | string | The resource ID of the mongodb database. |
 
 ## Template references
 

@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "sxxazasweux001"
+            "value": "<<namePrefix>>azasweux001"
         },
         "skuName": {
             "value": "D1"

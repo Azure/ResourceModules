@@ -4,16 +4,28 @@ param name string
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
 
+@description('Optional. This property can be used by user in the request to enable or disable the Host Encryption for the virtual machine. This will enable the encryption for all the disks including Resource/Temp disk at host itself. For security reasons, it is recommended to set encryptionAtHost to True. Restrictions: Cannot be enabled if Azure Disk Encryption (guest-VM encryption using bitlocker/DM-Crypt) is enabled on your virtual machine scale sets.')
+param encryptionAtHost bool = true
+
+@description('Optional. Specifies the SecurityType of the virtual machine scale set. It is set as TrustedLaunch to enable UefiSettings.')
+param securityType string = ''
+
+@description('Optional. Specifies whether secure boot should be enabled on the virtual machine scale set. This parameter is part of the UefiSettings. SecurityType should be set to TrustedLaunch to enable UefiSettings.')
+param secureBootEnabled bool = false
+
+@description('Optional. Specifies whether vTPM should be enabled on the virtual machine scale set. This parameter is part of the UefiSettings.  SecurityType should be set to TrustedLaunch to enable UefiSettings.')
+param vTpmEnabled bool = false
+
 @description('Required. OS image reference. In case of marketplace images, it\'s the combination of the publisher, offer, sku, version attributes. In case of custom images it\'s the resource ID of the custom image.')
 param imageReference object
 
 @description('Optional. Specifies information about the marketplace image used to create the virtual machine. This element is only used for marketplace images. Before you can use a marketplace image from an API, you must enable the image for programmatic use.')
 param plan object = {}
 
-@description('Required. Specifies the OS disk.')
+@description('Required. Specifies the OS disk. For security reasons, it is recommended to specify DiskEncryptionSet into the osDisk object. Restrictions: DiskEncryptionSet cannot be enabled if Azure Disk Encryption (guest-VM encryption using bitlocker/DM-Crypt) is enabled on your VM Scale sets.')
 param osDisk object
 
-@description('Optional. Specifies the data disks.')
+@description('Optional. Specifies the data disks. For security reasons, it is recommended to specify DiskEncryptionSet into the dataDisk object. Restrictions: DiskEncryptionSet cannot be enabled if Azure Disk Encryption (guest-VM encryption using bitlocker/DM-Crypt) is enabled on your VM Scale sets.')
 param dataDisks array = []
 
 @description('Optional. The flag that enables or disables a capability to have one or more managed data disks with UltraSSD_LRS storage account type on the VM or VMSS. Managed disks with storage account type UltraSSD_LRS can be added to a virtual machine or virtual machine scale set only if this property is enabled.')
@@ -93,6 +105,9 @@ param extensionMonitoringAgentConfig object = {
   enabled: false
 }
 
+@description('Optional. Resource ID of the monitoring log analytics workspace.')
+param monitoringWorkspaceId string = ''
+
 @description('Optional. The configuration for the [Dependency Agent] extension. Must at least contain the ["enabled": true] property to be executed')
 param extensionDependencyAgentConfig object = {
   enabled: false
@@ -133,14 +148,14 @@ param diagnosticLogsRetentionInDays int = 365
 @description('Optional. Resource ID of the diagnostic storage account.')
 param diagnosticStorageAccountId string = ''
 
-@description('Optional. Resource ID of log analytics.')
-param workspaceId string = ''
+@description('Optional. Resource ID of the diagnostic log analytics workspace.')
+param diagnosticWorkspaceId string = ''
 
-@description('Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.')
-param eventHubAuthorizationRuleId string = ''
+@description('Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.')
+param diagnosticEventHubAuthorizationRuleId string = ''
 
-@description('Optional. Name of the event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.')
-param eventHubName string = ''
+@description('Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.')
+param diagnosticEventHubName string = ''
 
 @allowed([
   'CanNotDelete'
@@ -248,7 +263,7 @@ param tags object = {}
 @description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
-@description('Optional. The chosen OS type')
+@description('Required. The chosen OS type')
 @allowed([
   'Windows'
   'Linux'
@@ -344,7 +359,9 @@ resource vmss 'Microsoft.Compute/virtualMachineScaleSets@2021-04-01' = {
   identity: identity
   zones: availabilityZones
   properties: {
-    proximityPlacementGroup: !empty(proximityPlacementGroupName) ? json('{"id":"${resourceId('Microsoft.Compute/proximityPlacementGroups', proximityPlacementGroup.name)}"}') : null
+    proximityPlacementGroup: !empty(proximityPlacementGroupName) ? {
+      id: az.resourceId('Microsoft.Compute/proximityPlacementGroups', proximityPlacementGroup.name)
+    } : null
     upgradePolicy: {
       mode: upgradePolicyMode
       rollingUpgradePolicy: {
@@ -372,6 +389,15 @@ resource vmss 'Microsoft.Compute/virtualMachineScaleSets@2021-04-01' = {
         linuxConfiguration: osType == 'Linux' ? linuxConfiguration : null
         secrets: secrets
       }
+      securityProfile: {
+        encryptionAtHost: encryptionAtHost
+        securityType: securityType
+        uefiSettings: securityType == 'TrustedLaunch' ? {
+          secureBootEnabled: secureBootEnabled
+          vTpmEnabled: vTpmEnabled
+        } : null
+      
+      }
       storageProfile: {
         imageReference: imageReference
         osDisk: {
@@ -385,7 +411,7 @@ resource vmss 'Microsoft.Compute/virtualMachineScaleSets@2021-04-01' = {
           vhdContainers: contains(osDisk, 'vhdContainers') ? osDisk.vhdContainers : null
           managedDisk: {
             storageAccountType: osDisk.managedDisk.storageAccountType
-            diskEncryptionSet: contains(osDisk, 'diskEncryptionSet') ? osDisk.diskEncryptionSet : null
+            diskEncryptionSet: contains(osDisk.managedDisk, 'diskEncryptionSet') ? osDisk.managedDisk.diskEncryptionSet : null
           }
         }
         dataDisks: [for (item, j) in dataDisks: {
@@ -477,9 +503,9 @@ module vmss_microsoftAntiMalwareExtension 'extensions/deploy.bicep' = if (extens
   }
 }
 
-resource vmss_logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2021-06-01' existing = if (!empty(workspaceId)) {
-  name: last(split(workspaceId, '/'))
-  scope: resourceGroup(split(workspaceId, '/')[2], split(workspaceId, '/')[4])
+resource vmss_logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2021-06-01' existing = if (!empty(monitoringWorkspaceId)) {
+  name: last(split(monitoringWorkspaceId, '/'))
+  scope: resourceGroup(split(monitoringWorkspaceId, '/')[2], split(monitoringWorkspaceId, '/')[4])
 }
 
 module vmss_microsoftMonitoringAgentExtension 'extensions/deploy.bicep' = if (extensionMonitoringAgentConfig.enabled) {
@@ -493,10 +519,10 @@ module vmss_microsoftMonitoringAgentExtension 'extensions/deploy.bicep' = if (ex
     autoUpgradeMinorVersion: contains(extensionMonitoringAgentConfig, 'autoUpgradeMinorVersion') ? extensionMonitoringAgentConfig.autoUpgradeMinorVersion : true
     enableAutomaticUpgrade: contains(extensionMonitoringAgentConfig, 'enableAutomaticUpgrade') ? extensionMonitoringAgentConfig.enableAutomaticUpgrade : false
     settings: {
-      workspaceId: !empty(workspaceId) ? reference(vmss_logAnalyticsWorkspace.id, vmss_logAnalyticsWorkspace.apiVersion).customerId : ''
+      workspaceId: !empty(monitoringWorkspaceId) ? reference(vmss_logAnalyticsWorkspace.id, vmss_logAnalyticsWorkspace.apiVersion).customerId : ''
     }
     protectedSettings: {
-      workspaceKey: !empty(workspaceId) ? vmss_logAnalyticsWorkspace.listKeys().primarySharedKey : ''
+      workspaceKey: !empty(monitoringWorkspaceId) ? vmss_logAnalyticsWorkspace.listKeys().primarySharedKey : ''
     }
   }
 }
@@ -581,7 +607,7 @@ module vmss_diskEncryptionExtension 'extensions/deploy.bicep' = if (extensionDis
   ]
 }
 
-resource vmss_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
+resource vmss_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
   name: '${vmss.name}-${lock}-lock'
   properties: {
     level: lock
@@ -590,13 +616,13 @@ resource vmss_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'Not
   scope: vmss
 }
 
-resource vmss_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(workspaceId)) || (!empty(eventHubAuthorizationRuleId)) || (!empty(eventHubName))) {
+resource vmss_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(diagnosticWorkspaceId)) || (!empty(diagnosticEventHubAuthorizationRuleId)) || (!empty(diagnosticEventHubName))) {
   name: '${vmss.name}-diagnosticSettings'
   properties: {
     storageAccountId: !empty(diagnosticStorageAccountId) ? diagnosticStorageAccountId : null
-    workspaceId: !empty(workspaceId) ? workspaceId : null
-    eventHubAuthorizationRuleId: !empty(eventHubAuthorizationRuleId) ? eventHubAuthorizationRuleId : null
-    eventHubName: !empty(eventHubName) ? eventHubName : null
+    workspaceId: !empty(diagnosticWorkspaceId) ? diagnosticWorkspaceId : null
+    eventHubAuthorizationRuleId: !empty(diagnosticEventHubAuthorizationRuleId) ? diagnosticEventHubAuthorizationRuleId : null
+    eventHubName: !empty(diagnosticEventHubName) ? diagnosticEventHubName : null
     metrics: diagnosticsMetrics
   }
   scope: vmss
@@ -612,13 +638,13 @@ module vmss_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in ro
 }]
 
 @description('The resource ID of the virtual machine scale set')
-output vmssResourceIds string = vmss.id
+output resourceId string = vmss.id
 
 @description('The resource group of the virtual machine scale set')
-output vmssResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name
 
 @description('The name of the virtual machine scale set')
-output vmssName string = vmss.name
+output name string = vmss.name
 
 @description('The principal ID of the system assigned identity.')
 output systemAssignedPrincipalId string = systemAssignedIdentity && contains(vmss.identity, 'principalId') ? vmss.identity.principalId : ''

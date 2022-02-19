@@ -47,10 +47,10 @@ resource storageinsightconfig 'Microsoft.OperationalInsights/workspaces/storageI
 }
 
 @description('The resource ID of the deployed storage insights configuration')
-output storageinsightconfigResourceId string = storageinsightconfig.id
+output resourceId string = storageinsightconfig.id
 
 @description('The resource group where the storage insight configuration is deployed')
-output storageinsightconfigResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name
 
 @description('The name of the storage insights configuration')
-output storageinsightconfigName string = storageinsightconfig.name
+output name string = storageinsightconfig.name

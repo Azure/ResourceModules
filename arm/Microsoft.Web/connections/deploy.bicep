@@ -75,7 +75,7 @@ resource connection 'Microsoft.Web/connections@2016-06-01' = {
   }
 }
 
-resource connection_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
+resource connection_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
   name: '${connection.name}-${lock}-lock'
   properties: {
     level: lock
@@ -94,10 +94,10 @@ module connection_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index)
 }]
 
 @description('The resource ID of the connection')
-output connectionResourceId string = connection.id
+output resourceId string = connection.id
 
 @description('The resource group the connection was deployed into')
-output connectionResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name
 
 @description('The name of the connection')
-output connectionName string = connection.name
+output name string = connection.name

@@ -39,7 +39,7 @@ resource azureHealthBot 'Microsoft.HealthBot/healthBots@2020-12-08' = {
   properties: {}
 }
 
-resource azureHealthBot_lock 'Microsoft.Authorization/locks@2016-09-01' = if (lock != 'NotSpecified') {
+resource azureHealthBot_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
   name: '${azureHealthBot.name}-${lock}-lock'
   properties: {
     level: lock
@@ -58,10 +58,10 @@ module healthBot_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) 
 }]
 
 @description('The resource group the health bot was deployed into')
-output azureHealthBotResourceGroup string = resourceGroup().name
+output resourceGroupName string = resourceGroup().name
 
 @description('The name of the health bot')
-output azureHealthBotName string = azureHealthBot.name
+output name string = azureHealthBot.name
 
 @description('The resource ID of the health bot')
-output azureHealthBotResourceId string = azureHealthBot.id
+output resourceId string = azureHealthBot.id

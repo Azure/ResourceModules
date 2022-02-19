@@ -20,6 +20,9 @@ inputs:
   managementGroupId:
     description: 'The managementGroupId to deploy to'
     required: false
+  customParameterFileTokens:
+    description: 'Additional parameter file token pairs in json format. e.g. {"tokenName":"tokenValue"}'
+    required: false
   removeDeployment:
     description: 'Set "true" to set module up for removal'
     default: 'true'
@@ -38,6 +41,9 @@ runs:
     - name: 'Setup agent'
       shell: pwsh
       run: |
+        # Grouping task logs
+        Write-Output "::group::Setup agent"
+
         # Load used functions
         . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
 
@@ -61,6 +67,9 @@ runs:
 
         # Set agent up
         Set-EnvironmentOnAgent -PSModules $Modules
+
+        Write-Output "::endgroup::"
+
     - name: Azure Login
       uses: Azure/login@v1
       with:
@@ -121,38 +130,62 @@ runs:
     - name: 'Replace Parameter File Tokens [${{ inputs.parameterFilePath }}] '
       shell: pwsh
       run: |
+        # Grouping task logs
+        Write-Output "::group::Replace Parameter File Tokens [${{ inputs.parameterFilePath }}]"
+
         # Load used functions
-        . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInParameterFile.ps1')
+        . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInFile.ps1')
 
         # Load Settings File
-        $Settings = Get-Content -Path "settings.json" | ConvertFrom-Json
-        # Initialize Default Parameter File Tokens
-        $DefaultParameterFileTokens = @(
-            @{ Name = 'resourceGroupName'; Value = '${{ inputs.resourceGroupName }}' }
-            @{ Name = 'subscriptionId'; Value = '${{ inputs.subscriptionId }}' }
-            @{ Name = 'managementGroupId'; Value = '${{ inputs.managementGroupId }}' }
-            @{ Name = "tenantId"; Value = '${{ env.ARM_TENANT_ID }}' }
-            @{ Name = "deploymentSpId"; Value = '${{ env.DEPLOYMENT_SP_ID }}' }
-        )
-
-        $DefaultParameterFileTokens = $DefaultParameterFileTokens | ForEach-Object { [PSCustomObject]$PSItem }
+        $Settings = Get-Content -Path "settings.json" | ConvertFrom-Json -AsHashTable
 
         # Construct Token Function Input
         $ConvertTokensInputs = @{
-            ParameterFilePath                 = '${{ inputs.parameterFilePath }}'
-            DefaultParameterFileTokens        = $DefaultParameterFileTokens
-            LocalCustomParameterFileTokens    = $Settings.parameterFileTokens.localTokens.tokens
-            TokenPrefix                       = $Settings.parameterFileTokens.tokenPrefix
-            TokenSuffix                       = $Settings.parameterFileTokens.tokenSuffix
+          Tokens       = @{}
+          FilePath     = '${{ inputs.parameterFilePath }}'
+          TokenPrefix  = $Settings.parameterFileTokens.tokenPrefix
+          TokenSuffix  = $Settings.parameterFileTokens.tokenSuffix
         }
+
+        # Local tokens
+        $ConvertTokensInputs.Tokens += @{
+          resourceGroupName = '${{ inputs.resourceGroupName }}'
+          subscriptionId    = '${{ inputs.subscriptionId }}'
+          managementGroupId = '${{ inputs.managementGroupId }}'
+          tenantId          = '${{ env.ARM_TENANT_ID }}'
+          deploymentSpId    = '${{ env.DEPLOYMENT_SP_ID }}'
+        }
+
+        # Add local tokens
+        if ($Settings.parameterFileTokens.localTokens) {
+          $tokenMap = @{}
+          foreach ($token in $Settings.parameterFileTokens.localTokens) {
+            $tokenMap += @{ $token.name = $token.value }
+          }
+          Write-Verbose ('Using local tokens [{0}]' -f ($tokenMap.Keys -join ', ')) -Verbose
+          $ConvertTokensInputs.Tokens += $tokenMap
+        }
+
+        # Add custom tokens (passed in via the pipeline)
+        if(-not [String]::IsNullOrEmpty('${{  inputs.customParameterFileTokens }}')) {
+          $customTokens = '${{ inputs.customParameterFileTokens }}' | ConvertFrom-Json -AsHashTable
+          Write-Verbose ('Using custom parameter file tokens [{0}]' -f ($customTokens.Keys -join ', ')) -Verbose
+          $ConvertTokensInputs.Tokens += $customTokens
+        }
+
         # Invoke Token Replacement Functionality
-        $null = Convert-TokensInParameterFile @ConvertTokensInputs -Verbose
+        $null = Convert-TokensInFile @ConvertTokensInputs
+
+        Write-Output "::endgroup::"
 
     # [Deployment validation] task(s)
     # -------------------------------
     - name: 'Validate [${{ inputs.templateFilePath }}]'
       shell: pwsh
       run: |
+        # Grouping task logs
+        Write-Output "::group::Validate [${{ inputs.templateFilePath }}]"
+
         # Load used functions
         . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourceValidation' 'Test-TemplateWithParameterFile.ps1')
 
@@ -173,12 +206,17 @@ runs:
 
         Test-TemplateWithParameterFile @functionInput -Verbose
 
+        Write-Output "::endgroup::"
+
     # [Deployment execution] task(s)
     # ------------------------------
     - name: 'Deploy [${{ inputs.templateFilePath }}] with parameters [${{ inputs.parameterFilePath }}]'
       shell: pwsh
       id: deploy_step
       run: |
+        # Grouping task logs
+        Write-Output "::group::Deploy [${{ inputs.templateFilePath }}] with parameters [${{ inputs.parameterFilePath }}]"
+
         # Load used functions
         . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourceDeployment' 'New-ModuleDeployment.ps1')
 
@@ -218,12 +256,17 @@ runs:
           throw $res.exception
         }
 
+        Write-Output "::endgroup::"
+
     # [Deployment removal] task(s)
     # ----------------------------
     - name: 'Remove [${{ inputs.templateFilePath }}] from parameters [${{ inputs.parameterFilePath }}]'
       shell: pwsh
       if: ${{ always() && inputs.removeDeployment == 'true' && ((steps.deploy_step.outputs.deploymentName != '') || (steps.dependencies_step.outputs.deploymentName != '')) }}
       run: |
+        # Grouping task logs
+        Write-Output "::group::Remove [${{ inputs.templateFilePath }}] from parameters [${{ inputs.parameterFilePath }}]"
+
         # Load used function
         . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourceRemoval' 'Initialize-DeploymentRemoval.ps1')
 
@@ -232,6 +275,7 @@ runs:
             DeploymentName    = '${{ steps.deploy_step.outputs.deploymentName }}'
             TemplateFilePath  = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.templateFilePath }}'
             ResourceGroupName = '${{ inputs.resourceGroupName }}'
+            ManagementGroupId = '${{ inputs.managementGroupId }}'
             Verbose           = $true
           }
 
@@ -258,3 +302,4 @@ runs:
 
           Initialize-DeploymentRemoval @functionInput
         }
+        Write-Output "::endgroup::"

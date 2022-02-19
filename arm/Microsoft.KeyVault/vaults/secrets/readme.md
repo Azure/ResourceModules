@@ -6,7 +6,7 @@ This module deploys a key vault secret.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
+| `Microsoft.Authorization/roleAssignments` | 2021-04-01-preview |
 | `Microsoft.KeyVault/vaults/secrets` | 2019-09-01 |
 
 ## Parameters
@@ -14,7 +14,7 @@ This module deploys a key vault secret.
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `attributesEnabled` | bool | `True` |  | Optional. Determines whether the object is enabled. |
-| `attributesExp` | int | `-1` |  | Optional. Expiry date in seconds since 1970-01-01T00:00:00Z. |
+| `attributesExp` | int | `-1` |  | Optional. Expiry date in seconds since 1970-01-01T00:00:00Z. For security reasons, it is recommended to set an expiration date whenever possible. |
 | `attributesNbf` | int | `-1` |  | Optional. Not before date in seconds since 1970-01-01T00:00:00Z. |
 | `contentType` | secureString |  |  | Optional. The content type of the secret. |
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
@@ -67,11 +67,11 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `secretName` | string | The name of the secret. |
-| `secretResourceGroup` | string | The name of the resource group the secret was created in. |
-| `secretResourceId` | string | The resource ID of the secret. |
+| `name` | string | The name of the secret. |
+| `resourceGroupName` | string | The name of the resource group the secret was created in. |
+| `resourceId` | string | The resource ID of the secret. |
 
 ## Template references
 
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-04-01-preview/roleAssignments)
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)
 - [Vaults/Secrets](https://docs.microsoft.com/en-us/azure/templates/Microsoft.KeyVault/2019-09-01/vaults/secrets)

@@ -6,9 +6,9 @@ This module deploys a local network gateway.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/locks` | 2016-09-01 |
-| `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
-| `Microsoft.Network/localNetworkGateways` | 2021-02-01 |
+| `Microsoft.Authorization/locks` | 2017-04-01 |
+| `Microsoft.Authorization/roleAssignments` | 2021-04-01-preview |
+| `Microsoft.Network/localNetworkGateways` | 2021-08-01 |
 
 ## Parameters
 
@@ -70,12 +70,12 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `localNetworkGatewayName` | string | The name of the local network gateway |
-| `localNetworkGatewayResourceGroup` | string | The resource group the local network gateway was deployed into |
-| `localNetworkGatewayResourceId` | string | The resource ID of the local network gateway |
+| `name` | string | The name of the local network gateway |
+| `resourceGroupName` | string | The resource group the local network gateway was deployed into |
+| `resourceId` | string | The resource ID of the local network gateway |
 
 ## Template references
 
-- [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-04-01-preview/roleAssignments)
-- [Localnetworkgateways](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-02-01/localNetworkGateways)
+- [Localnetworkgateways](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/localNetworkGateways)
+- [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)

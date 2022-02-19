@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "sxx-vm-linux-min-01"
+            "value": "<<namePrefix>>-vm-linux-min-01"
         },
         "osType": {
             "value": "Linux"
