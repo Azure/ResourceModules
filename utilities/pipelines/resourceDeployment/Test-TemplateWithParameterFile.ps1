@@ -109,7 +109,7 @@ function Test-TemplateWithParameterFile {
                 if ($subscriptionId) {
                     $Context = Get-AzContext -ListAvailable | Where-Object Subscription -Match $subscriptionId
                     if ($Context) {
-                        $Context | Set-AzContext
+                        $null = $Context | Set-AzContext
                     }
                 }
                 if ($PSCmdlet.ShouldProcess('Subscription level deployment', 'Test')) {
