@@ -1,7 +1,6 @@
-# Authorization RoleAssignments Subscriptions `[Microsoft.Authorization/roleAssignments/subscriptions]`
+# Role Assignment on Subscription Scope `[Microsoft.Authorization/roleAssignments]`
 
-This module deploys Authorization RoleAssignments Subscriptions.
-// TODO: Replace Resource and fill in description
+With this module you can perform role assignments on a Subscription level
 
 ## Resource Types
 
