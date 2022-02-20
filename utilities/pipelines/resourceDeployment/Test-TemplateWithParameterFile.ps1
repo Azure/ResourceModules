@@ -27,6 +27,9 @@ Optional. ID of the subscription to deploy into. Mandatory if deploying into a s
 .PARAMETER managementGroupId
 Optional. Name of the management group to deploy into. Mandatory if deploying into a management group (management group level)
 
+.PARAMETER additionalParameters
+Optional. Additional parameters you can provide with the deployment. E.g. @{ resourceGroupName = 'myResourceGroup' }
+
 .EXAMPLE
 Test-TemplateWithParameterFile templateFilePath 'ARM/KeyVault/deploy.json' -parameterFilePath 'ARM/KeyVault/.parameters/parameters.json' -location 'WestEurope' -resourceGroupName 'aLegendaryRg'
 
@@ -57,7 +60,10 @@ function Test-TemplateWithParameterFile {
         [string] $subscriptionId,
 
         [Parameter(Mandatory = $false)]
-        [string] $managementGroupId
+        [string] $managementGroupId,
+
+        [Parameter(Mandatory = $false)]
+        [Hashtable] $additionalParameters
     )
 
     begin {
@@ -76,6 +82,11 @@ function Test-TemplateWithParameterFile {
             OutVariable           = 'ValidationErrors'
         }
         $ValidationErrors = $null
+
+        # Additional parameter object provided yes/no
+        if ($additionalParameters) {
+            $DeploymentInputs += $additionalParameters
+        }
 
         $deploymentScope = Get-ScopeOfTemplateFile -TemplateFilePath $templateFilePath
 
