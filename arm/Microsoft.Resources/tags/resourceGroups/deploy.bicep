@@ -23,5 +23,11 @@ resource tag 'Microsoft.Resources/tags@2019-10-01' = {
 @description('The name of the tags resource')
 output name string = tag.name
 
+@description('The resourceId of the resource group the tags were applied to')
+output resourceId string = resourceGroup().id
+
+@description('The name of the resource group the tags were applied to')
+output resourceGroupName string = resourceGroup().name
+
 @description('The applied tags')
 output tags object = newTags
