@@ -96,12 +96,8 @@ param proximityPlacementGroupName string = ''
 param availabilitySetName string = ''
 
 @description('Optional. If set to 1, 2 or 3, the availability zone for all VMs is hardcoded to that value. If zero, then availability zones is not used. Cannot be used in combination with availability set nor scale set.')
-@allowed([
-  0
-  1
-  2
-  3
-])
+@minValue(0)
+@maxValue(3)
 param availabilityZone int = 0
 
 // External resources

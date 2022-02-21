@@ -25,7 +25,7 @@ This module deploys one Virtual Machine with one or multiple nics and optionally
 | `adminUsername` | secureString |  |  | Required. Administrator username |
 | `allowExtensionOperations` | bool | `True` |  | Optional. Specifies whether extension operations should be allowed on the virtual machine. This may only be set to False when no extensions are present on the virtual machine. |
 | `availabilitySetName` | string |  |  | Optional. Resource name of an availability set. Cannot be used in combination with availability zone nor scale set. |
-| `availabilityZone` | int |  | `[0, 1, 2, 3]` | Optional. If set to 1, 2 or 3, the availability zone for all VMs is hardcoded to that value. If zero, then availability zones is not used. Cannot be used in combination with availability set nor scale set. |
+| `availabilityZone` | int |  |  | Optional. If set to 1, 2 or 3, the availability zone for all VMs is hardcoded to that value. If zero, then availability zones is not used. Cannot be used in combination with availability set nor scale set. |
 | `backupPolicyName` | string | `DefaultPolicy` |  | Optional. Backup policy the VMs should be using for backup. If not provided, it will use the DefaultPolicy from the backup recovery service vault. |
 | `backupVaultName` | string |  |  | Optional. Recovery service vault name to add VMs to backup. |
 | `backupVaultResourceGroup` | string | `[resourceGroup().name]` |  | Optional. Resource group of the backup recovery service vault. If not provided the current resource group name is considered by default. |
