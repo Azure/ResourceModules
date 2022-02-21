@@ -1,6 +1,6 @@
 # ServiceBus Namespace Topic Authorization Rules `[Microsoft.ServiceBus/namespaces/topics/authorizationRules]`
 
-This module deploys an authorization rule for a service bus namespace queue.
+This module deploys an authorization rule for a service bus namespace topic.
 
 ## Resource Types
 
@@ -13,7 +13,7 @@ This module deploys an authorization rule for a service bus namespace queue.
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
-| `name` | string |  |  | Required. The name of the service bus namepace topic |
+| `name` | string |  |  | Required. The name of the service bus namespace topic |
 | `namespaceName` | string |  |  | Required. The name of the parent service bus namespace |
 | `rights` | array | `[]` | `[Listen, Manage, Send]` | Optional. The rights associated with the rule. |
 | `topicName` | string |  |  | Required. The name of the parent service bus namespace topic |

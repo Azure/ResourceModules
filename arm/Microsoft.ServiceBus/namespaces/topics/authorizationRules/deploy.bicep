@@ -1,4 +1,4 @@
-@description('Required. The name of the service bus namepace topic')
+@description('Required. The name of the service bus namespace topic')
 param name string
 
 @description('Required. The name of the parent service bus namespace')
