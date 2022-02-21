@@ -10,12 +10,6 @@ outputs:
   removeDeployment:
     description: 'Remove deployed module'
     value: ${{ steps.get-input-param-action.outputs.removeDeployment }}
-  versioningOption:
-    description: 'The mode to handle the version increments [major|minor|patch]'
-    value: ${{ steps.get-input-param-action.outputs.versioningOption }}
-  customVersion:
-    description: 'Custom version to apply. Used only if higher than latest'
-    value: ${{ steps.get-input-param-action.outputs.customVersion }}
 
 runs:
   using: 'composite'
@@ -23,14 +17,15 @@ runs:
     - name: Get workflow input parameters
       id: get-input-param-action
       run: |
+        # Grouping task logs
+        Write-Output "::group::Get workflow input parameters"
+
         Write-Verbose "The workflow trigger is: ${{ github.event_name }}" -Verbose
 
         # When running from workflow_dispatch event get input values
         if ('${{ github.event_name }}' -eq 'workflow_dispatch') {
 
           $removeDeployment='${{ github.event.inputs.removeDeployment }}'
-          $versioningOption='${{ github.event.inputs.versioningOption }}'
-          $customVersion='${{ github.event.inputs.customVersion }}'
         }
         # Otherwise retrieve default values
         else {
@@ -46,12 +41,10 @@ runs:
 
           $workflowParameters = Get-WorkflowDefaultInput @functionInput -Verbose
           $removeDeployment = $workflowParameters.removeDeployment
-          $versioningOption = $workflowParameters.versioningOption
-          $customVersion = $workflowParameters.customVersion
         }
 
         # Output values to be accessed by next jobs
         Write-Output "::set-output name=removeDeployment::$removeDeployment"
-        Write-Output "::set-output name=versioningOption::$versioningOption"
-        Write-Output "::set-output name=customVersion::$customVersion"
+
+        Write-Output "::endgroup::"
       shell: pwsh

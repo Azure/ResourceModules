@@ -22,7 +22,7 @@ This template deploys a log analytics workspace.
 | :-- | :-- | :-- | :-- | :-- |
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `dailyQuotaGb` | int | `-1` |  | Optional. The workspace daily quota for ingestion. |
-| `dataRetention` | int | `365` |  | Required. Number of days data will be retained for |
+| `dataRetention` | int | `365` |  | Optional. Number of days data will be retained for |
 | `dataSources` | _[dataSources](dataSources/readme.md)_ array | `[]` |  | Optional. LAW data sources to configure. |
 | `diagnosticEventHubAuthorizationRuleId` | string |  |  | Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string |  |  | Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
@@ -40,7 +40,7 @@ This template deploys a log analytics workspace.
 | `publicNetworkAccessForQuery` | string | `Enabled` | `[Enabled, Disabled]` | Optional. The network access type for accessing Log Analytics query. |
 | `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
 | `savedSearches` | _[savedSearches](savedSearches/readme.md)_ array | `[]` |  | Optional. Kusto Query Language searches to save. |
-| `serviceTier` | string | `PerGB2018` | `[Free, Standalone, PerNode, PerGB2018]` | Required. Service Tier: PerGB2018, Free, Standalone, PerGB or PerNode |
+| `serviceTier` | string | `PerGB2018` | `[Free, Standalone, PerNode, PerGB2018]` | Optional. Service Tier: PerGB2018, Free, Standalone, PerGB or PerNode |
 | `storageInsightsConfigs` | array | `[]` |  | Optional. List of storage accounts to be read by the workspace. |
 | `tags` | object | `{object}` |  | Optional. Tags of the resource. |
 | `useResourcePermissions` | bool |  |  | Optional. Set to 'true' to use resource or workspace permissions and 'false' (or leave empty) to require workspace permissions. |

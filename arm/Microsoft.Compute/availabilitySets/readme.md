@@ -8,7 +8,7 @@ This template deploys an availability set
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2017-04-01 |
 | `Microsoft.Authorization/roleAssignments` | 2021-04-01-preview |
-| `Microsoft.Compute/availabilitySets` | 2021-04-01 |
+| `Microsoft.Compute/availabilitySets` | 2021-07-01 |
 
 ## Parameters
 
@@ -68,12 +68,12 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The resource group the availability set was deployed into |
-| `resourceGroupName` | string | The name of the availability set |
+| `name` | string | The name of the availability set |
+| `resourceGroupName` | string | The resource group the availability set was deployed into |
 | `resourceId` | string | The resource ID of the availability set |
 
 ## Template references
 
-- [Availabilitysets](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Compute/2021-04-01/availabilitySets)
+- [Availabilitysets](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Compute/2021-07-01/availabilitySets)
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
 - [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)

@@ -3,15 +3,15 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "sxxazsigweuimages001"
+            "value": "<<namePrefix>>azsigweuimages001"
         },
         "images": {
             "value": [
                 {
-                    "name": "sxx-az-imgd-x-003"
+                    "name": "<<namePrefix>>-az-imgd-x-003"
                 },
                 {
-                    "name": "sxx-az-imgd-x-001",
+                    "name": "<<namePrefix>>-az-imgd-x-001",
                     "osType": "Windows",
                     "osState": "Generalized",
                     "publisher": "MicrosoftWindowsServer",
@@ -32,7 +32,7 @@
                     ]
                 },
                 {
-                    "name": "sxx-az-imgd-x-002",
+                    "name": "<<namePrefix>>-az-imgd-x-002",
                     "osType": "Linux",
                     "osState": "Generalized",
                     "publisher": "canonical",
