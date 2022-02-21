@@ -21,15 +21,15 @@ var builtInRoleNames = {
   'User Access Administrator': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '18d7d88d-d35e-4fb5-a5c3-7773c20a72d9')
 }
 
-resource queue 'Microsoft.ServiceBus/namespaces/queues@2021-06-01-preview' existing = {
+resource topic 'Microsoft.ServiceBus/namespaces/topics@2021-06-01-preview' existing = {
   name: '${split(resourceId, '/')[8]}/${split(resourceId, '/')[10]}'
 }
 
 resource roleAssigment 'Microsoft.Authorization/roleAssignments@2021-04-01-preview' = [for principalId in principalIds: {
-  name: guid(queue.name, principalId, roleDefinitionIdOrName)
+  name: guid(topic.name, principalId, roleDefinitionIdOrName)
   properties: {
     roleDefinitionId: contains(builtInRoleNames, roleDefinitionIdOrName) ? builtInRoleNames[roleDefinitionIdOrName] : roleDefinitionIdOrName
     principalId: principalId
   }
-  scope: queue
+  scope: topic
 }]
