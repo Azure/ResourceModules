@@ -27,7 +27,7 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
-resource namespace 'Microsoft.ServiceBus/namespaces@2021-06-01-preview' existing = {
+resource namespace 'Microsoft.ServiceBus/namespaces@2021-11-01' existing = {
   name: namespaceName
 }
 

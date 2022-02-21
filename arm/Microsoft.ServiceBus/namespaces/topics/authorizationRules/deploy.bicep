@@ -1,11 +1,11 @@
-@description('Required. The name of the service bus namepace queue')
+@description('Required. The name of the service bus namepace topic')
 param name string
 
 @description('Required. The name of the parent service bus namespace')
 param namespaceName string
 
-@description('Required. The name of the parent service bus namespace queue')
-param queueName string
+@description('Required. The name of the parent service bus namespace topic')
+param topicName string
 
 @description('Optional. The rights associated with the rule.')
 @allowed([
@@ -26,14 +26,14 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 resource namespace 'Microsoft.ServiceBus/namespaces@2021-11-01' existing = {
   name: namespaceName
 
-  resource queue 'queues@2021-11-01' existing = {
-    name: queueName
+  resource topic 'topics@2021-11-01' existing = {
+    name: topicName
   }
 }
 
-resource authorizationRule 'Microsoft.ServiceBus/namespaces/queues/authorizationRules@2017-04-01' = {
+resource authorizationRule 'Microsoft.ServiceBus/namespaces/topics/authorizationRules@2021-11-01' = {
   name: name
-  parent: namespace::queue
+  parent: namespace::topic
   properties: {
     rights: rights
   }
