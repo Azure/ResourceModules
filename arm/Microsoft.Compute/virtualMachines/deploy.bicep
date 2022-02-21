@@ -348,7 +348,7 @@ resource virtualMachine 'Microsoft.Compute/virtualMachines@2021-07-01' = {
   location: location
   identity: identity
   tags: tags
-  zones: 0
+  zones: array(0)
   plan: !empty(plan) ? plan : null
   properties: {
     hardwareProfile: {
