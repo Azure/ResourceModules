@@ -38,8 +38,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The name of the tags resource |
-| `resourceGroupName` | string | The name of the resource group the tag was deployed to |
-| `resourceId` | string | The resource ID of the tags resource |
+| `tags` | object | The applied tags |
 
 ## Template references
 

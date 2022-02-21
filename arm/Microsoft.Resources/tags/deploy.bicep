@@ -29,5 +29,8 @@ module tags_rg 'resourceGroups/deploy.bicep' = if (!empty(resourceGroupName) && 
   }
 }
 
+@description('The name of the tags resource')
+output name string = (!empty(resourceGroupName) && !empty(subscriptionId)) ? tags_rg.outputs.name : tags_sub.outputs.name
+
 @description('The applied tags')
-output appliedTags object = (!empty(resourceGroupName) && !empty(subscriptionId)) ? tags_rg.outputs.appliedTags : tags_sub.outputs.appliedTags
+output tags object = (!empty(resourceGroupName) && !empty(subscriptionId)) ? tags_rg.outputs.tags : tags_sub.outputs.tags
