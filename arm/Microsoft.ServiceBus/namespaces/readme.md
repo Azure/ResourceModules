@@ -11,15 +11,15 @@ This module deploys a service bus namespace resource.
 | `Microsoft.Insights/diagnosticSettings` | 2021-05-01-preview |
 | `Microsoft.Network/privateEndpoints` | 2021-05-01 |
 | `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | 2021-05-01 |
-| `Microsoft.ServiceBus/namespaces` | 2021-11-01 |
+| `Microsoft.ServiceBus/namespaces` | 2021-06-01-preview |
 | `Microsoft.ServiceBus/namespaces/AuthorizationRules` | 2017-04-01 |
 | `Microsoft.ServiceBus/namespaces/disasterRecoveryConfigs` | 2017-04-01 |
 | `Microsoft.ServiceBus/namespaces/ipfilterrules` | 2018-01-01-preview |
 | `Microsoft.ServiceBus/namespaces/migrationConfigurations` | 2017-04-01 |
-| `Microsoft.ServiceBus/namespaces/queues` | 2021-11-01 |
+| `Microsoft.ServiceBus/namespaces/queues` | 2021-06-01-preview |
 | `Microsoft.ServiceBus/namespaces/queues/authorizationRules` | 2017-04-01 |
-| `Microsoft.ServiceBus/namespaces/topics` | 2021-11-01 |
-| `Microsoft.ServiceBus/namespaces/topics/authorizationRules` | 2021-11-01 |
+| `Microsoft.ServiceBus/namespaces/topics` | 2021-06-01-preview |
+| `Microsoft.ServiceBus/namespaces/topics/authorizationRules` | 2021-06-01-preview |
 | `Microsoft.ServiceBus/namespaces/virtualnetworkrules` | 2018-01-01-preview |
 
 ## Parameters
@@ -154,15 +154,15 @@ You can specify multiple user assigned identities to a resource by providing add
 
 - [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings)
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
-- [Namespaces](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ServiceBus/2021-11-01/namespaces)
+- [Namespaces](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ServiceBus/2021-06-01-preview/namespaces)
 - [Namespaces/Authorizationrules](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ServiceBus/2017-04-01/namespaces/AuthorizationRules)
 - [Namespaces/Disasterrecoveryconfigs](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ServiceBus/2017-04-01/namespaces/disasterRecoveryConfigs)
 - [Namespaces/Ipfilterrules](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ServiceBus/2018-01-01-preview/namespaces/ipfilterrules)
 - [Namespaces/Migrationconfigurations](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ServiceBus/2017-04-01/namespaces/migrationConfigurations)
-- [Namespaces/Queues](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ServiceBus/2021-11-01/namespaces/queues)
+- [Namespaces/Queues](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ServiceBus/2021-06-01-preview/namespaces/queues)
 - [Namespaces/Queues/Authorizationrules](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ServiceBus/2017-04-01/namespaces/queues/authorizationRules)
-- [Namespaces/Topics](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ServiceBus/2021-11-01/namespaces/topics)
-- [Namespaces/Topics/Authorizationrules](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ServiceBus/2021-11-01/namespaces/topics/authorizationRules)
+- [Namespaces/Topics](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ServiceBus/2021-06-01-preview/namespaces/topics)
+- [Namespaces/Topics/Authorizationrules](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ServiceBus/2021-06-01-preview/namespaces/topics/authorizationRules)
 - [Namespaces/Virtualnetworkrules](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ServiceBus/2018-01-01-preview/namespaces/virtualnetworkrules)
 - [Privateendpoints](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/privateEndpoints)
 - [Privateendpoints/Privatednszonegroups](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/privateEndpoints/privateDnsZoneGroups)

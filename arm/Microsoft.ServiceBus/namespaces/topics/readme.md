@@ -9,8 +9,8 @@ This module deploys .
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2017-04-01 |
 | `Microsoft.Authorization/roleAssignments` | 2021-04-01-preview |
-| `Microsoft.ServiceBus/namespaces/topics` | 2021-11-01 |
-| `Microsoft.ServiceBus/namespaces/topics/authorizationRules` | 2021-11-01 |
+| `Microsoft.ServiceBus/namespaces/topics` | 2021-06-01-preview |
+| `Microsoft.ServiceBus/namespaces/topics/authorizationRules` | 2021-06-01-preview |
 
 ## Parameters
 
@@ -71,6 +71,6 @@ This module deploys .
 ## Template references
 
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
-- [Namespaces/Topics](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ServiceBus/2021-11-01/namespaces/topics)
-- [Namespaces/Topics/Authorizationrules](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ServiceBus/2021-11-01/namespaces/topics/authorizationRules)
+- [Namespaces/Topics](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ServiceBus/2021-06-01-preview/namespaces/topics)
+- [Namespaces/Topics/Authorizationrules](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ServiceBus/2021-06-01-preview/namespaces/topics/authorizationRules)
 - [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)

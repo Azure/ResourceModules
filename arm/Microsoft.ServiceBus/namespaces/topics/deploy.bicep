@@ -87,11 +87,11 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
-resource namespace 'Microsoft.ServiceBus/namespaces@2021-11-01' existing = {
+resource namespace 'Microsoft.ServiceBus/namespaces@2021-06-01-preview' existing = {
   name: namespaceName
 }
 
-resource topic 'Microsoft.ServiceBus/namespaces/topics@2021-11-01' = {
+resource topic 'Microsoft.ServiceBus/namespaces/topics@2021-06-01-preview' = {
   name: name
   parent: namespace
   properties: {
