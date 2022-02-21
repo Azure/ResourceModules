@@ -22,11 +22,5 @@ resource tag 'Microsoft.Resources/tags@2019-10-01' = {
   }
 }
 
-@description('The name of the subscription the tag was deployed to')
-output resourceGroupName string = subscription().displayName
-
-@description('The name of the tags resource')
-output name string = tag.name
-
-@description('The resource ID of the tags resource')
-output resourceId string = tag.id
+@description('The applied tags')
+output appliedTags object = newTags

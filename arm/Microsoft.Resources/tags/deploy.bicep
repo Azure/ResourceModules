@@ -10,11 +10,10 @@ param onlyUpdate bool = false
 param resourceGroupName string = ''
 
 @description('Optional. Subscription ID of the subscription to assign the tags to. If no Resource Group name is provided, the module deploys at subscription level, therefore assigns the provided tags to the subscription.')
-param subscriptionId string = ''
+param subscriptionId string = subscription().id
 
 module tags_sub 'subscriptions/deploy.bicep' = if (!empty(subscriptionId) && empty(resourceGroupName)) {
   name: '${deployment().name}-Tags-Sub'
-  scope: subscription(subscriptionId)
   params: {
     onlyUpdate: onlyUpdate
     tags: tags
@@ -23,15 +22,12 @@ module tags_sub 'subscriptions/deploy.bicep' = if (!empty(subscriptionId) && emp
 
 module tags_rg 'resourceGroups/deploy.bicep' = if (!empty(resourceGroupName) && !empty(subscriptionId)) {
   name: '${deployment().name}-Tags-RG'
-  scope: resourceGroup(subscriptionId, resourceGroupName)
+  scope: resourceGroup(resourceGroupName)
   params: {
     onlyUpdate: onlyUpdate
     tags: tags
   }
 }
 
-@description('The name of the tags resource')
-output name string = (!empty(resourceGroupName) && !empty(subscriptionId)) ? tags_rg.outputs.name : tags_sub.outputs.name
-
-@description('The resource ID of the tags resource')
-output resourceId string = (!empty(resourceGroupName) && !empty(subscriptionId)) ? tags_rg.outputs.resourceId : tags_sub.outputs.resourceId
+@description('The applied tags')
+output appliedTags object = (!empty(resourceGroupName) && !empty(subscriptionId)) ? tags_rg.outputs.appliedTags : tags_sub.outputs.appliedTags
