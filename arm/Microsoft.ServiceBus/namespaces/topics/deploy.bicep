@@ -1,5 +1,3 @@
-
-
 @description('Required. Name of the parent Service Bus Namespace for the Service Bus Topic.')
 @minLength(6)
 @maxLength(50)
