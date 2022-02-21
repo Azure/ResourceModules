@@ -15,7 +15,7 @@ module readTags '.bicep/readTags.bicep' = if (onlyUpdate) {
 
 var newTags = (onlyUpdate) ? union(readTags.outputs.existingTags, tags) : tags
 
-resource tag 'Microsoft.Resources/tags@2021-04-01' = {
+resource tag 'Microsoft.Resources/tags@2019-10-01' = {
   name: name
   properties: {
     tags: newTags

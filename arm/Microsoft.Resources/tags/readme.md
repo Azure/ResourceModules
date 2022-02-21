@@ -6,7 +6,7 @@ This module deploys Resources Tags on a subscription or resource group scope.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Resources/tags` | 2021-04-01 |
+| `Microsoft.Resources/tags` | 2019-10-01 |
 
 ## Parameters
 
@@ -43,4 +43,4 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 ## Template references
 
-- [Tags](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Resources/2021-04-01/tags)
+- [Tags](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Resources/2019-10-01/tags)
