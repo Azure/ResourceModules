@@ -160,7 +160,7 @@ var formattedAccessPolicies = [for accessPolicy in accessPolicies: {
   tenantId: contains(accessPolicy, 'tenantId') ? accessPolicy.tenantId : tenant().tenantId
 }]
 
-var secretList = !empty(secrets) ? secrets.secrets : []
+var secretList = !empty(secrets) ? secrets.secureList : []
 
 module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   name: 'pid-${cuaId}'
