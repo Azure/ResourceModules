@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "sxx-az-apgw-x-001"
+            "value": "<<namePrefix>>-az-apgw-x-001"
         },
         "userAssignedIdentities": {
             "value": {
