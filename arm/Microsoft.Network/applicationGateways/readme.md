@@ -16,8 +16,8 @@ This module deploys Network ApplicationGateways.
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `authenticationCertificates` | array | `[]` |  | Optional. Authentication certificates of the application gateway resource. |
-| `autoscaleMaxCapacity` | int | `10` |  | Optional. Upper bound on number of Application Gateway capacity. |
-| `autoscaleMinCapacity` | int |  |  | Optional. Lower bound on number of Application Gateway capacity. |
+| `autoscaleMaxCapacity` | int | `-1` |  | Optional. Upper bound on number of Application Gateway capacity. |
+| `autoscaleMinCapacity` | int | `-1` |  | Optional. Lower bound on number of Application Gateway capacity. |
 | `backendAddressPools` | array | `[]` |  | Optional. Backend address pool of the application gateway resource. |
 | `backendHttpSettingsCollection` | array | `[]` |  | Optional. Backend http settings of the application gateway resource. |
 | `capacity` | int | `2` |  | Optional. The number of Application instances to be configured. |
@@ -52,7 +52,6 @@ This module deploys Network ApplicationGateways.
 | `sku` | string | `WAF_Medium` | `[Standard_Small, Standard_Medium, Standard_Large, WAF_Medium, WAF_Large, Standard_v2, WAF_v2]` | Optional. The name of the SKU for the Application Gateway. |
 | `sslCertificates` | array | `[]` |  | Optional. SSL certificates of the application gateway resource. |
 | `sslPolicyCipherSuites` | array | `[TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384, TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256]` | `[TLS_DHE_DSS_WITH_3DES_EDE_CBC_SHA, TLS_DHE_DSS_WITH_AES_128_CBC_SHA, TLS_DHE_DSS_WITH_AES_128_CBC_SHA256, TLS_DHE_DSS_WITH_AES_256_CBC_SHA, TLS_DHE_DSS_WITH_AES_256_CBC_SHA256, TLS_DHE_RSA_WITH_AES_128_CBC_SHA, TLS_DHE_RSA_WITH_AES_128_GCM_SHA256, TLS_DHE_RSA_WITH_AES_256_CBC_SHA, TLS_DHE_RSA_WITH_AES_256_GCM_SHA384, TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA, TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256, TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256, TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA, TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA384, TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384, TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA, TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256, TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256, TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA, TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384, TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384, TLS_RSA_WITH_3DES_EDE_CBC_SHA, TLS_RSA_WITH_AES_128_CBC_SHA, TLS_RSA_WITH_AES_128_CBC_SHA256, TLS_RSA_WITH_AES_128_GCM_SHA256, TLS_RSA_WITH_AES_256_CBC_SHA, TLS_RSA_WITH_AES_256_CBC_SHA256, TLS_RSA_WITH_AES_256_GCM_SHA384]` | Optional. Ssl cipher suites to be enabled in the specified order to application gateway. |
-<!-- | `sslPolicyDisabledSslProtocols` | array | `[]` | `[TLSv1_0, TLSv1_1, TLSv1_2]` | Optional. Ssl protocols to be disabled on application gateway. | -->
 | `sslPolicyMinProtocolVersion` | string | `TLSv1_2` | `[TLSv1_0, TLSv1_1, TLSv1_2]` | Optional. Ssl protocol enums. |
 | `sslPolicyName` | string |  | `[AppGwSslPolicy20150501, AppGwSslPolicy20170401, AppGwSslPolicy20170401S, ]` | Optional. Ssl predefined policy name enums. |
 | `sslPolicyType` | string | `Custom` | `[Custom, Predefined]` | Optional. Type of Ssl Policy. |
