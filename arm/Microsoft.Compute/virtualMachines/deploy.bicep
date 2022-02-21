@@ -95,17 +95,15 @@ param proximityPlacementGroupName string = ''
 @description('Optional. Resource name of an availability set. Cannot be used in combination with availability zone nor scale set.')
 param availabilitySetName string = ''
 
-@description('Optional. Creates an availability zone and adds the VMs to it. Cannot be used in combination with availability set nor scale set.')
-param useAvailabilityZone bool = false
-
 @description('Optional. If set to 1, 2 or 3, the availability zone for all VMs is hardcoded to that value. If zero, then the automatic algorithm will be used to give every VM in a different zone (up to three zones). Cannot be used in combination with availability set nor scale set.')
 @allowed([
+  -1
   0
   1
   2
   3
 ])
-param availabilityZone int = 0
+param availabilityZone int = -1
 
 // External resources
 @description('Required. Configures NICs and PIPs.')
@@ -350,7 +348,7 @@ resource virtualMachine 'Microsoft.Compute/virtualMachines@2021-07-01' = {
   location: location
   identity: identity
   tags: tags
-  zones: useAvailabilityZone ? array(availabilityZone) : null
+  zones: 0
   plan: !empty(plan) ? plan : null
   properties: {
     hardwareProfile: {
@@ -363,7 +361,6 @@ resource virtualMachine 'Microsoft.Compute/virtualMachines@2021-07-01' = {
         secureBootEnabled: secureBootEnabled
         vTpmEnabled: vTpmEnabled
       } : null
-    
     }
     storageProfile: {
       imageReference: imageReference
