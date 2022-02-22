@@ -5,6 +5,7 @@ targetScope = 'managementGroup'
 param name string
 
 @sys.description('Optional. The display name of the policy definition.')
+@maxLength(128)
 param displayName string = ''
 
 @sys.description('Optional. The policy definition description.')

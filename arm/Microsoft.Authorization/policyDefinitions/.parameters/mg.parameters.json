@@ -3,13 +3,13 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "<<namePrefix>>-add-tag-to-sub-policy"
+            "value": "<<namePrefix>>-mg-policyDef"
         },
         "displayName": {
-            "value": "[Test] This policy adds tags to a subscription"
+            "value": "[DisplayName] This policy definition is deployed at subscription scope"
         },
         "description": {
-            "value": "This is the description of a policy that adds tags to a subscription"
+            "value": "[Description] This policy definition is deployed at subscription scope"
         },
         "policyRule": {
             "value": {
@@ -65,8 +65,8 @@
                 "category": "Security"
             }
         },
-        "subscriptionId": {
-            "value": "<<subscriptionId>>"
+        "managementGroupId": {
+            "value": "<<managementGroupId>>"
         }
     }
 }
