@@ -31,7 +31,7 @@ param parameters object = {}
 @sys.description('Optional. Location for all resources.')
 param location string = deployment().location
 
-module policySetDefinition_mg '.bicep/nested_policySetDefinition_mg.bicep' = if (empty(subscriptionId) && !empty(managementGroupId)) {
+module policySetDefinition_mg 'managementGroups/deploy.bicep' = if (empty(subscriptionId) && !empty(managementGroupId)) {
   name: '${uniqueString(deployment().name, location)}-PolicySetDefinition-MG-Module'
   scope: managementGroup(managementGroupId)
   params: {
@@ -46,7 +46,7 @@ module policySetDefinition_mg '.bicep/nested_policySetDefinition_mg.bicep' = if 
   }
 }
 
-module policySetDefinition_sub '.bicep/nested_policySetDefinition_sub.bicep' = if (empty(managementGroupId) && !empty(subscriptionId)) {
+module policySetDefinition_sub 'subscriptions/deploy.bicep' = if (empty(managementGroupId) && !empty(subscriptionId)) {
   name: '${uniqueString(deployment().name, location)}-PolicySetDefinition-Sub-Module'
   scope: subscription(subscriptionId)
   params: {

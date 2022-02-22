@@ -1,6 +1,6 @@
-# Role Assignment on Management Group Scope `[Microsoft.Authorization/roleAssignments]`
+# Role Assignment on Management Group level `[Microsoft.Authorization/roleAssignments/managementGroups]`
 
-With this module you can perform role assignments on a Management Group level
+With this module you can perform role assignments on a management group level
 
 ## Resource Types
 

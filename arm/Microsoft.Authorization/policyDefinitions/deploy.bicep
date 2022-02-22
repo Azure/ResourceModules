@@ -38,7 +38,7 @@ param subscriptionId string = ''
 @sys.description('Optional. Location for all resources.')
 param location string = deployment().location
 
-module policyDefinition_mg '.bicep/nested_policyDefinitions_mg.bicep' = if (empty(subscriptionId) && !empty(managementGroupId)) {
+module policyDefinition_mg 'managementGroups/deploy.bicep' = if (empty(subscriptionId) && !empty(managementGroupId)) {
   name: '${uniqueString(deployment().name, location)}-PolicyDefinition-MG-Module'
   scope: managementGroup(managementGroupId)
   params: {
@@ -53,7 +53,7 @@ module policyDefinition_mg '.bicep/nested_policyDefinitions_mg.bicep' = if (empt
   }
 }
 
-module policyDefinition_sub '.bicep/nested_policyDefinitions_sub.bicep' = if (empty(managementGroupId) && !empty(subscriptionId)) {
+module policyDefinition_sub 'subscriptions/deploy.bicep' = if (empty(managementGroupId) && !empty(subscriptionId)) {
   name: '${uniqueString(deployment().name, location)}-PolicyDefinition-Sub-Module'
   scope: subscription(subscriptionId)
   params: {

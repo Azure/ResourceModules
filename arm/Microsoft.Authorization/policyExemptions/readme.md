@@ -1,5 +1,7 @@
 # Policy Exemptions `[Microsoft.Authorization/policyExemptions]`
 
+With this module you can create policy exemptions.
+
 ## Resource types
 
 | Resource Type | API Version |

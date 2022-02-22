@@ -31,7 +31,6 @@ This module can be used to deploy a blob service into a storage account.
 | `name` | string | `default` |  | Optional. The name of the blob service |
 | `storageAccountName` | string |  |  | Required. Name of the Storage Account. |
 
-
 ## Outputs
 
 | Output Name | Type | Description |
