@@ -91,7 +91,7 @@ stages:
       - deploy_rg
     variables:
       resourceType: 'Microsoft.Authorization/policyAssignments'
-      templateFilePath: $(modulesPath)/$(resourceType)/.bicep/nested_policyAssignments_sub.bicep
+      templateFilePath: $(modulesPath)/$(resourceType)/subscriptions/deploy.bicep
     jobs:
       - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
         parameters:
