@@ -4,6 +4,9 @@
     "parameters": {
         "name": {
             "value": "<<namePrefix>>-az-vpngw-x-001"
+        },
+        "virtualHubResourceId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualHubs/alsehrHub"
         }
     }
 }
