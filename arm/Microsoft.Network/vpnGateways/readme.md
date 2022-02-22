@@ -6,7 +6,7 @@ This module deploys VPN Gateways.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Network/vpnGateways` | 2021-03-01 |
+| `Microsoft.Network/vpnGateways` | 2021-05-01 |
 | `Microsoft.Network/vpnGateways/natRules` | 2021-05-01 |
 | `Microsoft.Network/vpnGateways/vpnConnections` | 2021-05-01 |
 
@@ -54,6 +54,6 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 ## Template references
 
-- [Vpngateways](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-03-01/vpnGateways)
+- [Vpngateways](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/vpnGateways)
 - [Vpngateways/Natrules](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/vpnGateways/natRules)
 - [Vpngateways/Vpnconnections](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/vpnGateways/vpnConnections)

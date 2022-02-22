@@ -36,7 +36,7 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
-resource vpnGateway 'Microsoft.Network/vpnGateways@2021-03-01' = {
+resource vpnGateway 'Microsoft.Network/vpnGateways@2021-05-01' = {
   name: name
   location: location
   tags: tags
