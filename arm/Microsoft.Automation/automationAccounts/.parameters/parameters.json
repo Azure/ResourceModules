@@ -164,17 +164,17 @@
             }
         },
         "encryptionKeySource" : {
-            "value" : "Microsoft.Keyvault"
+            "value" : "Microsoft.Automation"
         },
-        "keyName" : {
-            "value" : "keyEncryptionKey"
-        },
-        "keyvaultUri" : {
-            "value" : "https://adp-carml-az-kv-x-001.vault.azure.net/"
-        },
-        "keyVersion" : {
-            "value" : "ff30d33d9866460085c3608c657cd5a2"
-        },
+        // "keyName" : {
+        //     "value" : "keyEncryptionKey"
+        // },
+        // "keyvaultUri" : {
+        //     "value" : "https://adp-carml-az-kv-x-001.vault.azure.net/"
+        // },
+        // "keyVersion" : {
+        //     "value" : "ff30d33d9866460085c3608c657cd5a2"
+        // },
         "roleAssignments": {
             "value": [
                 {
