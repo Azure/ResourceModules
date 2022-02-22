@@ -48,8 +48,6 @@ resource vpnGateway 'Microsoft.Network/vpnGateways@2021-05-01' = {
     virtualHub: !empty(virtualHubResourceId) ? {
       id: virtualHubResourceId
     } : null
-    // connections: connections
-    // natRules: natRules
   }
 }
 

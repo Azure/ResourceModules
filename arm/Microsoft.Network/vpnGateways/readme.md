@@ -27,6 +27,39 @@ This module deploys VPN Gateways.
 | `vpnGatewayScaleUnit` | int | `2` |  | Optional. The scale unit for this VPN gateway. |
 
 
+### Parameter Usage: `bgpSettings`
+
+```json
+"bgpSettings": {
+    "asn": 65515,
+    "peerWeight": 0,
+    "bgpPeeringAddresses": [
+        {
+            "ipconfigurationId": "Instance0",
+            "defaultBgpIpAddresses": [
+                "10.0.0.12"
+            ],
+            "customBgpIpAddresses": [],
+            "tunnelIpAddresses": [
+                "20.84.35.53",
+                "10.0.0.4"
+            ]
+        },
+        {
+            "ipconfigurationId": "Instance1",
+            "defaultBgpIpAddresses": [
+                "10.0.0.13"
+            ],
+            "customBgpIpAddresses": [],
+            "tunnelIpAddresses": [
+                "20.84.34.225",
+                "10.0.0.5"
+            ]
+        }
+    ]
+}
+```
+
 ### Parameter Usage: `tags`
 
 Tag names and tag values can be provided as needed. A tag can be left without a value.
