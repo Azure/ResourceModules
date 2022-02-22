@@ -164,7 +164,7 @@ jobs:
                 Verbosity = 'Detailed'
               }
             } -ErrorAction 'Stop'
-          errorActionPreference: continue
+          errorActionPreference: stop
 
       - task: PublishTestResults@2
         displayName: Publish Test Results
@@ -269,7 +269,7 @@ jobs:
                 Verbosity = 'Detailed'
               }
             } -ErrorAction 'Stop'
-          errorActionPreference: continue
+          errorActionPreference: stop
 
       - task: PublishTestResults@2
         displayName: Publish Test Results
