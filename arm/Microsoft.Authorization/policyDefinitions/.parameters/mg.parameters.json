@@ -6,10 +6,10 @@
             "value": "<<namePrefix>>-mg-policyDef"
         },
         "displayName": {
-            "value": "[DisplayName] This policy definition is deployed at subscription scope"
+            "value": "[DisplayName] This policy definition is deployed at the management group scope"
         },
         "description": {
-            "value": "[Description] This policy definition is deployed at subscription scope"
+            "value": "[Description] This policy definition is deployed at the management group scope"
         },
         "policyRule": {
             "value": {
