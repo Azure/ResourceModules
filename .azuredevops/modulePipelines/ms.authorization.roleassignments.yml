@@ -43,9 +43,9 @@ stages:
           removeDeployment: '${{ parameters.removeDeployment }}'
           deploymentBlocks:
             - path: $(modulePath)/.parameters/min.parameters.json
-              templateFilePath: $(modulePath)/.bicep/nested_rbac_sub.bicep
+              templateFilePath: $(modulePath)/subscriptions/deploy.bicep
             - path: $(modulePath)/.parameters/parameters.json
-              templateFilePath: $(modulePath)/.bicep/nested_rbac_sub.bicep
+              templateFilePath: $(modulePath)/subscriptions/deploy.bicep
 
   - stage: Publishing
     displayName: Publish module
