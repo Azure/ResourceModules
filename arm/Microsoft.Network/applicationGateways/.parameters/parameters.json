@@ -22,7 +22,9 @@
                 "fileUploadLimitInMb": 100
             }
         },
-        "enableHttp2": true,
+        "enableHttp2": {
+            "value": true
+        },
         "backendAddressPools": {
             "value": [
                 {
