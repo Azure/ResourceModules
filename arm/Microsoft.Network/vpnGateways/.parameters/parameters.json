@@ -17,6 +17,9 @@
                 }
             ]
         },
+        "virtualHubResourceId": {
+            "value": "/subscriptions/a7439831-1cd9-435d-a091-4aa863c96556/resourceGroups/validation-rg/providers/Microsoft.Network/virtualHubs/alsehrHub"
+        },
         "natRules": {
             "value": []
         },
