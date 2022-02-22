@@ -42,13 +42,56 @@ resource vpnGateway 'Microsoft.Network/vpnGateways@2021-03-01' = {
   tags: tags
   properties: {
     bgpSettings: bgpSettings
-    connections: connections
     enableBgpRouteTranslationForNat: enableBgpRouteTranslationForNat
     isRoutingPreferenceInternet: isRoutingPreferenceInternet
     vpnGatewayScaleUnit: vpnGatewayScaleUnit
-    natRules: natRules
     virtualHub: !empty(virtualHubResourceId) ? {
       id: virtualHubResourceId
     } : null
+    // connections: connections
+    // natRules: natRules
   }
 }
+
+module vpnGateway_natRules 'natRules/deploy.bicep' = [for (natRule, index) in natRules: {
+  name: '${deployment().name}-NATRule-${index}'
+  params: {
+    name: natRule.name
+    vpnGatewayName: vpnGateway.name
+    externalMappings: contains(natRule, 'externalMappings') ? natRule.externalMappings : []
+    internalMappings: contains(natRule, 'internalMappings') ? natRule.internalMappings : []
+    ipConfigurationId: contains(natRule, 'ipConfigurationId') ? natRule.ipConfigurationId : ''
+    mode: contains(natRule, 'mode') ? natRule.mode : ''
+    type: contains(natRule, 'type') ? natRule.type : ''
+  }
+}]
+
+module vpnGateway_connections 'connections/deploy.bicep' = [for (connection, index) in connections: {
+  name: '${deployment().name}-Connection-${index}'
+  params: {
+    name: connection.name
+    vpnGatewayName: vpnGateway.name
+    connectionBandwidth:
+    dpdTimeoutSeconds:
+    enableBgp:
+    enableInternetSecurity:
+    enableRateLimiting:
+    remoteVpnSiteResourceId:
+    routingConfiguration: {
+    }
+    routingWeight:
+    sharedKey:
+    useLocalAzureIpAddress:
+    usePolicyBasedTrafficSelectors:
+    vpnConnectionProtocolType:
+  }
+}]
+
+@description('The name of the VPN gateway')
+output name string = vpnGateway.name
+
+@description('The resource ID of the VPN gateway')
+output resourceId string = vpnGateway.id
+
+@description('The name of the resource group the VPN gateway was deployed into')
+output resourceGroupName string = resourceGroup().name
