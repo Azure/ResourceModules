@@ -10,7 +10,7 @@ param ipsecPolicies array = []
 @description('Optional. The Traffic Selector Policies to be considered by this connection.')
 param trafficSelectorPolicies array = []
 
-@description('Optional. List of all vpn site link connections to the gateway.')
+@description('Optional. List of all VPN site link connections to the gateway.')
 param vpnLinkConnections array = []
 
 @description('Optional. Routing Configuration indicating the associated and propagated route tables for this connection.')
@@ -19,7 +19,7 @@ param routingConfiguration object = {}
 @description('Optional. Enable policy-based traffic selectors.')
 param usePolicyBasedTrafficSelectors bool = false
 
-@description('Optional. Use local azure ip to initiate connection.')
+@description('Optional. Use local azure IP to initiate connection.')
 param useLocalAzureIpAddress bool = false
 
 @description('Optional. EnableBgp flag.')
@@ -31,10 +31,10 @@ param enableInternetSecurity bool = false
 @description('Optional. Enable internet security.')
 param enableBgp bool = false
 
-@description('Optional. Routing weight for vpn connection.')
+@description('Optional. Routing weight for VPN connection.')
 param routingWeight int = 0
 
-@description('Optional. DPD timeout in seconds for vpn connection.')
+@description('Optional. DPD timeout in seconds for VPN connection.')
 param dpdTimeoutSeconds int = 0
 
 @description('Optional. Expected bandwidth in MBPS.')
@@ -47,7 +47,7 @@ param connectionBandwidth int = 10
 ])
 param vpnConnectionProtocolType string = 'IKEv2'
 
-@description('Optional. SharedKey for the vpn connection.')
+@description('Optional. SharedKey for the VPN connection.')
 param sharedKey string = ''
 
 @description('Optional. Reference to a VPN site to link to')
