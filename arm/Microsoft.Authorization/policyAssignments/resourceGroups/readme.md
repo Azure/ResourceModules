@@ -2,7 +2,6 @@
 
 With this module you can perform policy assignments on a resource group level
 
-
 ## Resource Types
 
 | Resource Type | API Version |
