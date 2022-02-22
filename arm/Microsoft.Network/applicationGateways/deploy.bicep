@@ -127,14 +127,6 @@ param sslPolicyCipherSuites array = [
   'TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256'
 ]
 
-// @description('Optional. Ssl protocols to be disabled on application gateway.')
-// @allowed([
-//   'TLSv1_0'
-//   'TLSv1_1'
-//   'TLSv1_2'
-// ])
-// param sslPolicyDisabledSslProtocols array = []
-
 @description('Optional. Ssl protocol enums.')
 @allowed([
   'TLSv1_0'
@@ -303,7 +295,6 @@ resource applicationGateway 'Microsoft.Network/applicationGateways@2021-05-01' =
     sslCertificates: sslCertificates
     sslPolicy: {
       cipherSuites: sslPolicyCipherSuites
-      // disabledSslProtocols: sslPolicyDisabledSslProtocols
       minProtocolVersion: sslPolicyMinProtocolVersion
       policyName: empty(sslPolicyName) ? null : sslPolicyName
       policyType: sslPolicyType
@@ -313,31 +304,6 @@ resource applicationGateway 'Microsoft.Network/applicationGateways@2021-05-01' =
     trustedRootCertificates: trustedRootCertificates
     urlPathMaps: urlPathMaps
     webApplicationFirewallConfiguration: webApplicationFirewallConfiguration
-    // {
-    //   disabledRuleGroups: [
-    //     {
-    //       ruleGroupName: 'string'
-    //       rules: [
-    //         int
-    //       ]
-    //     }
-    //   ]
-    //   enabled: bool
-    //   exclusions: [
-    //     {
-    //       matchVariable: 'string'
-    //       selector: 'string'
-    //       selectorMatchOperator: 'string'
-    //     }
-    //   ]
-    //   fileUploadLimitInMb: int
-    //   firewallMode: 'string'
-    //   maxRequestBodySize: int
-    //   maxRequestBodySizeInKb: int
-    //   requestBodyCheck: bool
-    //   ruleSetType: 'string'
-    //   ruleSetVersion: 'string'
-    // }
   }, (enableFips ? {
     enableFips: enableFips
   } : {}), {})
