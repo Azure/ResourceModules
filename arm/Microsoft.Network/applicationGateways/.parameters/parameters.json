@@ -330,7 +330,7 @@
                 {
                     "name": "<<namePrefix>>-az-apgw-x-001-ssl-certificate",
                     "properties": {
-                        "keyVaultSecretId": "https://adp-<<namePrefix>>-az-kv-x-001.vault.azure.net/secrets/applicationGatewaySslCertificate/5b09a47d080943bb93d00f4dc45244a1"
+                        "keyVaultSecretId": "https://adp-<<namePrefix>>-az-kv-x-001.vault.azure.net/certificates/applicationGatewaySslCertificate/f46a93d6808a4a6eb9aa30d726b82dd4"
                     }
                 }
             ]
