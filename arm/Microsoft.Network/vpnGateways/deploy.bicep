@@ -50,7 +50,9 @@ resource vpnGateway 'Microsoft.Network/vpnGateways@2021-05-01' = {
     enableBgpRouteTranslationForNat: enableBgpRouteTranslationForNat
     isRoutingPreferenceInternet: isRoutingPreferenceInternet
     vpnGatewayScaleUnit: vpnGatewayScaleUnit
-    virtualHub: virtualHub
+    virtualHub: {
+      id: virtualHub.id
+    }
   }
 }
 
