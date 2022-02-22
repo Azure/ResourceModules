@@ -71,19 +71,18 @@ module vpnGateway_connections 'connections/deploy.bicep' = [for (connection, ind
   params: {
     name: connection.name
     vpnGatewayName: vpnGateway.name
-    connectionBandwidth:
-    dpdTimeoutSeconds:
-    enableBgp:
-    enableInternetSecurity:
-    enableRateLimiting:
-    remoteVpnSiteResourceId:
-    routingConfiguration: {
-    }
-    routingWeight:
-    sharedKey:
-    useLocalAzureIpAddress:
-    usePolicyBasedTrafficSelectors:
-    vpnConnectionProtocolType:
+    connectionBandwidth: contains(connection, 'vpnGatewayName') ? connection.vpnGatewayName :
+    dpdTimeoutSeconds: contains(connection, 'dpdTimeoutSeconds') ? connection.dpdTimeoutSeconds :
+    enableBgp: contains(connection, 'enableBgp') ? connection.enableBgp :
+    enableInternetSecurity: contains(connection, 'enableInternetSecurity') ? connection.enableInternetSecurity :
+    enableRateLimiting: contains(connection, 'enableRateLimiting') ? connection.enableRateLimiting :
+    remoteVpnSiteResourceId: contains(connection, 'remoteVpnSiteResourceId') ? connection.remoteVpnSiteResourceId :
+    routingConfiguration: contains(connection, 'routingConfiguration') ? connection.routingConfiguration :
+    routingWeight: contains(connection, 'routingWeight') ? connection.routingWeight :
+    sharedKey: contains(connection, 'sharedKey') ? connection.sharedKey :
+    useLocalAzureIpAddress: contains(connection, 'useLocalAzureIpAddress') ? connection.useLocalAzureIpAddress :
+    usePolicyBasedTrafficSelectors: contains(connection, 'usePolicyBasedTrafficSelectors') ? connection.usePolicyBasedTrafficSelectors :
+    vpnConnectionProtocolType: contains(connection, 'vpnConnectionProtocolType') ? connection.vpnConnectionProtocolType :
   }
 }]
 

@@ -17,7 +17,7 @@ param vpnLinkConnections array = []
 param routingConfiguration object
 
 @description('Optional. Enable policy-based traffic selectors.')
-param usePolicyBasedTrafficSelectors bool = false
+param usePolicyBasedTrafficSelectors bool
 
 @description('Optional. Use local azure ip to initiate connection.')
 param useLocalAzureIpAddress bool
