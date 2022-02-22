@@ -14,44 +14,44 @@ param trafficSelectorPolicies array = []
 param vpnLinkConnections array = []
 
 @description('Optional. Routing Configuration indicating the associated and propagated route tables for this connection.')
-param routingConfiguration object
+param routingConfiguration object = {}
 
 @description('Optional. Enable policy-based traffic selectors.')
-param usePolicyBasedTrafficSelectors bool
+param usePolicyBasedTrafficSelectors bool = false
 
 @description('Optional. Use local azure ip to initiate connection.')
-param useLocalAzureIpAddress bool
+param useLocalAzureIpAddress bool = false
 
 @description('Optional. EnableBgp flag.')
-param enableRateLimiting bool
+param enableRateLimiting bool = false
 
 @description('Optional. Enable internet security.')
-param enableInternetSecurity bool
+param enableInternetSecurity bool = false
 
 @description('Optional. Enable internet security.')
-param enableBgp bool
+param enableBgp bool = false
 
 @description('Optional. Routing weight for vpn connection.')
-param routingWeight int
+param routingWeight int = 0
 
 @description('Optional. DPD timeout in seconds for vpn connection.')
-param dpdTimeoutSeconds int
+param dpdTimeoutSeconds int = 0
 
 @description('Optional. Expected bandwidth in MBPS.')
-param connectionBandwidth int
+param connectionBandwidth int = 10
 
 @description('Optional. Gateway connection protocol.')
 @allowed([
   'IKEv1'
   'IKEv2'
 ])
-param vpnConnectionProtocolType string
+param vpnConnectionProtocolType string = 'IKEv2'
 
 @description('Optional. SharedKey for the vpn connection.')
-param sharedKey string
+param sharedKey string = ''
 
 @description('Optional. Reference to a VPN site to link to')
-param remoteVpnSiteResourceId string
+param remoteVpnSiteResourceId string = ''
 
 @description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''

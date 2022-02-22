@@ -1,0 +1,29 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": "<<namePrefix>>-az-vpngw-x-001"
+        },
+        "connections": {
+            "value": [
+                {
+                    "name": "SampleVpnsiteVpnGwConnection",
+                    "properties": {
+                        "connectionBandwidth": 10,
+                        "enableBgp": true,
+                        "remoteVpnSiteResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/vpnSites/SampleVpnSite"
+                    }
+                }
+            ]
+        },
+        "natRules": {
+            "value": []
+        },
+        "bgpSettings": {
+            "value": {
+                "asn": 65515
+            }
+        }
+    }
+}

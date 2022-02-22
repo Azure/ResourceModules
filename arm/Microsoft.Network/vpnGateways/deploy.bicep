@@ -17,13 +17,13 @@ param virtualHubResourceId string = ''
 param bgpSettings object = {}
 
 @description('Optional. Enable BGP routes translation for NAT on this VpnGateway.')
-param enableBgpRouteTranslationForNat bool
+param enableBgpRouteTranslationForNat bool = false
 
 @description('Optional. Enable Routing Preference property for the Public IP Interface of the VpnGateway.')
-param isRoutingPreferenceInternet bool
+param isRoutingPreferenceInternet bool = false
 
 @description('Optional. The scale unit for this vpn gateway.')
-param vpnGatewayScaleUnit int
+param vpnGatewayScaleUnit int = 2
 
 @description('Optional. Tags of the resource.')
 param tags object = {}
@@ -71,18 +71,18 @@ module vpnGateway_connections 'connections/deploy.bicep' = [for (connection, ind
   params: {
     name: connection.name
     vpnGatewayName: vpnGateway.name
-    connectionBandwidth: contains(connection, 'vpnGatewayName') ? connection.vpnGatewayName :
-    dpdTimeoutSeconds: contains(connection, 'dpdTimeoutSeconds') ? connection.dpdTimeoutSeconds :
-    enableBgp: contains(connection, 'enableBgp') ? connection.enableBgp :
-    enableInternetSecurity: contains(connection, 'enableInternetSecurity') ? connection.enableInternetSecurity :
-    enableRateLimiting: contains(connection, 'enableRateLimiting') ? connection.enableRateLimiting :
-    remoteVpnSiteResourceId: contains(connection, 'remoteVpnSiteResourceId') ? connection.remoteVpnSiteResourceId :
-    routingConfiguration: contains(connection, 'routingConfiguration') ? connection.routingConfiguration :
-    routingWeight: contains(connection, 'routingWeight') ? connection.routingWeight :
-    sharedKey: contains(connection, 'sharedKey') ? connection.sharedKey :
-    useLocalAzureIpAddress: contains(connection, 'useLocalAzureIpAddress') ? connection.useLocalAzureIpAddress :
-    usePolicyBasedTrafficSelectors: contains(connection, 'usePolicyBasedTrafficSelectors') ? connection.usePolicyBasedTrafficSelectors :
-    vpnConnectionProtocolType: contains(connection, 'vpnConnectionProtocolType') ? connection.vpnConnectionProtocolType :
+    connectionBandwidth: contains(connection, 'connectionBandwidth') ? connection.connectionBandwidth : 10
+    dpdTimeoutSeconds: contains(connection, 'dpdTimeoutSeconds') ? connection.dpdTimeoutSeconds : 0
+    enableBgp: contains(connection, 'enableBgp') ? connection.enableBgp : false
+    enableInternetSecurity: contains(connection, 'enableInternetSecurity') ? connection.enableInternetSecurity : false
+    enableRateLimiting: contains(connection, 'enableRateLimiting') ? connection.enableRateLimiting : false
+    remoteVpnSiteResourceId: contains(connection, 'remoteVpnSiteResourceId') ? connection.remoteVpnSiteResourceId : ''
+    routingConfiguration: contains(connection, 'routingConfiguration') ? connection.routingConfiguration : {}
+    routingWeight: contains(connection, 'routingWeight') ? connection.routingWeight : 0
+    sharedKey: contains(connection, 'sharedKey') ? connection.sharedKey : ''
+    useLocalAzureIpAddress: contains(connection, 'useLocalAzureIpAddress') ? connection.useLocalAzureIpAddress : false
+    usePolicyBasedTrafficSelectors: contains(connection, 'usePolicyBasedTrafficSelectors') ? connection.usePolicyBasedTrafficSelectors : false
+    vpnConnectionProtocolType: contains(connection, 'vpnConnectionProtocolType') ? connection.vpnConnectionProtocolType : 'IKEv2'
   }
 }]
 
