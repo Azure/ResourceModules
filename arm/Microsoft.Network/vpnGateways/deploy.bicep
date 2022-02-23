@@ -36,11 +36,6 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
-resource virtualHub 'Microsoft.Network/virtualHubs@2021-05-01' existing = {
-  scope: resourceGroup(split(virtualHubResourceId, '/')[4])
-  name: last(split(virtualHubResourceId, '/'))
-}
-
 resource vpnGateway 'Microsoft.Network/vpnGateways@2021-05-01' = {
   name: name
   location: location
@@ -51,7 +46,7 @@ resource vpnGateway 'Microsoft.Network/vpnGateways@2021-05-01' = {
     isRoutingPreferenceInternet: isRoutingPreferenceInternet
     vpnGatewayScaleUnit: vpnGatewayScaleUnit
     virtualHub: {
-      id: virtualHub.id
+      id: virtualHubResourceId
     }
   }
 }

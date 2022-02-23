@@ -26,6 +26,7 @@ This module deploys VPN Gateways.
 | `virtualHubResourceId` | string |  |  | Required. The resource ID of a virtual Hub to connect to |
 | `vpnGatewayScaleUnit` | int | `2` |  | Optional. The scale unit for this VPN gateway. |
 
+### Parameter Usage:
 
 ### Parameter Usage: `bgpSettings`
 
