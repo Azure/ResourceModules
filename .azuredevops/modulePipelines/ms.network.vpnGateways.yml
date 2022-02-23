@@ -30,10 +30,10 @@ variables:
     value: '/arm/Microsoft.Network/vpnGateways'
 
 stages:
-  - stage: Validation
-    displayName: Pester tests
-    jobs:
-      - template: /.azuredevops/pipelineTemplates/jobs.validateModulePester.yml
+  # - stage: Validation
+  #   displayName: Pester tests
+  #   jobs:
+  #     - template: /.azuredevops/pipelineTemplates/jobs.validateModulePester.yml
 
   - stage: Deployment
     displayName: Deployment tests
@@ -45,8 +45,8 @@ stages:
             - path: $(modulePath)/.parameters/min.parameters.json
             - path: $(modulePath)/.parameters/parameters.json
 
-  - stage: Publishing
-    displayName: Publish module
-    condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/main'), eq(variables['Build.SourceBranch'], 'refs/heads/master'), eq('${{ parameters.prerelease }}', 'true')))
-    jobs:
-      - template: /.azuredevops/pipelineTemplates/jobs.publishModule.yml
+  # - stage: Publishing
+  #   displayName: Publish module
+  #   condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/main'), eq(variables['Build.SourceBranch'], 'refs/heads/master'), eq('${{ parameters.prerelease }}', 'true')))
+  #   jobs:
+  #     - template: /.azuredevops/pipelineTemplates/jobs.publishModule.yml
