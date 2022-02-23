@@ -5,18 +5,18 @@
         "name": {
             "value": "<<namePrefix>>-az-vpngw-x-001"
         },
-        // "connections": {
-        //     "value": [
-        //         {
-        //             "name": "SampleVpnsiteVpnGwConnection",
-        //             "connectionBandwidth": 10,
-        //             "enableBgp": true,
-        //             "remoteVpnSiteResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/vpnSites/SampleVpnSite"
-        //         }
-        //     ]
-        // },
         "virtualHubResourceId": {
             "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualHubs/parHub"
+        },
+        "connections": {
+            "value": [
+                {
+                    "name": "SampleVpnsiteVpnGwConnection",
+                    "connectionBandwidth": 10,
+                    "enableBgp": true,
+                    "remoteVpnSiteResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/vpnSites/SampleVpnSite"
+                }
+            ]
         },
         "natRules": {
             "value": [
