@@ -3,13 +3,13 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "<<namePrefix>>-pass-tag"
+            "value": "<<namePrefix>>-sub-polAss"
         },
         "displayName": {
-            "value": "Add a tag to resources"
+            "value": "[Display Name] Policy Assignment at the subscription scope"
         },
         "description": {
-            "value": "Adds the specified tag and value when any resource missing this tag is created or updated. Existing resources can be remediated by triggering a remediation task. If the tag exists with a different value it will not be changed. Does not modify tags on resource groups."
+            "value": "[Description] Policy Assignment at the subscription scope"
         },
         "policyDefinitionId": {
             "value": "/providers/Microsoft.Authorization/policyDefinitions/4f9dc7db-30c1-420c-b61a-e1d640128d26"

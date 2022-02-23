@@ -1,13 +1,14 @@
 targetScope = 'managementGroup'
 
-@sys.description('Required. Specifies the name of the policy assignment.')
+@sys.description('Required. Specifies the name of the policy assignment. Maximum length is 24 characters for management group scope.')
 @maxLength(24)
 param name string
 
 @sys.description('Optional. This message will be part of response in case of policy violation.')
 param description string = ''
 
-@sys.description('Optional. The display name of the policy assignment.')
+@sys.description('Optional. The display name of the policy assignment.  Maximum length is 128 characters.')
+@maxLength(128)
 param displayName string = ''
 
 @sys.description('Required. Specifies the ID of the policy definition or policy set definition being assigned.')

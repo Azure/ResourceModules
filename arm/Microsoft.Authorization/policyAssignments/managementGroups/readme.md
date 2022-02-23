@@ -14,13 +14,13 @@ With this module you can perform policy assignments on a management group level.
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `description` | string |  |  | Optional. This message will be part of response in case of policy violation. |
-| `displayName` | string |  |  | Optional. The display name of the policy assignment. |
+| `displayName` | string |  |  | Optional. The display name of the policy assignment.  Maximum length is 128 characters. |
 | `enforcementMode` | string | `Default` | `[Default, DoNotEnforce]` | Optional. The policy assignment enforcement mode. Possible values are Default and DoNotEnforce. - Default or DoNotEnforce |
 | `identity` | string | `SystemAssigned` | `[SystemAssigned, None]` | Optional. The managed identity associated with the policy assignment. Policy assignments must include a resource identity when assigning 'Modify' policy definitions. |
 | `location` | string | `[deployment().location]` |  | Optional. Location for all resources. |
 | `managementGroupId` | string |  |  | Required. The Target Scope for the Policy. The name of the management group for the policy assignment |
 | `metadata` | object | `{object}` |  | Optional. The policy assignment metadata. Metadata is an open ended object and is typically a collection of key-value pairs. |
-| `name` | string |  |  | Required. Specifies the name of the policy assignment. |
+| `name` | string |  |  | Required. Specifies the name of the policy assignment. Maximum length is 24 characters for management group scope. |
 | `nonComplianceMessage` | string |  |  | Optional. The messages that describe why a resource is non-compliant with the policy. |
 | `notScopes` | array | `[]` |  | Optional. The policy excluded scopes |
 | `parameters` | object | `{object}` |  | Optional. Parameters for the policy assignment if needed. |

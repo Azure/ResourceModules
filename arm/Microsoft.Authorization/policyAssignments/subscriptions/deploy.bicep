@@ -1,13 +1,14 @@
 targetScope = 'subscription'
 
-@sys.description('Required. Specifies the name of the policy assignment.')
-@maxLength(24)
+@sys.description('Required. Specifies the name of the policy assignment. Maximum length is 64 characters for subscription scope.')
+@maxLength(64)
 param name string
 
 @sys.description('Optional. This message will be part of response in case of policy violation.')
 param description string = ''
 
-@sys.description('Optional. The display name of the policy assignment.')
+@sys.description('Optional. The display name of the policy assignment.  Maximum length is 128 characters.')
+@maxLength(128)
 param displayName string = ''
 
 @sys.description('Required. Specifies the ID of the policy definition or policy set definition being assigned.')
