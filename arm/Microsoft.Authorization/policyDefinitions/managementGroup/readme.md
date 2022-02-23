@@ -1,4 +1,4 @@
-# Policy Definitions on Management Group level `[Microsoft.Authorization/policyDefinitions/managementGroups]`
+# Policy Definitions on Management Group level `[Microsoft.Authorization/policyDefinitions/managementGroup]`
 
 With this module you can create policy definitions on a management group level.
 
@@ -13,11 +13,11 @@ With this module you can create policy definitions on a management group level.
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `description` | string |  |  | Optional. The policy definition description. |
-| `displayName` | string |  |  | Optional. The display name of the policy definition. Maximum length is 128 characters |
+| `displayName` | string |  |  | Optional. The display name of the policy definition. Maximum length is 128 characters. |
 | `managementGroupId` | string |  |  | Required. The group ID of the Management Group |
 | `metadata` | object | `{object}` |  | Optional. The policy Definition metadata. Metadata is an open ended object and is typically a collection of key-value pairs. |
 | `mode` | string | `All` | `[All, Indexed, Microsoft.KeyVault.Data, Microsoft.ContainerService.Data, Microsoft.Kubernetes.Data]` | Optional. The policy definition mode. Default is All, Some examples are All, Indexed, Microsoft.KeyVault.Data. |
-| `name` | string |  |  | Required. Specifies the name of the policy definition. Maximum length is 64 characters |
+| `name` | string |  |  | Required. Specifies the name of the policy definition. Maximum length is 64 characters. |
 | `parameters` | object | `{object}` |  | Optional. The policy definition parameters that can be used in policy definition references. |
 | `policyRule` | object |  |  | Required. The Policy Rule details for the Policy Definition |
 

@@ -1,10 +1,10 @@
 targetScope = 'managementGroup'
 
-@sys.description('Required. Specifies the name of the policy definition. Maximum length is 64 characters')
+@sys.description('Required. Specifies the name of the policy definition. Maximum length is 64 characters.')
 @maxLength(64)
 param name string
 
-@sys.description('Optional. The display name of the policy definition. Maximum length is 128 characters')
+@sys.description('Optional. The display name of the policy definition. Maximum length is 128 characters.')
 @maxLength(128)
 param displayName string = ''
 
