@@ -56,6 +56,14 @@ param subscriptionId string = subscription().subscriptionId
 @sys.description('Optional. The Target Scope for the Policy. The name of the resource group for the policy assignment')
 param resourceGroupName string = resourceGroup().name
 
+@sys.description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered.')
+param cuaId string = ''
+
+module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
+  name: 'pid-${cuaId}'
+  params: {}
+}
+
 var identity_var = identity == 'SystemAssigned' ? {
   type: identity
 } : null
@@ -93,3 +101,6 @@ output principalId string = identity == 'SystemAssigned' ? policyAssignment.iden
 
 @sys.description('Policy Assignment resource ID')
 output resourceId string = az.resourceId(subscriptionId, resourceGroupName, 'Microsoft.Authorization/policyAssignments', policyAssignment.name)
+
+@sys.description('The name of the resource group the policy was assigned to')
+output resourceGroupName string = resourceGroup().name

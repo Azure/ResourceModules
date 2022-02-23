@@ -54,6 +54,9 @@ param notScopes array = []
 @sys.description('Optional. Location for all resources.')
 param location string = deployment().location
 
+@sys.description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered. Use when scope target is resource group.')
+param cuaId string = ''
+
 module policyAssignment_mg 'managementGroups/deploy.bicep' = if (!empty(managementGroupId) && empty(subscriptionId) && empty(resourceGroupName)) {
   name: '${uniqueString(deployment().name, location)}-PolicyAssignment-MG-Module'
   scope: managementGroup(managementGroupId)
@@ -111,6 +114,7 @@ module policyAssignment_rg 'resourceGroups/deploy.bicep' = if (empty(managementG
     notScopes: !empty(notScopes) ? notScopes : []
     subscriptionId: subscriptionId
     location: location
+    cuaId: !empty(cuaId) ? cuaId : ''
   }
 }
 

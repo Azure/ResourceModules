@@ -13,6 +13,7 @@ With this module you can perform policy assignments on a resource group level
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered. |
 | `description` | string |  |  | Optional. This message will be part of response in case of policy violation. |
 | `displayName` | string |  |  | Optional. The display name of the policy assignment.  Maximum length is 128 characters. |
 | `enforcementMode` | string | `Default` | `[Default, DoNotEnforce]` | Optional. The policy assignment enforcement mode. Possible values are Default and DoNotEnforce. - Default or DoNotEnforce |
@@ -34,6 +35,7 @@ With this module you can perform policy assignments on a resource group level
 | :-- | :-- | :-- |
 | `name` | string | Policy Assignment Name |
 | `principalId` | string | Policy Assignment principal ID |
+| `resourceGroupName` | string | The name of the resource group the policy was assigned to |
 | `resourceId` | string | Policy Assignment resource ID |
 
 ## Template references

@@ -13,6 +13,7 @@ With this module you can perform policy assignments.
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered. Use when scope target is resource group. |
 | `description` | string |  |  | Optional. This message will be part of response in case of policy violation. |
 | `displayName` | string |  |  | Optional. The display name of the policy assignment.  Maximum length is 128 characters. |
 | `enforcementMode` | string | `Default` | `[Default, DoNotEnforce]` | Optional. The policy assignment enforcement mode. Possible values are Default and DoNotEnforce. - Default or DoNotEnforce |
