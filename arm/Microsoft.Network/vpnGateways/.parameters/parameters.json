@@ -14,6 +14,20 @@
                     "name": "SampleVpnsiteVpnGwConnection",
                     "connectionBandwidth": 10,
                     "enableBgp": true,
+                    "vpnLinkConnections": [
+                        {
+                            "id": "/subscriptions//<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/vpnSites/SampleVpnSite/vpnSiteLinks/link1",
+                            "name": "link1",
+                            "properties": {
+                                "ipsecPolicies": [],
+                                "vpnSiteLink": {
+                                    "id": "/subscriptions//<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/vpnSites/SampleVpnSite/vpnSiteLinks/link1"
+                                },
+                                "vpnConnectionProtocolType": "IKEv2",
+                                "usePolicyBasedTrafficSelectors": false
+                            }
+                        }
+                    ],
                     "remoteVpnSiteResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/vpnSites/SampleVpnSite"
                 }
             ]
