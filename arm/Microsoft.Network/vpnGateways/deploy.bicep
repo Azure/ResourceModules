@@ -70,7 +70,6 @@ module vpnGateway_connections 'connections/deploy.bicep' = [for (connection, ind
     name: connection.name
     vpnGatewayName: vpnGateway.name
     connectionBandwidth: contains(connection, 'connectionBandwidth') ? connection.connectionBandwidth : 10
-    dpdTimeoutSeconds: contains(connection, 'dpdTimeoutSeconds') ? connection.dpdTimeoutSeconds : 0
     enableBgp: contains(connection, 'enableBgp') ? connection.enableBgp : false
     enableInternetSecurity: contains(connection, 'enableInternetSecurity') ? connection.enableInternetSecurity : false
     enableRateLimiting: contains(connection, 'enableRateLimiting') ? connection.enableRateLimiting : false

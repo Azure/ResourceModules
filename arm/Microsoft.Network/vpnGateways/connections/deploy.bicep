@@ -34,9 +34,6 @@ param enableBgp bool = false
 @description('Optional. Routing weight for VPN connection.')
 param routingWeight int = 0
 
-@description('Optional. DPD timeout in seconds for VPN connection.')
-param dpdTimeoutSeconds int = 0
-
 @description('Optional. Expected bandwidth in MBPS.')
 param connectionBandwidth int = 10
 
@@ -70,7 +67,6 @@ resource vpnConnection 'Microsoft.Network/vpnGateways/vpnConnections@2021-05-01'
   parent: vpnGateway
   properties: {
     connectionBandwidth: connectionBandwidth
-    dpdTimeoutSeconds: dpdTimeoutSeconds
     enableBgp: enableBgp
     enableInternetSecurity: enableInternetSecurity
     enableRateLimiting: enableRateLimiting
