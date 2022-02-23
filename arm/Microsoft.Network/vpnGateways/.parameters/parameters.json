@@ -9,11 +9,9 @@
             "value": [
                 {
                     "name": "SampleVpnsiteVpnGwConnection",
-                    "properties": {
-                        "connectionBandwidth": 10,
-                        "enableBgp": true,
-                        "remoteVpnSiteResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/vpnSites/SampleVpnSite"
-                    }
+                    "connectionBandwidth": 10,
+                    "enableBgp": true,
+                    "remoteVpnSiteResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/vpnSites/SampleVpnSite"
                 }
             ]
         },

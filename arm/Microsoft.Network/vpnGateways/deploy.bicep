@@ -72,8 +72,8 @@ module vpnGateway_connections 'connections/deploy.bicep' = [for (connection, ind
     connectionBandwidth: contains(connection, 'connectionBandwidth') ? connection.connectionBandwidth : 10
     enableBgp: contains(connection, 'enableBgp') ? connection.enableBgp : false
     enableInternetSecurity: contains(connection, 'enableInternetSecurity') ? connection.enableInternetSecurity : false
-    enableRateLimiting: contains(connection, 'enableRateLimiting') ? connection.enableRateLimiting : false
     remoteVpnSiteResourceId: contains(connection, 'remoteVpnSiteResourceId') ? connection.remoteVpnSiteResourceId : ''
+    enableRateLimiting: contains(connection, 'enableRateLimiting') ? connection.enableRateLimiting : false
     routingConfiguration: contains(connection, 'routingConfiguration') ? connection.routingConfiguration : {}
     routingWeight: contains(connection, 'routingWeight') ? connection.routingWeight : 0
     sharedKey: contains(connection, 'sharedKey') ? connection.sharedKey : ''
