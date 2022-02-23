@@ -26,12 +26,12 @@
                 "diskSizeGB": "128",
                 "managedDisk": {
                     "storageAccountType": "Premium_LRS"
-                   
                 }
-                
             }
         },
-        
+        "availabilityZone": {
+            "value": 2
+        },
         "adminUsername": {
             "value": "localAdminUser"
         },
