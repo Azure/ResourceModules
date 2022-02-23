@@ -19,7 +19,24 @@
             "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualHubs/parHub"
         },
         "natRules": {
-            "value": []
+            "value": [
+                {
+                    "name": "natRule1",
+                    // "ipConfigurationId": "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworkGateways/cloudnet1-VNG/ipConfigurations/default",
+                    "internalMappings": [
+                        {
+                            "addressSpace": "10.4.0.0/24"
+                        }
+                    ],
+                    "externalMappings": [
+                        {
+                            "addressSpace": "192.168.21.0/24"
+                        }
+                    ],
+                    "type": "Static",
+                    "mode": "EgressSnat"
+                }
+            ]
         },
         "bgpSettings": {
             "value": {
