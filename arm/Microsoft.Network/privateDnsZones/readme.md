@@ -9,12 +9,14 @@ This template deploys a private DNS zone.
 | `Microsoft.Authorization/locks` | 2017-04-01 |
 | `Microsoft.Authorization/roleAssignments` | 2021-04-01-preview |
 | `Microsoft.Network/privateDnsZones` | 2020-06-01 |
+| `Microsoft.Network/privateDnsZones/A` | 2020-06-01 |
 | `Microsoft.Network/privateDnsZones/virtualNetworkLinks` | 2020-06-01 |
 
 ## Parameters
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
+| `aRecords` | array | `[]` |  | Optional. Array of A records. |
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `location` | string | `global` |  | Optional. The location of the PrivateDNSZone. Should be global. |
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
@@ -74,5 +76,6 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
 - [Privatednszones](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-06-01/privateDnsZones)
+- [Privatednszones/A](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-06-01/privateDnsZones/A)
 - [Privatednszones/Virtualnetworklinks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-06-01/privateDnsZones/virtualNetworkLinks)
 - [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)
