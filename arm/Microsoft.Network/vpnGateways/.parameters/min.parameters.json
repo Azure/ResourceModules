@@ -6,7 +6,7 @@
             "value": "<<namePrefix>>-az-vpngw-min-001"
         },
         "virtualHubResourceId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualHubs/weHub"
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualHubs/minHub"
         }
     }
 }
