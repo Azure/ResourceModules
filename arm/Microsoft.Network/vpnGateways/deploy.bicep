@@ -10,7 +10,7 @@ param connections array = []
 @description('Optional. List of all the NAT Rules to associate with the gateway.')
 param natRules array = []
 
-@description('Required. The resource ID of a virtual Hub to connect to')
+@description('Required. The resource ID of a virtual Hub to connect to. Note: The virtual Hub and Gateway must be deployed into the same location.')
 param virtualHubResourceId string
 
 @description('Optional. BGP settings details.')

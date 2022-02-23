@@ -23,7 +23,7 @@ This module deploys VPN Gateways.
 | `name` | string |  |  | Required. Name of the VPN gateway |
 | `natRules` | _[natRules](natRules/readme.md)_ array | `[]` |  | Optional. List of all the NAT Rules to associate with the gateway. |
 | `tags` | object | `{object}` |  | Optional. Tags of the resource. |
-| `virtualHubResourceId` | string |  |  | Required. The resource ID of a virtual Hub to connect to. MUST be in the same location. |
+| `virtualHubResourceId` | string |  |  | Required. The resource ID of a virtual Hub to connect to. Note: The virtual Hub and Gateway must be deployed into the same location. |
 | `vpnGatewayScaleUnit` | int | `2` |  | Optional. The scale unit for this VPN gateway. |
 
 ### Parameter Usage:
