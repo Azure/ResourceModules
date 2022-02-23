@@ -1,13 +1,13 @@
-targetScope = 'subscription'
+targetScope = 'managementGroup'
 
-@sys.description('Required. Specifies the name of the policy assignment. Maximum length is 64 characters for subscription scope.')
-@maxLength(64)
+@sys.description('Required. Specifies the name of the policy assignment. Maximum length is 24 characters for management group scope.')
+@maxLength(24)
 param name string
 
 @sys.description('Optional. This message will be part of response in case of policy violation.')
 param description string = ''
 
-@sys.description('Optional. The display name of the policy assignment.  Maximum length is 128 characters.')
+@sys.description('Optional. The display name of the policy assignment. Maximum length is 128 characters.')
 @maxLength(128)
 param displayName string = ''
 
@@ -40,6 +40,9 @@ param nonComplianceMessage string = ''
 ])
 param enforcementMode string = 'Default'
 
+@sys.description('Required. The Target Scope for the Policy. The name of the management group for the policy assignment')
+param managementGroupId string
+
 @sys.description('Optional. The policy excluded scopes')
 param notScopes array = []
 
@@ -49,9 +52,6 @@ param location string = deployment().location
 var nonComplianceMessage_var = {
   message: !empty(nonComplianceMessage) ? nonComplianceMessage : null
 }
-
-@sys.description('Optional. The Target Scope for the Policy. The subscription ID of the subscription for the policy assignment')
-param subscriptionId string = subscription().subscriptionId
 
 var identity_var = identity == 'SystemAssigned' ? {
   type: identity
@@ -74,7 +74,7 @@ resource policyAssignment 'Microsoft.Authorization/policyAssignments@2021-06-01'
 }
 
 resource roleAssignment 'Microsoft.Authorization/roleAssignments@2021-04-01-preview' = [for roleDefinitionId in roleDefinitionIds: if (!empty(roleDefinitionIds) && identity != 'None') {
-  name: guid(subscriptionId, roleDefinitionId, location, name)
+  name: guid(managementGroupId, roleDefinitionId, location, name)
   properties: {
     roleDefinitionId: roleDefinitionId
     principalId: policyAssignment.identity.principalId
@@ -89,4 +89,4 @@ output name string = policyAssignment.name
 output principalId string = identity == 'SystemAssigned' ? policyAssignment.identity.principalId : ''
 
 @sys.description('Policy Assignment resource ID')
-output resourceId string = subscriptionResourceId(subscriptionId, 'Microsoft.Authorization/policyAssignments', policyAssignment.name)
+output resourceId string = extensionResourceId(tenantResourceId('Microsoft.Management/managementGroups', managementGroupId), 'Microsoft.Authorization/policyAssignments', policyAssignment.name)

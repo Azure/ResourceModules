@@ -6,7 +6,7 @@ param name string
 @sys.description('Optional. This message will be part of response in case of policy violation.')
 param description string = ''
 
-@sys.description('Optional. The display name of the policy assignment.  Maximum length is 128 characters.')
+@sys.description('Optional. The display name of the policy assignment. Maximum length is 128 characters.')
 @maxLength(128)
 param displayName string = ''
 
@@ -57,7 +57,7 @@ param location string = deployment().location
 @sys.description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered. Use when scope target is resource group.')
 param cuaId string = ''
 
-module policyAssignment_mg 'managementGroups/deploy.bicep' = if (!empty(managementGroupId) && empty(subscriptionId) && empty(resourceGroupName)) {
+module policyAssignment_mg 'managementGroup/deploy.bicep' = if (!empty(managementGroupId) && empty(subscriptionId) && empty(resourceGroupName)) {
   name: '${uniqueString(deployment().name, location)}-PolicyAssignment-MG-Module'
   scope: managementGroup(managementGroupId)
   params: {
@@ -77,7 +77,7 @@ module policyAssignment_mg 'managementGroups/deploy.bicep' = if (!empty(manageme
   }
 }
 
-module policyAssignment_sub 'subscriptions/deploy.bicep' = if (empty(managementGroupId) && !empty(subscriptionId) && empty(resourceGroupName)) {
+module policyAssignment_sub 'subscription/deploy.bicep' = if (empty(managementGroupId) && !empty(subscriptionId) && empty(resourceGroupName)) {
   name: '${uniqueString(deployment().name, location)}-PolicyAssignment-Sub-Module'
   scope: subscription(subscriptionId)
   params: {
@@ -97,7 +97,7 @@ module policyAssignment_sub 'subscriptions/deploy.bicep' = if (empty(managementG
   }
 }
 
-module policyAssignment_rg 'resourceGroups/deploy.bicep' = if (empty(managementGroupId) && !empty(resourceGroupName) && !empty(subscriptionId)) {
+module policyAssignment_rg 'resourceGroup/deploy.bicep' = if (empty(managementGroupId) && !empty(resourceGroupName) && !empty(subscriptionId)) {
   name: '${uniqueString(deployment().name, location)}-PolicyAssignment-RG-Module'
   scope: resourceGroup(subscriptionId, resourceGroupName)
   params: {

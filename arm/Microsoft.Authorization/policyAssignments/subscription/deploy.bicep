@@ -1,13 +1,13 @@
-targetScope = 'resourceGroup'
+targetScope = 'subscription'
 
-@sys.description('Required. Specifies the name of the policy assignment. Maximum length is 64 characters for resource group scope.')
+@sys.description('Required. Specifies the name of the policy assignment. Maximum length is 64 characters for subscription scope.')
 @maxLength(64)
 param name string
 
 @sys.description('Optional. This message will be part of response in case of policy violation.')
 param description string = ''
 
-@sys.description('Optional. The display name of the policy assignment.  Maximum length is 128 characters.')
+@sys.description('Optional. The display name of the policy assignment. Maximum length is 128 characters.')
 @maxLength(128)
 param displayName string = ''
 
@@ -44,7 +44,7 @@ param enforcementMode string = 'Default'
 param notScopes array = []
 
 @sys.description('Optional. Location for all resources.')
-param location string = resourceGroup().location
+param location string = deployment().location
 
 var nonComplianceMessage_var = {
   message: !empty(nonComplianceMessage) ? nonComplianceMessage : null
@@ -52,17 +52,6 @@ var nonComplianceMessage_var = {
 
 @sys.description('Optional. The Target Scope for the Policy. The subscription ID of the subscription for the policy assignment')
 param subscriptionId string = subscription().subscriptionId
-
-@sys.description('Optional. The Target Scope for the Policy. The name of the resource group for the policy assignment')
-param resourceGroupName string = resourceGroup().name
-
-@sys.description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered.')
-param cuaId string = ''
-
-module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
-  name: 'pid-${cuaId}'
-  params: {}
-}
 
 var identity_var = identity == 'SystemAssigned' ? {
   type: identity
@@ -85,7 +74,7 @@ resource policyAssignment 'Microsoft.Authorization/policyAssignments@2021-06-01'
 }
 
 resource roleAssignment 'Microsoft.Authorization/roleAssignments@2021-04-01-preview' = [for roleDefinitionId in roleDefinitionIds: if (!empty(roleDefinitionIds) && identity != 'None') {
-  name: guid(subscriptionId, resourceGroupName, roleDefinitionId, location, name)
+  name: guid(subscriptionId, roleDefinitionId, location, name)
   properties: {
     roleDefinitionId: roleDefinitionId
     principalId: policyAssignment.identity.principalId
@@ -100,7 +89,4 @@ output name string = policyAssignment.name
 output principalId string = identity == 'SystemAssigned' ? policyAssignment.identity.principalId : ''
 
 @sys.description('Policy Assignment resource ID')
-output resourceId string = az.resourceId(subscriptionId, resourceGroupName, 'Microsoft.Authorization/policyAssignments', policyAssignment.name)
-
-@sys.description('The name of the resource group the policy was assigned to')
-output resourceGroupName string = resourceGroup().name
+output resourceId string = subscriptionResourceId(subscriptionId, 'Microsoft.Authorization/policyAssignments', policyAssignment.name)
