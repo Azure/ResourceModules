@@ -15,6 +15,18 @@
                 }
             ]
         },
+        "aRecords": {
+            "value": [
+                {
+                    "ttl": 3600,
+                    "aRecords": [
+                        {
+                            "ipv4Address": "10.240.4.4"
+                        }
+                    ]
+                }
+            ]
+        },
         "virtualNetworkLinks": {
             "value": [
                 {

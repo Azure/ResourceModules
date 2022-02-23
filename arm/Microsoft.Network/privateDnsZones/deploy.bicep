@@ -1,6 +1,9 @@
 @description('Required. Private DNS zone name.')
 param name string
 
+@description('Optional. Array of A records.')
+param aRecords array = []
+
 @description('Optional. Array of custom objects describing vNet links of the DNS zone. Each object should contain properties \'vnetResourceId\' and \'registrationEnabled\'. The \'vnetResourceId\' is a resource ID of a vNet to link, \'registrationEnabled\' (bool) enables automatic DNS registration in the zone for the linked vNet.')
 param virtualNetworkLinks array = []
 
@@ -35,15 +38,33 @@ resource privateDnsZone 'Microsoft.Network/privateDnsZones@2020-06-01' = {
   tags: tags
 }
 
-module privateDnsZone_virtualNetworkLinks 'virtualNetworkLinks/deploy.bicep' = [for (virtualNetworkLinks, index) in virtualNetworkLinks: {
+module privateDnsZone_aRecords 'a/deploy.bicep' = [for (aRecord, index) in aRecords: {
+  name: '${uniqueString(deployment().name, location)}-PrivateDnsZone-ARecord-${index}'
+  params: {
+    privateDnsZoneName: privateDnsZone.name
+    name: aRecord.name
+    aaaaRecords: aRecord.aaaaRecords
+    aRecords: aRecord.aRecords
+    cname: aRecord.cname
+    metadata: aRecord.metadata
+    mxRecords: aRecord.mxRecords
+    ptrRecords: aRecord.ptrRecords
+    soaRecord: aRecord.soaRecord
+    srvRecords: aRecord.srvRecords
+    ttl: contains(aRecord, 'ttl') ? aRecord.ttl : 3600
+    txtRecords: aRecord.txtRecords
+  }
+}]
+
+module privateDnsZone_virtualNetworkLinks 'virtualNetworkLinks/deploy.bicep' = [for (virtualNetworkLink, index) in virtualNetworkLinks: {
   name: '${uniqueString(deployment().name, location)}-PrivateDnsZone-VirtualNetworkLink-${index}'
   params: {
     privateDnsZoneName: privateDnsZone.name
-    name: contains(virtualNetworkLinks, 'name') ? virtualNetworkLinks.name : '${last(split(virtualNetworkLinks.virtualNetworkResourceId, '/'))}-vnetlink'
-    virtualNetworkResourceId: virtualNetworkLinks.virtualNetworkResourceId
-    location: contains(virtualNetworkLinks, 'location') ? virtualNetworkLinks.location : 'global'
-    registrationEnabled: contains(virtualNetworkLinks, 'registrationEnabled') ? virtualNetworkLinks.registrationEnabled : false
-    tags: contains(virtualNetworkLinks, 'tags') ? virtualNetworkLinks.tags : {}
+    name: contains(virtualNetworkLink, 'name') ? virtualNetworkLink.name : '${last(split(virtualNetworkLink.virtualNetworkResourceId, '/'))}-vnetlink'
+    virtualNetworkResourceId: virtualNetworkLink.virtualNetworkResourceId
+    location: contains(virtualNetworkLink, 'location') ? virtualNetworkLink.location : 'global'
+    registrationEnabled: contains(virtualNetworkLink, 'registrationEnabled') ? virtualNetworkLink.registrationEnabled : false
+    tags: contains(virtualNetworkLink, 'tags') ? virtualNetworkLink.tags : {}
   }
 }]
 
