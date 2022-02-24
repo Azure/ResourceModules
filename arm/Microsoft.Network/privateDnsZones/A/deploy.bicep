@@ -46,7 +46,7 @@ resource privateDnsZone 'Microsoft.Network/privateDnsZones@2020-06-01' existing 
   name: privateDnsZoneName
 }
 
-resource aRecord 'Microsoft.Network/privateDnsZones/A@2020-06-01' = {
+resource a 'Microsoft.Network/privateDnsZones/A@2020-06-01' = {
   name: name
   parent: privateDnsZone
   properties: {
@@ -66,10 +66,10 @@ resource aRecord 'Microsoft.Network/privateDnsZones/A@2020-06-01' = {
 }
 
 @description('The name of the deployed A record')
-output name string = aRecord.name
+output name string = a.name
 
 @description('The resource ID of the deployed A record')
-output resourceId string = aRecord.id
+output resourceId string = a.id
 
 @description('The resource group of the deployed A record')
 output resourceGroupName string = resourceGroup().name

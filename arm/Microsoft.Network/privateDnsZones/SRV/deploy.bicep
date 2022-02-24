@@ -46,7 +46,7 @@ resource privateDnsZone 'Microsoft.Network/privateDnsZones@2020-06-01' existing 
   name: privateDnsZoneName
 }
 
-resource srvRecord 'Microsoft.Network/privateDnsZones/SRV@2020-06-01' = {
+resource srv 'Microsoft.Network/privateDnsZones/SRV@2020-06-01' = {
   name: name
   parent: privateDnsZone
   properties: {
@@ -66,10 +66,10 @@ resource srvRecord 'Microsoft.Network/privateDnsZones/SRV@2020-06-01' = {
 }
 
 @description('The name of the deployed SRV record')
-output name string = srvRecord.name
+output name string = srv.name
 
 @description('The resource ID of the deployed SRV record')
-output resourceId string = srvRecord.id
+output resourceId string = srv.id
 
 @description('The resource group of the deployed SRV record')
 output resourceGroupName string = resourceGroup().name
