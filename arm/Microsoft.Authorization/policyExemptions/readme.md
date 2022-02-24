@@ -12,19 +12,19 @@ With this module you can create policy exemptions across the management group, s
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered. Use when scope target is resource group. |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution Id (GUID). This GUID must be previously registered. Use when scope target is resource group. |
 | `description` | string |  |  | Optional. The description of the policy exemption. |
 | `displayName` | string |  |  | Optional. The display name of the policy exemption. Maximum length is 128 characters. |
 | `exemptionCategory` | string | `Mitigated` | `[Mitigated, Waiver]` | Optional. The policy exemption category. Possible values are Waiver and Mitigated. Default is Mitigated |
 | `expiresOn` | string |  |  | Optional. The expiration date and time (in UTC ISO 8601 format yyyy-MM-ddTHH:mm:ssZ) of the policy exemption. e.g. 2021-10-02T03:57:00.000Z  |
 | `location` | string | `[deployment().location]` |  | Optional. Location for all resources. |
-| `managementGroupId` | string |  |  | Optional. The group ID of the management group to be exempted from the policy assignment. Cannot use with subscription ID parameter. |
+| `managementGroupId` | string |  |  | Optional. The group Id of the management group to be exempted from the policy assignment. Cannot use with subscription Id parameter. |
 | `metadata` | object | `{object}` |  | Optional. The policy exemption metadata. Metadata is an open ended object and is typically a collection of key-value pairs. |
 | `name` | string |  |  | Required. Specifies the name of the policy exemption. Maximum length is 64 characters for management group, subscription and resource group scopes. |
-| `policyAssignmentId` | string |  |  | Required. The resource ID of the policy assignment that is being exempted. |
-| `policyDefinitionReferenceIds` | array | `[]` |  | Optional. The policy definition reference ID list when the associated policy assignment is an assignment of a policy set definition. |
-| `resourceGroupName` | string |  |  | Optional. The name of the resource group to be exempted from the policy assignment. Must also use the subscription ID parameter. |
-| `subscriptionId` | string |  |  | Optional. The subscription ID of the subscription to be exempted from the policy assignment. Cannot use with management group ID parameter. |
+| `policyAssignmentId` | string |  |  | Required. The resource Id of the policy assignment that is being exempted. |
+| `policyDefinitionReferenceIds` | array | `[]` |  | Optional. The policy definition reference Id list when the associated policy assignment is an assignment of a policy set definition. |
+| `resourceGroupName` | string |  |  | Optional. The name of the resource group to be exempted from the policy assignment. Must also use the subscription Id parameter. |
+| `subscriptionId` | string |  |  | Optional. The subscription Id of the subscription to be exempted from the policy assignment. Cannot use with management group Id parameter. |
 
 ### Parameter Usage: `managementGroupId`
 
@@ -89,7 +89,7 @@ module policyexemption 'yourpath/arm/Microsoft.Authorization.policyExemptions/su
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | Policy Exemption Name |
-| `resourceId` | string | Policy Exemption resource ID |
+| `resourceId` | string | Policy Exemption resource Id |
 | `scope` | string | Policy Exemption Scope |
 
 ## Considerations

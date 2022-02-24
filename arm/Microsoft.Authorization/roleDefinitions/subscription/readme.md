@@ -19,14 +19,14 @@ With this module you can create role definitions on a subscription level
 | `notActions` | array | `[]` |  | Optional. List of denied actions. |
 | `notDataActions` | array | `[]` |  | Optional. List of denied data actions. This is not supported if the assignableScopes contains Management Group Scopes |
 | `roleName` | string |  |  | Required. Name of the custom RBAC role to be created. |
-| `subscriptionId` | string | `[subscription().subscriptionId]` |  | Optional. The subscription ID where the Role Definition and Target Scope will be applied to. |
+| `subscriptionId` | string | `[subscription().subscriptionId]` |  | Optional. The subscription Id where the Role Definition and Target Scope will be applied to. |
 
 ## Outputs
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The GUID of the Role Definition |
-| `resourceId` | string | The resource ID of the Role Definition |
+| `resourceId` | string | The resource Id of the Role Definition |
 | `scope` | string | The scope this Role Definition applies to |
 
 ## Template references

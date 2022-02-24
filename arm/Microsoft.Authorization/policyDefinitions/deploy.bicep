@@ -30,10 +30,10 @@ param parameters object = {}
 @sys.description('Required. The Policy Rule details for the Policy Definition')
 param policyRule object
 
-@sys.description('Optional. The group ID of the Management Group (Scope). Cannot be used with subscriptionId and does not support tenant level deployment (i.e. \'/\')')
+@sys.description('Optional. The group Id of the Management Group (Scope). Cannot be used with subscriptionId and does not support tenant level deployment (i.e. \'/\')')
 param managementGroupId string = ''
 
-@sys.description('Optional. The subscription ID of the subscription (Scope). Cannot be used with managementGroupId')
+@sys.description('Optional. The subscription Id of the subscription (Scope). Cannot be used with managementGroupId')
 param subscriptionId string = ''
 
 @sys.description('Optional. Location for all resources.')
@@ -72,7 +72,7 @@ module policyDefinition_sub 'subscription/deploy.bicep' = if (empty(managementGr
 @sys.description('Policy Definition Name')
 output name string = !empty(managementGroupId) ? policyDefinition_mg.outputs.name : policyDefinition_sub.outputs.name
 
-@sys.description('Policy Definition resource ID')
+@sys.description('Policy Definition resource Id')
 output resourceId string = !empty(managementGroupId) ? policyDefinition_mg.outputs.resourceId : policyDefinition_sub.outputs.resourceId
 
 @sys.description('Policy Definition Role Definition IDs')

@@ -30,7 +30,7 @@ param parameters object = {}
 @sys.description('Required. The Policy Rule details for the Policy Definition')
 param policyRule object
 
-@sys.description('Optional. The subscription ID of the subscription')
+@sys.description('Optional. The subscription Id of the subscription')
 param subscriptionId string = subscription().subscriptionId
 
 resource policyDefinition 'Microsoft.Authorization/policyDefinitions@2021-06-01' = {
@@ -49,7 +49,7 @@ resource policyDefinition 'Microsoft.Authorization/policyDefinitions@2021-06-01'
 @sys.description('Policy Definition Name')
 output name string = policyDefinition.name
 
-@sys.description('Policy Definition resource ID')
+@sys.description('Policy Definition resource Id')
 output resourceId string = subscriptionResourceId(subscriptionId, 'Microsoft.Authorization/policyDefinitions', policyDefinition.name)
 
 @sys.description('Policy Definition Role Definition IDs')

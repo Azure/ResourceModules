@@ -14,16 +14,16 @@ This module deploys custom RBAC Role Definitions across the management group, su
 | :-- | :-- | :-- | :-- | :-- |
 | `actions` | array | `[]` |  | Optional. List of allowed actions. |
 | `assignableScopes` | array | `[]` |  | Optional. Role definition assignable scopes. If not provided, will use the current scope provided. |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered. Use when scope target is resource group. |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution Id (GUID). This GUID must be previously registered. Use when scope target is resource group. |
 | `dataActions` | array | `[]` |  | Optional. List of allowed data actions. This is not supported if the assignableScopes contains Management Group Scopes |
 | `description` | string |  |  | Optional. Description of the custom RBAC role to be created. |
 | `location` | string | `[deployment().location]` |  | Optional. Location for all resources. |
-| `managementGroupId` | string |  |  | Optional. The group ID of the Management Group where the Role Definition and Target Scope will be applied to. Cannot use when Subscription or Resource Groups Parameters are used. |
+| `managementGroupId` | string |  |  | Optional. The group Id of the Management Group where the Role Definition and Target Scope will be applied to. Cannot use when Subscription or Resource Groups Parameters are used. |
 | `notActions` | array | `[]` |  | Optional. List of denied actions. |
 | `notDataActions` | array | `[]` |  | Optional. List of denied data actions. This is not supported if the assignableScopes contains Management Group Scopes |
 | `resourceGroupName` | string |  |  | Optional. The name of the Resource Group where the Role Definition and Target Scope will be applied to. |
 | `roleName` | string |  |  | Required. Name of the custom RBAC role to be created. |
-| `subscriptionId` | string |  |  | Optional. The subscription ID where the Role Definition and Target Scope will be applied to. Use for both Subscription level and Resource Group Level. |
+| `subscriptionId` | string |  |  | Optional. The subscription Id where the Role Definition and Target Scope will be applied to. Use for both Subscription level and Resource Group Level. |
 
 ### Parameter Usage: `managementGroupId`
 
@@ -88,16 +88,16 @@ module roledefinition 'yourpath/arm/Microsoft.Authorization.roleDefinitions/subs
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The GUID of the Role Definition |
-| `resourceId` | string | The resource ID of the Role Definition |
+| `resourceId` | string | The resource Id of the Role Definition |
 | `roleDefinitionScope` | string | The scope this Role Definition applies to |
 
 ## Considerations
 
 This module can be deployed both at subscription or resource group level:
 
-- To deploy the module at resource group level, provide a valid name of an existing Resource Group in the `resourceGroupName` parameter and an existing subscription ID in the `subscriptionId` parameter.
-- To deploy the module at the subscription level, provide an existing subscription ID in the `subscriptionId` parameter.
-- To deploy the module at the management group level, provide an existing management group ID in the `managementGroupId` parameter.
+- To deploy the module at resource group level, provide a valid name of an existing Resource Group in the `resourceGroupName` parameter and an existing subscription Id in the `subscriptionId` parameter.
+- To deploy the module at the subscription level, provide an existing subscription Id in the `subscriptionId` parameter.
+- To deploy the module at the management group level, provide an existing management group Id in the `managementGroupId` parameter.
 
 ## Template references
 

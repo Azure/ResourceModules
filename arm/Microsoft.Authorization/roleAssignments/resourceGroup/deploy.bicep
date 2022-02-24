@@ -1,15 +1,15 @@
 targetScope = 'resourceGroup'
 
-@sys.description('Required. You can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'')
+@sys.description('Required. You can provide either the display name of the role definition, or its fully qualified Id in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'')
 param roleDefinitionIdOrName string
 
-@sys.description('Required. The Principal or Object ID of the Security Principal (User, Group, Service Principal, Managed Identity)')
+@sys.description('Required. The Principal or Object Id of the Security Principal (User, Group, Service Principal, Managed Identity)')
 param principalId string
 
 @sys.description('Optional. Name of the Resource Group to assign the RBAC role to.')
 param resourceGroupName string = resourceGroup().name
 
-@sys.description('Optional. Subscription ID of the subscription to assign the RBAC role to.')
+@sys.description('Optional. Subscription Id of the subscription to assign the RBAC role to.')
 param subscriptionId string = subscription().subscriptionId
 
 @sys.description('Optional. Description of role assignment')
@@ -27,7 +27,7 @@ param condition string = ''
 ])
 param conditionVersion string = '2.0'
 
-@sys.description('Optional. The principal type of the assigned principal ID.')
+@sys.description('Optional. The principal type of the assigned principal Id.')
 @allowed([
   'ServicePrincipal'
   'Group'
@@ -38,7 +38,7 @@ param conditionVersion string = '2.0'
 ])
 param principalType string = ''
 
-@sys.description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered.')
+@sys.description('Optional. Customer Usage Attribution Id (GUID). This GUID must be previously registered.')
 param cuaId string = ''
 
 var builtInRoleNames_var = {
@@ -348,7 +348,7 @@ resource roleAssignment 'Microsoft.Authorization/roleAssignments@2021-04-01-prev
 @sys.description('The GUID of the Role Assignment')
 output name string = roleAssignment.name
 
-@sys.description('The resource ID of the Role Assignment')
+@sys.description('The resource Id of the Role Assignment')
 output scope string = resourceGroup().id
 
 @sys.description('The scope this Role Assignment applies to')

@@ -14,16 +14,16 @@ This module deploys Role Assignments across the management group, subscription o
 | :-- | :-- | :-- | :-- | :-- |
 | `condition` | string |  |  | Optional. The conditions on the role assignment. This limits the resources it can be assigned to |
 | `conditionVersion` | string | `2.0` | `[2.0]` | Optional. Version of the condition. Currently accepted value is "2.0" |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered. Use when scope target is resource group. |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution Id (GUID). This GUID must be previously registered. Use when scope target is resource group. |
 | `delegatedManagedIdentityResourceId` | string |  |  | Optional. Id of the delegated managed identity resource |
 | `description` | string |  |  | Optional. Description of role assignment |
 | `location` | string | `[deployment().location]` |  | Optional. Location for all resources. |
-| `managementGroupId` | string |  |  | Optional. Group ID of the Management Group to assign the RBAC role to. If no Subscription is provided, the module deploys at management group level, therefore assigns the provided RBAC role to the management group. |
-| `principalId` | string |  |  | Required. The Principal or Object ID of the Security Principal (User, Group, Service Principal, Managed Identity) |
-| `principalType` | string |  | `[ServicePrincipal, Group, User, ForeignGroup, Device, ]` | Optional. The principal type of the assigned principal ID. |
-| `resourceGroupName` | string |  |  | Optional. Name of the Resource Group to assign the RBAC role to. If no Resource Group name is provided, and Subscription ID is provided, the module deploys at subscription level, therefore assigns the provided RBAC role to the subscription. |
-| `roleDefinitionIdOrName` | string |  |  | Required. You can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
-| `subscriptionId` | string |  |  | Optional. Subscription ID of the subscription to assign the RBAC role to. If no Resource Group name is provided, the module deploys at subscription level, therefore assigns the provided RBAC role to the subscription. |
+| `managementGroupId` | string |  |  | Optional. Group Id of the Management Group to assign the RBAC role to. If no Subscription is provided, the module deploys at management group level, therefore assigns the provided RBAC role to the management group. |
+| `principalId` | string |  |  | Required. The Principal or Object Id of the Security Principal (User, Group, Service Principal, Managed Identity) |
+| `principalType` | string |  | `[ServicePrincipal, Group, User, ForeignGroup, Device, ]` | Optional. The principal type of the assigned principal Id. |
+| `resourceGroupName` | string |  |  | Optional. Name of the Resource Group to assign the RBAC role to. If no Resource Group name is provided, and Subscription Id is provided, the module deploys at subscription level, therefore assigns the provided RBAC role to the subscription. |
+| `roleDefinitionIdOrName` | string |  |  | Required. You can provide either the display name of the role definition, or its fully qualified Id in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
+| `subscriptionId` | string |  |  | Optional. Subscription Id of the subscription to assign the RBAC role to. If no Resource Group name is provided, the module deploys at subscription level, therefore assigns the provided RBAC role to the subscription. |
 
 ### Parameter Usage: `managementGroupId`
 
@@ -88,7 +88,7 @@ module roleassignment 'yourpath/arm/Microsoft.Authorization.roleAssignments/subs
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The GUID of the Role Assignment |
-| `resourceId` | string | The resource ID of the Role Assignment |
+| `resourceId` | string | The resource Id of the Role Assignment |
 | `scope` | string | The scope this Role Assignment applies to |
 
 ## Considerations

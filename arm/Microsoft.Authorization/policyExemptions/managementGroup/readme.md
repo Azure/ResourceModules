@@ -16,18 +16,18 @@ With this module you can create policy exemptions on a management group level.
 | `displayName` | string |  |  | Optional. The display name of the policy assignment. Maximum length is 128 characters. |
 | `exemptionCategory` | string | `Mitigated` | `[Mitigated, Waiver]` | Optional. The policy exemption category. Possible values are Waiver and Mitigated. Default is Mitigated |
 | `expiresOn` | string |  |  | Optional. The expiration date and time (in UTC ISO 8601 format yyyy-MM-ddTHH:mm:ssZ) of the policy exemption. e.g. 2021-10-02T03:57:00.000Z  |
-| `managementGroupId` | string |  |  | Required. The group ID of the management group to be exempted from the policy assignment. |
+| `managementGroupId` | string |  |  | Required. The group Id of the management group to be exempted from the policy assignment. |
 | `metadata` | object | `{object}` |  | Optional. The policy exemption metadata. Metadata is an open ended object and is typically a collection of key-value pairs. |
 | `name` | string |  |  | Required. Specifies the name of the policy exemption. Maximum length is 24 characters for management group scope. |
-| `policyAssignmentId` | string |  |  | Required. The resource ID of the policy assignment that is being exempted. |
-| `policyDefinitionReferenceIds` | array | `[]` |  | Optional. The policy definition reference ID list when the associated policy assignment is an assignment of a policy set definition. |
+| `policyAssignmentId` | string |  |  | Required. The resource Id of the policy assignment that is being exempted. |
+| `policyDefinitionReferenceIds` | array | `[]` |  | Optional. The policy definition reference Id list when the associated policy assignment is an assignment of a policy set definition. |
 
 ## Outputs
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | Policy Exemption Name |
-| `resourceId` | string | Policy Exemption resource ID |
+| `resourceId` | string | Policy Exemption resource Id |
 | `scope` | string | Policy Exemption Scope |
 
 ## Template references

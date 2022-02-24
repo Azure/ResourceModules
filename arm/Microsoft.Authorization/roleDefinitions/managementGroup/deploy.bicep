@@ -12,7 +12,7 @@ param actions array = []
 @sys.description('Optional. List of denied actions.')
 param notActions array = []
 
-@sys.description('Required. The group ID of the Management Group where the Role Definition and Target Scope will be applied to.')
+@sys.description('Required. The group Id of the Management Group where the Role Definition and Target Scope will be applied to.')
 param managementGroupId string
 
 @sys.description('Optional. Role definition assignable scopes. If not provided, will use the current scope provided.')
@@ -40,5 +40,5 @@ output name string = roleDefinition.name
 @sys.description('The scope this Role Definition applies to')
 output scope string = tenantResourceId('Microsoft.Management/managementGroups', managementGroupId)
 
-@sys.description('The resource ID of the Role Definition')
+@sys.description('The resource Id of the Role Definition')
 output resourceId string = extensionResourceId(tenantResourceId('Microsoft.Management/managementGroups', managementGroupId), 'Microsoft.Authorization/roleDefinitions', roleDefinition.name)

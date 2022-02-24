@@ -18,16 +18,16 @@ With this module you can create policy exemptions on a subscription level.
 | `expiresOn` | string |  |  | Optional. The expiration date and time (in UTC ISO 8601 format yyyy-MM-ddTHH:mm:ssZ) of the policy exemption. e.g. 2021-10-02T03:57:00.000Z  |
 | `metadata` | object | `{object}` |  | Optional. The policy exemption metadata. Metadata is an open ended object and is typically a collection of key-value pairs. |
 | `name` | string |  |  | Required. Specifies the name of the policy exemption. Maximum length is 64 characters for subscription scope. |
-| `policyAssignmentId` | string |  |  | Required. The resource ID of the policy assignment that is being exempted. |
-| `policyDefinitionReferenceIds` | array | `[]` |  | Optional. The policy definition reference ID list when the associated policy assignment is an assignment of a policy set definition. |
-| `subscriptionId` | string | `[subscription().subscriptionId]` |  | Optional. The subscription ID of the subscription to be exempted from the policy assignment. |
+| `policyAssignmentId` | string |  |  | Required. The resource Id of the policy assignment that is being exempted. |
+| `policyDefinitionReferenceIds` | array | `[]` |  | Optional. The policy definition reference Id list when the associated policy assignment is an assignment of a policy set definition. |
+| `subscriptionId` | string | `[subscription().subscriptionId]` |  | Optional. The subscription Id of the subscription to be exempted from the policy assignment. |
 
 ## Outputs
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | Policy Exemption Name |
-| `resourceId` | string | Policy Exemption resource ID |
+| `resourceId` | string | Policy Exemption resource Id |
 | `scope` | string | Policy Exemption Scope |
 
 ## Template references
