@@ -1,10 +1,11 @@
 targetScope = 'managementGroup'
 
-@sys.description('Required. Specifies the name of the policy exemption.')
-@maxLength(64)
+@sys.description('Required. Specifies the name of the policy exemption. Maximum length is 24 characters for management group scope, 64 characters for subscription and resource group scopes.')
+@maxLength(256)
 param name string
 
-@sys.description('Optional. The display name of the policy exemption.')
+@sys.description('Optional. The display name of the policy exemption. Maximum length is 128 characters.')
+@maxLength(256)
 param displayName string = ''
 
 @sys.description('Optional. The description of the policy exemption.')
@@ -41,7 +42,9 @@ param resourceGroupName string = ''
 @sys.description('Optional. Location for all resources.')
 param location string = deployment().location
 
-module policyExemption_mg 'managementGroups/deploy.bicep' = if (!empty(managementGroupId) && empty(subscriptionId) && empty(resourceGroupName)) {
+@sys.description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered. Use when scope target is resource group.')
+param cuaId string = ''
+module policyExemption_mg 'managementGroup/deploy.bicep' = if (!empty(managementGroupId) && empty(subscriptionId) && empty(resourceGroupName)) {
   name: '${uniqueString(deployment().name, location)}-PolicyExemption-MG-Module'
   scope: managementGroup(managementGroupId)
   params: {
@@ -57,7 +60,7 @@ module policyExemption_mg 'managementGroups/deploy.bicep' = if (!empty(managemen
   }
 }
 
-module policyExemption_sub 'subscriptions/deploy.bicep' = if (empty(managementGroupId) && !empty(subscriptionId) && empty(resourceGroupName)) {
+module policyExemption_sub 'subscription/deploy.bicep' = if (empty(managementGroupId) && !empty(subscriptionId) && empty(resourceGroupName)) {
   name: '${uniqueString(deployment().name, location)}-PolicyExemption-Sub-Module'
   scope: subscription(subscriptionId)
   params: {
@@ -73,7 +76,7 @@ module policyExemption_sub 'subscriptions/deploy.bicep' = if (empty(managementGr
   }
 }
 
-module policyExemption_rg 'resourceGroups/deploy.bicep' = if (empty(managementGroupId) && !empty(resourceGroupName) && !empty(subscriptionId)) {
+module policyExemption_rg 'resourceGroup/deploy.bicep' = if (empty(managementGroupId) && !empty(resourceGroupName) && !empty(subscriptionId)) {
   name: '${uniqueString(deployment().name, location)}-PolicyExemption-RG-Module'
   scope: resourceGroup(subscriptionId, resourceGroupName)
   params: {
@@ -87,6 +90,7 @@ module policyExemption_rg 'resourceGroups/deploy.bicep' = if (empty(managementGr
     expiresOn: !empty(expiresOn) ? expiresOn : ''
     subscriptionId: subscriptionId
     resourceGroupName: resourceGroupName
+    cuaId: !empty(cuaId) ? cuaId : ''
   }
 }
 

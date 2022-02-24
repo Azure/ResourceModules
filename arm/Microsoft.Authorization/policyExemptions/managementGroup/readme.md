@@ -1,4 +1,4 @@
-# Policy Exemptions on Management Group level `[Microsoft.Authorization/policyExemptions/managementGroups]`
+# Policy Exemptions on Management Group level `[Microsoft.Authorization/policyExemptions/managementGroup]`
 
 With this module you can create policy exemptions on a management group level.
 
@@ -13,12 +13,12 @@ With this module you can create policy exemptions on a management group level.
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `description` | string |  |  | Optional. The description of the policy exemption. |
-| `displayName` | string |  |  | Optional. The display name of the policy exemption. |
+| `displayName` | string |  |  | Optional. The display name of the policy assignment. Maximum length is 128 characters. |
 | `exemptionCategory` | string | `Mitigated` | `[Mitigated, Waiver]` | Optional. The policy exemption category. Possible values are Waiver and Mitigated. Default is Mitigated |
 | `expiresOn` | string |  |  | Optional. The expiration date and time (in UTC ISO 8601 format yyyy-MM-ddTHH:mm:ssZ) of the policy exemption. e.g. 2021-10-02T03:57:00.000Z  |
 | `managementGroupId` | string |  |  | Required. The group ID of the management group to be exempted from the policy assignment. |
 | `metadata` | object | `{object}` |  | Optional. The policy exemption metadata. Metadata is an open ended object and is typically a collection of key-value pairs. |
-| `name` | string |  |  | Required. Specifies the name of the policy exemption. |
+| `name` | string |  |  | Required. Specifies the name of the policy exemption. Maximum length is 24 characters for management group scope. |
 | `policyAssignmentId` | string |  |  | Required. The resource ID of the policy assignment that is being exempted. |
 | `policyDefinitionReferenceIds` | array | `[]` |  | Optional. The policy definition reference ID list when the associated policy assignment is an assignment of a policy set definition. |
 

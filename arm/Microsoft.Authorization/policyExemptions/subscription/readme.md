@@ -1,6 +1,6 @@
-# Policy Exemptions on Resource Group level `[Microsoft.Authorization/policyExemptions/resourceGroups]`
+# Policy Exemptions on Subscription level `[Microsoft.Authorization/policyExemptions/subscription]`
 
-With this module you can create policy exemptions on a resource group level.
+With this module you can create policy exemptions on a subscription level.
 
 ## Resource Types
 
@@ -13,14 +13,13 @@ With this module you can create policy exemptions on a resource group level.
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `description` | string |  |  | Optional. The description of the policy exemption. |
-| `displayName` | string |  |  | Optional. The display name of the policy exemption. |
+| `displayName` | string |  |  | Optional. The display name of the policy exemption. Maximum length is 128 characters. |
 | `exemptionCategory` | string | `Mitigated` | `[Mitigated, Waiver]` | Optional. The policy exemption category. Possible values are Waiver and Mitigated. Default is Mitigated |
 | `expiresOn` | string |  |  | Optional. The expiration date and time (in UTC ISO 8601 format yyyy-MM-ddTHH:mm:ssZ) of the policy exemption. e.g. 2021-10-02T03:57:00.000Z  |
 | `metadata` | object | `{object}` |  | Optional. The policy exemption metadata. Metadata is an open ended object and is typically a collection of key-value pairs. |
-| `name` | string |  |  | Required. Specifies the name of the policy exemption. |
+| `name` | string |  |  | Required. Specifies the name of the policy exemption. Maximum length is 64 characters for subscription scope. |
 | `policyAssignmentId` | string |  |  | Required. The resource ID of the policy assignment that is being exempted. |
 | `policyDefinitionReferenceIds` | array | `[]` |  | Optional. The policy definition reference ID list when the associated policy assignment is an assignment of a policy set definition. |
-| `resourceGroupName` | string | `[resourceGroup().name]` |  | Optional. The name of the resource group to be exempted from the policy assignment. |
 | `subscriptionId` | string | `[subscription().subscriptionId]` |  | Optional. The subscription ID of the subscription to be exempted from the policy assignment. |
 
 ## Outputs
