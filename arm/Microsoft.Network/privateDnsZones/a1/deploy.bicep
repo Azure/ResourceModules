@@ -1,11 +1,11 @@
-@description('Required. Private DNS zone name..')
+@description('Required. Private DNS zone name.')
 param privateDnsZoneName string
 
 @description('Required. The name of the A record.')
 param name string
 
-@description('Optional. The canonical name for this CNAME record.')
-param cnameValue string = ''
+@description('Optional. The list of A records in the record set.')
+param aRecords array = []
 
 @description('Optional. The metadata attached to the record set.')
 param metadata object = {}
@@ -25,23 +25,21 @@ resource privateDnsZone 'Microsoft.Network/privateDnsZones@2020-06-01' existing 
   name: privateDnsZoneName
 }
 
-resource cname 'Microsoft.Network/privateDnsZones/CNAME@2020-06-01' = {
+resource a 'Microsoft.Network/privateDnsZones/A@2020-06-01' = {
   name: name
   parent: privateDnsZone
   properties: {
-    cnameRecord: empty(cnameValue) ? null : {
-      cname: cnameValue
-    }
+    aRecords: aRecords
     metadata: metadata
     ttl: ttl
   }
 }
 
-@description('The name of the deployed CNAME record')
-output name string = cname.name
+@description('The name of the deployed A record')
+output name string = a.name
 
-@description('The resource ID of the deployed CNAME record')
-output resourceId string = cname.id
+@description('The resource ID of the deployed A record')
+output resourceId string = a.id
 
-@description('The resource group of the deployed CNAME record')
+@description('The resource group of the deployed A record')
 output resourceGroupName string = resourceGroup().name

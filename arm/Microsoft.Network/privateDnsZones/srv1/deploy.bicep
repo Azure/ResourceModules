@@ -1,4 +1,4 @@
-@description('Required. Private DNS zone name..')
+@description('Required. Private DNS zone name.')
 param privateDnsZoneName string
 
 @description('Required. The name of the A record.')
@@ -7,8 +7,8 @@ param name string
 @description('Optional. The metadata attached to the record set.')
 param metadata object = {}
 
-@description('Optional. The list of MX records in the record set.')
-param mxRecords array = []
+@description('Optional. The list of SRV records in the record set.')
+param srvRecords array = []
 
 @description('Optional. The TTL (time-to-live) of the records in the record set.')
 param ttl int = 3600
@@ -25,21 +25,21 @@ resource privateDnsZone 'Microsoft.Network/privateDnsZones@2020-06-01' existing 
   name: privateDnsZoneName
 }
 
-resource mx 'Microsoft.Network/privateDnsZones/MX@2020-06-01' = {
+resource srv 'Microsoft.Network/privateDnsZones/SRV@2020-06-01' = {
   name: name
   parent: privateDnsZone
   properties: {
     metadata: metadata
-    mxRecords: mxRecords
+    srvRecords: srvRecords
     ttl: ttl
   }
 }
 
-@description('The name of the deployed MX record')
-output name string = mx.name
+@description('The name of the deployed SRV record')
+output name string = srv.name
 
-@description('The resource ID of the deployed MX record')
-output resourceId string = mx.id
+@description('The resource ID of the deployed SRV record')
+output resourceId string = srv.id
 
-@description('The resource group of the deployed MX record')
+@description('The resource group of the deployed SRV record')
 output resourceGroupName string = resourceGroup().name
