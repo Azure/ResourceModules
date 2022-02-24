@@ -28,7 +28,7 @@
                             }
                         }
                     ],
-                    "remoteVpnSiteResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/vpnSites/SampleVpnSite"
+                    "remoteVpnSiteResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/vpnSites/spoke"
                 }
             ]
         },
