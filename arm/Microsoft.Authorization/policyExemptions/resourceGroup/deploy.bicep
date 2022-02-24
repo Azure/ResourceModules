@@ -1,11 +1,11 @@
 targetScope = 'resourceGroup'
 
 @sys.description('Required. Specifies the name of the policy exemption. Maximum length is 64 characters for resource group scope.')
-@maxLength(256)
+@maxLength(64)
 param name string
 
 @sys.description('Optional. The display name of the policy exemption. Maximum length is 128 characters.')
-@maxLength(256)
+@maxLength(128)
 param displayName string = ''
 
 @sys.description('Optional. The description of the policy exemption.')

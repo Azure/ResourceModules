@@ -1,11 +1,11 @@
 targetScope = 'managementGroup'
 
-@sys.description('Required. Specifies the name of the policy exemption. Maximum length is 24 characters for management group scope.')
-@maxLength(256)
+@sys.description('Required. Specifies the name of the policy exemption. Maximum length is 64 characters for management group scope.')
+@maxLength(64)
 param name string
 
 @sys.description('Optional. The display name of the policy assignment. Maximum length is 128 characters.')
-@maxLength(256)
+@maxLength(128)
 param displayName string = ''
 
 @sys.description('Optional. The description of the policy exemption.')

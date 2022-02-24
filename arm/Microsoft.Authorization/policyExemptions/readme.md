@@ -20,7 +20,7 @@ With this module you can create policy exemptions across the management group, s
 | `location` | string | `[deployment().location]` |  | Optional. Location for all resources. |
 | `managementGroupId` | string |  |  | Optional. The group ID of the management group to be exempted from the policy assignment. Cannot use with subscription ID parameter. |
 | `metadata` | object | `{object}` |  | Optional. The policy exemption metadata. Metadata is an open ended object and is typically a collection of key-value pairs. |
-| `name` | string |  |  | Required. Specifies the name of the policy exemption. Maximum length is 24 characters for management group scope, 64 characters for subscription and resource group scopes. |
+| `name` | string |  |  | Required. Specifies the name of the policy exemption. Maximum length is 64 characters for management group, subscription and resource group scopes. |
 | `policyAssignmentId` | string |  |  | Required. The resource ID of the policy assignment that is being exempted. |
 | `policyDefinitionReferenceIds` | array | `[]` |  | Optional. The policy definition reference ID list when the associated policy assignment is an assignment of a policy set definition. |
 | `resourceGroupName` | string |  |  | Optional. The name of the resource group to be exempted from the policy assignment. Must also use the subscription ID parameter. |
