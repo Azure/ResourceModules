@@ -13,6 +13,12 @@ param cnameRecords array = []
 @description('Optional. Array of MX records.')
 param mxRecords array = []
 
+@description('Optional. Array of PTR records.')
+param ptrRecords array = []
+
+@description('Optional. Array of SOA records.')
+param soaRecords array = []
+
 @description('Optional. Array of custom objects describing vNet links of the DNS zone. Each object should contain properties \'vnetResourceId\' and \'registrationEnabled\'. The \'vnetResourceId\' is a resource ID of a vNet to link, \'registrationEnabled\' (bool) enables automatic DNS registration in the zone for the linked vNet.')
 param virtualNetworkLinks array = []
 
@@ -116,6 +122,42 @@ module privateDnsZone_mxRecords 'mx/deploy.bicep' = [for (mxRecord, index) in mx
     srvRecords: mxRecord.srvRecords
     ttl: contains(mxRecord, 'ttl') ? mxRecord.ttl : 3600
     txtRecords: mxRecord.txtRecords
+  }
+}]
+
+module privateDnsZone_ptrRecords 'ptr/deploy.bicep' = [for (ptrRecord, index) in ptrRecords: {
+  name: '${uniqueString(deployment().name, location)}-PrivateDnsZone-MXRecord-${index}'
+  params: {
+    privateDnsZoneName: privateDnsZone.name
+    name: ptrRecord.name
+    aaaaRecords: ptrRecord.aaaaRecords
+    aRecords: ptrRecord.aRecords
+    cname: ptrRecord.cname
+    metadata: ptrRecord.metadata
+    mxRecords: ptrRecord.mxRecords
+    ptrRecords: ptrRecord.ptrRecords
+    soaRecord: ptrRecord.soaRecord
+    srvRecords: ptrRecord.srvRecords
+    ttl: contains(ptrRecord, 'ttl') ? ptrRecord.ttl : 3600
+    txtRecords: ptrRecord.txtRecords
+  }
+}]
+
+module privateDnsZone_soaRecords 'soa/deploy.bicep' = [for (soaRecord, index) in soaRecords: {
+  name: '${uniqueString(deployment().name, location)}-PrivateDnsZone-MXRecord-${index}'
+  params: {
+    privateDnsZoneName: privateDnsZone.name
+    name: soaRecord.name
+    aaaaRecords: soaRecord.aaaaRecords
+    aRecords: soaRecord.aRecords
+    cname: soaRecord.cname
+    metadata: soaRecord.metadata
+    mxRecords: soaRecord.mxRecords
+    ptrRecords: soaRecord.ptrRecords
+    soaRecord: soaRecord.soaRecord
+    srvRecords: soaRecord.srvRecords
+    ttl: contains(soaRecord, 'ttl') ? soaRecord.ttl : 3600
+    txtRecords: soaRecord.txtRecords
   }
 }]
 

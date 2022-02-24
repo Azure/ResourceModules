@@ -1,12 +1,12 @@
-# Network Private Dns Zones MX record `[Microsoft.Network/privateDnsZones/MX]`
+# Network Private Dns Zones SOA record `[Microsoft.Network/privateDnsZones/SOA]`
 
-This module deploys Network PrivateDnsZones MX record.
+This module deploys Network PrivateDnsZones SOA record.
 
 ## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Network/privateDnsZones/MX` | 2020-06-01 |
+| `Microsoft.Network/privateDnsZones/SOA` | 2020-06-01 |
 
 ## Parameters
 
@@ -122,10 +122,10 @@ This module deploys Network PrivateDnsZones MX record.
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the deployed MX record |
-| `resourceGroupName` | string | The resource group of the deployed MX record |
-| `resourceId` | string | The resource ID of the deployed MX record |
+| `name` | string | The name of the deployed SOA record |
+| `resourceGroupName` | string | The resource group of the deployed SOA record |
+| `resourceId` | string | The resource ID of the deployed SOA record |
 
 ## Template references
 
-- [Privatednszones/MX](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-06-01/privateDnsZones/MX)
+- [Privatednszones/SOA](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-06-01/privateDnsZones/SOA)

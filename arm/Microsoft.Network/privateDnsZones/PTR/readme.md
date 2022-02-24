@@ -1,12 +1,12 @@
-# Network Private Dns Zones MX record `[Microsoft.Network/privateDnsZones/MX]`
+# Network Private Dns Zones PTR record `[Microsoft.Network/privateDnsZones/PTR]`
 
-This module deploys Network PrivateDnsZones MX record.
+This module deploys Network PrivateDnsZones PTR record.
 
 ## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Network/privateDnsZones/MX` | 2020-06-01 |
+| `Microsoft.Network/privateDnsZones/PTR` | 2020-06-01 |
 
 ## Parameters
 
@@ -122,10 +122,10 @@ This module deploys Network PrivateDnsZones MX record.
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the deployed MX record |
-| `resourceGroupName` | string | The resource group of the deployed MX record |
-| `resourceId` | string | The resource ID of the deployed MX record |
+| `name` | string | The name of the deployed PTR record |
+| `resourceGroupName` | string | The resource group of the deployed PTR record |
+| `resourceId` | string | The resource ID of the deployed PTR record |
 
 ## Template references
 
-- [Privatednszones/MX](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-06-01/privateDnsZones/MX)
+- [Privatednszones/PTR](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-06-01/privateDnsZones/PTR)

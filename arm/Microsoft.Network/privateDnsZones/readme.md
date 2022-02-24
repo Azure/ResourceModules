@@ -13,6 +13,7 @@ This template deploys a private DNS zone.
 | `Microsoft.Network/privateDnsZones/AAAA` | 2020-06-01 |
 | `Microsoft.Network/privateDnsZones/CNAME` | 2020-06-01 |
 | `Microsoft.Network/privateDnsZones/MX` | 2020-06-01 |
+| `Microsoft.Network/privateDnsZones/PTR` | 2020-06-01 |
 | `Microsoft.Network/privateDnsZones/virtualNetworkLinks` | 2020-06-01 |
 
 ## Parameters
@@ -27,6 +28,7 @@ This template deploys a private DNS zone.
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
 | `mxRecords` | array | `[]` |  | Optional. Array of MX records. |
 | `name` | string |  |  | Required. Private DNS zone name. |
+| `ptrRecords` | array | `[]` |  | Optional. Array of PTR records. |
 | `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
 | `tags` | object | `{object}` |  | Optional. Tags of the resource. |
 | `virtualNetworkLinks` | _[virtualNetworkLinks](virtualNetworkLinks/readme.md)_ array | `[]` |  | Optional. Array of custom objects describing vNet links of the DNS zone. Each object should contain properties 'vnetResourceId' and 'registrationEnabled'. The 'vnetResourceId' is a resource ID of a vNet to link, 'registrationEnabled' (bool) enables automatic DNS registration in the zone for the linked vNet. |
@@ -86,5 +88,6 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 - [Privatednszones/AAAA](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-06-01/privateDnsZones/AAAA)
 - [Privatednszones/CNAME](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-06-01/privateDnsZones/CNAME)
 - [Privatednszones/MX](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-06-01/privateDnsZones/MX)
+- [Privatednszones/PTR](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-06-01/privateDnsZones/PTR)
 - [Privatednszones/Virtualnetworklinks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-06-01/privateDnsZones/virtualNetworkLinks)
 - [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)

@@ -1,4 +1,4 @@
-# Network Private Dns Zones A record `[Microsoft.Network/privateDnsZones/CNAME]`
+# Network Private Dns Zones CNAME record `[Microsoft.Network/privateDnsZones/CNAME]`
 
 This module deploys Network PrivateDnsZones CNAME record.
 
@@ -128,4 +128,4 @@ This module deploys Network PrivateDnsZones CNAME record.
 
 ## Template references
 
-- [Privatednszones/A](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-06-01/privateDnsZones/CNAME)
+- [Privatednszones/CNAME](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-06-01/privateDnsZones/CNAME)
