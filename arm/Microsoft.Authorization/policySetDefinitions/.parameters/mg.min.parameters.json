@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "test-policySetExample-min"
+            "value": "<<namePrefix>>-mg-min-policySet"
         },
         "policyDefinitions": {
             "value": [
@@ -19,8 +19,8 @@
                 }
             ]
         },
-        "subscriptionId": {
-            "value": "<<subscriptionId>>"
+        "managementGroupId": {
+            "value": "<<managementGroupId>>"
         }
     }
 }

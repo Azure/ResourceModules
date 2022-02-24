@@ -1,13 +1,14 @@
 targetScope = 'subscription'
 
-@sys.description('Required. Specifies the name of the policy Set Definition (Initiative).')
+@sys.description('Required. Specifies the name of the policy Set Definition (Initiative). Maximum length is 64 characters for subscription scope.')
 @maxLength(64)
 param name string
 
-@sys.description('Optional. The display name of the Set Definition (Initiative)')
+@sys.description('Optional. The display name of the Set Definition (Initiative). Maximum length is 128 characters.')
+@maxLength(128)
 param displayName string = ''
 
-@sys.description('Optional. The Description name of the Set Definition (Initiative)')
+@sys.description('Optional. The description name of the Set Definition (Initiative)')
 param description string = ''
 
 @sys.description('Optional. The subscription ID of the subscription')

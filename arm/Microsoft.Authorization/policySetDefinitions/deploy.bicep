@@ -1,13 +1,14 @@
 targetScope = 'managementGroup'
 
-@sys.description('Required. Specifies the name of the policy Set Definition (Initiative).')
+@sys.description('Required. Specifies the name of the policy Set Definition (Initiative). Maximum length is 24 characters for management group scope and 64 characters for subscription scope.')
 @maxLength(64)
 param name string
 
-@sys.description('Optional. The display name of the Set Definition (Initiative)')
+@sys.description('Optional. The display name of the Set Definition (Initiative). Maximum length is 128 characters.')
+@maxLength(128)
 param displayName string = ''
 
-@sys.description('Optional. The Description name of the Set Definition (Initiative)')
+@sys.description('Optional. The description name of the Set Definition (Initiative)')
 param description string = ''
 
 @sys.description('Optional. The group ID of the Management Group (Scope). Cannot be used with subscriptionId and does not support tenant level deployment (i.e. \'/\')')
@@ -31,7 +32,7 @@ param parameters object = {}
 @sys.description('Optional. Location for all resources.')
 param location string = deployment().location
 
-module policySetDefinition_mg 'managementGroups/deploy.bicep' = if (empty(subscriptionId) && !empty(managementGroupId)) {
+module policySetDefinition_mg 'managementGroup/deploy.bicep' = if (empty(subscriptionId) && !empty(managementGroupId)) {
   name: '${uniqueString(deployment().name, location)}-PolicySetDefinition-MG-Module'
   scope: managementGroup(managementGroupId)
   params: {
@@ -46,7 +47,7 @@ module policySetDefinition_mg 'managementGroups/deploy.bicep' = if (empty(subscr
   }
 }
 
-module policySetDefinition_sub 'subscriptions/deploy.bicep' = if (empty(managementGroupId) && !empty(subscriptionId)) {
+module policySetDefinition_sub 'subscription/deploy.bicep' = if (empty(managementGroupId) && !empty(subscriptionId)) {
   name: '${uniqueString(deployment().name, location)}-PolicySetDefinition-Sub-Module'
   scope: subscription(subscriptionId)
   params: {

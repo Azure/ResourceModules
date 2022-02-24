@@ -3,13 +3,13 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "test-policySetExample"
-        },
-        "description": {
-            "value": "[Test] Set of security policies"
+            "value": "<<namePrefix>>-mg-policySet"
         },
         "displayName": {
-            "value": "[Test] contoso security Policies"
+            "value": "[DisplayName] This policy set definition is deployed at management group scope"
+        },
+        "description": {
+            "value": "[Description] This policy set definition is deployed at management group scope"
         },
         "policyDefinitionGroups": {
             "value": [
@@ -59,8 +59,8 @@
                 "version": "1"
             }
         },
-        "subscriptionId": {
-            "value": "<<subscriptionId>>"
+        "managementGroupId": {
+            "value": "<<managementGroupId>>"
         }
     }
 }
