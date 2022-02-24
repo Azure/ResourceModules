@@ -14,7 +14,7 @@ This module deploys Network PrivateDnsZones CNAME record.
 | :-- | :-- | :-- | :-- | :-- |
 | `aaaaRecords` | array | `[]` |  | Optional. The list of AAAA records in the record set. |
 | `aRecords` | array | `[]` |  | Optional. The list of A records in the record set. |
-| `cname` | string |  |  | Optional. The canonical name for this CNAME record. |
+| `cnameValue` | string |  |  | Optional. The canonical name for this CNAME record. |
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `metadata` | object | `{object}` |  | Optional. The metadata attached to the record set. |
 | `mxRecords` | array | `[]` |  | Optional. The list of MX records in the record set. |
