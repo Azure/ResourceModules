@@ -5,17 +5,14 @@
         "roleName": {
             "value": "<<namePrefix>>-az-testRole-sub-min"
         },
-        "description": {
-            "value": "Test Custom Role Definition Min"
-        },
         "actions": {
             "value": [
                 "Microsoft.Compute/galleries/read",
                 "Microsoft.Compute/galleries/images/read"
             ]
         },
-        "subscriptionId": {
-            "value": "<<subscriptionId>>"
+        "managementGroupId": {
+            "value": "<<managementGroupId>>"
         }
     }
 }

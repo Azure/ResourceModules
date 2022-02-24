@@ -1,6 +1,6 @@
-# Role Definitions on Resource Group level `[Microsoft.Authorization/roleDefinitions/resourceGroups]`
+# Role Definitions on Management Group level `[Microsoft.Authorization/roleDefinitions/managementGroup]`
 
-With this module you can create role definitions on a resource group level
+With this module you can create role definitions on a management group level
 
 ## Resource Types
 
@@ -14,13 +14,10 @@ With this module you can create role definitions on a resource group level
 | :-- | :-- | :-- | :-- | :-- |
 | `actions` | array | `[]` |  | Optional. List of allowed actions. |
 | `assignableScopes` | array | `[]` |  | Optional. Role definition assignable scopes. If not provided, will use the current scope provided. |
-| `dataActions` | array | `[]` |  | Optional. List of allowed data actions. This is not supported if the assignableScopes contains Management Group Scopes |
 | `description` | string |  |  | Optional. Description of the custom RBAC role to be created. |
+| `managementGroupId` | string |  |  | Required. The group ID of the Management Group where the Role Definition and Target Scope will be applied to. |
 | `notActions` | array | `[]` |  | Optional. List of denied actions. |
-| `notDataActions` | array | `[]` |  | Optional. List of denied data actions. This is not supported if the assignableScopes contains Management Group Scopes |
-| `resourceGroupName` | string | `[resourceGroup().name]` |  | Optional. The name of the Resource Group where the Role Definition and Target Scope will be applied to. |
 | `roleName` | string |  |  | Required. Name of the custom RBAC role to be created. |
-| `subscriptionId` | string | `[subscription().subscriptionId]` |  | Optional. The subscription ID where the Role Definition and Target Scope will be applied to. |
 
 ## Outputs
 

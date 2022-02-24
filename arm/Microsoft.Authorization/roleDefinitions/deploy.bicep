@@ -33,7 +33,10 @@ param location string = deployment().location
 @sys.description('Optional. Role definition assignable scopes. If not provided, will use the current scope provided.')
 param assignableScopes array = []
 
-module roleDefinition_mg 'managementGroups/deploy.bicep' = if (!empty(managementGroupId) && empty(subscriptionId) && empty(resourceGroupName)) {
+@sys.description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered. Use when scope target is resource group.')
+param cuaId string = ''
+
+module roleDefinition_mg 'managementGroup/deploy.bicep' = if (!empty(managementGroupId) && empty(subscriptionId) && empty(resourceGroupName)) {
   name: '${uniqueString(deployment().name, location)}-RoleDefinition-MG-Module'
   scope: managementGroup(managementGroupId)
   params: {
@@ -46,7 +49,7 @@ module roleDefinition_mg 'managementGroups/deploy.bicep' = if (!empty(management
   }
 }
 
-module roleDefinition_sub 'subscriptions/deploy.bicep' = if (empty(managementGroupId) && !empty(subscriptionId) && empty(resourceGroupName)) {
+module roleDefinition_sub 'subscription/deploy.bicep' = if (empty(managementGroupId) && !empty(subscriptionId) && empty(resourceGroupName)) {
   name: '${uniqueString(deployment().name, location)}-RoleDefinition-Sub-Module'
   scope: subscription(subscriptionId)
   params: {
@@ -61,7 +64,7 @@ module roleDefinition_sub 'subscriptions/deploy.bicep' = if (empty(managementGro
   }
 }
 
-module roleDefinition_rg 'resourceGroups/deploy.bicep' = if (empty(managementGroupId) && !empty(resourceGroupName) && !empty(subscriptionId)) {
+module roleDefinition_rg 'resourceGroup/deploy.bicep' = if (empty(managementGroupId) && !empty(resourceGroupName) && !empty(subscriptionId)) {
   name: '${uniqueString(deployment().name, location)}-RoleDefinition-RG-Module'
   scope: resourceGroup(subscriptionId, resourceGroupName)
   params: {
@@ -74,6 +77,7 @@ module roleDefinition_rg 'resourceGroups/deploy.bicep' = if (empty(managementGro
     assignableScopes: !empty(assignableScopes) ? assignableScopes : []
     subscriptionId: subscriptionId
     resourceGroupName: resourceGroupName
+    cuaId: !empty(cuaId) ? cuaId : ''
   }
 }
 
