@@ -4,6 +4,15 @@ param name string
 @description('Optional. Array of A records.')
 param aRecords array = []
 
+@description('Optional. Array of AAAA records.')
+param aaaaRecords array = []
+
+@description('Optional. Array of CNAME records.')
+param cnameRecords array = []
+
+@description('Optional. Array of MX records.')
+param mxRecords array = []
+
 @description('Optional. Array of custom objects describing vNet links of the DNS zone. Each object should contain properties \'vnetResourceId\' and \'registrationEnabled\'. The \'vnetResourceId\' is a resource ID of a vNet to link, \'registrationEnabled\' (bool) enables automatic DNS registration in the zone for the linked vNet.')
 param virtualNetworkLinks array = []
 
@@ -53,6 +62,60 @@ module privateDnsZone_aRecords 'a/deploy.bicep' = [for (aRecord, index) in aReco
     srvRecords: aRecord.srvRecords
     ttl: contains(aRecord, 'ttl') ? aRecord.ttl : 3600
     txtRecords: aRecord.txtRecords
+  }
+}]
+
+module privateDnsZone_aaaaRecords 'aaaa/deploy.bicep' = [for (aaaaRecord, index) in aaaaRecords: {
+  name: '${uniqueString(deployment().name, location)}-PrivateDnsZone-AAAARecord-${index}'
+  params: {
+    privateDnsZoneName: privateDnsZone.name
+    name: aaaaRecord.name
+    aaaaRecords: aaaaRecord.aaaaRecords
+    aRecords: aaaaRecord.aRecords
+    cname: aaaaRecord.cname
+    metadata: aaaaRecord.metadata
+    mxRecords: aaaaRecord.mxRecords
+    ptrRecords: aaaaRecord.ptrRecords
+    soaRecord: aaaaRecord.soaRecord
+    srvRecords: aaaaRecord.srvRecords
+    ttl: contains(aaaaRecord, 'ttl') ? aaaaRecord.ttl : 3600
+    txtRecords: aaaaRecord.txtRecords
+  }
+}]
+
+module privateDnsZone_cnameRecords 'cname/deploy.bicep' = [for (cnameRecord, index) in cnameRecords: {
+  name: '${uniqueString(deployment().name, location)}-PrivateDnsZone-CNAMERecord-${index}'
+  params: {
+    privateDnsZoneName: privateDnsZone.name
+    name: cnameRecord.name
+    aaaaRecords: cnameRecord.aaaaRecords
+    aRecords: cnameRecord.aRecords
+    cname: cnameRecord.cname
+    metadata: cnameRecord.metadata
+    mxRecords: cnameRecord.mxRecords
+    ptrRecords: cnameRecord.ptrRecords
+    soaRecord: cnameRecord.soaRecord
+    srvRecords: cnameRecord.srvRecords
+    ttl: contains(cnameRecord, 'ttl') ? cnameRecord.ttl : 3600
+    txtRecords: cnameRecord.txtRecords
+  }
+}]
+
+module privateDnsZone_mxRecords 'mx/deploy.bicep' = [for (mxRecord, index) in mxRecords: {
+  name: '${uniqueString(deployment().name, location)}-PrivateDnsZone-MXRecord-${index}'
+  params: {
+    privateDnsZoneName: privateDnsZone.name
+    name: mxRecord.name
+    aaaaRecords: mxRecord.aaaaRecords
+    aRecords: mxRecord.aRecords
+    cname: mxRecord.cname
+    metadata: mxRecord.metadata
+    mxRecords: mxRecord.mxRecords
+    ptrRecords: mxRecord.ptrRecords
+    soaRecord: mxRecord.soaRecord
+    srvRecords: mxRecord.srvRecords
+    ttl: contains(mxRecord, 'ttl') ? mxRecord.ttl : 3600
+    txtRecords: mxRecord.txtRecords
   }
 }]
 
