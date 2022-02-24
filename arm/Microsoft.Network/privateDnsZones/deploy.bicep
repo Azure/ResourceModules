@@ -64,8 +64,8 @@ module privateDnsZone_a 'a/deploy.bicep' = [for (aRecord, index) in a: {
   params: {
     privateDnsZoneName: privateDnsZone.name
     name: aRecord.name
-    aRecords: aRecord.aRecords
-    metadata: aRecord.metadata
+    aRecords: contains(aRecord, 'aRecords') ? aRecord.aRecords : []
+    metadata: contains(aRecord, 'metadata') ? aRecord.metadata : {}
     ttl: contains(aRecord, 'ttl') ? aRecord.ttl : 3600
   }
 }]
