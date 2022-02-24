@@ -19,14 +19,14 @@ With this module you can create policy definitions on a subscription level.
 | `name` | string |  |  | Required. Specifies the name of the policy definition. Maximum length is 64 characters. |
 | `parameters` | object | `{object}` |  | Optional. The policy definition parameters that can be used in policy definition references. |
 | `policyRule` | object |  |  | Required. The Policy Rule details for the Policy Definition |
-| `subscriptionId` | string | `[subscription().subscriptionId]` |  | Optional. The subscription Id of the subscription |
+| `subscriptionId` | string | `[subscription().subscriptionId]` |  | Optional. The subscription ID of the subscription |
 
 ## Outputs
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | Policy Definition Name |
-| `resourceId` | string | Policy Definition resource Id |
+| `resourceId` | string | Policy Definition resource ID |
 | `roleDefinitionIds` | array | Policy Definition Role Definition IDs |
 
 ## Template references

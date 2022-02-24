@@ -15,7 +15,7 @@ With this module you can create role definitions on a management group level
 | `actions` | array | `[]` |  | Optional. List of allowed actions. |
 | `assignableScopes` | array | `[]` |  | Optional. Role definition assignable scopes. If not provided, will use the current scope provided. |
 | `description` | string |  |  | Optional. Description of the custom RBAC role to be created. |
-| `managementGroupId` | string |  |  | Required. The group Id of the Management Group where the Role Definition and Target Scope will be applied to. |
+| `managementGroupId` | string |  |  | Required. The group ID of the Management Group where the Role Definition and Target Scope will be applied to. |
 | `notActions` | array | `[]` |  | Optional. List of denied actions. |
 | `roleName` | string |  |  | Required. Name of the custom RBAC role to be created. |
 
@@ -24,7 +24,7 @@ With this module you can create role definitions on a management group level
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The GUID of the Role Definition |
-| `resourceId` | string | The resource Id of the Role Definition |
+| `resourceId` | string | The resource ID of the Role Definition |
 | `scope` | string | The scope this Role Definition applies to |
 
 ## Template references

@@ -1,18 +1,18 @@
 targetScope = 'subscription'
 
-@sys.description('Required. You can provide either the display name of the role definition, or its fully qualified Id in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'')
+@sys.description('Required. You can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'')
 param roleDefinitionIdOrName string
 
-@sys.description('Required. The Principal or Object Id of the Security Principal (User, Group, Service Principal, Managed Identity)')
+@sys.description('Required. The Principal or Object ID of the Security Principal (User, Group, Service Principal, Managed Identity)')
 param principalId string
 
-@sys.description('Optional. Subscription Id of the subscription to assign the RBAC role to.')
+@sys.description('Optional. Subscription ID of the subscription to assign the RBAC role to.')
 param subscriptionId string = subscription().subscriptionId
 
 @sys.description('Optional. Description of role assignment')
 param description string = ''
 
-@sys.description('Optional. Id of the delegated managed identity resource')
+@sys.description('Optional. ID of the delegated managed identity resource')
 param delegatedManagedIdentityResourceId string = ''
 
 @sys.description('Optional. The conditions on the role assignment. This limits the resources it can be assigned to')
@@ -24,7 +24,7 @@ param condition string = ''
 ])
 param conditionVersion string = '2.0'
 
-@sys.description('Optional. The principal type of the assigned principal Id.')
+@sys.description('Optional. The principal type of the assigned principal ID.')
 @allowed([
   'ServicePrincipal'
   'Group'
@@ -337,7 +337,7 @@ resource roleAssignment 'Microsoft.Authorization/roleAssignments@2021-04-01-prev
 @sys.description('The GUID of the Role Assignment')
 output name string = roleAssignment.name
 
-@sys.description('The resource Id of the Role Assignment')
+@sys.description('The resource ID of the Role Assignment')
 output scope string = subscription().id
 
 @sys.description('The scope this Role Assignment applies to')

@@ -10,7 +10,7 @@ param description string = ''
 @maxLength(128)
 param displayName string = ''
 
-@sys.description('Required. Specifies the Id of the policy definition or policy set definition being assigned.')
+@sys.description('Required. Specifies the ID of the policy definition or policy set definition being assigned.')
 param policyDefinitionId string
 
 @sys.description('Optional. Parameters for the policy assignment if needed.')
@@ -23,7 +23,7 @@ param parameters object = {}
 ])
 param identity string = 'SystemAssigned'
 
-@sys.description('Required. The IDs Of the Azure Role Definition list that is used to assign permissions to the identity. You need to provide either the fully qualified Id in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.. See https://docs.microsoft.com/en-us/azure/role-based-access-control/built-in-roles for the list IDs for built-in Roles. They must match on what is on the policy definition')
+@sys.description('Required. The IDs Of the Azure Role Definition list that is used to assign permissions to the identity. You need to provide either the fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.. See https://docs.microsoft.com/en-us/azure/role-based-access-control/built-in-roles for the list IDs for built-in Roles. They must match on what is on the policy definition')
 param roleDefinitionIds array = []
 
 @sys.description('Optional. The policy assignment metadata. Metadata is an open ended object and is typically a collection of key-value pairs.')
@@ -42,7 +42,7 @@ param enforcementMode string = 'Default'
 @sys.description('Optional. The Target Scope for the Policy. The name of the management group for the policy assignment')
 param managementGroupId string = ''
 
-@sys.description('Optional. The Target Scope for the Policy. The subscription Id of the subscription for the policy assignment')
+@sys.description('Optional. The Target Scope for the Policy. The subscription ID of the subscription for the policy assignment')
 param subscriptionId string = ''
 
 @sys.description('Optional. The Target Scope for the Policy. The name of the resource group for the policy assignment')
@@ -54,7 +54,7 @@ param notScopes array = []
 @sys.description('Optional. Location for all resources.')
 param location string = deployment().location
 
-@sys.description('Optional. Customer Usage Attribution Id (GUID). This GUID must be previously registered. Use when scope target is resource group.')
+@sys.description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered. Use when scope target is resource group.')
 param cuaId string = ''
 
 module policyAssignment_mg 'managementGroup/deploy.bicep' = if (!empty(managementGroupId) && empty(subscriptionId) && empty(resourceGroupName)) {
@@ -121,8 +121,8 @@ module policyAssignment_rg 'resourceGroup/deploy.bicep' = if (empty(managementGr
 @sys.description('Policy Assignment Name')
 output name string = !empty(managementGroupId) ? policyAssignment_mg.outputs.name : (!empty(resourceGroupName) ? policyAssignment_rg.outputs.name : policyAssignment_sub.outputs.name)
 
-@sys.description('Policy Assignment principal Id')
+@sys.description('Policy Assignment principal ID')
 output principalId string = !empty(managementGroupId) ? policyAssignment_mg.outputs.principalId : (!empty(resourceGroupName) ? policyAssignment_rg.outputs.principalId : policyAssignment_sub.outputs.principalId)
 
-@sys.description('Policy Assignment resource Id')
+@sys.description('Policy Assignment resource ID')
 output resourceId string = !empty(managementGroupId) ? policyAssignment_mg.outputs.resourceId : (!empty(resourceGroupName) ? policyAssignment_rg.outputs.resourceId : policyAssignment_sub.outputs.resourceId)

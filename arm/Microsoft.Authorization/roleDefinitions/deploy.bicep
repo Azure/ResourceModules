@@ -18,10 +18,10 @@ param dataActions array = []
 @sys.description('Optional. List of denied data actions. This is not supported if the assignableScopes contains Management Group Scopes')
 param notDataActions array = []
 
-@sys.description('Optional. The group Id of the Management Group where the Role Definition and Target Scope will be applied to. Cannot use when Subscription or Resource Groups Parameters are used.')
+@sys.description('Optional. The group ID of the Management Group where the Role Definition and Target Scope will be applied to. Cannot use when Subscription or Resource Groups Parameters are used.')
 param managementGroupId string = ''
 
-@sys.description('Optional. The subscription Id where the Role Definition and Target Scope will be applied to. Use for both Subscription level and Resource Group Level.')
+@sys.description('Optional. The subscription ID where the Role Definition and Target Scope will be applied to. Use for both Subscription level and Resource Group Level.')
 param subscriptionId string = ''
 
 @sys.description('Optional. The name of the Resource Group where the Role Definition and Target Scope will be applied to.')
@@ -33,7 +33,7 @@ param location string = deployment().location
 @sys.description('Optional. Role definition assignable scopes. If not provided, will use the current scope provided.')
 param assignableScopes array = []
 
-@sys.description('Optional. Customer Usage Attribution Id (GUID). This GUID must be previously registered. Use when scope target is resource group.')
+@sys.description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered. Use when scope target is resource group.')
 param cuaId string = ''
 
 module roleDefinition_mg 'managementGroup/deploy.bicep' = if (!empty(managementGroupId) && empty(subscriptionId) && empty(resourceGroupName)) {
@@ -84,7 +84,7 @@ module roleDefinition_rg 'resourceGroup/deploy.bicep' = if (empty(managementGrou
 @sys.description('The GUID of the Role Definition')
 output name string = !empty(managementGroupId) ? roleDefinition_mg.outputs.name : (!empty(resourceGroupName) ? roleDefinition_rg.outputs.name : roleDefinition_sub.outputs.name)
 
-@sys.description('The resource Id of the Role Definition')
+@sys.description('The resource ID of the Role Definition')
 output resourceId string = !empty(managementGroupId) ? roleDefinition_mg.outputs.resourceId : (!empty(resourceGroupName) ? roleDefinition_rg.outputs.resourceId : roleDefinition_sub.outputs.resourceId)
 
 @sys.description('The scope this Role Definition applies to')

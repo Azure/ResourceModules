@@ -21,28 +21,28 @@ param metadata object = {}
 ])
 param exemptionCategory string = 'Mitigated'
 
-@sys.description('Required. The resource Id of the policy assignment that is being exempted.')
+@sys.description('Required. The resource ID of the policy assignment that is being exempted.')
 param policyAssignmentId string
 
-@sys.description('Optional. The policy definition reference Id list when the associated policy assignment is an assignment of a policy set definition.')
+@sys.description('Optional. The policy definition reference ID list when the associated policy assignment is an assignment of a policy set definition.')
 param policyDefinitionReferenceIds array = []
 
 @sys.description('Optional. The expiration date and time (in UTC ISO 8601 format yyyy-MM-ddTHH:mm:ssZ) of the policy exemption. e.g. 2021-10-02T03:57:00.000Z ')
 param expiresOn string = ''
 
-@sys.description('Optional. The group Id of the management group to be exempted from the policy assignment. Cannot use with subscription Id parameter.')
+@sys.description('Optional. The group ID of the management group to be exempted from the policy assignment. Cannot use with subscription ID parameter.')
 param managementGroupId string = ''
 
-@sys.description('Optional. The subscription Id of the subscription to be exempted from the policy assignment. Cannot use with management group Id parameter.')
+@sys.description('Optional. The subscription ID of the subscription to be exempted from the policy assignment. Cannot use with management group ID parameter.')
 param subscriptionId string = ''
 
-@sys.description('Optional. The name of the resource group to be exempted from the policy assignment. Must also use the subscription Id parameter.')
+@sys.description('Optional. The name of the resource group to be exempted from the policy assignment. Must also use the subscription ID parameter.')
 param resourceGroupName string = ''
 
 @sys.description('Optional. Location for all resources.')
 param location string = deployment().location
 
-@sys.description('Optional. Customer Usage Attribution Id (GUID). This GUID must be previously registered. Use when scope target is resource group.')
+@sys.description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered. Use when scope target is resource group.')
 param cuaId string = ''
 module policyExemption_mg 'managementGroup/deploy.bicep' = if (!empty(managementGroupId) && empty(subscriptionId) && empty(resourceGroupName)) {
   name: '${uniqueString(deployment().name, location)}-PolicyExemption-MG-Module'
@@ -97,7 +97,7 @@ module policyExemption_rg 'resourceGroup/deploy.bicep' = if (empty(managementGro
 @sys.description('Policy Exemption Name')
 output name string = !empty(managementGroupId) ? policyExemption_mg.outputs.name : (!empty(resourceGroupName) ? policyExemption_rg.outputs.name : policyExemption_sub.outputs.name)
 
-@sys.description('Policy Exemption resource Id')
+@sys.description('Policy Exemption resource ID')
 output resourceId string = !empty(managementGroupId) ? policyExemption_mg.outputs.resourceId : (!empty(resourceGroupName) ? policyExemption_rg.outputs.resourceId : policyExemption_sub.outputs.resourceId)
 
 @sys.description('Policy Exemption Scope')

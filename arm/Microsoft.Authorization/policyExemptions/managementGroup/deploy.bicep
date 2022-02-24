@@ -21,16 +21,16 @@ param metadata object = {}
 ])
 param exemptionCategory string = 'Mitigated'
 
-@sys.description('Required. The resource Id of the policy assignment that is being exempted.')
+@sys.description('Required. The resource ID of the policy assignment that is being exempted.')
 param policyAssignmentId string
 
-@sys.description('Optional. The policy definition reference Id list when the associated policy assignment is an assignment of a policy set definition.')
+@sys.description('Optional. The policy definition reference ID list when the associated policy assignment is an assignment of a policy set definition.')
 param policyDefinitionReferenceIds array = []
 
 @sys.description('Optional. The expiration date and time (in UTC ISO 8601 format yyyy-MM-ddTHH:mm:ssZ) of the policy exemption. e.g. 2021-10-02T03:57:00.000Z ')
 param expiresOn string = ''
 
-@sys.description('Required. The group Id of the management group to be exempted from the policy assignment.')
+@sys.description('Required. The group ID of the management group to be exempted from the policy assignment.')
 param managementGroupId string
 
 resource policyExemption 'Microsoft.Authorization/policyExemptions@2020-07-01-preview' = {
@@ -49,7 +49,7 @@ resource policyExemption 'Microsoft.Authorization/policyExemptions@2020-07-01-pr
 @sys.description('Policy Exemption Name')
 output name string = policyExemption.name
 
-@sys.description('Policy Exemption resource Id')
+@sys.description('Policy Exemption resource ID')
 output resourceId string = extensionResourceId(tenantResourceId('Microsoft.Management/managementGroups', managementGroupId), 'Microsoft.Authorization/policyExemptions', policyExemption.name)
 
 @sys.description('Policy Exemption Scope')

@@ -18,7 +18,7 @@ param dataActions array = []
 @sys.description('Optional. List of denied data actions. This is not supported if the assignableScopes contains Management Group Scopes')
 param notDataActions array = []
 
-@sys.description('Optional. The subscription Id where the Role Definition and Target Scope will be applied to.')
+@sys.description('Optional. The subscription ID where the Role Definition and Target Scope will be applied to.')
 param subscriptionId string = subscription().subscriptionId
 
 @sys.description('Optional. Role definition assignable scopes. If not provided, will use the current scope provided.')
@@ -48,5 +48,5 @@ output name string = roleDefinition.name
 @sys.description('The scope this Role Definition applies to')
 output scope string = subscription().id
 
-@sys.description('The resource Id of the Role Definition')
+@sys.description('The resource ID of the Role Definition')
 output resourceId string = subscriptionResourceId(subscriptionId, 'Microsoft.Authorization/roleDefinitions', roleDefinition.name)

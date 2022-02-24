@@ -11,7 +11,7 @@ param description string = ''
 @maxLength(128)
 param displayName string = ''
 
-@sys.description('Required. Specifies the Id of the policy definition or policy set definition being assigned.')
+@sys.description('Required. Specifies the ID of the policy definition or policy set definition being assigned.')
 param policyDefinitionId string
 
 @sys.description('Optional. Parameters for the policy assignment if needed.')
@@ -24,7 +24,7 @@ param parameters object = {}
 ])
 param identity string = 'SystemAssigned'
 
-@sys.description('Required. The IDs Of the Azure Role Definition list that is used to assign permissions to the identity. You need to provide either the fully qualified Id in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.. See https://docs.microsoft.com/en-us/azure/role-based-access-control/built-in-roles for the list IDs for built-in Roles. They must match on what is on the policy definition')
+@sys.description('Required. The IDs Of the Azure Role Definition list that is used to assign permissions to the identity. You need to provide either the fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.. See https://docs.microsoft.com/en-us/azure/role-based-access-control/built-in-roles for the list IDs for built-in Roles. They must match on what is on the policy definition')
 param roleDefinitionIds array = []
 
 @sys.description('Optional. The policy assignment metadata. Metadata is an open ended object and is typically a collection of key-value pairs.')
@@ -50,13 +50,13 @@ var nonComplianceMessage_var = {
   message: !empty(nonComplianceMessage) ? nonComplianceMessage : null
 }
 
-@sys.description('Optional. The Target Scope for the Policy. The subscription Id of the subscription for the policy assignment')
+@sys.description('Optional. The Target Scope for the Policy. The subscription ID of the subscription for the policy assignment')
 param subscriptionId string = subscription().subscriptionId
 
 @sys.description('Optional. The Target Scope for the Policy. The name of the resource group for the policy assignment')
 param resourceGroupName string = resourceGroup().name
 
-@sys.description('Optional. Customer Usage Attribution Id (GUID). This GUID must be previously registered.')
+@sys.description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered.')
 param cuaId string = ''
 
 module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
@@ -96,10 +96,10 @@ resource roleAssignment 'Microsoft.Authorization/roleAssignments@2021-04-01-prev
 @sys.description('Policy Assignment Name')
 output name string = policyAssignment.name
 
-@sys.description('Policy Assignment principal Id')
+@sys.description('Policy Assignment principal ID')
 output principalId string = identity == 'SystemAssigned' ? policyAssignment.identity.principalId : ''
 
-@sys.description('Policy Assignment resource Id')
+@sys.description('Policy Assignment resource ID')
 output resourceId string = az.resourceId(subscriptionId, resourceGroupName, 'Microsoft.Authorization/policyAssignments', policyAssignment.name)
 
 @sys.description('The name of the resource group the policy was assigned to')

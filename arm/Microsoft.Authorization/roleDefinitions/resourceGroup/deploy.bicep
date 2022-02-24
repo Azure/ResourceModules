@@ -18,7 +18,7 @@ param dataActions array = []
 @sys.description('Optional. List of denied data actions. This is not supported if the assignableScopes contains Management Group Scopes')
 param notDataActions array = []
 
-@sys.description('Optional. The subscription Id where the Role Definition and Target Scope will be applied to.')
+@sys.description('Optional. The subscription ID where the Role Definition and Target Scope will be applied to.')
 param subscriptionId string = subscription().subscriptionId
 
 @sys.description('Optional. The name of the Resource Group where the Role Definition and Target Scope will be applied to.')
@@ -27,7 +27,7 @@ param resourceGroupName string = resourceGroup().name
 @sys.description('Optional. Role definition assignable scopes. If not provided, will use the current scope provided.')
 param assignableScopes array = []
 
-@sys.description('Optional. Customer Usage Attribution Id (GUID). This GUID must be previously registered.')
+@sys.description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered.')
 param cuaId string = ''
 
 module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
@@ -59,7 +59,7 @@ output name string = roleDefinition.name
 @sys.description('The scope this Role Definition applies to')
 output scope string = resourceGroup().id
 
-@sys.description('The resource Id of the Role Definition')
+@sys.description('The resource ID of the Role Definition')
 output resourceId string = roleDefinition.id
 
 @sys.description('The name of the resource group the role definition was created at')

@@ -1,18 +1,18 @@
 targetScope = 'managementGroup'
 
-@sys.description('Required. You can provide either the display name of the role definition, or its fully qualified Id in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'')
+@sys.description('Required. You can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'')
 param roleDefinitionIdOrName string
 
-@sys.description('Required. The Principal or Object Id of the Security Principal (User, Group, Service Principal, Managed Identity)')
+@sys.description('Required. The Principal or Object ID of the Security Principal (User, Group, Service Principal, Managed Identity)')
 param principalId string
 
-@sys.description('Optional. Name of the Resource Group to assign the RBAC role to. If no Resource Group name is provided, and Subscription Id is provided, the module deploys at subscription level, therefore assigns the provided RBAC role to the subscription.')
+@sys.description('Optional. Name of the Resource Group to assign the RBAC role to. If no Resource Group name is provided, and Subscription ID is provided, the module deploys at subscription level, therefore assigns the provided RBAC role to the subscription.')
 param resourceGroupName string = ''
 
-@sys.description('Optional. Subscription Id of the subscription to assign the RBAC role to. If no Resource Group name is provided, the module deploys at subscription level, therefore assigns the provided RBAC role to the subscription.')
+@sys.description('Optional. Subscription ID of the subscription to assign the RBAC role to. If no Resource Group name is provided, the module deploys at subscription level, therefore assigns the provided RBAC role to the subscription.')
 param subscriptionId string = ''
 
-@sys.description('Optional. Group Id of the Management Group to assign the RBAC role to. If no Subscription is provided, the module deploys at management group level, therefore assigns the provided RBAC role to the management group.')
+@sys.description('Optional. Group ID of the Management Group to assign the RBAC role to. If no Subscription is provided, the module deploys at management group level, therefore assigns the provided RBAC role to the management group.')
 param managementGroupId string = ''
 
 @sys.description('Optional. Location for all resources.')
@@ -21,7 +21,7 @@ param location string = deployment().location
 @sys.description('Optional. Description of role assignment')
 param description string = ''
 
-@sys.description('Optional. Id of the delegated managed identity resource')
+@sys.description('Optional. ID of the delegated managed identity resource')
 param delegatedManagedIdentityResourceId string = ''
 
 @sys.description('Optional. The conditions on the role assignment. This limits the resources it can be assigned to')
@@ -33,7 +33,7 @@ param condition string = ''
 ])
 param conditionVersion string = '2.0'
 
-@sys.description('Optional. The principal type of the assigned principal Id.')
+@sys.description('Optional. The principal type of the assigned principal ID.')
 @allowed([
   'ServicePrincipal'
   'Group'
@@ -44,7 +44,7 @@ param conditionVersion string = '2.0'
 ])
 param principalType string = ''
 
-@sys.description('Optional. Customer Usage Attribution Id (GUID). This GUID must be previously registered. Use when scope target is resource group.')
+@sys.description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered. Use when scope target is resource group.')
 param cuaId string = ''
 
 module roleAssignment_mg 'managementGroup/deploy.bicep' = if (!empty(managementGroupId) && empty(subscriptionId) && empty(resourceGroupName)) {
@@ -97,7 +97,7 @@ module roleAssignment_rg 'resourceGroup/deploy.bicep' = if (empty(managementGrou
 @sys.description('The GUID of the Role Assignment')
 output name string = !empty(managementGroupId) ? roleAssignment_mg.outputs.name : (!empty(resourceGroupName) ? roleAssignment_rg.outputs.name : roleAssignment_sub.outputs.name)
 
-@sys.description('The resource Id of the Role Assignment')
+@sys.description('The resource ID of the Role Assignment')
 output resourceId string = !empty(managementGroupId) ? roleAssignment_mg.outputs.resourceId : (!empty(resourceGroupName) ? roleAssignment_rg.outputs.resourceId : roleAssignment_sub.outputs.resourceId)
 
 @sys.description('The scope this Role Assignment applies to')
