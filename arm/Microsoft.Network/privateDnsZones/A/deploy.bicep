@@ -1,4 +1,4 @@
-@description('Required. Private DNS zone name.')
+@description('Required. Private DNS zone name..')
 param privateDnsZoneName string
 
 @description('Required. The name of the A record.')
