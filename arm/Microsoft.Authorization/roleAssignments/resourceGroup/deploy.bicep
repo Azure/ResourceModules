@@ -38,6 +38,9 @@ param conditionVersion string = '2.0'
 ])
 param principalType string = ''
 
+@sys.description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered.')
+param cuaId string = ''
+
 var builtInRoleNames_var = {
   'AcrPush': '/providers/Microsoft.Authorization/roleDefinitions/8311e382-0749-4cb8-b61a-304f252e45ec'
   'API Management Service Contributor': '/providers/Microsoft.Authorization/roleDefinitions/312a565d-c81f-4fd8-895a-4e21e48d571c'
@@ -324,6 +327,11 @@ var builtInRoleNames_var = {
 
 var roleDefinitionId_var = (contains(builtInRoleNames_var, roleDefinitionIdOrName) ? builtInRoleNames_var[roleDefinitionIdOrName] : roleDefinitionIdOrName)
 
+module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
+  name: 'pid-${cuaId}'
+  params: {}
+}
+
 resource roleAssignment 'Microsoft.Authorization/roleAssignments@2021-04-01-preview' = {
   name: guid(subscriptionId, resourceGroupName, roleDefinitionId_var, principalId)
   properties: {
@@ -345,3 +353,6 @@ output scope string = resourceGroup().id
 
 @sys.description('The scope this Role Assignment applies to')
 output resourceId string = az.resourceId(resourceGroupName, 'Microsoft.Authorization/roleAssignments', roleAssignment.name)
+
+@sys.description('The name of the resource group the role assignment was applied at')
+output resourceGroupName string = resourceGroup().name

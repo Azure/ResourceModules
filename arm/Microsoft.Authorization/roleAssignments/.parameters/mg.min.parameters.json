@@ -3,19 +3,13 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "roleDefinitionIdOrName": {
-            "value": "Backup Reader"
-        },
-        "description": {
-            "value": "Custom Role Assignment Sub"
+            "value": "Storage Queue Data Reader"
         },
         "principalId": {
             "value": "<<deploymentSpId>>"
         },
-        "principalType": {
-            "value": "ServicePrincipal"
-        },
-        "subscriptionId": {
-            "value": "<<subscriptionId>>"
+        "managementGroupId": {
+            "value": "<<managementGroupId>>"
         }
     }
 }

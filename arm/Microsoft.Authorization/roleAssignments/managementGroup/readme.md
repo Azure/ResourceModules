@@ -1,6 +1,6 @@
-# Role Assignment on Subscription level `[Microsoft.Authorization/roleAssignments/subscriptions]`
+# Role Assignment on Management Group level `[Microsoft.Authorization/roleAssignments/managementGroup]`
 
-With this module you can perform role assignments on a subscription level
+With this module you can perform role assignments on a management group level
 
 ## Resource Types
 
@@ -16,10 +16,10 @@ With this module you can perform role assignments on a subscription level
 | `conditionVersion` | string | `2.0` | `[2.0]` | Optional. Version of the condition. Currently accepted value is "2.0" |
 | `delegatedManagedIdentityResourceId` | string |  |  | Optional. Id of the delegated managed identity resource |
 | `description` | string |  |  | Optional. Description of role assignment |
+| `managementGroupId` | string |  |  | Required. Group ID of the Management Group to assign the RBAC role to |
 | `principalId` | string |  |  | Required. The Principal or Object ID of the Security Principal (User, Group, Service Principal, Managed Identity) |
 | `principalType` | string |  | `[ServicePrincipal, Group, User, ForeignGroup, Device, ]` | Optional. The principal type of the assigned principal ID. |
 | `roleDefinitionIdOrName` | string |  |  | Required. You can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
-| `subscriptionId` | string | `[subscription().subscriptionId]` |  | Optional. Subscription ID of the subscription to assign the RBAC role to. |
 
 ## Outputs
 

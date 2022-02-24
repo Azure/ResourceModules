@@ -1,4 +1,4 @@
-# Role Assignment on Resource Group level `[Microsoft.Authorization/roleAssignments/resourceGroups]`
+# Role Assignment on Resource Group level `[Microsoft.Authorization/roleAssignments/resourceGroup]`
 
 With this module you can perform role assignments on a resource group level
 
@@ -14,6 +14,7 @@ With this module you can perform role assignments on a resource group level
 | :-- | :-- | :-- | :-- | :-- |
 | `condition` | string |  |  | Optional. The conditions on the role assignment. This limits the resources it can be assigned to |
 | `conditionVersion` | string | `2.0` | `[2.0]` | Optional. Version of the condition. Currently accepted value is "2.0" |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered. |
 | `delegatedManagedIdentityResourceId` | string |  |  | Optional. Id of the delegated managed identity resource |
 | `description` | string |  |  | Optional. Description of role assignment |
 | `principalId` | string |  |  | Required. The Principal or Object ID of the Security Principal (User, Group, Service Principal, Managed Identity) |
@@ -27,6 +28,7 @@ With this module you can perform role assignments on a resource group level
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The GUID of the Role Assignment |
+| `resourceGroupName` | string | The name of the resource group the role assignment was applied at |
 | `resourceId` | string | The scope this Role Assignment applies to |
 | `scope` | string | The resource ID of the Role Assignment |
 
