@@ -6,7 +6,7 @@
             "value": "<<namePrefix>>-az-testRole-sub"
         },
         "description": {
-            "value": "Test Custom Role Definition Standard"
+            "value": "Test Custom Role Definition Standard (subscription scope)"
         },
         "actions": {
             "value": [
