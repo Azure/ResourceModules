@@ -19,6 +19,12 @@ param ptrRecords array = []
 @description('Optional. Array of SOA records.')
 param soaRecords array = []
 
+@description('Optional. Array of SRV records.')
+param srvRecords array = []
+
+@description('Optional. Array of TXT records.')
+param txtRecords array = []
+
 @description('Optional. Array of custom objects describing vNet links of the DNS zone. Each object should contain properties \'vnetResourceId\' and \'registrationEnabled\'. The \'vnetResourceId\' is a resource ID of a vNet to link, \'registrationEnabled\' (bool) enables automatic DNS registration in the zone for the linked vNet.')
 param virtualNetworkLinks array = []
 
@@ -126,7 +132,7 @@ module privateDnsZone_mxRecords 'mx/deploy.bicep' = [for (mxRecord, index) in mx
 }]
 
 module privateDnsZone_ptrRecords 'ptr/deploy.bicep' = [for (ptrRecord, index) in ptrRecords: {
-  name: '${uniqueString(deployment().name, location)}-PrivateDnsZone-MXRecord-${index}'
+  name: '${uniqueString(deployment().name, location)}-PrivateDnsZone-PTRRecord-${index}'
   params: {
     privateDnsZoneName: privateDnsZone.name
     name: ptrRecord.name
@@ -144,7 +150,7 @@ module privateDnsZone_ptrRecords 'ptr/deploy.bicep' = [for (ptrRecord, index) in
 }]
 
 module privateDnsZone_soaRecords 'soa/deploy.bicep' = [for (soaRecord, index) in soaRecords: {
-  name: '${uniqueString(deployment().name, location)}-PrivateDnsZone-MXRecord-${index}'
+  name: '${uniqueString(deployment().name, location)}-PrivateDnsZone-SOARecord-${index}'
   params: {
     privateDnsZoneName: privateDnsZone.name
     name: soaRecord.name
@@ -158,6 +164,42 @@ module privateDnsZone_soaRecords 'soa/deploy.bicep' = [for (soaRecord, index) in
     srvRecords: soaRecord.srvRecords
     ttl: contains(soaRecord, 'ttl') ? soaRecord.ttl : 3600
     txtRecords: soaRecord.txtRecords
+  }
+}]
+
+module privateDnsZone_srvRecords 'srv/deploy.bicep' = [for (srvRecord, index) in srvRecords: {
+  name: '${uniqueString(deployment().name, location)}-PrivateDnsZone-SRVRecord-${index}'
+  params: {
+    privateDnsZoneName: privateDnsZone.name
+    name: srvRecord.name
+    aaaaRecords: srvRecord.aaaaRecords
+    aRecords: srvRecord.aRecords
+    cname: srvRecord.cname
+    metadata: srvRecord.metadata
+    mxRecords: srvRecord.mxRecords
+    ptrRecords: srvRecord.ptrRecords
+    soaRecord: srvRecord.soaRecord
+    srvRecords: srvRecord.srvRecords
+    ttl: contains(srvRecord, 'ttl') ? srvRecord.ttl : 3600
+    txtRecords: srvRecord.txtRecords
+  }
+}]
+
+module privateDnsZone_txtRecords 'txt/deploy.bicep' = [for (txtRecord, index) in txtRecords: {
+  name: '${uniqueString(deployment().name, location)}-PrivateDnsZone-TXTRecord-${index}'
+  params: {
+    privateDnsZoneName: privateDnsZone.name
+    name: txtRecord.name
+    aaaaRecords: txtRecord.aaaaRecords
+    aRecords: txtRecord.aRecords
+    cname: txtRecord.cname
+    metadata: txtRecord.metadata
+    mxRecords: txtRecord.mxRecords
+    ptrRecords: txtRecord.ptrRecords
+    soaRecord: txtRecord.soaRecord
+    srvRecords: txtRecord.srvRecords
+    ttl: contains(txtRecord, 'ttl') ? txtRecord.ttl : 3600
+    txtRecords: txtRecord.txtRecords
   }
 }]
 
