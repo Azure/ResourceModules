@@ -44,7 +44,7 @@ This module deploys a key vault and its child resources.
 | `networkAcls` | object | `{object}` |  | Optional. Service endpoint object information. For security reasons, it is recommended to set the DefaultAction Deny |
 | `privateEndpoints` | array | `[]` |  | Optional. Configuration Details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible |
 | `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
-| `secrets` | _[secrets](secrets/readme.md)_ array | `[]` |  | Optional. All secrets to create |
+| `secrets` | _[secrets](secrets/readme.md)_ object | `[]` |  | Optional. All secrets to create |
 | `softDeleteRetentionInDays` | int | `90` |  | Optional. softDelete data retention days. It accepts >=7 and <=90. |
 | `tags` | object | `{object}` |  | Optional. Resource tags. |
 | `vaultSku` | string | `premium` | `[premium, standard]` | Optional. Specifies the SKU for the vault |
