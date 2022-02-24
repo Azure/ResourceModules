@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "roleName": {
-            "value": "<<namePrefix>>-az-testRole-sub-min"
+            "value": "<<namePrefix>>-az-testRole-mg-min"
         },
         "actions": {
             "value": [
