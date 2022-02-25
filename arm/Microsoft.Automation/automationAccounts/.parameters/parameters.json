@@ -8,7 +8,7 @@
         "schedules": {
             "value": [
                 {
-                    "name": "TestSchedule",
+                    "name": "TestSchedule01",
                     "startTime": "",
                     "expiryTime": "9999-12-31T23:59:00+00:00",
                     "interval": 15,
@@ -30,7 +30,7 @@
         "runbooks": {
             "value": [
                 {
-                    "name": "TestRunbook",
+                    "name": "TestRunbook01",
                     "runbookType": "PowerShell",
                     "description": "Test runbook",
                     "uri": "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/quickstarts/microsoft.automation/101-automation/scripts/AzureAutomationTutorial.ps1",
@@ -41,8 +41,8 @@
         "jobSchedules": {
             "value": [
                 {
-                    "scheduleName": "TestSchedule",
-                    "runbookName": "TestRunbook"
+                    "scheduleName": "TestSchedule01",
+                    "runbookName": "TestRunbook01"
                 }
             ]
         },
@@ -77,7 +77,7 @@
             ]
         },
         "linkedWorkspaceId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001"
+            "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-002"
         },
         "gallerySolutions": {
             "value": [
