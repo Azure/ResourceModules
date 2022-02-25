@@ -20,13 +20,13 @@ on:
     paths:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.eventgrid.systemtopics.yml'
-      - 'arm/Microsoft.EventGrid/systemtopics/**'
+      - 'arm/Microsoft.EventGrid/systemTopics/**'
       - '!*/**/readme.md'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/dependencies/**'
 
 env:
-  modulePath: 'arm/Microsoft.EventGrid/systemtopics'
+  modulePath: 'arm/Microsoft.EventGrid/systemTopics'
   workflowPath: '.github/workflows/ms.eventgrid.systemtopics.yml'
   AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
   ARM_SUBSCRIPTION_ID: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
