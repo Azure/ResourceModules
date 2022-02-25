@@ -50,11 +50,9 @@ param cuaId string = ''
 @description('Optional. The name of logs that will be streamed.')
 @allowed([
   'DeliveryFailures'
-  'PublishFailures'
 ])
 param logsToEnable array = [
   'DeliveryFailures'
-  'PublishFailures'
 ]
 
 @description('Optional. The name of metrics that will be streamed.')
