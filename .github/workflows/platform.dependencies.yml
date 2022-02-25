@@ -1135,7 +1135,7 @@ jobs:
       - name: 'Deploy module'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
-          templateFilePath: 'arm/${{ env.namespace }}/subscriptions/deploy.bicep'
+          templateFilePath: 'arm/${{ env.namespace }}/subscription/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.defaultLocation }}'
           resourceGroupName: '${{ env.defaultResourceGroupName }}'
