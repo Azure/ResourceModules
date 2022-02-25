@@ -75,8 +75,8 @@ module privateDnsZone_aaaa 'aaaa/deploy.bicep' = [for (aaaaRecord, index) in aaa
   params: {
     privateDnsZoneName: privateDnsZone.name
     name: aaaaRecord.name
-    aaaaRecords: aaaaRecord.aaaaRecords
-    metadata: aaaaRecord.metadata
+    aaaaRecords: contains(aaaaRecord, 'aaaaRecords') ? aaaaRecord.aaaaRecords : []
+    metadata: contains(aaaaRecord, 'metadata') ? aaaaRecord.metadata : {}
     ttl: contains(aaaaRecord, 'ttl') ? aaaaRecord.ttl : 3600
   }
 }]
@@ -86,8 +86,8 @@ module privateDnsZone_cname 'cname/deploy.bicep' = [for (cnameRecord, index) in 
   params: {
     privateDnsZoneName: privateDnsZone.name
     name: cnameRecord.name
-    cnameValue: cnameRecord.cname
-    metadata: cnameRecord.metadata
+    cnameValue: !empty(cnameRecord.cname) ? cnameRecord.cname : ''
+    metadata: contains(cnameRecord, 'metadata') ? cnameRecord.metadata : {}
     ttl: contains(cnameRecord, 'ttl') ? cnameRecord.ttl : 3600
   }
 }]
@@ -97,8 +97,8 @@ module privateDnsZone_mx 'mx/deploy.bicep' = [for (mxRecord, index) in mx: {
   params: {
     privateDnsZoneName: privateDnsZone.name
     name: mxRecord.name
-    metadata: mxRecord.metadata
-    mxRecords: mxRecord.mxRecords
+    metadata: contains(mxRecord, 'metadata') ? mxRecord.metadata : {}
+    mxRecords: contains(mxRecord, 'mxRecords') ? mxRecord.mxRecords : []
     ttl: contains(mxRecord, 'ttl') ? mxRecord.ttl : 3600
   }
 }]
@@ -108,8 +108,8 @@ module privateDnsZone_ptr 'ptr/deploy.bicep' = [for (ptrRecord, index) in ptr: {
   params: {
     privateDnsZoneName: privateDnsZone.name
     name: ptrRecord.name
-    metadata: ptrRecord.metadata
-    ptrRecords: ptrRecord.ptrRecords
+    metadata: contains(ptrRecord, 'metadata') ? ptrRecord.metadata : {}
+    ptrRecords: contains(ptrRecord, 'ptrRecords') ? ptrRecord.ptrRecords : []
     ttl: contains(ptrRecord, 'ttl') ? ptrRecord.ttl : 3600
   }
 }]
@@ -119,8 +119,8 @@ module privateDnsZone_soa 'soa/deploy.bicep' = [for (soaRecord, index) in soa: {
   params: {
     privateDnsZoneName: privateDnsZone.name
     name: soaRecord.name
-    metadata: soaRecord.metadata
-    soaRecord: soaRecord.soaRecord
+    metadata: contains(soaRecord, 'metadata') ? soaRecord.metadata : {}
+    soaRecord: contains(soaRecord, 'soaRecord') ? soaRecord.soaRecord : {}
     ttl: contains(soaRecord, 'ttl') ? soaRecord.ttl : 3600
   }
 }]
@@ -130,8 +130,8 @@ module privateDnsZone_srv 'srv/deploy.bicep' = [for (srvRecord, index) in srv: {
   params: {
     privateDnsZoneName: privateDnsZone.name
     name: srvRecord.name
-    metadata: srvRecord.metadata
-    srvRecords: srvRecord.srvRecords
+    metadata: contains(srvRecord, 'metadata') ? srvRecord.metadata : {}
+    srvRecords: contains(srvRecord, 'srvRecords') ? srvRecord.srvRecords : []
     ttl: contains(srvRecord, 'ttl') ? srvRecord.ttl : 3600
   }
 }]
@@ -141,9 +141,9 @@ module privateDnsZone_txt 'txt/deploy.bicep' = [for (txtRecord, index) in txt: {
   params: {
     privateDnsZoneName: privateDnsZone.name
     name: txtRecord.name
-    metadata: txtRecord.metadata
+    metadata: contains(txtRecord, 'metadata') ? txtRecord.metadata : {}
+    txtRecords: contains(txtRecord, 'txtRecords') ? txtRecord.txtRecords : []
     ttl: contains(txtRecord, 'ttl') ? txtRecord.ttl : 3600
-    txtRecords: txtRecord.txtRecords
   }
 }]
 
