@@ -81,7 +81,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        parameterFilePaths: ['parameters.json', 'min.parameters.json']
+        parameterFilePaths:
+          ['parameters.json', 'min.parameters.json', 'rg.parameters.json']
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -98,7 +99,7 @@ jobs:
       - name: 'Using parameter file [${{ matrix.parameterFilePaths }}]'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
-          templateFilePath: '${{ env.modulePath }}/.bicep/nested_roleDefinitions_sub.bicep'
+          templateFilePath: '${{ env.modulePath }}/deploy.bicep'
           parameterFilePath: '${{ env.modulePath }}/.parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.defaultLocation }}'
           resourceGroupName: '${{ env.resourceGroupName }}'
