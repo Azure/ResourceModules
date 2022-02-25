@@ -6,7 +6,7 @@
             "value": "adp-<<namePrefix>>-sb-pass-loc-rg"
         },
         "displayName": {
-            "value": "Audit resource location matches resource group location (subscription scope)"
+            "value": "[Depedency] Audit resource location matches resource group location (subscription scope)"
         },
         "policyDefinitionID": {
             "value": "/providers/Microsoft.Authorization/policyDefinitions/0a914e76-4921-4c19-b460-a2d36003525a"
