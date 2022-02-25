@@ -9,7 +9,7 @@
             "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
         },
         "topicType": {
-            "value": "Microsoft.Storage/storageAccounts"
+            "value": "Microsoft.Storage.StorageAccounts"
         },
         "roleAssignments": {
             "value": [
