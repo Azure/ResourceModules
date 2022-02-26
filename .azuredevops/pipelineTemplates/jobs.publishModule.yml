@@ -161,9 +161,9 @@ jobs:
             . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Publish-ModuleToUniversalArtifactFeed.ps1')
 
             #Prioritizing the bicep file
-            $TemplateFilePath = Join-Path '$(ENVMODULEPATH)' 'deploy.bicep'
+            $TemplateFilePath = Join-Path -Path '$(ENVMODULEPATH)' -ChildPath 'deploy.bicep'
             if (-not (Test-Path $TemplateFilePath)) {
-              $TemplateFilePath = Join-Path -Path $FolderPath -ChildPath 'deploy.json'
+              $TemplateFilePath = Join-Path -Path '$(ENVMODULEPATH)' -ChildPath 'deploy.json'
             }
 
             $functionInput = @{
@@ -217,9 +217,9 @@ jobs:
             . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Publish-ModuleToTemplateSpec.ps1')
 
             #Prioritizing the bicep file
-            $TemplateFilePath = Join-Path '$(ENVMODULEPATH)' 'deploy.bicep'
+            $TemplateFilePath = Join-Path -Path '$(ENVMODULEPATH)' -ChildPath 'deploy.bicep'
             if (-not (Test-Path $TemplateFilePath)) {
-              $TemplateFilePath = Join-Path -Path $FolderPath -ChildPath 'deploy.json'
+              $TemplateFilePath = Join-Path -Path '$(ENVMODULEPATH)' -ChildPath 'deploy.json'
             }
 
             $functionInput = @{
@@ -269,9 +269,9 @@ jobs:
             . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Publish-ModuleToPrivateBicepRegistry.ps1')
 
             #Prioritizing the bicep file
-            $TemplateFilePath = Join-Path '$(ENVMODULEPATH)' 'deploy.bicep'
+            $TemplateFilePath = Join-Path -Path '$(ENVMODULEPATH)' -ChildPath 'deploy.bicep'
             if (-not (Test-Path $TemplateFilePath)) {
-              $TemplateFilePath = Join-Path -Path $FolderPath -ChildPath 'deploy.json'
+              $TemplateFilePath = Join-Path -Path '$(ENVMODULEPATH)' -ChildPath 'deploy.json'
             }
 
             $functionInput = @{
