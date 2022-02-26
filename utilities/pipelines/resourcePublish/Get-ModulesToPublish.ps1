@@ -388,7 +388,7 @@ function Get-ModulesToPublish {
             TemplateFilePath = $TemplateFileToPublish.FullName
         }
 
-        # if ($ModuleVersion -notmatch 'prerelease') {
+        if ($ModuleVersion -notmatch 'prerelease') {
 
             # Latest Major,Minor
             $ModulesToPublish += @{
@@ -401,7 +401,7 @@ function Get-ModulesToPublish {
                 Version          = ($ModuleVersion.Split('.')[0])
                 TemplateFilePath = $TemplateFileToPublish.FullName
             }
-        # }
+        }
 
         $ParentTemplateFilesToPublish = Get-ParentModuleTemplateFile -TemplateFilePath $TemplateFileToPublish.FullName -Recurse
         foreach ($ParentTemplateFileToPublish in $ParentTemplateFilesToPublish) {
@@ -412,7 +412,7 @@ function Get-ModulesToPublish {
                 TemplateFilePath = $ParentTemplateFileToPublish.FullName
             }
 
-            # if ($ModuleVersion -notmatch 'prerelease') {
+            if ($ModuleVersion -notmatch 'prerelease') {
 
                 # Latest Major,Minor
                 $ModulesToPublish += @{
@@ -425,7 +425,7 @@ function Get-ModulesToPublish {
                     Version          = ($ParentModuleVersion.Split('.')[0])
                     TemplateFilePath = $ParentTemplateFileToPublish.FullName
                 }
-            # }
+            }
         }
     }
 
