@@ -31,9 +31,13 @@ function Get-ModifiedFileList {
         [string] $CompareCommit = 'HEAD^'
     )
 
-    Write-Verbose "Gathering modified files between [$CompareCommit] and [$Commit]" -Verbose
+    Write-Verbose "Gathering modified files between [$Commit] and [$CompareCommit]" -Verbose
     $Diff = git diff --name-only --diff-filter=AM $CompareCommit $Commit
-    $ModifiedFiles = $Diff | Get-Item -Force
+    $ModifiedFiles = $Diff | Get-Item
+    Write-Verbose 'The following files have been added or modified:' -Verbose
+    $ModifiedFiles | ForEach-Object {
+        Write-Verbose (' - [{0}]' -f $_.FullName) -Verbose
+    }
 
     return $ModifiedFiles
 }
@@ -58,15 +62,22 @@ function Get-GitBranchName {
     param ()
 
     # Get branch name from Git
-    $BranchName = git branch --show-current
+    try {
+        Write-Verbose "Git: Using git command 'git branch --show-current'" -Verbose
+        $BranchName = git branch --show-current
+    } catch {
+        Write-Verbose 'Git: No name found.' -Verbose
+    }
 
     # If git could not get name, try GitHub variable
     if ([string]::IsNullOrEmpty($BranchName) -and (Test-Path env:GITHUB_REF_NAME)) {
+        Write-Verbose "GitHub: Using environment variable 'GITHUB_REF_NAME': [$env:GITHUB_REF_NAME]" -Verbose
         $BranchName = $env:GITHUB_REF_NAME
     }
 
     # If git could not get name, try Azure DevOps variable
     if ([string]::IsNullOrEmpty($BranchName) -and (Test-Path env:BUILD_SOURCEBRANCHNAME)) {
+        Write-Verbose "Azure DevOps: Using environment variable 'BUILD_SOURCEBRANCHNAME': [$env:BUILD_SOURCEBRANCHNAME]" -Verbose
         $BranchName = $env:BUILD_SOURCEBRANCHNAME
     }
 
@@ -131,7 +142,7 @@ Find the closest deploy.bicep/json file to the changed files in the module folde
 Mandatory. Path to the main/parent module folder.
 
 .EXAMPLE
-Get-TemplateFileToPublish -ModuleFolderPath "C:\Repos\Azure\ResourceModules\arm\Microsoft.Storage\storageAccounts\"
+Get-TemplateFileToUpdate -ModuleFolderPath "C:\Repos\Azure\ResourceModules\arm\Microsoft.Storage\storageAccounts\"
 
 C:\Repos\Azure\ResourceModules\arm\Microsoft.Storage\storageAccounts\tableServices\tables\deploy.bicep
 
@@ -140,34 +151,32 @@ Assuming there is a changed file in 'Microsoft.Storage\storageAccounts\tableServ
 the function would return the deploy.bicep file in the same folder.
 
 #>
-function Get-TemplateFileToPublish {
+function Get-TemplateFileToUpdate {
 
     [CmdletBinding()]
     param (
         [Parameter(Mandatory)]
         [string] $ModuleFolderPath
     )
-    $ModuleFolderRelPath = $ModuleFolderPath.Split('/arm/')[-1]
+
     $ModifiedFiles = Get-ModifiedFileList -Verbose
-    Write-Verbose "Looking for modified files under: [$ModuleFolderRelPath]" -Verbose
+    Write-Verbose "Looking for modified files under: [$ModuleFolderPath]" -Verbose
     $ModifiedModuleFiles = $ModifiedFiles | Where-Object { $_.FullName -like "*$ModuleFolderPath*" }
 
-    $TemplateFilesToPublish = $ModifiedModuleFiles | ForEach-Object {
+    $TemplateFilesToUpdate = $ModifiedModuleFiles | ForEach-Object {
         Find-TemplateFile -Path $_.FullName -Verbose
     } | Sort-Object -Property FullName -Unique -Descending
 
-    if ($TemplateFilesToPublish.Count -eq 0) {
+    if ($TemplateFilesToUpdate.Count -eq 0) {
         Write-Verbose 'No template file found in the modified module.' -Verbose
     }
 
-    Write-Verbose ('Modified modules found: [{0}]' -f $TemplateFilesToPublish.count) -Verbose
-    $TemplateFilesToPublish | ForEach-Object {
-        $RelPath = ($_.FullName).Split('/arm/')[-1]
-        $RelPath = $RelPath.Split('/deploy.')[0]
-        Write-Verbose " - $RelPath" -Verbose
+    Write-Verbose ('Modified modules found: [{0}]' -f $TemplateFilesToUpdate.count) -Verbose
+    $TemplateFilesToUpdate | ForEach-Object {
+        Write-Verbose " - $($_.FullName)" -Verbose
     }
 
-    return $TemplateFilesToPublish
+    return $TemplateFilesToUpdate
 }
 
 <#
@@ -221,21 +230,20 @@ function Get-ParentModuleTemplateFile {
         $ParentTemplateFilePath = Join-Path -Path $ParentFolderPath -ChildPath 'deploy.json'
     }
 
-    $ParentTemplateFileRelPath = $ParentTemplateFilePath.Split('/arm/')[-1]
-    $ParentTemplateFileRelPath = $ParentTemplateFileRelPath.Split('/deploy.')[0]
-
     if (-not (Test-Path -Path $ParentTemplateFilePath)) {
+        Write-Verbose "No parent template file found at: [$ParentTemplateFilePath]" -Verbose
         return
     }
 
-    $ParentTemplateFilesToPublish = [System.Collections.ArrayList]@()
-    $ParentTemplateFilesToPublish += $ParentTemplateFilePath | Get-Item
+    Write-Verbose "Parent template file found at: [$ParentTemplateFilePath]" -Verbose
+    $ParentTemplateFilesToUpdate = [System.Collections.ArrayList]@()
+    $ParentTemplateFilesToUpdate += $ParentTemplateFilePath | Get-Item
 
     if ($Recurse) {
-        $ParentTemplateFilesToPublish += Get-ParentModuleTemplateFile $ParentTemplateFilePath -Recurse
+        $ParentTemplateFilesToUpdate += Get-ParentModuleTemplateFile $ParentTemplateFilePath -Recurse
     }
 
-    return $ParentTemplateFilesToPublish
+    return $ParentTemplateFilesToUpdate
 }
 
 <#
@@ -294,7 +302,7 @@ function Get-ModuleVersionFromFile {
     $VersionFilePath = Join-Path -Path $ModuleFolder -ChildPath 'version.json'
 
     if (-not (Test-Path -Path $VersionFilePath)) {
-        throw "No version file found at: [$VersionFilePath]"
+        throw "No version file found at: $VersionFilePath"
     }
 
     $VersionFileContent = Get-Content $VersionFilePath | ConvertFrom-Json
@@ -335,9 +343,13 @@ function Get-NewModuleVersion {
 
     $BranchName = Get-GitBranchName -Verbose
 
+    Write-Verbose "Current branch: [$BranchName]" -Verbose
     if ($BranchName -ne 'main' -and $BranchName -ne 'master') {
+        Write-Verbose "PreRelease: [$PreRelease]" -Verbose
         $NewVersion = "$NewVersion-prerelease".ToLower()
     }
+
+    Write-Verbose "New version: [$NewVersion]" -Verbose
 
     return $NewVersion
 }
@@ -346,19 +358,16 @@ function Get-NewModuleVersion {
 
 <#
 .SYNOPSIS
-Generates a hashtable with template file paths to publish with a new version.
+Generates a hashtable with template file paths to update with a new version.
 
 .DESCRIPTION
-Generates a hashtable with template file paths to publish with a new version.
+Generates a hashtable with template file paths to update with a new version.
 
 .PARAMETER TemplateFilePath
 Mandatory. Path to a deploy.bicep/json file.
 
-.PARAMETER PublishAll
-Optional. If true, the module will be published regardless of it being modified or not.
-
 .EXAMPLE
-Get-ModulesToPublish -TemplateFilePath 'C:\Repos\Azure\ResourceModules\arm\Microsoft.Storage\storageAccounts\deploy.bicep'
+Get-ModulesToUpdate -TemplateFilePath 'C:\Repos\Azure\ResourceModules\arm\Microsoft.Storage\storageAccounts\deploy.bicep'
 
 
 Name               Value
@@ -370,91 +379,47 @@ Version            0.3.848-prerelease
 TemplateFilePath   C:\Repos\Azure\ResourceModules\arm\Microsoft.Storage\storageAccounts\deploy.bicep
 Version            0.3.848-prerelease
 
-Generates a hashtable with template file paths to publish and their new versions.
+Generates a hashtable with template file paths to update and their new versions.
 
 
 #>#
-function Get-ModulesToPublish {
+function Get-ModulesToUpdate {
 
     [CmdletBinding()]
     param (
         [Parameter(Mandatory)]
-        [string] $TemplateFilePath,
-
-        [Parameter(Mandatory = $false)]
-        [switch] $PublishAll
+        [string] $TemplateFilePath
     )
 
     $ModuleFolderPath = Split-Path $TemplateFilePath -Parent
-    if ($PublishAll) {
-        Write-Verbose '[PublishAll] Publish module and all child modules.' -Verbose
-        $TemplateFilesToPublish = $ModuleFolderPath | Get-ChildItem -File -Include deploy.* -Recurse -Force
-    } else {
-        $TemplateFilesToPublish = Get-TemplateFileToPublish -ModuleFolderPath $ModuleFolderPath | Sort-Object FullName -Descending
-    }
+    $TemplateFilesToUpdate = Get-TemplateFileToUpdate -ModuleFolderPath $ModuleFolderPath | Sort-Object FullName -Descending
 
-    $ModulesToPublish = [System.Collections.ArrayList]@()
-    foreach ($TemplateFileToPublish in $TemplateFilesToPublish) {
-        $ModuleVersion = Get-NewModuleVersion -TemplateFilePath $TemplateFileToPublish.FullName -Verbose
-
-        $ModulesToPublish += @{
+    $ModulesToUpdate = [System.Collections.ArrayList]@()
+    foreach ($TemplateFileToUpdate in $TemplateFilesToUpdate) {
+        $ModuleVersion = Get-NewModuleVersion -TemplateFilePath $TemplateFileToUpdate.FullName -Verbose
+        $ModulesToUpdate += @{
             Version          = $ModuleVersion
-            TemplateFilePath = $TemplateFileToPublish.FullName
+            TemplateFilePath = $TemplateFileToUpdate.FullName
         }
 
-        if ($ModuleVersion -notmatch 'prerelease') {
+        $ParentTemplateFilesToUpdate = Get-ParentModuleTemplateFile -TemplateFilePath $TemplateFileToUpdate.FullName -Recurse
+        Write-Verbose "Found [$($ParentTemplateFilesToUpdate.count)] parent template files to update" -Verbose
+        foreach ($ParentTemplateFileToUpdate in $ParentTemplateFilesToUpdate) {
+            $ParentModuleVersion = Get-NewModuleVersion -TemplateFilePath $ParentTemplateFileToUpdate.FullName
 
-            # Latest Major,Minor
-            $ModulesToPublish += @{
-                Version          = ($ModuleVersion.Split('.')[0..1] -join '.')
-                TemplateFilePath = $TemplateFileToPublish.FullName
-            }
-
-            # Latest Major
-            $ModulesToPublish += @{
-                Version          = ($ModuleVersion.Split('.')[0])
-                TemplateFilePath = $TemplateFileToPublish.FullName
-            }
-        }
-
-        $ParentTemplateFilesToPublish = Get-ParentModuleTemplateFile -TemplateFilePath $TemplateFileToPublish.FullName -Recurse
-        foreach ($ParentTemplateFileToPublish in $ParentTemplateFilesToPublish) {
-            $ParentModuleVersion = Get-NewModuleVersion -TemplateFilePath $ParentTemplateFileToPublish.FullName
-
-            $ModulesToPublish += @{
+            $ModulesToUpdate += @{
                 Version          = $ParentModuleVersion
-                TemplateFilePath = $ParentTemplateFileToPublish.FullName
-            }
-
-            if ($ModuleVersion -notmatch 'prerelease') {
-
-                # Latest Major,Minor
-                $ModulesToPublish += @{
-                    Version          = ($ParentModuleVersion.Split('.')[0..1] -join '.')
-                    TemplateFilePath = $ParentTemplateFileToPublish.FullName
-                }
-
-                # Latest Major
-                $ModulesToPublish += @{
-                    Version          = ($ParentModuleVersion.Split('.')[0])
-                    TemplateFilePath = $ParentTemplateFileToPublish.FullName
-                }
+                TemplateFilePath = $ParentTemplateFileToUpdate.FullName
             }
         }
     }
 
-    $ModulesToPublish = $ModulesToPublish | Sort-Object TemplateFilePath, Version -Descending -Unique
+    $ModulesToUpdate = $ModulesToUpdate | Sort-Object TemplateFilePath -Descending -Unique
 
-    if ($ModulesToPublish.count -gt 0) {
-        Write-Verbose 'Publish the following modules:'-Verbose
-        $ModulesToPublish | ForEach-Object {
-            $RelPath = ($_.TemplateFilePath).Split('/arm/')[-1]
-            $RelPath = $RelPath.Split('/deploy.')[0]
-            Write-Verbose (' - [{0}] [{1}] ' -f $RelPath, $_.Version) -Verbose
-        }
-    } else {
-        Write-Verbose 'No modules to publish.'-Verbose
+    Write-Verbose 'Update the following modules:'-Verbose
+    $ModulesToUpdate | ForEach-Object {
+        Write-Verbose (' - [{0}] [{1}] ' -f $_.Version, $_.TemplateFilePath) -Verbose
     }
 
-    return $ModulesToPublish
+    return $ModulesToUpdate
 }
