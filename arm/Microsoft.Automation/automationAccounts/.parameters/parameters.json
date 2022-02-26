@@ -164,7 +164,7 @@
             }
         },
         "encryptionKeySource" : {
-            "value" : "Microsoft.KeyVault"
+            "value" : "Microsoft.Keyvault"
         },
         "encryptionUserAssignedIdentity": {
             "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/encryptestmi001"
