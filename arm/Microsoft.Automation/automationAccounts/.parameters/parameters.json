@@ -167,7 +167,7 @@
             "value" : "Microsoft.Keyvault"
         },
         "encryptionUserAssignedIdentity": {
-            "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/encryptestmi001"
+            "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001"
         },
         "keyName" : {
                 "value" : "keyEncryptionKey"
