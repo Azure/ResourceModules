@@ -33,7 +33,6 @@ This module deploys an Azure Automation Account.
 | `diagnosticWorkspaceId` | string |  |  | Optional. Resource ID of the diagnostic log analytics workspace. |
 | `encryptionKeySource` | string | Microsoft.Automation |  | Optional. Encryption Key Source. For security reasons it is recommended to use Microsoft.Keyvault if custom keys are available. |
 | `encryptionUserAssignedIdentity` | string | Microsoft.Automation |  | User identity used for CMK. If you set encryptionKeySource as Microsoft.Keyvault encryptionUserAssignedIdentity is required. |
-
 | `gallerySolutions` | array | `[]` |  | Optional. List of gallerySolutions to be created in the linked log analytics workspace |
 | `jobSchedules` | _[jobSchedules](jobSchedules/readme.md)_ array | `[]` |  | Optional. List of jobSchedules to be created in the automation account. |
 | `linkedWorkspaceId` | string |  |  | Optional. ID of the log analytics workspace to be linked to the deployed automation account. |
