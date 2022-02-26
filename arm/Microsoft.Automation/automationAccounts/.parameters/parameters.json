@@ -66,13 +66,13 @@
                 {
                     "name": "TestDateTime",
                     "value": "\"\\/Date(1637934042656)\\/\"",
-                    "description": "TestDateTimeDescription"
+                    "description": "TestDateTimeDescription",
+                    "isEncrypted": false
                 },
                 {
                     "name": "TestEncryptedVariable",
                     "value": "\"TestEncryptedValue\"",
-                    "description": "TestEncryptedDescription",
-                    "isEncrypted": true
+                    "description": "TestEncryptedDescription"
                 }
             ]
         },
@@ -164,17 +164,20 @@
             }
         },
         "encryptionKeySource" : {
-            "value" : "Microsoft.Automation"
+            "value" : "Microsoft.KeyVault"
         },
-        // "keyName" : {
-        //     "value" : "keyEncryptionKey"
-        // },
-        // "keyvaultUri" : {
-        //     "value" : "https://adp-carml-az-kv-x-001.vault.azure.net/"
-        // },
-        // "keyVersion" : {
-        //     "value" : "ff30d33d9866460085c3608c657cd5a2"
-        // },
+        "encryptionUserAssignedIdentity": {
+            "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/encryptestmi001"
+        },
+        "keyName" : {
+                "value" : "keyEncryptionKey"
+        },
+        "keyvaultUri" : {
+                    "value" : "https://encryptest001.vault.azure.net/"
+        },
+        "keyVersion" : {
+                    "value" : "4583473fb1894b25ba1ccda457784ba5"
+        },
         "roleAssignments": {
             "value": [
                 {

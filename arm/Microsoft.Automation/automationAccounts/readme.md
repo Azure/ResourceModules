@@ -32,11 +32,10 @@ This module deploys an Azure Automation Account.
 | `diagnosticStorageAccountId` | string |  |  | Optional. Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string |  |  | Optional. Resource ID of the diagnostic log analytics workspace. |
 | `encryptionKeySource` | string | Microsoft.Automation |  | Optional. Encryption Key Source. For security reasons it is recommended to use Microsoft.Keyvault if custom keys are available. |
+| `encryptionUserAssignedIdentity` | string | Microsoft.Automation |  | User identity used for CMK. If you set encryptionKeySource as Microsoft.Keyvault encryptionUserAssignedIdentity is required. |
+
 | `gallerySolutions` | array | `[]` |  | Optional. List of gallerySolutions to be created in the linked log analytics workspace |
 | `jobSchedules` | _[jobSchedules](jobSchedules/readme.md)_ array | `[]` |  | Optional. List of jobSchedules to be created in the automation account. |
-| `keyName` | array | `[]` |  | Optional. The name of key used to encrypt data. This parameter is needed only if you enable Microsoft.Keyvault as encryptionKeySource. |
-| `keyvaultUri` | array | `[]` |  | Optional. The URI of the key vault key used to encrypt data. This parameter is needed only if you enable Microsoft.Keyvault as encryptionKeySource. |
-| `keyVersion` | array | `[]` |  | Optional. The key version of the key used to encrypt data. This parameter is needed only if you enable Microsoft.Keyvault as encryptionKeySource. |
 | `linkedWorkspaceId` | string |  |  | Optional. ID of the log analytics workspace to be linked to the deployed automation account. |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
@@ -55,6 +54,28 @@ This module deploys an Azure Automation Account.
 | `userAssignedIdentities` | object | `{object}` |  | Optional. The ID(s) to assign to the resource. |
 | `variables` | _[variables](variables/readme.md)_ array | `[]` |  | Optional. List of variables to be created in the automation account. |
 
+### Parameter Usage: `encryption`
+Prerequsites:
+- User Assigned Identity for Encryption needs `Get`, `List`, `Wrap` and `Unwrap` permissions on the key
+- To use Azure Automation with customer managed keys, both `Soft Delete` and `Do Not Purge` features must be turned on to allow for recovery of keys in case of accidental deletion.
+
+```json
+"encryptionKeySource" : {
+    "value" : "Microsoft.KeyVault"
+},
+"encryptionUserAssignedIdentity": {
+    "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/<<identityName>>"
+},
+"keyName" : {
+        "value" : "keyEncryptionKey"
+},
+"keyvaultUri" : {
+            "value" : "https://<<keyValutName>>.vault.azure.net/"
+},
+"keyVersion" : {
+            "value" : "aa11b22c1234567890c3608c657cd5a2"
+},
+```
 ### Parameter Usage: `privateEndpoints`
 
 To use Private Endpoint the following dependencies must be deployed:
@@ -90,7 +111,6 @@ To use Private Endpoint the following dependencies must be deployed:
     ]
 }
 ```
-
 ### Parameter Usage: `roleAssignments`
 
 ```json

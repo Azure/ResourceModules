@@ -11,6 +11,9 @@ param location string = resourceGroup().location
 ])
 param skuName string = 'Basic'
 
+@description('Optional. User identity used for CMK. If you set encryptionKeySource as Microsoft.Keyvault encryptionUserAssignedIdentity is required.')
+param encryptionUserAssignedIdentity string = ''
+
 @description('Optional. Encryption Key Source. For security reasons it is recommended to use Microsoft.Keyvault if custom keys are available.')
 @allowed([
   'Microsoft.Automation'
@@ -155,6 +158,9 @@ resource automationAccount 'Microsoft.Automation/automationAccounts@2020-01-13-p
       name: skuName
     }
     encryption: {
+      identity: encryptionKeySource == 'Microsoft.Keyvault' ? {
+        userAssignedIdentity: any(encryptionUserAssignedIdentity)
+      } : null
       keySource: encryptionKeySource
       keyVaultProperties: encryptionKeySource == 'Microsoft.Keyvault' ? {
         keyName: keyName
@@ -228,7 +234,7 @@ module automationAccount_variables 'variables/deploy.bicep' = [for (variable, in
     name: variable.name
     description: contains(variable, 'description') ? variable.description : ''
     value: variable.value
-    isEncrypted: contains(variable, 'isEncrypted') ? variable.isEncrypted : false
+    isEncrypted: contains(variable, 'isEncrypted') ? variable.isEncrypted : true
   }
 }]
 
