@@ -93,7 +93,7 @@ function Publish-ModuleToUniversalArtifactFeed {
 
     process {
         if (-not (Assert-SemVerCompatability -Version $ModuleVersion)) {
-            Write-Warning "Invalid module version: [$ModuleVersion]"
+            Write-Warning "Invalid module version: [$ModuleVersion] - Skipping"
             return
         }
 
