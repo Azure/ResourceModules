@@ -164,7 +164,7 @@ function Get-TemplateFileToPublish {
     $TemplateFilesToPublish | ForEach-Object {
         $RelPath = ($_.FullName).Split('/arm/')[-1]
         $RelPath = $RelPath.Split('/deploy.')[0]
-        Write-Verbose " - $RelPath" -Verbose
+        Write-Verbose " - [$RelPath]" -Verbose
     }
 
     return $TemplateFilesToPublish
@@ -220,9 +220,6 @@ function Get-ParentModuleTemplateFile {
     if (-not (Test-Path $TemplateFilePath)) {
         $ParentTemplateFilePath = Join-Path -Path $ParentFolderPath -ChildPath 'deploy.json'
     }
-
-    $ParentTemplateFileRelPath = $ParentTemplateFilePath.Split('/arm/')[-1]
-    $ParentTemplateFileRelPath = $ParentTemplateFileRelPath.Split('/deploy.')[0]
 
     if (-not (Test-Path -Path $ParentTemplateFilePath)) {
         return
@@ -354,9 +351,6 @@ Generates a hashtable with template file paths to publish with a new version.
 .PARAMETER TemplateFilePath
 Mandatory. Path to a deploy.bicep/json file.
 
-.PARAMETER PublishAll
-Optional. If true, the module will be published regardless of it being modified or not.
-
 .EXAMPLE
 Get-ModulesToPublish -TemplateFilePath 'C:\Repos\Azure\ResourceModules\arm\Microsoft.Storage\storageAccounts\deploy.bicep'
 
@@ -379,19 +373,11 @@ function Get-ModulesToPublish {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory)]
-        [string] $TemplateFilePath,
-
-        [Parameter(Mandatory = $false)]
-        [switch] $PublishAll
+        [string] $TemplateFilePath
     )
 
     $ModuleFolderPath = Split-Path $TemplateFilePath -Parent
-    if ($PublishAll) {
-        Write-Verbose '[PublishAll] Publish module and all child modules.' -Verbose
-        $TemplateFilesToPublish = $ModuleFolderPath | Get-ChildItem -File -Include deploy.* -Recurse -Force
-    } else {
-        $TemplateFilesToPublish = Get-TemplateFileToPublish -ModuleFolderPath $ModuleFolderPath | Sort-Object FullName -Descending
-    }
+    $TemplateFilesToPublish = Get-TemplateFileToPublish -ModuleFolderPath $ModuleFolderPath | Sort-Object FullName -Descending
 
     $ModulesToPublish = [System.Collections.ArrayList]@()
     foreach ($TemplateFileToPublish in $TemplateFilesToPublish) {
@@ -402,7 +388,7 @@ function Get-ModulesToPublish {
             TemplateFilePath = $TemplateFileToPublish.FullName
         }
 
-        if ($ModuleVersion -notmatch 'prerelease') {
+        # if ($ModuleVersion -notmatch 'prerelease') {
 
             # Latest Major,Minor
             $ModulesToPublish += @{
@@ -415,7 +401,7 @@ function Get-ModulesToPublish {
                 Version          = ($ModuleVersion.Split('.')[0])
                 TemplateFilePath = $TemplateFileToPublish.FullName
             }
-        }
+        # }
 
         $ParentTemplateFilesToPublish = Get-ParentModuleTemplateFile -TemplateFilePath $TemplateFileToPublish.FullName -Recurse
         foreach ($ParentTemplateFileToPublish in $ParentTemplateFilesToPublish) {
@@ -426,7 +412,7 @@ function Get-ModulesToPublish {
                 TemplateFilePath = $ParentTemplateFileToPublish.FullName
             }
 
-            if ($ModuleVersion -notmatch 'prerelease') {
+            # if ($ModuleVersion -notmatch 'prerelease') {
 
                 # Latest Major,Minor
                 $ModulesToPublish += @{
@@ -439,7 +425,7 @@ function Get-ModulesToPublish {
                     Version          = ($ParentModuleVersion.Split('.')[0])
                     TemplateFilePath = $ParentTemplateFileToPublish.FullName
                 }
-            }
+            # }
         }
     }
 

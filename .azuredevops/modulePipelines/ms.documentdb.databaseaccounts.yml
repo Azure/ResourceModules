@@ -6,11 +6,7 @@ parameters:
     type: boolean
     default: true
   - name: prerelease
-    displayName: Publish prerelease
-    type: boolean
-    default: false
-  - name: publishAll
-    displayName: Publish module and all child modules
+    displayName: Publish prerelease module
     type: boolean
     default: false
 
@@ -55,6 +51,3 @@ stages:
     condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/main'), eq(variables['Build.SourceBranch'], 'refs/heads/master'), eq('${{ parameters.prerelease }}', 'true')))
     jobs:
       - template: /.azuredevops/pipelineTemplates/jobs.publishModule.yml
-        parameters:
-          publishAll: ${{ parameters.publishAll }}
-

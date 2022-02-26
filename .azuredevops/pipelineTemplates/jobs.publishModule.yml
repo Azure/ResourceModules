@@ -27,7 +27,6 @@
 ##   | vmImage                         | '$(vmImage)'                         | You can provide either a [poolname] or [vmImage] to run the job on                                      | 'ubuntu20.04'                     |
 ##   | defaultJobTimeoutInMinutes      | 120                                  | The timeout for the job in this pipeline                                                                | 120                               |
 ##   | modulePath                      | '$(modulePath)'                      | The path to the module to deploy. E.g. [c:/KeyVault]                                                    | 'c:/KeyVault'                     |
-##   | publishAll                      | '$(publishAll)'                      | Publish module and all child modules regardless of being modified                                       | 'true'                            |
 ##   | templateSpecsRGName             | '$(templateSpecsRGName)'             | Required to publish to template spec. ResourceGroup of the template spec to publish to                  | 'mgmt-rg'                         |
 ##   | templateSpecsRGLocation         | '$(templateSpecsRGLocation)'         | Required to publish to template spec. Location of the template spec resource group                      | 'West Europe'                     |
 ##   | templateSpecsDescription        | '$(templateSpecsDescription)'        | Required to publish to template spec. Description of the template spec to publish to                    | 'IaCs module'                     |
@@ -57,7 +56,6 @@ parameters:
   # Logic-related parameters
   ## Module-related
   modulePath: '$(modulePath)'
-  publishAll: '$(publishAll)'
 
   ## TemplateSpec-related
   templateSpecsDoPublish: '$(templateSpecsDoPublish)'
@@ -168,23 +166,25 @@ jobs:
 
             $functionInput = @{
               TemplateFilePath = $TemplateFilePath
-              PublishAll            = '${{ parameters.publishAll }}' -match '^(1|true|yes|on|enabled)$'
             }
 
             Write-Verbose "Invoke Get-ModulesToPublish with" -Verbose
             Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
             # Get the modified child resources
-            $ModulesToUpdate = Get-ModulesToPublish @functionInput -Verbose
+            $ModulesToPublish = Get-ModulesToPublish @functionInput -Verbose
 
             # Publish the modified child resources
-            foreach ($ModuleToUpdate in $ModulesToUpdate) {
+            foreach ($ModuleToPublish in $ModulesToPublish) {
+              $RelPath = (($ModuleToPublish.TemplateFilePath).Split('/arm/')[-1]).Split('/deploy.')[0]
+              Write-Host "##[group]$(' - [{0}] [{1}]' -f $RelPath, $ModuleToPublish.Version)"
+
               $functionInput = @{
-                TemplateFilePath = $ModuleToUpdate.TemplateFilePath
+                TemplateFilePath = $ModuleToPublish.TemplateFilePath
                 VstsOrganizationUri = '${{ parameters.vstsOrganizationUri }}'
                 VstsFeedProject  = '${{ parameters.vstsFeedProject }}'
                 VstsFeedName     = '${{ parameters.vstsFeedName }}'
-                ModuleVersion    = $ModuleToUpdate.Version
+                ModuleVersion    = $ModuleToPublish.Version
                 BearerToken      = $env:TOKEN
               }
 
@@ -192,6 +192,7 @@ jobs:
               Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
               Publish-ModuleToUniversalArtifactFeed @functionInput -Verbose
+              Write-Host "##[endgroup]"
             }
         env:
           TOKEN: $(vstsFeedToken)
@@ -224,28 +225,32 @@ jobs:
 
             $functionInput = @{
               TemplateFilePath = $TemplateFilePath
-              PublishAll       = '${{ parameters.publishAll }}' -match '^(1|true|yes|on|enabled)$'            }
+            }
 
             Write-Verbose "Invoke Get-ModulesToPublish with" -Verbose
             Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
             # Get the modified child resources
-            $ModulesToUpdate = Get-ModulesToPublish @functionInput -Verbose
+            $ModulesToPublish = Get-ModulesToPublish @functionInput -Verbose
 
             # Publish the modified child resources
-            foreach ($ModuleToUpdate in $ModulesToUpdate) {
+            foreach ($ModuleToPublish in $ModulesToPublish) {
+              $RelPath = (($ModuleToPublish.TemplateFilePath).Split('/arm/')[-1]).Split('/deploy.')[0]
+              Write-Host "##[group]$(' - [{0}] [{1}]' -f $RelPath, $ModuleToPublish.Version)"
+
               $functionInput = @{
-                TemplateFilePath         = $ModuleToUpdate.TemplateFilePath
+                TemplateFilePath         = $ModuleToPublish.TemplateFilePath
                 TemplateSpecsRgName      = '${{ parameters.templateSpecsRgName }}'
                 TemplateSpecsRgLocation  = '${{ parameters.templateSpecsRgLocation }}'
                 TemplateSpecsDescription = '${{ parameters.templateSpecsDescription }}'
-                ModuleVersion            = $ModuleToUpdate.Version
+                ModuleVersion            = $ModuleToPublish.Version
               }
 
               Write-Verbose "Invoke Publish-ModuleToTemplateSpec with" -Verbose
               Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
               Publish-ModuleToTemplateSpec @functionInput -Verbose
+              Write-Host "##[endgroup]"
             }
 
       # [private bicep registry publish] task(s)
@@ -276,27 +281,30 @@ jobs:
 
             $functionInput = @{
               TemplateFilePath = $TemplateFilePath
-              PublishAll       = '${{ parameters.publishAll }}' -match '^(1|true|yes|on|enabled)$'
             }
 
             Write-Verbose "Invoke Get-ModulesToPublish with" -Verbose
             Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
             # Get the modified child resources
-            $ModulesToUpdate = Get-ModulesToPublish @functionInput -Verbose
+            $ModulesToPublish = Get-ModulesToPublish @functionInput -Verbose
 
             # Publish the modified child resources
-            foreach ($ModuleToUpdate in $ModulesToUpdate) {
+            foreach ($ModuleToPublish in $ModulesToPublish) {
+              $RelPath = (($ModuleToPublish.TemplateFilePath).Split('/arm/')[-1]).Split('/deploy.')[0]
+              Write-Host "##[group]$(' - [{0}] [{1}]' -f $RelPath, $ModuleToPublish.Version)"
+
               $functionInput = @{
-                TemplateFilePath         = $ModuleToUpdate.TemplateFilePath
+                TemplateFilePath         = $ModuleToPublish.TemplateFilePath
                 BicepRegistryName       = '${{ parameters.bicepRegistryName }}'
                 BicepRegistryRgName     = '${{ parameters.bicepRegistryRgName }}'
                 BicepRegistryRgLocation = '${{ parameters.bicepRegistryRgLocation }}'
-                ModuleVersion            = $ModuleToUpdate.Version
+                ModuleVersion            = $ModuleToPublish.Version
               }
 
               Write-Verbose "Invoke Publish-ModuleToPrivateBicepRegistry with" -Verbose
               Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
               Publish-ModuleToPrivateBicepRegistry @functionInput -Verbose
+              Write-Host "##[endgroup]"
             }
