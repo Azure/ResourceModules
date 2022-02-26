@@ -35,9 +35,9 @@ This module deploys an Azure Automation Account.
 | `encryptionUserAssignedIdentity` | string | Microsoft.Automation |  | User identity used for CMK. If you set encryptionKeySource as Microsoft.Keyvault encryptionUserAssignedIdentity is required. |
 | `gallerySolutions` | array | `[]` |  | Optional. List of gallerySolutions to be created in the linked log analytics workspace |
 | `jobSchedules` | _[jobSchedules](jobSchedules/readme.md)_ array | `[]` |  | Optional. List of jobSchedules to be created in the automation account. |
-| `keyName` | string | `[]` |  | Optional. The name of key used to encrypt data. This parameter is needed only if you enable Microsoft.Keyvault as encryptionKeySource. |
-| `keyvaultUri` | string | `[]` |  | Optional. The URI of the key vault key used to encrypt data. This parameter is needed only if you enable Microsoft.Keyvault as encryptionKeySource. |
-| `keyVersion` | string | `[]` |  | Optional. The key version of the key used to encrypt data. This parameter is needed only if you enable Microsoft.Keyvault as encryptionKeySource. |
+| `keyName` | string |  |  | Optional. The name of key used to encrypt data. This parameter is needed only if you enable Microsoft.Keyvault as encryptionKeySource. |
+| `keyvaultUri` | string |  |  | Optional. The URI of the key vault key used to encrypt data. This parameter is needed only if you enable Microsoft.Keyvault as encryptionKeySource. |
+| `keyVersion` | string |  |  | Optional. The key version of the key used to encrypt data. This parameter is needed only if you enable Microsoft.Keyvault as encryptionKeySource. |
 | `linkedWorkspaceId` | string |  |  | Optional. ID of the log analytics workspace to be linked to the deployed automation account. |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
