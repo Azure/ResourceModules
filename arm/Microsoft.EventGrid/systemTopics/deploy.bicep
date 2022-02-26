@@ -41,11 +41,24 @@ param roleAssignments array = []
 @description('Optional. Specify the type of lock.')
 param lock string = 'NotSpecified'
 
+@description('Optional. Enables system assigned managed identity on the resource.')
+param systemAssignedIdentity bool = false
+
+@description('Optional. The ID(s) to assign to the resource.')
+param userAssignedIdentities object = {}
+
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
 @description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
+
+var identityType = systemAssignedIdentity ? (!empty(userAssignedIdentities) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned') : (!empty(userAssignedIdentities) ? 'UserAssigned' : 'None')
+
+var identity = identityType != 'None' ? {
+  type: identityType
+  userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
+} : null
 
 @description('Optional. The name of logs that will be streamed.')
 @allowed([
@@ -90,6 +103,7 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 resource eventGrid 'Microsoft.EventGrid/systemTopics@2021-12-01' = {
   name: name
   location: location
+  identity: identity
   tags: tags
   properties: {
     source: source

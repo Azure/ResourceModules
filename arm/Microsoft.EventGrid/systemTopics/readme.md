@@ -25,14 +25,16 @@ This module deploys an event grid topic.
 | `diagnosticWorkspaceId` | string |  |  | Optional. Resource ID of the diagnostic log analytics workspace. |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all Resources. |
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
-| `logsToEnable` | array | `[DeliveryFailures, PublishFailures]` | `[DeliveryFailures, PublishFailures]` | Optional. The name of logs that will be streamed. |
+| `logsToEnable` | array | `[DeliveryFailures]` | `[DeliveryFailures]` | Optional. The name of logs that will be streamed. |
 | `metricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | Optional. The name of metrics that will be streamed. |
 | `name` | string |  |  | Required. The name of the Event Grid Topic |
 | `privateEndpoints` | array | `[]` |  | Optional. Configuration Details for private endpoints. |
 | `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
 | `source` | string |  |  | Required. Source for the system topic. |
+| `systemAssignedIdentity` | bool |  |  | Optional. Enables system assigned managed identity on the resource. |
 | `tags` | object | `{object}` |  | Optional. Tags of the resource. |
 | `topicType` | string |  |  | Required. TopicType for the system topic. |
+| `userAssignedIdentities` | object | `{object}` |  | Optional. The ID(s) to assign to the resource. |
 
 ### Parameter Usage: `privateEndpoints`
 
@@ -107,6 +109,19 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
         "Role": "DeploymentValidation"
     }
 }
+```
+
+### Parameter Usage: `userAssignedIdentities`
+
+You can specify multiple user assigned identities to a resource by providing additional resource IDs using the following format:
+
+```json
+"userAssignedIdentities": {
+    "value": {
+        "/subscriptions/12345678-1234-1234-1234-123456789012/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001": {},
+        "/subscriptions/12345678-1234-1234-1234-123456789012/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002": {}
+    }
+},
 ```
 
 ## Outputs
