@@ -122,6 +122,9 @@ param cuaId string = ''
 @description('Generated. Do not provide a value! This date value is used to generate a SAS token to access the modules.')
 param basetime string = utcNow('u')
 
+@description('Optional. Allows https traffic only to storage service if sets to true.')
+param supportsHttpsTrafficOnly bool = true
+
 @description('Optional. The name of metrics that will be streamed.')
 @allowed([
   'Transaction'
@@ -164,7 +167,7 @@ var saBaseProperties = {
     }
   }
   accessTier: (storageAccountKind == 'Storage') ? null : storageAccountAccessTier
-  supportsHttpsTrafficOnly: true
+  supportsHttpsTrafficOnly: supportsHttpsTrafficOnly
   isHnsEnabled: ((!enableHierarchicalNamespace) ? null : enableHierarchicalNamespace)
   minimumTlsVersion: minimumTlsVersion
   networkAcls: (empty(networkAcls) ? null : networkAcls_var)

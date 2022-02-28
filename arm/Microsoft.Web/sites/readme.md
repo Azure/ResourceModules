@@ -10,8 +10,8 @@ This module deploys a web or function app.
 | `Microsoft.Authorization/roleAssignments` | 2021-04-01-preview |
 | `Microsoft.Insights/components` | 2020-02-02 |
 | `Microsoft.Insights/diagnosticSettings` | 2021-05-01-preview |
-| `Microsoft.Network/privateEndpoints` | 2021-03-01 |
-| `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | 2021-03-01 |
+| `Microsoft.Network/privateEndpoints` | 2021-05-01 |
+| `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | 2021-05-01 |
 | `Microsoft.Web/serverfarms` | 2021-02-01 |
 | `Microsoft.Web/sites` | 2020-12-01 |
 | `Microsoft.Web/sites/config` | 2021-02-01 |
