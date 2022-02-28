@@ -8,8 +8,8 @@ This template deploys a private endpoint for a generic service.
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2017-04-01 |
 | `Microsoft.Authorization/roleAssignments` | 2021-04-01-preview |
-| `Microsoft.Network/privateEndpoints` | 2021-03-01 |
-| `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | 2021-03-01 |
+| `Microsoft.Network/privateEndpoints` | 2021-05-01 |
+| `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | 2021-05-01 |
 
 ### Resource dependency
 
