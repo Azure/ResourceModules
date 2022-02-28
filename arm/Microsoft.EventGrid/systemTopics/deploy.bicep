@@ -160,3 +160,6 @@ output resourceId string = systemTopic.id
 
 @description('The name of the resource group the event grid system topic was deployed into')
 output resourceGroupName string = resourceGroup().name
+
+@description('The principal ID of the system assigned identity.')
+output systemAssignedPrincipalId string = systemAssignedIdentity && contains(systemTopic.identity, 'principalId') ? systemTopic.identity.principalId : ''

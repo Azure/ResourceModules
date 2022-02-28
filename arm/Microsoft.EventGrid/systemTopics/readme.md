@@ -131,6 +131,7 @@ You can specify multiple user assigned identities to a resource by providing add
 | `name` | string | The name of the event grid system topic |
 | `resourceGroupName` | string | The name of the resource group the event grid system topic was deployed into |
 | `resourceId` | string | The resource ID of the event grid system topic |
+| `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
 
 ## Template references
 
