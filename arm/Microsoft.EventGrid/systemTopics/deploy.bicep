@@ -111,7 +111,7 @@ resource systemTopic 'Microsoft.EventGrid/systemTopics@2021-12-01' = {
   }
 }
 
-resource eventGrid_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
+resource systemTopic_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
   name: '${systemTopic.name}-${lock}-lock'
   properties: {
     level: lock
@@ -120,7 +120,7 @@ resource eventGrid_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock !=
   scope: systemTopic
 }
 
-resource eventGrid_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(diagnosticWorkspaceId)) || (!empty(diagnosticEventHubAuthorizationRuleId)) || (!empty(diagnosticEventHubName))) {
+resource systemTopic_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(diagnosticWorkspaceId)) || (!empty(diagnosticEventHubAuthorizationRuleId)) || (!empty(diagnosticEventHubName))) {
   name: '${systemTopic.name}-diagnosticSettings'
   properties: {
     storageAccountId: !empty(diagnosticStorageAccountId) ? diagnosticStorageAccountId : null
@@ -133,7 +133,7 @@ resource eventGrid_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@202
   scope: systemTopic
 }
 
-module eventGrid_privateEndpoints '.bicep/nested_privateEndpoint.bicep' = [for (privateEndpoint, index) in privateEndpoints: if (!empty(privateEndpoints)) {
+module systemTopic_privateEndpoints '.bicep/nested_privateEndpoint.bicep' = [for (privateEndpoint, index) in privateEndpoints: if (!empty(privateEndpoints)) {
   name: '${uniqueString(deployment().name, location)}-EventGrid-PrivateEndpoint-${index}'
   params: {
     privateEndpointResourceId: systemTopic.id
@@ -143,7 +143,7 @@ module eventGrid_privateEndpoints '.bicep/nested_privateEndpoint.bicep' = [for (
   }
 }]
 
-module eventGrid_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+module systemTopic_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-EventGrid-Rbac-${index}'
   params: {
     principalIds: roleAssignment.principalIds
