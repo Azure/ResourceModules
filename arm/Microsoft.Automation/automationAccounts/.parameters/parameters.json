@@ -8,7 +8,7 @@
         "schedules": {
             "value": [
                 {
-                    "name": "TestSchedule01",
+                    "name": "TestSchedule",
                     "startTime": "",
                     "expiryTime": "9999-12-31T23:59:00+00:00",
                     "interval": 15,
@@ -30,7 +30,7 @@
         "runbooks": {
             "value": [
                 {
-                    "name": "TestRunbook01",
+                    "name": "TestRunbook",
                     "runbookType": "PowerShell",
                     "description": "Test runbook",
                     "uri": "https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/quickstarts/microsoft.automation/101-automation/scripts/AzureAutomationTutorial.ps1",
@@ -41,8 +41,8 @@
         "jobSchedules": {
             "value": [
                 {
-                    "scheduleName": "TestSchedule01",
-                    "runbookName": "TestRunbook01"
+                    "scheduleName": "TestSchedule",
+                    "runbookName": "TestRunbook"
                 }
             ]
         },
