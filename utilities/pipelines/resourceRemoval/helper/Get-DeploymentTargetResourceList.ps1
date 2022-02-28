@@ -109,7 +109,7 @@ function Get-DeploymentTargetResourceListInner {
                 if ($deployment -match '/subscriptions/') {
                     # Subscription Level Child Deployments
                     if ($deployment -match '/resourceGroups/') {
-                        # Resource Group Level Child Deployments
+                        # Resource Group Level Child Deployments (Used only if management group scope --> resource Group scope)
                         $name = Split-Path $deployment -Leaf
                         $resourceGroupName = $deployment.split('/resourceGroups/')[1].Split('/')[0]
                         [array]$resultSet += Get-DeploymentTargetResourceListInner -Name $name -ResourceGroupName $ResourceGroupName -Scope 'resourcegroup'
