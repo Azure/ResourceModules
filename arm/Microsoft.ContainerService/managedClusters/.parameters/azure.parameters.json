@@ -85,9 +85,6 @@
                 }
             ]
         },
-        "privateDNSZone": {
-            "value": "none"
-        },
         "roleAssignments": {
             "value": [
                 {

@@ -116,12 +116,8 @@ param enablePrivateCluster bool = false
 @description('Optional. Whether to create additional public FQDN for private cluster or not.')
 param enablePrivateClusterPublicFQDN bool = false
 
-@allowed([
-  'system'
-  'none'
-])
 @description('Optional. If AKS will create a Private DNS Zone in the Node Resource Group.')
-param privateDNSZone string = 'system'
+param usePrivateDNSZone bool = false
 
 @description('Required. Properties of the primary agent pool.')
 param primaryAgentPoolProfile array
@@ -439,7 +435,7 @@ resource managedCluster 'Microsoft.ContainerService/managedClusters@2021-10-01' 
       disableRunCommand: disableRunCommand
       enablePrivateCluster: enablePrivateCluster
       enablePrivateClusterPublicFQDN: enablePrivateClusterPublicFQDN
-      privateDNSZone: privateDNSZone
+      privateDNSZone: usePrivateDNSZone ? 'system' : ''
     }
     podIdentityProfile: {
       allowNetworkPluginKubenet: podIdentityProfileAllowNetworkPluginKubenet
@@ -539,7 +535,7 @@ output controlPlaneFQDN string = (enablePrivateCluster ? managedCluster.properti
 output systemAssignedPrincipalId string = systemAssignedIdentity && contains(managedCluster.identity, 'principalId') ? managedCluster.identity.principalId : ''
 
 @description('The Object ID of the AKS identity.')
-output kubeletidentityObjectId string = managedCluster.properties.identityProfile.kubeletidentity.objectId
+output kubeletidentityObjectId string = contains(managedCluster.properties, 'identityProfile') ? contains(managedCluster.properties.identityProfile, 'kubeletidentity') ? contains(managedCluster.properties.identityProfile.kubeletidentity, 'objectId') ? managedCluster.properties.identityProfile.kubeletidentity.objectId : '' : '' : ''
 
 @description('The Object ID of the OMS agent identity.')
-output omsagentIdentityObjectId string = managedCluster.properties.addonProfiles.omsagent.identity.objectId
+output omsagentIdentityObjectId string = contains(managedCluster.properties, 'addonProfiles') ? contains(managedCluster.properties.addonProfiles, 'omsagent') ? contains(managedCluster.properties.addonProfiles.omsagent, 'identity') ? contains(managedCluster.properties.addonProfiles.omsagent.identity, 'objectId') ? managedCluster.properties.addonProfiles.omsagent.identity.objectId : '' : '' : '' : ''
