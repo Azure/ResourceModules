@@ -24,7 +24,7 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
-resource automationAccount 'Microsoft.Automation/automationAccounts@2020-01-13-preview' existing = {
+resource automationAccount 'Microsoft.Automation/automationAccounts@2021-06-22' existing = {
   name: automationAccountName
 }
 
