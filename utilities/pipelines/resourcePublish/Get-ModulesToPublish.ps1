@@ -28,11 +28,11 @@ function Get-ModifiedFileList {
         [string] $Commit = 'HEAD',
 
         [Parameter(Mandatory = $false)]
-        [string] $CompareCommit = 'HEAD^'
+        [string] $CompareCommit = 'main'
     )
 
-    Write-Verbose "Gathering modified files between [$CompareCommit] and [$Commit]" -Verbose
-    $Diff = git diff --name-only --diff-filter=AM $CompareCommit $Commit
+    Write-Verbose "Gathering modified files between curent branch and main" -Verbose
+    $Diff = git diff --name-only --diff-filter=AM main
     $ModifiedFiles = $Diff | Get-Item -Force
 
     return $ModifiedFiles
