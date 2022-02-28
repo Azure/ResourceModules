@@ -38,23 +38,25 @@
             ]
         },
         "secrets": {
-            "value": [
-                {
-                    "name": "secretName",
-                    "value": "secretValue",
-                    "contentType": "Something",
-                    "attributesExp": 1702648632,
-                    "attributesNbf": 10000,
-                    "roleAssignments": [
-                        {
-                            "roleDefinitionIdOrName": "Reader",
-                            "principalIds": [
-                                "<<deploymentSpId>>"
-                            ]
-                        }
-                    ]
-                }
-            ]
+            "value": {
+                "secureList": [
+                    {
+                        "name": "secretName",
+                        "value": "secretValue",
+                        "contentType": "Something",
+                        "attributesExp": 1702648632,
+                        "attributesNbf": 10000,
+                        "roleAssignments": [
+                            {
+                                "roleDefinitionIdOrName": "Reader",
+                                "principalIds": [
+                                    "<<deploymentSpId>>"
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
         },
         "keys": {
             "value": [
