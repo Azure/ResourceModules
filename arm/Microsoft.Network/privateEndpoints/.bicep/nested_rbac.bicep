@@ -20,7 +20,7 @@ var builtInRoleNames = {
   'User Access Administrator': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '18d7d88d-d35e-4fb5-a5c3-7773c20a72d9')
 }
 
-resource privateEndpoint 'Microsoft.Network/privateEndpoints@2021-03-01' existing = {
+resource privateEndpoint 'Microsoft.Network/privateEndpoints@2021-05-01' existing = {
   name: last(split(resourceId, '/'))
 }
 
