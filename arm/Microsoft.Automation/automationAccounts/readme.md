@@ -78,6 +78,13 @@ Prerequsites:
 "keyVersion" : {
             "value" : "aa11b22c1234567890c3608c657cd5a2"
 },
+
+"userAssignedIdentities": {
+    "value": {
+        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001": {},
+        ...
+    }
+},
 ```
 ### Parameter Usage: `privateEndpoints`
 
