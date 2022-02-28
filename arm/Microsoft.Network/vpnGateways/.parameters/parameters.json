@@ -16,12 +16,12 @@
                     "enableBgp": true,
                     "vpnLinkConnections": [
                         {
-                            "id": "/subscriptions//<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/vpnSites/SampleVpnSite/vpnSiteLinks/link1",
+                            "id": "/subscriptions//<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/vpnSites/SampleVpnSite/vpnSiteLinks/link2",
                             "name": "link1",
                             "properties": {
                                 "ipsecPolicies": [],
                                 "vpnSiteLink": {
-                                    "id": "/subscriptions//<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/vpnSites/SampleVpnSite/vpnSiteLinks/link1"
+                                    "id": "/subscriptions//<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/vpnSites/SampleVpnSite/vpnSiteLinks/link2"
                                 },
                                 "vpnConnectionProtocolType": "IKEv2",
                                 "usePolicyBasedTrafficSelectors": false
