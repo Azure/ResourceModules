@@ -87,10 +87,10 @@ This module deploys Azure Kubernetes Cluster (AKS).
 | `podIdentityProfileUserAssignedIdentities` | array | `[]` |  | Optional. The pod identities to use in the cluster. |
 | `podIdentityProfileUserAssignedIdentityExceptions` | array | `[]` |  | Optional. The pod identity exceptions to allow. |
 | `primaryAgentPoolProfile` | array |  |  | Required. Properties of the primary agent pool. |
-| `privateDNSZone` | string | `system` | `[system, none]` | Optional. If AKS will create a Private DNS Zone in the Node Resource Group. |
 | `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
 | `systemAssignedIdentity` | bool | `False` |  | Optional. Enables system assigned managed identity on the resource. |
 | `tags` | object | `{object}` |  | Optional. Tags of the resource. |
+| `usePrivateDNSZone` | bool | `False` |  | Optional. If AKS will create a Private DNS Zone in the Node Resource Group. |
 | `userAssignedIdentities` | object | `{object}` |  | Optional. The ID(s) to assign to the resource. |
 
 ### Parameter Usage: `roleAssignments`
