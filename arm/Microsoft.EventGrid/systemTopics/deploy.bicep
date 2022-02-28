@@ -100,7 +100,7 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
-resource eventGrid 'Microsoft.EventGrid/systemTopics@2021-12-01' = {
+resource systemTopic 'Microsoft.EventGrid/systemTopics@2021-12-01' = {
   name: name
   location: location
   identity: identity
@@ -112,16 +112,16 @@ resource eventGrid 'Microsoft.EventGrid/systemTopics@2021-12-01' = {
 }
 
 resource eventGrid_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
-  name: '${eventGrid.name}-${lock}-lock'
+  name: '${systemTopic.name}-${lock}-lock'
   properties: {
     level: lock
     notes: (lock == 'CanNotDelete') ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
-  scope: eventGrid
+  scope: systemTopic
 }
 
 resource eventGrid_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(diagnosticWorkspaceId)) || (!empty(diagnosticEventHubAuthorizationRuleId)) || (!empty(diagnosticEventHubName))) {
-  name: '${eventGrid.name}-diagnosticSettings'
+  name: '${systemTopic.name}-diagnosticSettings'
   properties: {
     storageAccountId: !empty(diagnosticStorageAccountId) ? diagnosticStorageAccountId : null
     workspaceId: !empty(diagnosticWorkspaceId) ? diagnosticWorkspaceId : null
@@ -130,13 +130,13 @@ resource eventGrid_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@202
     metrics: diagnosticsMetrics
     logs: diagnosticsLogs
   }
-  scope: eventGrid
+  scope: systemTopic
 }
 
 module eventGrid_privateEndpoints '.bicep/nested_privateEndpoint.bicep' = [for (privateEndpoint, index) in privateEndpoints: if (!empty(privateEndpoints)) {
   name: '${uniqueString(deployment().name, location)}-EventGrid-PrivateEndpoint-${index}'
   params: {
-    privateEndpointResourceId: eventGrid.id
+    privateEndpointResourceId: systemTopic.id
     privateEndpointVnetLocation: (empty(privateEndpoints) ? 'dummy' : reference(split(privateEndpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location)
     privateEndpointObj: privateEndpoint
     tags: tags
@@ -148,15 +148,15 @@ module eventGrid_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) 
   params: {
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
-    resourceId: eventGrid.id
+    resourceId: systemTopic.id
   }
 }]
 
 @description('The name of the event grid system topic')
-output name string = eventGrid.name
+output name string = systemTopic.name
 
-@description('The resource ID of the event grid')
-output resourceId string = eventGrid.id
+@description('The resource ID of the event grid system topic')
+output resourceId string = systemTopic.id
 
-@description('The name of the resource group the event grid was deployed into')
+@description('The name of the resource group the event grid system topic was deployed into')
 output resourceGroupName string = resourceGroup().name

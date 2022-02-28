@@ -129,8 +129,8 @@ You can specify multiple user assigned identities to a resource by providing add
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The name of the event grid system topic |
-| `resourceGroupName` | string | The name of the resource group the event grid was deployed into |
-| `resourceId` | string | The resource ID of the event grid |
+| `resourceGroupName` | string | The name of the resource group the event grid system topic was deployed into |
+| `resourceId` | string | The resource ID of the event grid system topic |
 
 ## Template references
 
