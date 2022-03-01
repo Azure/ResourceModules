@@ -8,7 +8,7 @@ This module deploys an Azure Automation Account.
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2017-04-01 |
 | `Microsoft.Authorization/roleAssignments` | 2021-04-01-preview |
-| `Microsoft.Automation/automationAccounts` | 2021-06-22 |
+| `Microsoft.Automation/automationAccounts` | 2020-01-13-preview |
 | `Microsoft.Automation/automationAccounts/jobSchedules` | 2020-01-13-preview |
 | `Microsoft.Automation/automationAccounts/modules` | 2020-01-13-preview |
 | `Microsoft.Automation/automationAccounts/runbooks` | 2019-06-01 |
