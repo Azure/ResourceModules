@@ -17,11 +17,16 @@ Get modified files between previous and origin/main.
 #>
 function Get-ModifiedFileList {
     [CmdletBinding()]
-    param (
-    )
+    param ()
 
-    Write-Verbose "Gathering modified files between curent branch and main" -Verbose
-    $Diff = git diff --name-only --diff-filter=AM origin/main
+    $CurrentBranch = Get-GitBranchName
+    if (($CurrentBranch -eq 'main') -or ($CurrentBranch -eq 'master')) {
+        Write-Verbose "Gathering modified files on last commit on main" -Verbose
+        $Diff = git diff --name-only --diff-filter=AM $CurrentBranch^..$CurrentBranch
+    } else {
+        Write-Verbose "Gathering modified files between current branch and main" -Verbose
+        $Diff = git diff --name-only --diff-filter=AM origin/main
+    }
     $ModifiedFiles = $Diff | Get-Item -Force
 
     return $ModifiedFiles
