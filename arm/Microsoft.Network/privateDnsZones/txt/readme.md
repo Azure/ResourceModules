@@ -1,6 +1,6 @@
 # Network Private Dns Zones TXT record `[Microsoft.Network/privateDnsZones/TXT]`
 
-This module deploys Network PrivateDnsZones TXT record.
+This module deploys a Private DNS Zone TXT record.
 
 ## Resource Types
 
