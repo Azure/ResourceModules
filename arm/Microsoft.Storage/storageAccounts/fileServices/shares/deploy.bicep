@@ -1,5 +1,5 @@
 @maxLength(24)
-@description('Required. Name of the Storage Account.')
+@description('Required. Name of the Storage Account...')
 param storageAccountName string
 
 @description('Optional. The name of the file service')
