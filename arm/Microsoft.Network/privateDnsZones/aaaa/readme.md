@@ -1,6 +1,6 @@
 # Private DNS Zone AAAA record `[Microsoft.Network/privateDnsZones/AAAA]`
 
-This module deploys Network PrivateDnsZones AAAA record.
+This module deploys a Private DNS Zone AAAA record.
 
 ## Resource Types
 
