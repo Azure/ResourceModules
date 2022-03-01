@@ -1,6 +1,6 @@
 # Analysis Services Server `[Microsoft.AnalysisServices/servers]`
 
-This module deploys an analysis service server.
+This module deploys an analysis service server...
 
 ## Resource Types
 
