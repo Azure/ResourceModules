@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "adp-<<namePrefix>>-az-aut-law-001"
+            "value": "adp-<<namePrefix>>-az-law-aut-001"
         }
     }
 }
