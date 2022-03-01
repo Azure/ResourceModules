@@ -14,7 +14,7 @@ This module deploys Network PrivateDnsZones PTR record.
 | :-- | :-- | :-- | :-- | :-- |
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `metadata` | object | `{object}` |  | Optional. The metadata attached to the record set. |
-| `name` | string |  |  | Required. The name of the A record. |
+| `name` | string |  |  | Required. The name of the PTR record. |
 | `privateDnsZoneName` | string |  |  | Required. Private DNS zone name. |
 | `ptrRecords` | array | `[]` |  | Optional. The list of PTR records in the record set. |
 | `ttl` | int | `3600` |  | Optional. The TTL (time-to-live) of the records in the record set. |
