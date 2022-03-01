@@ -39,8 +39,8 @@ param nonComplianceMessage string = ''
 ])
 param enforcementMode string = 'Default'
 
-@sys.description('Optional. The Target Scope for the Policy. The name of the management group for the policy assignment')
-param managementGroupId string = ''
+@sys.description('Optional. The Target Scope for the Policy. The name of the management group for the policy assignment. If not provided, will use the current scope for deployment.')
+param managementGroupId string = managementGroup().name
 
 @sys.description('Optional. The Target Scope for the Policy. The subscription ID of the subscription for the policy assignment')
 param subscriptionId string = ''
@@ -54,10 +54,7 @@ param notScopes array = []
 @sys.description('Optional. Location for all resources.')
 param location string = deployment().location
 
-@sys.description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered. Use when scope target is resource group.')
-param cuaId string = ''
-
-module policyAssignment_mg 'managementGroup/deploy.bicep' = if (!empty(managementGroupId) && empty(subscriptionId) && empty(resourceGroupName)) {
+module policyAssignment_mg 'managementGroup/deploy.bicep' = if (empty(subscriptionId) && empty(resourceGroupName)) {
   name: '${uniqueString(deployment().name, location)}-PolicyAssignment-MG-Module'
   scope: managementGroup(managementGroupId)
   params: {
@@ -77,7 +74,7 @@ module policyAssignment_mg 'managementGroup/deploy.bicep' = if (!empty(managemen
   }
 }
 
-module policyAssignment_sub 'subscription/deploy.bicep' = if (empty(managementGroupId) && !empty(subscriptionId) && empty(resourceGroupName)) {
+module policyAssignment_sub 'subscription/deploy.bicep' = if (!empty(subscriptionId) && empty(resourceGroupName)) {
   name: '${uniqueString(deployment().name, location)}-PolicyAssignment-Sub-Module'
   scope: subscription(subscriptionId)
   params: {
@@ -97,7 +94,7 @@ module policyAssignment_sub 'subscription/deploy.bicep' = if (empty(managementGr
   }
 }
 
-module policyAssignment_rg 'resourceGroup/deploy.bicep' = if (empty(managementGroupId) && !empty(resourceGroupName) && !empty(subscriptionId)) {
+module policyAssignment_rg 'resourceGroup/deploy.bicep' = if (!empty(resourceGroupName) && !empty(subscriptionId)) {
   name: '${uniqueString(deployment().name, location)}-PolicyAssignment-RG-Module'
   scope: resourceGroup(subscriptionId, resourceGroupName)
   params: {
@@ -114,15 +111,14 @@ module policyAssignment_rg 'resourceGroup/deploy.bicep' = if (empty(managementGr
     notScopes: !empty(notScopes) ? notScopes : []
     subscriptionId: subscriptionId
     location: location
-    cuaId: !empty(cuaId) ? cuaId : ''
   }
 }
 
 @sys.description('Policy Assignment Name')
-output name string = !empty(managementGroupId) ? policyAssignment_mg.outputs.name : (!empty(resourceGroupName) ? policyAssignment_rg.outputs.name : policyAssignment_sub.outputs.name)
+output name string = empty(subscriptionId) && empty(resourceGroupName) ? policyAssignment_mg.outputs.name : (!empty(subscriptionId) && empty(resourceGroupName) ? policyAssignment_sub.outputs.name : policyAssignment_rg.outputs.name)
 
 @sys.description('Policy Assignment principal ID')
-output principalId string = !empty(managementGroupId) ? policyAssignment_mg.outputs.principalId : (!empty(resourceGroupName) ? policyAssignment_rg.outputs.principalId : policyAssignment_sub.outputs.principalId)
+output principalId string = empty(subscriptionId) && empty(resourceGroupName) ? policyAssignment_mg.outputs.principalId : (!empty(subscriptionId) && empty(resourceGroupName) ? policyAssignment_sub.outputs.principalId : policyAssignment_rg.outputs.principalId)
 
 @sys.description('Policy Assignment resource ID')
-output resourceId string = !empty(managementGroupId) ? policyAssignment_mg.outputs.resourceId : (!empty(resourceGroupName) ? policyAssignment_rg.outputs.resourceId : policyAssignment_sub.outputs.resourceId)
+output resourceId string = empty(subscriptionId) && empty(resourceGroupName) ? policyAssignment_mg.outputs.resourceId : (!empty(subscriptionId) && empty(resourceGroupName) ? policyAssignment_sub.outputs.resourceId : policyAssignment_rg.outputs.resourceId)
