@@ -12,7 +12,7 @@ This module deploys load balancer backend address pools.
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool |  |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `False` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `loadBalancerBackendAddresses` | array | `[]` |  | Optional. An array of backend addresses. |
 | `loadBalancerName` | string |  |  | Required. The name of the parent load balancer |
 | `name` | string |  |  | Required. The name of the backend address pool |

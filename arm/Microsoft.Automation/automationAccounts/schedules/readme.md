@@ -15,10 +15,10 @@ This module deploys an Azure Automation Account Schedule.
 | `advancedSchedule` | object | `{object}` |  | Optional. The properties of the create Advanced Schedule. |
 | `automationAccountName` | string |  |  | Required. Name of the parent Automation Account. |
 | `baseTime` | string | `[utcNow('u')]` |  | Optional. Time used as a basis for e.g. the schedule start date. |
-| `enableDefaultTelemetry` | bool |  |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `False` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `expiryTime` | string |  |  | Optional. The end time of the schedule. |
 | `frequency` | string | `OneTime` | `[Day, Hour, Minute, Month, OneTime, Week]` | Optional. The frequency of the schedule. |
-| `interval` | int |  |  | Optional. Anything |
+| `interval` | int | `0` |  | Optional. Anything |
 | `name` | string |  |  | Required. Name of the Automation Account schedule. |
 | `scheduleDescription` | string |  |  | Optional. The description of the schedule. |
 | `startTime` | string |  |  | Optional. The start time of the schedule. |

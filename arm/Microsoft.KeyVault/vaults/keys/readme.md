@@ -17,7 +17,7 @@ This module deploys a key vault key.
 | `attributesExp` | int | `-1` |  | Optional. Expiry date in seconds since 1970-01-01T00:00:00Z. For security reasons, it is recommended to set an expiration date whenever possible. |
 | `attributesNbf` | int | `-1` |  | Optional. Not before date in seconds since 1970-01-01T00:00:00Z. |
 | `curveName` | string | `P-256` | `[P-256, P-256K, P-384, P-521]` | Optional. The elliptic curve name. |
-| `enableDefaultTelemetry` | bool |  |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `False` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `keyOps` | array | `[]` | `[decrypt, encrypt, import, sign, unwrapKey, verify, wrapKey]` | Optional. Array of JsonWebKeyOperation |
 | `keySize` | int | `-1` |  | Optional. The key size in bits. For example: 2048, 3072, or 4096 for RSA. |
 | `keyVaultName` | string |  |  | Required. The name of the key vault |

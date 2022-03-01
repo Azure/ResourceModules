@@ -14,12 +14,12 @@ This module deploys an Agent Pool for a Container Service Managed Cluster
 | :-- | :-- | :-- | :-- | :-- |
 | `availabilityZones` | array | `[]` |  | Optional. The list of Availability zones to use for nodes. This can only be specified if the AgentPoolType property is "VirtualMachineScaleSets".	 |
 | `count` | int | `1` |  | Optional. Desired Number of agents (VMs) specified to host docker containers. Allowed values must be in the range of 0 to 1000 (inclusive) for user pools and in the range of 1 to 1000 (inclusive) for system pools. The default value is 1. |
-| `enableAutoScaling` | bool |  | `[True, False]` | Optional. Whether to enable auto-scaler |
-| `enableDefaultTelemetry` | bool |  |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `enableEncryptionAtHost` | bool |  | `[True, False]` | Optional. This is only supported on certain VM sizes and in certain Azure regions. For more information, see: /azure/aks/enable-host-encryption	 |
-| `enableFIPS` | bool |  | `[True, False]` | Optional. See Add a FIPS-enabled node pool (https://docs.microsoft.com/en-us/azure/aks/use-multiple-node-pools#add-a-fips-enabled-node-pool-preview) for more details. |
-| `enableNodePublicIP` | bool |  | `[True, False]` | Optional. Some scenarios may require nodes in a node pool to receive their own dedicated public IP addresses. A common scenario is for gaming workloads, where a console needs to make a direct connection to a cloud virtual machine to minimize hops. For more information see assigning a public IP per node (https://docs.microsoft.com/en-us/azure/aks/use-multiple-node-pools#assign-a-public-ip-per-node-for-your-node-pools). The default is false. |
-| `enableUltraSSD` | bool |  | `[True, False]` | Optional. Whether to enable UltraSSD |
+| `enableAutoScaling` | bool | `False` | `[True, False]` | Optional. Whether to enable auto-scaler |
+| `enableDefaultTelemetry` | bool | `False` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableEncryptionAtHost` | bool | `False` | `[True, False]` | Optional. This is only supported on certain VM sizes and in certain Azure regions. For more information, see: /azure/aks/enable-host-encryption	 |
+| `enableFIPS` | bool | `False` | `[True, False]` | Optional. See Add a FIPS-enabled node pool (https://docs.microsoft.com/en-us/azure/aks/use-multiple-node-pools#add-a-fips-enabled-node-pool-preview) for more details. |
+| `enableNodePublicIP` | bool | `False` | `[True, False]` | Optional. Some scenarios may require nodes in a node pool to receive their own dedicated public IP addresses. A common scenario is for gaming workloads, where a console needs to make a direct connection to a cloud virtual machine to minimize hops. For more information see assigning a public IP per node (https://docs.microsoft.com/en-us/azure/aks/use-multiple-node-pools#assign-a-public-ip-per-node-for-your-node-pools). The default is false. |
+| `enableUltraSSD` | bool | `False` | `[True, False]` | Optional. Whether to enable UltraSSD |
 | `gpuInstanceProfile` | string |  | `[MIG1g, MIG2g, MIG3g, MIG4g, MIG7g, ]` | Optional. GPUInstanceProfile to be used to specify GPU MIG instance profile for supported GPU VM SKU. |
 | `kubeletDiskType` | string |  |  | Optional. Determines the placement of emptyDir volumes, container runtime data root, and Kubelet ephemeral storage. |
 | `managedClusterName` | string |  |  | Required. Name of the managed cluster |
@@ -33,7 +33,7 @@ This module deploys an Agent Pool for a Container Service Managed Cluster
 | `nodePublicIpPrefixId` | string |  |  | Optional. ResourceId of the node PublicIPPrefix |
 | `nodeTaints` | array | `[]` |  | Optional. The taints added to new nodes during node pool create and scale. For example, key=value:NoSchedule.	 |
 | `orchestratorVersion` | string |  |  | Optional. As a best practice, you should upgrade all node pools in an AKS cluster to the same Kubernetes version. The node pool version must have the same major version as the control plane. The node pool minor version must be within two minor versions of the control plane version. The node pool version cannot be greater than the control plane version. For more information see upgrading a node pool (https://docs.microsoft.com/en-us/azure/aks/use-multiple-node-pools#upgrade-a-node-pool). |
-| `osDiskSizeGB` | int |  |  | Optional. OS Disk Size in GB to be used to specify the disk size for every machine in the master/agent pool. If you specify 0, it will apply the default osDisk size according to the vmSize specified. |
+| `osDiskSizeGB` | int | `0` |  | Optional. OS Disk Size in GB to be used to specify the disk size for every machine in the master/agent pool. If you specify 0, it will apply the default osDisk size according to the vmSize specified. |
 | `osDiskType` | string |  | `[Ephemeral, Managed, ]` | Optional. The default is "Ephemeral" if the VM supports it and has a cache disk larger than the requested OSDiskSizeGB. Otherwise, defaults to "Managed". May not be changed after creation. For more information see Ephemeral OS (https://docs.microsoft.com/en-us/azure/aks/cluster-configuration#ephemeral-os). |
 | `osSku` | string |  | `[CBLMariner, Ubuntu, ]` | Optional. Specifies an OS SKU. This value must not be specified if OSType is Windows. |
 | `osType` | string | `Linux` | `[Linux, Windows]` | Optional. The operating system type. The default is Linux. |

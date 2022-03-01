@@ -21,7 +21,7 @@ The following resources are required to be able to deploy this resource.
 | `apiManagementServiceName` | string |  |  | Required. The name of the of the API Management service. |
 | `cacheDescription` | string |  |  | Optional. Cache description |
 | `connectionString` | string |  |  | Required. Runtime connection string to cache. Can be referenced by a named value like so, {{<named-value>}} |
-| `enableDefaultTelemetry` | bool |  |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `False` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `name` | string |  |  | Required. Identifier of the Cache entity. Cache identifier (should be either 'default' or valid Azure region identifier). |
 | `resourceId` | string |  |  | Optional. Original uri of entity in external system cache points to. |
 | `useFromLocation` | string |  |  | Required. Location identifier to use cache from (should be either 'default' or valid Azure region identifier) |

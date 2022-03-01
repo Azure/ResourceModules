@@ -20,11 +20,11 @@ The following resources are required to be able to deploy this resource.
 | :-- | :-- | :-- | :-- | :-- |
 | `apiManagementServiceName` | string |  |  | Required. The name of the of the API Management service. |
 | `displayName` | string |  |  | Required. Unique name of NamedValue. It may contain only letters, digits, period, dash, and underscore characters. |
-| `enableDefaultTelemetry` | bool |  |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `False` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `keyVault` | object | `{object}` |  | Optional. KeyVault location details of the namedValue.  |
 | `name` | string |  |  | Required. Named value Name. |
 | `namedValueTags` | array | `[]` |  | Optional. Tags that when provided can be used to filter the NamedValue list. - string |
-| `secret` | bool |  |  | Optional. Determines whether the value is a secret and should be encrypted or not. Default value is false. |
+| `secret` | bool | `False` |  | Optional. Determines whether the value is a secret and should be encrypted or not. Default value is false. |
 | `value` | string | `[newGuid()]` |  | Optional. Value of the NamedValue. Can contain policy expressions. It may not be empty or consist only of whitespace. This property will not be filled on 'GET' operations! Use '/listSecrets' POST request to get the value. |
 
 ### Parameter Usage: `keyVault`

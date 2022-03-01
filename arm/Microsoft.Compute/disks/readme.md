@@ -14,14 +14,14 @@ This template deploys a disk
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `acceleratedNetwork` | bool |  |  | Optional. True if the image from which the OS disk is created supports accelerated networking. |
-| `burstingEnabled` | bool |  |  | Optional. Set to true to enable bursting beyond the provisioned performance target of the disk. |
+| `acceleratedNetwork` | bool | `False` |  | Optional. True if the image from which the OS disk is created supports accelerated networking. |
+| `burstingEnabled` | bool | `False` |  | Optional. Set to true to enable bursting beyond the provisioned performance target of the disk. |
 | `completionPercent` | int | `100` |  | Optional. Percentage complete for the background copy when a resource is created via the CopyStart operation. |
 | `createOption` | string | `Empty` | `[Attach, Copy, CopyStart, Empty, FromImage, Import, ImportSecure, Restore, Upload, UploadPreparedSecure]` | Optional. Sources of a disk creation. |
-| `diskIOPSReadWrite` | int |  |  | Optional. The number of IOPS allowed for this disk; only settable for UltraSSD disks. |
-| `diskMBpsReadWrite` | int |  |  | Optional. The bandwidth allowed for this disk; only settable for UltraSSD disks. |
-| `diskSizeGB` | int |  |  | Optional. If create option is empty, this field is mandatory and it indicates the size of the disk to create. |
-| `enableDefaultTelemetry` | bool |  |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `diskIOPSReadWrite` | int | `0` |  | Optional. The number of IOPS allowed for this disk; only settable for UltraSSD disks. |
+| `diskMBpsReadWrite` | int | `0` |  | Optional. The bandwidth allowed for this disk; only settable for UltraSSD disks. |
+| `diskSizeGB` | int | `0` |  | Optional. If create option is empty, this field is mandatory and it indicates the size of the disk to create. |
+| `enableDefaultTelemetry` | bool | `False` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `hyperVGeneration` | string | `V2` | `[V1, V2]` | Optional. The hypervisor generation of the Virtual Machine. Applicable to OS disks only. |
 | `imageReferenceId` | string |  |  | Optional. A relative uri containing either a Platform Image Repository or user image reference. |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Resource location. |

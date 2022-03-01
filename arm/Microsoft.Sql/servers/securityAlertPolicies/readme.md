@@ -13,11 +13,11 @@ This module deploys an SQL Server Security Alert Policy.
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `disabledAlerts` | array | `[]` |  | Optional. Specifies an array of alerts that are disabled. Allowed values are: Sql_Injection, Sql_Injection_Vulnerability, Access_Anomaly, Data_Exfiltration, Unsafe_Action, Brute_Force. |
-| `emailAccountAdmins` | bool |  |  | Optional. Specifies that the alert is sent to the account administrators. |
+| `emailAccountAdmins` | bool | `False` |  | Optional. Specifies that the alert is sent to the account administrators. |
 | `emailAddresses` | array | `[]` |  | Optional. Specifies an array of email addresses to which the alert is sent. |
-| `enableDefaultTelemetry` | bool |  |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `False` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `name` | string |  |  | Required. The name of the Security Alert Policy. |
-| `retentionDays` | int |  |  | Optional. Specifies the number of days to keep in the Threat Detection audit logs. |
+| `retentionDays` | int | `0` |  | Optional. Specifies the number of days to keep in the Threat Detection audit logs. |
 | `serverName` | string |  |  | Required. The Name of SQL Server |
 | `state` | string | `Disabled` | `[Disabled, Enabled]` | Optional. Specifies the state of the policy, whether it is enabled or disabled or a policy has not been applied yet on the specific database. |
 | `storageAccountAccessKey` | secureString |  |  | Optional. Specifies the identifier key of the Threat Detection audit storage account.. |

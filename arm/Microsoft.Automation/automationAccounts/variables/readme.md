@@ -14,8 +14,8 @@ This module deploys a variable to an Azure Automation Account.
 | :-- | :-- | :-- | :-- | :-- |
 | `automationAccountName` | string |  |  | Required. Name of the parent Automation Account |
 | `description` | string |  |  | Optional. The description of the variable. |
-| `enableDefaultTelemetry` | bool |  |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `isEncrypted` | bool |  |  | Optional. If the variable should be encrypted. |
+| `enableDefaultTelemetry` | bool | `False` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `isEncrypted` | bool | `False` |  | Optional. If the variable should be encrypted. |
 | `name` | string |  |  | Required. The name of the variable. |
 | `value` | string |  |  | Required. The value of the variable. |
 

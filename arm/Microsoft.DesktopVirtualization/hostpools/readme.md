@@ -22,7 +22,7 @@ This module deploys an Azure virtual desktop host pool.
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticStorageAccountId` | string |  |  | Optional. Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string |  |  | Optional. Resource ID of the diagnostic log analytics workspace. |
-| `enableDefaultTelemetry` | bool |  |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `False` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `hostpoolDescription` | string |  |  | Optional. The description of the Host Pool to be created. |
 | `hostpoolFriendlyName` | string |  |  | Optional. The friendly name of the Host Pool to be created. |
 | `hostpoolType` | string | `Pooled` | `[Personal, Pooled]` | Optional. Set this parameter to Personal if you would like to enable Persistent Desktop experience. Defaults to Pooled. |
@@ -35,11 +35,11 @@ This module deploys an Azure virtual desktop host pool.
 | `personalDesktopAssignmentType` | string |  | `[Automatic, Direct, ]` | Optional. Set the type of assignment for a Personal Host Pool type |
 | `preferredAppGroupType` | string | `Desktop` | `[Desktop, None, RailApplications]` | Optional. The type of preferred application group type, default to Desktop Application Group |
 | `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalIds' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
-| `startVMOnConnect` | bool |  |  | Optional. Enable Start VM on connect to allow users to start the virtual machine from a deallocated state. Important: Custom RBAC role required to power manage VMs. |
+| `startVMOnConnect` | bool | `False` |  | Optional. Enable Start VM on connect to allow users to start the virtual machine from a deallocated state. Important: Custom RBAC role required to power manage VMs. |
 | `tags` | object | `{object}` |  | Optional. Tags of the resource. |
 | `tokenValidityLength` | string | `PT8H` |  | Optional. Host Pool token validity length. Usage: 'PT8H' - valid for 8 hours; 'P5D' - valid for 5 days; 'P1Y' - valid for 1 year. When not provided, the token will be valid for 8 hours. |
-| `validationEnviroment` | bool |  |  | Optional. Whether to use validation enviroment. When set to true, the Host Pool will be deployed in a validation 'ring' (environment) that receives all the new features (might be less stable). Ddefaults to false that stands for the stable, production-ready environment. |
-| `validationEnvironment` | bool |  |  | Optional. Validation host pool allows you to test service changes before they are deployed to production. |
+| `validationEnviroment` | bool | `False` |  | Optional. Whether to use validation enviroment. When set to true, the Host Pool will be deployed in a validation 'ring' (environment) that receives all the new features (might be less stable). Ddefaults to false that stands for the stable, production-ready environment. |
+| `validationEnvironment` | bool | `False` |  | Optional. Validation host pool allows you to test service changes before they are deployed to production. |
 | `vmTemplate` | object | `{object}` |  | Optional. The necessary information for adding more VMs to this Host Pool. |
 
 ### Parameter Usage: `roleAssignments`

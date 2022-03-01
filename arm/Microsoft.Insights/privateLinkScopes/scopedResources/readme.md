@@ -12,7 +12,7 @@ This module deploys Insights PrivateLinkScopes ScopedResources.
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool |  |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `False` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `linkedResourceId` | string |  |  | Required. The resource ID of the scoped Azure monitor resource. |
 | `name` | string |  |  | Required. Name of the private link scoped resource. |
 | `privateLinkScopeName` | string |  |  | Required. Name of the parent private link scope. |

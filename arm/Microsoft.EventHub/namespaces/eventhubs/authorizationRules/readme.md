@@ -12,7 +12,7 @@ This module deploys an EventHub Namespace EventHubs Authorization Rule
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool |  |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `False` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `eventHubName` | string |  |  | Required. The name of the event hub namespace event hub |
 | `name` | string |  |  | Required. The name of the authorization rule |
 | `namespaceName` | string |  |  | Required. The name of the event hub namespace |

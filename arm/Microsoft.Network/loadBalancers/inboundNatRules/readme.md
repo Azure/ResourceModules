@@ -14,9 +14,9 @@ This module deploys load balancers inbound NAT rules.
 | :-- | :-- | :-- | :-- | :-- |
 | `backendAddressPoolName` | string |  |  | Optional. Name of the backend address pool |
 | `backendPort` | int | `[parameters('frontendPort')]` |  | Optional. The port used for the internal endpoint. |
-| `enableDefaultTelemetry` | bool |  |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `enableFloatingIP` | bool |  |  | Optional. Configures a virtual machine's endpoint for the floating IP capability required to configure a SQL AlwaysOn Availability Group. This setting is required when using the SQL AlwaysOn Availability Groups in SQL server. This setting can't be changed after you create the endpoint. |
-| `enableTcpReset` | bool |  |  | Optional. Receive bidirectional TCP Reset on TCP flow idle timeout or unexpected connection termination. This element is only used when the protocol is set to TCP. |
+| `enableDefaultTelemetry` | bool | `False` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableFloatingIP` | bool | `False` |  | Optional. Configures a virtual machine's endpoint for the floating IP capability required to configure a SQL AlwaysOn Availability Group. This setting is required when using the SQL AlwaysOn Availability Groups in SQL server. This setting can't be changed after you create the endpoint. |
+| `enableTcpReset` | bool | `False` |  | Optional. Receive bidirectional TCP Reset on TCP flow idle timeout or unexpected connection termination. This element is only used when the protocol is set to TCP. |
 | `frontendIPConfigurationName` | string |  |  | Required. The name of the frontend IP address to set for the inbound NAT rule |
 | `frontendPort` | int |  |  | Required. The port for the external endpoint. Port numbers for each rule must be unique within the Load Balancer.  |
 | `frontendPortRangeEnd` | int | `-1` |  | Optional. The port range end for the external endpoint. This property is used together with BackendAddressPool and FrontendPortRangeStart. Individual inbound NAT rule port mappings will be created for each backend address from BackendAddressPool. |

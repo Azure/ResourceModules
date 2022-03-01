@@ -13,7 +13,7 @@ This module deploys a collection within a MongoDB.
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `databaseAccountName` | string |  |  | Required. Name of the Cosmos DB database account. |
-| `enableDefaultTelemetry` | bool |  |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `False` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `indexes` | array |  |  | Required. Indexes for the collection |
 | `mongodbDatabaseName` | string |  |  | Required. Name of the mongodb database |
 | `name` | string |  |  | Required. Name of the collection |

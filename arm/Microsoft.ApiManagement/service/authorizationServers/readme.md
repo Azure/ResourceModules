@@ -27,13 +27,13 @@ The following resources are required to be able to deploy this resource.
 | `clientRegistrationEndpoint` | string |  |  | Optional. Optional reference to a page where client or app registration for this authorization server is performed. Contains absolute URL to entity being referenced. |
 | `clientSecret` | secureString |  |  | Required. Client or app secret registered with this authorization server. This property will not be filled on 'GET' operations! Use '/listSecrets' POST request to get the value. |
 | `defaultScope` | string |  |  | Optional. Access token scope that is going to be requested by default. Can be overridden at the API level. Should be provided in the form of a string containing space-delimited values. |
-| `enableDefaultTelemetry` | bool |  |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `False` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `grantTypes` | array |  |  | Required. Form of an authorization grant, which the client uses to request the access token. - authorizationCode, implicit, resourceOwnerPassword, clientCredentials |
 | `name` | string |  |  | Required. Identifier of the authorization server. |
 | `resourceOwnerPassword` | string |  |  | Optional. Can be optionally specified when resource owner password grant type is supported by this authorization server. Default resource owner password. |
 | `resourceOwnerUsername` | string |  |  | Optional. Can be optionally specified when resource owner password grant type is supported by this authorization server. Default resource owner username. |
 | `serverDescription` | string |  |  | Optional. Description of the authorization server. Can contain HTML formatting tags. |
-| `supportState` | bool |  |  | Optional. If true, authorization server will include state parameter from the authorization request to its response. Client may use state parameter to raise protocol security. |
+| `supportState` | bool | `False` |  | Optional. If true, authorization server will include state parameter from the authorization request to its response. Client may use state parameter to raise protocol security. |
 | `tokenBodyParameters` | array | `[]` |  | Optional. Additional parameters required by the token endpoint of this authorization server represented as an array of JSON objects with name and value string properties, i.e. {"name" : "name value", "value": "a value"}. - TokenBodyParameterContract object |
 | `tokenEndpoint` | string |  |  | Optional. OAuth token endpoint. Contains absolute URI to entity being referenced. |
 

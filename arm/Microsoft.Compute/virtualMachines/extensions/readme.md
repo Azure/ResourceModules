@@ -14,14 +14,14 @@ This module deploys a virtual machine extension.
 | :-- | :-- | :-- | :-- | :-- |
 | `autoUpgradeMinorVersion` | bool |  |  | Required. Indicates whether the extension should use a newer minor version if one is available at deployment time. Once deployed, however, the extension will not upgrade minor versions unless redeployed, even with this property set to true |
 | `enableAutomaticUpgrade` | bool |  |  | Required. Indicates whether the extension should be automatically upgraded by the platform if there is a newer version of the extension available |
-| `enableDefaultTelemetry` | bool |  |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `False` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `forceUpdateTag` | string |  |  | Optional. How the extension handler should be forced to update even if the extension configuration has not changed |
 | `location` | string | `[resourceGroup().location]` |  | Optional. The location the extension is deployed to |
 | `name` | string |  |  | Required. The name of the virtual machine extension |
 | `protectedSettings` | secureObject | `{object}` |  | Optional. Any object that contains the extension specific protected settings |
 | `publisher` | string |  |  | Required. The name of the extension handler publisher |
 | `settings` | object | `{object}` |  | Optional. Any object that contains the extension specific settings |
-| `supressFailures` | bool |  |  | Optional. Indicates whether failures stemming from the extension will be suppressed (Operational failures such as not connecting to the VM will not be suppressed regardless of this value). The default is false |
+| `supressFailures` | bool | `False` |  | Optional. Indicates whether failures stemming from the extension will be suppressed (Operational failures such as not connecting to the VM will not be suppressed regardless of this value). The default is false |
 | `type` | string |  |  | Required. Specifies the type of the extension; an example is "CustomScriptExtension" |
 | `typeHandlerVersion` | string |  |  | Required. Specifies the version of the script handler |
 | `virtualMachineName` | string |  |  | Required. The name of the virtual machine that extension is provisioned for |

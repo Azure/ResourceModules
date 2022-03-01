@@ -11,7 +11,7 @@
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `databaseAccountName` | string |  |  | Required. Name of the Database Account |
-| `enableDefaultTelemetry` | bool |  |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `False` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `kind` | string | `Hash` | `[Hash, MultiHash, Range]` | Optional. Indicates the kind of algorithm used for partitioning |
 | `name` | string |  |  | Required. Name of the container. |
 | `paths` | array | `[]` |  | Optional. List of paths using which data within the container can be partitioned |

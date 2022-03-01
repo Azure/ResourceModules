@@ -17,7 +17,7 @@ This module deploys a Machine Learning Services Workspace.
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `allowPublicAccessWhenBehindVnet` | bool |  |  | Optional. The flag to indicate whether to allow public access when behind VNet. |
+| `allowPublicAccessWhenBehindVnet` | bool | `False` |  | Optional. The flag to indicate whether to allow public access when behind VNet. |
 | `associatedApplicationInsightsResourceId` | string |  |  | Required. The resource ID of the associated Application Insights. |
 | `associatedContainerRegistryResourceId` | string |  |  | Optional. The resource ID of the associated Container Registry. |
 | `associatedKeyVaultResourceId` | string |  |  | Required. The resource ID of the associated Key Vault. |
@@ -27,8 +27,8 @@ This module deploys a Machine Learning Services Workspace.
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticStorageAccountId` | string |  |  | Optional. Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string |  |  | Optional. Resource ID of the diagnostic log analytics workspace. |
-| `enableDefaultTelemetry` | bool |  |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `hbiWorkspace` | bool |  |  | Optional. The flag to signal HBI data in the workspace and reduce diagnostic data collected by the service. |
+| `enableDefaultTelemetry` | bool | `False` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `hbiWorkspace` | bool | `False` |  | Optional. The flag to signal HBI data in the workspace and reduce diagnostic data collected by the service. |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
 | `logsToEnable` | array | `[AmlComputeClusterEvent, AmlComputeClusterNodeEvent, AmlComputeJobEvent, AmlComputeCpuGpuUtilization, AmlRunStatusChangedEvent]` | `[AmlComputeClusterEvent, AmlComputeClusterNodeEvent, AmlComputeJobEvent, AmlComputeCpuGpuUtilization, AmlRunStatusChangedEvent]` | Optional. The name of logs that will be streamed. |
@@ -37,7 +37,7 @@ This module deploys a Machine Learning Services Workspace.
 | `privateEndpoints` | array | `[]` |  | Optional. Configuration Details for private endpoints. |
 | `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
 | `sku` | string |  | `[Basic, Enterprise]` | Required. Specifies the sku, also referred as 'edition' of the Azure Machine Learning workspace. |
-| `systemAssignedIdentity` | bool |  |  | Optional. Enables system assigned managed identity on the resource. |
+| `systemAssignedIdentity` | bool | `False` |  | Optional. Enables system assigned managed identity on the resource. |
 | `tags` | object | `{object}` |  | Optional. Resource tags. |
 
 ### Parameter Usage: `roleAssignments`

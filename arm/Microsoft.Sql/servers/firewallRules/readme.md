@@ -12,7 +12,7 @@ This module deploys an SQL Server Firewall rule.
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool |  |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `False` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `endIpAddress` | string | `0.0.0.0` |  | Optional. The end IP address of the firewall rule. Must be IPv4 format. Must be greater than or equal to startIpAddress. Use value '0.0.0.0' for all Azure-internal IP addresses. |
 | `name` | string |  |  | Required. The name of the Server Firewall Rule. |
 | `serverName` | string |  |  | Required. The Name of SQL Server |

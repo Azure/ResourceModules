@@ -23,13 +23,13 @@ This module deploys Azure Kubernetes Cluster (AKS).
 | `aadProfileServerAppID` | string |  |  | Optional. The server AAD application ID. |
 | `aadProfileServerAppSecret` | string |  |  | Optional. The server AAD application secret. |
 | `aadProfileTenantId` | string | `[subscription().tenantId]` |  | Optional. Specifies the tenant ID of the Azure Active Directory used by the AKS cluster for authentication. |
-| `aciConnectorLinuxEnabled` | bool |  |  | Optional. Specifies whether the aciConnectorLinux add-on is enabled or not. |
+| `aciConnectorLinuxEnabled` | bool | `False` |  | Optional. Specifies whether the aciConnectorLinux add-on is enabled or not. |
 | `agentPools` | _[agentPools](agentPools/readme.md)_ array | `[]` |  | Optional. Define one or more secondary/additional agent pools |
 | `aksClusterAdminUsername` | string | `azureuser` |  | Optional. Specifies the administrator username of Linux virtual machines. |
 | `aksClusterDnsPrefix` | string | `[parameters('name')]` |  | Optional. Specifies the DNS prefix specified when creating the managed cluster. |
 | `aksClusterDnsServiceIP` | string |  |  | Optional. Specifies the IP address assigned to the Kubernetes DNS service. It must be within the Kubernetes service address range specified in serviceCidr. |
 | `aksClusterDockerBridgeCidr` | string |  |  | Optional. Specifies the CIDR notation IP range assigned to the Docker bridge network. It must not overlap with any Subnet IP ranges or the Kubernetes service address range. |
-| `aksClusterEnablePrivateCluster` | bool |  |  | Optional. Specifies whether to create the cluster as a private cluster or not. |
+| `aksClusterEnablePrivateCluster` | bool | `False` |  | Optional. Specifies whether to create the cluster as a private cluster or not. |
 | `aksClusterKubernetesVersion` | string |  |  | Optional. Version of Kubernetes specified when creating the managed cluster. |
 | `aksClusterLoadBalancerSku` | string | `standard` | `[basic, standard]` | Optional. Specifies the sku of the load balancer used by the virtual machine scale sets used by nodepools. |
 | `aksClusterNetworkPlugin` | string |  | `[, azure, kubenet]` | Optional. Specifies the network plugin used for building Kubernetes network. - azure or kubenet. |
@@ -55,13 +55,13 @@ This module deploys Azure Kubernetes Cluster (AKS).
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticStorageAccountId` | string |  |  | Optional. Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string |  |  | Optional. Resource ID of the diagnostic log analytics workspace. |
-| `enableDefaultTelemetry` | bool |  |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `httpApplicationRoutingEnabled` | bool |  |  | Optional. Specifies whether the httpApplicationRouting add-on is enabled or not. |
-| `kubeDashboardEnabled` | bool |  |  | Optional. Specifies whether the kubeDashboard add-on is enabled or not. |
+| `enableDefaultTelemetry` | bool | `False` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `httpApplicationRoutingEnabled` | bool | `False` |  | Optional. Specifies whether the httpApplicationRouting add-on is enabled or not. |
+| `kubeDashboardEnabled` | bool | `False` |  | Optional. Specifies whether the kubeDashboard add-on is enabled or not. |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Specifies the location of AKS cluster. It picks up Resource Group's location by default. |
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
 | `logsToEnable` | array | `[kube-apiserver, kube-audit, kube-controller-manager, kube-scheduler, cluster-autoscaler]` | `[kube-apiserver, kube-audit, kube-controller-manager, kube-scheduler, cluster-autoscaler]` | Optional. The name of logs that will be streamed. |
-| `managedOutboundIPCount` | int |  |  | Optional. Outbound IP Count for the Load balancer. |
+| `managedOutboundIPCount` | int | `0` |  | Optional. Outbound IP Count for the Load balancer. |
 | `metricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | Optional. The name of metrics that will be streamed. |
 | `monitoringWorkspaceId` | string |  |  | Optional. Resource ID of the monitoring log analytics workspace. |
 | `name` | string |  |  | Required. Specifies the name of the AKS cluster. |
@@ -69,7 +69,7 @@ This module deploys Azure Kubernetes Cluster (AKS).
 | `omsAgentEnabled` | bool | `True` |  | Optional. Specifies whether the OMS agent is enabled. |
 | `primaryAgentPoolProfile` | array |  |  | Required. Properties of the primary agent pool. |
 | `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
-| `systemAssignedIdentity` | bool |  |  | Optional. Enables system assigned managed identity on the resource. |
+| `systemAssignedIdentity` | bool | `False` |  | Optional. Enables system assigned managed identity on the resource. |
 | `tags` | object | `{object}` |  | Optional. Tags of the resource. |
 | `userAssignedIdentities` | object | `{object}` |  | Optional. The ID(s) to assign to the resource. |
 

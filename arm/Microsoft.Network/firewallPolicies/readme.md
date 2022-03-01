@@ -18,10 +18,10 @@ This module deploys Network Firewall Policies.
 | `bypassTrafficSettings` | array | `[]` |  | Optional. List of rules for traffic to bypass. |
 | `certificateName` | string |  |  | Optional. Name of the CA certificate. |
 | `defaultWorkspaceId` | string |  |  | Optional. Default Log Analytics Resource ID for Firewall Policy Insights. |
-| `enableDefaultTelemetry` | bool |  |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `enableProxy` | bool |  |  | Optional. Enable DNS Proxy on Firewalls attached to the Firewall Policy. |
+| `enableDefaultTelemetry` | bool | `False` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableProxy` | bool | `False` |  | Optional. Enable DNS Proxy on Firewalls attached to the Firewall Policy. |
 | `fqdns` | array | `[]` |  | Optional. List of FQDNs for the ThreatIntel Allowlist. |
-| `insightsIsEnabled` | bool |  |  | Optional. A flag to indicate if the insights are enabled on the policy. |
+| `insightsIsEnabled` | bool | `False` |  | Optional. A flag to indicate if the insights are enabled on the policy. |
 | `ipAddresses` | array | `[]` |  | Optional. List of IP addresses for the ThreatIntel Allowlist. |
 | `keyVaultSecretId` | string |  |  | Optional. Secret Id of (base-64 encoded unencrypted pfx) Secret or Certificate object stored in KeyVault.	 |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
@@ -33,7 +33,7 @@ This module deploys Network Firewall Policies.
 | `ruleGroups` | _[ruleGroups](ruleGroups/readme.md)_ array | `[]` |  | Optional. Rule groups. |
 | `servers` | array | `[]` |  | Optional. List of Custom DNS Servers. |
 | `signatureOverrides` | array | `[]` |  | Optional. List of specific signatures states. |
-| `systemAssignedIdentity` | bool |  |  | Optional. Enables system assigned managed identity on the resource. |
+| `systemAssignedIdentity` | bool | `False` |  | Optional. Enables system assigned managed identity on the resource. |
 | `tags` | object | `{object}` |  | Optional. Tags of the Firewall policy resource. |
 | `threatIntelMode` | string | `Off` | `[Alert, Deny, Off]` | Optional. The operation mode for Threat Intel. |
 | `tier` | string | `Standard` | `[Premium, Standard]` | Optional. Tier of Firewall Policy. |

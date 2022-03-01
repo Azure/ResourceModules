@@ -17,7 +17,7 @@ This module deploys a virtual hub.
 | `addressPrefix` | string |  |  | Required. Address-prefix for this VirtualHub. |
 | `allowBranchToBranchTraffic` | bool | `True` |  | Optional. Flag to control transit for VirtualRouter hub. |
 | `azureFirewallId` | string |  |  | Optional. Resource ID of the Azure Firewall to link to |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
+| `enableDefaultTelemetry` | bool | `False` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `expressRouteGatewayId` | string |  |  | Optional. Resource ID of the Express Route Gateway to link to |
 | `hubRouteTables` | _[hubRouteTables](hubRouteTables/readme.md)_ array | `[]` |  | Optional. Route tables to create for the virtual hub. |
 | `hubVirtualNetworkConnections` | _[hubVirtualNetworkConnections](hubVirtualNetworkConnections/readme.md)_ array | `[]` |  | Optional. Virtual network connections to create for the virtual hub. |
@@ -28,7 +28,7 @@ This module deploys a virtual hub.
 | `routeTableRoutes` | array | `[]` |  | Optional. VirtualHub route tables |
 | `securityPartnerProviderId` | string |  |  | Optional. ID of the Security Partner Provider to link to |
 | `securityProviderName` | string |  |  | Optional. The Security Provider name. |
-| `sku` | string | `Standard` | `Basic`,`Standard` | Optional. The sku of this VirtualHub. |
+| `sku` | string | `Standard` | `[Basic, Standard]` | Optional. The sku of this VirtualHub. |
 | `tags` | object | `{object}` |  | Optional. Tags of the resource. |
 | `virtualHubRouteTableV2s` | array | `[]` |  | Optional. List of all virtual hub route table v2s associated with this VirtualHub. |
 | `virtualRouterAsn` | int | `-1` |  | Optional. VirtualRouter ASN. |

@@ -17,7 +17,7 @@ This template deploys an availability set
 | `availabilitySetFaultDomain` | int | `2` |  | Optional. The number of fault domains to use. |
 | `availabilitySetSku` | string | `Aligned` |  | Optional. Sku of the availability set. Use 'Aligned' for virtual machines with managed disks and 'Classic' for virtual machines with unmanaged disks. |
 | `availabilitySetUpdateDomain` | int | `5` |  | Optional. The number of update domains to use. |
-| `enableDefaultTelemetry` | bool |  |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `False` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Resource location. |
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
 | `name` | string |  |  | Required. The name of the availability set that is being created. |

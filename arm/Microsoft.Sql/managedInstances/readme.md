@@ -38,7 +38,7 @@ SQL Managed Instance is deployed on a virtual network. This network is required 
 | `diagnosticStorageAccountId` | string |  |  | Optional. Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string |  |  | Optional. Resource ID of the diagnostic log analytics workspace. |
 | `dnsZonePartner` | string |  |  | Optional. The resource ID of another managed instance whose DNS zone this managed instance will share after creation. |
-| `enableDefaultTelemetry` | bool |  |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `False` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `encryptionProtectorObj` | _[encryptionProtector](encryptionProtector/readme.md)_ object | `{object}` |  | Optional. The encryption protection configuration |
 | `hardwareFamily` | string | `Gen5` |  | Optional. If the service has different generations of hardware, for the same SKU, then that can be captured here. |
 | `instancePoolResourceId` | string |  |  | Optional. The resource ID of the instance pool this managed server belongs to. |
@@ -52,7 +52,7 @@ SQL Managed Instance is deployed on a virtual network. This network is required 
 | `name` | string |  |  | Required. The name of the SQL managed instance. |
 | `primaryUserAssignedIdentityId` | string |  |  | Optional. Mandatory if "managedServiceIdentity" contains UserAssigned. The resource ID of a user assigned identity to be used by default. |
 | `proxyOverride` | string | `Proxy` | `[Proxy, Redirect, Default]` | Optional. Connection type used for connecting to the instance. |
-| `publicDataEndpointEnabled` | bool |  |  | Optional. Whether or not the public data endpoint is enabled. |
+| `publicDataEndpointEnabled` | bool | `False` |  | Optional. Whether or not the public data endpoint is enabled. |
 | `restorePointInTime` | string |  |  | Optional. Specifies the point in time (ISO8601 format) of the source database that will be restored to create the new database. |
 | `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
 | `securityAlertPoliciesObj` | _[securityAlertPolicies](securityAlertPolicies/readme.md)_ object | `{object}` |  | Optional. The security alert policy configuration |
@@ -61,7 +61,7 @@ SQL Managed Instance is deployed on a virtual network. This network is required 
 | `sourceManagedInstanceId` | string |  |  | Optional. The resource identifier of the source managed instance associated with create operation of this instance. |
 | `storageSizeInGB` | int | `32` |  | Optional. Storage size in GB. Minimum value: 32. Maximum value: 8192. Increments of 32 GB allowed only. |
 | `subnetId` | string |  |  | Required. The fully qualified resource ID of the subnet on which the SQL managed instance will be placed. |
-| `systemAssignedIdentity` | bool |  |  | Optional. Enables system assigned managed identity on the resource. |
+| `systemAssignedIdentity` | bool | `False` |  | Optional. Enables system assigned managed identity on the resource. |
 | `tags` | object | `{object}` |  | Optional. Tags of the resource. |
 | `timezoneId` | string | `UTC` |  | Optional. ID of the timezone. Allowed values are timezones supported by Windows. |
 | `userAssignedIdentities` | object | `{object}` |  | Optional. The ID(s) to assign to the resource. |
