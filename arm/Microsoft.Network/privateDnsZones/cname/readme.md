@@ -1,4 +1,4 @@
-# Network Private Dns Zones CNAME record `[Microsoft.Network/privateDnsZones/CNAME]`
+# Private DNS Zone CNAME record `[Microsoft.Network/privateDnsZones/CNAME]`
 
 This module deploys Network PrivateDnsZones CNAME record.
 
