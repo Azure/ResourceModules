@@ -1,4 +1,4 @@
-# Network Private Dns Zones SOA record `[Microsoft.Network/privateDnsZones/SOA]`
+# Private DNS Zone SOA record `[Microsoft.Network/privateDnsZones/SOA]`
 
 This module deploys Network PrivateDnsZones SOA record.
 
