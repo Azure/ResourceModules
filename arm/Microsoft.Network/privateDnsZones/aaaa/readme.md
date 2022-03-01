@@ -1,4 +1,4 @@
-# Network Private Dns Zones AAAA record `[Microsoft.Network/privateDnsZones/AAAA]`
+# Private DNS Zone AAAA record `[Microsoft.Network/privateDnsZones/AAAA]`
 
 This module deploys Network PrivateDnsZones AAAA record.
 
