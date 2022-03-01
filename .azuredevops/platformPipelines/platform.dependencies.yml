@@ -129,6 +129,9 @@ stages:
             - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
               templateFilePath: $(templateFilePath)
               displayName: Default LAW
+            - path: $(dependencyPath)/$(resourceType)/parameters/aut.parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: Automation account LAW
             - path: $(dependencyPath)/$(resourceType)/parameters/appi.parameters.json
               templateFilePath: $(templateFilePath)
               displayName: AppInsights LAW
