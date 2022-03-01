@@ -5,6 +5,9 @@
         "name": {
             "value": "<<namePrefix>>-vm-win-01"
         },
+        "encryptionAtHost": {
+            "value": false
+        },
         "imageReference": {
             "value": {
                 "publisher": "MicrosoftWindowsServer",
@@ -25,6 +28,9 @@
                     "storageAccountType": "Premium_LRS"
                 }
             }
+        },
+        "availabilityZone": {
+            "value": 2
         },
         "adminUsername": {
             "value": "localAdminUser"

@@ -34,6 +34,39 @@ If you're unfamiliar with Infrastructure as Code, or wonder how you can use the 
 - [Contribution Guide](./ContributionGuide)
 - [Known Issues](./KnownIssues)
 
+---
+
+> **Note**: the following table of contents is still a work in progress and intended to replace the above going forward.
+
+### _Updated Navigation_
+
+- [The context](./The%20context)
+  - [Infrastructure as Code](./The%20context%20-%20IaC)
+  - [CARML overview](./The%20context%20-%20CARML%20overview)
+- [Getting started](./Getting%20started)
+  - [Prerequisites](./Getting%20started%20-%20Prerequisites)
+  - [Setup environment](./Getting%20started%20-%20Setup%20environment)
+  - [Token replacement](./Getting%20started%20-%20Token%20replacement)
+  - [Dependency pipeline](./Getting%20started%20-%20Dependency%20pipeline)
+- [The library](./The%20library)
+  - [Module design](./The%20library%20-%20Module%20design)
+  - [Module usage](./The%20library%20-%20Module%20usage)
+- [The CI environment](./The%20CI%20environment)
+  - [Pipeline design](./The%20CI%20environment%20-%20Pipeline%20design)
+    - [Static validation](./The%20CI%20environment%20-%20Static%20validation)
+    - [Deployment validation](./The%20CI%20environment%20-%20Deployment%20validation)
+    - [Publishing](./The%20CI%20environment%20-%20Publishing)
+  - [Pipeline usage](./The%20CI%20environment%20-%20Pipeline%20usage)
+- [Interoperability](./Interoperability)
+  - [Bicep to ARM/JSON conversion](./Interoperability%20-%20Bicep%20to%20ARM%20conversion)
+  - [Register ADO pipelines](./Interoperability%20-%20Register%20ADO%20pipelines)
+- [Contribution guide](./Contribution%20guide)
+  - [Generate module Readme](./Contribution%20guide%20-%20Generate%20module%20Readme)
+  - [Get formatted RBAC roles](./Contribution%20guide%20-%20Get%20formatted%20RBAC%20roles)
+- [Known Issues](./Known%20issues)
+
+---
+
 # Scope
 
 Following you can find an abstract overview of everything in- and out-of-scope of this repository.

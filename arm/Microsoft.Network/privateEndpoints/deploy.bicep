@@ -38,7 +38,7 @@ module pid_cuaId '.bicep/nested_pid.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
-resource privateEndpoint 'Microsoft.Network/privateEndpoints@2021-03-01' = {
+resource privateEndpoint 'Microsoft.Network/privateEndpoints@2021-05-01' = {
   name: name
   location: location
   tags: tags
