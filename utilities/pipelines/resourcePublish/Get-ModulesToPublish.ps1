@@ -32,7 +32,9 @@ function Get-ModifiedFileList {
     )
 
     Write-Verbose "Gathering modified files between curent branch and main" -Verbose
-    $Diff = git diff --name-only --diff-filter=AM main
+    git remote
+    git branch
+    $Diff = git diff --name-only --diff-filter=AM origin/main
     $ModifiedFiles = $Diff | Get-Item -Force
 
     return $ModifiedFiles
