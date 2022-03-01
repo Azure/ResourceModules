@@ -4,14 +4,8 @@
 .SYNOPSIS
 Get modified files between two commits.
 
-.PARAMETER Commit
-Optional. A git reference to base the comparison on.
-
-.PARAMETER CompareCommit
-Optional. A git reference to compare with.
-
 .EXAMPLE
-Get-ModifiedFileList -Commit "HEAD^" -CompareCommit "HEAD"
+Get-ModifiedFileList 
 
     Directory: C:\Repo\Azure\ResourceModules\utilities\pipelines\resourcePublish
 
@@ -19,20 +13,15 @@ Mode                 LastWriteTime         Length Name
 ----                 -------------         ------ ----
 la---          08.12.2021    15:50           7133 Script.ps1
 
-Get modified files between previous and current commit.
+Get modified files between previous and origin/main.
 #>
 function Get-ModifiedFileList {
     [CmdletBinding()]
     param (
-        [Parameter(Mandatory = $false)]
-        [string] $Commit = 'HEAD',
-
-        [Parameter(Mandatory = $false)]
-        [string] $CompareCommit = 'HEAD^'
     )
 
-    Write-Verbose "Gathering modified files between [$CompareCommit] and [$Commit]" -Verbose
-    $Diff = git diff --name-only --diff-filter=AM $CompareCommit $Commit
+    Write-Verbose "Gathering modified files between curent branch and main" -Verbose
+    $Diff = git diff --name-only --diff-filter=AM origin/main
     $ModifiedFiles = $Diff | Get-Item -Force
 
     return $ModifiedFiles
