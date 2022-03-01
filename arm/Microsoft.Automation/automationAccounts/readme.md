@@ -18,7 +18,7 @@ This module deploys an Azure Automation Account.
 | `Microsoft.Insights/diagnosticSettings` | 2021-05-01-preview |
 | `Microsoft.Network/privateEndpoints` | 2021-05-01 |
 | `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | 2021-05-01 |
-| `Microsoft.OperationalInsights/workspaces/linkedServices` | 2020-08-01 |
+| `Microsoft.OperationalInsights/workspaces/linkedServices` | 2020-03-01-preview |
 | `Microsoft.OperationsManagement/solutions` | 2015-11-01-preview |
 
 ## Parameters

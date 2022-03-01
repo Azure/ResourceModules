@@ -188,8 +188,8 @@ module automationAccount_jobSchedules 'jobSchedules/deploy.bicep' = [for (jobSch
     automationAccountName: automationAccount.name
     runbookName: jobSchedule.runbookName
     scheduleName: jobSchedule.scheduleName
-    parameters: contains(jobSchedule, 'parameters') ? (!empty(jobSchedule.parameters) ? jobSchedule.parameters : {}) : {}
-    runOn: contains(jobSchedule, 'runOn') ? (!empty(jobSchedule.runOn) ? jobSchedule.runOn : '') : ''
+    parameters: contains(jobSchedule, 'parameters') ? jobSchedule.parameters : {}
+    runOn: contains(jobSchedule, 'runOn') ? jobSchedule.runOn : ''
   }
   dependsOn: [
     automationAccount_schedules
@@ -244,43 +244,38 @@ module automationAccount_softwareUpdateConfigurations 'softwareUpdateConfigurati
     frequency: softwareUpdateConfiguration.frequency
     operatingSystem: softwareUpdateConfiguration.operatingSystem
     rebootSetting: softwareUpdateConfiguration.rebootSetting
-    azureVirtualMachines: contains(softwareUpdateConfiguration, 'azureVirtualMachines') ? !empty(softwareUpdateConfiguration.azureVirtualMachines) ? softwareUpdateConfiguration.azureVirtualMachines : [] : []
-    excludeUpdates: contains(softwareUpdateConfiguration, 'excludeUpdates') ? !empty(softwareUpdateConfiguration.excludeUpdates) ? softwareUpdateConfiguration.excludeUpdates : [] : []
-    expiryTime: contains(softwareUpdateConfiguration, 'expiryTime') ? !empty(softwareUpdateConfiguration.expiryTime) ? softwareUpdateConfiguration.expiryTime : '' : ''
+    azureVirtualMachines: contains(softwareUpdateConfiguration, 'azureVirtualMachines') ? softwareUpdateConfiguration.azureVirtualMachines : []
+    excludeUpdates: contains(softwareUpdateConfiguration, 'excludeUpdates') ? softwareUpdateConfiguration.excludeUpdates : []
+    expiryTime: contains(softwareUpdateConfiguration, 'expiryTime') ? softwareUpdateConfiguration.expiryTime : ''
     expiryTimeOffsetMinutes: contains(softwareUpdateConfiguration, 'expiryTimeOffsetMinutes') ? softwareUpdateConfiguration.expiryTimeOffsetMinute : 0
-    includeUpdates: contains(softwareUpdateConfiguration, 'includeUpdates') ? !empty(softwareUpdateConfiguration.includeUpdates) ? softwareUpdateConfiguration.includeUpdates : [] : []
+    includeUpdates: contains(softwareUpdateConfiguration, 'includeUpdates') ? softwareUpdateConfiguration.includeUpdates : []
     interval: contains(softwareUpdateConfiguration, 'interval') ? softwareUpdateConfiguration.interval : 1
-    isEnabled: contains(softwareUpdateConfiguration, 'isEnabled') ? !empty(softwareUpdateConfiguration.isEnabled) ? softwareUpdateConfiguration.isEnabled : true : true
-    maintenanceWindow: contains(softwareUpdateConfiguration, 'maintenanceWindow') ? !empty(softwareUpdateConfiguration.maintenanceWindow) ? softwareUpdateConfiguration.maintenanceWindow : 'PT2H' : 'PT2H'
-    monthDays: contains(softwareUpdateConfiguration, 'monthDays') ? !empty(softwareUpdateConfiguration.monthDays) ? softwareUpdateConfiguration.monthDays : [] : []
-    monthlyOccurrences: contains(softwareUpdateConfiguration, 'monthlyOccurrences') ? !empty(softwareUpdateConfiguration.monthlyOccurrences) ? softwareUpdateConfiguration.monthlyOccurrences : [] : []
-    nextRun: contains(softwareUpdateConfiguration, 'nextRun') ? !empty(softwareUpdateConfiguration.nextRun) ? softwareUpdateConfiguration.nextRun : '' : ''
+    isEnabled: contains(softwareUpdateConfiguration, 'isEnabled') ? softwareUpdateConfiguration.isEnabled : true
+    maintenanceWindow: contains(softwareUpdateConfiguration, 'maintenanceWindow') ? softwareUpdateConfiguration.maintenanceWindow : 'PT2H'
+    monthDays: contains(softwareUpdateConfiguration, 'monthDays') ? softwareUpdateConfiguration.monthDays : []
+    monthlyOccurrences: contains(softwareUpdateConfiguration, 'monthlyOccurrences') ? softwareUpdateConfiguration.monthlyOccurrences : []
+    nextRun: contains(softwareUpdateConfiguration, 'nextRun') ? softwareUpdateConfiguration.nextRun : ''
     nextRunOffsetMinutes: contains(softwareUpdateConfiguration, 'nextRunOffsetMinutes') ? softwareUpdateConfiguration.nextRunOffsetMinutes : 0
-    nonAzureComputerNames: contains(softwareUpdateConfiguration, 'nonAzureComputerNames') ? !empty(softwareUpdateConfiguration.nonAzureComputerNames) ? softwareUpdateConfiguration.nonAzureComputerNames : [] : []
-    nonAzureQueries: contains(softwareUpdateConfiguration, 'nonAzureQueries') ? !empty(softwareUpdateConfiguration.nonAzureQueries) ? softwareUpdateConfiguration.nonAzureQueries : [] : []
-    postTaskParameters: contains(softwareUpdateConfiguration, 'postTaskParameters') ? !empty(softwareUpdateConfiguration.postTaskParameters) ? softwareUpdateConfiguration.postTaskParameters : {} : {}
-    postTaskSource: contains(softwareUpdateConfiguration, 'postTaskSource') ? !empty(softwareUpdateConfiguration.postTaskSource) ? softwareUpdateConfiguration.postTaskSource : '' : ''
-    preTaskParameters: contains(softwareUpdateConfiguration, 'preTaskParameters') ? !empty(softwareUpdateConfiguration.preTaskParameters) ? softwareUpdateConfiguration.preTaskParameters : {} : {}
-    preTaskSource: contains(softwareUpdateConfiguration, 'preTaskSource') ? !empty(softwareUpdateConfiguration.preTaskSource) ? softwareUpdateConfiguration.preTaskSource : '' : ''
-    scheduleDescription: contains(softwareUpdateConfiguration, 'scheduleDescription') ? !empty(softwareUpdateConfiguration.scheduleDescription) ? softwareUpdateConfiguration.scheduleDescription : '' : ''
-    scopeByLocations: contains(softwareUpdateConfiguration, 'scopeByLocations') ? !empty(softwareUpdateConfiguration.scopeByLocations) ? softwareUpdateConfiguration.scopeByLocations : [] : []
-    scopeByResources: contains(softwareUpdateConfiguration, 'scopeByResources') ? !empty(softwareUpdateConfiguration.scopeByResources) ? softwareUpdateConfiguration.scopeByResources : [
-      subscription().id
-    ] : [
+    nonAzureComputerNames: contains(softwareUpdateConfiguration, 'nonAzureComputerNames') ? softwareUpdateConfiguration.nonAzureComputerNames : []
+    nonAzureQueries: contains(softwareUpdateConfiguration, 'nonAzureQueries') ? softwareUpdateConfiguration.nonAzureQueries : []
+    postTaskParameters: contains(softwareUpdateConfiguration, 'postTaskParameters') ? softwareUpdateConfiguration.postTaskParameters : {}
+    postTaskSource: contains(softwareUpdateConfiguration, 'postTaskSource') ? softwareUpdateConfiguration.postTaskSource : ''
+    preTaskParameters: contains(softwareUpdateConfiguration, 'preTaskParameters') ? softwareUpdateConfiguration.preTaskParameters : {}
+    preTaskSource: contains(softwareUpdateConfiguration, 'preTaskSource') ? softwareUpdateConfiguration.preTaskSource : ''
+    scheduleDescription: contains(softwareUpdateConfiguration, 'scheduleDescription') ? softwareUpdateConfiguration.scheduleDescription : ''
+    scopeByLocations: contains(softwareUpdateConfiguration, 'scopeByLocations') ? softwareUpdateConfiguration.scopeByLocations : []
+    scopeByResources: contains(softwareUpdateConfiguration, 'scopeByResources') ? softwareUpdateConfiguration.scopeByResources : [
       subscription().id
     ]
-    scopeByTags: contains(softwareUpdateConfiguration, 'scopeByTags') ? !empty(softwareUpdateConfiguration.scopeByTags) ? softwareUpdateConfiguration.scopeByTags : {} : {}
-    scopeByTagsOperation: contains(softwareUpdateConfiguration, 'scopeByTagsOperation') ? !empty(softwareUpdateConfiguration.scopeByTagsOperation) ? softwareUpdateConfiguration.scopeByTagsOperation : 'All' : 'All'
-    startTime: contains(softwareUpdateConfiguration, 'startTime') ? !empty(softwareUpdateConfiguration.startTime) ? softwareUpdateConfiguration.startTime : '' : ''
-    timeZone: contains(softwareUpdateConfiguration, 'timeZone') ? !empty(softwareUpdateConfiguration.timeZone) ? softwareUpdateConfiguration.timeZone : 'UTC' : 'UTC'
-    updateClassifications: contains(softwareUpdateConfiguration, 'updateClassifications') ? !empty(softwareUpdateConfiguration.updateClassifications) ? softwareUpdateConfiguration.updateClassifications : [
-      'Critical'
-      'Security'
-    ] : [
+    scopeByTags: contains(softwareUpdateConfiguration, 'scopeByTags') ? softwareUpdateConfiguration.scopeByTags : {}
+    scopeByTagsOperation: contains(softwareUpdateConfiguration, 'scopeByTagsOperation') ? softwareUpdateConfiguration.scopeByTagsOperation : 'All'
+    startTime: contains(softwareUpdateConfiguration, 'startTime') ? softwareUpdateConfiguration.startTime : ''
+    timeZone: contains(softwareUpdateConfiguration, 'timeZone') ? softwareUpdateConfiguration.timeZone : 'UTC'
+    updateClassifications: contains(softwareUpdateConfiguration, 'updateClassifications') ? softwareUpdateConfiguration.updateClassifications : [
       'Critical'
       'Security'
     ]
-    weekDays: contains(softwareUpdateConfiguration, 'weekDays') ? empty(softwareUpdateConfiguration.weekDays) ? softwareUpdateConfiguration.weekDays : [] : []
+    weekDays: contains(softwareUpdateConfiguration, 'weekDays') ? softwareUpdateConfiguration.weekDays : []
   }
   dependsOn: [
     automationAccount_solutions
