@@ -1,4 +1,4 @@
-@maxLength(24)
+@maxLength(28)
 @description('Optional. Name of the Storage Account.')
 param name string = ''
 
