@@ -26,6 +26,7 @@ function Get-ModifiedFileList {
     param ()
 
     Write-Verbose "Gathering modified files between curent branch and main" -Verbose
+    git fetch
     $CurrentBranch = Get-GitBranchName
     if (($CurrentBranch -eq 'main') -or ($CurrentBranch -eq 'master')) {
         $Diff = git diff --name-only --diff-filter=AM $CurrentBranch^..$CurrentBranch
