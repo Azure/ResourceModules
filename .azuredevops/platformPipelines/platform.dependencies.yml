@@ -800,7 +800,7 @@ stages:
       - deploy_msi
     variables:
       resourceType: 'Microsoft.Authorization/roleAssignments'
-      templateFilePath: $(modulesPath)/$(resourceType)/subscriptions/deploy.bicep
+      templateFilePath: $(modulesPath)/$(resourceType)/subscription/deploy.bicep
       msiPrincipalId: $[ stageDependencies.deploy_msi.job_set_msi_id.outputs['print_msi_prinId.msiPrincipalId'] ]
     jobs:
       - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
