@@ -529,7 +529,7 @@ output resourceGroupName string = resourceGroup().name
 output name string = managedCluster.name
 
 @description('The control plane FQDN of the managed cluster')
-output controlPlaneFQDN string = (enablePrivateCluster ? managedCluster.properties.privateFQDN : managedCluster.properties.fqdn)
+output controlPlaneFQDN string = enablePrivateCluster ? managedCluster.properties.privateFQDN : managedCluster.properties.fqdn
 
 @description('The principal ID of the system assigned identity.')
 output systemAssignedPrincipalId string = systemAssignedIdentity && contains(managedCluster.identity, 'principalId') ? managedCluster.identity.principalId : ''
