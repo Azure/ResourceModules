@@ -63,7 +63,7 @@ If you're unfamiliar with Infrastructure as Code, or wonder how you can use the 
 - [Contribution guide](./Contribution%20guide)
   - [Generate module Readme](./Contribution%20guide%20-%20Generate%20module%20Readme)
   - [Get formatted RBAC roles](./Contribution%20guide%20-%20Get%20formatted%20RBAC%20roles)
-- [Known Issues](./Known%20issues)
+- [Known issues](./Known%20issues)
 
 ---
 
