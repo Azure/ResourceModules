@@ -114,9 +114,13 @@ Besides the execution of a publish, there is also the possibility to set the swi
 
 The publishing works as follows:
 
-1. The script `utilities/pipelines/resourcePublish/Get-ModulesToUpdate.ps1` gets all changed module files including child modules and handles the logic of propagating the appropriate module version to be used:
+1. The script `utilities/pipelines/resourcePublish/Get-ModulesToPublish.ps1` gets all changed module files including child modules and handles the logic of propagating the appropriate module version to be used:
    1. The major (`x.0`) and minor (`0.x`) version are set based on the file `version.json` in the module folder.
-   1. The patch (`0.0.x`) version is calculated based on the number of commits on the `HEAD` ref. This will cause the patch version to never reset to 0 with major and/or minor increment, as specified for [semver](https://semver.org/).
+   2. The patch (`0.0.x`) version is calculated based on the number of commits on the `HEAD` ref (aka. git height). This will cause the patch version to never reset to 0 with major and/or minor increment, as specified for [semver](https://semver.org/).
+   3. The module is published with a patch specific version (`x.y.z`). For Template Specs and Bicep Registry a major (`x`) and minor (`x.x`) version is also updated, allowing a consumer to use the latest version of any major or minor version.
+   1. For a changed child module, the direct parent hierarchy is also registered for an update, following the same procedure as above.
+   1. The list of module files paths and their versions are passed on as a array list.
+2. The different publishing scripts run (Artifact, Template Spec or Bicep Registry) and publish the module to the respective target location for each item on the list.
 
 **Example scenario**
 
@@ -139,7 +143,9 @@ Lets look at an example run where we would do a patch change on the `fileShares`
    - Assuming the development branch started from commit 500 on the default branch, and the author added 6 commits on the development branch, the prerelease versions will reach `0.3.506-prerelease`.
    - Meanwhile, there can be changes (let's say 2 squashed PR merges) on the default branch that is pushing its number of commits in history further.
    - If the PR for the changes to `fileShare` is squash merged as commit number 503, the patch version on the child and parent module is then `503`, resulting in a version `0.3.503` being published.
-
+7. The merge triggers cascading updates in the following way:
+   - The module is published with a `major.minor.patch` version as well as a `major.minor` and `major` version updates, allowing consumers to target the latest major or minor version with ease.
+   - All parent module are published following the steps mentioned above.
 ```
                   \         \
 C499 -> C500 ---> C501 ---> C502 ---> C503 (503)
