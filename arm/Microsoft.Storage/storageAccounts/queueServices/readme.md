@@ -27,7 +27,6 @@ This module can be used to deploy a file share service into a storage account.
 | `queues` | _[queues](queues/readme.md)_ array | `[]` |  | Optional. Queues to create. |
 | `storageAccountName` | string |  |  | Required. Name of the Storage Account. |
 
-
 ## Outputs
 
 | Output Name | Type | Description |
