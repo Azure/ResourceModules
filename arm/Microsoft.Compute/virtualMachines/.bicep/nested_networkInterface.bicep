@@ -6,6 +6,7 @@ param enableIPForwarding bool = false
 param enableAcceleratedNetworking bool = false
 param dnsServers array = []
 param networkSecurityGroupId string = ''
+param applicationSecurityGroupId string = ''
 param ipConfigurationArray array
 param lock string
 param diagnosticStorageAccountId string
@@ -67,6 +68,11 @@ resource networkInterface 'Microsoft.Network/networkInterfaces@2021-03-01' = {
       name: !empty(ipConfiguration.name) ? ipConfiguration.name : null
       properties: {
         primary: ((index == 0) ? true : false)
+        applicationSecurityGroups: !empty(applicationSecurityGroupId) ? [
+          {
+            id: applicationSecurityGroupId
+          }
+        ] : null
         privateIPAllocationMethod: contains(ipConfiguration, 'privateIPAllocationMethod') ? (!empty(ipConfiguration.privateIPAllocationMethod) ? ipConfiguration.privateIPAllocationMethod : null) : null
         privateIPAddress: contains(ipConfiguration, 'vmIPAddress') ? (!empty(ipConfiguration.vmIPAddress) ? ipConfiguration.vmIPAddress : null) : null
         publicIPAddress: contains(ipConfiguration, 'pipconfiguration') ? json('{"id":"${resourceId('Microsoft.Network/publicIPAddresses', '${virtualMachineName}${ipConfiguration.pipconfiguration.publicIpNameSuffix}')}"}') : null
