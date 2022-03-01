@@ -66,24 +66,24 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
-resource virtualNetwork 'Microsoft.Network/virtualNetworks@2021-03-01' existing = {
+resource virtualNetwork 'Microsoft.Network/virtualNetworks@2021-05-01' existing = {
   name: virtualNetworkName
 }
 
-resource networkSecurityGroup 'Microsoft.Network/networkSecurityGroups@2021-03-01' existing = if (!empty(networkSecurityGroupName)) {
+resource networkSecurityGroup 'Microsoft.Network/networkSecurityGroups@2021-05-01' existing = if (!empty(networkSecurityGroupName)) {
   name: networkSecurityGroupName
   scope: resourceGroup(networkSecurityGroupNameResourceGroupName)
 }
 
-resource routeTable 'Microsoft.Network/routeTables@2021-03-01' existing = if (!empty(routeTableName)) {
+resource routeTable 'Microsoft.Network/routeTables@2021-05-01' existing = if (!empty(routeTableName)) {
   name: routeTableName
 }
 
-resource natGateway 'Microsoft.Network/natGateways@2021-03-01' existing = if (!empty(natGatewayName)) {
+resource natGateway 'Microsoft.Network/natGateways@2021-05-01' existing = if (!empty(natGatewayName)) {
   name: natGatewayName
 }
 
-resource subnet 'Microsoft.Network/virtualNetworks/subnets@2021-03-01' = {
+resource subnet 'Microsoft.Network/virtualNetworks/subnets@2021-05-01' = {
   name: name
   parent: virtualNetwork
   properties: {
