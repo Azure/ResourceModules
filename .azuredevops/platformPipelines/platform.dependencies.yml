@@ -91,7 +91,7 @@ stages:
       - deploy_rg
     variables:
       resourceType: 'Microsoft.Authorization/policyAssignments'
-      templateFilePath: $(modulesPath)/$(resourceType)/subscriptions/deploy.bicep
+      templateFilePath: $(modulesPath)/$(resourceType)/subscription/deploy.bicep
     jobs:
       - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
         parameters:
