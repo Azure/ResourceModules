@@ -120,6 +120,10 @@ jobs:
           fetch-depth: 0
       - pwsh: |
         git branch --remotes --list '*/HEAD'
+        git fetch
+        git branch
+        git branch --remotes
+        git remote
       - name: Set environment variables
         uses: deep-mm/set-variables@v1.0
         with:
