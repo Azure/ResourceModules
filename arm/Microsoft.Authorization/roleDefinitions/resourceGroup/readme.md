@@ -19,9 +19,9 @@ With this module you can create role definitions on a resource group level
 | `description` | string |  |  | Optional. Description of the custom RBAC role to be created. |
 | `notActions` | array | `[]` |  | Optional. List of denied actions. |
 | `notDataActions` | array | `[]` |  | Optional. List of denied data actions. This is not supported if the assignableScopes contains Management Group Scopes |
-| `resourceGroupName` | string | `[resourceGroup().name]` |  | Optional. The name of the Resource Group where the Role Definition and Target Scope will be applied to. |
+| `resourceGroupName` | string | `[resourceGroup().name]` |  | Optional. The name of the Resource Group where the Role Definition and Target Scope will be applied to. If not provided, will use the current scope for deployment. |
 | `roleName` | string |  |  | Required. Name of the custom RBAC role to be created. |
-| `subscriptionId` | string | `[subscription().subscriptionId]` |  | Optional. The subscription ID where the Role Definition and Target Scope will be applied to. |
+| `subscriptionId` | string | `[subscription().subscriptionId]` |  | Optional. The subscription ID where the Role Definition and Target Scope will be applied to. If not provided, will use the current scope for deployment. |
 
 ## Outputs
 

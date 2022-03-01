@@ -10,9 +10,6 @@
                 "Microsoft.Compute/galleries/read",
                 "Microsoft.Compute/galleries/images/read"
             ]
-        },
-        "managementGroupId": {
-            "value": "<<managementGroupId>>"
         }
     }
 }

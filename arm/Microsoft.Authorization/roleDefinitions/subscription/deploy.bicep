@@ -18,7 +18,7 @@ param dataActions array = []
 @sys.description('Optional. List of denied data actions. This is not supported if the assignableScopes contains Management Group Scopes')
 param notDataActions array = []
 
-@sys.description('Optional. The subscription ID where the Role Definition and Target Scope will be applied to.')
+@sys.description('Optional. The subscription ID where the Role Definition and Target Scope will be applied to. If not provided, will use the current scope for deployment.')
 param subscriptionId string = subscription().subscriptionId
 
 @sys.description('Optional. Role definition assignable scopes. If not provided, will use the current scope provided.')
