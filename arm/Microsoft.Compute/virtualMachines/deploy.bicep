@@ -95,10 +95,7 @@ param proximityPlacementGroupName string = ''
 @description('Optional. Resource name of an availability set. Cannot be used in combination with availability zone nor scale set.')
 param availabilitySetName string = ''
 
-@description('Optional. Creates an availability zone and adds the VMs to it. Cannot be used in combination with availability set nor scale set.')
-param useAvailabilityZone bool = false
-
-@description('Optional. If set to 1, 2 or 3, the availability zone for all VMs is hardcoded to that value. If zero, then the automatic algorithm will be used to give every VM in a different zone (up to three zones). Cannot be used in combination with availability set nor scale set.')
+@description('Optional. If set to 1, 2 or 3, the availability zone for all VMs is hardcoded to that value. If zero, then availability zones is not used. Cannot be used in combination with availability set nor scale set.')
 @allowed([
   0
   1
@@ -328,9 +325,10 @@ module virtualMachine_nic '.bicep/nested_networkInterface.bicep' = [for (nicConf
     location: location
     tags: tags
     enableIPForwarding: contains(nicConfiguration, 'enableIPForwarding') ? (!empty(nicConfiguration.enableIPForwarding) ? nicConfiguration.enableIPForwarding : false) : false
-    enableAcceleratedNetworking: contains(nicConfiguration, 'enableAcceleratedNetworking') ? (!empty(nicConfiguration.enableAcceleratedNetworking) ? nicConfiguration.enableAcceleratedNetworking : false) : false
+    enableAcceleratedNetworking: contains(nicConfiguration, 'enableAcceleratedNetworking') ? nicConfiguration.enableAcceleratedNetworking : true
     dnsServers: contains(nicConfiguration, 'dnsServers') ? (!empty(nicConfiguration.dnsServers) ? nicConfiguration.dnsServers : []) : []
     networkSecurityGroupId: contains(nicConfiguration, 'nsgId') ? (!empty(nicConfiguration.nsgId) ? nicConfiguration.nsgId : '') : ''
+    applicationSecurityGroupId: contains(nicConfiguration, 'asgId') ? (!empty(nicConfiguration.asgId) ? nicConfiguration.asgId : '') : ''
     ipConfigurationArray: nicConfiguration.ipConfigurations
     lock: lock
     diagnosticStorageAccountId: diagnosticStorageAccountId
@@ -350,20 +348,19 @@ resource virtualMachine 'Microsoft.Compute/virtualMachines@2021-07-01' = {
   location: location
   identity: identity
   tags: tags
-  zones: useAvailabilityZone ? array(availabilityZone) : null
+  zones: availabilityZone != 0 ? array(availabilityZone) : null
   plan: !empty(plan) ? plan : null
   properties: {
     hardwareProfile: {
       vmSize: vmSize
     }
     securityProfile: {
-      encryptionAtHost: encryptionAtHost
+      //encryptionAtHost: encryptionAtHost
       securityType: securityType
       uefiSettings: securityType == 'TrustedLaunch' ? {
         secureBootEnabled: secureBootEnabled
         vTpmEnabled: vTpmEnabled
       } : null
-    
     }
     storageProfile: {
       imageReference: imageReference
