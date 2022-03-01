@@ -535,7 +535,7 @@ output controlPlaneFQDN string = enablePrivateCluster ? managedCluster.propertie
 output systemAssignedPrincipalId string = systemAssignedIdentity && contains(managedCluster.identity, 'principalId') ? managedCluster.identity.principalId : ''
 
 @description('The Object ID of the AKS identity.')
-output kubeletidentityObjectId string = contains(managedCluster.properties, 'identityProfile') ? contains(managedCluster.properties.identityProfile, 'kubeletidentity') ? contains(managedCluster.properties.identityProfile.kubeletidentity, 'objectId') ? managedCluster.properties.identityProfile.kubeletidentity.objectId : '' : '' : ''
+output kubeletidentityObjectId string = contains(managedCluster.properties, 'identityProfile') ? contains(managedCluster.properties.identityProfile, 'kubeletidentity') ? managedCluster.properties.identityProfile.kubeletidentity.objectId : '' : ''
 
 @description('The Object ID of the OMS agent identity.')
-output omsagentIdentityObjectId string = contains(managedCluster.properties, 'addonProfiles') ? contains(managedCluster.properties.addonProfiles, 'omsagent') ? contains(managedCluster.properties.addonProfiles.omsagent, 'identity') ? contains(managedCluster.properties.addonProfiles.omsagent.identity, 'objectId') ? managedCluster.properties.addonProfiles.omsagent.identity.objectId : '' : '' : '' : ''
+output omsagentIdentityObjectId string = contains(managedCluster.properties, 'addonProfiles') ? contains(managedCluster.properties.addonProfiles, 'omsagent') ? contains(managedCluster.properties.addonProfiles.omsagent, 'identity') ? managedCluster.properties.addonProfiles.omsagent.identity.objectId : '' : '' : ''
