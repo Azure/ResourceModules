@@ -1,6 +1,6 @@
 # Network Private Dns Zones MX record `[Microsoft.Network/privateDnsZones/MX]`
 
-This module deploys Network PrivateDnsZones MX record.
+This module deploys a Private DNS Zone MX record.
 
 ## Resource Types
 
