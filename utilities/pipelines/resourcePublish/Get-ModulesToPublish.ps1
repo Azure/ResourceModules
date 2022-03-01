@@ -25,12 +25,13 @@ function Get-ModifiedFileList {
     [CmdletBinding()]
     param ()
 
-    Write-Verbose "Gathering modified files between curent branch and main" -Verbose
     $CurrentBranch = Get-GitBranchName
     if (($CurrentBranch -eq 'main') -or ($CurrentBranch -eq 'master')) {
+        Write-Verbose 'Gathering modified files from the pull request' -Verbose
         $Diff = git diff --name-only --diff-filter=AM $CurrentBranch^..$CurrentBranch
     } else {
-        $Diff = git diff --name-only --diff-filter=AM origin/HEAD
+        Write-Verbose 'Gathering modified files between current branch and main' -Verbose
+        $Diff = git diff --name-only --diff-filter=AM origin/main
     }
     $ModifiedFiles = $Diff | Get-Item -Force
 
