@@ -6,14 +6,14 @@ param roleDefinitionIdOrName string
 @sys.description('Required. The Principal or Object ID of the Security Principal (User, Group, Service Principal, Managed Identity)')
 param principalId string
 
-@sys.description('Optional. Name of the Resource Group to assign the RBAC role to. If no Resource Group name is provided, and Subscription ID is provided, the module deploys at subscription level, therefore assigns the provided RBAC role to the subscription.')
+@sys.description('Optional. Name of the Resource Group to assign the RBAC role to. If Resource Group name is provided, and Subscription ID is provided, the module deploys at resource group level, therefore assigns the provided RBAC role to the resource group.')
 param resourceGroupName string = ''
 
 @sys.description('Optional. Subscription ID of the subscription to assign the RBAC role to. If no Resource Group name is provided, the module deploys at subscription level, therefore assigns the provided RBAC role to the subscription.')
 param subscriptionId string = ''
 
-@sys.description('Optional. Group ID of the Management Group to assign the RBAC role to. If no Subscription is provided, the module deploys at management group level, therefore assigns the provided RBAC role to the management group.')
-param managementGroupId string = ''
+@sys.description('Optional. Group ID of the Management Group to assign the RBAC role to. If not provided, will use the current scope for deployment.')
+param managementGroupId string = managementGroup().name
 
 @sys.description('Optional. Location for all resources.')
 param location string = deployment().location
@@ -44,10 +44,7 @@ param conditionVersion string = '2.0'
 ])
 param principalType string = ''
 
-@sys.description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered. Use when scope target is resource group.')
-param cuaId string = ''
-
-module roleAssignment_mg 'managementGroup/deploy.bicep' = if (!empty(managementGroupId) && empty(subscriptionId) && empty(resourceGroupName)) {
+module roleAssignment_mg 'managementGroup/deploy.bicep' = if (empty(subscriptionId) && empty(resourceGroupName)) {
   name: '${uniqueString(deployment().name, location)}-RoleAssignment-MG-Module'
   scope: managementGroup(managementGroupId)
   params: {
@@ -62,7 +59,7 @@ module roleAssignment_mg 'managementGroup/deploy.bicep' = if (!empty(managementG
   }
 }
 
-module roleAssignment_sub 'subscription/deploy.bicep' = if (empty(managementGroupId) && !empty(subscriptionId) && empty(resourceGroupName)) {
+module roleAssignment_sub 'subscription/deploy.bicep' = if (!empty(subscriptionId) && empty(resourceGroupName)) {
   name: '${uniqueString(deployment().name, location)}-RoleAssignment-Sub-Module'
   scope: subscription(subscriptionId)
   params: {
@@ -77,7 +74,7 @@ module roleAssignment_sub 'subscription/deploy.bicep' = if (empty(managementGrou
   }
 }
 
-module roleAssignment_rg 'resourceGroup/deploy.bicep' = if (empty(managementGroupId) && !empty(resourceGroupName) && !empty(subscriptionId)) {
+module roleAssignment_rg 'resourceGroup/deploy.bicep' = if (!empty(resourceGroupName) && !empty(subscriptionId)) {
   name: '${uniqueString(deployment().name, location)}-RoleAssignment-RG-Module'
   scope: resourceGroup(subscriptionId, resourceGroupName)
   params: {
@@ -90,15 +87,14 @@ module roleAssignment_rg 'resourceGroup/deploy.bicep' = if (empty(managementGrou
     delegatedManagedIdentityResourceId: !empty(delegatedManagedIdentityResourceId) ? delegatedManagedIdentityResourceId : ''
     conditionVersion: conditionVersion
     condition: !empty(condition) ? condition : ''
-    cuaId: !empty(cuaId) ? cuaId : ''
   }
 }
 
 @sys.description('The GUID of the Role Assignment')
-output name string = !empty(managementGroupId) ? roleAssignment_mg.outputs.name : (!empty(resourceGroupName) ? roleAssignment_rg.outputs.name : roleAssignment_sub.outputs.name)
+output name string = empty(subscriptionId) && empty(resourceGroupName) ? roleAssignment_mg.outputs.name : (!empty(subscriptionId) && empty(resourceGroupName) ? roleAssignment_sub.outputs.name : roleAssignment_rg.outputs.name)
 
 @sys.description('The resource ID of the Role Assignment')
-output resourceId string = !empty(managementGroupId) ? roleAssignment_mg.outputs.resourceId : (!empty(resourceGroupName) ? roleAssignment_rg.outputs.resourceId : roleAssignment_sub.outputs.resourceId)
+output resourceId string = empty(subscriptionId) && empty(resourceGroupName) ? roleAssignment_mg.outputs.resourceId : (!empty(subscriptionId) && empty(resourceGroupName) ? roleAssignment_sub.outputs.resourceId : roleAssignment_rg.outputs.resourceId)
 
 @sys.description('The scope this Role Assignment applies to')
-output scope string = !empty(managementGroupId) ? roleAssignment_mg.outputs.scope : (!empty(resourceGroupName) ? roleAssignment_rg.outputs.scope : roleAssignment_sub.outputs.scope)
+output scope string = empty(subscriptionId) && empty(resourceGroupName) ? roleAssignment_mg.outputs.scope : (!empty(subscriptionId) && empty(resourceGroupName) ? roleAssignment_sub.outputs.scope : roleAssignment_rg.outputs.scope)

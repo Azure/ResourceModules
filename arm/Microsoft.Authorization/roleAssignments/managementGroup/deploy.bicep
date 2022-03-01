@@ -6,8 +6,8 @@ param roleDefinitionIdOrName string
 @sys.description('Required. The Principal or Object ID of the Security Principal (User, Group, Service Principal, Managed Identity)')
 param principalId string
 
-@sys.description('Required. Group ID of the Management Group to assign the RBAC role to')
-param managementGroupId string
+@sys.description('Optional. Group ID of the Management Group to assign the RBAC role to. If not provided, will use the current scope for deployment.')
+param managementGroupId string = managementGroup().name
 
 @sys.description('Optional. Description of role assignment')
 param description string = ''

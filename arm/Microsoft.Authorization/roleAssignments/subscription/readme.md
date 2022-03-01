@@ -19,7 +19,7 @@ With this module you can perform role assignments on a subscription level
 | `principalId` | string |  |  | Required. The Principal or Object ID of the Security Principal (User, Group, Service Principal, Managed Identity) |
 | `principalType` | string |  | `[ServicePrincipal, Group, User, ForeignGroup, Device, ]` | Optional. The principal type of the assigned principal ID. |
 | `roleDefinitionIdOrName` | string |  |  | Required. You can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
-| `subscriptionId` | string | `[subscription().subscriptionId]` |  | Optional. Subscription ID of the subscription to assign the RBAC role to. |
+| `subscriptionId` | string | `[subscription().subscriptionId]` |  | Optional. Subscription ID of the subscription to assign the RBAC role to. If not provided, will use the current scope for deployment. |
 
 ## Outputs
 

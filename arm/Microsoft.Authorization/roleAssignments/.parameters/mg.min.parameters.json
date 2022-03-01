@@ -7,9 +7,6 @@
         },
         "principalId": {
             "value": "<<deploymentSpId>>"
-        },
-        "managementGroupId": {
-            "value": "<<managementGroupId>>"
         }
     }
 }

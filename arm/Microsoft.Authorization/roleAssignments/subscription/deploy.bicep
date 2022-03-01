@@ -6,7 +6,7 @@ param roleDefinitionIdOrName string
 @sys.description('Required. The Principal or Object ID of the Security Principal (User, Group, Service Principal, Managed Identity)')
 param principalId string
 
-@sys.description('Optional. Subscription ID of the subscription to assign the RBAC role to.')
+@sys.description('Optional. Subscription ID of the subscription to assign the RBAC role to. If not provided, will use the current scope for deployment.')
 param subscriptionId string = subscription().subscriptionId
 
 @sys.description('Optional. Description of role assignment')
