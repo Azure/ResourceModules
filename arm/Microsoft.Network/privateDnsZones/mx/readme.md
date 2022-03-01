@@ -15,7 +15,7 @@ This module deploys a Private DNS Zone MX record.
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `metadata` | object | `{object}` |  | Optional. The metadata attached to the record set. |
 | `mxRecords` | array | `[]` |  | Optional. The list of MX records in the record set. |
-| `name` | string |  |  | Required. The name of the A record. |
+| `name` | string |  |  | Required. The name of the MX record. |
 | `privateDnsZoneName` | string |  |  | Required. Private DNS zone name. |
 | `ttl` | int | `3600` |  | Optional. The TTL (time-to-live) of the records in the record set. |
 
