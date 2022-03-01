@@ -23,16 +23,15 @@ Get modified files between previous and current commit.
 #>
 function Get-ModifiedFileList {
     [CmdletBinding()]
-    param (
-        [Parameter(Mandatory = $false)]
-        [string] $Commit = 'HEAD',
-
-        [Parameter(Mandatory = $false)]
-        [string] $CompareCommit = 'main'
-    )
+    param ()
 
     Write-Verbose "Gathering modified files between curent branch and main" -Verbose
-    $Diff = git diff --name-only --diff-filter=AM origin/main
+    $CurrentBranch = Get-GitBranchName
+    if (($CurrentBranch -eq 'main') -or ($CurrentBranch -eq 'master')) {
+        $Diff = git diff --name-only --diff-filter=AM $CurrentBranch^..$CurrentBranch
+    } else {
+        $Diff = git diff --name-only --diff-filter=AM origin/HEAD
+    }
     $ModifiedFiles = $Diff | Get-Item -Force
 
     return $ModifiedFiles
