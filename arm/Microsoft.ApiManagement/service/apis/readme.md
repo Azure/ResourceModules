@@ -29,7 +29,7 @@ The following resources are required to be able to deploy this resource.
 | `apiVersionSetId` | string |  |  | Optional. Indicates the Version identifier of the API version set |
 | `authenticationSettings` | object | `{object}` |  | Optional. Collection of authentication settings included into this API. |
 | `displayName` | string |  |  | Required. API name. Must be 1 to 300 characters long. |
-| `enableDefaultTelemetry` | bool |  |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `False` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `format` | string | `openapi` | `[wadl-xml, wadl-link-json, swagger-json, swagger-link-json, wsdl, wsdl-link, openapi, openapi+json, openapi-link, openapi+json-link]` | Optional. Format of the Content in which the API is getting imported. |
 | `isCurrent` | bool | `True` |  | Optional. Indicates if API revision is current API revision. |
 | `name` | string |  |  | Required. API revision identifier. Must be unique in the current API Management service instance. Non-current revision has ;rev=n as a suffix where n is the revision number. |
@@ -39,7 +39,7 @@ The following resources are required to be able to deploy this resource.
 | `serviceUrl` | string |  |  | Optional. Absolute URL of the backend service implementing this API. Cannot be more than 2000 characters long. |
 | `sourceApiId` | string |  |  | Optional. API identifier of the source API. |
 | `subscriptionKeyParameterNames` | object | `{object}` |  | Optional. Protocols over which API is made available. |
-| `subscriptionRequired` | bool |  |  | Optional. Specifies whether an API or Product subscription is required for accessing the API. |
+| `subscriptionRequired` | bool | `False` |  | Optional. Specifies whether an API or Product subscription is required for accessing the API. |
 | `type` | string | `http` | `[http, soap]` | Optional. Type of API. |
 | `value` | string |  |  | Optional. Content value when Importing an API. |
 | `wsdlSelector` | object | `{object}` |  | Optional. Criteria to limit import of WSDL to a subset of the document. |
