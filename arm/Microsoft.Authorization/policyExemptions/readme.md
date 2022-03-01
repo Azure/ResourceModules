@@ -35,7 +35,7 @@ To deploy resource to a Management Group, provide the `managementGroupId` as an 
 }
 ```
 
-> `managementGroupId` is an optional parameter. If not provided, the target management group will be the one used at the time of the deployment trigger.
+> `managementGroupId` is an optional parameter. If not provided, the deployment will use the management group defined in the current deployment scope (i.e. `managementGroup().name`).
 
 ### Parameter Usage: `subscriptionId`
 
