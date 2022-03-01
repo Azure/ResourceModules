@@ -22,7 +22,7 @@
         "appInsightObject": {
             "value": {
                 "name": "<<namePrefix>>-az-wa-x-001-appi",
-                "workspaceResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.OperationalInsights/workspaces/adp-<<namePrefix>>-az-law-x-002"
+                "workspaceResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.OperationalInsights/workspaces/adp-<<namePrefix>>-az-law-appi-001"
             }
         },
         "siteConfig": {
