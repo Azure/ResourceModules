@@ -118,6 +118,8 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
+      - pwsh: |
+        git branch --remotes --list '*/HEAD'
       - name: Set environment variables
         uses: deep-mm/set-variables@v1.0
         with:
