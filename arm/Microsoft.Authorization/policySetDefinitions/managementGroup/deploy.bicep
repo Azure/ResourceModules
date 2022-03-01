@@ -11,8 +11,8 @@ param displayName string = ''
 @sys.description('Optional. The description name of the Set Definition (Initiative)')
 param description string = ''
 
-@sys.description('Required. The group ID of the Management Group')
-param managementGroupId string
+@sys.description('Optional. The group ID of the Management Group. If not provided, will use the current scope for deployment.')
+param managementGroupId string = managementGroup().name
 
 @sys.description('Optional. The Set Definition (Initiative) metadata. Metadata is an open ended object and is typically a collection of key-value pairs.')
 param metadata object = {}
