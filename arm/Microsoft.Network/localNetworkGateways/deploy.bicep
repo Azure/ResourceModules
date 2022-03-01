@@ -58,7 +58,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource localNetworkGateway 'Microsoft.Network/localNetworkGateways@2021-02-01' = {
+resource localNetworkGateway 'Microsoft.Network/localNetworkGateways@2021-08-01' = {
   name: name
   location: location
   tags: tags

@@ -10,7 +10,7 @@ This module deploys an Azure Monitor Private Link Scope.
 | `Microsoft.Authorization/roleAssignments` | 2021-04-01-preview |
 | `microsoft.insights/privateLinkScopes` | 2019-10-17-preview |
 | `Microsoft.Insights/privateLinkScopes/scopedResources` | 2021-07-01-preview |
-| `Microsoft.Network/privateEndpoints` | 2021-03-01 |
+| `Microsoft.Network/privateEndpoints` | 2021-05-01 |
 | `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | 2021-05-01 |
 
 ## Parameters

@@ -285,7 +285,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
 // Public IPs
 // ==========
 @batchSize(1)
-resource virtualGatewayPublicIP 'Microsoft.Network/publicIPAddresses@2021-02-01' = [for (virtualGatewayPublicIpName, index) in virtualGatewayPipName_var: {
+resource virtualGatewayPublicIP 'Microsoft.Network/publicIPAddresses@2021-05-01' = [for (virtualGatewayPublicIpName, index) in virtualGatewayPipName_var: {
   name: virtualGatewayPublicIpName
   location: location
   tags: tags
@@ -328,7 +328,7 @@ resource virtualNetworkGatewayPublicIp_diagnosticSettings 'Microsoft.Insights/di
 
 // VNET Gateway
 // ============
-resource virtualNetworkGateway 'Microsoft.Network/virtualNetworkGateways@2021-02-01' = {
+resource virtualNetworkGateway 'Microsoft.Network/virtualNetworkGateways@2021-05-01' = {
   name: name
   location: location
   tags: tags

@@ -8,16 +8,28 @@ param vmComputerNamesTransformation string = 'none'
 @description('Optional. Specifies the size for the VMs')
 param vmSize string = 'Standard_D2s_v3'
 
+@description('Optional. This property can be used by user in the request to enable or disable the Host Encryption for the virtual machine. This will enable the encryption for all the disks including Resource/Temp disk at host itself. For security reasons, it is recommended to set encryptionAtHost to True. Restrictions: Cannot be enabled if Azure Disk Encryption (guest-VM encryption using bitlocker/DM-Crypt) is enabled on your VMs.')
+param encryptionAtHost bool = true
+
+@description('Optional. Specifies the SecurityType of the virtual machine. It is set as TrustedLaunch to enable UefiSettings.')
+param securityType string = ''
+
+@description('Optional. Specifies whether secure boot should be enabled on the virtual machine. This parameter is part of the UefiSettings. SecurityType should be set to TrustedLaunch to enable UefiSettings.')
+param secureBootEnabled bool = false
+
+@description('Optional. Specifies whether vTPM should be enabled on the virtual machine. This parameter is part of the UefiSettings.  SecurityType should be set to TrustedLaunch to enable UefiSettings.')
+param vTpmEnabled bool = false
+
 @description('Required. OS image reference. In case of marketplace images, it\'s the combination of the publisher, offer, sku, version attributes. In case of custom images it\'s the resource ID of the custom image.')
 param imageReference object
 
 @description('Optional. Specifies information about the marketplace image used to create the virtual machine. This element is only used for marketplace images. Before you can use a marketplace image from an API, you must enable the image for programmatic use.')
 param plan object = {}
 
-@description('Required. Specifies the OS disk.')
+@description('Required. Specifies the OS disk. For security reasons, it is recommended to specify DiskEncryptionSet into the osDisk object.  Restrictions: DiskEncryptionSet cannot be enabled if Azure Disk Encryption (guest-VM encryption using bitlocker/DM-Crypt) is enabled on your VMs.')
 param osDisk object
 
-@description('Optional. Specifies the data disks.')
+@description('Optional. Specifies the data disks. For security reasons, it is recommended to specify DiskEncryptionSet into the dataDisk object. Restrictions: DiskEncryptionSet cannot be enabled if Azure Disk Encryption (guest-VM encryption using bitlocker/DM-Crypt) is enabled on your VMs.')
 param dataDisks array = []
 
 @description('Optional. The flag that enables or disables a capability to have one or more managed data disks with UltraSSD_LRS storage account type on the VM or VMSS. Managed disks with storage account type UltraSSD_LRS can be added to a virtual machine or virtual machine scale set only if this property is enabled.')
@@ -83,10 +95,7 @@ param proximityPlacementGroupName string = ''
 @description('Optional. Resource name of an availability set. Cannot be used in combination with availability zone nor scale set.')
 param availabilitySetName string = ''
 
-@description('Optional. Creates an availability zone and adds the VMs to it. Cannot be used in combination with availability set nor scale set.')
-param useAvailabilityZone bool = false
-
-@description('Optional. If set to 1, 2 or 3, the availability zone for all VMs is hardcoded to that value. If zero, then the automatic algorithm will be used to give every VM in a different zone (up to three zones). Cannot be used in combination with availability set nor scale set.')
+@description('Optional. If set to 1, 2 or 3, the availability zone for all VMs is hardcoded to that value. If zero, then availability zones is not used. Cannot be used in combination with availability set nor scale set.')
 @allowed([
   0
   1
@@ -235,7 +244,7 @@ param baseTime string = utcNow('u')
 @description('Optional. SAS token validity length to use to download files from storage accounts. Usage: \'PT8H\' - valid for 8 hours; \'P5D\' - valid for 5 days; \'P1Y\' - valid for 1 year. When not provided, the SAS token will be valid for 8 hours.')
 param sasTokenValidityLength string = 'PT8H'
 
-@description('Optional. The chosen OS type')
+@description('Required. The chosen OS type')
 @allowed([
   'Windows'
   'Linux'
@@ -323,7 +332,7 @@ module virtualMachine_nic '.bicep/nested_networkInterface.bicep' = [for (nicConf
     location: location
     tags: tags
     enableIPForwarding: contains(nicConfiguration, 'enableIPForwarding') ? (!empty(nicConfiguration.enableIPForwarding) ? nicConfiguration.enableIPForwarding : false) : false
-    enableAcceleratedNetworking: contains(nicConfiguration, 'enableAcceleratedNetworking') ? (!empty(nicConfiguration.enableAcceleratedNetworking) ? nicConfiguration.enableAcceleratedNetworking : false) : false
+    enableAcceleratedNetworking: contains(nicConfiguration, 'enableAcceleratedNetworking') ? nicConfiguration.enableAcceleratedNetworking : true
     dnsServers: contains(nicConfiguration, 'dnsServers') ? (!empty(nicConfiguration.dnsServers) ? nicConfiguration.dnsServers : []) : []
     networkSecurityGroupId: contains(nicConfiguration, 'nsgId') ? (!empty(nicConfiguration.nsgId) ? nicConfiguration.nsgId : '') : ''
     ipConfigurationArray: nicConfiguration.ipConfigurations
@@ -345,11 +354,19 @@ resource virtualMachine 'Microsoft.Compute/virtualMachines@2021-07-01' = {
   location: location
   identity: identity
   tags: tags
-  zones: useAvailabilityZone ? array(availabilityZone) : null
+  zones: availabilityZone != 0 ? array(availabilityZone) : null
   plan: !empty(plan) ? plan : null
   properties: {
     hardwareProfile: {
       vmSize: vmSize
+    }
+    securityProfile: {
+      encryptionAtHost: encryptionAtHost
+      securityType: securityType
+      uefiSettings: securityType == 'TrustedLaunch' ? {
+        secureBootEnabled: secureBootEnabled
+        vTpmEnabled: vTpmEnabled
+      } : null
     }
     storageProfile: {
       imageReference: imageReference
@@ -360,6 +377,7 @@ resource virtualMachine 'Microsoft.Compute/virtualMachines@2021-07-01' = {
         diskSizeGB: osDisk.diskSizeGB
         managedDisk: {
           storageAccountType: osDisk.managedDisk.storageAccountType
+          diskEncryptionSet: contains(osDisk.managedDisk, 'diskEncryptionSet') ? osDisk.managedDisk.diskEncryptionSet : null
         }
       }
       dataDisks: [for (dataDisk, index) in dataDisks: {

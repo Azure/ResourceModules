@@ -34,7 +34,7 @@ var diagnosticsMetrics = [for metric in metricsToEnable: {
   }
 }]
 
-resource publicIpAddress 'Microsoft.Network/publicIPAddresses@2021-03-01' = {
+resource publicIpAddress 'Microsoft.Network/publicIPAddresses@2021-05-01' = {
   name: publicIPAddressName
   location: location
   tags: tags

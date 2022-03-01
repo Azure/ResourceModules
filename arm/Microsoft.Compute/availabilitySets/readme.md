@@ -68,8 +68,8 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The resource group the availability set was deployed into |
-| `resourceGroupName` | string | The name of the availability set |
+| `name` | string | The name of the availability set |
+| `resourceGroupName` | string | The resource group the availability set was deployed into |
 | `resourceId` | string | The resource ID of the availability set |
 
 ## Template references

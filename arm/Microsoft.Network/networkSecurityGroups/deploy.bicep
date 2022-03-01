@@ -72,7 +72,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource networkSecurityGroup 'Microsoft.Network/networkSecurityGroups@2021-02-01' = {
+resource networkSecurityGroup 'Microsoft.Network/networkSecurityGroups@2021-05-01' = {
   name: name
   location: location
   tags: tags

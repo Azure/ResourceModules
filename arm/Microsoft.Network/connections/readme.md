@@ -7,7 +7,7 @@ This template deploys a virtual network gateway connection.
 | Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2017-04-01 |
-| `Microsoft.Network/connections` | 2021-02-01 |
+| `Microsoft.Network/connections` | 2021-05-01 |
 
 ## Parameters
 
@@ -92,5 +92,5 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 ## Template references
 
-- [Connections](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-02-01/connections)
+- [Connections](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/connections)
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)

@@ -100,7 +100,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource connection 'Microsoft.Network/connections@2021-02-01' = {
+resource connection 'Microsoft.Network/connections@2021-05-01' = {
   name: name
   location: location
   tags: tags
@@ -114,7 +114,7 @@ resource connection 'Microsoft.Network/connections@2021-02-01' = {
     enableBgp: enableBgp
     connectionType: virtualNetworkGatewayConnectionType
     routingWeight: routingWeight
-    sharedKey: virtualNetworkGatewayConnectionType == 'ExpressRoute' ? vpnSharedKey : null
+    sharedKey: virtualNetworkGatewayConnectionType == 'ExpressRoute' ? null : vpnSharedKey
     usePolicyBasedTrafficSelectors: usePolicyBasedTrafficSelectors
     ipsecPolicies: empty(customIPSecPolicy.ipsecEncryption) ? customIPSecPolicy.ipsecEncryption : customIPSecPolicy_var
   }

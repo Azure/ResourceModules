@@ -27,7 +27,7 @@ This module is used to deploy a storage account, with the ability to deploy 1 or
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `allowBlobPublicAccess` | bool |  |  | Optional. Indicates whether public access is enabled for all blobs or containers in the storage account. For security reasons, it is recommended to set it to false. |
+| `allowBlobPublicAccess` | bool | `False` |  | Optional. Indicates whether public access is enabled for all blobs or containers in the storage account. For security reasons, it is recommended to set it to false. |
 | `azureFilesIdentityBasedAuthentication` | object | `{object}` |  | Optional. Provides the identity based authentication settings for Azure Files. |
 | `basetime` | string | `[utcNow('u')]` |  | Generated. Do not provide a value! This date value is used to generate a SAS token to access the modules. |
 | `blobServices` | _[blobServices](blobServices/readme.md)_ object | `{object}` |  | Optional. Blob service and containers to deploy |
@@ -37,7 +37,7 @@ This module is used to deploy a storage account, with the ability to deploy 1 or
 | `diagnosticStorageAccountId` | string |  |  | Optional. Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string |  |  | Optional. Resource ID of the diagnostic log analytics workspace. |
 | `enableDefaultTelemetry` | bool |  |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `enableHierarchicalNamespace` | bool |  |  | Optional. If true, enables Hierarchical Namespace for the storage account |
+| `enableHierarchicalNamespace` | bool | `False` |  | Optional. If true, enables Hierarchical Namespace for the storage account |
 | `fileServices` | _[fileServices](fileServices/readme.md)_ object | `{object}` |  | Optional. File service and shares to deploy |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
@@ -49,11 +49,12 @@ This module is used to deploy a storage account, with the ability to deploy 1 or
 | `privateEndpoints` | array | `[]` |  | Optional. Configuration Details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible |
 | `queueServices` | _[queueServices](queueServices/readme.md)_ object | `{object}` |  | Optional. Queue service and queues to create. |
 | `requireInfrastructureEncryption` | bool | `True` |  | Optional. A boolean indicating whether or not the service applies a secondary layer of encryption with platform managed keys for data at rest. For security reasons, it is recommended to set it to true. |
-| `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or it's fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
+| `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
 | `storageAccountAccessTier` | string | `Hot` | `[Hot, Cool]` | Optional. Storage Account Access Tier. |
 | `storageAccountKind` | string | `StorageV2` | `[Storage, StorageV2, BlobStorage, FileStorage, BlockBlobStorage]` | Optional. Type of Storage Account to create. |
 | `storageAccountSku` | string | `Standard_GRS` | `[Standard_LRS, Standard_GRS, Standard_RAGRS, Standard_ZRS, Premium_LRS, Premium_ZRS, Standard_GZRS, Standard_RAGZRS]` | Optional. Storage Account Sku Name. |
-| `systemAssignedIdentity` | bool |  |  | Optional. Enables system assigned managed identity on the resource. |
+| `supportsHttpsTrafficOnly` | bool | `True` |  | Optional. Allows https traffic only to storage service if sets to true. |
+| `systemAssignedIdentity` | bool | `False` |  | Optional. Enables system assigned managed identity on the resource. |
 | `tableServices` | _[tableServices](tableServices/readme.md)_ object | `{object}` |  | Optional. Table service and tables to create. |
 | `tags` | object | `{object}` |  | Optional. Tags of the resource. |
 | `userAssignedIdentities` | object | `{object}` |  | Optional. The ID(s) to assign to the resource. |

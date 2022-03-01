@@ -129,6 +129,9 @@ stages:
             - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
               templateFilePath: $(templateFilePath)
               displayName: Default LAW
+            - path: $(dependencyPath)/$(resourceType)/parameters/aut.parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: Automation account LAW
             - path: $(dependencyPath)/$(resourceType)/parameters/appi.parameters.json
               templateFilePath: $(templateFilePath)
               displayName: AppInsights LAW
@@ -186,21 +189,30 @@ stages:
               azureSubscription: $(serviceConnection)
               ScriptType: 'InlineScript'
               Inline: |
-
                 $parameterFilePath = Join-Path '$(Build.SourcesDirectory)' '$(dependencyPath)' '$(resourceType)' 'parameters' 'parameters.json'
                 # Load used functions
                 . (Join-Path '$(Build.SourcesDirectory)' 'utilities' 'pipelines' 'sharedScripts' 'Export-ContentToBlob.ps1')
-                . (Join-Path '$(Build.SourcesDirectory)' 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInParameterFile.ps1')
+                . (Join-Path '$(Build.SourcesDirectory)' 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInFile.ps1')
 
                 # Replace tokens in parameter file
-                $Settings = Get-Content -Path (Join-Path '$(Build.SourcesDirectory)' 'settings.json') | ConvertFrom-Json
+                $Settings = Get-Content -Path (Join-Path '$(Build.SourcesDirectory)' 'settings.json') | ConvertFrom-Json -AsHashTable
                 $ConvertTokensInputs = @{
-                    ParameterFilePath                 = $parameterFilePath
-                    LocalCustomParameterFileTokens    = $Settings.parameterFileTokens.localTokens.tokens
-                    TokenPrefix                       = $Settings.parameterFileTokens.tokenPrefix
-                    TokenSuffix                       = $Settings.parameterFileTokens.tokenSuffix
+                    FilePath     = $parameterFilePath
+                    TokenPrefix  = $Settings.parameterFileTokens.tokenPrefix
+                    TokenSuffix  = $Settings.parameterFileTokens.tokenSuffix
                 }
-                $null = Convert-TokensInParameterFile @ConvertTokensInputs -Verbose
+
+                # Add local tokens
+                if ($Settings.parameterFileTokens.localTokens) {
+                    $tokenMap = @{}
+                    foreach ($token in $Settings.parameterFileTokens.localTokens) {
+                        $tokenMap += @{ $token.name = $token.value }
+                    }
+                    Write-Verbose ('Using local tokens [{0}]' -f ($tokenMap.Keys -join ', ')) -Verbose
+                    $ConvertTokensInputs.Tokens = $tokenMap
+                }
+
+                $null = Convert-TokensInFile @ConvertTokensInputs
 
                 # Get storage account name
                 $storageAccountParameters = (ConvertFrom-Json (Get-Content -path $parameterFilePath -Raw)).parameters
@@ -307,14 +319,21 @@ stages:
               Inline: |
 
                 # Load used functions
-                . (Join-Path '$(Build.SourcesDirectory)' 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInParameterFile.ps1')
+                . (Join-Path '$(Build.SourcesDirectory)' 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInFile.ps1')
 
                 # Prepare replace tokens in parameter file
-                $Settings = Get-Content -Path (Join-Path '$(Build.SourcesDirectory)' 'settings.json') | ConvertFrom-Json
+                $Settings = Get-Content -Path (Join-Path '$(Build.SourcesDirectory)' 'settings.json') | ConvertFrom-Json -AsHashTable
                 $ConvertTokensInputs = @{
-                    LocalCustomParameterFileTokens    = $Settings.parameterFileTokens.localTokens.tokens
-                    TokenPrefix                       = $Settings.parameterFileTokens.tokenPrefix
-                    TokenSuffix                       = $Settings.parameterFileTokens.tokenSuffix
+                    TokenPrefix  = $Settings.parameterFileTokens.tokenPrefix
+                    TokenSuffix  = $Settings.parameterFileTokens.tokenSuffix
+                }
+                if ($Settings.parameterFileTokens.localTokens) {
+                    $tokenMap = @{}
+                    foreach ($token in $Settings.parameterFileTokens.localTokens) {
+                        $tokenMap += @{ $token.name = $token.value }
+                    }
+                    Write-Verbose ('Using local tokens [{0}]' -f ($tokenMap.Keys -join ', ')) -Verbose
+                    $ConvertTokensInputs.Tokens = $tokenMap
                 }
 
                 # Retrieving parameters from previous job outputs and parameter files
@@ -324,12 +343,12 @@ stages:
 
                 Write-Verbose "Retrieving parameters from storage account parameter files" -Verbose
                 $parameterFilePath = Join-Path '$(Build.SourcesDirectory)' '$(dependencyPath)' '$(saResourceType)' 'parameters' 'parameters.json'
-                $null = Convert-TokensInParameterFile @ConvertTokensInputs -ParameterFilePath $parameterFilePath -Verbose
+                $null = Convert-TokensInFile @ConvertTokensInputs -FilePath $parameterFilePath -Verbose
                 $storageAccountParameters = (ConvertFrom-Json (Get-Content -path $parameterFilePath -Raw)).parameters
 
                 Write-Verbose "Retrieving parameters from image template parameter files" -Verbose
                 $parameterFilePath = Join-Path '$(Build.SourcesDirectory)' '$(dependencyPath)' '$(resourceType)' 'parameters' 'parameters.json'
-                $null = Convert-TokensInParameterFile @ConvertTokensInputs -ParameterFilePath $parameterFilePath -Verbose
+                $null = Convert-TokensInFile @ConvertTokensInputs -FilePath $parameterFilePath -Verbose
                 $imageTemplateParameters = (ConvertFrom-Json (Get-Content -path $parameterFilePath -Raw)).parameters
 
                 # Initializing parameters before the blob copy
@@ -467,6 +486,9 @@ stages:
             - path: $(dependencyPath)/$(resourceType)/parameters/lb.parameters.json
               templateFilePath: $(templateFilePath)
               displayName: Load balancer Public IP
+            - path: $(dependencyPath)/$(resourceType)/parameters/lb.min.parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: Min Load balancer Public IP
             - path: $(dependencyPath)/$(resourceType)/parameters/fw.parameters.json
               templateFilePath: $(templateFilePath)
               displayName: Firewall Public IP
@@ -540,7 +562,7 @@ stages:
             - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
               templateFilePath: $(templateFilePath)
               displayName: Default recovery services vault
-              customParameterFileTokens: '[{"Name":"msiPrincipalId","Value":"$(msiPrincipalId)"}]'
+              customParameterFileTokens: '{"msiPrincipalId":"$(msiPrincipalId)"}'
 
   - stage: deploy_kv
     displayName: Deploy key vaults
@@ -561,17 +583,17 @@ stages:
               templateFilePath: $(templateFilePath)
               displayName: Default Key Vault
               jobName: default_kv
-              customParameterFileTokens: '[{"Name":"msiPrincipalId","Value":"$(msiPrincipalId)"}]'
+              customParameterFileTokens: '{"msiPrincipalId":"$(msiPrincipalId)"}'
             - path: $(dependencyPath)/$(resourceType)/parameters/pe.parameters.json
               templateFilePath: $(templateFilePath)
               displayName: Private Endpoint Key Vault
-              customParameterFileTokens: '[{"Name":"msiPrincipalId","Value":"$(msiPrincipalId)"}]'
+              customParameterFileTokens: '{"msiPrincipalId":"$(msiPrincipalId)"}'
             - ${{ if eq( parameters.deploySqlMiDependencies, true) }}:
                 - path: $(dependencyPath)/$(resourceType)/parameters/sqlmi.parameters.json
                   templateFilePath: $(templateFilePath)
                   displayName: SQLMI key vault
                   jobName: sqlmi_kv
-                  customParameterFileTokens: '[{"Name":"msiPrincipalId","Value":"$(msiPrincipalId)"}]'
+                  customParameterFileTokens: '{"msiPrincipalId":"$(msiPrincipalId)"}'
       - job:
         displayName: Set key vault secrets keys and certificates
         dependsOn:
@@ -604,20 +626,26 @@ stages:
               azureSubscription: $(serviceConnection)
               ScriptType: 'InlineScript'
               Inline: |
-
                 $parameterFilePath = Join-Path '$(Build.SourcesDirectory)' '$(dependencyPath)' '$(resourceType)' 'parameters' 'parameters.json'
                 # Load used functions
-                . (Join-Path '$(Build.SourcesDirectory)' 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInParameterFile.ps1')
+                . (Join-Path '$(Build.SourcesDirectory)' 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInFile.ps1')
 
                 # Replace tokens in parameter file
-                $Settings = Get-Content -Path (Join-Path '$(Build.SourcesDirectory)' 'settings.json') | ConvertFrom-Json
+                $Settings = Get-Content -Path (Join-Path '$(Build.SourcesDirectory)' 'settings.json') | ConvertFrom-Json -AsHashTable
                 $ConvertTokensInputs = @{
-                    ParameterFilePath                 = $parameterFilePath
-                    LocalCustomParameterFileTokens    = $Settings.parameterFileTokens.localTokens.tokens
-                    TokenPrefix                       = $Settings.parameterFileTokens.tokenPrefix
-                    TokenSuffix                       = $Settings.parameterFileTokens.tokenSuffix
+                    FilePath    = $parameterFilePath
+                    TokenPrefix = $Settings.parameterFileTokens.tokenPrefix
+                    TokenSuffix = $Settings.parameterFileTokens.tokenSuffix
                 }
-                $null = Convert-TokensInParameterFile @ConvertTokensInputs -Verbose
+                if ($Settings.parameterFileTokens.localTokens) {
+                    $tokenMap = @{}
+                    foreach ($token in $Settings.parameterFileTokens.localTokens) {
+                        $tokenMap += @{ $token.name = $token.value }
+                    }
+                    Write-Verbose ('Using local tokens [{0}]' -f ($tokenMap.Keys -join ', ')) -Verbose
+                    $ConvertTokensInputs.Tokens = $tokenMap
+                }
+                $null = Convert-TokensInFile @ConvertTokensInputs
 
                 # Get key vault name
                 $keyVaultParameters = (ConvertFrom-Json (Get-Content -Path $parameterFilePath -Raw)).parameters
@@ -704,17 +732,24 @@ stages:
 
                     $parameterFilePath = Join-Path '$(Build.SourcesDirectory)' '$(dependencyPath)' '$(resourceType)' 'parameters' 'sqlmi.parameters.json'
                     # Load used functions
-                    . (Join-Path '$(Build.SourcesDirectory)' 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInParameterFile.ps1')
+                    . (Join-Path '$(Build.SourcesDirectory)' 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInFile.ps1')
 
                     # Replace tokens in parameter file
-                    $Settings = Get-Content -Path (Join-Path '$(Build.SourcesDirectory)' 'settings.json') | ConvertFrom-Json
+                    $Settings = Get-Content -Path (Join-Path '$(Build.SourcesDirectory)' 'settings.json') | ConvertFrom-Json -AsHashTable
                     $ConvertTokensInputs = @{
-                        ParameterFilePath                 = $parameterFilePath
-                        LocalCustomParameterFileTokens    = $Settings.parameterFileTokens.localTokens.tokens
-                        TokenPrefix                       = $Settings.parameterFileTokens.tokenPrefix
-                        TokenSuffix                       = $Settings.parameterFileTokens.tokenSuffix
+                        FilePath    = $parameterFilePath
+                        TokenPrefix = $Settings.parameterFileTokens.tokenPrefix
+                        TokenSuffix = $Settings.parameterFileTokens.tokenSuffix
                     }
-                    $null = Convert-TokensInParameterFile @ConvertTokensInputs -Verbose
+                    if ($Settings.parameterFileTokens.localTokens) {
+                        $tokenMap = @{}
+                        foreach ($token in $Settings.parameterFileTokens.localTokens) {
+                            $tokenMap += @{ $token.name = $token.value }
+                        }
+                        Write-Verbose ('Using local tokens [{0}]' -f ($tokenMap.Keys -join ', ')) -Verbose
+                        $ConvertTokensInputs.Tokens = $tokenMap
+                    }
+                    $null = Convert-TokensInFile @ConvertTokensInputs
 
                     # Get key vault name
                     $keyVaultParameters = (ConvertFrom-Json (Get-Content -Path $parameterFilePath -Raw)).parameters
@@ -777,7 +812,7 @@ stages:
             - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
               templateFilePath: $(templateFilePath)
               displayName: MSI Role Assignment
-              customParameterFileTokens: '[{"Name":"msiPrincipalId","Value":"$(msiPrincipalId)"}]'
+              customParameterFileTokens: '{"msiPrincipalId":"$(msiPrincipalId)"}'
 
   - stage: deploy_vnet
     displayName: Deploy virtual networks
@@ -810,6 +845,9 @@ stages:
             - path: $(dependencyPath)/$(resourceType)/parameters/5.aks.parameters.json
               templateFilePath: $(templateFilePath)
               displayName: AKS Virtual Network
+            - path: $(dependencyPath)/$(resourceType)/parameters/7.virtualHubConnection.parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: Virtual Hub Connection Virtual Network
             - ${{ if eq( parameters.deploySqlMiDependencies, true) }}:
                 - path: $(dependencyPath)/$(resourceType)/parameters/6.sqlmi.parameters.json
                   templateFilePath: $(templateFilePath)

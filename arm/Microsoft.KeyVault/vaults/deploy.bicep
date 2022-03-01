@@ -9,7 +9,8 @@ param location string = resourceGroup().location
 param accessPolicies array = []
 
 @description('Optional. All secrets to create')
-param secrets array = []
+@secure()
+param secrets object = {}
 
 @description('Optional. All keys to create')
 param keys array = []
@@ -159,6 +160,8 @@ var formattedAccessPolicies = [for accessPolicy in accessPolicies: {
   tenantId: contains(accessPolicy, 'tenantId') ? accessPolicy.tenantId : tenant().tenantId
 }]
 
+var secretList = !empty(secrets) ? secrets.secureList : []
+
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name)}'
   properties: {
@@ -224,7 +227,7 @@ module keyVault_accessPolicies 'accessPolicies/deploy.bicep' = if (!empty(access
   }
 }
 
-module keyVault_secrets 'secrets/deploy.bicep' = [for (secret, index) in secrets: {
+module keyVault_secrets 'secrets/deploy.bicep' = [for (secret, index) in secretList: {
   name: '${uniqueString(deployment().name, location)}-KeyVault-Secret-${index}'
   params: {
     name: secret.name

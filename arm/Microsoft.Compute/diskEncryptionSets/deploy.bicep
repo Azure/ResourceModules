@@ -10,12 +10,12 @@ param keyVaultId string
 @description('Required. Key URL (with version) pointing to a key or secret in KeyVault.')
 param keyUrl string
 
-@description('Optional. The type of key used to encrypt the data of the disk.')
+@description('Optional. The type of key used to encrypt the data of the disk. For security reasons, it is recommended to set encryptionType to EncryptionAtRestWithPlatformAndCustomerKeys')
 @allowed([
   'EncryptionAtRestWithCustomerKey'
   'EncryptionAtRestWithPlatformAndCustomerKeys'
 ])
-param encryptionType string = 'EncryptionAtRestWithCustomerKey'
+param encryptionType string = 'EncryptionAtRestWithPlatformAndCustomerKeys'
 
 @description('Optional. Set this flag to true to enable auto-updating of this disk encryption set to the latest key version.')
 param rotationToLatestKeyVersionEnabled bool = false

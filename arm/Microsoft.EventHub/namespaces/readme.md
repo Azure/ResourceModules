@@ -15,7 +15,7 @@ This module deploys an event hub namespace.
 | `Microsoft.EventHub/namespaces/eventhubs/authorizationRules` | 2021-06-01-preview |
 | `Microsoft.EventHub/namespaces/eventhubs/consumergroups` | 2021-06-01-preview |
 | `Microsoft.Insights/diagnosticSettings` | 2021-05-01-preview |
-| `Microsoft.Network/privateEndpoints` | 2021-03-01 |
+| `Microsoft.Network/privateEndpoints` | 2021-05-01 |
 | `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | 2021-05-01 |
 
 ## Parameters
