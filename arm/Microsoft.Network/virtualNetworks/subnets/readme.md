@@ -6,7 +6,7 @@ This module deploys a virtual network subnet.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Network/virtualNetworks/subnets` | 2021-03-01 |
+| `Microsoft.Network/virtualNetworks/subnets` | 2021-05-01 |
 
 ## Parameters
 
@@ -70,4 +70,4 @@ The `privateEndpointNetworkPolicies` property must be set to disabled for subnet
 
 ## Template references
 
-- [Virtualnetworks/Subnets](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-03-01/virtualNetworks/subnets)
+- [Virtualnetworks/Subnets](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/virtualNetworks/subnets)

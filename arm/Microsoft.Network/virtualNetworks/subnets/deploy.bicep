@@ -66,7 +66,7 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
-resource virtualNetwork 'Microsoft.Network/virtualNetworks@2021-03-01' existing = {
+resource virtualNetwork 'Microsoft.Network/virtualNetworks@2021-05-01' existing = {
   name: virtualNetworkName
 }
 
@@ -83,7 +83,7 @@ resource natGateway 'Microsoft.Network/natGateways@2021-03-01' existing = if (!e
   name: natGatewayName
 }
 
-resource subnet 'Microsoft.Network/virtualNetworks/subnets@2021-03-01' = {
+resource subnet 'Microsoft.Network/virtualNetworks/subnets@2021-05-01' = {
   name: name
   parent: virtualNetwork
   properties: {
