@@ -124,6 +124,7 @@ jobs:
           git branch
           git branch --remotes
           git remote
+        shell: pwsh
       - name: Set environment variables
         uses: deep-mm/set-variables@v1.0
         with:
