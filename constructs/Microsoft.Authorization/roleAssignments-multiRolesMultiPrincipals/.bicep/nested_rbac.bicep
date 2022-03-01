@@ -302,7 +302,7 @@ module roleAssignments_mg '../../../../arm/Microsoft.Authorization/roleAssignmen
   }
 }]
 
-module roleAssignments_sub '../../../../arm/Microsoft.Authorization/roleAssignments/subscriptions/deploy.bicep' = [for principalId in principalIds: if (empty(managementGroupId) && !empty(subscriptionId) && empty(resourceGroupName)) {
+module roleAssignments_sub '../../../../arm/Microsoft.Authorization/roleAssignments/subscription/deploy.bicep' = [for principalId in principalIds: if (empty(managementGroupId) && !empty(subscriptionId) && empty(resourceGroupName)) {
   name: 'roleAssignments_sub-${guid(deployment().name, location, principalId)}'
   scope: subscription(subscriptionId)
   params: {
