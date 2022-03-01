@@ -30,8 +30,8 @@ param parameters object = {}
 @sys.description('Required. The Policy Rule details for the Policy Definition')
 param policyRule object
 
-@sys.description('Required. The group ID of the Management Group')
-param managementGroupId string
+@sys.description('Optional. The group ID of the Management Group. If not provided, will use the current scope for deployment.')
+param managementGroupId string = managementGroup().name
 
 resource policyDefinition 'Microsoft.Authorization/policyDefinitions@2021-06-01' = {
   name: name

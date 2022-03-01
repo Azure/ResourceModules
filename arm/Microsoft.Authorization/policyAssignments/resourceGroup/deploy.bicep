@@ -50,10 +50,10 @@ var nonComplianceMessage_var = {
   message: !empty(nonComplianceMessage) ? nonComplianceMessage : null
 }
 
-@sys.description('Optional. The Target Scope for the Policy. The subscription ID of the subscription for the policy assignment')
+@sys.description('Optional. The Target Scope for the Policy. The subscription ID of the subscription for the policy assignment. If not provided, will use the current scope for deployment.')
 param subscriptionId string = subscription().subscriptionId
 
-@sys.description('Optional. The Target Scope for the Policy. The name of the resource group for the policy assignment')
+@sys.description('Optional. The Target Scope for the Policy. The name of the resource group for the policy assignment. If not provided, will use the current scope for deployment.')
 param resourceGroupName string = resourceGroup().name
 
 @sys.description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered.')

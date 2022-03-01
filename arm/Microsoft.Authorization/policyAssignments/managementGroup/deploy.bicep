@@ -40,8 +40,8 @@ param nonComplianceMessage string = ''
 ])
 param enforcementMode string = 'Default'
 
-@sys.description('Required. The Target Scope for the Policy. The name of the management group for the policy assignment')
-param managementGroupId string
+@sys.description('Optional. The Target Scope for the Policy. The name of the management group for the policy assignment. If not provided, will use the current scope for deployment.')
+param managementGroupId string = managementGroup().name
 
 @sys.description('Optional. The policy excluded scopes')
 param notScopes array = []

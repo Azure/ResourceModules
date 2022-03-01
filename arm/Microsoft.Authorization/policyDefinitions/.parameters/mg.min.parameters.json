@@ -30,9 +30,6 @@
                     "type": "String"
                 }
             }
-        },
-        "managementGroupId": {
-            "value": "<<managementGroupId>>"
         }
     }
 }

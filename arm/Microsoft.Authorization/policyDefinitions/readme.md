@@ -15,7 +15,7 @@ With this module you can create policy definitions across the management group o
 | `description` | string |  |  | Optional. The policy definition description. |
 | `displayName` | string |  |  | Optional. The display name of the policy definition. Maximum length is 128 characters. |
 | `location` | string | `[deployment().location]` |  | Optional. Location for all resources. |
-| `managementGroupId` | string |  |  | Optional. The group ID of the Management Group (Scope). Cannot be used with subscriptionId and does not support tenant level deployment (i.e. '/') |
+| `managementGroupId` | string | `[managementGroup().name]` |  | Optional. The group ID of the Management Group (Scope). If not provided, will use the current scope for deployment. |
 | `metadata` | object | `{object}` |  | Optional. The policy Definition metadata. Metadata is an open ended object and is typically a collection of key-value pairs. |
 | `mode` | string | `All` | `[All, Indexed, Microsoft.KeyVault.Data, Microsoft.ContainerService.Data, Microsoft.Kubernetes.Data]` | Optional. The policy definition mode. Default is All, Some examples are All, Indexed, Microsoft.KeyVault.Data. |
 | `name` | string |  |  | Required. Specifies the name of the policy definition. Maximum length is 64 characters for management group scope and subscription scope. |
@@ -33,7 +33,7 @@ To deploy resource to a Management Group, provide the `managementGroupId` as an 
 }
 ```
 
-> The name of the Management Group in the deployment does not have to match the value of the `managementGroupId` in the input parameters. For example, you can trigger the initial deployment at the root management group, but the parameter file has another management group mentioned, hence the real target is the one in the parameter file.
+> `managementGroupId` is an optional parameter. If not provided, the target management group will be the one used at the time of the deployment trigger.
 
 ### Parameter Usage: `subscriptionId`
 
@@ -49,7 +49,7 @@ To deploy resource to an Azure Subscription, provide the `subscriptionId` as an 
 
 In general, most of the resources under the `Microsoft.Authorization` namespace allows deploying resources at multiple scopes (management groups, subscriptions, resource groups). The `deploy.bicep` root module is simply an orchestrator module that targets sub-modules for different scopes as seen in the parameter usage section. All sub-modules for this namespace have folders that represent the target scope. For example, if the orchestrator module in the [root](deploy.bicep) needs to target 'subscription' level scopes. It will look at the relative path ['/subscription/deploy.bicep'](./subscription/deploy.bicep) and use this sub-module for the actual deployment, while still passing the same parameters from the root module.
 
-The above method is useful when you want to use a single point to interact with the module but rely on parameter combinations to achieve the target scope. But what if you want to incorporate this module with other modules with lower scopes? This will not work as the [root](deploy.bicep) is defined at a higher scope (i.e. management group), hence the module can no longer be used. That is simply because you cannot have your own bicep file that has a target of subscription, and this root module is at a higher scope than that. This is the error that you can expect to face:
+The above method is useful when you want to use a single point to interact with the module but rely on parameter combinations to achieve the target scope. But what if you want to incorporate this module in other modules with lower scopes? This would force you to deploy the module in scope `managementGroup` regardless and further require you to provide its ID with it. If you do not set the scope to management group, this would be the error that you can expect to face:
 
 ```bicep
 Error BCP134: Scope "subscription" is not valid for this module. Permitted scopes: "managementGroup"
