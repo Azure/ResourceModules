@@ -20,7 +20,7 @@ With this module you can create policy exemptions on a subscription level.
 | `name` | string |  |  | Required. Specifies the name of the policy exemption. Maximum length is 64 characters for subscription scope. |
 | `policyAssignmentId` | string |  |  | Required. The resource ID of the policy assignment that is being exempted. |
 | `policyDefinitionReferenceIds` | array | `[]` |  | Optional. The policy definition reference ID list when the associated policy assignment is an assignment of a policy set definition. |
-| `subscriptionId` | string | `[subscription().subscriptionId]` |  | Optional. The subscription ID of the subscription to be exempted from the policy assignment. |
+| `subscriptionId` | string | `[subscription().subscriptionId]` |  | Optional. The subscription ID of the subscription to be exempted from the policy assignment. If not provided, will use the current scope for deployment. |
 
 ## Outputs
 

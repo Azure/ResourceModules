@@ -30,10 +30,10 @@ param policyDefinitionReferenceIds array = []
 @sys.description('Optional. The expiration date and time (in UTC ISO 8601 format yyyy-MM-ddTHH:mm:ssZ) of the policy exemption. e.g. 2021-10-02T03:57:00.000Z ')
 param expiresOn string = ''
 
-@sys.description('Optional. The subscription ID of the subscription to be exempted from the policy assignment.')
+@sys.description('Optional. The subscription ID of the subscription to be exempted from the policy assignment. If not provided, will use the current scope for deployment.')
 param subscriptionId string = subscription().subscriptionId
 
-@sys.description('Optional. The name of the resource group to be exempted from the policy assignment.')
+@sys.description('Optional. The name of the resource group to be exempted from the policy assignment. If not provided, will use the current scope for deployment.')
 param resourceGroupName string = resourceGroup().name
 
 @sys.description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered.')
