@@ -33,17 +33,17 @@ function Set-ReadMeModuleTable {
 
     [CmdletBinding(SupportsShouldProcess)]
     param (
-        [Parameter(Mandatory = $false)]
-        [string] $FilePath = 'C:\Users\masanzde\Documents\IACs\Azure\ResourceModules\README.md',
+        [Parameter(Mandatory = $true)]
+        [string] $FilePath,
 
-        [Parameter(Mandatory = $false)]
-        [string] $ModulesPath = 'C:\Users\masanzde\Documents\IACs\Azure\ResourceModules\arm',
+        [Parameter(Mandatory = $true)]
+        [string] $ModulesPath,
 
-        [Parameter(Mandatory = $false)]
-        [string] $RepositoryName = 'ResourceModules',
+        [Parameter(Mandatory = $true)]
+        [string] $RepositoryName,
 
-        [Parameter(Mandatory = $false)]
-        [string] $Organization = 'masanzde',
+        [Parameter(Mandatory = $true)]
+        [string] $Organization,
 
         [Parameter(Mandatory = $false)]
         [ValidateSet('Name', 'ProviderNamespace', 'ResourceType', 'TemplateType', 'Deploy', 'Status')]
