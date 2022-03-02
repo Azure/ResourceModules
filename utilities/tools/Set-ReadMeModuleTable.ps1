@@ -52,10 +52,11 @@ function Set-ReadMeModuleTable {
         [Parameter(Mandatory = $false)]
         [string] $SortByColumn = 'ProviderNamespace',
 
-        [Parameter(ParameterSetName = 'AzureDevOps', Mandatory = $false)]
-        [switch]$ADO = $false,
+        [Parameter(Mandatory = $true)]
+        [ValidateSet('GitHub', 'ADO')]
+        [string]$Environment,
 
-        [Parameter(ParameterSetName = 'AzureDevOps', Mandatory = $false)]
+        [Parameter(Mandatory = $false)]
         [string]$ProjectName = ''
     )
 
@@ -72,10 +73,11 @@ function Set-ReadMeModuleTable {
         Organization   = $Organization
         ColumnsInOrder = $ColumnsInOrder
         SortByColumn   = $SortByColumn
-        ADO            = $ADO
+        Environment    = $Environment
         ProjectName    = $ProjectName
     }
-    $tableString = Get-ModulesAsMarkdownTable @tableStringInputObject
+    Write-Verbose ($tableStringInputObject | ConvertTo-Json | Out-String) -Verbose
+    $tableString = Get-ModulesAsMarkdownTable @tableStringInputObject -Verbose
 
     $newContent = Merge-FileWithNewContent -oldContent $contentArray -newContent $tableString -sectionStartIdentifier '## Available Resource Modules' -contentType 'table'
 
