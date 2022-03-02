@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "<<namePrefix>>-az-privdns-x-001.com"
+            "value": "<<namePrefix>>-az-privdns-x-002.com"
         },
         "roleAssignments": {
             "value": [
@@ -15,7 +15,20 @@
                 }
             ]
         },
-        "a": {
+        "AAAA": {
+            "value": [
+                {
+                    "name": "AAAA_2001:0db8:85a3:0000:0000:8a2e:0370:7334",
+                    "ttl": 3600,
+                    "aRecords": [
+                        {
+                            "ipv6Address": "2001:0db8:85a3:0000:0000:8a2e:0370:7334"
+                        }
+                    ]
+                }
+            ]
+        },
+        "A": {
             "value": [
                 {
                     "name": "A_10.240.4.4",
@@ -23,6 +36,90 @@
                     "aRecords": [
                         {
                             "ipv4Address": "10.240.4.4"
+                        }
+                    ]
+                }
+            ]
+        },
+        "CNAME": {
+            "value": [
+                {
+                    "name": "CNAME_test",
+                    "ttl": 3600,
+                    "cnameRecord": {
+                        "cname": "test"
+                    }
+                }
+            ]
+        },
+        "MX": {
+            "value": [
+                {
+                    "name": "MX_contoso",
+                    "ttl": 3600,
+                    "mxRecords": [
+                        {
+                            "exchange": "contoso.com",
+                            "preference": 100
+                        }
+                    ]
+                }
+            ]
+        },
+        "PTR": {
+            "value": [
+                {
+                    "name": "PTR_contoso",
+                    "ttl": 3600,
+                    "ptrRecords": [
+                        {
+                            "ptrdname": "contoso.com"
+                        }
+                    ]
+                }
+            ]
+        },
+        "SOA": {
+            "value": [
+                {
+                    "name": "SOA_contoso",
+                    "ttl": 3600,
+                    "soaRecord": {
+                        "email": "test@contoso.com",
+                        "expireTime": 1,
+                        "host": "ns1.contoso.com",
+                        "minimumTtl": 1,
+                        "refreshTime": 15,
+                        "retryTime": 10,
+                        "serialNumber": "1"
+                    }
+                }
+            ]
+        },
+        "SRV": {
+            "value": [
+                {
+                    "name": "SRV_contoso",
+                    "ttl": 3600,
+                    "srvRecords": [
+                        {
+                            "port": 9332,
+                            "priority": 0,
+                            "target": "test.contoso.com",
+                            "weight": 0
+                        }
+                    ]
+                }
+            ]
+        },
+        "TXT": {
+            "value": [
+                {
+                    "name": "TXT_test",
+                    "ttl": 3600,
+                    "txtRecords": [
+                        {
+                            "value": "test"
                         }
                     ]
                 }

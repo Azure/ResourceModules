@@ -12,10 +12,10 @@ This module deploys Network PrivateDnsZones CNAME record.
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `cnameValue` | string |  |  | Optional. The canonical name for this CNAME record. |
+| `cnameRecord` | object | `{object}` |  | Optional. A CNAME record. |
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `metadata` | object | `{object}` |  | Optional. The metadata attached to the record set. |
-| `name` | string |  |  | Required. The name of the CNAME record. |
+| `name` | string |  |  | Required. The name of the A record. |
 | `privateDnsZoneName` | string |  |  | Required. Private DNS zone name. |
 | `ttl` | int | `3600` |  | Optional. The TTL (time-to-live) of the records in the record set. |
 
