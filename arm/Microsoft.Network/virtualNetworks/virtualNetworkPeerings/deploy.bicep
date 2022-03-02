@@ -30,11 +30,11 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
-resource virtualNetwork 'Microsoft.Network/virtualNetworks@2021-03-01' existing = {
+resource virtualNetwork 'Microsoft.Network/virtualNetworks@2021-05-01' existing = {
   name: localVnetName
 }
 
-resource virtualNetworkPeering 'Microsoft.Network/virtualNetworks/virtualNetworkPeerings@2021-02-01' = {
+resource virtualNetworkPeering 'Microsoft.Network/virtualNetworks/virtualNetworkPeerings@2021-05-01' = {
   name: name
   parent: virtualNetwork
   properties: {

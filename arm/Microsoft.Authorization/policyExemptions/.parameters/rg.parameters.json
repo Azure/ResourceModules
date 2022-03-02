@@ -1,0 +1,32 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": "<<namePrefix>>-rg-polexem"
+        },
+        "displayName": {
+            "value": "[Display Name] policy exempt (resource group scope)"
+        },
+        "policyAssignmentId": {
+            "value": "/subscriptions/<<subscriptionId>>/providers/Microsoft.Authorization/policyAssignments/adp-<<namePrefix>>-sb-pass-loc-rg"
+        },
+        "exemptionCategory": {
+            "value": "Waiver"
+        },
+        "metadata": {
+            "value": {
+                "category": "Security"
+            }
+        },
+        "expiresOn": {
+            "value": "2025-10-02T03:57:00.000Z"
+        },
+        "subscriptionId": {
+            "value": "<<subscriptionId>>"
+        },
+        "resourceGroupName": {
+            "value": "<<resourceGroupName>>"
+        }
+    }
+}
