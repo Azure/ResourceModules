@@ -25,7 +25,7 @@ resource privateDnsZone 'Microsoft.Network/privateDnsZones@2020-06-01' existing 
   name: privateDnsZoneName
 }
 
-resource soa 'Microsoft.Network/privateDnsZones/SOA@2020-06-01' = {
+resource SOA 'Microsoft.Network/privateDnsZones/SOA@2020-06-01' = {
   name: name
   parent: privateDnsZone
   properties: {
@@ -36,10 +36,10 @@ resource soa 'Microsoft.Network/privateDnsZones/SOA@2020-06-01' = {
 }
 
 @description('The name of the deployed SOA record')
-output name string = soa.name
+output name string = SOA.name
 
 @description('The resource ID of the deployed SOA record')
-output resourceId string = soa.id
+output resourceId string = SOA.id
 
 @description('The resource group of the deployed SOA record')
 output resourceGroupName string = resourceGroup().name

@@ -25,7 +25,7 @@ resource privateDnsZone 'Microsoft.Network/privateDnsZones@2020-06-01' existing 
   name: privateDnsZoneName
 }
 
-resource cname 'Microsoft.Network/privateDnsZones/CNAME@2020-06-01' = {
+resource CNAME 'Microsoft.Network/privateDnsZones/CNAME@2020-06-01' = {
   name: name
   parent: privateDnsZone
   properties: {
@@ -38,10 +38,10 @@ resource cname 'Microsoft.Network/privateDnsZones/CNAME@2020-06-01' = {
 }
 
 @description('The name of the deployed CNAME record')
-output name string = cname.name
+output name string = CNAME.name
 
 @description('The resource ID of the deployed CNAME record')
-output resourceId string = cname.id
+output resourceId string = CNAME.id
 
 @description('The resource group of the deployed CNAME record')
 output resourceGroupName string = resourceGroup().name
