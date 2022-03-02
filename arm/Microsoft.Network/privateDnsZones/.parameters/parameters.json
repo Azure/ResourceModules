@@ -85,12 +85,12 @@
                     "name": "@",
                     "ttl": 3600,
                     "soaRecord": {
-                        "email": "test@contoso.com",
-                        "expireTime": 1,
-                        "host": "ns1.contoso.com",
-                        "minimumTtl": 1,
-                        "refreshTime": 15,
-                        "retryTime": 10,
+                        "email": "azureprivatedns-host.microsoft.com",
+                        "expireTime": 2419200,
+                        "host": "azureprivatedns.net",
+                        "minimumTtl": 10,
+                        "refreshTime": 3600,
+                        "retryTime": 300,
                         "serialNumber": "1"
                     }
                 }
