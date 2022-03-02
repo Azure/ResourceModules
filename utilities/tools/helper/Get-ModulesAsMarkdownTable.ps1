@@ -38,19 +38,34 @@ function Get-PipelineStatusUrl {
         [string] $RepositoryName,
 
         [Parameter(Mandatory)]
-        [string] $Organization
+        [string] $Organization,
+
+        [Parameter(ParameterSetName = 'AzureDevOps', Mandatory = $false)]
+        [switch]$ADO,
+
+        [Parameter(ParameterSetName = 'AzureDevOps', Mandatory = $true)]
+        [string]$ProjectName
     )
+
 
     $shortProvider = $provider.Replace('Microsoft.', 'MS.')
     $pipelineFileName = ('{0}.{1}.yml' -f $shortProvider, $name).Replace('\', '/').Replace('/', '.').ToLower()
-    $pipelineFileUri = ".github/workflows/$pipelineFileName"
-
-    $pipelineName = (Get-Content -Path $pipelineFileUri)[0].TrimStart('name:').Replace('"', '').Trim()
-
-    $pipelineFileGitUri = 'https://github.com/{0}/{1}/actions/workflows/{2}' -f $Organization, $RepositoryName, $pipelineFileName
-
-    # Note: Badge name is automatically the pipeline name
-    return ('[![{0}]({1}/badge.svg)]({1})' -f $pipelineName, $pipelineFileGitUri).Replace('\', '/')
+    switch ($ADO) {
+        $true {
+            $pipelineFileUri = ".azuredevops/modulePipelines/$pipelineFileName"
+            $pipelineName = (Get-Content -Path $pipelineFileUri)[0].TrimStart('name:').Replace('"', '').Trim()
+            $pipelineFileGitUri = 'https://dev.azure.com/{0}/{1}/_apis/build/status/{2}?branchName=main' -f $Organization, $Projectname, $pipelineName
+            # Note: Badge name is automatically the pipeline name
+            return ('[![{0}]({1})]({1})' -f $pipelineName, $pipelineFileGitUri).Replace('\', '/')
+        }
+        Default {
+            $pipelineFileUri = ".github/workflows/$pipelineFileName"
+            $pipelineName = (Get-Content -Path $pipelineFileUri)[0].TrimStart('name:').Replace('"', '').Trim()
+            $pipelineFileGitUri = 'https://github.com/{0}/{1}/actions/workflows/{2}' -f $Organization, $RepositoryName, $pipelineFileName
+            # Note: Badge name is automatically the pipeline name
+            return ('[![{0}]({1}/badge.svg)]({1})' -f $pipelineName, $pipelineFileGitUri).Replace('\', '/')
+        }
+    }
 }
 
 <#
@@ -294,7 +309,13 @@ function Get-ResolvedSubServiceRow {
         [string] $RepositoryName,
 
         [Parameter(Mandatory = $true)]
-        [string] $Organization
+        [string] $Organization,
+
+        [Parameter(ParameterSetName = 'AzureDevOps', Mandatory = $false)]
+        [switch]$ADO,
+
+        [Parameter(ParameterSetName = 'AzureDevOps', Mandatory = $true)]
+        [string]$ProjectName
     )
 
     $rawSubFolders = Get-ChildItem -Path $subPath -Directory -Recurse -Exclude @('.bicep', '.parameters') -Force
@@ -312,7 +333,15 @@ function Get-ResolvedSubServiceRow {
         foreach ($column in $ColumnsInOrder) {
             switch ($column) {
                 'Name' {
-                    $row['Name'] = ('[{0}](https://github.com/{1}/{2}/tree/main/arm/{3})' -f (Get-ResourceModuleName -path $subfolder), $Organization, $RepositoryName, $relativePath.Replace('\', '/'))
+                    switch ($ADO) {
+                        $true {
+                            $row['Name'] = ('[{0}](https://dev.azure.com/{1}/{2}/_git/{3}?path=/arm/{4})' -f (Get-ResourceModuleName -path $subfolder), $Organization, $ProjectName, $RepositoryName, $relativePath.Replace('\', '/'))
+                        }
+                        Default {
+                            $row['Name'] = ('[{0}](https://github.com/{1}/{2}/tree/main/arm/{3})' -f (Get-ResourceModuleName -path $subfolder), $Organization, $RepositoryName, $relativePath.Replace('\', '/'))
+                        }
+                    }
+
                 }
                 'ProviderNamespace' {
                     # If we don't sort by provider, we have to add the provider to each row to ensure readability of each row
@@ -329,7 +358,15 @@ function Get-ResolvedSubServiceRow {
                     }
                 }
                 'ResourceType' {
-                    $row['ResourceType'] = ('[{0}](https://github.com/{1}/{2}/tree/main/arm/{3})' -f $subName, $Organization, $RepositoryName, $relativePath.Replace('\', '/'))
+                    switch ($ADO) {
+                        $true {
+                            $row['ResourceType'] = ('[{0}](https://dev.azure.com/{1}/{2}/_git/{3}?path=/arm/{4})' -f $subName, $Organization, $ProjectName, $RepositoryName, $relativePath.Replace('\', '/'))
+                        }
+                        Default {
+                            $row['ResourceType'] = ('[{0}](https://github.com/{1}/{2}/tree/main/arm/{3})' -f $subName, $Organization, $RepositoryName, $relativePath.Replace('\', '/'))
+                        }
+                    }
+
 
                 }
                 'TemplateType' {
@@ -432,7 +469,13 @@ function Get-ModulesAsMarkdownTable {
         [string] $RepositoryName,
 
         [Parameter(Mandatory = $true)]
-        [string] $Organization
+        [string] $Organization,
+
+        [Parameter(ParameterSetName = 'AzureDevOps', Mandatory = $false)]
+        [switch]$ADO,
+
+        [Parameter(ParameterSetName = 'AzureDevOps', Mandatory = $true)]
+        [string]$ProjectName
     )
 
     # Header
@@ -488,11 +531,17 @@ function Get-ModulesAsMarkdownTable {
                 $output = Get-ResolvedSubServiceRow @recursiveSubServiceInputObject
             } else {
                 $row = @{}
-
                 foreach ($column in $ColumnsInOrder) {
                     switch ($column) {
                         'Name' {
-                            $row['Name'] = ('[{0}](https://github.com/{1}/{2}/tree/main/arm/{3})' -f (Get-ResourceModuleName -path $containedFolder), $Organization, $RepositoryName, $concatedBase.Replace('\', '/'))
+                            switch ($ADO) {
+                                $true {
+                                    $row['Name'] = ('[{0}](https://dev.azure.com/{1}/{2}/_git/{3}?path=/arm/{4})' -f (Get-ResourceModuleName -path $containedFolder), $Organization, $ProjectName, $RepositoryName, $concatedBase.Replace('\', '/'))
+                                }
+                                Default {
+                                    $row['Name'] = ('[{0}](https://github.com/{1}/{2}/tree/main/arm/{3})' -f (Get-ResourceModuleName -path $containedFolder), $Organization, $RepositoryName, $concatedBase.Replace('\', '/'))
+                                }
+                            }
                         }
                         'ProviderNamespace' {
                             if ($previousProvider -eq $provider -and $SortByColumn -ne 'Name') {
@@ -509,7 +558,15 @@ function Get-ModulesAsMarkdownTable {
                             }
                         }
                         'ResourceType' {
-                            $row['ResourceType'] += ('[{0}](https://github.com/{1}/{2}/tree/main/arm/{3})' -f $containedFolderName, $Organization, $RepositoryName, $concatedBase.Replace('\', '/'))
+                            switch ($ADO) {
+                                $true {
+                                    $row['ResourceType'] = ('[{0}](https://dev.azure.com/{1}/{2}/_git/{3}?path=/arm/{4})' -f (Get-ResourceModuleName -path $containedFolder), $Organization, $ProjectName, $RepositoryName, $concatedBase.Replace('\', '/'))
+                                }
+                                Default {
+                                    $row['ResourceType'] += ('[{0}](https://github.com/{1}/{2}/tree/main/arm/{3})' -f $containedFolderName, $Organization, $RepositoryName, $concatedBase.Replace('\', '/'))
+                                }
+                            }
+
                         }
                         'TemplateType' {
                             $row['TemplateType'] += Get-TypeColumnString -path $containedFolder
