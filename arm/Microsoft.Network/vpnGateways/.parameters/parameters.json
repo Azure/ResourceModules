@@ -6,7 +6,7 @@
             "value": "carml-az-vpngw-x-001"
         },
         "virtualHubResourceId": {
-            "value": "/subscriptions/a7439831-1cd9-435d-a091-4aa863c96556/resourceGroups/validation-rg/providers/Microsoft.Network/virtualHubs/SampleVirtualHub"
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualHubs/SampleVirtualHub"
         },
         "bgpSettings": {
             "value": {
@@ -22,7 +22,7 @@
                     "enableBgp": true,
                     "routingConfiguration": {
                         "associatedRouteTable": {
-                            "id": "/subscriptions/a7439831-1cd9-435d-a091-4aa863c96556/resourceGroups/validation-rg/providers/Microsoft.Network/virtualHubs/SampleVirtualHub/hubRouteTables/defaultRouteTable"
+                            "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualHubs/SampleVirtualHub/hubRouteTables/defaultRouteTable"
                         },
                         "propagatedRouteTables": {
                             "labels": [
@@ -30,7 +30,7 @@
                             ],
                             "ids": [
                                 {
-                                    "id": "/subscriptions/a7439831-1cd9-435d-a091-4aa863c96556/resourceGroups/validation-rg/providers/Microsoft.Network/virtualHubs/SampleVirtualHub/hubRouteTables/defaultRouteTable"
+                                    "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualHubs/SampleVirtualHub/hubRouteTables/defaultRouteTable"
                                 }
                             ]
                         },
@@ -38,7 +38,7 @@
                             "staticRoutes": []
                         }
                     },
-                    "remoteVpnSiteResourceId": "/subscriptions/a7439831-1cd9-435d-a091-4aa863c96556/resourceGroups/validation-rg/providers/Microsoft.Network/vpnSites/SampleVpnSite"
+                    "remoteVpnSiteResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/vpnSites/SampleVpnSite"
                 }
             ]
         },

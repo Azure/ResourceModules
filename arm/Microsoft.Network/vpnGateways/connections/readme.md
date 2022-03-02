@@ -31,6 +31,29 @@ This module deploys VPN Gateways Connections.
 | `vpnGatewayName` | string |  |  | Required. The name of the VPN gateway this VPN connection is associated with. |
 | `vpnLinkConnections` | array | `[]` |  | Optional. List of all VPN site link connections to the gateway. |
 
+### Parameter Usage: `routingConfiguration`
+
+```json
+"routingConfiguration": {
+    "associatedRouteTable": {
+        "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualHubs/SampleVirtualHub/hubRouteTables/defaultRouteTable"
+    },
+    "propagatedRouteTables": {
+        "labels": [
+            "default"
+        ],
+        "ids": [
+            {
+                "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualHubs/SampleVirtualHub/hubRouteTables/defaultRouteTable"
+            }
+        ]
+    },
+    "vnetRoutes": {
+        "staticRoutes": []
+    }
+}
+```
+
 ## Outputs
 
 | Output Name | Type | Description |
