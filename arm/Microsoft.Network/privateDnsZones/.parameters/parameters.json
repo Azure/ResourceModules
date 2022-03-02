@@ -82,7 +82,7 @@
         "SOA": {
             "value": [
                 {
-                    "name": "SOA_contoso",
+                    "name": "@",
                     "ttl": 3600,
                     "soaRecord": {
                         "email": "test@contoso.com",
