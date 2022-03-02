@@ -86,7 +86,7 @@ module privateDnsZone_CNAME 'CNAME/deploy.bicep' = [for (cnameRecord, index) in 
   params: {
     privateDnsZoneName: privateDnsZone.name
     name: cnameRecord.name
-    cnameValue: !empty(cnameRecord.cname) ? cnameRecord.cname : ''
+    cnameRecord: contains(cnameRecord, 'cnameRecord') ? cnameRecord.cnameRecord : {}
     metadata: contains(cnameRecord, 'metadata') ? cnameRecord.metadata : {}
     ttl: contains(cnameRecord, 'ttl') ? cnameRecord.ttl : 3600
   }
