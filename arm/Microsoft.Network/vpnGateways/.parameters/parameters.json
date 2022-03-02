@@ -8,28 +8,37 @@
         "virtualHubResourceId": {
             "value": "/subscriptions/a7439831-1cd9-435d-a091-4aa863c96556/resourceGroups/validation-rg/providers/Microsoft.Network/virtualHubs/SampleVirtualHub"
         },
+        "bgpSettings": {
+            "value": {
+                "asn": 65515,
+                "peerWeight": 0
+            }
+        },
         "connections": {
             "value": [
                 {
-                    "name": "SampleVpnsiteVpnGwConnection",
+                    "name": "Connection-SampleVpnSite",
                     "connectionBandwidth": 10,
                     "enableBgp": true,
-                    "vpnLinkConnections": [
-                        {
-                            // "id": "/subscriptions/a7439831-1cd9-435d-a091-4aa863c96556/resourceGroups/validation-rg/providers/Microsoft.Network/vpnSites/SampleVpnSite/vpnSiteLinks/Link1",
-                            // "name": "link1",
-                            "name": "SampleVpnsiteVpnGwConnection",
-                            "properties": {
-                                "ipsecPolicies": [],
-                                "vpnSiteLink": {
-                                    "id": "/subscriptions/a7439831-1cd9-435d-a091-4aa863c96556/resourceGroups/validation-rg/providers/Microsoft.Network/vpnSites/SampleVpnSite/vpnSiteLinks/Link1"
-                                },
-                                "vpnConnectionProtocolType": "IKEv2",
-                                "usePolicyBasedTrafficSelectors": false
-                            }
+                    "routingConfiguration": {
+                        "associatedRouteTable": {
+                            "id": "/subscriptions/a7439831-1cd9-435d-a091-4aa863c96556/resourceGroups/validation-rg/providers/Microsoft.Network/virtualHubs/SampleVirtualHub/hubRouteTables/defaultRouteTable"
+                        },
+                        "propagatedRouteTables": {
+                            "labels": [
+                                "default"
+                            ],
+                            "ids": [
+                                {
+                                    "id": "/subscriptions/a7439831-1cd9-435d-a091-4aa863c96556/resourceGroups/validation-rg/providers/Microsoft.Network/virtualHubs/SampleVirtualHub/hubRouteTables/defaultRouteTable"
+                                }
+                            ]
+                        },
+                        "vnetRoutes": {
+                            "staticRoutes": []
                         }
-                    ],
-                    "remoteVpnSiteResourceId": "/subscriptions/a7439831-1cd9-435d-a091-4aa863c96556/resourceGroups/validation-rg/providers/Microsoft.Network/vpnSites/vpnsite"
+                    },
+                    "remoteVpnSiteResourceId": "/subscriptions/a7439831-1cd9-435d-a091-4aa863c96556/resourceGroups/validation-rg/providers/Microsoft.Network/vpnSites/SampleVpnSite"
                 }
             ]
         },
@@ -37,7 +46,6 @@
             "value": [
                 {
                     "name": "natRule1",
-                    // "ipConfigurationId": "/subscriptions/subid/resourceGroups/rg1/providers/Microsoft.Network/virtualNetworkGateways/cloudnet1-VNG/ipConfigurations/default",
                     "internalMappings": [
                         {
                             "addressSpace": "10.4.0.0/24"
@@ -52,11 +60,6 @@
                     "mode": "EgressSnat"
                 }
             ]
-        },
-        "bgpSettings": {
-            "value": {
-                "asn": 65515
-            }
         }
     }
 }
