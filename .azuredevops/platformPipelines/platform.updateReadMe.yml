@@ -36,12 +36,10 @@ jobs:
             # Load used functions
             . (Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'tools' 'Set-ReadMeModuleTable.ps1')
 
-            $OrganizationURI = '$(System.CollectionUri)'
-
             $functionInput = @{
               ModulesPath    = Join-Path '$(System.DefaultWorkingDirectory)' 'arm'
               FilePath       = Join-Path '$(System.DefaultWorkingDirectory)' 'README.md'
-              Organization   = $OrganizationURI.Split('/')[3]
+              Organization   = '$(System.CollectionUri)'.Split('/')[3]
               RepositoryName = '$(Build.Repository.Name)'
               ColumnsInOrder = @('Name', 'Status')
               SortByColumn   = 'Name'
