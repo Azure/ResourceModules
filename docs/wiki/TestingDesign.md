@@ -91,8 +91,7 @@ This happens using the `utilities/pipelines/resourceDeployment/Test-TemplateWith
 Currently the list of the parameter file used to test the module is hardcoded in the module specific workflow, as the **parameterFilePaths** in the _job_deploy_module_ and _job_tests_module_deploy_validate_ jobs.
 
 ## Module dependencies
-
-In order to successfully deploy and test all modules in your desired environment some modules have to have resources deployed beforehand.
+In order to successfully deploy and test all ARM/Bicep modules in your desired environment some modules require certain Azure resources to be deployed beforehand.
 
 > **Note**<br>
 If we speak from **modules** in this context we mean the **services** which get created from these modules.

@@ -25,32 +25,39 @@ Mandatory. The set of columns to add to the table in the order you expect them i
 Available are 'Name', 'ProviderNamespace', 'ResourceType', 'TemplateType', 'Deploy' & 'Status'
 
 .EXAMPLE
-Set-GitHubReadMeModuleTable -FilePath 'C:\readme.md' -ModulesPath 'C:\arm' -RepositoryName 'ResourceModules' -Organization 'Azure' -ColumnsInOrder @('Name','Status')
+Set-ReadMeModuleTable -FilePath 'C:\readme.md' -ModulesPath 'C:\arm' -RepositoryName 'ResourceModules' -Organization 'Azure' -ColumnsInOrder @('Name','Status')
 
 Update the defined table section in the 'readme.md' file with a table that has the columns 'Name' & 'Status'
 #>
-function Set-GitHubReadMeModuleTable {
+function Set-ReadMeModuleTable {
 
     [CmdletBinding(SupportsShouldProcess)]
     param (
-        [Parameter(Mandatory)]
+        [Parameter(Mandatory = $true)]
         [string] $FilePath,
 
-        [Parameter(Mandatory)]
+        [Parameter(Mandatory = $true)]
         [string] $ModulesPath,
 
-        [Parameter(Mandatory)]
+        [Parameter(Mandatory = $true)]
         [string] $RepositoryName,
 
-        [Parameter(Mandatory)]
+        [Parameter(Mandatory = $true)]
         [string] $Organization,
 
-        [Parameter(Mandatory)]
+        [Parameter(Mandatory = $false)]
         [ValidateSet('Name', 'ProviderNamespace', 'ResourceType', 'TemplateType', 'Deploy', 'Status')]
-        [string[]] $ColumnsInOrder,
+        [string[]] $ColumnsInOrder = @('Name', 'ProviderNamespace', 'ResourceType'),
 
         [Parameter(Mandatory = $false)]
-        [string] $SortByColumn = 'ProviderNamespace'
+        [string] $SortByColumn = 'ProviderNamespace',
+
+        [Parameter(Mandatory = $true)]
+        [ValidateSet('GitHub', 'ADO')]
+        [string]$Environment,
+
+        [Parameter(Mandatory = $false)]
+        [string]$ProjectName = ''
     )
 
     # Load external functions
@@ -66,8 +73,11 @@ function Set-GitHubReadMeModuleTable {
         Organization   = $Organization
         ColumnsInOrder = $ColumnsInOrder
         SortByColumn   = $SortByColumn
+        Environment    = $Environment
+        ProjectName    = $ProjectName
     }
-    $tableString = Get-ModulesAsMarkdownTable @tableStringInputObject
+    Write-Verbose ($tableStringInputObject | ConvertTo-Json | Out-String) -Verbose
+    $tableString = Get-ModulesAsMarkdownTable @tableStringInputObject -Verbose
 
     $newContent = Merge-FileWithNewContent -oldContent $contentArray -newContent $tableString -sectionStartIdentifier '## Available Resource Modules' -contentType 'table'
 
