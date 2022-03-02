@@ -20,7 +20,7 @@
                 {
                     "name": "AAAA_2001_0db8_85a3_0000_0000_8a2e_0370_7334",
                     "ttl": 3600,
-                    "aRecords": [
+                    "aaaaRecords": [
                         {
                             "ipv6Address": "2001:0db8:85a3:0000:0000:8a2e:0370:7334"
                         }
@@ -119,7 +119,9 @@
                     "ttl": 3600,
                     "txtRecords": [
                         {
-                            "value": "test"
+                            "value": [
+                                "test"
+                            ]
                         }
                     ]
                 }
