@@ -128,7 +128,7 @@ resource azureBastion 'Microsoft.Network/bastionHosts@2021-05-01' = {
     name: skuType
   }
   properties: {
-    scaleUnits: var_scaleUnits
+    scaleUnits: scaleUnits_var
     ipConfigurations: [
       {
         name: 'IpConf'
