@@ -1,4 +1,4 @@
-This section outlines how you can contribute to the repository.
+This section provides the step-by-step process we suggest to follow for contributions to our repository. It also outlines details on specific utilities developed to support you with this task.
 
 ---
 

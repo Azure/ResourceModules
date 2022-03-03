@@ -1,3 +1,18 @@
+This section outlines the contribution flow to the CARML repository.
+
+---
+
+### _Navigation_
+
+- [CARML issue](#CARML-issue)
+- [Environment setup](#Environment-setup)
+- [Develop](#Develop)
+- [Validate](#Validate)
+- [Open a PR](#Open-a-PR)
+
+---
+
+
 Create / pick an issue at aka.ms/CARML
 Fork the repository
 Create a branch
