@@ -53,9 +53,9 @@ jobs:
     outputs:
       removeDeployment: ${{ steps.get-workflow-param.outputs.removeDeployment }}
 
-  # ####################
-  # #   Pester Tests   #
-  # ####################
+  ####################
+  #   Pester Tests   #
+  ####################
   job_module_pester_validation:
     runs-on: ubuntu-20.04
     name: 'Pester tests'
@@ -69,9 +69,9 @@ jobs:
         with:
           modulePath: '${{ env.modulePath }}'
 
-  # ####################
-  # # Deployment tests #
-  # ####################
+  ####################
+  # Deployment tests #
+  ####################
   job_module_deploy_validation:
     runs-on: ubuntu-20.04
     name: 'Deployment tests'
