@@ -4,7 +4,7 @@ The _CARML_ platform hosts a collection of [resource modules](./Modules) with th
 
 As such, users can use the modules as they are, alter them and or use them to deploy their environments.
 
-To ensure the modules are valid and can perform the intended deployments, the repository comes with a [validation & test](./Testing) [pipeline](./Pipelines) for each module. If successful it will also publish them in one or multiple target locations.
+To ensure the modules are valid and can perform the intended deployments, the repository comes with a [CI environment](./) for each module. If successful it will also publish them in one or multiple target locations.
 
 As such, _CARML_ covers the `bottom box` of the [deployment model](#what-is-the-intended-the-deployment-model) section and `Phase #1` & `Phase #2` of the [deployment flow](#what-is-the-intended-deployment-flow) section.
 
