@@ -1,6 +1,6 @@
 # The context
 
-This section aims to set the stage for the Common Azure Resource Modules Library context and the motivations behind this initiative.
+This section aims to set the stage for the Common Azure Resource Modules Library (CARML) context and the motivations behind this initiative.
 
 ---
 
