@@ -21,7 +21,7 @@
             }
         },
         "location": {
-            "value": "resourceGroup().location"
+            "value": "eastus"
         },
         "diagnosticLogsRetentionInDays": {
             "value": 365
