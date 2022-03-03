@@ -16,14 +16,17 @@ la---          08.12.2021    15:50           7133 Script.ps1
 Get modified files between previous and current commit depending on if you are running on main/master or a custom branch.
 #>
 function Get-ModifiedFileList {
-
     $CurrentBranch = Get-GitBranchName
     if (($CurrentBranch -eq 'main') -or ($CurrentBranch -eq 'master')) {
         Write-Verbose 'Gathering modified files from the pull request' -Verbose
-        $Diff = git diff --name-only --diff-filter=AM origin/$CurrentBranch^..origin/$CurrentBranch
+        $Diff = git diff --name-only --diff-filter=AM HEAD^ HEAD
     } else {
         Write-Verbose 'Gathering modified files between current branch and main' -Verbose
         $Diff = git diff --name-only --diff-filter=AM origin/main
+        if ($Diff.count -eq 0) {
+            Write-Verbose 'Gathering modified files between current branch and master' -Verbose
+            $Diff = git diff --name-only --diff-filter=AM origin/master
+        }
     }
     $ModifiedFiles = $Diff | Get-Item -Force
 
