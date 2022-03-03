@@ -20,9 +20,6 @@
                 "enablePowerBIService": true
             }
         },
-        "location": {
-            "value": "eastus"
-        },
         "diagnosticLogsRetentionInDays": {
             "value": 365
         },
