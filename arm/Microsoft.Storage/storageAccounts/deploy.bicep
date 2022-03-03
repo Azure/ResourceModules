@@ -172,7 +172,7 @@ var saBaseProperties = {
   isHnsEnabled: ((!enableHierarchicalNamespace) ? null : enableHierarchicalNamespace)
   minimumTlsVersion: minimumTlsVersion
   networkAcls: (empty(networkAcls) ? null : networkAcls_var)
-  allowBlobPublicAccess: (storageAccountKind == 'true') ? null : allowBlobPublicAccess
+  allowBlobPublicAccess: allowBlobPublicAccess == 'true' ? allowBlobPublicAccess : null
   publicNetworkAccess: !empty(publicNetworkAccess) ? publicNetworkAccess : null
 }
 var saOptIdBasedAuthProperties = {
