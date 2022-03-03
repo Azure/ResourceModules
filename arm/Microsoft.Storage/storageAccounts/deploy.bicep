@@ -173,7 +173,7 @@ var saBaseProperties = {
   minimumTlsVersion: minimumTlsVersion
   networkAcls: (empty(networkAcls) ? null : networkAcls_var)
   allowBlobPublicAccess: (storageAccountKind == 'true') ? null : allowBlobPublicAccess
-  publicNetworkAccess: (empty(publicNetworkAccess) ? null : publicNetworkAccess
+  publicNetworkAccess: !empty(publicNetworkAccess) ? publicNetworkAccess : null
 }
 var saOptIdBasedAuthProperties = {
   azureFilesIdentityBasedAuthentication: azureFilesIdentityBasedAuthentication_var
