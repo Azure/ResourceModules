@@ -31,7 +31,7 @@ jobs:
         shell: pwsh
         run: |
           # Load used functions
-          . "$env:GITHUB_WORKSPACE/utilities/tools/Set-GitHubReadMeModuleTable.ps1"
+          . "$env:GITHUB_WORKSPACE/utilities/tools/Set-ReadMeModuleTable.ps1"
 
           $functionInput = @{
             ModulesPath    = Join-Path $env:GITHUB_WORKSPACE 'arm'
@@ -40,18 +40,19 @@ jobs:
             RepositoryName = ($env:GITHUB_REPOSITORY).split('/')[1]
             ColumnsInOrder = @('Name', 'Status')
             SortByColumn   = 'Name'
+            Environment    = 'GitHub'
           }
 
           Write-Verbose "Invoke task with" -Verbose
           Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
-          Set-GitHubReadMeModuleTable @functionInput -Verbose
+          Set-ReadMeModuleTable @functionInput -Verbose
 
       - name: 'Update module folder ReadMe'
         shell: pwsh
         run: |
           # Load used functions
-          . "$env:GITHUB_WORKSPACE/utilities/tools/Set-GitHubReadMeModuleTable.ps1"
+          . "$env:GITHUB_WORKSPACE/utilities/tools/Set-ReadMeModuleTable.ps1"
 
           $functionInput = @{
             ModulesPath    = Join-Path $env:GITHUB_WORKSPACE 'arm'
@@ -59,12 +60,13 @@ jobs:
             Organization   = ($env:GITHUB_REPOSITORY).split('/')[0]
             RepositoryName = ($env:GITHUB_REPOSITORY).split('/')[1]
             ColumnsInOrder = @('Name', 'ProviderNamespace','ResourceType')
+            Environment    = 'GitHub'
           }
 
           Write-Verbose "Invoke task with" -Verbose
           Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
-          Set-GitHubReadMeModuleTable @functionInput -Verbose
+          Set-ReadMeModuleTable @functionInput -Verbose
 
       - name: 'Push changes'
         shell: pwsh

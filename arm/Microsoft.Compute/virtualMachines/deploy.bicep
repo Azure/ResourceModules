@@ -325,7 +325,7 @@ module virtualMachine_nic '.bicep/nested_networkInterface.bicep' = [for (nicConf
     location: location
     tags: tags
     enableIPForwarding: contains(nicConfiguration, 'enableIPForwarding') ? (!empty(nicConfiguration.enableIPForwarding) ? nicConfiguration.enableIPForwarding : false) : false
-    enableAcceleratedNetworking: contains(nicConfiguration, 'enableAcceleratedNetworking') ? (!empty(nicConfiguration.enableAcceleratedNetworking) ? nicConfiguration.enableAcceleratedNetworking : false) : false
+    enableAcceleratedNetworking: contains(nicConfiguration, 'enableAcceleratedNetworking') ? nicConfiguration.enableAcceleratedNetworking : true
     dnsServers: contains(nicConfiguration, 'dnsServers') ? (!empty(nicConfiguration.dnsServers) ? nicConfiguration.dnsServers : []) : []
     networkSecurityGroupId: contains(nicConfiguration, 'nsgId') ? (!empty(nicConfiguration.nsgId) ? nicConfiguration.nsgId : '') : ''
     ipConfigurationArray: nicConfiguration.ipConfigurations
