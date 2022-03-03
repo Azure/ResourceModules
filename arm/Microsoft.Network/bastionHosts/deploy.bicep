@@ -74,7 +74,7 @@ var diagnosticsLogs = [for log in logsToEnable: {
   }
 }]
 
-var var_scaleUnits = skuType == 'Basic' ? 2 : scaleUnits
+var scaleUnits_var = skuType == 'Basic' ? 2 : scaleUnits
 
 module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   name: 'pid-${cuaId}'
