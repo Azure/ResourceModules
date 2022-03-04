@@ -8,6 +8,14 @@
         "acrAdminUserEnabled": {
             "value": false
         },
+        "replications": {
+            "value": [
+                {
+                    "name": "North Europe",
+                    "location": "northeurope"
+                }
+            ]
+        },
         "roleAssignments": {
             "value": [
                 {
