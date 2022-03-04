@@ -59,11 +59,11 @@ If you're unfamiliar with Infrastructure as Code, or wonder how you can use the 
   - [Pipeline usage](./The%20CI%20environment%20-%20Pipeline%20usage)
 - [Interoperability](./Interoperability)
   - [Bicep to ARM/JSON conversion](./Interoperability%20-%20Bicep%20to%20ARM%20conversion)
-  - [Register ADO pipelines](./Interoperability%20-%20Register%20ADO%20pipelines)
+  - [Register Azure DevOps pipelines](./Interoperability%20-%20Register%20Azure%20DevOps%20pipelines)
 - [Contribution guide](./Contribution%20guide)
   - [Generate module Readme](./Contribution%20guide%20-%20Generate%20module%20Readme)
   - [Get formatted RBAC roles](./Contribution%20guide%20-%20Get%20formatted%20RBAC%20roles)
-- [Known Issues](./Known%20issues)
+- [Known issues](./Known%20issues)
 
 ---
 

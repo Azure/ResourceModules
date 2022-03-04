@@ -1,0 +1,18 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": "<<namePrefix>>-min-rg-polexem"
+        },
+        "policyAssignmentId": {
+            "value": "/subscriptions/<<subscriptionId>>/providers/Microsoft.Authorization/policyAssignments/adp-<<namePrefix>>-sb-pass-loc-rg"
+        },
+        "subscriptionId": {
+            "value": "<<subscriptionId>>"
+        },
+        "resourceGroupName": {
+            "value": "<<resourceGroupName>>"
+        }
+    }
+}
