@@ -18,7 +18,7 @@ on:
       - main
     paths:
       - '.github/actions/templates/**'
-      - '.github/workflows/ms.network.vpnGateways.yml'
+      - '.github/workflows/ms.network.vpngateways.yml'
       - 'arm/Microsoft.Network/vpnGateways/**'
       - '!*/**/readme.md'
       - 'utilities/pipelines/**'
@@ -26,7 +26,7 @@ on:
 
 env:
   modulePath: 'arm/Microsoft.Network/vpnGateways'
-  workflowPath: '.github/workflows/ms.network.vpnGateways.yml'
+  workflowPath: '.github/workflows/ms.network.vpngateways.yml'
   AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
   ARM_SUBSCRIPTION_ID: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
   ARM_MGMTGROUP_ID: '${{ secrets.ARM_MGMTGROUP_ID }}'
