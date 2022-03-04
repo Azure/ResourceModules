@@ -49,7 +49,7 @@ param storageAccountAccessTier string = 'Hot'
   'Disabled'
 ])
 @description('Optional. Storage Account Public Network Access.')
-param publicNetworkAccess bool 
+param publicNetworkAccess bool = 'Enabled'
 
 @description('Optional. Provides the identity based authentication settings for Azure Files.')
 param azureFilesIdentityBasedAuthentication object = {}
