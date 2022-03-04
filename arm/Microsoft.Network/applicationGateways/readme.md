@@ -1,100 +1,313 @@
-# Application Gateways `[Microsoft.Network/applicationGateways]`
+# Network Application Gateways `[Microsoft.Network/applicationGateways]`
 
-This template deploys an application gateway.
+This module deploys Network ApplicationGateways.
 
-## Resource types
+## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2017-04-01 |
 | `Microsoft.Authorization/roleAssignments` | 2021-04-01-preview |
 | `Microsoft.Insights/diagnosticSettings` | 2021-05-01-preview |
-| `Microsoft.Network/applicationGateways` | 2021-03-01 |
+| `Microsoft.Network/applicationGateways` | 2021-05-01 |
 
 ## Parameters
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `backendHttpConfigurations` | array |  |  | Required. The backend HTTP settings to be configured. These HTTP settings will be used to rewrite the incoming HTTP requests for the backend pools. |
-| `backendPools` | array |  |  | Required. The backend pools to be configured. |
+| `authenticationCertificates` | array | `[]` |  | Optional. Authentication certificates of the application gateway resource. |
+| `autoscaleMaxCapacity` | int | `-1` |  | Optional. Upper bound on number of Application Gateway capacity. |
+| `autoscaleMinCapacity` | int | `-1` |  | Optional. Lower bound on number of Application Gateway capacity. |
+| `backendAddressPools` | array | `[]` |  | Optional. Backend address pool of the application gateway resource. |
+| `backendHttpSettingsCollection` | array | `[]` |  | Optional. Backend http settings of the application gateway resource. |
 | `capacity` | int | `2` |  | Optional. The number of Application instances to be configured. |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered. |
-| `diagnosticEventHubAuthorizationRuleId` | string |  |  | Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
-| `diagnosticEventHubName` | string |  |  | Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
+| `customErrorConfigurations` | array | `[]` |  | Optional. Custom error configurations of the application gateway resource. |
+| `diagnosticEventHubAuthorizationRuleId` | string |  |  | Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.  |
+| `diagnosticEventHubName` | string |  |  | Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
-| `diagnosticStorageAccountId` | string |  |  | Optional. Resource ID of the diagnostic storage account. |
-| `diagnosticWorkspaceId` | string |  |  | Optional. Resource ID of the diagnostic log analytics workspace. |
-| `frontendHttpListeners` | array | `[]` |  | Required. The frontend http listeners to be configured. |
-| `frontendHttpRedirects` | array | `[]` |  | Optional. The http redirects to be configured. Each redirect will route http traffic to a predefined frontEnd HTTPS listener. |
-| `frontendHttpsListeners` | array | `[]` |  | Required. The frontend HTTPS listeners to be configured. |
-| `frontendPrivateIpAddress` | string |  |  | Optional. The private IP within the Application Gateway subnet to be used as frontend private address. |
-| `frontendPublicIpResourceId` | string |  |  | Required. PublicIP Resource ID used in Public Frontend. |
-| `gatewayIpConfigurationName` | string | `gatewayIpConfiguration01` |  | Optional. Application Gateway IP configuration name. |
-| `http2Enabled` | bool | `True` |  | Optional. Enables HTTP/2 support. |
-| `location` | string | `[resourceGroup().location]` |  | Optional. Location for all Resources. |
+| `diagnosticStorageAccountId` | string |  |  | Optional. Resource ID of the diagnostic storage account. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub |
+| `diagnosticWorkspaceId` | string |  |  | Optional. Resource ID of the diagnostic log analytics workspace. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub |
+| `enableFips` | bool |  |  | Optional. Whether FIPS is enabled on the application gateway resource. |
+| `enableHttp2` | bool |  |  | Optional. Whether HTTP2 is enabled on the application gateway resource. |
+| `enableRequestBuffering` | bool |  |  | Optional. Enable request buffering. |
+| `enableResponseBuffering` | bool |  |  | Optional. Enable response buffering. |
+| `firewallPolicyId` | string |  |  | Optional. The resource Id of an associated firewall policy. |
+| `frontendIPConfigurations` | array | `[]` |  | Optional. Frontend IP addresses of the application gateway resource. |
+| `frontendPorts` | array | `[]` |  | Optional. Frontend ports of the application gateway resource. |
+| `gatewayIPConfigurations` | array | `[]` |  | Optional. Subnets of the application gateway resource. |
+| `httpListeners` | array | `[]` |  | Optional. Http listeners of the application gateway resource. |
+| `loadDistributionPolicies` | array | `[]` |  | Optional. Load distribution policies of the application gateway resource. |
+| `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
 | `logsToEnable` | array | `[ApplicationGatewayAccessLog, ApplicationGatewayPerformanceLog, ApplicationGatewayFirewallLog]` | `[ApplicationGatewayAccessLog, ApplicationGatewayPerformanceLog, ApplicationGatewayFirewallLog]` | Optional. The name of logs that will be streamed. |
 | `metricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | Optional. The name of metrics that will be streamed. |
-| `name` | string |  |  | Required. The name to be used for the Application Gateway. |
-| `probes` | array | `[]` |  | Optional. The backend HTTP settings probes to be configured. |
+| `name` | string |  |  | Required. Name of the Application Gateway. |
+| `privateLinkConfigurations` | array | `[]` |  | Optional. PrivateLink configurations on application gateway. |
+| `probes` | array | `[]` |  | Optional. Probes of the application gateway resource. |
+| `redirectConfigurations` | array | `[]` |  | Optional. Redirect configurations of the application gateway resource. |
+| `requestRoutingRules` | array | `[]` |  | Optional. Request routing rules of the application gateway resource. |
+| `rewriteRuleSets` | array | `[]` |  | Optional. Rewrite rules for the application gateway resource.	 |
 | `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
-| `routingRules` | array |  |  | Required. The routing rules to be configured. These rules will be used to route requests from frontend listeners to backend pools using a backend HTTP configuration. |
 | `sku` | string | `WAF_Medium` | `[Standard_Small, Standard_Medium, Standard_Large, WAF_Medium, WAF_Large, Standard_v2, WAF_v2]` | Optional. The name of the SKU for the Application Gateway. |
-| `sslCertificateKeyVaultSecretId` | string |  |  | Optional. Secret ID of the SSL certificate stored in the Key Vault that will be used to configure the HTTPS listeners. |
-| `sslCertificateName` | string | `sslCertificate01` |  | Optional. SSL certificate reference name for a certificate stored in the Key Vault to configure the HTTPS listeners. |
-| `subnetName` | string |  |  | Required. The name of Gateway Subnet Name where the Application Gateway will be deployed. |
-| `tags` | object | `{object}` |  | Optional. Tags of the resource. |
+| `sslCertificates` | array | `[]` |  | Optional. SSL certificates of the application gateway resource. |
+| `sslPolicyCipherSuites` | array | `[TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384, TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256]` | `[TLS_DHE_DSS_WITH_3DES_EDE_CBC_SHA, TLS_DHE_DSS_WITH_AES_128_CBC_SHA, TLS_DHE_DSS_WITH_AES_128_CBC_SHA256, TLS_DHE_DSS_WITH_AES_256_CBC_SHA, TLS_DHE_DSS_WITH_AES_256_CBC_SHA256, TLS_DHE_RSA_WITH_AES_128_CBC_SHA, TLS_DHE_RSA_WITH_AES_128_GCM_SHA256, TLS_DHE_RSA_WITH_AES_256_CBC_SHA, TLS_DHE_RSA_WITH_AES_256_GCM_SHA384, TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA, TLS_ECDHE_ECDSA_WITH_AES_128_CBC_SHA256, TLS_ECDHE_ECDSA_WITH_AES_128_GCM_SHA256, TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA, TLS_ECDHE_ECDSA_WITH_AES_256_CBC_SHA384, TLS_ECDHE_ECDSA_WITH_AES_256_GCM_SHA384, TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA, TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256, TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256, TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA, TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384, TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384, TLS_RSA_WITH_3DES_EDE_CBC_SHA, TLS_RSA_WITH_AES_128_CBC_SHA, TLS_RSA_WITH_AES_128_CBC_SHA256, TLS_RSA_WITH_AES_128_GCM_SHA256, TLS_RSA_WITH_AES_256_CBC_SHA, TLS_RSA_WITH_AES_256_CBC_SHA256, TLS_RSA_WITH_AES_256_GCM_SHA384]` | Optional. Ssl cipher suites to be enabled in the specified order to application gateway. |
+| `sslPolicyMinProtocolVersion` | string | `TLSv1_2` | `[TLSv1_0, TLSv1_1, TLSv1_2]` | Optional. Ssl protocol enums. |
+| `sslPolicyName` | string |  | `[AppGwSslPolicy20150501, AppGwSslPolicy20170401, AppGwSslPolicy20170401S, ]` | Optional. Ssl predefined policy name enums. |
+| `sslPolicyType` | string | `Custom` | `[Custom, Predefined]` | Optional. Type of Ssl Policy. |
+| `sslProfiles` | array | `[]` |  | Optional. SSL profiles of the application gateway resource. |
+| `tags` | object | `{object}` |  | Optional. Resource tags. |
+| `trustedClientCertificates` | array | `[]` |  | Optional. Trusted client certificates of the application gateway resource. |
+| `trustedRootCertificates` | array | `[]` |  | Optional. Trusted Root certificates of the application gateway resource. |
+| `urlPathMaps` | array | `[]` |  | Optional. URL path map of the application gateway resource. |
 | `userAssignedIdentities` | object | `{object}` |  | Optional. The ID(s) to assign to the resource. |
-| `vNetName` | string |  |  | Required. The name of the Virtual Network where the Application Gateway will be deployed. |
-| `vNetResourceGroup` | string | `[resourceGroup().name]` |  | Optional. The name of the Virtual Network Resource Group where the Application Gateway will be deployed. |
-| `vNetSubscriptionId` | string | `[subscription().subscriptionId]` |  | Optional. The Subscription ID of the Virtual Network where the Application Gateway will be deployed. |
+| `webApplicationFirewallConfiguration` | object | `{object}` |  | Optional. Application gateway web application firewall configuration. |
+| `zones` | array | `[]` |  | Optional. A list of availability zones denoting where the resource needs to come from. |
 
-### Parameter Usage: `backendPools`
+### Parameter Usage: `authenticationCertificates`
 
 ```json
-"backendPools": {
+"authenticationCertificates": {
     "value": [
         {
-            "backendPoolName": "appServiceBackendPool",
-            "backendAddresses": [
-            {
-                "fqdn": "aghapp.azurewebsites.net"
-            }
-            ]
-        },
-        {
-            "backendPoolName": "privateVmBackendPool",
-            "backendAddresses": [
-            {
-                "ipAddress": "10.0.0.4"
-            }
-            ]
+        "id": "string",
+        "name": "string",
+        "properties": {
+          "data": "string"
         }
+      }
     ]
 }
 ```
 
-### Parameter Usage: `backendHttpConfigurations`
+### Parameter Usage: `backendAddressPools`
 
 ```json
-"backendHttpConfigurations": {
+"backendAddressPools": {
     "value": [
         {
-            "backendHttpConfigurationName": "appServiceBackendHttpsSetting",
-            "port": 443,
-            "protocol": "https",
-            "cookieBasedAffinity": "Disabled",
-            "pickHostNameFromBackendAddress": true,
-            "probeEnabled": false
-        },
-        {
-            "backendHttpConfigurationName": "privateVmHttpSetting",
-            "port": 80,
-            "protocol": "http",
-            "cookieBasedAffinity": "Disabled",
-            "pickHostNameFromBackendAddress": false,
-            "probeEnabled": true
+        "id": "string",
+        "name": "string",
+        "properties": {
+          "backendAddresses": [
+            {
+              "fqdn": "string",
+              "ipAddress": "string"
+            }
+          ]
         }
+      }
+    ]
+}
+```
+
+### Parameter Usage: `backendHttpSettingsCollection`
+
+```json
+"backendHttpSettingsCollection": {
+    "value": [
+        {
+        "id": "string",
+        "name": "string",
+        "properties": {
+          "affinityCookieName": "string",
+          "authenticationCertificates": [
+            {
+              "id": "string"
+            }
+          ],
+          "connectionDraining": {
+            "drainTimeoutInSec": "int",
+            "enabled": "bool"
+          },
+          "cookieBasedAffinity": "string",
+          "hostName": "string",
+          "path": "string",
+          "pickHostNameFromBackendAddress": "bool",
+          "port": "int",
+          "probe": {
+            "id": "string"
+          },
+          "probeEnabled": "bool",
+          "protocol": "string",
+          "requestTimeout": "int",
+          "trustedRootCertificates": [
+            {
+              "id": "string"
+            }
+          ]
+        }
+      }
+    ]
+}
+```
+
+### Parameter Usage: `customErrorConfigurations`
+
+```json
+"customErrorConfigurations": {
+    "value": [
+        {
+        "customErrorPageUrl": "string",
+        "statusCode": "string"
+      }
+    ]
+}
+```
+
+### Parameter Usage: `frontendIPConfigurations`
+
+```json
+"frontendIPConfigurations": {
+    "value": [
+        {
+        "id": "string",
+        "name": "string",
+        "properties": {
+          "privateIPAddress": "string",
+          "privateIPAllocationMethod": "string",
+          "privateLinkConfiguration": {
+            "id": "string"
+          },
+          "publicIPAddress": {
+            "id": "string"
+          },
+          "subnet": {
+            "id": "string"
+          }
+        }
+      }
+    ]
+}
+```
+
+### Parameter Usage: `frontendPorts`
+
+```json
+"frontendPorts": {
+    "value": [
+        {
+        "id": "string",
+        "name": "string",
+        "properties": {
+          "port": "int"
+        }
+      }
+    ]
+}
+```
+
+### Parameter Usage: `gatewayIPConfigurations`
+
+```json
+"gatewayIPConfigurations": {
+    "value": [
+        {
+        "id": "string",
+        "name": "string",
+        "properties": {
+          "subnet": {
+            "id": "string"
+          }
+        }
+      }
+    ]
+}
+```
+
+### Parameter Usage: `httpListeners`
+
+```json
+"httpListeners": {
+    "value": [
+        {
+        "id": "string",
+        "name": "string",
+        "properties": {
+          "customErrorConfigurations": [
+            {
+              "customErrorPageUrl": "string",
+              "statusCode": "string"
+            }
+          ],
+          "firewallPolicy": {
+            "id": "string"
+          },
+          "frontendIPConfiguration": {
+            "id": "string"
+          },
+          "frontendPort": {
+            "id": "string"
+          },
+          "hostName": "string",
+          "hostNames": [ "string" ],
+          "protocol": "string",
+          "requireServerNameIndication": "bool",
+          "sslCertificate": {
+            "id": "string"
+          },
+          "sslProfile": {
+            "id": "string"
+          }
+        }
+      }
+    ]
+}
+```
+
+### Parameter Usage: `loadDistributionPolicies`
+
+```json
+"loadDistributionPolicies": {
+    "value": [
+        {
+        "id": "string",
+        "name": "string",
+        "properties": {
+          "loadDistributionAlgorithm": "string",
+          "loadDistributionTargets": [
+            {
+              "id": "string",
+              "name": "string",
+              "properties": {
+                "backendAddressPool": {
+                  "id": "string"
+                },
+                "weightPerServer": "int"
+              }
+            }
+          ]
+        }
+      }
+    ]
+}
+```
+
+### Parameter Usage: `privateLinkConfigurations`
+
+```json
+"privateLinkConfigurations": {
+    "value": [
+        {
+        "id": "string",
+        "name": "string",
+        "properties": {
+          "ipConfigurations": [
+            {
+              "id": "string",
+              "name": "string",
+              "properties": {
+                "primary": "bool",
+                "privateIPAddress": "string",
+                "privateIPAllocationMethod": "string",
+                "subnet": {
+                  "id": "string"
+                }
+              }
+            }
+          ]
+        }
+      }
     ]
 }
 ```
@@ -105,76 +318,285 @@ This template deploys an application gateway.
 "probes": {
     "value": [
         {
-          "backendHttpConfigurationName": "privateVmHttpSetting",
-          "protocol": "http",
-          "host": "10.0.0.4",
-          "path": "/",
-          "interval": 60,
-          "timeout": 15,
-          "unhealthyThreshold": 5,
-          "minServers": 3,
-          "statusCodes": [
-            "200",
-            "401"
+        "id": "string",
+        "name": "string",
+        "properties": {
+          "host": "string",
+          "interval": "int",
+          "match": {
+            "body": "string",
+            "statusCodes": [ "string" ]
+          },
+          "minServers": "int",
+          "path": "string",
+          "pickHostNameFromBackendHttpSettings": "bool",
+          "port": "int",
+          "protocol": "string",
+          "timeout": "int",
+          "unhealthyThreshold": "int"
+        }
+      }
+    ]
+}
+```
+
+### Parameter Usage: `redirectConfigurations`
+
+```json
+"redirectConfigurations": {
+    "value": [
+        {
+        "id": "string",
+        "name": "string",
+        "properties": {
+          "includePath": "bool",
+          "includeQueryString": "bool",
+          "pathRules": [
+            {
+              "id": "string"
+            }
+          ],
+          "redirectType": "string",
+          "requestRoutingRules": [
+            {
+              "id": "string"
+            }
+          ],
+          "targetListener": {
+            "id": "string"
+          },
+          "targetUrl": "string",
+          "urlPathMaps": [
+            {
+              "id": "string"
+            }
           ]
         }
+      }
     ]
 }
 ```
 
-### Parameter Usage: `frontendHttpsListeners`
+### Parameter Usage: `requestRoutingRules`
 
 ```json
-"frontendHttpsListeners": {
+"requestRoutingRules": {
     "value": [
         {
-            "frontendListenerName": "public443",
-            "frontendIPType": "Public",
-            "port": 443
-        },
-        {
-            "frontendListenerName": "private4433",
-            "frontendIPType": "Private",
-            "port": 4433
+        "id": "string",
+        "name": "string",
+        "properties": {
+          "backendAddressPool": {
+            "id": "string"
+          },
+          "backendHttpSettings": {
+            "id": "string"
+          },
+          "httpListener": {
+            "id": "string"
+          },
+          "loadDistributionPolicy": {
+            "id": "string"
+          },
+          "priority": "int",
+          "redirectConfiguration": {
+            "id": "string"
+          },
+          "rewriteRuleSet": {
+            "id": "string"
+          },
+          "ruleType": "string",
+          "urlPathMap": {
+            "id": "string"
+          }
         }
+      }
     ]
 }
 ```
 
-### Parameter Usage: `frontendHttpRedirects`
+### Parameter Usage: `rewriteRuleSets`
 
 ```json
-"frontendHttpRedirects": {
+"rewriteRuleSets": {
     "value": [
         {
-            "frontendIPType": "Public",
-            "port": 80,
-            "frontendListenerName": "public443"
-        },
-        {
-            "frontendIPType": "Private",
-            "port": 8080,
-            "frontendListenerName": "private4433"
+        "id": "string",
+        "name": "string",
+        "properties": {
+          "rewriteRules": [
+            {
+              "actionSet": {
+                "requestHeaderConfigurations": [
+                  {
+                    "headerName": "string",
+                    "headerValue": "string"
+                  }
+                ],
+                "responseHeaderConfigurations": [
+                  {
+                    "headerName": "string",
+                    "headerValue": "string"
+                  }
+                ],
+                "urlConfiguration": {
+                  "modifiedPath": "string",
+                  "modifiedQueryString": "string",
+                  "reroute": "bool"
+                }
+              },
+              "conditions": [
+                {
+                  "ignoreCase": "bool",
+                  "negate": "bool",
+                  "pattern": "string",
+                  "variable": "string"
+                }
+              ],
+              "name": "string",
+              "ruleSequence": "int"
+            }
+          ]
         }
+      }
     ]
 }
 ```
 
-### Parameter Usage: `routingRules`
+### Parameter Usage: `sslCertificates`
 
 ```json
-"routingRules": {
+"sslCertificates": {
     "value": [
         {
-            "frontendListenerName": "public443",
-            "backendPoolName": "appServiceBackendPool",
-            "backendHttpConfigurationName": "appServiceBackendHttpsSetting"
-        },
-        {
-            "frontendListenerName": "private4433",
-            "backendPoolName": "privateVmBackendPool",
-            "backendHttpConfigurationName": "privateVmHttpSetting"
+        "id": "string",
+        "name": "string",
+        "properties": {
+          "data": "string",
+          "keyVaultSecretId": "string",
+          "password": "string"
         }
+      }
+    ]
+}
+```
+
+### Parameter Usage: `sslProfiles`
+
+```json
+"sslProfiles": {
+    "value": [
+        {
+        "id": "string",
+        "name": "string",
+        "properties": {
+          "clientAuthConfiguration": {
+            "verifyClientCertIssuerDN": "bool"
+          },
+          "sslPolicy": {
+            "cipherSuites": [ "string" ],
+            "disabledSslProtocols": [ "string" ],
+            "minProtocolVersion": "string",
+            "policyName": "string",
+            "policyType": "string"
+          },
+          "trustedClientCertificates": [
+            {
+              "id": "string"
+            }
+          ]
+        }
+      }
+    ]
+}
+```
+
+### Parameter Usage: `trustedClientCertificates`
+
+```json
+"trustedClientCertificates": {
+    "value": [
+        {
+        "id": "string",
+        "name": "string",
+        "properties": {
+          "data": "string"
+        }
+      }
+    ]
+}
+```
+
+### Parameter Usage: `trustedRootCertificates`
+
+```json
+"trustedRootCertificates": {
+    "value": [
+        {
+        "id": "string",
+        "name": "string",
+        "properties": {
+          "data": "string",
+          "keyVaultSecretId": "string"
+        }
+      }
+    ]
+}
+```
+
+### Parameter Usage: `urlPathMaps`
+
+```json
+"urlPathMaps": {
+    "value": [
+        {
+        "id": "string",
+        "name": "string",
+        "properties": {
+          "defaultBackendAddressPool": {
+            "id": "string"
+          },
+          "defaultBackendHttpSettings": {
+            "id": "string"
+          },
+          "defaultLoadDistributionPolicy": {
+            "id": "string"
+          },
+          "defaultRedirectConfiguration": {
+            "id": "string"
+          },
+          "defaultRewriteRuleSet": {
+            "id": "string"
+          },
+          "pathRules": [
+            {
+              "id": "string",
+              "name": "string",
+              "properties": {
+                "backendAddressPool": {
+                  "id": "string"
+                },
+                "backendHttpSettings": {
+                  "id": "string"
+                },
+                "firewallPolicy": {
+                  "id": "string"
+                },
+                "loadDistributionPolicy": {
+                  "id": "string"
+                },
+                "paths": [ "string" ],
+                "redirectConfiguration": {
+                  "id": "string"
+                },
+                "rewriteRuleSet": {
+                  "id": "string"
+                }
+              }
+            }
+          ]
+        }
+      }
     ]
 }
 ```
@@ -241,7 +663,7 @@ You can specify multiple user assigned identities to a resource by providing add
 
 ## Template references
 
-- [Applicationgateways](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-03-01/applicationGateways)
+- [Applicationgateways](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/applicationGateways)
 - [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings)
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
 - [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)
