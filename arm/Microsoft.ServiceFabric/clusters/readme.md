@@ -25,9 +25,9 @@ This module deploys a service fabric cluster.
 | `clusterCodeVersion` | string |  |  | Optional. The Service Fabric runtime version of the cluster. This property can only by set the user when upgradeMode is set to "Manual". To get list of available Service Fabric versions for new clusters use ClusterVersion API. To get the list of available version for existing clusters use availableClusterVersions. |
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `diagnosticsStorageAccountConfig` | object | `{object}` |  | Optional. The storage account information for storing Service Fabric diagnostic logs. |
-| `eventStoreServiceEnabled` | bool |  |  | Optional. Indicates if the event store service is enabled. |
+| `eventStoreServiceEnabled` | bool | `False` |  | Optional. Indicates if the event store service is enabled. |
 | `fabricSettings` | array | `[]` |  | Optional. The list of custom fabric settings to configure the cluster. |
-| `infrastructureServiceManager` | bool |  |  | Optional. Indicates if infrastructure service manager is enabled. |
+| `infrastructureServiceManager` | bool | `False` |  | Optional. Indicates if infrastructure service manager is enabled. |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
 | `managementEndpoint` | string |  |  | Required. The http management endpoint of the cluster. |
@@ -48,7 +48,7 @@ This module deploys a service fabric cluster.
 | `upgradeWave` | string | `Wave0` | `[Wave0, Wave1, Wave2]` | Optional. Indicates when new cluster runtime version upgrades will be applied after they are released. By default is Wave0. |
 | `vmImage` | string |  |  | Optional. The VM image VMSS has been configured with. Generic names such as Windows or Linux can be used |
 | `vmssZonalUpgradeMode` | string | `Hierarchical` | `[Hierarchical, Parallel]` | Optional. This property defines the upgrade mode for the virtual machine scale set, it is mandatory if a node type with multiple Availability Zones is added. |
-| `waveUpgradePaused` | bool |  |  | Optional. Boolean to pause automatic runtime version upgrades to the cluster. |
+| `waveUpgradePaused` | bool | `False` |  | Optional. Boolean to pause automatic runtime version upgrades to the cluster. |
 
 ### Parameter Usage: `notifications`
 
@@ -79,6 +79,7 @@ This module deploys a service fabric cluster.
     "value": [
         {
             "roleDefinitionIdOrName": "Reader",
+            "description": "Reader Role Assignment",
             "principalIds": [
                 "12345678-1234-1234-1234-123456789012", // object 1
                 "78945612-1234-1234-1234-123456789012" // object 2

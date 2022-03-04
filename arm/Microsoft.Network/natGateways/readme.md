@@ -30,7 +30,7 @@ This module deploys a NAT gateway.
 | `name` | string |  |  | Required. Name of the Azure Bastion resource |
 | `natGatewayDomainNameLabel` | string |  |  | Optional. DNS name of the Public IP resource. A region specific suffix will be appended to it, e.g.: your-DNS-name.westeurope.cloudapp.azure.com |
 | `natGatewayPipName` | string |  |  | Optional. Specifies the name of the Public IP used by the NAT Gateway. If it's not provided, a '-pip' suffix will be appended to the Bastion's name. |
-| `natGatewayPublicIpAddress` | bool |  |  | Optional. Use to have a new Public IP Address created for the NAT Gateway. |
+| `natGatewayPublicIpAddress` | bool | `False` |  | Optional. Use to have a new Public IP Address created for the NAT Gateway. |
 | `natGatewayPublicIPPrefixId` | string |  |  | Optional. Resource ID of the Public IP Prefix object. This is only needed if you want your Public IPs created in a PIP Prefix. |
 | `publicIpAddresses` | array | `[]` |  | Optional. Existing Public IP Address resource names to use for the NAT Gateway. |
 | `publicIpPrefixes` | array | `[]` |  | Optional. Existing Public IP Prefixes resource names to use for the NAT Gateway. |
@@ -45,6 +45,7 @@ This module deploys a NAT gateway.
     "value": [
         {
             "roleDefinitionIdOrName": "Reader",
+            "description": "Reader Role Assignment",
             "principalIds": [
                 "12345678-1234-1234-1234-123456789012", // object 1
                 "78945612-1234-1234-1234-123456789012" // object 2

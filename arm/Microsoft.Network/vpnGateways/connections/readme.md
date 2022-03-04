@@ -17,14 +17,14 @@ This module deploys VPN Gateways Connections.
 | `enableBgp` | bool | `False` |  | Optional. Enable BGP flag. |
 | `enableInternetSecurity` | bool | `False` |  | Optional. Enable internet security. |
 | `enableRateLimiting` | bool | `False` |  | Optional. Enable rate limiting. |
-| `ipsecPolicies` | array | `[]` |  | Optional. The IPSec Policies to be considered by this connection. |
+| `ipsecPolicies` | array | `[]` |  | Optional. The IPSec policies to be considered by this connection. |
 | `name` | string |  |  | Required. The name of the VPN connection. |
 | `remoteVpnSiteResourceId` | string |  |  | Optional. Reference to a VPN site to link to |
-| `routingConfiguration` | object | `{object}` |  | Optional. Routing Configuration indicating the associated and propagated route tables for this connection. |
+| `routingConfiguration` | object | `{object}` |  | Optional. Routing configuration indicating the associated and propagated route tables for this connection. |
 | `routingWeight` | int | `0` |  | Optional. Routing weight for VPN connection. |
 | `sharedKey` | string |  |  | Optional. SharedKey for the VPN connection. |
-| `trafficSelectorPolicies` | array | `[]` |  | Optional. The Traffic Selector Policies to be considered by this connection. |
-| `useLocalAzureIpAddress` | bool | `False` |  | Optional. Use local azure IP to initiate connection. |
+| `trafficSelectorPolicies` | array | `[]` |  | Optional. The traffic selector policies to be considered by this connection. |
+| `useLocalAzureIpAddress` | bool | `False` |  | Optional. Use local Azure IP to initiate connection. |
 | `usePolicyBasedTrafficSelectors` | bool | `False` |  | Optional. Enable policy-based traffic selectors. |
 | `vpnConnectionProtocolType` | string | `IKEv2` | `[IKEv1, IKEv2]` | Optional. Gateway connection protocol. |
 | `vpnGatewayName` | string |  |  | Required. The name of the VPN gateway this VPN connection is associated with. |

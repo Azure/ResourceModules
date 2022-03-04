@@ -27,7 +27,7 @@ This module deploys a scheduled query rule.
 | `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
 | `scopes` | array | `[]` |  | Required. The list of resource IDs that this scheduled query rule is scoped to. |
 | `severity` | int | `3` | `[0, 1, 2, 3, 4]` | Optional. Severity of the alert. Should be an integer between [0-4]. Value of 0 is severest. Relevant and required only for rules of the kind LogAlert. |
-| `skipQueryValidation` | bool |  |  | Optional. The flag which indicates whether the provided query should be validated or not. Relevant only for rules of the kind LogAlert. |
+| `skipQueryValidation` | bool | `False` |  | Optional. The flag which indicates whether the provided query should be validated or not. Relevant only for rules of the kind LogAlert. |
 | `suppressForMinutes` | string |  |  | Optional. Mute actions for the chosen period of time (in ISO 8601 duration format) after the alert is fired. If set, autoMitigate must be disabled.Relevant only for rules of the kind LogAlert. |
 | `tags` | object | `{object}` |  | Optional. Tags of the resource. |
 | `targetResourceTypes` | array | `[]` |  | Optional. List of resource type of the target resource(s) on which the alert is created/updated. For example if the scope is a resource group and targetResourceTypes is Microsoft.Compute/virtualMachines, then a different alert will be fired for each virtual machine in the resource group which meet the alert criteria. Relevant only for rules of the kind LogAlert |
@@ -40,6 +40,7 @@ This module deploys a scheduled query rule.
     "value": [
         {
             "roleDefinitionIdOrName": "Reader",
+            "description": "Reader Role Assignment",
             "principalIds": [
                 "12345678-1234-1234-1234-123456789012", // object 1
                 "78945612-1234-1234-1234-123456789012" // object 2

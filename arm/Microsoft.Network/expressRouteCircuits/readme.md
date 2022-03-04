@@ -27,8 +27,8 @@ This template deploys an express route circuit.
 | `logsToEnable` | array | `[PeeringRouteLog]` | `[PeeringRouteLog]` | Optional. The name of logs that will be streamed. |
 | `metricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | Optional. The name of metrics that will be streamed. |
 | `name` | string |  |  | Required. This is the name of the ExpressRoute circuit |
-| `peerASN` | int |  |  | Optional. The autonomous system number of the customer/connectivity provider. |
-| `peering` | bool |  | `[True, False]` | Optional. Enabled BGP peering type for the Circuit. |
+| `peerASN` | int | `0` |  | Optional. The autonomous system number of the customer/connectivity provider. |
+| `peering` | bool | `False` | `[True, False]` | Optional. Enabled BGP peering type for the Circuit. |
 | `peeringLocation` | string |  |  | Required. This is the name of the peering location and not the ARM resource location. It must exactly match one of the available peering locations from List ExpressRoute Service Providers API call. |
 | `peeringType` | string | `AzurePrivatePeering` | `[AzurePrivatePeering, MicrosoftPeering]` | Optional. BGP peering type for the Circuit. Choose from AzurePrivatePeering, AzurePublicPeering or MicrosoftPeering. |
 | `primaryPeerAddressPrefix` | string |  |  | Optional. A /30 subnet used to configure IP addresses for interfaces on Link1. |
@@ -39,7 +39,7 @@ This template deploys an express route circuit.
 | `skuFamily` | string | `MeteredData` | `[MeteredData, UnlimitedData]` | Required. Chosen SKU family of ExpressRoute circuit. Choose from MeteredData or UnlimitedData SKU families. |
 | `skuTier` | string | `Standard` | `[Local, Standard, Premium]` | Required. Chosen SKU Tier of ExpressRoute circuit. Choose from Local, Premium or Standard SKU tiers. |
 | `tags` | object | `{object}` |  | Optional. Tags of the resource. |
-| `vlanId` | int |  |  | Optional. Specifies the identifier that is used to identify the customer. |
+| `vlanId` | int | `0` |  | Optional. Specifies the identifier that is used to identify the customer. |
 
 ### Parameter Usage: `roleAssignments`
 
@@ -48,6 +48,7 @@ This template deploys an express route circuit.
     "value": [
         {
             "roleDefinitionIdOrName": "Reader",
+            "description": "Reader Role Assignment",
             "principalIds": [
                 "12345678-1234-1234-1234-123456789012", // object 1
                 "78945612-1234-1234-1234-123456789012" // object 2

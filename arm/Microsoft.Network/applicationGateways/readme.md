@@ -28,10 +28,10 @@ This module deploys Network ApplicationGateways.
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticStorageAccountId` | string |  |  | Optional. Resource ID of the diagnostic storage account. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub |
 | `diagnosticWorkspaceId` | string |  |  | Optional. Resource ID of the diagnostic log analytics workspace. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub |
-| `enableFips` | bool |  |  | Optional. Whether FIPS is enabled on the application gateway resource. |
-| `enableHttp2` | bool |  |  | Optional. Whether HTTP2 is enabled on the application gateway resource. |
-| `enableRequestBuffering` | bool |  |  | Optional. Enable request buffering. |
-| `enableResponseBuffering` | bool |  |  | Optional. Enable response buffering. |
+| `enableFips` | bool | `False` |  | Optional. Whether FIPS is enabled on the application gateway resource. |
+| `enableHttp2` | bool | `False` |  | Optional. Whether HTTP2 is enabled on the application gateway resource. |
+| `enableRequestBuffering` | bool | `False` |  | Optional. Enable request buffering. |
+| `enableResponseBuffering` | bool | `False` |  | Optional. Enable response buffering. |
 | `firewallPolicyId` | string |  |  | Optional. The resource Id of an associated firewall policy. |
 | `frontendIPConfigurations` | array | `[]` |  | Optional. Frontend IP addresses of the application gateway resource. |
 | `frontendPorts` | array | `[]` |  | Optional. Frontend ports of the application gateway resource. |
@@ -608,6 +608,7 @@ This module deploys Network ApplicationGateways.
     "value": [
         {
             "roleDefinitionIdOrName": "Reader",
+            "description": "Reader Role Assignment",
             "principalIds": [
                 "12345678-1234-1234-1234-123456789012", // object 1
                 "78945612-1234-1234-1234-123456789012" // object 2

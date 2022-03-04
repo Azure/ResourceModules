@@ -21,7 +21,7 @@ This module deploys a virtual machine extension.
 | `protectedSettings` | secureObject | `{object}` |  | Optional. Any object that contains the extension specific protected settings |
 | `publisher` | string |  |  | Required. The name of the extension handler publisher |
 | `settings` | object | `{object}` |  | Optional. Any object that contains the extension specific settings |
-| `supressFailures` | bool |  |  | Optional. Indicates whether failures stemming from the extension will be suppressed (Operational failures such as not connecting to the VM will not be suppressed regardless of this value). The default is false |
+| `supressFailures` | bool | `False` |  | Optional. Indicates whether failures stemming from the extension will be suppressed (Operational failures such as not connecting to the VM will not be suppressed regardless of this value). The default is false |
 | `type` | string |  |  | Required. Specifies the type of the extension; an example is "CustomScriptExtension" |
 | `typeHandlerVersion` | string |  |  | Required. Specifies the version of the script handler |
 | `virtualMachineName` | string |  |  | Required. The name of the virtual machine that extension is provisioned for |

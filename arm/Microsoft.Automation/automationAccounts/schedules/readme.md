@@ -18,7 +18,7 @@ This module deploys an Azure Automation Account Schedule.
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered. |
 | `expiryTime` | string |  |  | Optional. The end time of the schedule. |
 | `frequency` | string | `OneTime` | `[Day, Hour, Minute, Month, OneTime, Week]` | Optional. The frequency of the schedule. |
-| `interval` | int |  |  | Optional. Anything |
+| `interval` | int | `0` |  | Optional. Anything |
 | `name` | string |  |  | Required. Name of the Automation Account schedule. |
 | `scheduleDescription` | string |  |  | Optional. The description of the schedule. |
 | `startTime` | string |  |  | Optional. The start time of the schedule. |

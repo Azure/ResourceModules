@@ -43,7 +43,7 @@ This template deploys a log analytics workspace.
 | `serviceTier` | string | `PerGB2018` | `[Free, Standalone, PerNode, PerGB2018]` | Optional. Service Tier: PerGB2018, Free, Standalone, PerGB or PerNode |
 | `storageInsightsConfigs` | array | `[]` |  | Optional. List of storage accounts to be read by the workspace. |
 | `tags` | object | `{object}` |  | Optional. Tags of the resource. |
-| `useResourcePermissions` | bool |  |  | Optional. Set to 'true' to use resource or workspace permissions and 'false' (or leave empty) to require workspace permissions. |
+| `useResourcePermissions` | bool | `False` |  | Optional. Set to 'true' to use resource or workspace permissions and 'false' (or leave empty) to require workspace permissions. |
 
 ### Parameter Usage: `gallerySolutions`
 
@@ -86,6 +86,7 @@ This template deploys a log analytics workspace.
     "value": [
         {
             "roleDefinitionIdOrName": "Reader",
+            "description": "Reader Role Assignment",
             "principalIds": [
                 "12345678-1234-1234-1234-123456789012", // object 1
                 "78945612-1234-1234-1234-123456789012" // object 2

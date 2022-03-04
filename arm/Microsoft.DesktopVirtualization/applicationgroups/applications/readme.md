@@ -19,10 +19,10 @@ This module deploys AVD Applications.
 | `description` | string |  |  | Optional. Description of Application.. |
 | `filePath` | string |  |  | Required. Specifies a path for the executable file for the application. |
 | `friendlyName` | string |  |  | Required. Friendly name of Application.. |
-| `iconIndex` | int |  |  | Optional. Index of the icon. |
+| `iconIndex` | int | `0` |  | Optional. Index of the icon. |
 | `iconPath` | string |  |  | Optional. Path to icon. |
 | `name` | string |  |  | Required. Name of the Application to be created in the Application Group. |
-| `showInPortal` | bool |  |  | Optional. Specifies whether to show the RemoteApp program in the RD Web Access server. |
+| `showInPortal` | bool | `False` |  | Optional. Specifies whether to show the RemoteApp program in the RD Web Access server. |
 
 ## Outputs
 

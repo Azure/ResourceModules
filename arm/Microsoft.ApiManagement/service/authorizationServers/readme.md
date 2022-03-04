@@ -33,7 +33,7 @@ The following resources are required to be able to deploy this resource.
 | `resourceOwnerPassword` | string |  |  | Optional. Can be optionally specified when resource owner password grant type is supported by this authorization server. Default resource owner password. |
 | `resourceOwnerUsername` | string |  |  | Optional. Can be optionally specified when resource owner password grant type is supported by this authorization server. Default resource owner username. |
 | `serverDescription` | string |  |  | Optional. Description of the authorization server. Can contain HTML formatting tags. |
-| `supportState` | bool |  |  | Optional. If true, authorization server will include state parameter from the authorization request to its response. Client may use state parameter to raise protocol security. |
+| `supportState` | bool | `False` |  | Optional. If true, authorization server will include state parameter from the authorization request to its response. Client may use state parameter to raise protocol security. |
 | `tokenBodyParameters` | array | `[]` |  | Optional. Additional parameters required by the token endpoint of this authorization server represented as an array of JSON objects with name and value string properties, i.e. {"name" : "name value", "value": "a value"}. - TokenBodyParameterContract object |
 | `tokenEndpoint` | string |  |  | Optional. OAuth token endpoint. Contains absolute URI to entity being referenced. |
 

@@ -15,7 +15,7 @@ This module deploys an image template that can be consumed by the Azure Image Bu
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `baseTime` | string | `[utcNow('yyyy-MM-dd-HH-mm-ss')]` |  | Generated. Do not provide a value! This date value is used to generate a unique image template name. |
-| `buildTimeoutInMinutes` | int |  |  | Optional. Image build timeout in minutes. Allowed values: 0-960. 0 means the default 240 minutes |
+| `buildTimeoutInMinutes` | int | `0` |  | Optional. Image build timeout in minutes. Allowed values: 0-960. 0 means the default 240 minutes |
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `customizationSteps` | array |  |  | Required. Customization steps to be run when building the VM image. |
 | `imageReplicationRegions` | array | `[]` |  | Optional. List of the regions the image produced by this solution should be stored in the Shared Image Gallery. When left empty, the deployment's location will be taken as a default value. |
@@ -92,6 +92,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
     "value": [
         {
             "roleDefinitionIdOrName": "Reader",
+            "description": "Reader Role Assignment",
             "principalIds": [
                 "12345678-1234-1234-1234-123456789012", // object 1
                 "78945612-1234-1234-1234-123456789012" // object 2
@@ -118,6 +119,6 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 ## Template references
 
-- [Define resources with Bicep and ARM templates](https://docs.microsoft.com/en-us/azure/templates)
+- [Imagetemplates](https://docs.microsoft.com/en-us/azure/templates/Microsoft.VirtualMachineImages/2020-02-14/imageTemplates)
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
 - [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)
