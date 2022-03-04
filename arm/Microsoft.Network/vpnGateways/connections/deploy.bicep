@@ -19,7 +19,7 @@ param routingConfiguration object = {}
 @description('Optional. Enable policy-based traffic selectors.')
 param usePolicyBasedTrafficSelectors bool = false
 
-@description('Optional. Use local azure IP to initiate connection.')
+@description('Optional. Use local Azure IP to initiate connection.')
 param useLocalAzureIpAddress bool = false
 
 @description('Optional. EnableBgp flag.')
