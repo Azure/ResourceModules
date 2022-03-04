@@ -16,10 +16,10 @@ param virtualHubResourceId string
 @description('Optional. BGP settings details.')
 param bgpSettings object = {}
 
-@description('Optional. Enable BGP routes translation for NAT on this VPNGateway.')
+@description('Optional. Enable BGP routes translation for NAT on this VPN gateway.')
 param enableBgpRouteTranslationForNat bool = false
 
-@description('Optional. Enable Routing Preference property for the Public IP Interface of the VPNGateway.')
+@description('Optional. Enable routing preference property for the public IP interface of the VPN gateway.')
 param isRoutingPreferenceInternet bool = false
 
 @description('Optional. The scale unit for this VPN gateway.')

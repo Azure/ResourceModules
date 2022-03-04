@@ -4,22 +4,22 @@ param name string
 @description('Required. The name of the VPN gateway this VPN connection is associated with.')
 param vpnGatewayName string
 
-@description('Optional. The IPSec Policies to be considered by this connection.')
+@description('Optional. The IPSec policies to be considered by this connection.')
 param ipsecPolicies array = []
 
-@description('Optional. The Traffic Selector Policies to be considered by this connection.')
+@description('Optional. The traffic selector policies to be considered by this connection.')
 param trafficSelectorPolicies array = []
 
 @description('Optional. List of all VPN site link connections to the gateway.')
 param vpnLinkConnections array = []
 
-@description('Optional. Routing Configuration indicating the associated and propagated route tables for this connection.')
+@description('Optional. Routing configuration indicating the associated and propagated route tables for this connection.')
 param routingConfiguration object = {}
 
 @description('Optional. Enable policy-based traffic selectors.')
 param usePolicyBasedTrafficSelectors bool = false
 
-@description('Optional. Use local azure IP to initiate connection.')
+@description('Optional. Use local Azure IP to initiate connection.')
 param useLocalAzureIpAddress bool = false
 
 @description('Optional. Enable rate limiting.')
