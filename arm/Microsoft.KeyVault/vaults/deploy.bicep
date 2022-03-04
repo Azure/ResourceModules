@@ -142,15 +142,15 @@ var diagnosticsMetrics = [for metric in metricsToEnable: {
 var maxNameLength = 24
 var uniquenameUntrim = uniqueString('Key Vault${baseTime}')
 var uniquename = (length(uniquenameUntrim) > maxNameLength ? substring(uniquenameUntrim, 0, maxNameLength) : uniquenameUntrim)
-var name_var = empty(name) ? uniquename : name
+var name_var = !empty(name) ? name : uniquename
 var virtualNetworkRules = [for networkrule in ((contains(networkAcls, 'virtualNetworkRules')) ? networkAcls.virtualNetworkRules : []): {
   id: '${vNetId}/subnets/${networkrule.subnet}'
 }]
 var networkAcls_var = {
-  bypass: (empty(networkAcls) ? null : networkAcls.bypass)
-  defaultAction: (empty(networkAcls) ? null : networkAcls.defaultAction)
-  virtualNetworkRules: (empty(networkAcls) ? null : virtualNetworkRules)
-  ipRules: (empty(networkAcls) ? null : ((length(networkAcls.ipRules) == 0) ? [] : networkAcls.ipRules))
+  bypass: !empty(networkAcls) ? networkAcls.bypass : null
+  defaultAction: !empty(networkAcls) ? networkAcls.defaultAction : null
+  virtualNetworkRules: !empty(networkAcls) ? virtualNetworkRules : null
+  ipRules: (!empty(networkAcls) && length(networkAcls.ipRules) != 0) ? networkAcls.ipRules : null
 }
 
 var formattedAccessPolicies = [for accessPolicy in accessPolicies: {
@@ -179,14 +179,14 @@ resource keyVault 'Microsoft.KeyVault/vaults@2019-09-01' = {
     softDeleteRetentionInDays: softDeleteRetentionInDays
     enableRbacAuthorization: enableRbacAuthorization
     createMode: createMode
-    enablePurgeProtection: ((!enablePurgeProtection) ? null : enablePurgeProtection)
+    enablePurgeProtection: enablePurgeProtection ? enablePurgeProtection : null
     tenantId: subscription().tenantId
     accessPolicies: formattedAccessPolicies
     sku: {
       name: vaultSku
       family: 'A'
     }
-    networkAcls: (empty(networkAcls) ? null : networkAcls_var)
+    networkAcls: !empty(networkAcls) ? networkAcls_var : null
   }
 }
 
@@ -194,7 +194,7 @@ resource keyVault_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 
   name: '${keyVault.name}-${lock}-lock'
   properties: {
     level: lock
-    notes: (lock == 'CanNotDelete') ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
+    notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: keyVault
 }
@@ -256,7 +256,7 @@ module keyVault_privateEndpoints '.bicep/nested_privateEndpoint.bicep' = [for (p
   name: '${uniqueString(deployment().name, location)}-KeyVault-PrivateEndpoint-${index}'
   params: {
     privateEndpointResourceId: keyVault.id
-    privateEndpointVnetLocation: (empty(privateEndpoints) ? 'dummy' : reference(split(privateEndpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location)
+    privateEndpointVnetLocation: empty(privateEndpoints) ? 'dummy' : reference(split(privateEndpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location
     privateEndpointObj: privateEndpoint
     tags: tags
   }
