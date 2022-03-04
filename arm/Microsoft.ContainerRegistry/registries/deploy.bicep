@@ -18,11 +18,10 @@ param privateEndpoints array = []
 @description('Optional. Tier of your Azure container registry.')
 @allowed([
   'Basic'
-  'Classic'
   'Premium'
   'Standard'
 ])
-param acrSku string = 'Standard'
+param acrSku string = 'Basic'
 
 @allowed([
   'disabled'
