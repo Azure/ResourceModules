@@ -24,9 +24,9 @@ This module deploys an app service environment.
 | `diagnosticStorageAccountId` | string |  |  | Optional. Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string |  |  | Optional. Resource ID of the diagnostic log analytics workspace. |
 | `dnsSuffix` | string |  |  | Optional. DNS suffix of the App Service Environment. |
-| `dynamicCacheEnabled` | bool |  |  | Optional. True/false indicating whether the App Service Environment is suspended. The environment can be suspended e.g. when the management endpoint is no longer available(most likely because NSG blocked the incoming traffic). |
+| `dynamicCacheEnabled` | bool | `False` |  | Optional. True/false indicating whether the App Service Environment is suspended. The environment can be suspended e.g. when the management endpoint is no longer available(most likely because NSG blocked the incoming traffic). |
 | `frontEndScaleFactor` | int | `15` |  | Optional. Scale factor for frontends. |
-| `hasLinuxWorkers` | bool |  |  | Optional. Flag that displays whether an ASE has linux workers or not |
+| `hasLinuxWorkers` | bool | `False` |  | Optional. Flag that displays whether an ASE has linux workers or not |
 | `internalLoadBalancingMode` | string | `None` | `[None, Web, Publishing]` | Optional. Specifies which endpoints to serve internally in the Virtual Network for the App Service Environment. - None, Web, Publishing, Web,Publishing |
 | `ipsslAddressCount` | int | `2` |  | Optional. Number of IP SSL addresses reserved for the App Service Environment. |
 | `kind` | string | `ASEV2` |  | Optional. Kind of resource. |
@@ -39,7 +39,7 @@ This module deploys an app service environment.
 | `networkAccessControlList` | array | `[]` |  | Optional. Access control list for controlling traffic to the App Service Environment.. |
 | `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
 | `subnetResourceId` | string |  |  | Required. ResourceId for the sub net |
-| `suspended` | bool |  |  | Optional. true if the App Service Environment is suspended; otherwise, false. The environment can be suspended, e.g. when the management endpoint is no longer available (most likely because NSG blocked the incoming traffic). |
+| `suspended` | bool | `False` |  | Optional. true if the App Service Environment is suspended; otherwise, false. The environment can be suspended, e.g. when the management endpoint is no longer available (most likely because NSG blocked the incoming traffic). |
 | `tags` | object | `{object}` |  | Optional. Resource tags. |
 | `userWhitelistedIpRanges` | array | `[]` |  | Optional. User added ip ranges to whitelist on ASE db - string |
 | `workerPools` | array | `[]` |  | Optional. Description of worker pools with worker size IDs, VM sizes, and number of workers in each pool.. |
@@ -51,6 +51,7 @@ This module deploys an app service environment.
     "value": [
         {
             "roleDefinitionIdOrName": "Reader",
+            "description": "Reader Role Assignment",
             "principalIds": [
                 "12345678-1234-1234-1234-123456789012", // object 1
                 "78945612-1234-1234-1234-123456789012" // object 2

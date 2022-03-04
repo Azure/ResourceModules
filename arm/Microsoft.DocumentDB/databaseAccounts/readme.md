@@ -40,7 +40,7 @@ This module deploys a DocumentDB database account and its child resources.
 | `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalIds' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
 | `serverVersion` | string | `4.0` | `[3.2, 3.6, 4.0]` | Optional. Specifies the MongoDB server version to use. |
 | `sqlDatabases` | _[sqlDatabases](sqlDatabases/readme.md)_ array | `[]` |  | Optional. SQL Databases configurations |
-| `systemAssignedIdentity` | bool |  |  | Optional. Enables system assigned managed identity on the resource. |
+| `systemAssignedIdentity` | bool | `False` |  | Optional. Enables system assigned managed identity on the resource. |
 | `tags` | object | `{object}` |  | Optional. Tags of the Database Account resource. |
 | `userAssignedIdentities` | object | `{object}` |  | Optional. The ID(s) to assign to the resource. |
 
@@ -51,6 +51,7 @@ This module deploys a DocumentDB database account and its child resources.
     "value": [
         {
             "roleDefinitionIdOrName": "Reader",
+            "description": "Reader Role Assignment",
             "principalIds": [
                 "12345678-1234-1234-1234-123456789012", // object 1
                 "78945612-1234-1234-1234-123456789012" // object 2

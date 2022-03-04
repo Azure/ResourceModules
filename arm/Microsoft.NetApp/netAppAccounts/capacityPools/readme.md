@@ -14,7 +14,7 @@ This template deploys capacity pools in an Azure NetApp Files.
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `coolAccess` | bool |  |  | Optional. If enabled (true) the pool can contain cool Access enabled volumes. |
+| `coolAccess` | bool | `False` |  | Optional. If enabled (true) the pool can contain cool Access enabled volumes. |
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location of the pool volume. |
 | `name` | string |  |  | Required. The name of the capacity pool. |
@@ -50,6 +50,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
     "value": [
         {
             "roleDefinitionIdOrName": "Reader",
+            "description": "Reader Role Assignment",
             "principalIds": [
                 "12345678-1234-1234-1234-123456789012", // object 1
                 "78945612-1234-1234-1234-123456789012" // object 2

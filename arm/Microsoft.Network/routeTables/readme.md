@@ -15,7 +15,7 @@ This module deploys a user defined route table.
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
-| `disableBgpRoutePropagation` | bool |  |  | Optional. Switch to disable BGP route propagation. |
+| `disableBgpRoutePropagation` | bool | `False` |  | Optional. Switch to disable BGP route propagation. |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
 | `name` | string |  |  | Required. Name given for the hub route table. |
@@ -72,6 +72,7 @@ Here's an example of specifying a few routes:
     "value": [
         {
             "roleDefinitionIdOrName": "Reader",
+            "description": "Reader Role Assignment",
             "principalIds": [
                 "12345678-1234-1234-1234-123456789012", // object 1
                 "78945612-1234-1234-1234-123456789012" // object 2

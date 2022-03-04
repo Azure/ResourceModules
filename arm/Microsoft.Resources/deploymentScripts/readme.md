@@ -27,7 +27,7 @@ This module deploys a deployment script.
 | `name` | string |  |  | Required. Display name of the script to be run. |
 | `primaryScriptUri` | string |  |  | Optional. Uri for the external script. This is the entry point for the external script. To run an internal script, use the scriptContent instead. |
 | `retentionInterval` | string | `P1D` |  | Optional. Interval for which the service retains the script resource after it reaches a terminal state. Resource will be deleted when this duration expires. Duration is based on ISO 8601 pattern (for example P7D means one week). |
-| `runOnce` | bool |  |  | Optional. When set to false, script will run every time the template is deployed. When set to true, the script will only run once. |
+| `runOnce` | bool | `False` |  | Optional. When set to false, script will run every time the template is deployed. When set to true, the script will only run once. |
 | `scriptContent` | string |  |  | Optional. Script body. Max length: 32000 characters. To run an external script, use primaryScriptURI instead. |
 | `supportingScriptUris` | array | `[]` |  | Optional. List of supporting files for the external script (defined in primaryScriptUri). Does not work with internal scripts (code defined in scriptContent). |
 | `tags` | object | `{object}` |  | Optional. Tags of the resource. |

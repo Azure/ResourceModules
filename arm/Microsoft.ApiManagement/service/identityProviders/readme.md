@@ -14,7 +14,7 @@ This module deploys API Management Service Identity Provider.
 | :-- | :-- | :-- | :-- | :-- |
 | `apiManagementServiceName` | string |  |  | Required. The name of the of the API Management service. |
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
-| `enableIdentityProviders` | bool |  |  | Optional. Used to enable the deployment of the identityProviders child resource. |
+| `enableIdentityProviders` | bool | `False` |  | Optional. Used to enable the deployment of the identityProviders child resource. |
 | `identityProviderAllowedTenants` | array | `[]` |  | Optional. List of Allowed Tenants when configuring Azure Active Directory login. - string |
 | `identityProviderAuthority` | string |  |  | Optional. OpenID Connect discovery endpoint hostname for AAD or AAD B2C. |
 | `identityProviderClientId` | string |  |  | Optional. Client ID of the Application in the external Identity Provider. Required if identity provider is used. |
