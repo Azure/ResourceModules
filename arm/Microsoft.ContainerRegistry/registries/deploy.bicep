@@ -22,7 +22,7 @@ param privateEndpoints array = []
   'Premium'
   'Standard'
 ])
-param acrSku string = 'Basic'
+param acrSku string = 'Standard'
 
 @allowed([
   'disabled'
