@@ -179,7 +179,7 @@ resource keyVault 'Microsoft.KeyVault/vaults@2019-09-01' = {
     softDeleteRetentionInDays: softDeleteRetentionInDays
     enableRbacAuthorization: enableRbacAuthorization
     createMode: createMode
-    enablePurgeProtection: enablePurgeProtection ? enablePurgeProtection : null
+    enablePurgeProtection: enablePurgeProtection
     tenantId: subscription().tenantId
     accessPolicies: formattedAccessPolicies
     sku: {
