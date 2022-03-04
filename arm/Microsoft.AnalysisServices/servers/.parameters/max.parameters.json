@@ -48,9 +48,6 @@
                 }
             ]
         },
-        "cuaId": {
-            "value": "00000-0-000000"
-        },
         "logsToEnable": {
             "value": [
                 "Engine",
