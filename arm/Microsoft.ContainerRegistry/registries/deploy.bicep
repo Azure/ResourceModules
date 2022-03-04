@@ -195,7 +195,7 @@ resource registry 'Microsoft.ContainerRegistry/registries@2021-09-01' = {
   properties: {
     adminUserEnabled: acrAdminUserEnabled
     encryption: {
-      keyVaultProperties: keyVaultProperties
+      keyVaultProperties: !empty(keyVaultProperties) ? keyVaultProperties : null
       status: encryptionStatus
     }
     policies: {
