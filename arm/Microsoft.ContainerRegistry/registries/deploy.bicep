@@ -198,9 +198,9 @@ resource registry 'Microsoft.ContainerRegistry/registries@2021-09-01' = {
       status: encryptionStatus
     }
     policies: {
-      exportPolicy: {
+      exportPolicy: acrSku == 'Premium' ? {
         status: exportPolicyStatus
-      }
+      } : null
       quarantinePolicy: {
         status: quarantinePolicyStatus
       }

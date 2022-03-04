@@ -11,6 +11,9 @@
         "acrSku": {
             "value": "Premium"
         },
+        "exportPolicyStatus": {
+            "value": "enabled"
+        },
         "replications": {
             "value": [
                 {
