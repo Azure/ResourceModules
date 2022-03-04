@@ -13,7 +13,7 @@ param trafficSelectorPolicies array = []
 @description('Optional. List of all VPN site link connections to the gateway.')
 param vpnLinkConnections array = []
 
-@description('Optional. Routing Configuration indicating the associated and propagated route tables for this connection.')
+@description('Optional. Routing configuration indicating the associated and propagated route tables for this connection.')
 param routingConfiguration object = {}
 
 @description('Optional. Enable policy-based traffic selectors.')
