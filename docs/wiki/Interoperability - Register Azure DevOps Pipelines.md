@@ -1,4 +1,4 @@
-Not all customers may be using GitHub repos and/or GitHub Actions. CARML is able to be hosted in a GitHub repo and deployed with Azure DevOps Pipelines or it can completely be ran out of Azure DevOps.
+Not all customers may be using GitHub repos and/or GitHub Actions. CARML can be hosted in a GitHub repo and deployed using Azure DevOps Pipelines or run entirely through Azure DevOps.
 
 Use this script to automatically register all specified Azure DevOps pipelines in a target Azure DevOps project. This is especially useful to register the initial module pipelines as there is one for each module in the repository.
 
