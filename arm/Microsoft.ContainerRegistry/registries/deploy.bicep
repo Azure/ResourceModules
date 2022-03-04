@@ -220,7 +220,7 @@ resource registry 'Microsoft.ContainerRegistry/registries@2021-09-01' = {
     //   defaultAction: networkRuleSetDefaultAction
     //   ipRules: networkRuleSetIpRules
     // } : null
-    zoneRedundancy: acrSku == 'Premium' ? zoneRedundancy : null
+    // zoneRedundancy: acrSku == 'Premium' ? zoneRedundancy : null
   }
 }
 
