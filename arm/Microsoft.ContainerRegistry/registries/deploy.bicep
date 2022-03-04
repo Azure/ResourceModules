@@ -208,10 +208,10 @@ resource registry 'Microsoft.ContainerRegistry/registries@2021-09-01' = {
         type: 'Notary'
         status: trustPolicyStatus
       }
-      // retentionPolicy: {
-      //   days: retentionPolicyDays
-      //   status: retentionPolicyStatus
-      // }
+      retentionPolicy: acrSku == 'Premium' ? {
+        days: retentionPolicyDays
+        status: retentionPolicyStatus
+      } : null
     }
     dataEndpointEnabled: dataEndpointEnabled
     publicNetworkAccess: publicNetworkAccess
