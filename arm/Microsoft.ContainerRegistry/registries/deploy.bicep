@@ -193,10 +193,10 @@ resource registry 'Microsoft.ContainerRegistry/registries@2021-09-01' = {
   }
   properties: {
     adminUserEnabled: acrAdminUserEnabled
-    encryption: {
+    encryption: acrSku == 'Premium' ? {
       keyVaultProperties: !empty(keyVaultProperties) ? keyVaultProperties : null
       status: encryptionStatus
-    }
+    } : null
     policies: {
       exportPolicy: acrSku == 'Premium' ? {
         status: exportPolicyStatus
