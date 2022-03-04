@@ -51,6 +51,17 @@ Azure Container Registry is a managed, private Docker registry service based on 
 | `userAssignedIdentities` | object | `{object}` |  | Optional. The ID(s) to assign to the resource. |
 | `zoneRedundancy` | string | `Disabled` | `[Disabled, Enabled]` | Optional. Whether or not zone redundancy is enabled for this container registry |
 
+### Parameter Usage: `keyVaultProperties`
+
+```json
+"keyVaultProperties": {
+    "value": {
+        "identity": "string", // The client id of the identity which will be used to access key vault.
+        "keyIdentifier": "string" // Key vault uri to access the encryption key.
+    }
+}
+```
+
 ### Parameter Usage: `roleAssignments`
 
 ```json
