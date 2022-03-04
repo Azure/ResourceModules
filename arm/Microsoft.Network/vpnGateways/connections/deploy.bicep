@@ -7,7 +7,7 @@ param vpnGatewayName string
 @description('Optional. The IPSec policies to be considered by this connection.')
 param ipsecPolicies array = []
 
-@description('Optional. The Traffic Selector Policies to be considered by this connection.')
+@description('Optional. The traffic selector policies to be considered by this connection.')
 param trafficSelectorPolicies array = []
 
 @description('Optional. List of all VPN site link connections to the gateway.')
