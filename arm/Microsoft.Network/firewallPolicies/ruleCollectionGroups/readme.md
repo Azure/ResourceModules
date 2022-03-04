@@ -6,7 +6,7 @@ This module deploys Network Firewall Policies Rule Collection Groups.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Network/firewallPolicies/ruleCollectionGroups` | 2021-03-01 |
+| `Microsoft.Network/firewallPolicies/ruleCollectionGroups` | 2021-05-01 |
 
 ## Parameters
 
@@ -43,4 +43,4 @@ For remaining properties, see [FirewallPolicyRuleCollection objects](https://doc
 
 ## Template references
 
-- [Firewallpolicies/Rulecollectiongroups](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-03-01/firewallPolicies/ruleCollectionGroups)
+- [Firewallpolicies/Rulecollectiongroups](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/firewallPolicies/ruleCollectionGroups)

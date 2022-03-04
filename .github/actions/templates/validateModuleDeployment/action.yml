@@ -138,7 +138,7 @@ runs:
         Write-Output "::group::Validate [${{ inputs.templateFilePath }}]"
 
         # Load used functions
-        . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourceValidation' 'Test-TemplateWithParameterFile.ps1')
+        . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourceDeployment' 'Test-TemplateWithParameterFile.ps1')
 
         # ----------- #
         # INVOKE TEST #

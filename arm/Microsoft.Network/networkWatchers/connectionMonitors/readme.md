@@ -6,7 +6,7 @@ This template deploys Connection Monitors.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Network/networkWatchers/connectionMonitors` | 2021-03-01 |
+| `Microsoft.Network/networkWatchers/connectionMonitors` | 2021-05-01 |
 
 ## Parameters
 
@@ -49,4 +49,4 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 ## Template references
 
-- [Networkwatchers/Connectionmonitors](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-03-01/networkWatchers/connectionMonitors)
+- [Networkwatchers/Connectionmonitors](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/networkWatchers/connectionMonitors)

@@ -106,7 +106,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource firewallPolicy 'Microsoft.Network/firewallPolicies@2021-03-01' = {
+resource firewallPolicy 'Microsoft.Network/firewallPolicies@2021-05-01' = {
   name: name
   location: location
   tags: tags

@@ -29,6 +29,8 @@ This module deploys a bastion host.
 | `publicIPAddressId` | string |  |  | Optional. Specifies the resource ID of the existing public IP to be leveraged by Azure Bastion. |
 | `publicIPAddressObject` | object | `{object}` |  | Optional. Specifies the properties of the public IP to create and be used by Azure Bastion. If it's not provided and publicIPAddressId is empty, a '-pip' suffix will be appended to the Bastion's name. |
 | `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
+| `scaleUnits` | int | `2` |  | Optional. The scale units for the Bastion Host resource. |
+| `skuType` | string | `Basic` | `[Basic, Standard]` | Optional. The SKU of this Bastion Host. |
 | `tags` | object | `{object}` |  | Optional. Tags of the resource. |
 | `vNetId` | string |  |  | Required. Shared services Virtual Network resource identifier |
 

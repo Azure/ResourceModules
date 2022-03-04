@@ -6,8 +6,8 @@ This module deploys Network Firewall Policies.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Network/firewallPolicies` | 2021-03-01 |
-| `Microsoft.Network/firewallPolicies/ruleCollectionGroups` | 2021-03-01 |
+| `Microsoft.Network/firewallPolicies` | 2021-05-01 |
+| `Microsoft.Network/firewallPolicies/ruleCollectionGroups` | 2021-05-01 |
 | `Microsoft.Network/firewallPolicies/ruleGroups` | 2020-04-01 |
 
 ## Parameters
@@ -81,5 +81,5 @@ You can specify multiple user assigned identities to a resource by providing add
 ## Template references
 
 - ['firewallPolicies/ruleGroups' Parent Documentation](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/firewallPolicies)
-- [Firewallpolicies](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-03-01/firewallPolicies)
-- [Firewallpolicies/Rulecollectiongroups](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-03-01/firewallPolicies/ruleCollectionGroups)
+- [Firewallpolicies](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/firewallPolicies)
+- [Firewallpolicies/Rulecollectiongroups](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/firewallPolicies/ruleCollectionGroups)

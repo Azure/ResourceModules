@@ -38,6 +38,16 @@ param diagnosticEventHubName string = ''
 @description('Optional. Specify the type of lock.')
 param lock string = 'NotSpecified'
 
+@allowed([
+  'Basic'
+  'Standard'
+])
+@description('Optional. The SKU of this Bastion Host.')
+param skuType string = 'Basic'
+
+@description('Optional. The scale units for the Bastion Host resource.')
+param scaleUnits int = 2
+
 @description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'')
 param roleAssignments array = []
 
@@ -63,6 +73,8 @@ var diagnosticsLogs = [for log in logsToEnable: {
     days: diagnosticLogsRetentionInDays
   }
 }]
+
+var scaleUnits_var = skuType == 'Basic' ? 2 : scaleUnits
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name)}'
@@ -119,7 +131,11 @@ resource azureBastion 'Microsoft.Network/bastionHosts@2021-05-01' = {
   name: name
   location: location
   tags: tags
+  sku: {
+    name: skuType
+  }
   properties: {
+    scaleUnits: scaleUnits_var
     ipConfigurations: [
       {
         name: 'IpConf'

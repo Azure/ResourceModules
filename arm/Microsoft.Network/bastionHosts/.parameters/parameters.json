@@ -11,6 +11,12 @@
         "publicIPAddressId": {
             "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/publicIPAddresses/adp-<<namePrefix>>-az-pip-x-bas"
         },
+        "skuType": {
+            "value": "Standard"
+        },
+        "scaleUnits": {
+            "value": 4
+        },
         "roleAssignments": {
             "value": [
                 {

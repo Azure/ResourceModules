@@ -7,7 +7,7 @@ This module controls the Network Security Group Flow Logs and analytics settings
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Network/networkWatchers/flowLogs` | 2021-03-01 |
+| `Microsoft.Network/networkWatchers/flowLogs` | 2021-05-01 |
 
 ## Parameters
 
@@ -53,4 +53,4 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 ## Template references
 
-- [Networkwatchers/Flowlogs](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-03-01/networkWatchers/flowLogs)
+- [Networkwatchers/Flowlogs](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/networkWatchers/flowLogs)

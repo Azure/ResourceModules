@@ -14,7 +14,7 @@ In the platform's pipeline `platform.updateReadMe.yml`, this script is invoked e
 ---
 # Location
 
-You can find the script under `/utilities/tools/Set-GitHubReadMeModuleTable.ps1`
+You can find the script under `/utilities/tools/Set-ReadMeModuleTable.ps1`
 
 # How it works
 

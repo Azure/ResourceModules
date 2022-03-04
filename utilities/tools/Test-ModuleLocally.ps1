@@ -123,7 +123,7 @@ function Test-ModuleLocally {
         . (Join-Path $PSScriptRoot '../pipelines/tokensReplacement/Convert-TokensInFile.ps1')
         # Load Modules Validation / Deployment Scripts
         . (Join-Path $PSScriptRoot '../pipelines/resourceDeployment/New-ModuleDeployment.ps1')
-        . (Join-Path $PSScriptRoot '../pipelines/resourceValidation/Test-TemplateWithParameterFile.ps1')
+        . (Join-Path $PSScriptRoot '../pipelines/resourceDeployment/Test-TemplateWithParameterFile.ps1')
     }
     process {
 
