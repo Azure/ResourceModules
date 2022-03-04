@@ -19,10 +19,6 @@
                 {
                     "name": "northeurope",
                     "location": "northeurope"
-                },
-                {
-                    "name": "westeurope",
-                    "location": "westeurope"
                 }
             ]
         },

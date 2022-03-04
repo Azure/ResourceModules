@@ -37,10 +37,10 @@ resource replication 'Microsoft.ContainerRegistry/registries/replications@2021-0
   parent: registry
   location: location
   tags: tags
-  properties: {
-    regionEndpointEnabled: regionEndpointEnabled
-    zoneRedundancy: zoneRedundancy
-  }
+  // properties: {
+  //   regionEndpointEnabled: regionEndpointEnabled
+  //   zoneRedundancy: zoneRedundancy
+  // }
 }
 
 @description('The name of the replication.')
