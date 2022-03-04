@@ -15,7 +15,7 @@ This template deploys a virtual network gateway connection.
 | :-- | :-- | :-- | :-- | :-- |
 | `customIPSecPolicy` | object | `{object}` |  | Optional. The IPSec Policies to be considered by this connection |
 | `enableBgp` | bool | `False` |  | Optional. Value to specify if BGP is enabled or not |
-| `enableDefaultTelemetry` | bool | `False` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `localVirtualNetworkGatewayName` | string |  |  | Required. Specifies the local Virtual Network Gateway name |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |

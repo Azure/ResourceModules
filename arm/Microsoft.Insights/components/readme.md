@@ -12,7 +12,7 @@
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `appInsightsType` | string | `web` | `[web, other]` | Optional. Application type |
-| `enableDefaultTelemetry` | bool | `False` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `kind` | string |  |  | Optional. The kind of application that this component refers to, used to customize UI. This value is a freeform string, values should typically be one of the following: web, ios, other, store, java, phone. |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all Resources |
 | `name` | string |  |  | Required. Name of the Application Insights |

@@ -5,7 +5,7 @@ param name string
 param backupStorageConfig object = {}
 
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
-param enableDefaultTelemetry bool = false
+param enableDefaultTelemetry bool = true
 
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location

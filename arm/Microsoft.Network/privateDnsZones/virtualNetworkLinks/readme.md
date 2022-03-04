@@ -12,7 +12,7 @@ This module deploys private dns zone virtual network links.
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `False` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `location` | string | `global` |  | Optional. The location of the PrivateDNSZone. Should be global. |
 | `name` | string | `[format('{0}-vnetlink', last(split(parameters('virtualNetworkResourceId'), '/')))]` |  | Optional. The name of the virtual network link. |
 | `privateDnsZoneName` | string |  |  | Required. Private DNS zone name. |

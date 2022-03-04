@@ -8,7 +8,7 @@ param name string = 'add'
 param accessPolicies array = []
 
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
-param enableDefaultTelemetry bool = false
+param enableDefaultTelemetry bool = true
 
 var formattedAccessPolicies = [for accessPolicy in accessPolicies: {
   applicationId: contains(accessPolicy, 'applicationId') ? accessPolicy.applicationId : ''

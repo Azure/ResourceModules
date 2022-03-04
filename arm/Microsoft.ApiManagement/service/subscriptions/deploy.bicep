@@ -5,7 +5,7 @@ param allowTracing bool = true
 param apiManagementServiceName string
 
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
-param enableDefaultTelemetry bool = false
+param enableDefaultTelemetry bool = true
 
 @description('Optional. User (user ID path) for whom subscription is being created in form /users/{userId}')
 param ownerId string = ''

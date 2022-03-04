@@ -14,7 +14,7 @@ This module deploys a Protection Container for a Recovery Services Vault
 | :-- | :-- | :-- | :-- | :-- |
 | `backupManagementType` | string |  | `[AzureBackupServer, AzureIaasVM, AzureSql, AzureStorage, AzureWorkload, DPM, DefaultBackup, Invalid, MAB, ]` | Optional. Backup management type to execute the current Protection Container job. |
 | `containerType` | string |  | `[AzureBackupServerContainer, AzureSqlContainer, GenericContainer, Microsoft.ClassicCompute/virtualMachines, Microsoft.Compute/virtualMachines, SQLAGWorkLoadContainer, StorageContainer, VMAppContainer, Windows, ]` | Optional. Type of the container |
-| `enableDefaultTelemetry` | bool | `False` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `friendlyName` | string |  |  | Optional. Friendly name of the Protection Container |
 | `name` | string |  |  | Required. Name of the Azure Recovery Service Vault Protection Container |
 | `recoveryVaultName` | string |  |  | Required. Name of the Azure Recovery Service Vault |

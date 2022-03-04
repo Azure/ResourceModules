@@ -17,7 +17,7 @@ This module deploys an Alert based on Activity Log.
 | `alertDescription` | string |  |  | Optional. Description of the alert. |
 | `conditions` | array |  |  | Required. The condition that will cause this alert to activate. Array of objects |
 | `enabled` | bool | `True` |  | Optional. Indicates whether this alert is enabled. |
-| `enableDefaultTelemetry` | bool | `False` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `location` | string | `global` |  | Optional. Location for all resources. |
 | `name` | string |  |  | Required. The name of the alert. |
 | `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |

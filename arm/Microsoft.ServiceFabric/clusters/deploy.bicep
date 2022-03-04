@@ -16,7 +16,7 @@ param tags object = {}
 param lock string = 'NotSpecified'
 
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
-param enableDefaultTelemetry bool = false
+param enableDefaultTelemetry bool = true
 
 @allowed([
   'BackupRestoreService'

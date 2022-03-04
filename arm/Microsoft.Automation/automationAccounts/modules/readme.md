@@ -13,7 +13,7 @@ This module deploys an Azure Automation Account Module.
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `automationAccountName` | string |  |  | Required. Name of the parent Automation Account. |
-| `enableDefaultTelemetry` | bool | `False` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
 | `name` | string |  |  | Required. Name of the Automation Account module. |
 | `tags` | object | `{object}` |  | Optional. Tags of the Automation Account resource. |

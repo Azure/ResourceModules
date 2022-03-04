@@ -17,7 +17,7 @@ This module deploys a virtual hub.
 | `addressPrefix` | string |  |  | Required. Address-prefix for this VirtualHub. |
 | `allowBranchToBranchTraffic` | bool | `True` |  | Optional. Flag to control transit for VirtualRouter hub. |
 | `azureFirewallId` | string |  |  | Optional. Resource ID of the Azure Firewall to link to |
-| `enableDefaultTelemetry` | bool | `False` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `expressRouteGatewayId` | string |  |  | Optional. Resource ID of the Express Route Gateway to link to |
 | `hubRouteTables` | _[hubRouteTables](hubRouteTables/readme.md)_ array | `[]` |  | Optional. Route tables to create for the virtual hub. |
 | `hubVirtualNetworkConnections` | _[hubVirtualNetworkConnections](hubVirtualNetworkConnections/readme.md)_ array | `[]` |  | Optional. Virtual network connections to create for the virtual hub. |

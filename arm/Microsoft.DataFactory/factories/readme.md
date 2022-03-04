@@ -20,7 +20,7 @@
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticStorageAccountId` | string |  |  | Optional. Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string |  |  | Optional. Resource ID of the diagnostic log analytics workspace. |
-| `enableDefaultTelemetry` | bool | `False` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `gitAccountName` | string |  |  | Optional. The account name. |
 | `gitCollaborationBranch` | string | `main` |  | Optional. The collaboration branch name. Default is 'main'. |
 | `gitConfigureLater` | bool | `True` |  | Optional. Boolean to define whether or not to configure git during template deployment. |

@@ -13,7 +13,7 @@ This module deploys a Managed or Self-Hosted Integration Runtime for an Azure Da
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `dataFactoryName` | string |  |  | Required. The name of the Azure Data Factory |
-| `enableDefaultTelemetry` | bool | `False` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `managedVirtualNetworkName` | string |  |  | Optional. The name of the Managed Virtual Network if using type "Managed"  |
 | `name` | string |  |  | Required. The name of the Integration Runtime |
 | `type` | string |  | `[Managed, SelfHosted]` | Required. The type of Integration Runtime |

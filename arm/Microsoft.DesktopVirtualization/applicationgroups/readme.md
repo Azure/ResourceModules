@@ -24,7 +24,7 @@ This module deploys an Azure virtual desktop application group.
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticStorageAccountId` | string |  |  | Optional. Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string |  |  | Optional. Resource ID of log analytics. |
-| `enableDefaultTelemetry` | bool | `False` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `friendlyName` | string |  |  | Optional. The friendly name of the Application Group to be created. |
 | `hostpoolName` | string |  |  | Required. Name of the Host Pool to be linked to this Application Group. |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |

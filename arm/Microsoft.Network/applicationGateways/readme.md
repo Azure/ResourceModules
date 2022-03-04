@@ -27,7 +27,7 @@ This module deploys Network ApplicationGateways.
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticStorageAccountId` | string |  |  | Optional. Resource ID of the diagnostic storage account. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub |
 | `diagnosticWorkspaceId` | string |  |  | Optional. Resource ID of the diagnostic log analytics workspace. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub |
-| `enableDefaultTelemetry` | bool | `False` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `enableFips` | bool | `False` |  | Optional. Whether FIPS is enabled on the application gateway resource. |
 | `enableHttp2` | bool | `False` |  | Optional. Whether HTTP2 is enabled on the application gateway resource. |
 | `enableRequestBuffering` | bool | `False` |  | Optional. Enable request buffering. |

@@ -13,7 +13,7 @@ This module deploys API Management Service APIs Version Set.
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `apiManagementServiceName` | string |  |  | Required. The name of the of the API Management service. |
-| `enableDefaultTelemetry` | bool | `False` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `name` | string | `default` |  | Optional. API Version set name |
 | `properties` | object | `{object}` |  | Optional. API Version set properties |
 

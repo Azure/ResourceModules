@@ -30,7 +30,7 @@ This module deploys an Azure Automation Account.
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticStorageAccountId` | string |  |  | Optional. Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string |  |  | Optional. Resource ID of the diagnostic log analytics workspace. |
-| `enableDefaultTelemetry` | bool | `False` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `gallerySolutions` | array | `[]` |  | Optional. List of gallerySolutions to be created in the linked log analytics workspace |
 | `jobSchedules` | _[jobSchedules](jobSchedules/readme.md)_ array | `[]` |  | Optional. List of jobSchedules to be created in the automation account. |
 | `linkedWorkspaceId` | string |  |  | Optional. ID of the log analytics workspace to be linked to the deployed automation account. |

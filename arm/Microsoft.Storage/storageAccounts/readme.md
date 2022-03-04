@@ -36,7 +36,7 @@ This module is used to deploy a storage account, with the ability to deploy 1 or
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticStorageAccountId` | string |  |  | Optional. Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string |  |  | Optional. Resource ID of the diagnostic log analytics workspace. |
-| `enableDefaultTelemetry` | bool | `False` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `enableHierarchicalNamespace` | bool | `False` |  | Optional. If true, enables Hierarchical Namespace for the storage account |
 | `fileServices` | _[fileServices](fileServices/readme.md)_ object | `{object}` |  | Optional. File service and shares to deploy |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |

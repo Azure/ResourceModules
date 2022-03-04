@@ -12,7 +12,7 @@ This template deploys Connection Monitors.
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `False` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `endpoints` | array | `[]` |  | Optional. List of connection monitor endpoints. |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
 | `name` | string |  |  | Optional. Name of the resource. |

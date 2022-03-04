@@ -23,7 +23,7 @@ This module deploys a firewall.
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticStorageAccountId` | string |  |  | Optional. Diagnostic Storage Account resource identifier |
 | `diagnosticWorkspaceId` | string |  |  | Optional. Log Analytics workspace resource identifier |
-| `enableDefaultTelemetry` | bool | `False` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `firewallPolicyId` | string |  |  | Optional. Resource ID of the Firewall Policy that should be attached. |
 | `ipConfigurations` | array |  |  | Required. List of IP Configurations. |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |

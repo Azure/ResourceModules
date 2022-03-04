@@ -14,7 +14,7 @@ This template deploys a disk encryption set.
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `False` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `encryptionType` | string | `EncryptionAtRestWithPlatformAndCustomerKeys` | `[EncryptionAtRestWithCustomerKey, EncryptionAtRestWithPlatformAndCustomerKeys]` | Optional. The type of key used to encrypt the data of the disk. For security reasons, it is recommended to set encryptionType to EncryptionAtRestWithPlatformAndCustomerKeys |
 | `keyUrl` | string |  |  | Required. Key URL (with version) pointing to a key or secret in KeyVault. |
 | `keyVaultId` | string |  |  | Required. Resource ID of the KeyVault containing the key or secret. |

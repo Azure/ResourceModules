@@ -24,7 +24,7 @@ This module deploys a service fabric cluster.
 | `clientCertificateThumbprints` | array | `[]` |  | Optional. The list of client certificates referenced by thumbprint that are allowed to manage the cluster. |
 | `clusterCodeVersion` | string |  |  | Optional. The Service Fabric runtime version of the cluster. This property can only by set the user when upgradeMode is set to "Manual". To get list of available Service Fabric versions for new clusters use ClusterVersion API. To get the list of available version for existing clusters use availableClusterVersions. |
 | `diagnosticsStorageAccountConfig` | object | `{object}` |  | Optional. The storage account information for storing Service Fabric diagnostic logs. |
-| `enableDefaultTelemetry` | bool | `False` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `eventStoreServiceEnabled` | bool | `False` |  | Optional. Indicates if the event store service is enabled. |
 | `fabricSettings` | array | `[]` |  | Optional. The list of custom fabric settings to configure the cluster. |
 | `infrastructureServiceManager` | bool | `False` |  | Optional. Indicates if infrastructure service manager is enabled. |

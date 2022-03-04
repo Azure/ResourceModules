@@ -23,7 +23,7 @@ This module deploys different kinds of cognitive services resources
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticStorageAccountId` | string |  |  | Optional. Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string |  |  | Optional. Resource ID of the diagnostic log analytics workspace. |
-| `enableDefaultTelemetry` | bool | `False` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `kind` | string |  | `[AnomalyDetector, Bing.Autosuggest.v7, Bing.CustomSearch, Bing.EntitySearch, Bing.Search.v7, Bing.SpellCheck.v7, CognitiveServices, ComputerVision, ContentModerator, CustomVision.Prediction, CustomVision.Training, Face, FormRecognizer, ImmersiveReader, Internal.AllInOne, LUIS, LUIS.Authoring, Personalizer, QnAMaker, SpeechServices, TextAnalytics, TextTranslation]` | Required. Kind of the Cognitive Services. Use 'Get-AzCognitiveServicesAccountSku' to determine a valid combinations of 'kind' and 'sku' for your Azure region. |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all Resources. |
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |

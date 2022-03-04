@@ -50,7 +50,7 @@ param contactRoles array = []
 param actionGroups array = []
 
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
-param enableDefaultTelemetry bool = false
+param enableDefaultTelemetry bool = true
 
 var budgetNameVar = empty(name) ? '${resetPeriod}-${category}-Budget' : name
 var notificationsArray = [for threshold in thresholds: {

@@ -34,7 +34,7 @@ This module deploys a service bus namespace resource.
 | `diagnosticStorageAccountId` | string |  |  | Optional. Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string |  |  | Optional. Resource ID of the diagnostic log analytics workspace. |
 | `disasterRecoveryConfigs` | _[disasterRecoveryConfigs](disasterRecoveryConfigs/readme.md)_ object | `{object}` |  | Optional. The disaster recovery configuration. |
-| `enableDefaultTelemetry` | bool | `False` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `ipFilterRules` | _[ipFilterRules](ipFilterRules/readme.md)_ array | `[]` |  | Optional. IP Filter Rules for the Service Bus namespace |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |

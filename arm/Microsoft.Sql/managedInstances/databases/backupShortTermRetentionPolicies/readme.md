@@ -14,7 +14,7 @@ This module deploys a backup short-term retention policies for SQL Managed Insta
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `databaseName` | string |  |  | Required. The name of the SQL managed instance database |
-| `enableDefaultTelemetry` | bool | `False` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `managedInstanceName` | string |  |  | Required. Name of the SQL managed instance. |
 | `name` | string |  |  | Required. The name of the Short Term Retention backup policy. For example "default". |
 | `retentionDays` | int | `35` |  | Optional. The backup retention period in days. This is how many days Point-in-Time Restore will be supported. |

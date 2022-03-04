@@ -16,7 +16,7 @@ This module deploys a virtual network subnet.
 | `addressPrefixes` | array | `[]` |  | Optional. List of address prefixes for the subnet. |
 | `applicationGatewayIpConfigurations` | array | `[]` |  | Optional. Application gateway IP configurations of virtual network resource. |
 | `delegations` | array | `[]` |  | Optional. The delegations to enable on the subnet |
-| `enableDefaultTelemetry` | bool | `False` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `ipAllocations` | array | `[]` |  | Optional. Array of IpAllocation which reference this subnet |
 | `name` | string |  |  | Optional. The Name of the subnet resource. |
 | `natGatewayName` | string |  |  | Optional. The name of the NAT Gateway to use for the subnet |

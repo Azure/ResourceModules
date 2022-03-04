@@ -236,7 +236,7 @@ param roleAssignments array = []
 param tags object = {}
 
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
-param enableDefaultTelemetry bool = false
+param enableDefaultTelemetry bool = true
 
 @description('Generated. Do not provide a value! This date value is used to generate a registration token.')
 param baseTime string = utcNow('u')

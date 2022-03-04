@@ -54,7 +54,7 @@ param roleAssignments array = []
 param tags object = {}
 
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
-param enableDefaultTelemetry bool = false
+param enableDefaultTelemetry bool = true
 
 var hostingEnvironmentProfile = {
   id: appServiceEnvironmentId

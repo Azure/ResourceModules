@@ -67,7 +67,7 @@ param location string = resourceGroup().location
 param roleAssignments array = []
 
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
-param enableDefaultTelemetry bool = false
+param enableDefaultTelemetry bool = true
 
 @description('Optional. Tags of the resource.')
 param tags object = {}

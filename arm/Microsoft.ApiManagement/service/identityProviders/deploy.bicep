@@ -2,7 +2,7 @@
 param apiManagementServiceName string
 
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
-param enableDefaultTelemetry bool = false
+param enableDefaultTelemetry bool = true
 
 @description('Optional. Used to enable the deployment of the identityProviders child resource.')
 param enableIdentityProviders bool = false

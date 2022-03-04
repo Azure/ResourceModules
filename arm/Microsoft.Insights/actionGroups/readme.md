@@ -19,7 +19,7 @@ This module deploys an Action Group.
 | `azureFunctionReceivers` | array | `[]` |  | Optional. The list of function receivers that are part of this action group. |
 | `emailReceivers` | array | `[]` |  | Optional. The list of email receivers that are part of this action group. |
 | `enabled` | bool | `True` |  | Optional. Indicates whether this action group is enabled. If an action group is not enabled, then none of its receivers will receive communications. |
-| `enableDefaultTelemetry` | bool | `False` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `groupShortName` | string |  |  | Required. The short name of the action group. |
 | `itsmReceivers` | array | `[]` |  | Optional. The list of ITSM receivers that are part of this action group. |
 | `location` | string | `global` |  | Optional. Location for all resources. |

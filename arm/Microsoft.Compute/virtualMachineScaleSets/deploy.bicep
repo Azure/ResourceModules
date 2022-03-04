@@ -261,7 +261,7 @@ param availabilityZones array = []
 param tags object = {}
 
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
-param enableDefaultTelemetry bool = false
+param enableDefaultTelemetry bool = true
 
 @description('Required. The chosen OS type')
 @allowed([
@@ -403,7 +403,6 @@ resource vmss 'Microsoft.Compute/virtualMachineScaleSets@2021-04-01' = {
           secureBootEnabled: secureBootEnabled
           vTpmEnabled: vTpmEnabled
         } : null
-      
       }
       storageProfile: {
         imageReference: imageReference

@@ -44,7 +44,7 @@ This module deploys an API management service.
 | `diagnosticWorkspaceId` | string |  |  | Optional. Resource ID of the diagnostic log analytics workspace. |
 | `disableGateway` | bool | `False` |  | Optional. Property only valid for an API Management service deployed in multiple locations. This can be used to disable the gateway in master region. |
 | `enableClientCertificate` | bool | `False` |  | Optional. Property only meant to be used for Consumption SKU Service. This enforces a client certificate to be presented on each request to the gateway. This also enables the ability to authenticate the certificate in the policy on the gateway. |
-| `enableDefaultTelemetry` | bool | `False` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `hostnameConfigurations` | array | `[]` |  | Optional. Custom hostname configuration of the API Management service. |
 | `identityProviders` | _[identityProviders](identityProviders/readme.md)_ array | `[]` |  | Optional. Identity providers. |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all Resources. |

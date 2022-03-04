@@ -66,7 +66,7 @@ This module deploys Azure Kubernetes Cluster (AKS).
 | `diagnosticWorkspaceId` | string |  |  | Optional. Resource ID of the diagnostic log analytics workspace. |
 | `disableLocalAccounts` | bool | `False` |  | Optional. If set to true, getting static credentials will be disabled for this cluster. This must only be used on Managed Clusters that are AAD enabled. |
 | `disableRunCommand` | bool | `False` |  | Optional. Whether to disable run command for the cluster or not. |
-| `enableDefaultTelemetry` | bool | `False` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `enableKeyvaultSecretsProvider` | bool | `False` |  | Optional. Specifies whether the KeyvaultSecretsProvider add-on is enabled or not. |
 | `enablePrivateCluster` | bool | `False` |  | Optional. Specifies whether to create the cluster as a private cluster or not. |
 | `enablePrivateClusterPublicFQDN` | bool | `False` |  | Optional. Whether to create additional public FQDN for private cluster or not. |

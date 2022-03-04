@@ -14,7 +14,7 @@ This module deploys API Management Service APIs policies.
 | :-- | :-- | :-- | :-- | :-- |
 | `apiManagementServiceName` | string |  |  | Required. The name of the of the API Management service. |
 | `apiName` | string |  |  | Required. The name of the of the API. |
-| `enableDefaultTelemetry` | bool | `False` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `format` | string | `xml` | `[rawxml, rawxml-link, xml, xml-link]` | Optional. Format of the policyContent. |
 | `name` | string | `policy` |  | Optional. The name of the policy |
 | `value` | string |  |  | Required. Contents of the Policy as defined by the format. |

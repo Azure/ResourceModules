@@ -11,7 +11,7 @@ param connectorEndpointsConfiguration object = {}
 param contentsAccessControlConfiguration object = {}
 
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
-param enableDefaultTelemetry bool = false
+param enableDefaultTelemetry bool = true
 
 @description('Optional. Parameters for the definition template.')
 param definitionParameters object = {}

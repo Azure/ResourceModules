@@ -13,7 +13,7 @@ This template deploys a data source for a Log Analytics workspace.
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `counterName` | string |  |  | Optional. Counter name to configure when kind is WindowsPerformanceCounter. |
-| `enableDefaultTelemetry` | bool | `False` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `eventLogName` | string |  |  | Optional. Windows event log name to configure when kind is WindowsEvent. |
 | `eventTypes` | array | `[]` |  | Optional. Windows event types to configure when kind is WindowsEvent. |
 | `instanceName` | string | `*` |  | Optional. Name of the instance to configure when kind is WindowsPerformanceCounter or LinuxPerformanceObject. |

@@ -13,7 +13,7 @@
 | :-- | :-- | :-- | :-- | :-- |
 | `containers` | _[containers](containers/readme.md)_ array | `[]` |  | Optional. Array of containers to deploy in the SQL database. |
 | `databaseAccountName` | string |  |  | Required. ID of the Cosmos DB database account. |
-| `enableDefaultTelemetry` | bool | `False` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `name` | string |  |  | Required. Name of the SQL database  |
 | `tags` | object | `{object}` |  | Optional. Tags of the SQL database resource. |
 | `throughput` | int | `400` |  | Optional. Request units per second |

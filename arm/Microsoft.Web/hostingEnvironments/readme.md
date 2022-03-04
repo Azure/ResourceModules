@@ -24,7 +24,7 @@ This module deploys an app service environment.
 | `diagnosticWorkspaceId` | string |  |  | Optional. Resource ID of the diagnostic log analytics workspace. |
 | `dnsSuffix` | string |  |  | Optional. DNS suffix of the App Service Environment. |
 | `dynamicCacheEnabled` | bool | `False` |  | Optional. True/false indicating whether the App Service Environment is suspended. The environment can be suspended e.g. when the management endpoint is no longer available(most likely because NSG blocked the incoming traffic). |
-| `enableDefaultTelemetry` | bool | `False` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `frontEndScaleFactor` | int | `15` |  | Optional. Scale factor for frontends. |
 | `hasLinuxWorkers` | bool | `False` |  | Optional. Flag that displays whether an ASE has linux workers or not |
 | `internalLoadBalancingMode` | string | `None` | `[None, Web, Publishing]` | Optional. Specifies which endpoints to serve internally in the Virtual Network for the App Service Environment. - None, Web, Publishing, Web,Publishing |

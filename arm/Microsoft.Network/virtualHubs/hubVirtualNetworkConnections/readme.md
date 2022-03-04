@@ -12,7 +12,7 @@ This module deploys virtual hub virtual network connections.
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `False` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `enableInternetSecurity` | bool | `True` |  | Optional. Enable internet security. |
 | `name` | string |  |  | Required. The connection name. |
 | `remoteVirtualNetworkId` | string |  |  | Required. Resource ID of the virtual network to link to |

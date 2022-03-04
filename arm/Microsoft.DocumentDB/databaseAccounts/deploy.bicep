@@ -60,7 +60,7 @@ param sqlDatabases array = []
 param mongodbDatabases array = []
 
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
-param enableDefaultTelemetry bool = false
+param enableDefaultTelemetry bool = true
 
 @allowed([
   'CanNotDelete'

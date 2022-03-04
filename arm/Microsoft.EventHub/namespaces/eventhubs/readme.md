@@ -27,7 +27,7 @@ This module deploys an Event Hub.
 | `captureDescriptionSizeLimitInBytes` | int | `314572800` |  | Optional. The size window defines the amount of data built up in your Event Hub before an capture operation |
 | `captureDescriptionSkipEmptyArchives` | bool | `False` |  | Optional. A value that indicates whether to Skip Empty Archives |
 | `consumerGroups` | _[consumerGroups](consumerGroups/readme.md)_ array | `[System.Collections.Hashtable]` |  | Optional. The consumer groups to create in this event hub instance |
-| `enableDefaultTelemetry` | bool | `False` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
 | `messageRetentionInDays` | int | `1` |  | Optional. Number of days to retain the events for this Event Hub, value should be 1 to 7 days |
 | `name` | string |  |  | Required. The name of the event hub |

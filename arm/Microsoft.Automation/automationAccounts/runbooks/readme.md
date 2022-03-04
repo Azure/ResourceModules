@@ -14,7 +14,7 @@ This module deploys an Azure Automation Account Runbook.
 | :-- | :-- | :-- | :-- | :-- |
 | `automationAccountName` | string |  |  | Required. Name of the parent Automation Account. |
 | `baseTime` | string | `[utcNow('u')]` |  | Optional. Time used as a basis for e.g. the schedule start date. |
-| `enableDefaultTelemetry` | bool | `False` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
 | `name` | string |  |  | Required. Name of the Automation Account runbook. |
 | `runbookDescription` | string |  |  | Optional. The description of the runbook. |

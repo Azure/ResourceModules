@@ -38,7 +38,7 @@ SQL Managed Instance is deployed on a virtual network. This network is required 
 | `diagnosticStorageAccountId` | string |  |  | Optional. Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string |  |  | Optional. Resource ID of the diagnostic log analytics workspace. |
 | `dnsZonePartner` | string |  |  | Optional. The resource ID of another managed instance whose DNS zone this managed instance will share after creation. |
-| `enableDefaultTelemetry` | bool | `False` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `encryptionProtectorObj` | _[encryptionProtector](encryptionProtector/readme.md)_ object | `{object}` |  | Optional. The encryption protection configuration |
 | `hardwareFamily` | string | `Gen5` |  | Optional. If the service has different generations of hardware, for the same SKU, then that can be captured here. |
 | `instancePoolResourceId` | string |  |  | Optional. The resource ID of the instance pool this managed server belongs to. |

@@ -81,7 +81,7 @@ param lock string = 'NotSpecified'
 param tags object = {}
 
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
-param enableDefaultTelemetry bool = false
+param enableDefaultTelemetry bool = true
 
 @description('Optional. The type of preferred application group type, default to Desktop Application Group')
 @allowed([

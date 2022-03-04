@@ -27,7 +27,7 @@ The following resources are required to be able to deploy this resource.
 | `clientRegistrationEndpoint` | string |  |  | Optional. Optional reference to a page where client or app registration for this authorization server is performed. Contains absolute URL to entity being referenced. |
 | `clientSecret` | secureString |  |  | Required. Client or app secret registered with this authorization server. This property will not be filled on 'GET' operations! Use '/listSecrets' POST request to get the value. |
 | `defaultScope` | string |  |  | Optional. Access token scope that is going to be requested by default. Can be overridden at the API level. Should be provided in the form of a string containing space-delimited values. |
-| `enableDefaultTelemetry` | bool | `False` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `grantTypes` | array |  |  | Required. Form of an authorization grant, which the client uses to request the access token. - authorizationCode, implicit, resourceOwnerPassword, clientCredentials |
 | `name` | string |  |  | Required. Identifier of the authorization server. |
 | `resourceOwnerPassword` | string |  |  | Optional. Can be optionally specified when resource owner password grant type is supported by this authorization server. Default resource owner password. |

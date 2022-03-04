@@ -20,7 +20,7 @@ The following resources are required to be able to deploy this resource.
 | :-- | :-- | :-- | :-- | :-- |
 | `apiManagementServiceName` | string |  |  | Required. The name of the of the API Management service. |
 | `displayName` | string |  |  | Required. Unique name of NamedValue. It may contain only letters, digits, period, dash, and underscore characters. |
-| `enableDefaultTelemetry` | bool | `False` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `keyVault` | object | `{object}` |  | Optional. KeyVault location details of the namedValue.  |
 | `name` | string |  |  | Required. Named value Name. |
 | `namedValueTags` | array | `[]` |  | Optional. Tags that when provided can be used to filter the NamedValue list. - string |

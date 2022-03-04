@@ -61,7 +61,7 @@ param lock string = 'NotSpecified'
 param tags object = {}
 
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
-param enableDefaultTelemetry bool = false
+param enableDefaultTelemetry bool = true
 
 var localVirtualNetworkGatewayId = az.resourceId(resourceGroup().name, 'Microsoft.Network/virtualNetworkGateways', localVirtualNetworkGatewayName)
 var remoteEntitySubscriptionId_var = (empty(remoteEntitySubscriptionId) ? subscription().subscriptionId : remoteEntitySubscriptionId)

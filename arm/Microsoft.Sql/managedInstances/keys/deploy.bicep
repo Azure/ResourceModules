@@ -15,7 +15,7 @@ param serverKeyType string = 'ServiceManaged'
 param uri string = ''
 
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
-param enableDefaultTelemetry bool = false
+param enableDefaultTelemetry bool = true
 
 var splittedKeyUri = split(uri, '/')
 

@@ -15,7 +15,7 @@ This module deploys an app service plan.
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `appServiceEnvironmentId` | string |  |  | Optional. The Resource ID of the App Service Environment to use for the App Service Plan. |
-| `enableDefaultTelemetry` | bool | `False` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
 | `maximumElasticWorkerCount` | int | `1` |  | Optional. Maximum number of total workers allowed for this ElasticScaleEnabled App Service Plan. |
