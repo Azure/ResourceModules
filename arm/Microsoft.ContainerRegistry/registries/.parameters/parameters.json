@@ -17,7 +17,7 @@
         "replications": {
             "value": [
                 {
-                    "name": "North Europe",
+                    "name": "northeurope",
                     "location": "northeurope"
                 }
             ]
