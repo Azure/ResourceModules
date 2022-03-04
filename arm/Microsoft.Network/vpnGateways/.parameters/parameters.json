@@ -17,12 +17,12 @@
         "connections": {
             "value": [
                 {
-                    "name": "Connection-SampleVpnSite",
+                    "name": "Connection-<<namePrefix>>-az-vsite-x-001",
                     "connectionBandwidth": 10,
                     "enableBgp": true,
                     "routingConfiguration": {
                         "associatedRouteTable": {
-                            "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualHubs/SampleVirtualHub/hubRouteTables/defaultRouteTable"
+                            "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualHubs/<<namePrefix>>-az-vhub-x-001/hubRouteTables/defaultRouteTable"
                         },
                         "propagatedRouteTables": {
                             "labels": [
@@ -30,7 +30,7 @@
                             ],
                             "ids": [
                                 {
-                                    "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualHubs/SampleVirtualHub/hubRouteTables/defaultRouteTable"
+                                    "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualHubs/<<namePrefix>>-az-vhub-x-001/hubRouteTables/defaultRouteTable"
                                 }
                             ]
                         },
@@ -38,7 +38,7 @@
                             "staticRoutes": []
                         }
                     },
-                    "remoteVpnSiteResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/vpnSites/SampleVpnSite"
+                    "remoteVpnSiteResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/vpnSites/<<namePrefix>>-az-vsite-x-001"
                 }
             ]
         },
