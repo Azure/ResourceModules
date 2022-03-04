@@ -28,7 +28,11 @@
           "tenantId": "<<tenantId>>",
           "objectId": "<<msiPrincipalID>>", // The object ID of the deployed MSI. Replaced by the pipeline
           "permissions": {
-            "keys": [],
+            "keys": [
+              "Get",
+              "WrapKey",
+              "UnwrapKey"
+            ],
             "secrets": [
               "Get"
             ],
