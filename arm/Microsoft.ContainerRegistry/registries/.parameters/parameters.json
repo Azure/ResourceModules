@@ -8,6 +8,9 @@
         "acrAdminUserEnabled": {
             "value": false
         },
+        "acrSku": {
+            "value": "Standard"
+        },
         "replications": {
             "value": [
                 {
