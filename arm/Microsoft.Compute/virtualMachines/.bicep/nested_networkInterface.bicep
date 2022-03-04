@@ -73,6 +73,8 @@ resource networkInterface 'Microsoft.Network/networkInterfaces@2021-03-01' = {
         subnet: {
           id: ipConfiguration.subnetId
         }
+        loadBalancerBackendAddressPools: contains(ipConfiguration, 'loadBalancerBackendAddressPools') ? ipConfiguration.loadBalancerBackendAddressPools : null
+        applicationSecurityGroups: contains(ipConfiguration, 'applicationSecurityGroups') ? ipConfiguration.applicationSecurityGroups : null
       }
     }]
   }
