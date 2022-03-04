@@ -193,14 +193,14 @@ resource registry 'Microsoft.ContainerRegistry/registries@2021-09-01' = {
   }
   properties: {
     adminUserEnabled: acrAdminUserEnabled
-    // encryption: acrSku == 'Premium' ? {
-    //   keyVaultProperties: !empty(keyVaultProperties) ? keyVaultProperties : null
-    //   status: encryptionStatus
-    // } : null
+    encryption: acrSku == 'Premium' ? {
+      keyVaultProperties: !empty(keyVaultProperties) ? keyVaultProperties : null
+      status: encryptionStatus
+    } : null
     policies: {
-      // exportPolicy: acrSku == 'Premium' ? {
-      //   status: exportPolicyStatus
-      // } : null
+      exportPolicy: acrSku == 'Premium' ? {
+        status: exportPolicyStatus
+      } : null
       quarantinePolicy: {
         status: quarantinePolicyStatus
       }
@@ -216,11 +216,11 @@ resource registry 'Microsoft.ContainerRegistry/registries@2021-09-01' = {
     dataEndpointEnabled: dataEndpointEnabled
     publicNetworkAccess: publicNetworkAccess
     networkRuleBypassOptions: networkRuleBypassOptions
-    // networkRuleSet: !empty(networkRuleSetIpRules) ? {
-    //   defaultAction: networkRuleSetDefaultAction
-    //   ipRules: networkRuleSetIpRules
-    // } : null
-    // zoneRedundancy: acrSku == 'Premium' ? zoneRedundancy : null
+    networkRuleSet: !empty(networkRuleSetIpRules) ? {
+      defaultAction: networkRuleSetDefaultAction
+      ipRules: networkRuleSetIpRules
+    } : null
+    zoneRedundancy: acrSku == 'Premium' ? zoneRedundancy : null
   }
 }
 
