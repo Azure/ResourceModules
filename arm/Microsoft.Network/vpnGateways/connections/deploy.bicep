@@ -22,13 +22,13 @@ param usePolicyBasedTrafficSelectors bool = false
 @description('Optional. Use local azure IP to initiate connection.')
 param useLocalAzureIpAddress bool = false
 
-@description('Optional. EnableBgp flag.')
+@description('Optional. Enable rate limiting.')
 param enableRateLimiting bool = false
 
 @description('Optional. Enable internet security.')
 param enableInternetSecurity bool = false
 
-@description('Optional. Enable internet security.')
+@description('Optional. Enable BGP flag.')
 param enableBgp bool = false
 
 @description('Optional. Routing weight for VPN connection.')
