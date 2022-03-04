@@ -216,10 +216,10 @@ resource registry 'Microsoft.ContainerRegistry/registries@2021-09-01' = {
     dataEndpointEnabled: dataEndpointEnabled
     publicNetworkAccess: publicNetworkAccess
     networkRuleBypassOptions: networkRuleBypassOptions
-    networkRuleSet: !empty(networkRuleSetIpRules) ? {
-      defaultAction: networkRuleSetDefaultAction
-      ipRules: networkRuleSetIpRules
-    } : null
+    // networkRuleSet: !empty(networkRuleSetIpRules) ? {
+    //   defaultAction: networkRuleSetDefaultAction
+    //   ipRules: networkRuleSetIpRules
+    // } : null
     zoneRedundancy: acrSku == 'Premium' ? zoneRedundancy : null
   }
 }
