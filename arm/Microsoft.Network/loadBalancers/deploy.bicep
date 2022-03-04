@@ -64,24 +64,17 @@ param inboundNatRules array = []
 @description('Optional. The outbound rules.')
 param outboundRules array = []
 
-var frontendsSubnets = [for item in frontendIPConfigurations: {
-  id: item.subnetId
-}]
-var frontendsPublicIPAddresses = [for item in frontendIPConfigurations: {
-  id: item.publicIPAddressId
-}]
-var frontendsObj = {
-  subnets: frontendsSubnets
-  publicIPAddresses: frontendsPublicIPAddresses
-}
-
 var frontendIPConfigurations_var = [for (frontendIPConfiguration, index) in frontendIPConfigurations: {
   name: frontendIPConfiguration.name
   properties: {
-    subnet: !empty(frontendIPConfiguration.subnetId) ? frontendsObj.subnets[index] : null
-    publicIPAddress: !empty(frontendIPConfiguration.publicIPAddressId) ? frontendsObj.publicIPAddresses[index] : null
-    privateIPAddress: !empty(frontendIPConfiguration.privateIPAddress) ? frontendIPConfiguration.privateIPAddress : null
-    privateIPAllocationMethod: !empty(frontendIPConfiguration.subnetId) ? (empty(frontendIPConfiguration.privateIPAddress) ? 'Dynamic' : 'Static') : null
+    subnet: contains(frontendIPConfiguration, 'subnetId') ? {
+        id: frontendIPConfiguration.subnetId
+    } : null
+    publicIPAddress: contains(frontendIPConfiguration, 'publicIPAddressId') ? {
+        id: frontendIPConfiguration.publicIPAddressId
+    } : null
+    privateIPAddress: contains(frontendIPConfiguration, 'privateIPAddress') ? frontendIPConfiguration.privateIPAddress : null
+    privateIPAllocationMethod: contains(frontendIPConfiguration, 'subnetId') ? (contains(frontendIPConfiguration, 'privateIPAddress') ? 'Static' : 'Dynamic') : null
   }
 }]
 
@@ -130,7 +123,7 @@ var probes_var = [for probe in probes: {
   name: probe.name
   properties: {
     protocol: contains(probe, 'protocol') ? probe.protocol : 'Tcp'
-    requestPath: (contains(probe, 'protocol') && toLower(probe.protocol) == 'tcp') ? null : probe.requestPath
+    requestPath: toLower(probe.protocol) != 'tcp' ? probe.requestPath : null
     port: contains(probe, 'port') ? probe.port : 80
     intervalInSeconds: contains(probe, 'intervalInSeconds') ? probe.intervalInSeconds : 5
     numberOfProbes: contains(probe, 'numberOfProbes') ? probe.numberOfProbes : 2
@@ -176,15 +169,15 @@ resource loadBalancer 'Microsoft.Network/loadBalancers@2021-05-01' = {
   }
 }
 
-module loadBalancer_backendAddressPools 'backendAddressPools/deploy.bicep' = [for (backendAddressPool, index) in backendAddressPools: {
-  name: '${uniqueString(deployment().name, location)}-LoadBalancer-backendAddressPools-${index}'
-  params: {
-    loadBalancerName: loadBalancer.name
-    name: backendAddressPool.name
-    loadBalancerBackendAddresses: contains(backendAddressPool, 'loadBalancerBackendAddresses') ? backendAddressPool.loadBalancerBackendAddresses : []
-    tunnelInterfaces: contains(backendAddressPool, 'tunnelInterfaces') ? backendAddressPool.tunnelInterfaces : []
-  }
-}]
+// module loadBalancer_backendAddressPools 'backendAddressPools/deploy.bicep' = [for (backendAddressPool, index) in backendAddressPools: {
+//   name: '${uniqueString(deployment().name, location)}-LoadBalancer-backendAddressPools-${index}'
+//   params: {
+//     loadBalancerName: loadBalancer.name
+//     name: backendAddressPool.name
+//     loadBalancerBackendAddresses: contains(backendAddressPool, 'loadBalancerBackendAddresses') ? backendAddressPool.loadBalancerBackendAddresses : []
+//     tunnelInterfaces: contains(backendAddressPool, 'tunnelInterfaces') ? backendAddressPool.tunnelInterfaces : []
+//   }
+// }]
 
 module loadBalancer_inboundNATRules 'inboundNatRules/deploy.bicep' = [for (inboundNATRule, index) in inboundNatRules: {
   name: '${uniqueString(deployment().name, location)}-LoadBalancer-inboundNatRules-${index}'
@@ -202,9 +195,9 @@ module loadBalancer_inboundNATRules 'inboundNatRules/deploy.bicep' = [for (inbou
     idleTimeoutInMinutes: contains(inboundNATRule, 'idleTimeoutInMinutes') ? inboundNATRule.idleTimeoutInMinutes : 4
     protocol: contains(inboundNATRule, 'protocol') ? inboundNATRule.protocol : 'Tcp'
   }
-  dependsOn: [
-    loadBalancer_backendAddressPools
-  ]
+//   dependsOn: [
+//     loadBalancer_backendAddressPools
+//   ]
 }]
 
 resource loadBalancer_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
@@ -245,3 +238,6 @@ output resourceId string = loadBalancer.id
 
 @description('The resource group the load balancer was deployed into')
 output resourceGroupName string = resourceGroup().name
+
+@description('The backend address pools available in the load balancer.')
+output backendpools array = loadBalancer.properties.backendAddressPools
