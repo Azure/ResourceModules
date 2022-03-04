@@ -18,31 +18,85 @@ param privateEndpoints array = []
 @description('Optional. Tier of your Azure container registry.')
 @allowed([
   'Basic'
-  'Standard'
+  'Classic'
   'Premium'
+  'Standard'
 ])
 param acrSku string = 'Basic'
 
-@description('Optional. The value that indicates whether the policy is enabled or not.')
-param quarantinePolicyStatus string = ''
+@allowed([
+  'disabled'
+  'enabled'
+])
+@description('Optional. The value that indicates whether the export policy is enabled or not.')
+param exportPolicyStatus string = 'disabled'
 
-@description('Optional. The value that indicates whether the policy is enabled or not.')
-param trustPolicyStatus string = ''
+@allowed([
+  'disabled'
+  'enabled'
+])
+@description('Optional. The value that indicates whether the quarantine policy is enabled or not.')
+param quarantinePolicyStatus string = 'disabled'
 
-@description('Optional. The value that indicates whether the policy is enabled or not.')
-param retentionPolicyStatus string = ''
+@allowed([
+  'disabled'
+  'enabled'
+])
+@description('Optional. The value that indicates whether the trust policy is enabled or not.')
+param trustPolicyStatus string = 'disabled'
+
+@allowed([
+  'disabled'
+  'enabled'
+])
+@description('Optional. The value that indicates whether the retention policy is enabled or not.')
+param retentionPolicyStatus string = 'enabled'
 
 @description('Optional. The number of days to retain an untagged manifest after which it gets purged.')
-param retentionPolicyDays string = ''
+param retentionPolicyDays int = 15
+
+@allowed([
+  'disabled'
+  'enabled'
+])
+@description('Optional. The value that indicates whether encryption is enabled or not.')
+param encryptionStatus string = 'disabled'
+
+@description('Optional. Identity which will be used to access key vault and Key vault uri to access the encryption key.')
+param keyVaultProperties object = {}
 
 @description('Optional. Enable a single data endpoint per region for serving data. Not relevant in case of disabled public access.')
 param dataEndpointEnabled bool = false
 
+@allowed([
+  'Disabled'
+  'Enabled'
+])
 @description('Optional. Whether or not public network access is allowed for the container registry. - Enabled or Disabled')
 param publicNetworkAccess string = 'Enabled'
 
 @description('Optional. Whether to allow trusted Azure services to access a network restricted registry. Not relevant in case of public access. - AzureServices or None')
 param networkRuleBypassOptions string = 'AzureServices'
+
+@allowed([
+  'Allow'
+  'Deny'
+])
+@description('Optional. The default action of allow or deny when no other rules match.')
+param networkRuleSetDefaultAction string = 'Deny'
+
+@description('Optional. The IP ACL rules.')
+param networkRuleSetIpRules array = []
+
+@allowed([
+  'Disabled'
+  'Enabled'
+])
+@description('Optional. Whether or not zone redundancy is enabled for this container registry')
+param zoneRedundancy string = 'Disabled'
+
+@description('Optional. All replications to create')
+param replications array = []
 
 @allowed([
   'CanNotDelete'
@@ -140,24 +194,48 @@ resource registry 'Microsoft.ContainerRegistry/registries@2021-09-01' = {
   }
   properties: {
     adminUserEnabled: acrAdminUserEnabled
+    encryption: {
+      keyVaultProperties: keyVaultProperties
+      status: encryptionStatus
+    }
     policies: {
+      exportPolicy: {
+        status: exportPolicyStatus
+      }
       quarantinePolicy: {
-        status: (empty(quarantinePolicyStatus) ? null : quarantinePolicyStatus)
+        status: quarantinePolicyStatus
       }
       trustPolicy: {
         type: 'Notary'
-        status: (empty(trustPolicyStatus) ? null : trustPolicyStatus)
+        status: trustPolicyStatus
       }
       retentionPolicy: {
-        days: (empty(retentionPolicyDays) ? null : int(retentionPolicyDays))
-        status: (empty(retentionPolicyStatus) ? null : retentionPolicyStatus)
+        days: retentionPolicyDays
+        status: retentionPolicyStatus
       }
     }
     dataEndpointEnabled: dataEndpointEnabled
     publicNetworkAccess: publicNetworkAccess
     networkRuleBypassOptions: networkRuleBypassOptions
+    networkRuleSet: {
+      defaultAction: networkRuleSetDefaultAction
+      ipRules: networkRuleSetIpRules
+    }
+    zoneRedundancy: zoneRedundancy
   }
 }
+
+module registry_replications 'replications/deploy.bicep' = [for (replication, index) in replications: {
+  name: '${uniqueString(deployment().name, location)}-Registry-Replication-${index}'
+  params: {
+    name: replication.name
+    registryName: registry.name
+    location: location
+    regionEndpointEnabled: contains(replication, 'regionEndpointEnabled') ? replication.regionEndpointEnabled : false
+    zoneRedundancy: contains(replication, 'zoneRedundancy') ? replication.zoneRedundancy : 'Disabled'
+    tags: contains(replication, 'tags') ? replication.tags : {}
+  }
+}]
 
 resource registry_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
   name: '${registry.name}-${lock}-lock'
