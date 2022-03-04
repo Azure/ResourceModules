@@ -12,7 +12,7 @@
             "value": false
         },
         "publicNetworkAccess": {
-            "value": false
+            "value": "Disabled"
         },
         "requireInfrastructureEncryption": {
             "value": true
