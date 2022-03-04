@@ -42,13 +42,13 @@ Implement your contribution
 Depending on the contribution (e.g., module, pipeline) note the design guidelines in the CARML wiki
 
 # Validate
-If it's a module change, test the code using the pipeline(s) against your environment
-
-
+How you proceed from here depends on the scenario:
 
 In case you want to contribute to the documentation, you can skip this step.
 
-Test your code leveraging the CARML CI environment, as detailed in the Pipelines usage section.
+In case your contribution involves changes to the library (the modules) and/or to the CI environment (the pipelines), we kindly ask you to validate your updates against your environment before requesting to merge them to the main repo. Test your code leveraging the CARML CI environment, as detailed in the Pipelines usage section.
 
 # Open a PR
 Open a PR, reference the badge status of your pipeline run and link your issue to it
+
+
