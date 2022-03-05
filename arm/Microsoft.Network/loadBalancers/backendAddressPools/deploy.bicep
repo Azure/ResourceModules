@@ -25,8 +25,8 @@ resource loadBalancer 'Microsoft.Network/loadBalancers@2021-05-01' existing = {
 resource backendAddressPool 'Microsoft.Network/loadBalancers/backendAddressPools@2021-05-01' = {
   name: name
   properties: {
-    loadBalancerBackendAddresses: !empty(loadBalancerBackendAddresses) ? loadBalancerBackendAddresses : []
-    tunnelInterfaces: !empty(tunnelInterfaces) ? tunnelInterfaces : []
+    loadBalancerBackendAddresses: loadBalancerBackendAddresses
+    tunnelInterfaces: tunnelInterfaces
   }
   parent: loadBalancer
 }
