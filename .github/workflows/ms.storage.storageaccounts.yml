@@ -7,15 +7,15 @@ on:
         type: boolean
         description: 'Remove deployed module'
         required: false
-        default: 'true'
+        default: 'false' # TODO set to true before PR
       prerelease:
         type: boolean
         description: 'Publish prerelease module'
         required: false
         default: 'false'
   push:
-    branches:
-      - main
+    # branches:
+    #   - main
     paths:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.storage.storageaccounts.yml'
@@ -82,7 +82,7 @@ jobs:
       fail-fast: false
       matrix:
         parameterFilePaths:
-          ['parameters.json', 'min.parameters.json', 'v1.parameters.json']
+          ['parameters.json'] #['parameters.json', 'min.parameters.json', 'v1.parameters.json']
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
