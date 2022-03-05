@@ -146,38 +146,10 @@ var diagnosticsMetrics = [for metric in metricsToEnable: {
 var virtualNetworkRules = [for index in range(0, (empty(networkAcls) ? 0 : length(networkAcls.virtualNetworkRules))): {
   id: '${vNetId}/subnets/${networkAcls.virtualNetworkRules[index].subnet}'
 }]
-var networkAcls_var = {
-  bypass: (empty(networkAcls) ? null : networkAcls.bypass)
-  defaultAction: (empty(networkAcls) ? null : networkAcls.defaultAction)
-  virtualNetworkRules: (empty(networkAcls) ? null : virtualNetworkRules)
-  ipRules: (empty(networkAcls) ? null : ((length(networkAcls.ipRules) == 0) ? null : networkAcls.ipRules))
-}
-var azureFilesIdentityBasedAuthentication_var = azureFilesIdentityBasedAuthentication
 
 var maxNameLength = 24
 var uniqueStoragenameUntrim = '${uniqueString('Storage Account${basetime}')}'
 var uniqueStoragename = length(uniqueStoragenameUntrim) > maxNameLength ? substring(uniqueStoragenameUntrim, 0, maxNameLength) : uniqueStoragenameUntrim
-
-var saBaseProperties = {
-  encryption: {
-    keySource: 'Microsoft.Storage'
-    services: {
-      blob: (((storageAccountKind == 'BlockBlobStorage') || (storageAccountKind == 'BlobStorage') || (storageAccountKind == 'StorageV2') || (storageAccountKind == 'Storage')) ? json('{"enabled": true}') : null)
-      file: (((storageAccountKind == 'FileStorage') || (storageAccountKind == 'StorageV2') || (storageAccountKind == 'Storage')) ? json('{"enabled": true}') : null)
-    }
-  }
-  accessTier: (storageAccountKind == 'Storage') ? null : storageAccountAccessTier
-  supportsHttpsTrafficOnly: supportsHttpsTrafficOnly
-  isHnsEnabled: ((!enableHierarchicalNamespace) ? null : enableHierarchicalNamespace)
-  minimumTlsVersion: minimumTlsVersion
-  networkAcls: (empty(networkAcls) ? null : networkAcls_var)
-  allowBlobPublicAccess: allowBlobPublicAccess
-  requireInfrastructureEncryption: requireInfrastructureEncryption
-}
-var saOptIdBasedAuthProperties = {
-  azureFilesIdentityBasedAuthentication: azureFilesIdentityBasedAuthentication_var
-}
-var saProperties = (empty(azureFilesIdentityBasedAuthentication) ? saBaseProperties : union(saBaseProperties, saOptIdBasedAuthProperties))
 
 var identityType = systemAssignedIdentity ? (!empty(userAssignedIdentities) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned') : (!empty(userAssignedIdentities) ? 'UserAssigned' : 'None')
 
@@ -200,7 +172,28 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-06-01' = {
   }
   identity: identity
   tags: tags
-  properties: saProperties
+  properties: {
+    encryption: {
+      keySource: 'Microsoft.Storage'
+      services: {
+        blob: (((storageAccountKind == 'BlockBlobStorage') || (storageAccountKind == 'BlobStorage') || (storageAccountKind == 'StorageV2') || (storageAccountKind == 'Storage')) ? json('{"enabled": true}') : null)
+        file: (((storageAccountKind == 'FileStorage') || (storageAccountKind == 'StorageV2') || (storageAccountKind == 'Storage')) ? json('{"enabled": true}') : null)
+      }
+    }
+    accessTier: (storageAccountKind == 'Storage') ? null : storageAccountAccessTier
+    supportsHttpsTrafficOnly: supportsHttpsTrafficOnly
+    isHnsEnabled: ((!enableHierarchicalNamespace) ? null : enableHierarchicalNamespace)
+    minimumTlsVersion: minimumTlsVersion
+    networkAcls: !empty(networkAcls) ? {
+      bypass: !empty(networkAcls) ? networkAcls.bypass : null
+      defaultAction: !empty(networkAcls) ? networkAcls.defaultAction : null
+      virtualNetworkRules: !empty(networkAcls) ? virtualNetworkRules : null
+      ipRules: !empty(networkAcls) ? ((length(networkAcls.ipRules) != 0) ? networkAcls.ipRules : null) : null
+    } : null
+    allowBlobPublicAccess: allowBlobPublicAccess
+    requireInfrastructureEncryption: requireInfrastructureEncryption
+    azureFilesIdentityBasedAuthentication: !empty(azureFilesIdentityBasedAuthentication) ? azureFilesIdentityBasedAuthentication : null
+  }
 }
 
 resource storageAccount_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(diagnosticWorkspaceId)) || (!empty(diagnosticEventHubAuthorizationRuleId)) || (!empty(diagnosticEventHubName))) {
