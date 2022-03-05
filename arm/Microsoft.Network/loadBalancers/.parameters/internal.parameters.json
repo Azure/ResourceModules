@@ -31,12 +31,6 @@
                     "port": "62000",
                     "intervalInSeconds": 5,
                     "numberOfProbes": 2
-                },
-                {
-                    "name": "probe2",
-                    "protocol": "Https",
-                    "port": 443,
-                    "requestPath": "/"
                 }
             ]
         },
@@ -54,15 +48,6 @@
                     "probeName": "probe1",
                     "disableOutboundSnat": true,
                     "enableTcpReset": false,
-                    "backendAddressPoolName": "servers"
-                },
-                {
-                    "name": "privateIPLBRule2",
-                    "frontendIPConfigurationName": "privateIPConfig1",
-                    "frontendPort": 443,
-                    "backendPort": 443,
-                    "loadDistribution": "Default",
-                    "probeName": "probe2",
                     "backendAddressPoolName": "servers"
                 }
             ]
