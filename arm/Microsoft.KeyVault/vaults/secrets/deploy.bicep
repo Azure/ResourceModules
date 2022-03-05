@@ -54,8 +54,8 @@ resource secret 'Microsoft.KeyVault/vaults/secrets@2019-09-01' = {
     contentType: contentType
     attributes: {
       enabled: attributesEnabled
-      exp: !(attributesExp == -1) ? attributesExp : null
-      nbf: !(attributesNbf == -1) ? attributesNbf : null
+      exp: attributesExp != -1 ? attributesExp : null
+      nbf: attributesNbf != -1 ? attributesNbf : null
     }
     value: value
   }

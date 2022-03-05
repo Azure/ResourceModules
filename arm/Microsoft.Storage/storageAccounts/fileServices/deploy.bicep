@@ -115,11 +115,13 @@ resource fileServices_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@
 }
 
 module fileServices_shares 'shares/deploy.bicep' = [for (share, index) in shares: {
-  name: '${deployment().name}-File-${index}'
+  name: '${deployment().name}-shares-${index}'
   params: {
     storageAccountName: storageAccount.name
     fileServicesName: fileServices.name
     name: share.name
+    enabledProtocols: contains(share, 'enabledProtocols') ? share.enabledProtocols : 'SMB'
+    rootSquash: contains(share, 'rootSquash') ? share.rootSquash : 'NoRootSquash'
     sharedQuota: contains(share, 'sharedQuota') ? share.sharedQuota : 5120
     roleAssignments: contains(share, 'roleAssignments') ? share.roleAssignments : []
   }
