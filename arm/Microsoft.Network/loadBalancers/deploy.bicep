@@ -67,19 +67,19 @@ param outboundRules array = []
 var frontendIPConfigurations_var = [for (frontendIPConfiguration, index) in frontendIPConfigurations: {
   name: frontendIPConfiguration.name
   properties: {
-    subnet: contains(frontendIPConfiguration, 'subnetId') ? {
+    subnet: contains(frontendIPConfiguration, 'subnetId') && !empty(frontendIPConfiguration.subnetId) ? {
         id: frontendIPConfiguration.subnetId
     } : null
-    publicIPAddress: contains(frontendIPConfiguration, 'publicIPAddressId') ? {
+    publicIPAddress: contains(frontendIPConfiguration, 'publicIPAddressId') && !empty(frontendIPConfiguration.publicIPAddressId) ? {
         id: frontendIPConfiguration.publicIPAddressId
     } : null
-    privateIPAddress: contains(frontendIPConfiguration, 'privateIPAddress') ? frontendIPConfiguration.privateIPAddress : null
+    privateIPAddress: contains(frontendIPConfiguration, 'privateIPAddress') && !empty(frontendIPConfiguration.privateIPAddress) ? frontendIPConfiguration.privateIPAddress : null
     privateIPAddressVersion: contains(frontendIPConfiguration, 'privateIPAddressVersion') ? frontendIPConfiguration.privateIPAddressVersion : 'IPv4'
     privateIPAllocationMethod: contains(frontendIPConfiguration, 'subnetId') ? (contains(frontendIPConfiguration, 'privateIPAddress') ? 'Static' : 'Dynamic') : null
-    gatewayLoadBalancer: contains(frontendIPConfiguration, 'gatewayLoadBalancer') ? {
+    gatewayLoadBalancer: contains(frontendIPConfiguration, 'gatewayLoadBalancer') && !empty(frontendIPConfiguration.gatewayLoadBalancer) ? {
       id: frontendIPConfiguration.gatewayLoadBalancer
     } : null
-    publicIPPrefix: contains(frontendIPConfiguration, 'publicIPPrefix') ? {
+    publicIPPrefix: contains(frontendIPConfiguration, 'publicIPPrefix') && !empty(frontendIPConfiguration.publicIPPrefix) ? {
       id: frontendIPConfiguration.publicIPPrefix
     } : null
   }
