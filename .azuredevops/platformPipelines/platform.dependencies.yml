@@ -585,6 +585,10 @@ stages:
               templateFilePath: $(templateFilePath)
               displayName: Private Endpoint Key Vault
               customParameterFileTokens: '{"msiPrincipalId":"$(msiPrincipalId)"}'
+            - path: $(dependencyPath)/$(resourceType)/parameters/nopr.parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: Private Endpoint Key Vault
+              customParameterFileTokens: '{"msiPrincipalId":"$(msiPrincipalId)"}'
             - ${{ if eq( parameters.deploySqlMiDependencies, true) }}:
                 - path: $(dependencyPath)/$(resourceType)/parameters/sqlmi.parameters.json
                   templateFilePath: $(templateFilePath)

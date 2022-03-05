@@ -3,7 +3,7 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "name": {
-      "value": "adp-<<namePrefix>>-az-kv-x-001"
+      "value": "adp-<<namePrefix>>-az-kv-nopurge-001"  // keyvault with purge protection enabled, to be used for encryption
     },
     "accessPolicies": {
       "value": [
@@ -29,7 +29,9 @@
           "objectId": "<<msiPrincipalID>>", // The object ID of the deployed MSI. Replaced by the pipeline
           "permissions": {
             "keys": [
-              "Get"
+              "Get",
+              "WrapKey",
+              "UnwrapKey"
             ],
             "secrets": [
               "Get"
@@ -55,7 +57,7 @@
       ]
     },
     "enablePurgeProtection": {
-      "value": false
+      "value": true
     }
   }
 }
