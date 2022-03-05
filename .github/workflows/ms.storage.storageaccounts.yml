@@ -14,8 +14,8 @@ on:
         required: false
         default: 'false'
   push:
-    # branches:
-    #   - main
+    branches:
+      - main
     paths:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.storage.storageaccounts.yml'
