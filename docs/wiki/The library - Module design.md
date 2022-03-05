@@ -1,4 +1,4 @@
-This section gives you an overview of the design principles followed by the CARML Bicep modules.
+This section details the design principles followed by the CARML Bicep modules.
 
 ---
 
