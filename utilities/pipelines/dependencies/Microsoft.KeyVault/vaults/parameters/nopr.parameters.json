@@ -3,7 +3,7 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "name": {
-      "value": "adp-<<namePrefix>>-az-kv-nopurge-001"  // keyvault with purge protection enabled, to be used for encryption
+      "value": "adp-<<namePrefix>>-az-kv-nopr-001"  // keyvault with purge protection enabled, to be used for encryption
     },
     "accessPolicies": {
       "value": [
