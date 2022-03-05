@@ -1,4 +1,4 @@
-name: 'Network: Virtual Hubs'
+name: 'Network: VirtualHubs'
 
 on:
   workflow_dispatch:
@@ -18,7 +18,7 @@ on:
       - main
     paths:
       - '.github/actions/templates/**'
-      - '.github/workflows/ms.network.virtualHubs.yml'
+      - '.github/workflows/ms.network.virtualhubs.yml'
       - 'arm/Microsoft.Network/virtualHubs/**'
       - '!*/**/readme.md'
       - 'utilities/pipelines/**'
@@ -26,7 +26,7 @@ on:
 
 env:
   modulePath: 'arm/Microsoft.Network/virtualHubs'
-  workflowPath: '.github/workflows/ms.network.virtualHubs.yml'
+  workflowPath: '.github/workflows/ms.network.virtualhubs.yml'
   AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
   ARM_SUBSCRIPTION_ID: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
   ARM_MGMTGROUP_ID: '${{ secrets.ARM_MGMTGROUP_ID }}'

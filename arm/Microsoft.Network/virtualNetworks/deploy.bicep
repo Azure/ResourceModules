@@ -111,15 +111,6 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2021-05-01' = {
     ddosProtectionPlan: !empty(ddosProtectionPlanId) ? ddosProtectionPlan : null
     dhcpOptions: !empty(dnsServers) ? dnsServers_var : null
     enableDdosProtection: !empty(ddosProtectionPlanId)
-    subnets: [for subnet in subnets: {
-      name: subnet.name
-      properties: {
-        addressPrefix: subnet.addressPrefix
-        delegations: contains(subnet, 'delegations') ? subnet.delegations : null
-        privateEndpointNetworkPolicies: contains(subnet, 'privateEndpointNetworkPolicies') ? subnet.privateEndpointNetworkPolicies : null
-        privateLinkServiceNetworkPolicies: contains(subnet, 'privateLinkServiceNetworkPolicies') ? subnet.privateLinkServiceNetworkPolicies : null
-      }
-    }]
   }
 }
 
