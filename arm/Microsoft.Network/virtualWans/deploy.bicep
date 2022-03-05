@@ -48,7 +48,7 @@ resource virtualWan 'Microsoft.Network/virtualWans@2021-05-01' = {
   tags: tags
   properties: {
     allowBranchToBranchTraffic: allowBranchToBranchTraffic
-    allowVnetToVnetTraffic: allowVnetToVnetTraffic
+    allowVnetToVnetTraffic: allowVnetToVnetTraffic ? allowVnetToVnetTraffic : null
     disableVpnEncryption: disableVpnEncryption
     type: type
   }
