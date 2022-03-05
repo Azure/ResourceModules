@@ -16,7 +16,7 @@ This module is used to deploy a storage account, with the ability to deploy 1 or
 | `Microsoft.Storage/storageAccounts/blobServices/containers` | 2019-06-01 |
 | `Microsoft.Storage/storageAccounts/blobServices/containers/immutabilityPolicies` | 2019-06-01 |
 | `Microsoft.Storage/storageAccounts/fileServices` | 2021-04-01 |
-| `Microsoft.Storage/storageAccounts/fileServices/shares` | 2019-06-01 |
+| `Microsoft.Storage/storageAccounts/fileServices/shares` | 2021-08-01 |
 | `Microsoft.Storage/storageAccounts/managementPolicies` | 2019-06-01 |
 | `Microsoft.Storage/storageAccounts/queueServices` | 2021-04-01 |
 | `Microsoft.Storage/storageAccounts/queueServices/queues` | 2019-06-01 |
@@ -192,7 +192,7 @@ The hierarchical namespace of the storage account (see parameter `enableHierarch
 - [Storageaccounts/Blobservices/Containers](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Storage/2019-06-01/storageAccounts/blobServices/containers)
 - [Storageaccounts/Blobservices/Containers/Immutabilitypolicies](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Storage/2019-06-01/storageAccounts/blobServices/containers/immutabilityPolicies)
 - [Storageaccounts/Fileservices](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Storage/2021-04-01/storageAccounts/fileServices)
-- [Storageaccounts/Fileservices/Shares](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Storage/2019-06-01/storageAccounts/fileServices/shares)
+- [Storageaccounts/Fileservices/Shares](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Storage/2021-08-01/storageAccounts/fileServices/shares)
 - [Storageaccounts/Managementpolicies](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Storage/2019-06-01/storageAccounts/managementPolicies)
 - [Storageaccounts/Queueservices](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Storage/2021-04-01/storageAccounts/queueServices)
 - [Storageaccounts/Queueservices/Queues](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Storage/2019-06-01/storageAccounts/queueServices/queues)

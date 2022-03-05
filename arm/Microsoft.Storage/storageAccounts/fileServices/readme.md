@@ -9,7 +9,7 @@ This module can be used to deploy a file share service into a storage account.
 | `Microsoft.Authorization/roleAssignments` | 2021-04-01-preview |
 | `Microsoft.Insights/diagnosticSettings` | 2021-05-01-preview |
 | `Microsoft.Storage/storageAccounts/fileServices` | 2021-04-01 |
-| `Microsoft.Storage/storageAccounts/fileServices/shares` | 2019-06-01 |
+| `Microsoft.Storage/storageAccounts/fileServices/shares` | 2021-08-01 |
 
 ## Parameters
 
@@ -42,4 +42,4 @@ This module can be used to deploy a file share service into a storage account.
 - [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings)
 - [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)
 - [Storageaccounts/Fileservices](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Storage/2021-04-01/storageAccounts/fileServices)
-- [Storageaccounts/Fileservices/Shares](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Storage/2019-06-01/storageAccounts/fileServices/shares)
+- [Storageaccounts/Fileservices/Shares](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Storage/2021-08-01/storageAccounts/fileServices/shares)
