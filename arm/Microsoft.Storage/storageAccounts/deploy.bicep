@@ -122,14 +122,6 @@ param cuaId string = ''
 @description('Generated. Do not provide a value! This date value is used to generate a SAS token to access the modules.')
 param basetime string = utcNow('u')
 
-@allowed([
-  'Enabled'
-  'Disabled'
-])
-
-@description('Optional. Enable or disallow public network access to Storage Account..')
-param publicNetworkAccess string = 'Enabled'
-
 @description('Optional. Allows https traffic only to storage service if sets to true.')
 param supportsHttpsTrafficOnly bool = true
 
@@ -154,27 +146,52 @@ var diagnosticsMetrics = [for metric in metricsToEnable: {
 var virtualNetworkRules = [for index in range(0, (empty(networkAcls) ? 0 : length(networkAcls.virtualNetworkRules))): {
   id: '${vNetId}/subnets/${networkAcls.virtualNetworkRules[index].subnet}'
 }]
+var networkAcls_var = {
+  bypass: (empty(networkAcls) ? null : networkAcls.bypass)
+  defaultAction: (empty(networkAcls) ? null : networkAcls.defaultAction)
+  virtualNetworkRules: (empty(networkAcls) ? null : virtualNetworkRules)
+  ipRules: (empty(networkAcls) ? null : ((length(networkAcls.ipRules) == 0) ? null : networkAcls.ipRules))
+}
+var azureFilesIdentityBasedAuthentication_var = azureFilesIdentityBasedAuthentication
 
 var maxNameLength = 24
 var uniqueStoragenameUntrim = '${uniqueString('Storage Account${basetime}')}'
 var uniqueStoragename = length(uniqueStoragenameUntrim) > maxNameLength ? substring(uniqueStoragenameUntrim, 0, maxNameLength) : uniqueStoragenameUntrim
 
-var supportsBlobService = storageAccountKind == 'BlockBlobStorage' || storageAccountKind == 'BlobStorage' || storageAccountKind == 'StorageV2' || storageAccountKind == 'Storage'
-var supportsFileService = storageAccountKind == 'FileStorage' || storageAccountKind == 'StorageV2' || storageAccountKind == 'Storage'
+var saBaseProperties = {
+  encryption: {
+    keySource: 'Microsoft.Storage'
+    services: {
+      blob: (((storageAccountKind == 'BlockBlobStorage') || (storageAccountKind == 'BlobStorage') || (storageAccountKind == 'StorageV2') || (storageAccountKind == 'Storage')) ? json('{"enabled": true}') : null)
+      file: (((storageAccountKind == 'FileStorage') || (storageAccountKind == 'StorageV2') || (storageAccountKind == 'Storage')) ? json('{"enabled": true}') : null)
+    }
+  }
+  accessTier: (storageAccountKind == 'Storage') ? null : storageAccountAccessTier
+  supportsHttpsTrafficOnly: supportsHttpsTrafficOnly
+  isHnsEnabled: ((!enableHierarchicalNamespace) ? null : enableHierarchicalNamespace)
+  minimumTlsVersion: minimumTlsVersion
+  networkAcls: (empty(networkAcls) ? null : networkAcls_var)
+  allowBlobPublicAccess: allowBlobPublicAccess
+  requireInfrastructureEncryption: requireInfrastructureEncryption
+}
+var saOptIdBasedAuthProperties = {
+  azureFilesIdentityBasedAuthentication: azureFilesIdentityBasedAuthentication_var
+}
+var saProperties = (empty(azureFilesIdentityBasedAuthentication) ? saBaseProperties : union(saBaseProperties, saOptIdBasedAuthProperties))
 
 var identityType = systemAssignedIdentity ? (!empty(userAssignedIdentities) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned') : (!empty(userAssignedIdentities) ? 'UserAssigned' : 'None')
 
 var identity = identityType != 'None' ? {
   type: identityType
   userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
-} : {}
+} : null
 
 module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   name: 'pid-${cuaId}'
   params: {}
 }
 
-resource storageAccount 'Microsoft.Storage/storageAccounts@2021-08-01' = {
+resource storageAccount 'Microsoft.Storage/storageAccounts@2021-06-01' = {
   name: !empty(name) ? name : uniqueStoragename
   location: location
   kind: storageAccountKind
@@ -183,42 +200,16 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-08-01' = {
   }
   identity: identity
   tags: tags
-  properties: {
-    encryption: {
-      keySource: 'Microsoft.Storage'
-      services: {
-        blob: supportsBlobService ? {
-          enabled: true
-        } : null
-        file: supportsFileService ? {
-          enabled: true
-        } : null
-      }
-      requireInfrastructureEncryption: requireInfrastructureEncryption
-    }
-    accessTier: storageAccountKind != 'Storage' ? storageAccountAccessTier : null
-    supportsHttpsTrafficOnly: supportsHttpsTrafficOnly
-    isHnsEnabled: enableHierarchicalNamespace ? enableHierarchicalNamespace : null
-    minimumTlsVersion: minimumTlsVersion
-    networkAcls: !empty(networkAcls) ? {
-      bypass: !empty(networkAcls) ? networkAcls.bypass : null
-      defaultAction: !empty(networkAcls) ? networkAcls.defaultAction : null
-      virtualNetworkRules: !empty(networkAcls) ? virtualNetworkRules : null
-      ipRules: !empty(networkAcls) ? (length(networkAcls.ipRules) != 0 ? networkAcls.ipRules : null) : null
-    } : null
-    allowBlobPublicAccess: allowBlobPublicAccess
-    publicNetworkAccess: publicNetworkAccess
-    azureFilesIdentityBasedAuthentication: !empty(azureFilesIdentityBasedAuthentication) ? azureFilesIdentityBasedAuthentication : null
-  }
+  properties: saProperties
 }
 
 resource storageAccount_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(diagnosticWorkspaceId)) || (!empty(diagnosticEventHubAuthorizationRuleId)) || (!empty(diagnosticEventHubName))) {
   name: '${storageAccount.name}-diagnosticSettings'
   properties: {
-    storageAccountId: !empty(diagnosticStorageAccountId) ? diagnosticStorageAccountId : null
-    workspaceId: !empty(diagnosticWorkspaceId) ? diagnosticWorkspaceId : null
-    eventHubAuthorizationRuleId: !empty(diagnosticEventHubAuthorizationRuleId) ? diagnosticEventHubAuthorizationRuleId : null
-    eventHubName: !empty(diagnosticEventHubName) ? diagnosticEventHubName : null
+    storageAccountId: empty(diagnosticStorageAccountId) ? null : diagnosticStorageAccountId
+    workspaceId: empty(diagnosticWorkspaceId) ? null : diagnosticWorkspaceId
+    eventHubAuthorizationRuleId: empty(diagnosticEventHubAuthorizationRuleId) ? null : diagnosticEventHubAuthorizationRuleId
+    eventHubName: empty(diagnosticEventHubName) ? null : diagnosticEventHubName
     metrics: diagnosticsMetrics
   }
   scope: storageAccount
@@ -228,7 +219,7 @@ resource storageAccount_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lo
   name: '${storageAccount.name}-${lock}-lock'
   properties: {
     level: lock
-    notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
+    notes: (lock == 'CanNotDelete') ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: storageAccount
 }
@@ -246,7 +237,7 @@ module storageAccount_privateEndpoints '.bicep/nested_privateEndpoint.bicep' = [
   name: '${uniqueString(deployment().name, location)}-Storage-PrivateEndpoints-${index}'
   params: {
     privateEndpointResourceId: storageAccount.id
-    privateEndpointVnetLocation: !empty(privateEndpoints) ? reference(split(endpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location : 'dummy'
+    privateEndpointVnetLocation: (empty(privateEndpoints) ? 'dummy' : reference(split(endpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location)
     privateEndpointObj: endpoint
     tags: tags
   }

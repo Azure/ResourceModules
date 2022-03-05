@@ -11,9 +11,9 @@
         "allowBlobPublicAccess": {
             "value": false
         },
-        "publicNetworkAccess": {
-            "value": "Disabled"
-        },
+        // "publicNetworkAccess": {
+        //     "value": "Disabled"
+        // },
         "requireInfrastructureEncryption": {
             "value": true
         },
