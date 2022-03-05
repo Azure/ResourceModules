@@ -8,6 +8,15 @@
         "type": {
             "value": "Basic"
         },
+        "allowBranchToBranchTraffic": {
+            "value": true
+        },
+        "allowVnetToVnetTraffic": {
+            "value": true
+        },
+        "disableVpnEncryption": {
+            "value": true
+        },
         "roleAssignments": {
             "value": [
                 {
