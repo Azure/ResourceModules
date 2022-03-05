@@ -196,15 +196,15 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-06-01' = {
       }
       requireInfrastructureEncryption: requireInfrastructureEncryption
     }
-    accessTier: (storageAccountKind == 'Storage') ? null : storageAccountAccessTier
+    accessTier: storageAccountKind != 'Storage' ? storageAccountAccessTier : null
     supportsHttpsTrafficOnly: supportsHttpsTrafficOnly
-    isHnsEnabled: ((!enableHierarchicalNamespace) ? null : enableHierarchicalNamespace)
+    isHnsEnabled: enableHierarchicalNamespace ? enableHierarchicalNamespace : null
     minimumTlsVersion: minimumTlsVersion
     networkAcls: !empty(networkAcls) ? {
       bypass: !empty(networkAcls) ? networkAcls.bypass : null
       defaultAction: !empty(networkAcls) ? networkAcls.defaultAction : null
       virtualNetworkRules: !empty(networkAcls) ? virtualNetworkRules : null
-      ipRules: !empty(networkAcls) ? ((length(networkAcls.ipRules) != 0) ? networkAcls.ipRules : null) : null
+      ipRules: !empty(networkAcls) ? (length(networkAcls.ipRules) != 0 ? networkAcls.ipRules : null) : null
     } : null
     allowBlobPublicAccess: allowBlobPublicAccess
     publicNetworkAccess: publicNetworkAccess
