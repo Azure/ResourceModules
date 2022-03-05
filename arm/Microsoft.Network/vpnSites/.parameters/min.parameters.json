@@ -14,7 +14,7 @@
             "value": "1.2.3.4"
         },
         "virtualWanId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualWans/alsehrVWan"
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualWans/<<namePrefix>>-az-vw-x-001"
         }
     }
 }
