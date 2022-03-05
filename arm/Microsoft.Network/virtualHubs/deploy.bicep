@@ -102,7 +102,7 @@ resource virtualHub 'Microsoft.Network/virtualHubs@2021-05-01' = {
     securityProviderName: securityProviderName
     sku: sku
     virtualHubRouteTableV2s: virtualHubRouteTableV2s
-    virtualRouterAsn: !(virtualRouterAsn == -1) ? virtualRouterAsn : null
+    virtualRouterAsn: virtualRouterAsn != -1 ? virtualRouterAsn : null
     virtualRouterIps: !empty(virtualRouterIps) ? virtualRouterIps : null
     virtualWan: {
       id: virtualWanId
