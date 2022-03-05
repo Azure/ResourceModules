@@ -104,9 +104,9 @@ resource virtualHub 'Microsoft.Network/virtualHubs@2021-05-01' = {
     virtualHubRouteTableV2s: virtualHubRouteTableV2s
     virtualRouterAsn: !(virtualRouterAsn == -1) ? virtualRouterAsn : null
     virtualRouterIps: !empty(virtualRouterIps) ? virtualRouterIps : null
-    virtualWan: !empty(virtualWanId) ? {
+    virtualWan: {
       id: virtualWanId
-    } : null
+    }
     vpnGateway: !empty(vpnGatewayId) ? {
       id: vpnGatewayId
     } : null
