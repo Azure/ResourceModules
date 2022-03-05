@@ -179,6 +179,7 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-06-01' = {
         blob: (((storageAccountKind == 'BlockBlobStorage') || (storageAccountKind == 'BlobStorage') || (storageAccountKind == 'StorageV2') || (storageAccountKind == 'Storage')) ? json('{"enabled": true}') : null)
         file: (((storageAccountKind == 'FileStorage') || (storageAccountKind == 'StorageV2') || (storageAccountKind == 'Storage')) ? json('{"enabled": true}') : null)
       }
+      requireInfrastructureEncryption: requireInfrastructureEncryption
     }
     accessTier: (storageAccountKind == 'Storage') ? null : storageAccountAccessTier
     supportsHttpsTrafficOnly: supportsHttpsTrafficOnly
@@ -191,7 +192,6 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-06-01' = {
       ipRules: !empty(networkAcls) ? ((length(networkAcls.ipRules) != 0) ? networkAcls.ipRules : null) : null
     } : null
     allowBlobPublicAccess: allowBlobPublicAccess
-    requireInfrastructureEncryption: requireInfrastructureEncryption
     azureFilesIdentityBasedAuthentication: !empty(azureFilesIdentityBasedAuthentication) ? azureFilesIdentityBasedAuthentication : null
   }
 }
