@@ -1,4 +1,4 @@
-name: 'Network: VPN Sites'
+name: 'Network - VPN Sites'
 
 parameters:
   - name: removeDeployment
