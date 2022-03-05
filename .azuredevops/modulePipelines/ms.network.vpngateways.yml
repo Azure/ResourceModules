@@ -1,4 +1,4 @@
-name: 'Network: VirtualHubs'
+name: 'Network: VPNGateways'
 
 parameters:
   - name: removeDeployment
@@ -17,9 +17,9 @@ trigger:
       - main
   paths:
     include:
-      - '/.azuredevops/modulePipelines/ms.network.virtualhubs.yml'
+      - '/.azuredevops/modulePipelines/ms.network.vpngateways.yml'
       - '/.azuredevops/pipelineTemplates/module.*.yml'
-      - '/arm/Microsoft.Network/virtualHubs/*'
+      - '/arm/Microsoft.Network/vpnGateways/*'
     exclude:
       - '/**/*.md'
 
@@ -27,7 +27,7 @@ variables:
   - template: '/.azuredevops/pipelineVariables/global.variables.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/arm/Microsoft.Network/virtualHubs'
+    value: '/arm/Microsoft.Network/vpnGateways'
 
 stages:
   - stage: Validation
