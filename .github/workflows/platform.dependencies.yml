@@ -7,12 +7,12 @@ on:
         type: boolean
         description: 'Enable SqlMi dependencies deployment'
         required: false
-        default: 'false'
+        default: false
       deployVhdDependencies:
         type: boolean
         description: 'Enable deployment of a vhd stored in a blob container'
         required: false
-        default: 'false'
+        default: false
 
   # push:
   #   branches:
@@ -191,7 +191,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        parameterFilePaths: ['appi.parameters.json', 'aut.parameters.json', 'parameters.json']
+        parameterFilePaths:
+          ['appi.parameters.json', 'aut.parameters.json', 'parameters.json']
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
