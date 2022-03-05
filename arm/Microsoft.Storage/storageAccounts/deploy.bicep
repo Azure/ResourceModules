@@ -122,6 +122,14 @@ param cuaId string = ''
 @description('Generated. Do not provide a value! This date value is used to generate a SAS token to access the modules.')
 param basetime string = utcNow('u')
 
+@allowed([
+  'Enabled'
+  'Disabled'
+])
+
+@description('Optional. Enable or disallow public network access to Storage Account..')
+param publicNetworkAccess string = 'Enabled'
+
 @description('Optional. Allows https traffic only to storage service if sets to true.')
 param supportsHttpsTrafficOnly bool = true
 
@@ -151,6 +159,9 @@ var maxNameLength = 24
 var uniqueStoragenameUntrim = '${uniqueString('Storage Account${basetime}')}'
 var uniqueStoragename = length(uniqueStoragenameUntrim) > maxNameLength ? substring(uniqueStoragenameUntrim, 0, maxNameLength) : uniqueStoragenameUntrim
 
+var supportsBlobService = storageAccountKind == 'BlockBlobStorage' || storageAccountKind == 'BlobStorage' || storageAccountKind == 'StorageV2' || storageAccountKind == 'Storage'
+var supportsFileService = storageAccountKind == 'FileStorage' || storageAccountKind == 'StorageV2' || storageAccountKind == 'Storage'
+
 var identityType = systemAssignedIdentity ? (!empty(userAssignedIdentities) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned') : (!empty(userAssignedIdentities) ? 'UserAssigned' : 'None')
 
 var identity = identityType != 'None' ? {
@@ -176,8 +187,12 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-06-01' = {
     encryption: {
       keySource: 'Microsoft.Storage'
       services: {
-        blob: (((storageAccountKind == 'BlockBlobStorage') || (storageAccountKind == 'BlobStorage') || (storageAccountKind == 'StorageV2') || (storageAccountKind == 'Storage')) ? json('{"enabled": true}') : null)
-        file: (((storageAccountKind == 'FileStorage') || (storageAccountKind == 'StorageV2') || (storageAccountKind == 'Storage')) ? json('{"enabled": true}') : null)
+        blob: supportsBlobService ? {
+          enabled: true
+        } : null
+        file: supportsFileService ? {
+          enabled: true
+        } : null
       }
       requireInfrastructureEncryption: requireInfrastructureEncryption
     }
@@ -192,6 +207,7 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-06-01' = {
       ipRules: !empty(networkAcls) ? ((length(networkAcls.ipRules) != 0) ? networkAcls.ipRules : null) : null
     } : null
     allowBlobPublicAccess: allowBlobPublicAccess
+    publicNetworkAccess: publicNetworkAccess
     azureFilesIdentityBasedAuthentication: !empty(azureFilesIdentityBasedAuthentication) ? azureFilesIdentityBasedAuthentication : null
   }
 }
