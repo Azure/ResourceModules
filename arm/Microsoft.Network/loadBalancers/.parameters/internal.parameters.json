@@ -72,16 +72,6 @@
                 }
             ]
         },
-        "outboundRules": {
-            "value": [
-                {
-                    "name": "outboundRule1",
-                    "frontendIPConfigurationName": "privateIPConfig1",
-                    "backendAddressPoolName": "servers",
-                    "allocatedOutboundPorts": 63984
-                }
-            ]
-        },
         "roleAssignments": {
             "value": [
                 {
