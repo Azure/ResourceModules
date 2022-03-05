@@ -194,7 +194,7 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-08-01' = {
           enabled: true
         } : null
       }
-      requireInfrastructureEncryption: requireInfrastructureEncryption
+      requireInfrastructureEncryption: storageAccountKind != 'Storage' ? requireInfrastructureEncryption : null
     }
     accessTier: storageAccountKind != 'Storage' ? storageAccountAccessTier : null
     supportsHttpsTrafficOnly: supportsHttpsTrafficOnly
