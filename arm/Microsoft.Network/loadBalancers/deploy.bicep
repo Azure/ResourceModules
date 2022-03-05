@@ -74,7 +74,14 @@ var frontendIPConfigurations_var = [for (frontendIPConfiguration, index) in fron
         id: frontendIPConfiguration.publicIPAddressId
     } : null
     privateIPAddress: contains(frontendIPConfiguration, 'privateIPAddress') ? frontendIPConfiguration.privateIPAddress : null
+    privateIPAddressVersion: contains(frontendIPConfiguration, 'privateIPAddressVersion') ? frontendIPConfiguration.privateIPAddressVersion : 'IPv4'
     privateIPAllocationMethod: contains(frontendIPConfiguration, 'subnetId') ? (contains(frontendIPConfiguration, 'privateIPAddress') ? 'Static' : 'Dynamic') : null
+    gatewayLoadBalancer: contains(frontendIPConfiguration, 'gatewayLoadBalancer') ? {
+      id: frontendIPConfiguration.gatewayLoadBalancer
+    } : null
+    publicIPPrefix: contains(frontendIPConfiguration, 'publicIPPrefix') ? {
+      id: frontendIPConfiguration.publicIPPrefix
+    } : null
   }
 }]
 
