@@ -5,17 +5,8 @@
         "name": {
             "value": "<<namePrefix>>-az-vw-x-001"
         },
-        "vpnsiteAddressspaceList": {
-            "value": []
-        },
-        "vpnsitePublicIPAddress": {
-            "value": "1.2.3.4"
-        },
-        "vpnsiteBgpAsn": {
-            "value": 65010
-        },
-        "vpnsiteBgpPeeringAddress": {
-            "value": "1.1.1.1"
+        "type": {
+            "value": "Basic"
         },
         "roleAssignments": {
             "value": [
