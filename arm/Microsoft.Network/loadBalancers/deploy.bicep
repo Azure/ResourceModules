@@ -137,6 +137,10 @@ var probes_var = [for probe in probes: {
   }
 }]
 
+var backendAddressPoolNames = [for backendAddressPool in backendAddressPools: {
+  name: backendAddressPool.name
+}]
+
 @description('Optional. The name of metrics that will be streamed.')
 @allowed([
   'AllMetrics'
@@ -170,7 +174,7 @@ resource loadBalancer 'Microsoft.Network/loadBalancers@2021-05-01' = {
   properties: {
     frontendIPConfigurations: frontendIPConfigurations_var
     loadBalancingRules: loadBalancingRules_var
-    backendAddressPools: backendAddressPools
+    backendAddressPools: backendAddressPoolNames
     outboundRules: outboundRules_var
     probes: probes_var
   }
@@ -181,7 +185,7 @@ module loadBalancer_backendAddressPools 'backendAddressPools/deploy.bicep' = [fo
   params: {
     loadBalancerName: loadBalancer.name
     name: backendAddressPool.name
-    tunnelInterfaces: contains(backendAddressPool, 'tunnelInterfaces') && !empty(backendAddressPool.tunnelInterfaces) ? backendAddressPool.tunnelInterfaces : null
+    tunnelInterfaces: contains(backendAddressPool, 'tunnelInterfaces') && !empty(backendAddressPool.tunnelInterfaces) ? backendAddressPool.tunnelInterfaces : []
     loadBalancerBackendAddresses: contains(backendAddressPool, 'loadBalancerBackendAddresses') && !empty(backendAddressPool.loadBalancerBackendAddresses) ? backendAddressPool.loadBalancerBackendAddresses : null
   }
 }]

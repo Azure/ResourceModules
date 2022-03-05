@@ -26,7 +26,7 @@ resource backendAddressPool 'Microsoft.Network/loadBalancers/backendAddressPools
   name: name
   properties: {
     loadBalancerBackendAddresses: !empty(loadBalancerBackendAddresses) ? loadBalancerBackendAddresses : null
-    tunnelInterfaces: !empty(tunnelInterfaces) ? tunnelInterfaces : null
+    tunnelInterfaces: !empty(tunnelInterfaces) ? tunnelInterfaces : []
   }
   parent: loadBalancer
 }
