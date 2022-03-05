@@ -13,7 +13,7 @@ param tags object = {}
 @description('Optional. An array of IP address ranges that can be used by subnets of the virtual network. Must be provided if no bgpProperties or VPNSiteLinks are configured.')
 param addressPrefixes array = []
 
-@description('Optional.	BGP settings details. Must be provided if no addressPrefixes or VPNSiteLinks are configured. Note: This is a deprecated property, please use the corresponding VpnSiteLinks property instead.')
+@description('Optional. BGP settings details. Must be provided if no addressPrefixes or VPNSiteLinks are configured. Note: This is a deprecated property, please use the corresponding VpnSiteLinks property instead.')
 param bgpProperties object = {}
 
 @description('Optional. List of properties of the device.')
