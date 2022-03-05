@@ -170,20 +170,21 @@ resource loadBalancer 'Microsoft.Network/loadBalancers@2021-05-01' = {
   properties: {
     frontendIPConfigurations: frontendIPConfigurations_var
     loadBalancingRules: loadBalancingRules_var
+    backendAddressPools: backendAddressPools
     outboundRules: outboundRules_var
     probes: probes_var
   }
 }
 
-module loadBalancer_backendAddressPools 'backendAddressPools/deploy.bicep' = [for (backendAddressPool, index) in backendAddressPools: {
-  name: '${uniqueString(deployment().name, location)}-loadBalancer-backendAddressPools-${index}'
-  params: {
-    loadBalancerName: loadBalancer.name
-    name: backendAddressPool.name
-    tunnelInterfaces: contains(backendAddressPool, 'tunnelInterfaces') && !empty(backendAddressPool.tunnelInterfaces) ? backendAddressPool.tunnelInterfaces : []
-    loadBalancerBackendAddresses: contains(backendAddressPool, 'loadBalancerBackendAddresses') && !empty(backendAddressPool.loadBalancerBackendAddresses) ? backendAddressPool.loadBalancerBackendAddresses : []
-  }
-}]
+// module loadBalancer_backendAddressPools 'backendAddressPools/deploy.bicep' = [for (backendAddressPool, index) in backendAddressPools: {
+//   name: '${uniqueString(deployment().name, location)}-loadBalancer-backendAddressPools-${index}'
+//   params: {
+//     loadBalancerName: loadBalancer.name
+//     name: backendAddressPool.name
+//     tunnelInterfaces: contains(backendAddressPool, 'tunnelInterfaces') && !empty(backendAddressPool.tunnelInterfaces) ? backendAddressPool.tunnelInterfaces : []
+//     loadBalancerBackendAddresses: contains(backendAddressPool, 'loadBalancerBackendAddresses') && !empty(backendAddressPool.loadBalancerBackendAddresses) ? backendAddressPool.loadBalancerBackendAddresses : []
+//   }
+// }]
 
 module loadBalancer_inboundNATRules 'inboundNatRules/deploy.bicep' = [for (inboundNATRule, index) in inboundNatRules: {
   name: '${uniqueString(deployment().name, location)}-LoadBalancer-inboundNatRules-${index}'
@@ -201,9 +202,9 @@ module loadBalancer_inboundNATRules 'inboundNatRules/deploy.bicep' = [for (inbou
     idleTimeoutInMinutes: contains(inboundNATRule, 'idleTimeoutInMinutes') ? inboundNATRule.idleTimeoutInMinutes : 4
     protocol: contains(inboundNATRule, 'protocol') ? inboundNATRule.protocol : 'Tcp'
   }
-  dependsOn: [
-    loadBalancer_backendAddressPools
-  ]
+  // dependsOn: [
+  //   loadBalancer_backendAddressPools
+  // ]
 }]
 
 resource loadBalancer_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
