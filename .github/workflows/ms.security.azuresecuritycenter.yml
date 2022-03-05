@@ -7,12 +7,12 @@ on:
         type: boolean
         description: 'Remove deployed module'
         required: false
-        default: 'false' # Needs custom removals script
+        default: false # Needs custom removals script
       prerelease:
         type: boolean
         description: 'Publish prerelease module'
         required: false
-        default: 'false'
+        default: false
   push:
     branches:
       - main
