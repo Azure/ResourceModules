@@ -1273,7 +1273,6 @@ jobs:
       namespace: 'Microsoft.Network\loadBalancers'
     needs:
       - job_deploy_vnet
-      - job_deploy_sa
       - job_deploy_evh
       - job_deploy_law
     strategy:
