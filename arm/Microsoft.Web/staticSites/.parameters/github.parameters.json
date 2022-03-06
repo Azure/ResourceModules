@@ -11,6 +11,9 @@
         "branch": {
             "value": "main"
         },
+        "sku": {
+            "value": "Standard"
+        },
         "stagingEnvironmentPolicy": {
             "value": "Enabled"
         },
