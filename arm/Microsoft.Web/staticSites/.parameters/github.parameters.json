@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "<<namePrefix>>-az-wss-x-001"
+            "value": "<<namePrefix>>-az-wss-gh-001"
         },
         "repositoryUrl": {
             "value": "https://github.com/MariusStorhaug/static-website"

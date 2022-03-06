@@ -3,10 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "<<namePrefix>>-az-wss-x-001"
-        },
-        "sku": {
-            "value": "Standard"
+            "value": "<<namePrefix>>-az-wss-min-001"
         }
     }
 }
