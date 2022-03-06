@@ -37,6 +37,40 @@ This module deploys Web StaticSites.
 | `templateProperties` | object | `{object}` |  | Optional. Template Options for the static site. |
 | `userAssignedIdentities` | object | `{object}` |  | Optional. The ID(s) to assign to the resource. |
 
+### Parameter Usage: `buildProperties`
+
+[StaticSiteBuildProperties - Microsoft.Web/staticSites 2021-03-01 - Bicep & ARM template reference | Microsoft Docs](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Web/2021-03-01/staticSites?tabs=bicep#staticsitebuildproperties)
+
+```bicep
+    buildProperties: {
+      apiBuildCommand: 'string'
+      apiLocation: 'string'
+      appArtifactLocation: 'string'
+      appBuildCommand: 'string'
+      appLocation: 'string'
+      githubActionSecretNameOverride: 'string'
+      outputLocation: 'string'
+      skipGithubActionWorkflowGeneration: bool
+    }
+```
+
+### Parameter Usage: `templateProperties`
+
+[StaticSiteTemplateOptions - Microsoft.Web/staticSites 2021-03-01 - Bicep & ARM template reference | Microsoft Docs](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Web/2021-03-01/staticSites?tabs=bicep#staticsitetemplateoptions)
+
+```bicep
+    buildProperties: {
+      apiBuildCommand: 'string'
+      apiLocation: 'string'
+      appArtifactLocation: 'string'
+      appBuildCommand: 'string'
+      appLocation: 'string'
+      githubActionSecretNameOverride: 'string'
+      outputLocation: 'string'
+      skipGithubActionWorkflowGeneration: bool
+    }
+```
+
 ### Parameter Usage: `privateEndpoints`
 
 To use Private Endpoint the following dependencies must be deployed:
