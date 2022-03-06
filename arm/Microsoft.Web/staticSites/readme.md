@@ -1,6 +1,7 @@
 # Web StaticSites `[Microsoft.Web/staticSites]`
 
 This module deploys Web StaticSites.
+// TODO: Replace Resource and fill in description
 
 ## Resource Types
 
@@ -20,21 +21,25 @@ This module deploys Web StaticSites.
 | `branch` | string |  |  | Optional. The branch name of the GitHub repo. |
 | `buildProperties` | object | `{object}` |  | Optional. Build properties for the static site. |
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered. |
-| `enterpriseGradeCdnStatus` | string | `Enabled` | `[Disabled, Disabling, Enabled, Enabling]` | Optional. State indicating the status of the enterprise grade CDN serving traffic to the static web app. |
-| `location` | string | `[resourceGroup().location]` |  | Optional. Location for all Resources. |
+| `enterpriseGradeCdnStatus` | string | `Disabled` | `[Disabled, Disabling, Enabled, Enabling]` | Optional. State indicating the status of the enterprise grade CDN serving traffic to the static web app. |
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
 | `name` | string |  |  | Required. Name of the static site. |
 | `privateEndpoints` | array | `[]` |  | Optional. Configuration details for private endpoints. |
-| `provider` | string |  |  | Optional. The provider that submitted the last deployment to the primary environment of the static site. |
+| `provider` | string | `None` |  | Optional. The provider that submitted the last deployment to the primary environment of the static site. |
 | `repositoryToken` | secureString |  |  | Optional. The Personal Access Token for accessing the GitHub repo. |
 | `repositoryUrl` | string |  |  | Optional. The name of the GitHub repo. |
 | `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `sku` | string | `Free` | `[Free, Standard]` | Optional. Type of static site to deploy. |
+| `stagingEnvironment` | string | `WestEurope` | `[CentralUS, EastUS2, EastAsia, WestEurope, WestUS2]` |  |
 | `stagingEnvironmentPolicy` | string | `Enabled` | `[Enabled, Disabled]` | Optional. State indicating whether staging environments are allowed or not allowed for a static web app. |
 | `systemAssignedIdentity` | bool | `False` |  | Optional. Enables system assigned managed identity on the resource. |
 | `tags` | object | `{object}` |  | Optional. Tags of the resource. |
 | `templateProperties` | object | `{object}` |  | Optional. Template Options for the static site. |
 | `userAssignedIdentities` | object | `{object}` |  | Optional. The ID(s) to assign to the resource. |
+
+### Parameter Usage: `<ParameterPlaceholder>`
+
+// TODO: Fill in Parameter usage
 
 ### Parameter Usage: `privateEndpoints`
 
