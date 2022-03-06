@@ -65,7 +65,7 @@
                             },
                             "loadBalancerBackendAddressPools": [
                                 {
-                                    "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/loadBalancers/adp-<<namePrefix>>-az-lb-x-001/backendAddressPools/servers"
+                                    "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/loadBalancers/adp-<<namePrefix>>-az-lb-internal-001/backendAddressPools/servers"
                                 }
                             ],
                             "applicationSecurityGroups": [
