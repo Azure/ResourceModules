@@ -16,16 +16,6 @@ param sku string = 'Free'
 @description('Optional. If config file is locked for this static web app.')
 param allowConfigFileUpdates bool = true
 
-// @allowed([
-//   'CentralUS'
-//   'EastUS2'
-//   'EastAsia'
-//   'WestEurope'
-//   'WestUS2'
-//   ''
-// ])
-// param stagingEnvironment string = ''
-
 @allowed([
   'Enabled'
   'Disabled'
@@ -33,18 +23,18 @@ param allowConfigFileUpdates bool = true
 @description('Optional. State indicating whether staging environments are allowed or not allowed for a static web app.')
 param stagingEnvironmentPolicy string = 'Enabled'
 
-// @secure()
-// @description('Optional. The Personal Access Token for accessing the GitHub repo.')
-// param repositoryToken string = ''
+@secure()
+@description('Optional. The Personal Access Token for accessing the GitHub repo.')
+param repositoryToken string = ''
 
-// @description('Optional. The owner of the GitHub repo.')
-// param owner string = ''
+@description('Optional. The owner of the GitHub repo.')
+param owner string = ''
 
-// @description('Optional. The name of the GitHub repo.')
-// param repository string = ''
+@description('Optional. The name of the GitHub repo.')
+param repositoryUrl string = ''
 
-// @description('Optional. The branch name of the GitHub repo.')
-// param branch string = ''
+@description('Optional. The branch name of the GitHub repo.')
+param branch string = ''
 
 @description('Optional. Enables system assigned managed identity on the resource.')
 param systemAssignedIdentity bool = false
@@ -84,41 +74,61 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
-resource staticSite 'Microsoft.Web/staticSites@2021-02-01' = {
+resource staticSite 'Microsoft.Web/staticSites@2021-03-01' = {
   name: name
   location: location
   tags: tags
+  identity: identity
   sku: {
     name: sku
     tier: sku
+    skuCapacity: {
+      default: 2
+      elasticMaximum: 5
+      maximum:5
+      minimum: 2
+      scaleType: ''
+    }
+    size: ''
+    capabilities: [
+      {
+        name: ''
+        reason: ''
+        value: ''
+      }
+    ]
+    family: ''
+    locations: [
+      ''
+    ]
   }
-  identity: identity
+  kind: 'Microsoft.Web/staticSites'
   properties: {
     allowConfigFileUpdates: allowConfigFileUpdates
     stagingEnvironmentPolicy: stagingEnvironmentPolicy
+    provider: 'GitHub'
+    branch: branch
+    buildProperties: {
+      apiBuildCommand: ''
+      apiLocation: ''
+      appArtifactLocation: ''
+      appBuildCommand: ''
+      appLocation: ''
+      githubActionSecretNameOverride: ''
+      outputLocation: ''
+      skipGithubActionWorkflowGeneration: true
+    }
+    repositoryToken: repositoryToken
+    repositoryUrl: repositoryUrl
+    templateProperties: {
+      isPrivate: true
+      description: ''
+      owner: owner
+      repositoryName: ''
+      templateRepositoryUrl: ''
+    }
   }
 }
-// properties: {
-    // branch: branch
-    // buildProperties: {
-    //   apiBuildCommand: 'string'
-    //   apiLocation: 'string'
-    //   appArtifactLocation: 'string'
-    //   appBuildCommand: 'string'
-    //   appLocation: 'string'
-    //   githubActionSecretNameOverride: 'string'
-    //   outputLocation: 'string'
-    //   skipGithubActionWorkflowGeneration: true
-    // }
-    // repositoryToken: repositoryToken
-    // repositoryUrl: 'https://github.com/${owner}/${repository}'
-    // templateProperties: {
-    //   description: 'string'
-    //   isPrivate: false
-    //   owner: owner
-    //   repositoryName: repository
-    //   templateRepositoryUrl: 'string'
-    // }
 
 resource staticSite_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
   name: '${staticSite.name}-${lock}-lock'
