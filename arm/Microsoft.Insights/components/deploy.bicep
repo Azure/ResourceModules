@@ -9,21 +9,21 @@ param name string
 param appInsightsType string = 'web'
 
 @description('Required. Resource ID of the log analytics workspace which the data will be ingested to. This property is required to create an application with this API version. Applications from older versions will not have this property.')
-param appInsightsWorkspaceResourceId string
+param workspaceResourceId string
 
 @description('Optional. The network access type for accessing Application Insights ingestion. - Enabled or Disabled')
 @allowed([
   'Enabled'
   'Disabled'
 ])
-param appInsightsPublicNetworkAccessForIngestion string = 'Enabled'
+param publicNetworkAccessForIngestion string = 'Enabled'
 
 @description('Optional. The network access type for accessing Application Insights query. - Enabled or Disabled')
 @allowed([
   'Enabled'
   'Disabled'
 ])
-param appInsightsPublicNetworkAccessForQuery string = 'Enabled'
+param publicNetworkAccessForQuery string = 'Enabled'
 
 @description('Optional. The kind of application that this component refers to, used to customize UI. This value is a freeform string, values should typically be one of the following: web, ios, other, store, java, phone.')
 param kind string = ''
@@ -52,9 +52,9 @@ resource appInsights 'Microsoft.Insights/components@2020-02-02' = {
   kind: kind
   properties: {
     Application_Type: appInsightsType
-    WorkspaceResourceId: appInsightsWorkspaceResourceId
-    publicNetworkAccessForIngestion: appInsightsPublicNetworkAccessForIngestion
-    publicNetworkAccessForQuery: appInsightsPublicNetworkAccessForQuery
+    WorkspaceResourceId: workspaceResourceId
+    publicNetworkAccessForIngestion: publicNetworkAccessForIngestion
+    publicNetworkAccessForQuery: publicNetworkAccessForQuery
   }
 }
 

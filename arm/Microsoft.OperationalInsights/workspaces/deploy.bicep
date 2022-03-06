@@ -4,7 +4,7 @@ param name string
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
 
-@description('Required. Service Tier: PerGB2018, Free, Standalone, PerGB or PerNode')
+@description('Optional. Service Tier: PerGB2018, Free, Standalone, PerGB or PerNode')
 @allowed([
   'Free'
   'Standalone'
@@ -28,7 +28,7 @@ param dataSources array = []
 @description('Optional. LAW gallerySolutions from the gallery.')
 param gallerySolutions array = []
 
-@description('Required. Number of days data will be retained for')
+@description('Optional. Number of days data will be retained for')
 @minValue(0)
 @maxValue(730)
 param dataRetention int = 365

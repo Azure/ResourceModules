@@ -36,6 +36,16 @@ param licenseType string = 'LicenseIncluded'
 @description('Optional. If the service has different generations of hardware, for the same SKU, then that can be captured here.')
 param hardwareFamily string = 'Gen5'
 
+@description('Optional. Whether or not multi-az is enabled.')
+param zoneRedundant bool = false
+
+@description('Optional. Service principal type. If using AD Authentication and applying Admin, must be set to `SystemAssigned`. Then Global Admin must allow Reader access to Azure AD for the Service Principal')
+@allowed([
+  'None'
+  'SystemAssigned'
+])
+param servicePrincipal string = 'None'
+
 @description('Optional. Specifies the mode of database creation. Default: Regular instance creation. Restore: Creates an instance by restoring a set of backups to specific point in time. RestorePointInTime and SourceManagedInstanceId must be specified.')
 @allowed([
   'Default'
@@ -133,6 +143,15 @@ param encryptionProtectorObj object = {}
 @description('Optional. The administrator configuration')
 param administratorsObj object = {}
 
+@description('Optional. The storage account type used to store backups for this database.')
+@allowed([
+  'Geo'
+  'GeoZone'
+  'Local'
+  'Zone'
+])
+param requestedBackupStorageRedundancy string = 'Geo'
+
 @description('Optional. The name of logs that will be streamed.')
 @allowed([
   'ResourceUsageStats'
@@ -189,6 +208,7 @@ resource managedInstance 'Microsoft.Sql/managedInstances@2021-05-01-preview' = {
   sku: {
     name: skuName
     tier: skuTier
+    family: hardwareFamily
   }
   tags: tags
   properties: {
@@ -197,7 +217,6 @@ resource managedInstance 'Microsoft.Sql/managedInstances@2021-05-01-preview' = {
     administratorLoginPassword: administratorLoginPassword
     subnetId: subnetId
     licenseType: licenseType
-    hardwareFamily: hardwareFamily
     vCores: vCores
     storageSizeInGB: storageSizeInGB
     collation: collation
@@ -209,6 +228,11 @@ resource managedInstance 'Microsoft.Sql/managedInstances@2021-05-01-preview' = {
     timezoneId: timezoneId
     instancePoolId: instancePoolResourceId
     primaryUserAssignedIdentityId: primaryUserAssignedIdentityId
+    requestedBackupStorageRedundancy: requestedBackupStorageRedundancy
+    zoneRedundant: zoneRedundant
+    servicePrincipal: {
+      type: servicePrincipal
+    }
   }
 }
 
@@ -322,7 +346,7 @@ module managedInstance_administrator 'administrators/deploy.bicep' = if (!empty(
   params: {
     managedInstanceName: managedInstance.name
     login: administratorsObj.name
-    sid: administratorsObj.name
+    sid: administratorsObj.sid
     tenantId: contains(administratorsObj, 'tenantId') ? administratorsObj.tenantId : ''
   }
 }

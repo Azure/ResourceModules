@@ -1,4 +1,4 @@
-# ServiceBus Queue `[Microsoft.ServiceBus/namespaces/queues]`
+# ServiceBus Namespace Queue `[Microsoft.ServiceBus/namespaces/queues]`
 
 This module deploys a queue for a service bus namespace.
 

@@ -91,7 +91,7 @@ stages:
       - deploy_rg
     variables:
       resourceType: 'Microsoft.Authorization/policyAssignments'
-      templateFilePath: $(modulesPath)/$(resourceType)/.bicep/nested_policyAssignments_sub.bicep
+      templateFilePath: $(modulesPath)/$(resourceType)/subscription/deploy.bicep
     jobs:
       - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
         parameters:
@@ -129,6 +129,9 @@ stages:
             - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
               templateFilePath: $(templateFilePath)
               displayName: Default LAW
+            - path: $(dependencyPath)/$(resourceType)/parameters/aut.parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: Automation account LAW
             - path: $(dependencyPath)/$(resourceType)/parameters/appi.parameters.json
               templateFilePath: $(templateFilePath)
               displayName: AppInsights LAW
@@ -800,7 +803,7 @@ stages:
       - deploy_msi
     variables:
       resourceType: 'Microsoft.Authorization/roleAssignments'
-      templateFilePath: $(modulesPath)/$(resourceType)/.bicep/nested_rbac_sub.bicep
+      templateFilePath: $(modulesPath)/$(resourceType)/subscription/deploy.bicep
       msiPrincipalId: $[ stageDependencies.deploy_msi.job_set_msi_id.outputs['print_msi_prinId.msiPrincipalId'] ]
     jobs:
       - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml

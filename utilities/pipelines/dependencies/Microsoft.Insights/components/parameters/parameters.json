@@ -5,8 +5,8 @@
         "name": {
             "value": "adp-<<namePrefix>>-az-appi-x-001"
         },
-        "appInsightsWorkspaceResourceId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-002"
+        "workspaceResourceId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-appi-001"
         }
     }
 }
