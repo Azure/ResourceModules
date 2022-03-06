@@ -106,7 +106,7 @@ resource staticSite 'Microsoft.Web/staticSites@2021-03-01' = {
     branch: branch
     buildProperties: buildProperties
     repositoryToken: repositoryToken
-    repositoryUrl: repositoryUrl
+    repositoryUrl: !empty(repositoryUrl) ? repositoryUrl : null
     templateProperties: templateProperties
   }
 }
