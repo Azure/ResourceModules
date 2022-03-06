@@ -38,26 +38,50 @@ In this first step make sure you
 
 ## 2. Fork/clone the repository into your DevOps environment
 
-Next you'll want to create your own copy of the code. Depending on the repository environment you want to use (GitHub or Azure DevOps), the set up will be slightly different:
-
-- GitHub Repository
-  - For GitHub, you have two choices depending on your planned repository visibility:
-    - If the repository may be public, we recommend to create a simple fork into the target organization. As the CARML source repository is public, a fork must be public too.
-    - If you need a private version instead, we recommend you create your target repository, download/clone the CARML repository and upload the content to the created target repository
-      > **Note:** This disables the feature to 'fetch' from the upstream (CARML) repository. As a result, you have to port updates manually.
-- Azure DevOps Repository
-    - For an Azure DevOps git, we recommend you create your target repository, download/clone the CARML repository and upload the content to the created target repository
-      > **Note:** This disables the feature to 'fetch' from the upstream (CARML) repository. As a result, you have to port updates manually.
+Next you'll want to create your own copy of the code. Depending on the repository environment you want to use (GitHub or Azure DevOps), the set up will be slightly different.
 
 > **Note:** Whether you chose GitHub or Azure DevOps as your repository's location does not affect your options when registering the pipelines.
 
-## 3. Configure the CI environment
+<details>
+<summary>GitHub Repository</summary>
+
+For GitHub, you have two choices depending on your planned repository visibility:
+- If the repository may be **public**, we recommend to create a simple fork into the target organization. As the CARML source repository is public, a fork must be public too.
+- If you need a **private** version instead, we recommend you create your target repository, download/clone the CARML repository and upload the content to the created target repository
+  > **Note:** This disables the feature to 'fetch' from the upstream (CARML) repository. As a result, you have to port updates manually.
 
 </details>
 
 <details>
+<summary>Azure DevOps Repository</summary>
+
+For a **private** Azure DevOps git, we recommend you create your target repository, download/clone the CARML repository and upload the content to the created target repository
+> **Note:** This disables the feature to 'fetch' from the upstream (CARML) repository. As a result, you have to port updates manually.
+
+</details>
+
+## 3. Configure the CI environment
+
+While the concepts are the same, the configuration of the CI environment differs drastically depending on the DevOps environment in which you want to register and run your pipelines.
+
+
+<details>
+<summary>GitHub</summary>
+</details>
+
+<details>
+<summary>Azure DevOps</summary>
+</details>
+
+</details>
+
+<p>
+
+<details>
 <summary><b>Option 2:</b> Consume module library only</summary>
 </details>
+
+<p>
 
 <details>
 <summary><b>Option 3:</b> Contribute</summary>
