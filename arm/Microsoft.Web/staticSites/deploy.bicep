@@ -23,12 +23,27 @@ param allowConfigFileUpdates bool = true
 @description('Optional. State indicating whether staging environments are allowed or not allowed for a static web app.')
 param stagingEnvironmentPolicy string = 'Enabled'
 
+@allowed([
+  'Disabled'
+  'Disabling'
+  'Enabled'
+  'Enabling'
+])
+@description('Optional. State indicating the status of the enterprise grade CDN serving traffic to the static web app.')
+param enterpriseGradeCdnStatus string = 'Enabled'
+
+@description('Optional. Build properties for the static site.')
+param buildProperties object = {}
+
+@description('Optional. Template Options for the static site.')
+param templateProperties object = {}
+
+@description('Optional. The provider that submitted the last deployment to the primary environment of the static site.')
+param provider string = ''
+
 @secure()
 @description('Optional. The Personal Access Token for accessing the GitHub repo.')
 param repositoryToken string = ''
-
-@description('Optional. The owner of the GitHub repo.')
-param owner string = ''
 
 @description('Optional. The name of the GitHub repo.')
 param repositoryUrl string = ''
@@ -82,51 +97,17 @@ resource staticSite 'Microsoft.Web/staticSites@2021-03-01' = {
   sku: {
     name: sku
     tier: sku
-    skuCapacity: {
-      default: 2
-      elasticMaximum: 5
-      maximum:5
-      minimum: 2
-      scaleType: ''
-    }
-    size: ''
-    capabilities: [
-      {
-        name: ''
-        reason: ''
-        value: ''
-      }
-    ]
-    family: ''
-    locations: [
-      ''
-    ]
   }
-  kind: 'Microsoft.Web/staticSites'
   properties: {
     allowConfigFileUpdates: allowConfigFileUpdates
     stagingEnvironmentPolicy: stagingEnvironmentPolicy
-    provider: 'GitHub'
+    enterpriseGradeCdnStatus: enterpriseGradeCdnStatus
+    provider: provider
     branch: branch
-    buildProperties: {
-      apiBuildCommand: ''
-      apiLocation: ''
-      appArtifactLocation: ''
-      appBuildCommand: ''
-      appLocation: ''
-      githubActionSecretNameOverride: ''
-      outputLocation: ''
-      skipGithubActionWorkflowGeneration: true
-    }
+    buildProperties: buildProperties
     repositoryToken: repositoryToken
     repositoryUrl: repositoryUrl
-    templateProperties: {
-      isPrivate: true
-      description: ''
-      owner: owner
-      repositoryName: ''
-      templateRepositoryUrl: ''
-    }
+    templateProperties: templateProperties
   }
 }
 
