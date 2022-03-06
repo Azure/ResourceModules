@@ -14,7 +14,7 @@ param type string = 'Standard'
 @description('Optional. True if branch to branch traffic is allowed.')
 param allowBranchToBranchTraffic bool = false
 
-@description('Optional. True if branch to branch traffic is allowed.')
+@description('Optional. True if Vnet to Vnet traffic is allowed. ')
 param allowVnetToVnetTraffic bool = false
 
 @description('Optional. True if branch to branch traffic is allowed.')
