@@ -889,7 +889,6 @@ stages:
     displayName: Deploy load balancers
     dependsOn:
       - deploy_vnet
-      - deploy_sa
     variables:
       resourceType: 'Microsoft.Network/loadBalancers'
       templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
