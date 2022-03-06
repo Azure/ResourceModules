@@ -1,7 +1,7 @@
 In this area, we provide instructions to migrate from CARML version 0.3.1 to version 0.4.0. The content is divided into two main parts: The updates to the modules & the CI environment.
 
 # Modules
-## General migration of new modules
+## General import of new modules
 New modules can usually be migrated by adding the content of the release's `arm` folder into your own `arm` folder.
 
 > **Note:** You should only do this from a branch and carefully compare any changes the platform displays.
@@ -10,7 +10,7 @@ New modules can usually be migrated by adding the content of the release's `arm`
 >
 > Also, take special note of any new, required parameter or changed parameter name if you also modified any module's parameter files.
 
-You will notice other changes, such as modified `parameter.json` files and `version.json` files", whose migration is explained in more detail in the corresponding section.
+You will notice other changes, such as modified `parameter.json` files and `version.json` files", whose upgrade is explained in more detail in the corresponding section.
 
 ## Migrate AutoMange module
 The original **standalone** AutoManage module was merged into the virtual machine module (as an extension to follow latest best practices) and subsequently removed.
