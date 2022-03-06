@@ -6,10 +6,18 @@
             "value": "<<namePrefix>>-az-wss-x-001"
         },
         "repositoryUrl": {
-            "value": "https://github.com/Azure/ResourceModules"
+            "value": "https://github.com/MariusStorhaug/static-website"
         },
         "branch": {
             "value": "main"
+        },
+        "repositoryToken": {
+            "reference": {
+                "keyVault": {
+                    "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001"
+                },
+                "secretName": "repoPAT"
+            }
         },
         "sku": {
             "value": "Standard"
