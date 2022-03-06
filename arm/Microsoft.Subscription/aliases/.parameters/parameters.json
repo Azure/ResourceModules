@@ -1,0 +1,23 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": "TestSub123"
+        },
+        "displayName": {
+            "value": "TestSub123Test"
+        },
+        "billingScope": {
+            "value": "/providers/Microsoft.Billing/billingAccounts/b022aae8-0849-44d3-a787-d654cfbfbb06:7d4855f3-901b-483f-bb7f-fe3e4100814d_2019-05-31/billingProfiles/EBKN-XYN3-BG7-PGB/invoiceSections/DN3D-G63Z-PJA-PGB"
+        },
+        "tags": {
+            "value": {
+                "costCenter": "1234",
+                "environment": "prod",
+                "contactinfo": "someone@company.com",
+                "SometOtherTag": "SomeOtherValue"
+            }
+        }
+    }
+}
