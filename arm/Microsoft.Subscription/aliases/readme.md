@@ -21,7 +21,7 @@ This module deploys a Subscription Alias.
 | `subscriptionId` | string |  |  | Optional. This parameter can be used to create alias for existing subscription Id |
 | `subscriptionOwnerId` | string |  |  | Optional. Owner Id of the subscription |
 | `subscriptionTenantId` | string |  |  | Optional. Tenant Id of the subscription |
-| `subscriptionWorkload` | string |  |  | Required. Workload type for the subscription |
+| `subscriptionWorkload` | string | `Production` | `[Production, DevTest]` | Optional. The workload type of the subscription. |
 | `tags` | object | `{object}` |  | Optional. Tags for the subscription |
 
 ### Parameter Usage: `tags`
