@@ -4,6 +4,9 @@
     "parameters": {
         "name": {
             "value": "<<namePrefix>>-az-wss-x-001"
+        },
+        "sku": {
+            "value": "Standard"
         }
     }
 }

@@ -82,7 +82,7 @@ var identityType = systemAssignedIdentity ? (!empty(userAssignedIdentities) ? 'S
 var identity = identityType != 'None' ? {
   type: identityType
   userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
-} : null
+} : {}
 
 module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   name: 'pid-${cuaId}'
@@ -93,7 +93,7 @@ resource staticSite 'Microsoft.Web/staticSites@2021-03-01' = {
   name: name
   location: location
   tags: tags
-  //identity: identity
+  identity: identity
   sku: {
     name: sku
     tier: sku
