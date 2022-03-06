@@ -30,7 +30,7 @@ This module deploys Web StaticSites.
 | `repositoryUrl` | string |  |  | Optional. The name of the GitHub repo. |
 | `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `sku` | string | `Free` | `[Free, Standard]` | Optional. Type of static site to deploy. |
-| `stagingEnvironment` | string | `WestEurope` | `[CentralUS, EastUS2, EastAsia, WestEurope, WestUS2]` |  |
+| `stagingEnvironment` | string | `WestEurope` | `[CentralUS, EastUS2, EastAsia, WestEurope, WestUS2]` | Optional. Location to deploy static site. |
 | `stagingEnvironmentPolicy` | string | `Enabled` | `[Enabled, Disabled]` | Optional. State indicating whether staging environments are allowed or not allowed for a static web app. |
 | `systemAssignedIdentity` | bool | `False` |  | Optional. Enables system assigned managed identity on the resource. |
 | `tags` | object | `{object}` |  | Optional. Tags of the resource. |
