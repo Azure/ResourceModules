@@ -26,7 +26,8 @@
                 "appArtifactLocation": "src",
                 "appSettings": {
                     "MY_APP_SETTING1": "value 1",
-                    "MY_APP_SETTING2": "value 2"
+                    "MY_APP_SETTING2": "value 2",
+                    "MY_APP_SETTING3": "value 3"
                 }
             }
         },
