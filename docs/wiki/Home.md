@@ -32,6 +32,8 @@ If you're unfamiliar with Infrastructure as Code, or wonder how you can use the 
     - [Removal action](./PipelineRemovalAction)
   - [Usage](./PipelinesUsage)
 - [Contribution Guide](./ContributionGuide)
+- Upgrade guidelines
+  - [Migration from 0.3.1 to 0.4.0](./Migration%20from%200.3.1%20to%200.4.0.md)
 - [Known Issues](./KnownIssues)
 
 ---
@@ -64,6 +66,8 @@ If you're unfamiliar with Infrastructure as Code, or wonder how you can use the 
   - [Contribution flow](./Contribution%20guide%20-%20Contribution%20flow)
   - [Generate module Readme](./Contribution%20guide%20-%20Generate%20module%20Readme)
   - [Get formatted RBAC roles](./Contribution%20guide%20-%20Get%20formatted%20RBAC%20roles)
+- Upgrade guidelines
+  - [Migration from 0.3.1 to 0.4.0](./Migration%20from%200.3.1%20to%200.4.0.md)
 - [Known issues](./Known%20issues)
 
 ---
