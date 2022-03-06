@@ -83,7 +83,9 @@ jobs:
       matrix:
         parameterFilePaths:
           [
+            'parameters.json',
             'min.parameters.json',
+            'azuredevops.parameters.json',
             'github.parameters.json'
           ]
     steps:

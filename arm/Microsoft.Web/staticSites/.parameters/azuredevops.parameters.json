@@ -1,0 +1,76 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": "<<namePrefix>>-az-wss-gh-001"
+        },
+        "repositoryUrl": {
+            "value": "https://dev.azure.com/MariusStorhaug/static-website"
+        },
+        "branch": {
+            "value": "main"
+        },
+        "repositoryToken": {
+            "reference": {
+                "keyVault": {
+                    "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001"
+                },
+                "secretName": "GitHubPAT"
+            }
+        },
+        "buildProperties": {
+            "value": {
+                "appLocation": "/",
+                "apiLocation": "",
+                "appArtifactLocation": "src",
+                "appSettings": {
+                    "MY_APP_SETTING1": "value 1",
+                    "MY_APP_SETTING2": "value 2",
+                    "MY_APP_SETTING3": "value 3"
+                }
+            }
+        },
+        "sku": {
+            "value": "Standard"
+        },
+        "stagingEnvironmentPolicy": {
+            "value": "Enabled"
+        },
+        "allowConfigFileUpdates": {
+            "value": true
+        },
+        "provider": {
+            "value": "DevOps"
+        },
+        "enterpriseGradeCdnStatus": {
+            "value": "Disabled"
+        },
+        "systemAssignedIdentity": {
+            "value": true
+        },
+        "userAssignedIdentities": {
+            "value": {
+                "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001": {}
+            }
+        },
+        "roleAssignments": {
+            "value": [
+                {
+                    "roleDefinitionIdOrName": "Reader",
+                    "principalIds": [
+                        "<<deploymentSpId>>"
+                    ]
+                }
+            ]
+        },
+        "privateEndpoints": {
+            "value": [
+                {
+                    "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints",
+                    "service": "staticSites"
+                }
+            ]
+        }
+    }
+}
