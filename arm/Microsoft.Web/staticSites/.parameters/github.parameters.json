@@ -19,6 +19,17 @@
                 "secretName": "repoPAT"
             }
         },
+        "buildProperties": {
+            "value": {
+                "appLocation": "/",
+                "apiLocation": "",
+                "appArtifactLocation": "src",
+                "appSettings": {
+                    "MY_APP_SETTING1": "value 1",
+                    "MY_APP_SETTING2": "value 2"
+                }
+            }
+        },
         "sku": {
             "value": "Standard"
         },
