@@ -12,8 +12,12 @@ param subscriptionAlias string
 @description('Required. Display name for the subscription')
 param subscriptionDisplayName string
 
-@description('Required. Workload type for the subscription')
-param subscriptionWorkload string
+@allowed([
+  'Production'
+  'DevTest'
+])
+@description('Optional. The workload type of the subscription.')
+param subscriptionWorkload string = 'Production'
 
 @description('Optional. Owner Id of the subscription')
 param subscriptionOwnerId string = ''
