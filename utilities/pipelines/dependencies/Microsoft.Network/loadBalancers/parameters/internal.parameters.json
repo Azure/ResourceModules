@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "adp-<<namePrefix>>-az-lb-x-001"
+            "value": "adp-<<namePrefix>>-az-lb-internal-001"
         },
         "loadBalancerSku": {
             "value": "Standard"
