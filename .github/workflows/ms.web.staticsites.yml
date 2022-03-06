@@ -83,7 +83,7 @@ jobs:
       matrix:
         parameterFilePaths:
           [
-            'min.parameters.json'
+            'min.parameters.json',
             'github.parameters.json'
           ]
     steps:
