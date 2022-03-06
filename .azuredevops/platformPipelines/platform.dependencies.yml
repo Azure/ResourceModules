@@ -891,7 +891,6 @@ stages:
       - deploy_vnet
       - deploy_sa
       - deploy_evh
-      - deploy_law
     variables:
       resourceType: 'Microsoft.Network/loadBalancers'
       templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
