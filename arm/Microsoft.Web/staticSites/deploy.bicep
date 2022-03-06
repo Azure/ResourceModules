@@ -3,9 +3,6 @@
 @maxLength(40)
 param name string
 
-@description('Optional. Location for all Resources.')
-param location string = resourceGroup().location
-
 @allowed([
   'Free'
   'Standard'
@@ -15,6 +12,16 @@ param sku string = 'Free'
 
 @description('Optional. If config file is locked for this static web app.')
 param allowConfigFileUpdates bool = true
+
+@allowed([
+  'CentralUS'
+  'EastUS2'
+  'EastAsia'
+  'WestEurope'
+  'WestUS2'
+  ''
+])
+param stagingEnvironment string = 'WestEurope'
 
 @allowed([
   'Enabled'
@@ -30,7 +37,7 @@ param stagingEnvironmentPolicy string = 'Enabled'
   'Enabling'
 ])
 @description('Optional. State indicating the status of the enterprise grade CDN serving traffic to the static web app.')
-param enterpriseGradeCdnStatus string = 'Enabled'
+param enterpriseGradeCdnStatus string = 'Disabled'
 
 @description('Optional. Build properties for the static site.')
 param buildProperties object = {}
@@ -39,7 +46,7 @@ param buildProperties object = {}
 param templateProperties object = {}
 
 @description('Optional. The provider that submitted the last deployment to the primary environment of the static site.')
-param provider string = ''
+param provider string = 'None'
 
 @secure()
 @description('Optional. The Personal Access Token for accessing the GitHub repo.')
@@ -91,7 +98,7 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
 
 resource staticSite 'Microsoft.Web/staticSites@2021-03-01' = {
   name: name
-  location: location
+  location: stagingEnvironment
   tags: tags
   identity: identity
   sku: {
@@ -102,12 +109,12 @@ resource staticSite 'Microsoft.Web/staticSites@2021-03-01' = {
     allowConfigFileUpdates: allowConfigFileUpdates
     stagingEnvironmentPolicy: stagingEnvironmentPolicy
     enterpriseGradeCdnStatus: enterpriseGradeCdnStatus
-    provider: provider
-    branch: branch
-    buildProperties: buildProperties
-    repositoryToken: repositoryToken
+    provider: !empty(provider) ? provider : 'None'
+    branch: !empty(branch) ? branch : null
+    buildProperties: !empty(buildProperties) ? buildProperties : null
+    repositoryToken: !empty(repositoryToken) ? repositoryToken : null
     repositoryUrl: !empty(repositoryUrl) ? repositoryUrl : null
-    templateProperties: templateProperties
+    templateProperties: !empty(templateProperties) ? templateProperties : null
   }
 }
 
