@@ -44,8 +44,6 @@ stages:
           deploymentBlocks:
             - path: $(modulePath)/.parameters/min.parameters.json
             - path: $(modulePath)/.parameters/parameters.json
-            - path: $(modulePath)/.parameters/azuredevops.parameters.json
-            - path: $(modulePath)/.parameters/github.parameters.json
 
   - stage: Publishing
     displayName: Publish module
