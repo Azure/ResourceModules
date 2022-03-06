@@ -13,15 +13,8 @@ param sku string = 'Free'
 @description('Optional. If config file is locked for this static web app.')
 param allowConfigFileUpdates bool = true
 
-@allowed([
-  'CentralUS'
-  'EastUS2'
-  'EastAsia'
-  'WestEurope'
-  'WestUS2'
-])
-@description('Optional. Location to deploy static site.')
-param location string = 'WestEurope'
+@description('Optional. Location to deploy static site. The following locations are supported: CentralUS, EastUS2, EastAsia, WestEurope, WestUS2')
+param location string = resourceGroup().location
 
 @allowed([
   'Enabled'

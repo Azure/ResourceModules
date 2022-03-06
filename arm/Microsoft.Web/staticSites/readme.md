@@ -22,7 +22,7 @@ This module deploys Web StaticSites.
 | `buildProperties` | object | `{object}` |  | Optional. Build properties for the static site. |
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered. |
 | `enterpriseGradeCdnStatus` | string | `Disabled` | `[Disabled, Disabling, Enabled, Enabling]` | Optional. State indicating the status of the enterprise grade CDN serving traffic to the static web app. |
-| `location` | string | `WestEurope` | `[CentralUS, EastUS2, EastAsia, WestEurope, WestUS2]` | Optional. Location to deploy static site. |
+| `location` | string | `[resourceGroup().location]` |  | Optional. Location to deploy static site. The following locations are supported: CentralUS, EastUS2, EastAsia, WestEurope, WestUS2 |
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
 | `name` | string |  |  | Required. Name of the static site. |
 | `privateEndpoints` | array | `[]` |  | Optional. Configuration details for private endpoints. |
@@ -36,10 +36,6 @@ This module deploys Web StaticSites.
 | `tags` | object | `{object}` |  | Optional. Tags of the resource. |
 | `templateProperties` | object | `{object}` |  | Optional. Template Options for the static site. |
 | `userAssignedIdentities` | object | `{object}` |  | Optional. The ID(s) to assign to the resource. |
-
-### Parameter Usage: `<ParameterPlaceholder>`
-
-// TODO: Fill in Parameter usage
 
 ### Parameter Usage: `privateEndpoints`
 
