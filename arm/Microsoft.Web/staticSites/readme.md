@@ -1,7 +1,6 @@
 # Web StaticSites `[Microsoft.Web/staticSites]`
 
 This module deploys Web StaticSites.
-// TODO: Replace Resource and fill in description
 
 ## Resource Types
 
