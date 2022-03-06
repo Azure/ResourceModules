@@ -84,6 +84,7 @@ jobs:
         parameterFilePaths:
           [
             'min.parameters.json'
+            'github.parameters.json'
           ]
     steps:
       - name: 'Checkout'
