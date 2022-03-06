@@ -4,7 +4,7 @@ param location string = resourceGroup().location
 @description('Required. Name of the Virtual VNET.')
 param name string
 
-@description('Optional. SKU of the Virtual WAN.')
+@description('Optional. The type of the VirtualWAN.')
 @allowed([
   'Standard'
   'Basic'
