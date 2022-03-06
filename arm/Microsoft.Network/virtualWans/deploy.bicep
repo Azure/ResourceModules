@@ -1,10 +1,10 @@
 @description('Optional. Location where all resources will be created.')
 param location string = resourceGroup().location
 
-@description('Required. Name of the Virtual Wan.')
+@description('Required. Name of the Virtual VNET.')
 param name string
 
-@description('Optional. Sku of the Virtual Wan.')
+@description('Optional. SKU of the Virtual WAN.')
 @allowed([
   'Standard'
   'Basic'
@@ -14,10 +14,10 @@ param type string = 'Standard'
 @description('Optional. True if branch to branch traffic is allowed.')
 param allowBranchToBranchTraffic bool = false
 
-@description('Optional. True if Vnet to Vnet traffic is allowed. ')
+@description('Optional. True if VNET to VNET traffic is allowed. ')
 param allowVnetToVnetTraffic bool = false
 
-@description('Optional. Vpn encryption to be disabled or not.')
+@description('Optional. VPN encryption to be disabled or not.')
 param disableVpnEncryption bool = false
 
 @description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'')
