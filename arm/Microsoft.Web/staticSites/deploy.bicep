@@ -93,7 +93,7 @@ resource staticSite 'Microsoft.Web/staticSites@2021-03-01' = {
   name: name
   location: location
   tags: tags
-  identity: identity
+  //identity: identity
   sku: {
     name: sku
     tier: sku
