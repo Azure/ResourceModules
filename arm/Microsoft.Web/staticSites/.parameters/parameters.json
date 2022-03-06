@@ -14,9 +14,6 @@
         "allowConfigFileUpdates": {
             "value": true
         },
-        "provider": {
-            "value": "Other"
-        },
         "enterpriseGradeCdnStatus": {
             "value": "Disabled"
         },
