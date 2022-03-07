@@ -28,7 +28,7 @@
                 "value" : "keyEncryptionKey"
         },
         "keyvaultUri" : {
-                    "value" : "https://adp-carml-az-kv-nopr-001.vault.azure.net/"
+                    "value" : "https://adp-carml-az-kv-nopr-002.vault.azure.net/"
         },
         "keyVersion" : {
                     "value" : "aec4b9241b704bf8b0559175c6be0d05"
