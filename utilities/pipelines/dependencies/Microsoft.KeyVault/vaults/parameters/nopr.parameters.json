@@ -27,6 +27,7 @@
           "permissions": {
             "keys": [
               "Get",
+              "List",
               "WrapKey",
               "UnwrapKey"
             ],
