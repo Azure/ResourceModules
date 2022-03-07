@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "<<namePrefix>>-az-apim-x-001"
+            "value": "<<namePrefix>>-az-apim-min-001"
         },
         "publisherEmail": {
             "value": "apimgmt-noreply@mail.windowsazure.com"
