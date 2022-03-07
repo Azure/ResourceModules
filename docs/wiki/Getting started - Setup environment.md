@@ -149,7 +149,7 @@ To use the environment's pipelines you need the following secrets set up:
 >
 > **Make sure you create this object as one continuous string as shown above** - using the information you collected during [Step 1](#1-configure-your-azure-environment). Failing to format the secret as above, results in masked strings (`***`) in place of `{` and `}` in the workflow logs as it is considering each line of the json object as a separate secret string. If you're interested, you can find more information about this object [here](https://github.com/Azure/login#configure-deployment-credentials).
 
-### 3.2.2 Setup variables (esp. ACR)
+### 3.2.2 Setup variables
 
 The primary pipeline variable file hosts the fundamental pipeline configuration. In the file you will find and can configure information such as:
 
@@ -200,7 +200,7 @@ To do so, perform the following steps:
 
 1. Next, select '`I understand my workflows, go ahead and enable them`'.
 
-    <img src="./media/ghActionsTab.png" alt="Enable Actions" height="380">
+    <img src="./media/SetupEnvironment/actionsEnable.png" alt="Enable Actions" height="380">
 
 </details>
 
@@ -210,8 +210,62 @@ To do so, perform the following steps:
 <summary>Azure DevOps</summary>
 
 ### 3.2.1 Setup service connection
+
 ### 3.2.2 Setup secrets
-### 3.2.3 Setup variables (esp. ACR)
+
+### 3.2.3 Setup variables
+
+The primary pipeline variable file hosts the fundamental pipeline configuration. In the file you will find and can configure information such as:
+
+<details>
+<summary>General</summary>
+
+| Variable Name | Example Value | Description |
+| - | - | - |
+| `defaultLocation` | 'WestEurope' | The default location to deploy resources to. If no location is specified in the deploying parameter file, this location is used |
+| `defaultResourceGroupName` | 'validation-rg' | The resource group to deploy all resources for validation to |
+| `serviceConnection` | 'Contoso-Connection' | The service connection that points to the subscription to test in and publish to |
+
+</details>
+
+<details>
+<summary>Template-specs specific (publishing)</summary>
+
+| Variable Name | Example Value | Description |
+| - | - | - |
+| `templateSpecsRGName` | "artifacts-rg" | The resource group to host the created template-specs |
+| `templateSpecsRGLocation` | "WestEurope" | The location of the resource group to host the template-specs. Is used to create a new resource group if not yet existing |
+| `templateSpecsDescription` | "This is a module from the [Common Azure Resource Modules Library]" | A description to add to the published template specs |
+| `templateSpecsDoPublish` | "true" | A central switch to enable/disable publishing to template-specs |
+
+</details>
+
+<details>
+<summary>Private bicep registry specific (publishing)</summary>
+
+| Variable Name | Example Value | Description |
+| - | - | - |
+| `bicepRegistryName` | "adpsxxazacrx001" | The container registry to publish bicep templates to |
+| `bicepRegistryRGName` | "artifacts-rg" | The resource group of the container registry to publish bicep templates to. Is used to create a new container registry if not yet existing |
+| `bicepRegistryRGName` | "artifacts-rg" | The location of the resource group of the container registry to publish bicep templates to. Is used to create a new resource group if not yet existing |
+| `bicepRegistryDoPublish` | "true" | A central switch to enable/disable publishing to the private bicep registry |
+
+</details>
+
+<details>
+<summary>Universal packages specific (publishing)</summary>
+
+| Variable Name | Example Value | Description |
+| - | - | - |
+| `vstsFeedName` | 'ResourceModules' | The name of the Azure DevOps universal packages feed to publish to |
+| `vstsFeedProject` | '$(System.TeamProject)' | The project that hosts the feed. The feed must be created in Azure DevOps ahead of time. |
+| `vstsFeedToken` | '$(System.AccessToken)' | The token used to publish universal packages into the feed above |
+| `artifactsFeedDoPublish` | "true" | A central switch to enable/disable publishing to Universal packages |
+
+</details>
+
+<p>
+
 ### 3.2.4 Register pipelines
 
 </details>
