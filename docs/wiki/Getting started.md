@@ -1,24 +1,28 @@
 This section will give on an overview on how to get started using this repository.
 
----
+Depending on how you want to use this repositories content you may go down different paths to get started:
 
-### _Navigation_
-[Scenarios](#scenarios)
 
 ---
 
-# Scenarios
+## _Navigation_
+- [**Scenario 1:** Onboard module library and CI environment](#scenario-1-onboard-module-library-and-ci-environment)
+- [**Scenario 2:** Consume module library only](#scenario-2-consume-module-library-only)
+- [**Scenario 3:** Contribute](#scenario-3-contribute)
 
-<details>
-<summary><b>Option 1:</b> Onboard module library and CI environment</summary>
+---
+
+# **Scenario 1:** Onboard module library and CI environment
 
 The repository is built so that you can create your own private 1:1 clone and be able to reuse the same concepts and features in your own environment such as GitHub.
 
-This requires three main steps:
+This requires several steps:
 
-1. Configure your Azure environment
-1. Fork/clone the repository into your DevOps environment (GitHub or Azure DevOps)
-1. Configure the CI environment
+1. [Configure your Azure environment](#1-configure-your-azure-environment)
+1. [Fork/clone the repository into your DevOps environment](#2-forkclone-the-repository-into-your-devops-environment)
+1. [Configure the CI environment](#3-configure-the-ci-environment)
+1. [Deploy dependencies](#4-deploy-dependencies)
+1. [Update module parameter files](#5-update-module-parameter-files)
 
 Depending on the DevOps environment you choose (GitHub or Azure DevOps) make sure you also account for the specific requirements outlined below.
 
@@ -36,7 +40,7 @@ In this first step make sure you
   - Subscription ID
   - Parent Management Group ID
 
-## 1. Fork/clone the repository into your DevOps environment
+## 2. Fork/clone the repository into your DevOps environment
 
 Next you'll want to create your own copy of the code. Depending on the repository environment you want to use (GitHub or Azure DevOps), the set up will be slightly different.
 
@@ -60,6 +64,8 @@ For a **private** Azure DevOps git, we recommend you create your target reposito
 
 </details>
 
+<p><p>
+
 <details>
 <summary><b>How to:</b> Clone/download the repository</summary>
 To save a local copy of the repository you can either clone the repository or download it as a `.zip` file.
@@ -77,29 +83,80 @@ If you instead just want to have a copy of the repository's content you can inst
 
 </details>
 
-## 1. Configure the CI environment
+<p>
 
-While the concepts are the same, the configuration of the CI environment differs drastically depending on the DevOps environment in which you want to register and run your pipelines.
+## 3. Configure the CI environment
 
+To configure the CI environment you have to perform several tasks:
+- [Update default `namePrefix`](#update-default-nameprefix)
+- [Setup CI-environment-specific configuration](#setup-ci-environment-specific-configuration)
+
+> **Note:** While you can use the browser, we recommend that you clone all files from your local machine and update them using, for example, Visual Studio Code.
+
+### 3.1 Update default `namePrefix`
+
+To lower the barrier to entry and allow users to easily define their own naming conventions, we introduced a default `'name prefix'` for all deployed resources.
+
+Each pipeline in CARML that deploys resources uses a logic that automatically replaces "tokens" (i.e. placeholders) in any parameter file. Tokens are stored in only a few central locations to facilitate maintenance.
+
+To update the `namePrefix`, perform the following steps:
+
+1. Open the `settings.json` file in the repository root directory.
+
+1. Replace the `"value": "<...>"` of token `namePrefix` with a different value:
+
+    ```json
+    {
+        "name": "namePrefix",
+        "value": "<...>"
+    }
+    ```
+    > **Note:** The value should be a 3-5 character long string like `cntso`. Longer strings are not recommended as they may conflict with Azure resource name length restrictions.
+
+    <!-- TODO: Handle
+    > **Note:** You may also introduce additional tokens later if need be. For further guidelines please refer to the [./] section.
+    -->
+
+### 3.2 Setup CI-environment-specific configuration
+
+While the concepts are the same, the configuration of the CI environment can differ drastically depending on the DevOps environment in which you want to register and run your pipelines. Following you can find instructions on how to perform the remaining configuration in the corresponding DevOps environment:
 
 <details>
 <summary>GitHub</summary>
+
+#### 3.2.1 Setup secrets
+#### 3.2.2 Setup variables (esp. ACR)
+#### 3.2.3 Enable actions
+
 </details>
 
 <details>
 <summary>Azure DevOps</summary>
-</details>
+
+#### 3.2.1 Setup service connection
+#### 3.2.2 Setup secrets
+#### 3.2.3 Setup variables (esp. ACR)
+#### 3.2.4 Register pipelines
 
 </details>
 
 <p>
 
-<details>
-<summary><b>Option 2:</b> Consume module library only</summary>
+## 4. Deploy dependencies
 </details>
+
+## 5. Update module parameter files
+
+- TODO: e.g. VM key
+
+---
 
 <p>
 
-<details>
-<summary><b>Option 3:</b> Contribute</summary>
-</details>
+# **Scenario 2:** Consume module library only
+
+---
+
+<p>
+
+# **Scenario 3:** Contribute
