@@ -12,7 +12,9 @@ Depending on how you want to use this repositories content you may go down diffe
 
 ---
 
-# **Scenario 1:** Onboard module library and CI environment
+<details><summary><b>Scenario 1:</b> Onboard module library and CI environment</summary>
+
+# Onboard module library and CI environment
 
 The repository is built so that you can create your own private 1:1 clone and be able to reuse the same concepts and features in your own environment such as GitHub.
 
@@ -143,20 +145,31 @@ While the concepts are the same, the configuration of the CI environment can dif
 <p>
 
 ## 4. Deploy dependencies
-</details>
+
 
 ## 5. Update module parameter files
 
 - TODO: e.g. VM key
 
----
-
-<p>
-
-# **Scenario 2:** Consume module library only
+</details>
 
 ---
 
 <p>
 
-# **Scenario 3:** Contribute
+<details><summary><b>Scenario 2:</b> Consume module library only</summary>
+
+# Consume module library only
+
+</details>
+
+
+---
+
+<p>
+
+<details><summary><b>Scenario 3:</b> Contribute</summary>
+
+# Contribute
+
+</details>
