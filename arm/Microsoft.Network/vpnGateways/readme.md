@@ -6,6 +6,7 @@ This module deploys VPN Gateways.
 
 | Resource Type | API Version |
 | :-- | :-- |
+| `Microsoft.Authorization/locks` | 2017-04-01 |
 | `Microsoft.Network/vpnGateways` | 2021-05-01 |
 | `Microsoft.Network/vpnGateways/natRules` | 2021-05-01 |
 | `Microsoft.Network/vpnGateways/vpnConnections` | 2021-05-01 |
@@ -20,6 +21,7 @@ This module deploys VPN Gateways.
 | `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `isRoutingPreferenceInternet` | bool | `False` |  | Optional. Enable routing preference property for the public IP interface of the VPN gateway. |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location where all resources will be created. |
+| `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
 | `name` | string |  |  | Required. Name of the VPN gateway |
 | `natRules` | _[natRules](natRules/readme.md)_ array | `[]` |  | Optional. List of all the NAT Rules to associate with the gateway. |
 | `tags` | object | `{object}` |  | Optional. Tags of the resource. |
@@ -88,6 +90,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 ## Template references
 
+- [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
 - [Vpngateways](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/vpnGateways)
 - [Vpngateways/Natrules](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/vpnGateways/natRules)
 - [Vpngateways/Vpnconnections](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/vpnGateways/vpnConnections)

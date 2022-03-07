@@ -696,22 +696,20 @@ Describe 'Deployment template tests' -Tag Template {
             )
 
             if (-not $templateContent.parameters) {
+                # Skip test
                 $true | Should -Be $true
                 return
             }
 
-            $ParamDescriptionFlag = @()
+            $IncorrectParameters = @()
             $Paramdescoutput = $templateContent.parameters.Keys
             foreach ($Param in $Paramdescoutput) {
                 $Data = ($templateContent.parameters.$Param.metadata).description
-                if ($Data -like 'Optional. [a-zA-Z]*' -or $Data -like 'Required. [a-zA-Z]*' -or $Data -like 'Generated. [a-zA-Z]*') {
-                    $true | Should -Be $true
-                    $ParamDescriptionFlag += $true
-                } else {
-                    $ParamDescriptionFlag += $false
+                if ($Data -notlike 'Optional. [a-zA-Z]*' -and $Data -notlike 'Required. [a-zA-Z]*' -and $Data -notlike 'Generated. [a-zA-Z]*') {
+                    $IncorrectParameters += $Param
                 }
             }
-            $ParamDescriptionFlag | Should -Not -Contain $false
+            $IncorrectParameters | Should -BeNullOrEmpty
         }
 
         # PARAMETER Tests
