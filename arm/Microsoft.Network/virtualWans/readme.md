@@ -20,10 +20,10 @@ This template deploys a virtual WAN.
 | `disableVpnEncryption` | bool | `False` |  | Optional. VPN encryption to be disabled or not. |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location where all resources will be created. |
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
-| `name` | string |  |  | Required. Name of the Virtual VNET. |
+| `name` | string |  |  | Required. Name of the Virtual WAN. |
 | `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
 | `tags` | object | `{object}` |  | Optional. Tags of the resource. |
-| `type` | string | `Standard` | `[Standard, Basic]` | Optional. The type of the VirtualWAN. |
+| `type` | string | `Standard` | `[Standard, Basic]` | Optional. The type of the Virtual WAN. |
 
 ### Parameter Usage: `roleAssignments`
 

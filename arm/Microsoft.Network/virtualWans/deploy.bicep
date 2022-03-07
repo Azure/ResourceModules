@@ -1,10 +1,10 @@
 @description('Optional. Location where all resources will be created.')
 param location string = resourceGroup().location
 
-@description('Required. Name of the Virtual VNET.')
+@description('Required. Name of the Virtual WAN.')
 param name string
 
-@description('Optional. The type of the VirtualWAN.')
+@description('Optional. The type of the Virtual WAN.')
 @allowed([
   'Standard'
   'Basic'
