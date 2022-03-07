@@ -14,6 +14,12 @@
         "exportPolicyStatus": {
             "value": "enabled"
         },
+        "quarantinePolicyStatus": {
+            "value": "enabled"
+        },
+        "trustPolicyStatus": {
+            "value": "enabled"
+        },
         "replications": {
             "value": [
                 {
