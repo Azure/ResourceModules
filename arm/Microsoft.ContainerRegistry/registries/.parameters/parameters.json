@@ -8,6 +8,26 @@
         "acrAdminUserEnabled": {
             "value": false
         },
+        "acrSku": {
+            "value": "Premium"
+        },
+        "exportPolicyStatus": {
+            "value": "enabled"
+        },
+        "quarantinePolicyStatus": {
+            "value": "enabled"
+        },
+        "trustPolicyStatus": {
+            "value": "enabled"
+        },
+        "replications": {
+            "value": [
+                {
+                    "name": "northeurope",
+                    "location": "northeurope"
+                }
+            ]
+        },
         "roleAssignments": {
             "value": [
                 {

@@ -9,39 +9,58 @@ Azure Container Registry is a managed, private Docker registry service based on 
 | `Microsoft.Authorization/locks` | 2017-04-01 |
 | `Microsoft.Authorization/roleAssignments` | 2021-04-01-preview |
 | `Microsoft.ContainerRegistry/registries` | 2021-09-01 |
+| `Microsoft.ContainerRegistry/registries/replications` | 2021-12-01-preview |
 | `Microsoft.Insights/diagnosticSettings` | 2021-05-01-preview |
-| `Microsoft.Network/privateEndpoints` | 2021-02-01 |
+| `Microsoft.Network/privateEndpoints` | 2021-05-01 |
 | `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | 2021-02-01 |
 
 ## Parameters
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `acrAdminUserEnabled` | bool |  |  | Optional. Enable admin user that have push / pull permission to the registry. |
-| `acrSku` | string | `Basic` | `[Basic, Standard, Premium]` | Optional. Tier of your Azure container registry. |
+| `acrAdminUserEnabled` | bool | `False` |  | Optional. Enable admin user that have push / pull permission to the registry. |
+| `acrSku` | string | `Basic` | `[Basic, Premium, Standard]` | Optional. Tier of your Azure container registry. |
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
-| `dataEndpointEnabled` | bool |  |  | Optional. Enable a single data endpoint per region for serving data. Not relevant in case of disabled public access. |
+| `dataEndpointEnabled` | bool | `False` |  | Optional. Enable a single data endpoint per region for serving data. Not relevant in case of disabled public access. |
 | `diagnosticEventHubAuthorizationRuleId` | string |  |  | Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string |  |  | Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticStorageAccountId` | string |  |  | Optional. Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string |  |  | Optional. Resource ID of the diagnostic log analytics workspace. |
+| `encryptionStatus` | string | `disabled` | `[disabled, enabled]` | Optional. The value that indicates whether encryption is enabled or not. |
+| `exportPolicyStatus` | string | `disabled` | `[disabled, enabled]` | Optional. The value that indicates whether the export policy is enabled or not. |
+| `keyVaultProperties` | object | `{object}` |  | Optional. Identity which will be used to access key vault and Key vault uri to access the encryption key. |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
 | `logsToEnable` | array | `[ContainerRegistryRepositoryEvents, ContainerRegistryLoginEvents]` | `[ContainerRegistryRepositoryEvents, ContainerRegistryLoginEvents]` | Optional. The name of logs that will be streamed. |
 | `metricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | Optional. The name of metrics that will be streamed. |
 | `name` | string |  |  | Required. Name of your Azure container registry |
 | `networkRuleBypassOptions` | string | `AzureServices` |  | Optional. Whether to allow trusted Azure services to access a network restricted registry. Not relevant in case of public access. - AzureServices or None |
+| `networkRuleSetDefaultAction` | string | `Deny` | `[Allow, Deny]` | Optional. The default action of allow or deny when no other rules match. |
+| `networkRuleSetIpRules` | array | `[]` |  | Optional. The IP ACL rules. |
 | `privateEndpoints` | array | `[]` |  | Optional. Configuration Details for private endpoints. |
-| `publicNetworkAccess` | string | `Enabled` |  | Optional. Whether or not public network access is allowed for the container registry. - Enabled or Disabled |
-| `quarantinePolicyStatus` | string |  |  | Optional. The value that indicates whether the policy is enabled or not. |
-| `retentionPolicyDays` | string |  |  | Optional. The number of days to retain an untagged manifest after which it gets purged. |
-| `retentionPolicyStatus` | string |  |  | Optional. The value that indicates whether the policy is enabled or not. |
+| `publicNetworkAccess` | string | `Enabled` | `[Disabled, Enabled]` | Optional. Whether or not public network access is allowed for the container registry. - Enabled or Disabled |
+| `quarantinePolicyStatus` | string | `disabled` | `[disabled, enabled]` | Optional. The value that indicates whether the quarantine policy is enabled or not. |
+| `replications` | _[replications](replications/readme.md)_ array | `[]` |  | Optional. All replications to create |
+| `retentionPolicyDays` | int | `15` |  | Optional. The number of days to retain an untagged manifest after which it gets purged. |
+| `retentionPolicyStatus` | string | `enabled` | `[disabled, enabled]` | Optional. The value that indicates whether the retention policy is enabled or not. |
 | `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
-| `systemAssignedIdentity` | bool |  |  | Optional. Enables system assigned managed identity on the resource. |
+| `systemAssignedIdentity` | bool | `False` |  | Optional. Enables system assigned managed identity on the resource. |
 | `tags` | object | `{object}` |  | Optional. Tags of the resource. |
-| `trustPolicyStatus` | string |  |  | Optional. The value that indicates whether the policy is enabled or not. |
+| `trustPolicyStatus` | string | `disabled` | `[disabled, enabled]` | Optional. The value that indicates whether the trust policy is enabled or not. |
 | `userAssignedIdentities` | object | `{object}` |  | Optional. The ID(s) to assign to the resource. |
+| `zoneRedundancy` | string | `Disabled` | `[Disabled, Enabled]` | Optional. Whether or not zone redundancy is enabled for this container registry |
+
+### Parameter Usage: `keyVaultProperties`
+
+```json
+"keyVaultProperties": {
+    "value": {
+        "identity": "string", // The client id of the identity which will be used to access key vault.
+        "keyIdentifier": "string" // Key vault uri to access the encryption key.
+    }
+}
+```
 
 ### Parameter Usage: `roleAssignments`
 
@@ -160,7 +179,8 @@ You can specify multiple user assigned identities to a resource by providing add
 
 - [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings)
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
-- [Privateendpoints](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-02-01/privateEndpoints)
+- [Privateendpoints](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/privateEndpoints)
 - [Privateendpoints/Privatednszonegroups](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-02-01/privateEndpoints/privateDnsZoneGroups)
 - [Registries](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ContainerRegistry/2021-09-01/registries)
+- [Registries/Replications](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ContainerRegistry/2021-12-01-preview/registries/replications)
 - [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)
