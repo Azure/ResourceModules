@@ -97,10 +97,6 @@ To update the `namePrefix`, perform the following steps:
     ```
     > **Note:** The value should be a 3-5 character long string like `cntso`. Longer strings are not recommended as they may conflict with Azure resource name length restrictions.
 
-    <!-- TODO: Handle
-    > **Note:** You may also introduce additional tokens later if need be. For further guidelines please refer to the [./] section.
-    -->
-
 ## 3.2 Setup CI-environment-specific configuration
 
 While the concepts are the same, the configuration of the CI environment can differ drastically depending on the DevOps environment in which you want to register and run your pipelines. Following you can find instructions on how to perform the remaining configuration in the corresponding DevOps environment:
@@ -109,10 +105,106 @@ While the concepts are the same, the configuration of the CI environment can dif
 <summary>GitHub</summary>
 
 ### 3.2.1 Setup secrets
-### 3.2.2 Setup variables (esp. ACR)
-### 3.2.3 Enable actions
+
+### Pipeline secrets
+
+To use the environment's pipelines you need the following secrets set up:
+
+| Secret Name | Example | Description |
+| - | - | - |
+| `ARM_MGMTGROUP_ID` | `de33a0e7-64d9-4a94-8fe9-b018cedf1e05` | The group ID of the management group to test deploy modules of that level in. |
+| `ARM_SUBSCRIPTION_ID` | `d0312b25-9160-4550-914f-8738d9b5caf5` | The subscription ID of the subscription to test deploy modules of that level in. |
+| `ARM_TENANT_ID` | `9734cec9-4384-445b-bbb6-767e7be6e5ec` | The tenant ID of the tenant to test deploy modules of that level in. |
+| `DEPLOYMENT_SP_ID` | `de33a0e7-64d9-4a94-8fe9-b018cedf1e05` | This is the Principal (Object ID) for the Service Principal used as the Azure service connection. It is used for Default Role Assignments when Modules are being deployed into Azure |
+| `AZURE_CREDENTIALS` | `{"clientId": "4ce8ce4c-cac0-48eb-b815-65e5763e2929", "clientSecret": "<placeholder>", "subscriptionId": "d0312b25-9160-4550-914f-8738d9b5caf5", "tenantId": "9734cec9-4384-445b-bbb6-767e7be6e5ec" }` | The login credentials of the deployment principal to use to log into the target Azure environment to test in. The format is described [here](https://github.com/Azure/login#configure-deployment-credentials). |
+| `PLATFORM_REPO_UPDATE_PAT` | `<placeholder>` | A PAT with enough permissions assigned to it to push into the main branch. This PAT is leveraged by pipelines that automatically generate ReadMe files to keep them up to date |
+
+<p>
+
+<details>
+<summary><b>How to:</b> Add a repository secret to GitHub</summary>
+
+1. Navigate to the repository's `Settings`.
+
+    <img src="./media/SetupEnvironment/forkSettings.png" alt="Navigate to settings" height="100">
+
+1. In the list of settings, expand `Secrets` and select `Actions`. You can create a new repository secret by selecting `New repository secret` on the top right.
+
+    <img src="./media/SetupEnvironment/forkSettingsSecrets.png" alt="Navigate to secrets" height="600">
+
+1. In the opening view, you can create a secret by providing a secret `Name`, a secret `Value`, followed by a click on the `Add secret` button.
+
+    <img src="./media/SetupEnvironment/forkSettingsSecretAdd.png" alt="Add secret" height="600">
 
 </details>
+
+<p>
+
+> Special case: `AZURE_CREDENTIALS`,
+> This secret represents our service connection to Azure and its value is a compressed JSON object that must match the following format:
+>
+> ```JSON
+> {"clientId": "<client_id>", "clientSecret": "<client_secret>", "subscriptionId": "<subscriptionId>", "tenantId": "<tenant_id>" }
+> ```
+>
+> **Make sure you create this object as one continuous string as shown above** - using the information you collected during [Step 1](#1-configure-your-azure-environment). Failing to format the secret as above, results in masked strings (`***`) in place of `{` and `}` in the workflow logs as it is considering each line of the json object as a separate secret string. If you're interested, you can find more information about this object [here](https://github.com/Azure/login#configure-deployment-credentials).
+
+### 3.2.2 Setup variables (esp. ACR)
+
+The primary pipeline variable file hosts the fundamental pipeline configuration. In the file you will find and can configure information such as:
+
+<details>
+<summary>General</summary>
+
+| Variable Name | Example Value | Description |
+| - | - | - |
+| `defaultLocation` | "WestEurope" | The default location to deploy resources to. If no location is specified in the deploying parameter file, this location is used |
+| `resourceGroupName` | "validation-rg" | The resource group to deploy all resources for validation to |
+
+</details>
+
+<details>
+<summary>Template-specs specific (publishing)</summary>
+
+| Variable Name | Example Value | Description |
+| - | - | - |
+| `templateSpecsRGName` | "artifacts-rg" | The resource group to host the created template-specs |
+| `templateSpecsRGLocation` | "WestEurope" | The location of the resource group to host the template-specs. Is used to create a new resource group if not yet existing |
+| `templateSpecsDescription` | "This is a module from the [Common Azure Resource Modules Library]" | A description to add to the published template specs |
+| `templateSpecsDoPublish` | "true" | A central switch to enable/disable publishing to template-specs |
+
+</details>
+
+<details>
+<summary>Private bicep registry specific (publishing)</summary>
+
+| Variable Name | Example Value | Description |
+| - | - | - |
+| `bicepRegistryName` | "adpsxxazacrx001" | The container registry to publish bicep templates to |
+| `bicepRegistryRGName` | "artifacts-rg" | The resource group of the container registry to publish bicep templates to. Is used to create a new container registry if not yet existing |
+| `bicepRegistryRGName` | "artifacts-rg" | The location of the resource group of the container registry to publish bicep templates to. Is used to create a new resource group if not yet existing |
+| `bicepRegistryDoPublish` | "true" | A central switch to enable/disable publishing to the private bicep registry |
+
+</details>
+
+<p>
+
+### 3.2.3 Enable actions
+
+
+Finally, the 'GitHub Actions' are disabled by default. Hence, in order to continue with the rest of the lab and execute any pipelines you have to enable them first.
+
+To do so, perform the following steps:
+
+1. Navigate to the `Actions` tab on the top of the repository page.
+
+1. Next, select '`I understand my workflows, go ahead and enable them`'.
+
+    <img src="./media/ghActionsTab.png" alt="Enable Actions" height="380">
+
+</details>
+
+<p>
 
 <details>
 <summary>Azure DevOps</summary>
