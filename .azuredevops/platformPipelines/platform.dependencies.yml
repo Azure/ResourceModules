@@ -91,7 +91,7 @@ stages:
       - deploy_rg
     variables:
       resourceType: 'Microsoft.Authorization/policyAssignments'
-      templateFilePath: $(modulesPath)/$(resourceType)/.bicep/nested_policyAssignments_sub.bicep
+      templateFilePath: $(modulesPath)/$(resourceType)/subscription/deploy.bicep
     jobs:
       - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
         parameters:
@@ -129,6 +129,9 @@ stages:
             - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
               templateFilePath: $(templateFilePath)
               displayName: Default LAW
+            - path: $(dependencyPath)/$(resourceType)/parameters/aut.parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: Automation account LAW
             - path: $(dependencyPath)/$(resourceType)/parameters/appi.parameters.json
               templateFilePath: $(templateFilePath)
               displayName: AppInsights LAW
@@ -585,10 +588,6 @@ stages:
               templateFilePath: $(templateFilePath)
               displayName: Private Endpoint Key Vault
               customParameterFileTokens: '{"msiPrincipalId":"$(msiPrincipalId)"}'
-            - path: $(dependencyPath)/$(resourceType)/parameters/nopr.parameters.json
-              templateFilePath: $(templateFilePath)
-              displayName: Private Endpoint Key Vault
-              customParameterFileTokens: '{"msiPrincipalId":"$(msiPrincipalId)"}'
             - ${{ if eq( parameters.deploySqlMiDependencies, true) }}:
                 - path: $(dependencyPath)/$(resourceType)/parameters/sqlmi.parameters.json
                   templateFilePath: $(templateFilePath)
@@ -684,48 +683,6 @@ stages:
                   $null = Add-AzKeyVaultCertificate -VaultName $keyVaultName -Name $_.name -CertificatePolicy $_.CertificatePolicy
                   Write-Verbose ('Added certificate [{0}] to key vault [{1}]' -f $_.name, $keyVaultName) -Verbose
                 }
-
-                # Set keys
-                # ----
-                @(
-                  @{ name = 'keyEncryptionKey'; Destination = 'Software' } # DiskEncryptionSet, VirtualMachines and VMSS
-                ) | ForEach-Object {
-                    $null = Add-AzKeyVaultKey -VaultName $keyVaultName -Name $_.name -Destination $_.Destination
-                    Write-Verbose ('Added key [{0}] to key vault [{1}]' -f $_.name, $keyVaultName) -Verbose
-                }
-              azurePowerShellVersion: 'LatestVersion'
-              pwsh: true
-
-          - task: AzurePowerShell@5
-            displayName: Set no purge key vault keys
-            inputs:
-              azureSubscription: $(serviceConnection)
-              ScriptType: 'InlineScript'
-              Inline: |
-                $parameterFilePath = Join-Path '$(Build.SourcesDirectory)' '$(dependencyPath)' '$(resourceType)' 'parameters' 'nopr.parameters.json'
-                # Load used functions
-                . (Join-Path '$(Build.SourcesDirectory)' 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInFile.ps1')
-
-                # Replace tokens in parameter file
-                $Settings = Get-Content -Path (Join-Path '$(Build.SourcesDirectory)' 'settings.json') | ConvertFrom-Json -AsHashTable
-                $ConvertTokensInputs = @{
-                    FilePath    = $parameterFilePath
-                    TokenPrefix = $Settings.parameterFileTokens.tokenPrefix
-                    TokenSuffix = $Settings.parameterFileTokens.tokenSuffix
-                }
-                if ($Settings.parameterFileTokens.localTokens) {
-                    $tokenMap = @{}
-                    foreach ($token in $Settings.parameterFileTokens.localTokens) {
-                        $tokenMap += @{ $token.name = $token.value }
-                    }
-                    Write-Verbose ('Using local tokens [{0}]' -f ($tokenMap.Keys -join ', ')) -Verbose
-                    $ConvertTokensInputs.Tokens = $tokenMap
-                }
-                $null = Convert-TokensInFile @ConvertTokensInputs
-
-                # Get key vault name
-                $keyVaultParameters = (ConvertFrom-Json (Get-Content -Path $parameterFilePath -Raw)).parameters
-                $keyVaultName = $keyVaultParameters.name.value
 
                 # Set keys
                 # ----
@@ -846,7 +803,7 @@ stages:
       - deploy_msi
     variables:
       resourceType: 'Microsoft.Authorization/roleAssignments'
-      templateFilePath: $(modulesPath)/$(resourceType)/.bicep/nested_rbac_sub.bicep
+      templateFilePath: $(modulesPath)/$(resourceType)/subscription/deploy.bicep
       msiPrincipalId: $[ stageDependencies.deploy_msi.job_set_msi_id.outputs['print_msi_prinId.msiPrincipalId'] ]
     jobs:
       - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
