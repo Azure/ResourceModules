@@ -17,9 +17,6 @@
               "Backup"
             ],
             "secrets": [
-              "Get",
-              "List",
-              "Backup"
             ],
             "certificates": []
           }
@@ -33,9 +30,7 @@
               "WrapKey",
               "UnwrapKey"
             ],
-            "secrets": [
-              "Get"
-            ],
+            "secrets": [],
             "certificates": []
           }
         },
@@ -46,18 +41,17 @@
             "keys": [
               "all"
             ],
-            "secrets": [
-              "all"
-            ],
-            "certificates": [
-              "all"
-            ]
+            "secrets": [],
+            "certificates": []
           }
         }
       ]
     },
     "enablePurgeProtection": {
       "value": true
+    },
+    "softDeleteRetentionInDays" : {
+      "value": 7
     }
   }
 }
