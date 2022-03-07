@@ -13,6 +13,7 @@ This module deploys Network Security Group Security Rules.
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `access` | string | `Deny` | `[Allow, Deny]` | Optional. Whether network traffic is allowed or denied. |
+| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `description` | string |  |  | Optional. A description for this rule |
 | `destinationAddressPrefix` | string |  |  | Optional. The destination address prefix. CIDR or destination IP range. Asterisk "*" can also be used to match all source IPs. Default tags such as "VirtualNetwork", "AzureLoadBalancer" and "Internet" can also be used. |
 | `destinationAddressPrefixes` | array | `[]` |  | Optional. The destination address prefixes. CIDR or destination IP ranges. |

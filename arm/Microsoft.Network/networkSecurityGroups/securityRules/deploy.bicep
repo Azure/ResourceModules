@@ -66,6 +66,14 @@ param sourcePortRange string = ''
 @sys.description('Optional. The source port ranges.')
 param sourcePortRanges array = []
 
+@sys.description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
+param cuaId string = ''
+
+module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
+  name: 'pid-${cuaId}'
+  params: {}
+}
+
 resource networkSecurityGroup 'Microsoft.Network/networkSecurityGroups@2021-05-01' existing = {
   name: networkSecurityGroupName
 }
