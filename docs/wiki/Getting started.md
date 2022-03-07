@@ -74,7 +74,7 @@ To save a local copy of the repository you can either clone the repository or do
 A clone is a direct reference the the source repository which enables you to pull updates as they happen in the source repository. To achieve this you have to have `Git` installed and run the command
 
 ```PowerShell
-  git clone 'https://github.com/Azure/ResourceModules.git'`
+  git clone 'https://github.com/Azure/ResourceModules.git'
 ```
 
 from the command-line of your choice.
