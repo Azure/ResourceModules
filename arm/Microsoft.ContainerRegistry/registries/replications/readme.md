@@ -6,7 +6,7 @@ This module deploys ContainerRegistry Registries Replications.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.ContainerRegistry/registries/replications` | 2021-09-01 |
+| `Microsoft.ContainerRegistry/registries/replications` | 2021-12-01-preview |
 
 ## Parameters
 
@@ -15,7 +15,7 @@ This module deploys ContainerRegistry Registries Replications.
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
 | `name` | string |  |  | Required. The name of the replication. |
-| `regionEndpointEnabled` | bool | `False` |  | Optional. Specifies whether the replication regional endpoint is enabled. Requests will not be routed to a replication whose regional endpoint is disabled, however its data will continue to be synced with other replications. |
+| `regionEndpointEnabled` | bool | `True` |  | Optional. Specifies whether the replication regional endpoint is enabled. Requests will not be routed to a replication whose regional endpoint is disabled, however its data will continue to be synced with other replications. |
 | `registryName` | string |  |  | Required. The name of the registry. |
 | `tags` | object | `{object}` |  | Optional. Tags of the resource. |
 | `zoneRedundancy` | string | `Disabled` | `[Disabled, Enabled]` | Optional. Whether or not zone redundancy is enabled for this container registry |
@@ -47,4 +47,4 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 ## Template references
 
-- [Registries/Replications](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ContainerRegistry/2021-09-01/registries/replications)
+- [Registries/Replications](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ContainerRegistry/2021-12-01-preview/registries/replications)

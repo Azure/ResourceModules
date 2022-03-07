@@ -9,7 +9,7 @@ Azure Container Registry is a managed, private Docker registry service based on 
 | `Microsoft.Authorization/locks` | 2017-04-01 |
 | `Microsoft.Authorization/roleAssignments` | 2021-04-01-preview |
 | `Microsoft.ContainerRegistry/registries` | 2021-09-01 |
-| `Microsoft.ContainerRegistry/registries/replications` | 2021-09-01 |
+| `Microsoft.ContainerRegistry/registries/replications` | 2021-12-01-preview |
 | `Microsoft.Insights/diagnosticSettings` | 2021-05-01-preview |
 | `Microsoft.Network/privateEndpoints` | 2021-05-01 |
 | `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | 2021-02-01 |
@@ -19,7 +19,7 @@ Azure Container Registry is a managed, private Docker registry service based on 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `acrAdminUserEnabled` | bool | `False` |  | Optional. Enable admin user that have push / pull permission to the registry. |
-| `acrSku` | string | `Basic` | `[Basic, Classic, Premium, Standard]` | Optional. Tier of your Azure container registry. |
+| `acrSku` | string | `Basic` | `[Basic, Premium, Standard]` | Optional. Tier of your Azure container registry. |
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `dataEndpointEnabled` | bool | `False` |  | Optional. Enable a single data endpoint per region for serving data. Not relevant in case of disabled public access. |
 | `diagnosticEventHubAuthorizationRuleId` | string |  |  | Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
@@ -182,5 +182,5 @@ You can specify multiple user assigned identities to a resource by providing add
 - [Privateendpoints](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/privateEndpoints)
 - [Privateendpoints/Privatednszonegroups](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-02-01/privateEndpoints/privateDnsZoneGroups)
 - [Registries](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ContainerRegistry/2021-09-01/registries)
-- [Registries/Replications](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ContainerRegistry/2021-09-01/registries/replications)
+- [Registries/Replications](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ContainerRegistry/2021-12-01-preview/registries/replications)
 - [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)

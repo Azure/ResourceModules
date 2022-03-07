@@ -32,7 +32,7 @@ resource registry 'Microsoft.ContainerRegistry/registries@2021-09-01' existing =
   name: registryName
 }
 
-resource replication 'Microsoft.ContainerRegistry/registries/replications@2021-09-01' = {
+resource replication 'Microsoft.ContainerRegistry/registries/replications@2021-12-01-preview' = {
   name: name
   parent: registry
   location: location
