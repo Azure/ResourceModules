@@ -229,7 +229,7 @@ module registry_replications 'replications/deploy.bicep' = [for (replication, in
   params: {
     name: replication.name
     registryName: registry.name
-    location: location
+    location: replication.location
     regionEndpointEnabled: contains(replication, 'regionEndpointEnabled') ? replication.regionEndpointEnabled : true
     zoneRedundancy: contains(replication, 'zoneRedundancy') ? replication.zoneRedundancy : 'Disabled'
     tags: contains(replication, 'tags') ? replication.tags : {}
