@@ -88,8 +88,8 @@ If you instead just want to have a copy of the repository's content you can inst
 ## 3. Configure the CI environment
 
 To configure the CI environment you have to perform several tasks:
-- [Update default `namePrefix`](#update-default-nameprefix)
-- [Setup CI-environment-specific configuration](#setup-ci-environment-specific-configuration)
+- [3.1 Update default `namePrefix`](#31-update-default-nameprefix)
+- [3.2 Setup CI-environment-specific configuration](#32-setup-ci-environment-specific-configuration)
 
 > **Note:** While you can use the browser, we recommend that you clone all files from your local machine and update them using, for example, Visual Studio Code.
 
