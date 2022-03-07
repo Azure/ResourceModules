@@ -173,3 +173,6 @@ While the concepts are the same, the configuration of the CI environment can dif
 # Contribute
 
 </details>
+
+<!-- TODO: Reference interoperability (ConvertTo-ARM) for scenario 1 & 2 -->
+<!-- TODO: Explains publishing (variables) that must be specified -->
