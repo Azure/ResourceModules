@@ -396,7 +396,6 @@ resource vmss 'Microsoft.Compute/virtualMachineScaleSets@2021-04-01' = {
           secureBootEnabled: secureBootEnabled
           vTpmEnabled: vTpmEnabled
         } : null
-      
       }
       storageProfile: {
         imageReference: imageReference
@@ -631,6 +630,7 @@ resource vmss_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-
 module vmss_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-VMSS-Rbac-${index}'
   params: {
+    description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
     resourceId: vmss.id

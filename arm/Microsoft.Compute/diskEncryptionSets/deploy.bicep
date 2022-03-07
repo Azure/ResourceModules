@@ -80,6 +80,7 @@ module keyVaultAccessPolicies '.bicep/nested_kvAccessPolicy.bicep' = {
 module diskEncryptionSet_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-DiskEncrSet-Rbac-${index}'
   params: {
+    description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
     resourceId: diskEncryptionSet.id

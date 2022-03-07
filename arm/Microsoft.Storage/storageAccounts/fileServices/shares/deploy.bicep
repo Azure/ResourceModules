@@ -12,16 +12,16 @@ param name string
 param sharedQuota int = 5120
 
 @allowed([
-    'NFS'
-    'SMB'
+  'NFS'
+  'SMB'
 ])
 @description('Optional. The authentication protocol that is used for the file share. Can only be specified when creating a share.')
 param enabledProtocols string = 'SMB'
 
 @allowed([
-    'AllSquash'
-    'NoRootSquash'
-    'RootSquash'
+  'AllSquash'
+  'NoRootSquash'
+  'RootSquash'
 ])
 @description('Optional. Permissions for NFS file shares are enforced by the client OS rather than the Azure Files service. Toggling the root squash behavior reduces the rights of the root user for NFS shares.')
 param rootSquash string = 'NoRootSquash'
@@ -58,6 +58,7 @@ resource fileShare 'Microsoft.Storage/storageAccounts/fileServices/shares@2021-0
 module fileShare_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${deployment().name}-Rbac-${index}'
   params: {
+    description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
     resourceId: fileShare.id
