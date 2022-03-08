@@ -180,7 +180,7 @@ The primary pipeline variable file `.github/variables/global.variables.json` hos
 
 | Variable Name | Example Value | Description |
 | - | - | - |
-| `bicepRegistryName` | `"adpsxxazacrx001"` | The container registry to publish bicep templates to |
+| `bicepRegistryName` | `"adpsxxazacrx001"` | The container registry to publish bicep templates to. <p> **NOTE:** Must be globally unique |
 | `bicepRegistryRGName` | `"artifacts-rg"` | The resource group of the container registry to publish bicep templates to. Is used to create a new container registry if not yet existing |
 | `bicepRegistryRGName` | `"artifacts-rg"` | The location of the resource group of the container registry to publish bicep templates to. Is used to create a new resource group if not yet existing |
 | `bicepRegistryDoPublish` | `"true"` | A central switch to enable/disable publishing to the private bicep registry |
@@ -188,6 +188,8 @@ The primary pipeline variable file `.github/variables/global.variables.json` hos
 </details>
 
 <p>
+
+> **NOTE:** If you plan to use the private container registry for Bicep, make sure to update its value `bicepRegistryName` as it must be globally unique
 
 ### 3.2.3 Enable actions
 
@@ -267,7 +269,7 @@ The primary pipeline variable file `.azuredevops/pipelineVariables/global.variab
 
 | Variable Name | Example Value | Description |
 | - | - | - |
-| `bicepRegistryName` | `'adpsxxazacrx001'` | The container registry to publish bicep templates to |
+| `bicepRegistryName` | `'adpsxxazacrx001'` | The container registry to publish bicep templates to. <p> **NOTE:** Must be globally unique |
 | `bicepRegistryRGName` | `'artifacts-rg'` | The resource group of the container registry to publish bicep templates to. Is used to create a new container registry if not yet existing |
 | `bicepRegistryRGName` | `'artifacts-rg'` | The location of the resource group of the container registry to publish bicep templates to. Is used to create a new resource group if not yet existing |
 | `bicepRegistryDoPublish` | `'true'` | A central switch to enable/disable publishing to the private bicep registry |
@@ -288,7 +290,11 @@ The primary pipeline variable file `.azuredevops/pipelineVariables/global.variab
 
 <p>
 
+> **NOTE:** If you plan to use the private container registry for Bicep, make sure to update its value `bicepRegistryName` as it must be globally unique
+
 ### 3.2.4 Register pipelines
+
+To use the pipelines that come with the environment in Azure DevOps, you need to register them first. You can either do this manually, or, execute the utility `Register-AzureDevOpsPipeline` we provide in path `utilities/tools/AzureDevOps`. For further information, please refer to the corresponding [documentation](./Getting%20started%20-%20Register-AzureDevOpsPipeline).
 
 </details>
 
@@ -296,13 +302,30 @@ The primary pipeline variable file `.azuredevops/pipelineVariables/global.variab
 
 # 4. Deploy dependencies
 
+At this stage you can execute your first pipeline, that is, the dependency pipeline.
+
+As the modules we test oftentimes have dependencies to other services, we created a pipeline to deploys several standard services like Virtual Networks and Key Vaults (alongside dummy secrets) for the modules to use. This _dependency_ pipeline should be prepared and executed before you start running any module pipelines.
+
+> **Note:** If you want to rename any services there make sure to update any references to this name in the module parameter files. You can find further details about this pipeline [here](./Getting%20started%20-%20Dependency%20pipeline).
 
 # 5. Update module parameter files
 
-- TODO: e.g. VM key
+Once the required dependencies are deployed, there is one more step left to get as many module pipelines running as possible.
+
+Essentially, several modules reference values who's references are will be different for every first deployment of a resource. For example, if a module references a Key Vault key, its version identifier will only be available once the dependency pipeline executed once.
+
+For this reason, make sure to update the references in the following modules once the dependency pipeline concluded:
+
+| File | Parameter |
+| - | - |
+| `arm\Microsoft.Compute\diskEncryptionSets\.parameters\parameters.json` |`keyUrl.value` |
+| `arm\Microsoft.Compute\virtualMachines\.parameters\linux.parameters.json` | `extensionDiskEncryptionConfig.value.settings.KeyEncryptionKeyURL` |
+| `arm\Microsoft.Compute\virtualMachines\.parameters\windows.parameters.json` | `extensionDiskEncryptionConfig.value.settings.KeyEncryptionKeyURL` |
+| `arm\Microsoft.Compute\virtualMachineScaleSets\.parameters\linux.parameters.json` | `extensionDiskEncryptionConfig.value.settings.KeyEncryptionKeyURL` |
+| `arm\Microsoft.Compute\virtualMachineScaleSets\.parameters\windows.parameters.json` | `extensionDiskEncryptionConfig.value.settings.KeyEncryptionKeyURL` |
+| `arm\Microsoft.Sql\managedInstances\.parameters\parameters.json` | `keys.value.uri` |
 
 </details>
 
 
 <!-- TODO: Reference interoperability (ConvertTo-ARM) for scenario 1 & 2 -->
-<!-- TODO: Explains publishing (variables) that must be specified -->
