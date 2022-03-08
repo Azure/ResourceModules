@@ -23,7 +23,7 @@
                 "azureADOnlyAuthentication": false,
                 "login": "John Doe",
                 "sid": "<<objectId>>",
-                "principalType": "User",
+                "principalType": "Application",
                 "tenantId": "<<tenantId>>"
             }
         },
