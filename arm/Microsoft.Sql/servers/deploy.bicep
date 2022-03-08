@@ -43,7 +43,7 @@ param firewallRules array = []
 @description('Optional. The security alert policies to create in the server')
 param securityAlertPolicies array = []
 
-@description('Conditional. The Azure Active Directory (AAD) administrator authentiaction.')
+@description('Optional. The Azure Active Directory (AAD) administrator authentiaction. Required if no `administratorLogin` & `administratorLoginPassword` is provided.')
 param administrators object = {}
 
 var identityType = systemAssignedIdentity ? (!empty(userAssignedIdentities) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned') : (!empty(userAssignedIdentities) ? 'UserAssigned' : 'None')
