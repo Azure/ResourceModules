@@ -65,7 +65,7 @@ jobs:
   job_module_pester_validation:
     runs-on: ubuntu-20.04
     name: 'Pester tests'
-    if: '${{ needs.job_set_workflow_param.outputs.skipValidation }}' == 'false'
+    if: '${{ needs.job_set_workflow_param.outputs.skipValidation  == 'false' }}'
     needs:
       - job_set_workflow_param
     steps:
