@@ -1,0 +1,15 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "location": {
+            "value": "westeurope"
+        },
+        "targetVnetResourceId": {
+            "value": "/subscriptions/7ce5fff6-aaaa-4a71-88b4-12b48eecfb1f/resourceGroups/rg-spoke/providers/Microsoft.Network/virtualNetworks/vnet-spoke-BU0001A0008-00"
+        },
+        "geoRedundancyLocation":{
+            "value": "northeurope"
+        }
+    }
+}

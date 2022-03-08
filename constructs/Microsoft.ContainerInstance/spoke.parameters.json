@@ -1,0 +1,24 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "resourceGroupName": {
+            "value": "rg-spoke"
+        },
+        "location": {
+            "value": "westeurope"
+        },
+        "clusterVnetAddressSpace": {
+            "value": "10.240.0.0/16"
+        },
+        "hubVnetResourceId": {
+            "value": "/subscriptions/7ce5fff6-aaaa-4a71-88b4-12b48eecfb1f/resourceGroups/rg-enterprise-networking-hubs/providers/Microsoft.Network/virtualNetworks/vnet-westeurope-hub"
+        },
+        "hubLaWorkspaceResourceId": {
+            "value": "/subscriptions/7ce5fff6-aaaa-4a71-88b4-12b48eecfb1f/resourcegroups/rg-enterprise-networking-hubs/providers/microsoft.operationalinsights/workspaces/la-hub-westeurope-igkacw5jgu4fo"
+        },
+        "hubFwResourceId": {
+            "value": "/subscriptions/7ce5fff6-aaaa-4a71-88b4-12b48eecfb1f/resourceGroups/rg-enterprise-networking-hubs/providers/Microsoft.Network/azureFirewalls/fw-westeurope"
+        }
+    }
+}

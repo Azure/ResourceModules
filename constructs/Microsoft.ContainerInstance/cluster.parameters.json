@@ -1,0 +1,21 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "location": {
+            "value": "westeurope"
+        },
+        "targetVnetResourceId": {
+            "value": "/subscriptions/7ce5fff6-aaaa-4a71-88b4-12b48eecfb1f/resourceGroups/rg-spoke/providers/Microsoft.Network/virtualNetworks/vnet-spoke-BU0001A0008-00"
+        },
+        "k8sControlPlaneAuthorizationTenantId":{
+            "value": "246f55de-f13f-4d18-afeb-b5ad7be41265"
+        },
+        "clusterAdminAadGroupObjectId":{
+            "value": "50f1138f-1d8c-4eab-b643-e3a02820f244"
+        },
+        "a0008NamespaceReaderAadGroupObjectId":{
+            "value": "50f1138f-1d8c-4eab-b643-e3a02820f244"
+        }
+    }
+}
