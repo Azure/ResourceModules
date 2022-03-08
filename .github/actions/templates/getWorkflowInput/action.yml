@@ -10,6 +10,9 @@ outputs:
   removeDeployment:
     description: 'Remove deployed module'
     value: ${{ steps.get-input-param-action.outputs.removeDeployment }}
+  skipValidation:
+    description: 'Skip static and deployment validation'
+    value: ${{ steps.get-input-param-action.outputs.skipValidation }}
 
 runs:
   using: 'composite'
@@ -24,8 +27,8 @@ runs:
 
         # When running from workflow_dispatch event get input values
         if ('${{ github.event_name }}' -eq 'workflow_dispatch') {
-
           $removeDeployment='${{ github.event.inputs.removeDeployment }}'
+          $skipValidation='${{ github.event.inputs.skipValidation }}'
         }
         # Otherwise retrieve default values
         else {
@@ -41,10 +44,12 @@ runs:
 
           $workflowParameters = Get-WorkflowDefaultInput @functionInput -Verbose
           $removeDeployment = $workflowParameters.removeDeployment
+          $skipValidation = $workflowParameters.skipValidation
         }
 
         # Output values to be accessed by next jobs
         Write-Output "::set-output name=removeDeployment::$removeDeployment"
+        Write-Output "::set-output name=skipValidation::$skipValidation"
 
         Write-Output "::endgroup::"
       shell: pwsh

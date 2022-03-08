@@ -57,6 +57,7 @@ jobs:
           workflowPath: '${{ env.workflowPath}}'
     outputs:
       removeDeployment: ${{ steps.get-workflow-param.outputs.removeDeployment }}
+      removeDeployment: ${{ steps.get-workflow-param.outputs.removeDeployment }}
 
   ####################
   #   Pester Tests   #
@@ -64,7 +65,9 @@ jobs:
   job_module_pester_validation:
     runs-on: ubuntu-20.04
     name: 'Pester tests'
-    if: github.event.inputs.skipValidation == 'false'
+    if: (!needs.job_set_workflow_param.outputs.skipValidation)
+    needs:
+      - job_set_workflow_param
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -81,7 +84,7 @@ jobs:
   job_module_deploy_validation:
     runs-on: ubuntu-20.04
     name: 'Deployment tests'
-    if: github.event.inputs.skipValidation == 'false'
+    if: (!needs.job_set_workflow_param.outputs.skipValidation)
     needs:
       - job_set_workflow_param
       - job_module_pester_validation
