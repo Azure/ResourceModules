@@ -122,6 +122,7 @@ function Get-WorkflowDefaultInput {
 
         $workflowParameters = @{
             removeDeployment = Get-DefaultValue -InputName 'removeDeployment' -Content $workflowContent -Verbose
+            skipValidation   = Get-DefaultValue -InputName 'skipValidation' -Content $workflowContent -Verbose
         }
 
         Write-Verbose 'Get workflow default input complete'
