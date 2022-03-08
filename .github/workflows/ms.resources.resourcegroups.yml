@@ -15,7 +15,7 @@ on:
         default: false
       skipValidation:
         type: boolean
-        description: 'Skip static and deployment validation'
+        description: 'Skip validation'
         required: false
         default: false
   push:
@@ -118,7 +118,6 @@ jobs:
   job_publish_module:
     name: 'Publish module'
     if: always() && (needs.job_module_deploy_validation.result != 'failure') && (needs.job_module_pester_validation.result != 'failure') && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master' || github.event.inputs.prerelease == 'true')
-    # if: (!needs.job_set_workflow_param.outputs.skipValidation) && github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master' || github.event.inputs.prerelease == 'true'
     runs-on: ubuntu-20.04
     needs:
       - job_set_workflow_param
@@ -145,4 +144,3 @@ jobs:
           bicepRegistryRGName: '${{ env.bicepRegistryRGName }}'
           bicepRegistryRgLocation: '${{ env.bicepRegistryRgLocation }}'
           bicepRegistryDoPublish: '${{ env.bicepRegistryDoPublish }}'
-

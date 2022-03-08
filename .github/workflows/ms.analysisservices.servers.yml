@@ -15,7 +15,7 @@ on:
         default: false
       skipValidation:
         type: boolean
-        description: 'Skip static and deployment validation'
+        description: 'Skip validation'
         required: false
         default: false
   push:
@@ -40,7 +40,7 @@ env:
 
 jobs:
   ############################
-  #   Set input parameters   #
+  #   SET INPUT PARAMETERS   #
   ############################
   job_set_workflow_param:
     runs-on: ubuntu-20.04
@@ -57,6 +57,7 @@ jobs:
           workflowPath: '${{ env.workflowPath}}'
     outputs:
       removeDeployment: ${{ steps.get-workflow-param.outputs.removeDeployment }}
+      skipValidation: ${{ steps.get-workflow-param.outputs.skipValidation }}
 
   ####################
   #   Pester Tests   #
@@ -64,7 +65,9 @@ jobs:
   job_module_pester_validation:
     runs-on: ubuntu-20.04
     name: 'Pester tests'
-    if: github.event.inputs.skipValidation == 'false'
+    if: (!needs.job_set_workflow_param.outputs.skipValidation)
+    needs:
+      - job_set_workflow_param
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -75,13 +78,13 @@ jobs:
         with:
           modulePath: '${{ env.modulePath }}'
 
-  ########################
-  #   Deployment tests   #
-  ########################
+  ####################
+  # Deployment tests #
+  ####################
   job_module_deploy_validation:
     runs-on: ubuntu-20.04
     name: 'Deployment tests'
-    if: github.event.inputs.skipValidation == 'false'
+    if: (!needs.job_set_workflow_param.outputs.skipValidation)
     needs:
       - job_set_workflow_param
       - job_module_pester_validation
@@ -109,15 +112,16 @@ jobs:
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
           removeDeployment: '${{ needs.job_set_workflow_param.outputs.removeDeployment }}'
 
-  ##################
-  #   Publishing   #
-  ##################
+  ###############
+  #   PUBLISH   #
+  ###############
   job_publish_module:
     name: 'Publish module'
-    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master' || github.event.inputs.prerelease == 'true'
+    if: always() && (needs.job_module_deploy_validation.result != 'failure') && (needs.job_module_pester_validation.result != 'failure') && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master' || github.event.inputs.prerelease == 'true')
     runs-on: ubuntu-20.04
     needs:
       - job_set_workflow_param
+      - job_module_pester_validation
       - job_module_deploy_validation
     steps:
       - name: 'Checkout'
