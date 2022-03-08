@@ -13,6 +13,8 @@ param dbLogin string
 @secure()
 param dbPwd string
 
+param kubernetesVersion string = '1.22.4'
+
 resource rg 'Microsoft.Resources/resourceGroups@2021-04-01' existing = {
   scope: subscription()
   name: '${split(rgResourceId, '/')[4]}'
@@ -78,7 +80,7 @@ module cluster '../../../arm/Microsoft.ContainerService/managedClusters/deploy.b
     location: location
     aksClusterSkuTier: 'Paid'
     aksClusterKubernetesVersion: kubernetesVersion
-    aksClusterDnsPrefix: uniqueString(rg.outputs.name)
+    aksClusterDnsPrefix: uniqueString(rg.name)
     primaryAgentPoolProfile: [
       {
         name: 'npsystem'
@@ -89,7 +91,7 @@ module cluster '../../../arm/Microsoft.ContainerService/managedClusters/deploy.b
         osType: 'Linux'
         minCount: 3
         maxCount: 4
-        vnetSubnetID: vnetNodePoolSubnetResourceId
+        vnetSubnetID: spokeVirtualNetwork::snetClusterNodes.id
         enableAutoScaling: true
         type: 'VirtualMachineScaleSets'
         mode: 'System'
@@ -121,7 +123,7 @@ module cluster '../../../arm/Microsoft.ContainerService/managedClusters/deploy.b
         osType: 'Linux'
         minCount: 2
         maxCount: 5
-        vnetSubnetID: vnetNodePoolSubnetResourceId
+        vnetSubnetID: spokeVirtualNetwork::snetClusterNodes.id
         enableAutoScaling: true
         type: 'VirtualMachineScaleSets'
         mode: 'User'
@@ -144,7 +146,7 @@ module cluster '../../../arm/Microsoft.ContainerService/managedClusters/deploy.b
       clientId: 'msi'
     }
     httpApplicationRoutingEnabled: false
-    monitoringWorkspaceId: clusterLa.outputs.resourceId
+    monitoringWorkspaceId: law.id
     aciConnectorLinuxEnabled: false
     azurePolicyEnabled: true
     azurePolicyVersion: 'v2'
@@ -218,9 +220,9 @@ module cluster '../../../arm/Microsoft.ContainerService/managedClusters/deploy.b
       'Application identifier': 'a0008'
     }
   }
-  scope: resourceGroup(resourceGroupName)
+  scope: resourceGroup(rg.name)
   dependsOn: [
     rg
-    clusterControlPlaneIdentity
+    law
   ]
 }
