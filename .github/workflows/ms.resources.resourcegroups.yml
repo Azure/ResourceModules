@@ -65,7 +65,7 @@ jobs:
   job_module_pester_validation:
     runs-on: ubuntu-20.04
     name: 'Pester tests'
-    if: ${{ ! github.event.inputs.skipValidation }}
+    if: ${{ github.event.inputs.prerelease == 'false' }}
     needs:
       - job_set_workflow_param
     steps:
@@ -84,7 +84,7 @@ jobs:
   job_module_deploy_validation:
     runs-on: ubuntu-20.04
     name: 'Deployment tests'
-    if: ${{ !github.event.inputs.skipValidation }}
+    if: ${{ github.event.inputs.prerelease == 'false' }}
     needs:
       - job_set_workflow_param
       - job_module_pester_validation
