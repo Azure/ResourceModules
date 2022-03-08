@@ -29,6 +29,8 @@ runs:
         if ('${{ github.event_name }}' -eq 'workflow_dispatch') {
           $removeDeployment='${{ github.event.inputs.removeDeployment }}'
           $skipValidation='${{ github.event.inputs.skipValidation }}'
+          Write-Verbose "removeDeployment is: $removeDeployment" -Verbose
+          Write-Verbose "skipValidation is: $skipValidation" -Verbose
         }
         # Otherwise retrieve default values
         else {
@@ -45,6 +47,8 @@ runs:
           $workflowParameters = Get-WorkflowDefaultInput @functionInput -Verbose
           $removeDeployment = $workflowParameters.removeDeployment
           $skipValidation = $workflowParameters.skipValidation
+          Write-Verbose "removeDeployment is: $removeDeployment" -Verbose
+          Write-Verbose "skipValidation is: $skipValidation" -Verbose
         }
 
         # Output values to be accessed by next jobs
