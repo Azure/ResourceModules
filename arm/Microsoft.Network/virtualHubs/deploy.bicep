@@ -68,6 +68,14 @@ param hubRouteTables array = []
 @description('Optional. Virtual network connections to create for the virtual hub.')
 param hubVirtualNetworkConnections array = []
 
+@allowed([
+  'CanNotDelete'
+  'NotSpecified'
+  'ReadOnly'
+])
+@description('Optional. Specify the type of lock.')
+param lock string = 'NotSpecified'
+
 @description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
@@ -102,15 +110,24 @@ resource virtualHub 'Microsoft.Network/virtualHubs@2021-05-01' = {
     securityProviderName: securityProviderName
     sku: sku
     virtualHubRouteTableV2s: virtualHubRouteTableV2s
-    virtualRouterAsn: !(virtualRouterAsn == -1) ? virtualRouterAsn : null
+    virtualRouterAsn: virtualRouterAsn != -1 ? virtualRouterAsn : null
     virtualRouterIps: !empty(virtualRouterIps) ? virtualRouterIps : null
-    virtualWan: !empty(virtualWanId) ? {
+    virtualWan: {
       id: virtualWanId
-    } : null
+    }
     vpnGateway: !empty(vpnGatewayId) ? {
       id: vpnGatewayId
     } : null
   }
+}
+
+resource virtualHub_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
+  name: '${virtualHub.name}-${lock}-lock'
+  properties: {
+    level: lock
+    notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
+  }
+  scope: virtualHub
 }
 
 module virtualHub_routeTables 'hubRouteTables/deploy.bicep' = [for (routeTable, index) in hubRouteTables: {

@@ -18,8 +18,8 @@ param dataActions array = []
 @sys.description('Optional. List of denied data actions. This is not supported if the assignableScopes contains Management Group Scopes')
 param notDataActions array = []
 
-@sys.description('Optional. The group ID of the Management Group where the Role Definition and Target Scope will be applied to. Cannot use when Subscription or Resource Groups Parameters are used.')
-param managementGroupId string = ''
+@sys.description('Optional. The group ID of the Management Group where the Role Definition and Target Scope will be applied to. If not provided, will use the current scope for deployment.')
+param managementGroupId string = managementGroup().name
 
 @sys.description('Optional. The subscription ID where the Role Definition and Target Scope will be applied to. Use for both Subscription level and Resource Group Level.')
 param subscriptionId string = ''
@@ -33,7 +33,7 @@ param location string = deployment().location
 @sys.description('Optional. Role definition assignable scopes. If not provided, will use the current scope provided.')
 param assignableScopes array = []
 
-module roleDefinition_mg '.bicep/nested_roleDefinitions_mg.bicep' = if (!empty(managementGroupId) && empty(subscriptionId) && empty(resourceGroupName)) {
+module roleDefinition_mg 'managementGroup/deploy.bicep' = if (empty(subscriptionId) && empty(resourceGroupName)) {
   name: '${uniqueString(deployment().name, location)}-RoleDefinition-MG-Module'
   scope: managementGroup(managementGroupId)
   params: {
@@ -46,7 +46,7 @@ module roleDefinition_mg '.bicep/nested_roleDefinitions_mg.bicep' = if (!empty(m
   }
 }
 
-module roleDefinition_sub '.bicep/nested_roleDefinitions_sub.bicep' = if (empty(managementGroupId) && !empty(subscriptionId) && empty(resourceGroupName)) {
+module roleDefinition_sub 'subscription/deploy.bicep' = if (!empty(subscriptionId) && empty(resourceGroupName)) {
   name: '${uniqueString(deployment().name, location)}-RoleDefinition-Sub-Module'
   scope: subscription(subscriptionId)
   params: {
@@ -61,7 +61,7 @@ module roleDefinition_sub '.bicep/nested_roleDefinitions_sub.bicep' = if (empty(
   }
 }
 
-module roleDefinition_rg '.bicep/nested_roleDefinitions_rg.bicep' = if (empty(managementGroupId) && !empty(resourceGroupName) && !empty(subscriptionId)) {
+module roleDefinition_rg 'resourceGroup/deploy.bicep' = if (!empty(resourceGroupName) && !empty(subscriptionId)) {
   name: '${uniqueString(deployment().name, location)}-RoleDefinition-RG-Module'
   scope: resourceGroup(subscriptionId, resourceGroupName)
   params: {
@@ -78,10 +78,10 @@ module roleDefinition_rg '.bicep/nested_roleDefinitions_rg.bicep' = if (empty(ma
 }
 
 @sys.description('The GUID of the Role Definition')
-output name string = !empty(managementGroupId) ? roleDefinition_mg.outputs.name : (!empty(resourceGroupName) ? roleDefinition_rg.outputs.name : roleDefinition_sub.outputs.name)
+output name string = empty(subscriptionId) && empty(resourceGroupName) ? roleDefinition_mg.outputs.name : (!empty(subscriptionId) && empty(resourceGroupName) ? roleDefinition_sub.outputs.name : roleDefinition_rg.outputs.name)
 
 @sys.description('The resource ID of the Role Definition')
-output resourceId string = !empty(managementGroupId) ? roleDefinition_mg.outputs.resourceId : (!empty(resourceGroupName) ? roleDefinition_rg.outputs.resourceId : roleDefinition_sub.outputs.resourceId)
+output resourceId string = empty(subscriptionId) && empty(resourceGroupName) ? roleDefinition_mg.outputs.resourceId : (!empty(subscriptionId) && empty(resourceGroupName) ? roleDefinition_sub.outputs.resourceId : roleDefinition_rg.outputs.resourceId)
 
 @sys.description('The scope this Role Definition applies to')
-output roleDefinitionScope string = !empty(managementGroupId) ? roleDefinition_mg.outputs.scope : (!empty(resourceGroupName) ? roleDefinition_rg.outputs.scope : roleDefinition_sub.outputs.scope)
+output roleDefinitionScope string = empty(subscriptionId) && empty(resourceGroupName) ? roleDefinition_mg.outputs.scope : (!empty(subscriptionId) && empty(resourceGroupName) ? roleDefinition_sub.outputs.scope : roleDefinition_rg.outputs.scope)

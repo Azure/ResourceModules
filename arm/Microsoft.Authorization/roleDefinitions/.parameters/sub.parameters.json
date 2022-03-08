@@ -1,0 +1,43 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "roleName": {
+            "value": "<<namePrefix>>-az-testRole-sub"
+        },
+        "description": {
+            "value": "Test Custom Role Definition Standard (subscription scope)"
+        },
+        "actions": {
+            "value": [
+                "Microsoft.Compute/galleries/*",
+                "Microsoft.Network/virtualNetworks/read"
+            ]
+        },
+        "notActions": {
+            "value": [
+                "Microsoft.Compute/images/write",
+                "Microsoft.Compute/images/delete",
+                "Microsoft.Network/virtualNetworks/subnets/join/action"
+            ]
+        },
+        "dataActions": {
+            "value": [
+                "Microsoft.Storage/storageAccounts/blobServices/*/read"
+            ]
+        },
+        "notDataActions": {
+            "value": [
+                "Microsoft.Storage/storageAccounts/blobServices/containers/blobs/read"
+            ]
+        },
+        "assignableScopes": {
+            "value": [
+                "/subscriptions/<<subscriptionId>>"
+            ]
+        },
+        "subscriptionId": {
+            "value": "<<subscriptionId>>"
+        }
+    }
+}

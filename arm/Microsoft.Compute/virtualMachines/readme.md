@@ -235,7 +235,11 @@ Get-TimeZone -ListAvailable | Select ID
 
 ### Parameter Usage: `nicConfigurations`
 
-The field `nicSuffix` and `subnetId` are mandatory. If `enablePublicIP` is set to true, then `publicIpNameSuffix` is also mandatory. Each IP config needs to have the mandatory field `name`.
+Comments:
+- The field `nicSuffix` and `subnetId` are mandatory.
+- If `enablePublicIP` is set to true, then `publicIpNameSuffix` is also mandatory.
+- Each IP config needs to have the mandatory field `name`.
+- If not disabled, `enableAcceleratedNetworking` is considered `true` by default and requires the VM to be deployed with a supported OS and VM size.
 
 ```json
 "nicConfigurations": {
