@@ -7,6 +7,7 @@ This requires several steps:
 1. [Configure the CI environment](#3-configure-the-ci-environment)
 1. [Deploy dependencies](#4-deploy-dependencies)
 1. [Update module parameter files](#5-update-module-parameter-files)
+1. [(Optional) Convert library to ARM](#6-optional-convert-library-to-arm)
 
 Depending on the DevOps environment you choose (GitHub or Azure DevOps) make sure you also account for the specific requirements outlined below.
 
@@ -327,5 +328,6 @@ For this reason, make sure to update the references in the following modules onc
 
 </details>
 
+# 6. (Optional) Convert library to ARM
 
-<!-- TODO: Reference interoperability (ConvertTo-ARM) for scenario 1 & 2 -->
+Note that in case you don't want to use Bicep, you always have the option to use the utility `ConvertTo-ARMTemplate`, we provide in path `utilities/tools`, to convert the repository to an ARM-only repository. Due to the way Bicep works and the CI environment is set up, you should be able to use it with ARM templates in the same way as you would using Bicep. For further information on how to use the tool, please refer to the tool-specific [documentation](./Getting%20started%20-%20ConvertTo-ARMTemplate).
