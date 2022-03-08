@@ -18,6 +18,15 @@
                 "secretName": "administratorLoginPassword"
             }
         },
+        "administrators": {
+            "value": {
+                "azureADOnlyAuthentication": false,
+                "login": "John Doe",
+                "sid": "<<objectId>>",
+                "principalType": "User",
+                "tenantId": "<<tenantId>>"
+            }
+        },
         "location": {
             "value": "westeurope"
         },
