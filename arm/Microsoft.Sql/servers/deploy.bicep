@@ -1,9 +1,9 @@
-@description('Required. Administrator username for the server.')
-param administratorLogin string
+@description('Optional if AAD Admin is assigned. Administrator username for the server.')
+param administratorLogin string = ''
 
-@description('Required. The administrator login password.')
+@description('Optional if AAD Admin is assigned. The administrator login password.')
 @secure()
-param administratorLoginPassword string
+param administratorLoginPassword string = ''
 
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
@@ -43,6 +43,9 @@ param firewallRules array = []
 @description('Optional. The security alert policies to create in the server')
 param securityAlertPolicies array = []
 
+@description('Optional. The Azure Active Directory (AAD) administrator authentiaction.')
+param administrators object = {}
+
 var identityType = systemAssignedIdentity ? (!empty(userAssignedIdentities) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned') : (!empty(userAssignedIdentities) ? 'UserAssigned' : 'None')
 
 var identity = identityType != 'None' ? {
@@ -61,8 +64,16 @@ resource server 'Microsoft.Sql/servers@2021-05-01-preview' = {
   tags: tags
   identity: identity
   properties: {
-    administratorLogin: administratorLogin
-    administratorLoginPassword: administratorLoginPassword
+    administratorLogin: !empty(administratorLogin) ? administratorLogin : null
+    administratorLoginPassword: !empty(administratorLoginPassword) ? administratorLoginPassword : null
+    administrators: !empty(administrators) ? {
+      administratorType: 'ActiveDirectory'
+      azureADOnlyAuthentication: administrators.azureADOnlyAuthentication
+      login: administrators.login
+      principalType: administrators.principalType
+      sid: administrators.sid 
+      tenantId: administrators.tenantId
+    } : null
     version: '12.0'
   }
 }

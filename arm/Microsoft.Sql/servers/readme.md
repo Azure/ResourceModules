@@ -84,6 +84,23 @@ You can specify multiple user assigned identities to a resource by providing add
 },
 ```
 
+### Parameter Usage: `administrators`
+
+Configure Azure Active Directory Authentication method for server administrator.
+https://docs.microsoft.com/en-us/azure/templates/microsoft.sql/servers/administrators?tabs=bicep
+
+```json
+"administrators": {
+    "value": {
+        "azureADOnlyAuthentication": false
+        "login": "John Doe"
+        "sid": "<<objectId>>"
+        "principalType" : "User" // options: "User", "Group", "Application"
+        "tenantId": "<<tenantId>>"
+    }
+},
+```
+
 ## Outputs
 
 | Output Name | Type | Description |
