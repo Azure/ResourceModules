@@ -94,3 +94,4 @@ In this section you can find useful information regarding the Modules that are c
 | [App Service Environments](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Web/hostingEnvironments) |  | [hostingEnvironments](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Web/hostingEnvironments) |
 | [App Service Plans](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Web/serverfarms) |  | [serverfarms](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Web/serverfarms) |
 | [Web/Function Apps](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Web/sites) |  | [sites](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Web/sites) |
+| [Web StaticSites](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Web/staticSites) |  | [staticSites](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Web/staticSites) |
