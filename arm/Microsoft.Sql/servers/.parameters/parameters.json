@@ -22,7 +22,7 @@
             "value": {
                 "azureADOnlyAuthentication": false,
                 "login": "John Doe",
-                "sid": "<<objectId>>",
+                "sid": "<<deploymentSpId>>",
                 "principalType": "Application",
                 "tenantId": "<<tenantId>>"
             }
