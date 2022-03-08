@@ -1,0 +1,62 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": "<<namePrefix>>-rg-polAss"
+        },
+        "displayName": {
+            "value": "[Display Name] Policy Assignment at the resource group scope"
+        },
+        "description": {
+            "value": "[Description] Policy Assignment at the resource group scope"
+        },
+        "policyDefinitionId": {
+            "value": "/providers/Microsoft.Authorization/policyDefinitions/4f9dc7db-30c1-420c-b61a-e1d640128d26"
+        },
+        "parameters": {
+            "value": {
+                "tagName": {
+                    "value": "env"
+                },
+                "tagValue": {
+                    "value": "prod"
+                }
+            }
+        },
+        "nonComplianceMessage": {
+            "value": "Violated Policy Assignment - This is a Non Compliance Message"
+        },
+        "enforcementMode": {
+            "value": "DoNotEnforce"
+        },
+        "metadata": {
+            "value": {
+                "category": "Security",
+                "version": "1.0"
+            }
+        },
+        "location": {
+            "value": "australiaeast"
+        },
+        "notScopes": {
+            "value": [
+                "/subscriptions/<<subscriptionId>>/resourceGroups/<<resourceGroupName>>/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001"
+            ]
+        },
+        "identity": {
+            "value": "SystemAssigned"
+        },
+        "roleDefinitionIds": {
+            "value": [
+                "/providers/microsoft.authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c"
+            ]
+        },
+        "subscriptionId": {
+            "value": "<<subscriptionId>>"
+        },
+        "resourceGroupName": {
+            "value": "<<resourceGroupName>>"
+        }
+    }
+}

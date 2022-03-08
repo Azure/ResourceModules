@@ -108,7 +108,14 @@ function Get-DeploymentTargetResourceListInner {
                 [array]$resultSet = $resultSet | Where-Object { $_ -ne $deployment }
                 if ($deployment -match '/subscriptions/') {
                     # Subscription Level Child Deployments
-                    [array]$resultSet += Get-DeploymentTargetResourceListInner -Name (Split-Path $deployment -Leaf) -Scope 'subscription'
+                    if ($deployment -match '/resourceGroups/') {
+                        # Resource Group Level Child Deployments (Used only if management group scope --> resource Group scope)
+                        $name = Split-Path $deployment -Leaf
+                        $resourceGroupName = $deployment.split('/resourceGroups/')[1].Split('/')[0]
+                        [array]$resultSet += Get-DeploymentTargetResourceListInner -Name $name -ResourceGroupName $ResourceGroupName -Scope 'resourcegroup'
+                    } else {
+                        [array]$resultSet += Get-DeploymentTargetResourceListInner -Name (Split-Path $deployment -Leaf) -Scope 'subscription'
+                    }
                 } else {
                     # Management Group Level Deployments
                     [array]$resultSet += Get-DeploymentTargetResourceListInner -name (Split-Path $deployment -Leaf) -scope 'managementgroup' -ManagementGroupId $ManagementGroupId

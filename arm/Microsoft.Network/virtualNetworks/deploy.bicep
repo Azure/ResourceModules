@@ -100,7 +100,7 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
-resource virtualNetwork 'Microsoft.Network/virtualNetworks@2021-03-01' = {
+resource virtualNetwork 'Microsoft.Network/virtualNetworks@2021-05-01' = {
   name: name
   location: location
   tags: tags
@@ -111,15 +111,6 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2021-03-01' = {
     ddosProtectionPlan: !empty(ddosProtectionPlanId) ? ddosProtectionPlan : null
     dhcpOptions: !empty(dnsServers) ? dnsServers_var : null
     enableDdosProtection: !empty(ddosProtectionPlanId)
-    subnets: [for subnet in subnets: {
-      name: subnet.name
-      properties: {
-        addressPrefix: subnet.addressPrefix
-        delegations: contains(subnet, 'delegations') ? subnet.delegations : null
-        privateEndpointNetworkPolicies: contains(subnet, 'privateEndpointNetworkPolicies') ? subnet.privateEndpointNetworkPolicies : null
-        privateLinkServiceNetworkPolicies: contains(subnet, 'privateLinkServiceNetworkPolicies') ? subnet.privateLinkServiceNetworkPolicies : null
-      }
-    }]
   }
 }
 

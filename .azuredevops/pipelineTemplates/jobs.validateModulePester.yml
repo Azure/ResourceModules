@@ -172,7 +172,7 @@ jobs:
           testRunTitle: 'Global Module Tests'
           testResultsFormat: NUnit
           testResultsFiles: global-testResults.xml
-          failTaskOnFailedTests: false
+          failTaskOnFailedTests: true
           searchFolder: 'arm/.global'
         continueOnError: false
         condition: succeededOrFailed()
@@ -277,7 +277,7 @@ jobs:
           testRunTitle: 'Global Module API Tests'
           testResultsFormat: NUnit
           testResultsFiles: api-testResults.xml
-          failTaskOnFailedTests: false
+          failTaskOnFailedTests: true
           searchFolder: 'arm/.global'
         continueOnError: false
         condition: succeededOrFailed()

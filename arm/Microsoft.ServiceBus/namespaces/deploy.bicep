@@ -89,6 +89,9 @@ param baseTime string = utcNow('u')
 @description('Optional. The queues to create in the service bus namespace')
 param queues array = []
 
+@description('Optional. The topics to create in the service bus namespace')
+param topics array = []
+
 @description('Optional. The name of logs that will be streamed.')
 @allowed([
   'OperationalLogs'
@@ -231,6 +234,37 @@ module serviceBusNamespace_queues 'queues/deploy.bicep' = [for (queue, index) in
     requiresSession: contains(queue, 'requiresSession') ? queue.requiresSession : false
     roleAssignments: contains(queue, 'roleAssignments') ? queue.roleAssignments : []
     status: contains(queue, 'status') ? queue.status : 'Active'
+  }
+}]
+
+module serviceBusNamespace_topics 'topics/deploy.bicep' = [for (topic, index) in topics: {
+  name: '${uniqueString(deployment().name, location)}-Topic-${index}'
+  params: {
+    namespaceName: serviceBusNamespace.name
+    name: topic.name
+    authorizationRules: contains(topic, 'authorizationRules') ? topic.authorizationRules : [
+      {
+        name: 'RootManageSharedAccessKey'
+        rights: [
+          'Listen'
+          'Manage'
+          'Send'
+        ]
+      }
+    ]
+    autoDeleteOnIdle: contains(topic, 'autoDeleteOnIdle') ? topic.autoDeleteOnIdle : 'PT5M'
+    defaultMessageTimeToLive: contains(topic, 'defaultMessageTimeToLive') ? topic.defaultMessageTimeToLive : 'P14D'
+    duplicateDetectionHistoryTimeWindow: contains(topic, 'duplicateDetectionHistoryTimeWindow') ? topic.duplicateDetectionHistoryTimeWindow : 'PT10M'
+    enableBatchedOperations: contains(topic, 'enableBatchedOperations') ? topic.enableBatchedOperations : true
+    enableExpress: contains(topic, 'enableExpress') ? topic.enableExpress : false
+    enablePartitioning: contains(topic, 'enablePartitioning') ? topic.enablePartitioning : false
+    lock: contains(topic, 'lock') ? topic.lock : 'NotSpecified'
+    maxMessageSizeInKilobytes: contains(topic, 'maxMessageSizeInKilobytes') ? topic.maxMessageSizeInKilobytes : 1024
+    maxSizeInMegabytes: contains(topic, 'maxSizeInMegabytes') ? topic.maxSizeInMegabytes : 1024
+    requiresDuplicateDetection: contains(topic, 'requiresDuplicateDetection') ? topic.requiresDuplicateDetection : false
+    roleAssignments: contains(topic, 'roleAssignments') ? topic.roleAssignments : []
+    status: contains(topic, 'status') ? topic.status : 'Active'
+    supportOrdering: contains(topic, 'supportOrdering') ? topic.supportOrdering : false
   }
 }]
 

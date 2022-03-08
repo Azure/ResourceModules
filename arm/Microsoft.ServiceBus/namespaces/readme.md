@@ -18,6 +18,8 @@ This module deploys a service bus namespace resource.
 | `Microsoft.ServiceBus/namespaces/migrationConfigurations` | 2017-04-01 |
 | `Microsoft.ServiceBus/namespaces/queues` | 2021-06-01-preview |
 | `Microsoft.ServiceBus/namespaces/queues/authorizationRules` | 2017-04-01 |
+| `Microsoft.ServiceBus/namespaces/topics` | 2021-06-01-preview |
+| `Microsoft.ServiceBus/namespaces/topics/authorizationRules` | 2021-06-01-preview |
 | `Microsoft.ServiceBus/namespaces/virtualnetworkrules` | 2018-01-01-preview |
 
 ## Parameters
@@ -46,6 +48,7 @@ This module deploys a service bus namespace resource.
 | `skuName` | string | `Basic` | `[Basic, Standard, Premium]` | Required. Name of this SKU. - Basic, Standard, Premium |
 | `systemAssignedIdentity` | bool |  |  | Optional. Enables system assigned managed identity on the resource. |
 | `tags` | object | `{object}` |  | Optional. Tags of the resource. |
+| `topics` | _[topics](topics/readme.md)_ array | `[]` |  | Optional. The topics to create in the service bus namespace |
 | `userAssignedIdentities` | object | `{object}` |  | Optional. The ID(s) to assign to the resource. |
 | `virtualNetworkRules` | _[virtualNetworkRules](virtualNetworkRules/readme.md)_ array | `[]` |  | Optional. vNet Rules SubnetIds for the Service Bus namespace. |
 | `zoneRedundant` | bool |  |  | Optional. Enabling this property creates a Premium Service Bus Namespace in regions supported availability zones. |
@@ -158,6 +161,8 @@ You can specify multiple user assigned identities to a resource by providing add
 - [Namespaces/Migrationconfigurations](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ServiceBus/2017-04-01/namespaces/migrationConfigurations)
 - [Namespaces/Queues](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ServiceBus/2021-06-01-preview/namespaces/queues)
 - [Namespaces/Queues/Authorizationrules](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ServiceBus/2017-04-01/namespaces/queues/authorizationRules)
+- [Namespaces/Topics](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ServiceBus/2021-06-01-preview/namespaces/topics)
+- [Namespaces/Topics/Authorizationrules](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ServiceBus/2021-06-01-preview/namespaces/topics/authorizationRules)
 - [Namespaces/Virtualnetworkrules](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ServiceBus/2018-01-01-preview/namespaces/virtualnetworkrules)
 - [Privateendpoints](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/privateEndpoints)
 - [Privateendpoints/Privatednszonegroups](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/privateEndpoints/privateDnsZoneGroups)
