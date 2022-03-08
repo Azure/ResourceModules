@@ -108,7 +108,7 @@ While the concepts are the same, the configuration of the CI environment can dif
 
 ### Pipeline secrets
 
-To use the environment's pipelines you need the following secrets set up:
+To use the environment's pipelines you should use the information you gathered during the [Azure setup](#1-configure-your-azure-environment) to set the following repository secrets set up:
 
 | Secret Name | Example | Description |
 | - | - | - |
@@ -149,17 +149,17 @@ To use the environment's pipelines you need the following secrets set up:
 >
 > **Make sure you create this object as one continuous string as shown above** - using the information you collected during [Step 1](#1-configure-your-azure-environment). Failing to format the secret as above, results in masked strings (`***`) in place of `{` and `}` in the workflow logs as it is considering each line of the json object as a separate secret string. If you're interested, you can find more information about this object [here](https://github.com/Azure/login#configure-deployment-credentials).
 
-### 3.2.2 Setup variables
+### 3.2.2 Setup variables file
 
-The primary pipeline variable file hosts the fundamental pipeline configuration. In the file you will find and can configure information such as:
+The primary pipeline variable file `.github/variables/global.variables.json` hosts the fundamental pipeline configuration. In the file you will find and can configure settings such as:
 
 <details>
 <summary>General</summary>
 
 | Variable Name | Example Value | Description |
 | - | - | - |
-| `defaultLocation` | "WestEurope" | The default location to deploy resources to. If no location is specified in the deploying parameter file, this location is used |
-| `resourceGroupName` | "validation-rg" | The resource group to deploy all resources for validation to |
+| `defaultLocation` | `"WestEurope"` | The default location to deploy resources to. If no location is specified in the deploying parameter file, this location is used |
+| `resourceGroupName` | `"validation-rg"` | The resource group to deploy all resources for validation to |
 
 </details>
 
@@ -168,10 +168,10 @@ The primary pipeline variable file hosts the fundamental pipeline configuration.
 
 | Variable Name | Example Value | Description |
 | - | - | - |
-| `templateSpecsRGName` | "artifacts-rg" | The resource group to host the created template-specs |
-| `templateSpecsRGLocation` | "WestEurope" | The location of the resource group to host the template-specs. Is used to create a new resource group if not yet existing |
-| `templateSpecsDescription` | "This is a module from the [Common Azure Resource Modules Library]" | A description to add to the published template specs |
-| `templateSpecsDoPublish` | "true" | A central switch to enable/disable publishing to template-specs |
+| `templateSpecsRGName` | `"artifacts-rg"` | The resource group to host the created template-specs |
+| `templateSpecsRGLocation` | `"WestEurope"` | The location of the resource group to host the template-specs. Is used to create a new resource group if not yet existing |
+| `templateSpecsDescription` | `"This is a module from the [Common Azure Resource Modules Library]"` | A description to add to the published template specs |
+| `templateSpecsDoPublish` | `"true"` | A central switch to enable/disable publishing to template-specs |
 
 </details>
 
@@ -180,10 +180,10 @@ The primary pipeline variable file hosts the fundamental pipeline configuration.
 
 | Variable Name | Example Value | Description |
 | - | - | - |
-| `bicepRegistryName` | "adpsxxazacrx001" | The container registry to publish bicep templates to |
-| `bicepRegistryRGName` | "artifacts-rg" | The resource group of the container registry to publish bicep templates to. Is used to create a new container registry if not yet existing |
-| `bicepRegistryRGName` | "artifacts-rg" | The location of the resource group of the container registry to publish bicep templates to. Is used to create a new resource group if not yet existing |
-| `bicepRegistryDoPublish` | "true" | A central switch to enable/disable publishing to the private bicep registry |
+| `bicepRegistryName` | `"adpsxxazacrx001"` | The container registry to publish bicep templates to |
+| `bicepRegistryRGName` | `"artifacts-rg"` | The resource group of the container registry to publish bicep templates to. Is used to create a new container registry if not yet existing |
+| `bicepRegistryRGName` | `"artifacts-rg"` | The location of the resource group of the container registry to publish bicep templates to. Is used to create a new resource group if not yet existing |
+| `bicepRegistryDoPublish` | `"true"` | A central switch to enable/disable publishing to the private bicep registry |
 
 </details>
 
@@ -211,20 +211,42 @@ To do so, perform the following steps:
 
 ### 3.2.1 Setup service connection
 
-### 3.2.2 Setup secrets
+The service connection must be set up in the project's settings under _Pipelines: Service connections_ (a step by step guide can be found [here](https://docs.microsoft.com/en-us/azure/devops/pipelines/library/service-endpoints?view=azure-devops&tabs=yaml)).
 
-### 3.2.3 Setup variables
+It's name must match the one configured as `serviceConnection` in the [variable file](#323-setup-variables-file)'s 'Global' section.
 
-The primary pipeline variable file hosts the fundamental pipeline configuration. In the file you will find and can configure information such as:
+### 3.2.2 Setup secrets in variable group
+
+The variable group must set up in Azure DevOps as described [here](https://docs.microsoft.com/en-us/azure/devops/pipelines/library/variable-groups?view=azure-devops&tabs=classic#create-a-variable-group).
+
+Based on the information you gather in the [Azure setup](#1-configure-your-azure-environment), you must configure the following secrets in the variable group:
+
+| Secret Name | Example | Description |
+| - | - | - |
+| `ARM_MGMTGROUP_ID` | `de33a0e7-64d9-4a94-8fe9-b018cedf1e05` | The group ID of the management group to test deploy modules of that level in. |
+| `ARM_SUBSCRIPTION_ID` | `d0312b25-9160-4550-914f-8738d9b5caf5` | The subscription ID of the subscription to test deploy modules of that level in. |
+| `ARM_TENANT_ID` | `9734cec9-4384-445b-bbb6-767e7be6e5ec` | The tenant ID of the tenant to test deploy modules of that level in. |
+| `DEPLOYMENT_SP_ID` | `de33a0e7-64d9-4a94-8fe9-b018cedf1e05` | This is the Principal (Object ID) for the Service Principal used as the Azure service connection. It is used for Default Role Assignments when Modules are being deployed into Azure |
+
+Make sure its name matches the `group` reference used in the module pipelines. For example
+
+```yaml
+variables:
+  - group: 'PLATFORM_VARIABLES'
+```
+
+### 3.2.3 Setup variables file
+
+The primary pipeline variable file `.azuredevops/pipelineVariables/global.variables.yml` hosts the fundamental pipeline configuration. In the file you will find and can configure information such as:
 
 <details>
 <summary>General</summary>
 
 | Variable Name | Example Value | Description |
 | - | - | - |
-| `defaultLocation` | 'WestEurope' | The default location to deploy resources to. If no location is specified in the deploying parameter file, this location is used |
-| `defaultResourceGroupName` | 'validation-rg' | The resource group to deploy all resources for validation to |
-| `serviceConnection` | 'Contoso-Connection' | The service connection that points to the subscription to test in and publish to |
+| `defaultLocation` | `'WestEurope'` | The default location to deploy resources to. If no location is specified in the deploying parameter file, this location is used |
+| `defaultResourceGroupName` | `'validation-rg'` | The resource group to deploy all resources for validation to |
+| `serviceConnection` | `'Contoso-Connection'` | The service connection that points to the subscription to test in and publish to |
 
 </details>
 
@@ -233,10 +255,10 @@ The primary pipeline variable file hosts the fundamental pipeline configuration.
 
 | Variable Name | Example Value | Description |
 | - | - | - |
-| `templateSpecsRGName` | "artifacts-rg" | The resource group to host the created template-specs |
-| `templateSpecsRGLocation` | "WestEurope" | The location of the resource group to host the template-specs. Is used to create a new resource group if not yet existing |
-| `templateSpecsDescription` | "This is a module from the [Common Azure Resource Modules Library]" | A description to add to the published template specs |
-| `templateSpecsDoPublish` | "true" | A central switch to enable/disable publishing to template-specs |
+| `templateSpecsRGName` | `'artifacts-rg'` | The resource group to host the created template-specs |
+| `templateSpecsRGLocation` | `'WestEurope'` | The location of the resource group to host the template-specs. Is used to create a new resource group if not yet existing |
+| `templateSpecsDescription` | `'This is a module from the [Common Azure Resource Modules Library]'` | A description to add to the published template specs |
+| `templateSpecsDoPublish` | `'true'` | A central switch to enable/disable publishing to template-specs |
 
 </details>
 
@@ -245,10 +267,10 @@ The primary pipeline variable file hosts the fundamental pipeline configuration.
 
 | Variable Name | Example Value | Description |
 | - | - | - |
-| `bicepRegistryName` | "adpsxxazacrx001" | The container registry to publish bicep templates to |
-| `bicepRegistryRGName` | "artifacts-rg" | The resource group of the container registry to publish bicep templates to. Is used to create a new container registry if not yet existing |
-| `bicepRegistryRGName` | "artifacts-rg" | The location of the resource group of the container registry to publish bicep templates to. Is used to create a new resource group if not yet existing |
-| `bicepRegistryDoPublish` | "true" | A central switch to enable/disable publishing to the private bicep registry |
+| `bicepRegistryName` | `'adpsxxazacrx001'` | The container registry to publish bicep templates to |
+| `bicepRegistryRGName` | `'artifacts-rg'` | The resource group of the container registry to publish bicep templates to. Is used to create a new container registry if not yet existing |
+| `bicepRegistryRGName` | `'artifacts-rg'` | The location of the resource group of the container registry to publish bicep templates to. Is used to create a new resource group if not yet existing |
+| `bicepRegistryDoPublish` | `'true'` | A central switch to enable/disable publishing to the private bicep registry |
 
 </details>
 
@@ -257,10 +279,10 @@ The primary pipeline variable file hosts the fundamental pipeline configuration.
 
 | Variable Name | Example Value | Description |
 | - | - | - |
-| `vstsFeedName` | 'ResourceModules' | The name of the Azure DevOps universal packages feed to publish to |
-| `vstsFeedProject` | '$(System.TeamProject)' | The project that hosts the feed. The feed must be created in Azure DevOps ahead of time. |
-| `vstsFeedToken` | '$(System.AccessToken)' | The token used to publish universal packages into the feed above |
-| `artifactsFeedDoPublish` | "true" | A central switch to enable/disable publishing to Universal packages |
+| `vstsFeedName` | `'ResourceModules'` | The name of the Azure DevOps universal packages feed to publish to |
+| `vstsFeedProject` | `'$(System.TeamProject)'` | The project that hosts the feed. The feed must be created in Azure DevOps ahead of time. |
+| `vstsFeedToken` | `'$(System.AccessToken)'` | The token used to publish universal packages into the feed above |
+| `artifactsFeedDoPublish` | `'true'` | A central switch to enable/disable publishing to Universal packages |
 
 </details>
 
