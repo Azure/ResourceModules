@@ -18,9 +18,9 @@ This module deploys a SQL server.
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `administrators` | object |  |  | Conditional. Azure Active Directory admin of the server. |
-| `administratorLogin` | string |  |  | Conditional. Administrator username for the server. |
-| `administratorLoginPassword` | secureString |  |  | Conditional. The administrator login password. |
+| `administratorLogin` | string |  |  | Optional. Administrator username for the server. Required if no `administrators` object for AAD authentication is provided. |
+| `administratorLoginPassword` | secureString |  |  | Optional. The administrator login password. Required if no `administrators` object for AAD authentication is provided. |
+| `administrators` | object | `{object}` |  | Optional. The Azure Active Directory (AAD) administrator authentiaction. Required if no `administratorLogin` & `administratorLoginPassword` is provided. |
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `databases` | _[databases](databases/readme.md)_ array | `[]` |  | Optional. The databases to create in the server |
 | `firewallRules` | _[firewallRules](firewallRules/readme.md)_ array | `[]` |  | Optional. The firewall rules to create in the server |
@@ -29,7 +29,7 @@ This module deploys a SQL server.
 | `name` | string |  |  | Required. The name of the server. |
 | `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
 | `securityAlertPolicies` | _[securityAlertPolicies](securityAlertPolicies/readme.md)_ array | `[]` |  | Optional. The security alert policies to create in the server |
-| `systemAssignedIdentity` | bool |  |  | Optional. Enables system assigned managed identity on the resource. |
+| `systemAssignedIdentity` | bool | `False` |  | Optional. Enables system assigned managed identity on the resource. |
 | `tags` | object | `{object}` |  | Optional. Tags of the resource. |
 | `userAssignedIdentities` | object | `{object}` |  | Optional. The ID(s) to assign to the resource. |
 
