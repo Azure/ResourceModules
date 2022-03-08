@@ -13,7 +13,7 @@ on:
         description: 'Publish prerelease module'
         required: false
         default: false
-        skipValidation:
+      skipValidation:
         type: boolean
         description: 'Skip static and deployment validation'
         required: false
