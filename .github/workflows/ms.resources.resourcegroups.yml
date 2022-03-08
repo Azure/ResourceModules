@@ -57,7 +57,7 @@ jobs:
           workflowPath: '${{ env.workflowPath}}'
     outputs:
       removeDeployment: ${{ steps.get-workflow-param.outputs.removeDeployment }}
-      removeDeployment: ${{ steps.get-workflow-param.outputs.removeDeployment }}
+      skipValidation: ${{ steps.get-workflow-param.outputs.skipValidation }}
 
   ####################
   #   Pester Tests   #
