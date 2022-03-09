@@ -185,7 +185,7 @@ module keyVault '../../../arm/Microsoft.KeyVault/vaults/deploy.bicep' = {
     enableVaultForDeployment: false
     enableVaultForDiskEncryption: false
     enableVaultForTemplateDeployment: true
-    enableSoftDelete: false
+    enableSoftDelete: true
     diagnosticWorkspaceId: law.outputs.resourceId
     roleAssignments: [
       {
