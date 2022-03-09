@@ -57,4 +57,4 @@ Note that in case you don't want to use Bicep, you always have the option to use
 
 # 3. Build solution
 
-With the codebase ready you can now start to build a solution. For examples on how to do so, please refer to the corresponding [Build a solution](./Build%20a%20solution#example-with-local-file-references) section.
+With the codebase ready you can now start to build a solution. For examples on how to do so, please refer to the corresponding [solution creation](./Solution%20creation) section.
