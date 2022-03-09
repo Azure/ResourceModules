@@ -1,0 +1,27 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "rgResourceId": {
+            "value": "/subscriptions/7ce5fff6-aaaa-4a71-88b4-12b48eecfb1f/resourceGroups/rg-hub01"
+        },
+        "lawResourceId": {
+            "value": "/subscriptions/7ce5fff6-aaaa-4a71-88b4-12b48eecfb1f/resourcegroups/rg-hub01/providers/microsoft.operationalinsights/workspaces/la-aks-ztcfklhbc4mbs"
+        },
+        "vnetResourceId": {
+            "value": "/subscriptions/7ce5fff6-aaaa-4a71-88b4-12b48eecfb1f/resourceGroups/rg-hub01/providers/Microsoft.Network/virtualNetworks/vnet-spoke-contoso-00"
+        },
+        "clusterControlPlaneIdentityResourceId": {
+            "value": "/subscriptions/7ce5fff6-aaaa-4a71-88b4-12b48eecfb1f/resourceGroups/rg-hub01/providers/Microsoft.ManagedIdentity/userAssignedIdentities/mi-aks-ztcfklhbc4mbs-controlplane"
+        },
+        "location": {
+            "value": "westeurope"
+        },
+        "dbLogin": {
+            "value": "rahalan"
+        },
+        "dbPwd": {
+            "value": "sdfdgd@1234"
+        }
+    }
+}

@@ -193,17 +193,17 @@ module keyVault '../../arm/Microsoft.KeyVault/vaults/deploy.bicep' = {
     location: location
     accessPolicies: []
     vaultSku: 'standard'
-    networkAcls: {
-      bypass: 'AzureServices'
-      defaultAction: 'Deny'
-      ipRules: []
-      virtualNetworkRules: []
-    }
+    // networkAcls: {
+    //   bypass: 'AzureServices'
+    //   defaultAction: 'Deny'
+    //   ipRules: []
+    //   virtualNetworkRules: []
+    // }
     enableRbacAuthorization: true
     enableVaultForDeployment: false
     enableVaultForDiskEncryption: false
     enableVaultForTemplateDeployment: false
-    enableSoftDelete: true
+    enableSoftDelete: false
     diagnosticWorkspaceId: clusterLa.outputs.resourceId
     secrets: {
       secureList: [

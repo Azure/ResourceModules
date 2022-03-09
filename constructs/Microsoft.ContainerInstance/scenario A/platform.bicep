@@ -195,19 +195,20 @@ module keyVault '../../../arm/Microsoft.KeyVault/vaults/deploy.bicep' = {
     diagnosticWorkspaceId: law.outputs.resourceId
     roleAssignments: [
       {
-        roleDefinitionIdOrName: 'Key Vault Secrets User (preview)'
+        roleDefinitionIdOrName: 'Reader'
         principalIds: [
-          mi_appgateway_frontend.outputs.principalId
-          podmi_ingress_controller.outputs.principalId
+          // mi_appgateway_frontend.outputs.principalId
+          '50f1138f-1d8c-4eab-b643-e3a02820f244'
+          // podmi_ingress_controller.outputs.principalId
         ]
       }
-      {
-        roleDefinitionIdOrName: 'Key Vault Reader (preview)'
-        principalIds: [
-          mi_appgateway_frontend.outputs.principalId
-          podmi_ingress_controller.outputs.principalId
-        ]
-      }
+      // {
+      //   roleDefinitionIdOrName: 'Key Vault Reader (preview)'
+      //   principalIds: [
+      //     mi_appgateway_frontend.outputs.principalId
+      //     podmi_ingress_controller.outputs.principalId
+      //   ]
+      // }
     ]
   }
   scope: resourceGroup(resourceGroupName)
@@ -217,3 +218,8 @@ module keyVault '../../../arm/Microsoft.KeyVault/vaults/deploy.bicep' = {
     podmi_ingress_controller
   ]
 }
+
+output rgResourceId string = rg.outputs.resourceId
+output lawResourceId string = law.outputs.resourceId
+output vnetResourceId string = clusterVNet.outputs.resourceId
+output clusterControlPlaneIdentityResourceId string = clusterControlPlaneIdentity.outputs.resourceId

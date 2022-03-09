@@ -4,13 +4,15 @@ param lawResourceId string
 
 param vnetResourceId string
 
+param clusterControlPlaneIdentityResourceId string
+
 @description('The hub\'s regional affinity.')
 param location string
 
-@secure()
+// @secure()
 param dbLogin string
 
-@secure()
+// @secure()
 param dbPwd string
 
 param kubernetesVersion string = '1.22.4'
@@ -25,19 +27,25 @@ resource rg 'Microsoft.Resources/resourceGroups@2021-04-01' existing = {
 }
 
 resource law 'Microsoft.OperationalInsights/workspaces@2020-08-01' existing = {
-  name: '${split(lawResourceId, '/')[4]}'
+  scope: resourceGroup(rg.name)
+  name: '${split(lawResourceId, '/')[8]}'
+}
+
+resource clusterControlPlaneIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-11-30' existing = {
+  scope: resourceGroup(rg.name)
+  name: '${split(clusterControlPlaneIdentityResourceId, '/')[8]}'
 }
 
 module sql '../../../arm/Microsoft.Sql/servers/deploy.bicep' = {
-  name: 'sql'
+  name: 'sql1'
   params: {
-    name: 'sql'
-    location: location
+    name: 'sql1rahalan00012'
+    location: 'eastus'
     administratorLogin: dbLogin
     administratorLoginPassword: dbPwd
     databases: [
       {
-        name: '<<namePrefix>>-az-sqldb-x-001'
+        name: 'contoso1-az-sqldb-x-001'
         collation: 'SQL_Latin1_General_CP1_CI_AS'
         tier: 'GeneralPurpose'
         skuName: 'GP_Gen5_2'
@@ -65,7 +73,7 @@ resource spokeVirtualNetwork 'Microsoft.Network/virtualNetworks@2021-05-01' exis
 module acrAks '../../../arm/Microsoft.ContainerRegistry/registries/deploy.bicep' = {
   name: 'acraks'
   params: {
-    name: 'acraks'
+    name: 'acraks0001'
     location: location
     acrSku: 'Basic'
     diagnosticWorkspaceId: law.id
@@ -165,9 +173,9 @@ module cluster '../../../arm/Microsoft.ContainerService/managedClusters/deploy.b
     aksClusterDnsServiceIP: '172.16.0.10'
     aksClusterDockerBridgeCidr: '172.18.0.1/16'
     aadProfileManaged: true
-    aadProfileEnableAzureRBAC: isUsingAzureRBACasKubernetesRBAC
-    aadProfileAdminGroupObjectIDs: ((!isUsingAzureRBACasKubernetesRBAC) ? array(clusterAdminAadGroupObjectId) : [])
-    aadProfileTenantId: k8sControlPlaneAuthorizationTenantId
+    // aadProfileEnableAzureRBAC: isUsingAzureRBACasKubernetesRBAC
+    // aadProfileAdminGroupObjectIDs: ((!isUsingAzureRBACasKubernetesRBAC) ? array(clusterAdminAadGroupObjectId) : [])
+    // aadProfileTenantId: k8sControlPlaneAuthorizationTenantId
     autoScalerProfileBalanceSimilarNodeGroups: 'false'
     autoScalerProfileExpander: 'random'
     autoScalerProfileMaxEmptyBulkDelete: '10'
@@ -186,37 +194,37 @@ module cluster '../../../arm/Microsoft.ContainerService/managedClusters/deploy.b
     autoScalerProfileUtilizationThreshold: '0.5'
     autoScalerProfileMaxGracefulTerminationSec: '600'
     enablePrivateCluster: false
-    authorizedIPRanges: clusterAuthorizedIPRanges
+    // authorizedIPRanges: clusterAuthorizedIPRanges
     // maxAgentPools: 2
     disableLocalAccounts: true
-    roleAssignments: [
-      {
-        roleDefinitionIdOrName: 'Azure Kubernetes Service RBAC Cluster Admin'
-        principalIds: [
-          clusterAdminAadGroupObjectId
-        ]
-      }
-      {
-        roleDefinitionIdOrName: 'Azure Kubernetes Service Cluster User Role'
-        principalIds: [
-          clusterAdminAadGroupObjectId
-        ]
-      }
-      {
-        roleDefinitionIdOrName: 'Azure Kubernetes Service RBAC Reader'
-        principalIds: [
-          a0008NamespaceReaderAadGroupObjectId
-        ]
-      }
-      {
-        roleDefinitionIdOrName: 'Azure Kubernetes Service Cluster User Role'
-        principalIds: [
-          a0008NamespaceReaderAadGroupObjectId
-        ]
-      }
-    ]
+    // roleAssignments: [
+    //   {
+    //     roleDefinitionIdOrName: 'Azure Kubernetes Service RBAC Cluster Admin'
+    //     principalIds: [
+    //       clusterAdminAadGroupObjectId
+    //     ]
+    //   }
+    //   {
+    //     roleDefinitionIdOrName: 'Azure Kubernetes Service Cluster User Role'
+    //     principalIds: [
+    //       clusterAdminAadGroupObjectId
+    //     ]
+    //   }
+    //   {
+    //     roleDefinitionIdOrName: 'Azure Kubernetes Service RBAC Reader'
+    //     principalIds: [
+    //       a0008NamespaceReaderAadGroupObjectId
+    //     ]
+    //   }
+    //   {
+    //     roleDefinitionIdOrName: 'Azure Kubernetes Service Cluster User Role'
+    //     principalIds: [
+    //       a0008NamespaceReaderAadGroupObjectId
+    //     ]
+    //   }
+    // ]
     userAssignedIdentities: {
-      '${clusterControlPlaneIdentity.outputs.resourceId}': {}
+      '${clusterControlPlaneIdentity.id}': {}
     }
     diagnosticWorkspaceId: law.id
     tags: {
