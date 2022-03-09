@@ -23,6 +23,27 @@ var logAnalyticsWorkspaceName = 'la-${clusterName}'
 var clusterControlPlaneIdentityName = 'mi-${clusterName}-controlplane'
 var keyVaultName = 'kv-${clusterName}'
 
+var keyVaultDeploymentScriptParameters = {
+  name: 'sxx-ds-kv-${orgAppId}-01'
+  userAssignedIdentities: {
+    '${podmi_ingress_controller.outputs.resourceId}': {}
+  }
+  cleanupPreference: 'OnSuccess'
+  arguments: ' -keyVaultName "${keyVault.name}"'
+  scriptContent: '''
+      param(
+        [string] $keyVaultName
+      )
+      $usernameString = (-join ((65..90) + (97..122) | Get-Random -Count 9 -SetSeed 1 | % {[char]$_ + "$_"})).substring(0,19) # max length
+      $passwordString = (New-Guid).Guid.SubString(0,19)
+      $userName = ConvertTo-SecureString -String $usernameString -AsPlainText -Force
+      $password = ConvertTo-SecureString -String $passwordString -AsPlainText -Force
+      # VirtualMachines and VMSS
+      Set-AzKeyVaultSecret -VaultName $keyVaultName -Name 'adminUsername' -SecretValue $username
+      Set-AzKeyVaultSecret -VaultName $keyVaultName -Name 'adminPassword' -SecretValue $password
+    '''
+}
+
 module rg '../../../arm/Microsoft.Resources/resourceGroups/deploy.bicep' = {
   name: resourceGroupName
   params: {
@@ -209,11 +230,35 @@ module keyVault '../../../arm/Microsoft.KeyVault/vaults/deploy.bicep' = {
           podmi_ingress_controller.outputs.principalId
         ]
       }
+      {
+        roleDefinitionIdOrName: 'Key Vault Secrets Officer'
+        principalIds: [
+          podmi_ingress_controller.outputs.principalId
+        ]
+      }
     ]
   }
   scope: resourceGroup(resourceGroupName)
   dependsOn: [
     rg
+    podmi_ingress_controller
+  ]
+}
+
+module keyVaultdeploymentScript '../../../arm/Microsoft.Resources/deploymentScripts/deploy.bicep' = {
+  scope: resourceGroup(resourceGroupName)
+  name: '${uniqueString(deployment().name, location)}-kv-ds'
+  params: {
+    name: keyVaultDeploymentScriptParameters.name
+    location: location
+    arguments: keyVaultDeploymentScriptParameters.arguments
+    userAssignedIdentities: keyVaultDeploymentScriptParameters.userAssignedIdentities
+    scriptContent: keyVaultDeploymentScriptParameters.scriptContent
+    cleanupPreference: keyVaultDeploymentScriptParameters.cleanupPreference
+  }
+  dependsOn: [
+    rg
+    keyVault
     podmi_ingress_controller
   ]
 }
