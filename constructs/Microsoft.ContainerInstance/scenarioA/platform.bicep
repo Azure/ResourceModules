@@ -184,7 +184,7 @@ module keyVault '../../../arm/Microsoft.KeyVault/vaults/deploy.bicep' = {
     enableRbacAuthorization: true
     enableVaultForDeployment: false
     enableVaultForDiskEncryption: false
-    enableVaultForTemplateDeployment: false
+    enableVaultForTemplateDeployment: true
     enableSoftDelete: false
     diagnosticWorkspaceId: law.outputs.resourceId
     roleAssignments: [
@@ -192,6 +192,7 @@ module keyVault '../../../arm/Microsoft.KeyVault/vaults/deploy.bicep' = {
         roleDefinitionIdOrName: 'Key Vault Secrets User'
         principalIds: [
           podmi_ingress_controller.outputs.principalId
+          '67ed5a4b-2f65-4ff9-a9b0-0375d41cd91a'
         ]
       }
       {
