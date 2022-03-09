@@ -80,17 +80,17 @@ To configure the CI environment you have to perform several tasks:
 - [3.1 Update default `namePrefix`](#31-update-default-nameprefix)
 - [3.2 Setup CI-environment-specific configuration](#32-setup-ci-environment-specific-configuration)
 
-> **Note:** While you can use the browser, we recommend that you clone all files from your local machine and update them using, for example, Visual Studio Code.
+> **Note:** While you can use the browser, we recommend that you clone all files to your local machine and update them using, for example, Visual Studio Code.
 
 ## 3.1 Update default `namePrefix`
 
 To lower the barrier to entry and allow users to easily define their own naming conventions, we introduced a default `'name prefix'` for all deployed resources.
 
-Each pipeline in CARML that deploys resources uses a logic that automatically replaces "tokens" (i.e. placeholders) in any parameter file. Tokens are stored in only a few central locations to facilitate maintenance.
+Each pipeline in CARML deploying resources uses a logic that automatically replaces "tokens" (i.e. placeholders) in any parameter file. Tokens are stored in only a few central locations to facilitate maintenance (e.g. local `settings.json`, repository secrets or variables group).
 
 To update the `namePrefix`, perform the following steps:
 
-1. Open the `settings.json` file in the repository root directory.
+1. Open the `settings.json` file in the repository's root directory.
 
 1. Replace the `"value": "<...>"` of token `namePrefix` with a different value:
 
