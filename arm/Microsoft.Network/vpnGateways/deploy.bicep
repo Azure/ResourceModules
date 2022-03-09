@@ -28,6 +28,14 @@ param vpnGatewayScaleUnit int = 2
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
+@allowed([
+  'CanNotDelete'
+  'NotSpecified'
+  'ReadOnly'
+])
+@description('Optional. Specify the type of lock.')
+param lock string = 'NotSpecified'
+
 @description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
@@ -49,6 +57,15 @@ resource vpnGateway 'Microsoft.Network/vpnGateways@2021-05-01' = {
       id: virtualHubResourceId
     }
   }
+}
+
+resource vpnGateway_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
+  name: '${vpnGateway.name}-${lock}-lock'
+  properties: {
+    level: lock
+    notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
+  }
+  scope: vpnGateway
 }
 
 module vpnGateway_natRules 'natRules/deploy.bicep' = [for (natRule, index) in natRules: {

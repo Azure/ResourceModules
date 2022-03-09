@@ -11,7 +11,7 @@ This module is used to deploy a storage account, with the ability to deploy 1 or
 | `Microsoft.Insights/diagnosticSettings` | 2021-05-01-preview |
 | `Microsoft.Network/privateEndpoints` | 2021-05-01 |
 | `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | 2021-02-01 |
-| `Microsoft.Storage/storageAccounts` | 2021-06-01 |
+| `Microsoft.Storage/storageAccounts` | 2021-08-01 |
 | `Microsoft.Storage/storageAccounts/blobServices` | 2021-06-01 |
 | `Microsoft.Storage/storageAccounts/blobServices/containers` | 2019-06-01 |
 | `Microsoft.Storage/storageAccounts/blobServices/containers/immutabilityPolicies` | 2019-06-01 |
@@ -47,6 +47,7 @@ This module is used to deploy a storage account, with the ability to deploy 1 or
 | `name` | string |  |  | Optional. Name of the Storage Account. |
 | `networkAcls` | object | `{object}` |  | Optional. Networks ACLs, this value contains IPs to whitelist and/or Subnet information. For security reasons, it is recommended to set the DefaultAction Deny |
 | `privateEndpoints` | array | `[]` |  | Optional. Configuration Details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible |
+| `publicNetworkAccess` | string | `Enabled` | `[Enabled, Disabled]` | Optional. Enable or disallow public network access to Storage Account.. |
 | `queueServices` | _[queueServices](queueServices/readme.md)_ object | `{object}` |  | Optional. Queue service and queues to create. |
 | `requireInfrastructureEncryption` | bool | `True` |  | Optional. A boolean indicating whether or not the service applies a secondary layer of encryption with platform managed keys for data at rest. For security reasons, it is recommended to set it to true. |
 | `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
@@ -187,7 +188,7 @@ The hierarchical namespace of the storage account (see parameter `enableHierarch
 - [Privateendpoints](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/privateEndpoints)
 - [Privateendpoints/Privatednszonegroups](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-02-01/privateEndpoints/privateDnsZoneGroups)
 - [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)
-- [Storageaccounts](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Storage/2021-06-01/storageAccounts)
+- [Storageaccounts](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Storage/2021-08-01/storageAccounts)
 - [Storageaccounts/Blobservices](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Storage/2021-06-01/storageAccounts/blobServices)
 - [Storageaccounts/Blobservices/Containers](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Storage/2019-06-01/storageAccounts/blobServices/containers)
 - [Storageaccounts/Blobservices/Containers/Immutabilitypolicies](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Storage/2019-06-01/storageAccounts/blobServices/containers/immutabilityPolicies)
