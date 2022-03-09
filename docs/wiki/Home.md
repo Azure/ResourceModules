@@ -46,8 +46,6 @@ If you're unfamiliar with Infrastructure as Code, or wonder how you can use the 
 - [Getting started](./Getting%20started)
   - [Getting started - Setup environment](./Getting%20started%20-%20Setup%20environment)
   - [Getting started - Consume library](./Getting%20started%20-%20Consume%20library)
-  - [Getting started - Register-AzureDevOpsPipeline](./Getting%20started%20-%20Register-AzureDevOpsPipeline)
-  - [Getting started - ConvertTo-ARMTemplate](./Getting%20started%20-%20ConvertTo-ARMTemplate)
   - [Dependency pipeline](./Getting%20started%20-%20Dependency%20pipeline)
 - [The library](./The%20library)
   - [Module design](./The%20library%20-%20Module%20design)
