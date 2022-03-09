@@ -3,25 +3,30 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "rgResourceId": {
-            "value": "/subscriptions/7ce5fff6-aaaa-4a71-88b4-12b48eecfb1f/resourceGroups/rg-hub01"
+            "value": "/subscriptions/7ce5fff6-aaaa-4a71-88b4-12b48eecfb1f/resourceGroups/rg-scenario-a"
         },
         "lawResourceId": {
-            "value": "/subscriptions/7ce5fff6-aaaa-4a71-88b4-12b48eecfb1f/resourcegroups/rg-hub01/providers/microsoft.operationalinsights/workspaces/la-aks-ztcfklhbc4mbs"
+            "value": "/subscriptions/7ce5fff6-aaaa-4a71-88b4-12b48eecfb1f/resourceGroups/rg-scenario-a/providers/Microsoft.OperationalInsights/workspaces/la-aks-d2ztzjy25qznc"
         },
         "vnetResourceId": {
-            "value": "/subscriptions/7ce5fff6-aaaa-4a71-88b4-12b48eecfb1f/resourceGroups/rg-hub01/providers/Microsoft.Network/virtualNetworks/vnet-spoke-contoso-00"
+            "value": "/subscriptions/7ce5fff6-aaaa-4a71-88b4-12b48eecfb1f/resourceGroups/rg-scenario-a/providers/Microsoft.Network/virtualNetworks/vnet-spoke-contoso-00"
         },
         "clusterControlPlaneIdentityResourceId": {
-            "value": "/subscriptions/7ce5fff6-aaaa-4a71-88b4-12b48eecfb1f/resourceGroups/rg-hub01/providers/Microsoft.ManagedIdentity/userAssignedIdentities/mi-aks-ztcfklhbc4mbs-controlplane"
+            "value": "/subscriptions/7ce5fff6-aaaa-4a71-88b4-12b48eecfb1f/resourceGroups/rg-scenario-a/providers/Microsoft.ManagedIdentity/userAssignedIdentities/mi-aks-d2ztzjy25qznc-controlplane"
         },
         "location": {
             "value": "westeurope"
         },
         "dbLogin": {
-            "value": "rahalan"
+            "value": "john"
         },
-        "dbPwd": {
-            "value": "sdfdgd@1234"
+        "dbPassword": {
+            "reference": {
+                "keyVault": {
+                    "id": "/subscriptions/7ce5fff6-aaaa-4a71-88b4-12b48eecfb1f/resourceGroups/rg-scenario-a/providers/Microsoft.KeyVault/vaults/kv-aks-d2ztzjy25qznc"
+                },
+                "secretName": "dbPassword"
+            }
         }
     }
 }

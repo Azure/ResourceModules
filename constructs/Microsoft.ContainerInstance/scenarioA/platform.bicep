@@ -8,7 +8,7 @@ param resourceGroupName string
 @maxLength(18)
 param clusterVnetAddressSpace string
 
-@description('The resource location.')
+@description('The location for all platform resources.')
 param location string
 
 var orgAppId = 'contoso'
@@ -181,17 +181,11 @@ module keyVault '../../../arm/Microsoft.KeyVault/vaults/deploy.bicep' = {
     location: location
     accessPolicies: []
     vaultSku: 'standard'
-    networkAcls: {
-      bypass: 'AzureServices'
-      defaultAction: 'Deny'
-      ipRules: []
-      virtualNetworkRules: []
-    }
     enableRbacAuthorization: true
     enableVaultForDeployment: false
     enableVaultForDiskEncryption: false
     enableVaultForTemplateDeployment: false
-    enableSoftDelete: true
+    enableSoftDelete: false
     diagnosticWorkspaceId: law.outputs.resourceId
     roleAssignments: [
       {

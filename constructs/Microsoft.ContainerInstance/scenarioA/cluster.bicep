@@ -1,25 +1,37 @@
+targetScope = 'subscription'
+
+@description('Resource ID of the resource group')
 param rgResourceId string
 
+@description('Resource ID of the log analytics workspace')
 param lawResourceId string
 
+@description('Resource ID of the virtual network')
 param vnetResourceId string
 
+@description('Resource ID of the control plane identity')
 param clusterControlPlaneIdentityResourceId string
 
-@description('The hub\'s regional affinity.')
+@description('The location for all cluster resources.')
 param location string
 
-// @secure()
+@secure()
+@description('The user name for the SQL DB.')
 param dbLogin string
 
-// @secure()
-param dbPwd string
+@secure()
+@description('The password for the SQL DB.')
+param dbPassword string
 
+@description('The kubernetes version that will be used.')
 param kubernetesVersion string = '1.22.4'
 
 var subRgUniqueString = uniqueString('aks', subscription().subscriptionId, rg.name)
 var nodeResourceGroupName = 'rg-${clusterName}-nodepools'
 var clusterName = 'aks-${subRgUniqueString}'
+var acrName = 'acr-${subRgUniqueString}'
+var dbServerName = 'sql-${subRgUniqueString}'
+var dbName = 'sql-${subRgUniqueString}-01'
 
 resource rg 'Microsoft.Resources/resourceGroups@2021-04-01' existing = {
   scope: subscription()
@@ -36,16 +48,25 @@ resource clusterControlPlaneIdentity 'Microsoft.ManagedIdentity/userAssignedIden
   name: '${split(clusterControlPlaneIdentityResourceId, '/')[8]}'
 }
 
+resource vnet 'Microsoft.Network/virtualNetworks@2021-05-01' existing = {
+  scope: rg
+  name: '${last(split(vnetResourceId, '/'))}'
+
+  resource snetClusterNodes 'subnets@2021-05-01' existing = {
+    name: 'snet-clusternodes'
+  }
+}
+
 module sql '../../../arm/Microsoft.Sql/servers/deploy.bicep' = {
   name: 'sql1'
   params: {
-    name: 'sql1rahalan00012'
-    location: 'eastus'
+    name: dbServerName
+    location: location
     administratorLogin: dbLogin
-    administratorLoginPassword: dbPwd
+    administratorLoginPassword: dbPassword
     databases: [
       {
-        name: 'contoso1-az-sqldb-x-001'
+        name: dbName
         collation: 'SQL_Latin1_General_CP1_CI_AS'
         tier: 'GeneralPurpose'
         skuName: 'GP_Gen5_2'
@@ -61,19 +82,10 @@ module sql '../../../arm/Microsoft.Sql/servers/deploy.bicep' = {
   ]
 }
 
-resource spokeVirtualNetwork 'Microsoft.Network/virtualNetworks@2021-05-01' existing = {
-  scope: rg
-  name: '${last(split(vnetResourceId, '/'))}'
-
-  resource snetClusterNodes 'subnets@2021-05-01' existing = {
-    name: 'snet-clusternodes'
-  }
-}
-
 module acrAks '../../../arm/Microsoft.ContainerRegistry/registries/deploy.bicep' = {
   name: 'acraks'
   params: {
-    name: 'acraks0001'
+    name: acrName
     location: location
     acrSku: 'Basic'
     diagnosticWorkspaceId: law.id
@@ -103,7 +115,7 @@ module cluster '../../../arm/Microsoft.ContainerService/managedClusters/deploy.b
         osType: 'Linux'
         minCount: 3
         maxCount: 4
-        vnetSubnetID: spokeVirtualNetwork::snetClusterNodes.id
+        vnetSubnetID: vnet::snetClusterNodes.id
         enableAutoScaling: true
         type: 'VirtualMachineScaleSets'
         mode: 'System'
@@ -135,7 +147,7 @@ module cluster '../../../arm/Microsoft.ContainerService/managedClusters/deploy.b
         osType: 'Linux'
         minCount: 2
         maxCount: 5
-        vnetSubnetID: spokeVirtualNetwork::snetClusterNodes.id
+        vnetSubnetID: vnet::snetClusterNodes.id
         enableAutoScaling: true
         type: 'VirtualMachineScaleSets'
         mode: 'User'
@@ -228,8 +240,7 @@ module cluster '../../../arm/Microsoft.ContainerService/managedClusters/deploy.b
     }
     diagnosticWorkspaceId: law.id
     tags: {
-      'Business unit': 'BU0001'
-      'Application identifier': 'a0008'
+      'Business unit': 'contoso'
     }
   }
   scope: resourceGroup(rg.name)
