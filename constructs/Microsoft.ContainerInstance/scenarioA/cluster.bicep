@@ -29,7 +29,7 @@ param kubernetesVersion string = '1.22.4'
 var subRgUniqueString = uniqueString('aks', subscription().subscriptionId, rg.name)
 var nodeResourceGroupName = 'rg-${clusterName}-nodepools'
 var clusterName = 'aks-${subRgUniqueString}'
-var acrName = 'acr-${subRgUniqueString}'
+var acrName = 'acr${subRgUniqueString}'
 var dbServerName = 'sql-${subRgUniqueString}'
 var dbName = 'sql-${subRgUniqueString}-01'
 

@@ -15,7 +15,7 @@
             "value": "/subscriptions/7ce5fff6-aaaa-4a71-88b4-12b48eecfb1f/resourceGroups/rg-scenario-a/providers/Microsoft.ManagedIdentity/userAssignedIdentities/mi-aks-d2ztzjy25qznc-controlplane"
         },
         "location": {
-            "value": "westeurope"
+            "value": "eastus"
         },
         "dbLogin": {
             "value": "john"
