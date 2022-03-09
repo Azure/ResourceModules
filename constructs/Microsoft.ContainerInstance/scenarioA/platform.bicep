@@ -90,7 +90,16 @@ module routeTable '../../../arm/Microsoft.Network/routeTables/deploy.bicep' = {
   params: {
     name: routeTableName
     location: location
-    routes: []
+    routes: [
+      {
+        name: 'r-nexthop-to-fw'
+        properties: {
+          nextHopType: 'VirtualAppliance'
+          addressPrefix: '0.0.0.0/0'
+          nextHopIpAddress: '192.168.0.0'
+        }
+      }
+    ]
   }
   scope: resourceGroup(resourceGroupName)
   dependsOn: [
@@ -192,7 +201,6 @@ module keyVault '../../../arm/Microsoft.KeyVault/vaults/deploy.bicep' = {
         roleDefinitionIdOrName: 'Key Vault Secrets User'
         principalIds: [
           podmi_ingress_controller.outputs.principalId
-          '67ed5a4b-2f65-4ff9-a9b0-0375d41cd91a'
         ]
       }
       {
