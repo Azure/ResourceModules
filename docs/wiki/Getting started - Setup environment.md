@@ -152,7 +152,7 @@ To use the environment's pipelines you should use the information you gathered d
 > {"clientId": "<client_id>", "clientSecret": "<client_secret>", "subscriptionId": "<subscriptionId>", "tenantId": "<tenant_id>" }
 > ```
 >
-> **Make sure you create this object as one continuous string as shown above** - using the information you collected during [Step 1](#1-configure-your-azure-environment). Failing to format the secret as above, results in masked strings (`***`) in place of `{` and `}` in the workflow logs as it is considering each line of the json object as a separate secret string. If you're interested, you can find more information about this object [here](https://github.com/Azure/login#configure-deployment-credentials).
+> **Make sure you create this object as one continuous string as shown above** - using the information you collected during [Step 1](#1-configure-your-azure-environment). Failing to format the secret as above, causes GitHub to consider each line of the json object as a separate secret string. If you're interested, you can find more information about this object [here](https://github.com/Azure/login#configure-deployment-credentials).
 
 ### 3.2.2 Setup variables file
 
@@ -163,7 +163,7 @@ The primary pipeline variable file `.github/variables/global.variables.json` hos
 
 | Variable Name | Example Value | Description |
 | - | - | - |
-| `defaultLocation` | `"WestEurope"` | The default location to deploy resources to. If no location is specified in the deploying parameter file, this location is used |
+| `defaultLocation` | `"WestEurope"` | The default location to deploy resources to and store deployment metadata at. If no location is specified in the deploying parameter file, this location is used |
 | `resourceGroupName` | `"validation-rg"` | The resource group to deploy all resources for validation to |
 
 </details>
@@ -181,14 +181,14 @@ The primary pipeline variable file `.github/variables/global.variables.json` hos
 </details>
 
 <details>
-<summary>Private bicep registry specific (publishing)</summary>
+<summary>Private Bicep registry specific (publishing)</summary>
 
 | Variable Name | Example Value | Description |
 | - | - | - |
-| `bicepRegistryName` | `"adpsxxazacrx001"` | The container registry to publish bicep templates to. <p> **NOTE:** Must be globally unique |
-| `bicepRegistryRGName` | `"artifacts-rg"` | The resource group of the container registry to publish bicep templates to. Is used to create a new container registry if not yet existing |
-| `bicepRegistryRGName` | `"artifacts-rg"` | The location of the resource group of the container registry to publish bicep templates to. Is used to create a new resource group if not yet existing |
-| `bicepRegistryDoPublish` | `"true"` | A central switch to enable/disable publishing to the private bicep registry |
+| `bicepRegistryName` | `"adpsxxazacrx001"` | The container registry to publish Bicep templates to. <p> **NOTE:** Must be globally unique |
+| `bicepRegistryRGName` | `"artifacts-rg"` | The resource group of the container registry to publish Bicep templates to. It is used to create a new container registry if not yet existing |
+| `bicepRegistryRGName` | `"artifacts-rg"` | The location of the resource group of the container registry to publish Bicep templates to. Is used to create a new resource group if not yet existing |
+| `bicepRegistryDoPublish` | `"true"` | A central switch to enable/disable publishing to the private Bicep registry |
 
 </details>
 
@@ -199,7 +199,7 @@ The primary pipeline variable file `.github/variables/global.variables.json` hos
 ### 3.2.3 Enable actions
 
 
-Finally, the 'GitHub Actions' are disabled by default. Hence, in order to continue with the rest of the lab and execute any pipelines you have to enable them first.
+Finally, 'GitHub Actions' are disabled by default and must be enabled for execution.
 
 To do so, perform the following steps:
 
@@ -270,14 +270,14 @@ The primary pipeline variable file `.azuredevops/pipelineVariables/global.variab
 </details>
 
 <details>
-<summary>Private bicep registry specific (publishing)</summary>
+<summary>Private Bicep registry specific (publishing)</summary>
 
 | Variable Name | Example Value | Description |
 | - | - | - |
-| `bicepRegistryName` | `'adpsxxazacrx001'` | The container registry to publish bicep templates to. <p> **NOTE:** Must be globally unique |
-| `bicepRegistryRGName` | `'artifacts-rg'` | The resource group of the container registry to publish bicep templates to. Is used to create a new container registry if not yet existing |
-| `bicepRegistryRGName` | `'artifacts-rg'` | The location of the resource group of the container registry to publish bicep templates to. Is used to create a new resource group if not yet existing |
-| `bicepRegistryDoPublish` | `'true'` | A central switch to enable/disable publishing to the private bicep registry |
+| `bicepRegistryName` | `'adpsxxazacrx001'` | The container registry to publish Bicep templates to. <p> **NOTE:** Must be globally unique |
+| `bicepRegistryRGName` | `'artifacts-rg'` | The resource group of the container registry to publish Bicep templates to. Is used to create a new container registry if not yet existing |
+| `bicepRegistryRGName` | `'artifacts-rg'` | The location of the resource group of the container registry to publish Bicep templates to. Is used to create a new resource group if not yet existing |
+| `bicepRegistryDoPublish` | `'true'` | A central switch to enable/disable publishing to the private Bicep registry |
 
 </details>
 
