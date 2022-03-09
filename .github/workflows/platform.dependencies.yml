@@ -7,12 +7,12 @@ on:
         type: boolean
         description: 'Enable SqlMi dependencies deployment'
         required: false
-        default: 'false'
+        default: false
       deployVhdDependencies:
         type: boolean
         description: 'Enable deployment of a vhd stored in a blob container'
         required: false
-        default: 'false'
+        default: false
 
   # push:
   #   branches:
@@ -23,7 +23,7 @@ on:
   #     - 'utilities/pipelines/dependencies/**'
 
 env:
-  defaultLocation: 'EastUS'
+  defaultLocation: 'WestEurope'
   defaultResourceGroupName: 'validation-rg'
   resourceGroupNameArtifacts: 'artifacts-rg'
   removeDeployment: 'false'
@@ -191,7 +191,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        parameterFilePaths: ['appi.parameters.json', 'aut.parameters.json', 'parameters.json']
+        parameterFilePaths:
+          ['appi.parameters.json', 'aut.parameters.json', 'parameters.json']
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -253,12 +254,10 @@ jobs:
         run: |
           # Load used functions
           . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
-
           # Define PS modules to install on the runner
           $Modules = @(
               @{ Name = 'Az.Storage' }
           )
-
           # Set agent up
           Set-EnvironmentOnAgent -PSModules $Modules
       - name: Azure Login
@@ -274,7 +273,6 @@ jobs:
             # Load used functions
             . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'sharedScripts' 'Export-ContentToBlob.ps1')
             . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInFile.ps1')
-
             # Replace tokens in parameter file
             $Settings = Get-Content -Path "settings.json" | ConvertFrom-Json -AsHashTable
             $ConvertTokensInputs = @{
@@ -283,7 +281,6 @@ jobs:
                 TokenPrefix = $Settings.parameterFileTokens.tokenPrefix
                 TokenSuffix = $Settings.parameterFileTokens.tokenSuffix
             }
-
             # Add local tokens
             if ($Settings.parameterFileTokens.localTokens) {
                 $tokenMap = @{}
@@ -293,12 +290,9 @@ jobs:
                 Write-Verbose ('Using local tokens [{0}]' -f ($tokenMap.Keys -join ', ')) -Verbose
                 $ConvertTokensInputs.Tokens += $tokenMap
             }
-
             $null = Convert-TokensInFile @ConvertTokensInputs
-
             # Get storage account name
             $storageAccountParameters = (ConvertFrom-Json (Get-Content -path $parameterFilePath -Raw)).parameters
-
             # Upload files to storage account
             $functionInput = @{
               ResourceGroupName   = '${{ env.defaultResourceGroupName }}'
@@ -306,10 +300,8 @@ jobs:
               contentDirectories  = Join-Path $env:GITHUB_WORKSPACE '${{ env.dependencyPath }}' '${{ env.namespace }}' 'uploads'
               targetContainer     = $storageAccountParameters.blobServices.value.containers[0].name
             }
-
             Write-Verbose "Invoke task with" -Verbose
             Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
-
             Export-ContentToBlob @functionInput -Verbose
           azPSVersion: 'latest'
 
@@ -406,13 +398,11 @@ jobs:
         run: |
           # Load used functions
           . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
-
           # Define PS modules to install on the runner
           $Modules = @(
               @{ Name = 'Az.ImageBuilder' },
               @{ Name = 'Az.Storage' }
           )
-
           # Set agent up
           Set-EnvironmentOnAgent -PSModules $Modules
       - name: Azure Login
@@ -427,7 +417,6 @@ jobs:
             Write-Verbose "Retrieving output from previous job" -Verbose
             $imageTemplateName = '${{ needs.job_deploy_imgt.outputs.imageTemplateName }}'
             $imageTemplateResourceGroup = '${{ needs.job_deploy_imgt.outputs.imageTemplateResourceGroup }}'
-
             Write-Verbose "Trigger new image creation with imageTemplateName $imageTemplateName and imageTemplateResourceGroup $imageTemplateResourceGroup" -Verbose
             Start-AzImageBuilderTemplate -ImageTemplateName $imageTemplateName -ResourceGroupName $imageTemplateResourceGroup
           azPSVersion: 'latest'
@@ -437,7 +426,6 @@ jobs:
           inlineScript: |
             # Load used functions
             . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInFile.ps1')
-
             # Prepare replace tokens in parameter file
             $Settings = Get-Content -Path "settings.json" | ConvertFrom-Json -AsHashTable
             $ConvertTokensInputs = @{
@@ -445,7 +433,6 @@ jobs:
                 TokenPrefix = $Settings.parameterFileTokens.tokenPrefix
                 TokenSuffix = $Settings.parameterFileTokens.tokenSuffix
             }
-
             # Add local tokens
             if ($Settings.parameterFileTokens.localTokens) {
                 $tokenMap = @{}
@@ -455,22 +442,18 @@ jobs:
                 Write-Verbose ('Using local tokens [{0}]' -f ($tokenMap.Keys -join ', ')) -Verbose
                 $ConvertTokensInputs.Tokens += $tokenMap
             }
-
             # Retrieving parameters from previous job outputs and parameter files
             Write-Verbose "Retrieving parameters from previous job outputs" -Verbose
             $imageTemplateName = '${{ needs.job_deploy_imgt.outputs.imageTemplateName }}'
             $imageTemplateResourceGroup = '${{ needs.job_deploy_imgt.outputs.imageTemplateResourceGroup }}'
-
             Write-Verbose "Retrieving parameters from storage account parameter files" -Verbose
             $parameterFilePath = Join-Path $env:GITHUB_WORKSPACE '${{ env.dependencyPath }}' '${{ env.saNamespace }}' 'parameters' 'parameters.json'
             $null = Convert-TokensInFile @ConvertTokensInputs -FilePath $parameterFilePath -Verbose
             $storageAccountParameters = (ConvertFrom-Json (Get-Content -path $parameterFilePath -Raw)).parameters
-
             Write-Verbose "Retrieving parameters from image template parameter files" -Verbose
             $parameterFilePath = Join-Path $env:GITHUB_WORKSPACE '${{ env.dependencyPath }}' '${{ env.imgtNamespace }}' 'parameters' 'parameters.json'
             $null = Convert-TokensInFile @ConvertTokensInputs -FilePath $parameterFilePath -Verbose
             $imageTemplateParameters = (ConvertFrom-Json (Get-Content -path $parameterFilePath -Raw)).parameters
-
             # Initializing parameters before the blob copy
             Write-Verbose "Initializing source storage account parameters before the blob copy" -Verbose
             $imgtRunOutput = Get-AzImageBuilderRunOutput -ImageTemplateName $imageTemplateName -ResourceGroupName $imageTemplateResourceGroup | Where-Object ArtifactUri -NE $null
@@ -480,7 +463,6 @@ jobs:
             $sourceStorageAccountContext = $sourceStorageAccount.Context
             $sourceStorageAccountRGName = $sourceStorageAccount.ResourceGroupName
             Write-Verbose "Retrieving artifact uri $sourceUri stored in resource group $sourceStorageAccountRGName" -Verbose
-
             Write-Verbose "Initializing destination storage account parameters before the blob copy" -Verbose
             $destinationStorageAccountName = $storageAccountParameters.name.value
             $destinationStorageAccount = Get-AzStorageAccount | Where-Object StorageAccountName -EQ $destinationStorageAccountName
@@ -489,7 +471,6 @@ jobs:
             $destinationBlobName = $imageTemplateParameters.name.value
             $destinationBlobName = "$destinationBlobName.vhd"
             Write-Verbose "Planning for destination blob name $destinationBlobName in container $destinationContainerName and storage account $destinationStorageAccountName" -Verbose
-
             # Copying the vhd to a destination blob container
             Write-Verbose "Copying the vhd to a destination blob container" -Verbose
             $resourceActionInputObject = @{
@@ -879,12 +860,10 @@ jobs:
         run: |
           # Load used functions
           . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
-
           # Define PS modules to install on the runner
           $Modules = @(
               @{ Name = 'Az.KeyVault' }
           )
-
           # Set agent up
           Set-EnvironmentOnAgent -PSModules $Modules
       - name: Azure Login
@@ -896,11 +875,9 @@ jobs:
         uses: azure/powershell@v1
         with:
           inlineScript: |
-
             $parameterFilePath = Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'dependencies' '${{ env.namespace }}' 'parameters' 'parameters.json'
             # Load used functions
             . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInFile.ps1')
-
             # Replace tokens in parameter file
             $Settings = Get-Content -Path "settings.json" | ConvertFrom-Json -AsHashTable
             $ConvertTokensInputs = @{
@@ -918,11 +895,9 @@ jobs:
                 $ConvertTokensInputs.Tokens += $tokenMap
             }
             $null = Convert-TokensInFile @ConvertTokensInputs
-
             # Get key vault name
             $keyVaultParameters = (ConvertFrom-Json (Get-Content -Path $parameterFilePath -Raw)).parameters
             $keyVaultName = $keyVaultParameters.name.value
-
             # Generate values
             $usernameString = ( -join ((65..90) + (97..122) | Get-Random -Count 9 -SetSeed 1 | ForEach-Object { [char]$_ + "$_" })).substring(0, 19) # max length
             $userName = ConvertTo-SecureString -String $usernameString -AsPlainText -Force
@@ -930,7 +905,6 @@ jobs:
             $password = ConvertTo-SecureString -String $passwordString -AsPlainText -Force
             $vpnSharedKeyString = (New-Guid).Guid.SubString(0, 32)
             $vpnSharedKey = ConvertTo-SecureString -String $vpnSharedKeyString -AsPlainText -Force
-
             # Set secrets
             # -------
             @(
@@ -945,7 +919,6 @@ jobs:
               $null = Set-AzKeyVaultSecret -VaultName $keyVaultName -Name $_.name -SecretValue $_.secretValue
               Write-Verbose ('Added secret [{0}] to key vault [{1}]' -f $_.name, $keyVaultName) -Verbose
             }
-
             # Set certificates
             # -----------
             $certPolicy = New-AzKeyVaultCertificatePolicy -SecretContentType 'application/x-pkcs12' -SubjectName 'CN=fabrikam.com' -IssuerName 'Self' -ValidityInMonths 12 -ReuseKeyOnRenewal
@@ -955,7 +928,6 @@ jobs:
               $null = Add-AzKeyVaultCertificate -VaultName $keyVaultName -Name $_.name -CertificatePolicy $_.CertificatePolicy
               Write-Verbose ('Added certificate [{0}] to key vault [{1}]' -f $_.name, $keyVaultName) -Verbose
             }
-
             # Set keys
             # ----
             @(
@@ -1016,15 +988,12 @@ jobs:
         run: |
           # Load used functions
           . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
-
           # Define PS modules to install on the runner
           $Modules = @(
               @{ Name = 'Az.KeyVault' }
           )
-
           # Set agent up
           Set-EnvironmentOnAgent -PSModules $Modules
-
       - name: Azure Login
         uses: azure/login@v1
         with:
@@ -1037,7 +1006,6 @@ jobs:
             $parameterFilePath = Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'dependencies' '${{ env.namespace }}' 'parameters' 'sqlmi.parameters.json'
             # Load used functions
             . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInFile.ps1')
-
             # Replace tokens in parameter file
             $Settings = Get-Content -Path "settings.json" | ConvertFrom-Json -AsHashTable
             $ConvertTokensInputs = @{
@@ -1046,7 +1014,6 @@ jobs:
                 TokenPrefix = $Settings.parameterFileTokens.tokenPrefix
                 TokenSuffix = $Settings.parameterFileTokens.tokenSuffix
             }
-
             # Add local tokens
             if ($Settings.parameterFileTokens.localTokens) {
                 $tokenMap = @{}
@@ -1056,19 +1023,15 @@ jobs:
                 Write-Verbose ('Using local tokens [{0}]' -f ($tokenMap.Keys -join ', ')) -Verbose
                 $ConvertTokensInputs.Tokens += $tokenMap
             }
-
             $null = Convert-TokensInFile @ConvertTokensInputs
-
             # Get key vault name
             $keyVaultParameters = (ConvertFrom-Json (Get-Content -Path $parameterFilePath -Raw)).parameters
             $keyVaultName = $keyVaultParameters.name.value
-
             # Generate values
             $usernameString = ( -join ((65..90) + (97..122) | Get-Random -Count 9 -SetSeed 1 | ForEach-Object { [char]$_ + "$_" })).substring(0, 19) # max length
             $userName = ConvertTo-SecureString -String $usernameString -AsPlainText -Force
             $passwordString = (New-Guid).Guid.SubString(0, 19)
             $password = ConvertTo-SecureString -String $passwordString -AsPlainText -Force
-
             # Set secrets
             # -------
             @(
@@ -1078,7 +1041,6 @@ jobs:
               $null = Set-AzKeyVaultSecret -VaultName $keyVaultName -Name $_.name -SecretValue $_.secretValue
               Write-Verbose ('Added secret [{0}] to key vault [{1}]' -f $_.name, $keyVaultName) -Verbose
             }
-
             # Set keys
             # ----
             @(
@@ -1249,6 +1211,33 @@ jobs:
       fail-fast: false
       matrix:
         parameterFilePaths: ['parameters.json']
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: 'Deploy module'
+        uses: ./.github/actions/templates/validateModuleDeployment
+        with:
+          templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
+          parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
+          location: '${{ env.defaultLocation }}'
+          resourceGroupName: '${{ env.defaultResourceGroupName }}'
+          subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
+          managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
+          removeDeployment: '${{ env.removeDeployment }}'
+
+  job_deploy_lb:
+    runs-on: ubuntu-20.04
+    name: 'Deploy load balancers'
+    env:
+      namespace: 'Microsoft.Network\loadBalancers'
+    needs:
+      - job_deploy_vnet
+    strategy:
+      fail-fast: false
+      matrix:
+        parameterFilePaths: ['internal.parameters.json']
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
