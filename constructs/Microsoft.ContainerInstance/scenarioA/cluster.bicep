@@ -184,30 +184,7 @@ module cluster '../../../arm/Microsoft.ContainerService/managedClusters/deploy.b
     aksClusterServiceCidr: '172.16.0.0/16'
     aksClusterDnsServiceIP: '172.16.0.10'
     aksClusterDockerBridgeCidr: '172.18.0.1/16'
-    aadProfileManaged: true
-    // aadProfileEnableAzureRBAC: isUsingAzureRBACasKubernetesRBAC
-    // aadProfileAdminGroupObjectIDs: ((!isUsingAzureRBACasKubernetesRBAC) ? array(clusterAdminAadGroupObjectId) : [])
-    // aadProfileTenantId: k8sControlPlaneAuthorizationTenantId
-    autoScalerProfileBalanceSimilarNodeGroups: 'false'
-    autoScalerProfileExpander: 'random'
-    autoScalerProfileMaxEmptyBulkDelete: '10'
-    autoScalerProfileMaxNodeProvisionTime: '15m'
-    autoScalerProfileMaxTotalUnreadyPercentage: '45'
-    autoScalerProfileNewPodScaleUpDelay: '0s'
-    autoScalerProfileOkTotalUnreadyCount: '3'
-    autoScalerProfileSkipNodesWithLocalStorage: 'true'
-    autoScalerProfileSkipNodesWithSystemPods: 'true'
-    autoScalerProfileScanInterval: '10s'
-    autoScalerProfileScaleDownDelayAfterAdd: '10m'
-    autoScalerProfileScaleDownDelayAfterDelete: '20s'
-    autoScalerProfileScaleDownDelayAfterFailure: '3m'
-    autoScalerProfileScaleDownUnneededTime: '10m'
-    autoScalerProfileScaleDownUnreadyTime: '20m'
-    autoScalerProfileUtilizationThreshold: '0.5'
-    autoScalerProfileMaxGracefulTerminationSec: '600'
     enablePrivateCluster: false
-    // authorizedIPRanges: clusterAuthorizedIPRanges
-    // maxAgentPools: 2
     disableLocalAccounts: true
     // roleAssignments: [
     //   {
