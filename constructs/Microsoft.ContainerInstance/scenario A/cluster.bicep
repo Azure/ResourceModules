@@ -15,6 +15,10 @@ param dbPwd string
 
 param kubernetesVersion string = '1.22.4'
 
+var subRgUniqueString = uniqueString('aks', subscription().subscriptionId, rg.name)
+var nodeResourceGroupName = 'rg-${clusterName}-nodepools'
+var clusterName = 'aks-${subRgUniqueString}'
+
 resource rg 'Microsoft.Resources/resourceGroups@2021-04-01' existing = {
   scope: subscription()
   name: '${split(rgResourceId, '/')[4]}'
@@ -214,7 +218,7 @@ module cluster '../../../arm/Microsoft.ContainerService/managedClusters/deploy.b
     userAssignedIdentities: {
       '${clusterControlPlaneIdentity.outputs.resourceId}': {}
     }
-    diagnosticWorkspaceId: clusterLa.outputs.resourceId
+    diagnosticWorkspaceId: law.id
     tags: {
       'Business unit': 'BU0001'
       'Application identifier': 'a0008'
