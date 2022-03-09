@@ -226,7 +226,7 @@ It's name must match the one configured as `serviceConnection` in the [variable 
 
 The variable group must set up in Azure DevOps as described [here](https://docs.microsoft.com/en-us/azure/devops/pipelines/library/variable-groups?view=azure-devops&tabs=classic#create-a-variable-group).
 
-Based on the information you gather in the [Azure setup](#1-configure-your-azure-environment), you must configure the following secrets in the variable group:
+Based on the information you gathered in the [Azure setup](#1-configure-your-azure-environment), you must configure the following secrets in the variable group:
 
 | Secret Name | Example | Description |
 | - | - | - |
