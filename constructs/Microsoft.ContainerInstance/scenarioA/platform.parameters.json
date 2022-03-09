@@ -3,10 +3,13 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "resourceGroupName": {
-            "value": "rg-hub01"
+            "value": "rg-scenario-a"
         },
         "location": {
-            "value": "westeurope"
+            "value": "eastus"
+        },
+        "clusterVnetAddressSpace": {
+            "value": "10.240.0.0/16"
         }
     }
 }

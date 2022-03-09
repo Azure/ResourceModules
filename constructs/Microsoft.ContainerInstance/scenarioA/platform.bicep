@@ -1,20 +1,21 @@
 targetScope = 'subscription'
 
 @description('Name of the resource group')
-param resourceGroupName string = 'rg-hub'
+param resourceGroupName string
 
 @description('A /16 to contain the cluster')
 @minLength(10)
 @maxLength(18)
-param clusterVnetAddressSpace string = '10.240.0.0/16'
+param clusterVnetAddressSpace string
 
-@description('The hub\'s regional affinity.')
+@description('The resource location.')
 param location string
 
 var orgAppId = 'contoso'
 var clusterVNetName = 'vnet-spoke-${orgAppId}-00'
 var nsgNodePoolsName = 'nsg-${clusterVNetName}-nodepools'
 var nsgAksiLbName = 'nsg-${clusterVNetName}-aksilbs'
+var routeTableName = 'route-${location}-default'
 var primaryClusterPipName = 'pip-${orgAppId}-00'
 var subRgUniqueString = uniqueString('aks', subscription().subscriptionId, resourceGroupName)
 var clusterName = 'aks-${subRgUniqueString}'
@@ -37,8 +38,6 @@ module law '../../../arm/Microsoft.OperationalInsights/workspaces/deploy.bicep' 
     location: location
     serviceTier: 'PerGB2018'
     dataRetention: 30
-    // publicNetworkAccessForIngestion: 'Enabled'
-    // publicNetworkAccessForQuery: 'Enabled'
     gallerySolutions: [
       {
         name: 'ContainerInsights'
@@ -86,6 +85,19 @@ module nsgAksiLb '../../../arm/Microsoft.Network/networkSecurityGroups/deploy.bi
   ]
 }
 
+module routeTable '../../../arm/Microsoft.Network/routeTables/deploy.bicep' = {
+  name: routeTableName
+  params: {
+    name: routeTableName
+    location: location
+    routes: []
+  }
+  scope: resourceGroup(resourceGroupName)
+  dependsOn: [
+    rg
+  ]
+}
+
 module clusterVNet '../../../arm/Microsoft.Network/virtualNetworks/deploy.bicep' = {
   name: clusterVNetName
   params: {
@@ -97,7 +109,7 @@ module clusterVNet '../../../arm/Microsoft.Network/virtualNetworks/deploy.bicep'
       {
         name: 'snet-clusternodes'
         addressPrefix: '10.240.0.0/22'
-        // routeTableName: routeTable.outputs.name
+        routeTableName: routeTable.outputs.name
         networkSecurityGroupName: nsgNodePools.outputs.name
         privateEndpointNetworkPolicies: 'Disabled'
         privateLinkServiceNetworkPolicies: 'Enabled'
@@ -105,7 +117,7 @@ module clusterVNet '../../../arm/Microsoft.Network/virtualNetworks/deploy.bicep'
       {
         name: 'snet-clusteringressservices'
         addressPrefix: '10.240.4.0/28'
-        // routeTableName: routeTable.outputs.name
+        routeTableName: routeTable.outputs.name
         networkSecurityGroupName: nsgAksiLb.outputs.name
         privateEndpointNetworkPolicies: 'Disabled'
         privateLinkServiceNetworkPolicies: 'Disabled'
@@ -150,18 +162,6 @@ module clusterControlPlaneIdentity '../../../arm/Microsoft.ManagedIdentity/userA
   ]
 }
 
-module mi_appgateway_frontend '../../../arm/Microsoft.ManagedIdentity/userAssignedIdentities/deploy.bicep' = {
-  name: 'mi-appgateway-frontend'
-  params: {
-    name: 'mi-appgateway-frontend'
-    location: location
-  }
-  scope: resourceGroup(resourceGroupName)
-  dependsOn: [
-    rg
-  ]
-}
-
 module podmi_ingress_controller '../../../arm/Microsoft.ManagedIdentity/userAssignedIdentities/deploy.bicep' = {
   name: 'podmi-ingress-controller'
   params: {
@@ -195,26 +195,22 @@ module keyVault '../../../arm/Microsoft.KeyVault/vaults/deploy.bicep' = {
     diagnosticWorkspaceId: law.outputs.resourceId
     roleAssignments: [
       {
-        roleDefinitionIdOrName: 'Reader'
+        roleDefinitionIdOrName: 'Key Vault Secrets User'
         principalIds: [
-          // mi_appgateway_frontend.outputs.principalId
-          '50f1138f-1d8c-4eab-b643-e3a02820f244'
-          // podmi_ingress_controller.outputs.principalId
+          podmi_ingress_controller.outputs.principalId
         ]
       }
-      // {
-      //   roleDefinitionIdOrName: 'Key Vault Reader (preview)'
-      //   principalIds: [
-      //     mi_appgateway_frontend.outputs.principalId
-      //     podmi_ingress_controller.outputs.principalId
-      //   ]
-      // }
+      {
+        roleDefinitionIdOrName: 'Key Vault Reader'
+        principalIds: [
+          podmi_ingress_controller.outputs.principalId
+        ]
+      }
     ]
   }
   scope: resourceGroup(resourceGroupName)
   dependsOn: [
     rg
-    mi_appgateway_frontend
     podmi_ingress_controller
   ]
 }
