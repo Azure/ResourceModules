@@ -295,7 +295,7 @@ The primary pipeline variable file `.azuredevops/pipelineVariables/global.variab
 
 ### 3.2.4 Register pipelines
 
-To use the pipelines that come with the environment in Azure DevOps, you need to register them first. You can either do this manually, or, execute the utility `Register-AzureDevOpsPipeline` we provide in path `utilities/tools/AzureDevOps`. For further information, please refer to the corresponding [documentation](./Getting%20started%20-%20Register-AzureDevOpsPipeline).
+To use the pipelines that come with the environment in Azure DevOps, you need to register them first. You can either do this manually, or, execute the utility `Register-AzureDevOpsPipeline` we provide in path `utilities/tools/AzureDevOps`. For further information, please refer to the corresponding [documentation](./Interoperability%20-%20Register%20Azure%20DevOps%20Pipelines).
 
 </details>
 
@@ -325,6 +325,7 @@ For this reason, make sure to update the references in the following modules onc
 | `arm\Microsoft.Compute\virtualMachineScaleSets\.parameters\linux.parameters.json` | `extensionDiskEncryptionConfig.value.settings.KeyEncryptionKeyURL` |
 | `arm\Microsoft.Compute\virtualMachineScaleSets\.parameters\windows.parameters.json` | `extensionDiskEncryptionConfig.value.settings.KeyEncryptionKeyURL` |
 | `arm\Microsoft.Sql\managedInstances\.parameters\parameters.json` | `keys.value.uri` |
+| `arm\Microsoft.Network\applicationGateways\.parameters\parameters.json` | `sslCertificates.value.properties.keyVaultSecretId` |
 
 </details>
 
