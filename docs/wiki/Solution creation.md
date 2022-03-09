@@ -98,7 +98,6 @@ module vnet '../arm/Microsoft.Network/virtualNetworks/deploy.bicep' = {
 }
 ```
 
-
 ## ***Example with a private bicep registry***
 
 The following example shows how you could orchestrate a deployment of multiple resources using modules from a private bicep registry. In this example we will deploy a resource group with a contained NSG and use the same in a subsequent VNET deployment.
