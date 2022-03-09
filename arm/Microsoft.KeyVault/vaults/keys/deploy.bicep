@@ -71,12 +71,12 @@ resource key 'Microsoft.KeyVault/vaults/keys@2019-09-01' = {
   properties: {
     attributes: {
       enabled: attributesEnabled
-      exp: !(attributesExp == -1) ? attributesExp : null
-      nbf: !(attributesNbf == -1) ? attributesNbf : null
+      exp: attributesExp != -1 ? attributesExp : null
+      nbf: attributesNbf != -1 ? attributesNbf : null
     }
     curveName: curveName
     keyOps: keyOps
-    keySize: !(keySize == -1) ? keySize : null
+    keySize: keySize != -1 ? keySize : null
     kty: kty
   }
 }

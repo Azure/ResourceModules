@@ -1,3 +1,34 @@
+#region Helper
+<#
+.SYNOPSIS
+Asserts that the given version string it semver 2.0 compatible
+
+.DESCRIPTION
+Asserts that the given version string it semver 2.0 compatible
+
+.PARAMETER Version
+The version to check
+
+.EXAMPLE
+Assert-SemVerCompatability -Version '1.0.0'
+
+True
+
+Checks if the version '1.0.0' is semver 2.0 compatible
+
+#>
+function Assert-SemVerCompatability {
+    [CmdletBinding()]
+    param (
+        [Parameter()]
+        [string]
+        $Version
+    )
+
+    return $Version -match '^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$'
+}
+#endregion
+
 <#
 .SYNOPSIS
 Publish a new version of a given module to an Azure DevOps artifact feed as a universal package.
@@ -61,6 +92,10 @@ function Publish-ModuleToUniversalArtifactFeed {
     }
 
     process {
+        if (-not (Assert-SemVerCompatability -Version $ModuleVersion)) {
+            Write-Warning "Invalid module version: [$ModuleVersion] - Skipping"
+            return
+        }
 
         #################################
         ##    Generate package name    ##
@@ -103,7 +138,12 @@ function Publish-ModuleToUniversalArtifactFeed {
                 $inputObject += @('--project', "$VstsFeedProject")
             }
 
-            az artifacts universal publish @inputObject
+            try {
+                az artifacts universal publish @inputObject
+            } catch {
+                Write-Warning "Failed to publish module to Universal Package Feed [$VstsOrganizationUri/$VstsFeedProject/$VstsFeedName]"
+                Write-Warning $_
+            }
 
         }
         Write-Verbose 'Publish complete'

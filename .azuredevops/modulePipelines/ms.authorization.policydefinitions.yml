@@ -42,10 +42,14 @@ stages:
         parameters:
           removeDeployment: '${{ parameters.removeDeployment }}'
           deploymentBlocks:
-            - path: $(modulePath)/.parameters/min.parameters.json
-              templateFilePath: $(modulePath)/.bicep/nested_policyDefinitions_sub.bicep
-            - path: $(modulePath)/.parameters/parameters.json
-              templateFilePath: $(modulePath)/.bicep/nested_policyDefinitions_sub.bicep
+            - path: $(modulePath)/.parameters/mg.min.parameters.json
+              templateFilePath: $(modulePath)/deploy.bicep
+            - path: $(modulePath)/.parameters/mg.parameters.json
+              templateFilePath: $(modulePath)/deploy.bicep
+            - path: $(modulePath)/.parameters/sub.min.parameters.json
+              templateFilePath: $(modulePath)/deploy.bicep
+            - path: $(modulePath)/.parameters/sub.parameters.json
+              templateFilePath: $(modulePath)/deploy.bicep
 
   - stage: Publishing
     displayName: Publish module

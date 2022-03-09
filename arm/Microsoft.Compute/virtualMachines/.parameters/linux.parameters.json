@@ -19,6 +19,9 @@
         "encryptionAtHost": {
             "value": false
         },
+        "availabilityZone": {
+            "value": 1
+        },
         "imageReference": {
             "value": {
                 "publisher": "Canonical",

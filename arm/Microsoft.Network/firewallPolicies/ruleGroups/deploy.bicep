@@ -18,7 +18,7 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
-resource firewallPolicy 'Microsoft.Network/firewallPolicies@2021-03-01' existing = {
+resource firewallPolicy 'Microsoft.Network/firewallPolicies@2021-05-01' existing = {
   name: firewallPolicyName
 }
 

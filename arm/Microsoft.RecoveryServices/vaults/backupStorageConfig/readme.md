@@ -17,7 +17,6 @@ This module deploys the Backup Storage Configuration for the Recovery Service Va
 | `recoveryVaultName` | string |  |  | Required. Name of the Azure Recovery Service Vault |
 | `storageModelType` | string | `GeoRedundant` | `[GeoRedundant, LocallyRedundant, ReadAccessGeoZoneRedundant, ZoneRedundant]` | Optional. Change Vault Storage Type (Works if vault has not registered any backup instance) |
 
-
 ## Outputs
 
 | Output Name | Type | Description |

@@ -2,7 +2,6 @@
 
 This module deploys virtual hub route tables.
 
-
 ## Resource Types
 
 | Resource Type | API Version |

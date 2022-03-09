@@ -48,6 +48,8 @@ stages:
               resourceGroupName: ${{ format(variables.rgPattern, 'min.parameters.json') }}
             - path: $(modulePath)/.parameters/parameters.json
               resourceGroupName: ${{ format(variables.rgPattern, 'parameters.json') }}
+            - path: $(modulePath)/.parameters/max.parameters.json
+              resourceGroupName: ${{ format(variables.rgPattern, 'max.parameters.json') }}
 
   - stage: Publishing
     displayName: Publish module
