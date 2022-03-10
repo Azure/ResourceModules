@@ -67,9 +67,9 @@ If you're unfamiliar with Infrastructure as Code, or wonder how you can use the 
   - [Generate module Readme](./Contribution%20guide%20-%20Generate%20module%20Readme)
   - [Get formatted RBAC roles](./Contribution%20guide%20-%20Get%20formatted%20RBAC%20roles)
   - [Validate module locally](./Contribution%20guide%20-%20Validate%20module%20locally)
-- [Known issues](./Known%20issues)
 - Upgrade guidelines
   - [Upgrade from 0.3.1 to 0.4.0](./Upgrade%20from%200.3.1%20to%200.4.0)
+- [Known issues](./Known%20issues)
 
 ---
 
