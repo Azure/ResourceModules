@@ -350,4 +350,4 @@ For this reason, make sure to update the references in the following modules onc
 
 # 6. (Optional) Convert library to ARM
 
-Note that in case you don't want to use Bicep, you always have the option to use the utility `ConvertTo-ARMTemplate`, we provide in path `utilities/tools`, to convert the repository to an ARM-only repository. Due to the way Bicep works and the CI environment is set up, you should be able to use it with ARM templates in the same way as you would using Bicep. For further information on how to use the tool, please refer to the tool-specific [documentation](./Getting%20started%20-%20ConvertTo-ARMTemplate).
+Note that in case you don't want to use Bicep, you always have the option to use the utility `ConvertTo-ARMTemplate` we provide in path `utilities/tools` to convert the repository to an ARM-only repository. Due to the way Bicep works and the CI environment is set up, you should be able to use it with ARM templates in the same way as you would when using Bicep. For further information on how to use the tool, please refer to the tool-specific [documentation](./Interoperability%20-%20Bicep%20to%20ARM%20conversion).
