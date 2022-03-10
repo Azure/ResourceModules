@@ -20,7 +20,7 @@ This module deploys a SQL server.
 | :-- | :-- | :-- | :-- | :-- |
 | `administratorLogin` | string |  |  | Optional. Administrator username for the server. Required if no `administrators` object for AAD authentication is provided. |
 | `administratorLoginPassword` | secureString |  |  | Optional. The administrator login password. Required if no `administrators` object for AAD authentication is provided. |
-| `administrators` | object | `{object}` |  | Optional. The Azure Active Directory (AAD) administrator authentiaction. Required if no `administratorLogin` & `administratorLoginPassword` is provided. |
+| `administrators` | object | `{object}` |  | Optional. The Azure Active Directory (AAD) administrator authentication. Required if no `administratorLogin` & `administratorLoginPassword` is provided. |
 | `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `databases` | _[databases](databases/readme.md)_ array | `[]` |  | Optional. The databases to create in the server |
 | `firewallRules` | _[firewallRules](firewallRules/readme.md)_ array | `[]` |  | Optional. The firewall rules to create in the server |
