@@ -205,6 +205,7 @@ The example assumes you are using a [`bicepconfig.json`](https://docs.microsoft.
 
 The following example shows how you could orchestrate a deployment of multiple resources using template specs. In this example we will deploy a NSG and use the same in a subsequent VNET deployment.
 
+> **Note**: the preferred method to publish modules to template-specs is to leverage our [CI environment](./The%20CI%20environment). However, this option may not be applicable in all scenarios (ref e.g. the [Consume library](./Getting%20started%20-%20Consume%20library) section). As an alternative, the same [Publish-ModuleToTemplateSpec.ps1](https://github.com/Azure/ResourceModules/blob/main/utilities/pipelines/resourcePublish/Publish-ModuleToTemplateSpec.ps1) script leveraged by the publishing step of the CI environment pipeline can also be executed locally.
 ```bicep
 targetScope = 'subscription'
 
