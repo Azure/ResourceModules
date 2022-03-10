@@ -109,7 +109,7 @@ While the concepts are the same, the configuration of the CI environment can dif
 <details>
 <summary>GitHub</summary>
 
-For _GitHub_, you have to perform the following DevOps-specific steps:
+For _GitHub_, you have to perform the following environment-specific steps:
 - [3.2.1 Setup secrets](#321-setup-secrets)
 - [3.2.2 Setup variables file](#322-setup-variables-file)
 - [3.2.3 Enable actions](#323-enable-actions)
@@ -219,7 +219,7 @@ To do so, perform the following steps:
 <details>
 <summary>Azure DevOps</summary>
 
-For _Azure DevOps_, you have to perform the following DevOps-specific steps:
+For _Azure DevOps_, you have to perform the following environment-specific steps:
 - [3.2.1 Setup service connection](#321-setup-service-connection)
 - [3.2.2 Setup secrets in variable group](#322-setup-secrets-in-variable-group)
 - [3.2.3 Setup variables file](#323-setup-variables-file)
