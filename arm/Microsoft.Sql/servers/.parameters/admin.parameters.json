@@ -8,7 +8,7 @@
         "administrators": {
             "value": {
                 "azureADOnlyAuthentication": true,
-                "login": "U85Z90R82n110u117M7",
+                "login": "myspn",
                 "sid": "<<deploymentSpId>>",
                 "principalType": "Application",
                 "tenantId": "<<tenantId>>"
