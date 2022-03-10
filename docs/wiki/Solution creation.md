@@ -102,6 +102,7 @@ module vnet '../arm/Microsoft.Network/virtualNetworks/deploy.bicep' = {
 
 The following example shows how you could orchestrate a deployment of multiple resources using modules from a private bicep registry. In this example we will deploy a resource group with a contained NSG and use the same in a subsequent VNET deployment.
 
+> **Note**: the preferred method to publish modules to the Bicep registry is to leverage our [CI environment](./The%20CI%20environment). However, this option may not be applicable in all scenarios (ref e.g. the [Consume library](./Getting%20started%20-%20Consume%20library) section). As an alternative, the same [Publish-ModuleToPrivateBicepRegistry.ps1](https://github.com/Azure/ResourceModules/blob/main/utilities/pipelines/resourcePublish/Publish-ModuleToPrivateBicepRegistry.ps1) script leveraged by the publishing step of the CI environment pipeline can also be executed locally.
 ```bicep
 targetScope = 'subscription'
 
