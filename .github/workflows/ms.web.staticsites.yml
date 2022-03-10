@@ -1,4 +1,4 @@
-name: 'ApiManagement: Service'
+name: 'Web: StaticSites'
 
 on:
   workflow_dispatch:
@@ -18,15 +18,15 @@ on:
       - main
     paths:
       - '.github/actions/templates/**'
-      - '.github/workflows/ms.apimanagement.service.yml'
-      - 'arm/Microsoft.ApiManagement/service/**'
+      - '.github/workflows/ms.web.staticsites.yml'
+      - 'arm/Microsoft.Web/staticSites/**'
       - '!*/**/readme.md'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/dependencies/**'
 
 env:
-  modulePath: 'arm/Microsoft.ApiManagement/service'
-  workflowPath: '.github/workflows/ms.apimanagement.service.yml'
+  modulePath: 'arm/Microsoft.Web/staticSites'
+  workflowPath: '.github/workflows/ms.web.staticsites.yml'
   AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
   ARM_SUBSCRIPTION_ID: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
   ARM_MGMTGROUP_ID: '${{ secrets.ARM_MGMTGROUP_ID }}'
@@ -81,7 +81,11 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        parameterFilePaths: ['parameters.json', 'max.parameters.json', 'min.parameters.json']
+        parameterFilePaths:
+          [
+            'min.parameters.json',
+            'parameters.json'
+          ]
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2

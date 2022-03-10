@@ -18,8 +18,9 @@ This module deploys a SQL server.
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `administratorLogin` | string |  |  | Required. Administrator username for the server. |
-| `administratorLoginPassword` | secureString |  |  | Required. The administrator login password. |
+| `administratorLogin` | string |  |  | Optional. Administrator username for the server. Required if no `administrators` object for AAD authentication is provided. |
+| `administratorLoginPassword` | secureString |  |  | Optional. The administrator login password. Required if no `administrators` object for AAD authentication is provided. |
+| `administrators` | object | `{object}` |  | Optional. The Azure Active Directory (AAD) administrator authentication. Required if no `administratorLogin` & `administratorLoginPassword` is provided. |
 | `databases` | _[databases](databases/readme.md)_ array | `[]` |  | Optional. The databases to create in the server |
 | `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `firewallRules` | _[firewallRules](firewallRules/readme.md)_ array | `[]` |  | Optional. The firewall rules to create in the server |
@@ -80,6 +81,23 @@ You can specify multiple user assigned identities to a resource by providing add
     "value": {
         "/subscriptions/12345678-1234-1234-1234-123456789012/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001": {},
         "/subscriptions/12345678-1234-1234-1234-123456789012/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002": {}
+    }
+},
+```
+
+### Parameter Usage: `administrators`
+
+Configure Azure Active Directory Authentication method for server administrator.
+https://docs.microsoft.com/en-us/azure/templates/microsoft.sql/servers/administrators?tabs=bicep
+
+```json
+"administrators": {
+    "value": {
+        "azureADOnlyAuthentication": false
+        "login": "John Doe"
+        "sid": "<<objectId>>"
+        "principalType" : "User" // options: "User", "Group", "Application"
+        "tenantId": "<<tenantId>>"
     }
 },
 ```

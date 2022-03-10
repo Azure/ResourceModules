@@ -64,24 +64,24 @@ param inboundNatRules array = []
 @description('Optional. The outbound rules.')
 param outboundRules array = []
 
-var frontendsSubnets = [for item in frontendIPConfigurations: {
-  id: item.subnetId
-}]
-var frontendsPublicIPAddresses = [for item in frontendIPConfigurations: {
-  id: item.publicIPAddressId
-}]
-var frontendsObj = {
-  subnets: frontendsSubnets
-  publicIPAddresses: frontendsPublicIPAddresses
-}
-
 var frontendIPConfigurations_var = [for (frontendIPConfiguration, index) in frontendIPConfigurations: {
   name: frontendIPConfiguration.name
   properties: {
-    subnet: !empty(frontendIPConfiguration.subnetId) ? frontendsObj.subnets[index] : null
-    publicIPAddress: !empty(frontendIPConfiguration.publicIPAddressId) ? frontendsObj.publicIPAddresses[index] : null
-    privateIPAddress: !empty(frontendIPConfiguration.privateIPAddress) ? frontendIPConfiguration.privateIPAddress : null
-    privateIPAllocationMethod: !empty(frontendIPConfiguration.subnetId) ? (empty(frontendIPConfiguration.privateIPAddress) ? 'Dynamic' : 'Static') : null
+    subnet: contains(frontendIPConfiguration, 'subnetId') && !empty(frontendIPConfiguration.subnetId) ? {
+        id: frontendIPConfiguration.subnetId
+    } : null
+    publicIPAddress: contains(frontendIPConfiguration, 'publicIPAddressId') && !empty(frontendIPConfiguration.publicIPAddressId) ? {
+        id: frontendIPConfiguration.publicIPAddressId
+    } : null
+    privateIPAddress: contains(frontendIPConfiguration, 'privateIPAddress') && !empty(frontendIPConfiguration.privateIPAddress) ? frontendIPConfiguration.privateIPAddress : null
+    privateIPAddressVersion: contains(frontendIPConfiguration, 'privateIPAddressVersion') ? frontendIPConfiguration.privateIPAddressVersion : 'IPv4'
+    privateIPAllocationMethod: contains(frontendIPConfiguration, 'subnetId') && !empty(frontendIPConfiguration.subnetId) ? (contains(frontendIPConfiguration, 'privateIPAddress') ? 'Static' : 'Dynamic') : null
+    gatewayLoadBalancer: contains(frontendIPConfiguration, 'gatewayLoadBalancer') && !empty(frontendIPConfiguration.gatewayLoadBalancer) ? {
+      id: frontendIPConfiguration.gatewayLoadBalancer
+    } : null
+    publicIPPrefix: contains(frontendIPConfiguration, 'publicIPPrefix') && !empty(frontendIPConfiguration.publicIPPrefix) ? {
+      id: frontendIPConfiguration.publicIPPrefix
+    } : null
   }
 }]
 
@@ -130,11 +130,15 @@ var probes_var = [for probe in probes: {
   name: probe.name
   properties: {
     protocol: contains(probe, 'protocol') ? probe.protocol : 'Tcp'
-    requestPath: (contains(probe, 'protocol') && toLower(probe.protocol) == 'tcp') ? null : probe.requestPath
+    requestPath: toLower(probe.protocol) != 'tcp' ? probe.requestPath : null
     port: contains(probe, 'port') ? probe.port : 80
     intervalInSeconds: contains(probe, 'intervalInSeconds') ? probe.intervalInSeconds : 5
     numberOfProbes: contains(probe, 'numberOfProbes') ? probe.numberOfProbes : 2
   }
+}]
+
+var backendAddressPoolNames = [for backendAddressPool in backendAddressPools: {
+  name: backendAddressPool.name
 }]
 
 @description('Optional. The name of metrics that will be streamed.')
@@ -176,20 +180,20 @@ resource loadBalancer 'Microsoft.Network/loadBalancers@2021-05-01' = {
   }
   properties: {
     frontendIPConfigurations: frontendIPConfigurations_var
-    backendAddressPools: backendAddressPools
     loadBalancingRules: loadBalancingRules_var
+    backendAddressPools: backendAddressPoolNames
     outboundRules: outboundRules_var
     probes: probes_var
   }
 }
 
 module loadBalancer_backendAddressPools 'backendAddressPools/deploy.bicep' = [for (backendAddressPool, index) in backendAddressPools: {
-  name: '${uniqueString(deployment().name, location)}-LoadBalancer-backendAddressPools-${index}'
+  name: '${uniqueString(deployment().name, location)}-loadBalancer-backendAddressPools-${index}'
   params: {
     loadBalancerName: loadBalancer.name
     name: backendAddressPool.name
-    loadBalancerBackendAddresses: contains(backendAddressPool, 'loadBalancerBackendAddresses') ? backendAddressPool.loadBalancerBackendAddresses : []
-    tunnelInterfaces: contains(backendAddressPool, 'tunnelInterfaces') ? backendAddressPool.tunnelInterfaces : []
+    tunnelInterfaces: contains(backendAddressPool, 'tunnelInterfaces') && !empty(backendAddressPool.tunnelInterfaces) ? backendAddressPool.tunnelInterfaces : []
+    loadBalancerBackendAddresses: contains(backendAddressPool, 'loadBalancerBackendAddresses') && !empty(backendAddressPool.loadBalancerBackendAddresses) ? backendAddressPool.loadBalancerBackendAddresses : []
   }
 }]
 
@@ -252,3 +256,6 @@ output resourceId string = loadBalancer.id
 
 @description('The resource group the load balancer was deployed into')
 output resourceGroupName string = resourceGroup().name
+
+@description('The backend address pools available in the load balancer.')
+output backendpools array = loadBalancer.properties.backendAddressPools

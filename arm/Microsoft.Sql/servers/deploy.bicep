@@ -1,9 +1,9 @@
-@description('Required. Administrator username for the server.')
-param administratorLogin string
+@description('Optional. Administrator username for the server. Required if no `administrators` object for AAD authentication is provided.')
+param administratorLogin string = ''
 
-@description('Required. The administrator login password.')
+@description('Optional. The administrator login password. Required if no `administrators` object for AAD authentication is provided.')
 @secure()
-param administratorLoginPassword string
+param administratorLoginPassword string = ''
 
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
@@ -43,6 +43,9 @@ param firewallRules array = []
 @description('Optional. The security alert policies to create in the server')
 param securityAlertPolicies array = []
 
+@description('Optional. The Azure Active Directory (AAD) administrator authentication. Required if no `administratorLogin` & `administratorLoginPassword` is provided.')
+param administrators object = {}
+
 var identityType = systemAssignedIdentity ? (!empty(userAssignedIdentities) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned') : (!empty(userAssignedIdentities) ? 'UserAssigned' : 'None')
 
 var identity = identityType != 'None' ? {
@@ -68,8 +71,16 @@ resource server 'Microsoft.Sql/servers@2021-05-01-preview' = {
   tags: tags
   identity: identity
   properties: {
-    administratorLogin: administratorLogin
-    administratorLoginPassword: administratorLoginPassword
+    administratorLogin: !empty(administratorLogin) ? administratorLogin : null
+    administratorLoginPassword: !empty(administratorLoginPassword) ? administratorLoginPassword : null
+    administrators: !empty(administrators) ? {
+      administratorType: 'ActiveDirectory'
+      azureADOnlyAuthentication: administrators.azureADOnlyAuthentication
+      login: administrators.login
+      principalType: administrators.principalType
+      sid: administrators.sid
+      tenantId: administrators.tenantId
+    } : null
     version: '12.0'
   }
 }

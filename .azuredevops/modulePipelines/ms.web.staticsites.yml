@@ -1,4 +1,4 @@
-name: 'Network - LoadBalancers'
+name: 'Web - StaticSites'
 
 parameters:
   - name: removeDeployment
@@ -17,9 +17,9 @@ trigger:
       - main
   paths:
     include:
-      - '/.azuredevops/modulePipelines/ms.network.loadbalancers.yml'
+      - '/.azuredevops/modulePipelines/ms.web.staticsites.yml'
       - '/.azuredevops/pipelineTemplates/module.*.yml'
-      - '/arm/Microsoft.Network/loadBalancers/*'
+      - '/arm/Microsoft.Web/staticSites/*'
     exclude:
       - '/**/*.md'
 
@@ -27,7 +27,7 @@ variables:
   - template: '/.azuredevops/pipelineVariables/global.variables.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/arm/Microsoft.Network/loadBalancers'
+    value: '/arm/Microsoft.Web/staticSites'
 
 stages:
   - stage: Validation
@@ -42,9 +42,8 @@ stages:
         parameters:
           removeDeployment: '${{ parameters.removeDeployment }}'
           deploymentBlocks:
-            - path: $(modulePath)/.parameters/parameters.json
             - path: $(modulePath)/.parameters/min.parameters.json
-            - path: $(modulePath)/.parameters/internal.parameters.json
+            - path: $(modulePath)/.parameters/parameters.json
 
   - stage: Publishing
     displayName: Publish module
