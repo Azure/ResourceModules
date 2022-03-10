@@ -8,7 +8,7 @@ This section shows you how you can orchestrate a deployment using multiple resou
 
 The _template-orchestrated_ approach means using a _main_ or so-called _master template_ for deploying resources in Azure. This template will only contain nested deployments, where the modules – instead of embedding their content into the _master template_ – will be referenced by the _master template_.
 
-With this approach, modules need to be stored in an available location, where the Azure Resource Manager (ARM) can access them. This can be achieved by storing the modules templates in an accessible location location like _local_, _template specs_ or the _bicep registry_.
+With this approach, modules need to be stored in an available location, where the Azure Resource Manager (ARM) can access them. This can be achieved by storing the modules templates in an accessible location location like _local_, _Template Specs_ or the _Bicep Registry_.
 
 In an enterprise environment, the recommended approach is to store these templates in a private environment, only accessible by enterprise resources. Thus, only trusted authorities can have access to these files.
 
@@ -98,9 +98,9 @@ module vnet '../arm/Microsoft.Network/virtualNetworks/deploy.bicep' = {
 }
 ```
 
-## ***Example with a private bicep registry***
+## ***Example with a Private Bicep Registry***
 
-The following example shows how you could orchestrate a deployment of multiple resources using modules from a private bicep registry. In this example we will deploy a resource group with a contained NSG and use the same in a subsequent VNET deployment.
+The following example shows how you could orchestrate a deployment of multiple resources using modules from a private Bicep Registry. In this example we will deploy a resource group with a contained NSG and use the same in a subsequent VNET deployment.
 
 ```bicep
 targetScope = 'subscription'
