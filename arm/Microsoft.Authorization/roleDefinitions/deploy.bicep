@@ -59,6 +59,7 @@ module roleDefinition_mg 'managementGroup/deploy.bicep' = if (empty(subscription
     notActions: !empty(notActions) ? notActions : []
     assignableScopes: !empty(assignableScopes) ? assignableScopes : []
     managementGroupId: managementGroupId
+    location: location
   }
 }
 
@@ -74,6 +75,7 @@ module roleDefinition_sub 'subscription/deploy.bicep' = if (!empty(subscriptionI
     notDataActions: !empty(notDataActions) ? notDataActions : []
     assignableScopes: !empty(assignableScopes) ? assignableScopes : []
     subscriptionId: subscriptionId
+    location: location
   }
 }
 

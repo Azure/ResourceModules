@@ -66,6 +66,7 @@ module policyDefinition_mg 'managementGroup/deploy.bicep' = if (empty(subscripti
     metadata: !empty(metadata) ? metadata : {}
     parameters: !empty(parameters) ? parameters : {}
     policyRule: policyRule
+    location: location
   }
 }
 
@@ -81,6 +82,7 @@ module policyDefinition_sub 'subscription/deploy.bicep' = if (!empty(subscriptio
     metadata: !empty(metadata) ? metadata : {}
     parameters: !empty(parameters) ? parameters : {}
     policyRule: policyRule
+    location: location
   }
 }
 
