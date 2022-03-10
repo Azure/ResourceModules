@@ -43,6 +43,8 @@ You can remove these placeholders as you see fit, or migrate them together with 
 ## Version file
 A `version.json` file was added to each individual module. Please make sure such a file is added to every module folder in the `arm` folder structure.
 
+For more information on how versioning is handled see [here](https://github.com/Azure/ResourceModules/wiki/PipelinesDesign#publish).
+
 For the modules you copy over, a `version.json` file will already be available. For any modules you created on your end, you will have to add the file yourself.
 
 # CI environment
