@@ -8,7 +8,7 @@ This section shows you how you can orchestrate a deployment using multiple resou
 
 The _template-orchestrated_ approach means using a _main_ or so-called _master template_ for deploying resources in Azure. This template will only contain nested deployments, where the modules – instead of embedding their content into the _master template_ – will be referenced by the _master template_.
 
-With this approach, modules need to be stored in an available location, where the Azure Resource Manager (ARM) can access them. This can be achieved by storing the modules templates in an accessible location location like _local_, _template specs_ or the _bicep registry_.
+With this approach, modules need to be stored in an available location, where the Azure Resource Manager (ARM) can access them. This can be achieved by storing the modules templates in an accessible location like _local_, _template specs_ or the _bicep registry_.
 
 In an enterprise environment, the recommended approach is to store these templates in a private environment, only accessible by enterprise resources. Thus, only trusted authorities can have access to these files.
 
