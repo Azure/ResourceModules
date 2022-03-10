@@ -1,4 +1,4 @@
-name: 'Network - VirtualWans'
+name: 'Web - StaticSites'
 
 parameters:
   - name: removeDeployment
@@ -17,9 +17,9 @@ trigger:
       - main
   paths:
     include:
-      - '/.azuredevops/modulePipelines/ms.network.virtualwans.yml'
+      - '/.azuredevops/modulePipelines/ms.web.staticsites.yml'
       - '/.azuredevops/pipelineTemplates/module.*.yml'
-      - '/arm/Microsoft.Network/virtualWans/*'
+      - '/arm/Microsoft.Web/staticSites/*'
     exclude:
       - '/**/*.md'
 
@@ -27,7 +27,7 @@ variables:
   - template: '/.azuredevops/pipelineVariables/global.variables.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/arm/Microsoft.Network/virtualWans'
+    value: '/arm/Microsoft.Web/staticSites'
 
 stages:
   - stage: Validation
