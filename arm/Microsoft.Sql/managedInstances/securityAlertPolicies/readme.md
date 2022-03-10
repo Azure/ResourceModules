@@ -12,8 +12,8 @@ This module deploys a security alert policy for a SQL managed instance.
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `emailAccountAdmins` | bool | `False` |  | Optional. Specifies that the schedule scan notification will be is sent to the subscription administrators. |
+| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `managedInstanceName` | string |  |  | Required. Name of the SQL managed instance. |
 | `name` | string |  |  | Required. The name of the security alert policy |
 | `state` | string | `Disabled` | `[Enabled, Disabled]` | Optional. Enables advanced data security features, like recuring vulnerability assesment scans and ATP. If enabled, storage account must be provided. |

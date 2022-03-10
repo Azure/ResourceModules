@@ -34,7 +34,6 @@ This module deploys one Virtual Machine with one or multiple nics and optionally
 | `bootDiagnosticStorageAccountUri` | string | `[format('.blob.{0}/', environment().suffixes.storage)]` |  | Optional. Storage account boot diagnostic base URI. |
 | `certificatesToBeInstalled` | array | `[]` |  | Optional. Specifies set of certificates that should be installed onto the virtual machine. |
 | `configurationProfileAssignments` | array | `[]` |  | Optional. Any VM configuration profile assignments |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `customData` | string |  |  | Optional. Custom data associated to the VM, this value will be automatically converted into base64 to account for the expected VM format. |
 | `dataDisks` | array | `[]` |  | Optional. Specifies the data disks. For security reasons, it is recommended to specify DiskEncryptionSet into the dataDisk object. Restrictions: DiskEncryptionSet cannot be enabled if Azure Disk Encryption (guest-VM encryption using bitlocker/DM-Crypt) is enabled on your VMs. |
 | `dedicatedHostId` | string |  |  | Optional. Specifies resource ID about the dedicated host that the virtual machine resides in. |
@@ -45,6 +44,7 @@ This module deploys one Virtual Machine with one or multiple nics and optionally
 | `diagnosticWorkspaceId` | string |  |  | Optional. Resource ID of the diagnostic log analytics workspace. |
 | `disablePasswordAuthentication` | bool | `False` |  | Optional. Specifies whether password authentication should be disabled. |
 | `enableAutomaticUpdates` | bool | `True` |  | Optional. Indicates whether Automatic Updates is enabled for the Windows virtual machine. Default value is true. For virtual machine scale sets, this property can be updated and updates will take effect on OS reprovisioning. |
+| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `enableEvictionPolicy` | bool | `False` |  | Optional. Specifies the eviction policy for the low priority virtual machine. Will result in 'Deallocate' eviction policy. |
 | `enableServerSideEncryption` | bool | `False` |  | Optional. Specifies if Windows VM disks should be encrypted with Server-side encryption + Customer managed Key. |
 | `encryptionAtHost` | bool | `True` |  | Optional. This property can be used by user in the request to enable or disable the Host Encryption for the virtual machine. This will enable the encryption for all the disks including Resource/Temp disk at host itself. For security reasons, it is recommended to set encryptionAtHost to True. Restrictions: Cannot be enabled if Azure Disk Encryption (guest-VM encryption using bitlocker/DM-Crypt) is enabled on your VMs. |

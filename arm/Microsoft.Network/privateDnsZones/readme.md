@@ -26,7 +26,7 @@ This template deploys a private DNS zone.
 | `a` | _[a](a/readme.md)_ array | `[]` |  | Optional. Array of A records. |
 | `aaaa` | _[aaaa](aaaa/readme.md)_ array | `[]` |  | Optional. Array of AAAA records. |
 | `cname` | _[cname](cname/readme.md)_ array | `[]` |  | Optional. Array of CNAME records. |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
+| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `location` | string | `global` |  | Optional. The location of the PrivateDNSZone. Should be global. |
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
 | `mx` | _[mx](mx/readme.md)_ array | `[]` |  | Optional. Array of MX records. |

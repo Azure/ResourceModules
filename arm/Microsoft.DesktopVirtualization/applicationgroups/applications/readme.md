@@ -15,8 +15,8 @@ This module deploys AVD Applications.
 | `appGroupName` | string |  |  | Required. Name of the Application Group to create the application(s) in. |
 | `commandLineArguments` | string |  |  | Optional. Command-Line Arguments for Application. |
 | `commandLineSetting` | string | `DoNotAllow` | `[Allow, DoNotAllow, Require]` | Optional. Specifies whether this published application can be launched with command-line arguments provided by the client, command-line arguments specified at publish time, or no command-line arguments at all. |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `description` | string |  |  | Optional. Description of Application.. |
+| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `filePath` | string |  |  | Required. Specifies a path for the executable file for the application. |
 | `friendlyName` | string |  |  | Required. Friendly name of Application.. |
 | `iconIndex` | int | `0` |  | Optional. Index of the icon. |

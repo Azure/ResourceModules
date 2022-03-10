@@ -16,11 +16,11 @@ This module deploys a queue for a service bus namespace.
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `authorizationRules` | _[authorizationRules](authorizationRules/readme.md)_ array | `[System.Collections.Hashtable]` |  | Optional. Authorization Rules for the Service Bus Queue |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `deadLetteringOnMessageExpiration` | bool | `True` |  | Optional. A value that indicates whether this queue has dead letter support when a message expires. |
 | `defaultMessageTimeToLive` | string | `P14D` |  | Optional. ISO 8601 default message timespan to live value. This is the duration after which the message expires, starting from when the message is sent to Service Bus. This is the default value used when TimeToLive is not set on a message itself. |
 | `duplicateDetectionHistoryTimeWindow` | string | `PT10M` |  | Optional. ISO 8601 timeSpan structure that defines the duration of the duplicate detection history. The default value is 10 minutes. |
 | `enableBatchedOperations` | bool | `True` |  | Optional. Value that indicates whether server-side batched operations are enabled. |
+| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `enableExpress` | bool | `False` |  | Optional. A value that indicates whether Express Entities are enabled. An express queue holds a message in memory temporarily before writing it to persistent storage. |
 | `enablePartitioning` | bool | `False` |  | Optional. A value that indicates whether the queue is to be partitioned across multiple message brokers. |
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |

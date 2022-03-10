@@ -24,13 +24,13 @@ This module deploys an event hub namespace.
 | :-- | :-- | :-- | :-- | :-- |
 | `authorizationRules` | _[authorizationRules](authorizationRules/readme.md)_ array | `[System.Collections.Hashtable]` |  | Optional. Authorization Rules for the Event Hub namespace |
 | `baseTime` | string | `[utcNow('u')]` |  | Generated. Do not provide a value! This date value is used to generate a SAS token to access the modules. |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `diagnosticEventHubAuthorizationRuleId` | string |  |  | Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string |  |  | Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticStorageAccountId` | string |  |  | Optional. Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string |  |  | Optional. Resource ID of the diagnostic log analytics workspace. |
 | `disasterRecoveryConfig` | object | `{object}` |  | Optional. The disaster recovery config for this namespace |
+| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `eventHubs` | _[eventHubs](eventHubs/readme.md)_ array | `[]` |  | Optional. The event hubs to deploy into this namespace |
 | `isAutoInflateEnabled` | bool | `False` |  | Optional. Switch to enable the Auto Inflate feature of Event Hub. |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |

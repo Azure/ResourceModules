@@ -18,8 +18,8 @@ This module deploys an alert based on metrics.
 | `alertDescription` | string |  |  | Optional. Description of the alert. |
 | `autoMitigate` | bool | `True` |  | Optional. The flag that indicates whether the alert should be auto resolved or not. |
 | `criterias` | array |  |  | Required. Criterias to trigger the alert. Array of 'Microsoft.Azure.Monitor.SingleResourceMultipleMetricCriteria' or 'Microsoft.Azure.Monitor.MultipleResourceMultipleMetricCriteria' objects |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `enabled` | bool | `True` |  | Optional. Indicates whether this alert is enabled. |
+| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `evaluationFrequency` | string | `PT5M` | `[PT1M, PT5M, PT15M, PT30M, PT1H]` | Optional. how often the metric alert is evaluated represented in ISO 8601 duration format. |
 | `location` | string | `global` |  | Optional. Location for all resources. |
 | `name` | string |  |  | Required. The name of the alert. |

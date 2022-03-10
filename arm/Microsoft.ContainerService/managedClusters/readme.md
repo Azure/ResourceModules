@@ -59,7 +59,6 @@ This module deploys Azure Kubernetes Cluster (AKS).
 | `autoScalerProfileUtilizationThreshold` | string | `0.5` |  | Optional. Specifies the utilization threshold of the auto-scaler of the AKS cluster. |
 | `azurePolicyEnabled` | bool | `True` |  | Optional. Specifies whether the azurepolicy add-on is enabled or not. |
 | `azurePolicyVersion` | string | `v2` |  | Optional. Specifies the azure policy version to use. |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `diagnosticEventHubAuthorizationRuleId` | string |  |  | Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string |  |  | Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
@@ -67,6 +66,7 @@ This module deploys Azure Kubernetes Cluster (AKS).
 | `diagnosticWorkspaceId` | string |  |  | Optional. Resource ID of the diagnostic log analytics workspace. |
 | `disableLocalAccounts` | bool | `False` |  | Optional. If set to true, getting static credentials will be disabled for this cluster. This must only be used on Managed Clusters that are AAD enabled. |
 | `disableRunCommand` | bool | `False` |  | Optional. Whether to disable run command for the cluster or not. |
+| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `enableKeyvaultSecretsProvider` | bool | `False` |  | Optional. Specifies whether the KeyvaultSecretsProvider add-on is enabled or not. |
 | `enablePrivateCluster` | bool | `False` |  | Optional. Specifies whether to create the cluster as a private cluster or not. |
 | `enablePrivateClusterPublicFQDN` | bool | `False` |  | Optional. Whether to create additional public FQDN for private cluster or not. |

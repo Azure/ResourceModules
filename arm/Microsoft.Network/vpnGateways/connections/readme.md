@@ -13,8 +13,8 @@ This module deploys VPN Gateways Connections.
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `connectionBandwidth` | int | `10` |  | Optional. Expected bandwidth in MBPS. |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `enableBgp` | bool | `False` |  | Optional. Enable BGP flag. |
+| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `enableInternetSecurity` | bool | `False` |  | Optional. Enable internet security. |
 | `enableRateLimiting` | bool | `False` |  | Optional. Enable rate limiting. |
 | `ipsecPolicies` | array | `[]` |  | Optional. The IPSec policies to be considered by this connection. |
