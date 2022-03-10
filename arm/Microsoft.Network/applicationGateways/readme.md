@@ -21,17 +21,17 @@ This module deploys Network ApplicationGateways.
 | `backendAddressPools` | array | `[]` |  | Optional. Backend address pool of the application gateway resource. |
 | `backendHttpSettingsCollection` | array | `[]` |  | Optional. Backend http settings of the application gateway resource. |
 | `capacity` | int | `2` |  | Optional. The number of Application instances to be configured. |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `customErrorConfigurations` | array | `[]` |  | Optional. Custom error configurations of the application gateway resource. |
 | `diagnosticEventHubAuthorizationRuleId` | string |  |  | Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.  |
 | `diagnosticEventHubName` | string |  |  | Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticStorageAccountId` | string |  |  | Optional. Resource ID of the diagnostic storage account. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub |
 | `diagnosticWorkspaceId` | string |  |  | Optional. Resource ID of the diagnostic log analytics workspace. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub |
-| `enableFips` | bool |  |  | Optional. Whether FIPS is enabled on the application gateway resource. |
-| `enableHttp2` | bool |  |  | Optional. Whether HTTP2 is enabled on the application gateway resource. |
-| `enableRequestBuffering` | bool |  |  | Optional. Enable request buffering. |
-| `enableResponseBuffering` | bool |  |  | Optional. Enable response buffering. |
+| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableFips` | bool | `False` |  | Optional. Whether FIPS is enabled on the application gateway resource. |
+| `enableHttp2` | bool | `False` |  | Optional. Whether HTTP2 is enabled on the application gateway resource. |
+| `enableRequestBuffering` | bool | `False` |  | Optional. Enable request buffering. |
+| `enableResponseBuffering` | bool | `False` |  | Optional. Enable response buffering. |
 | `firewallPolicyId` | string |  |  | Optional. The resource Id of an associated firewall policy. |
 | `frontendIPConfigurations` | array | `[]` |  | Optional. Frontend IP addresses of the application gateway resource. |
 | `frontendPorts` | array | `[]` |  | Optional. Frontend ports of the application gateway resource. |

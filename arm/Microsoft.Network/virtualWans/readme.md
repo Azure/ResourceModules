@@ -16,8 +16,8 @@ This template deploys a virtual WAN.
 | :-- | :-- | :-- | :-- | :-- |
 | `allowBranchToBranchTraffic` | bool | `False` |  | Optional. True if branch to branch traffic is allowed. |
 | `allowVnetToVnetTraffic` | bool | `False` |  | Optional. True if VNET to VNET traffic is allowed.  |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `disableVpnEncryption` | bool | `False` |  | Optional. VPN encryption to be disabled or not. |
+| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location where all resources will be created. |
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
 | `name` | string |  |  | Required. Name of the Virtual WAN. |
