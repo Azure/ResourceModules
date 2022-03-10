@@ -68,12 +68,27 @@ param hubRouteTables array = []
 @description('Optional. Virtual network connections to create for the virtual hub.')
 param hubVirtualNetworkConnections array = []
 
-@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
-param cuaId string = ''
+@allowed([
+  'CanNotDelete'
+  'NotSpecified'
+  'ReadOnly'
+])
+@description('Optional. Specify the type of lock.')
+param lock string = 'NotSpecified'
 
-module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
-  name: 'pid-${cuaId}'
-  params: {}
+@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+param enableDefaultTelemetry bool = true
+
+resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
+  name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name)}'
+  properties: {
+    mode: 'Incremental'
+    template: {
+      '$schema': 'https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#'
+      contentVersion: '1.0.0.0'
+      resources: []
+    }
+  }
 }
 
 resource virtualHub 'Microsoft.Network/virtualHubs@2021-05-01' = {
@@ -111,6 +126,15 @@ resource virtualHub 'Microsoft.Network/virtualHubs@2021-05-01' = {
       id: vpnGatewayId
     } : null
   }
+}
+
+resource virtualHub_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
+  name: '${virtualHub.name}-${lock}-lock'
+  properties: {
+    level: lock
+    notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
+  }
+  scope: virtualHub
 }
 
 module virtualHub_routeTables 'hubRouteTables/deploy.bicep' = [for (routeTable, index) in hubRouteTables: {

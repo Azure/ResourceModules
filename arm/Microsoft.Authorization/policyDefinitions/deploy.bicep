@@ -39,6 +39,21 @@ param subscriptionId string = ''
 @sys.description('Optional. Location for all resources.')
 param location string = deployment().location
 
+@sys.description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+param enableDefaultTelemetry bool = true
+
+resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
+  name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name)}'
+  properties: {
+    mode: 'Incremental'
+    template: {
+      '$schema': 'https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#'
+      contentVersion: '1.0.0.0'
+      resources: []
+    }
+  }
+}
+
 module policyDefinition_mg 'managementGroup/deploy.bicep' = if (empty(subscriptionId)) {
   name: '${uniqueString(deployment().name, location)}-PolicyDefinition-MG-Module'
   scope: managementGroup(managementGroupId)

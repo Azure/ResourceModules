@@ -91,14 +91,17 @@ stages:
       - deploy_rg
     variables:
       resourceType: 'Microsoft.Authorization/policyAssignments'
-      templateFilePath: $(modulesPath)/$(resourceType)/subscription/deploy.bicep
+      templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
     jobs:
       - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
         parameters:
           deploymentBlocks:
-            - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
+            - path: $(dependencyPath)/$(resourceType)/parameters/mg.parameters.json
               templateFilePath: $(templateFilePath)
-              displayName: Policy assignment
+              displayName: Policy assignment (mg)
+            - path: $(dependencyPath)/$(resourceType)/parameters/sub.parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: Policy assignment (sub)
 
   - stage: deploy_evh
     displayName: Deploy event hub
@@ -884,3 +887,18 @@ stages:
             - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
               templateFilePath: $(templateFilePath)
               displayName: Default Virtual Machine
+
+  - stage: deploy_lb
+    displayName: Deploy load balancers
+    dependsOn:
+      - deploy_vnet
+    variables:
+      resourceType: 'Microsoft.Network/loadBalancers'
+      templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
+    jobs:
+      - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
+        parameters:
+          deploymentBlocks:
+            - path: $(dependencyPath)/$(resourceType)/parameters/internal.parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: Deploy module

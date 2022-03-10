@@ -15,18 +15,18 @@ This module deploys an app service plan.
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `appServiceEnvironmentId` | string |  |  | Optional. The Resource ID of the App Service Environment to use for the App Service Plan. |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
+| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
 | `maximumElasticWorkerCount` | int | `1` |  | Optional. Maximum number of total workers allowed for this ElasticScaleEnabled App Service Plan. |
 | `name` | string |  |  | Required. The name of the app service plan to deploy. |
-| `perSiteScaling` | bool |  |  | Optional. If true, apps assigned to this App Service plan can be scaled independently. If false, apps assigned to this App Service plan will scale to all instances of the plan. |
+| `perSiteScaling` | bool | `False` |  | Optional. If true, apps assigned to this App Service plan can be scaled independently. If false, apps assigned to this App Service plan will scale to all instances of the plan. |
 | `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
 | `serverOS` | string | `Windows` | `[Windows, Linux]` | Optional. Kind of server OS. |
 | `sku` | object |  |  | Required. Defines the name, tier, size, family and capacity of the App Service Plan. |
 | `tags` | object | `{object}` |  | Optional. Tags of the resource. |
-| `targetWorkerCount` | int |  |  | Optional. Scaling worker count. |
-| `targetWorkerSize` | int |  | `[0, 1, 2]` | Optional. The instance size of the hosting plan (small, medium, or large). |
+| `targetWorkerCount` | int | `0` |  | Optional. Scaling worker count. |
+| `targetWorkerSize` | int | `0` | `[0, 1, 2]` | Optional. The instance size of the hosting plan (small, medium, or large). |
 | `workerTierName` | string |  |  | Optional. Target worker tier assigned to the App Service plan. |
 
 ### Parameter Usage: `sku`

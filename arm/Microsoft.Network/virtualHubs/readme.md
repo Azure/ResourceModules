@@ -6,6 +6,7 @@ This module deploys a virtual hub.
 
 | Resource Type | API Version |
 | :-- | :-- |
+| `Microsoft.Authorization/locks` | 2017-04-01 |
 | `Microsoft.Network/virtualHubs` | 2021-05-01 |
 | `Microsoft.Network/virtualHubs/hubRouteTables` | 2021-05-01 |
 | `Microsoft.Network/virtualHubs/hubVirtualNetworkConnections` | 2021-05-01 |
@@ -17,18 +18,19 @@ This module deploys a virtual hub.
 | `addressPrefix` | string |  |  | Required. Address-prefix for this VirtualHub. |
 | `allowBranchToBranchTraffic` | bool | `True` |  | Optional. Flag to control transit for VirtualRouter hub. |
 | `azureFirewallId` | string |  |  | Optional. Resource ID of the Azure Firewall to link to |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
+| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `expressRouteGatewayId` | string |  |  | Optional. Resource ID of the Express Route Gateway to link to |
 | `hubRouteTables` | _[hubRouteTables](hubRouteTables/readme.md)_ array | `[]` |  | Optional. Route tables to create for the virtual hub. |
 | `hubVirtualNetworkConnections` | _[hubVirtualNetworkConnections](hubVirtualNetworkConnections/readme.md)_ array | `[]` |  | Optional. Virtual network connections to create for the virtual hub. |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
+| `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
 | `name` | string |  |  | Required. The virtual hub name. |
 | `p2SVpnGatewayId` | string |  |  | Optional. Resource ID of the Point-to-Site VPN Gateway to link to |
 | `preferredRoutingGateway` | string |  | `[ExpressRoute, None, VpnGateway, ]` | Optional. The preferred routing gateway types |
 | `routeTableRoutes` | array | `[]` |  | Optional. VirtualHub route tables |
 | `securityPartnerProviderId` | string |  |  | Optional. ID of the Security Partner Provider to link to |
 | `securityProviderName` | string |  |  | Optional. The Security Provider name. |
-| `sku` | string | `Standard` | `Basic`,`Standard` | Optional. The sku of this VirtualHub. |
+| `sku` | string | `Standard` | `[Basic, Standard]` | Optional. The sku of this VirtualHub. |
 | `tags` | object | `{object}` |  | Optional. Tags of the resource. |
 | `virtualHubRouteTableV2s` | array | `[]` |  | Optional. List of all virtual hub route table v2s associated with this VirtualHub. |
 | `virtualRouterAsn` | int | `-1` |  | Optional. VirtualRouter ASN. |
@@ -63,6 +65,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 ## Template references
 
+- [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
 - [Virtualhubs](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/virtualHubs)
 - [Virtualhubs/Hubroutetables](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/virtualHubs/hubRouteTables)
 - [Virtualhubs/Hubvirtualnetworkconnections](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/virtualHubs/hubVirtualNetworkConnections)

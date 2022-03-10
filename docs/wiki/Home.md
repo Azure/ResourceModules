@@ -63,6 +63,7 @@ If you're unfamiliar with Infrastructure as Code, or wonder how you can use the 
   - [Contribution flow](./Contribution%20guide%20-%20Contribution%20flow)
   - [Generate module Readme](./Contribution%20guide%20-%20Generate%20module%20Readme)
   - [Get formatted RBAC roles](./Contribution%20guide%20-%20Get%20formatted%20RBAC%20roles)
+  - [Validate module locally](./Contribution%20guide%20-%20Validate%20module%20locally)
 - [Solution creation](./Solution%20creation)
 - [Known issues](./Known%20issues)
 
