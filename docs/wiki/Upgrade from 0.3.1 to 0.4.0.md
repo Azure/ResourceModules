@@ -59,7 +59,8 @@ General updates can be migrated by essentially copying/replacing any code outsid
 -	additional deployments in the dependency pipeline
 
 ## NamePrefix in settings.json
-A change that affects all modules is the introduction of the `namePrefix` property in the local `settings.json` file. This prefix is used to replace any placeholder such as `<<namePrefix>>` in any parameter file deployed in the CI pipelines.
+A change that affects all modules is the introduction of the `namePrefix` property in the local `settings.json` file.
+This prefix is used to simplify the introduction of a "personalized" resource name prefix, avoiding the chance of name conflict with other users.
 
 When migrating, this change should be introduced before or together with the update of the [individual modules](#parameter-file-name-prefix), as their parameter files make have use of this placeholder.
 
