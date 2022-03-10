@@ -128,6 +128,12 @@ param agentPools array = []
 @description('Optional. Specifies whether the httpApplicationRouting add-on is enabled or not.')
 param httpApplicationRoutingEnabled bool = false
 
+@description('Optional. Specifies whether the ingressApplicationGateway (AGIC) add-on is enabled or not.')
+param ingressApplicationGatewayEnabled bool = false
+
+@description('Optional. Specifies the resource id of conected application gateway.')
+param appGatewayResourceId string = ''
+
 @description('Optional. Specifies whether the aciConnectorLinux add-on is enabled or not.')
 param aciConnectorLinuxEnabled bool = false
 
@@ -362,6 +368,13 @@ resource managedCluster 'Microsoft.ContainerService/managedClusters@2021-10-01' 
     addonProfiles: {
       httpApplicationRouting: {
         enabled: httpApplicationRoutingEnabled
+      }
+      ingressApplicationGateway: {
+        enabled: ingressApplicationGatewayEnabled
+        config: {
+          applicationGatewayId: appGatewayResourceId
+          effectiveApplicationGatewayId: appGatewayResourceId
+        }
       }
       omsagent: {
         enabled: omsAgentEnabled && !empty(monitoringWorkspaceId)
