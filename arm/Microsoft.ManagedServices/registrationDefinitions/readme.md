@@ -19,6 +19,7 @@ remote/managing tenant.
 | :-- | :-- | :-- | :-- | :-- |
 | `authorizations` | array |  |  | Required. Specify an array of objects, containing object of Azure Active Directory principalId, a Azure roleDefinitionId, and an optional principalIdDisplayName. The roleDefinition specified is granted to the principalId in the provider's Active Directory and the principalIdDisplayName is visible to customers. |
 | `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `location` | string | `[deployment().location]` |  | Optional. Location for all resources. |
 | `managedByTenantId` | string |  |  | Required. Specify the tenant ID of the tenant which homes the principals you are delegating permissions to. |
 | `name` | string |  |  | Required. Specify a unique name for your offer/registration. i.e '<Managing Tenant> - <Remote Tenant> - <ResourceName>' |
 | `registrationDescription` | string |  |  | Required. Description of the offer/registration. i.e. 'Managed by <Managing Org Name>' |

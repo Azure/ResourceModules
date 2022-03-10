@@ -18,6 +18,7 @@ This module deploys a subscription wide export of the activity log.
 | `diagnosticStorageAccountId` | string |  |  | Optional. Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string |  |  | Optional. Resource ID of the diagnostic log analytics workspace. |
 | `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `location` | string | `[deployment().location]` |  | Optional. Location for all resources. |
 | `logsToEnable` | array | `[Administrative, Security, ServiceHealth, Alert, Recommendation, Policy, Autoscale, ResourceHealth]` | `[Administrative, Security, ServiceHealth, Alert, Recommendation, Policy, Autoscale, ResourceHealth]` | Optional. The name of logs that will be streamed. |
 | `name` | string | `[format('{0}-ActivityLog', uniqueString(subscription().id))]` |  | Optional. Name of the ActivityLog diagnostic settings. |
 

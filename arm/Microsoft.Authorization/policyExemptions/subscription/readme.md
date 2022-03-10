@@ -17,6 +17,7 @@ With this module you can create policy exemptions on a subscription level.
 | `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `exemptionCategory` | string | `Mitigated` | `[Mitigated, Waiver]` | Optional. The policy exemption category. Possible values are Waiver and Mitigated. Default is Mitigated |
 | `expiresOn` | string |  |  | Optional. The expiration date and time (in UTC ISO 8601 format yyyy-MM-ddTHH:mm:ssZ) of the policy exemption. e.g. 2021-10-02T03:57:00.000Z  |
+| `location` | string | `[deployment().location]` |  | Optional. Location for all resources. |
 | `metadata` | object | `{object}` |  | Optional. The policy exemption metadata. Metadata is an open ended object and is typically a collection of key-value pairs. |
 | `name` | string |  |  | Required. Specifies the name of the policy exemption. Maximum length is 64 characters for subscription scope. |
 | `policyAssignmentId` | string |  |  | Required. The resource ID of the policy assignment that is being exempted. |

@@ -16,6 +16,7 @@ With this module you can create role definitions on a management group level
 | `assignableScopes` | array | `[]` |  | Optional. Role definition assignable scopes. If not provided, will use the current scope provided. |
 | `description` | string |  |  | Optional. Description of the custom RBAC role to be created. |
 | `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `location` | string | `[deployment().location]` |  | Optional. Location for all resources. |
 | `managementGroupId` | string | `[managementGroup().name]` |  | Optional. The group ID of the Management Group where the Role Definition and Target Scope will be applied to. If not provided, will use the current scope for deployment. |
 | `notActions` | array | `[]` |  | Optional. List of denied actions. |
 | `roleName` | string |  |  | Required. Name of the custom RBAC role to be created. |

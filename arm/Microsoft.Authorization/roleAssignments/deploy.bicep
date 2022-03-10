@@ -49,6 +49,7 @@ param enableDefaultTelemetry bool = true
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name)}'
+  location: location
   properties: {
     mode: 'Incremental'
     template: {
@@ -71,6 +72,7 @@ module roleAssignment_mg 'managementGroup/deploy.bicep' = if (empty(subscription
     delegatedManagedIdentityResourceId: !empty(delegatedManagedIdentityResourceId) ? delegatedManagedIdentityResourceId : ''
     conditionVersion: conditionVersion
     condition: !empty(condition) ? condition : ''
+    location: location
   }
 }
 
@@ -86,6 +88,7 @@ module roleAssignment_sub 'subscription/deploy.bicep' = if (!empty(subscriptionI
     delegatedManagedIdentityResourceId: !empty(delegatedManagedIdentityResourceId) ? delegatedManagedIdentityResourceId : ''
     conditionVersion: conditionVersion
     condition: !empty(condition) ? condition : ''
+    location: location
   }
 }
 
