@@ -320,7 +320,8 @@ To use the pipelines that come with the environment in Azure DevOps, you need to
 
 At this stage you can execute your first pipeline, that is, the dependency pipeline.
 
-Since the modules we tested often depend on other services, we created a pipeline that provides the modules with various persisting standard services such as virtual networks and key vaults (along with dummy secrets). This _dependency_ pipeline should be prepared and executed before you start running any module pipelines.
+Since the modules we tested often depend on other services, we created a pipeline that provides the modules with various persisting standard services such as virtual networks and key vaults (along with dummy secrets). This _dependency_ pipeline should be prepared and executed before you start running all module pipelines.
+> Note, not all modules require dependencies or only a subset of the deployed.
 
 It has to components to it to function:
 - The dependency pipeline itself that orchestrates deployments

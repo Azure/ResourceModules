@@ -1,6 +1,6 @@
 In order to successfully deploy and test all ARM/Bicep modules in your desired environment some modules require certain Azure resources to be deployed beforehand.
 
-> **Note:** If we speak from **modules** in this context we mean the **services** which get created from these modules.
+> **Note:** If we speak of **modules** in this context we mean the **services** which get created from these modules.
 
 ---
 
@@ -13,11 +13,13 @@ In order to successfully deploy and test all ARM/Bicep modules in your desired e
 
 # Resources deployed by the dependency workflow
 
-Together with the resource modules pipelines, we are providing a dependency pipeline (GitHub workflow: `.github\workflows\platform.dependencies.yml`), leveraging resource parameters from the `utilities\dependencies` subfolder.
+Together with the resource modules pipelines, we are providing a dependency pipeline, leveraging resource parameters from the `utilities\dependencies` subfolder and either one of the following pipelines:
+- GitHub workflow: `.github\workflows\platform.dependencies.yml`
+- Azure DevOps pipeline: `.azuredevops\platformPipelines\platform.dependencies.yml`
 
 The resources deployed by the dependency workflow need to be in place before testing all the modules. Some of them (e.g. [storage account], [key vault] and [event hub namespace]) require a globally unique resource name. Before running the dependency workflow, it is required to update those values and their corresponding references in the resource modules parameters.
 
-Alternatively, you can leverage the token replacement utility we integrate by default by setting up your `\<<namePrefix\>>` token. Refer to [Parameter File Tokens Design](./ParameterFileTokens) for more details.
+> Note: By default, the parameter files make use of the placeholder token `'<<namePrefix>>'` to make all resource names specific to an environment. Refer to [Parameter File Tokens Design](./The%20CI%20environment%20-%20Token%20replacement) for more details.
 
 Some of the resources integrated with the full dependency pipeline are disabled by default as they require more time to be deployed or because they may cause issues when running in parallel with some of our module validation pipelines. Those are the sqlmi dependencies and the resources needed to build and distribute a VHD in a storage account. We suggest to enable them explicitly in case you need to onboard the modules requiring them, i.e. respectively [SQL managed instance], [compute disks] and [compute images].
 
