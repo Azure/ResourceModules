@@ -189,8 +189,8 @@ The primary pipeline variable file `.github/variables/global.variables.json` hos
 | Variable Name | Example Value | Description |
 | - | - | - |
 | `bicepRegistryName` | `"adpsxxazacrx001"` | The container registry to publish Bicep templates to. <p> **NOTE:** Must be globally unique |
-| `bicepRegistryRGName` | `"artifacts-rg"` | The resource group of the container registry to publish Bicep templates to. It is used to create a new container registry if not yet existing |
-| `bicepRegistryRGName` | `"artifacts-rg"` | The location of the resource group of the container registry to publish Bicep templates to. Is used to create a new resource group if not yet existing |
+| `bicepRegistryRGName` | `"artifacts-rg"` | The resource group of the container registry to publish Bicep templates into. It is used to create a new container registry if not yet existing |
+| `bicepRegistryRGName` | `"artifacts-rg"` | The location of the resource group of the container registry to publish Bicep templates into. Is used to create a new resource group if not yet existing |
 | `bicepRegistryDoPublish` | `"true"` | A central switch to enable/disable publishing to the private Bicep registry |
 
 </details>
@@ -229,11 +229,11 @@ For _Azure DevOps_, you have to perform the following environment-specific steps
 
 The service connection must be set up in the project's settings under _Pipelines: Service connections_ (a step by step guide can be found [here](https://docs.microsoft.com/en-us/azure/devops/pipelines/library/service-endpoints?view=azure-devops&tabs=yaml)).
 
-It's name must match the one configured as `serviceConnection` in the [variable file](#323-setup-variables-file)'s 'Global' section.
+It's name must match the one configured as `serviceConnection` in the [variable file](#323-setup-variables-file)'s 'General' section.
 
 ### 3.2.2 Setup secrets in variable group
 
-The variable group must set up in Azure DevOps as described [here](https://docs.microsoft.com/en-us/azure/devops/pipelines/library/variable-groups?view=azure-devops&tabs=classic#create-a-variable-group).
+The a variable group `PLATFORM_VARIABLES` must set up in Azure DevOps as described [here](https://docs.microsoft.com/en-us/azure/devops/pipelines/library/variable-groups?view=azure-devops&tabs=classic#create-a-variable-group).
 
 Based on the information you gathered in the [Azure setup](#1-configure-your-azure-environment), you must configure the following secrets in the variable group:
 
@@ -242,7 +242,7 @@ Based on the information you gathered in the [Azure setup](#1-configure-your-azu
 | `ARM_MGMTGROUP_ID` | `de33a0e7-64d9-4a94-8fe9-b018cedf1e05` | The group ID of the management group to test-deploy modules in. |
 | `ARM_SUBSCRIPTION_ID` | `d0312b25-9160-4550-914f-8738d9b5caf5` | The ID of the subscription to test-deploy modules in. |
 | `ARM_TENANT_ID` | `9734cec9-4384-445b-bbb6-767e7be6e5ec` | The tenant ID of the tenant to test-deploy modules in. |
-| `DEPLOYMENT_SP_ID` | `de33a0e7-64d9-4a94-8fe9-b018cedf1e05` | This is the Principal (Object ID) for the Service Principal used as the Azure service connection. It is used for Default Role Assignments when Modules are being deployed into Azure |
+| `DEPLOYMENT_SP_ID` | `de33a0e7-64d9-4a94-8fe9-b018cedf1e05` | The service principal ID (Object ID) of the principal used as the Azure service connection. Also used for test Role Assignments when modules are being deployed into Azure |
 
 Make sure its name matches the `group` reference used in the module pipelines. For example
 
@@ -250,6 +250,8 @@ Make sure its name matches the `group` reference used in the module pipelines. F
 variables:
   - group: 'PLATFORM_VARIABLES'
 ```
+
+> **Note:** If you need to use different name than `PLATFORM_VARIABLES` make sure to search & replace all references with the new name.
 
 ### 3.2.3 Setup variables file
 
@@ -261,7 +263,7 @@ The primary pipeline variable file `.azuredevops/pipelineVariables/global.variab
 | Variable Name | Example Value | Description |
 | - | - | - |
 | `defaultLocation` | `'WestEurope'` | The default location to deploy resources to. If no location is specified in the deploying parameter file, this location is used |
-| `defaultResourceGroupName` | `'validation-rg'` | The resource group to deploy all resources for validation to |
+| `defaultResourceGroupName` | `'validation-rg'` | The resource group to deploy all resources for validation into |
 | `serviceConnection` | `'Contoso-Connection'` | The service connection that points to the subscription to test in and publish to |
 
 </details>
@@ -318,15 +320,19 @@ To use the pipelines that come with the environment in Azure DevOps, you need to
 
 At this stage you can execute your first pipeline, that is, the dependency pipeline.
 
-As the modules we test oftentimes have dependencies to other services, we created a pipeline to deploys several standard services like Virtual Networks and Key Vaults (alongside dummy secrets) for the modules to use. This _dependency_ pipeline should be prepared and executed before you start running any module pipelines.
+Since the modules we tested often depend on other services, we created a pipeline that provides the modules with various persisting standard services such as virtual networks and key vaults (along with dummy secrets). This _dependency_ pipeline should be prepared and executed before you start running any module pipelines.
 
-> **Note:** If you want to rename any services there make sure to update any references to this name in the module parameter files. You can find further details about this pipeline [here](./Getting%20started%20-%20Dependency%20pipeline).
+It has to components to it to function:
+- The dependency pipeline itself that orchestrates deployments
+- The parameter files used by the dependency pipeline, stored in path `utilities\pipelines\dependencies`
+
+> **Note:** If you want to rename any dependency resources, make sure to update any references to their name in the module parameter files too. You can find further details about this pipeline [here](./Getting%20started%20-%20Dependency%20pipeline).
 
 # 5. Update module parameter files
 
 Once the required dependencies are deployed, there is one more step left to get as many module pipelines running as possible.
 
-Essentially, several modules reference values who's references are will be different for every first deployment of a resource. For example, if a module references a Key Vault key, its version identifier will only be available once the dependency pipeline executed once.
+Several module parameters reference resources with unique values. For example, if a module references a Key Vault key, its version identifier will only be available once the dependency pipeline executed once.
 
 For this reason, make sure to update the references in the following modules once the dependency pipeline concluded:
 
