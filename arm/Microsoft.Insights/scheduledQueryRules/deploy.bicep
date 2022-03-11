@@ -21,7 +21,7 @@ param kind string = 'LogAlert'
 param autoMitigate bool = true
 
 @description('Optional. If specified (in ISO 8601 duration format) then overrides the query time range. Relevant only for rules of the kind LogAlert.')
-param queryTimeRange string
+param queryTimeRange string = ''
 
 @description('Optional. The flag which indicates whether the provided query should be validated or not. Relevant only for rules of the kind LogAlert.')
 param skipQueryValidation bool = false
@@ -49,7 +49,7 @@ param severity int = 3
 param evaluationFrequency string = ''
 
 @description('Optional. The period of time (in ISO 8601 duration format) on which the Alert query will be executed (bin size). Relevant and required only for rules of the kind LogAlert.')
-param windowSize string
+param windowSize string = ''
 
 @description('Optional. Actions to invoke when the alert fires.')
 param actions array = []
@@ -94,14 +94,14 @@ resource queryRule 'Microsoft.Insights/scheduledQueryRules@2021-02-01-preview' =
     description: alertDescription
     displayName: name
     enabled: enabled
-    evaluationFrequency: (kind == 'LogAlert') ? evaluationFrequency : null
-    muteActionsDuration: (kind == 'LogAlert') ? suppressForMinutes : null
-    overrideQueryTimeRange: (kind == 'LogAlert') ? queryTimeRange : null
+    evaluationFrequency: (kind == 'LogAlert' && !empty(evaluationFrequency)) ? evaluationFrequency : null
+    muteActionsDuration: (kind == 'LogAlert' && !empty(suppressForMinutes)) ? suppressForMinutes : null
+    overrideQueryTimeRange: (kind == 'LogAlert' && !empty(queryTimeRange)) ? queryTimeRange : null
     scopes: scopes
     severity: (kind == 'LogAlert') ? severity : null
     skipQueryValidation: (kind == 'LogAlert') ? skipQueryValidation : null
     targetResourceTypes: (kind == 'LogAlert') ? targetResourceTypes : null
-    windowSize: (kind == 'LogAlert') ? windowSize : null
+    windowSize: (kind == 'LogAlert' && !empty(windowSize)) ? windowSize : null
   }
 }
 
