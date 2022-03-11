@@ -93,13 +93,13 @@ https://docs.microsoft.com/en-us/azure/templates/microsoft.sql/servers/administr
 ```json
 "administrators": {
     "value": {
-        "azureADOnlyAuthentication": false
-        "login": "John Doe"
-        "sid": "<<objectId>>"
+        "azureADOnlyAuthentication": true
+        "login": "John Doe" // if application can be anything
+        "sid": "<<objectId>>" // if application, the object ID
         "principalType" : "User" // options: "User", "Group", "Application"
         "tenantId": "<<tenantId>>"
     }
-},
+}
 ```
 
 ## Outputs
