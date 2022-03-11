@@ -1,4 +1,37 @@
-﻿
+﻿<#
+.SYNOPSIS
+Test if a given name prefix token placeholder is already taken
+
+.DESCRIPTION
+Test if a given name prefix token placeholder is already taken. Tests resource names by their actual value in the parameter files
+
+.PARAMETER namePrefix
+Parameter description
+
+.PARAMETER ValidateOrDeployParameters
+Optional. An object consisting of the components that are required when using the Validate test or DeploymentTest switch parameter.  Mandatory if the DeploymentTest/ValidationTest switches are set.
+
+.PARAMETER AdditionalTokens
+Optional. A hashtable parameter that contains custom tokens to be replaced in the paramter files for deployment
+
+.EXAMPLE
+$inputObject = @{
+    namePrefix                 = 'carml'
+    ValidateOrDeployParameters = @{
+        Location          = 'westeurope'
+        ResourceGroupName = 'validation-rg'
+        SubscriptionId    = '00000000-0000-0000-0000-000000000000'
+        ManagementGroupId = '00000000-0000-0000-0000-000000000000'
+        RemoveDeployment  = $false
+    }
+    AdditionalTokens           = @{
+        deploymentSpId = '00000000-0000-0000-0000-000000000000'
+    }
+}
+Test-NamePrefixAvailability @inputObject
+
+Test if namePrefix 'carml' is available.
+#>
 function Test-NamePrefixAvailability {
 
     [CmdletBinding()]
