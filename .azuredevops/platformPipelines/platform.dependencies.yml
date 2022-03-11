@@ -586,7 +586,7 @@ stages:
               customParameterFileTokens: '{"msiPrincipalId":"$(msiPrincipalId)"}'
             - path: $(dependencyPath)/$(resourceType)/parameters/nopr.parameters.json
               templateFilePath: $(templateFilePath)
-              displayName: Default Key Vault
+              displayName: Purge proteced key vault
               jobName: default_kv_nopr
               customParameterFileTokens: '{"msiPrincipalId":"$(msiPrincipalId)"}'  
             - path: $(dependencyPath)/$(resourceType)/parameters/pe.parameters.json
