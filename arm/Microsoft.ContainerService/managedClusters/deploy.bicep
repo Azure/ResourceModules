@@ -231,6 +231,15 @@ param podIdentityProfileUserAssignedIdentities array = []
 @description('Optional. The pod identity exceptions to allow.')
 param podIdentityProfileUserAssignedIdentityExceptions array = []
 
+@description('Optional. Whether the The OIDC issuer profile of the Managed Cluster is enabled.')
+param enableOidcIssuerProfile bool = false
+
+@description('Optional. Whether to enable Azure Defender.')
+param enableAzureDefender bool = false
+
+@description('Optional. Whether to enable Kubernetes pod security policy.')
+param enablePodSecurityPolicy bool = false
+
 @description('Optional. Resource ID of the diagnostic storage account.')
 param diagnosticStorageAccountId string = ''
 
@@ -351,7 +360,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource managedCluster 'Microsoft.ContainerService/managedClusters@2021-10-01' = {
+resource managedCluster 'Microsoft.ContainerService/managedClusters@2021-11-01-preview' = {
   name: name
   location: location
   tags: (empty(tags) ? null : tags)
@@ -395,9 +404,13 @@ resource managedCluster 'Microsoft.ContainerService/managedClusters@2021-10-01' 
         }
       }
     }
+    oidcIssuerProfile: enableOidcIssuerProfile ? {
+      enabled: enableOidcIssuerProfile
+    } : null
     enableRBAC: aadProfileEnableAzureRBAC
     disableLocalAccounts: disableLocalAccounts
     nodeResourceGroup: nodeResourceGroup
+    enablePodSecurityPolicy: enablePodSecurityPolicy
     networkProfile: {
       networkPlugin: !empty(aksClusterNetworkPlugin) ? any(aksClusterNetworkPlugin) : null
       networkPolicy: !empty(aksClusterNetworkPolicy) ? any(aksClusterNetworkPolicy) : null
@@ -450,6 +463,12 @@ resource managedCluster 'Microsoft.ContainerService/managedClusters@2021-10-01' 
       userAssignedIdentities: podIdentityProfileUserAssignedIdentities
       userAssignedIdentityExceptions: podIdentityProfileUserAssignedIdentityExceptions
     }
+    securityProfile: enableAzureDefender ? {
+      azureDefender: {
+        enabled: enableAzureDefender
+        logAnalyticsWorkspaceResourceId: !empty(monitoringWorkspaceId) ? monitoringWorkspaceId : null
+      }
+    } : null
   }
 }
 
