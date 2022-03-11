@@ -14,10 +14,7 @@
       "value": [
         {
           "name": "AzureFirewallSubnet",
-          "addressPrefix": "10.4.4.0/24",
-          "routeTableName": "",
-          "serviceEndpoints": [],
-          "delegations": []
+          "addressPrefix": "10.4.4.0/24"
         }
       ]
     }

@@ -18,17 +18,18 @@ This module deploys a SQL server.
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `administratorLogin` | string |  |  | Required. Administrator username for the server. |
-| `administratorLoginPassword` | secureString |  |  | Required. The administrator login password. |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
+| `administratorLogin` | string |  |  | Optional. Administrator username for the server. Required if no `administrators` object for AAD authentication is provided. |
+| `administratorLoginPassword` | secureString |  |  | Optional. The administrator login password. Required if no `administrators` object for AAD authentication is provided. |
+| `administrators` | object | `{object}` |  | Optional. The Azure Active Directory (AAD) administrator authentication. Required if no `administratorLogin` & `administratorLoginPassword` is provided. |
 | `databases` | _[databases](databases/readme.md)_ array | `[]` |  | Optional. The databases to create in the server |
+| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `firewallRules` | _[firewallRules](firewallRules/readme.md)_ array | `[]` |  | Optional. The firewall rules to create in the server |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
 | `name` | string |  |  | Required. The name of the server. |
 | `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
 | `securityAlertPolicies` | _[securityAlertPolicies](securityAlertPolicies/readme.md)_ array | `[]` |  | Optional. The security alert policies to create in the server |
-| `systemAssignedIdentity` | bool |  |  | Optional. Enables system assigned managed identity on the resource. |
+| `systemAssignedIdentity` | bool | `False` |  | Optional. Enables system assigned managed identity on the resource. |
 | `tags` | object | `{object}` |  | Optional. Tags of the resource. |
 | `userAssignedIdentities` | object | `{object}` |  | Optional. The ID(s) to assign to the resource. |
 
@@ -39,6 +40,7 @@ This module deploys a SQL server.
     "value": [
         {
             "roleDefinitionIdOrName": "Reader",
+            "description": "Reader Role Assignment",
             "principalIds": [
                 "12345678-1234-1234-1234-123456789012", // object 1
                 "78945612-1234-1234-1234-123456789012" // object 2
@@ -82,6 +84,23 @@ You can specify multiple user assigned identities to a resource by providing add
         "/subscriptions/12345678-1234-1234-1234-123456789012/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002": {}
     }
 },
+```
+
+### Parameter Usage: `administrators`
+
+Configure Azure Active Directory Authentication method for server administrator.
+https://docs.microsoft.com/en-us/azure/templates/microsoft.sql/servers/administrators?tabs=bicep
+
+```json
+"administrators": {
+    "value": {
+        "azureADOnlyAuthentication": true
+        "login": "John Doe" // if application can be anything
+        "sid": "<<objectId>>" // if application, the object ID
+        "principalType" : "User" // options: "User", "Group", "Application"
+        "tenantId": "<<tenantId>>"
+    }
+}
 ```
 
 ## Outputs

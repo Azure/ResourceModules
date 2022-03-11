@@ -15,6 +15,7 @@ With this module you can perform policy assignments across the management group,
 | :-- | :-- | :-- | :-- | :-- |
 | `description` | string |  |  | Optional. This message will be part of response in case of policy violation. |
 | `displayName` | string |  |  | Optional. The display name of the policy assignment. Maximum length is 128 characters. |
+| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `enforcementMode` | string | `Default` | `[Default, DoNotEnforce]` | Optional. The policy assignment enforcement mode. Possible values are Default and DoNotEnforce. - Default or DoNotEnforce |
 | `identity` | string | `SystemAssigned` | `[SystemAssigned, None]` | Optional. The managed identity associated with the policy assignment. Policy assignments must include a resource identity when assigning 'Modify' policy definitions. |
 | `location` | string | `[deployment().location]` |  | Optional. Location for all resources. |
