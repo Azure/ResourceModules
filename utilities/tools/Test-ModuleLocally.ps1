@@ -238,7 +238,7 @@ function Test-ModuleLocally {
             } finally {
                 # Restore parameter files
                 # -----------------------
-                if (($ValidationTest -or $DeploymentTest) -and $ValidateOrDeployParameters -and -not $RestoreAlreadyTriggered) {
+                if (($ValidationTest -or $DeploymentTest) -and $ValidateOrDeployParameters) {
                     # Replace Values with Tokens For Repo Updates
                     Write-Verbose 'Restoring Tokens'
                     $ModuleParameterFiles | ForEach-Object { $null = Convert-TokensInFile @ConvertTokensInputs -FilePath $_ -SwapValueWithName $true }
