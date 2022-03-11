@@ -19,12 +19,11 @@ This module deploys a virtual network subnet.
 | `delegations` | array | `[]` |  | Optional. The delegations to enable on the subnet |
 | `ipAllocations` | array | `[]` |  | Optional. Array of IpAllocation which reference this subnet |
 | `name` | string |  |  | Optional. The Name of the subnet resource. |
-| `natGatewayName` | string |  |  | Optional. The name of the NAT Gateway to use for the subnet |
-| `networkSecurityGroupName` | string |  |  | Optional. The network security group to assign to the subnet |
-| `networkSecurityGroupNameResourceGroupName` | string | `[resourceGroup().name]` |  | Optional. Resource Group where NSGs are deployed, if different than VNET Resource Group. |
+| `natGatewayId` | string |  |  | Optional. The resource ID of the NAT Gateway to use for the subnet |
+| `networkSecurityGroupId` | string |  |  | Optional. The resource ID of the network security group to assign to the subnet |
 | `privateEndpointNetworkPolicies` | string |  | `[Disabled, Enabled, ]` | Optional. enable or disable apply network policies on private end point in the subnet. |
 | `privateLinkServiceNetworkPolicies` | string |  | `[Disabled, Enabled, ]` | Optional. enable or disable apply network policies on private link service in the subnet. |
-| `routeTableName` | string |  |  | Optional. The route table to assign to the subnet |
+| `routeTableId` | string |  |  | Optional. The resource ID of the route table to assign to the subnet |
 | `serviceEndpointPolicies` | array | `[]` |  | Optional. An array of service endpoint policies. |
 | `serviceEndpoints` | array | `[]` |  | Optional. The service endpoints to enable on the subnet |
 | `virtualNetworkName` | string |  |  | Required. The name of the parent virtual network |

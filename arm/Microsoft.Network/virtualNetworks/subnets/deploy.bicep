@@ -7,15 +7,11 @@ param virtualNetworkName string
 @description('Required. The address prefix for the subnet.')
 param addressPrefix string
 
-@description('Optional. The network security group to assign to the subnet')
-param networkSecurityGroupName string = ''
+@description('Optional. The resource ID of the network security group to assign to the subnet')
+param networkSecurityGroupId string = ''
 
-@description('Optional. Resource Group where NSGs are deployed, if different than VNET Resource Group.')
-@minLength(1)
-param networkSecurityGroupNameResourceGroupName string = resourceGroup().name
-
-@description('Optional. The route table to assign to the subnet')
-param routeTableName string = ''
+@description('Optional. The resource ID of the route table to assign to the subnet')
+param routeTableId string = ''
 
 @description('Optional. The service endpoints to enable on the subnet')
 param serviceEndpoints array = []
@@ -23,8 +19,8 @@ param serviceEndpoints array = []
 @description('Optional. The delegations to enable on the subnet')
 param delegations array = []
 
-@description('Optional. The name of the NAT Gateway to use for the subnet')
-param natGatewayName string = ''
+@description('Optional. The resource ID of the NAT Gateway to use for the subnet')
+param natGatewayId string = ''
 
 @description('Optional. enable or disable apply network policies on private end point in the subnet.')
 @allowed([
@@ -54,10 +50,6 @@ param ipAllocations array = []
 @description('Optional. An array of service endpoint policies.')
 param serviceEndpointPolicies array = []
 
-var formattedServiceEndpoints = [for serviceEndpoint in serviceEndpoints: {
-  service: serviceEndpoint
-}]
-
 @description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
 param cuaId string = ''
 
@@ -70,34 +62,21 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2021-05-01' existing 
   name: virtualNetworkName
 }
 
-resource networkSecurityGroup 'Microsoft.Network/networkSecurityGroups@2021-05-01' existing = if (!empty(networkSecurityGroupName)) {
-  name: networkSecurityGroupName
-  scope: resourceGroup(networkSecurityGroupNameResourceGroupName)
-}
-
-resource routeTable 'Microsoft.Network/routeTables@2021-05-01' existing = if (!empty(routeTableName)) {
-  name: routeTableName
-}
-
-resource natGateway 'Microsoft.Network/natGateways@2021-05-01' existing = if (!empty(natGatewayName)) {
-  name: natGatewayName
-}
-
 resource subnet 'Microsoft.Network/virtualNetworks/subnets@2021-05-01' = {
   name: name
   parent: virtualNetwork
   properties: {
     addressPrefix: addressPrefix
-    networkSecurityGroup: !empty(networkSecurityGroupName) ? {
-      id: networkSecurityGroup.id
+    networkSecurityGroup: !empty(networkSecurityGroupId) ? {
+      id: networkSecurityGroupId
     } : null
-    routeTable: !empty(routeTableName) ? {
-      id: routeTable.id
+    routeTable: !empty(routeTableId) ? {
+      id: routeTableId
     } : null
-    natGateway: !empty(natGatewayName) ? {
-      id: natGateway.id
+    natGateway: !empty(natGatewayId) ? {
+      id: natGatewayId
     } : null
-    serviceEndpoints: !empty(formattedServiceEndpoints) ? formattedServiceEndpoints : []
+    serviceEndpoints: serviceEndpoints
     delegations: delegations
     privateEndpointNetworkPolicies: !empty(privateEndpointNetworkPolicies) ? any(privateEndpointNetworkPolicies) : null
     privateLinkServiceNetworkPolicies: !empty(privateLinkServiceNetworkPolicies) ? any(privateLinkServiceNetworkPolicies) : null
