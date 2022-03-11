@@ -5,7 +5,7 @@
     "name": {
       "value": "adp-<<namePrefix>>-az-nsg-x-apgw"
     },
-    "networkSecurityGroupSecurityRules": {
+    "securityRules": {
       "value": [
         {
           "name": "AllowPortsForAppGateway",
