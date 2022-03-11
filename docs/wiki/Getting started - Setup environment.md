@@ -1,4 +1,4 @@
-The repository is built so that you can create your own private 1:1 clone and be able to reuse the same concepts and features in your own environment such as GitHub.
+The repository is built so that you can create your own 1:1 instance and be able to reuse the same concepts and features in your own environment such as GitHub.
 
 This requires several steps:
 
