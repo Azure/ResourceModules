@@ -12,7 +12,7 @@ This module deploys Network FirewallPolicies Rule Groups.
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
+| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `firewallPolicyName` | string |  |  | Required. Name of the Firewall Policy. |
 | `name` | string |  |  | Required. The name of the rule group to deploy |
 | `priority` | int |  |  | Required. Priority of the Firewall Policy Rule Group resource. |

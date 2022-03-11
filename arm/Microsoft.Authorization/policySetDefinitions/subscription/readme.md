@@ -14,6 +14,8 @@ With this module you can create policy set definitions on a subscription level.
 | :-- | :-- | :-- | :-- | :-- |
 | `description` | string |  |  | Optional. The description name of the Set Definition (Initiative) |
 | `displayName` | string |  |  | Optional. The display name of the Set Definition (Initiative). Maximum length is 128 characters. |
+| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `location` | string | `[deployment().location]` |  | Optional. Location for all resources. |
 | `metadata` | object | `{object}` |  | Optional. The Set Definition (Initiative) metadata. Metadata is an open ended object and is typically a collection of key-value pairs. |
 | `name` | string |  |  | Required. Specifies the name of the policy Set Definition (Initiative). Maximum length is 64 characters for subscription scope. |
 | `parameters` | object | `{object}` |  | Optional. The Set Definition (Initiative) parameters that can be used in policy definition references. |

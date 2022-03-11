@@ -20,13 +20,13 @@ Azure Container Registry is a managed, private Docker registry service based on 
 | :-- | :-- | :-- | :-- | :-- |
 | `acrAdminUserEnabled` | bool | `False` |  | Optional. Enable admin user that have push / pull permission to the registry. |
 | `acrSku` | string | `Basic` | `[Basic, Premium, Standard]` | Optional. Tier of your Azure container registry. |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `dataEndpointEnabled` | bool | `False` |  | Optional. Enable a single data endpoint per region for serving data. Not relevant in case of disabled public access. |
 | `diagnosticEventHubAuthorizationRuleId` | string |  |  | Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string |  |  | Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticStorageAccountId` | string |  |  | Optional. Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string |  |  | Optional. Resource ID of the diagnostic log analytics workspace. |
+| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `encryptionStatus` | string | `disabled` | `[disabled, enabled]` | Optional. The value that indicates whether encryption is enabled or not. |
 | `exportPolicyStatus` | string | `disabled` | `[disabled, enabled]` | Optional. The value that indicates whether the export policy is enabled or not. |
 | `keyVaultProperties` | object | `{object}` |  | Optional. Identity which will be used to access key vault and Key vault uri to access the encryption key. |

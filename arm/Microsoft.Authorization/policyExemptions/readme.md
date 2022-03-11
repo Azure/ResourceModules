@@ -14,6 +14,7 @@ With this module you can create policy exemptions across the management group, s
 | :-- | :-- | :-- | :-- | :-- |
 | `description` | string |  |  | Optional. The description of the policy exemption. |
 | `displayName` | string |  |  | Optional. The display name of the policy exemption. Maximum length is 128 characters. |
+| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `exemptionCategory` | string | `Mitigated` | `[Mitigated, Waiver]` | Optional. The policy exemption category. Possible values are Waiver and Mitigated. Default is Mitigated |
 | `expiresOn` | string |  |  | Optional. The expiration date and time (in UTC ISO 8601 format yyyy-MM-ddTHH:mm:ssZ) of the policy exemption. e.g. 2021-10-02T03:57:00.000Z  |
 | `location` | string | `[deployment().location]` |  | Optional. Location for all resources. |

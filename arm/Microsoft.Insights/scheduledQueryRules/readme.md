@@ -17,8 +17,8 @@ This module deploys a scheduled query rule.
 | `alertDescription` | string |  |  | Optional. The description of the scheduled query rule. |
 | `autoMitigate` | bool | `True` |  | Optional. The flag that indicates whether the alert should be automatically resolved or not. Relevant only for rules of the kind LogAlert. |
 | `criterias` | object | `{object}` |  | Optional. The rule criteria that defines the conditions of the scheduled query rule. |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `enabled` | bool | `True` |  | Optional. The flag which indicates whether this scheduled query rule is enabled. |
+| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `evaluationFrequency` | string |  |  | Optional. How often the scheduled query rule is evaluated represented in ISO 8601 duration format. Relevant and required only for rules of the kind LogAlert. |
 | `kind` | string | `LogAlert` | `[LogAlert, LogToMetric]` | Optional. Indicates the type of scheduled query rule. |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
@@ -27,7 +27,7 @@ This module deploys a scheduled query rule.
 | `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
 | `scopes` | array | `[]` |  | Required. The list of resource IDs that this scheduled query rule is scoped to. |
 | `severity` | int | `3` | `[0, 1, 2, 3, 4]` | Optional. Severity of the alert. Should be an integer between [0-4]. Value of 0 is severest. Relevant and required only for rules of the kind LogAlert. |
-| `skipQueryValidation` | bool |  |  | Optional. The flag which indicates whether the provided query should be validated or not. Relevant only for rules of the kind LogAlert. |
+| `skipQueryValidation` | bool | `False` |  | Optional. The flag which indicates whether the provided query should be validated or not. Relevant only for rules of the kind LogAlert. |
 | `suppressForMinutes` | string |  |  | Optional. Mute actions for the chosen period of time (in ISO 8601 duration format) after the alert is fired. If set, autoMitigate must be disabled.Relevant only for rules of the kind LogAlert. |
 | `tags` | object | `{object}` |  | Optional. Tags of the resource. |
 | `targetResourceTypes` | array | `[]` |  | Optional. List of resource type of the target resource(s) on which the alert is created/updated. For example if the scope is a resource group and targetResourceTypes is Microsoft.Compute/virtualMachines, then a different alert will be fired for each virtual machine in the resource group which meet the alert criteria. Relevant only for rules of the kind LogAlert |

@@ -15,8 +15,8 @@ This module deploys a VPN Site.
 | :-- | :-- | :-- | :-- | :-- |
 | `addressPrefixes` | array | `[]` |  | Optional. An array of IP address ranges that can be used by subnets of the virtual network. Must be provided if no bgpProperties or VPNSiteLinks are configured. |
 | `bgpProperties` | object | `{object}` |  | Optional. BGP settings details. Must be provided if no addressPrefixes or VPNSiteLinks are configured. Note: This is a deprecated property, please use the corresponding VpnSiteLinks property instead. |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `deviceProperties` | object | `{object}` |  | Optional. List of properties of the device. |
+| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `ipAddress` | string |  |  | Optional. The IP-address for the VPN-site. Note: This is a deprecated property, please use the corresponding VpnSiteLinks property instead. |
 | `isSecuritySite` | bool | `False` |  | Optional. IsSecuritySite flag |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location where all resources will be created. |

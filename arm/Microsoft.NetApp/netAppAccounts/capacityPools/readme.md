@@ -14,8 +14,8 @@ This template deploys capacity pools in an Azure NetApp Files.
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `coolAccess` | bool |  |  | Optional. If enabled (true) the pool can contain cool Access enabled volumes. |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
+| `coolAccess` | bool | `False` |  | Optional. If enabled (true) the pool can contain cool Access enabled volumes. |
+| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location of the pool volume. |
 | `name` | string |  |  | Required. The name of the capacity pool. |
 | `netAppAccountName` | string |  |  | Required. The name of the NetApp account. |
