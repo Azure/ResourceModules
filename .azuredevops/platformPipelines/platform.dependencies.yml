@@ -587,7 +587,7 @@ stages:
             - path: $(dependencyPath)/$(resourceType)/parameters/nopr.parameters.json
               templateFilePath: $(templateFilePath)
               displayName: Default Key Vault
-              jobName: default_kv
+              jobName: default_kv_nopr
               customParameterFileTokens: '{"msiPrincipalId":"$(msiPrincipalId)"}'  
             - path: $(dependencyPath)/$(resourceType)/parameters/pe.parameters.json
               templateFilePath: $(templateFilePath)
@@ -603,6 +603,7 @@ stages:
         displayName: Set key vault secrets keys and certificates
         dependsOn:
           - default_kv
+          - default_kv_nopr
         pool:
           ${{ if eq(variables['vmImage'], '') }}:
             name: $(poolName)
