@@ -118,8 +118,39 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2021-05-01' = {
     ddosProtectionPlan: !empty(ddosProtectionPlanId) ? ddosProtectionPlan : null
     dhcpOptions: !empty(dnsServers) ? dnsServers_var : null
     enableDdosProtection: !empty(ddosProtectionPlanId)
+    subnets: [for subnet in subnets: {
+      name: subnet.name
+      properties: {
+        addressPrefix: subnet.addressPrefix
+        addressPrefixes: contains(subnet, 'addressPrefixes') ? subnet.addressPrefixes : []
+        applicationGatewayIpConfigurations: contains(subnet, 'applicationGatewayIpConfigurations') ? subnet.applicationGatewayIpConfigurations : []
+        delegations: contains(subnet, 'delegations') ? subnet.delegations : []
+        ipAllocations: contains(subnet, 'ipAllocations') ? subnet.ipAllocations : []
+        natGateway: contains(subnet, 'natGatewayId') ? {
+          'id': subnet.natGatewayId
+        } : json('null')
+        networkSecurityGroup: contains(subnet, 'networkSecurityGroupId') ? {
+          'id': subnet.networkSecurityGroupId
+        } : json('null')
+        privateEndpointNetworkPolicies: contains(subnet, 'privateEndpointNetworkPolicies') ? subnet.privateEndpointNetworkPolicies : null
+        privateLinkServiceNetworkPolicies: contains(subnet, 'privateLinkServiceNetworkPolicies') ? subnet.privateLinkServiceNetworkPolicies : null
+        routeTable: contains(subnet, 'routeTableId') ? {
+          'id': subnet.routeTableId
+        } : json('null')
+        serviceEndpoints: contains(subnet, 'serviceEndpoints') ? subnet.serviceEndpoints : []
+        serviceEndpointPolicies: contains(subnet, 'serviceEndpointPolicies') ? subnet.serviceEndpointPolicies : []
+      }
+    }]
   }
 }
+
+//NOTE Start: ------------------------------------
+// The below module (virtualNetwork_subnets) is a duplicate of the child resource (subnets) defined in the parent module (virtualNetwork).
+// The reason it exists so that deployment validation tests can be performed on the child module (subnets), in case that module needed to be deployed alone outside of this template.
+// The reason for duplication is due to the current design for the (virtualNetworks) resource from Azure, where if the child module (subnets) does not exist within it, causes
+//    an issue, where the child resource (subnets) gets all of its properties removed, hence not as 'idempotent' as it should be. See https://github.com/Azure/azure-quickstart-templates/issues/2786 for more details.
+// You can safely remove the below child module (virtualNetwork_subnets) in your consumption of the module (virtualNetworks) to reduce the template size and duplication.
+//NOTE End  : ------------------------------------
 
 @batchSize(1)
 module virtualNetwork_subnets 'subnets/deploy.bicep' = [for (subnet, index) in subnets: {
@@ -132,12 +163,11 @@ module virtualNetwork_subnets 'subnets/deploy.bicep' = [for (subnet, index) in s
     applicationGatewayIpConfigurations: contains(subnet, 'applicationGatewayIpConfigurations') ? subnet.applicationGatewayIpConfigurations : []
     delegations: contains(subnet, 'delegations') ? subnet.delegations : []
     ipAllocations: contains(subnet, 'ipAllocations') ? subnet.ipAllocations : []
-    natGatewayName: contains(subnet, 'natGatewayName') ? subnet.natGatewayName : ''
-    networkSecurityGroupName: contains(subnet, 'networkSecurityGroupName') ? subnet.networkSecurityGroupName : ''
-    networkSecurityGroupNameResourceGroupName: contains(subnet, 'networkSecurityGroupNameResourceGroupName') ? subnet.networkSecurityGroupNameResourceGroupName : resourceGroup().name
+    natGatewayId: contains(subnet, 'natGatewayId') ? subnet.natGatewayId : ''
+    networkSecurityGroupId: contains(subnet, 'networkSecurityGroupId') ? subnet.networkSecurityGroupId : ''
     privateEndpointNetworkPolicies: contains(subnet, 'privateEndpointNetworkPolicies') ? subnet.privateEndpointNetworkPolicies : ''
     privateLinkServiceNetworkPolicies: contains(subnet, 'privateLinkServiceNetworkPolicies') ? subnet.privateLinkServiceNetworkPolicies : ''
-    routeTableName: contains(subnet, 'routeTableName') ? subnet.routeTableName : ''
+    routeTableId: contains(subnet, 'routeTableId') ? subnet.routeTableId : ''
     serviceEndpointPolicies: contains(subnet, 'serviceEndpointPolicies') ? subnet.serviceEndpointPolicies : []
     serviceEndpoints: contains(subnet, 'serviceEndpoints') ? subnet.serviceEndpoints : []
   }

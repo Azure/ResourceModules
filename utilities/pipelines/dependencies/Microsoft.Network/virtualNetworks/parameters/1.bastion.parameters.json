@@ -15,7 +15,7 @@
         {
           "name": "AzureBastionSubnet", // Bastion subnet
           "addressPrefix": "10.1.5.0/24",
-          "networkSecurityGroupName": "adp-<<namePrefix>>-az-nsg-x-bastion"
+          "networkSecurityGroupId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/networkSecurityGroups/adp-<<namePrefix>>-az-nsg-x-bastion"
         }
       ]
     }
