@@ -107,7 +107,6 @@ function Test-NamePrefixAvailability {
 
             # Extract Parameter Names
             # -----------------------
-
             $storageAccountFiles = $parameterFiles | Where-Object { $_ -match 'Microsoft.Storage/storageAccounts' }
             $storageAccountNames = $storageAccountFiles | ForEach-Object { (ConvertFrom-Json (Get-Content $_ -Raw)).parameters.name.value } | Where-Object { $null -ne $_ }
 
@@ -116,8 +115,6 @@ function Test-NamePrefixAvailability {
 
             $acrFiles = $parameterFiles | Where-Object { $_ -match 'Microsoft.ContainerRegistry/registries' }
             $acrNames = $acrFiles | ForEach-Object { (ConvertFrom-Json (Get-Content $_ -Raw)).parameters.name.value } | Where-Object { $null -ne $_ }
-
-            # $accessToken = Get-AzAccessToken
 
             $subscriptionId = (Get-AzContext).Subscription.Id
 
@@ -196,7 +193,6 @@ function Test-NamePrefixAvailability {
         } finally {
             # Restore parameter files
             # -----------------------
-            # Replace Values with Tokens For Repo Updates
             Write-Verbose 'Restoring Tokens'
             $parameterFiles | ForEach-Object { $null = Convert-TokensInFile @ConvertTokensInputs -FilePath $_ -SwapValueWithName $true }
         }
