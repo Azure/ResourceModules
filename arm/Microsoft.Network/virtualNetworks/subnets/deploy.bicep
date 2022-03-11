@@ -22,7 +22,7 @@ param delegations array = []
 @description('Optional. The resource ID of the NAT Gateway to use for the subnet')
 param natGatewayId string = ''
 
-@description('Optional. enable or disable apply network policies on private end point in the subnet.')
+@description('Optional. enable or disable apply network policies on private endpoint in the subnet.')
 @allowed([
   'Disabled'
   'Enabled'
@@ -49,9 +49,6 @@ param ipAllocations array = []
 
 @description('Optional. An array of service endpoint policies.')
 param serviceEndpointPolicies array = []
-
-@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
-param cuaId string = ''
 
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
