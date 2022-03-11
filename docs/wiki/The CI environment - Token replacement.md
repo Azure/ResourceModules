@@ -76,7 +76,6 @@ The token prefix `'<<'` and suffix `'>>'` in the above example are also configur
 
 # How it works
 
-
 The below image compares the different token types that can be used for parameter file tokens:
 
 <img src="./media/tokenTypes.png" alt="tokenTypes">
