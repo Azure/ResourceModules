@@ -1,3 +1,4 @@
+param description string = ''
 param principalIds array
 param roleDefinitionIdOrName string
 param resourceId string
@@ -34,6 +35,7 @@ resource managedCluster 'Microsoft.ContainerService/managedClusters@2021-07-01' 
 resource roleAssignment 'Microsoft.Authorization/roleAssignments@2021-04-01-preview' = [for principalId in principalIds: {
   name: guid(managedCluster.name, principalId, roleDefinitionIdOrName)
   properties: {
+    description: description
     roleDefinitionId: contains(builtInRoleNames, roleDefinitionIdOrName) ? builtInRoleNames[roleDefinitionIdOrName] : roleDefinitionIdOrName
     principalId: principalId
   }

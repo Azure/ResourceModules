@@ -176,6 +176,7 @@ resource azureBastion_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@
 module azureBastion_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-Bastion-Rbac-${index}'
   params: {
+    description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
     resourceId: azureBastion.id

@@ -28,4 +28,4 @@ This module deploys an authorization rule for a service bus namespace topic.
 
 ## Template references
 
-- [Namespaces/Topics/Authorizationrules](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ServiceBus/2021-06-01-preview/namespaces/topics/authorizationRules)
+- [Namespaces/Topics/Authorizationrules](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ServiceBus/namespaces/topics/authorizationRules)

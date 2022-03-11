@@ -79,6 +79,7 @@ resource volume 'Microsoft.NetApp/netAppAccounts/capacityPools/volumes@2021-06-0
 module volume_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${deployment().name}-Rbac-${index}'
   params: {
+    description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
     resourceId: volume.id

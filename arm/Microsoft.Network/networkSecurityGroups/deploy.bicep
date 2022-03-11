@@ -147,6 +147,7 @@ resource networkSecurityGroup_diagnosticSettings 'Microsoft.Insights/diagnosticS
 module networkSecurityGroup_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-NSG-Rbac-${index}'
   params: {
+    description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
     resourceId: networkSecurityGroup.id

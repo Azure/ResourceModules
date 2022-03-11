@@ -55,6 +55,7 @@ module resourceGroup_lock '.bicep/nested_lock.bicep' = if (lock != 'NotSpecified
 module resourceGroup_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-RG-Rbac-${index}'
   params: {
+    description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
     resourceGroupName: resourceGroup.name

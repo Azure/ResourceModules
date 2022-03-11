@@ -21,6 +21,9 @@ This template deploys a disk
 | `diskIOPSReadWrite` | int | `0` |  | Optional. The number of IOPS allowed for this disk; only settable for UltraSSD disks. |
 | `diskMBpsReadWrite` | int | `0` |  | Optional. The bandwidth allowed for this disk; only settable for UltraSSD disks. |
 | `diskSizeGB` | int | `0` |  | Optional. If create option is empty, this field is mandatory and it indicates the size of the disk to create. |
+| `diskIOPSReadWrite` | int | `0` |  | Optional. The number of IOPS allowed for this disk; only settable for UltraSSD disks. |
+| `diskMBpsReadWrite` | int | `0` |  | Optional. The bandwidth allowed for this disk; only settable for UltraSSD disks. |
+| `diskSizeGB` | int | `0` |  | Optional. If create option is empty, this field is mandatory and it indicates the size of the disk to create. |
 | `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `hyperVGeneration` | string | `V2` | `[V1, V2]` | Optional. The hypervisor generation of the Virtual Machine. Applicable to OS disks only. |
 | `imageReferenceId` | string |  |  | Optional. A relative uri containing either a Platform Image Repository or user image reference. |
@@ -48,6 +51,7 @@ This template deploys a disk
     "value": [
         {
             "roleDefinitionIdOrName": "Reader",
+            "description": "Reader Role Assignment",
             "principalIds": [
                 "12345678-1234-1234-1234-123456789012", // object 1
                 "78945612-1234-1234-1234-123456789012" // object 2
