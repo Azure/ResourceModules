@@ -237,6 +237,9 @@ param enableOidcIssuerProfile bool = false
 @description('Optional. Whether to enable Azure Defender.')
 param enableAzureDefender bool = false
 
+@description('Optional. Whether to enable Kubernetes pod security policy.')
+param enablePodSecurityPolicy bool = false
+
 @description('Optional. Resource ID of the diagnostic storage account.')
 param diagnosticStorageAccountId string = ''
 
@@ -407,6 +410,7 @@ resource managedCluster 'Microsoft.ContainerService/managedClusters@2021-11-01-p
     enableRBAC: aadProfileEnableAzureRBAC
     disableLocalAccounts: disableLocalAccounts
     nodeResourceGroup: nodeResourceGroup
+    enablePodSecurityPolicy: enablePodSecurityPolicy
     networkProfile: {
       networkPlugin: !empty(aksClusterNetworkPlugin) ? any(aksClusterNetworkPlugin) : null
       networkPolicy: !empty(aksClusterNetworkPolicy) ? any(aksClusterNetworkPolicy) : null

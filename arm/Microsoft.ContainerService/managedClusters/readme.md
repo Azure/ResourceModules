@@ -70,6 +70,7 @@ This module deploys Azure Kubernetes Cluster (AKS).
 | `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `enableKeyvaultSecretsProvider` | bool | `False` |  | Optional. Specifies whether the KeyvaultSecretsProvider add-on is enabled or not. |
 | `enableOidcIssuerProfile` | bool | `False` |  | Optional. Whether the The OIDC issuer profile of the Managed Cluster is enabled. |
+| `enablePodSecurityPolicy` | bool | `False` |  | Optional. Whether to enable Kubernetes pod security policy. |
 | `enablePrivateCluster` | bool | `False` |  | Optional. Specifies whether to create the cluster as a private cluster or not. |
 | `enablePrivateClusterPublicFQDN` | bool | `False` |  | Optional. Whether to create additional public FQDN for private cluster or not. |
 | `enableSecretRotation` | string | `false` | `[false, true]` | Optional. Specifies whether the KeyvaultSecretsProvider add-on uses secret rotation. |
