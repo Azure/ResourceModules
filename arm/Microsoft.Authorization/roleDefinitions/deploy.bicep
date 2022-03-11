@@ -27,7 +27,7 @@ param subscriptionId string = ''
 @sys.description('Optional. The name of the Resource Group where the Role Definition and Target Scope will be applied to.')
 param resourceGroupName string = ''
 
-@sys.description('Optional. Location for all resources.')
+@sys.description('Optional. Location deployment metadata.')
 param location string = deployment().location
 
 @sys.description('Optional. Role definition assignable scopes. If not provided, will use the current scope provided.')
@@ -37,7 +37,7 @@ param assignableScopes array = []
 param enableDefaultTelemetry bool = true
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
-  name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name)}'
+  name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
   location: location
   properties: {
     mode: 'Incremental'

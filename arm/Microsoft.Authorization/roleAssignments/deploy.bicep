@@ -15,7 +15,7 @@ param subscriptionId string = ''
 @sys.description('Optional. Group ID of the Management Group to assign the RBAC role to. If not provided, will use the current scope for deployment.')
 param managementGroupId string = managementGroup().name
 
-@sys.description('Optional. Location for all resources.')
+@sys.description('Optional. Location deployment metadata.')
 param location string = deployment().location
 
 @sys.description('Optional. Description of role assignment')
@@ -48,7 +48,7 @@ param principalType string = ''
 param enableDefaultTelemetry bool = true
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
-  name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name)}'
+  name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
   location: location
   properties: {
     mode: 'Incremental'
