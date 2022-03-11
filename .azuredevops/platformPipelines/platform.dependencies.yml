@@ -584,6 +584,11 @@ stages:
               displayName: Default Key Vault
               jobName: default_kv
               customParameterFileTokens: '{"msiPrincipalId":"$(msiPrincipalId)"}'
+            - path: $(dependencyPath)/$(resourceType)/parameters/nopr.parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: Default Key Vault
+              jobName: default_kv
+              customParameterFileTokens: '{"msiPrincipalId":"$(msiPrincipalId)"}'  
             - path: $(dependencyPath)/$(resourceType)/parameters/pe.parameters.json
               templateFilePath: $(templateFilePath)
               displayName: Private Endpoint Key Vault
@@ -627,6 +632,8 @@ stages:
               ScriptType: 'InlineScript'
               Inline: |
                 $parameterFilePath = Join-Path '$(Build.SourcesDirectory)' '$(dependencyPath)' '$(resourceType)' 'parameters' 'parameters.json'
+                $noprParameterFilePath = Join-Path '$(Build.SourcesDirectory)' '$(dependencyPath)' '$(resourceType)' 'parameters' 'nopr.parameters.json'
+
                 # Load used functions
                 . (Join-Path '$(Build.SourcesDirectory)' 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInFile.ps1')
 
@@ -637,6 +644,11 @@ stages:
                     TokenPrefix = $Settings.parameterFileTokens.tokenPrefix
                     TokenSuffix = $Settings.parameterFileTokens.tokenSuffix
                 }
+                $NoprConvertTokensInputs = @{
+                    FilePath    = $noprParameterFilePath
+                    TokenPrefix = $Settings.parameterFileTokens.tokenPrefix
+                    TokenSuffix = $Settings.parameterFileTokens.tokenSuffix
+                }
                 if ($Settings.parameterFileTokens.localTokens) {
                     $tokenMap = @{}
                     foreach ($token in $Settings.parameterFileTokens.localTokens) {
@@ -644,12 +656,17 @@ stages:
                     }
                     Write-Verbose ('Using local tokens [{0}]' -f ($tokenMap.Keys -join ', ')) -Verbose
                     $ConvertTokensInputs.Tokens = $tokenMap
+                    $NoprConvertTokensInputs.Tokens = $tokenMap
                 }
                 $null = Convert-TokensInFile @ConvertTokensInputs
+                $null = Convert-TokensInFile @NoprConvertTokensInputs
 
                 # Get key vault name
                 $keyVaultParameters = (ConvertFrom-Json (Get-Content -Path $parameterFilePath -Raw)).parameters
                 $keyVaultName = $keyVaultParameters.name.value
+                # No Purge Key Vault
+                $noprKeyVaultParameters = (ConvertFrom-Json (Get-Content -Path $noprParameterFilePath -Raw)).parameters
+                $noprKeyVaultName = $noprKeyVaultParameters.name.value
 
                 # Generate values
                 $usernameString = ( -join ((65..90) + (97..122) | Get-Random -Count 9 -SetSeed 1 | ForEach-Object { [char]$_ + "$_" })).substring(0, 19) # max length
@@ -691,6 +708,13 @@ stages:
                 ) | ForEach-Object {
                     $null = Add-AzKeyVaultKey -VaultName $keyVaultName -Name $_.name -Destination $_.Destination
                     Write-Verbose ('Added key [{0}] to key vault [{1}]' -f $_.name, $keyVaultName) -Verbose
+                }
+                # noprKeyVault Keys
+                @(
+                  @{ name = 'keyEncryptionKey'; Destination = 'Software' } # Automation Account
+                ) | ForEach-Object {
+                    $null = Add-AzKeyVaultKey -VaultName $noprKeyVaultName -Name $_.name -Destination $_.Destination
+                    Write-Verbose ('Added key [{0}] to key vault [{1}]' -f $_.name, $noprKeyVaultName) -Verbose
                 }
               azurePowerShellVersion: 'LatestVersion'
               pwsh: true
