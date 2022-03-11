@@ -55,6 +55,7 @@ If you're unfamiliar with Infrastructure as Code, or wonder how you can use the 
     - [Static validation](./The%20CI%20environment%20-%20Static%20validation)
     - [Deployment validation](./The%20CI%20environment%20-%20Deployment%20validation)
     - [Publishing](./The%20CI%20environment%20-%20Publishing)
+    - [Token replacement](./The%20CI%20environment%20-%20Token%20replacement)
   - [Pipeline usage](./The%20CI%20environment%20-%20Pipeline%20usage)
 - [Interoperability](./Interoperability)
   - [Bicep to ARM/JSON conversion](./Interoperability%20-%20Bicep%20to%20ARM%20conversion)
