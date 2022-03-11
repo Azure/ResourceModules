@@ -2,6 +2,9 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
+        "name": {
+            "value": "<<namePrefix>>-az-sqlsrv-x-001"
+        },
         "administratorLogin": {
             "reference": {
                 "keyVault": {
@@ -18,20 +21,8 @@
                 "secretName": "administratorLoginPassword"
             }
         },
-        "administrators": {
-            "value": {
-                "azureADOnlyAuthentication": false,
-                "login": "John Doe",
-                "sid": "<<deploymentSpId>>",
-                "principalType": "Application",
-                "tenantId": "<<tenantId>>"
-            }
-        },
         "location": {
             "value": "westeurope"
-        },
-        "name": {
-            "value": "<<namePrefix>>-az-sqlsrv-x-001"
         },
         "roleAssignments": {
             "value": [

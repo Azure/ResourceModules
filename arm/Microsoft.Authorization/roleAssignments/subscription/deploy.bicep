@@ -18,6 +18,9 @@ param delegatedManagedIdentityResourceId string = ''
 @sys.description('Optional. The conditions on the role assignment. This limits the resources it can be assigned to')
 param condition string = ''
 
+@sys.description('Optional. Location for all resources.')
+param location string = deployment().location
+
 @sys.description('Optional. Version of the condition. Currently accepted value is "2.0"')
 @allowed([
   '2.0'
@@ -324,6 +327,7 @@ var builtInRoleNames_var = {
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name)}'
+  location: location
   properties: {
     mode: 'Incremental'
     template: {

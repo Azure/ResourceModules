@@ -38,6 +38,9 @@ param principalType string = ''
 @sys.description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
 
+@sys.description('Optional. Location for all resources.')
+param location string = deployment().location
+
 var builtInRoleNames_var = {
   'AcrPush': '/providers/Microsoft.Authorization/roleDefinitions/8311e382-0749-4cb8-b61a-304f252e45ec'
   'API Management Service Contributor': '/providers/Microsoft.Authorization/roleDefinitions/312a565d-c81f-4fd8-895a-4e21e48d571c'
@@ -326,6 +329,7 @@ var roleDefinitionId_var = (contains(builtInRoleNames_var, roleDefinitionIdOrNam
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name)}'
+  location: location
   properties: {
     mode: 'Incremental'
     template: {
