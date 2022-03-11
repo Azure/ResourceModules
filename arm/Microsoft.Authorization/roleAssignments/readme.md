@@ -17,7 +17,7 @@ This module deploys Role Assignments across the management group, subscription o
 | `delegatedManagedIdentityResourceId` | string |  |  | Optional. ID of the delegated managed identity resource |
 | `description` | string |  |  | Optional. Description of role assignment |
 | `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `location` | string | `[deployment().location]` |  | Optional. Location for all resources. |
+| `location` | string | `[deployment().location]` |  | Optional. Location deployment metadata. |
 | `managementGroupId` | string | `[managementGroup().name]` |  | Optional. Group ID of the Management Group to assign the RBAC role to. If not provided, will use the current scope for deployment. |
 | `principalId` | string |  |  | Required. The Principal or Object ID of the Security Principal (User, Group, Service Principal, Managed Identity) |
 | `principalType` | string |  | `[ServicePrincipal, Group, User, ForeignGroup, Device, ]` | Optional. The principal type of the assigned principal ID. |

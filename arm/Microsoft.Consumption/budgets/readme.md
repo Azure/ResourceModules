@@ -19,6 +19,7 @@ This module deploys budgets for subscriptions.
 | `contactRoles` | array | `[]` |  | Optional. The list of contact roles to send the budget notification to when the thresholds are exceeded. |
 | `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `endDate` | string |  |  | Optional. The end date for the budget. If not provided, it will default to 10 years from the start date. |
+| `location` | string | `[deployment().location]` |  | Optional. Location deployment metadata. |
 | `name` | string |  |  | Optional. The name of the budget. |
 | `resetPeriod` | string | `Monthly` | `[Monthly, Quarterly, Annually, BillingMonth, BillingQuarter, BillingAnnual]` | Optional. The time covered by a budget. Tracking of the amount will be reset based on the time grain. BillingMonth, BillingQuarter, and BillingAnnual are only supported by WD customers. |
 | `startDate` | string | `[format('{0}-{1}-01T00:00:00Z', utcNow('yyyy'), utcNow('MM'))]` |  | Required. The start date for the budget. Start date should be the first day of the month and cannot be in the past (except for the current month). |

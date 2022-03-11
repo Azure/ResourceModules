@@ -20,7 +20,7 @@ This module has some known **limitations**:
 | :-- | :-- | :-- | :-- | :-- |
 | `displayName` | string |  |  | Optional. The friendly name of the management group. If no value is passed then this field will be set to the group ID. |
 | `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `location` | string | `[deployment().location]` |  | Optional. Location for all resources. |
+| `location` | string | `[deployment().location]` |  | Optional. Location deployment metadata. |
 | `name` | string |  |  | Required. The group ID of the Management group |
 | `parentId` | string |  |  | Optional. The management group parent ID. Defaults to current scope. |
 | `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects to define RBAC on this resource. |

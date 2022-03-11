@@ -13,7 +13,6 @@ This module deploys Network Security Group Security Rules.
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `access` | string | `Deny` | `[Allow, Deny]` | Optional. Whether network traffic is allowed or denied. |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `description` | string |  |  | Optional. A description for this rule |
 | `destinationAddressPrefix` | string |  |  | Optional. The destination address prefix. CIDR or destination IP range. Asterisk "*" can also be used to match all source IPs. Default tags such as "VirtualNetwork", "AzureLoadBalancer" and "Internet" can also be used. |
 | `destinationAddressPrefixes` | array | `[]` |  | Optional. The destination address prefixes. CIDR or destination IP ranges. |
@@ -21,6 +20,7 @@ This module deploys Network Security Group Security Rules.
 | `destinationPortRange` | string |  |  | Optional. The destination port or range. Integer or range between 0 and 65535. Asterisk "*" can also be used to match all ports. |
 | `destinationPortRanges` | array | `[]` |  | Optional. The destination port ranges. |
 | `direction` | string |  | `[Inbound, Outbound]` | Required. The direction of the rule. The direction specifies if rule will be evaluated on incoming or outgoing traffic. |
+| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `name` | string |  |  | Required. The name of the security rule |
 | `networkSecurityGroupName` | string |  |  | Required. The name of the network security group to deploy the security rule into |
 | `priority` | int |  |  | Required. The priority of the rule. The value can be between 100 and 4096. The priority number must be unique for each rule in the collection. The lower the priority number, the higher the priority of the rule. |
