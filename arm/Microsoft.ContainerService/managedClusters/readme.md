@@ -8,7 +8,7 @@ This module deploys Azure Kubernetes Cluster (AKS).
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2017-04-01 |
 | `Microsoft.Authorization/roleAssignments` | 2021-04-01-preview |
-| `Microsoft.ContainerService/managedClusters` | 2021-10-01 |
+| `Microsoft.ContainerService/managedClusters` | 2021-11-01-preview |
 | `Microsoft.ContainerService/managedClusters/agentPools` | 2021-08-01 |
 | `Microsoft.Insights/diagnosticSettings` | 2021-05-01-preview |
 
@@ -47,7 +47,7 @@ This module deploys Azure Kubernetes Cluster (AKS).
 | `autoScalerProfileMaxNodeProvisionTime` | string | `15m` |  | Optional. Specifies the maximum node provisioning time for the auto-scaler of the AKS cluster. Values must be an integer followed by an "m". No unit of time other than minutes (m) is supported. |
 | `autoScalerProfileMaxTotalUnreadyPercentage` | string | `45` |  | Optional. Specifies the mximum total unready percentage for the auto-scaler of the AKS cluster. The maximum is 100 and the minimum is 0. |
 | `autoScalerProfileNewPodScaleUpDelay` | string | `0s` |  | Optional. For scenarios like burst/batch scale where you do not want CA to act before the kubernetes scheduler could schedule all the pods, you can tell CA to ignore unscheduled pods before they are a certain age. Values must be an integer followed by a unit ("s" for seconds, "m" for minutes, "h" for hours, etc). |
-| `autoScalerProfileOkTotalUnreadyCount` | string | `3` |  | Optional. Specifies the OK total unready count for the auto-scaler of the AKS cluster. |
+| `autoScalerProfileOkTotalUnreadyCount` | string | `3` |  | Optional. Specifies the ok total unready count for the auto-scaler of the AKS cluster. |
 | `autoScalerProfileScaleDownDelayAfterAdd` | string | `10m` |  | Optional. Specifies the scale down delay after add of the auto-scaler of the AKS cluster. |
 | `autoScalerProfileScaleDownDelayAfterDelete` | string | `20s` |  | Optional. Specifies the scale down delay after delete of the auto-scaler of the AKS cluster. |
 | `autoScalerProfileScaleDownDelayAfterFailure` | string | `3m` |  | Optional. Specifies scale down delay after failure of the auto-scaler of the AKS cluster. |
@@ -66,8 +66,11 @@ This module deploys Azure Kubernetes Cluster (AKS).
 | `diagnosticWorkspaceId` | string |  |  | Optional. Resource ID of the diagnostic log analytics workspace. |
 | `disableLocalAccounts` | bool | `False` |  | Optional. If set to true, getting static credentials will be disabled for this cluster. This must only be used on Managed Clusters that are AAD enabled. |
 | `disableRunCommand` | bool | `False` |  | Optional. Whether to disable run command for the cluster or not. |
+| `enableAzureDefender` | bool | `False` |  | Optional. Whether to enable Azure Defender. |
 | `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `enableKeyvaultSecretsProvider` | bool | `False` |  | Optional. Specifies whether the KeyvaultSecretsProvider add-on is enabled or not. |
+| `enableOidcIssuerProfile` | bool | `False` |  | Optional. Whether the The OIDC issuer profile of the Managed Cluster is enabled. |
+| `enablePodSecurityPolicy` | bool | `False` |  | Optional. Whether to enable Kubernetes pod security policy. |
 | `enablePrivateCluster` | bool | `False` |  | Optional. Specifies whether to create the cluster as a private cluster or not. |
 | `enablePrivateClusterPublicFQDN` | bool | `False` |  | Optional. Whether to create additional public FQDN for private cluster or not. |
 | `enableSecretRotation` | string | `false` | `[false, true]` | Optional. Specifies whether the KeyvaultSecretsProvider add-on uses secret rotation. |
@@ -232,6 +235,6 @@ You can specify multiple user assigned identities to a resource by providing add
 
 - [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings)
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
-- [Managedclusters](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ContainerService/2021-10-01/managedClusters)
+- [Managedclusters](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ContainerService/2021-11-01-preview/managedClusters)
 - [Managedclusters/Agentpools](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ContainerService/2021-08-01/managedClusters/agentPools)
 - [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)
