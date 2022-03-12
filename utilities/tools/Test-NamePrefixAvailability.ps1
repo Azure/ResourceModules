@@ -8,24 +8,19 @@ Test if a given name prefix token placeholder is already taken. Tests resource n
 .PARAMETER namePrefix
 Parameter description
 
-.PARAMETER ValidateOrDeployParameters
-Optional. An object consisting of the components that are required when using the Validate test or DeploymentTest switch parameter.  Mandatory if the DeploymentTest/ValidationTest switches are set.
-
-.PARAMETER AdditionalTokens
-Optional. A hashtable parameter that contains custom tokens to be replaced in the paramter files for deployment
+.PARAMETER Tokens
+Optional. A hashtable parameter that contains tokens to be replaced in the paramter files
 
 .EXAMPLE
 $inputObject = @{
-    namePrefix                 = 'carml'
-    ValidateOrDeployParameters = @{
+    NamePrefix = 'carml'
+    Tokens     = @{
         Location          = 'westeurope'
         ResourceGroupName = 'validation-rg'
         SubscriptionId    = '00000000-0000-0000-0000-000000000000'
         ManagementGroupId = '00000000-0000-0000-0000-000000000000'
         RemoveDeployment  = $false
-    }
-    AdditionalTokens           = @{
-        deploymentSpId = '00000000-0000-0000-0000-000000000000'
+        deploymentSpId    = '00000000-0000-0000-0000-000000000000'
     }
 }
 Test-NamePrefixAvailability @inputObject
@@ -40,10 +35,7 @@ function Test-NamePrefixAvailability {
         [string] $namePrefix,
 
         [Parameter(Mandatory = $false)]
-        [Psobject] $ValidateOrDeployParameters = @{},
-
-        [Parameter(Mandatory = $false)]
-        [hashtable] $AdditionalTokens = @{}
+        [Psobject] $Tokens = @{}
     )
 
     begin {
@@ -70,15 +62,7 @@ function Test-NamePrefixAvailability {
         # Replace parameter file tokens
         # -----------------------------
         $ConvertTokensInputs = @{
-            Tokens = @{
-                subscriptionId    = $ValidateOrDeployParameters.SubscriptionId
-                managementGroupId = $ValidateOrDeployParameters.ManagementGroupId
-            }
-        }
-
-        #Add Other Parameter File Tokens (For Testing)
-        if ($AdditionalTokens) {
-            $ConvertTokensInputs.Tokens += $AdditionalTokens
+            Tokens = $Tokens
         }
 
         # Tokens in settings.json
