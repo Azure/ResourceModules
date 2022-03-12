@@ -847,7 +847,7 @@ Describe "API version tests [All apiVersions in the template should be 'recent']
         }
     }
 
-    It 'In [<moduleName>] used resource type [<resourceType>] should use on of the recent API version(s). Currently using [<TargetApi>]' -TestCases $TestCases {
+    It 'In [<moduleName>] used resource type [<resourceType>] should use one of the recent API version(s). Currently using [<TargetApi>]' -TestCases $TestCases {
         param(
             $moduleName,
             $resourceType,
