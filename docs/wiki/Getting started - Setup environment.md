@@ -102,6 +102,8 @@ To update the `namePrefix`, perform the following steps:
     ```
     > **Note:** The value should be a 3-5 character long string like `cntso`. Longer strings are not recommended as they may conflict with Azure resource name length restrictions.
 
+    > **Note:** We highly encourage you to use the script `'utilities/tools/Test-NamePrefixAvailability.ps1'` to test if a given name prefix could conflict with any existing resource.
+
  For further information on the token replacement logic, please refer to the corresponding [Token replacement](./The%20CI%20environment%20-%20Token%20replacement) section.
 
 ## 3.2 Setup CI-environment-specific configuration
