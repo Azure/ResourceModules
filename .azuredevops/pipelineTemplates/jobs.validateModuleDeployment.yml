@@ -86,7 +86,6 @@ jobs:
             vmImage: ${{ parameters.vmImage }}
           ${{ if ne(parameters.poolName, '') }}:
             name: ${{ parameters.poolName }}
-
         steps:
           # [Checkout Repositories] task(s)
           #--------------------------------
@@ -149,73 +148,6 @@ jobs:
                 }
                 Write-Output "##vso[task.setvariable variable=ModuleRepoRoot]$moduleRepoRoot"
                 Write-Output "##vso[task.setvariable variable=parametersRepoRoot]$parametersRepoRoot"
-
-          # [Dependency deployment] task(s)
-          # -------------------------------
-          - task: AzurePowerShell@5
-            displayName: 'Deploy dependencies for template [${{ deploymentBlock.path }}]'
-            inputs:
-              azureSubscription: ${{ parameters.serviceConnection }}
-              azurePowerShellVersion: ${{ parameters.azurePowerShellVersion }}
-              preferredAzurePowerShellVersion: ${{ parameters.preferredAzurePowerShellVersion }}
-              pwsh: true
-              ScriptType: InlineScript
-              inline: |
-                # Load used functions
-                . (Join-Path '$(moduleRepoRoot)' '$(pipelineFunctionsPath)' 'resourceDeployment' 'New-ModuleDeployment.ps1')
-
-                if(-not [String]::IsNullOrEmpty('${{ deploymentBlock.templateFilePath }}')) {
-                  $templateFilePath = Join-Path '$(moduleRepoRoot)' '${{ deploymentBlock.templateFilePath }}'
-                } else {
-                  # Use default path
-                  $templateFilePath = (Test-Path (Join-Path '$(moduleRepoRoot)' '$(modulePath)' 'deploy.bicep')) ?
-                    (Join-Path '$(moduleRepoRoot)' '$(modulePath)' 'deploy.bicep') :
-                    (Join-Path '$(moduleRepoRoot)' '$(modulePath)' 'deploy.json')
-                }
-
-                # TODO: Update to latest folder
-                $templateFolderPath = Split-Path (Join-Path '$(parametersRepoRoot)' '${{ deploymentBlock.path }}') -Parent
-                $templateFileName = 'dep.{0}.bicep' -f (Split-Path '${{ deploymentBlock.path }}' -LeafBase)
-                $dependencyTemplateFilePath = Join-Path '$(moduleRepoRoot)' $templateFolderPath $templateFileName
-
-                if (-not (Test-Path $dependencyTemplateFilePath)) {
-                  Write-Verbose "No dependency deployment found in path [$dependencyTemplateFilePath]. Skipping deployment" -Verbose
-                  return
-                }
-
-                $functionInput = @{
-                  templateFilePath   = $dependencyTemplateFilePath
-                  location           = '${{ parameters.location }}'
-                  subscriptionId     = '${{ parameters.subscriptionId }}'
-                  managementGroupId  = '${{ parameters.managementGroupId }}'
-                  doNotThrow         = $true
-                }
-
-                # Get correct resource group
-                if(-not [String]::IsNullOrEmpty('${{ deploymentBlock.resourceGroupName }}')) {
-                    $resourceGroupName = '${{ deploymentBlock.resourceGroupName }}'
-                } else {
-                    $resourceGroupName = '${{ parameters.resourceGroupName }}'
-                }
-
-                # Pass the resource group name as a deployment parameter to deploy into it
-                $functionInput['additionalParameters'] = @{
-                  resourceGroupName = $resourceGroupName
-                }
-
-                Write-Verbose 'Invoke task with' -Verbose
-                Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
-
-                # Invoke deployment
-                $res = New-ModuleDeployment @functionInput -Verbose
-
-                # Get deployment name
-                Write-Host ('##vso[task.setvariable variable=dependencyDeploymentName]{0}' -f $res.deploymentName)
-
-                if ($res.ContainsKey('exception')) {
-                  # Happens only if there is an exception
-                  throw $res.exception
-                }
 
           # [Agent] Replace tokens
           #-----------------------
@@ -417,7 +349,7 @@ jobs:
           #------------------
           - task: AzurePowerShell@5
             displayName: 'Remove deployed resources via [${{ parameters.serviceConnection }}]'
-            condition: and(succeededOrFailed(), eq( '${{ parameters.removeDeployment }}', 'true'), not(or(eq(variables['deploymentName'],''), eq(variables['dependencyDeploymentName'],''))))
+            condition: and(succeededOrFailed(), eq( '${{ parameters.removeDeployment }}', 'true'), not(eq(variables['deploymentName'],''))))
             inputs:
               azureSubscription: ${{ parameters.serviceConnection }}
               azurePowerShellVersion: ${{ parameters.azurePowerShellVersion }}
@@ -451,25 +383,6 @@ jobs:
                       DeploymentName    = '$(deploymentName)'
                       TemplateFilePath  = $templateFilePath
                       ResourceGroupName = $resourceGroupName
-                      Verbose           = $true
-                  }
-
-                  Write-Verbose 'Invoke task with' -Verbose
-                  Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
-
-                  Initialize-DeploymentRemoval @functionInput
-                }
-
-                if (-not [String]::IsNullOrEmpty('$(dependencyDeploymentName)')) {
-                  $templateFolderPath = Split-Path (Join-Path '$(parametersRepoRoot)' '${{ deploymentBlock.path }}') -Parent
-                  $templateFileName = 'dep.{0}.bicep' -f (Split-Path '${{ deploymentBlock.path }}' -LeafBase)
-                  $dependencyTemplateFilePath = Join-Path '$(moduleRepoRoot)' $templateFolderPath $templateFileName
-
-                  $functionInput = @{
-                      DeploymentName    = '$(dependencyDeploymentName)'
-                      TemplateFilePath  = $dependencyTemplateFilePath
-                      ResourceGroupName = $resourceGroupName
-                      ManagementGroupId = '${{ parameters.managementGroupId }}'
                       Verbose           = $true
                   }
 
