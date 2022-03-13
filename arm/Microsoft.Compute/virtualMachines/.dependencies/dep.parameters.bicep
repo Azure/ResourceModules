@@ -11,8 +11,8 @@ param resourceGroupName string
 @description('Optional. The location to deploy to')
 param location string = deployment().location
 
-@description('Optional. A short identifier for the kind of deployment. E.g. "vwwinpar". Should be kept short to not run into resource-name length-constraints')
-param serviceShort string = 'vmwinpar'
+@description('Optional. A short identifier for the kind of deployment. E.g. "vmpar". Should be kept short to not run into resource-name length-constraints')
+param serviceShort string = 'vmpar'
 
 // ========= //
 // Variables //
@@ -40,7 +40,7 @@ var storageAccountParameters = {
     {
       roleDefinitionIdOrName: 'Owner'
       principalIds: [
-        managedIdentity.outputs.msiPrincipalId
+        managedIdentity.outputs.principalId
       ]
     }
   ]
@@ -49,7 +49,7 @@ var storageAccountParameters = {
 var storageAccountDeploymentScriptParameters = {
   name: 'sxx-ds-sa-${serviceShort}-01'
   userAssignedIdentities: {
-    '${managedIdentity.outputs.msiResourceId}': {}
+    '${managedIdentity.outputs.resourceId}': {}
   }
   cleanupPreference: 'OnSuccess'
   arguments: ' -StorageAccountName "${storageAccountParameters.name}" -ResourceGroupName "${resourceGroupName}" -ContainerName "scripts" -FileName "scriptExtensionMasterInstaller.ps1"'
@@ -118,7 +118,7 @@ var keyVaultParameters = {
   accessPolicies: [
     // Required so that the MSI can add secrets to the key vault
     {
-      objectId: managedIdentity.outputs.msiPrincipalId
+      objectId: managedIdentity.outputs.principalId
       permissions: {
         secrets: [
           'All'
@@ -131,7 +131,7 @@ var keyVaultParameters = {
 var keyVaultDeploymentScriptParameters = {
   name: 'sxx-ds-kv-${serviceShort}-01'
   userAssignedIdentities: {
-    '${managedIdentity.outputs.msiResourceId}': {}
+    '${managedIdentity.outputs.resourceId}': {}
   }
   cleanupPreference: 'OnSuccess'
   arguments: ' -keyVaultName "${keyVaultParameters.name}"'
@@ -207,6 +207,7 @@ module managedIdentity '../../../Microsoft.ManagedIdentity/userAssignedIdentitie
   name: '${uniqueString(deployment().name, location)}-mi'
   params: {
     name: managedIdentityParameters.name
+    location: location
   }
   dependsOn: [
     resourceGroup
@@ -223,6 +224,7 @@ module storageAccount '../../../Microsoft.Storage/storageAccounts/deploy.bicep' 
     allowBlobPublicAccess: storageAccountParameters.allowBlobPublicAccess
     blobServices: storageAccountParameters.blobServices
     roleAssignments: storageAccountParameters.roleAssignments
+    location: location
   }
   dependsOn: [
     resourceGroup
@@ -239,6 +241,7 @@ module storageAccountDeploymentScript '../../../Microsoft.Resources/deploymentSc
     userAssignedIdentities: storageAccountDeploymentScriptParameters.userAssignedIdentities
     scriptContent: storageAccountDeploymentScriptParameters.scriptContent
     cleanupPreference: storageAccountDeploymentScriptParameters.cleanupPreference
+    location: location
   }
   dependsOn: [
     resourceGroup
@@ -252,6 +255,7 @@ module logAnalyticsWorkspace '../../../Microsoft.OperationalInsights/workspaces/
   name: '${uniqueString(deployment().name, location)}-oms'
   params: {
     name: logAnalyticsWorkspaceParameters.name
+    location: location
   }
   dependsOn: [
     resourceGroup
@@ -264,6 +268,7 @@ module eventHubNamespace '../../../Microsoft.EventHub/namespaces/deploy.bicep' =
   params: {
     name: eventHubNamespaceParameters.name
     eventHubs: eventHubNamespaceParameters.eventHubs
+    location: location
   }
   dependsOn: [
     resourceGroup
@@ -275,6 +280,7 @@ module networkSecurityGroup '../../../Microsoft.Network/networkSecurityGroups/de
   name: '${uniqueString(deployment().name, location)}-nsg'
   params: {
     name: networkSecurityGroupParameters.name
+    location: location
   }
   dependsOn: [
     resourceGroup
@@ -288,6 +294,7 @@ module virtualNetwork '../../../Microsoft.Network/virtualNetworks/deploy.bicep' 
     name: virtualNetworkParameters.name
     addressPrefixes: virtualNetworkParameters.addressPrefixes
     subnets: virtualNetworkParameters.subnets
+    location: location
   }
   dependsOn: [
     resourceGroup
@@ -301,6 +308,7 @@ module recoveryServicesVault '../../../Microsoft.RecoveryServices/vaults/deploy.
   params: {
     name: recoveryServicesVaultParameters.name
     backupPolicies: recoveryServicesVaultParameters.backupPolicies
+    location: location
   }
   dependsOn: [
     resourceGroup
@@ -314,6 +322,7 @@ module keyVault '../../../Microsoft.KeyVault/vaults/deploy.bicep' = {
     name: keyVaultParameters.name
     enablePurgeProtection: keyVaultParameters.enablePurgeProtection
     accessPolicies: keyVaultParameters.accessPolicies
+    location: location
   }
   dependsOn: [
     resourceGroup
@@ -329,6 +338,7 @@ module keyVaultdeploymentScript '../../../Microsoft.Resources/deploymentScripts/
     userAssignedIdentities: keyVaultDeploymentScriptParameters.userAssignedIdentities
     scriptContent: keyVaultDeploymentScriptParameters.scriptContent
     cleanupPreference: keyVaultDeploymentScriptParameters.cleanupPreference
+    location: location
   }
   dependsOn: [
     resourceGroup
@@ -341,14 +351,14 @@ module keyVaultdeploymentScript '../../../Microsoft.Resources/deploymentScripts/
 // Outputs //
 // ======= //
 
-output resourceGroupResourceId string = resourceGroup.outputs.resourceGroupResourceId
-output managedIdentityResourceId string = managedIdentity.outputs.msiResourceId
-output storageAccountResourceId string = storageAccount.outputs.storageAccountResourceId
-output storageAccountDeploymentScriptResourceId string = storageAccountDeploymentScript.outputs.deploymentScriptResourceId
-output logAnalyticsWorkspaceResourceId string = logAnalyticsWorkspace.outputs.logAnalyticsResourceId
-output eventHubNamespaceResourceId string = eventHubNamespace.outputs.namespaceResourceId
-output networkSecurityGroupResourceId string = networkSecurityGroup.outputs.networkSecurityGroupResourceId
-output virtualNetworkResourceId string = virtualNetwork.outputs.virtualNetworkResourceId
-output recoveryServicesVaultResourceId string = recoveryServicesVault.outputs.recoveryServicesVaultResourceId
-output keyVaultResourceId string = keyVault.outputs.keyVaultResourceId
-output keyVaultdeploymentScriptResourceId string = keyVaultdeploymentScript.outputs.deploymentScriptResourceId
+output resourceGroupResourceId string = resourceGroup.outputs.resourceId
+output managedIdentityResourceId string = managedIdentity.outputs.resourceId
+output storageAccountResourceId string = storageAccount.outputs.resourceId
+output storageAccountDeploymentScriptResourceId string = storageAccountDeploymentScript.outputs.resourceId
+output logAnalyticsWorkspaceResourceId string = logAnalyticsWorkspace.outputs.resourceId
+output eventHubNamespaceResourceId string = eventHubNamespace.outputs.resourceId
+output networkSecurityGroupResourceId string = networkSecurityGroup.outputs.resourceId
+output virtualNetworkResourceId string = virtualNetwork.outputs.resourceId
+output recoveryServicesVaultResourceId string = recoveryServicesVault.outputs.resourceId
+output keyVaultResourceId string = keyVault.outputs.resourceId
+output keyVaultdeploymentScriptResourceId string = keyVaultdeploymentScript.outputs.resourceId

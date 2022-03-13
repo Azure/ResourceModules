@@ -26,7 +26,7 @@
         "adminUsername": {
             "reference": {
                 "keyVault": {
-                    "id": "/subscriptions/<<subscriptionId>>/resourceGroups/<<resourceGroupName>>/providers/Microsoft.KeyVault/vaults/adp-sxx-kv-vmwinmin-01"
+                    "id": "/subscriptions/<<subscriptionId>>/resourceGroups/<<resourceGroupName>>/providers/Microsoft.KeyVault/vaults/adp-sxx-kv-vmpar-01"
                 },
                 "secretName": "adminUsername"
             }
@@ -34,7 +34,7 @@
         "adminPassword": {
             "reference": {
                 "keyVault": {
-                    "id": "/subscriptions/<<subscriptionId>>/resourceGroups/<<resourceGroupName>>/providers/Microsoft.KeyVault/vaults/adp-sxx-kv-vmwinmin-01"
+                    "id": "/subscriptions/<<subscriptionId>>/resourceGroups/<<resourceGroupName>>/providers/Microsoft.KeyVault/vaults/adp-sxx-kv-vmpar-01"
                 },
                 "secretName": "adminPassword"
             }
@@ -46,7 +46,7 @@
                     "ipConfigurations": [
                         {
                             "name": "ipconfig01",
-                            "subnetId": "/subscriptions/<<subscriptionId>>/resourceGroups/<<resourceGroupName>>/providers/Microsoft.Network/virtualNetworks/adp-sxx-vnet-vmwinmin-01/subnets/sxx-subnet-x-01"
+                            "subnetId": "/subscriptions/<<subscriptionId>>/resourceGroups/<<resourceGroupName>>/providers/Microsoft.Network/virtualNetworks/adp-sxx-vnet-vmpar-01/subnets/sxx-subnet-x-01"
                         }
                     ]
                 }

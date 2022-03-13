@@ -35,7 +35,7 @@
         "adminUsername": {
             "reference": {
                 "keyVault": {
-                    "id": "/subscriptions/<<subscriptionId>>/resourceGroups/<<resourceGroupName>>/providers/Microsoft.KeyVault/vaults/adp-sxx-kv-vmwinpar-01"
+                    "id": "/subscriptions/<<subscriptionId>>/resourceGroups/<<resourceGroupName>>/providers/Microsoft.KeyVault/vaults/adp-sxx-kv-vmpar-01"
                 },
                 "secretName": "adminUsername"
             }
@@ -43,7 +43,7 @@
         "adminPassword": {
             "reference": {
                 "keyVault": {
-                    "id": "/subscriptions/<<subscriptionId>>/resourceGroups/<<resourceGroupName>>/providers/Microsoft.KeyVault/vaults/adp-sxx-kv-vmwinpar-01"
+                    "id": "/subscriptions/<<subscriptionId>>/resourceGroups/<<resourceGroupName>>/providers/Microsoft.KeyVault/vaults/adp-sxx-kv-vmpar-01"
                 },
                 "secretName": "adminPassword"
             }
@@ -56,7 +56,7 @@
                     "ipConfigurations": [
                         {
                             "name": "ipconfig01",
-                            "subnetId": "/subscriptions/<<subscriptionId>>/resourceGroups/<<resourceGroupName>>/providers/Microsoft.Network/virtualNetworks/adp-sxx-vnet-vmwinpar-01/subnets/sxx-subnet-x-01",
+                            "subnetId": "/subscriptions/<<subscriptionId>>/resourceGroups/<<resourceGroupName>>/providers/Microsoft.Network/virtualNetworks/adp-sxx-vnet-vmpar-01/subnets/sxx-subnet-x-01",
                             "pipConfiguration": {
                                 "publicIpNameSuffix": "-pip-01",
                                 "roleAssignments": [
@@ -82,7 +82,7 @@
             ]
         },
         "backupVaultName": {
-            "value": "adp-sxx-rsv-vmwinpar-01"
+            "value": "adp-sxx-rsv-vmpar-01"
         },
         "backupVaultResourceGroup": {
             "value": "<<resourceGroupName>>"
@@ -104,23 +104,23 @@
             "value": 7
         },
         "diagnosticStorageAccountId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/<<resourceGroupName>>/providers/Microsoft.Storage/storageAccounts/adpsxxazsavmwinpar01"
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/<<resourceGroupName>>/providers/Microsoft.Storage/storageAccounts/adpsxxazsavmpar01"
         },
         "workspaceId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourcegroups/<<resourceGroupName>>/providers/microsoft.operationalinsights/workspaces/adp-sxx-law-vmwinpar-01"
+            "value": "/subscriptions/<<subscriptionId>>/resourcegroups/<<resourceGroupName>>/providers/microsoft.operationalinsights/workspaces/adp-sxx-law-vmpar-01"
         },
         "eventHubAuthorizationRuleId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/<<resourceGroupName>>/providers/Microsoft.EventHub/namespaces/adp-sxx-evhns-vmwinpar-01/AuthorizationRules/RootManageSharedAccessKey"
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/<<resourceGroupName>>/providers/Microsoft.EventHub/namespaces/adp-sxx-evhns-vmpar-01/AuthorizationRules/RootManageSharedAccessKey"
         },
         "eventHubName": {
-            "value": "adp-sxx-evh-vmwinpar-01"
+            "value": "adp-sxx-evh-vmpar-01"
         },
         "systemAssignedIdentity": {
             "value": true
         },
         "userAssignedIdentities": {
             "value": {
-                "/subscriptions/<<subscriptionId>>/resourcegroups/<<resourceGroupName>>/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-msi-vmwinpar-01": {}
+                "/subscriptions/<<subscriptionId>>/resourcegroups/<<resourceGroupName>>/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-msi-vmpar-01": {}
             }
         },
         "extensionAntiMalwareConfig": {
@@ -186,8 +186,8 @@
                 "enabled": true,
                 "fileData": [
                     {
-                        "uri": "https://adpsxxazsavmwinpar01.blob.core.windows.net/scripts/scriptExtensionMasterInstaller.ps1",
-                        "storageAccountId": "/subscriptions/<<subscriptionId>>/resourceGroups/<<resourceGroupName>>/providers/Microsoft.Storage/storageAccounts/adpsxxazsavmwinpar01"
+                        "uri": "https://adpsxxazsavmpar01.blob.core.windows.net/scripts/scriptExtensionMasterInstaller.ps1",
+                        "storageAccountId": "/subscriptions/<<subscriptionId>>/resourceGroups/<<resourceGroupName>>/providers/Microsoft.Storage/storageAccounts/adpsxxazsavmpar01"
                     }
                 ],
                 "protectedSettings": {

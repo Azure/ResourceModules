@@ -10,7 +10,9 @@ targetScope = 'subscription'
 param resourceGroupName string
 
 // Shared
-var location = deployment().location
+@description('Optional. The location to deploy resources to')
+param location string = deployment().location
+
 var serviceShort = 'aspar'
 
 // Diagnostic Storage Account
@@ -68,6 +70,7 @@ module diagnoticStorageAccount '../../../Microsoft.Storage/storageAccounts/deplo
     storageAccountKind: storageAccountParameters.storageAccountKind
     storageAccountSku: storageAccountParameters.storageAccountSku
     allowBlobPublicAccess: storageAccountParameters.allowBlobPublicAccess
+    location: location
   }
   dependsOn: [
     resourceGroup
@@ -80,6 +83,7 @@ module logAnalyticsWorkspace '../../../Microsoft.OperationalInsights/workspaces/
   scope: az.resourceGroup(resourceGroupName)
   params: {
     name: logAnalyticsWorkspaceParameters.name
+    location: location
   }
   dependsOn: [
     resourceGroup
@@ -93,14 +97,12 @@ module eventHubNamespace '../../../Microsoft.EventHub/namespaces/deploy.bicep' =
   params: {
     name: eventHubNamespaceParameters.name
     eventHubs: eventHubNamespaceParameters.eventHubs
+    location: location
   }
   dependsOn: [
     resourceGroup
   ]
 }
 
-@description('The name of the resource group')
-output resourceGroupName string = resourceGroup.outputs.resourceGroupName
-
 @description('The resource ID of the resource group')
-output resourceGroupResourceId string = resourceGroup.outputs.resourceGroupResourceId
+output resourceGroupResourceId string = resourceGroup.outputs.resourceId

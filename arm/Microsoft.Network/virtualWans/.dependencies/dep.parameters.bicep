@@ -10,7 +10,8 @@ targetScope = 'subscription'
 param resourceGroupName string
 
 // Shared
-var location = deployment().location
+@description('Optional. The location to deploy resources to')
+param location string = deployment().location
 
 // =========== //
 // Deployments //
@@ -25,8 +26,5 @@ module resourceGroup '../../../Microsoft.Resources/resourceGroups/deploy.bicep' 
   }
 }
 
-@description('The name of the resource group')
-output resourceGroupName string = resourceGroup.outputs.resourceGroupName
-
 @description('The resource ID of the resource group')
-output resourceGroupResourceId string = resourceGroup.outputs.resourceGroupResourceId
+output resourceGroupResourceId string = resourceGroup.outputs.resourceId
