@@ -12,7 +12,7 @@ This module deploys a Private DNS Zone SOA record.
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
+| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `metadata` | object | `{object}` |  | Optional. The metadata attached to the record set. |
 | `name` | string |  |  | Required. The name of the SOA record. |
 | `privateDnsZoneName` | string |  |  | Required. Private DNS zone name. |

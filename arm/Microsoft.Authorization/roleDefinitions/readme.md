@@ -16,7 +16,8 @@ This module deploys custom RBAC Role Definitions across the management group, su
 | `assignableScopes` | array | `[]` |  | Optional. Role definition assignable scopes. If not provided, will use the current scope provided. |
 | `dataActions` | array | `[]` |  | Optional. List of allowed data actions. This is not supported if the assignableScopes contains Management Group Scopes |
 | `description` | string |  |  | Optional. Description of the custom RBAC role to be created. |
-| `location` | string | `[deployment().location]` |  | Optional. Location for all resources. |
+| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `location` | string | `[deployment().location]` |  | Optional. Location deployment metadata. |
 | `managementGroupId` | string | `[managementGroup().name]` |  | Optional. The group ID of the Management Group where the Role Definition and Target Scope will be applied to. If not provided, will use the current scope for deployment. |
 | `notActions` | array | `[]` |  | Optional. List of denied actions. |
 | `notDataActions` | array | `[]` |  | Optional. List of denied data actions. This is not supported if the assignableScopes contains Management Group Scopes |

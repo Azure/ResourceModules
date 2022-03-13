@@ -17,8 +17,8 @@ This module deploys VPN Gateways.
 | :-- | :-- | :-- | :-- | :-- |
 | `bgpSettings` | object | `{object}` |  | Optional. BGP settings details. |
 | `connections` | _[connections](connections/readme.md)_ array | `[]` |  | Optional. The connections to create in the VPN gateway |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `enableBgpRouteTranslationForNat` | bool | `False` |  | Optional. Enable BGP routes translation for NAT on this VPN gateway. |
+| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `isRoutingPreferenceInternet` | bool | `False` |  | Optional. Enable routing preference property for the public IP interface of the VPN gateway. |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location where all resources will be created. |
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |

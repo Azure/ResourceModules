@@ -12,7 +12,7 @@ This module deploys a ServiceFabric cluster application type.
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
+| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `name` | string | `defaultApplicationType` |  | Optional. Application type name. |
 | `serviceFabricClusterName` | string |  |  | Required. Name of the Service Fabric cluster. |
 | `tags` | object | `{object}` |  | Optional. Tags of the resource. |
