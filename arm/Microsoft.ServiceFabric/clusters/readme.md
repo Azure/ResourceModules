@@ -6,7 +6,7 @@ This module deploys a service fabric cluster.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/locks` | 2016-09-01 |
+| `Microsoft.Authorization/locks` | 2017-04-01 |
 | `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
 | `Microsoft.ServiceFabric/clusters` | 2021-06-01 |
 | `Microsoft.ServiceFabric/clusters/applicationTypes` | 2021-06-01 |
@@ -125,5 +125,6 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 - [Clusters](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ServiceFabric/2021-06-01/clusters)
 - [Clusters/Applicationtypes](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ServiceFabric/2021-06-01/clusters/applicationTypes)
-- [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
+- [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
 - [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-04-01-preview/roleAssignments)
+
