@@ -16,7 +16,7 @@ $script:moduleFolderPathsFiltered = $moduleFolderPaths | Where-Object {
     (Split-Path $_ -Leaf) -notin @( 'AzureNetappFiles', 'TrafficManager', 'PrivateDnsZones', 'ManagementGroups') }
 
 # Import any helper function used in this test script
-Import-Module (Join-Path $PSScriptRoot 'shared\helper.psm1')
+Import-Module (Join-Path $PSScriptRoot 'helper.psm1')
 
 Describe 'File/folder tests' -Tag Modules {
 

@@ -41,7 +41,7 @@ Tests falls into four categories:
 
 All Module Unit tests are performed with the help of [Pester](https://github.com/pester/Pester) and are required to have consistent, clean and syntactically correct tests to ensure that our modules are configured correctly, documentation is up to date, and modules don't turn stale.
 
-The following activities are run executing the `arm/.global/global.module.tests.ps1` script.
+The following activities are run executing the `arm/.global/tests/global.module.tests.ps1` script.
 
 - **File & folder tests** validate that the module folder structure is set up in the intended way. e.g.:
   - reame.md must exists
@@ -69,7 +69,7 @@ The following activities are run executing the `arm/.global/global.module.tests.
 
 # API version validation
 
-In this phase, the workflow will verify if the module is one of the latest 5 (non-preview) API version using the `arm/.global/global.module.tests.ps1` script.
+In this phase, the workflow will verify if the module is one of the latest 5 (non-preview) API version using the `arm/.global/tests/global.module.tests.ps1` script.
 
 ---
 

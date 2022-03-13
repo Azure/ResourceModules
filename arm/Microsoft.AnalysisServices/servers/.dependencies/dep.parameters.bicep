@@ -13,40 +13,8 @@ param resourceGroupName string
 @description('Optional. The location to deploy resources to')
 param location string = deployment().location
 
-var serviceShort = 'aspar'
-
-// Diagnostic Storage Account
-var storageAccountParameters = {
-  name: 'adpsxxazsa${serviceShort}01'
-  storageAccountKind: 'StorageV2'
-  storageAccountSku: 'Standard_LRS'
-  allowBlobPublicAccess: false
-}
-
-// Log Analytics
-var logAnalyticsWorkspaceParameters = {
-  name: 'adp-sxx-az-law-${serviceShort}-001'
-}
-
-// Event Hub Namespace
-var eventHubNamespaceParameters = {
-  name: 'adp-sxx-az-evhns-${serviceShort}-001'
-  eventHubs: [
-    {
-      name: 'adp-sxx-az-evh-${serviceShort}-001'
-      authorizationRules: [
-        {
-          name: 'RootManageSharedAccessKey'
-          rights: [
-            'Listen'
-            'Manage'
-            'Send'
-          ]
-        }
-      ]
-    }
-  ]
-}
+@description('Optional. A short identifier for the kind of deployment. E.g. "aspar". Should be kept short to not run into resource-name length-constraints')
+param serviceShort string = 'aspar'
 
 // =========== //
 // Deployments //
@@ -61,48 +29,20 @@ module resourceGroup '../../../Microsoft.Resources/resourceGroups/deploy.bicep' 
   }
 }
 
-// Storage Accounts
-module diagnoticStorageAccount '../../../Microsoft.Storage/storageAccounts/deploy.bicep' = {
-  name: '${uniqueString(deployment().name, location)}-sa'
+module diagnosticDependencies '../../../.global/dependencyConstructs/diagnostic.dependencies.bicep' = {
   scope: az.resourceGroup(resourceGroupName)
+  name: '${uniqueString(deployment().name, location)}-diagDep'
   params: {
-    name: storageAccountParameters.name
-    storageAccountKind: storageAccountParameters.storageAccountKind
-    storageAccountSku: storageAccountParameters.storageAccountSku
-    allowBlobPublicAccess: storageAccountParameters.allowBlobPublicAccess
+    resourceGroupName: resourceGroupName
+    storageAccountName: 'adpsxxazsa${serviceShort}01'
+    logAnalyticsWorkspaceName: 'adp-sxx-law-${serviceShort}-01'
+    eventHubNamespaceEventHubName: 'adp-sxx-evh-${serviceShort}-01'
+    eventHubNamespaceName: 'adp-sxx-evhns-${serviceShort}-01'
     location: location
   }
-  dependsOn: [
-    resourceGroup
-  ]
 }
 
-// Log Analytics Workspace
-module logAnalyticsWorkspace '../../../Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
-  name: '${uniqueString(deployment().name, location)}-oms'
-  scope: az.resourceGroup(resourceGroupName)
-  params: {
-    name: logAnalyticsWorkspaceParameters.name
-    location: location
-  }
-  dependsOn: [
-    resourceGroup
-  ]
-}
-
-// Event Hub Namespace
-module eventHubNamespace '../../../Microsoft.EventHub/namespaces/deploy.bicep' = {
-  name: '${uniqueString(deployment().name, location)}-ehn'
-  scope: az.resourceGroup(resourceGroupName)
-  params: {
-    name: eventHubNamespaceParameters.name
-    eventHubs: eventHubNamespaceParameters.eventHubs
-    location: location
-  }
-  dependsOn: [
-    resourceGroup
-  ]
-}
-
-@description('The resource ID of the resource group')
 output resourceGroupResourceId string = resourceGroup.outputs.resourceId
+output storageAccountResourceId string = diagnosticDependencies.outputs.storageAccountResourceId
+output logAnalyticsWorkspaceResourceId string = diagnosticDependencies.outputs.logAnalyticsWorkspaceResourceId
+output eventHubNamespaceResourceId string = diagnosticDependencies.outputs.eventHubNamespaceResourceId

@@ -60,7 +60,7 @@ runs:
         # --------------------- #
         Invoke-Pester -Configuration @{
           Run        = @{
-            Container = New-PesterContainer -Path 'arm/.global/global.module.tests.ps1' -Data @{
+            Container = New-PesterContainer -Path 'arm/.global/tests/global.module.tests.ps1' -Data @{
               moduleFolderPaths = $moduleFolderPaths
             }
           }
@@ -110,7 +110,7 @@ runs:
         # --------------------- #
         Invoke-Pester -Configuration @{
           Run        = @{
-            Container = New-PesterContainer -Path 'arm/.global/global.module.tests.ps1' -Data @{
+            Container = New-PesterContainer -Path 'arm/.global/tests/global.module.tests.ps1' -Data @{
               moduleFolderPaths = $moduleFolderPaths
             }
           }

@@ -19,7 +19,7 @@ When you have done your changes and want to validate, run the following:
 ```pwsh
 Invoke-Pester -Configuration @{
     Run        = @{
-        Container = New-PesterContainer -Path 'arm/.global/global.module.tests.ps1' -Data @{
+        Container = New-PesterContainer -Path 'arm/.global/tests/global.module.tests.ps1' -Data @{
             moduleFolderPaths = "C:\dev\ip\Azure-ResourceModules\ResourceModules\arm\Microsoft.EventGrid/topics"
         }
     }

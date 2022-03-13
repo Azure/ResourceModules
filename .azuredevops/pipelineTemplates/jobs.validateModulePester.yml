@@ -147,7 +147,7 @@ jobs:
 
             Invoke-Pester -Configuration @{
               Run        = @{
-                Container = New-PesterContainer -Path (Join-Path '$(moduleRepoRoot)' 'arm' '.global' 'global.module.tests.ps1') -Data @{
+                Container = New-PesterContainer -Path (Join-Path '$(moduleRepoRoot)' 'arm' '.global' 'tests' 'global.module.tests.ps1') -Data @{
                   moduleFolderPaths = $moduleFolderPaths
                 }
               }
@@ -252,7 +252,7 @@ jobs:
 
             Invoke-Pester -Configuration @{
               Run        = @{
-                Container = New-PesterContainer -Path (Join-Path '$(moduleRepoRoot)' 'arm' '.global' 'global.module.tests.ps1') -Data @{
+                Container = New-PesterContainer -Path (Join-Path '$(moduleRepoRoot)' 'arm' '.global' 'tests' 'global.module.tests.ps1') -Data @{
                   moduleFolderPaths = $moduleFolderPaths
                 }
               }
