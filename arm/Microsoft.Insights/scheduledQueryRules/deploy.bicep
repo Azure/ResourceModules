@@ -21,7 +21,7 @@ param kind string = 'LogAlert'
 param autoMitigate bool = true
 
 @description('Optional. If specified (in ISO 8601 duration format) then overrides the query time range. Relevant only for rules of the kind LogAlert.')
-param queryTimeRange string
+param queryTimeRange string = ''
 
 @description('Optional. The flag which indicates whether the provided query should be validated or not. Relevant only for rules of the kind LogAlert.')
 param skipQueryValidation bool = false
@@ -49,7 +49,7 @@ param severity int = 3
 param evaluationFrequency string = ''
 
 @description('Optional. The period of time (in ISO 8601 duration format) on which the Alert query will be executed (bin size). Relevant and required only for rules of the kind LogAlert.')
-param windowSize string
+param windowSize string = ''
 
 @description('Optional. Actions to invoke when the alert fires.')
 param actions array = []
@@ -63,12 +63,19 @@ param suppressForMinutes string = ''
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
-param cuaId string = ''
+@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+param enableDefaultTelemetry bool = true
 
-module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
-  name: 'pid-${cuaId}'
-  params: {}
+resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
+  name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
+  properties: {
+    mode: 'Incremental'
+    template: {
+      '$schema': 'https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#'
+      contentVersion: '1.0.0.0'
+      resources: []
+    }
+  }
 }
 
 resource queryRule 'Microsoft.Insights/scheduledQueryRules@2021-02-01-preview' = {
@@ -87,20 +94,21 @@ resource queryRule 'Microsoft.Insights/scheduledQueryRules@2021-02-01-preview' =
     description: alertDescription
     displayName: name
     enabled: enabled
-    evaluationFrequency: (kind == 'LogAlert') ? evaluationFrequency : null
-    muteActionsDuration: (kind == 'LogAlert') ? suppressForMinutes : null
-    overrideQueryTimeRange: (kind == 'LogAlert') ? queryTimeRange : null
+    evaluationFrequency: (kind == 'LogAlert' && !empty(evaluationFrequency)) ? evaluationFrequency : null
+    muteActionsDuration: (kind == 'LogAlert' && !empty(suppressForMinutes)) ? suppressForMinutes : null
+    overrideQueryTimeRange: (kind == 'LogAlert' && !empty(queryTimeRange)) ? queryTimeRange : null
     scopes: scopes
     severity: (kind == 'LogAlert') ? severity : null
     skipQueryValidation: (kind == 'LogAlert') ? skipQueryValidation : null
     targetResourceTypes: (kind == 'LogAlert') ? targetResourceTypes : null
-    windowSize: (kind == 'LogAlert') ? windowSize : null
+    windowSize: (kind == 'LogAlert' && !empty(windowSize)) ? windowSize : null
   }
 }
 
 module queryRule_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-QueryRule-Rbac-${index}'
   params: {
+    description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
     resourceId: queryRule.id

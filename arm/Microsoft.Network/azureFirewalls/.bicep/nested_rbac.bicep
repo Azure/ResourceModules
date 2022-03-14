@@ -1,3 +1,4 @@
+param description string = ''
 param principalIds array
 param roleDefinitionIdOrName string
 param resourceId string
@@ -25,13 +26,14 @@ var builtInRoleNames = {
   'User Access Administrator': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '18d7d88d-d35e-4fb5-a5c3-7773c20a72d9')
 }
 
-resource azureFirewall 'Microsoft.Network/azureFirewalls@2021-02-01' existing = {
+resource azureFirewall 'Microsoft.Network/azureFirewalls@2021-05-01' existing = {
   name: last(split(resourceId, '/'))
 }
 
 resource roleAssignment 'Microsoft.Authorization/roleAssignments@2021-04-01-preview' = [for principalId in principalIds: {
   name: guid(azureFirewall.name, principalId, roleDefinitionIdOrName)
   properties: {
+    description: description
     roleDefinitionId: contains(builtInRoleNames, roleDefinitionIdOrName) ? builtInRoleNames[roleDefinitionIdOrName] : roleDefinitionIdOrName
     principalId: principalId
   }

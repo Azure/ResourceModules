@@ -31,7 +31,7 @@
                         {
                             "name": "<<namePrefix>>-az-subnet-x-001(validation-rg)",
                             "type": "AzureVM",
-                            "resourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Compute/virtualMachines/adp-<<namePrefix>>-vm-001"
+                            "resourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Compute/virtualMachines/adp-<<namePrefix>>-vm-01"
                         },
                         {
                             "name": "Office Portal",

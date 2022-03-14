@@ -176,7 +176,7 @@ function Set-ParametersSection {
         $defaultValue = ($param.defaultValue -is [array]) ? ('[{0}]' -f ($param.defaultValue -join ', ')) : (($param.defaultValue -is [hashtable]) ? '{object}' : $param.defaultValue)
         $allowed = ($param.allowedValues -is [array]) ? ('[{0}]' -f ($param.allowedValues -join ', ')) : (($param.allowedValues -is [hashtable]) ? '{object}' : $param.allowedValues)
         $description = $param.metadata.description
-        $SectionContent += ('| `{0}` | {1} | {2} | {3} | {4} |' -f $paramName, $type, (($defaultValue) ? "``$defaultValue``" : ''), (($allowed) ? "``$allowed``" : ''), $description)
+        $SectionContent += ('| `{0}` | {1} | {2} | {3} | {4} |' -f $paramName, $type, (![string]::IsNullOrEmpty($defaultValue) ? "``$defaultValue``" : ''), (($allowed) ? "``$allowed``" : ''), $description)
     }
 
     # Build result
