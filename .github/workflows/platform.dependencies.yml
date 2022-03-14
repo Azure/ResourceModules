@@ -7,12 +7,12 @@ on:
         type: boolean
         description: 'Enable SqlMi dependencies deployment'
         required: false
-        default: 'false'
+        default: false
       deployVhdDependencies:
         type: boolean
         description: 'Enable deployment of a vhd stored in a blob container'
         required: false
-        default: 'false'
+        default: false
 
   # push:
   #   branches:
@@ -44,6 +44,33 @@ jobs:
       fail-fast: false
       matrix:
         parameterFilePaths: ['validation.parameters.json']
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: 'Deploy module'
+        uses: ./.github/actions/templates/validateModuleDeployment
+        with:
+          templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
+          parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
+          location: '${{ env.defaultLocation }}'
+          resourceGroupName: '${{ env.defaultResourceGroupName }}'
+          subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
+          managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
+          removeDeployment: '${{ env.removeDeployment }}'
+
+  job_deploy_ppg:
+    runs-on: ubuntu-20.04
+    name: 'Deploy proximity placement group'
+    env:
+      namespace: 'Microsoft.Compute\proximityPlacementGroups'
+    needs:
+      - job_deploy_rg
+    strategy:
+      fail-fast: false
+      matrix:
+        parameterFilePaths: ['parameters.json']
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -110,7 +137,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        parameterFilePaths: ['parameters.json']
+        parameterFilePaths: ['mg.parameters.json', 'sub.parameters.json']
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -119,7 +146,7 @@ jobs:
       - name: 'Deploy module'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
-          templateFilePath: 'arm/${{ env.namespace }}/.bicep/nested_policyAssignments_sub.bicep'
+          templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.defaultLocation }}'
           resourceGroupName: '${{ env.defaultResourceGroupName }}'
@@ -164,7 +191,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        parameterFilePaths: ['appi.parameters.json', 'parameters.json']
+        parameterFilePaths:
+          ['appi.parameters.json', 'aut.parameters.json', 'parameters.json']
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -1108,7 +1136,7 @@ jobs:
       - name: 'Deploy module'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
-          templateFilePath: 'arm/${{ env.namespace }}/.bicep/nested_rbac_sub.bicep'
+          templateFilePath: 'arm/${{ env.namespace }}/subscription/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.defaultLocation }}'
           resourceGroupName: '${{ env.defaultResourceGroupName }}'
@@ -1222,6 +1250,33 @@ jobs:
       fail-fast: false
       matrix:
         parameterFilePaths: ['parameters.json']
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: 'Deploy module'
+        uses: ./.github/actions/templates/validateModuleDeployment
+        with:
+          templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
+          parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
+          location: '${{ env.defaultLocation }}'
+          resourceGroupName: '${{ env.defaultResourceGroupName }}'
+          subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
+          managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
+          removeDeployment: '${{ env.removeDeployment }}'
+
+  job_deploy_lb:
+    runs-on: ubuntu-20.04
+    name: 'Deploy load balancers'
+    env:
+      namespace: 'Microsoft.Network\loadBalancers'
+    needs:
+      - job_deploy_vnet
+    strategy:
+      fail-fast: false
+      matrix:
+        parameterFilePaths: ['internal.parameters.json']
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2

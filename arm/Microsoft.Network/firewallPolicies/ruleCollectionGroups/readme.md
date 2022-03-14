@@ -6,13 +6,13 @@ This module deploys Network Firewall Policies Rule Collection Groups.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Network/firewallPolicies/ruleCollectionGroups` | 2021-03-01 |
+| `Microsoft.Network/firewallPolicies/ruleCollectionGroups` | 2021-05-01 |
 
 ## Parameters
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
+| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `firewallPolicyName` | string |  |  | Required. Name of the Firewall Policy. |
 | `name` | string |  |  | Required. The name of the rule collection group to deploy |
 | `priority` | int |  |  | Required. Priority of the Firewall Policy Rule Collection Group resource. |
@@ -43,4 +43,4 @@ For remaining properties, see [FirewallPolicyRuleCollection objects](https://doc
 
 ## Template references
 
-- [Firewallpolicies/Rulecollectiongroups](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-03-01/firewallPolicies/ruleCollectionGroups)
+- [Firewallpolicies/Rulecollectiongroups](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/firewallPolicies/ruleCollectionGroups)

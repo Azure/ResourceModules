@@ -7,14 +7,14 @@ This module controls the Network Security Group Flow Logs and analytics settings
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Network/networkWatchers/flowLogs` | 2021-03-01 |
+| `Microsoft.Network/networkWatchers/flowLogs` | 2021-05-01 |
 
 ## Parameters
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `enabled` | bool | `True` |  | Optional. If the flow log should be enabled |
+| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `formatVersion` | int | `2` | `[1, 2]` | Optional. The flow log format version |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
 | `name` | string | `[format('{0}-{1}-flowlog', last(split(parameters('targetResourceId'), '/')), split(parameters('targetResourceId'), '/')[4])]` |  | Optional. Name of the resource. |
@@ -53,4 +53,4 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 ## Template references
 
-- [Networkwatchers/Flowlogs](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-03-01/networkWatchers/flowLogs)
+- [Networkwatchers/Flowlogs](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/networkWatchers/flowLogs)

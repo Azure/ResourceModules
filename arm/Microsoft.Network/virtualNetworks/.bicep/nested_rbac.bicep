@@ -1,3 +1,4 @@
+param description string = ''
 param principalIds array
 param roleDefinitionIdOrName string
 param resourceId string
@@ -35,13 +36,14 @@ var builtInRoleNames = {
   'Virtual Machine User Login': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'fb879df8-f326-4884-b1cf-06f3ad86be52')
 }
 
-resource virtualNetwork 'Microsoft.Network/virtualNetworks@2021-03-01' existing = {
+resource virtualNetwork 'Microsoft.Network/virtualNetworks@2021-05-01' existing = {
   name: last(split(resourceId, '/'))
 }
 
 resource roleAssignment 'Microsoft.Authorization/roleAssignments@2021-04-01-preview' = [for principalId in principalIds: {
   name: guid(virtualNetwork.name, principalId, roleDefinitionIdOrName)
   properties: {
+    description: description
     roleDefinitionId: contains(builtInRoleNames, roleDefinitionIdOrName) ? builtInRoleNames[roleDefinitionIdOrName] : roleDefinitionIdOrName
     principalId: principalId
   }

@@ -8,8 +8,8 @@ This template deploys a private endpoint for a generic service.
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2017-04-01 |
 | `Microsoft.Authorization/roleAssignments` | 2021-04-01-preview |
-| `Microsoft.Network/privateEndpoints` | 2021-03-01 |
-| `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | 2021-03-01 |
+| `Microsoft.Network/privateEndpoints` | 2021-05-01 |
+| `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | 2021-05-01 |
 
 ### Resource dependency
 
@@ -25,7 +25,7 @@ The following resources are required to be able to deploy this resource:
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
+| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `groupId` | array |  |  | Required. Subtype(s) of the connection to be created. The allowed values depend on the type serviceResourceId refers to. |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all Resources. |
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
@@ -60,6 +60,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
     "value": [
         {
             "roleDefinitionIdOrName": "Reader",
+            "description": "Reader Role Assignment",
             "principalIds": [
                 "12345678-1234-1234-1234-123456789012", // object 1
                 "78945612-1234-1234-1234-123456789012" // object 2
@@ -86,6 +87,6 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 ## Template references
 
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
-- [Privateendpoints](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-03-01/privateEndpoints)
-- [Privateendpoints/Privatednszonegroups](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-03-01/privateEndpoints/privateDnsZoneGroups)
+- [Privateendpoints](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/privateEndpoints)
+- [Privateendpoints/Privatednszonegroups](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/privateEndpoints/privateDnsZoneGroups)
 - [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)

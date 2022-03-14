@@ -5,140 +5,333 @@
         "name": {
             "value": "<<namePrefix>>-az-apgw-x-001"
         },
-        "sku": {
-            "value": "WAF_v2"
-        },
-        "vNetName": {
-            "value": "adp-<<namePrefix>>-az-vnet-x-001"
-        },
-        "subnetName": {
-            "value": "<<namePrefix>>-az-subnet-x-007"
-        },
-        "vNetResourceGroup": {
-            "value": "validation-rg"
-        },
-        "frontendPrivateIpAddress": {
-            "value": "10.0.8.6"
-        },
-        "frontendPublicIpResourceId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/publicIPAddresses/adp-<<namePrefix>>-az-pip-x-apgw"
-        },
         "userAssignedIdentities": {
             "value": {
                 "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001": {}
             }
         },
-        "sslCertificateKeyVaultSecretId": {
-            "value": "https://adp-<<namePrefix>>-az-kv-x-001.vault.azure.net/secrets/applicationGatewaySslCertificate/9b670bb436e04eae9acd9b93dca269b6" // ID must be updated for new certificates
+        "webApplicationFirewallConfiguration": {
+            "value": {
+                "enabled": true,
+                "firewallMode": "Detection",
+                "ruleSetType": "OWASP",
+                "ruleSetVersion": "3.0",
+                "disabledRuleGroups": [],
+                "requestBodyCheck": true,
+                "maxRequestBodySizeInKb": 128,
+                "fileUploadLimitInMb": 100
+            }
         },
-        "backendPools": {
+        "enableHttp2": {
+            "value": true
+        },
+        "backendAddressPools": {
             "value": [
                 {
-                    "backendPoolName": "appServiceBackendPool",
-                    "backendAddresses": [
-                        {
-                            "fqdn": "aghapp.azurewebsites.net"
-                        }
-                    ]
+                    "name": "appServiceBackendPool",
+                    "properties": {
+                        "backendAddresses": [
+                            {
+                                "fqdn": "aghapp.azurewebsites.net"
+                            }
+                        ]
+                    }
                 },
                 {
-                    "backendPoolName": "privateVmBackendPool",
-                    "backendAddresses": [
-                        {
-                            "ipAddress": "10.0.0.4"
-                        }
-                    ]
+                    "name": "privateVmBackendPool",
+                    "properties": {
+                        "backendAddresses": [
+                            {
+                                "ipAddress": "10.0.0.4"
+                            }
+                        ]
+                    }
                 }
             ]
         },
-        "backendHttpConfigurations": {
+        "backendHttpSettingsCollection": {
             "value": [
                 {
-                    "backendHttpConfigurationName": "appServiceBackendHttpsSetting",
-                    "port": 443,
-                    "protocol": "https",
-                    "cookieBasedAffinity": "Disabled",
-                    "pickHostNameFromBackendAddress": true,
-                    "probeEnabled": false
+                    "name": "appServiceBackendHttpsSetting",
+                    "properties": {
+                        "port": 443,
+                        "protocol": "Https",
+                        "cookieBasedAffinity": "Disabled",
+                        "pickHostNameFromBackendAddress": true,
+                        "requestTimeout": 30
+                    }
                 },
                 {
-                    "backendHttpConfigurationName": "privateVmHttpSetting",
-                    "port": 80,
-                    "protocol": "http",
-                    "cookieBasedAffinity": "Disabled",
-                    "pickHostNameFromBackendAddress": false,
-                    "probeEnabled": true
+                    "name": "privateVmHttpSetting",
+                    "properties": {
+                        "port": 80,
+                        "protocol": "Http",
+                        "cookieBasedAffinity": "Disabled",
+                        "pickHostNameFromBackendAddress": false,
+                        "requestTimeout": 30,
+                        "probe": {
+                            "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationGateways/<<namePrefix>>-az-apgw-x-001/probes/privateVmHttpSettingProbe"
+                        }
+                    }
+                }
+            ]
+        },
+        "frontendIPConfigurations": {
+            "value": [
+                {
+                    "name": "private",
+                    "properties": {
+                        "privateIPAddress": "10.0.8.6",
+                        "privateIPAllocationMethod": "Static",
+                        "subnet": {
+                            "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-007"
+                        }
+                    }
+                },
+                {
+                    "name": "public",
+                    "properties": {
+                        "privateIPAllocationMethod": "Dynamic",
+                        "publicIPAddress": {
+                            "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/publicIPAddresses/adp-<<namePrefix>>-az-pip-x-apgw"
+                        }
+                    }
+                }
+            ]
+        },
+        "frontendPorts": {
+            "value": [
+                {
+                    "name": "port443",
+                    "properties": {
+                        "port": 443
+                    }
+                },
+                {
+                    "name": "port4433",
+                    "properties": {
+                        "port": 4433
+                    }
+                },
+                {
+                    "name": "port80",
+                    "properties": {
+                        "port": 80
+                    }
+                },
+                {
+                    "name": "port8080",
+                    "properties": {
+                        "port": 8080
+                    }
+                }
+            ]
+        },
+        "httpListeners": {
+            "value": [
+                {
+                    "name": "public443",
+                    "properties": {
+                        "frontendIPConfiguration": {
+                            "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationGateways/<<namePrefix>>-az-apgw-x-001/frontendIPConfigurations/public"
+                        },
+                        "frontendPort": {
+                            "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationGateways/<<namePrefix>>-az-apgw-x-001/frontendPorts/port443"
+                        },
+                        "sslCertificate": {
+                            "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationGateways/<<namePrefix>>-az-apgw-x-001/sslCertificates/<<namePrefix>>-az-apgw-x-001-ssl-certificate"
+                        },
+                        "protocol": "https",
+                        "hostNames": [],
+                        "requireServerNameIndication": false
+                    }
+                },
+                {
+                    "name": "private4433",
+                    "properties": {
+                        "frontendIPConfiguration": {
+                            "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationGateways/<<namePrefix>>-az-apgw-x-001/frontendIPConfigurations/private"
+                        },
+                        "frontendPort": {
+                            "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationGateways/<<namePrefix>>-az-apgw-x-001/frontendPorts/port4433"
+                        },
+                        "sslCertificate": {
+                            "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationGateways/<<namePrefix>>-az-apgw-x-001/sslCertificates/<<namePrefix>>-az-apgw-x-001-ssl-certificate"
+                        },
+                        "protocol": "https",
+                        "hostNames": [],
+                        "requireServerNameIndication": false
+                    }
+                },
+                {
+                    "name": "httpRedirect80",
+                    "properties": {
+                        "frontendIPConfiguration": {
+                            "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationGateways/<<namePrefix>>-az-apgw-x-001/frontendIPConfigurations/public"
+                        },
+                        "frontendPort": {
+                            "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationGateways/<<namePrefix>>-az-apgw-x-001/frontendPorts/port80"
+                        },
+                        "protocol": "Http",
+                        "hostNames": [],
+                        "requireServerNameIndication": false
+                    }
+                },
+                {
+                    "name": "httpRedirect8080",
+                    "properties": {
+                        "frontendIPConfiguration": {
+                            "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationGateways/<<namePrefix>>-az-apgw-x-001/frontendIPConfigurations/private"
+                        },
+                        "frontendPort": {
+                            "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationGateways/<<namePrefix>>-az-apgw-x-001/frontendPorts/port8080"
+                        },
+                        "protocol": "Http",
+                        "hostNames": [],
+                        "requireServerNameIndication": false
+                    }
+                }
+            ]
+        },
+        "gatewayIPConfigurations": {
+            "value": [
+                {
+                    "name": "apw-ip-configuration",
+                    "properties": {
+                        "subnet": {
+                            "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-007"
+                        }
+                    }
                 }
             ]
         },
         "probes": {
             "value": [
                 {
-                    "backendHttpConfigurationName": "privateVmHttpSetting",
-                    "protocol": "http",
-                    "host": "10.0.0.4",
-                    "path": "/",
-                    "interval": 60,
-                    "timeout": 15,
-                    "unhealthyThreshold": 5,
-                    "minServers": 3,
-                    "body": "",
-                    "statusCodes": [
-                        "200",
-                        "401"
-                    ]
+                    "name": "privateVmHttpSettingProbe",
+                    "properties": {
+                        "protocol": "Http",
+                        "host": "10.0.0.4",
+                        "path": "/",
+                        "interval": 60,
+                        "timeout": 15,
+                        "unhealthyThreshold": 5,
+                        "pickHostNameFromBackendHttpSettings": false,
+                        "minServers": 3,
+                        "match": {
+                            "statusCodes": [
+                                "200",
+                                "401"
+                            ]
+                        }
+                    }
                 }
             ]
         },
-        "frontendHttpsListeners": {
+        "redirectConfigurations": {
             "value": [
                 {
-                    "frontendListenerName": "public443",
-                    "frontendIPType": "Public",
-                    "port": 443
+                    "name": "httpRedirect80",
+                    "properties": {
+                        "redirectType": "Permanent",
+                        "targetListener": {
+                            "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationGateways/<<namePrefix>>-az-apgw-x-001/httpListeners/public443"
+                        },
+                        "includePath": true,
+                        "includeQueryString": true,
+                        "requestRoutingRules": [
+                            {
+                                "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationGateways/<<namePrefix>>-az-apgw-x-001/requestRoutingRules/httpRedirect80-public443"
+                            }
+                        ]
+                    }
                 },
                 {
-                    "frontendListenerName": "private4433",
-                    "frontendIPType": "Private",
-                    "port": 4433
+                    "name": "httpRedirect8080",
+                    "properties": {
+                        "redirectType": "Permanent",
+                        "targetListener": {
+                            "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationGateways/<<namePrefix>>-az-apgw-x-001/httpListeners/private4433"
+                        },
+                        "includePath": true,
+                        "includeQueryString": true,
+                        "requestRoutingRules": [
+                            {
+                                "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationGateways/<<namePrefix>>-az-apgw-x-001/requestRoutingRules/httpRedirect8080-private4433"
+                            }
+                        ]
+                    }
                 }
             ]
         },
-        "frontendHttpRedirects": {
+        "requestRoutingRules": {
             "value": [
                 {
-                    "frontendIPType": "Public",
-                    "port": 80,
-                    "frontendListenerName": "public443"
+                    "name": "public443-appServiceBackendHttpsSetting-appServiceBackendHttpsSetting",
+                    "properties": {
+                        "ruleType": "Basic",
+                        "httpListener": {
+                            "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationGateways/<<namePrefix>>-az-apgw-x-001/httpListeners/public443"
+                        },
+                        "backendAddressPool": {
+                            "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationGateways/<<namePrefix>>-az-apgw-x-001/backendAddressPools/appServiceBackendPool"
+                        },
+                        "backendHttpSettings": {
+                            "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationGateways/<<namePrefix>>-az-apgw-x-001/backendHttpSettingsCollection/appServiceBackendHttpsSetting"
+                        }
+                    }
                 },
                 {
-                    "frontendIPType": "Private",
-                    "port": 8080,
-                    "frontendListenerName": "private4433"
-                }
-            ]
-        },
-        "routingRules": {
-            "value": [
-                {
-                    "frontendListenerName": "public443",
-                    "backendPoolName": "appServiceBackendPool",
-                    "backendHttpConfigurationName": "appServiceBackendHttpsSetting"
+                    "name": "private4433-privateVmHttpSetting-privateVmHttpSetting",
+                    "properties": {
+                        "ruleType": "Basic",
+                        "httpListener": {
+                            "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationGateways/<<namePrefix>>-az-apgw-x-001/httpListeners/private4433"
+                        },
+                        "backendAddressPool": {
+                            "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationGateways/<<namePrefix>>-az-apgw-x-001/backendAddressPools/privateVmBackendPool"
+                        },
+                        "backendHttpSettings": {
+                            "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationGateways/<<namePrefix>>-az-apgw-x-001/backendHttpSettingsCollection/privateVmHttpSetting"
+                        }
+                    }
                 },
                 {
-                    "frontendListenerName": "private4433",
-                    "backendPoolName": "privateVmBackendPool",
-                    "backendHttpConfigurationName": "privateVmHttpSetting"
+                    "name": "httpRedirect80-public443",
+                    "properties": {
+                        "ruleType": "Basic",
+                        "httpListener": {
+                            "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationGateways/<<namePrefix>>-az-apgw-x-001/httpListeners/httpRedirect80"
+                        },
+                        "redirectConfiguration": {
+                            "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationGateways/<<namePrefix>>-az-apgw-x-001/redirectConfigurations/httpRedirect80"
+                        }
+                    }
+                },
+                {
+                    "name": "httpRedirect8080-private4433",
+                    "properties": {
+                        "ruleType": "Basic",
+                        "httpListener": {
+                            "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationGateways/<<namePrefix>>-az-apgw-x-001/httpListeners/httpRedirect8080"
+                        },
+                        "redirectConfiguration": {
+                            "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationGateways/<<namePrefix>>-az-apgw-x-001/redirectConfigurations/httpRedirect8080"
+                        }
+                    }
                 }
             ]
         },
-        "roleAssignments": {
+        "sku": {
+            "value": "WAF_v2"
+        },
+        "sslCertificates": {
             "value": [
                 {
-                    "roleDefinitionIdOrName": "Reader",
-                    "principalIds": [
-                        "<<deploymentSpId>>"
-                    ]
+                    "name": "<<namePrefix>>-az-apgw-x-001-ssl-certificate",
+                    "properties": {
+                        "keyVaultSecretId": "https://adp-<<namePrefix>>-az-kv-x-001.vault.azure.net/secrets/applicationGatewaySslCertificate02/40b9b1a7a69e48cfa1e36f24b97b8799"
+                    }
                 }
             ]
         },
@@ -156,6 +349,16 @@
         },
         "diagnosticEventHubName": {
             "value": "adp-<<namePrefix>>-az-evh-x-001"
+        },
+        "roleAssignments": {
+            "value": [
+                {
+                    "roleDefinitionIdOrName": "Reader",
+                    "principalIds": [
+                        "<<deploymentSpId>>"
+                    ]
+                }
+            ]
         }
     }
 }

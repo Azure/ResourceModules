@@ -1,3 +1,4 @@
+param description string = ''
 param principalIds array
 param roleDefinitionIdOrName string
 param resourceId string
@@ -28,6 +29,7 @@ resource eventHub 'Microsoft.EventHub/namespaces/eventhubs@2021-06-01-preview' e
 resource roleAssignment 'Microsoft.Authorization/roleAssignments@2021-04-01-preview' = [for principalId in principalIds: {
   name: guid(split(resourceId, '/')[0], split(resourceId, '/')[1], principalId, roleDefinitionIdOrName)
   properties: {
+    description: description
     roleDefinitionId: contains(builtInRoleNames, roleDefinitionIdOrName) ? builtInRoleNames[roleDefinitionIdOrName] : roleDefinitionIdOrName
     principalId: principalId
   }

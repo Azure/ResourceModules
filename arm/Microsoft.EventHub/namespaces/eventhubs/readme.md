@@ -21,13 +21,13 @@ This module deploys an Event Hub.
 | `captureDescriptionDestinationBlobContainer` | string |  |  | Optional. Blob container Name |
 | `captureDescriptionDestinationName` | string | `EventHubArchive.AzureBlockBlob` |  | Optional. Name for capture destination |
 | `captureDescriptionDestinationStorageAccountResourceId` | string |  |  | Optional. Resource ID of the storage account to be used to create the blobs |
-| `captureDescriptionEnabled` | bool |  |  | Optional. A value that indicates whether capture description is enabled. |
+| `captureDescriptionEnabled` | bool | `False` |  | Optional. A value that indicates whether capture description is enabled. |
 | `captureDescriptionEncoding` | string | `Avro` | `[Avro, AvroDeflate]` | Optional. Enumerates the possible values for the encoding format of capture description. Note: "AvroDeflate" will be deprecated in New API Version |
 | `captureDescriptionIntervalInSeconds` | int | `300` |  | Optional. The time window allows you to set the frequency with which the capture to Azure Blobs will happen |
 | `captureDescriptionSizeLimitInBytes` | int | `314572800` |  | Optional. The size window defines the amount of data built up in your Event Hub before an capture operation |
-| `captureDescriptionSkipEmptyArchives` | bool |  |  | Optional. A value that indicates whether to Skip Empty Archives |
+| `captureDescriptionSkipEmptyArchives` | bool | `False` |  | Optional. A value that indicates whether to Skip Empty Archives |
 | `consumerGroups` | _[consumerGroups](consumerGroups/readme.md)_ array | `[System.Collections.Hashtable]` |  | Optional. The consumer groups to create in this event hub instance |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
+| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
 | `messageRetentionInDays` | int | `1` |  | Optional. Number of days to retain the events for this Event Hub, value should be 1 to 7 days |
 | `name` | string |  |  | Required. The name of the event hub |
@@ -43,6 +43,7 @@ This module deploys an Event Hub.
     "value": [
         {
             "roleDefinitionIdOrName": "Reader",
+            "description": "Reader Role Assignment",
             "principalIds": [
                 "12345678-1234-1234-1234-123456789012", // object 1
                 "78945612-1234-1234-1234-123456789012" // object 2

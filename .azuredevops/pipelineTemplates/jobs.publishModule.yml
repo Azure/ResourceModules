@@ -155,7 +155,7 @@ jobs:
           pwsh: true
           script: |
             # Load used functions
-            . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Get-ModulesToUpdate.ps1')
+            . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Get-ModulesToPublish.ps1')
             . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Publish-ModuleToUniversalArtifactFeed.ps1')
 
             #Prioritizing the bicep file
@@ -168,20 +168,23 @@ jobs:
               TemplateFilePath = $TemplateFilePath
             }
 
-            Write-Verbose "Invoke Get-ModulesToUpdate with" -Verbose
+            Write-Verbose "Invoke Get-ModulesToPublish with" -Verbose
             Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
             # Get the modified child resources
-            $ModulesToUpdate = Get-ModulesToUpdate @functionInput -Verbose
+            $ModulesToPublish = Get-ModulesToPublish @functionInput -Verbose
 
             # Publish the modified child resources
-            foreach ($ModuleToUpdate in $ModulesToUpdate) {
+            foreach ($ModuleToPublish in $ModulesToPublish) {
+              $RelPath = (($ModuleToPublish.TemplateFilePath).Split('/arm/')[-1]).Split('/deploy.')[0]
+              Write-Host "##[group]$(' - [{0}] [{1}]' -f $RelPath, $ModuleToPublish.Version)"
+
               $functionInput = @{
-                TemplateFilePath = $ModuleToUpdate.TemplateFilePath
+                TemplateFilePath = $ModuleToPublish.TemplateFilePath
                 VstsOrganizationUri = '${{ parameters.vstsOrganizationUri }}'
                 VstsFeedProject  = '${{ parameters.vstsFeedProject }}'
                 VstsFeedName     = '${{ parameters.vstsFeedName }}'
-                ModuleVersion    = $ModuleToUpdate.Version
+                ModuleVersion    = $ModuleToPublish.Version
                 BearerToken      = $env:TOKEN
               }
 
@@ -189,6 +192,7 @@ jobs:
               Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
               Publish-ModuleToUniversalArtifactFeed @functionInput -Verbose
+              Write-Host "##[endgroup]"
             }
         env:
           TOKEN: $(vstsFeedToken)
@@ -210,7 +214,7 @@ jobs:
           ScriptType: InlineScript
           inline: |
             # Load used functions
-            . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Get-ModulesToUpdate.ps1')
+            . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Get-ModulesToPublish.ps1')
             . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Publish-ModuleToTemplateSpec.ps1')
 
             #Prioritizing the bicep file
@@ -223,26 +227,30 @@ jobs:
               TemplateFilePath = $TemplateFilePath
             }
 
-            Write-Verbose "Invoke Get-ModulesToUpdate with" -Verbose
+            Write-Verbose "Invoke Get-ModulesToPublish with" -Verbose
             Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
             # Get the modified child resources
-            $ModulesToUpdate = Get-ModulesToUpdate @functionInput -Verbose
+            $ModulesToPublish = Get-ModulesToPublish @functionInput -Verbose
 
             # Publish the modified child resources
-            foreach ($ModuleToUpdate in $ModulesToUpdate) {
+            foreach ($ModuleToPublish in $ModulesToPublish) {
+              $RelPath = (($ModuleToPublish.TemplateFilePath).Split('/arm/')[-1]).Split('/deploy.')[0]
+              Write-Host "##[group]$(' - [{0}] [{1}]' -f $RelPath, $ModuleToPublish.Version)"
+
               $functionInput = @{
-                TemplateFilePath         = $ModuleToUpdate.TemplateFilePath
+                TemplateFilePath         = $ModuleToPublish.TemplateFilePath
                 TemplateSpecsRgName      = '${{ parameters.templateSpecsRgName }}'
                 TemplateSpecsRgLocation  = '${{ parameters.templateSpecsRgLocation }}'
                 TemplateSpecsDescription = '${{ parameters.templateSpecsDescription }}'
-                ModuleVersion            = $ModuleToUpdate.Version
+                ModuleVersion            = $ModuleToPublish.Version
               }
 
               Write-Verbose "Invoke Publish-ModuleToTemplateSpec with" -Verbose
               Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
               Publish-ModuleToTemplateSpec @functionInput -Verbose
+              Write-Host "##[endgroup]"
             }
 
       # [private bicep registry publish] task(s)
@@ -262,7 +270,7 @@ jobs:
           ScriptType: InlineScript
           inline: |
             # Load used functions
-            . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Get-ModulesToUpdate.ps1')
+            . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Get-ModulesToPublish.ps1')
             . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Publish-ModuleToPrivateBicepRegistry.ps1')
 
             #Prioritizing the bicep file
@@ -275,24 +283,28 @@ jobs:
               TemplateFilePath = $TemplateFilePath
             }
 
-            Write-Verbose "Invoke Get-ModulesToUpdate with" -Verbose
+            Write-Verbose "Invoke Get-ModulesToPublish with" -Verbose
             Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
             # Get the modified child resources
-            $ModulesToUpdate = Get-ModulesToUpdate @functionInput -Verbose
+            $ModulesToPublish = Get-ModulesToPublish @functionInput -Verbose
 
             # Publish the modified child resources
-            foreach ($ModuleToUpdate in $ModulesToUpdate) {
+            foreach ($ModuleToPublish in $ModulesToPublish) {
+              $RelPath = (($ModuleToPublish.TemplateFilePath).Split('/arm/')[-1]).Split('/deploy.')[0]
+              Write-Host "##[group]$(' - [{0}] [{1}]' -f $RelPath, $ModuleToPublish.Version)"
+
               $functionInput = @{
-                TemplateFilePath         = $ModuleToUpdate.TemplateFilePath
+                TemplateFilePath         = $ModuleToPublish.TemplateFilePath
                 BicepRegistryName       = '${{ parameters.bicepRegistryName }}'
                 BicepRegistryRgName     = '${{ parameters.bicepRegistryRgName }}'
                 BicepRegistryRgLocation = '${{ parameters.bicepRegistryRgLocation }}'
-                ModuleVersion            = $ModuleToUpdate.Version
+                ModuleVersion            = $ModuleToPublish.Version
               }
 
               Write-Verbose "Invoke Publish-ModuleToPrivateBicepRegistry with" -Verbose
               Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
               Publish-ModuleToPrivateBicepRegistry @functionInput -Verbose
+              Write-Host "##[endgroup]"
             }

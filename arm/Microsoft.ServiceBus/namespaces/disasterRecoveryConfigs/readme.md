@@ -13,7 +13,7 @@ This module deploys a disaster recovery config for a service bus Namespace
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `alternateName` | string |  |  | Optional. Primary/Secondary eventhub namespace name, which is part of GEO DR pairing |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
+| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `name` | string | `default` |  | Optional. The name of the disaster recovery config |
 | `namespaceName` | string |  |  | Required. Name of the parent Service Bus Namespace for the Service Bus Queue. |
 | `partnerNamespaceResourceID` | string |  |  | Optional. Resource ID of the Primary/Secondary event hub namespace name, which is part of GEO DR pairing |

@@ -9,7 +9,8 @@ param location string = resourceGroup().location
 param accessPolicies array = []
 
 @description('Optional. All secrets to create')
-param secrets array = []
+@secure()
+param secrets object = {}
 
 @description('Optional. All keys to create')
 param keys array = []
@@ -97,8 +98,8 @@ param privateEndpoints array = []
 @description('Optional. Resource tags.')
 param tags object = {}
 
-@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
-param cuaId string = ''
+@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+param enableDefaultTelemetry bool = true
 
 @description('Generated. Do not provide a value! This date value is used to generate a SAS token to access the modules.')
 param baseTime string = utcNow('u')
@@ -141,15 +142,15 @@ var diagnosticsMetrics = [for metric in metricsToEnable: {
 var maxNameLength = 24
 var uniquenameUntrim = uniqueString('Key Vault${baseTime}')
 var uniquename = (length(uniquenameUntrim) > maxNameLength ? substring(uniquenameUntrim, 0, maxNameLength) : uniquenameUntrim)
-var name_var = empty(name) ? uniquename : name
+var name_var = !empty(name) ? name : uniquename
 var virtualNetworkRules = [for networkrule in ((contains(networkAcls, 'virtualNetworkRules')) ? networkAcls.virtualNetworkRules : []): {
   id: '${vNetId}/subnets/${networkrule.subnet}'
 }]
 var networkAcls_var = {
-  bypass: (empty(networkAcls) ? null : networkAcls.bypass)
-  defaultAction: (empty(networkAcls) ? null : networkAcls.defaultAction)
-  virtualNetworkRules: (empty(networkAcls) ? null : virtualNetworkRules)
-  ipRules: (empty(networkAcls) ? null : ((length(networkAcls.ipRules) == 0) ? [] : networkAcls.ipRules))
+  bypass: !empty(networkAcls) ? networkAcls.bypass : null
+  defaultAction: !empty(networkAcls) ? networkAcls.defaultAction : null
+  virtualNetworkRules: !empty(networkAcls) ? virtualNetworkRules : null
+  ipRules: (!empty(networkAcls) && length(networkAcls.ipRules) != 0) ? networkAcls.ipRules : null
 }
 
 var formattedAccessPolicies = [for accessPolicy in accessPolicies: {
@@ -159,9 +160,18 @@ var formattedAccessPolicies = [for accessPolicy in accessPolicies: {
   tenantId: contains(accessPolicy, 'tenantId') ? accessPolicy.tenantId : tenant().tenantId
 }]
 
-module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
-  name: 'pid-${cuaId}'
-  params: {}
+var secretList = !empty(secrets) ? secrets.secureList : []
+
+resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
+  name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
+  properties: {
+    mode: 'Incremental'
+    template: {
+      '$schema': 'https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#'
+      contentVersion: '1.0.0.0'
+      resources: []
+    }
+  }
 }
 
 resource keyVault 'Microsoft.KeyVault/vaults@2019-09-01' = {
@@ -176,14 +186,14 @@ resource keyVault 'Microsoft.KeyVault/vaults@2019-09-01' = {
     softDeleteRetentionInDays: softDeleteRetentionInDays
     enableRbacAuthorization: enableRbacAuthorization
     createMode: createMode
-    enablePurgeProtection: ((!enablePurgeProtection) ? null : enablePurgeProtection)
+    enablePurgeProtection: enablePurgeProtection ? enablePurgeProtection : null
     tenantId: subscription().tenantId
     accessPolicies: formattedAccessPolicies
     sku: {
       name: vaultSku
       family: 'A'
     }
-    networkAcls: (empty(networkAcls) ? null : networkAcls_var)
+    networkAcls: !empty(networkAcls) ? networkAcls_var : null
   }
 }
 
@@ -191,7 +201,7 @@ resource keyVault_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 
   name: '${keyVault.name}-${lock}-lock'
   properties: {
     level: lock
-    notes: (lock == 'CanNotDelete') ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
+    notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: keyVault
 }
@@ -217,7 +227,7 @@ module keyVault_accessPolicies 'accessPolicies/deploy.bicep' = if (!empty(access
   }
 }
 
-module keyVault_secrets 'secrets/deploy.bicep' = [for (secret, index) in secrets: {
+module keyVault_secrets 'secrets/deploy.bicep' = [for (secret, index) in secretList: {
   name: '${uniqueString(deployment().name, location)}-KeyVault-Secret-${index}'
   params: {
     name: secret.name
@@ -253,7 +263,7 @@ module keyVault_privateEndpoints '.bicep/nested_privateEndpoint.bicep' = [for (p
   name: '${uniqueString(deployment().name, location)}-KeyVault-PrivateEndpoint-${index}'
   params: {
     privateEndpointResourceId: keyVault.id
-    privateEndpointVnetLocation: (empty(privateEndpoints) ? 'dummy' : reference(split(privateEndpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location)
+    privateEndpointVnetLocation: empty(privateEndpoints) ? 'dummy' : reference(split(privateEndpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location
     privateEndpointObj: privateEndpoint
     tags: tags
   }
@@ -262,6 +272,7 @@ module keyVault_privateEndpoints '.bicep/nested_privateEndpoint.bicep' = [for (p
 module keyVault_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-KeyVault-Rbac-${index}'
   params: {
+    description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
     resourceId: keyVault.id

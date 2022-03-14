@@ -14,7 +14,7 @@ This module deploys a local network gateway.
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
+| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `fqdn` | string |  |  | Optional. FQDN of local network gateway. |
 | `localAddressPrefixes` | array |  |  | Required. List of the local (on-premises) IP address ranges |
 | `localAsn` | string |  |  | Optional. The BGP speaker's ASN. Not providing this value will automatically disable BGP on this Local Network Gateway resource. |
@@ -34,6 +34,7 @@ This module deploys a local network gateway.
     "value": [
         {
             "roleDefinitionIdOrName": "Reader",
+            "description": "Reader Role Assignment",
             "principalIds": [
                 "12345678-1234-1234-1234-123456789012", // object 1
                 "78945612-1234-1234-1234-123456789012" // object 2
@@ -76,6 +77,6 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 ## Template references
 
+- [Define resources with Bicep and ARM templates](https://docs.microsoft.com/en-us/azure/templates)
 - [Localnetworkgateways](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/localNetworkGateways)
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)

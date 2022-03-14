@@ -15,7 +15,7 @@ This template deploys volumes in a capacity pool of an Azure NetApp files.
 | :-- | :-- | :-- | :-- | :-- |
 | `capacityPoolName` | string |  |  | Required. The name of the capacity pool. |
 | `creationToken` | string | `[parameters('name')]` |  | Optional. A unique file path for the volume. This is the name of the volume export. A volume is mounted using the export path. File path must start with an alphabetical character and be unique within the subscription. |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
+| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `exportPolicyRules` | array | `[]` |  | Optional. Export policy rules. |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location of the pool volume. |
 | `name` | string |  |  | Required. The name of the pool volume. |
@@ -33,6 +33,7 @@ This template deploys volumes in a capacity pool of an Azure NetApp files.
     "value": [
         {
             "roleDefinitionIdOrName": "Reader",
+            "description": "Reader Role Assignment",
             "principalIds": [
                 "12345678-1234-1234-1234-123456789012", // object 1
                 "78945612-1234-1234-1234-123456789012" // object 2

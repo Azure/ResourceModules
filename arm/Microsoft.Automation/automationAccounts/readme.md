@@ -16,8 +16,8 @@ This module deploys an Azure Automation Account.
 | `Microsoft.Automation/automationAccounts/softwareUpdateConfigurations` | 2019-06-01 |
 | `Microsoft.Automation/automationAccounts/variables` | 2020-01-13-preview |
 | `Microsoft.Insights/diagnosticSettings` | 2021-05-01-preview |
-| `Microsoft.Network/privateEndpoints` | 2021-03-01 |
-| `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | 2021-03-01 |
+| `Microsoft.Network/privateEndpoints` | 2021-05-01 |
+| `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | 2021-05-01 |
 | `Microsoft.OperationalInsights/workspaces/linkedServices` | 2020-03-01-preview |
 | `Microsoft.OperationsManagement/solutions` | 2015-11-01-preview |
 
@@ -25,12 +25,12 @@ This module deploys an Azure Automation Account.
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered. |
 | `diagnosticEventHubAuthorizationRuleId` | string |  |  | Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string |  |  | Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticStorageAccountId` | string |  |  | Optional. Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string |  |  | Optional. Resource ID of the diagnostic log analytics workspace. |
+| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `gallerySolutions` | array | `[]` |  | Optional. List of gallerySolutions to be created in the linked log analytics workspace |
 | `jobSchedules` | _[jobSchedules](jobSchedules/readme.md)_ array | `[]` |  | Optional. List of jobSchedules to be created in the automation account. |
 | `linkedWorkspaceId` | string |  |  | Optional. ID of the log analytics workspace to be linked to the deployed automation account. |
@@ -46,7 +46,7 @@ This module deploys an Azure Automation Account.
 | `schedules` | _[schedules](schedules/readme.md)_ array | `[]` |  | Optional. List of schedules to be created in the automation account. |
 | `skuName` | string | `Basic` | `[Free, Basic]` | Optional. SKU name of the account. |
 | `softwareUpdateConfigurations` | _[softwareUpdateConfigurations](softwareUpdateConfigurations/readme.md)_ array | `[]` |  | Optional. List of softwareUpdateConfigurations to be created in the automation account |
-| `systemAssignedIdentity` | bool |  |  | Optional. Enables system assigned managed identity on the resource. |
+| `systemAssignedIdentity` | bool | `False` |  | Optional. Enables system assigned managed identity on the resource. |
 | `tags` | object | `{object}` |  | Optional. Tags of the Automation Account resource. |
 | `userAssignedIdentities` | object | `{object}` |  | Optional. The ID(s) to assign to the resource. |
 | `variables` | _[variables](variables/readme.md)_ array | `[]` |  | Optional. List of variables to be created in the automation account. |
@@ -94,6 +94,7 @@ To use Private Endpoint the following dependencies must be deployed:
     "value": [
         {
             "roleDefinitionIdOrName": "Reader",
+            "description": "Reader Role Assignment",
             "principalIds": [
                 "12345678-1234-1234-1234-123456789012", // object 1
                 "78945612-1234-1234-1234-123456789012" // object 2
@@ -159,8 +160,8 @@ You can specify multiple user assigned identities to a resource by providing add
 - [Automationaccounts/Variables](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Automation/2020-01-13-preview/automationAccounts/variables)
 - [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings)
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
-- [Privateendpoints](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-03-01/privateEndpoints)
-- [Privateendpoints/Privatednszonegroups](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-03-01/privateEndpoints/privateDnsZoneGroups)
+- [Privateendpoints](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/privateEndpoints)
+- [Privateendpoints/Privatednszonegroups](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/privateEndpoints/privateDnsZoneGroups)
 - [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)
 - [Solutions](https://docs.microsoft.com/en-us/azure/templates/Microsoft.OperationsManagement/2015-11-01-preview/solutions)
 - [Workspaces/Linkedservices](https://docs.microsoft.com/en-us/azure/templates/Microsoft.OperationalInsights/2020-03-01-preview/workspaces/linkedServices)

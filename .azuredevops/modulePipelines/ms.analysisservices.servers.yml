@@ -44,6 +44,7 @@ stages:
           deploymentBlocks:
             - path: $(modulePath)/.parameters/min.parameters.json
             - path: $(modulePath)/.parameters/parameters.json
+            - path: $(modulePath)/.parameters/max.parameters.json
 
   - stage: Publishing
     displayName: Publish module
