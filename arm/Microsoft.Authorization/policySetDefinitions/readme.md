@@ -14,7 +14,8 @@ With this module you can create policy set definitions across the management gro
 | :-- | :-- | :-- | :-- | :-- |
 | `description` | string |  |  | Optional. The description name of the Set Definition (Initiative) |
 | `displayName` | string |  |  | Optional. The display name of the Set Definition (Initiative). Maximum length is 128 characters. |
-| `location` | string | `[deployment().location]` |  | Optional. Location for all resources. |
+| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `location` | string | `[deployment().location]` |  | Optional. Location deployment metadata. |
 | `managementGroupId` | string | `[managementGroup().name]` |  | Optional. The group ID of the Management Group (Scope). If not provided, will use the current scope for deployment. |
 | `metadata` | object | `{object}` |  | Optional. The Set Definition (Initiative) metadata. Metadata is an open ended object and is typically a collection of key-value pairs. |
 | `name` | string |  |  | Required. Specifies the name of the policy Set Definition (Initiative). Maximum length is 24 characters for management group scope and 64 characters for subscription scope. |

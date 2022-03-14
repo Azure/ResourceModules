@@ -600,16 +600,16 @@ Describe 'Deployment template tests' -Tag Template {
                 $moduleFolderName,
                 $templateContent
             )
-            $CuaIDFlag = @()
+            $enableDefaultTelemetryFlag = @()
             $Schemaverion = $templateContent.'$schema'
             if ((($Schemaverion.Split('/')[5]).Split('.')[0]) -eq (($RGdeployment.Split('/')[5]).Split('.')[0])) {
-                if (($templateContent.resources.type -ccontains 'Microsoft.Resources/deployments' -and $templateContent.resources.condition -like "*[not(empty(parameters('cuaId')))]*") -or ($templateContent.resources.resources.type -ccontains 'Microsoft.Resources/deployments' -and $templateContent.resources.resources.condition -like "*[not(empty(parameters('cuaId')))]*")) {
-                    $CuaIDFlag += $true
+                if (($templateContent.resources.type -ccontains 'Microsoft.Resources/deployments' -and $templateContent.resources.condition -like "*[parameters('enableDefaultTelemetry')]*") -or ($templateContent.resources.resources.type -ccontains 'Microsoft.Resources/deployments' -and $templateContent.resources.resources.condition -like "*[parameters('enableDefaultTelemetry')]*")) {
+                    $enableDefaultTelemetryFlag += $true
                 } else {
-                    $CuaIDFlag += $false
+                    $enableDefaultTelemetryFlag += $false
                 }
             }
-            $CuaIDFlag | Should -Not -Contain $false
+            $enableDefaultTelemetryFlag | Should -Not -Contain $false
         }
 
         It "[<moduleFolderName>] The Location should be defined as a parameter, with the default value of 'resourceGroup().Location' or global for ResourceGroup deployment scope" -TestCases $deploymentFolderTestCases {
@@ -847,7 +847,7 @@ Describe "API version tests [All apiVersions in the template should be 'recent']
         }
     }
 
-    It 'In [<moduleName>] used resource type [<resourceType>] should use on of the recent API version(s). Currently using [<TargetApi>]' -TestCases $TestCases {
+    It 'In [<moduleName>] used resource type [<resourceType>] should use one of the recent API version(s). Currently using [<TargetApi>]' -TestCases $TestCases {
         param(
             $moduleName,
             $resourceType,

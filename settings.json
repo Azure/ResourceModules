@@ -11,5 +11,6 @@
                 }
             }
         ]
-    }
+    },
+    "enableDefaultTelemetry": true
 }

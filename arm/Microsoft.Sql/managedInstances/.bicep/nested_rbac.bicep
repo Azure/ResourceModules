@@ -1,3 +1,4 @@
+param description string = ''
 param principalIds array
 param roleDefinitionIdOrName string
 param resourceId string
@@ -28,6 +29,7 @@ resource managedInstance 'Microsoft.Sql/managedInstances@2020-08-01-preview' exi
 resource roleAssignment 'Microsoft.Authorization/roleAssignments@2021-04-01-preview' = [for principalId in principalIds: {
   name: guid(managedInstance.name, principalId, roleDefinitionIdOrName)
   properties: {
+    description: description
     roleDefinitionId: contains(builtInRoleNames, roleDefinitionIdOrName) ? builtInRoleNames[roleDefinitionIdOrName] : roleDefinitionIdOrName
     principalId: principalId
   }

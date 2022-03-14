@@ -18,13 +18,13 @@ This module deploys an Azure virtual desktop application group.
 | :-- | :-- | :-- | :-- | :-- |
 | `applicationGroupType` | string |  | `[RemoteApp, Desktop]` | Required. The type of the Application Group to be created. Allowed values: RemoteApp or Desktop |
 | `applications` | _[applications](applications/readme.md)_ array | `[]` |  | Optional. List of applications to be created in the Application Group. |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `description` | string |  |  | Optional. The description of the Application Group to be created. |
 | `diagnosticEventHubAuthorizationRuleId` | string |  |  | Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string |  |  | Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticStorageAccountId` | string |  |  | Optional. Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string |  |  | Optional. Resource ID of log analytics. |
+| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `friendlyName` | string |  |  | Optional. The friendly name of the Application Group to be created. |
 | `hostpoolName` | string |  |  | Required. Name of the Host Pool to be linked to this Application Group. |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
@@ -41,6 +41,7 @@ This module deploys an Azure virtual desktop application group.
     "value": [
         {
             "roleDefinitionIdOrName": "Reader",
+            "description": "Reader Role Assignment",
             "principalIds": [
                 "12345678-1234-1234-1234-123456789012", // object 1
                 "78945612-1234-1234-1234-123456789012" // object 2

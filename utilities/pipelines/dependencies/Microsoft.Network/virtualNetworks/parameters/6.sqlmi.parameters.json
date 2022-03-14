@@ -15,9 +15,8 @@
         {
           "name": "<<namePrefix>>-az-subnet-x-sqlmi", // SQLMi subnet
           "addressPrefix": "10.6.0.0/24",
-          "networkSecurityGroupName": "adp-<<namePrefix>>-az-nsg-x-sqlmi",
-          "routeTableName": "adp-<<namePrefix>>-az-udr-x-sqlmi",
-          "serviceEndpoints": [],
+          "networkSecurityGroupId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/networkSecurityGroups/adp-<<namePrefix>>-az-nsg-x-sqlmi",
+          "routeTableNameId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/routeTables/adp-<<namePrefix>>-az-udr-x-sqlmi",
           "delegations": [
             {
               "name": "sqlMiDel",
