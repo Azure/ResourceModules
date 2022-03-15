@@ -119,13 +119,25 @@ module vm_scaleset '../../arm/Microsoft.Compute/virtualMachineScaleSets/deploy.b
           }
     }
     osType: 'Windows'
-
+    nicConfigurations: [
+      {
+        nicSuffix: '-nic01'
+        ipconfigurations: [
+          {
+            name: 'ipconfig1'
+            subnet: {
+              id: vnet.outputs.resourceId
+            }
+          }
+        ]
+      }
+      
+    ]
   }
   dependsOn: [
     rsg_web_tier
     vnet
   ]
-
 }
 
 // Create DB Tier
