@@ -5,14 +5,14 @@
         "name": {
             "value": "<<namePrefix>>-az-fd-x-001"
         },
-        "backendAddressPools": {
+        "backendPools": {
             "value": [
                 {
                     "name": "backendPool",
                     "properties": {
                         "backends": [
                             {
-                                "address": "backendAddress",
+                                "address": "biceptest.local",
                                 "backendHostHeader": "backendAddress",
                                 "httpPort": 80,
                                 "httpsPort": 443,
@@ -25,33 +25,30 @@
                                 "privateLinkResourceId": ""
                             }
                         ],
-                        "loadBalancingSettings": {
-                            "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/frontDoors/<<namePrefix>>-az-fd-x-001/LoadBalancingSettings/loadBalancingSettings"
+                        "LoadBalancingSettings": {
+                            "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/frontDoors/<<namePrefix>>-az-fd-x-001/LoadBalancingSettings/loadBalancer"
                         },
-                        "healthProbeSettings": {
-                            "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/frontDoors/<<namePrefix>>-az-fd-x-001/HealthProbeSettings/healthProbeSettings"
+                        "HealthProbeSettings": {
+                            "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/frontDoors/<<namePrefix>>-az-fd-x-001/HealthProbeSettings/heathProbe"
                         }
                     }
                 }
             ]
         },
         "enforceCertificateNameCheck": {
-            "value": ""
+            "value": "Disabled"
         },
         "sendRecvTimeoutSeconds": {
-            "value": 600
+            "value": 10
         },
         "frontendEndpoints": {
             "value": [
                 {
                     "name": "frontEnd",
                     "properties": {
-                        "hostName": "",
-                        "sessionAffinityEnabledState": "",
-                        "sessionAffinityTtlSeconds": 60,
-                        "webApplicationFirewallPolicyLink": {
-                            "id": "'string'"
-                        }
+                        "hostName": "<<namePrefix>>-az-fd-x-001.azurefd.net",
+                        "sessionAffinityEnabledState": "Disabled",
+                        "sessionAffinityTtlSeconds": 60
                     }
                 }
             ]
@@ -65,7 +62,7 @@
                         "healthProbeMethod": "",
                         "intervalInSeconds": 60,
                         "path": "/",
-                        "protocol": "https"
+                        "protocol": "Https"
                     }
                 }
             ]
@@ -91,7 +88,7 @@
                             "Http",
                             "Https"
                         ],
-                        "enabledState": "",
+                        "enabledState": "Enabled",
                         "frontendEndpoints": [
                             {
                                 "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/frontDoors/<<namePrefix>>-az-fd-x-001/FrontendEndpoints/frontEnd"
@@ -100,20 +97,12 @@
                         "patternsToMatch": [
                             "/*"
                         ],
-                        "routeConfiguration": [
-                            {
-                                "'@odata.type'": "#Microsoft.Azure.FrontDoor.Models.FrontdoorForwardingConfiguration",
-                                "forwardingProtocol": "MatchRequest",
-                                "backendPool": {
-                                    "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/frontDoors/<<namePrefix>>-az-fd-x-001/BackendPools/backendPool"
-                                }
+                        "routeConfiguration": {
+                            "@odata.type": "#Microsoft.Azure.FrontDoor.Models.FrontdoorForwardingConfiguration",
+                            "forwardingProtocol": "MatchRequest",
+                            "backendPool": {
+                                "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/frontDoors/<<namePrefix>>-az-fd-x-001/BackendPools/backendPool"
                             }
-                        ],
-                        "rulesEngine": {
-                            "id": ""
-                        },
-                        "webApplicationFirewallPolicyLink": {
-                            "id": ""
                         }
                     }
                 }

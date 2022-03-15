@@ -26,13 +26,13 @@ param enableDefaultTelemetry bool = true
 param backendPools array = []
 
 @description('Optional. Enforce certificate name check of the frontdoor resource.')
-param enforceCertificateNameCheck string = ''
+param enforceCertificateNameCheck string = 'Disabled'
 
 @description('Optional. Certificate name check time of the frontdoor resource.')
 param sendRecvTimeoutSeconds int = 600
 
 @description('Optional. State of the frontdoor resource.')
-param enabledState string = ''
+param enabledState string = 'Enabled'
 
 @description('Optional. Friendly name of the frontdoor resource.')
 param friendlyName string = ''
@@ -61,7 +61,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource symbolicname 'Microsoft.Network/frontDoors@2020-05-01' = {
+resource frontDoor 'Microsoft.Network/frontDoors@2020-05-01' = {
   name: name
   location: 'global'
   tags: tags
@@ -78,4 +78,13 @@ resource symbolicname 'Microsoft.Network/frontDoors@2020-05-01' = {
     loadBalancingSettings: loadBalancingSettings
     routingRules: routingRules
   }
+}
+
+resource frontDoor_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
+  name: '${frontDoor.name}-${lock}-lock'
+  properties: {
+    level: lock
+    notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
+  }
+  scope: frontDoor
 }
