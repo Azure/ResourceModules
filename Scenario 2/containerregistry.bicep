@@ -5,7 +5,7 @@ module containerRegistry '../arm/Microsoft.ContainerRegistry/registries/deploy.b
   scope: resourceGroup(rgname)
   name: 'scenario2-cr'
   params: {
-    name: 'scenario2-cr'
+    name: 'scenario2cr'
     acrAdminUserEnabled: true
     acrSku: 'Basic'
   }
