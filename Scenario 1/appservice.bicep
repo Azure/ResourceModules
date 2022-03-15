@@ -58,5 +58,6 @@ module appService '../arm/Microsoft.Web/sites/deploy.bicep' = {
     kind: 'app'
     name: webApp
     appServicePlanId: appServicePlan.outputs.name
+    sdsd: vnet.outputs.subnetNames
   }
 }
