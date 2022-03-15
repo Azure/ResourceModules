@@ -103,7 +103,7 @@ module vm_scaleset '../../arm/Microsoft.Compute/virtualMachineScaleSets/deploy.b
   params: {
     location: location
     name: '${prefix}-vmscaleset'
-    skuName: 'Standard_D2s'
+    skuName: 'Standard_D2_v2'
     adminUsername: 'team5Admin'
     imageReference: {
       publisher: 'MicrosoftWindowsServer'
