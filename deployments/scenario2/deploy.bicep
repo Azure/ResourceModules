@@ -50,7 +50,7 @@ module container_registry '../../arm/Microsoft.ContainerRegistry/registries/depl
   scope: resourceGroup(rsg_app_tier.name)
   name: '${prefix}-reg'
   params: {
-    name: '${prefix}-container'
+    name: '${prefix}container'
     location: location
   }
 }
