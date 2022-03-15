@@ -81,6 +81,9 @@ module site '../../arm/Microsoft.Web/sites/deploy.bicep' = {
     functionsWorkerRuntime: 'dotnet'
     appInsightId: app_insights.outputs.resourceId
   }
+  dependsOn: [
+    rsg_web_tier
+  ]
 }
 
 // Create App Tier
@@ -95,6 +98,9 @@ module vnet '../../arm/Microsoft.Network/virtualnetworks/deploy.bicep' = {
     addressPrefixes: vNetAddressPrefixes
     subnets: subnets
   }
+  dependsOn: [
+    rsg_shared
+  ]
 }
 
 // Key Vault
@@ -105,7 +111,56 @@ module kv '../../arm/Microsoft.KeyVault/vaults/deploy.bicep' = {
     location: location
     name: keyVaultName
   }
+  dependsOn: [
+    rsg_shared
+  ]
 }
+
+// Scaleset
+module vm_scaleset '../../arm/Microsoft.Compute/virtualMachineScaleSets/deploy.bicep' = {
+  scope: resourceGroup(rsg_app_tier.name)
+  name: '${prefix}-scaleset'
+  params: {
+    location: location
+    name: '${prefix}-vmscaleset'
+    skuName: 'Standard_DS15_v2'
+    adminUsername: 'team5Admin'
+    imageReference: {
+      publisher: 'MicrosoftWindowsServer'
+        offer: 'WindowsServer'
+        sku: '2016-Datacenter'
+        version: 'latest'
+    }  
+    osDisk: {
+          createOption: 'fromImage'
+          diskSizeGB: 128
+          managedDisk: {
+              storageAccountType: 'Premium_LRS'
+          }
+    }
+    osType: 'Windows'
+    nicConfigurations: [
+      {
+        nicSuffix: '-nic01'
+        ipconfigurations: [
+          {
+            name: 'ipconfig1'
+            subnet: {
+              id: vnet.outputs.resourceId
+            }
+          }
+        ]
+      }
+      
+    ]
+  }
+  dependsOn: [
+    rsg_web_tier
+    vnet
+  ]
+}
+
+
 
 // Create DB Tier
 
@@ -118,6 +173,9 @@ module logAnalytics '../../arm/Microsoft.OperationalInsights/workspaces/deploy.b
     location: location
     name: loganalyticsName
   }
+  dependsOn: [
+    rsg_shared
+  ]
 }
 
 // Create App Insights
@@ -130,4 +188,7 @@ module app_insights '../../arm/Microsoft.Insights/components/deploy.bicep' = {
     location: location
     workspaceResourceId: logAnalytics.outputs.resourceId
   }
+  dependsOn: [
+    rsg_shared
+  ]
 }
