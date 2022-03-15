@@ -3,6 +3,7 @@ targetScope = 'subscription'
 param prefix string = 'team5'
 param location string = 'centralus'
 
+var appInsightsName = '${prefix}-app-insights'
 var vnetName = '${prefix}-vnet'
 var vNetAddressPrefixes = [
   '10.0.0.0/16'
@@ -97,3 +98,17 @@ module vnet '../../arm/Microsoft.Network/virtualnetworks/deploy.bicep' = {
 }
 
 // Create DB Tier
+
+// Create App Insights
+module app_insights '../../arm/Microsoft.Insights/components/deploy.bicep' = {
+  name: '${prefix}-app-insights'
+  scope: resourceGroup(rsg_shared.name)
+  params: {
+    location: location
+    name: '${prefix}-app-insights'
+    workspaceResourceId: ''
+  }
+  dependsOn: [
+    rsg_shared
+  ]
+}
