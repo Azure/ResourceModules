@@ -2,7 +2,7 @@
 
 targetScope = 'subscription'
 
-param prefix string = 'team5'
+param prefix string = 'scenario2team5'
 param location string = 'centralus'
 
 // Create Resource Groups
