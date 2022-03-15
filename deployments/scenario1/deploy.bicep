@@ -3,6 +3,8 @@ targetScope = 'subscription'
 param prefix string = 'team5'
 param location string = 'centralus'
 
+param loganalyticsName string = '${prefix}-ws'
+
 var vnetName = '${prefix}-vnet'
 var vNetAddressPrefixes = [
   '10.0.0.0/16'
@@ -97,3 +99,16 @@ module vnet '../../arm/Microsoft.Network/virtualnetworks/deploy.bicep' = {
 }
 
 // Create DB Tier
+
+//log analytics
+module logAnalytics '../../arm/Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
+  name: 'team5-loganalytics-ws'
+  scope: resourceGroup(rsg_shared.name)
+  params: {
+    location: location
+    name: loganalyticsName
+  }
+  dependsOn: [
+    rsg_shared
+  ]
+}
