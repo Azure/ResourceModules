@@ -57,5 +57,6 @@ module appService '../arm/Microsoft.Web/sites/deploy.bicep' = {
   params: {
     kind: 'app'
     name: webApp
+    appServicePlanId: appServicePlan.outputs.name
   }
 }
