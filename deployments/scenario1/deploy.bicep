@@ -103,7 +103,7 @@ module vm_scaleset '../../arm/Microsoft.Compute/virtualMachineScaleSets/deploy.b
   params: {
     location: location
     name: '${prefix}-vmscaleset'
-    skuName: 'Standard_B2s'
+    skuName: 'Standard_D2ads'
     adminUsername: 'team5Admin'
     imageReference: {
       publisher: 'MicrosoftWindowsServer'
@@ -139,5 +139,7 @@ module vm_scaleset '../../arm/Microsoft.Compute/virtualMachineScaleSets/deploy.b
     vnet
   ]
 }
+
+
 
 // Create DB Tier
