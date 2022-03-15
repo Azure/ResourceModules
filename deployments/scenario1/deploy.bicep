@@ -22,6 +22,7 @@ var subnets = [
   }
 ]
 
+var keyVaultName = '${prefix}-keyvault'
 // Create Resource Groups
 
 @description('The Resource Groups to create')
@@ -94,6 +95,16 @@ module vnet '../../arm/Microsoft.Network/virtualnetworks/deploy.bicep' = {
   dependsOn: [
     rsg_shared
   ]
+}
+
+// Key Vault
+module kv '../../arm/Microsoft.KeyVault/vaults/deploy.bicep' = {
+  scope: resourceGroup(rsg_shared.name)
+  name: 'team5-keyvault'
+  params: {
+    location: location
+    name: keyVaultName
+  }
 }
 
 // Create DB Tier
