@@ -34,6 +34,7 @@ module vnet '../arm/Microsoft.Network/virtualNetworks/deploy.bicep' = {
       {
         name: 'vm-subnet'
         addressPrefix: '172.16.1.0/24'
+        privateEndpointNetworkPolicies: 'Disabled'
       }
     ]
   }
@@ -66,13 +67,15 @@ module sqlpec '../arm/Microsoft.Network/privateEndpoints/deploy.bicep' = {
     ]
     privateDnsZoneGroups: [
       {
-        privateDnsResourceId: sqlpdns.outputs.resourceId
+        privateDnsResourceIds: [
+          sqlpdns.outputs.resourceId
+        ]
         privateEndpointName: 'sql-pec-deploy'
       }
     ]
     name: 'sqlpec'
     serviceResourceId: sql.outputs.resourceId
-    targetSubnetResourceId: vnet.outputs.subnetResourceIds[1].id
+    targetSubnetResourceId: vnet.outputs.subnetResourceIds[1]
   }
 }
 
