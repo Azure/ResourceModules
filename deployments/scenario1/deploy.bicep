@@ -3,6 +3,25 @@ targetScope = 'subscription'
 param prefix string = 'team5'
 param location string = 'centralus'
 
+var vnetName = '${prefix}-vnet'
+var vNetAddressPrefixes = [
+  '10.0.0.0/16'
+]
+var subnets = [
+  {
+    name: 'WebSubnet'
+    addressPrefix: '10.0.0.0/24'
+  }
+  {
+    name: 'AppSubnet'
+    addressPrefix: '10.0.1.0/24'
+  }
+  {
+    name: 'DataSubnet'
+    addressPrefix: '10.0.2.0/24'
+  }
+]
+
 // Create Resource Groups
 
 @description('The Resource Groups to create')
@@ -31,6 +50,14 @@ module rsg_data_tier '../../arm/Microsoft.Resources/resourceGroups/deploy.bicep'
   }
 }
 
+module rsg_vnet_tier '../../arm/Microsoft.Resources/resourceGroups/deploy.bicep' = {
+  name: '${prefix}-vnet'
+  params: {
+    name: '${prefix}-vnet'
+    location: location
+  }
+}
+
 // Create Web Tier
 
 module site '../../arm/Microsoft.Web/sites/deploy.bicep' = {
@@ -53,5 +80,20 @@ module site '../../arm/Microsoft.Web/sites/deploy.bicep' = {
 }
 
 // Create App Tier
+
+// Virtual Network
+module vnet '../../arm/Microsoft.Network/virtualnetworks/deploy.bicep' = {
+  name: 'team5-vnet'
+  scope: resourceGroup(rsg_vnet_tier.name)
+  params: {
+    location: location
+    name: vnetName
+    addressPrefixes: vNetAddressPrefixes
+    subnets: subnets
+  }
+  dependsOn: [
+    rsg_web_tier
+  ]
+}
 
 // Create DB Tier
