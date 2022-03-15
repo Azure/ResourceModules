@@ -4,6 +4,7 @@ param prefix string = 'team5'
 param location string = 'centralus'
 
 var appInsightsName = '${prefix}-app-insights'
+var loganalyticsName = '${prefix}-ws'
 var vnetName = '${prefix}-vnet'
 var vNetAddressPrefixes = [
   '10.0.0.0/16'
@@ -99,16 +100,32 @@ module vnet '../../arm/Microsoft.Network/virtualnetworks/deploy.bicep' = {
 
 // Create DB Tier
 
-// Create App Insights
-module app_insights '../../arm/Microsoft.Insights/components/deploy.bicep' = {
-  name: '${prefix}-app-insights'
+// Create Log Analytics
+
+module logAnalytics '../../arm/Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
+  name: loganalyticsName
   scope: resourceGroup(rsg_shared.name)
   params: {
     location: location
-    name: '${prefix}-app-insights'
-    workspaceResourceId: ''
+    name: loganalyticsName
   }
   dependsOn: [
     rsg_shared
+  ]
+}
+
+// Create App Insights
+
+module app_insights '../../arm/Microsoft.Insights/components/deploy.bicep' = {
+  name: appInsightsName
+  scope: resourceGroup(rsg_shared.name)
+  params: {
+    name: appInsightsName
+    location: location
+    workspaceResourceId: logAnalytics.outputs.resourceId
+  }
+  dependsOn: [
+    rsg_shared
+    logAnalytics
   ]
 }
