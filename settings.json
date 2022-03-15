@@ -4,7 +4,7 @@
         "tokenSuffix": ">>",
         "localTokens": [
             {
-                "name": "namePrefix",
+                "name": "team5",
                 "value": "carml",
                 "metadata": {
                     "description": "A 3-5 character length string, included in the resources names"
