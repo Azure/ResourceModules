@@ -1,0 +1,213 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "metadata": {
+    "_generator": {
+      "name": "bicep",
+      "version": "0.4.1318.3566",
+      "templateHash": "345110592834511213"
+    }
+  },
+  "parameters": {
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "metadata": {
+        "description": "Required. Name of the scaling plan"
+      }
+    },
+    "location": {
+      "type": "string",
+      "defaultValue": "[resourceGroup().location]",
+      "metadata": {
+        "description": "Optional. Location for all resources."
+      }
+    },
+    "friendlyName": {
+      "type": "string",
+      "defaultValue": "[parameters('name')]",
+      "metadata": {
+        "description": "Optional. Friendly Name of the scaling plan"
+      }
+    },
+    "scalingplanDescription": {
+      "type": "string",
+      "defaultValue": "[parameters('name')]",
+      "metadata": {
+        "description": "Optional. Description of the scaling plan."
+      }
+    },
+    "timeZone": {
+      "type": "string",
+      "defaultValue": "W. Europe Standard Time",
+      "metadata": {
+        "description": "Optional. Timezone to be used for the scaling plan."
+      }
+    },
+    "hostPoolType": {
+      "type": "string",
+      "defaultValue": "Pooled",
+      "metadata": {
+        "description": "Optional. The type of hostpool where this scaling plan should be applied."
+      },
+      "allowedValues": [
+        "Pooled"
+      ]
+    },
+    "exclusionTag": {
+      "type": "string",
+      "defaultValue": "",
+      "metadata": {
+        "description": "Optional. Provide a tag to be used for hosts that should not be affected by the scaling plan."
+      }
+    },
+    "schedules": {
+      "type": "array",
+      "defaultValue": [
+        {
+          "rampUpStartTime": {
+            "hour": 7,
+            "minute": 0
+          },
+          "peakStartTime": {
+            "hour": 9,
+            "minute": 0
+          },
+          "rampDownStartTime": {
+            "hour": 18,
+            "minute": 0
+          },
+          "offPeakStartTime": {
+            "hour": 20,
+            "minute": 0
+          },
+          "name": "weekdays_schedule",
+          "daysOfWeek": [
+            "Monday",
+            "Tuesday",
+            "Wednesday",
+            "Thursday",
+            "Friday"
+          ],
+          "rampUpLoadBalancingAlgorithm": "DepthFirst",
+          "rampUpMinimumHostsPct": 20,
+          "rampUpCapacityThresholdPct": 60,
+          "peakLoadBalancingAlgorithm": "DepthFirst",
+          "rampDownLoadBalancingAlgorithm": "DepthFirst",
+          "rampDownMinimumHostsPct": 10,
+          "rampDownCapacityThresholdPct": 90,
+          "rampDownForceLogoffUsers": true,
+          "rampDownWaitTimeMinutes": 30,
+          "rampDownNotificationMessage": "You will be logged off in 30 min. Make sure to save your work.",
+          "rampDownStopHostsWhen": "ZeroSessions",
+          "offPeakLoadBalancingAlgorithm": "DepthFirst"
+        }
+      ],
+      "metadata": {
+        "description": "Optional. The schedules related to this scaling plan. If no value is provided a default schedule will be provided."
+      }
+    },
+    "hostPoolReferences": {
+      "type": "array",
+      "defaultValue": [],
+      "metadata": {
+        "description": "Optional. An array of references to hostpools."
+      }
+    },
+    "tags": {
+      "type": "object",
+      "defaultValue": {},
+      "metadata": {
+        "description": "Optional. Tags of the resource."
+      }
+    },
+    "enableLogging": {
+      "type": "bool",
+      "defaultValue": false,
+      "metadata": {
+        "description": "Enable logging to loganalytics."
+      }
+    },
+    "logworkspaceSubscriptionId": {
+      "type": "string",
+      "defaultValue": "ce3aa15d-c8a9-4aaa-9d99-df14cf94010d",
+      "metadata": {
+        "description": "SubscriptionId where the loganalytics workspace is located."
+      }
+    },
+    "logworkspaceResourceGroup": {
+      "type": "string",
+      "defaultValue": "analytics-prod-rg",
+      "metadata": {
+        "description": "ResourcegroupName where the loganalytics workspace is located."
+      }
+    },
+    "logworkspaceName": {
+      "type": "string",
+      "defaultValue": "mgmt-prod-nore-la",
+      "metadata": {
+        "description": "Name of the loganalytics workspace."
+      }
+    }
+  },
+  "resources": [
+    {
+      "type": "Microsoft.DesktopVirtualization/scalingPlans",
+      "apiVersion": "2022-02-10-preview",
+      "name": "[parameters('name')]",
+      "location": "[parameters('location')]",
+      "tags": "[parameters('tags')]",
+      "properties": {
+        "friendlyName": "[parameters('friendlyName')]",
+        "timeZone": "[parameters('timeZone')]",
+        "hostPoolType": "[parameters('hostPoolType')]",
+        "exclusionTag": "[parameters('exclusionTag')]",
+        "schedules": "[parameters('schedules')]",
+        "hostPoolReferences": "[parameters('hostPoolReferences')]",
+        "description": "[parameters('scalingplanDescription')]"
+      }
+    },
+    {
+      "condition": "[parameters('enableLogging')]",
+      "type": "Microsoft.Insights/diagnosticSettings",
+      "apiVersion": "2021-05-01-preview",
+      "scope": "[format('Microsoft.DesktopVirtualization/scalingPlans/{0}', parameters('name'))]",
+      "name": "scalingDiagnostics",
+      "properties": {
+        "workspaceId": "[extensionResourceId(format('/subscriptions/{0}/resourceGroups/{1}', parameters('logworkspaceSubscriptionId'), parameters('logworkspaceResourceGroup')), 'Microsoft.OperationalInsights/workspaces', parameters('logworkspaceName'))]",
+        "logs": [
+          {
+            "category": "Autoscale",
+            "enabled": true
+          }
+        ]
+      },
+      "dependsOn": [
+        "[resourceId('Microsoft.DesktopVirtualization/scalingPlans', parameters('name'))]"
+      ]
+    }
+  ],
+  "outputs": {
+    "resourceId": {
+      "type": "string",
+      "value": "[resourceId('Microsoft.DesktopVirtualization/scalingPlans', parameters('name'))]",
+      "metadata": {
+        "description": "The resource ID of the AVD scaling plan"
+      }
+    },
+    "resourceGroupName": {
+      "type": "string",
+      "value": "[resourceGroup().name]",
+      "metadata": {
+        "description": "The resource group the AVD scaling plan was deployed into"
+      }
+    },
+    "name": {
+      "type": "string",
+      "value": "[parameters('name')]",
+      "metadata": {
+        "description": "The name of the AVD scaling plan"
+      }
+    }
+  }
+}
