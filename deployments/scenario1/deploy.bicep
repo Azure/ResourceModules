@@ -81,6 +81,9 @@ module site '../../arm/Microsoft.Web/sites/deploy.bicep' = {
     functionsWorkerRuntime: 'dotnet'
     appInsightId: app_insights.outputs.resourceId
   }
+  dependsOn: [
+    rsg_web_tier
+  ]
 }
 
 // Create App Tier
@@ -95,6 +98,9 @@ module vnet '../../arm/Microsoft.Network/virtualnetworks/deploy.bicep' = {
     addressPrefixes: vNetAddressPrefixes
     subnets: subnets
   }
+  dependsOn: [
+    rsg_shared
+  ]
 }
 
 // Key Vault
@@ -105,6 +111,9 @@ module kv '../../arm/Microsoft.KeyVault/vaults/deploy.bicep' = {
     location: location
     name: keyVaultName
   }
+  dependsOn: [
+    rsg_shared
+  ]
 }
 
 // Create DB Tier
@@ -118,6 +127,9 @@ module logAnalytics '../../arm/Microsoft.OperationalInsights/workspaces/deploy.b
     location: location
     name: loganalyticsName
   }
+  dependsOn: [
+    rsg_shared
+  ]
 }
 
 // Create App Insights
@@ -130,4 +142,7 @@ module app_insights '../../arm/Microsoft.Insights/components/deploy.bicep' = {
     location: location
     workspaceResourceId: logAnalytics.outputs.resourceId
   }
+  dependsOn: [
+    rsg_shared
+  ]
 }
