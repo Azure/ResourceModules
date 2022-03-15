@@ -21,6 +21,14 @@ module vnet '../arm/Microsoft.Network/virtualNetworks/deploy.bicep' = {
       {
         name: 'app-subnet'
         addressPrefix: '172.16.0.0/24'
+        delegations: [
+          {
+            name: 'appSvcDel'
+            properties: {
+              serviceName: 'Microsoft.Web/serverFarms'
+            }
+          }
+        ]
       }
       {
         name: 'vm-subnet'
