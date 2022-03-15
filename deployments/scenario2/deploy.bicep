@@ -48,7 +48,7 @@ module kv '../../arm/Microsoft.KeyVault/vaults/deploy.bicep' = {
 // container registry
 module container_registry '../../arm/Microsoft.ContainerRegistry/registries/deploy.bicep' = {
   scope: resourceGroup(rsg_app_tier.name)
-  name: '${prefix}-reg'
+  name: '${prefix}reg'
   params: {
     name: '${prefix}-container'
     location: location
