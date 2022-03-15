@@ -1,9 +1,9 @@
-//Scenario 2
-
 targetScope = 'subscription'
 
 param prefix string = 'scenario2team5'
 param location string = 'centralus'
+
+var keyVaultName = '${prefix}-keyvault'
 
 // Create Resource Groups
 
@@ -30,6 +30,16 @@ module rsg_shared '../../arm/Microsoft.Resources/resourceGroups/deploy.bicep' = 
   params: {
     name: '${prefix}-shared'
     location: location
+  }
+}
+
+// Key Vault
+module kv '../../arm/Microsoft.KeyVault/vaults/deploy.bicep' = {
+  scope: resourceGroup(rsg_shared.name)
+  name: 'team5-keyvault'
+  params: {
+    location: location
+    name: keyVaultName
   }
 }
 
