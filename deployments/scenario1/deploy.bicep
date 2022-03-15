@@ -96,4 +96,36 @@ module vnet '../../arm/Microsoft.Network/virtualnetworks/deploy.bicep' = {
   ]
 }
 
+// Scaleset
+module vm_scaleset '../../arm/Microsoft.Compute/virtualMachineScaleSets/deploy.bicep' = {
+  scope: resourceGroup(rsg_app_tier.name)
+  name: '${prefix}-scaleset'
+  params: {
+    location: location
+    name: '${prefix}-vmscaleset'
+    skuName: 'Standard_B2s'
+    adminUsername: 'team5Admin'
+    imageReference: {
+      publisher: 'MicrosoftWindowsServer'
+        offer: 'WindowsServer'
+        sku: '2016-Datacenter'
+        version: 'latest'
+    }  
+    osDisk: {
+          createOption: 'fromImage'
+          diskSizeGB: 128
+          managedDisk: {
+              storageAccountType: 'Premium_LRS'
+          }
+    }
+    osType: 'Windows'
+
+  }
+  dependsOn: [
+    rsg_web_tier
+    vnet
+  ]
+
+}
+
 // Create DB Tier
