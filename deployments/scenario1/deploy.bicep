@@ -79,6 +79,7 @@ module site '../../arm/Microsoft.Web/sites/deploy.bicep' = {
       skuFamily: 'Pv2'
     }
     functionsWorkerRuntime: 'dotnet'
+    appInsightId: app_insights.outputs.resourceId
   }
 }
 
@@ -94,9 +95,6 @@ module vnet '../../arm/Microsoft.Network/virtualnetworks/deploy.bicep' = {
     addressPrefixes: vNetAddressPrefixes
     subnets: subnets
   }
-  dependsOn: [
-    rsg_shared
-  ]
 }
 
 // Key Vault
@@ -120,9 +118,6 @@ module logAnalytics '../../arm/Microsoft.OperationalInsights/workspaces/deploy.b
     location: location
     name: loganalyticsName
   }
-  dependsOn: [
-    rsg_shared
-  ]
 }
 
 // Create App Insights
@@ -135,8 +130,4 @@ module app_insights '../../arm/Microsoft.Insights/components/deploy.bicep' = {
     location: location
     workspaceResourceId: logAnalytics.outputs.resourceId
   }
-  dependsOn: [
-    rsg_shared
-    logAnalytics
-  ]
 }
