@@ -50,10 +50,10 @@ module rsg_data_tier '../../arm/Microsoft.Resources/resourceGroups/deploy.bicep'
   }
 }
 
-module rsg_vnet_tier '../../arm/Microsoft.Resources/resourceGroups/deploy.bicep' = {
-  name: '${prefix}-vnet'
+module rsg_shared '../../arm/Microsoft.Resources/resourceGroups/deploy.bicep' = {
+  name: '${prefix}-shared'
   params: {
-    name: '${prefix}-vnet'
+    name: '${prefix}-shared'
     location: location
   }
 }
@@ -84,7 +84,7 @@ module site '../../arm/Microsoft.Web/sites/deploy.bicep' = {
 // Virtual Network
 module vnet '../../arm/Microsoft.Network/virtualnetworks/deploy.bicep' = {
   name: 'team5-vnet'
-  scope: resourceGroup(rsg_vnet_tier.name)
+  scope: resourceGroup(rsg_shared.name)
   params: {
     location: location
     name: vnetName
@@ -92,7 +92,7 @@ module vnet '../../arm/Microsoft.Network/virtualnetworks/deploy.bicep' = {
     subnets: subnets
   }
   dependsOn: [
-    rsg_web_tier
+    rsg_shared
   ]
 }
 
