@@ -34,6 +34,7 @@ module vnet '../arm/Microsoft.Network/virtualNetworks/deploy.bicep' = {
       {
         name: 'vm-subnet'
         addressPrefix: '172.16.1.0/24'
+        privateEndpointNetworkPolicies: 'Disabled'
       }
     ]
   }
@@ -66,13 +67,15 @@ module sqlpec '../arm/Microsoft.Network/privateEndpoints/deploy.bicep' = {
     ]
     privateDnsZoneGroups: [
       {
-        privateDnsResourceId: sqlpdns.outputs.resourceId
+        privateDnsResourceIds: [
+          sqlpdns.outputs.resourceId
+        ]
         privateEndpointName: 'sql-pec-deploy'
       }
     ]
     name: 'sqlpec'
     serviceResourceId: sql.outputs.resourceId
-    targetSubnetResourceId: vnet.outputs.subnetResourceIds[1].id
+    targetSubnetResourceId: vnet.outputs.subnetResourceIds[1]
   }
 }
 
@@ -84,6 +87,37 @@ module sqlpdns '../arm/Microsoft.Network/privateDnsZones/deploy.bicep' = {
     virtualNetworkLinks: [
       {
         virtualNetworkResourceId: vnet.outputs.resourceId
+      }
+    ]
+  }
+}
+
+module virtualMachines '../arm/Microsoft.Compute/virtualMachines/deploy.bicep' = {
+  scope: resourceGroup(rgname)
+  name: 'scenario-vm'
+
+  params: {
+    name: 'web01'
+    osType: 'Windows'
+    osDisk: {
+      name: 'web01-data'
+      createOption: 'FromImage'
+      osType: 'Windows'
+      diskSizeGB: '128GB'
+      managedDisk: {
+        storageAccountType: 'Premium_LRS'
+      }
+    }
+    adminUsername: 'sblair'
+    imageReference: {
+      publisher: 'WindowsServer'
+      sku: '2016-Datacenter'
+      version: 'latest'
+    }
+    nicConfigurations: [
+      {
+        nicSuffix: '-nic-01'
+        deleteOption: 'Delete'
       }
     ]
   }
