@@ -75,7 +75,7 @@ param diagnosticEventHubName string = ''
   'QueryStoreWaitStatistics'
   'Errors'
   'DatabaseWaitStatistics'
-  'Timouts'
+  'Timeouts'
   'Blocks'
   'Deadlocks'
 ])
@@ -86,7 +86,7 @@ param logsToEnable array = [
   'QueryStoreWaitStatistics'
   'Errors'
   'DatabaseWaitStatistics'
-  'Timouts'
+  'Timeouts'
   'Blocks'
   'Deadlocks'
 ]
