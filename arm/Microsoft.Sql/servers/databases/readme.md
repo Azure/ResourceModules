@@ -25,10 +25,10 @@ This module deploys an Azure SQL Server.
 | `isLedgerOn` | bool | `False` |  | Optional. Whether or not this database is a ledger database, which means all tables in the database are ledger tables. Note: the value of this property cannot be changed after the database has been created. |
 | `licenseType` | string |  |  | Optional. The license type to apply for this database. |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
-| `logsToEnable` | array | `[SQLInsights, AutomaticTuning, QueryStoreRuntimeStatistics, QueryStoreWaitStatistics, Errors, DatabaseWaitStatistics, Timeouts, Blocks, Deadlocks]` | `[SQLInsights, AutomaticTuning, QueryStoreRuntimeStatistics, QueryStoreWaitStatistics, Errors, DatabaseWaitStatistics, Timeouts, Blocks, Deadlocks]` | Optional. The name of logs that will be streamed. |
+| `logsToEnable` | array | `[SQLInsights, AutomaticTuning, QueryStoreRuntimeStatistics, QueryStoreWaitStatistics, Errors, DatabaseWaitStatistics, Timeouts, Blocks, Deadlocks, DevOpsOperationsAudit, SQLSecurityAuditEvents]` | `[SQLInsights, AutomaticTuning, QueryStoreRuntimeStatistics, QueryStoreWaitStatistics, Errors, DatabaseWaitStatistics, Timeouts, Blocks, Deadlocks, DevOpsOperationsAudit, SQLSecurityAuditEvents]` | Optional. The name of logs that will be streamed. |
 | `maintenanceConfigurationId` | string |  |  | Optional. Maintenance configuration ID assigned to the database. This configuration defines the period when the maintenance updates will occur. |
 | `maxSizeBytes` | int | `34359738368` |  | Optional. The max size of the database expressed in bytes. |
-| `metricsToEnable` | array | `[Basic]` | `[Basic]` | Optional. The name of metrics that will be streamed. |
+| `metricsToEnable` | array | `[Basic, InstanceAndAppAdvanced, WorkloadManagement]` | `[Basic, InstanceAndAppAdvanced, WorkloadManagement]` | Optional. The name of metrics that will be streamed. |
 | `minCapacity` | string |  |  | Optional. Minimal capacity that database will always have allocated. |
 | `name` | string |  |  | Required. The name of the database. |
 | `readScale` | string | `Disabled` | `[Enabled, Disabled]` | Optional. The state of read-only routing. |

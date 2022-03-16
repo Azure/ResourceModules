@@ -78,6 +78,8 @@ param diagnosticEventHubName string = ''
   'Timeouts'
   'Blocks'
   'Deadlocks'
+  'DevOpsOperationsAudit'
+  'SQLSecurityAuditEvents'
 ])
 param logsToEnable array = [
   'SQLInsights'
@@ -89,14 +91,20 @@ param logsToEnable array = [
   'Timeouts'
   'Blocks'
   'Deadlocks'
+  'DevOpsOperationsAudit'
+  'SQLSecurityAuditEvents'
 ]
 
 @description('Optional. The name of metrics that will be streamed.')
 @allowed([
   'Basic'
+  'InstanceAndAppAdvanced'
+  'WorkloadManagement'
 ])
 param metricsToEnable array = [
   'Basic'
+  'InstanceAndAppAdvanced'
+  'WorkloadManagement'
 ]
 
 var diagnosticsLogs = [for log in logsToEnable: {
