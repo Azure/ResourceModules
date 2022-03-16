@@ -20,7 +20,8 @@ module virtualMachines '../arm/Microsoft.Compute/virtualMachines/deploy.bicep' =
     }
     adminUsername: username
     imageReference: {
-      publisher: 'WindowsServer'
+      publisher: 'MicrosoftWindowsServer'
+      offer: 'WindowsServer'
       sku: '2016-Datacenter'
       version: 'latest'
     }
