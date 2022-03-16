@@ -71,8 +71,7 @@ param hostPoolReferences array = []
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-// scalingPlan
-resource scalingPlan 'Microsoft.DesktopVirtualization/scalingPlans@2022-02-10-preview' = {
+resource scalingPlan 'Microsoft.DesktopVirtualization/scalingPlans@2021-09-03-preview' = {
   name: name
   location: location
   tags: tags
@@ -87,36 +86,64 @@ resource scalingPlan 'Microsoft.DesktopVirtualization/scalingPlans@2022-02-10-pr
   }
 }
 
-@description('Optional. Enable logging to loganalytics.')
-param enableLogging bool = false
+@description('Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.')
+@minValue(0)
+@maxValue(365)
+param diagnosticLogsRetentionInDays int = 365
 
-@description('Optional. SubscriptionId where the loganalytics workspace is located.')
-param logworkspaceSubscriptionId string = 'ce3aa15d-c8a9-4aaa-9d99-df14cf94010d'
+@description('Optional. Resource ID of the diagnostic storage account.')
+param diagnosticStorageAccountId string = ''
 
-@description('Optional. ResourcegroupName where the loganalytics workspace is located.')
-param logworkspaceResourceGroup string = 'analytics-prod-rg'
+@description('Optional. Resource ID of the diagnostic log analytics workspace.')
+param diagnosticWorkspaceId string = ''
 
-@description('Optional. Name of the loganalytics workspace.')
-param logworkspaceName string = 'mgmt-prod-nore-la'
+@description('Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.')
+param diagnosticEventHubAuthorizationRuleId string = ''
 
-resource logworkspace 'Microsoft.OperationalInsights/workspaces@2021-06-01' existing = if (enableLogging) {
-  name: logworkspaceName
-  scope: resourceGroup(logworkspaceSubscriptionId, logworkspaceResourceGroup)
-}
+@description('Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.')
+param diagnosticEventHubName string = ''
 
-resource scalingPlanDiag 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = if (enableLogging) {
-  scope: scalingPlan
-  name: 'scalingDiagnostics'
-  properties: {
-    workspaceId: logworkspace.id
-    logs: [
-      {
-        category: 'Autoscale'
-        enabled: true
-      }
-    ]
+@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalIds\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'')
+param roleAssignments array = []
+
+@description('Optional. The name of logs that will be streamed.')
+@allowed([
+  'Autoscale'
+])
+param logsToEnable array = [
+  'Autoscale'
+]
+
+var diagnosticsLogs = [for log in logsToEnable: {
+  category: log
+  enabled: true
+  retentionPolicy: {
+    enabled: true
+    days: diagnosticLogsRetentionInDays
   }
+}]
+
+resource scalingplan_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(diagnosticWorkspaceId)) || (!empty(diagnosticEventHubAuthorizationRuleId)) || (!empty(diagnosticEventHubName))) {
+  name: '${scalingPlan.name}-diagnosticsetting'
+  properties: {
+    storageAccountId: !empty(diagnosticStorageAccountId) ? diagnosticStorageAccountId : null
+    workspaceId: !empty(diagnosticWorkspaceId) ? diagnosticWorkspaceId : null
+    eventHubAuthorizationRuleId: !empty(diagnosticEventHubAuthorizationRuleId) ? diagnosticEventHubAuthorizationRuleId : null
+    eventHubName: !empty(diagnosticEventHubName) ? diagnosticEventHubName : null
+    logs: diagnosticsLogs
+  }
+  scope: scalingPlan
 }
+
+module scalingplan_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+  name: '${uniqueString(deployment().name, location)}-Workspace-Rbac-${index}'
+  params: {
+    description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
+    principalIds: roleAssignment.principalIds
+    roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
+    resourceId: scalingPlan.id
+  }
+}]
 
 @description('The resource ID of the AVD scaling plan')
 output resourceId string = scalingPlan.id
