@@ -88,3 +88,12 @@ resource frontDoor_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock !=
   }
   scope: frontDoor
 }
+
+@description('The name of the front door')
+output name string = frontDoor.name
+
+@description('The resource ID of the front door')
+output resourceId string = frontDoor.id
+
+@description('The resource group the front door was deployed into')
+output resourceGroupName string = resourceGroup().name
