@@ -8,6 +8,7 @@ module virtualMachines '../arm/Microsoft.Compute/virtualMachines/deploy.bicep' =
   params: {
     name: 'web01'
     osType: 'Windows'
+    vmSize: 'standard_d4ads_v5'
     osDisk: {
       name: 'web01-data'
       createOption: 'FromImage'
