@@ -1,7 +1,7 @@
 param kvlocation string = resourceGroup().location
 
 module keyvault '../arm/Microsoft.KeyVault/vaults/deploy.bicep' = {
-  name: 'kv-3tierapp'
+  name: 'kvtierapp'
   params: {
     location: kvlocation
     lock: 'CanNotDelete'
