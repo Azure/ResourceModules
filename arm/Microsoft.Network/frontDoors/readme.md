@@ -1,7 +1,7 @@
 # Network FrontDoors `[Microsoft.Network/frontDoors]`
 
 This module deploys Network FrontDoors.
-// TODO: Replace Resource and fill in description
+
 
 ## Resource Types
 
@@ -41,7 +41,7 @@ This module deploys Network FrontDoors.
 
 ### Parameter Usage: `<ParameterPlaceholder>`
 
-// TODO: Fill in Parameter usage
+
 
 ### Parameter Usage: `roleAssignments`
 
