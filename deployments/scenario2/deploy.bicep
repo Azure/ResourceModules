@@ -54,3 +54,22 @@ module container_registry '../../arm/Microsoft.ContainerRegistry/registries/depl
     location: location
   }
 }
+
+resource kvresource 'Microsoft.KeyVault/vaults@2021-11-01-preview' existing = {
+  scope: resourceGroup(rsg_shared.name)
+  name: 'scenario2team5-keyvault'
+}
+
+module db '../../arm/Microsoft.Sql/servers/deploy.bicep' = {
+  name: '${prefix}-db'
+  scope: resourceGroup(rsg_data_tier.name)
+  params: {
+    location: location
+    name: '${prefix}-db'
+    administratorLogin: 'sampleadminloginname'
+    administratorLoginPassword: kvresource.getSecret('sqlsecret')
+  }
+  dependsOn: [
+    rsg_data_tier
+  ]
+}
