@@ -1,20 +1,20 @@
-@description('Optional. The collation of the database.')
-param collation string
-
 @description('Required. The name of the database.')
 param name string
 
-@description('Optional. The tier or edition of the particular SKU.')
-param tier string
-
-@description('Required. The name of the SKU.')
-param skuName string
-
-@description('Optional. The max size of the database expressed in bytes.')
-param maxSizeBytes int
-
 @description('Required. The Name of SQL Server')
 param serverName string
+
+@description('Optional. The collation of the database.')
+param collation string = 'SQL_Latin1_General_CP1_CI_AS'
+
+@description('Optional. The tier or edition of the particular SKU.')
+param tier string = 'GeneralPurpose'
+
+@description('Optional. The name of the SKU.')
+param skuName string = 'GP_Gen5_2'
+
+@description('Optional. The max size of the database expressed in bytes.')
+param maxSizeBytes int = 34359738368
 
 @description('Optional. The name of the sample schema to apply when creating this database.')
 param sampleName string = ''
