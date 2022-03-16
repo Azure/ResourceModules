@@ -1,4 +1,4 @@
-name: 'Network - Frontdoor'
+name: 'Network - Frontdoors'
 
 parameters:
   - name: removeDeployment
