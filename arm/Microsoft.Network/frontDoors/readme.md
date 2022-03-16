@@ -76,8 +76,11 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 ## Outputs
 
-| Output Name | Type |
-| :-- | :-- |
+| Output Name | Type | Description |
+| :-- | :-- | :-- |
+| `name` | string | The name of the front door |
+| `resourceGroupName` | string | The resource group the front door was deployed into |
+| `resourceId` | string | The resource ID of the front door |
 
 ## Template references
 
