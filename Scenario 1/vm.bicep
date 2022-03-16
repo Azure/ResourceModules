@@ -13,7 +13,7 @@ module virtualMachines '../arm/Microsoft.Compute/virtualMachines/deploy.bicep' =
       name: 'web01-data'
       createOption: 'FromImage'
       osType: 'Windows'
-      diskSizeGB: '128GB'
+      diskSizeGB: '128'
       managedDisk: {
         storageAccountType: 'Premium_LRS'
       }
@@ -31,7 +31,7 @@ module virtualMachines '../arm/Microsoft.Compute/virtualMachines/deploy.bicep' =
         ipConfigurations: [
           {
             name: 'scenario1-nic-config'
-            subnet: '/subscriptions/f90e413f-4282-4ace-8fe7-abbae028363e/resourceGroups/scenario1-rg/providers/Microsoft.Network/virtualNetworks/scenario1-vnet/subnets/vm-subnet'
+            subnetId: '/subscriptions/f90e413f-4282-4ace-8fe7-abbae028363e/resourceGroups/scenario1-rg/providers/Microsoft.Network/virtualNetworks/scenario1-vnet/subnets/vm-subnet'
           }
         ]
       }
