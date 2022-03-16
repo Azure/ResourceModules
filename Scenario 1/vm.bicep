@@ -27,10 +27,11 @@ module virtualMachines '../arm/Microsoft.Compute/virtualMachines/deploy.bicep' =
       {
         nicSuffix: '-nic-01'
         deleteOption: 'Delete'
-        ipconfigurations: {
-          name: scenario1 - nic - config
-          subnet: '/subscriptions/f90e413f-4282-4ace-8fe7-abbae028363e/resourceGroups/scenario1-rg/providers/Microsoft.Network/virtualNetworks/scenario1-vnet/subnets/vm-subnet'
-        }
+        ipConfigurations:
+          {
+            name: 'scenario1-nic-config'
+            subnet: '/subscriptions/f90e413f-4282-4ace-8fe7-abbae028363e/resourceGroups/scenario1-rg/providers/Microsoft.Network/virtualNetworks/scenario1-vnet/subnets/vm-subnet'
+          }
       }
     ]
   }
