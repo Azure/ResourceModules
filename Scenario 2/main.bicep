@@ -97,7 +97,7 @@ module aks '../arm/Microsoft.ContainerService/managedClusters/deploy.bicep' = {
     primaryAgentPoolProfile: [
       {
         name: 'akspoolname'
-        vmSize: 'Standard_DS3_v2'
+        vmSize: 'standard_d4ads_v5'
         osDiskSizeGB: 128
         count: 2
         osType: 'Linux'
@@ -117,12 +117,12 @@ module aks '../arm/Microsoft.ContainerService/managedClusters/deploy.bicep' = {
   }
 }
 
-// module containerRegistry '../arm/Microsoft.ContainerRegistry/registries/deploy.bicep' = {
-//   scope: resourceGroup(rgname)
-//   name: 'scenario2-cr'
-//   params: {
-//     name: 'scenario2cr'
-//     acrAdminUserEnabled: true
-//     acrSku: 'Basic'
-//   }
-// }
+module containerRegistry '../arm/Microsoft.ContainerRegistry/registries/deploy.bicep' = {
+  scope: resourceGroup(rgname)
+  name: 'scenario2-cr'
+  params: {
+    name: 'scenario2cr'
+    acrAdminUserEnabled: true
+    acrSku: 'Basic'
+  }
+}
