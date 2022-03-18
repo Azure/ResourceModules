@@ -23,6 +23,7 @@ This module deploys a Replication Protection Container Mapping.
 | `targetContainerFabricName` | string | `replicationFabricName` |  | Optional. Name of the fabric containing the target container. If targetProtectionContainerId is specified, this parameter will be ignored |
 | `targetContainerName` | string |  |  | Optional. Name of the target container. Must be specified if targetProtectionContainerId is not. If targetProtectionContainerId is specified, this parameter will be ignored |
 | `targetProtectionContainerId` | string |  |  | Optional. Resource ID of the target Replication container. Must be specified if targetContainerName is not. If specified, targetContainerFabricName and targetContainerName will be ignored |
+| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
 
 ## Outputs
 

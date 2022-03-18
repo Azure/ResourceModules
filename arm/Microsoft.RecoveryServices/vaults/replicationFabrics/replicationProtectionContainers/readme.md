@@ -19,6 +19,7 @@ This module deploys a Replication Protection Container.
 | `recoveryVaultName` | string |  |  | Required. Name of the Azure Recovery Service Vault |
 | `replicationContainerMappings` | array | `[]` |  | Optional. Replication containers mappings to create. |
 | `replicationFabricName` | string |  |  | Required. Name of the Replication Fabric |
+| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
 
 ### Parameter Usage: `replicationContainerMappings`
 

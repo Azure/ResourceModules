@@ -20,6 +20,7 @@ This module deploys a Replication Policy for Disaster Recovery scenario.
 | `name` | string |  |  | Required. The name of the replication policy |
 | `recoveryPointHistory` | int | `1440` |  | Optional. The duration in minutes until which the recovery points need to be stored. |
 | `recoveryVaultName` | string |  |  | Required. Name of the Azure Recovery Service Vault |
+| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
 
 ## Outputs
 
