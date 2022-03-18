@@ -2,7 +2,7 @@
 param recoveryVaultName string
 
 @description('Required. The recovery location the fabric represents')
-param location string
+param location string = resourceGroup().location
 
 @description('Optional. The name of the fabric')
 param name string = location
