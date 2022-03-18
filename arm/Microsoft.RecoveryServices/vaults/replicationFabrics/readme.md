@@ -16,13 +16,30 @@ This module deploys a Replication Fabric for Azure to Azure disaster recovery sc
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `location` | string |  |  | Required. The recovery location the fabric represents |
-| `name` | string | `[parameters('location')]` |  | Optional. The name of the fabric |
+| `name` | string | `location` |  | Optional. The name of the fabric |
 | `recoveryVaultName` | string |  |  | Required. Name of the Azure Recovery Service Vault |
 | `replicationContainers` | array | `[]` |  | Optional. Replication containers to create. |
 
-### Parameter Usage: `<ParameterPlaceholder>`
+### Parameter Usage: `replicationContainers`
 
-// TODO: Fill in Parameter usage
+```json
+"replicationContainers": {
+    "value": [
+        {
+            "name": "we-container1",
+            "replicationContainerMappings": [ //optional
+                {
+                    "policyName": "Default_values",
+                    "targetContainerName": "we-container2"
+                }
+            ]
+        },
+        {
+            "name": "we-container2"
+        },
+    ]
+}
+```
 
 ## Outputs
 
