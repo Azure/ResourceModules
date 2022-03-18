@@ -5,12 +5,8 @@ This section provides a guideline on how to use the CARML Bicep modules.
 ### _Navigation_
 
 - [Deploy template](#deploy-template)
-  - [Deploy local template](#deploy-local-template)
-    - [**Local:** PowerShell](#local-powershell)
-    - [**Local:** Azure CLI](#local-azure-cli)
-  - [Deploy remote template](#deploy-remote-template)
-    - [**Remote:** PowerShell](#remote-powershell)
-    - [**Remote:** Azure CLI](#remote-azure-cli)
+  - [PowerShell](#powershell)
+  - [Azure CLI](#azure-cli)
 - [Orchestrate deployment](#orchestrate-deployment)
   - [Template-orchestration](#template-orchestration)
 ---
@@ -19,73 +15,163 @@ This section provides a guideline on how to use the CARML Bicep modules.
 
 This section shows you how to deploy a Bicep template.
 
-- [Deploy local template](#deploy-local-template)
-- [Deploy remote template](#deploy-remote-template)
+## PowerShell
 
-## Deploy local template
+This sub-section gives you an example on how to deploy a template from your local drive (file) or a publicly available remote location (URI).
 
-This sub-section gives you an example on how to deploy a template from your local drive.
-
-### **Local:** PowerShell
-
-This example targets a resource group level template.
+<details>
+<summary><i>Resource Group</i> scope</summary>
 
 ```PowerShell
 New-AzResourceGroup -Name 'ExampleGroup' -Location "Central US"
 
 $inputObject = @{
- DeploymentName    = 'ExampleDeployment'
- ResourceGroupName = 'ExampleGroup'
- TemplateFile      = "$home\ResourceModules\arm\Microsoft.KeyVault\vault\deploy.bicep"
+  DeploymentName    = 'ExampleDeployment'
+  ResourceGroupName = 'ExampleGroup'
+  # Using a local reference
+  TemplateFile      = "$home\ResourceModules\arm\Microsoft.KeyVault\vault\deploy.bicep"
+  # Using a remote reference
+  # TemplateUri     = 'https://raw.githubusercontent.com/Azure/ResourceModules/main/arm/Microsoft.KeyVault/vaults/deploy.bicep'
 }
 New-AzResourceGroupDeployment @inputObject
 ```
 
-### **Local:** Azure CLI
+For more information please refer to the official [Microsoft docs](). # TODO: Add
 
-This example targets a resource group level template.
+</details>
 
-```bash
-az group create --name 'ExampleGroup' --location "Central US"
-$inputObject = @(
-    '--name',           'ExampleDeployment',
-    '--resource-group', 'ExampleGroup',
-    '--template-file',  "$home\ResourceModules\arm\Microsoft.KeyVault\vault\deploy.bicep",
-    '--parameters',     'storageAccountType=Standard_GRS',
-)
-az deployment group create @inputObject
-```
-
-## Deploy remote template
-
-This section gives you an example on how to deploy a template that is stored at a publicly available remote location.
-
-### **Remote:** PowerShell
+<details>
+<summary><i>Subscription</i> scope</summary>
 
 ```PowerShell
-New-AzResourceGroup -Name 'ExampleGroup' -Location "Central US"
-
 $inputObject = @{
- DeploymentName    = 'ExampleDeployment'
- ResourceGroupName = 'ExampleGroup'
- TemplateUri       = 'https://raw.githubusercontent.com/Azure/ResourceModules/main/arm/Microsoft.KeyVault/vaults/deploy.bicep'
+  DeploymentName = 'ExampleDeployment'
+  # Using a local reference
+  TemplateFile   = "$home\ResourceModules\arm\Microsoft.Resources\resourceGroups\deploy.bicep"
+  # Using a remote reference
+  # TemplateUri  = 'https://raw.githubusercontent.com/Azure/ResourceModules/main/arm/Microsoft.Resources/resourceGroups/deploy.bicep'
 }
-New-AzResourceGroupDeployment @inputObject
+New-AzDeployment @inputObject
 ```
 
-### **Remote:** Azure CLI
+For more information please refer to the official [Microsoft docs](). # TODO: Add
+
+</details>
+
+<details>
+<summary><i>Management group</i> scope</summary>
+
+```PowerShell
+$inputObject = @{
+  DeploymentName = 'ExampleDeployment'
+  # Using a local reference
+  TemplateFile   = "$home\ResourceModules\arm\Microsoft.Authorization\policyAssignments\managementGroup\deploy.bicep"
+  # Using a remote reference
+  # TemplateUri  = 'https://raw.githubusercontent.com/Azure/ResourceModules/main/arm/Microsoft.Authorization/policyAssignments/managementGroup/deploy.bicep'
+}
+New-AzManagementGroupDeployment @inputObject
+```
+
+For more information please refer to the official [Microsoft docs](). # TODO: Add
+
+</details>
+
+<details>
+<summary><i>Tenant</i> scope</summary>
+
+```PowerShell
+$inputObject = @{
+  DeploymentName = 'ExampleDeployment'
+  # Using a local reference
+  TemplateFile   = "$home\ResourceModules\arm\Microsoft.Subscription\aliases\deploy.bicep"
+  # Using a remote reference
+  # TemplateUri  = 'https://raw.githubusercontent.com/Azure/ResourceModules/main/arm/Microsoft.Subscription/aliases/deploy.bicep'
+}
+New-AzTenantDeployment @inputObject
+```
+
+For more information please refer to the official [Microsoft docs](). # TODO: Add
+
+</details>
+
+## Azure CLI
+
+<details>
+<summary><i>Resource Group</i> scope</summary>
 
 ```bash
 az group create --name 'ExampleGroup' --location "Central US"
-
 $inputObject = @(
-    '--name',           'ExampleDeployment',
-    '--resource-group', 'ExampleGroup',
-    '--template-uri',   'https://raw.githubusercontent.com/Azure/ResourceModules/main/arm/Microsoft.KeyVault/vaults/deploy.bicep',
-    '--parameters',     'storageAccountType=Standard_GRS',
+  '--name',           'ExampleDeployment',
+  '--resource-group', 'ExampleGroup',
+    # Using a local reference
+  '--template-file',  "$home\ResourceModules\arm\Microsoft.Storage\storageAccounts\deploy.bicep",
+  # Using a remote reference
+  # '--template-uri',   'https://raw.githubusercontent.com/Azure/ResourceModules/main/arm/Microsoft.Storage/storageAccounts/deploy.bicep',
 )
 az deployment group create @inputObject
 ```
+
+For more information please refer to the official [Microsoft docs](). # TODO: Add
+
+</details>
+
+<details>
+<summary><i>Subscription</i> scope</summary>
+
+```bash
+$inputObject = @(
+  '--name',           'ExampleDeployment',
+  '--resource-group', 'ExampleGroup',
+    # Using a local reference
+  '--template-file',  "$home\ResourceModules\arm\Microsoft.Resources\resourceGroups\deploy.bicep",
+  # Using a remote reference
+  # '--template-uri',  'https://raw.githubusercontent.com/Azure/ResourceModules/main/arm/Microsoft.Resources/resourceGroups/deploy.bicep',
+)
+az deployment create @inputObject
+```
+
+For more information please refer to the official [Microsoft docs](). # TODO: Add
+
+</details>
+
+<details>
+<summary><i>Management group</i> scope</summary>
+
+```bash
+$inputObject = @(
+  '--name',           'ExampleDeployment',
+  '--resource-group', 'ExampleGroup',
+    # Using a local reference
+  '--template-file',  "$home\ResourceModules\arm\Microsoft.Authorization\policyAssignments\managementGroup\deploy.bicep",
+  # Using a remote reference
+  # '--template-uri',  'https://raw.githubusercontent.com/Azure/ResourceModules/main/arm/Microsoft.Authorization/policyAssignments/managementGroup/deploy.bicep',
+)
+az deployment mg create @inputObject
+```
+
+For more information please refer to the official [Microsoft docs](). # TODO: Add
+
+</details>
+
+<details>
+<summary><i>Tenant</i> scope</summary>
+
+```bash
+$inputObject = @(
+  '--name',           'ExampleDeployment',
+  '--resource-group', 'ExampleGroup',
+    # Using a local reference
+  '--template-file',  "$home\ResourceModules\arm\Microsoft.Subscription\aliases\deploy.bicep",
+  # Using a remote reference
+  # '--template-uri',  'https://raw.githubusercontent.com/Azure/ResourceModules/main/arm/Microsoft.Subscription/aliases/deploy.bicep',
+)
+az deployment tenant create @inputObject
+```
+
+For more information please refer to the official [Microsoft docs](). # TODO: Add
+
+</details>
 
 ---
 
