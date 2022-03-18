@@ -20,6 +20,14 @@ param backupConfig object = {}
 @minLength(0)
 param protectionContainers array = []
 
+@description('Optional. List of all replication fabrics.')
+@minLength(0)
+param replicationFabrics array = []
+
+@description('Optional. List of all replication policies.')
+@minLength(0)
+param replicationPolicies array = []
+
 @description('Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.')
 @minValue(0)
 @maxValue(365)
@@ -137,7 +145,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource rsv 'Microsoft.RecoveryServices/vaults@2021-12-01' = {
+resource rsv 'Microsoft.RecoveryServices/vaults@2021-11-01-preview' = {
   name: name
   location: location
   tags: tags
@@ -148,6 +156,31 @@ resource rsv 'Microsoft.RecoveryServices/vaults@2021-12-01' = {
   }
   properties: {}
 }
+
+module rsv_replicationFabrics 'replicationFabrics/deploy.bicep' = [for (replicationFabric, index) in replicationFabrics: {
+  name: '${uniqueString(deployment().name, location)}-RSV-Fabric-${index}'
+  params: {
+    recoveryVaultName: rsv.name
+    name: contains(replicationFabric, 'name') ? replicationFabric.name : replicationFabric.location
+    location: replicationFabric.location
+    replicationContainers: contains(replicationFabric, 'replicationContainers') ? replicationFabric.replicationContainers : []
+  }
+  dependsOn: [
+    rsv_replicationPolicies
+  ]
+}]
+
+module rsv_replicationPolicies 'replicationPolicies/deploy.bicep' = [for (replicationPolicy, index) in replicationPolicies: {
+  name: '${uniqueString(deployment().name, location)}-RSV-Policy-${index}'
+  params: {
+    name: replicationPolicy.name
+    recoveryVaultName: rsv.name
+    appConsistentFrequencyInMinutes: contains(replicationPolicy, 'appConsistentFrequencyInMinutes') ? replicationPolicy.appConsistentFrequencyInMinutes : 60
+    crashConsistentFrequencyInMinutes: contains(replicationPolicy, 'crashConsistentFrequencyInMinutes') ? replicationPolicy.crashConsistentFrequencyInMinutes : 5
+    multiVmSyncStatus: contains(replicationPolicy, 'multiVmSyncStatus') ? replicationPolicy.multiVmSyncStatus : 'Enable'
+    recoveryPointHistory: contains(replicationPolicy, 'recoveryPointHistory') ? replicationPolicy.recoveryPointHistory : 1440
+  }
+}]
 
 module rsv_backupStorageConfiguration 'backupStorageConfig/deploy.bicep' = if (!empty(backupStorageConfig)) {
   name: '${uniqueString(deployment().name, location)}-RSV-BackupStorageConfig'
