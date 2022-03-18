@@ -2,6 +2,8 @@
 
 This module deploys a Replication Protection Container.
 
+> **Note**: this version of the module only supports the `instanceType: 'A2A'` scenario.
+
 ## Resource Types
 
 | Resource Type | API Version |

@@ -1,6 +1,8 @@
 # RecoveryServices Vaults ReplicationPolicies `[Microsoft.RecoveryServices/vaults/replicationPolicies]`
 
-This module deploys RecoveryServices Vaults ReplicationPolicies.
+This module deploys a Replication Policy for Disaster Recovery scenario.
+
+> **Note**: this version of the module only supports the `instanceType: 'A2A'` scenario.
 
 ## Resource Types
 
