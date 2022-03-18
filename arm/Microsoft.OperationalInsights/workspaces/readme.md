@@ -50,31 +50,11 @@ This template deploys a log analytics workspace.
 ```json
 "gallerySolutions": {
     "value": [
-        "AgentHealthAssessment",
-        "AlertManagement",
-        "AntiMalware",
-        "AzureActivity",
-        //"AzureAppGatewayAnalytics",
-        "AzureAutomation",
-        "AzureCdnCoreAnalytics",
-        "AzureDataFactoryAnalytics",
-        "AzureNSGAnalytics",
-        "AzureSQLAnalytics",
-        "ChangeTracking",
-        "Containers",
-        "InfrastructureInsights",
-        "KeyVaultAnalytics",
-        "LogicAppsManagement",
-        "NetworkMonitoring",
-        "Security",
-        "SecurityCenterFree",
-        "ServiceFabric",
-        "ServiceMap",
-        "SQLAssessment",
-        "Updates",
-        "VMInsights",
-        "WireData2",
-        "WaaSUpdateInsights"
+        {
+            "name": "AzureAutomation",
+            "product": "OMSGallery",
+            "publisher": "Microsoft"
+        }
     ]
 }
 ```
