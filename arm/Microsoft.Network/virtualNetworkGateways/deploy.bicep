@@ -336,7 +336,7 @@ resource virtualNetworkGateway 'Microsoft.Network/virtualNetworkGateways@2021-05
     ipConfigurations: activeActive_var ? activeActiveIpConfiguration : activePassiveIpConfiguration
     activeActive: activeActive_var
     enableBgp: enableBgp_var
-    bgpSettings: virtualNetworkGatewayType == 'ExpressRoute' ? null : bgpSettings
+    bgpSettings: enableBgp_var ? bgpSettings : null
     sku: {
       name: virtualNetworkGatewaySku
       tier: virtualNetworkGatewaySku

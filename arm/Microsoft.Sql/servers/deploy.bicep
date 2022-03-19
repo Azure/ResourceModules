@@ -109,10 +109,10 @@ module server_databases 'databases/deploy.bicep' = [for (database, index) in dat
   params: {
     name: database.name
     serverName: server.name
-    maxSizeBytes: database.maxSizeBytes
-    tier: database.tier
-    skuName: database.skuName
-    collation: database.collation
+    tier: contains(database, 'tier') ? database.tier : 'GeneralPurpose'
+    skuName: contains(database, 'skuName') ? database.skuName : 'GP_Gen5_2'
+    collation: contains(database, 'collation') ? database.collation : 'SQL_Latin1_General_CP1_CI_AS'
+    maxSizeBytes: contains(database, 'maxSizeBytes') ? database.maxSizeBytes : 34359738368
     autoPauseDelay: contains(database, 'autoPauseDelay') ? database.autoPauseDelay : ''
     diagnosticLogsRetentionInDays: contains(database, 'diagnosticLogsRetentionInDays') ? database.diagnosticLogsRetentionInDays : 365
     diagnosticStorageAccountId: contains(database, 'diagnosticStorageAccountId') ? database.diagnosticStorageAccountId : ''
