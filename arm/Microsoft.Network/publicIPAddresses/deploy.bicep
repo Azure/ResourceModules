@@ -78,7 +78,7 @@ param tags object = {}
   'DDoSMitigationFlowLogs'
   'DDoSMitigationReports'
 ])
-param logsToEnable array = [
+param diagnosticLogsToEnable array = [
   'DDoSProtectionNotifications'
   'DDoSMitigationFlowLogs'
   'DDoSMitigationReports'
@@ -88,11 +88,11 @@ param logsToEnable array = [
 @allowed([
   'AllMetrics'
 ])
-param metricsToEnable array = [
+param diagnosticMetricsToEnable array = [
   'AllMetrics'
 ]
 
-var diagnosticsLogs = [for log in logsToEnable: {
+var diagnosticsLogs = [for log in diagnosticLogsToEnable: {
   category: log
   enabled: true
   retentionPolicy: {
@@ -101,7 +101,7 @@ var diagnosticsLogs = [for log in logsToEnable: {
   }
 }]
 
-var diagnosticsMetrics = [for metric in metricsToEnable: {
+var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
   category: metric
   timeGrain: null
   enabled: true

@@ -108,11 +108,11 @@ param enableDefaultTelemetry bool = true
 @allowed([
   'AppServiceEnvironmentPlatformLogs'
 ])
-param logsToEnable array = [
+param diagnosticLogsToEnable array = [
   'AppServiceEnvironmentPlatformLogs'
 ]
 
-var diagnosticsLogs = [for log in logsToEnable: {
+var diagnosticsLogs = [for log in diagnosticLogsToEnable: {
   category: log
   enabled: true
   retentionPolicy: {

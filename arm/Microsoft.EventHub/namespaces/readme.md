@@ -35,9 +35,9 @@ This module deploys an event hub namespace.
 | `isAutoInflateEnabled` | bool | `False` |  | Optional. Switch to enable the Auto Inflate feature of Event Hub. |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
-| `logsToEnable` | array | `[ArchiveLogs, OperationalLogs, KafkaCoordinatorLogs, KafkaUserErrorLogs, EventHubVNetConnectionEvent, CustomerManagedKeyUserLogs, AutoScaleLogs]` | `[ArchiveLogs, OperationalLogs, KafkaCoordinatorLogs, KafkaUserErrorLogs, EventHubVNetConnectionEvent, CustomerManagedKeyUserLogs, AutoScaleLogs]` | Optional. The name of logs that will be streamed. |
+| `diagnosticLogsToEnable` | array | `[ArchiveLogs, OperationalLogs, KafkaCoordinatorLogs, KafkaUserErrorLogs, EventHubVNetConnectionEvent, CustomerManagedKeyUserLogs, AutoScaleLogs]` | `[ArchiveLogs, OperationalLogs, KafkaCoordinatorLogs, KafkaUserErrorLogs, EventHubVNetConnectionEvent, CustomerManagedKeyUserLogs, AutoScaleLogs]` | Optional. The name of logs that will be streamed. |
 | `maximumThroughputUnits` | int | `1` |  | Optional. Upper limit of throughput units when AutoInflate is enabled, value should be within 0 to 20 throughput units. |
-| `metricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | Optional. The name of metrics that will be streamed. |
+| `diagnosticMetricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | Optional. The name of metrics that will be streamed. |
 | `name` | string |  |  | Optional. The name of the event hub namespace. If no name is provided, then unique name will be created. |
 | `networkAcls` | object | `{object}` |  | Optional. Service endpoint object information |
 | `privateEndpoints` | array | `[]` |  | Optional. Configuration Details for private endpoints.For security reasons, it is recommended to use private endpoints whenever possible. |

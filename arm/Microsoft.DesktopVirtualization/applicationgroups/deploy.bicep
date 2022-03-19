@@ -61,7 +61,7 @@ param enableDefaultTelemetry bool = true
   'Error'
   'Management'
 ])
-param logsToEnable array = [
+param diagnosticLogsToEnable array = [
   'Checkpoint'
   'Error'
   'Management'
@@ -70,7 +70,7 @@ param logsToEnable array = [
 @sys.description('Optional. List of applications to be created in the Application Group.')
 param applications array = []
 
-var diagnosticsLogs = [for log in logsToEnable: {
+var diagnosticsLogs = [for log in diagnosticLogsToEnable: {
   category: log
   enabled: true
   retentionPolicy: {

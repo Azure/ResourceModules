@@ -49,8 +49,8 @@ This module deploys an API management service.
 | `identityProviders` | _[identityProviders](identityProviders/readme.md)_ array | `[]` |  | Optional. Identity providers. |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all Resources. |
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
-| `logsToEnable` | array | `[GatewayLogs]` | `[GatewayLogs]` | Optional. The name of logs that will be streamed. |
-| `metricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | Optional. The name of metrics that will be streamed. |
+| `diagnosticLogsToEnable` | array | `[GatewayLogs]` | `[GatewayLogs]` | Optional. The name of logs that will be streamed. |
+| `diagnosticMetricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | Optional. The name of metrics that will be streamed. |
 | `minApiVersion` | string |  |  | Optional. Limit control plane API calls to API Management service with version equal to or newer than this value. |
 | `name` | string |  |  | Required. The name of the of the API Management service. |
 | `namedValues` | _[namedValues](namedValues/readme.md)_ array | `[]` |  | Optional. Named values. |

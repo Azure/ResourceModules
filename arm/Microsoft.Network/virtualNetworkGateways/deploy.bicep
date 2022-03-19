@@ -109,7 +109,7 @@ param enableDefaultTelemetry bool = true
   'DDoSMitigationFlowLogs'
   'DDoSMitigationReports'
 ])
-param publicIpLogsToEnable array = [
+param publicIpdiagnosticLogsToEnable array = [
   'DDoSProtectionNotifications'
   'DDoSMitigationFlowLogs'
   'DDoSMitigationReports'
@@ -123,7 +123,7 @@ param publicIpLogsToEnable array = [
   'IKEDiagnosticLog'
   'P2SDiagnosticLog'
 ])
-param virtualNetworkGatewayLogsToEnable array = [
+param virtualNetworkGatewaydiagnosticLogsToEnable array = [
   'GatewayDiagnosticLog'
   'TunnelDiagnosticLog'
   'RouteDiagnosticLog'
@@ -135,11 +135,11 @@ param virtualNetworkGatewayLogsToEnable array = [
 @allowed([
   'AllMetrics'
 ])
-param metricsToEnable array = [
+param diagnosticMetricsToEnable array = [
   'AllMetrics'
 ]
 
-var virtualNetworkGatewayDiagnosticsLogs = [for log in virtualNetworkGatewayLogsToEnable: {
+var virtualNetworkGatewayDiagnosticsLogs = [for log in virtualNetworkGatewaydiagnosticLogsToEnable: {
   category: log
   enabled: true
   retentionPolicy: {
@@ -147,7 +147,7 @@ var virtualNetworkGatewayDiagnosticsLogs = [for log in virtualNetworkGatewayLogs
     days: diagnosticLogsRetentionInDays
   }
 }]
-var publicIpDiagnosticsLogs = [for log in publicIpLogsToEnable: {
+var publicIpDiagnosticsLogs = [for log in publicIpdiagnosticLogsToEnable: {
   category: log
   enabled: true
   retentionPolicy: {
@@ -156,7 +156,7 @@ var publicIpDiagnosticsLogs = [for log in publicIpLogsToEnable: {
   }
 }]
 
-var diagnosticsMetrics = [for metric in metricsToEnable: {
+var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
   category: metric
   timeGrain: null
   enabled: true

@@ -61,11 +61,11 @@ param enableDefaultTelemetry bool = true
 @allowed([
   'BastionAuditLogs'
 ])
-param logsToEnable array = [
+param diagnosticLogsToEnable array = [
   'BastionAuditLogs'
 ]
 
-var diagnosticsLogs = [for log in logsToEnable: {
+var diagnosticsLogs = [for log in diagnosticLogsToEnable: {
   category: log
   enabled: true
   retentionPolicy: {
@@ -102,12 +102,12 @@ module publicIPAddress '.bicep/nested_publicIPAddress.bicep' = if (empty(publicI
     skuName: contains(publicIPAddressObject, 'skuName') ? (!(empty(publicIPAddressObject.skuName)) ? publicIPAddressObject.skuName : 'Standard') : 'Standard'
     skuTier: contains(publicIPAddressObject, 'skuTier') ? (!(empty(publicIPAddressObject.skuTier)) ? publicIPAddressObject.skuTier : 'Regional') : 'Regional'
     roleAssignments: contains(publicIPAddressObject, 'roleAssignments') ? (!empty(publicIPAddressObject.roleAssignments) ? publicIPAddressObject.roleAssignments : []) : []
-    metricsToEnable: contains(publicIPAddressObject, 'metricsToEnable') ? (!(empty(publicIPAddressObject.metricsToEnable)) ? publicIPAddressObject.metricsToEnable : [
+    diagnosticMetricsToEnable: contains(publicIPAddressObject, 'diagnosticMetricsToEnable') ? (!(empty(publicIPAddressObject.diagnosticMetricsToEnable)) ? publicIPAddressObject.diagnosticMetricsToEnable : [
       'AllMetrics'
     ]) : [
       'AllMetrics'
     ]
-    logsToEnable: contains(publicIPAddressObject, 'logsToEnable') ? (!(empty(publicIPAddressObject.logsToEnable)) ? publicIPAddressObject.logsToEnable : [
+    diagnosticLogsToEnable: contains(publicIPAddressObject, 'diagnosticLogsToEnable') ? (!(empty(publicIPAddressObject.diagnosticLogsToEnable)) ? publicIPAddressObject.diagnosticLogsToEnable : [
       'DDoSProtectionNotifications'
       'DDoSMitigationFlowLogs'
       'DDoSMitigationReports'

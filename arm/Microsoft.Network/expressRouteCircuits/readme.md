@@ -24,8 +24,8 @@ This template deploys an express route circuit.
 | `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
-| `logsToEnable` | array | `[PeeringRouteLog]` | `[PeeringRouteLog]` | Optional. The name of logs that will be streamed. |
-| `metricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | Optional. The name of metrics that will be streamed. |
+| `diagnosticLogsToEnable` | array | `[PeeringRouteLog]` | `[PeeringRouteLog]` | Optional. The name of logs that will be streamed. |
+| `diagnosticMetricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | Optional. The name of metrics that will be streamed. |
 | `name` | string |  |  | Required. This is the name of the ExpressRoute circuit |
 | `peerASN` | int | `0` |  | Optional. The autonomous system number of the customer/connectivity provider. |
 | `peering` | bool | `False` | `[True, False]` | Optional. Enabled BGP peering type for the Circuit. |

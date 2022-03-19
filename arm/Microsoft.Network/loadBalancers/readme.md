@@ -30,7 +30,7 @@ This module deploys a load balancer.
 | `loadBalancingRules` | array | `[]` |  | Optional. Array of objects containing all load balancing rules |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
-| `metricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | Optional. The name of metrics that will be streamed. |
+| `diagnosticMetricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | Optional. The name of metrics that will be streamed. |
 | `name` | string |  |  | Required. The Proximity Placement Groups Name |
 | `outboundRules` | array | `[]` |  | Optional. The outbound rules. |
 | `probes` | array | `[]` |  | Optional. Array of objects containing all probes, these are references in the load balancing rules |

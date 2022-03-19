@@ -88,14 +88,14 @@ param enableDefaultTelemetry bool = true
   'QueryStoreWaitStatistics'
   'Errors'
 ])
-param logsToEnable array = [
+param diagnosticLogsToEnable array = [
   'SQLInsights'
   'QueryStoreRuntimeStatistics'
   'QueryStoreWaitStatistics'
   'Errors'
 ]
 
-var diagnosticsLogs = [for log in logsToEnable: {
+var diagnosticsLogs = [for log in diagnosticLogsToEnable: {
   category: log
   enabled: true
   retentionPolicy: {

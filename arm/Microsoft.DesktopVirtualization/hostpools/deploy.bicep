@@ -109,7 +109,7 @@ param roleAssignments array = []
   'HostRegistration'
   'AgentHealthStatus'
 ])
-param logsToEnable array = [
+param diagnosticLogsToEnable array = [
   'Checkpoint'
   'Error'
   'Management'
@@ -118,7 +118,7 @@ param logsToEnable array = [
   'AgentHealthStatus'
 ]
 
-var diagnosticsLogs = [for log in logsToEnable: {
+var diagnosticsLogs = [for log in diagnosticLogsToEnable: {
   category: log
   enabled: true
   retentionPolicy: {

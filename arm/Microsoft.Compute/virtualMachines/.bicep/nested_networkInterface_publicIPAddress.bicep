@@ -9,13 +9,13 @@ param diagnosticLogsRetentionInDays int
 param diagnosticWorkspaceId string
 param diagnosticEventHubAuthorizationRuleId string
 param diagnosticEventHubName string
-param metricsToEnable array
-param logsToEnable array
+param diagnosticMetricsToEnable array
+param diagnosticLogsToEnable array
 param lock string
 param roleAssignments array
 param tags object
 
-var diagnosticsLogs = [for log in logsToEnable: {
+var diagnosticsLogs = [for log in diagnosticLogsToEnable: {
   category: log
   enabled: true
   retentionPolicy: {
@@ -24,7 +24,7 @@ var diagnosticsLogs = [for log in logsToEnable: {
   }
 }]
 
-var diagnosticsMetrics = [for metric in metricsToEnable: {
+var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
   category: metric
   timeGrain: null
   enabled: true

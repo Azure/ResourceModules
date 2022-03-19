@@ -54,14 +54,14 @@ param roleAssignments array = []
   'Management'
   'Feed'
 ])
-param logsToEnable array = [
+param diagnosticLogsToEnable array = [
   'Checkpoint'
   'Error'
   'Management'
   'Feed'
 ]
 
-var diagnosticsLogs = [for log in logsToEnable: {
+var diagnosticsLogs = [for log in diagnosticLogsToEnable: {
   category: log
   enabled: true
   retentionPolicy: {

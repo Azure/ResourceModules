@@ -74,7 +74,7 @@ param tags object = {}
   'AzureSiteRecoveryReplicationDataUploadRate'
   'AzureSiteRecoveryProtectedDiskDataChurn'
 ])
-param logsToEnable array = [
+param diagnosticLogsToEnable array = [
   'AzureBackupReport'
   'CoreAzureBackup'
   'AddonAzureBackupJobs'
@@ -95,11 +95,11 @@ param logsToEnable array = [
 @allowed([
   'Health'
 ])
-param metricsToEnable array = [
+param diagnosticMetricsToEnable array = [
   'Health'
 ]
 
-var diagnosticsLogs = [for log in logsToEnable: {
+var diagnosticsLogs = [for log in diagnosticLogsToEnable: {
   category: log
   enabled: true
   retentionPolicy: {
@@ -108,7 +108,7 @@ var diagnosticsLogs = [for log in logsToEnable: {
   }
 }]
 
-var diagnosticsMetrics = [for metric in metricsToEnable: {
+var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
   category: metric
   timeGrain: null
   enabled: true

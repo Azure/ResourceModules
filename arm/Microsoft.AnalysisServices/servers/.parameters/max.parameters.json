@@ -51,13 +51,13 @@
                 }
             ]
         },
-        "logsToEnable": {
+        "diagnosticLogsToEnable": {
             "value": [
                 "Engine",
                 "Service"
             ]
         },
-        "metricsToEnable": {
+        "diagnosticMetricsToEnable": {
             "value": [
                 "AllMetrics"
             ]

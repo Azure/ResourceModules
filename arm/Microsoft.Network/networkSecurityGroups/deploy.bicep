@@ -46,12 +46,12 @@ param enableDefaultTelemetry bool = true
   'NetworkSecurityGroupEvent'
   'NetworkSecurityGroupRuleCounter'
 ])
-param logsToEnable array = [
+param diagnosticLogsToEnable array = [
   'NetworkSecurityGroupEvent'
   'NetworkSecurityGroupRuleCounter'
 ]
 
-var diagnosticsLogs = [for log in logsToEnable: {
+var diagnosticsLogs = [for log in diagnosticLogsToEnable: {
   category: log
   enabled: true
   retentionPolicy: {

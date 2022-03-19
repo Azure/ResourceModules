@@ -26,8 +26,8 @@ This module deploys an event grid topic.
 | `inboundIpRules` | array | `[]` |  | Optional. Array of IPs to whitelist. |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all Resources. |
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
-| `logsToEnable` | array | `[DeliveryFailures, PublishFailures]` | `[DeliveryFailures, PublishFailures]` | Optional. The name of logs that will be streamed. |
-| `metricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | Optional. The name of metrics that will be streamed. |
+| `diagnosticLogsToEnable` | array | `[DeliveryFailures, PublishFailures]` | `[DeliveryFailures, PublishFailures]` | Optional. The name of logs that will be streamed. |
+| `diagnosticMetricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | Optional. The name of metrics that will be streamed. |
 | `name` | string |  |  | Required. The name of the Event Grid Topic |
 | `privateEndpoints` | array | `[]` |  | Optional. Configuration Details for private endpoints. |
 | `publicNetworkAccess` | string | `Enabled` |  | Optional. Determines if traffic is allowed over public network. |

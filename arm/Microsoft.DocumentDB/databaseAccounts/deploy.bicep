@@ -102,7 +102,7 @@ param diagnosticEventHubName string = ''
   'GremlinRequests'
   'TableApiRequests'
 ])
-param logsToEnable array = [
+param diagnosticLogsToEnable array = [
   'DataPlaneRequests'
   'MongoRequests'
   'QueryRuntimeStatistics'
@@ -118,11 +118,11 @@ param logsToEnable array = [
 @allowed([
   'Requests'
 ])
-param metricsToEnable array = [
+param diagnosticMetricsToEnable array = [
   'Requests'
 ]
 
-var diagnosticsLogs = [for log in logsToEnable: {
+var diagnosticsLogs = [for log in diagnosticLogsToEnable: {
   category: log
   enabled: true
   retentionPolicy: {
@@ -131,7 +131,7 @@ var diagnosticsLogs = [for log in logsToEnable: {
   }
 }]
 
-var diagnosticsMetrics = [for metric in metricsToEnable: {
+var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
   category: metric
   timeGrain: null
   enabled: true

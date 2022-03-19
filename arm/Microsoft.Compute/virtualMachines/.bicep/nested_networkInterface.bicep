@@ -13,12 +13,12 @@ param diagnosticLogsRetentionInDays int
 param diagnosticWorkspaceId string
 param diagnosticEventHubAuthorizationRuleId string
 param diagnosticEventHubName string
-param pipMetricsToEnable array
-param pipLogsToEnable array
-param metricsToEnable array
+param pipdiagnosticMetricsToEnable array
+param pipdiagnosticLogsToEnable array
+param diagnosticMetricsToEnable array
 param roleAssignments array
 
-var diagnosticsMetrics = [for metric in metricsToEnable: {
+var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
   category: metric
   timeGrain: null
   enabled: true
@@ -42,8 +42,8 @@ module networkInterface_publicIPConfigurations 'nested_networkInterface_publicIP
     diagnosticWorkspaceId: diagnosticWorkspaceId
     diagnosticEventHubAuthorizationRuleId: diagnosticEventHubAuthorizationRuleId
     diagnosticEventHubName: diagnosticEventHubName
-    metricsToEnable: pipMetricsToEnable
-    logsToEnable: pipLogsToEnable
+    diagnosticMetricsToEnable: pipdiagnosticMetricsToEnable
+    diagnosticLogsToEnable: pipdiagnosticLogsToEnable
     lock: lock
     roleAssignments: contains(ipConfiguration.pipconfiguration, 'roleAssignments') ? (!empty(ipConfiguration.pipconfiguration.roleAssignments) ? ipConfiguration.pipconfiguration.roleAssignments : []) : []
     tags: tags

@@ -33,7 +33,7 @@ The SQL Managed Instance Database is deployed on a SQL Managed Instance.
 | `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
-| `logsToEnable` | array | `[SQLInsights, QueryStoreRuntimeStatistics, QueryStoreWaitStatistics, Errors]` | `[SQLInsights, QueryStoreRuntimeStatistics, QueryStoreWaitStatistics, Errors]` | Optional. The name of logs that will be streamed. |
+| `diagnosticLogsToEnable` | array | `[SQLInsights, QueryStoreRuntimeStatistics, QueryStoreWaitStatistics, Errors]` | `[SQLInsights, QueryStoreRuntimeStatistics, QueryStoreWaitStatistics, Errors]` | Optional. The name of logs that will be streamed. |
 | `longTermRetentionBackupResourceId` | string |  |  | Optional. Conditional. The name of the Long Term Retention backup to be used for restore of this managed database. |
 | `managedInstanceName` | string |  |  | Required. The name of the SQL managed instance. |
 | `name` | string |  |  | Required. The name of the SQL managed instance database. |
