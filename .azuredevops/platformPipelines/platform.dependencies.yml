@@ -47,6 +47,21 @@ stages:
               templateFilePath: $(templateFilePath)
               displayName: Validation Resource Group
 
+  - stage: deploy_ppg
+    displayName: Deploy proximity placement group
+    dependsOn:
+      - deploy_rg
+    variables:
+      resourceType: 'Microsoft.Compute/proximityPlacementGroups'
+      templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
+    jobs:
+      - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
+        parameters:
+          deploymentBlocks:
+            - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: Proximity Placement Group
+
   - stage: deploy_msi
     displayName: Deploy user assigned identity
     dependsOn:
