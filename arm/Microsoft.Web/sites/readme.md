@@ -12,7 +12,6 @@ This module deploys a web or function app.
 | `Microsoft.Insights/diagnosticSettings` | 2021-05-01-preview |
 | `Microsoft.Network/privateEndpoints` | 2021-05-01 |
 | `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | 2021-05-01 |
-| `Microsoft.Web/serverfarms` | 2021-02-01 |
 | `Microsoft.Web/sites` | 2020-12-01 |
 | `Microsoft.Web/sites/config` | 2021-02-01 |
 
@@ -23,8 +22,6 @@ This module deploys a web or function app.
 | `appInsightId` | string |  |  | Optional. The resource ID of the existing app insight to leverage for the app. If the resource ID is not provided, the appInsightObject can be used to create a new app insight. |
 | `appInsightObject` | object | `{object}` |  | Optional. Used to deploy a new app insight if no appInsightId is provided. |
 | `appServiceEnvironmentId` | string |  |  | Optional. The resource ID of the app service environment to use for this resource. |
-| `appServicePlanId` | string |  |  | Optional. The resource ID of the app service plan to use for the site. If not provided, the appServicePlanObject is used to create a new plan. |
-| `appServicePlanObject` | object | `{object}` |  | Optional. Required if no appServicePlanId is provided to deploy a new app service plan. |
 | `clientAffinityEnabled` | bool | `True` |  | Optional. If client affinity is enabled. |
 | `diagnosticEventHubAuthorizationRuleId` | string |  |  | Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string |  |  | Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
@@ -43,6 +40,7 @@ This module deploys a web or function app.
 | `name` | string |  |  | Required. Name of the site. |
 | `privateEndpoints` | array | `[]` |  | Optional. Configuration details for private endpoints. |
 | `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
+| `serverFarmResourceId` | string |  |  | Optional. The resource ID of the app service plan to use for the site. If not provided, the appServicePlanObject is used to create a new plan. |
 | `siteConfig` | object | `{object}` |  | Optional. Configuration of the app. |
 | `storageAccountId` | string |  |  | Optional. Required if functionapp kind. The resource ID of the storage account to manage triggers and logging function executions. |
 | `systemAssignedIdentity` | bool | `False` |  | Optional. Enables system assigned managed identity on the resource. |
@@ -156,5 +154,4 @@ You can specify multiple user assigned identities to a resource by providing add
 - [Privateendpoints](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/privateEndpoints)
 - [Privateendpoints/Privatednszonegroups](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/privateEndpoints/privateDnsZoneGroups)
 - [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)
-- [Serverfarms](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Web/2021-02-01/serverfarms)
 - [Sites](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Web/2020-12-01/sites)

@@ -8,15 +8,8 @@
         "kind": {
             "value": "functionapp"
         },
-        "appServicePlanObject": {
-            "value": {
-                "serverOS": "Linux",
-                "skuName": "P1v2",
-                "skuCapacity": 2,
-                "skuTier": "PremiumV2",
-                "skuSize": "P1v2",
-                "skuFamily": "Pv2"
-            }
+        "serverFarmResourceId": {
+            "value": "" // TODO: Fill
         },
         "siteConfig": {
             "value": {
