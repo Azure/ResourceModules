@@ -54,7 +54,7 @@ SQL MI allows for Azure AD Authentication via an [Azure AD Admin](https://docs.m
 | `licenseType` | string | `LicenseIncluded` | `[LicenseIncluded, BasePrice]` | Optional. The license type. Possible values are 'LicenseIncluded' (regular price inclusive of a new SQL license) and 'BasePrice' (discounted AHB price for bringing your own SQL licenses). |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
-| `diagnosticLogsToEnable` | array | `[ResourceUsageStats, SQLSecurityAuditEvents]` | `[ResourceUsageStats, SQLSecurityAuditEvents]` | Optional. The name of logs that will be streamed. |
+| `diagnosticLogCategoriesToEnable` | array | `[ResourceUsageStats, SQLSecurityAuditEvents]` | `[ResourceUsageStats, SQLSecurityAuditEvents]` | Optional. The name of logs that will be streamed. |
 | `managedInstanceCreateMode` | string | `Default` | `[Default, PointInTimeRestore]` | Optional. Specifies the mode of database creation. Default: Regular instance creation. Restore: Creates an instance by restoring a set of backups to specific point in time. RestorePointInTime and SourceManagedInstanceId must be specified. |
 | `diagnosticMetricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | Optional. The name of metrics that will be streamed. |
 | `name` | string |  |  | Required. The name of the SQL managed instance. |

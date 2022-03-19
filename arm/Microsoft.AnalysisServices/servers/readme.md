@@ -30,7 +30,7 @@ The following resources are required to be able to deploy this resource.
 | `firewallSettings` | object | `{object}` |  | Optional. The inbound firewall rules to define on the server. If not specified, firewall is disabled. |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all Resources. |
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
-| `diagnosticLogsToEnable` | array | `[Engine, Service]` | `[Engine, Service]` | Optional. The name of logs that will be streamed. |
+| `diagnosticLogCategoriesToEnable` | array | `[Engine, Service]` | `[Engine, Service]` | Optional. The name of logs that will be streamed. |
 | `diagnosticMetricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | Optional. The name of metrics that will be streamed. |
 | `name` | string |  |  | Required. The name of the Azure Analysis Services server to create. |
 | `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |

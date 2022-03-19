@@ -61,7 +61,7 @@ param enableDefaultTelemetry bool = true
   'Engine'
   'Service'
 ])
-param diagnosticLogsToEnable array = [
+param diagnosticLogCategoriesToEnable array = [
   'Engine'
   'Service'
 ]
@@ -74,8 +74,8 @@ param diagnosticMetricsToEnable array = [
   'AllMetrics'
 ]
 
-var diagnosticsLogs = [for log in diagnosticLogsToEnable: {
-  category: log
+var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
+  category: category
   enabled: true
   retentionPolicy: {
     enabled: true

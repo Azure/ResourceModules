@@ -61,12 +61,12 @@ param enableDefaultTelemetry bool = true
 @allowed([
   'BastionAuditLogs'
 ])
-param diagnosticLogsToEnable array = [
+param diagnosticLogCategoriesToEnable array = [
   'BastionAuditLogs'
 ]
 
-var diagnosticsLogs = [for log in diagnosticLogsToEnable: {
-  category: log
+var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
+  category: category
   enabled: true
   retentionPolicy: {
     enabled: true
@@ -107,7 +107,7 @@ module publicIPAddress '.bicep/nested_publicIPAddress.bicep' = if (empty(publicI
     ]) : [
       'AllMetrics'
     ]
-    diagnosticLogsToEnable: contains(publicIPAddressObject, 'diagnosticLogsToEnable') ? (!(empty(publicIPAddressObject.diagnosticLogsToEnable)) ? publicIPAddressObject.diagnosticLogsToEnable : [
+    diagnosticLogCategoriesToEnable: contains(publicIPAddressObject, 'diagnosticLogCategoriesToEnable') ? (!(empty(publicIPAddressObject.diagnosticLogCategoriesToEnable)) ? publicIPAddressObject.diagnosticLogCategoriesToEnable : [
       'DDoSProtectionNotifications'
       'DDoSMitigationFlowLogs'
       'DDoSMitigationReports'

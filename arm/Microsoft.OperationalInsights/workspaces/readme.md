@@ -33,7 +33,7 @@ This template deploys a log analytics workspace.
 | `linkedServices` | _[linkedServices](linkedServices/readme.md)_ array | `[]` |  | Optional. List of services to be linked. |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
-| `diagnosticLogsToEnable` | array | `[Audit]` | `[Audit]` | Optional. The name of logs that will be streamed. |
+| `diagnosticLogCategoriesToEnable` | array | `[Audit]` | `[Audit]` | Optional. The name of logs that will be streamed. |
 | `diagnosticMetricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | Optional. The name of metrics that will be streamed. |
 | `name` | string |  |  | Required. Name of the Log Analytics workspace |
 | `publicNetworkAccessForIngestion` | string | `Enabled` | `[Enabled, Disabled]` | Optional. The network access type for accessing Log Analytics ingestion. |

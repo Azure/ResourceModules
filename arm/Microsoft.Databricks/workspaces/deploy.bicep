@@ -65,7 +65,7 @@ param enableDefaultTelemetry bool = true
   'sqlPermissions'
   'instancePools'
 ])
-param diagnosticLogsToEnable array = [
+param diagnosticLogCategoriesToEnable array = [
   'dbfs'
   'clusters'
   'accounts'
@@ -78,8 +78,8 @@ param diagnosticLogsToEnable array = [
   'instancePools'
 ]
 
-var diagnosticsLogs = [for log in diagnosticLogsToEnable: {
-  category: log
+var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
+  category: category
   enabled: true
   retentionPolicy: {
     enabled: true

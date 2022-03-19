@@ -20,7 +20,7 @@
 | `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all Resources. |
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
-| `diagnosticLogsToEnable` | array | `[ServiceLog]` | `[ServiceLog]` | Optional. The name of logs that will be streamed. |
+| `diagnosticLogCategoriesToEnable` | array | `[ServiceLog]` | `[ServiceLog]` | Optional. The name of logs that will be streamed. |
 | `diagnosticMetricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | Optional. The name of metrics that will be streamed. |
 | `name` | string |  |  | Required. Name of the Azure Batch |
 | `tags` | object | `{object}` |  | Optional. Tags of the resource. |

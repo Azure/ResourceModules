@@ -51,7 +51,7 @@
                 }
             ]
         },
-        "diagnosticLogsToEnable": {
+        "diagnosticLogCategoriesToEnable": {
             "value": [
                 "Engine",
                 "Service"

@@ -33,7 +33,7 @@ param diagnosticEventHubName string = ''
   'Autoscale'
   'ResourceHealth'
 ])
-param diagnosticLogsToEnable array = [
+param diagnosticLogCategoriesToEnable array = [
   'Administrative'
   'Security'
   'ServiceHealth'
@@ -50,8 +50,8 @@ param enableDefaultTelemetry bool = true
 @sys.description('Optional. Location deployment metadata.')
 param location string = deployment().location
 
-var diagnosticsLogs = [for log in diagnosticLogsToEnable: {
-  category: log
+var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
+  category: category
   enabled: true
   retentionPolicy: {
     enabled: true

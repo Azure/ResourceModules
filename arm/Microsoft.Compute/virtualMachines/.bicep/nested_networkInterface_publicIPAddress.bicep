@@ -10,13 +10,13 @@ param diagnosticWorkspaceId string
 param diagnosticEventHubAuthorizationRuleId string
 param diagnosticEventHubName string
 param diagnosticMetricsToEnable array
-param diagnosticLogsToEnable array
+param diagnosticLogCategoriesToEnable array
 param lock string
 param roleAssignments array
 param tags object
 
-var diagnosticsLogs = [for log in diagnosticLogsToEnable: {
-  category: log
+var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
+  category: category
   enabled: true
   retentionPolicy: {
     enabled: true

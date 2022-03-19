@@ -113,7 +113,7 @@ param zones array = []
 @allowed([
   'GatewayLogs'
 ])
-param diagnosticLogsToEnable array = [
+param diagnosticLogCategoriesToEnable array = [
   'GatewayLogs'
 ]
 
@@ -150,8 +150,8 @@ param products array = []
 @description('Optional. Subscriptions.')
 param subscriptions array = []
 
-var diagnosticsLogs = [for log in diagnosticLogsToEnable: {
-  category: log
+var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
+  category: category
   enabled: true
   retentionPolicy: {
     enabled: true

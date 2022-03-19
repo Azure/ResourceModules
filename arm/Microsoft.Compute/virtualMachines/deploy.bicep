@@ -114,7 +114,7 @@ param nicConfigurations array
   'DDoSMitigationFlowLogs'
   'DDoSMitigationReports'
 ])
-param pipdiagnosticLogsToEnable array = [
+param pipdiagnosticLogCategoriesToEnable array = [
   'DDoSProtectionNotifications'
   'DDoSMitigationFlowLogs'
   'DDoSMitigationReports'
@@ -344,7 +344,7 @@ module virtualMachine_nic '.bicep/nested_networkInterface.bicep' = [for (nicConf
     diagnosticEventHubName: diagnosticEventHubName
     diagnosticMetricsToEnable: nicdiagnosticMetricsToEnable
     pipdiagnosticMetricsToEnable: pipdiagnosticMetricsToEnable
-    pipdiagnosticLogsToEnable: pipdiagnosticLogsToEnable
+    pipdiagnosticLogCategoriesToEnable: pipdiagnosticLogCategoriesToEnable
     roleAssignments: contains(nicConfiguration, 'roleAssignments') ? (!empty(nicConfiguration.roleAssignments) ? nicConfiguration.roleAssignments : []) : []
   }
 }]

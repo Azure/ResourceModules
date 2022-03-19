@@ -109,7 +109,7 @@ param enableDefaultTelemetry bool = true
   'DDoSMitigationFlowLogs'
   'DDoSMitigationReports'
 ])
-param publicIpdiagnosticLogsToEnable array = [
+param publicIpdiagnosticLogCategoriesToEnable array = [
   'DDoSProtectionNotifications'
   'DDoSMitigationFlowLogs'
   'DDoSMitigationReports'
@@ -123,7 +123,7 @@ param publicIpdiagnosticLogsToEnable array = [
   'IKEDiagnosticLog'
   'P2SDiagnosticLog'
 ])
-param virtualNetworkGatewaydiagnosticLogsToEnable array = [
+param virtualNetworkGatewaydiagnosticLogCategoriesToEnable array = [
   'GatewayDiagnosticLog'
   'TunnelDiagnosticLog'
   'RouteDiagnosticLog'
@@ -139,16 +139,16 @@ param diagnosticMetricsToEnable array = [
   'AllMetrics'
 ]
 
-var virtualNetworkGatewayDiagnosticsLogs = [for log in virtualNetworkGatewaydiagnosticLogsToEnable: {
-  category: log
+var virtualNetworkGatewayDiagnosticsLogs = [for log in virtualNetworkGatewaydiagnosticLogCategoriesToEnable: {
+  category: category
   enabled: true
   retentionPolicy: {
     enabled: true
     days: diagnosticLogsRetentionInDays
   }
 }]
-var publicIpDiagnosticsLogs = [for log in publicIpdiagnosticLogsToEnable: {
-  category: log
+var publicIpDiagnosticsLogs = [for log in publicIpdiagnosticLogCategoriesToEnable: {
+  category: category
   enabled: true
   retentionPolicy: {
     enabled: true

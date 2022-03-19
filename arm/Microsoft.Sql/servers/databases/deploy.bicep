@@ -81,7 +81,7 @@ param diagnosticEventHubName string = ''
   'DevOpsOperationsAudit'
   'SQLSecurityAuditEvents'
 ])
-param diagnosticLogsToEnable array = [
+param diagnosticLogCategoriesToEnable array = [
   'SQLInsights'
   'AutomaticTuning'
   'QueryStoreRuntimeStatistics'
@@ -107,8 +107,8 @@ param diagnosticMetricsToEnable array = [
   'WorkloadManagement'
 ]
 
-var diagnosticsLogs = [for log in diagnosticLogsToEnable: {
-  category: log
+var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
+  category: category
   enabled: true
   retentionPolicy: {
     enabled: true

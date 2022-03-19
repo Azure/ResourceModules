@@ -157,7 +157,7 @@ param requestedBackupStorageRedundancy string = 'Geo'
   'ResourceUsageStats'
   'SQLSecurityAuditEvents'
 ])
-param diagnosticLogsToEnable array = [
+param diagnosticLogCategoriesToEnable array = [
   'ResourceUsageStats'
   'SQLSecurityAuditEvents'
 ]
@@ -170,8 +170,8 @@ param diagnosticMetricsToEnable array = [
   'AllMetrics'
 ]
 
-var diagnosticsLogs = [for log in diagnosticLogsToEnable: {
-  category: log
+var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
+  category: category
   enabled: true
   retentionPolicy: {
     enabled: true

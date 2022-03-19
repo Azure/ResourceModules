@@ -43,7 +43,7 @@ param enableDefaultTelemetry bool = true
   'StorageWrite'
   'StorageDelete'
 ])
-param diagnosticLogsToEnable array = [
+param diagnosticLogCategoriesToEnable array = [
   'StorageRead'
   'StorageWrite'
   'StorageDelete'
@@ -57,8 +57,8 @@ param diagnosticMetricsToEnable array = [
   'Transaction'
 ]
 
-var diagnosticsLogs = [for log in diagnosticLogsToEnable: {
-  category: log
+var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
+  category: category
   enabled: true
   retentionPolicy: {
     enabled: true

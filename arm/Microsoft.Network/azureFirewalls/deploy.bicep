@@ -88,7 +88,7 @@ param enableDefaultTelemetry bool = true
   'AzureFirewallNetworkRule'
   'AzureFirewallDnsProxy'
 ])
-param diagnosticLogsToEnable array = [
+param diagnosticLogCategoriesToEnable array = [
   'AzureFirewallApplicationRule'
   'AzureFirewallNetworkRule'
   'AzureFirewallDnsProxy'
@@ -114,8 +114,8 @@ var ipConfigurations_var = [for ipConfiguration in ipConfigurations: {
   }
 }]
 
-var diagnosticsLogs = [for log in diagnosticLogsToEnable: {
-  category: log
+var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
+  category: category
   enabled: true
   retentionPolicy: {
     enabled: true

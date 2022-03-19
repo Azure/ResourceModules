@@ -192,7 +192,7 @@ param diagnosticEventHubName string = ''
   'ApplicationGatewayPerformanceLog'
   'ApplicationGatewayFirewallLog'
 ])
-param diagnosticLogsToEnable array = [
+param diagnosticLogCategoriesToEnable array = [
   'ApplicationGatewayAccessLog'
   'ApplicationGatewayPerformanceLog'
   'ApplicationGatewayFirewallLog'
@@ -213,8 +213,8 @@ var identity = identityType != 'None' ? {
   userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
 } : null
 
-var diagnosticsLogs = [for log in diagnosticLogsToEnable: {
-  category: log
+var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
+  category: category
   enabled: true
   retentionPolicy: {
     enabled: true

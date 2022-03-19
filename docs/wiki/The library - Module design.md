@@ -237,7 +237,7 @@ param diagnosticEventHubName string = ''
 @allowed([
   <LogsIfAny>
 ])
-param diagnosticLogsToEnable array = [
+param diagnosticLogCategoriesToEnable array = [
   <LogsIfAny>
 ]
 
@@ -249,8 +249,8 @@ param diagnosticMetricsToEnable array = [
   <MetricsIfAny>
 ]
 
-var diagnosticsLogs = [for log in diagnosticLogsToEnable: {
-  category: log
+var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
+  category: category
   enabled: true
   retentionPolicy: {
     enabled: true

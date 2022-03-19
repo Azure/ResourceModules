@@ -281,7 +281,7 @@ module storageAccount_blobServices 'blobServices/deploy.bicep' = if (!empty(blob
     diagnosticStorageAccountId: contains(blobServices, 'diagnosticStorageAccountId') ? blobServices.diagnosticStorageAccountId : ''
     diagnosticEventHubAuthorizationRuleId: contains(blobServices, 'diagnosticEventHubAuthorizationRuleId') ? blobServices.diagnosticEventHubAuthorizationRuleId : ''
     diagnosticEventHubName: contains(blobServices, 'diagnosticEventHubName') ? blobServices.diagnosticEventHubName : ''
-    diagnosticLogsToEnable: contains(blobServices, 'diagnosticLogsToEnable') ? blobServices.diagnosticLogsToEnable : []
+    diagnosticLogCategoriesToEnable: contains(blobServices, 'diagnosticLogCategoriesToEnable') ? blobServices.diagnosticLogCategoriesToEnable : []
     diagnosticMetricsToEnable: contains(blobServices, 'diagnosticMetricsToEnable') ? blobServices.diagnosticMetricsToEnable : []
     diagnosticWorkspaceId: contains(blobServices, 'diagnosticWorkspaceId') ? blobServices.diagnosticWorkspaceId : ''
   }
@@ -296,7 +296,7 @@ module storageAccount_fileServices 'fileServices/deploy.bicep' = if (!empty(file
     diagnosticStorageAccountId: contains(fileServices, 'diagnosticStorageAccountId') ? fileServices.diagnosticStorageAccountId : ''
     diagnosticEventHubAuthorizationRuleId: contains(fileServices, 'diagnosticEventHubAuthorizationRuleId') ? fileServices.diagnosticEventHubAuthorizationRuleId : ''
     diagnosticEventHubName: contains(fileServices, 'diagnosticEventHubName') ? fileServices.diagnosticEventHubName : ''
-    diagnosticLogsToEnable: contains(fileServices, 'diagnosticLogsToEnable') ? fileServices.diagnosticLogsToEnable : []
+    diagnosticLogCategoriesToEnable: contains(fileServices, 'diagnosticLogCategoriesToEnable') ? fileServices.diagnosticLogCategoriesToEnable : []
     diagnosticMetricsToEnable: contains(fileServices, 'diagnosticMetricsToEnable') ? fileServices.diagnosticMetricsToEnable : []
     protocolSettings: contains(fileServices, 'protocolSettings') ? fileServices.protocolSettings : {}
     shareDeleteRetentionPolicy: contains(fileServices, 'shareDeleteRetentionPolicy') ? fileServices.shareDeleteRetentionPolicy : {
@@ -317,7 +317,7 @@ module storageAccount_queueServices 'queueServices/deploy.bicep' = if (!empty(qu
     diagnosticStorageAccountId: contains(queueServices, 'diagnosticStorageAccountId') ? queueServices.diagnosticStorageAccountId : ''
     diagnosticEventHubAuthorizationRuleId: contains(queueServices, 'diagnosticEventHubAuthorizationRuleId') ? queueServices.diagnosticEventHubAuthorizationRuleId : ''
     diagnosticEventHubName: contains(queueServices, 'diagnosticEventHubName') ? queueServices.diagnosticEventHubName : ''
-    diagnosticLogsToEnable: contains(queueServices, 'diagnosticLogsToEnable') ? queueServices.diagnosticLogsToEnable : []
+    diagnosticLogCategoriesToEnable: contains(queueServices, 'diagnosticLogCategoriesToEnable') ? queueServices.diagnosticLogCategoriesToEnable : []
     diagnosticMetricsToEnable: contains(queueServices, 'diagnosticMetricsToEnable') ? queueServices.diagnosticMetricsToEnable : []
     queues: contains(queueServices, 'queues') ? queueServices.queues : []
     diagnosticWorkspaceId: contains(queueServices, 'diagnosticWorkspaceId') ? queueServices.diagnosticWorkspaceId : ''
@@ -333,7 +333,7 @@ module storageAccount_tableServices 'tableServices/deploy.bicep' = if (!empty(ta
     diagnosticStorageAccountId: contains(tableServices, 'diagnosticStorageAccountId') ? tableServices.diagnosticStorageAccountId : ''
     diagnosticEventHubAuthorizationRuleId: contains(tableServices, 'diagnosticEventHubAuthorizationRuleId') ? tableServices.diagnosticEventHubAuthorizationRuleId : ''
     diagnosticEventHubName: contains(tableServices, 'diagnosticEventHubName') ? tableServices.diagnosticEventHubName : ''
-    diagnosticLogsToEnable: contains(tableServices, 'diagnosticLogsToEnable') ? tableServices.diagnosticLogsToEnable : []
+    diagnosticLogCategoriesToEnable: contains(tableServices, 'diagnosticLogCategoriesToEnable') ? tableServices.diagnosticLogCategoriesToEnable : []
     diagnosticMetricsToEnable: contains(tableServices, 'diagnosticMetricsToEnable') ? tableServices.diagnosticMetricsToEnable : []
     tables: contains(tableServices, 'tables') ? tableServices.tables : []
     diagnosticWorkspaceId: contains(tableServices, 'diagnosticWorkspaceId') ? tableServices.diagnosticWorkspaceId : ''

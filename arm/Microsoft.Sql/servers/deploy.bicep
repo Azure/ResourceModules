@@ -120,7 +120,7 @@ module server_databases 'databases/deploy.bicep' = [for (database, index) in dat
     diagnosticEventHubName: contains(database, 'diagnosticEventHubName') ? database.diagnosticEventHubName : ''
     isLedgerOn: contains(database, 'isLedgerOn') ? database.isLedgerOn : false
     location: contains(database, 'location') ? database.location : server.location
-    diagnosticLogsToEnable: contains(database, 'diagnosticLogsToEnable') ? database.diagnosticLogsToEnable : []
+    diagnosticLogCategoriesToEnable: contains(database, 'diagnosticLogCategoriesToEnable') ? database.diagnosticLogCategoriesToEnable : []
     licenseType: contains(database, 'licenseType') ? database.licenseType : ''
     maintenanceConfigurationId: contains(database, 'maintenanceConfigurationId') ? database.maintenanceConfigurationId : ''
     minCapacity: contains(database, 'minCapacity') ? database.minCapacity : ''

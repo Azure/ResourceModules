@@ -122,7 +122,7 @@ param enableDefaultTelemetry bool = true
   'ContainerRegistryRepositoryEvents'
   'ContainerRegistryLoginEvents'
 ])
-param diagnosticLogsToEnable array = [
+param diagnosticLogCategoriesToEnable array = [
   'ContainerRegistryRepositoryEvents'
   'ContainerRegistryLoginEvents'
 ]
@@ -152,8 +152,8 @@ param diagnosticEventHubAuthorizationRuleId string = ''
 @description('Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.')
 param diagnosticEventHubName string = ''
 
-var diagnosticsLogs = [for log in diagnosticLogsToEnable: {
-  category: log
+var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
+  category: category
   enabled: true
   retentionPolicy: {
     enabled: true

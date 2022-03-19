@@ -77,7 +77,7 @@ param diagnosticEventHubName string = ''
   'AmlComputeCpuGpuUtilization'
   'AmlRunStatusChangedEvent'
 ])
-param diagnosticLogsToEnable array = [
+param diagnosticLogCategoriesToEnable array = [
   'AmlComputeClusterEvent'
   'AmlComputeClusterNodeEvent'
   'AmlComputeJobEvent'
@@ -93,8 +93,8 @@ param diagnosticMetricsToEnable array = [
   'AllMetrics'
 ]
 
-var diagnosticsLogs = [for log in diagnosticLogsToEnable: {
-  category: log
+var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
+  category: category
   enabled: true
   retentionPolicy: {
     enabled: true

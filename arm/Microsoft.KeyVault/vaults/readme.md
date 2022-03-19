@@ -38,7 +38,7 @@ This module deploys a key vault and its child resources.
 | `keys` | _[keys](keys/readme.md)_ array | `[]` |  | Optional. All keys to create |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
-| `diagnosticLogsToEnable` | array | `[AuditEvent]` | `[AuditEvent]` | Optional. The name of logs that will be streamed. |
+| `diagnosticLogCategoriesToEnable` | array | `[AuditEvent]` | `[AuditEvent]` | Optional. The name of logs that will be streamed. |
 | `diagnosticMetricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | Optional. The name of metrics that will be streamed. |
 | `name` | string |  |  | Optional. Name of the Key Vault. If no name is provided, then unique name will be created. |
 | `networkAcls` | object | `{object}` |  | Optional. Service endpoint object information. For security reasons, it is recommended to set the DefaultAction Deny |

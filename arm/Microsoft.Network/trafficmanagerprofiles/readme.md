@@ -23,7 +23,7 @@ This module deploys a traffic manager profile.
 | `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `endpoints` | array | `[]` |  | Optional. The list of endpoints in the Traffic Manager profile. |
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
-| `diagnosticLogsToEnable` | array | `[ProbeHealthStatusEvents]` | `[ProbeHealthStatusEvents]` | Optional. The name of logs that will be streamed. |
+| `diagnosticLogCategoriesToEnable` | array | `[ProbeHealthStatusEvents]` | `[ProbeHealthStatusEvents]` | Optional. The name of logs that will be streamed. |
 | `maxReturn` | int | `1` |  | Optional. Maximum number of endpoints to be returned for MultiValue routing type. |
 | `diagnosticMetricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | Optional. The name of metrics that will be streamed. |
 | `monitorConfig` | object | `{object}` |  | Optional. The endpoint monitoring settings of the Traffic Manager profile. |

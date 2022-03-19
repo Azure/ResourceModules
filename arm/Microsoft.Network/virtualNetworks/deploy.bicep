@@ -57,7 +57,7 @@ param enableDefaultTelemetry bool = true
 @allowed([
   'VMProtectionAlerts'
 ])
-param diagnosticLogsToEnable array = [
+param diagnosticLogCategoriesToEnable array = [
   'VMProtectionAlerts'
 ]
 
@@ -69,8 +69,8 @@ param diagnosticMetricsToEnable array = [
   'AllMetrics'
 ]
 
-var diagnosticsLogs = [for log in diagnosticLogsToEnable: {
-  category: log
+var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
+  category: category
   enabled: true
   retentionPolicy: {
     enabled: true

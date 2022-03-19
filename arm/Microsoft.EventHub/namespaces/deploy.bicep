@@ -108,7 +108,7 @@ param disasterRecoveryConfig object = {}
   'CustomerManagedKeyUserLogs'
   'AutoScaleLogs'
 ])
-param diagnosticLogsToEnable array = [
+param diagnosticLogCategoriesToEnable array = [
   'ArchiveLogs'
   'OperationalLogs'
   'KafkaCoordinatorLogs'
@@ -141,8 +141,8 @@ var networkAcls_var = {
   ipRules: !empty(networkAcls) ? (length(networkAcls.ipRules) > 0 ? networkAcls.ipRules : null) : null
 }
 
-var diagnosticsLogs = [for log in diagnosticLogsToEnable: {
-  category: log
+var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
+  category: category
   enabled: true
   retentionPolicy: {
     enabled: true

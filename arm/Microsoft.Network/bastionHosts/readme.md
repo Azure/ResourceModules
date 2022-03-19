@@ -24,7 +24,7 @@ This module deploys a bastion host.
 | `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
-| `diagnosticLogsToEnable` | array | `[BastionAuditLogs]` | `[BastionAuditLogs]` | Optional. Optional. The name of bastion logs that will be streamed. |
+| `diagnosticLogCategoriesToEnable` | array | `[BastionAuditLogs]` | `[BastionAuditLogs]` | Optional. Optional. The name of bastion logs that will be streamed. |
 | `name` | string |  |  | Required. Name of the Azure Bastion resource |
 | `publicIPAddressId` | string |  |  | Optional. Specifies the resource ID of the existing public IP to be leveraged by Azure Bastion. |
 | `publicIPAddressObject` | object | `{object}` |  | Optional. Specifies the properties of the public IP to create and be used by Azure Bastion. If it's not provided and publicIPAddressId is empty, a '-pip' suffix will be appended to the Bastion's name. |

@@ -14,7 +14,7 @@ param diagnosticWorkspaceId string
 param diagnosticEventHubAuthorizationRuleId string
 param diagnosticEventHubName string
 param pipdiagnosticMetricsToEnable array
-param pipdiagnosticLogsToEnable array
+param pipdiagnosticLogCategoriesToEnable array
 param diagnosticMetricsToEnable array
 param roleAssignments array
 
@@ -43,7 +43,7 @@ module networkInterface_publicIPConfigurations 'nested_networkInterface_publicIP
     diagnosticEventHubAuthorizationRuleId: diagnosticEventHubAuthorizationRuleId
     diagnosticEventHubName: diagnosticEventHubName
     diagnosticMetricsToEnable: pipdiagnosticMetricsToEnable
-    diagnosticLogsToEnable: pipdiagnosticLogsToEnable
+    diagnosticLogCategoriesToEnable: pipdiagnosticLogCategoriesToEnable
     lock: lock
     roleAssignments: contains(ipConfiguration.pipconfiguration, 'roleAssignments') ? (!empty(ipConfiguration.pipconfiguration.roleAssignments) ? ipConfiguration.pipconfiguration.roleAssignments : []) : []
     tags: tags
