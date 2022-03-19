@@ -14,7 +14,7 @@ This module deploys an Azure SQL Server.
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `autoPauseDelay` | string |  |  | Optional. Time in minutes after which database is automatically paused. |
-| `collation` | string |  |  | Optional. The collation of the database. |
+| `collation` | string | `SQL_Latin1_General_CP1_CI_AS` |  | Optional. The collation of the database. |
 | `diagnosticEventHubAuthorizationRuleId` | string |  |  | Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string |  |  | Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
@@ -25,19 +25,19 @@ This module deploys an Azure SQL Server.
 | `isLedgerOn` | bool | `False` |  | Optional. Whether or not this database is a ledger database, which means all tables in the database are ledger tables. Note: the value of this property cannot be changed after the database has been created. |
 | `licenseType` | string |  |  | Optional. The license type to apply for this database. |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
-| `logsToEnable` | array | `[SQLInsights, AutomaticTuning, QueryStoreRuntimeStatistics, QueryStoreWaitStatistics, Errors, DatabaseWaitStatistics, Timouts, Blocks, Deadlocks]` | `[SQLInsights, AutomaticTuning, QueryStoreRuntimeStatistics, QueryStoreWaitStatistics, Errors, DatabaseWaitStatistics, Timouts, Blocks, Deadlocks]` | Optional. The name of logs that will be streamed. |
+| `logsToEnable` | array | `[SQLInsights, AutomaticTuning, QueryStoreRuntimeStatistics, QueryStoreWaitStatistics, Errors, DatabaseWaitStatistics, Timeouts, Blocks, Deadlocks, DevOpsOperationsAudit, SQLSecurityAuditEvents]` | `[SQLInsights, AutomaticTuning, QueryStoreRuntimeStatistics, QueryStoreWaitStatistics, Errors, DatabaseWaitStatistics, Timeouts, Blocks, Deadlocks, DevOpsOperationsAudit, SQLSecurityAuditEvents]` | Optional. The name of logs that will be streamed. |
 | `maintenanceConfigurationId` | string |  |  | Optional. Maintenance configuration ID assigned to the database. This configuration defines the period when the maintenance updates will occur. |
-| `maxSizeBytes` | int |  |  | Optional. The max size of the database expressed in bytes. |
-| `metricsToEnable` | array | `[Basic]` | `[Basic]` | Optional. The name of metrics that will be streamed. |
+| `maxSizeBytes` | int | `34359738368` |  | Optional. The max size of the database expressed in bytes. |
+| `metricsToEnable` | array | `[Basic, InstanceAndAppAdvanced, WorkloadManagement]` | `[Basic, InstanceAndAppAdvanced, WorkloadManagement]` | Optional. The name of metrics that will be streamed. |
 | `minCapacity` | string |  |  | Optional. Minimal capacity that database will always have allocated. |
 | `name` | string |  |  | Required. The name of the database. |
 | `readScale` | string | `Disabled` | `[Enabled, Disabled]` | Optional. The state of read-only routing. |
 | `requestedBackupStorageRedundancy` | string |  | `[Geo, Local, Zone, ]` | Optional. The storage account type to be used to store backups for this database. |
 | `sampleName` | string |  |  | Optional. The name of the sample schema to apply when creating this database. |
 | `serverName` | string |  |  | Required. The Name of SQL Server |
-| `skuName` | string |  |  | Required. The name of the SKU. |
+| `skuName` | string | `GP_Gen5_2` |  | Optional. The name of the SKU. |
 | `tags` | object | `{object}` |  | Optional. Tags of the resource. |
-| `tier` | string |  |  | Optional. The tier or edition of the particular SKU. |
+| `tier` | string | `GeneralPurpose` |  | Optional. The tier or edition of the particular SKU. |
 | `zoneRedundant` | bool | `False` |  | Optional. Whether or not this database is zone redundant. |
 
 ### Parameter Usage: `tags`
