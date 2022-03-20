@@ -22,6 +22,10 @@ This sub-section gives you an example on how to deploy a template from your loca
 <details>
 <summary><i>Resource Group</i> scope</summary>
 
+To be used if the targeted scope in the first line of the template is:
+- **Bicep:** `targetScope = 'resourceGroup'`
+- **ARM:** `"$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#"`
+
 ```PowerShell
 New-AzResourceGroup -Name 'ExampleGroup' -Location "Central US"
 
@@ -43,6 +47,10 @@ For more information please refer to the official [Microsoft docs](https://docs.
 <details>
 <summary><i>Subscription</i> scope</summary>
 
+To be used if the targeted scope in the first line of the template is:
+- **Bicep:** `targetScope = 'subscription'`
+- **ARM:** `"$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#"`
+
 ```PowerShell
 $inputObject = @{
   DeploymentName = 'ExampleDeployment-{0}' -f (-join (Get-Date -Format 'yyyyMMddTHHMMssffffZ')[0..63])
@@ -61,6 +69,10 @@ For more information please refer to the official [Microsoft docs](https://docs.
 <details>
 <summary><i>Management group</i> scope</summary>
 
+To be used if the targeted scope in the first line of the template is:
+- **Bicep:** `targetScope = 'managementGroup'`
+- **ARM:** `"$schema": "https://schema.management.azure.com/schemas/2018-05-01/managementGroupDeploymentTemplate.json#"`
+
 ```PowerShell
 $inputObject = @{
   DeploymentName = 'ExampleDeployment-{0}' -f (-join (Get-Date -Format 'yyyyMMddTHHMMssffffZ')[0..63])
@@ -78,6 +90,10 @@ For more information please refer to the official [Microsoft docs](https://docs.
 
 <details>
 <summary><i>Tenant</i> scope</summary>
+
+To be used if the targeted scope in the first line of the template is:
+- **Bicep:** `targetScope = 'tenant'`
+- **ARM:** `"$schema": "https://schema.management.azure.com/schemas/2019-08-01/tenantDeploymentTemplate.json#",     `
 
 ```PowerShell
 $inputObject = @{
@@ -99,6 +115,10 @@ For more information please refer to the official [Microsoft docs](https://docs.
 <details>
 <summary><i>Resource Group</i> scope</summary>
 
+To be used if the targeted scope in the first line of the template is:
+- **Bicep:** `targetScope = 'resourceGroup'`
+- **ARM:** `"$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#"`
+
 ```bash
 az group create --name 'ExampleGroup' --location "Central US"
 $inputObject = @(
@@ -119,6 +139,10 @@ For more information please refer to the official [Microsoft docs](https://docs.
 <details>
 <summary><i>Subscription</i> scope</summary>
 
+To be used if the targeted scope in the first line of the template is:
+- **Bicep:** `targetScope = 'subscription'`
+- **ARM:** `"$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#"`
+
 ```bash
 $inputObject = @(
   '--name',           ('ExampleDeployment-{0}' -f (-join (Get-Date -Format 'yyyyMMddTHHMMssffffZ')[0..63])),
@@ -138,6 +162,10 @@ For more information please refer to the official [Microsoft docs](https://docs.
 <details>
 <summary><i>Management group</i> scope</summary>
 
+To be used if the targeted scope in the first line of the template is:
+- **Bicep:** `targetScope = 'managementGroup'`
+- **ARM:** `"$schema": "https://schema.management.azure.com/schemas/2018-05-01/managementGroupDeploymentTemplate.json#"`
+
 ```bash
 $inputObject = @(
   '--name',           ('ExampleDeployment-{0}' -f (-join (Get-Date -Format 'yyyyMMddTHHMMssffffZ')[0..63])),
@@ -156,6 +184,10 @@ For more information please refer to the official [Microsoft docs](https://docs.
 
 <details>
 <summary><i>Tenant</i> scope</summary>
+
+To be used if the targeted scope in the first line of the template is:
+- **Bicep:** `targetScope = 'tenant'`
+- **ARM:** `"$schema": "https://schema.management.azure.com/schemas/2019-08-01/tenantDeploymentTemplate.json#",     `
 
 ```bash
 $inputObject = @(
