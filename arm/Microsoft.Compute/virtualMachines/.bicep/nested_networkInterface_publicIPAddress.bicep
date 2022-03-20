@@ -16,7 +16,7 @@ param roleAssignments array
 param tags object
 
 @description('Optional. The name of the diagnostic setting, if deployed.')
-param diagnosticSettingsName string = '${name}-diagnosticSettings'
+param diagnosticSettingsName string = '${publicIPAddressName}-diagnosticSettings'
 
 var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
   category: category

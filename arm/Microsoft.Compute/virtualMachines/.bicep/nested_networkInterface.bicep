@@ -15,10 +15,16 @@ param diagnosticEventHubAuthorizationRuleId string
 param diagnosticEventHubName string
 param pipdiagnosticMetricsToEnable array
 param pipdiagnosticLogCategoriesToEnable array
-param diagnosticMetricsToEnable array
+param nicDiagnosticMetricsToEnable array
 param roleAssignments array
 
-var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
+@description('Optional. The name of the PIP diagnostic setting, if deployed.')
+param pipDiagnosticSettingsName string = '${virtualMachineName}-diagnosticSettings'
+
+@description('Optional. The name of the NIC diagnostic setting, if deployed.')
+param nicDiagnosticSettingsName string = '${virtualMachineName}-diagnosticSettings'
+
+var nicDiagnosticsMetrics = [for metric in nicDiagnosticMetricsToEnable: {
   category: metric
   timeGrain: null
   enabled: true
@@ -42,6 +48,7 @@ module networkInterface_publicIPConfigurations 'nested_networkInterface_publicIP
     diagnosticWorkspaceId: diagnosticWorkspaceId
     diagnosticEventHubAuthorizationRuleId: diagnosticEventHubAuthorizationRuleId
     diagnosticEventHubName: diagnosticEventHubName
+    diagnosticSettingsName: pipDiagnosticSettingsName
     diagnosticMetricsToEnable: pipdiagnosticMetricsToEnable
     diagnosticLogCategoriesToEnable: pipdiagnosticLogCategoriesToEnable
     lock: lock
@@ -93,13 +100,13 @@ resource networkInterface_lock 'Microsoft.Authorization/locks@2017-04-01' = if (
 }
 
 resource networkInterface_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(diagnosticWorkspaceId)) || (!empty(diagnosticEventHubAuthorizationRuleId)) || (!empty(diagnosticEventHubName))) {
-  name: diagnosticSettingsName
+  name: nicDiagnosticSettingsName
   properties: {
     storageAccountId: !empty(diagnosticStorageAccountId) ? diagnosticStorageAccountId : null
     workspaceId: !empty(diagnosticWorkspaceId) ? diagnosticWorkspaceId : null
     eventHubAuthorizationRuleId: !empty(diagnosticEventHubAuthorizationRuleId) ? diagnosticEventHubAuthorizationRuleId : null
     eventHubName: !empty(diagnosticEventHubName) ? diagnosticEventHubName : null
-    metrics: diagnosticsMetrics
+    metrics: nicDiagnosticsMetrics
   }
   scope: networkInterface
 }

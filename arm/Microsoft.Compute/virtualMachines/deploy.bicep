@@ -108,6 +108,9 @@ param availabilityZone int = 0
 @description('Required. Configures NICs and PIPs.')
 param nicConfigurations array
 
+@description('Optional. The name of the PIP diagnostic setting, if deployed.')
+param pipDiagnosticSettingsName string = '${name}-diagnosticSettings'
+
 @description('Optional. The name of logs that will be streamed.')
 @allowed([
   'DDoSProtectionNotifications'
@@ -127,6 +130,9 @@ param pipdiagnosticLogCategoriesToEnable array = [
 param pipdiagnosticMetricsToEnable array = [
   'AllMetrics'
 ]
+
+@description('Optional. The name of the NIC diagnostic setting, if deployed.')
+param nicDiagnosticSettingsName string = '${name}-diagnosticSettings'
 
 @description('Optional. The name of metrics that will be streamed.')
 @allowed([
@@ -342,9 +348,11 @@ module virtualMachine_nic '.bicep/nested_networkInterface.bicep' = [for (nicConf
     diagnosticWorkspaceId: diagnosticWorkspaceId
     diagnosticEventHubAuthorizationRuleId: diagnosticEventHubAuthorizationRuleId
     diagnosticEventHubName: diagnosticEventHubName
-    diagnosticMetricsToEnable: nicdiagnosticMetricsToEnable
+    pipDiagnosticSettingsName: pipDiagnosticSettingsName
+    nicDiagnosticSettingsName: nicDiagnosticSettingsName
     pipdiagnosticMetricsToEnable: pipdiagnosticMetricsToEnable
     pipdiagnosticLogCategoriesToEnable: pipdiagnosticLogCategoriesToEnable
+    nicDiagnosticMetricsToEnable: nicdiagnosticMetricsToEnable
     roleAssignments: contains(nicConfiguration, 'roleAssignments') ? (!empty(nicConfiguration.roleAssignments) ? nicConfiguration.roleAssignments : []) : []
   }
 }]
