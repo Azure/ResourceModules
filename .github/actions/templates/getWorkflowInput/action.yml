@@ -2,7 +2,7 @@
 ## 'Get Workflow Input' Composite Action               ##
 #########################################################
 ##
-## This pipeline template contains the logic to read pipeline runtime parameters and publih their value as a pipeline output.
+## This composite action contains the logic to read pipeline runtime parameters and publih their value as a pipeline output.
 ## This is essential in case a pipeline was not triggered via 'workflow_dispatch' as this renders the otherwise available runtime parameters unavailable.
 ## To solve this, the pipeline reads the template file and looks out for the default value to publish it as an output regardless.
 ##
