@@ -70,7 +70,7 @@ param diagnosticLogCategoriesToEnable array = [
 @sys.description('Optional. List of applications to be created in the Application Group.')
 param applications array = []
 
-@description('Optional. The name of the diagnostic setting, if deployed.')
+@sys.description('Optional. The name of the diagnostic setting, if deployed.')
 param diagnosticSettingsName string = '${name}-diagnosticSettings'
 
 var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
