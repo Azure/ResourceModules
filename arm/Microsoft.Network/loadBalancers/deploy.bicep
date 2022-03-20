@@ -149,6 +149,9 @@ param diagnosticMetricsToEnable array = [
   'AllMetrics'
 ]
 
+@description('Optional. The name of the diagnostic setting, if deployed.')
+param diagnosticSettingsName string = '${name}-diagnosticSettings'
+
 var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
   category: metric
   timeGrain: null
