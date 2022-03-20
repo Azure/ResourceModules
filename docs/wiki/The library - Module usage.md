@@ -30,12 +30,13 @@ To be used if the targeted scope in the first line of the template is:
 New-AzResourceGroup -Name 'ExampleGroup' -Location "Central US"
 
 $inputObject = @{
-  DeploymentName    = 'ExampleDeployment-{0}' -f (-join (Get-Date -Format 'yyyyMMddTHHMMssffffZ')[0..63])
-  ResourceGroupName = 'ExampleGroup'
+  DeploymentName        = 'ExampleDeployment-{0}' -f (-join (Get-Date -Format 'yyyyMMddTHHMMssffffZ')[0..63])
+  ResourceGroupName     = 'ExampleGroup'
+  TemplateParameterFile = 'parameters.json'
   # Using a local reference
-  TemplateFile      = "$home\ResourceModules\arm\Microsoft.KeyVault\vault\deploy.bicep"
+  TemplateFile          = "$home\ResourceModules\arm\Microsoft.KeyVault\vault\deploy.bicep"
   # Using a remote reference
-  # TemplateUri     = 'https://raw.githubusercontent.com/Azure/ResourceModules/main/arm/Microsoft.KeyVault/vaults/deploy.bicep'
+  # TemplateUri         = 'https://raw.githubusercontent.com/Azure/ResourceModules/main/arm/Microsoft.KeyVault/vaults/deploy.bicep'
 }
 New-AzResourceGroupDeployment @inputObject
 ```
@@ -53,11 +54,13 @@ To be used if the targeted scope in the first line of the template is:
 
 ```PowerShell
 $inputObject = @{
-  DeploymentName = 'ExampleDeployment-{0}' -f (-join (Get-Date -Format 'yyyyMMddTHHMMssffffZ')[0..63])
+  DeploymentName        = 'ExampleDeployment-{0}' -f (-join (Get-Date -Format 'yyyyMMddTHHMMssffffZ')[0..63])
+  TemplateParameterFile = 'parameters.json'
+  Location              = 'EastUS2'
   # Using a local reference
-  TemplateFile   = "$home\ResourceModules\arm\Microsoft.Resources\resourceGroups\deploy.bicep"
+  TemplateFile          = "$home\ResourceModules\arm\Microsoft.Resources\resourceGroups\deploy.bicep"
   # Using a remote reference
-  # TemplateUri  = 'https://raw.githubusercontent.com/Azure/ResourceModules/main/arm/Microsoft.Resources/resourceGroups/deploy.bicep'
+  # TemplateUri         = 'https://raw.githubusercontent.com/Azure/ResourceModules/main/arm/Microsoft.Resources/resourceGroups/deploy.bicep'
 }
 New-AzDeployment @inputObject
 ```
@@ -75,11 +78,14 @@ To be used if the targeted scope in the first line of the template is:
 
 ```PowerShell
 $inputObject = @{
-  DeploymentName = 'ExampleDeployment-{0}' -f (-join (Get-Date -Format 'yyyyMMddTHHMMssffffZ')[0..63])
+  DeploymentName        = 'ExampleDeployment-{0}' -f (-join (Get-Date -Format 'yyyyMMddTHHMMssffffZ')[0..63])
+  ManagementGroupId     = 'myManagementGroup'
+  Location              = 'EastUS2'
+  TemplateParameterFile = 'parameters.json'
   # Using a local reference
-  TemplateFile   = "$home\ResourceModules\arm\Microsoft.Authorization\policyAssignments\managementGroup\deploy.bicep"
+  TemplateFile          = "$home\ResourceModules\arm\Microsoft.Authorization\policyAssignments\managementGroup\deploy.bicep"
   # Using a remote reference
-  # TemplateUri  = 'https://raw.githubusercontent.com/Azure/ResourceModules/main/arm/Microsoft.Authorization/policyAssignments/managementGroup/deploy.bicep'
+  # TemplateUri         = 'https://raw.githubusercontent.com/Azure/ResourceModules/main/arm/Microsoft.Authorization/policyAssignments/managementGroup/deploy.bicep'
 }
 New-AzManagementGroupDeployment @inputObject
 ```
@@ -97,11 +103,13 @@ To be used if the targeted scope in the first line of the template is:
 
 ```PowerShell
 $inputObject = @{
-  DeploymentName = 'ExampleDeployment-{0}' -f (-join (Get-Date -Format 'yyyyMMddTHHMMssffffZ')[0..63])
+  DeploymentName        = 'ExampleDeployment-{0}' -f (-join (Get-Date -Format 'yyyyMMddTHHMMssffffZ')[0..63])
+  TemplateParameterFile = 'parameters.json'
+  Location              = 'EastUS2'
   # Using a local reference
-  TemplateFile   = "$home\ResourceModules\arm\Microsoft.Subscription\aliases\deploy.bicep"
+  TemplateFile          = "$home\ResourceModules\arm\Microsoft.Subscription\aliases\deploy.bicep"
   # Using a remote reference
-  # TemplateUri  = 'https://raw.githubusercontent.com/Azure/ResourceModules/main/arm/Microsoft.Subscription/aliases/deploy.bicep'
+  # TemplateUri         = 'https://raw.githubusercontent.com/Azure/ResourceModules/main/arm/Microsoft.Subscription/aliases/deploy.bicep'
 }
 New-AzTenantDeployment @inputObject
 ```
@@ -124,10 +132,11 @@ az group create --name 'ExampleGroup' --location "Central US"
 $inputObject = @(
   '--name',           ('ExampleDeployment-{0}' -f (-join (Get-Date -Format 'yyyyMMddTHHMMssffffZ')[0..63])),
   '--resource-group', 'ExampleGroup',
-    # Using a local reference
+  '--parameters',     '@parameters.json',
+  # Using a local reference
   '--template-file',  "$home\ResourceModules\arm\Microsoft.Storage\storageAccounts\deploy.bicep",
   # Using a remote reference
-  # '--template-uri',   'https://raw.githubusercontent.com/Azure/ResourceModules/main/arm/Microsoft.Storage/storageAccounts/deploy.bicep',
+  # '--template-uri',   'https://raw.githubusercontent.com/Azure/ResourceModules/main/arm/Microsoft.Storage/storageAccounts/deploy.bicep'
 )
 az deployment group create @inputObject
 ```
@@ -146,11 +155,12 @@ To be used if the targeted scope in the first line of the template is:
 ```bash
 $inputObject = @(
   '--name',           ('ExampleDeployment-{0}' -f (-join (Get-Date -Format 'yyyyMMddTHHMMssffffZ')[0..63])),
-  '--resource-group', 'ExampleGroup',
-    # Using a local reference
+  '--parameters',     '@parameters.json',
+  '--location',       'EastUS2',
+  # Using a local reference
   '--template-file',  "$home\ResourceModules\arm\Microsoft.Resources\resourceGroups\deploy.bicep"
   # Using a remote reference
-  # '--template-uri',  'https://raw.githubusercontent.com/Azure/ResourceModules/main/arm/Microsoft.Resources/resourceGroups/deploy.bicep',
+  # '--template-uri',  'https://raw.githubusercontent.com/Azure/ResourceModules/main/arm/Microsoft.Resources/resourceGroups/deploy.bicep'
 )
 az deployment sub create @inputObject
 ```
@@ -168,12 +178,14 @@ To be used if the targeted scope in the first line of the template is:
 
 ```bash
 $inputObject = @(
-  '--name',           ('ExampleDeployment-{0}' -f (-join (Get-Date -Format 'yyyyMMddTHHMMssffffZ')[0..63])),
-  '--resource-group', 'ExampleGroup',
-    # Using a local reference
-  '--template-file',  "$home\ResourceModules\arm\Microsoft.Authorization\policyAssignments\managementGroup\deploy.bicep"
+  '--name',                ('ExampleDeployment-{0}' -f (-join (Get-Date -Format 'yyyyMMddTHHMMssffffZ')[0..63])),
+  '--parameters',          '@parameters.json',
+  '--location',            'EastUS2',
+  '--management-group-id', 'myManagementGroup',
+  # Using a local reference
+  '--template-file',       "$home\ResourceModules\arm\Microsoft.Authorization\policyAssignments\managementGroup\deploy.bicep"
   # Using a remote reference
-  # '--template-uri',  'https://raw.githubusercontent.com/Azure/ResourceModules/main/arm/Microsoft.Authorization/policyAssignments/managementGroup/deploy.bicep',
+  # '--template-uri',      'https://raw.githubusercontent.com/Azure/ResourceModules/main/arm/Microsoft.Authorization/policyAssignments/managementGroup/deploy.bicep'
 )
 az deployment mg create @inputObject
 ```
@@ -192,11 +204,12 @@ To be used if the targeted scope in the first line of the template is:
 ```bash
 $inputObject = @(
   '--name',           ('ExampleDeployment-{0}' -f (-join (Get-Date -Format 'yyyyMMddTHHMMssffffZ')[0..63])),
-  '--resource-group', 'ExampleGroup',
-    # Using a local reference
+  '--parameters',     '@parameters.json',
+  '--location',       'EastUS2',
+  # Using a local reference
   '--template-file',  "$home\ResourceModules\arm\Microsoft.Subscription\aliases\deploy.bicep"
   # Using a remote reference
-  # '--template-uri',  'https://raw.githubusercontent.com/Azure/ResourceModules/main/arm/Microsoft.Subscription/aliases/deploy.bicep',
+  # '--template-uri',  'https://raw.githubusercontent.com/Azure/ResourceModules/main/arm/Microsoft.Subscription/aliases/deploy.bicep'
 )
 az deployment tenant create @inputObject
 ```
