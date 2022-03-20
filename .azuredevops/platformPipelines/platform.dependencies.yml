@@ -85,6 +85,21 @@ stages:
                 Write-Verbose "msiPrincipalId: $msiPrincipalId" -Verbose
                 Write-Output ('##vso[task.setvariable variable={0};isOutput=true]{1}' -f 'msiPrincipalId', $msiPrincipalId)
 
+  - stage: deploy_sf
+    displayName: Deploy server farm
+    dependsOn:
+      - deploy_rg
+    variables:
+      resourceType: 'Microsoft.Web/serverfarms'
+      templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
+    jobs:
+      - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
+        parameters:
+          deploymentBlocks:
+            - path: $(dependencyPath)/$(resourceType)/parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: Server farm
+
   - stage: deploy_pa
     displayName: Deploy policy assignment
     dependsOn:
