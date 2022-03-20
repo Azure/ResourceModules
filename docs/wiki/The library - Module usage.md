@@ -102,7 +102,7 @@ For more information please refer to the official [Microsoft docs](https://docs.
 ```bash
 az group create --name 'ExampleGroup' --location "Central US"
 $inputObject = @(
-  '--name',           'ExampleDeployment-{0}' -f (-join (Get-Date -Format 'yyyyMMddTHHMMssffffZ')[0..63]),
+  '--name',           ('ExampleDeployment-{0}' -f (-join (Get-Date -Format 'yyyyMMddTHHMMssffffZ')[0..63])),
   '--resource-group', 'ExampleGroup',
     # Using a local reference
   '--template-file',  "$home\ResourceModules\arm\Microsoft.Storage\storageAccounts\deploy.bicep",
@@ -121,10 +121,10 @@ For more information please refer to the official [Microsoft docs](https://docs.
 
 ```bash
 $inputObject = @(
-  '--name',           'ExampleDeployment-{0}' -f (-join (Get-Date -Format 'yyyyMMddTHHMMssffffZ')[0..63]),
+  '--name',           ('ExampleDeployment-{0}' -f (-join (Get-Date -Format 'yyyyMMddTHHMMssffffZ')[0..63])),
   '--resource-group', 'ExampleGroup',
     # Using a local reference
-  '--template-file',  "$home\ResourceModules\arm\Microsoft.Resources\resourceGroups\deploy.bicep",
+  '--template-file',  "$home\ResourceModules\arm\Microsoft.Resources\resourceGroups\deploy.bicep"
   # Using a remote reference
   # '--template-uri',  'https://raw.githubusercontent.com/Azure/ResourceModules/main/arm/Microsoft.Resources/resourceGroups/deploy.bicep',
 )
@@ -140,10 +140,10 @@ For more information please refer to the official [Microsoft docs](https://docs.
 
 ```bash
 $inputObject = @(
-  '--name',           'ExampleDeployment-{0}' -f (-join (Get-Date -Format 'yyyyMMddTHHMMssffffZ')[0..63]),
+  '--name',           ('ExampleDeployment-{0}' -f (-join (Get-Date -Format 'yyyyMMddTHHMMssffffZ')[0..63])),
   '--resource-group', 'ExampleGroup',
     # Using a local reference
-  '--template-file',  "$home\ResourceModules\arm\Microsoft.Authorization\policyAssignments\managementGroup\deploy.bicep",
+  '--template-file',  "$home\ResourceModules\arm\Microsoft.Authorization\policyAssignments\managementGroup\deploy.bicep"
   # Using a remote reference
   # '--template-uri',  'https://raw.githubusercontent.com/Azure/ResourceModules/main/arm/Microsoft.Authorization/policyAssignments/managementGroup/deploy.bicep',
 )
@@ -159,10 +159,10 @@ For more information please refer to the official [Microsoft docs](https://docs.
 
 ```bash
 $inputObject = @(
-  '--name',           'ExampleDeployment-{0}' -f (-join (Get-Date -Format 'yyyyMMddTHHMMssffffZ')[0..63]),
+  '--name',           ('ExampleDeployment-{0}' -f (-join (Get-Date -Format 'yyyyMMddTHHMMssffffZ')[0..63])),
   '--resource-group', 'ExampleGroup',
     # Using a local reference
-  '--template-file',  "$home\ResourceModules\arm\Microsoft.Subscription\aliases\deploy.bicep",
+  '--template-file',  "$home\ResourceModules\arm\Microsoft.Subscription\aliases\deploy.bicep"
   # Using a remote reference
   # '--template-uri',  'https://raw.githubusercontent.com/Azure/ResourceModules/main/arm/Microsoft.Subscription/aliases/deploy.bicep',
 )
