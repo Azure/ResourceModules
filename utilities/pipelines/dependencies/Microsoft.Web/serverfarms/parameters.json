@@ -10,16 +10,6 @@
                 "name": "F1",
                 "tier": "Free"
             }
-        },
-        "roleAssignments": {
-            "value": [
-                {
-                    "roleDefinitionIdOrName": "Reader",
-                    "principalIds": [
-                        "<<deploymentSpId>>"
-                    ]
-                }
-            ]
         }
     }
 }
