@@ -97,8 +97,9 @@ param diagnosticEventHubName string = ''
   'AppServiceHTTPLogs'
   'AppServiceConsoleLogs'
   'AppServiceAppLogs'
-  'AppServiceFileAuditLogs'
   'AppServiceAuditLogs'
+  'AppServiceIPSecAuditLogs'
+  'AppServicePlatformLogs'
   'FunctionAppLogs'
 ])
 param logsToEnable array = kind == 'functionapp' ? [
@@ -107,8 +108,9 @@ param logsToEnable array = kind == 'functionapp' ? [
   'AppServiceHTTPLogs'
   'AppServiceConsoleLogs'
   'AppServiceAppLogs'
-  'AppServiceFileAuditLogs'
   'AppServiceAuditLogs'
+  'AppServiceIPSecAuditLogs'
+  'AppServicePlatformLogs'
 ]
 
 @description('Optional. The name of metrics that will be streamed.')
