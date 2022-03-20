@@ -37,7 +37,7 @@ param functionsWorkerRuntime string = ''
 @description('Optional. Version if the function extension.')
 param functionsExtensionVersion string = '~3'
 
-@description('Optional. The resource ID of the app service plan to use for the site. If not provided, the appServicePlanObject is used to create a new plan.')
+@description('Optional. The resource ID of the app service plan to use for the site.')
 param serverFarmResourceId string = ''
 
 @description('Optional. The resource ID of the existing app insight to leverage for the app. If the resource ID is not provided, the appInsightObject can be used to create a new app insight.')

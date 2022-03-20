@@ -40,7 +40,7 @@ This module deploys a web or function app.
 | `name` | string |  |  | Required. Name of the site. |
 | `privateEndpoints` | array | `[]` |  | Optional. Configuration details for private endpoints. |
 | `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
-| `serverFarmResourceId` | string |  |  | Optional. The resource ID of the app service plan to use for the site. If not provided, the appServicePlanObject is used to create a new plan. |
+| `serverFarmResourceId` | string |  |  | Optional. The resource ID of the app service plan to use for the site. |
 | `siteConfig` | object | `{object}` |  | Optional. Configuration of the app. |
 | `storageAccountId` | string |  |  | Optional. Required if functionapp kind. The resource ID of the storage account to manage triggers and logging function executions. |
 | `systemAssignedIdentity` | bool | `False` |  | Optional. Enables system assigned managed identity on the resource. |
