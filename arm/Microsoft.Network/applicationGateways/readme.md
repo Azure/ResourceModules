@@ -35,7 +35,7 @@ This module deploys Network ApplicationGateways.
 | `enableHttp2` | bool | `False` |  | Optional. Whether HTTP2 is enabled on the application gateway resource. |
 | `enableRequestBuffering` | bool | `False` |  | Optional. Enable request buffering. |
 | `enableResponseBuffering` | bool | `False` |  | Optional. Enable response buffering. |
-| `firewallPolicyId` | string |  |  | Optional. The resource Id of an associated firewall policy. |
+| `firewallPolicyId` | string |  |  | Optional. The resource ID of an associated firewall policy. |
 | `frontendIPConfigurations` | array | `[]` |  | Optional. Frontend IP addresses of the application gateway resource. |
 | `frontendPorts` | array | `[]` |  | Optional. Frontend ports of the application gateway resource. |
 | `gatewayIPConfigurations` | array | `[]` |  | Optional. Subnets of the application gateway resource. |

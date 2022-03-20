@@ -32,7 +32,7 @@ param enableFips bool = false
 @description('Optional. Whether HTTP2 is enabled on the application gateway resource.')
 param enableHttp2 bool = false
 
-@description('Optional. The resource Id of an associated firewall policy.')
+@description('Optional. The resource ID of an associated firewall policy.')
 param firewallPolicyId string = ''
 
 @description('Optional. Frontend IP addresses of the application gateway resource.')
