@@ -130,7 +130,7 @@ param basetime string = utcNow('u')
 @description('Optional. Enable or disallow public network access to Storage Account..')
 param publicNetworkAccess string = 'Enabled'
 
-@description('Optional. Allows https traffic only to storage service if sets to true.')
+@description('Optional. Allows HTTPS traffic only to storage service if sets to true.')
 param supportsHttpsTrafficOnly bool = true
 
 @description('Optional. The name of metrics that will be streamed.')
