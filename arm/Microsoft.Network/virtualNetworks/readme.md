@@ -36,6 +36,45 @@ This template deploys a virtual network (vNet).
 | `tags` | object | `{object}` |  | Optional. Tags of the resource. |
 | `virtualNetworkPeerings` | _[virtualNetworkPeerings](virtualNetworkPeerings/readme.md)_ array | `[]` |  | Optional. Virtual Network Peerings configurations |
 
+### Parameter Usage: `subnets`
+
+Below you can find an example for the subnet property's usage. For all remaining properties, please refer to the _[subnets](subnets/readme.md)_ readme.
+
+```json
+"subnets": {
+    "value": [
+        {
+            "name": "GatewaySubnet",
+            "addressPrefix": "10.0.255.0/24"
+        },
+        {
+            "name": "<<namePrefix>>-az-subnet-x-001",
+            "addressPrefix": "10.0.0.0/24",
+            "networkSecurityGroupId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/networkSecurityGroups/adp-<<namePrefix>>-az-nsg-x-001",
+            "serviceEndpoints": [
+                {
+                    "service": "Microsoft.Storage"
+                },
+                {
+                    "service": "Microsoft.Sql"
+                }
+            ],
+            "routeTableId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/routeTables/adp-<<namePrefix>>-az-udr-x-001",
+            "delegations": [
+                {
+                    "name": "netappDel",
+                    "properties": {
+                        "serviceName": "Microsoft.Netapp/volumes"
+                    }
+                }
+            ],
+            "privateEndpointNetworkPolicies": "Disabled",
+            "privateLinkServiceNetworkPolicies": "Enabled"
+        }
+    ]
+}
+```
+
 ### Parameter Usage: `virtualNetworkPeerings`
 
 As the virtual network peering array allows you to deploy not only a one-way but also two-way peering (i.e reverse), you can use the following ***additional*** properties on top of what is documented in _[virtualNetworkPeerings](virtualNetworkPeerings/readme.md)_.
@@ -49,6 +88,24 @@ As the virtual network peering array allows you to deploy not only a one-way but
 | `remotePeeringAllowVirtualNetworkAccess` | bool | `true` | | Optional. Whether the VMs in the local virtual network space would be able to access the VMs in remote virtual network space. |
 | `remotePeeringDoNotVerifyRemoteGateways` | bool | `true` | | Optional. If we need to verify the provisioning state of the remote gateway. |
 | `remotePeeringUseRemoteGateways` | bool | `false` | |  Optional. If remote gateways can be used on this virtual network. If the flag is set to `true`, and allowGatewayTransit on local peering is also `true`, virtual network will use gateways of local virtual network for transit. Only one peering can have this flag set to `true`. This flag cannot be set if virtual network already has a gateway.  |
+
+```json
+"virtualNetworkPeerings": {
+    "value": [
+        {
+            "remoteVirtualNetworkId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-peer01",
+            "allowForwardedTraffic": true,
+            "allowGatewayTransit": false,
+            "allowVirtualNetworkAccess": true,
+            "useRemoteGateways": false,
+            "remotePeeringEnabled": true,
+            "remotePeeringName": "customName",
+            "remotePeeringAllowVirtualNetworkAccess": true,
+            "remotePeeringAllowForwardedTraffic": true
+        }
+    ]
+}
+```
 
 ### Parameter Usage: `addressPrefixes`
 
