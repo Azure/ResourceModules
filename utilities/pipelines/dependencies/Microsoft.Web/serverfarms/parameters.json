@@ -7,8 +7,11 @@
         },
         "sku": {
             "value": {
-                "name": "F1",
-                "tier": "Free"
+                "name": "S1",
+                "tier": "Standard",
+                "size": "S1",
+                "family": "S",
+                "capacity": 1
             }
         }
     }
