@@ -34,6 +34,8 @@ This module is used to deploy a storage account, with the ability to deploy 1 or
 | `diagnosticEventHubAuthorizationRuleId` | string |  |  | Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string |  |  | Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
+| `diagnosticMetricsToEnable` | array | `[Transaction]` | `[Transaction]` | Optional. The name of metrics that will be streamed. |
+| `diagnosticSettingsName` | string | `[format('{0}-diagnosticSettings', parameters('name'))]` |  | Optional. The name of the diagnostic setting, if deployed. |
 | `diagnosticStorageAccountId` | string |  |  | Optional. Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string |  |  | Optional. Resource ID of the diagnostic log analytics workspace. |
 | `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
@@ -42,7 +44,6 @@ This module is used to deploy a storage account, with the ability to deploy 1 or
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
 | `managementPolicyRules` | array | `[]` |  | Optional. The Storage Account ManagementPolicies Rules. |
-| `diagnosticMetricsToEnable` | array | `[Transaction]` | `[Transaction]` | Optional. The name of metrics that will be streamed. |
 | `minimumTlsVersion` | string | `TLS1_2` | `[TLS1_0, TLS1_1, TLS1_2]` | Optional. Set the minimum TLS version on request to storage. |
 | `name` | string |  |  | Optional. Name of the Storage Account. |
 | `networkAcls` | object | `{object}` |  | Optional. Networks ACLs, this value contains IPs to whitelist and/or Subnet information. For security reasons, it is recommended to set the DefaultAction Deny |
@@ -54,7 +55,7 @@ This module is used to deploy a storage account, with the ability to deploy 1 or
 | `storageAccountAccessTier` | string | `Hot` | `[Hot, Cool]` | Optional. Storage Account Access Tier. |
 | `storageAccountKind` | string | `StorageV2` | `[Storage, StorageV2, BlobStorage, FileStorage, BlockBlobStorage]` | Optional. Type of Storage Account to create. |
 | `storageAccountSku` | string | `Standard_GRS` | `[Standard_LRS, Standard_GRS, Standard_RAGRS, Standard_ZRS, Premium_LRS, Premium_ZRS, Standard_GZRS, Standard_RAGZRS]` | Optional. Storage Account Sku Name. |
-| `supportsHttpsTrafficOnly` | bool | `True` |  | Optional. Allows HTTPS traffic only to storage service if sets to true. |
+| `supportsHttpsTrafficOnly` | bool | `True` |  | Optional. Allows https traffic only to storage service if sets to true. |
 | `systemAssignedIdentity` | bool | `False` |  | Optional. Enables system assigned managed identity on the resource. |
 | `tableServices` | _[tableServices](tableServices/readme.md)_ object | `{object}` |  | Optional. Table service and tables to create. |
 | `tags` | object | `{object}` |  | Optional. Tags of the resource. |
