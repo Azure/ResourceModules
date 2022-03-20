@@ -139,7 +139,13 @@ param diagnosticMetricsToEnable array = [
   'AllMetrics'
 ]
 
-var virtualNetworkGatewayDiagnosticsLogs = [for log in virtualNetworkGatewaydiagnosticLogCategoriesToEnable: {
+@description('Optional. The name of the diagnostic setting, if deployed.')
+param virtualNetworkGatewayDiagnosticSettingsName string = '${name}-diagnosticSettings'
+
+@description('Optional. The name of the diagnostic setting, if deployed.')
+param publicIpDiagnosticSettingsName string = '${name}-diagnosticSettings'
+
+var virtualNetworkGatewayDiagnosticsLogs = [for category in virtualNetworkGatewaydiagnosticLogCategoriesToEnable: {
   category: category
   enabled: true
   retentionPolicy: {
@@ -147,7 +153,8 @@ var virtualNetworkGatewayDiagnosticsLogs = [for log in virtualNetworkGatewaydiag
     days: diagnosticLogsRetentionInDays
   }
 }]
-var publicIpDiagnosticsLogs = [for log in publicIpdiagnosticLogCategoriesToEnable: {
+
+var publicIpDiagnosticsLogs = [for category in publicIpdiagnosticLogCategoriesToEnable: {
   category: category
   enabled: true
   retentionPolicy: {
@@ -314,7 +321,7 @@ resource virtualGatewayPublicIP_lock 'Microsoft.Authorization/locks@2017-04-01' 
 
 @batchSize(1)
 resource virtualNetworkGatewayPublicIp_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2021-05-01-preview' = [for (virtualGatewayPublicIpName, index) in virtualGatewayPipName_var: if ((!empty(diagnosticStorageAccountId)) || (!empty(diagnosticWorkspaceId)) || (!empty(diagnosticEventHubAuthorizationRuleId)) || (!empty(diagnosticEventHubName))) {
-  name: '${virtualGatewayPublicIpName}-diagnosticSettings'
+  name: publicIpDiagnosticSettingsName
   properties: {
     storageAccountId: !empty(diagnosticStorageAccountId) ? diagnosticStorageAccountId : null
     workspaceId: !empty(diagnosticWorkspaceId) ? diagnosticWorkspaceId : null
@@ -360,7 +367,7 @@ resource virtualNetworkGateway_lock 'Microsoft.Authorization/locks@2017-04-01' =
 }
 
 resource virtualNetworkGateway_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = if (!empty(diagnosticStorageAccountId) || !empty(diagnosticWorkspaceId) || !empty(diagnosticEventHubAuthorizationRuleId) || !empty(diagnosticEventHubName)) {
-  name: '${virtualNetworkGateway.name}-diagnosticSettings'
+  name: virtualNetworkGatewayDiagnosticSettingsName
   properties: {
     storageAccountId: !empty(diagnosticStorageAccountId) ? diagnosticStorageAccountId : null
     workspaceId: !empty(diagnosticWorkspaceId) ? diagnosticWorkspaceId : null
