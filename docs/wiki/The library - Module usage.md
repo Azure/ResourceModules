@@ -26,7 +26,7 @@ This sub-section gives you an example on how to deploy a template from your loca
 New-AzResourceGroup -Name 'ExampleGroup' -Location "Central US"
 
 $inputObject = @{
-  DeploymentName    = 'ExampleDeployment'
+  DeploymentName    = 'ExampleDeployment-{0}' -f (-join (Get-Date -Format 'yyyyMMddTHHMMssffffZ')[0..63])
   ResourceGroupName = 'ExampleGroup'
   # Using a local reference
   TemplateFile      = "$home\ResourceModules\arm\Microsoft.KeyVault\vault\deploy.bicep"
@@ -45,7 +45,7 @@ For more information please refer to the official [Microsoft docs](https://docs.
 
 ```PowerShell
 $inputObject = @{
-  DeploymentName = 'ExampleDeployment'
+  DeploymentName = 'ExampleDeployment-{0}' -f (-join (Get-Date -Format 'yyyyMMddTHHMMssffffZ')[0..63])
   # Using a local reference
   TemplateFile   = "$home\ResourceModules\arm\Microsoft.Resources\resourceGroups\deploy.bicep"
   # Using a remote reference
@@ -63,7 +63,7 @@ For more information please refer to the official [Microsoft docs](https://docs.
 
 ```PowerShell
 $inputObject = @{
-  DeploymentName = 'ExampleDeployment'
+  DeploymentName = 'ExampleDeployment-{0}' -f (-join (Get-Date -Format 'yyyyMMddTHHMMssffffZ')[0..63])
   # Using a local reference
   TemplateFile   = "$home\ResourceModules\arm\Microsoft.Authorization\policyAssignments\managementGroup\deploy.bicep"
   # Using a remote reference
@@ -81,7 +81,7 @@ For more information please refer to the official [Microsoft docs](https://docs.
 
 ```PowerShell
 $inputObject = @{
-  DeploymentName = 'ExampleDeployment'
+  DeploymentName = 'ExampleDeployment-{0}' -f (-join (Get-Date -Format 'yyyyMMddTHHMMssffffZ')[0..63])
   # Using a local reference
   TemplateFile   = "$home\ResourceModules\arm\Microsoft.Subscription\aliases\deploy.bicep"
   # Using a remote reference
@@ -102,7 +102,7 @@ For more information please refer to the official [Microsoft docs](https://docs.
 ```bash
 az group create --name 'ExampleGroup' --location "Central US"
 $inputObject = @(
-  '--name',           'ExampleDeployment',
+  '--name',           'ExampleDeployment-{0}' -f (-join (Get-Date -Format 'yyyyMMddTHHMMssffffZ')[0..63]),
   '--resource-group', 'ExampleGroup',
     # Using a local reference
   '--template-file',  "$home\ResourceModules\arm\Microsoft.Storage\storageAccounts\deploy.bicep",
@@ -121,7 +121,7 @@ For more information please refer to the official [Microsoft docs](https://docs.
 
 ```bash
 $inputObject = @(
-  '--name',           'ExampleDeployment',
+  '--name',           'ExampleDeployment-{0}' -f (-join (Get-Date -Format 'yyyyMMddTHHMMssffffZ')[0..63]),
   '--resource-group', 'ExampleGroup',
     # Using a local reference
   '--template-file',  "$home\ResourceModules\arm\Microsoft.Resources\resourceGroups\deploy.bicep",
@@ -140,7 +140,7 @@ For more information please refer to the official [Microsoft docs](https://docs.
 
 ```bash
 $inputObject = @(
-  '--name',           'ExampleDeployment',
+  '--name',           'ExampleDeployment-{0}' -f (-join (Get-Date -Format 'yyyyMMddTHHMMssffffZ')[0..63]),
   '--resource-group', 'ExampleGroup',
     # Using a local reference
   '--template-file',  "$home\ResourceModules\arm\Microsoft.Authorization\policyAssignments\managementGroup\deploy.bicep",
@@ -159,7 +159,7 @@ For more information please refer to the official [Microsoft docs](https://docs.
 
 ```bash
 $inputObject = @(
-  '--name',           'ExampleDeployment',
+  '--name',           'ExampleDeployment-{0}' -f (-join (Get-Date -Format 'yyyyMMddTHHMMssffffZ')[0..63]),
   '--resource-group', 'ExampleGroup',
     # Using a local reference
   '--template-file',  "$home\ResourceModules\arm\Microsoft.Subscription\aliases\deploy.bicep",
