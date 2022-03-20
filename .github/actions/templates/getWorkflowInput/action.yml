@@ -4,7 +4,7 @@
 ##
 ## This composite action contains the logic to read workflow runtime parameters and publih their value as a workflow output.
 ## This is essential in case a workflow was not triggered via 'workflow_dispatch' as this renders the otherwise available runtime parameters unavailable.
-## To solve this, the action reads the workflow file and looks out for the default value to publish it as an output regardless.
+## To solve this, the action reads the workflow file for the module, and looks for the default values of the workflow inputs and publishes them as an output, regardless of how the workflow was triggered.
 ##
 ## Currently publsihes the runtime parameter(s):
 ## - removeDeployment
