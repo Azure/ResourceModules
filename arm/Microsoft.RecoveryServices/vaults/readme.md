@@ -9,11 +9,15 @@ This module deploys a recovery service vault.
 | `Microsoft.Authorization/locks` | 2017-04-01 |
 | `Microsoft.Authorization/roleAssignments` | 2021-04-01-preview |
 | `Microsoft.Insights/diagnosticSettings` | 2021-05-01-preview |
-| `Microsoft.RecoveryServices/vaults` | 2021-12-01 |
+| `Microsoft.RecoveryServices/vaults` | 2021-11-01-preview |
 | `Microsoft.RecoveryServices/vaults/backupconfig` | 2021-10-01 |
 | `Microsoft.RecoveryServices/vaults/backupFabrics/protectionContainers` | 2021-08-01 |
 | `Microsoft.RecoveryServices/vaults/backupPolicies` | 2021-08-01 |
 | `Microsoft.RecoveryServices/vaults/backupstorageconfig` | 2021-08-01 |
+| `Microsoft.RecoveryServices/vaults/replicationFabrics` | 2021-12-01 |
+| `Microsoft.RecoveryServices/vaults/replicationFabrics/replicationProtectionContainers` | 2021-12-01 |
+| `Microsoft.RecoveryServices/vaults/replicationFabrics/replicationProtectionContainers/replicationProtectionContainerMappings` | 2021-12-01 |
+| `Microsoft.RecoveryServices/vaults/replicationPolicies` | 2021-12-01 |
 
 ## Parameters
 
@@ -35,6 +39,8 @@ This module deploys a recovery service vault.
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
 | `name` | string |  |  | Required. Name of the Azure Recovery Service Vault |
 | `protectionContainers` | _[protectionContainers](protectionContainers/readme.md)_ array | `[]` |  | Optional. List of all protection containers. |
+| `replicationFabrics` | _[replicationFabrics](replicationFabrics/readme.md)_ array | `[]` |  | Optional. List of all replication fabrics. |
+| `replicationPolicies` | _[replicationPolicies](replicationPolicies/readme.md)_ array | `[]` |  | Optional. List of all replication policies. |
 | `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
 | `systemAssignedIdentity` | bool | `False` |  | Optional. Enables system assigned managed identity on the resource. |
 | `tags` | object | `{object}` |  | Optional. Tags of the Recovery Service Vault resource. |
@@ -333,6 +339,58 @@ Array of backup policies. They need to be properly formatted and can be VM backu
 }
 ```
 
+### Parameter Usage: `replicationFabrics`
+
+```json
+"replicationFabrics": {
+  "value": [
+      {
+          "location": "NorthEurope",
+          "replicationContainers": [
+              {
+                  "name": "ne-container1",
+                  "replicationContainerMappings": [
+                    {
+                      "policyName": "Default_values",
+                      "targetContainerFabricName": "WestEurope-Fabric",
+                      "targetContainerName": "we-conainer2"
+                    }
+                  ]
+              }
+          ]
+      },
+      {
+          "name": "WestEurope-Fabric", //Optional
+          "location": "WestEurope",
+          "replicationContainers": [
+              {
+                  "name": "we-conainer2"
+              }
+          ]
+      }
+  ]
+},
+```
+
+### Parameter Usage: `replicationPolicies`
+
+```json
+"replicationPolicies": {
+    "value": [
+        {
+            "name": "Default_values"
+        },
+        {
+            "name": "Custom_values",
+            "appConsistentFrequencyInMinutes": 240,
+            "crashConsistentFrequencyInMinutes": 7,
+            "multiVmSyncStatus": "Disable",
+            "recoveryPointHistory": 2880
+        }
+    ]
+}
+```
+
 ### Parameter Usage: `userAssignedIdentities`
 
 You can specify multiple user assigned identities to a resource by providing additional resource IDs using the following format:
@@ -360,8 +418,12 @@ You can specify multiple user assigned identities to a resource by providing add
 - [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings)
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
 - [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)
-- [Vaults](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2021-12-01/vaults)
+- [Vaults](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2021-11-01-preview/vaults)
 - [Vaults/Backupconfig](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2021-10-01/vaults/backupconfig)
 - [Vaults/Backupfabrics/Protectioncontainers](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2021-08-01/vaults/backupFabrics/protectionContainers)
 - [Vaults/Backuppolicies](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2021-08-01/vaults/backupPolicies)
 - [Vaults/Backupstorageconfig](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2021-08-01/vaults/backupstorageconfig)
+- [Vaults/Replicationfabrics](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2021-12-01/vaults/replicationFabrics)
+- [Vaults/Replicationfabrics/Replicationprotectioncontainers](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2021-12-01/vaults/replicationFabrics/replicationProtectionContainers)
+- [Vaults/Replicationfabrics/Replicationprotectioncontainers/Replicationprotectioncontainermappings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2021-12-01/vaults/replicationFabrics/replicationProtectionContainers/replicationProtectionContainerMappings)
+- [Vaults/Replicationpolicies](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2021-12-01/vaults/replicationPolicies)

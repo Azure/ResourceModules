@@ -37,11 +37,8 @@ param functionsWorkerRuntime string = ''
 @description('Optional. Version if the function extension.')
 param functionsExtensionVersion string = '~3'
 
-@description('Optional. The resource ID of the app service plan to use for the site. If not provided, the appServicePlanObject is used to create a new plan.')
-param appServicePlanId string = ''
-
-@description('Optional. Required if no appServicePlanId is provided to deploy a new app service plan.')
-param appServicePlanObject object = {}
+@description('Optional. The resource ID of the app service plan to use for the site.')
+param serverFarmResourceId string = ''
 
 @description('Optional. The resource ID of the existing app insight to leverage for the app. If the resource ID is not provided, the appInsightObject can be used to create a new app insight.')
 param appInsightId string = ''
@@ -100,8 +97,9 @@ param diagnosticEventHubName string = ''
   'AppServiceHTTPLogs'
   'AppServiceConsoleLogs'
   'AppServiceAppLogs'
-  'AppServiceFileAuditLogs'
   'AppServiceAuditLogs'
+  'AppServiceIPSecAuditLogs'
+  'AppServicePlatformLogs'
   'FunctionAppLogs'
 ])
 param diagnosticLogCategoriesToEnable array = kind == 'functionapp' ? [
@@ -110,8 +108,9 @@ param diagnosticLogCategoriesToEnable array = kind == 'functionapp' ? [
   'AppServiceHTTPLogs'
   'AppServiceConsoleLogs'
   'AppServiceAppLogs'
-  'AppServiceFileAuditLogs'
   'AppServiceAuditLogs'
+  'AppServiceIPSecAuditLogs'
+  'AppServicePlatformLogs'
 ]
 
 @description('Optional. The name of metrics that will be streamed.')
@@ -163,30 +162,6 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource appServicePlanExisting 'Microsoft.Web/serverfarms@2021-02-01' existing = if (!empty(appServicePlanId)) {
-  name: last(split(appServicePlanId, '/'))
-  scope: resourceGroup(split(appServicePlanId, '/')[2], split(appServicePlanId, '/')[4])
-}
-
-module appServicePlan '.bicep/nested_serverfarms.bicep' = if (empty(appServicePlanId)) {
-  name: '${uniqueString(deployment().name, location)}-Site-AppServicePlan'
-  params: {
-    name: contains(appServicePlanObject, 'name') ? !empty(appServicePlanObject.name) ? appServicePlanObject.name : '${name}-asp' : '${name}-asp'
-    location: location
-    tags: tags
-    serverOS: appServicePlanObject.serverOS
-    sku: {
-      name: appServicePlanObject.skuName
-      capacity: appServicePlanObject.skuCapacity
-      tier: appServicePlanObject.skuTier
-      size: appServicePlanObject.skuSize
-      family: appServicePlanObject.skuFamily
-    }
-    appServiceEnvironmentId: appServiceEnvironmentId
-    lock: lock
-  }
-}
-
 module appInsight '.bicep/nested_components.bicep' = if (!empty(appInsightObject)) {
   name: '${uniqueString(deployment().name, location)}-Site-AppInsight'
   params: {
@@ -194,6 +169,7 @@ module appInsight '.bicep/nested_components.bicep' = if (!empty(appInsightObject
     workspaceResourceId: appInsightObject.workspaceResourceId
     tags: tags
     lock: lock
+    location: location
   }
 }
 
@@ -204,7 +180,7 @@ resource app 'Microsoft.Web/sites@2020-12-01' = {
   tags: tags
   identity: identity
   properties: {
-    serverFarmId: !empty(appServicePlanId) ? appServicePlanExisting.id : appServicePlan.outputs.resourceId
+    serverFarmId: serverFarmResourceId
     httpsOnly: httpsOnly
     hostingEnvironmentProfile: !empty(appServiceEnvironmentId) ? {
       id: appServiceEnvironmentId

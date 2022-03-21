@@ -50,32 +50,128 @@ This template deploys a log analytics workspace.
 
 ```json
 "gallerySolutions": {
+
     "value": [
-        "AgentHealthAssessment",
-        "AlertManagement",
-        "AntiMalware",
-        "AzureActivity",
-        //"AzureAppGatewayAnalytics",
-        "AzureAutomation",
-        "AzureCdnCoreAnalytics",
-        "AzureDataFactoryAnalytics",
-        "AzureNSGAnalytics",
-        "AzureSQLAnalytics",
-        "ChangeTracking",
-        "Containers",
-        "InfrastructureInsights",
-        "KeyVaultAnalytics",
-        "LogicAppsManagement",
-        "NetworkMonitoring",
-        "Security",
-        "SecurityCenterFree",
-        "ServiceFabric",
-        "ServiceMap",
-        "SQLAssessment",
-        "Updates",
-        "VMInsights",
-        "WireData2",
-        "WaaSUpdateInsights"
+        {
+            "name": "AgentHealthAssessment",
+            "product": "OMSGallery/AgentHealthAssessment",
+            "publisher": "Microsoft"
+        },
+        {
+            "name": "AlertManagement",
+            "product": "OMSGallery/AlertManagement",
+            "publisher": "Microsoft"
+        },
+        {
+            "name": "AntiMalware",
+            "product": "OMSGallery/AntiMalware",
+            "publisher": "Microsoft"
+        },
+        {
+            "name": "AzureActivity",
+            "product": "OMSGallery/AzureActivity",
+            "publisher": "Microsoft"
+        },
+        {
+            "name": "AzureAutomation",
+            "product": "OMSGallery/AzureAutomation",
+            "publisher": "Microsoft"
+        },
+        {
+            "name": "AzureCdnCoreAnalytics",
+            "product": "OMSGallery/AzureCdnCoreAnalytics",
+            "publisher": "Microsoft"
+        },
+        {
+            "name": "AzureDataFactoryAnalytics",
+            "product": "OMSGallery/AzureDataFactoryAnalytics",
+            "publisher": "Microsoft"
+        },
+        {
+            "name": "AzureNSGAnalytics",
+            "product": "OMSGallery/AzureNSGAnalytics",
+            "publisher": "Microsoft"
+        },
+        {
+            "name": "AzureSQLAnalytics",
+            "product": "OMSGallery/AzureSQLAnalytics",
+            "publisher": "Microsoft"
+        },
+        {
+            "name": "ChangeTracking",
+            "product": "OMSGallery/ChangeTracking",
+            "publisher": "Microsoft"
+        },
+        {
+            "name": "Containers",
+            "product": "OMSGallery/Containers",
+            "publisher": "Microsoft"
+        },
+        {
+            "name": "InfrastructureInsights",
+            "product": "OMSGallery/InfrastructureInsights",
+            "publisher": "Microsoft"
+        },
+        {
+            "name": "KeyVaultAnalytics",
+            "product": "OMSGallery/KeyVaultAnalytics",
+            "publisher": "Microsoft"
+        },
+        {
+            "name": "LogicAppsManagement",
+            "product": "OMSGallery/LogicAppsManagement",
+            "publisher": "Microsoft"
+        },
+        {
+            "name": "NetworkMonitoring",
+            "product": "OMSGallery/NetworkMonitoring",
+            "publisher": "Microsoft"
+        },
+        {
+            "name": "Security",
+            "product": "OMSGallery/Security",
+            "publisher": "Microsoft"
+        },
+        {
+            "name": "SecurityCenterFree",
+            "product": "OMSGallery/SecurityCenterFree",
+            "publisher": "Microsoft"
+        },
+        {
+            "name": "ServiceFabric",
+            "product": "OMSGallery/ServiceFabric",
+            "publisher": "Microsoft"
+        },
+        {
+            "name": "ServiceMap",
+            "product": "OMSGallery/ServiceMap",
+            "publisher": "Microsoft"
+        },
+        {
+            "name": "SQLAssessment",
+            "product": "OMSGallery/SQLAssessment",
+            "publisher": "Microsoft"
+        },
+        {
+            "name": "Updates",
+            "product": "OMSGallery/Updates",
+            "publisher": "Microsoft"
+        },
+        {
+            "name": "VMInsights",
+            "product": "OMSGallery/VMInsights",
+            "publisher": "Microsoft"
+        },
+        {
+            "name": "WireData2",
+            "product": "OMSGallery/WireData2",
+            "publisher": "Microsoft"
+        },
+        {
+            "name": "WaaSUpdateInsights",
+            "product": "OMSGallery/WaaSUpdateInsights",
+            "publisher": "Microsoft"
+        }
     ]
 }
 ```
