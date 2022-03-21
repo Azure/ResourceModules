@@ -21,6 +21,18 @@
 ##   | workflowPath | true     | ''      | The path to the workflow file used to retrieve default workflow input parameters | '.github/workflows/ms.keyvault.vaults.yml' |
 ##   |===================================================================================================================================================================|
 ##
+#########################################################
+##
+##----------------------------------------##
+## ACTION OUTPUTS                         ##
+##----------------------------------------##
+##
+##   |==================================================================================================================|
+##   | Output           | Description                                                                                   |
+##   |------------------|-----------------------------------------------------------------------------------------------|
+##   | removeDeployment | A flag, set in the pipeline, to control whether deployment resources should be removed or not |
+##   |==================================================================================================================|
+##
 ##---------------------------------------------##
 
 name: 'Get Workflow Input'
@@ -33,7 +45,7 @@ inputs:
 
 outputs:
   removeDeployment:
-    description: 'Remove deployed module'
+    description: 'A flag, set in the pipeline, to control whether deployment resources should be removed or not'
     value: ${{ steps.get-input-param-action.outputs.removeDeployment }}
 
 runs:
