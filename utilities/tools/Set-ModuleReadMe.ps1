@@ -229,18 +229,18 @@ function Set-ParametersSection {
     }
 
     # Update parameter section content
-    $NewSectionContent = [System.Collections.ArrayList]@()
+    $newSectionContent = [System.Collections.ArrayList]@()
     foreach ($paramKind in $orderedParamKindArray) {
         $paramTableIdentifier = '**{0} parameters**' -f $paramKind
-        $NewSectionContent += ''
-        $NewSectionContent += $paramTableIdentifier
-        $NewSectionContent += ''
-        $NewSectionContent += $($sectionContentMapping[$paramKind])
+        $newSectionContent += ''
+        $newSectionContent += $paramTableIdentifier
+        $newSectionContent += ''
+        $newSectionContent += $($sectionContentMapping[$paramKind])
     }
 
     # Build result
     if ($PSCmdlet.ShouldProcess('Original file with new parameters content', 'Merge')) {
-        $updatedFileContent = Merge-FileWithNewContent -oldContent $ReadMeFileContent -newContent $NewSectionContent -SectionStartIdentifier $SectionStartIdentifier -contentType 'none'
+        $updatedFileContent = Merge-FileWithNewContent -oldContent $ReadMeFileContent -newContent $newSectionContent -SectionStartIdentifier $SectionStartIdentifier -contentType 'none'
     }
 
     # Build sub-section 'ParameterUsage'
