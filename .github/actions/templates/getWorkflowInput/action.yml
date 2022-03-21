@@ -6,7 +6,7 @@
 ## This is essential in case a module workflow was not triggered via the 'workflow_dispatch' method, so these runtime parameters will not be available to use when the workflow runs.
 ## To solve this, the action reads the workflow file for the module, and looks for the default values of the workflow inputs and publishes them as an output, regardless of how the workflow was triggered.
 ##
-## Currently publsihes the runtime parameter(s):
+## Currently publishes the runtime parameter(s):
 ## - removeDeployment
 ##
 #########################################################
