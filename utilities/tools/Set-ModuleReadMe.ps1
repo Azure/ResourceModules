@@ -223,7 +223,7 @@ function Set-ParametersSection {
         if ($paramKind -eq 'Required') {
             $newContent = ('| `{0}` | {1} | {2} | {3} |' -f $paramName, $type, (($allowed) ? "``$allowed``" : ''), $description)
         } else {
-            $newContent = ('| `{0}` | {1} | {2} | {3} | {4} |' -f $paramName, $type, (![string]::IsNullOrEmpty($defaultValue) ? "``$defaultValue``" : ''), (($allowed) ? "``$allowed``" : ''), $description)
+            $newContent = ('| `{0}` | {1} | {2} | {3} | {4} |' -f $paramName, $type, (-not [string]::IsNullOrEmpty($defaultValue) ? "``$defaultValue``" : ''), (($allowed) ? "``$allowed``" : ''), $description)
         }
         $sectionContentMapping[$paramKind] += $newContent
     }
