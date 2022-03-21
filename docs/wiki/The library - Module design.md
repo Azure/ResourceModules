@@ -374,10 +374,11 @@ Within a bicep file, use the following conventions:
 
 - Parameter names are in camelCase, e.g. `allowBlobPublicAccess`.
 - Descriptions contain type of requirement:
-  - `Optional` - Is not needed at any point. Module contains default values.
-  - `Required` - Is required to be provided. Module does not have a default value and will expect input.
-  - `Generated` - Should not be used to provide a parameter. Used to generate data used in the deployment that cannot be generated other places in the template. i.e. the `utcNow()` function.
-  - `Conditional` - Optional or required parameter depending on other inputs.
+  - `Required` - The parameter value must be provided. The parameter does not have a default value and hence the module expects input.
+  - `Conditional` - The parameter value can be optional or required based on a condition, mostly based on the value provided to other parameters.
+  - `Optional` - The parameter value is not mandatory. The module provides a default value for the parameter.
+  - `Generated` - The parameter value is generated within the module and should not be specified as input.
+
 
 ## Variables
 
