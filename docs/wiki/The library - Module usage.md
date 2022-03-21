@@ -5,12 +5,8 @@ This section provides a guideline on how to use the CARML Bicep modules.
 ### _Navigation_
 
 - [Deploy template](#deploy-template)
-  - [Deploy local template](#deploy-local-template)
-    - [**Local:** PowerShell](#local-powershell)
-    - [**Local:** Azure CLI](#local-azure-cli)
-  - [Deploy remote template](#deploy-remote-template)
-    - [**Remote:** PowerShell](#remote-powershell)
-    - [**Remote:** Azure CLI](#remote-azure-cli)
+  - [PowerShell](#powershell)
+  - [Azure CLI](#azure-cli)
 - [Orchestrate deployment](#orchestrate-deployment)
   - [Template-orchestration](#template-orchestration)
 ---
@@ -19,12 +15,12 @@ This section provides a guideline on how to use the CARML Bicep modules.
 
 This section shows you how to deploy a Bicep template.
 
-- [Deploy local template](#deploy-local-template)
-- [Deploy remote template](#deploy-remote-template)
+## PowerShell
 
-## Deploy local template
+This sub-section gives you an example on how to deploy a template from your local drive (file) or a publicly available remote location (URI).
 
-This sub-section gives you an example on how to deploy a template from your local drive.
+<details>
+<summary><i>Resource Group</i> scope</summary>
 
 To be used if the targeted scope in the first line of the template is:
 - **Bicep:** `targetScope = 'resourceGroup'`
@@ -115,14 +111,17 @@ $inputObject = @{
   # Using a remote reference
   # TemplateUri         = 'https://raw.githubusercontent.com/Azure/ResourceModules/main/arm/Microsoft.Subscription/aliases/deploy.bicep'
 }
-New-AzResourceGroupDeployment @inputObject
+New-AzTenantDeployment @inputObject
 ```
 
 For more information please refer to the official [Microsoft docs](https://docs.microsoft.com/en-us/powershell/module/az.resources/new-aztenantdeployment).
 
 </details>
 
-This example targets a resource group level template.
+## Azure CLI
+
+<details>
+<summary><i>Resource Group</i> scope</summary>
 
 To be used if the targeted scope in the first line of the template is:
 - **Bicep:** `targetScope = 'resourceGroup'`
@@ -144,9 +143,10 @@ az deployment group create @inputObject
 
 For more information please refer to the official [Microsoft docs](https://docs.microsoft.com/en-us/cli/azure/deployment/group?view=azure-cli-latest#az-deployment-group-create).
 
-This section gives you an example on how to deploy a template that is stored at a publicly available remote location.
+</details>
 
-### **Remote:** PowerShell
+<details>
+<summary><i>Subscription</i> scope</summary>
 
 To be used if the targeted scope in the first line of the template is:
 - **Bicep:** `targetScope = 'subscription'`
@@ -202,8 +202,6 @@ To be used if the targeted scope in the first line of the template is:
 - **ARM:** `"$schema": "https://schema.management.azure.com/schemas/2019-08-01/tenantDeploymentTemplate.json#",     `
 
 ```bash
-az group create --name 'ExampleGroup' --location "Central US"
-
 $inputObject = @(
   '--name',           ('ExampleDeployment-{0}' -f (-join (Get-Date -Format 'yyyyMMddTHHMMssffffZ')[0..63])),
   '--parameters',     '@parameters.json',
@@ -213,7 +211,7 @@ $inputObject = @(
   # Using a remote reference
   # '--template-uri',  'https://raw.githubusercontent.com/Azure/ResourceModules/main/arm/Microsoft.Subscription/aliases/deploy.bicep'
 )
-az deployment group create @inputObject
+az deployment tenant create @inputObject
 ```
 
 For more information please refer to the official [Microsoft docs](https://docs.microsoft.com/en-us/cli/azure/deployment/tenant?view=azure-cli-latest#az-deployment-tenant-create).
