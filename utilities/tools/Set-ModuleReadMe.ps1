@@ -211,8 +211,10 @@ function Set-ParametersSection {
             # Update parameter table content based on parameter category
             ## Remove category from parameter description
             $description = $description.substring("$category. ".Length)
-            # TODO: only add ` if value is not empty
-            $newSectionContent += ('| `{0}` | {1} | {2}{3}{4} |' -f $parameter.name, $type, ($hasDefaults ? "``$defaultValue`` | " : ''), ($hasAllowed ? "``$allowed`` | " : ''), $description)
+            # TODO: Fix that section is not overwritten
+            $defaultValueColumnValue = ($hasDefaults ? (-not [String]::IsNullOrEmpty($defaultValue) ? "``$defaultValue`` | " : ' | ') : '')
+            $allowedColumnValue = ($hasAllowed ? (-not [String]::IsNullOrEmpty($allowed) ? "``$allowed`` | " : ' | ') : '')
+            $newSectionContent += ('| `{0}` | {1} | {2}{3}{4} |' -f $parameter.name, $type, $defaultValueColumnValue, $allowedColumnValue, $description)
         }
         $newSectionContent += ''
     }
