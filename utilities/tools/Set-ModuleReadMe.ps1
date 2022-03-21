@@ -157,7 +157,7 @@ function Set-ParametersSection {
     $descriptions = $TemplateFileContent.parameters.Values.metadata.description
 
     # Get the module parameter categories
-    $paramKindArray = @()
+    $paramKindArray = $descriptions | ForEach-Object { $_.Split('.')[0] } | Select-Object -Unique
     foreach ($description in $descriptions) {
         $paramKind = $description.split('.')[0]
         if ($paramKindArray -notcontains $paramKind) {
