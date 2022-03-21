@@ -147,7 +147,7 @@ jobs:
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
-          parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/${{ matrix.parameterFilePaths }}'
+          parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.defaultLocation }}'
           resourceGroupName: '${{ env.defaultResourceGroupName }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'

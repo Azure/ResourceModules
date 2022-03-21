@@ -96,7 +96,7 @@ stages:
       - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
         parameters:
           deploymentBlocks:
-            - path: $(dependencyPath)/$(resourceType)/parameters.json
+            - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
               templateFilePath: $(templateFilePath)
               displayName: Server farm
 
