@@ -149,10 +149,50 @@ function Set-ParametersSection {
     )
 
     # Process content
-    $SectionContent = [System.Collections.ArrayList]@(
-        '| Parameter Name | Type | Default Value | Possible Values | Description |',
-        '| :-- | :-- | :-- | :-- | :-- |'
-    )
+
+    # Define parameter tables' order
+    $paramKindOrder = 'Required', 'Conditional', 'Optional', 'Generated'
+
+    # Get all descriptions
+    $descriptions = $templateFileContent.parameters.Values.values.values
+
+    # Get the module parameter categories
+    $paramKindArray = @()
+    foreach ($description in $descriptions) {
+        $paramKind = $description.split('.')[0]
+        if ($paramKindArray -notcontains $paramKind) {
+            $paramKindArray += $paramKind
+        }
+    }
+
+    # Order parameter categories by priority (ref https://docs.microsoft.com/en-us/dotnet/api/system.array.indexof?view=net-6.0)
+    $paramKindArrayLength = $paramKindArray.length
+    Write-Verbose ("paramKindArrayLength $paramKindArrayLength") -Verbose
+    $orderedParamKindArray = $paramKindArray | Sort-Object {
+        if ($paramKindOrder.IndexOf($_) -eq '-1') {
+            $paramKindArrayLength + 1
+        } else {
+            $paramKindOrder.IndexOf($_)
+        }
+    }
+
+    # Define parameter tables header and section content mapping
+    $sectionContentMapping = @{}
+    foreach ($paramKind in $orderedParamKindArray) {
+        if ($paramKind -eq 'Required') {
+            $SectionContent = [System.Collections.ArrayList]@(
+                # No default value required for required parameters
+                '| Parameter Name | Type | Allowed Values | Description |',
+                '| :-- | :-- | :-- | :-- |'
+            )
+        } else {
+            $SectionContent = [System.Collections.ArrayList]@(
+                '| Parameter Name | Type | Default Value | Allowed Values | Description |',
+                '| :-- | :-- | :-- | :-- | :-- |'
+            )
+        }
+        $sectionContentMapping.Add($paramKind, $SectionContent)
+    }
 
     $currentLevelFolders = Get-ChildItem -Path $currentFolderPath -Directory -Depth 0
     $folderNames = ($null -ne $currentLevelFolders) ? ($currentLevelFolders.FullName | ForEach-Object { Split-Path $_ -Leaf }) : @()
@@ -176,12 +216,32 @@ function Set-ParametersSection {
         $defaultValue = ($param.defaultValue -is [array]) ? ('[{0}]' -f ($param.defaultValue -join ', ')) : (($param.defaultValue -is [hashtable]) ? '{object}' : $param.defaultValue)
         $allowed = ($param.allowedValues -is [array]) ? ('[{0}]' -f ($param.allowedValues -join ', ')) : (($param.allowedValues -is [hashtable]) ? '{object}' : $param.allowedValues)
         $description = $param.metadata.description
-        $SectionContent += ('| `{0}` | {1} | {2} | {3} | {4} |' -f $paramName, $type, (![string]::IsNullOrEmpty($defaultValue) ? "``$defaultValue``" : ''), (($allowed) ? "``$allowed``" : ''), $description)
+
+        # Update parameter table content based on parameter category
+        $paramKind = $description.split('.')[0]
+        ## Remove category from parameter description
+        $description = $description.substring($paramKind.length) -replace '^\.( )*', ''
+        if ($paramKind -eq 'Required') {
+            $newContent = ('| `{0}` | {1} | {2} | {3} |' -f $paramName, $type, (($allowed) ? "``$allowed``" : ''), $description)
+        } else {
+            $newContent = ('| `{0}` | {1} | {2} | {3} | {4} |' -f $paramName, $type, (![string]::IsNullOrEmpty($defaultValue) ? "``$defaultValue``" : ''), (($allowed) ? "``$allowed``" : ''), $description)
+        }
+        $sectionContentMapping[$paramKind] += $newContent
+    }
+
+    # Update parameter section content
+    $NewSectionContent = [System.Collections.ArrayList]@()
+    foreach ($paramKind in $orderedParamKindArray) {
+        $paramTableIdentifier = '**{0} parameters**' -f $paramKind
+        $NewSectionContent += ''
+        $NewSectionContent += $paramTableIdentifier
+        $NewSectionContent += ''
+        $NewSectionContent += $($sectionContentMapping[$paramKind])
     }
 
     # Build result
     if ($PSCmdlet.ShouldProcess('Original file with new parameters content', 'Merge')) {
-        $updatedFileContent = Merge-FileWithNewContent -oldContent $ReadMeFileContent -newContent $SectionContent -SectionStartIdentifier $SectionStartIdentifier -contentType 'table'
+        $updatedFileContent = Merge-FileWithNewContent -oldContent $ReadMeFileContent -newContent $NewSectionContent -SectionStartIdentifier $SectionStartIdentifier -contentType 'none'
     }
 
     # Build sub-section 'ParameterUsage'
