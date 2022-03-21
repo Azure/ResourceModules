@@ -3,7 +3,7 @@
 #########################################################
 ##
 ## This composite action contains the logic to both test and execute a deployment of a given template and parameter file.
-## It can further optionally remove/not remove the deployment
+## By default, tested deployments are also removed. Optionally, the removal step can be skipped.
 ##
 #########################################################
 ##
