@@ -158,12 +158,6 @@ function Set-ParametersSection {
 
     # Get the module parameter categories
     $paramKindArray = $descriptions | ForEach-Object { $_.Split('.')[0] } | Select-Object -Unique
-    foreach ($description in $descriptions) {
-        $paramKind = $description.split('.')[0]
-        if ($paramKindArray -notcontains $paramKind) {
-            $paramKindArray += $paramKind
-        }
-    }
 
     # Order parameter categories by priority (ref https://docs.microsoft.com/en-us/dotnet/api/system.array.indexof?view=net-6.0)
     $paramKindArrayLength = $paramKindArray.length
