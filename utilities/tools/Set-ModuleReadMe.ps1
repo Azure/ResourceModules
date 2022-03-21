@@ -145,98 +145,149 @@ function Set-ParametersSection {
         [string] $currentFolderPath,
 
         [Parameter(Mandatory = $false)]
-        [string] $SectionStartIdentifier = '## Parameters'
+        [string] $SectionStartIdentifier = '## Parameters',
+
+        [Parameter(Mandatory = $false)]
+        [string[]] $ColumnsInOrder = @('Required', 'Conditional', 'Optional', 'Generated')
     )
 
-    # Process content
-
-    # Define parameter tables' order
-    $paramKindOrder = 'Required', 'Conditional', 'Optional', 'Generated'
-
     # Get all descriptions
-    $descriptions = $templateFileContent.parameters.Values.values.values
+    $descriptions = $TemplateFileContent.parameters.Values.metadata.description
 
     # Get the module parameter categories
-    $paramKindArray = @()
-    foreach ($description in $descriptions) {
-        $paramKind = $description.split('.')[0]
-        if ($paramKindArray -notcontains $paramKind) {
-            $paramKindArray += $paramKind
-        }
-    }
+    $paramCategories = $descriptions | ForEach-Object { $_.Split('.')[0] } | Select-Object -Unique
 
-    # Order parameter categories by priority (ref https://docs.microsoft.com/en-us/dotnet/api/system.array.indexof?view=net-6.0)
-    $paramKindArrayLength = $paramKindArray.length
-    $orderedParamKindArray = $paramKindArray | Sort-Object {
-        if ($paramKindOrder.IndexOf($_) -eq '-1') {
-            $paramKindArrayLength + 1
-        } else {
-            $paramKindOrder.IndexOf($_)
-        }
-    }
+    # Sort categories
+    $sortedParamCategories = $ColumnsInOrder | Where-Object { $paramCategories -contains $_ }
+    # Add all others that exist but are not specified in the columnsInOrder parameter
+    $sortedParamCategories += $paramCategories | Where-Object { $ColumnsInOrder -notcontains $_ }
 
-    # Define parameter tables header and section content mapping
-    $sectionContentMapping = @{}
-    foreach ($paramKind in $orderedParamKindArray) {
-        if ($paramKind -eq 'Required') {
-            $SectionContent = [System.Collections.ArrayList]@(
-                # No default value required for required parameters
-                '| Parameter Name | Type | Allowed Values | Description |',
-                '| :-- | :-- | :-- | :-- |'
-            )
-        } else {
-            $SectionContent = [System.Collections.ArrayList]@(
-                '| Parameter Name | Type | Default Value | Allowed Values | Description |',
-                '| :-- | :-- | :-- | :-- | :-- |'
-            )
-        }
-        $sectionContentMapping.Add($paramKind, $SectionContent)
-    }
-
+    # Collect file information
     $currentLevelFolders = Get-ChildItem -Path $currentFolderPath -Directory -Depth 0
     $folderNames = ($null -ne $currentLevelFolders) ? ($currentLevelFolders.FullName | ForEach-Object { Split-Path $_ -Leaf }) : @()
 
-    foreach ($paramName in ($templateFileContent.parameters.Keys | Sort-Object -Culture en-US)) {
-        $param = $TemplateFileContent.parameters[$paramName]
+    # Add name as property for later reference
+    $TemplateFileContent.parameters.Keys | ForEach-Object { $TemplateFileContent.parameters[$_]['name'] = $_ }
 
-        # Check for local readme references
-        if ($folderNames -and $paramName -in $folderNames -and $param.type -in @('object', 'array')) {
-            if ($folderNames -contains $paramName) {
-                $type = '_[{0}]({0}/readme.md)_ {1}' -f $paramName, $param.type
+    $newSectionContent = [System.Collections.ArrayList]@()
+    # Create parameter blocks
+    foreach ($category in $sortedParamCategories) {
+
+        # 1. Prepare
+        # Filter to relevant items
+        [array] $categoryParameters = $TemplateFileContent.parameters.Values | Where-Object { $_.metadata.description -like "$category. *" } | Sort-Object -Culture 'en-US'
+
+        # Check properties for later reference
+        $hasDefaults = $categoryParameters.defaultValue.count -gt 0
+        $hasAllowed = $categoryParameters.allowedValues.count -gt 0
+
+        # 2. Create header including optional columns
+        $newSectionContent += @(
+            ('### {0} parameters' -f $category),
+            ('| Parameter Name | Type | {0}{1}Description |' -f ($hasDefaults ? 'Default Value | ' : ''), ($hasAllowed ? 'Allowed Value | ' : '')),
+            ('| :-- | :-- | {0}{1}:-- |' -f ($hasDefaults ? ':-- | ' : ''), ($hasAllowed ? ':-- | ' : ''))
+        )
+
+        # 3. Add individual parameters
+        foreach ($parameter in $categoryParameters) {
+
+            # Check for local readme references
+            if ($folderNames -and $parameter.name -in $folderNames -and $parameter.type -in @('object', 'array')) {
+                if ($folderNames -contains $parameter.name) {
+                    $type = '_[{0}]({0}/readme.md)_ {1}' -f $parameter.name, $parameter.type
+                }
+            } elseif ($folderNames -and $parameter.name -like '*Obj' -and $parameter.name.TrimEnd('Obj') -in $folderNames -and $parameter.type -in @('object', 'array')) {
+                if ($folderNames -contains $parameter.name.TrimEnd('Obj')) {
+                    $type = '_[{0}]({0}/readme.md)_ {1}' -f $parameter.name.TrimEnd('Obj'), $parameter.type
+                }
+            } else {
+                $type = $parameter.type
             }
-        } elseif ($folderNames -and $paramName -like '*Obj' -and $paramName.TrimEnd('Obj') -in $folderNames -and $param.type -in @('object', 'array')) {
-            if ($folderNames -contains $paramName.TrimEnd('Obj')) {
-                $type = '_[{0}]({0}/readme.md)_ {1}' -f $paramName.TrimEnd('Obj'), $param.type
-            }
-        } else {
-            $type = $param.type
-        }
 
-        $defaultValue = ($param.defaultValue -is [array]) ? ('[{0}]' -f ($param.defaultValue -join ', ')) : (($param.defaultValue -is [hashtable]) ? '{object}' : $param.defaultValue)
-        $allowed = ($param.allowedValues -is [array]) ? ('[{0}]' -f ($param.allowedValues -join ', ')) : (($param.allowedValues -is [hashtable]) ? '{object}' : $param.allowedValues)
-        $description = $param.metadata.description
+            $defaultValue = ($parameter.defaultValue -is [array]) ? ('[{0}]' -f ($parameter.defaultValue -join ', ')) : (($parameter.defaultValue -is [hashtable]) ? '{object}' : $parameter.defaultValue)
+            $allowed = ($parameter.allowedValues -is [array]) ? ('[{0}]' -f ($parameter.allowedValues -join ', ')) : (($parameter.allowedValues -is [hashtable]) ? '{object}' : $parameter.allowedValues)
+            $description = $parameter.metadata.description
 
-        # Update parameter table content based on parameter category
-        $paramKind = $description.split('.')[0]
-        ## Remove category from parameter description
-        $description = $description.substring($paramKind.length) -replace '^\.( )*', ''
-        if ($paramKind -eq 'Required') {
-            $newContent = ('| `{0}` | {1} | {2} | {3} |' -f $paramName, $type, (($allowed) ? "``$allowed``" : ''), $description)
-        } else {
-            $newContent = ('| `{0}` | {1} | {2} | {3} | {4} |' -f $paramName, $type, (![string]::IsNullOrEmpty($defaultValue) ? "``$defaultValue``" : ''), (($allowed) ? "``$allowed``" : ''), $description)
+            # Update parameter table content based on parameter category
+            ## Remove category from parameter description
+            $description = $description.substring("$category. ".Length)
+            $newSectionContent += ('| {0} | {1} | {2}{3}{4} |' -f $parameter.name, $type, ($hasDefaults ? $defaultValue : ''), ($hasAllowed ? $allowed : ''), $description)
         }
-        $sectionContentMapping[$paramKind] += $newContent
+        $newSectionContent += ''
     }
+
+    # Order parameter categories by priority (ref https://docs.microsoft.com/en-us/dotnet/api/system.array.indexof?view=net-6.0)
+    # $paramCategoriesLength = $paramCategories.length
+    # $orderedparamCategories = $paramCategories | Sort-Object {
+    #     if ($ColumnsInOrder.IndexOf($_) -eq '-1') {
+    #         $paramCategoriesLength + 1
+    #     } else {
+    #         $ColumnsInOrder.IndexOf($_)
+    #     }
+    # }
+
+    # Define parameter tables header and section content mapping
+    # $sectionContentMapping = @{}
+    # foreach ($paramKind in $orderedparamCategories) {
+    #     if ($paramKind -eq 'Required') {
+    #         $SectionContent = [System.Collections.ArrayList]@(
+    #             # No default value required for required parameters
+    #             '| Parameter Name | Type | Allowed Values | Description |',
+    #             '| :-- | :-- | :-- | :-- |'
+    #         )
+    #     } else {
+    #         $SectionContent = [System.Collections.ArrayList]@(
+    #             '| Parameter Name | Type | Default Value | Allowed Values | Description |',
+    #             '| :-- | :-- | :-- | :-- | :-- |'
+    #         )
+    #     }
+    #     $sectionContentMapping.Add($paramKind, $SectionContent)
+    # }
+
+    # $currentLevelFolders = Get-ChildItem -Path $currentFolderPath -Directory -Depth 0
+    # $folderNames = ($null -ne $currentLevelFolders) ? ($currentLevelFolders.FullName | ForEach-Object { Split-Path $_ -Leaf }) : @()
+
+    # foreach ($paramName in ($templateFileContent.parameters.Keys | Sort-Object -Culture en-US)) {
+    #     $param = $TemplateFileContent.parameters[$paramName]
+
+    #     # Check for local readme references
+    #     if ($folderNames -and $paramName -in $folderNames -and $param.type -in @('object', 'array')) {
+    #         if ($folderNames -contains $paramName) {
+    #             $type = '_[{0}]({0}/readme.md)_ {1}' -f $paramName, $param.type
+    #         }
+    #     } elseif ($folderNames -and $paramName -like '*Obj' -and $paramName.TrimEnd('Obj') -in $folderNames -and $param.type -in @('object', 'array')) {
+    #         if ($folderNames -contains $paramName.TrimEnd('Obj')) {
+    #             $type = '_[{0}]({0}/readme.md)_ {1}' -f $paramName.TrimEnd('Obj'), $param.type
+    #         }
+    #     } else {
+    #         $type = $param.type
+    #     }
+
+    #     $defaultValue = ($param.defaultValue -is [array]) ? ('[{0}]' -f ($param.defaultValue -join ', ')) : (($param.defaultValue -is [hashtable]) ? '{object}' : $param.defaultValue)
+    #     $allowed = ($param.allowedValues -is [array]) ? ('[{0}]' -f ($param.allowedValues -join ', ')) : (($param.allowedValues -is [hashtable]) ? '{object}' : $param.allowedValues)
+    #     $description = $param.metadata.description
+
+    #     # Update parameter table content based on parameter category
+    #     $paramKind = $description.split('.')[0]
+    #     ## Remove category from parameter description
+    #     $description = $description.substring($paramKind.length) -replace '^\.( )*', ''
+    #     if ($paramKind -eq 'Required') {
+    #         $newContent = ('| `{0}` | {1} | {2} | {3} |' -f $paramName, $type, (($allowed) ? "``$allowed``" : ''), $description)
+    #     } else {
+    #         $newContent = ('| `{0}` | {1} | {2} | {3} | {4} |' -f $paramName, $type, (![string]::IsNullOrEmpty($defaultValue) ? "``$defaultValue``" : ''), (($allowed) ? "``$allowed``" : ''), $description)
+    #     }
+    #     $sectionContentMapping[$paramKind] += $newContent
+    # }
 
     # Update parameter section content
-    $newSectionContent = [System.Collections.ArrayList]@()
-    foreach ($paramKind in $orderedParamKindArray) {
-        $paramTableIdentifier = '**{0} parameters**' -f $paramKind
-        $newSectionContent += ''
-        $newSectionContent += $paramTableIdentifier
-        $newSectionContent += ''
-        $newSectionContent += $($sectionContentMapping[$paramKind])
-    }
+    # $newSectionContent = [System.Collections.ArrayList]@()
+    # foreach ($paramKind in $orderedparamCategories) {
+    #     $paramTableIdentifier = '**{0} parameters**' -f $paramKind
+    #     $newSectionContent += ''
+    #     $newSectionContent += $paramTableIdentifier
+    #     $newSectionContent += ''
+    #     $newSectionContent += $($sectionContentMapping[$paramKind])
+    # }
 
     # Build result
     if ($PSCmdlet.ShouldProcess('Original file with new parameters content', 'Merge')) {
