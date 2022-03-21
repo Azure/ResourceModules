@@ -39,7 +39,6 @@ This module deploys Network FrontDoors.
 | `sendRecvTimeoutSeconds` | int | `600` |  | Optional. Certificate name check time of the frontdoor resource. |
 | `tags` | object | `{object}` |  | Optional. Resource tags. |
 
-### Parameter Usage: `<ParameterPlaceholder>`
 
 
 
