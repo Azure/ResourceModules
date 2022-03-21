@@ -1,7 +1,6 @@
-# DesktopVirtualization ScalingPlans `[Microsoft.DesktopVirtualization/scalingPlans]`
+# AVD Scaling Plan `[Microsoft.DesktopVirtualization/scalingPlans]`
 
-This module deploys DesktopVirtualization ScalingPlans.
-// TODO: Replace Resource and fill in description
+This module deploys AVD ScalingPlans.
 
 ## Resource Types
 
@@ -33,9 +32,53 @@ This module deploys DesktopVirtualization ScalingPlans.
 | `tags` | object | `{object}` |  | Optional. Tags of the resource. |
 | `timeZone` | string | `W. Europe Standard Time` |  | Optional. Timezone to be used for the scaling plan. |
 
-### Parameter Usage: `<ParameterPlaceholder>`
+### Parameter Usage: `schedules`
 
-// TODO: Fill in Parameter usage
+Multiple schedules can be provided as needed. If a schedule is not provided, a default schedule will be created.
+
+```json
+"schedules" : {
+    "value": [
+    {
+        "rampUpStartTime": {
+            "hour": 7,
+            "minute": 0
+        },
+            "peakStartTime": {
+            "hour": 9,
+            "minute": 0
+        },
+            "rampDownStartTime": {
+            "hour": 18,
+            "minute": 0
+        },
+        "offPeakStartTime": {
+            "hour": 20,
+            "minute": 0
+        },
+        "name": "weekdays_schedule",
+            "daysOfWeek": [
+            "Monday",
+            "Tuesday",
+            "Wednesday",
+            "Thursday",
+            "Friday"
+        ],
+        "rampUpLoadBalancingAlgorithm": "DepthFirst",
+        "rampUpMinimumHostsPct": 20,
+        "rampUpCapacityThresholdPct": 60,
+        "peakLoadBalancingAlgorithm": "DepthFirst",
+        "rampDownLoadBalancingAlgorithm": "DepthFirst",
+        "rampDownMinimumHostsPct": 10,
+        "rampDownCapacityThresholdPct": 90,
+        "rampDownForceLogoffUsers": true,
+        "rampDownWaitTimeMinutes": 30,
+        "rampDownNotificationMessage": "You will be logged off in 30 min. Make sure to save your work.",
+        "rampDownStopHostsWhen": "ZeroSessions",
+        "offPeakLoadBalancingAlgorithm": "DepthFirst"
+    }]
+}
+```
 
 ### Parameter Usage: `tags`
 

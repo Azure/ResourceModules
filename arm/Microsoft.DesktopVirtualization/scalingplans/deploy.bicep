@@ -71,21 +71,6 @@ param hostPoolReferences array = []
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-resource scalingPlan 'Microsoft.DesktopVirtualization/scalingPlans@2021-09-03-preview' = {
-  name: name
-  location: location
-  tags: tags
-  properties: {
-    friendlyName: friendlyName
-    timeZone: timeZone
-    hostPoolType: hostPoolType
-    exclusionTag: exclusionTag
-    schedules: schedules
-    hostPoolReferences: hostPoolReferences
-    description: scalingplanDescription
-  }
-}
-
 @description('Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.')
 @minValue(0)
 @maxValue(365)
@@ -122,6 +107,21 @@ var diagnosticsLogs = [for log in logsToEnable: {
     days: diagnosticLogsRetentionInDays
   }
 }]
+
+resource scalingPlan 'Microsoft.DesktopVirtualization/scalingPlans@2021-09-03-preview' = {
+  name: name
+  location: location
+  tags: tags
+  properties: {
+    friendlyName: friendlyName
+    timeZone: timeZone
+    hostPoolType: hostPoolType
+    exclusionTag: exclusionTag
+    schedules: schedules
+    hostPoolReferences: hostPoolReferences
+    description: scalingplanDescription
+  }
+}
 
 resource scalingplan_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(diagnosticWorkspaceId)) || (!empty(diagnosticEventHubAuthorizationRuleId)) || (!empty(diagnosticEventHubName))) {
   name: '${scalingPlan.name}-diagnosticsetting'
