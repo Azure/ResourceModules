@@ -273,30 +273,56 @@ Describe 'Readme tests' -Tag Readme {
             while ($readMeContent[$parametersSectionStartIndex] -notlike '*# Parameters' -and -not ($parametersSectionStartIndex -ge $readMeContent.count)) {
                 $parametersSectionStartIndex++
             }
-
-            $parametersTableStartIndex = $parametersSectionStartIndex + 1
-            while ($readMeContent[$parametersTableStartIndex] -notlike '*|*' -and -not ($parametersTableStartIndex -ge $readMeContent.count)) {
-                $parametersTableStartIndex++
-            }
+            $parametersSectionStartIndex ++
+            Write-Verbose ("parametersSectionStartIndex $parametersSectionStartIndex") -Verbose
 
             if ($parametersSectionStartIndex -ge $readMeContent.count) {
                 throw 'Parameters section is missing in the Readme. Please add and re-run the tests.'
             }
 
-            $parametersTableEndIndex = $parametersTableStartIndex + 2 # Header row + table separator row
-            while ($readMeContent[$parametersTableEndIndex] -like '*|*' -and -not ($parametersTableEndIndex -ge $readMeContent.count)) {
-                $parametersTableEndIndex++
+            # #######################
+            $parametersSectionEndIndex = $parametersSectionStartIndex + 1
+            while ($readMeContent[$parametersSectionEndIndex] -notlike '*# *' -and -not ($parametersSectionEndIndex -ge $readMeContent.count)) {
+                $parametersSectionEndIndex++
             }
-            $parametersTableEndIndex-- # remove one index as the while loop will move one index past the last table row
+            Write-Verbose ("parametersSectionEndIndex $parametersSectionEndIndex") -Verbose
+
+            $parametersSectionIndex = $parametersSectionStartIndex
 
             $parametersList = [System.Collections.ArrayList]@()
-            for ($index = $parametersTableStartIndex + 2; $index -le $parametersTableEndIndex; $index++) {
-                $parametersList += $readMeContent[$index].Split('|')[1].Replace('`', '').Trim()
+
+            while ($parametersSectionIndex -lt $parametersSectionEndIndex) {
+
+                Write-Verbose ("# parametersSectionIndex $parametersSectionIndex") -Verbose
+                $parametersTableStartIndex = $parametersSectionIndex
+                while ($readMeContent[$parametersTableStartIndex] -notlike '*|*' -and -not ($parametersTableStartIndex -ge $readMeContent.count)) {
+                    $parametersTableStartIndex++
+                }
+                $parametersTableStartIndex++
+                Write-Verbose ("# parametersTableStartIndex $parametersTableStartIndex") -Verbose
+
+                $parametersTableEndIndex = $parametersTableStartIndex + 2 # Header row + table separator row
+                while ($readMeContent[$parametersTableEndIndex] -like '*|*' -and -not ($parametersTableEndIndex -ge $readMeContent.count)) {
+                    $parametersTableEndIndex++
+                }
+                # $parametersTableEndIndex-- # remove one index as the while loop will move one index past the last table row
+                Write-Verbose ("# parametersTableEndIndex $parametersTableEndIndex") -Verbose
+
+                for ($index = $parametersTableStartIndex + 1; $index -lt $parametersTableEndIndex; $index++) {
+                    Write-Verbose ("## index $index") -Verbose
+                    $parameter = $readMeContent[$index].Split('|')[1].Replace('`', '').Trim()
+                    Write-Verbose ("## parameter $parameter") -Verbose
+                    $parametersList += $parameter
+                }
+                $parametersSectionIndex = $parametersTableEndIndex + 1
+                Write-Verbose ("## parametersSectionIndex $parametersSectionIndex") -Verbose
             }
+            # #####################
 
             # Test
             $differentiatingItems = $parameters | Where-Object { $parametersList -notcontains $_ }
             $differentiatingItems.Count | Should -Be 0 -Because ('list of template parameters missing in the ReadMe file [{0}] should be empty' -f ($differentiatingItems -join ','))
+
         }
 
         It '[<moduleFolderName>] Outputs section should contain a table with these column names in order: Output Name, Type' -TestCases $readmeFolderTestCases {
