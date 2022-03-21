@@ -1,5 +1,5 @@
 #########################################################
-## 'Get Workflow Input' Composite Action               ##
+## 'Get workflow input' Composite Action               ##
 #########################################################
 ##
 ## This composite action contains the logic to read workflow runtime parameters and publih their value as a workflow output.
