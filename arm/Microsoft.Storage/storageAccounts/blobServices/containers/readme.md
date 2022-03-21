@@ -12,16 +12,24 @@ This module deployes a blob container
 
 ## Parameters
 
-| Parameter Name | Type | Default Value | Possible Values | Description |
+
+**Required parameters**
+
+| Parameter Name | Type | Allowed Values | Description |
+| :-- | :-- | :-- | :-- |
+| `name` | string |  | The name of the storage container to deploy |
+| `storageAccountName` | string |  | Name of the Storage Account. |
+
+**Optional parameters**
+
+| Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `blobServicesName` | string | `default` |  | Optional. Name of the blob service. |
-| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `immutabilityPolicyName` | string | `default` |  | Optional. Name of the immutable policy. |
-| `immutabilityPolicyProperties` | object | `{object}` |  | Optional. Configure immutability policy. |
-| `name` | string |  |  | Required. The name of the storage container to deploy |
-| `publicAccess` | string | `None` | `[Container, Blob, None]` | Optional. Specifies whether data in the container may be accessed publicly and the level of access. |
-| `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
-| `storageAccountName` | string |  |  | Required. Name of the Storage Account. |
+| `blobServicesName` | string | `default` |  | Name of the blob service. |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `immutabilityPolicyName` | string | `default` |  | Name of the immutable policy. |
+| `immutabilityPolicyProperties` | object | `{object}` |  | Configure immutability policy. |
+| `publicAccess` | string | `None` | `[Container, Blob, None]` | Specifies whether data in the container may be accessed publicly and the level of access. |
+| `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
 
 ### Parameter Usage: `roleAssignments`
 

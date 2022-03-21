@@ -167,7 +167,6 @@ function Set-ParametersSection {
 
     # Order parameter categories by priority (ref https://docs.microsoft.com/en-us/dotnet/api/system.array.indexof?view=net-6.0)
     $paramKindArrayLength = $paramKindArray.length
-    Write-Verbose ("paramKindArrayLength $paramKindArrayLength") -Verbose
     $orderedParamKindArray = $paramKindArray | Sort-Object {
         if ($paramKindOrder.IndexOf($_) -eq '-1') {
             $paramKindArrayLength + 1
