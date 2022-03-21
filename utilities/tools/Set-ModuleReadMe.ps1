@@ -183,7 +183,7 @@ function Set-ParametersSection {
 
         # 2. Create header including optional columns
         $newSectionContent += @(
-            ('### {0} parameters' -f $category),
+            ('### **{0}** parameters' -f $category),
             ('| Parameter Name | Type | {0}{1}Description |' -f ($hasDefaults ? 'Default Value | ' : ''), ($hasAllowed ? 'Allowed Value | ' : '')),
             ('| :-- | :-- | {0}{1}:-- |' -f ($hasDefaults ? ':-- | ' : ''), ($hasAllowed ? ':-- | ' : ''))
         )
@@ -211,7 +211,8 @@ function Set-ParametersSection {
             # Update parameter table content based on parameter category
             ## Remove category from parameter description
             $description = $description.substring("$category. ".Length)
-            $newSectionContent += ('| {0} | {1} | {2}{3}{4} |' -f $parameter.name, $type, ($hasDefaults ? $defaultValue : ''), ($hasAllowed ? $allowed : ''), $description)
+            # TODO: only add ` if value is not empty
+            $newSectionContent += ('| `{0}` | {1} | {2}{3}{4} |' -f $parameter.name, $type, ($hasDefaults ? "``$defaultValue`` | " : ''), ($hasAllowed ? "``$allowed`` | " : ''), $description)
         }
         $newSectionContent += ''
     }
