@@ -154,7 +154,7 @@ function Set-ParametersSection {
     $paramKindOrder = 'Required', 'Conditional', 'Optional', 'Generated'
 
     # Get all descriptions
-    $descriptions = $templateFileContent.parameters.Values.values.values
+    $descriptions = $TemplateFileContent.parameters.Values.metadata.description
 
     # Get the module parameter categories
     $paramKindArray = @()
