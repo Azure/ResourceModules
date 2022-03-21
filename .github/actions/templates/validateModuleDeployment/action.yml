@@ -2,7 +2,7 @@
 ## 'Deploy module' Composite Action                    ##
 #########################################################
 ##
-## This composite action enables you to both test and execute a deployment of a given template and parameter file.
+## This composite action contains the logic to both test and execute a deployment of a given template and parameter file.
 ## It can further optionally remove/not remove the deployment
 ##
 #########################################################
@@ -14,7 +14,7 @@
 ##   |============================================================================================================================================================================|
 ##   | Parameter                 | Required | Default | Description                                           | Example                                                           |
 ##   |---------------------------|----------|---------|-------------------------------------------------------|-------------------------------------------------------------------|
-##   | templateFilePath          | true     | ''      | The path to the template file to publish              | 'arm/Microsoft.ApiManagement/service/deploy.bicep'                |
+##   | templateFilePath          | true     | ''      | The path to the template file to use for deployment              | 'arm/Microsoft.ApiManagement/service/deploy.bicep'                |
 ##   | parameterFilePath         | true     | ''      | The path to the parameter file to use for deployment  | 'arm/Microsoft.ApiManagement/service/.parameters/parameters.json' |
 ##   | location                  | true     | ''      | The location to use for deployment                    | 'WestEurope'                                                      |
 ##   | resourceGroupName         | false    | ''      | The resource group to deploy to                       | 'validation-rg'                                                   |

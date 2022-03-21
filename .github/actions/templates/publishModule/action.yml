@@ -2,7 +2,7 @@
 ## 'Publish module' Composite Action                   ##
 #########################################################
 ##
-## This composite action enables you to publish a given template to a number of different locations such as:
+## This composite action contains the logic to publish a given template to a number of different locations such as:
 ## - Template Specs
 ## - Private Bicep Registry
 ##
