@@ -81,7 +81,7 @@ param diagnosticEventHubName string = ''
   'DevOpsOperationsAudit'
   'SQLSecurityAuditEvents'
 ])
-param logsToEnable array = [
+param diagnosticLogCategoriesToEnable array = [
   'SQLInsights'
   'AutomaticTuning'
   'QueryStoreRuntimeStatistics'
@@ -101,14 +101,17 @@ param logsToEnable array = [
   'InstanceAndAppAdvanced'
   'WorkloadManagement'
 ])
-param metricsToEnable array = [
+param diagnosticMetricsToEnable array = [
   'Basic'
   'InstanceAndAppAdvanced'
   'WorkloadManagement'
 ]
 
-var diagnosticsLogs = [for log in logsToEnable: {
-  category: log
+@description('Optional. The name of the diagnostic setting, if deployed.')
+param diagnosticSettingsName string = '${name}-diagnosticSettings'
+
+var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
+  category: category
   enabled: true
   retentionPolicy: {
     enabled: true
@@ -116,7 +119,7 @@ var diagnosticsLogs = [for log in logsToEnable: {
   }
 }]
 
-var diagnosticsMetrics = [for metric in metricsToEnable: {
+var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
   category: metric
   timeGrain: null
   enabled: true
@@ -183,7 +186,7 @@ resource database 'Microsoft.Sql/servers/databases@2021-02-01-preview' = {
 }
 
 resource database_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(diagnosticWorkspaceId)) || (!empty(diagnosticEventHubAuthorizationRuleId)) || (!empty(diagnosticEventHubName))) {
-  name: '${last(split(database.name, '/'))}-diagnosticSettings'
+  name: diagnosticSettingsName
   properties: {
     storageAccountId: !empty(diagnosticStorageAccountId) ? diagnosticStorageAccountId : null
     workspaceId: !empty(diagnosticWorkspaceId) ? diagnosticWorkspaceId : null
