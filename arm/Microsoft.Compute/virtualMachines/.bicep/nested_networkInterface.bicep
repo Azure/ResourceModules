@@ -50,7 +50,7 @@ module networkInterface_publicIPConfigurations 'nested_networkInterface_publicIP
   }
 }]
 
-resource networkInterface 'Microsoft.Network/networkInterfaces@2021-03-01' = {
+resource networkInterface 'Microsoft.Network/networkInterfaces@2021-05-01' = {
   name: networkInterfaceName
   location: location
   tags: tags
@@ -73,6 +73,8 @@ resource networkInterface 'Microsoft.Network/networkInterfaces@2021-03-01' = {
         subnet: {
           id: ipConfiguration.subnetId
         }
+        loadBalancerBackendAddressPools: contains(ipConfiguration, 'loadBalancerBackendAddressPools') ? ipConfiguration.loadBalancerBackendAddressPools : null
+        applicationSecurityGroups: contains(ipConfiguration, 'applicationSecurityGroups') ? ipConfiguration.applicationSecurityGroups : null
       }
     }]
   }
@@ -105,6 +107,7 @@ resource networkInterface_diagnosticSettings 'Microsoft.Insights/diagnosticsetti
 module networkInterface_rbac 'nested_networkInterface_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${deployment().name}-Rbac-${index}'
   params: {
+    description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
     resourceId: networkInterface.id

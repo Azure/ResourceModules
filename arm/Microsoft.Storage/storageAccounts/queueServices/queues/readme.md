@@ -13,7 +13,7 @@ This module deployes a storage account queue
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
+| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `metadata` | object | `{object}` |  | Required. A name-value pair that represents queue metadata. |
 | `name` | string |  |  | Required. The name of the storage queue to deploy |
 | `queueServicesName` | string | `default` |  | Optional. The name of the queue service |
@@ -27,6 +27,7 @@ This module deployes a storage account queue
     "value": [
         {
             "roleDefinitionIdOrName": "Reader",
+            "description": "Reader Role Assignment",
             "principalIds": [
                 "12345678-1234-1234-1234-123456789012", // object 1
                 "78945612-1234-1234-1234-123456789012" // object 2

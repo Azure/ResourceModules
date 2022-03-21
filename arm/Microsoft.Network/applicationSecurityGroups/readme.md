@@ -14,7 +14,7 @@ This module deploys an application security group.
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
+| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
 | `name` | string |  |  | Required. Name of the Application Security Group. |
@@ -45,6 +45,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
     "value": [
         {
             "roleDefinitionIdOrName": "Reader",
+            "description": "Reader Role Assignment",
             "principalIds": [
                 "12345678-1234-1234-1234-123456789012", // object 1
                 "78945612-1234-1234-1234-123456789012" // object 2

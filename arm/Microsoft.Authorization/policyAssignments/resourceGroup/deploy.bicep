@@ -56,12 +56,19 @@ param subscriptionId string = subscription().subscriptionId
 @sys.description('Optional. The Target Scope for the Policy. The name of the resource group for the policy assignment. If not provided, will use the current scope for deployment.')
 param resourceGroupName string = resourceGroup().name
 
-@sys.description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered.')
-param cuaId string = ''
+@sys.description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+param enableDefaultTelemetry bool = true
 
-module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
-  name: 'pid-${cuaId}'
-  params: {}
+resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
+  name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
+  properties: {
+    mode: 'Incremental'
+    template: {
+      '$schema': 'https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#'
+      contentVersion: '1.0.0.0'
+      resources: []
+    }
+  }
 }
 
 var identity_var = identity == 'SystemAssigned' ? {

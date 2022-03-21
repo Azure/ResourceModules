@@ -17,7 +17,7 @@ This template deploys a network watcher.
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `connectionMonitors` | _[connectionMonitors](connectionMonitors/readme.md)_ array | `[]` |  | Optional. Array that contains the Connection Monitors |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
+| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `flowLogs` | _[flowLogs](flowLogs/readme.md)_ array | `[]` |  | Optional. Array that contains the Flow Logs |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
@@ -33,6 +33,7 @@ This template deploys a network watcher.
     "value": [
         {
             "roleDefinitionIdOrName": "Reader",
+            "description": "Reader Role Assignment",
             "principalIds": [
                 "12345678-1234-1234-1234-123456789012", // object 1
                 "78945612-1234-1234-1234-123456789012" // object 2

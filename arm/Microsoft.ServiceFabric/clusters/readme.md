@@ -6,7 +6,7 @@ This module deploys a service fabric cluster.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/locks` | 2016-09-01 |
+| `Microsoft.Authorization/locks` | 2017-04-01 |
 | `Microsoft.Authorization/roleAssignments` | 2020-04-01-preview |
 | `Microsoft.ServiceFabric/clusters` | 2021-06-01 |
 | `Microsoft.ServiceFabric/clusters/applicationTypes` | 2021-06-01 |
@@ -23,11 +23,11 @@ This module deploys a service fabric cluster.
 | `clientCertificateCommonNames` | array | `[]` |  | Optional. The list of client certificates referenced by common name that are allowed to manage the cluster. |
 | `clientCertificateThumbprints` | array | `[]` |  | Optional. The list of client certificates referenced by thumbprint that are allowed to manage the cluster. |
 | `clusterCodeVersion` | string |  |  | Optional. The Service Fabric runtime version of the cluster. This property can only by set the user when upgradeMode is set to "Manual". To get list of available Service Fabric versions for new clusters use ClusterVersion API. To get the list of available version for existing clusters use availableClusterVersions. |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `diagnosticsStorageAccountConfig` | object | `{object}` |  | Optional. The storage account information for storing Service Fabric diagnostic logs. |
-| `eventStoreServiceEnabled` | bool |  |  | Optional. Indicates if the event store service is enabled. |
+| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `eventStoreServiceEnabled` | bool | `False` |  | Optional. Indicates if the event store service is enabled. |
 | `fabricSettings` | array | `[]` |  | Optional. The list of custom fabric settings to configure the cluster. |
-| `infrastructureServiceManager` | bool |  |  | Optional. Indicates if infrastructure service manager is enabled. |
+| `infrastructureServiceManager` | bool | `False` |  | Optional. Indicates if infrastructure service manager is enabled. |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
 | `managementEndpoint` | string |  |  | Required. The http management endpoint of the cluster. |
@@ -48,7 +48,7 @@ This module deploys a service fabric cluster.
 | `upgradeWave` | string | `Wave0` | `[Wave0, Wave1, Wave2]` | Optional. Indicates when new cluster runtime version upgrades will be applied after they are released. By default is Wave0. |
 | `vmImage` | string |  |  | Optional. The VM image VMSS has been configured with. Generic names such as Windows or Linux can be used |
 | `vmssZonalUpgradeMode` | string | `Hierarchical` | `[Hierarchical, Parallel]` | Optional. This property defines the upgrade mode for the virtual machine scale set, it is mandatory if a node type with multiple Availability Zones is added. |
-| `waveUpgradePaused` | bool |  |  | Optional. Boolean to pause automatic runtime version upgrades to the cluster. |
+| `waveUpgradePaused` | bool | `False` |  | Optional. Boolean to pause automatic runtime version upgrades to the cluster. |
 
 ### Parameter Usage: `notifications`
 
@@ -79,6 +79,7 @@ This module deploys a service fabric cluster.
     "value": [
         {
             "roleDefinitionIdOrName": "Reader",
+            "description": "Reader Role Assignment",
             "principalIds": [
                 "12345678-1234-1234-1234-123456789012", // object 1
                 "78945612-1234-1234-1234-123456789012" // object 2
@@ -124,5 +125,6 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 - [Clusters](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ServiceFabric/2021-06-01/clusters)
 - [Clusters/Applicationtypes](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ServiceFabric/2021-06-01/clusters/applicationTypes)
-- [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2016-09-01/locks)
+- [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
 - [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-04-01-preview/roleAssignments)
+

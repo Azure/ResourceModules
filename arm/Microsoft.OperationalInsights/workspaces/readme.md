@@ -20,7 +20,6 @@ This template deploys a log analytics workspace.
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `dailyQuotaGb` | int | `-1` |  | Optional. The workspace daily quota for ingestion. |
 | `dataRetention` | int | `365` |  | Optional. Number of days data will be retained for |
 | `dataSources` | _[dataSources](dataSources/readme.md)_ array | `[]` |  | Optional. LAW data sources to configure. |
@@ -29,6 +28,7 @@ This template deploys a log analytics workspace.
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticStorageAccountId` | string |  |  | Optional. Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string |  |  | Optional. Resource ID of a log analytics workspace. |
+| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `gallerySolutions` | array | `[]` |  | Optional. LAW gallerySolutions from the gallery. |
 | `linkedServices` | _[linkedServices](linkedServices/readme.md)_ array | `[]` |  | Optional. List of services to be linked. |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
@@ -43,38 +43,134 @@ This template deploys a log analytics workspace.
 | `serviceTier` | string | `PerGB2018` | `[Free, Standalone, PerNode, PerGB2018]` | Optional. Service Tier: PerGB2018, Free, Standalone, PerGB or PerNode |
 | `storageInsightsConfigs` | array | `[]` |  | Optional. List of storage accounts to be read by the workspace. |
 | `tags` | object | `{object}` |  | Optional. Tags of the resource. |
-| `useResourcePermissions` | bool |  |  | Optional. Set to 'true' to use resource or workspace permissions and 'false' (or leave empty) to require workspace permissions. |
+| `useResourcePermissions` | bool | `False` |  | Optional. Set to 'true' to use resource or workspace permissions and 'false' (or leave empty) to require workspace permissions. |
 
 ### Parameter Usage: `gallerySolutions`
 
 ```json
 "gallerySolutions": {
+
     "value": [
-        "AgentHealthAssessment",
-        "AlertManagement",
-        "AntiMalware",
-        "AzureActivity",
-        //"AzureAppGatewayAnalytics",
-        "AzureAutomation",
-        "AzureCdnCoreAnalytics",
-        "AzureDataFactoryAnalytics",
-        "AzureNSGAnalytics",
-        "AzureSQLAnalytics",
-        "ChangeTracking",
-        "Containers",
-        "InfrastructureInsights",
-        "KeyVaultAnalytics",
-        "LogicAppsManagement",
-        "NetworkMonitoring",
-        "Security",
-        "SecurityCenterFree",
-        "ServiceFabric",
-        "ServiceMap",
-        "SQLAssessment",
-        "Updates",
-        "VMInsights",
-        "WireData2",
-        "WaaSUpdateInsights"
+        {
+            "name": "AgentHealthAssessment",
+            "product": "OMSGallery/AgentHealthAssessment",
+            "publisher": "Microsoft"
+        },
+        {
+            "name": "AlertManagement",
+            "product": "OMSGallery/AlertManagement",
+            "publisher": "Microsoft"
+        },
+        {
+            "name": "AntiMalware",
+            "product": "OMSGallery/AntiMalware",
+            "publisher": "Microsoft"
+        },
+        {
+            "name": "AzureActivity",
+            "product": "OMSGallery/AzureActivity",
+            "publisher": "Microsoft"
+        },
+        {
+            "name": "AzureAutomation",
+            "product": "OMSGallery/AzureAutomation",
+            "publisher": "Microsoft"
+        },
+        {
+            "name": "AzureCdnCoreAnalytics",
+            "product": "OMSGallery/AzureCdnCoreAnalytics",
+            "publisher": "Microsoft"
+        },
+        {
+            "name": "AzureDataFactoryAnalytics",
+            "product": "OMSGallery/AzureDataFactoryAnalytics",
+            "publisher": "Microsoft"
+        },
+        {
+            "name": "AzureNSGAnalytics",
+            "product": "OMSGallery/AzureNSGAnalytics",
+            "publisher": "Microsoft"
+        },
+        {
+            "name": "AzureSQLAnalytics",
+            "product": "OMSGallery/AzureSQLAnalytics",
+            "publisher": "Microsoft"
+        },
+        {
+            "name": "ChangeTracking",
+            "product": "OMSGallery/ChangeTracking",
+            "publisher": "Microsoft"
+        },
+        {
+            "name": "Containers",
+            "product": "OMSGallery/Containers",
+            "publisher": "Microsoft"
+        },
+        {
+            "name": "InfrastructureInsights",
+            "product": "OMSGallery/InfrastructureInsights",
+            "publisher": "Microsoft"
+        },
+        {
+            "name": "KeyVaultAnalytics",
+            "product": "OMSGallery/KeyVaultAnalytics",
+            "publisher": "Microsoft"
+        },
+        {
+            "name": "LogicAppsManagement",
+            "product": "OMSGallery/LogicAppsManagement",
+            "publisher": "Microsoft"
+        },
+        {
+            "name": "NetworkMonitoring",
+            "product": "OMSGallery/NetworkMonitoring",
+            "publisher": "Microsoft"
+        },
+        {
+            "name": "Security",
+            "product": "OMSGallery/Security",
+            "publisher": "Microsoft"
+        },
+        {
+            "name": "SecurityCenterFree",
+            "product": "OMSGallery/SecurityCenterFree",
+            "publisher": "Microsoft"
+        },
+        {
+            "name": "ServiceFabric",
+            "product": "OMSGallery/ServiceFabric",
+            "publisher": "Microsoft"
+        },
+        {
+            "name": "ServiceMap",
+            "product": "OMSGallery/ServiceMap",
+            "publisher": "Microsoft"
+        },
+        {
+            "name": "SQLAssessment",
+            "product": "OMSGallery/SQLAssessment",
+            "publisher": "Microsoft"
+        },
+        {
+            "name": "Updates",
+            "product": "OMSGallery/Updates",
+            "publisher": "Microsoft"
+        },
+        {
+            "name": "VMInsights",
+            "product": "OMSGallery/VMInsights",
+            "publisher": "Microsoft"
+        },
+        {
+            "name": "WireData2",
+            "product": "OMSGallery/WireData2",
+            "publisher": "Microsoft"
+        },
+        {
+            "name": "WaaSUpdateInsights",
+            "product": "OMSGallery/WaaSUpdateInsights",
+            "publisher": "Microsoft"
+        }
     ]
 }
 ```
@@ -86,6 +182,7 @@ This template deploys a log analytics workspace.
     "value": [
         {
             "roleDefinitionIdOrName": "Reader",
+            "description": "Reader Role Assignment",
             "principalIds": [
                 "12345678-1234-1234-1234-123456789012", // object 1
                 "78945612-1234-1234-1234-123456789012" // object 2

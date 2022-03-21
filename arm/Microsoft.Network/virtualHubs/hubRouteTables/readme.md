@@ -12,7 +12,7 @@ This module deploys virtual hub route tables.
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
+| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `labels` | array | `[]` |  | Optional. List of labels associated with this route table. |
 | `name` | string |  |  | Required. The route table name. |
 | `routes` | array | `[]` |  | Optional. List of all routes. |

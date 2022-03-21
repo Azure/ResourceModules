@@ -87,8 +87,6 @@ param databases array = []
 module server_databases 'databases/deploy.bicep' = [for (database, index) in databases: {}]
 ```
 
-Each module should come with a `.bicep` folder with a least the `nested_cuaId.bicep` file in it
-
 ## Naming
 
 Use the following naming standard for module files and folders:
@@ -114,7 +112,6 @@ Use the following naming standard for module files and folders:
   >└─ sites
   >    ├─ .bicep
   >    |  ├─ nested_components.bicep
-  >    |  ├─ nested_cuaId.bicep
   >    |  ├─ nested_privateEndpoint.bicep
   >    |  ├─ nested_rbac.bicep
   >    |  └─ nested_serverfarms.bicep
