@@ -731,7 +731,8 @@ Describe 'Deployment template tests' -Tag Template {
             $Paramdescoutput = $templateContent.parameters.Keys
             foreach ($Param in $Paramdescoutput) {
                 $Data = ($templateContent.parameters.$Param.metadata).description
-                if ($Data -notlike 'Optional. [a-zA-Z]*' -and $Data -notlike 'Required. [a-zA-Z]*' -and $Data -notlike 'Generated. [a-zA-Z]*') {
+                # if ($Data -notlike 'Optional. [a-zA-Z]*' -and $Data -notlike 'Required. [a-zA-Z]*' -and $Data -notlike 'Generated. [a-zA-Z]*') {
+                if ($Data -notmatch '^[a-zA-Z]+\. .+') {
                     $IncorrectParameters += $Param
                 }
             }
