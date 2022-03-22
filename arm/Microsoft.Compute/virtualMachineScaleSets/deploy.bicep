@@ -286,11 +286,14 @@ param userAssignedIdentities object = {}
 @allowed([
   'AllMetrics'
 ])
-param metricsToEnable array = [
+param diagnosticMetricsToEnable array = [
   'AllMetrics'
 ]
 
-var diagnosticsMetrics = [for metric in metricsToEnable: {
+@description('Optional. The name of the diagnostic setting, if deployed.')
+param publicIpDiagnosticSettingsName string = '${name}-diagnosticSettings'
+
+var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
   category: metric
   timeGrain: null
   enabled: true
@@ -623,7 +626,7 @@ resource vmss_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'Not
 }
 
 resource vmss_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(diagnosticWorkspaceId)) || (!empty(diagnosticEventHubAuthorizationRuleId)) || (!empty(diagnosticEventHubName))) {
-  name: '${vmss.name}-diagnosticSettings'
+  name: publicIpDiagnosticSettingsName
   properties: {
     storageAccountId: !empty(diagnosticStorageAccountId) ? diagnosticStorageAccountId : null
     workspaceId: !empty(diagnosticWorkspaceId) ? diagnosticWorkspaceId : null

@@ -32,7 +32,7 @@ param enableFips bool = false
 @description('Optional. Whether HTTP2 is enabled on the application gateway resource.')
 param enableHttp2 bool = false
 
-@description('Optional. The resource Id of an associated firewall policy.')
+@description('Optional. The resource ID of an associated firewall policy.')
 param firewallPolicyId string = ''
 
 @description('Optional. Frontend IP addresses of the application gateway resource.')
@@ -192,7 +192,7 @@ param diagnosticEventHubName string = ''
   'ApplicationGatewayPerformanceLog'
   'ApplicationGatewayFirewallLog'
 ])
-param logsToEnable array = [
+param diagnosticLogCategoriesToEnable array = [
   'ApplicationGatewayAccessLog'
   'ApplicationGatewayPerformanceLog'
   'ApplicationGatewayFirewallLog'
@@ -202,7 +202,7 @@ param logsToEnable array = [
 @allowed([
   'AllMetrics'
 ])
-param metricsToEnable array = [
+param diagnosticMetricsToEnable array = [
   'AllMetrics'
 ]
 
@@ -213,8 +213,11 @@ var identity = identityType != 'None' ? {
   userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
 } : null
 
-var diagnosticsLogs = [for log in logsToEnable: {
-  category: log
+@description('Optional. The name of the diagnostic setting, if deployed.')
+param diagnosticSettingsName string = '${name}-diagnosticSettings'
+
+var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
+  category: category
   enabled: true
   retentionPolicy: {
     enabled: true
@@ -222,7 +225,7 @@ var diagnosticsLogs = [for log in logsToEnable: {
   }
 }]
 
-var diagnosticsMetrics = [for metric in metricsToEnable: {
+var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
   category: metric
   timeGrain: null
   enabled: true
@@ -327,7 +330,7 @@ resource applicationGateway_lock 'Microsoft.Authorization/locks@2017-04-01' = if
 }
 
 resource applicationGateway_diagnosticSettingName 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = if (!empty(diagnosticStorageAccountId) || !empty(diagnosticWorkspaceId) || !empty(diagnosticEventHubAuthorizationRuleId) || !empty(diagnosticEventHubName)) {
-  name: '${applicationGateway.name}-diagnosticSettings'
+  name: diagnosticSettingsName
   properties: {
     storageAccountId: empty(diagnosticStorageAccountId) ? null : diagnosticStorageAccountId
     workspaceId: empty(diagnosticWorkspaceId) ? null : diagnosticWorkspaceId

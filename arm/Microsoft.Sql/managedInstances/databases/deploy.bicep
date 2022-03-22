@@ -88,15 +88,18 @@ param enableDefaultTelemetry bool = true
   'QueryStoreWaitStatistics'
   'Errors'
 ])
-param logsToEnable array = [
+param diagnosticLogCategoriesToEnable array = [
   'SQLInsights'
   'QueryStoreRuntimeStatistics'
   'QueryStoreWaitStatistics'
   'Errors'
 ]
 
-var diagnosticsLogs = [for log in logsToEnable: {
-  category: log
+@description('Optional. The name of the diagnostic setting, if deployed.')
+param diagnosticSettingsName string = '${name}-diagnosticSettings'
+
+var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
+  category: category
   enabled: true
   retentionPolicy: {
     enabled: true
@@ -149,7 +152,7 @@ resource database_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 
 }
 
 resource database_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(diagnosticWorkspaceId)) || (!empty(diagnosticEventHubAuthorizationRuleId)) || (!empty(diagnosticEventHubName))) {
-  name: '${last(split(database.name, '/'))}-diagnosticSettings'
+  name: diagnosticSettingsName
   properties: {
     storageAccountId: !empty(diagnosticStorageAccountId) ? diagnosticStorageAccountId : null
     workspaceId: !empty(diagnosticWorkspaceId) ? diagnosticWorkspaceId : null

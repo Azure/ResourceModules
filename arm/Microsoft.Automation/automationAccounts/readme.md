@@ -27,17 +27,23 @@ This module deploys an Azure Automation Account.
 | :-- | :-- | :-- | :-- | :-- |
 | `diagnosticEventHubAuthorizationRuleId` | string |  |  | Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string |  |  | Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
+| `diagnosticLogCategoriesToEnable` | array | `[JobLogs, JobStreams, DscNodeStatus]` | `[JobLogs, JobStreams, DscNodeStatus]` | Optional. The name of logs that will be streamed. |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
+| `diagnosticMetricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | Optional. The name of metrics that will be streamed. |
+| `diagnosticSettingsName` | string | `[format('{0}-diagnosticSettings', parameters('name'))]` |  | Optional. The name of the diagnostic setting, if deployed. |
 | `diagnosticStorageAccountId` | string |  |  | Optional. Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string |  |  | Optional. Resource ID of the diagnostic log analytics workspace. |
+| `encryptionKeySource` | string | Microsoft.Automation |  | Optional. Encryption Key Source. For security reasons it is recommended to use Microsoft.Keyvault if custom keys are available. |
+| `encryptionUserAssignedIdentity` | string | Microsoft.Automation |  | User identity used for CMK. If you set encryptionKeySource as Microsoft.Keyvault encryptionUserAssignedIdentity is required. |
 | `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `gallerySolutions` | array | `[]` |  | Optional. List of gallerySolutions to be created in the linked log analytics workspace |
 | `jobSchedules` | _[jobSchedules](jobSchedules/readme.md)_ array | `[]` |  | Optional. List of jobSchedules to be created in the automation account. |
+| `keyName` | string |  |  | Optional. The name of key used to encrypt data. This parameter is needed only if you enable Microsoft.Keyvault as encryptionKeySource. |
+| `keyvaultUri` | string |  |  | Optional. The URI of the key vault key used to encrypt data. This parameter is needed only if you enable Microsoft.Keyvault as encryptionKeySource. |
+| `keyVersion` | string |  |  | Optional. The key version of the key used to encrypt data. This parameter is needed only if you enable Microsoft.Keyvault as encryptionKeySource. |
 | `linkedWorkspaceId` | string |  |  | Optional. ID of the log analytics workspace to be linked to the deployed automation account. |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
-| `logsToEnable` | array | `[JobLogs, JobStreams, DscNodeStatus]` | `[JobLogs, JobStreams, DscNodeStatus]` | Optional. The name of logs that will be streamed. |
-| `metricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | Optional. The name of metrics that will be streamed. |
 | `modules` | _[modules](modules/readme.md)_ array | `[]` |  | Optional. List of modules to be created in the automation account. |
 | `name` | string |  |  | Required. Name of the Automation Account. |
 | `privateEndpoints` | array | `[]` |  | Optional. Configuration Details for private endpoints. |
@@ -51,6 +57,36 @@ This module deploys an Azure Automation Account.
 | `userAssignedIdentities` | object | `{object}` |  | Optional. The ID(s) to assign to the resource. |
 | `variables` | _[variables](variables/readme.md)_ array | `[]` |  | Optional. List of variables to be created in the automation account. |
 
+### Parameter Usage: `encryption`
+Prerequsites:
+- User Assigned Identity for Encryption needs `Get`, `List`, `Wrap` and `Unwrap` permissions on the key.
+- User Assigned Identity have to be one of the defined identities in userAssignedIdentities parameter block.
+- To use Azure Automation with customer managed keys, both `Soft Delete` and `Do Not Purge` features must be turned on to allow for recovery of keys in case of accidental deletion.
+
+```json
+"encryptionKeySource" : {
+    "value" : "Microsoft.KeyVault"
+},
+"encryptionUserAssignedIdentity": {
+    "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001" // this identity needs to be one of the identities defined in userAssignedIdentities section
+},
+"keyName" : {
+        "value" : "keyEncryptionKey"
+},
+"keyvaultUri" : {
+            "value" : "https://<<keyValutName>>.vault.azure.net/"
+},
+"keyVersion" : {
+            "value" : "aa11b22c1234567890c3608c657cd5a2"
+},
+
+"userAssignedIdentities": {
+    "value": {
+        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001": {}, // same value as 'encryptionUserAssignedIdentity' parameter
+        ...
+    }
+},
+```
 ### Parameter Usage: `privateEndpoints`
 
 To use Private Endpoint the following dependencies must be deployed:
@@ -86,7 +122,6 @@ To use Private Endpoint the following dependencies must be deployed:
     ]
 }
 ```
-
 ### Parameter Usage: `roleAssignments`
 
 ```json

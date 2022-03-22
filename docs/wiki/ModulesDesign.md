@@ -239,7 +239,7 @@ param diagnosticEventHubName string = ''
 @allowed([
   <LogsIfAny>
 ])
-param logsToEnable array = [
+param diagnosticLogCategoriesToEnable array = [
   <LogsIfAny>
 ]
 
@@ -247,12 +247,15 @@ param logsToEnable array = [
 @allowed([
   <MetricsIfAny>
 ])
-param metricsToEnable array = [
+param diagnosticMetricsToEnable array = [
   <MetricsIfAny>
 ]
 
-var diagnosticsLogs = [for log in logsToEnable: {
-  category: log
+@description('Optional. The name of the diagnostic setting, if deployed.')
+param diagnosticSettingsName string = '${name}-diagnosticSettings'
+
+var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
+  category: category
   enabled: true
   retentionPolicy: {
     enabled: true
@@ -260,7 +263,7 @@ var diagnosticsLogs = [for log in logsToEnable: {
   }
 }]
 
-var diagnosticsMetrics = [for metric in metricsToEnable: {
+var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
   category: metric
   timeGrain: null
   enabled: true
@@ -271,7 +274,7 @@ var diagnosticsMetrics = [for metric in metricsToEnable: {
 }]
 
 resource <mainResource>_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2021-05-01-preview' = if (!empty(diagnosticStorageAccountId) || !empty(diagnosticWorkspaceId) || !empty(diagnosticEventHubAuthorizationRuleId) || !empty(diagnosticEventHubName)) {
-  name: '${<mainResource>.name}-diagnosticSettings'
+  name: diagnosticSettingsName
   properties: {
     storageAccountId: !empty(diagnosticStorageAccountId) ? diagnosticStorageAccountId : null
     workspaceId: !empty(diagnosticWorkspaceId) ? diagnosticWorkspaceId : null
