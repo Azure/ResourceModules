@@ -66,18 +66,18 @@
                 {
                     "name": "TestDateTime",
                     "value": "\"\\/Date(1637934042656)\\/\"",
-                    "description": "TestDateTimeDescription"
+                    "description": "TestDateTimeDescription",
+                    "isEncrypted": false
                 },
                 {
                     "name": "TestEncryptedVariable",
                     "value": "\"TestEncryptedValue\"",
-                    "description": "TestEncryptedDescription",
-                    "isEncrypted": true
+                    "description": "TestEncryptedDescription"
                 }
             ]
         },
         "linkedWorkspaceId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001"
+            "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-aut-001"
         },
         "gallerySolutions": {
             "value": [
