@@ -715,7 +715,7 @@ Describe 'Deployment template tests' -Tag Template {
 
         }
 
-        It "[<moduleFolderName>] parameters' description shoud start either by 'Optional.' or 'Required.' or 'Generated.'" -TestCases $deploymentFolderTestCases {
+        It "[<moduleFolderName>] parameters' description shoud start with a one word category followed by a dot, a space and the actual description text." -TestCases $deploymentFolderTestCases {
             param(
                 $moduleFolderName,
                 $templateContent
@@ -731,7 +731,6 @@ Describe 'Deployment template tests' -Tag Template {
             $Paramdescoutput = $templateContent.parameters.Keys
             foreach ($Param in $Paramdescoutput) {
                 $Data = ($templateContent.parameters.$Param.metadata).description
-                # if ($Data -notlike 'Optional. [a-zA-Z]*' -and $Data -notlike 'Required. [a-zA-Z]*' -and $Data -notlike 'Generated. [a-zA-Z]*') {
                 if ($Data -notmatch '^[a-zA-Z]+\. .+') {
                     $IncorrectParameters += $Param
                 }
