@@ -289,10 +289,10 @@ Describe 'Readme tests' -Tag Readme {
 
             ## Iterate over all parameter tables
             $parametersList = [System.Collections.ArrayList]@()
-            $parametersSectionIndex = $parametersSectionStartIndex
-            while ($parametersSectionIndex -lt $parametersSectionEndIndex) {
+            $sectionIndex = $parametersSectionStartIndex
+            while ($sectionIndex -lt $parametersSectionEndIndex) {
                 ### Get table start index
-                $parametersTableStartIndex = $parametersSectionIndex
+                $parametersTableStartIndex = $sectionIndex
                 while ($readMeContent[$parametersTableStartIndex] -notlike '*|*' -and -not ($parametersTableStartIndex -ge $readMeContent.count)) {
                     $parametersTableStartIndex++
                 }
@@ -303,13 +303,12 @@ Describe 'Readme tests' -Tag Readme {
                 while ($readMeContent[$parametersTableEndIndex] -like '*|*' -and -not ($parametersTableEndIndex -ge $readMeContent.count)) {
                     $parametersTableEndIndex++
                 }
-                $parametersTableEndIndex-- # remove one index as the while loop will move one index past the last table row
                 Write-Verbose ("[loop] parametersTableEndIndex $parametersTableEndIndex") -Verbose
 
-                for ($index = $parametersTableStartIndex + 2; $index -le $parametersTableEndIndex; $index++) {
-                    $parametersList += $readMeContent[$index].Split('|')[1].Replace('`', '').Trim()
+                for ($tableIndex = $parametersTableStartIndex + 2; $tableIndex -lt $parametersTableEndIndex; $tableIndex++) {
+                    $parametersList += $readMeContent[$tableIndex].Split('|')[1].Replace('`', '').Trim()
                 }
-                $parametersSectionIndex = $parametersTableEndIndex + 1
+                $sectionIndex = $parametersTableEndIndex + 1
             }
 
             # Test
