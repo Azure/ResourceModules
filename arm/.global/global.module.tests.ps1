@@ -315,7 +315,6 @@ Describe 'Readme tests' -Tag Readme {
             # Test
             $differentiatingItems = $parameters | Where-Object { $parametersList -notcontains $_ }
             $differentiatingItems.Count | Should -Be 0 -Because ('list of template parameters missing in the ReadMe file [{0}] should be empty' -f ($differentiatingItems -join ','))
-
         }
 
         It '[<moduleFolderName>] Outputs section should contain a table with these column names in order: Output Name, Type' -TestCases $readmeFolderTestCases {
