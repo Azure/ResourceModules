@@ -11,9 +11,6 @@
         "publisherName": {
             "value": "<<namePrefix>>-az-amorg-x-001"
         },
-        "cuaId": {
-            "value": "00000-0-000000"
-        },
         "portalSettings": {
             "value": [
                 {

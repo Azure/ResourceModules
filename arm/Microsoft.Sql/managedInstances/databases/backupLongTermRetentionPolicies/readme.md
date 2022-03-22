@@ -12,8 +12,8 @@ This module deploys a backup long-term retention policies for SQL Managed Instan
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `databaseName` | string |  |  | Required. The name of the managed instance database |
+| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `managedInstanceName` | string |  |  | Required. Name of the managed instance. |
 | `monthlyRetention` | string | `P1Y` |  | Optional. The monthly retention policy for an LTR backup in an ISO 8601 format. |
 | `name` | string |  |  | Required. The name of the Long Term Retention backup policy. For example "default". |

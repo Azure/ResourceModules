@@ -13,7 +13,7 @@ This module deploys a storage account file share.
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
+| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `enabledProtocols` | string | `SMB` | `[NFS, SMB]` | Optional. The authentication protocol that is used for the file share. Can only be specified when creating a share. |
 | `fileServicesName` | string | `default` |  | Optional. The name of the file service |
 | `name` | string |  |  | Required. The name of the file share to create |
@@ -29,6 +29,7 @@ This module deploys a storage account file share.
     "value": [
         {
             "roleDefinitionIdOrName": "Reader",
+            "description": "Reader Role Assignment",
             "principalIds": [
                 "12345678-1234-1234-1234-123456789012", // object 1
                 "78945612-1234-1234-1234-123456789012" // object 2

@@ -132,6 +132,7 @@ resource publicIpAddress_diagnosticSettings 'Microsoft.Insights/diagnosticSettin
 module publicIpAddress_rbac 'nested_publicIPAddress_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${deployment().name}-rbac-${index}'
   params: {
+    description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
     principalIds: roleAssignment.principalIds
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
     resourceId: publicIpAddress.id
