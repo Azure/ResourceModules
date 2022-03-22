@@ -303,7 +303,7 @@ Describe 'Readme tests' -Tag Readme {
                 while ($readMeContent[$parametersTableEndIndex] -like '*|*' -and -not ($parametersTableEndIndex -ge $readMeContent.count)) {
                     $parametersTableEndIndex++
                 }
-                $parametersTableEndIndex--
+                $parametersTableEndIndex-- # remove one index as the while loop will move one index past the last table row
                 Write-Verbose ("[loop] parametersTableEndIndex $parametersTableEndIndex") -Verbose
 
                 for ($index = $parametersTableStartIndex + 2; $index -le $parametersTableEndIndex; $index++) {
