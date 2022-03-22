@@ -43,6 +43,8 @@ stages:
           removeDeployment: '${{ parameters.removeDeployment }}'
           deploymentBlocks:
             - path: $(modulePath)/.parameters/parameters.json
+            - path: $(modulePath)/.parameters/min.parameters.json
+            - path: $(modulePath)/.parameters/max.parameters.json
 
   - stage: Publishing
     displayName: Publish module
