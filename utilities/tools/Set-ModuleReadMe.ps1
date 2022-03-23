@@ -401,8 +401,26 @@ function Set-TemplateReferencesSection {
     return $updatedFileContent
 }
 
-function Set-TableOfContent {
+<#
+.SYNOPSIS
+Generate a table of content section for the given readme file
 
+.DESCRIPTION
+Generate a table of content section for the given readme file
+
+.PARAMETER ReadMeFileContent
+Mandatory. The readme file content array to update
+
+.PARAMETER SectionStartIdentifier
+Optional. The identifier of the 'navigation' section. Defaults to '## Navigation'
+
+.EXAMPLE
+Set-TableOfContent -ReadMeFileContent @('# Title', '', '## Section 1', ...)
+
+
+Update the given readme's '## Navigation' section to reflect the latest file structure
+#>
+function Set-TableOfContent {
 
     [CmdletBinding(SupportsShouldProcess)]
     param (
