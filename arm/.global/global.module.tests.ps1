@@ -274,7 +274,7 @@ Describe 'Readme tests' -Tag Readme {
             while ($readMeContent[$parametersSectionStartIndex] -notlike '*# Parameters' -and -not ($parametersSectionStartIndex -ge $readMeContent.count)) {
                 $parametersSectionStartIndex++
             }
-            Write-Verbose ("parametersSectionStartIndex $parametersSectionStartIndex") -Verbose
+            Write-Verbose ("parametersSectionStartIndex $parametersSectionStartIndex")
 
             if ($parametersSectionStartIndex -ge $readMeContent.count) {
                 throw 'Parameters section is missing in the Readme. Please add and re-run the tests.'
