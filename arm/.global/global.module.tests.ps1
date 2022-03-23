@@ -274,7 +274,7 @@ Describe 'Readme tests' -Tag Readme {
             while ($readMeContent[$parametersSectionStartIndex] -notlike '*# Parameters' -and -not ($parametersSectionStartIndex -ge $readMeContent.count)) {
                 $parametersSectionStartIndex++
             }
-            Write-Verbose ("parametersSectionStartIndex $parametersSectionStartIndex")
+            Write-Verbose ("Start row of the parameters section in the readme: $parametersSectionStartIndex")
 
             if ($parametersSectionStartIndex -ge $readMeContent.count) {
                 throw 'Parameters section is missing in the Readme. Please add and re-run the tests.'
@@ -285,7 +285,7 @@ Describe 'Readme tests' -Tag Readme {
             while ($readMeContent[$parametersSectionEndIndex] -notlike '*# *' -and -not ($parametersSectionEndIndex -ge $readMeContent.count)) {
                 $parametersSectionEndIndex++
             }
-            Write-Verbose ("parametersSectionEndIndex $parametersSectionEndIndex") -Verbose
+            Write-Verbose ("End row of the parameters section in the readme: $parametersSectionEndIndex")
 
             ## Iterate over all parameter tables
             $parametersList = [System.Collections.ArrayList]@()
@@ -296,14 +296,14 @@ Describe 'Readme tests' -Tag Readme {
                 while ($readMeContent[$parametersTableStartIndex] -notlike '*|*' -and -not ($parametersTableStartIndex -ge $readMeContent.count)) {
                     $parametersTableStartIndex++
                 }
-                Write-Verbose ("[loop] parametersTableStartIndex $parametersTableStartIndex") -Verbose
+                Write-Verbose ("[loop] Start row of the parameter table: $parametersTableStartIndex")
 
                 ### Get table end index
                 $parametersTableEndIndex = $parametersTableStartIndex + 2 # Header row + table separator row
                 while ($readMeContent[$parametersTableEndIndex] -like '*|*' -and -not ($parametersTableEndIndex -ge $readMeContent.count)) {
                     $parametersTableEndIndex++
                 }
-                Write-Verbose ("[loop] parametersTableEndIndex $parametersTableEndIndex") -Verbose
+                Write-Verbose ("[loop] End row of the parameter table: $parametersTableEndIndex")
 
                 for ($tableIndex = $parametersTableStartIndex + 2; $tableIndex -lt $parametersTableEndIndex; $tableIndex++) {
                     $parametersList += $readMeContent[$tableIndex].Split('|')[1].Replace('`', '').Trim()
