@@ -175,7 +175,7 @@ function Set-ParametersSection {
 
         # 1. Prepare
         # Filter to relevant items
-        [array] $categoryParameters = $TemplateFileContent.parameters.Values | Where-Object { $_.metadata.description -like "$category. *" } | Sort-Object -Culture 'en-US'
+        [array] $categoryParameters = $TemplateFileContent.parameters.Values | Where-Object { $_.metadata.description -like "$category. *" } | Sort-Object -Property 'Name' -Culture 'en-US'
 
         # Check properties for later reference
         $hasDefaults = $categoryParameters.defaultValue.count -gt 0
