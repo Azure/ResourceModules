@@ -2,6 +2,14 @@
 
 This module is used to deploy a storage account, with the ability to deploy 1 or more blob containers, file shares, tables and queues. Optional ACLs can be configured on the storage account and optional RBAC can be assigned on the storage account and on each child resource.
 
+## Navigation
+
+- [Resource types](#Resource-types)
+- [Parameters](#Parameters)
+- [Outputs](#Outputs)
+- [Considerations](#Considerations)
+- [Template references](#Template-references)
+
 ## Resource types
 
 | Resource Type | API Version |
@@ -25,9 +33,7 @@ This module is used to deploy a storage account, with the ability to deploy 1 or
 
 ## Parameters
 
-
 **Optional parameters**
-
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `allowBlobPublicAccess` | bool | `False` |  | Indicates whether public access is enabled for all blobs or containers in the storage account. For security reasons, it is recommended to set it to false. |
@@ -65,10 +71,10 @@ This module is used to deploy a storage account, with the ability to deploy 1 or
 | `vNetId` | string |  |  | Virtual Network Identifier used to create a service endpoint. |
 
 **Generated parameters**
+| Parameter Name | Type | Default Value | Description |
+| :-- | :-- | :-- | :-- |
+| `basetime` | string | `[utcNow('u')]` | Do not provide a value! This date value is used to generate a SAS token to access the modules. |
 
-| Parameter Name | Type | Default Value | Allowed Values | Description |
-| :-- | :-- | :-- | :-- | :-- |
-| `basetime` | string | `[utcNow('u')]` |  | Do not provide a value! This date value is used to generate a SAS token to access the modules. |
 
 ### Parameter Usage: `roleAssignments`
 

@@ -2,6 +2,13 @@
 
 This module deploys a storage account table
 
+## Navigation
+
+- [Resource Types](#Resource-Types)
+- [Parameters](#Parameters)
+- [Outputs](#Outputs)
+- [Template references](#Template-references)
+
 ## Resource Types
 
 | Resource Type | API Version |
@@ -10,20 +17,18 @@ This module deploys a storage account table
 
 ## Parameters
 
-
 **Required parameters**
-
-| Parameter Name | Type | Allowed Values | Description |
-| :-- | :-- | :-- | :-- |
-| `name` | string |  | Name of the table. |
-| `storageAccountName` | string |  | Name of the Storage Account. |
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `name` | string | Name of the table. |
+| `storageAccountName` | string | Name of the Storage Account. |
 
 **Optional parameters**
+| Parameter Name | Type | Default Value | Description |
+| :-- | :-- | :-- | :-- |
+| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `tableServicesName` | string | `default` | The name of the table service |
 
-| Parameter Name | Type | Default Value | Allowed Values | Description |
-| :-- | :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `tableServicesName` | string | `default` |  | The name of the table service |
 
 ## Outputs
 
