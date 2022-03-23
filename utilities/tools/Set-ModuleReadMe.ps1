@@ -183,7 +183,7 @@ function Set-ParametersSection {
 
         # 2. Create header including optional columns
         $newSectionContent += @(
-            ('### **{0}** parameters' -f $category),
+            ('**{0} parameters**' -f $category),
             ('| Parameter Name | Type | {0}{1}Description |' -f ($hasDefaults ? 'Default Value | ' : ''), ($hasAllowed ? 'Allowed Value | ' : '')),
             ('| :-- | :-- | {0}{1}:-- |' -f ($hasDefaults ? ':-- | ' : ''), ($hasAllowed ? ':-- | ' : ''))
         )
@@ -211,7 +211,6 @@ function Set-ParametersSection {
             # Update parameter table content based on parameter category
             ## Remove category from parameter description
             $description = $description.substring("$category. ".Length)
-            # TODO: Fix that section is not overwritten
             $defaultValueColumnValue = ($hasDefaults ? (-not [String]::IsNullOrEmpty($defaultValue) ? "``$defaultValue`` | " : ' | ') : '')
             $allowedColumnValue = ($hasAllowed ? (-not [String]::IsNullOrEmpty($allowed) ? "``$allowed`` | " : ' | ') : '')
             $newSectionContent += ('| `{0}` | {1} | {2}{3}{4} |' -f $parameter.name, $type, $defaultValueColumnValue, $allowedColumnValue, $description)
@@ -250,7 +249,6 @@ function Set-ParametersSection {
 
     return $updatedFileContent
 }
-
 
 <#
 .SYNOPSIS
@@ -402,6 +400,22 @@ function Set-TemplateReferencesSection {
     }
     return $updatedFileContent
 }
+
+function Set-TableOfContent {
+
+
+    [CmdletBinding(SupportsShouldProcess)]
+    param (
+        [Parameter(Mandatory)]
+        [hashtable] $TemplateFileContent,
+
+        [Parameter(Mandatory)]
+        [object[]] $ReadMeFileContent
+    )
+
+    $templateFileContent
+
+}
 #endregion
 
 <#
@@ -469,7 +483,8 @@ function Set-ModuleReadMe {
             'Resource Types',
             'Parameters',
             'Outputs',
-            'Template references'
+            'Template references',
+            'Navigation'
         )
     )
 
@@ -574,6 +589,16 @@ function Set-ModuleReadMe {
             TemplateFileContent = $templateFileContent
         }
         $readMeFileContent = Set-TemplateReferencesSection @inputObject
+    }
+
+    if ($SectionsToRefresh -contains 'Navigation') {
+        # Handle [Navigation] section
+        # ===================================
+        $inputObject = @{
+            ReadMeFileContent   = $readMeFileContent
+            TemplateFileContent = $templateFileContent
+        }
+        $readMeFileContent = Set-TableOfContent @inputObject
     }
 
     Write-Verbose 'New content:'
