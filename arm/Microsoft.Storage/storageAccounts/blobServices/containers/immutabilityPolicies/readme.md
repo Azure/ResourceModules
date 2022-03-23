@@ -10,15 +10,23 @@ This module deployes an Immutability Policy for a blob container
 
 ## Parameters
 
-| Parameter Name | Type | Default Value | Possible Values | Description |
+
+**Required parameters**
+
+| Parameter Name | Type | Allowed Values | Description |
+| :-- | :-- | :-- | :-- |
+| `containerName` | string |  | Name of the container to apply the policy to |
+| `storageAccountName` | string |  | Name of the Storage Account. |
+
+**Optional parameters**
+
+| Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `allowProtectedAppendWrites` | bool | `True` |  | Optional. This property can only be changed for unlocked time-based retention policies. When enabled, new blocks can be written to an append blob while maintaining immutability protection and compliance. Only new blocks can be added and any existing blocks cannot be modified or deleted. This property cannot be changed with ExtendImmutabilityPolicy API |
-| `blobServicesName` | string | `default` |  | Optional. Name of the blob service. |
-| `containerName` | string |  |  | Required. Name of the container to apply the policy to |
-| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `immutabilityPeriodSinceCreationInDays` | int | `365` |  | Optional. The immutability period for the blobs in the container since the policy creation, in days. |
-| `name` | string | `default` |  | Optional. Name of the immutable policy. |
-| `storageAccountName` | string |  |  | Required. Name of the Storage Account. |
+| `allowProtectedAppendWrites` | bool | `True` |  | This property can only be changed for unlocked time-based retention policies. When enabled, new blocks can be written to an append blob while maintaining immutability protection and compliance. Only new blocks can be added and any existing blocks cannot be modified or deleted. This property cannot be changed with ExtendImmutabilityPolicy API |
+| `blobServicesName` | string | `default` |  | Name of the blob service. |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `immutabilityPeriodSinceCreationInDays` | int | `365` |  | The immutability period for the blobs in the container since the policy creation, in days. |
+| `name` | string | `default` |  | Name of the immutable policy. |
 
 ## Outputs
 

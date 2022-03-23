@@ -10,12 +10,20 @@ This module can be used to deploy a management policies into a storage account.
 
 ## Parameters
 
-| Parameter Name | Type | Default Value | Possible Values | Description |
+
+**Required parameters**
+
+| Parameter Name | Type | Allowed Values | Description |
+| :-- | :-- | :-- | :-- |
+| `rules` | array |  | The Storage Account ManagementPolicies Rules |
+| `storageAccountName` | string |  | Name of the Storage Account. |
+
+**Optional parameters**
+
+| Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `name` | string | `default` |  | Optional. The name of the storage container to deploy |
-| `rules` | array |  |  | Required. The Storage Account ManagementPolicies Rules |
-| `storageAccountName` | string |  |  | Required. Name of the Storage Account. |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `name` | string | `default` |  | The name of the storage container to deploy |
 
 ### Parameter Usage: `rules`
 
