@@ -24,7 +24,10 @@ This module deploys Network ApplicationGateways.
 | `customErrorConfigurations` | array | `[]` |  | Optional. Custom error configurations of the application gateway resource. |
 | `diagnosticEventHubAuthorizationRuleId` | string |  |  | Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.  |
 | `diagnosticEventHubName` | string |  |  | Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub |
+| `diagnosticLogCategoriesToEnable` | array | `[ApplicationGatewayAccessLog, ApplicationGatewayPerformanceLog, ApplicationGatewayFirewallLog]` | `[ApplicationGatewayAccessLog, ApplicationGatewayPerformanceLog, ApplicationGatewayFirewallLog]` | Optional. The name of logs that will be streamed. |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
+| `diagnosticMetricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | Optional. The name of metrics that will be streamed. |
+| `diagnosticSettingsName` | string | `[format('{0}-diagnosticSettings', parameters('name'))]` |  | Optional. The name of the diagnostic setting, if deployed. |
 | `diagnosticStorageAccountId` | string |  |  | Optional. Resource ID of the diagnostic storage account. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub |
 | `diagnosticWorkspaceId` | string |  |  | Optional. Resource ID of the diagnostic log analytics workspace. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub |
 | `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
@@ -32,7 +35,7 @@ This module deploys Network ApplicationGateways.
 | `enableHttp2` | bool | `False` |  | Optional. Whether HTTP2 is enabled on the application gateway resource. |
 | `enableRequestBuffering` | bool | `False` |  | Optional. Enable request buffering. |
 | `enableResponseBuffering` | bool | `False` |  | Optional. Enable response buffering. |
-| `firewallPolicyId` | string |  |  | Optional. The resource ID of an associated firewall policy. |
+| `firewallPolicyId` | string |  |  | Optional. The resource Id of an associated firewall policy. |
 | `frontendIPConfigurations` | array | `[]` |  | Optional. Frontend IP addresses of the application gateway resource. |
 | `frontendPorts` | array | `[]` |  | Optional. Frontend ports of the application gateway resource. |
 | `gatewayIPConfigurations` | array | `[]` |  | Optional. Subnets of the application gateway resource. |
@@ -40,14 +43,12 @@ This module deploys Network ApplicationGateways.
 | `loadDistributionPolicies` | array | `[]` |  | Optional. Load distribution policies of the application gateway resource. |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
-| `logsToEnable` | array | `[ApplicationGatewayAccessLog, ApplicationGatewayPerformanceLog, ApplicationGatewayFirewallLog]` | `[ApplicationGatewayAccessLog, ApplicationGatewayPerformanceLog, ApplicationGatewayFirewallLog]` | Optional. The name of logs that will be streamed. |
-| `metricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | Optional. The name of metrics that will be streamed. |
 | `name` | string |  |  | Required. Name of the Application Gateway. |
 | `privateLinkConfigurations` | array | `[]` |  | Optional. PrivateLink configurations on application gateway. |
 | `probes` | array | `[]` |  | Optional. Probes of the application gateway resource. |
 | `redirectConfigurations` | array | `[]` |  | Optional. Redirect configurations of the application gateway resource. |
 | `requestRoutingRules` | array | `[]` |  | Optional. Request routing rules of the application gateway resource. |
-| `rewriteRuleSets` | array | `[]` |  | Optional. Rewrite rules for the application gateway resource.  |
+| `rewriteRuleSets` | array | `[]` |  | Optional. Rewrite rules for the application gateway resource.	 |
 | `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
 | `sku` | string | `WAF_Medium` | `[Standard_Small, Standard_Medium, Standard_Large, WAF_Medium, WAF_Large, Standard_v2, WAF_v2]` | Optional. The name of the SKU for the Application Gateway. |
 | `sslCertificates` | array | `[]` |  | Optional. SSL certificates of the application gateway resource. |

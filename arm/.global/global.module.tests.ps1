@@ -269,29 +269,46 @@ Describe 'Readme tests' -Tag Readme {
             $parameters = $templateContent.parameters.Keys
 
             # Get ReadMe data
+            ## Get section start index
             $parametersSectionStartIndex = 0
             while ($readMeContent[$parametersSectionStartIndex] -notlike '*# Parameters' -and -not ($parametersSectionStartIndex -ge $readMeContent.count)) {
                 $parametersSectionStartIndex++
             }
-
-            $parametersTableStartIndex = $parametersSectionStartIndex + 1
-            while ($readMeContent[$parametersTableStartIndex] -notlike '*|*' -and -not ($parametersTableStartIndex -ge $readMeContent.count)) {
-                $parametersTableStartIndex++
-            }
+            Write-Verbose ("parametersSectionStartIndex $parametersSectionStartIndex") -Verbose
 
             if ($parametersSectionStartIndex -ge $readMeContent.count) {
                 throw 'Parameters section is missing in the Readme. Please add and re-run the tests.'
             }
 
-            $parametersTableEndIndex = $parametersTableStartIndex + 2 # Header row + table separator row
-            while ($readMeContent[$parametersTableEndIndex] -like '*|*' -and -not ($parametersTableEndIndex -ge $readMeContent.count)) {
-                $parametersTableEndIndex++
+            ## Get section end index
+            $parametersSectionEndIndex = $parametersSectionStartIndex + 1
+            while ($readMeContent[$parametersSectionEndIndex] -notlike '*# *' -and -not ($parametersSectionEndIndex -ge $readMeContent.count)) {
+                $parametersSectionEndIndex++
             }
-            $parametersTableEndIndex-- # remove one index as the while loop will move one index past the last table row
+            Write-Verbose ("parametersSectionEndIndex $parametersSectionEndIndex") -Verbose
 
+            ## Iterate over all parameter tables
             $parametersList = [System.Collections.ArrayList]@()
-            for ($index = $parametersTableStartIndex + 2; $index -le $parametersTableEndIndex; $index++) {
-                $parametersList += $readMeContent[$index].Split('|')[1].Replace('`', '').Trim()
+            $sectionIndex = $parametersSectionStartIndex
+            while ($sectionIndex -lt $parametersSectionEndIndex) {
+                ### Get table start index
+                $parametersTableStartIndex = $sectionIndex
+                while ($readMeContent[$parametersTableStartIndex] -notlike '*|*' -and -not ($parametersTableStartIndex -ge $readMeContent.count)) {
+                    $parametersTableStartIndex++
+                }
+                Write-Verbose ("[loop] parametersTableStartIndex $parametersTableStartIndex") -Verbose
+
+                ### Get table end index
+                $parametersTableEndIndex = $parametersTableStartIndex + 2 # Header row + table separator row
+                while ($readMeContent[$parametersTableEndIndex] -like '*|*' -and -not ($parametersTableEndIndex -ge $readMeContent.count)) {
+                    $parametersTableEndIndex++
+                }
+                Write-Verbose ("[loop] parametersTableEndIndex $parametersTableEndIndex") -Verbose
+
+                for ($tableIndex = $parametersTableStartIndex + 2; $tableIndex -lt $parametersTableEndIndex; $tableIndex++) {
+                    $parametersList += $readMeContent[$tableIndex].Split('|')[1].Replace('`', '').Trim()
+                }
+                $sectionIndex = $parametersTableEndIndex + 1
             }
 
             # Test
@@ -689,7 +706,7 @@ Describe 'Deployment template tests' -Tag Template {
 
         }
 
-        It "[<moduleFolderName>] parameters' description shoud start either by 'Optional.' or 'Required.' or 'Generated.'" -TestCases $deploymentFolderTestCases {
+        It "[<moduleFolderName>] parameters' description shoud start with a one word category followed by a dot, a space and the actual description text." -TestCases $deploymentFolderTestCases {
             param(
                 $moduleFolderName,
                 $templateContent
@@ -705,7 +722,7 @@ Describe 'Deployment template tests' -Tag Template {
             $Paramdescoutput = $templateContent.parameters.Keys
             foreach ($Param in $Paramdescoutput) {
                 $Data = ($templateContent.parameters.$Param.metadata).description
-                if ($Data -notlike 'Optional. [a-zA-Z]*' -and $Data -notlike 'Required. [a-zA-Z]*' -and $Data -notlike 'Generated. [a-zA-Z]*') {
+                if ($Data -notmatch '^[a-zA-Z]+\. .+') {
                     $IncorrectParameters += $Param
                 }
             }

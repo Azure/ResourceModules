@@ -237,7 +237,7 @@ param diagnosticEventHubName string = ''
 @allowed([
   <LogsIfAny>
 ])
-param logsToEnable array = [
+param diagnosticLogCategoriesToEnable array = [
   <LogsIfAny>
 ]
 
@@ -245,12 +245,15 @@ param logsToEnable array = [
 @allowed([
   <MetricsIfAny>
 ])
-param metricsToEnable array = [
+param diagnosticMetricsToEnable array = [
   <MetricsIfAny>
 ]
 
-var diagnosticsLogs = [for log in logsToEnable: {
-  category: log
+@description('Optional. The name of the diagnostic setting, if deployed.')
+param diagnosticSettingsName string = '${name}-diagnosticSettings'
+
+var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
+  category: category
   enabled: true
   retentionPolicy: {
     enabled: true
@@ -258,7 +261,7 @@ var diagnosticsLogs = [for log in logsToEnable: {
   }
 }]
 
-var diagnosticsMetrics = [for metric in metricsToEnable: {
+var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
   category: metric
   timeGrain: null
   enabled: true
@@ -269,7 +272,7 @@ var diagnosticsMetrics = [for metric in metricsToEnable: {
 }]
 
 resource <mainResource>_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2021-05-01-preview' = if (!empty(diagnosticStorageAccountId) || !empty(diagnosticWorkspaceId) || !empty(diagnosticEventHubAuthorizationRuleId) || !empty(diagnosticEventHubName)) {
-  name: '${<mainResource>.name}-diagnosticSettings'
+  name: diagnosticSettingsName
   properties: {
     storageAccountId: !empty(diagnosticStorageAccountId) ? diagnosticStorageAccountId : null
     workspaceId: !empty(diagnosticWorkspaceId) ? diagnosticWorkspaceId : null
@@ -374,10 +377,11 @@ Within a bicep file, use the following conventions:
 
 - Parameter names are in camelCase, e.g. `allowBlobPublicAccess`.
 - Descriptions contain type of requirement:
-  - `Optional` - Is not needed at any point. Module contains default values.
-  - `Required` - Is required to be provided. Module does not have a default value and will expect input.
-  - `Generated` - Should not be used to provide a parameter. Used to generate data used in the deployment that cannot be generated other places in the template. i.e. the `utcNow()` function.
-  - `Conditional` - Optional or required parameter depending on other inputs.
+  - `Required` - The parameter value must be provided. The parameter does not have a default value and hence the module expects input.
+  - `Conditional` - The parameter value can be optional or required based on a condition, mostly based on the value provided to other parameters.
+  - `Optional` - The parameter value is not mandatory. The module provides a default value for the parameter.
+  - `Generated` - The parameter value is generated within the module and should not be specified as input.
+
 
 ## Variables
 

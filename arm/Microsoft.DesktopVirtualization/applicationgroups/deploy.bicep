@@ -61,7 +61,7 @@ param enableDefaultTelemetry bool = true
   'Error'
   'Management'
 ])
-param logsToEnable array = [
+param diagnosticLogCategoriesToEnable array = [
   'Checkpoint'
   'Error'
   'Management'
@@ -70,8 +70,11 @@ param logsToEnable array = [
 @sys.description('Optional. List of applications to be created in the Application Group.')
 param applications array = []
 
-var diagnosticsLogs = [for log in logsToEnable: {
-  category: log
+@sys.description('Optional. The name of the diagnostic setting, if deployed.')
+param diagnosticSettingsName string = '${name}-diagnosticSettings'
+
+var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
+  category: category
   enabled: true
   retentionPolicy: {
     enabled: true
@@ -117,7 +120,7 @@ resource appGroup_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 
 }
 
 resource appGroup_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(diagnosticWorkspaceId)) || (!empty(diagnosticEventHubAuthorizationRuleId)) || (!empty(diagnosticEventHubName))) {
-  name: '${appGroup.name}-diagnosticSettings'
+  name: diagnosticSettingsName
   properties: {
     storageAccountId: !empty(diagnosticStorageAccountId) ? diagnosticStorageAccountId : null
     workspaceId: !empty(diagnosticWorkspaceId) ? diagnosticWorkspaceId : null
