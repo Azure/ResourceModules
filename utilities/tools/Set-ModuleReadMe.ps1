@@ -407,14 +407,38 @@ function Set-TableOfContent {
     [CmdletBinding(SupportsShouldProcess)]
     param (
         [Parameter(Mandatory)]
-        [hashtable] $TemplateFileContent,
+        [object[]] $ReadMeFileContent,
 
-        [Parameter(Mandatory)]
-        [object[]] $ReadMeFileContent
+        [Parameter(Mandatory = $false)]
+        [string] $SectionStartIdentifier = '## Navigation'
     )
 
-    $templateFileContent
+    $newSectionContent = [System.Collections.ArrayList]@()
 
+    $contentPointer = 1
+    while ($ReadMeFileContent[$contentPointer] -notlike '#*') {
+        $contentPointer++
+    }
+
+    $headers = $ReadMeFileContent.Split('\n') | Where-Object { $_ -like '## *' }
+
+    if ($headers -notcontains $SectionStartIdentifier) {
+        $beforeContent = $ReadMeFileContent[0 .. ($contentPointer - 1)]
+        $afterContent = $ReadMeFileContent[$contentPointer .. ($ReadMeFileContent.Count - 1)]
+
+        $ReadMeFileContent = $beforeContent + @($SectionStartIdentifier, '') + $afterContent
+    }
+
+    $headers | Where-Object { $_ -ne $SectionStartIdentifier } | ForEach-Object {
+        $newSectionContent += '- [{0}](#{1})' -f $_.Replace('#', '').Trim(), $_.Replace('#', '').Trim().Replace(' ', '-').Replace('.', '')
+    }
+
+    # Build result
+    if ($PSCmdlet.ShouldProcess('Original file with new parameters content', 'Merge')) {
+        $updatedFileContent = Merge-FileWithNewContent -oldContent $ReadMeFileContent -newContent $newSectionContent -SectionStartIdentifier $SectionStartIdentifier -contentType 'none'
+    }
+
+    return $updatedFileContent
 }
 #endregion
 
@@ -595,8 +619,7 @@ function Set-ModuleReadMe {
         # Handle [Navigation] section
         # ===================================
         $inputObject = @{
-            ReadMeFileContent   = $readMeFileContent
-            TemplateFileContent = $templateFileContent
+            ReadMeFileContent = $readMeFileContent
         }
         $readMeFileContent = Set-TableOfContent @inputObject
     }
