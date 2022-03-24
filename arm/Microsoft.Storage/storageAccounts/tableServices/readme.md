@@ -2,6 +2,13 @@
 
 This module deploys a storage account table service
 
+## Navigation
+
+- [Resource Types](#Resource-Types)
+- [Parameters](#Parameters)
+- [Outputs](#Outputs)
+- [Template references](#Template-references)
+
 ## Resource Types
 
 | Resource Type | API Version |
@@ -12,15 +19,12 @@ This module deploys a storage account table service
 
 ## Parameters
 
-
 **Required parameters**
-
-| Parameter Name | Type | Allowed Values | Description |
-| :-- | :-- | :-- | :-- |
-| `storageAccountName` | string |  | Name of the Storage Account. |
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `storageAccountName` | string | Name of the Storage Account. |
 
 **Optional parameters**
-
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `diagnosticEventHubAuthorizationRuleId` | string |  |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
@@ -34,6 +38,7 @@ This module deploys a storage account table service
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `name` | string | `default` |  | The name of the table service |
 | `tables` | _[tables](tables/readme.md)_ array | `[]` |  | tables to create. |
+
 
 ## Outputs
 

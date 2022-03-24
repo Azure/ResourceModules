@@ -2,6 +2,13 @@
 
 This module can be used to deploy a file share service into a storage account.
 
+## Navigation
+
+- [Resource Types](#Resource-Types)
+- [Parameters](#Parameters)
+- [Outputs](#Outputs)
+- [Template references](#Template-references)
+
 ## Resource Types
 
 | Resource Type | API Version |
@@ -13,15 +20,12 @@ This module can be used to deploy a file share service into a storage account.
 
 ## Parameters
 
-
 **Required parameters**
-
-| Parameter Name | Type | Allowed Values | Description |
-| :-- | :-- | :-- | :-- |
-| `storageAccountName` | string |  | Name of the Storage Account. |
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `storageAccountName` | string | Name of the Storage Account. |
 
 **Optional parameters**
-
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `diagnosticEventHubAuthorizationRuleId` | string |  |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
@@ -37,6 +41,7 @@ This module can be used to deploy a file share service into a storage account.
 | `protocolSettings` | object | `{object}` |  | Protocol settings for file service |
 | `shareDeleteRetentionPolicy` | object | `{object}` |  | The service properties for soft delete. |
 | `shares` | _[shares](shares/readme.md)_ array | `[]` |  | File shares to create. |
+
 
 ## Outputs
 

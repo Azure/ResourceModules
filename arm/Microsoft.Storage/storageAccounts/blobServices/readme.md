@@ -2,6 +2,13 @@
 
 This module can be used to deploy a blob service into a storage account.
 
+## Navigation
+
+- [Resource Types](#Resource-Types)
+- [Parameters](#Parameters)
+- [Outputs](#Outputs)
+- [Template references](#Template-references)
+
 ## Resource Types
 
 | Resource Type | API Version |
@@ -14,15 +21,12 @@ This module can be used to deploy a blob service into a storage account.
 
 ## Parameters
 
-
 **Required parameters**
-
-| Parameter Name | Type | Allowed Values | Description |
-| :-- | :-- | :-- | :-- |
-| `storageAccountName` | string |  | Name of the Storage Account. |
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `storageAccountName` | string | Name of the Storage Account. |
 
 **Optional parameters**
-
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `automaticSnapshotPolicyEnabled` | bool | `False` |  | Automatic Snapshot is enabled if set to true. |
@@ -39,6 +43,7 @@ This module can be used to deploy a blob service into a storage account.
 | `diagnosticWorkspaceId` | string |  |  | Resource ID of a log analytics workspace. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `name` | string | `default` |  | The name of the blob service |
+
 
 ## Outputs
 

@@ -1,6 +1,13 @@
 # Storage Account Queue `[Microsoft.Storage/storageAccounts/queueServices/queues]`
 
-This module deployes a storage account queue
+This module deploys a storage account queue
+
+## Navigation
+
+- [Resource Types](#Resource-Types)
+- [Parameters](#Parameters)
+- [Outputs](#Outputs)
+- [Template references](#Template-references)
 
 ## Resource Types
 
@@ -11,22 +18,20 @@ This module deployes a storage account queue
 
 ## Parameters
 
-
 **Required parameters**
-
-| Parameter Name | Type | Allowed Values | Description |
-| :-- | :-- | :-- | :-- |
-| `metadata` | object |  | A name-value pair that represents queue metadata. |
-| `name` | string |  | The name of the storage queue to deploy |
-| `storageAccountName` | string |  | Name of the Storage Account. |
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `metadata` | object | A name-value pair that represents queue metadata. |
+| `name` | string | The name of the storage queue to deploy |
+| `storageAccountName` | string | Name of the Storage Account. |
 
 **Optional parameters**
+| Parameter Name | Type | Default Value | Description |
+| :-- | :-- | :-- | :-- |
+| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `queueServicesName` | string | `default` | The name of the queue service |
+| `roleAssignments` | array | `[]` | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
 
-| Parameter Name | Type | Default Value | Allowed Values | Description |
-| :-- | :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `queueServicesName` | string | `default` |  | The name of the queue service |
-| `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
 
 ### Parameter Usage: `roleAssignments`
 
