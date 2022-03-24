@@ -181,6 +181,7 @@ The element requires you to provide both the `principalIds` & `roleDefinitionOrI
 
 ```bicep
 param principalIds array
+param principalType string = ''
 param roleDefinitionIdOrName string
 param resourceId string
 
@@ -206,6 +207,7 @@ resource roleAssignment 'Microsoft.Authorization/roleAssignments@2021-04-01-prev
   properties: {
     roleDefinitionId: contains(builtInRoleNames, roleDefinitionIdOrName) ? builtInRoleNames[roleDefinitionIdOrName] : roleDefinitionIdOrName
     principalId: principalId
+    principalType: !empty(principalType) ? principalType : null
   }
   scope: <mainResource>
 }]

@@ -1,5 +1,6 @@
 param description string = ''
 param principalIds array
+param principalType string = ''
 param roleDefinitionIdOrName string
 param resourceId string
 
@@ -32,6 +33,7 @@ resource roleAssignment 'Microsoft.Authorization/roleAssignments@2021-04-01-prev
     description: description
     roleDefinitionId: contains(builtInRoleNames, roleDefinitionIdOrName) ? builtInRoleNames[roleDefinitionIdOrName] : roleDefinitionIdOrName
     principalId: principalId
+    principalType: !empty(principalType) ? principalType : null
   }
   scope: service
 }]
