@@ -16,6 +16,9 @@
         },
         "allowBlobPublicAccess": {
             "value": false
+        },
+        "requireInfrastructureEncryption": {
+            "value": false
         }
     }
 }
