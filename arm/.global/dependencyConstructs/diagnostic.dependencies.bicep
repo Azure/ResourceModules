@@ -54,15 +54,15 @@ module eventHubNamespace '../../Microsoft.EventHub/namespaces/deploy.bicep' = {
     eventHubs: [
       {
         name: eventHubNamespaceEventHubName
-        authorizationRules: [
-          {
-            name: 'RootManageSharedAccessKey'
-            rights: [
-              'Listen'
-              'Manage'
-              'Send'
-            ]
-          }
+      }
+    ]
+    authorizationRules: [
+      {
+        name: 'RootManageSharedAccessKey'
+        rights: [
+          'Listen'
+          'Manage'
+          'Send'
         ]
       }
     ]
