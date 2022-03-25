@@ -59,7 +59,7 @@ module resourceGroup_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, ind
     principalIds: roleAssignment.principalIds
     principalType: contains(roleAssignment, 'principalType') ? roleAssignment.principalType : ''
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
-    resourceGroupName: resourceGroup.name
+    resourceId: resourceGroup.id
   }
   scope: resourceGroup
 }]
