@@ -21,8 +21,6 @@ param principalType string = ''
 @sys.description('Optional. Description of role assignment')
 param description string = ''
 
-@sys.description('Required. The resource ID of the resource to apply the role assignment to')
-
 var builtInRoleNames = {
   'AcrDelete': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'c2f4ef07-c644-48eb-af81-4b1b4947fb11')
   'AcrImageSigner': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '6cef56e8-d556-48e5-a04f-b8e64114680f')
