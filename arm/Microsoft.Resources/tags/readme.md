@@ -2,6 +2,13 @@
 
 This module deploys Resources Tags on a subscription or resource group scope.
 
+## Navigation
+
+- [Resource Types](#Resource-Types)
+- [Parameters](#Parameters)
+- [Outputs](#Outputs)
+- [Template references](#Template-references)
+
 ## Resource Types
 
 | Resource Type | API Version |
@@ -10,14 +17,16 @@ This module deploys Resources Tags on a subscription or resource group scope.
 
 ## Parameters
 
-| Parameter Name | Type | Default Value | Possible Values | Description |
-| :-- | :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `location` | string | `[deployment().location]` |  | Optional. Location deployment metadata. |
-| `onlyUpdate` | bool | `False` |  | Optional. Instead of overwriting the existing tags, combine them with the new tags |
-| `resourceGroupName` | string |  |  | Optional. Name of the Resource Group to assign the tags to. If no Resource Group name is provided, and Subscription ID is provided, the module deploys at subscription level, therefore assigns the provided tags to the subscription. |
-| `subscriptionId` | string | `[subscription().id]` |  | Optional. Subscription ID of the subscription to assign the tags to. If no Resource Group name is provided, the module deploys at subscription level, therefore assigns the provided tags to the subscription. |
-| `tags` | object | `{object}` |  | Optional. Tags for the resource group. If not provided, removes existing tags |
+**Optional parameters**
+| Parameter Name | Type | Default Value | Description |
+| :-- | :-- | :-- | :-- |
+| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `location` | string | `[deployment().location]` | Location deployment metadata. |
+| `onlyUpdate` | bool | `False` | Instead of overwriting the existing tags, combine them with the new tags |
+| `resourceGroupName` | string |  | Name of the Resource Group to assign the tags to. If no Resource Group name is provided, and Subscription ID is provided, the module deploys at subscription level, therefore assigns the provided tags to the subscription. |
+| `subscriptionId` | string | `[subscription().id]` | Subscription ID of the subscription to assign the tags to. If no Resource Group name is provided, the module deploys at subscription level, therefore assigns the provided tags to the subscription. |
+| `tags` | object | `{object}` | Tags for the resource group. If not provided, removes existing tags |
+
 
 ### Parameter Usage: `tags`
 

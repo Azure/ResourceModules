@@ -2,6 +2,13 @@
 
 This module deploys Web StaticSites.
 
+## Navigation
+
+- [Resource Types](#Resource-Types)
+- [Parameters](#Parameters)
+- [Outputs](#Outputs)
+- [Template references](#Template-references)
+
 ## Resource Types
 
 | Resource Type | API Version |
@@ -14,27 +21,33 @@ This module deploys Web StaticSites.
 
 ## Parameters
 
-| Parameter Name | Type | Default Value | Possible Values | Description |
+**Required parameters**
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `name` | string | Name of the static site. |
+
+**Optional parameters**
+| Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `allowConfigFileUpdates` | bool | `True` |  | Optional. If config file is locked for this static web app. |
-| `branch` | string |  |  | Optional. The branch name of the GitHub repo. |
-| `buildProperties` | object | `{object}` |  | Optional. Build properties for the static site. |
-| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `enterpriseGradeCdnStatus` | string | `Disabled` | `[Disabled, Disabling, Enabled, Enabling]` | Optional. State indicating the status of the enterprise grade CDN serving traffic to the static web app. |
-| `location` | string | `[resourceGroup().location]` |  | Optional. Location to deploy static site. The following locations are supported: CentralUS, EastUS2, EastAsia, WestEurope, WestUS2 |
-| `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
-| `name` | string |  |  | Required. Name of the static site. |
-| `privateEndpoints` | array | `[]` |  | Optional. Configuration details for private endpoints. |
-| `provider` | string | `None` |  | Optional. The provider that submitted the last deployment to the primary environment of the static site. |
-| `repositoryToken` | secureString |  |  | Optional. The Personal Access Token for accessing the GitHub repo. |
-| `repositoryUrl` | string |  |  | Optional. The name of the GitHub repo. |
-| `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
-| `sku` | string | `Free` | `[Free, Standard]` | Optional. Type of static site to deploy. |
-| `stagingEnvironmentPolicy` | string | `Enabled` | `[Enabled, Disabled]` | Optional. State indicating whether staging environments are allowed or not allowed for a static web app. |
-| `systemAssignedIdentity` | bool | `False` |  | Optional. Enables system assigned managed identity on the resource. |
-| `tags` | object | `{object}` |  | Optional. Tags of the resource. |
-| `templateProperties` | object | `{object}` |  | Optional. Template Options for the static site. |
-| `userAssignedIdentities` | object | `{object}` |  | Optional. The ID(s) to assign to the resource. |
+| `allowConfigFileUpdates` | bool | `True` |  | If config file is locked for this static web app. |
+| `branch` | string |  |  | The branch name of the GitHub repo. |
+| `buildProperties` | object | `{object}` |  | Build properties for the static site. |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enterpriseGradeCdnStatus` | string | `Disabled` | `[Disabled, Disabling, Enabled, Enabling]` | State indicating the status of the enterprise grade CDN serving traffic to the static web app. |
+| `location` | string | `[resourceGroup().location]` |  | Location to deploy static site. The following locations are supported: CentralUS, EastUS2, EastAsia, WestEurope, WestUS2 |
+| `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Specify the type of lock. |
+| `privateEndpoints` | array | `[]` |  | Configuration details for private endpoints. |
+| `provider` | string | `None` |  | The provider that submitted the last deployment to the primary environment of the static site. |
+| `repositoryToken` | secureString |  |  | The Personal Access Token for accessing the GitHub repo. |
+| `repositoryUrl` | string |  |  | The name of the GitHub repo. |
+| `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
+| `sku` | string | `Free` | `[Free, Standard]` | Type of static site to deploy. |
+| `stagingEnvironmentPolicy` | string | `Enabled` | `[Enabled, Disabled]` | State indicating whether staging environments are allowed or not allowed for a static web app. |
+| `systemAssignedIdentity` | bool | `False` |  | Enables system assigned managed identity on the resource. |
+| `tags` | object | `{object}` |  | Tags of the resource. |
+| `templateProperties` | object | `{object}` |  | Template Options for the static site. |
+| `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. |
+
 
 ### Parameter Usage: `buildProperties`
 

@@ -1,9 +1,27 @@
 targetScope = 'managementGroup'
 
-param description string = ''
+@sys.description('Required. The IDs of the prinicpals to assign to role to')
 param principalIds array
+
+@sys.description('Required. The name of the role to assign. If it cannot be found you can specify the role definition ID instead')
 param roleDefinitionIdOrName string
-param resourceName string
+
+@sys.description('Required. The resource ID of the resource to apply the role assignment to')
+param resourceId string
+
+@sys.description('Optional. The principal type of the assigned principal ID.')
+@allowed([
+  'ServicePrincipal'
+  'Group'
+  'User'
+  'ForeignGroup'
+  'Device'
+  ''
+])
+param principalType string = ''
+
+@sys.description('Optional. Description of role assignment')
+param description string = ''
 
 var builtInRoleNames = {
   'AcrPush': '/providers/Microsoft.Authorization/roleDefinitions/8311e382-0749-4cb8-b61a-304f252e45ec'
@@ -290,7 +308,7 @@ var builtInRoleNames = {
 }
 
 resource roleAssignment 'Microsoft.Authorization/roleAssignments@2021-04-01-preview' = [for principalId in principalIds: {
-  name: guid(resourceName, principalId, roleDefinitionIdOrName)
+  name: guid(last(split(resourceId, '/')), principalId, roleDefinitionIdOrName)
   properties: {
     description: description
     roleDefinitionId: contains(builtInRoleNames, roleDefinitionIdOrName) ? builtInRoleNames[roleDefinitionIdOrName] : roleDefinitionIdOrName

@@ -2,6 +2,13 @@
 
 This module deploys API Management Service Identity Provider.
 
+## Navigation
+
+- [Resource Types](#Resource-Types)
+- [Parameters](#Parameters)
+- [Outputs](#Outputs)
+- [Template references](#Template-references)
+
 ## Resource Types
 
 | Resource Type | API Version |
@@ -10,22 +17,28 @@ This module deploys API Management Service Identity Provider.
 
 ## Parameters
 
-| Parameter Name | Type | Default Value | Possible Values | Description |
+**Required parameters**
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `apiManagementServiceName` | string | The name of the of the API Management service. |
+| `name` | string | Identity provider name |
+
+**Optional parameters**
+| Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `apiManagementServiceName` | string |  |  | Required. The name of the of the API Management service. |
-| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `enableIdentityProviders` | bool | `False` |  | Optional. Used to enable the deployment of the identityProviders child resource. |
-| `identityProviderAllowedTenants` | array | `[]` |  | Optional. List of Allowed Tenants when configuring Azure Active Directory login. - string |
-| `identityProviderAuthority` | string |  |  | Optional. OpenID Connect discovery endpoint hostname for AAD or AAD B2C. |
-| `identityProviderClientId` | string |  |  | Optional. Client ID of the Application in the external Identity Provider. Required if identity provider is used. |
-| `identityProviderClientSecret` | secureString |  |  | Optional. Client secret of the Application in external Identity Provider, used to authenticate login request. Required if identity provider is used. |
-| `identityProviderPasswordResetPolicyName` | string |  |  | Optional. Password Reset Policy Name. Only applies to AAD B2C Identity Provider. |
-| `identityProviderProfileEditingPolicyName` | string |  |  | Optional. Profile Editing Policy Name. Only applies to AAD B2C Identity Provider. |
-| `identityProviderSignInPolicyName` | string |  |  | Optional. Signin Policy Name. Only applies to AAD B2C Identity Provider. |
-| `identityProviderSignInTenant` | string |  |  | Optional. The TenantId to use instead of Common when logging into Active Directory |
-| `identityProviderSignUpPolicyName` | string |  |  | Optional. Signup Policy Name. Only applies to AAD B2C Identity Provider. |
-| `identityProviderType` | string | `aad` | `[aad, aadB2C, facebook, google, microsoft, twitter]` | Optional. Identity Provider Type identifier. |
-| `name` | string |  |  | Required. Identity provider name |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableIdentityProviders` | bool | `False` |  | Used to enable the deployment of the identityProviders child resource. |
+| `identityProviderAllowedTenants` | array | `[]` |  | List of Allowed Tenants when configuring Azure Active Directory login. - string |
+| `identityProviderAuthority` | string |  |  | OpenID Connect discovery endpoint hostname for AAD or AAD B2C. |
+| `identityProviderClientId` | string |  |  | Client ID of the Application in the external Identity Provider. Required if identity provider is used. |
+| `identityProviderClientSecret` | secureString |  |  | Client secret of the Application in external Identity Provider, used to authenticate login request. Required if identity provider is used. |
+| `identityProviderPasswordResetPolicyName` | string |  |  | Password Reset Policy Name. Only applies to AAD B2C Identity Provider. |
+| `identityProviderProfileEditingPolicyName` | string |  |  | Profile Editing Policy Name. Only applies to AAD B2C Identity Provider. |
+| `identityProviderSignInPolicyName` | string |  |  | Signin Policy Name. Only applies to AAD B2C Identity Provider. |
+| `identityProviderSignInTenant` | string |  |  | The TenantId to use instead of Common when logging into Active Directory |
+| `identityProviderSignUpPolicyName` | string |  |  | Signup Policy Name. Only applies to AAD B2C Identity Provider. |
+| `identityProviderType` | string | `aad` | `[aad, aadB2C, facebook, google, microsoft, twitter]` | Identity Provider Type identifier. |
+
 
 ## Outputs
 

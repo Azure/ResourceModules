@@ -2,6 +2,13 @@
 
 This module deploys Network Firewall Policies Rule Collection Groups.
 
+## Navigation
+
+- [Resource Types](#Resource-Types)
+- [Parameters](#Parameters)
+- [Outputs](#Outputs)
+- [Template references](#Template-references)
+
 ## Resource Types
 
 | Resource Type | API Version |
@@ -10,13 +17,19 @@ This module deploys Network Firewall Policies Rule Collection Groups.
 
 ## Parameters
 
-| Parameter Name | Type | Default Value | Possible Values | Description |
-| :-- | :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `firewallPolicyName` | string |  |  | Required. Name of the Firewall Policy. |
-| `name` | string |  |  | Required. The name of the rule collection group to deploy |
-| `priority` | int |  |  | Required. Priority of the Firewall Policy Rule Collection Group resource. |
-| `ruleCollections` | array | `[]` |  | Optional. Group of Firewall Policy rule collections. |
+**Required parameters**
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `firewallPolicyName` | string | Name of the Firewall Policy. |
+| `name` | string | The name of the rule collection group to deploy |
+| `priority` | int | Priority of the Firewall Policy Rule Collection Group resource. |
+
+**Optional parameters**
+| Parameter Name | Type | Default Value | Description |
+| :-- | :-- | :-- | :-- |
+| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `ruleCollections` | array | `[]` | Group of Firewall Policy rule collections. |
+
 
 ### Parameter Usage: `ruleCollections`
 

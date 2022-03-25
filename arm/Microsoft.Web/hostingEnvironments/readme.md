@@ -2,6 +2,13 @@
 
 This module deploys an app service environment.
 
+## Navigation
+
+- [Resource types](#Resource-types)
+- [Parameters](#Parameters)
+- [Outputs](#Outputs)
+- [Template references](#Template-references)
+
 ## Resource types
 
 | Resource Type | API Version |
@@ -13,37 +20,43 @@ This module deploys an app service environment.
 
 ## Parameters
 
-| Parameter Name | Type | Default Value | Possible Values | Description |
+**Required parameters**
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `name` | string | Name of the App Service Environment |
+| `subnetResourceId` | string | ResourceId for the sub net |
+
+**Optional parameters**
+| Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `apiManagementAccountId` | string |  |  | Optional. API Management Account associated with the App Service Environment. |
-| `clusterSettings` | array | `[]` |  | Optional. Custom settings for changing the behavior of the App Service Environment |
-| `diagnosticEventHubAuthorizationRuleId` | string |  |  | Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
-| `diagnosticEventHubName` | string |  |  | Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
-| `diagnosticLogCategoriesToEnable` | array | `[AppServiceEnvironmentPlatformLogs]` | `[AppServiceEnvironmentPlatformLogs]` | Optional. The name of logs that will be streamed. |
-| `diagnosticLogsRetentionInDays` | int | `365` |  | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
-| `diagnosticSettingsName` | string | `[format('{0}-diagnosticSettings', parameters('name'))]` |  | Optional. The name of the diagnostic setting, if deployed. |
-| `diagnosticStorageAccountId` | string |  |  | Optional. Resource ID of the diagnostic storage account. |
-| `diagnosticWorkspaceId` | string |  |  | Optional. Resource ID of the diagnostic log analytics workspace. |
-| `dnsSuffix` | string |  |  | Optional. DNS suffix of the App Service Environment. |
-| `dynamicCacheEnabled` | bool | `False` |  | Optional. True/false indicating whether the App Service Environment is suspended. The environment can be suspended e.g. when the management endpoint is no longer available(most likely because NSG blocked the incoming traffic). |
-| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `frontEndScaleFactor` | int | `15` |  | Optional. Scale factor for frontends. |
-| `hasLinuxWorkers` | bool | `False` |  | Optional. Flag that displays whether an ASE has linux workers or not |
-| `internalLoadBalancingMode` | string | `None` | `[None, Web, Publishing]` | Optional. Specifies which endpoints to serve internally in the Virtual Network for the App Service Environment. - None, Web, Publishing, Web,Publishing |
-| `ipsslAddressCount` | int | `2` |  | Optional. Number of IP SSL addresses reserved for the App Service Environment. |
-| `kind` | string | `ASEV2` |  | Optional. Kind of resource. |
-| `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
-| `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
-| `multiRoleCount` | int | `2` |  | Optional. Number of frontend instances. |
-| `multiSize` | string | `Standard_D1_V2` | `[Medium, Large, ExtraLarge, Standard_D2, Standard_D3, Standard_D4, Standard_D1_V2, Standard_D2_V2, Standard_D3_V2, Standard_D4_V2]` | Optional. Frontend VM size, e.g. Medium, Large |
-| `name` | string |  |  | Required. Name of the App Service Environment |
-| `networkAccessControlList` | array | `[]` |  | Optional. Access control list for controlling traffic to the App Service Environment.. |
-| `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
-| `subnetResourceId` | string |  |  | Required. ResourceId for the sub net |
-| `suspended` | bool | `False` |  | Optional. true if the App Service Environment is suspended; otherwise, false. The environment can be suspended, e.g. when the management endpoint is no longer available (most likely because NSG blocked the incoming traffic). |
-| `tags` | object | `{object}` |  | Optional. Resource tags. |
-| `userWhitelistedIpRanges` | array | `[]` |  | Optional. User added ip ranges to whitelist on ASE db - string |
-| `workerPools` | array | `[]` |  | Optional. Description of worker pools with worker size IDs, VM sizes, and number of workers in each pool.. |
+| `apiManagementAccountId` | string |  |  | API Management Account associated with the App Service Environment. |
+| `clusterSettings` | array | `[]` |  | Custom settings for changing the behavior of the App Service Environment |
+| `diagnosticEventHubAuthorizationRuleId` | string |  |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
+| `diagnosticEventHubName` | string |  |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
+| `diagnosticLogCategoriesToEnable` | array | `[AppServiceEnvironmentPlatformLogs]` | `[AppServiceEnvironmentPlatformLogs]` | The name of logs that will be streamed. |
+| `diagnosticLogsRetentionInDays` | int | `365` |  | Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
+| `diagnosticSettingsName` | string | `[format('{0}-diagnosticSettings', parameters('name'))]` |  | The name of the diagnostic setting, if deployed. |
+| `diagnosticStorageAccountId` | string |  |  | Resource ID of the diagnostic storage account. |
+| `diagnosticWorkspaceId` | string |  |  | Resource ID of the diagnostic log analytics workspace. |
+| `dnsSuffix` | string |  |  | DNS suffix of the App Service Environment. |
+| `dynamicCacheEnabled` | bool | `False` |  | True/false indicating whether the App Service Environment is suspended. The environment can be suspended e.g. when the management endpoint is no longer available(most likely because NSG blocked the incoming traffic). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `frontEndScaleFactor` | int | `15` |  | Scale factor for frontends. |
+| `hasLinuxWorkers` | bool | `False` |  | Flag that displays whether an ASE has linux workers or not |
+| `internalLoadBalancingMode` | string | `None` | `[None, Web, Publishing]` | Specifies which endpoints to serve internally in the Virtual Network for the App Service Environment. - None, Web, Publishing, Web,Publishing |
+| `ipsslAddressCount` | int | `2` |  | Number of IP SSL addresses reserved for the App Service Environment. |
+| `kind` | string | `ASEV2` |  | Kind of resource. |
+| `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
+| `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Specify the type of lock. |
+| `multiRoleCount` | int | `2` |  | Number of frontend instances. |
+| `multiSize` | string | `Standard_D1_V2` | `[Medium, Large, ExtraLarge, Standard_D2, Standard_D3, Standard_D4, Standard_D1_V2, Standard_D2_V2, Standard_D3_V2, Standard_D4_V2]` | Frontend VM size, e.g. Medium, Large |
+| `networkAccessControlList` | array | `[]` |  | Access control list for controlling traffic to the App Service Environment.. |
+| `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
+| `suspended` | bool | `False` |  | true if the App Service Environment is suspended; otherwise, false. The environment can be suspended, e.g. when the management endpoint is no longer available (most likely because NSG blocked the incoming traffic). |
+| `tags` | object | `{object}` |  | Resource tags. |
+| `userWhitelistedIpRanges` | array | `[]` |  | User added ip ranges to whitelist on ASE db - string |
+| `workerPools` | array | `[]` |  | Description of worker pools with worker size IDs, VM sizes, and number of workers in each pool.. |
+
 
 ### Parameter Usage: `roleAssignments`
 

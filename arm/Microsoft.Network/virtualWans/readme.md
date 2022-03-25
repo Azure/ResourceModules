@@ -2,6 +2,13 @@
 
 This template deploys a virtual WAN.
 
+## Navigation
+
+- [Resource types](#Resource-types)
+- [Parameters](#Parameters)
+- [Outputs](#Outputs)
+- [Template references](#Template-references)
+
 ## Resource types
 
 | Resource Type | API Version |
@@ -12,18 +19,24 @@ This template deploys a virtual WAN.
 
 ## Parameters
 
-| Parameter Name | Type | Default Value | Possible Values | Description |
+**Required parameters**
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `name` | string | Name of the Virtual WAN. |
+
+**Optional parameters**
+| Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `allowBranchToBranchTraffic` | bool | `False` |  | Optional. True if branch to branch traffic is allowed. |
-| `allowVnetToVnetTraffic` | bool | `False` |  | Optional. True if VNET to VNET traffic is allowed.  |
-| `disableVpnEncryption` | bool | `False` |  | Optional. VPN encryption to be disabled or not. |
-| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `location` | string | `[resourceGroup().location]` |  | Optional. Location where all resources will be created. |
-| `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
-| `name` | string |  |  | Required. Name of the Virtual WAN. |
-| `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
-| `tags` | object | `{object}` |  | Optional. Tags of the resource. |
-| `type` | string | `Standard` | `[Standard, Basic]` | Optional. The type of the Virtual WAN. |
+| `allowBranchToBranchTraffic` | bool | `False` |  | True if branch to branch traffic is allowed. |
+| `allowVnetToVnetTraffic` | bool | `False` |  | True if VNET to VNET traffic is allowed.  |
+| `disableVpnEncryption` | bool | `False` |  | VPN encryption to be disabled or not. |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `location` | string | `[resourceGroup().location]` |  | Location where all resources will be created. |
+| `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Specify the type of lock. |
+| `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
+| `tags` | object | `{object}` |  | Tags of the resource. |
+| `type` | string | `Standard` | `[Standard, Basic]` | The type of the Virtual WAN. |
+
 
 ### Parameter Usage: `roleAssignments`
 

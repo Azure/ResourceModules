@@ -2,6 +2,13 @@
 
 This template deploys a linked service for a Log Analytics workspace.
 
+## Navigation
+
+- [Resource Types](#Resource-Types)
+- [Parameters](#Parameters)
+- [Outputs](#Outputs)
+- [Template references](#Template-references)
+
 ## Resource Types
 
 | Resource Type | API Version |
@@ -10,14 +17,20 @@ This template deploys a linked service for a Log Analytics workspace.
 
 ## Parameters
 
-| Parameter Name | Type | Default Value | Possible Values | Description |
-| :-- | :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `logAnalyticsWorkspaceName` | string |  |  | Required. Name of the Log Analytics workspace |
-| `name` | string |  |  | Required. Name of the link |
-| `resourceId` | string |  |  | Required. The resource ID of the resource that will be linked to the workspace. This should be used for linking resources which require read access. |
-| `tags` | object | `{object}` |  | Optional. Tags to configure in the resource. |
-| `writeAccessResourceId` | string |  |  | Optional. The resource ID of the resource that will be linked to the workspace. This should be used for linking resources which require write access.  |
+**Required parameters**
+| Parameter Name | Type | Default Value | Description |
+| :-- | :-- | :-- | :-- |
+| `logAnalyticsWorkspaceName` | string |  | Name of the Log Analytics workspace |
+| `name` | string |  | Name of the link |
+| `resourceId` | string |  | The resource ID of the resource that will be linked to the workspace. This should be used for linking resources which require read access. |
+
+**Optional parameters**
+| Parameter Name | Type | Default Value | Description |
+| :-- | :-- | :-- | :-- |
+| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `tags` | object | `{object}` | Tags to configure in the resource. |
+| `writeAccessResourceId` | string |  | The resource ID of the resource that will be linked to the workspace. This should be used for linking resources which require write access.  |
+
 
 ### Parameter Usage: `tags`
 

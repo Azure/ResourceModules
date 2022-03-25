@@ -6,6 +6,14 @@ assigned a role is in a remote/managing Azure Active Directory tenant. The templ
 the Azure resources you want to delegate access to are, providing 'authorizations' (aka. access delegation) to principals in a
 remote/managing tenant.
 
+## Navigation
+
+- [Resource types](#Resource-types)
+- [Parameters](#Parameters)
+- [Outputs](#Outputs)
+- [Considerations](#Considerations)
+- [Template references](#Template-references)
+
 ## Resource types
 
 | Resource Type | API Version |
@@ -15,15 +23,21 @@ remote/managing tenant.
 
 ## Parameters
 
-| Parameter Name | Type | Default Value | Possible Values | Description |
-| :-- | :-- | :-- | :-- | :-- |
-| `authorizations` | array |  |  | Required. Specify an array of objects, containing object of Azure Active Directory principalId, a Azure roleDefinitionId, and an optional principalIdDisplayName. The roleDefinition specified is granted to the principalId in the provider's Active Directory and the principalIdDisplayName is visible to customers. |
-| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `location` | string | `[deployment().location]` |  | Optional. Location deployment metadata. |
-| `managedByTenantId` | string |  |  | Required. Specify the tenant ID of the tenant which homes the principals you are delegating permissions to. |
-| `name` | string |  |  | Required. Specify a unique name for your offer/registration. i.e '<Managing Tenant> - <Remote Tenant> - <ResourceName>' |
-| `registrationDescription` | string |  |  | Required. Description of the offer/registration. i.e. 'Managed by <Managing Org Name>' |
-| `resourceGroupName` | string |  |  | Optional. Specify the name of the Resource Group to delegate access to. If not provided, delegation will be done on the targeted subscription. |
+**Required parameters**
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `authorizations` | array | Specify an array of objects, containing object of Azure Active Directory principalId, a Azure roleDefinitionId, and an optional principalIdDisplayName. The roleDefinition specified is granted to the principalId in the provider's Active Directory and the principalIdDisplayName is visible to customers. |
+| `managedByTenantId` | string | Specify the tenant ID of the tenant which homes the principals you are delegating permissions to. |
+| `name` | string | Specify a unique name for your offer/registration. i.e '<Managing Tenant> - <Remote Tenant> - <ResourceName>' |
+| `registrationDescription` | string | Description of the offer/registration. i.e. 'Managed by <Managing Org Name>' |
+
+**Optional parameters**
+| Parameter Name | Type | Default Value | Description |
+| :-- | :-- | :-- | :-- |
+| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `location` | string | `[deployment().location]` | Location deployment metadata. |
+| `resourceGroupName` | string |  | Specify the name of the Resource Group to delegate access to. If not provided, delegation will be done on the targeted subscription. |
+
 
 ### Parameter Usage: `authorizations`
 
@@ -120,4 +134,5 @@ There are a couple of limitations that you should be aware of with Lighthouse:
 
 ## Template references
 
-- [Define resources with Bicep and ARM templates](https://docs.microsoft.com/en-us/azure/templates)
+- [Registrationassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ManagedServices/2019-09-01/registrationAssignments)
+- [Registrationdefinitions](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ManagedServices/2019-09-01/registrationDefinitions)

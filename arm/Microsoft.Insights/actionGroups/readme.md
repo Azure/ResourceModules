@@ -2,6 +2,13 @@
 
 This module deploys an Action Group.
 
+## Navigation
+
+- [Resource Types](#Resource-Types)
+- [Parameters](#Parameters)
+- [Outputs](#Outputs)
+- [Template references](#Template-references)
+
 ## Resource Types
 
 | Resource Type | API Version |
@@ -11,25 +18,31 @@ This module deploys an Action Group.
 
 ## Parameters
 
-| Parameter Name | Type | Default Value | Possible Values | Description |
-| :-- | :-- | :-- | :-- | :-- |
-| `armRoleReceivers` | array | `[]` |  | Optional. The list of ARM role receivers that are part of this action group. Roles are Azure RBAC roles and only built-in roles are supported. |
-| `automationRunbookReceivers` | array | `[]` |  | Optional. The list of AutomationRunbook receivers that are part of this action group. |
-| `azureAppPushReceivers` | array | `[]` |  | Optional. The list of AzureAppPush receivers that are part of this action group. |
-| `azureFunctionReceivers` | array | `[]` |  | Optional. The list of function receivers that are part of this action group. |
-| `emailReceivers` | array | `[]` |  | Optional. The list of email receivers that are part of this action group. |
-| `enabled` | bool | `True` |  | Optional. Indicates whether this action group is enabled. If an action group is not enabled, then none of its receivers will receive communications. |
-| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `groupShortName` | string |  |  | Required. The short name of the action group. |
-| `itsmReceivers` | array | `[]` |  | Optional. The list of ITSM receivers that are part of this action group. |
-| `location` | string | `global` |  | Optional. Location for all resources. |
-| `logicAppReceivers` | array | `[]` |  | Optional. The list of logic app receivers that are part of this action group. |
-| `name` | string |  |  | Required. The name of the action group. |
-| `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
-| `smsReceivers` | array | `[]` |  | Optional. The list of SMS receivers that are part of this action group. |
-| `tags` | object | `{object}` |  | Optional. Tags of the resource. |
-| `voiceReceivers` | array | `[]` |  | Optional. The list of voice receivers that are part of this action group. |
-| `webhookReceivers` | array | `[]` |  | Optional. The list of webhook receivers that are part of this action group. |
+**Required parameters**
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `groupShortName` | string | The short name of the action group. |
+| `name` | string | The name of the action group. |
+
+**Optional parameters**
+| Parameter Name | Type | Default Value | Description |
+| :-- | :-- | :-- | :-- |
+| `armRoleReceivers` | array | `[]` | The list of ARM role receivers that are part of this action group. Roles are Azure RBAC roles and only built-in roles are supported. |
+| `automationRunbookReceivers` | array | `[]` | The list of AutomationRunbook receivers that are part of this action group. |
+| `azureAppPushReceivers` | array | `[]` | The list of AzureAppPush receivers that are part of this action group. |
+| `azureFunctionReceivers` | array | `[]` | The list of function receivers that are part of this action group. |
+| `emailReceivers` | array | `[]` | The list of email receivers that are part of this action group. |
+| `enabled` | bool | `True` | Indicates whether this action group is enabled. If an action group is not enabled, then none of its receivers will receive communications. |
+| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `itsmReceivers` | array | `[]` | The list of ITSM receivers that are part of this action group. |
+| `location` | string | `global` | Location for all resources. |
+| `logicAppReceivers` | array | `[]` | The list of logic app receivers that are part of this action group. |
+| `roleAssignments` | array | `[]` | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
+| `smsReceivers` | array | `[]` | The list of SMS receivers that are part of this action group. |
+| `tags` | object | `{object}` | Tags of the resource. |
+| `voiceReceivers` | array | `[]` | The list of voice receivers that are part of this action group. |
+| `webhookReceivers` | array | `[]` | The list of webhook receivers that are part of this action group. |
+
 
 ### Parameter Usage: receivers
 

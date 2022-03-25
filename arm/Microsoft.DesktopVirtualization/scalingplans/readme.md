@@ -2,6 +2,13 @@
 
 This module deploys AVD ScalingPlans.
 
+## Navigation
+
+- [Resource Types](#Resource-Types)
+- [Parameters](#Parameters)
+- [Outputs](#Outputs)
+- [Template references](#Template-references)
+
 ## Resource Types
 
 | Resource Type | API Version |
@@ -12,25 +19,31 @@ This module deploys AVD ScalingPlans.
 
 ## Parameters
 
-| Parameter Name | Type | Default Value | Possible Values | Description |
+**Required parameters**
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `name` | string | Name of the scaling plan |
+
+**Optional parameters**
+| Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `diagnosticEventHubAuthorizationRuleId` | string |  |  | Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
-| `diagnosticEventHubName` | string |  |  | Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
-| `diagnosticLogsRetentionInDays` | int | `365` |  | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
-| `diagnosticStorageAccountId` | string |  |  | Optional. Resource ID of the diagnostic storage account. |
-| `diagnosticWorkspaceId` | string |  |  | Optional. Resource ID of the diagnostic log analytics workspace. |
-| `exclusionTag` | string |  |  | Optional. Provide a tag to be used for hosts that should not be affected by the scaling plan. |
-| `friendlyName` | string | `[parameters('name')]` |  | Optional. Friendly Name of the scaling plan |
-| `hostPoolReferences` | array | `[]` |  | Optional. An array of references to hostpools. |
-| `hostPoolType` | string | `Pooled` | `[Pooled]` | Optional. The type of hostpool where this scaling plan should be applied. |
-| `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
-| `logsToEnable` | array | `[Autoscale]` | `[Autoscale]` | Optional. The name of logs that will be streamed. |
-| `name` | string |  |  | Required. Name of the scaling plan |
-| `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalIds' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
-| `scalingplanDescription` | string | `[parameters('name')]` |  | Optional. Description of the scaling plan. |
-| `schedules` | array | `[System.Collections.Hashtable]` |  | Optional. The schedules related to this scaling plan. If no value is provided a default schedule will be provided. |
-| `tags` | object | `{object}` |  | Optional. Tags of the resource. |
-| `timeZone` | string | `W. Europe Standard Time` |  | Optional. Timezone to be used for the scaling plan. |
+| `diagnosticEventHubAuthorizationRuleId` | string |  |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
+| `diagnosticEventHubName` | string |  |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
+| `diagnosticLogsRetentionInDays` | int | `365` |  | Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
+| `diagnosticStorageAccountId` | string |  |  | Resource ID of the diagnostic storage account. |
+| `diagnosticWorkspaceId` | string |  |  | Resource ID of the diagnostic log analytics workspace. |
+| `exclusionTag` | string |  |  | Provide a tag to be used for hosts that should not be affected by the scaling plan. |
+| `friendlyName` | string | `[parameters('name')]` |  | Friendly Name of the scaling plan |
+| `hostPoolReferences` | array | `[]` |  | An array of references to hostpools. |
+| `hostPoolType` | string | `Pooled` | `[Pooled]` | The type of hostpool where this scaling plan should be applied. |
+| `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
+| `logsToEnable` | array | `[Autoscale]` | `[Autoscale]` | The name of logs that will be streamed. |
+| `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalIds' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
+| `scalingplanDescription` | string | `[parameters('name')]` |  | Description of the scaling plan. |
+| `schedules` | array | `[System.Collections.Hashtable]` |  | The schedules related to this scaling plan. If no value is provided a default schedule will be provided. |
+| `tags` | object | `{object}` |  | Tags of the resource. |
+| `timeZone` | string | `W. Europe Standard Time` |  | Timezone to be used for the scaling plan. |
+
 
 ### Parameter Usage: `schedules`
 

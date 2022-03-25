@@ -2,6 +2,13 @@
 
 This module deploys API Management Service Backends.
 
+## Navigation
+
+- [Resource types](#Resource-types)
+- [Parameters](#Parameters)
+- [Outputs](#Outputs)
+- [Template references](#Template-references)
+
 ## Resource types
 
 | Resource Type | API Version |
@@ -16,20 +23,26 @@ The following resources are required to be able to deploy this resource.
 
 ## Parameters
 
-| Parameter Name | Type | Default Value | Possible Values | Description |
-| :-- | :-- | :-- | :-- | :-- |
-| `apiManagementServiceName` | string |  |  | Required. The name of the of the API Management service. |
-| `backendDescription` | string |  |  | Optional. Backend Description. |
-| `credentials` | object | `{object}` |  | Optional. Backend Credentials Contract Properties. |
-| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `name` | string |  |  | Required. Backend Name. |
-| `protocol` | string | `http` |  | Optional. Backend communication protocol. - http or soap |
-| `proxy` | object | `{object}` |  | Optional. Backend Proxy Contract Properties |
-| `resourceId` | string |  |  | Optional. Management Uri of the Resource in External System. This URL can be the Arm Resource ID of Logic Apps, Function Apps or API Apps. |
-| `serviceFabricCluster` | object | `{object}` |  | Optional. Backend Service Fabric Cluster Properties. |
-| `title` | string |  |  | Optional. Backend Title. |
-| `tls` | object | `{object}` |  | Optional. Backend TLS Properties |
-| `url` | string |  |  | Required. Runtime URL of the Backend. |
+**Required parameters**
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `apiManagementServiceName` | string | The name of the of the API Management service. |
+| `name` | string | Backend Name. |
+| `url` | string | Runtime URL of the Backend. |
+
+**Optional parameters**
+| Parameter Name | Type | Default Value | Description |
+| :-- | :-- | :-- | :-- |
+| `backendDescription` | string |  | Backend Description. |
+| `credentials` | object | `{object}` | Backend Credentials Contract Properties. |
+| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `protocol` | string | `http` | Backend communication protocol. - http or soap |
+| `proxy` | object | `{object}` | Backend Proxy Contract Properties |
+| `resourceId` | string |  | Management Uri of the Resource in External System. This URL can be the Arm Resource ID of Logic Apps, Function Apps or API Apps. |
+| `serviceFabricCluster` | object | `{object}` | Backend Service Fabric Cluster Properties. |
+| `title` | string |  | Backend Title. |
+| `tls` | object | `{object}` | Backend TLS Properties |
+
 
 ### Parameters - credentials
 
