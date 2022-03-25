@@ -95,10 +95,9 @@ jobs:
         with:
           fetch-depth: 0
       - name: Set environment variables
-        uses: deep-mm/set-variables@v1.0
+        uses: ./.github/actions/templates/setEnvironmentVariables
         with:
-          # Name of variable file
-          variableFileName: 'global.variables' # Don't write .json here
+          variablesPath: ${{ env.variablesPath }}
       # ------------------- #
       ##  Deploy & Remove  ##
       # ------------------- #
@@ -129,9 +128,9 @@ jobs:
         with:
           fetch-depth: 0
       - name: Set environment variables
-        uses: deep-mm/set-variables@v1.0
+        uses: ./.github/actions/templates/setEnvironmentVariables
         with:
-          variableFileName: 'global.variables'
+          variablesPath: ${{ env.variablesPath }}
       - name: 'Publish module'
         uses: ./.github/actions/templates/publishModule
         with:
