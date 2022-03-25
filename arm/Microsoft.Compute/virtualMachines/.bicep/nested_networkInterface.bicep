@@ -116,6 +116,7 @@ module networkInterface_rbac 'nested_networkInterface_rbac.bicep' = [for (roleAs
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
     principalIds: roleAssignment.principalIds
+    principalType: contains(roleAssignment, 'principalType') ? roleAssignment.principalType : ''
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
     resourceId: networkInterface.id
   }

@@ -621,6 +621,7 @@ module virtualMachine_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, in
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
     principalIds: roleAssignment.principalIds
+    principalType: contains(roleAssignment, 'principalType') ? roleAssignment.principalType : ''
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
     resourceId: virtualMachine.id
   }

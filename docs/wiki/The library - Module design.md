@@ -174,13 +174,14 @@ module <mainResource>_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, in
 
 Here you specify the platform roles available for the main resource.
 
-The `builtInRoleNames` variable contains the list of applicable roles for the specific resource to which the nested_rbac.bicep module applies.
+The `builtInRoleNames` variable contains the list of applicable roles for the specific resource which the `nested_rbac.bicep` template applies.
 >**Note**: You use the helper script [Get-FormattedRBACRoles.ps1](./Contribution%20guide%20-%20Get%20formatted%20RBAC%20roles) to extract a formatted list of RBAC roles used in the CARML modules based on the RBAC lists in Azure.
 
 The element requires you to provide both the `principalIds` & `roleDefinitionOrIdName` to assign to the principal IDs. Also, the `resourceId` is target resource's resource ID that allows us to reference it as an `existing` resource. Note, the implementation of the `split` in the resource reference becomes longer the deeper you go in the child-resource hierarchy.
 
 ```bicep
 param principalIds array
+param principalType string = ''
 param roleDefinitionIdOrName string
 param resourceId string
 
@@ -206,6 +207,7 @@ resource roleAssignment 'Microsoft.Authorization/roleAssignments@2021-04-01-prev
   properties: {
     roleDefinitionId: contains(builtInRoleNames, roleDefinitionIdOrName) ? builtInRoleNames[roleDefinitionIdOrName] : roleDefinitionIdOrName
     principalId: principalId
+    principalType: !empty(principalType) ? principalType : null
   }
   scope: <mainResource>
 }]
