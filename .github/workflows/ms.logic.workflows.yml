@@ -25,6 +25,7 @@ on:
       - '!utilities/pipelines/dependencies/**'
 
 env:
+  variablesPath: 'global.variables.yml'
   modulePath: 'arm/Microsoft.Logic/workflows'
   workflowPath: '.github/workflows/ms.logic.workflows.yml'
   AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}

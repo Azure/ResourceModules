@@ -25,6 +25,7 @@ on:
       - '!utilities/pipelines/dependencies/**'
 
 env:
+  variablesPath: 'global.variables.yml'
   modulePath: 'arm/Microsoft.Insights/privateLinkScopes'
   workflowPath: '.github/workflows/ms.insights.privatelinkscopes.yml'
   AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}

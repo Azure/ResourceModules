@@ -25,6 +25,7 @@ on:
       - '!utilities/pipelines/dependencies/**'
 
 env:
+  variablesPath: 'global.variables.yml'
   modulePath: 'arm/Microsoft.Web/sites'
   workflowPath: '.github/workflows/ms.web.sites.yml'
   AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}

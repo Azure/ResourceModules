@@ -25,6 +25,7 @@ on:
       - '!utilities/pipelines/dependencies/**'
 
 env:
+  variablesPath: 'global.variables.yml'
   modulePath: 'arm/Microsoft.Web/staticSites'
   workflowPath: '.github/workflows/ms.web.staticsites.yml'
   AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
@@ -81,11 +82,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        parameterFilePaths:
-          [
-            'min.parameters.json',
-            'parameters.json'
-          ]
+        parameterFilePaths: ['min.parameters.json', 'parameters.json']
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2

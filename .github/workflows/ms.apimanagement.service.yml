@@ -25,6 +25,7 @@ on:
       - '!utilities/pipelines/dependencies/**'
 
 env:
+  variablesPath: 'global.variables.yml'
   modulePath: 'arm/Microsoft.ApiManagement/service'
   workflowPath: '.github/workflows/ms.apimanagement.service.yml'
   AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
@@ -81,7 +82,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        parameterFilePaths: ['parameters.json', 'max.parameters.json', 'min.parameters.json']
+        parameterFilePaths:
+          ['parameters.json', 'max.parameters.json', 'min.parameters.json']
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2

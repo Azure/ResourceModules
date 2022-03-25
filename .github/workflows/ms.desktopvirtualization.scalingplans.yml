@@ -25,6 +25,7 @@ on:
       - '!utilities/pipelines/dependencies/**'
 
 env:
+  variablesPath: 'global.variables.yml'
   modulePath: 'arm/Microsoft.DesktopVirtualization/scalingplans'
   workflowPath: '.github/workflows/ms.desktopvirtualization.scalingplans.yml'
   AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}

@@ -25,6 +25,7 @@ on:
       - '!utilities/pipelines/dependencies/**'
 
 env:
+  variablesPath: 'global.variables.yml'
   modulePath: 'arm/Microsoft.ManagedIdentity/userAssignedIdentities'
   workflowPath: '.github/workflows/ms.managedidentity.userassignedidentities.yml'
   AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
