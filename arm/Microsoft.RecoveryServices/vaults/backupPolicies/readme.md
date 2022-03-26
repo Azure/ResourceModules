@@ -2,13 +2,6 @@
 
 This module deploys a Backup Policy for a Recovery Services Vault
 
-## Navigation
-
-- [Resource types](#Resource-types)
-- [Parameters](#Parameters)
-- [Outputs](#Outputs)
-- [Template references](#Template-references)
-
 ## Resource types
 
 | Resource Type | API Version |
@@ -17,18 +10,12 @@ This module deploys a Backup Policy for a Recovery Services Vault
 
 ## Parameters
 
-**Required parameters**
-| Parameter Name | Type | Description |
-| :-- | :-- | :-- |
-| `backupPolicyProperties` | object | Configuration of the Azure Recovery Service Vault Backup Policy |
-| `name` | string | Name of the Azure Recovery Service Vault Backup Policy |
-| `recoveryVaultName` | string | Name of the Azure Recovery Service Vault |
-
-**Optional parameters**
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-
+| Parameter Name | Type | Default Value | Possible Values | Description |
+| :-- | :-- | :-- | :-- | :-- |
+| `backupPolicyProperties` | object |  |  | Required. Configuration of the Azure Recovery Service Vault Backup Policy |
+| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `name` | string |  |  | Required. Name of the Azure Recovery Service Vault Backup Policy |
+| `recoveryVaultName` | string |  |  | Required. Name of the Azure Recovery Service Vault |
 
 ### Parameter Usage: `backupPolicyProperties`
 

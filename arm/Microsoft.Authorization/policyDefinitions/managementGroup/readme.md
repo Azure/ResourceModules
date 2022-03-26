@@ -2,13 +2,6 @@
 
 With this module you can create policy definitions on a management group level.
 
-## Navigation
-
-- [Resource Types](#Resource-Types)
-- [Parameters](#Parameters)
-- [Outputs](#Outputs)
-- [Template references](#Template-references)
-
 ## Resource Types
 
 | Resource Type | API Version |
@@ -17,24 +10,18 @@ With this module you can create policy definitions on a management group level.
 
 ## Parameters
 
-**Required parameters**
-| Parameter Name | Type | Description |
-| :-- | :-- | :-- |
-| `name` | string | Specifies the name of the policy definition. Maximum length is 64 characters. |
-| `policyRule` | object | The Policy Rule details for the Policy Definition |
-
-**Optional parameters**
-| Parameter Name | Type | Default Value | Allowed Values | Description |
+| Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `description` | string |  |  | The policy definition description. |
-| `displayName` | string |  |  | The display name of the policy definition. Maximum length is 128 characters. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `location` | string | `[deployment().location]` |  | Location deployment metadata. |
-| `managementGroupId` | string | `[managementGroup().name]` |  | The group ID of the Management Group. If not provided, will use the current scope for deployment. |
-| `metadata` | object | `{object}` |  | The policy Definition metadata. Metadata is an open ended object and is typically a collection of key-value pairs. |
-| `mode` | string | `All` | `[All, Indexed, Microsoft.KeyVault.Data, Microsoft.ContainerService.Data, Microsoft.Kubernetes.Data]` | The policy definition mode. Default is All, Some examples are All, Indexed, Microsoft.KeyVault.Data. |
-| `parameters` | object | `{object}` |  | The policy definition parameters that can be used in policy definition references. |
-
+| `description` | string |  |  | Optional. The policy definition description. |
+| `displayName` | string |  |  | Optional. The display name of the policy definition. Maximum length is 128 characters. |
+| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `location` | string | `[deployment().location]` |  | Optional. Location deployment metadata. |
+| `managementGroupId` | string | `[managementGroup().name]` |  | Optional. The group ID of the Management Group. If not provided, will use the current scope for deployment. |
+| `metadata` | object | `{object}` |  | Optional. The policy Definition metadata. Metadata is an open ended object and is typically a collection of key-value pairs. |
+| `mode` | string | `All` | `[All, Indexed, Microsoft.KeyVault.Data, Microsoft.ContainerService.Data, Microsoft.Kubernetes.Data]` | Optional. The policy definition mode. Default is All, Some examples are All, Indexed, Microsoft.KeyVault.Data. |
+| `name` | string |  |  | Required. Specifies the name of the policy definition. Maximum length is 64 characters. |
+| `parameters` | object | `{object}` |  | Optional. The policy definition parameters that can be used in policy definition references. |
+| `policyRule` | object |  |  | Required. The Policy Rule details for the Policy Definition |
 
 ## Outputs
 

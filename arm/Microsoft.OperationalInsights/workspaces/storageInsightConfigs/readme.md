@@ -2,13 +2,6 @@
 
 This template deploys a storage insights configuration for a Log Analytics workspace.
 
-## Navigation
-
-- [Resource Types](#Resource-Types)
-- [Parameters](#Parameters)
-- [Outputs](#Outputs)
-- [Template references](#Template-references)
-
 ## Resource Types
 
 | Resource Type | API Version |
@@ -17,21 +10,15 @@ This template deploys a storage insights configuration for a Log Analytics works
 
 ## Parameters
 
-**Required parameters**
-| Parameter Name | Type | Description |
-| :-- | :-- | :-- |
-| `logAnalyticsWorkspaceName` | string | Name of the Log Analytics workspace. |
-| `storageAccountId` | string | The Azure Resource Manager ID of the storage account resource. |
-
-**Optional parameters**
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `containers` | array | `[]` | The names of the blob containers that the workspace should read. |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `name` | string | `[format('{0}-stinsconfig', last(split(parameters('storageAccountId'), '/')))]` | The name of the storage insights config |
-| `tables` | array | `[]` | The names of the Azure tables that the workspace should read. |
-| `tags` | object | `{object}` | Tags to configure in the resource. |
-
+| Parameter Name | Type | Default Value | Possible Values | Description |
+| :-- | :-- | :-- | :-- | :-- |
+| `containers` | array | `[]` |  | Optional. The names of the blob containers that the workspace should read. |
+| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `logAnalyticsWorkspaceName` | string |  |  | Required. Name of the Log Analytics workspace. |
+| `name` | string | `[format('{0}-stinsconfig', last(split(parameters('storageAccountId'), '/')))]` |  | Optional. The name of the storage insights config |
+| `storageAccountId` | string |  |  | Required. The Azure Resource Manager ID of the storage account resource. |
+| `tables` | array | `[]` |  | Optional. The names of the Azure tables that the workspace should read. |
+| `tags` | object | `{object}` |  | Optional. Tags to configure in the resource. |
 
 ### Parameter Usage: `tags`
 

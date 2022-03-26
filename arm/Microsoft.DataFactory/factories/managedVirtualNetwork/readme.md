@@ -2,13 +2,6 @@
 
 This module deploys a Managed Virtual Network for an Azure Data Factory
 
-## Navigation
-
-- [Resource types](#Resource-types)
-- [Parameters](#Parameters)
-- [Outputs](#Outputs)
-- [Template references](#Template-references)
-
 ## Resource types
 
 | Resource Type | API Version |
@@ -17,17 +10,11 @@ This module deploys a Managed Virtual Network for an Azure Data Factory
 
 ## Parameters
 
-**Required parameters**
-| Parameter Name | Type | Description |
-| :-- | :-- | :-- |
-| `dataFactoryName` | string | The name of the Azure Data Factory |
-| `name` | string | The name of the Managed Virtual Network |
-
-**Optional parameters**
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-
+| Parameter Name | Type | Default Value | Possible Values | Description |
+| :-- | :-- | :-- | :-- | :-- |
+| `dataFactoryName` | string |  |  | Required. The name of the Azure Data Factory |
+| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `name` | string |  |  | Required. The name of the Managed Virtual Network |
 
 ## Outputs
 

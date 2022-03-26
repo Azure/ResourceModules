@@ -2,13 +2,6 @@
 
 This module deploys a local network gateway.
 
-## Navigation
-
-- [Resource types](#Resource-types)
-- [Parameters](#Parameters)
-- [Outputs](#Outputs)
-- [Template references](#Template-references)
-
 ## Resource types
 
 | Resource Type | API Version |
@@ -19,26 +12,20 @@ This module deploys a local network gateway.
 
 ## Parameters
 
-**Required parameters**
-| Parameter Name | Type | Description |
-| :-- | :-- | :-- |
-| `localAddressPrefixes` | array | List of the local (on-premises) IP address ranges |
-| `localGatewayPublicIpAddress` | string | Public IP of the local gateway |
-| `name` | string | Name of the Local Network Gateway |
-
-**Optional parameters**
-| Parameter Name | Type | Default Value | Allowed Values | Description |
+| Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `fqdn` | string |  |  | FQDN of local network gateway. |
-| `localAsn` | string |  |  | The BGP speaker's ASN. Not providing this value will automatically disable BGP on this Local Network Gateway resource. |
-| `localBgpPeeringAddress` | string |  |  | The BGP peering address and BGP identifier of this BGP speaker. Not providing this value will automatically disable BGP on this Local Network Gateway resource. |
-| `localPeerWeight` | string |  |  | The weight added to routes learned from this BGP speaker. This will only take effect if both the localAsn and the localBgpPeeringAddress values are provided. |
-| `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
-| `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Specify the type of lock. |
-| `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
-| `tags` | object | `{object}` |  | Tags of the resource. |
-
+| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `fqdn` | string |  |  | Optional. FQDN of local network gateway. |
+| `localAddressPrefixes` | array |  |  | Required. List of the local (on-premises) IP address ranges |
+| `localAsn` | string |  |  | Optional. The BGP speaker's ASN. Not providing this value will automatically disable BGP on this Local Network Gateway resource. |
+| `localBgpPeeringAddress` | string |  |  | Optional. The BGP peering address and BGP identifier of this BGP speaker. Not providing this value will automatically disable BGP on this Local Network Gateway resource. |
+| `localGatewayPublicIpAddress` | string |  |  | Required. Public IP of the local gateway |
+| `localPeerWeight` | string |  |  | Optional. The weight added to routes learned from this BGP speaker. This will only take effect if both the localAsn and the localBgpPeeringAddress values are provided. |
+| `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
+| `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
+| `name` | string |  |  | Required. Name of the Local Network Gateway |
+| `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
+| `tags` | object | `{object}` |  | Optional. Tags of the resource. |
 
 ### Parameter Usage: `roleAssignments`
 

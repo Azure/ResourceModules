@@ -4,13 +4,6 @@ This module deploys a Replication Protection Container.
 
 > **Note**: this version of the module only supports the `instanceType: 'A2A'` scenario.
 
-## Navigation
-
-- [Resource Types](#Resource-Types)
-- [Parameters](#Parameters)
-- [Outputs](#Outputs)
-- [Template references](#Template-references)
-
 ## Resource Types
 
 | Resource Type | API Version |
@@ -20,19 +13,13 @@ This module deploys a Replication Protection Container.
 
 ## Parameters
 
-**Required parameters**
-| Parameter Name | Type | Description |
-| :-- | :-- | :-- |
-| `name` | string | The name of the replication container |
-| `recoveryVaultName` | string | Name of the Azure Recovery Service Vault |
-| `replicationFabricName` | string | Name of the Replication Fabric |
-
-**Optional parameters**
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `replicationContainerMappings` | array | `[]` | Replication containers mappings to create. |
-
+| Parameter Name | Type | Default Value | Possible Values | Description |
+| :-- | :-- | :-- | :-- | :-- |
+| `name` | string |  |  | Required. The name of the replication container |
+| `recoveryVaultName` | string |  |  | Required. Name of the Azure Recovery Service Vault |
+| `replicationContainerMappings` | array | `[]` |  | Optional. Replication containers mappings to create. |
+| `replicationFabricName` | string |  |  | Required. Name of the Replication Fabric |
+| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
 
 ### Parameter Usage: `replicationContainerMappings`
 

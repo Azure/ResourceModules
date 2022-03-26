@@ -2,13 +2,6 @@
 
 This module deploys an administrator for the SQL managed instance
 
-## Navigation
-
-- [Resource Types](#Resource-Types)
-- [Parameters](#Parameters)
-- [Outputs](#Outputs)
-- [Template references](#Template-references)
-
 ## Resource Types
 
 | Resource Type | API Version |
@@ -17,20 +10,14 @@ This module deploys an administrator for the SQL managed instance
 
 ## Parameters
 
-**Required parameters**
-| Parameter Name | Type | Description |
-| :-- | :-- | :-- |
-| `login` | string | Login name of the managed instance administrator. |
-| `managedInstanceName` | string | Name of the SQL managed instance. |
-| `sid` | string | SID (object ID) of the managed instance administrator. |
-
-**Optional parameters**
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `name` | string | `ActiveDirectory` | The name of the managed instance administrator |
-| `tenantId` | string |  | Tenant ID of the managed instance administrator. |
-
+| Parameter Name | Type | Default Value | Possible Values | Description |
+| :-- | :-- | :-- | :-- | :-- |
+| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `login` | string |  |  | Required. Login name of the managed instance administrator. |
+| `managedInstanceName` | string |  |  | Required. Name of the SQL managed instance. |
+| `name` | string | `ActiveDirectory` |  | Optional. The name of the managed instance administrator |
+| `sid` | string |  |  | Required. SID (object ID) of the managed instance administrator. |
+| `tenantId` | string |  |  | Optional. Tenant ID of the managed instance administrator. |
 
 ## Outputs
 

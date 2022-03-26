@@ -2,13 +2,6 @@
 
 This module deploys an EventHub Namespace Authorization Rule
 
-## Navigation
-
-- [Resource Types](#Resource-Types)
-- [Parameters](#Parameters)
-- [Outputs](#Outputs)
-- [Template references](#Template-references)
-
 ## Resource Types
 
 | Resource Type | API Version |
@@ -17,18 +10,12 @@ This module deploys an EventHub Namespace Authorization Rule
 
 ## Parameters
 
-**Required parameters**
-| Parameter Name | Type | Description |
-| :-- | :-- | :-- |
-| `name` | string | The name of the authorization rule |
-| `namespaceName` | string | The name of the event hub namespace |
-
-**Optional parameters**
-| Parameter Name | Type | Default Value | Allowed Values | Description |
+| Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `rights` | array | `[]` | `[Listen, Manage, Send]` | The rights associated with the rule. |
-
+| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `name` | string |  |  | Required. The name of the authorization rule |
+| `namespaceName` | string |  |  | Required. The name of the event hub namespace |
+| `rights` | array | `[]` | `[Listen, Manage, Send]` | Optional. The rights associated with the rule. |
 
 ## Outputs
 

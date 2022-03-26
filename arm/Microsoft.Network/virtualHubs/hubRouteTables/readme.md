@@ -2,13 +2,6 @@
 
 This module deploys virtual hub route tables.
 
-## Navigation
-
-- [Resource Types](#Resource-Types)
-- [Parameters](#Parameters)
-- [Outputs](#Outputs)
-- [Template references](#Template-references)
-
 ## Resource Types
 
 | Resource Type | API Version |
@@ -17,19 +10,13 @@ This module deploys virtual hub route tables.
 
 ## Parameters
 
-**Required parameters**
-| Parameter Name | Type | Description |
-| :-- | :-- | :-- |
-| `name` | string | The route table name. |
-| `virtualHubName` | string | The virtual hub name. |
-
-**Optional parameters**
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `labels` | array | `[]` | List of labels associated with this route table. |
-| `routes` | array | `[]` | List of all routes. |
-
+| Parameter Name | Type | Default Value | Possible Values | Description |
+| :-- | :-- | :-- | :-- | :-- |
+| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `labels` | array | `[]` |  | Optional. List of labels associated with this route table. |
+| `name` | string |  |  | Required. The route table name. |
+| `routes` | array | `[]` |  | Optional. List of all routes. |
+| `virtualHubName` | string |  |  | Required. The virtual hub name. |
 
 ## Outputs
 

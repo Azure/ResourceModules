@@ -2,13 +2,6 @@
 
 This module deploys virtual hub virtual network connections.
 
-## Navigation
-
-- [Resource Types](#Resource-Types)
-- [Parameters](#Parameters)
-- [Outputs](#Outputs)
-- [Template references](#Template-references)
-
 ## Resource Types
 
 | Resource Type | API Version |
@@ -17,20 +10,14 @@ This module deploys virtual hub virtual network connections.
 
 ## Parameters
 
-**Required parameters**
-| Parameter Name | Type | Description |
-| :-- | :-- | :-- |
-| `name` | string | The connection name. |
-| `remoteVirtualNetworkId` | string | Resource ID of the virtual network to link to |
-| `virtualHubName` | string | The virtual hub name. |
-
-**Optional parameters**
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `enableInternetSecurity` | bool | `True` | Enable internet security. |
-| `routingConfiguration` | object | `{object}` | Routing Configuration indicating the associated and propagated route tables for this connection. |
-
+| Parameter Name | Type | Default Value | Possible Values | Description |
+| :-- | :-- | :-- | :-- | :-- |
+| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableInternetSecurity` | bool | `True` |  | Optional. Enable internet security. |
+| `name` | string |  |  | Required. The connection name. |
+| `remoteVirtualNetworkId` | string |  |  | Required. Resource ID of the virtual network to link to |
+| `routingConfiguration` | object | `{object}` |  | Optional. Routing Configuration indicating the associated and propagated route tables for this connection. |
+| `virtualHubName` | string |  |  | Required. The virtual hub name. |
 
 ### Parameter Usage: `hubVirtualNetworkConnections`
 

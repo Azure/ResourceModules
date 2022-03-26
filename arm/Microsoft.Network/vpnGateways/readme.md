@@ -2,13 +2,6 @@
 
 This module deploys VPN Gateways.
 
-## Navigation
-
-- [Resource Types](#Resource-Types)
-- [Parameters](#Parameters)
-- [Outputs](#Outputs)
-- [Template references](#Template-references)
-
 ## Resource Types
 
 | Resource Type | API Version |
@@ -20,26 +13,20 @@ This module deploys VPN Gateways.
 
 ## Parameters
 
-**Required parameters**
-| Parameter Name | Type | Description |
-| :-- | :-- | :-- |
-| `name` | string | Name of the VPN gateway |
-| `virtualHubResourceId` | string | The resource ID of a virtual Hub to connect to. Note: The virtual Hub and Gateway must be deployed into the same location. |
-
-**Optional parameters**
-| Parameter Name | Type | Default Value | Allowed Values | Description |
+| Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `bgpSettings` | object | `{object}` |  | BGP settings details. |
-| `connections` | _[connections](connections/readme.md)_ array | `[]` |  | The connections to create in the VPN gateway |
-| `enableBgpRouteTranslationForNat` | bool | `False` |  | Enable BGP routes translation for NAT on this VPN gateway. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `isRoutingPreferenceInternet` | bool | `False` |  | Enable routing preference property for the public IP interface of the VPN gateway. |
-| `location` | string | `[resourceGroup().location]` |  | Location where all resources will be created. |
-| `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Specify the type of lock. |
-| `natRules` | _[natRules](natRules/readme.md)_ array | `[]` |  | List of all the NAT Rules to associate with the gateway. |
-| `tags` | object | `{object}` |  | Tags of the resource. |
-| `vpnGatewayScaleUnit` | int | `2` |  | The scale unit for this VPN gateway. |
-
+| `bgpSettings` | object | `{object}` |  | Optional. BGP settings details. |
+| `connections` | _[connections](connections/readme.md)_ array | `[]` |  | Optional. The connections to create in the VPN gateway |
+| `enableBgpRouteTranslationForNat` | bool | `False` |  | Optional. Enable BGP routes translation for NAT on this VPN gateway. |
+| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `isRoutingPreferenceInternet` | bool | `False` |  | Optional. Enable routing preference property for the public IP interface of the VPN gateway. |
+| `location` | string | `[resourceGroup().location]` |  | Optional. Location where all resources will be created. |
+| `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
+| `name` | string |  |  | Required. Name of the VPN gateway |
+| `natRules` | _[natRules](natRules/readme.md)_ array | `[]` |  | Optional. List of all the NAT Rules to associate with the gateway. |
+| `tags` | object | `{object}` |  | Optional. Tags of the resource. |
+| `virtualHubResourceId` | string |  |  | Required. The resource ID of a virtual Hub to connect to. Note: The virtual Hub and Gateway must be deployed into the same location. |
+| `vpnGatewayScaleUnit` | int | `2` |  | Optional. The scale unit for this VPN gateway. |
 
 ### Parameter Usage:
 

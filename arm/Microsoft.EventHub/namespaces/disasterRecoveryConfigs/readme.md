@@ -2,13 +2,6 @@
 
 This module deploys an EventHub Namespace Disaster Recovery Config
 
-## Navigation
-
-- [Resource Types](#Resource-Types)
-- [Parameters](#Parameters)
-- [Outputs](#Outputs)
-- [Template references](#Template-references)
-
 ## Resource Types
 
 | Resource Type | API Version |
@@ -17,18 +10,12 @@ This module deploys an EventHub Namespace Disaster Recovery Config
 
 ## Parameters
 
-**Required parameters**
-| Parameter Name | Type | Description |
-| :-- | :-- | :-- |
-| `name` | string | The name of the disaster recovery config |
-| `namespaceName` | string | The name of the event hub namespace |
-
-**Optional parameters**
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `partnerNamespaceId` | string |  | Resource ID of the Primary/Secondary event hub namespace name, which is part of GEO DR pairing |
-
+| Parameter Name | Type | Default Value | Possible Values | Description |
+| :-- | :-- | :-- | :-- | :-- |
+| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `name` | string |  |  | Required. The name of the disaster recovery config |
+| `namespaceName` | string |  |  | Required. The name of the event hub namespace |
+| `partnerNamespaceId` | string |  |  | Optional. Resource ID of the Primary/Secondary event hub namespace name, which is part of GEO DR pairing |
 
 ## Outputs
 

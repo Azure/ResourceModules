@@ -2,13 +2,6 @@
 
 This module deploys an event grid topic.
 
-## Navigation
-
-- [Resource Types](#Resource-Types)
-- [Parameters](#Parameters)
-- [Outputs](#Outputs)
-- [Template references](#Template-references)
-
 ## Resource Types
 
 | Resource Type | API Version |
@@ -22,33 +15,27 @@ This module deploys an event grid topic.
 
 ## Parameters
 
-**Required parameters**
-| Parameter Name | Type | Description |
-| :-- | :-- | :-- |
-| `name` | string | The name of the Event Grid Topic |
-| `source` | string | Source for the system topic. |
-| `topicType` | string | TopicType for the system topic. |
-
-**Optional parameters**
-| Parameter Name | Type | Default Value | Allowed Values | Description |
+| Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `diagnosticEventHubAuthorizationRuleId` | string |  |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
-| `diagnosticEventHubName` | string |  |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
-| `diagnosticLogCategoriesToEnable` | array | `[DeliveryFailures]` | `[DeliveryFailures]` | The name of logs that will be streamed. |
-| `diagnosticLogsRetentionInDays` | int | `365` |  | Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
-| `diagnosticMetricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | The name of metrics that will be streamed. |
-| `diagnosticSettingsName` | string | `[format('{0}-diagnosticSettings', parameters('name'))]` |  | The name of the diagnostic setting, if deployed. |
-| `diagnosticStorageAccountId` | string |  |  | Resource ID of the diagnostic storage account. |
-| `diagnosticWorkspaceId` | string |  |  | Resource ID of the diagnostic log analytics workspace. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `location` | string | `[resourceGroup().location]` |  | Location for all Resources. |
-| `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Specify the type of lock. |
-| `privateEndpoints` | array | `[]` |  | Configuration Details for private endpoints. |
-| `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
-| `systemAssignedIdentity` | bool | `False` |  | Enables system assigned managed identity on the resource. |
-| `tags` | object | `{object}` |  | Tags of the resource. |
-| `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. |
-
+| `diagnosticEventHubAuthorizationRuleId` | string |  |  | Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
+| `diagnosticEventHubName` | string |  |  | Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
+| `diagnosticLogCategoriesToEnable` | array | `[DeliveryFailures]` | `[DeliveryFailures]` | Optional. The name of logs that will be streamed. |
+| `diagnosticLogsRetentionInDays` | int | `365` |  | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
+| `diagnosticMetricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | Optional. The name of metrics that will be streamed. |
+| `diagnosticSettingsName` | string | `[format('{0}-diagnosticSettings', parameters('name'))]` |  | Optional. The name of the diagnostic setting, if deployed. |
+| `diagnosticStorageAccountId` | string |  |  | Optional. Resource ID of the diagnostic storage account. |
+| `diagnosticWorkspaceId` | string |  |  | Optional. Resource ID of the diagnostic log analytics workspace. |
+| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `location` | string | `[resourceGroup().location]` |  | Optional. Location for all Resources. |
+| `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
+| `name` | string |  |  | Required. The name of the Event Grid Topic |
+| `privateEndpoints` | array | `[]` |  | Optional. Configuration Details for private endpoints. |
+| `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
+| `source` | string |  |  | Required. Source for the system topic. |
+| `systemAssignedIdentity` | bool | `False` |  | Optional. Enables system assigned managed identity on the resource. |
+| `tags` | object | `{object}` |  | Optional. Tags of the resource. |
+| `topicType` | string |  |  | Required. TopicType for the system topic. |
+| `userAssignedIdentities` | object | `{object}` |  | Optional. The ID(s) to assign to the resource. |
 
 ### Parameter Usage: `privateEndpoints`
 

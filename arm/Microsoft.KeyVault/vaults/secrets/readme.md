@@ -2,13 +2,6 @@
 
 This module deploys a key vault secret.
 
-## Navigation
-
-- [Resource Types](#Resource-Types)
-- [Parameters](#Parameters)
-- [Outputs](#Outputs)
-- [Template references](#Template-references)
-
 ## Resource Types
 
 | Resource Type | API Version |
@@ -18,24 +11,18 @@ This module deploys a key vault secret.
 
 ## Parameters
 
-**Required parameters**
-| Parameter Name | Type | Description |
-| :-- | :-- | :-- |
-| `keyVaultName` | string | The name of the key vault |
-| `name` | string | The name of the secret |
-| `value` | secureString | The value of the secret. NOTE: "value" will never be returned from the service, as APIs using this model are is intended for internal use in ARM deployments. Users should use the data-plane REST service for interaction with vault secrets. |
-
-**Optional parameters**
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `attributesEnabled` | bool | `True` | Determines whether the object is enabled. |
-| `attributesExp` | int | `-1` | Expiry date in seconds since 1970-01-01T00:00:00Z. For security reasons, it is recommended to set an expiration date whenever possible. |
-| `attributesNbf` | int | `-1` | Not before date in seconds since 1970-01-01T00:00:00Z. |
-| `contentType` | secureString |  | The content type of the secret. |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `roleAssignments` | array | `[]` | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
-| `tags` | object | `{object}` | Resource tags. |
-
+| Parameter Name | Type | Default Value | Possible Values | Description |
+| :-- | :-- | :-- | :-- | :-- |
+| `attributesEnabled` | bool | `True` |  | Optional. Determines whether the object is enabled. |
+| `attributesExp` | int | `-1` |  | Optional. Expiry date in seconds since 1970-01-01T00:00:00Z. For security reasons, it is recommended to set an expiration date whenever possible. |
+| `attributesNbf` | int | `-1` |  | Optional. Not before date in seconds since 1970-01-01T00:00:00Z. |
+| `contentType` | secureString |  |  | Optional. The content type of the secret. |
+| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `keyVaultName` | string |  |  | Required. The name of the key vault |
+| `name` | string |  |  | Required. The name of the secret |
+| `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
+| `tags` | object | `{object}` |  | Optional. Resource tags. |
+| `value` | secureString |  |  | Required. The value of the secret. NOTE: "value" will never be returned from the service, as APIs using this model are is intended for internal use in ARM deployments. Users should use the data-plane REST service for interaction with vault secrets. |
 
 ### Parameter Usage: `tags`
 

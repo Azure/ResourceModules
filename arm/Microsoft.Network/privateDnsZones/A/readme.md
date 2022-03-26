@@ -2,13 +2,6 @@
 
 This module deploys a Private DNS Zone A record.
 
-## Navigation
-
-- [Resource Types](#Resource-Types)
-- [Parameters](#Parameters)
-- [Outputs](#Outputs)
-- [Template references](#Template-references)
-
 ## Resource Types
 
 | Resource Type | API Version |
@@ -17,20 +10,14 @@ This module deploys a Private DNS Zone A record.
 
 ## Parameters
 
-**Required parameters**
-| Parameter Name | Type | Description |
-| :-- | :-- | :-- |
-| `name` | string | The name of the A record. |
-| `privateDnsZoneName` | string | Private DNS zone name. |
-
-**Optional parameters**
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `aRecords` | array | `[]` | The list of A records in the record set. |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `metadata` | object | `{object}` | The metadata attached to the record set. |
-| `ttl` | int | `3600` | The TTL (time-to-live) of the records in the record set. |
-
+| Parameter Name | Type | Default Value | Possible Values | Description |
+| :-- | :-- | :-- | :-- | :-- |
+| `aRecords` | array | `[]` |  | Optional. The list of A records in the record set. |
+| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `metadata` | object | `{object}` |  | Optional. The metadata attached to the record set. |
+| `name` | string |  |  | Required. The name of the A record. |
+| `privateDnsZoneName` | string |  |  | Required. Private DNS zone name. |
+| `ttl` | int | `3600` |  | Optional. The TTL (time-to-live) of the records in the record set. |
 
 ### Parameter Usage: `aRecords`
 

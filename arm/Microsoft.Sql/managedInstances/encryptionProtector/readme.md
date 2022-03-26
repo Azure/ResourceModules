@@ -2,13 +2,6 @@
 
 This module deploys an encryption protector for a SQL managed instance.
 
-## Navigation
-
-- [Resource Types](#Resource-Types)
-- [Parameters](#Parameters)
-- [Outputs](#Outputs)
-- [Template references](#Template-references)
-
 ## Resource Types
 
 | Resource Type | API Version |
@@ -17,20 +10,14 @@ This module deploys an encryption protector for a SQL managed instance.
 
 ## Parameters
 
-**Required parameters**
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `managedInstanceName` | string |  | Name of the SQL managed instance. |
-| `name` | string | `current` | The name of the encryptionProtector |
-| `serverKeyName` | string |  | The name of the SQL managed instance key. |
-
-**Optional parameters**
-| Parameter Name | Type | Default Value | Allowed Values | Description |
+| Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `autoRotationEnabled` | bool | `False` |  | Key auto rotation opt-in flag |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `serverKeyType` | string | `ServiceManaged` | `[AzureKeyVault, ServiceManaged]` | The encryption protector type like "ServiceManaged", "AzureKeyVault". |
-
+| `autoRotationEnabled` | bool | `False` |  | Optional. Key auto rotation opt-in flag |
+| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `managedInstanceName` | string |  |  | Required. Name of the SQL managed instance. |
+| `name` | string | `current` |  | Required. The name of the encryptionProtector |
+| `serverKeyName` | string |  |  | Required. The name of the SQL managed instance key. |
+| `serverKeyType` | string | `ServiceManaged` | `[AzureKeyVault, ServiceManaged]` | Optional. The encryption protector type like "ServiceManaged", "AzureKeyVault". |
 
 ## Outputs
 

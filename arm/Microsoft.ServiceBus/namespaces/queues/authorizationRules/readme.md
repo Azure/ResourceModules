@@ -2,13 +2,6 @@
 
 This module deploys an authorization rule for a service bus namespace queue.
 
-## Navigation
-
-- [Resource Types](#Resource-Types)
-- [Parameters](#Parameters)
-- [Outputs](#Outputs)
-- [Template references](#Template-references)
-
 ## Resource Types
 
 | Resource Type | API Version |
@@ -17,19 +10,13 @@ This module deploys an authorization rule for a service bus namespace queue.
 
 ## Parameters
 
-**Required parameters**
-| Parameter Name | Type | Description |
-| :-- | :-- | :-- |
-| `name` | string | The name of the service bus namepace queue |
-| `namespaceName` | string | The name of the parent service bus namespace |
-| `queueName` | string | The name of the parent service bus namespace queue |
-
-**Optional parameters**
-| Parameter Name | Type | Default Value | Allowed Values | Description |
+| Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `rights` | array | `[]` | `[Listen, Manage, Send]` | The rights associated with the rule. |
-
+| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `name` | string |  |  | Required. The name of the service bus namepace queue |
+| `namespaceName` | string |  |  | Required. The name of the parent service bus namespace |
+| `queueName` | string |  |  | Required. The name of the parent service bus namespace queue |
+| `rights` | array | `[]` | `[Listen, Manage, Send]` | Optional. The rights associated with the rule. |
 
 ## Outputs
 

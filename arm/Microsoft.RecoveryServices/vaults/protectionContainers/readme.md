@@ -2,13 +2,6 @@
 
 This module deploys a Protection Container for a Recovery Services Vault
 
-## Navigation
-
-- [Resource types](#Resource-types)
-- [Parameters](#Parameters)
-- [Outputs](#Outputs)
-- [Template references](#Template-references)
-
 ## Resource types
 
 | Resource Type | API Version |
@@ -17,21 +10,15 @@ This module deploys a Protection Container for a Recovery Services Vault
 
 ## Parameters
 
-**Required parameters**
-| Parameter Name | Type | Description |
-| :-- | :-- | :-- |
-| `name` | string | Name of the Azure Recovery Service Vault Protection Container |
-| `recoveryVaultName` | string | Name of the Azure Recovery Service Vault |
-
-**Optional parameters**
-| Parameter Name | Type | Default Value | Allowed Values | Description |
+| Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `backupManagementType` | string |  | `[AzureBackupServer, AzureIaasVM, AzureSql, AzureStorage, AzureWorkload, DPM, DefaultBackup, Invalid, MAB, ]` | Backup management type to execute the current Protection Container job. |
-| `containerType` | string |  | `[AzureBackupServerContainer, AzureSqlContainer, GenericContainer, Microsoft.ClassicCompute/virtualMachines, Microsoft.Compute/virtualMachines, SQLAGWorkLoadContainer, StorageContainer, VMAppContainer, Windows, ]` | Type of the container |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `friendlyName` | string |  |  | Friendly name of the Protection Container |
-| `sourceResourceId` | string |  |  | Resource ID of the target resource for the Protection Container  |
-
+| `backupManagementType` | string |  | `[AzureBackupServer, AzureIaasVM, AzureSql, AzureStorage, AzureWorkload, DPM, DefaultBackup, Invalid, MAB, ]` | Optional. Backup management type to execute the current Protection Container job. |
+| `containerType` | string |  | `[AzureBackupServerContainer, AzureSqlContainer, GenericContainer, Microsoft.ClassicCompute/virtualMachines, Microsoft.Compute/virtualMachines, SQLAGWorkLoadContainer, StorageContainer, VMAppContainer, Windows, ]` | Optional. Type of the container |
+| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `friendlyName` | string |  |  | Optional. Friendly name of the Protection Container |
+| `name` | string |  |  | Required. Name of the Azure Recovery Service Vault Protection Container |
+| `recoveryVaultName` | string |  |  | Required. Name of the Azure Recovery Service Vault |
+| `sourceResourceId` | string |  |  | Optional. Resource ID of the target resource for the Protection Container  |
 
 ## Outputs
 

@@ -2,13 +2,6 @@
 
 This module deploys a virtual network gateway.
 
-## Navigation
-
-- [Resource types](#Resource-types)
-- [Parameters](#Parameters)
-- [Outputs](#Outputs)
-- [Template references](#Template-references)
-
 ## Resource types
 
 | Resource Type | API Version |
@@ -21,44 +14,38 @@ This module deploys a virtual network gateway.
 
 ## Parameters
 
-**Required parameters**
-| Parameter Name | Type | Default Value | Allowed Values | Description |
+| Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `name` | string |  |  | Specifies the Virtual Network Gateway name. |
-| `virtualNetworkGatewaySku` | string |  | `[Basic, VpnGw1, VpnGw2, VpnGw3, VpnGw1AZ, VpnGw2AZ, VpnGw3AZ, Standard, HighPerformance, UltraPerformance, ErGw1AZ, ErGw2AZ, ErGw3AZ]` | The Sku of the Gateway. |
-| `virtualNetworkGatewayType` | string |  | `[Vpn, ExpressRoute]` | Specifies the gateway type. E.g. VPN, ExpressRoute |
-| `vNetResourceId` | string |  |  | Virtual Network resource ID |
-| `vpnType` | string | `RouteBased` | `[PolicyBased, RouteBased]` | Specifies the VPN type |
-
-**Optional parameters**
-| Parameter Name | Type | Default Value | Allowed Values | Description |
-| :-- | :-- | :-- | :-- | :-- |
-| `activeActive` | bool | `True` |  | Value to specify if the Gateway should be deployed in active-active or active-passive configuration |
-| `asn` | int | `65815` |  | ASN value |
-| `clientRevokedCertThumbprint` | string |  |  | Thumbprint of the revoked certificate. This would revoke VPN client certificates matching this thumbprint from connecting to the VNet. |
-| `clientRootCertData` | string |  |  | Client root certificate data used to authenticate VPN clients. |
-| `diagnosticEventHubAuthorizationRuleId` | string |  |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
-| `diagnosticEventHubName` | string |  |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
-| `diagnosticLogsRetentionInDays` | int | `365` |  | Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
-| `diagnosticMetricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | The name of metrics that will be streamed. |
-| `diagnosticStorageAccountId` | string |  |  | Resource ID of the diagnostic storage account. |
-| `diagnosticWorkspaceId` | string |  |  | Resource ID of the diagnostic log analytics workspace. |
-| `domainNameLabel` | array | `[]` |  | DNS name(s) of the Public IP resource(s). If you enabled active-active configuration, you need to provide 2 DNS names, if you want to use this feature. A region specific suffix will be appended to it, e.g.: your-DNS-name.westeurope.cloudapp.azure.com |
-| `enableBgp` | bool | `True` |  | Value to specify if BGP is enabled or not |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `gatewayPipName` | array | `[]` |  | Specifies the name of the Public IP used by the Virtual Network Gateway. If it's not provided, a '-pip' suffix will be appended to the gateway's name. |
-| `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
-| `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Specify the type of lock. |
-| `publicIpdiagnosticLogCategoriesToEnable` | array | `[DDoSProtectionNotifications, DDoSMitigationFlowLogs, DDoSMitigationReports]` | `[DDoSProtectionNotifications, DDoSMitigationFlowLogs, DDoSMitigationReports]` | The name of logs that will be streamed. |
-| `publicIpDiagnosticSettingsName` | string | `[format('{0}-diagnosticSettings', parameters('name'))]` |  | The name of the diagnostic setting, if deployed. |
-| `publicIPPrefixResourceId` | string |  |  | Resource ID of the Public IP Prefix object. This is only needed if you want your Public IPs created in a PIP Prefix. |
-| `publicIpZones` | array | `[]` |  | Specifies the zones of the Public IP address. Basic IP SKU does not support Availability Zones. |
-| `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
-| `tags` | object | `{object}` |  | Tags of the resource. |
-| `virtualNetworkGatewaydiagnosticLogCategoriesToEnable` | array | `[GatewayDiagnosticLog, TunnelDiagnosticLog, RouteDiagnosticLog, IKEDiagnosticLog, P2SDiagnosticLog]` | `[GatewayDiagnosticLog, TunnelDiagnosticLog, RouteDiagnosticLog, IKEDiagnosticLog, P2SDiagnosticLog]` | The name of logs that will be streamed. |
-| `virtualNetworkGatewayDiagnosticSettingsName` | string | `[format('{0}-diagnosticSettings', parameters('name'))]` |  | The name of the diagnostic setting, if deployed. |
-| `vpnClientAddressPoolPrefix` | string |  |  | The IP address range from which VPN clients will receive an IP address when connected. Range specified must not overlap with on-premise network. |
-
+| `activeActive` | bool | `True` |  | Optional. Value to specify if the Gateway should be deployed in active-active or active-passive configuration |
+| `asn` | int | `65815` |  | Optional. ASN value |
+| `clientRevokedCertThumbprint` | string |  |  | Optional. Thumbprint of the revoked certificate. This would revoke VPN client certificates matching this thumbprint from connecting to the VNet. |
+| `clientRootCertData` | string |  |  | Optional. Client root certificate data used to authenticate VPN clients. |
+| `diagnosticEventHubAuthorizationRuleId` | string |  |  | Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
+| `diagnosticEventHubName` | string |  |  | Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
+| `diagnosticLogsRetentionInDays` | int | `365` |  | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
+| `diagnosticMetricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | Optional. The name of metrics that will be streamed. |
+| `diagnosticStorageAccountId` | string |  |  | Optional. Resource ID of the diagnostic storage account. |
+| `diagnosticWorkspaceId` | string |  |  | Optional. Resource ID of the diagnostic log analytics workspace. |
+| `domainNameLabel` | array | `[]` |  | Optional. DNS name(s) of the Public IP resource(s). If you enabled active-active configuration, you need to provide 2 DNS names, if you want to use this feature. A region specific suffix will be appended to it, e.g.: your-DNS-name.westeurope.cloudapp.azure.com |
+| `enableBgp` | bool | `True` |  | Optional. Value to specify if BGP is enabled or not |
+| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `gatewayPipName` | array | `[]` |  | Optional. Specifies the name of the Public IP used by the Virtual Network Gateway. If it's not provided, a '-pip' suffix will be appended to the gateway's name. |
+| `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
+| `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
+| `name` | string |  |  | Required. Specifies the Virtual Network Gateway name. |
+| `publicIpdiagnosticLogCategoriesToEnable` | array | `[DDoSProtectionNotifications, DDoSMitigationFlowLogs, DDoSMitigationReports]` | `[DDoSProtectionNotifications, DDoSMitigationFlowLogs, DDoSMitigationReports]` | Optional. The name of logs that will be streamed. |
+| `publicIpDiagnosticSettingsName` | string | `[format('{0}-diagnosticSettings', parameters('name'))]` |  | Optional. The name of the diagnostic setting, if deployed. |
+| `publicIPPrefixResourceId` | string |  |  | Optional. Resource ID of the Public IP Prefix object. This is only needed if you want your Public IPs created in a PIP Prefix. |
+| `publicIpZones` | array | `[]` |  | Optional. Specifies the zones of the Public IP address. Basic IP SKU does not support Availability Zones. |
+| `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
+| `tags` | object | `{object}` |  | Optional. Tags of the resource. |
+| `virtualNetworkGatewaydiagnosticLogCategoriesToEnable` | array | `[GatewayDiagnosticLog, TunnelDiagnosticLog, RouteDiagnosticLog, IKEDiagnosticLog, P2SDiagnosticLog]` | `[GatewayDiagnosticLog, TunnelDiagnosticLog, RouteDiagnosticLog, IKEDiagnosticLog, P2SDiagnosticLog]` | Optional. The name of logs that will be streamed. |
+| `virtualNetworkGatewayDiagnosticSettingsName` | string | `[format('{0}-diagnosticSettings', parameters('name'))]` |  | Optional. The name of the diagnostic setting, if deployed. |
+| `virtualNetworkGatewaySku` | string |  | `[Basic, VpnGw1, VpnGw2, VpnGw3, VpnGw1AZ, VpnGw2AZ, VpnGw3AZ, Standard, HighPerformance, UltraPerformance, ErGw1AZ, ErGw2AZ, ErGw3AZ]` | Required. The Sku of the Gateway. |
+| `virtualNetworkGatewayType` | string |  | `[Vpn, ExpressRoute]` | Required. Specifies the gateway type. E.g. VPN, ExpressRoute |
+| `vNetResourceId` | string |  |  | Required. Virtual Network resource ID |
+| `vpnClientAddressPoolPrefix` | string |  |  | Optional. The IP address range from which VPN clients will receive an IP address when connected. Range specified must not overlap with on-premise network. |
+| `vpnType` | string | `RouteBased` | `[PolicyBased, RouteBased]` | Required. Specifies the VPN type |
 
 ### Parameter Usage: `subnets`
 

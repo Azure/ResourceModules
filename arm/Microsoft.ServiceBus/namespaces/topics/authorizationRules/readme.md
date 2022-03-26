@@ -2,13 +2,6 @@
 
 This module deploys an authorization rule for a service bus namespace topic.
 
-## Navigation
-
-- [Resource Types](#Resource-Types)
-- [Parameters](#Parameters)
-- [Outputs](#Outputs)
-- [Template references](#Template-references)
-
 ## Resource Types
 
 | Resource Type | API Version |
@@ -17,19 +10,13 @@ This module deploys an authorization rule for a service bus namespace topic.
 
 ## Parameters
 
-**Required parameters**
-| Parameter Name | Type | Description |
-| :-- | :-- | :-- |
-| `name` | string | The name of the service bus namespace topic |
-| `namespaceName` | string | The name of the parent service bus namespace |
-| `topicName` | string | The name of the parent service bus namespace topic |
-
-**Optional parameters**
-| Parameter Name | Type | Default Value | Allowed Values | Description |
+| Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `rights` | array | `[]` | `[Listen, Manage, Send]` | The rights associated with the rule. |
-
+| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `name` | string |  |  | Required. The name of the service bus namespace topic |
+| `namespaceName` | string |  |  | Required. The name of the parent service bus namespace |
+| `rights` | array | `[]` | `[Listen, Manage, Send]` | Optional. The rights associated with the rule. |
+| `topicName` | string |  |  | Required. The name of the parent service bus namespace topic |
 
 ## Outputs
 

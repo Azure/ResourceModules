@@ -2,13 +2,6 @@
 
 This module deploys an SQL Server Security Alert Policy.
 
-## Navigation
-
-- [Resource Types](#Resource-Types)
-- [Parameters](#Parameters)
-- [Outputs](#Outputs)
-- [Template references](#Template-references)
-
 ## Resource Types
 
 | Resource Type | API Version |
@@ -17,24 +10,18 @@ This module deploys an SQL Server Security Alert Policy.
 
 ## Parameters
 
-**Required parameters**
-| Parameter Name | Type | Description |
-| :-- | :-- | :-- |
-| `name` | string | The name of the Security Alert Policy. |
-| `serverName` | string | The Name of SQL Server |
-
-**Optional parameters**
-| Parameter Name | Type | Default Value | Allowed Values | Description |
+| Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `disabledAlerts` | array | `[]` |  | Specifies an array of alerts that are disabled. Allowed values are: Sql_Injection, Sql_Injection_Vulnerability, Access_Anomaly, Data_Exfiltration, Unsafe_Action, Brute_Force. |
-| `emailAccountAdmins` | bool | `False` |  | Specifies that the alert is sent to the account administrators. |
-| `emailAddresses` | array | `[]` |  | Specifies an array of email addresses to which the alert is sent. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `retentionDays` | int | `0` |  | Specifies the number of days to keep in the Threat Detection audit logs. |
-| `state` | string | `Disabled` | `[Disabled, Enabled]` | Specifies the state of the policy, whether it is enabled or disabled or a policy has not been applied yet on the specific database. |
-| `storageAccountAccessKey` | secureString |  |  | Specifies the identifier key of the Threat Detection audit storage account.. |
-| `storageEndpoint` | string |  |  | Specifies the blob storage endpoint (e.g. https://mystorageaccount.blob.core.windows.net). This blob storage will hold all Threat Detection audit logs. |
-
+| `disabledAlerts` | array | `[]` |  | Optional. Specifies an array of alerts that are disabled. Allowed values are: Sql_Injection, Sql_Injection_Vulnerability, Access_Anomaly, Data_Exfiltration, Unsafe_Action, Brute_Force. |
+| `emailAccountAdmins` | bool | `False` |  | Optional. Specifies that the alert is sent to the account administrators. |
+| `emailAddresses` | array | `[]` |  | Optional. Specifies an array of email addresses to which the alert is sent. |
+| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `name` | string |  |  | Required. The name of the Security Alert Policy. |
+| `retentionDays` | int | `0` |  | Optional. Specifies the number of days to keep in the Threat Detection audit logs. |
+| `serverName` | string |  |  | Required. The Name of SQL Server |
+| `state` | string | `Disabled` | `[Disabled, Enabled]` | Optional. Specifies the state of the policy, whether it is enabled or disabled or a policy has not been applied yet on the specific database. |
+| `storageAccountAccessKey` | secureString |  |  | Optional. Specifies the identifier key of the Threat Detection audit storage account.. |
+| `storageEndpoint` | string |  |  | Optional. Specifies the blob storage endpoint (e.g. https://mystorageaccount.blob.core.windows.net). This blob storage will hold all Threat Detection audit logs. |
 
 ## Outputs
 

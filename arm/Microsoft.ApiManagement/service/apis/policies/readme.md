@@ -2,13 +2,6 @@
 
 This module deploys API Management Service APIs policies.
 
-## Navigation
-
-- [Resource Types](#Resource-Types)
-- [Parameters](#Parameters)
-- [Outputs](#Outputs)
-- [Template references](#Template-references)
-
 ## Resource Types
 
 | Resource Type | API Version |
@@ -17,20 +10,14 @@ This module deploys API Management Service APIs policies.
 
 ## Parameters
 
-**Required parameters**
-| Parameter Name | Type | Description |
-| :-- | :-- | :-- |
-| `apiManagementServiceName` | string | The name of the of the API Management service. |
-| `apiName` | string | The name of the of the API. |
-| `value` | string | Contents of the Policy as defined by the format. |
-
-**Optional parameters**
-| Parameter Name | Type | Default Value | Allowed Values | Description |
+| Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `format` | string | `xml` | `[rawxml, rawxml-link, xml, xml-link]` | Format of the policyContent. |
-| `name` | string | `policy` |  | The name of the policy |
-
+| `apiManagementServiceName` | string |  |  | Required. The name of the of the API Management service. |
+| `apiName` | string |  |  | Required. The name of the of the API. |
+| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `format` | string | `xml` | `[rawxml, rawxml-link, xml, xml-link]` | Optional. Format of the policyContent. |
+| `name` | string | `policy` |  | Optional. The name of the policy |
+| `value` | string |  |  | Required. Contents of the Policy as defined by the format. |
 
 ## Outputs
 

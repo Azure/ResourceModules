@@ -2,13 +2,6 @@
 
 This template deploys a virtual network gateway connection.
 
-## Navigation
-
-- [Resource types](#Resource-types)
-- [Parameters](#Parameters)
-- [Outputs](#Outputs)
-- [Template references](#Template-references)
-
 ## Resource types
 
 | Resource Type | API Version |
@@ -18,29 +11,23 @@ This template deploys a virtual network gateway connection.
 
 ## Parameters
 
-**Required parameters**
-| Parameter Name | Type | Description |
-| :-- | :-- | :-- |
-| `localVirtualNetworkGatewayName` | string | Specifies the local Virtual Network Gateway name |
-| `name` | string | Remote connection name |
-| `remoteEntityName` | string | Specifies the remote Virtual Network Gateway/ExpressRoute |
-
-**Optional parameters**
-| Parameter Name | Type | Default Value | Allowed Values | Description |
+| Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `customIPSecPolicy` | object | `{object}` |  | The IPSec Policies to be considered by this connection |
-| `enableBgp` | bool | `False` |  | Value to specify if BGP is enabled or not |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
-| `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Specify the type of lock. |
-| `remoteEntityResourceGroup` | string |  |  | Remote Virtual Network Gateway/ExpressRoute resource group name |
-| `remoteEntitySubscriptionId` | string |  |  | Remote Virtual Network Gateway/ExpressRoute Subscription ID |
-| `routingWeight` | string |  |  | The weight added to routes learned from this BGP speaker. |
-| `tags` | object | `{object}` |  | Tags of the resource. |
-| `usePolicyBasedTrafficSelectors` | bool | `False` |  | Enable policy-based traffic selectors |
-| `virtualNetworkGatewayConnectionType` | string | `Ipsec` | `[Ipsec, VNet2VNet, ExpressRoute, VPNClient]` | Gateway connection type. |
-| `vpnSharedKey` | string |  |  | Specifies a VPN shared key. The same value has to be specified on both Virtual Network Gateways |
-
+| `customIPSecPolicy` | object | `{object}` |  | Optional. The IPSec Policies to be considered by this connection |
+| `enableBgp` | bool | `False` |  | Optional. Value to specify if BGP is enabled or not |
+| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `localVirtualNetworkGatewayName` | string |  |  | Required. Specifies the local Virtual Network Gateway name |
+| `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
+| `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
+| `name` | string |  |  | Required. Remote connection name |
+| `remoteEntityName` | string |  |  | Required. Specifies the remote Virtual Network Gateway/ExpressRoute |
+| `remoteEntityResourceGroup` | string |  |  | Optional. Remote Virtual Network Gateway/ExpressRoute resource group name |
+| `remoteEntitySubscriptionId` | string |  |  | Optional. Remote Virtual Network Gateway/ExpressRoute Subscription ID |
+| `routingWeight` | string |  |  | Optional. The weight added to routes learned from this BGP speaker. |
+| `tags` | object | `{object}` |  | Optional. Tags of the resource. |
+| `usePolicyBasedTrafficSelectors` | bool | `False` |  | Optional. Enable policy-based traffic selectors |
+| `virtualNetworkGatewayConnectionType` | string | `Ipsec` | `[Ipsec, VNet2VNet, ExpressRoute, VPNClient]` | Optional. Gateway connection type. |
+| `vpnSharedKey` | string |  |  | Optional. Specifies a VPN shared key. The same value has to be specified on both Virtual Network Gateways |
 
 ### Parameter Usage: `customIPSecPolicy`
 

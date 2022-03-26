@@ -2,13 +2,6 @@
 
 With this module you can perform role assignments on a resource group level
 
-## Navigation
-
-- [Resource Types](#Resource-Types)
-- [Parameters](#Parameters)
-- [Outputs](#Outputs)
-- [Template references](#Template-references)
-
 ## Resource Types
 
 | Resource Type | API Version |
@@ -17,24 +10,18 @@ With this module you can perform role assignments on a resource group level
 
 ## Parameters
 
-**Required parameters**
-| Parameter Name | Type | Description |
-| :-- | :-- | :-- |
-| `principalId` | string | The Principal or Object ID of the Security Principal (User, Group, Service Principal, Managed Identity) |
-| `roleDefinitionIdOrName` | string | You can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
-
-**Optional parameters**
-| Parameter Name | Type | Default Value | Allowed Values | Description |
+| Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `condition` | string |  |  | The conditions on the role assignment. This limits the resources it can be assigned to |
-| `conditionVersion` | string | `2.0` | `[2.0]` | Version of the condition. Currently accepted value is "2.0" |
-| `delegatedManagedIdentityResourceId` | string |  |  | ID of the delegated managed identity resource |
-| `description` | string |  |  | Description of role assignment |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `principalType` | string |  | `[ServicePrincipal, Group, User, ForeignGroup, Device, ]` | The principal type of the assigned principal ID. |
-| `resourceGroupName` | string | `[resourceGroup().name]` |  | Name of the Resource Group to assign the RBAC role to. If not provided, will use the current scope for deployment. |
-| `subscriptionId` | string | `[subscription().subscriptionId]` |  | Subscription ID of the subscription to assign the RBAC role to. If not provided, will use the current scope for deployment. |
-
+| `condition` | string |  |  | Optional. The conditions on the role assignment. This limits the resources it can be assigned to |
+| `conditionVersion` | string | `2.0` | `[2.0]` | Optional. Version of the condition. Currently accepted value is "2.0" |
+| `delegatedManagedIdentityResourceId` | string |  |  | Optional. ID of the delegated managed identity resource |
+| `description` | string |  |  | Optional. Description of role assignment |
+| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `principalId` | string |  |  | Required. The Principal or Object ID of the Security Principal (User, Group, Service Principal, Managed Identity) |
+| `principalType` | string |  | `[ServicePrincipal, Group, User, ForeignGroup, Device, ]` | Optional. The principal type of the assigned principal ID. |
+| `resourceGroupName` | string | `[resourceGroup().name]` |  | Optional. Name of the Resource Group to assign the RBAC role to. If not provided, will use the current scope for deployment. |
+| `roleDefinitionIdOrName` | string |  |  | Required. You can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
+| `subscriptionId` | string | `[subscription().subscriptionId]` |  | Optional. Subscription ID of the subscription to assign the RBAC role to. If not provided, will use the current scope for deployment. |
 
 ## Outputs
 
