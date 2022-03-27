@@ -14,14 +14,14 @@ This template deploys a disk
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `acceleratedNetwork` | bool |  |  | Optional. True if the image from which the OS disk is created supports accelerated networking. |
-| `burstingEnabled` | bool |  |  | Optional. Set to true to enable bursting beyond the provisioned performance target of the disk. |
+| `acceleratedNetwork` | bool | `False` |  | Optional. True if the image from which the OS disk is created supports accelerated networking. |
+| `burstingEnabled` | bool | `False` |  | Optional. Set to true to enable bursting beyond the provisioned performance target of the disk. |
 | `completionPercent` | int | `100` |  | Optional. Percentage complete for the background copy when a resource is created via the CopyStart operation. |
 | `createOption` | string | `Empty` | `[Attach, Copy, CopyStart, Empty, FromImage, Import, ImportSecure, Restore, Upload, UploadPreparedSecure]` | Optional. Sources of a disk creation. |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
-| `diskIOPSReadWrite` | int |  |  | Optional. The number of IOPS allowed for this disk; only settable for UltraSSD disks. |
-| `diskMBpsReadWrite` | int |  |  | Optional. The bandwidth allowed for this disk; only settable for UltraSSD disks. |
-| `diskSizeGB` | int |  |  | Optional. If create option is empty, this field is mandatory and it indicates the size of the disk to create. |
+| `diskIOPSReadWrite` | int | `0` |  | Optional. The number of IOPS allowed for this disk; only settable for UltraSSD disks. |
+| `diskMBpsReadWrite` | int | `0` |  | Optional. The bandwidth allowed for this disk; only settable for UltraSSD disks. |
+| `diskSizeGB` | int | `0` |  | Optional. If create option is empty, this field is mandatory and it indicates the size of the disk to create. |
+| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `hyperVGeneration` | string | `V2` | `[V1, V2]` | Optional. The hypervisor generation of the Virtual Machine. Applicable to OS disks only. |
 | `imageReferenceId` | string |  |  | Optional. A relative uri containing either a Platform Image Repository or user image reference. |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Resource location. |
@@ -35,7 +35,7 @@ This template deploys a disk
 | `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
 | `securityDataUri` | string |  |  | Optional. If create option is ImportSecure, this is the URI of a blob to be imported into VM guest state. |
 | `sku` | string |  | `[Standard_LRS, Premium_LRS, StandardSSD_LRS, UltraSSD_LRS, Premium_ZRS, Premium_ZRS]` | Required. The disks sku name. Can be . |
-| `sourceResourceId` | string |  |  | Optional. If create option is Copy, this is the ARM ID of the source snapshot or disk. |
+| `sourceResourceId` | string |  |  | Optional. If create option is Copy, this is the ARM id of the source snapshot or disk. |
 | `sourceUri` | string |  |  | Optional. If create option is Import, this is the URI of a blob to be imported into a managed disk. |
 | `storageAccountId` | string |  |  | Optional. Required if create option is Import. The Azure Resource Manager identifier of the storage account containing the blob to import as a disk |
 | `tags` | object | `{object}` |  | Optional. Tags of the availability set resource. |
@@ -43,11 +43,14 @@ This template deploys a disk
 
 ### Parameter Usage: `roleAssignments`
 
+Create a role assignment for the given resource. If you want to assign a service principal / managed identity that is created in the same deployment, make sure to also specify the `'principalType'` parameter and set it to 'ServicePrincipal'. This will ensure the role assignment waits for the principal's propagation in Azure.
+
 ```json
 "roleAssignments": {
     "value": [
         {
             "roleDefinitionIdOrName": "Reader",
+            "description": "Reader Role Assignment",
             "principalIds": [
                 "12345678-1234-1234-1234-123456789012", // object 1
                 "78945612-1234-1234-1234-123456789012" // object 2
@@ -57,7 +60,8 @@ This template deploys a disk
             "roleDefinitionIdOrName": "/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11",
             "principalIds": [
                 "12345678-1234-1234-1234-123456789012" // object 1
-            ]
+            ],
+            "principalType": "ServicePrincipal"
         }
     ]
 }

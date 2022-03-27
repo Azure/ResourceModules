@@ -36,6 +36,16 @@ param licenseType string = 'LicenseIncluded'
 @description('Optional. If the service has different generations of hardware, for the same SKU, then that can be captured here.')
 param hardwareFamily string = 'Gen5'
 
+@description('Optional. Whether or not multi-az is enabled.')
+param zoneRedundant bool = false
+
+@description('Optional. Service principal type. If using AD Authentication and applying Admin, must be set to `SystemAssigned`. Then Global Admin must allow Reader access to Azure AD for the Service Principal')
+@allowed([
+  'None'
+  'SystemAssigned'
+])
+param servicePrincipal string = 'None'
+
 @description('Optional. Specifies the mode of database creation. Default: Regular instance creation. Restore: Creates an instance by restoring a set of backups to specific point in time. RestorePointInTime and SourceManagedInstanceId must be specified.')
 @allowed([
   'Default'
@@ -103,8 +113,8 @@ param roleAssignments array = []
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
-param cuaId string = ''
+@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+param enableDefaultTelemetry bool = true
 
 @description('Optional. Enables system assigned managed identity on the resource.')
 param systemAssignedIdentity bool = false
@@ -133,12 +143,21 @@ param encryptionProtectorObj object = {}
 @description('Optional. The administrator configuration')
 param administratorsObj object = {}
 
+@description('Optional. The storage account type used to store backups for this database.')
+@allowed([
+  'Geo'
+  'GeoZone'
+  'Local'
+  'Zone'
+])
+param requestedBackupStorageRedundancy string = 'Geo'
+
 @description('Optional. The name of logs that will be streamed.')
 @allowed([
   'ResourceUsageStats'
   'SQLSecurityAuditEvents'
 ])
-param logsToEnable array = [
+param diagnosticLogCategoriesToEnable array = [
   'ResourceUsageStats'
   'SQLSecurityAuditEvents'
 ]
@@ -147,12 +166,15 @@ param logsToEnable array = [
 @allowed([
   'AllMetrics'
 ])
-param metricsToEnable array = [
+param diagnosticMetricsToEnable array = [
   'AllMetrics'
 ]
 
-var diagnosticsLogs = [for log in logsToEnable: {
-  category: log
+@description('Optional. The name of the diagnostic setting, if deployed.')
+param diagnosticSettingsName string = '${name}-diagnosticSettings'
+
+var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
+  category: category
   enabled: true
   retentionPolicy: {
     enabled: true
@@ -160,7 +182,7 @@ var diagnosticsLogs = [for log in logsToEnable: {
   }
 }]
 
-var diagnosticsMetrics = [for metric in metricsToEnable: {
+var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
   category: metric
   timeGrain: null
   enabled: true
@@ -177,9 +199,16 @@ var identity = identityType != 'None' ? {
   userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
 } : null
 
-module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
-  name: 'pid-${cuaId}'
-  params: {}
+resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
+  name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
+  properties: {
+    mode: 'Incremental'
+    template: {
+      '$schema': 'https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#'
+      contentVersion: '1.0.0.0'
+      resources: []
+    }
+  }
 }
 
 resource managedInstance 'Microsoft.Sql/managedInstances@2021-05-01-preview' = {
@@ -189,6 +218,7 @@ resource managedInstance 'Microsoft.Sql/managedInstances@2021-05-01-preview' = {
   sku: {
     name: skuName
     tier: skuTier
+    family: hardwareFamily
   }
   tags: tags
   properties: {
@@ -197,7 +227,6 @@ resource managedInstance 'Microsoft.Sql/managedInstances@2021-05-01-preview' = {
     administratorLoginPassword: administratorLoginPassword
     subnetId: subnetId
     licenseType: licenseType
-    hardwareFamily: hardwareFamily
     vCores: vCores
     storageSizeInGB: storageSizeInGB
     collation: collation
@@ -209,6 +238,11 @@ resource managedInstance 'Microsoft.Sql/managedInstances@2021-05-01-preview' = {
     timezoneId: timezoneId
     instancePoolId: instancePoolResourceId
     primaryUserAssignedIdentityId: primaryUserAssignedIdentityId
+    requestedBackupStorageRedundancy: requestedBackupStorageRedundancy
+    zoneRedundant: zoneRedundant
+    servicePrincipal: {
+      type: servicePrincipal
+    }
   }
 }
 
@@ -222,7 +256,7 @@ resource managedInstance_lock 'Microsoft.Authorization/locks@2017-04-01' = if (l
 }
 
 resource managedInstance_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(diagnosticWorkspaceId)) || (!empty(diagnosticEventHubAuthorizationRuleId)) || (!empty(diagnosticEventHubName))) {
-  name: '${managedInstance.name}-diagnosticSettings'
+  name: diagnosticSettingsName
   properties: {
     storageAccountId: !empty(diagnosticStorageAccountId) ? diagnosticStorageAccountId : null
     workspaceId: !empty(diagnosticWorkspaceId) ? diagnosticWorkspaceId : null
@@ -237,7 +271,9 @@ resource managedInstance_diagnosticSettings 'Microsoft.Insights/diagnosticsettin
 module managedInstance_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-SqlMi-Rbac-${index}'
   params: {
+    description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
     principalIds: roleAssignment.principalIds
+    principalType: contains(roleAssignment, 'principalType') ? roleAssignment.principalType : ''
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
     resourceId: managedInstance.id
   }
@@ -322,7 +358,7 @@ module managedInstance_administrator 'administrators/deploy.bicep' = if (!empty(
   params: {
     managedInstanceName: managedInstance.name
     login: administratorsObj.name
-    sid: administratorsObj.name
+    sid: administratorsObj.sid
     tenantId: contains(administratorsObj, 'tenantId') ? administratorsObj.tenantId : ''
   }
 }

@@ -1,9 +1,9 @@
-@description('Required. Administrator username for the server.')
-param administratorLogin string
+@description('Optional. Administrator username for the server. Required if no `administrators` object for AAD authentication is provided.')
+param administratorLogin string = ''
 
-@description('Required. The administrator login password.')
+@description('Optional. The administrator login password. Required if no `administrators` object for AAD authentication is provided.')
 @secure()
-param administratorLoginPassword string
+param administratorLoginPassword string = ''
 
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
@@ -31,8 +31,8 @@ param roleAssignments array = []
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
-param cuaId string = ''
+@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+param enableDefaultTelemetry bool = true
 
 @description('Optional. The databases to create in the server')
 param databases array = []
@@ -43,6 +43,9 @@ param firewallRules array = []
 @description('Optional. The security alert policies to create in the server')
 param securityAlertPolicies array = []
 
+@description('Optional. The Azure Active Directory (AAD) administrator authentication. Required if no `administratorLogin` & `administratorLoginPassword` is provided.')
+param administrators object = {}
+
 var identityType = systemAssignedIdentity ? (!empty(userAssignedIdentities) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned') : (!empty(userAssignedIdentities) ? 'UserAssigned' : 'None')
 
 var identity = identityType != 'None' ? {
@@ -50,9 +53,16 @@ var identity = identityType != 'None' ? {
   userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
 } : null
 
-module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
-  name: 'pid-${cuaId}'
-  params: {}
+resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
+  name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
+  properties: {
+    mode: 'Incremental'
+    template: {
+      '$schema': 'https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#'
+      contentVersion: '1.0.0.0'
+      resources: []
+    }
+  }
 }
 
 resource server 'Microsoft.Sql/servers@2021-05-01-preview' = {
@@ -61,8 +71,16 @@ resource server 'Microsoft.Sql/servers@2021-05-01-preview' = {
   tags: tags
   identity: identity
   properties: {
-    administratorLogin: administratorLogin
-    administratorLoginPassword: administratorLoginPassword
+    administratorLogin: !empty(administratorLogin) ? administratorLogin : null
+    administratorLoginPassword: !empty(administratorLoginPassword) ? administratorLoginPassword : null
+    administrators: !empty(administrators) ? {
+      administratorType: 'ActiveDirectory'
+      azureADOnlyAuthentication: administrators.azureADOnlyAuthentication
+      login: administrators.login
+      principalType: administrators.principalType
+      sid: administrators.sid
+      tenantId: administrators.tenantId
+    } : null
     version: '12.0'
   }
 }
@@ -79,7 +97,9 @@ resource server_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'N
 module server_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-Sql-Rbac-${index}'
   params: {
+    description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
     principalIds: roleAssignment.principalIds
+    principalType: contains(roleAssignment, 'principalType') ? roleAssignment.principalType : ''
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
     resourceId: server.id
   }
@@ -90,10 +110,10 @@ module server_databases 'databases/deploy.bicep' = [for (database, index) in dat
   params: {
     name: database.name
     serverName: server.name
-    maxSizeBytes: database.maxSizeBytes
-    tier: database.tier
-    skuName: database.skuName
-    collation: database.collation
+    tier: contains(database, 'tier') ? database.tier : 'GeneralPurpose'
+    skuName: contains(database, 'skuName') ? database.skuName : 'GP_Gen5_2'
+    collation: contains(database, 'collation') ? database.collation : 'SQL_Latin1_General_CP1_CI_AS'
+    maxSizeBytes: contains(database, 'maxSizeBytes') ? database.maxSizeBytes : 34359738368
     autoPauseDelay: contains(database, 'autoPauseDelay') ? database.autoPauseDelay : ''
     diagnosticLogsRetentionInDays: contains(database, 'diagnosticLogsRetentionInDays') ? database.diagnosticLogsRetentionInDays : 365
     diagnosticStorageAccountId: contains(database, 'diagnosticStorageAccountId') ? database.diagnosticStorageAccountId : ''
@@ -101,11 +121,11 @@ module server_databases 'databases/deploy.bicep' = [for (database, index) in dat
     diagnosticEventHubName: contains(database, 'diagnosticEventHubName') ? database.diagnosticEventHubName : ''
     isLedgerOn: contains(database, 'isLedgerOn') ? database.isLedgerOn : false
     location: contains(database, 'location') ? database.location : server.location
-    logsToEnable: contains(database, 'logsToEnable') ? database.logsToEnable : []
+    diagnosticLogCategoriesToEnable: contains(database, 'diagnosticLogCategoriesToEnable') ? database.diagnosticLogCategoriesToEnable : []
     licenseType: contains(database, 'licenseType') ? database.licenseType : ''
     maintenanceConfigurationId: contains(database, 'maintenanceConfigurationId') ? database.maintenanceConfigurationId : ''
     minCapacity: contains(database, 'minCapacity') ? database.minCapacity : ''
-    metricsToEnable: contains(database, 'metricsToEnable') ? database.metricsToEnable : []
+    diagnosticMetricsToEnable: contains(database, 'diagnosticMetricsToEnable') ? database.diagnosticMetricsToEnable : []
     highAvailabilityReplicaCount: contains(database, 'highAvailabilityReplicaCount') ? database.highAvailabilityReplicaCount : 0
     readScale: contains(database, 'readScale') ? database.readScale : 'Disabled'
     requestedBackupStorageRedundancy: contains(database, 'requestedBackupStorageRedundancy') ? database.requestedBackupStorageRedundancy : ''

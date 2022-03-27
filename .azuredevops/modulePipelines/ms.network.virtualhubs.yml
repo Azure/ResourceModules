@@ -1,4 +1,4 @@
-name: 'Network: Virtual Hubs'
+name: 'Network: VirtualHubs'
 
 parameters:
   - name: removeDeployment
@@ -17,7 +17,7 @@ trigger:
       - main
   paths:
     include:
-      - '/.azuredevops/modulePipelines/ms.network.virtualHubs.yml'
+      - '/.azuredevops/modulePipelines/ms.network.virtualhubs.yml'
       - '/.azuredevops/pipelineTemplates/module.*.yml'
       - '/arm/Microsoft.Network/virtualHubs/*'
     exclude:

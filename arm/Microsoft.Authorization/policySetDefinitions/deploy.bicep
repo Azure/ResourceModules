@@ -1,17 +1,18 @@
 targetScope = 'managementGroup'
 
-@sys.description('Required. Specifies the name of the policy Set Definition (Initiative).')
+@sys.description('Required. Specifies the name of the policy Set Definition (Initiative). Maximum length is 24 characters for management group scope and 64 characters for subscription scope.')
 @maxLength(64)
 param name string
 
-@sys.description('Optional. The display name of the Set Definition (Initiative)')
+@sys.description('Optional. The display name of the Set Definition (Initiative). Maximum length is 128 characters.')
+@maxLength(128)
 param displayName string = ''
 
-@sys.description('Optional. The Description name of the Set Definition (Initiative)')
+@sys.description('Optional. The description name of the Set Definition (Initiative)')
 param description string = ''
 
-@sys.description('Optional. The group ID of the Management Group (Scope). Cannot be used with subscriptionId and does not support tenant level deployment (i.e. \'/\')')
-param managementGroupId string = ''
+@sys.description('Optional. The group ID of the Management Group (Scope). If not provided, will use the current scope for deployment.')
+param managementGroupId string = managementGroup().name
 
 @sys.description('Optional. The subscription ID of the subscription (Scope). Cannot be used with managementGroupId')
 param subscriptionId string = ''
@@ -28,10 +29,26 @@ param policyDefinitionGroups array = []
 @sys.description('Optional. The Set Definition (Initiative) parameters that can be used in policy definition references.')
 param parameters object = {}
 
-@sys.description('Optional. Location for all resources.')
+@sys.description('Optional. Location deployment metadata.')
 param location string = deployment().location
 
-module policySetDefinition_mg '.bicep/nested_policySetDefinition_mg.bicep' = if (empty(subscriptionId) && !empty(managementGroupId)) {
+@sys.description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+param enableDefaultTelemetry bool = true
+
+resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
+  name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
+  location: location
+  properties: {
+    mode: 'Incremental'
+    template: {
+      '$schema': 'https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#'
+      contentVersion: '1.0.0.0'
+      resources: []
+    }
+  }
+}
+
+module policySetDefinition_mg 'managementGroup/deploy.bicep' = if (empty(subscriptionId)) {
   name: '${uniqueString(deployment().name, location)}-PolicySetDefinition-MG-Module'
   scope: managementGroup(managementGroupId)
   params: {
@@ -43,10 +60,11 @@ module policySetDefinition_mg '.bicep/nested_policySetDefinition_mg.bicep' = if 
     policyDefinitions: policyDefinitions
     policyDefinitionGroups: !empty(policyDefinitionGroups) ? policyDefinitionGroups : []
     managementGroupId: managementGroupId
+    location: location
   }
 }
 
-module policySetDefinition_sub '.bicep/nested_policySetDefinition_sub.bicep' = if (empty(managementGroupId) && !empty(subscriptionId)) {
+module policySetDefinition_sub 'subscription/deploy.bicep' = if (!empty(subscriptionId)) {
   name: '${uniqueString(deployment().name, location)}-PolicySetDefinition-Sub-Module'
   scope: subscription(subscriptionId)
   params: {
@@ -58,11 +76,12 @@ module policySetDefinition_sub '.bicep/nested_policySetDefinition_sub.bicep' = i
     policyDefinitions: policyDefinitions
     policyDefinitionGroups: !empty(policyDefinitionGroups) ? policyDefinitionGroups : []
     subscriptionId: subscriptionId
+    location: location
   }
 }
 
 @sys.description('Policy Set Definition Name')
-output name string = !empty(managementGroupId) ? policySetDefinition_mg.outputs.name : policySetDefinition_sub.outputs.name
+output name string = empty(subscriptionId) ? policySetDefinition_mg.outputs.name : policySetDefinition_sub.outputs.name
 
 @sys.description('Policy Set Definition resource ID')
-output resourceId string = !empty(managementGroupId) ? policySetDefinition_mg.outputs.resourceId : policySetDefinition_sub.outputs.resourceId
+output resourceId string = empty(subscriptionId) ? policySetDefinition_mg.outputs.resourceId : policySetDefinition_sub.outputs.resourceId

@@ -12,6 +12,25 @@ param parentId string = ''
 @description('Optional. Array of role assignment objects to define RBAC on this resource.')
 param roleAssignments array = []
 
+@sys.description('Optional. Location deployment metadata.')
+param location string = deployment().location
+
+@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+param enableDefaultTelemetry bool = true
+
+resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
+  name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
+  location: location
+  properties: {
+    mode: 'Incremental'
+    template: {
+      '$schema': 'https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#'
+      contentVersion: '1.0.0.0'
+      resources: []
+    }
+  }
+}
+
 resource managementGroup 'Microsoft.Management/managementGroups@2021-04-01' = {
   name: name
   scope: tenant()
@@ -28,7 +47,9 @@ resource managementGroup 'Microsoft.Management/managementGroups@2021-04-01' = {
 module managementGroup_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name)}-ManagementGroup-Rbac-${index}'
   params: {
+    description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
     principalIds: roleAssignment.principalIds
+    principalType: contains(roleAssignment, 'principalType') ? roleAssignment.principalType : ''
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
     resourceName: managementGroup.name
   }

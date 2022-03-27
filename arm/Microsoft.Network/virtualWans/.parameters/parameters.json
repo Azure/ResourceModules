@@ -5,17 +5,17 @@
         "name": {
             "value": "<<namePrefix>>-az-vw-x-001"
         },
-        "vpnsiteAddressspaceList": {
-            "value": []
+        "type": {
+            "value": "Basic"
         },
-        "vpnsitePublicIPAddress": {
-            "value": "1.2.3.4"
+        "allowBranchToBranchTraffic": {
+            "value": true
         },
-        "vpnsiteBgpAsn": {
-            "value": 65010
+        "allowVnetToVnetTraffic": {
+            "value": true
         },
-        "vpnsiteBgpPeeringAddress": {
-            "value": "1.1.1.1"
+        "disableVpnEncryption": {
+            "value": true
         },
         "roleAssignments": {
             "value": [

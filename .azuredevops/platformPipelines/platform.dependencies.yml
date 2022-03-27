@@ -47,6 +47,21 @@ stages:
               templateFilePath: $(templateFilePath)
               displayName: Validation Resource Group
 
+  - stage: deploy_ppg
+    displayName: Deploy proximity placement group
+    dependsOn:
+      - deploy_rg
+    variables:
+      resourceType: 'Microsoft.Compute/proximityPlacementGroups'
+      templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
+    jobs:
+      - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
+        parameters:
+          deploymentBlocks:
+            - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: Proximity Placement Group
+
   - stage: deploy_msi
     displayName: Deploy user assigned identity
     dependsOn:
@@ -85,20 +100,38 @@ stages:
                 Write-Verbose "msiPrincipalId: $msiPrincipalId" -Verbose
                 Write-Output ('##vso[task.setvariable variable={0};isOutput=true]{1}' -f 'msiPrincipalId', $msiPrincipalId)
 
-  - stage: deploy_pa
-    displayName: Deploy policy assignment
+  - stage: deploy_sf
+    displayName: Deploy server farm
     dependsOn:
       - deploy_rg
     variables:
-      resourceType: 'Microsoft.Authorization/policyAssignments'
-      templateFilePath: $(modulesPath)/$(resourceType)/.bicep/nested_policyAssignments_sub.bicep
+      resourceType: 'Microsoft.Web/serverfarms'
+      templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
     jobs:
       - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
         parameters:
           deploymentBlocks:
             - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
               templateFilePath: $(templateFilePath)
-              displayName: Policy assignment
+              displayName: Server farm
+
+  - stage: deploy_pa
+    displayName: Deploy policy assignment
+    dependsOn:
+      - deploy_rg
+    variables:
+      resourceType: 'Microsoft.Authorization/policyAssignments'
+      templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
+    jobs:
+      - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
+        parameters:
+          deploymentBlocks:
+            - path: $(dependencyPath)/$(resourceType)/parameters/mg.parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: Policy assignment (mg)
+            - path: $(dependencyPath)/$(resourceType)/parameters/sub.parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: Policy assignment (sub)
 
   - stage: deploy_evh
     displayName: Deploy event hub
@@ -584,6 +617,11 @@ stages:
               displayName: Default Key Vault
               jobName: default_kv
               customParameterFileTokens: '{"msiPrincipalId":"$(msiPrincipalId)"}'
+            - path: $(dependencyPath)/$(resourceType)/parameters/nopr.parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: Purge proteced key vault
+              jobName: default_kv_nopr
+              customParameterFileTokens: '{"msiPrincipalId":"$(msiPrincipalId)"}'  
             - path: $(dependencyPath)/$(resourceType)/parameters/pe.parameters.json
               templateFilePath: $(templateFilePath)
               displayName: Private Endpoint Key Vault
@@ -598,6 +636,7 @@ stages:
         displayName: Set key vault secrets keys and certificates
         dependsOn:
           - default_kv
+          - default_kv_nopr
         pool:
           ${{ if eq(variables['vmImage'], '') }}:
             name: $(poolName)
@@ -627,6 +666,8 @@ stages:
               ScriptType: 'InlineScript'
               Inline: |
                 $parameterFilePath = Join-Path '$(Build.SourcesDirectory)' '$(dependencyPath)' '$(resourceType)' 'parameters' 'parameters.json'
+                $noprParameterFilePath = Join-Path '$(Build.SourcesDirectory)' '$(dependencyPath)' '$(resourceType)' 'parameters' 'nopr.parameters.json'
+
                 # Load used functions
                 . (Join-Path '$(Build.SourcesDirectory)' 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInFile.ps1')
 
@@ -637,6 +678,11 @@ stages:
                     TokenPrefix = $Settings.parameterFileTokens.tokenPrefix
                     TokenSuffix = $Settings.parameterFileTokens.tokenSuffix
                 }
+                $NoprConvertTokensInputs = @{
+                    FilePath    = $noprParameterFilePath
+                    TokenPrefix = $Settings.parameterFileTokens.tokenPrefix
+                    TokenSuffix = $Settings.parameterFileTokens.tokenSuffix
+                }
                 if ($Settings.parameterFileTokens.localTokens) {
                     $tokenMap = @{}
                     foreach ($token in $Settings.parameterFileTokens.localTokens) {
@@ -644,12 +690,17 @@ stages:
                     }
                     Write-Verbose ('Using local tokens [{0}]' -f ($tokenMap.Keys -join ', ')) -Verbose
                     $ConvertTokensInputs.Tokens = $tokenMap
+                    $NoprConvertTokensInputs.Tokens = $tokenMap
                 }
                 $null = Convert-TokensInFile @ConvertTokensInputs
+                $null = Convert-TokensInFile @NoprConvertTokensInputs
 
                 # Get key vault name
                 $keyVaultParameters = (ConvertFrom-Json (Get-Content -Path $parameterFilePath -Raw)).parameters
                 $keyVaultName = $keyVaultParameters.name.value
+                # No Purge Key Vault
+                $noprKeyVaultParameters = (ConvertFrom-Json (Get-Content -Path $noprParameterFilePath -Raw)).parameters
+                $noprKeyVaultName = $noprKeyVaultParameters.name.value
 
                 # Generate values
                 $usernameString = ( -join ((65..90) + (97..122) | Get-Random -Count 9 -SetSeed 1 | ForEach-Object { [char]$_ + "$_" })).substring(0, 19) # max length
@@ -691,6 +742,13 @@ stages:
                 ) | ForEach-Object {
                     $null = Add-AzKeyVaultKey -VaultName $keyVaultName -Name $_.name -Destination $_.Destination
                     Write-Verbose ('Added key [{0}] to key vault [{1}]' -f $_.name, $keyVaultName) -Verbose
+                }
+                # noprKeyVault Keys
+                @(
+                  @{ name = 'keyEncryptionKey'; Destination = 'Software' } # Automation Account
+                ) | ForEach-Object {
+                    $null = Add-AzKeyVaultKey -VaultName $noprKeyVaultName -Name $_.name -Destination $_.Destination
+                    Write-Verbose ('Added key [{0}] to key vault [{1}]' -f $_.name, $noprKeyVaultName) -Verbose
                 }
               azurePowerShellVersion: 'LatestVersion'
               pwsh: true
@@ -803,7 +861,7 @@ stages:
       - deploy_msi
     variables:
       resourceType: 'Microsoft.Authorization/roleAssignments'
-      templateFilePath: $(modulesPath)/$(resourceType)/.bicep/nested_rbac_sub.bicep
+      templateFilePath: $(modulesPath)/$(resourceType)/subscription/deploy.bicep
       msiPrincipalId: $[ stageDependencies.deploy_msi.job_set_msi_id.outputs['print_msi_prinId.msiPrincipalId'] ]
     jobs:
       - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
@@ -884,3 +942,18 @@ stages:
             - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
               templateFilePath: $(templateFilePath)
               displayName: Default Virtual Machine
+
+  - stage: deploy_lb
+    displayName: Deploy load balancers
+    dependsOn:
+      - deploy_vnet
+    variables:
+      resourceType: 'Microsoft.Network/loadBalancers'
+      templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
+    jobs:
+      - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
+        parameters:
+          deploymentBlocks:
+            - path: $(dependencyPath)/$(resourceType)/parameters/internal.parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: Deploy module

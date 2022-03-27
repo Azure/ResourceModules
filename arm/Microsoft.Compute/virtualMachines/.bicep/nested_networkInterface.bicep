@@ -13,12 +13,18 @@ param diagnosticLogsRetentionInDays int
 param diagnosticWorkspaceId string
 param diagnosticEventHubAuthorizationRuleId string
 param diagnosticEventHubName string
-param pipMetricsToEnable array
-param pipLogsToEnable array
-param metricsToEnable array
+param pipdiagnosticMetricsToEnable array
+param pipdiagnosticLogCategoriesToEnable array
+param nicDiagnosticMetricsToEnable array
 param roleAssignments array
 
-var diagnosticsMetrics = [for metric in metricsToEnable: {
+@description('Optional. The name of the PIP diagnostic setting, if deployed.')
+param pipDiagnosticSettingsName string = '${virtualMachineName}-diagnosticSettings'
+
+@description('Optional. The name of the NIC diagnostic setting, if deployed.')
+param nicDiagnosticSettingsName string = '${virtualMachineName}-diagnosticSettings'
+
+var nicDiagnosticsMetrics = [for metric in nicDiagnosticMetricsToEnable: {
   category: metric
   timeGrain: null
   enabled: true
@@ -42,15 +48,16 @@ module networkInterface_publicIPConfigurations 'nested_networkInterface_publicIP
     diagnosticWorkspaceId: diagnosticWorkspaceId
     diagnosticEventHubAuthorizationRuleId: diagnosticEventHubAuthorizationRuleId
     diagnosticEventHubName: diagnosticEventHubName
-    metricsToEnable: pipMetricsToEnable
-    logsToEnable: pipLogsToEnable
+    diagnosticSettingsName: pipDiagnosticSettingsName
+    diagnosticMetricsToEnable: pipdiagnosticMetricsToEnable
+    diagnosticLogCategoriesToEnable: pipdiagnosticLogCategoriesToEnable
     lock: lock
     roleAssignments: contains(ipConfiguration.pipconfiguration, 'roleAssignments') ? (!empty(ipConfiguration.pipconfiguration.roleAssignments) ? ipConfiguration.pipconfiguration.roleAssignments : []) : []
     tags: tags
   }
 }]
 
-resource networkInterface 'Microsoft.Network/networkInterfaces@2021-03-01' = {
+resource networkInterface 'Microsoft.Network/networkInterfaces@2021-05-01' = {
   name: networkInterfaceName
   location: location
   tags: tags
@@ -73,6 +80,8 @@ resource networkInterface 'Microsoft.Network/networkInterfaces@2021-03-01' = {
         subnet: {
           id: ipConfiguration.subnetId
         }
+        loadBalancerBackendAddressPools: contains(ipConfiguration, 'loadBalancerBackendAddressPools') ? ipConfiguration.loadBalancerBackendAddressPools : null
+        applicationSecurityGroups: contains(ipConfiguration, 'applicationSecurityGroups') ? ipConfiguration.applicationSecurityGroups : null
       }
     }]
   }
@@ -91,13 +100,13 @@ resource networkInterface_lock 'Microsoft.Authorization/locks@2017-04-01' = if (
 }
 
 resource networkInterface_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(diagnosticWorkspaceId)) || (!empty(diagnosticEventHubAuthorizationRuleId)) || (!empty(diagnosticEventHubName))) {
-  name: '${networkInterface.name}-diagnosticSettings'
+  name: nicDiagnosticSettingsName
   properties: {
     storageAccountId: !empty(diagnosticStorageAccountId) ? diagnosticStorageAccountId : null
     workspaceId: !empty(diagnosticWorkspaceId) ? diagnosticWorkspaceId : null
     eventHubAuthorizationRuleId: !empty(diagnosticEventHubAuthorizationRuleId) ? diagnosticEventHubAuthorizationRuleId : null
     eventHubName: !empty(diagnosticEventHubName) ? diagnosticEventHubName : null
-    metrics: diagnosticsMetrics
+    metrics: nicDiagnosticsMetrics
   }
   scope: networkInterface
 }
@@ -105,7 +114,9 @@ resource networkInterface_diagnosticSettings 'Microsoft.Insights/diagnosticsetti
 module networkInterface_rbac 'nested_networkInterface_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${deployment().name}-Rbac-${index}'
   params: {
+    description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
     principalIds: roleAssignment.principalIds
+    principalType: contains(roleAssignment, 'principalType') ? roleAssignment.principalType : ''
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
     resourceId: networkInterface.id
   }

@@ -1,6 +1,6 @@
 # Removal action
 
-This section describes how the removal of resources deployed by a module is performed and how to modify the default behaviour if a specific module or resource type needs it.
+This section describes how the removal of resources deployed by a module is performed and how to modify the default behavior if a specific module or resource type needs it.
 
 ---
 
@@ -57,7 +57,7 @@ To modify the resource types removal **order**:
 1. In the case block, update the `$removalSequence` variable value to accommodate your module requirements
 1. Remember to add the `break` statement.
 
-To defina a **custom removal** action:
+To define a **custom removal** action:
 1. Open the `/utilities/pipelines/resourceRemoval/helper/Invoke-ResourceRemoval.ps1` file.
 1. Look for the following comment: `### CODE LOCATION: Add custom removal action here`
 1. Add a case value that matches the resource type you want to modify the removal action for

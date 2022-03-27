@@ -11,9 +11,6 @@
         "sku": {
             "value": "F0"
         },
-        "cuaId": {
-            "value": "00000000-0000-0000-0000-000000000000"
-        },
         "roleAssignments": {
             "value": [
                 {
