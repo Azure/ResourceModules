@@ -2,6 +2,13 @@
 
 This module deploys an Azure Automation Account Runbook.
 
+## Navigation
+
+- [Resource Types](#Resource-Types)
+- [Parameters](#Parameters)
+- [Outputs](#Outputs)
+- [Template references](#Template-references)
+
 ## Resource Types
 
 | Resource Type | API Version |
@@ -10,20 +17,26 @@ This module deploys an Azure Automation Account Runbook.
 
 ## Parameters
 
-| Parameter Name | Type | Default Value | Possible Values | Description |
-| :-- | :-- | :-- | :-- | :-- |
-| `automationAccountName` | string |  |  | Required. Name of the parent Automation Account. |
-| `baseTime` | string | `[utcNow('u')]` |  | Optional. Time used as a basis for e.g. the schedule start date. |
-| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
-| `name` | string |  |  | Required. Name of the Automation Account runbook. |
-| `runbookDescription` | string |  |  | Optional. The description of the runbook. |
-| `runbookType` | string |  | `[Graph, GraphPowerShell, GraphPowerShellWorkflow, PowerShell, PowerShellWorkflow]` | Required. The type of the runbook. |
-| `sasTokenValidityLength` | string | `PT8H` |  | Optional. SAS token validity length. Usage: 'PT8H' - valid for 8 hours; 'P5D' - valid for 5 days; 'P1Y' - valid for 1 year. When not provided, the SAS token will be valid for 8 hours. |
-| `scriptStorageAccountId` | string |  |  | Optional. ID of the runbook storage account. |
-| `tags` | object | `{object}` |  | Optional. Tags of the Automation Account resource. |
-| `uri` | string |  |  | Optional. The uri of the runbook content. |
-| `version` | string |  |  | Optional. The version of the runbook content. |
+**Required parameters**
+| Parameter Name | Type | Allowed Values | Description |
+| :-- | :-- | :-- | :-- |
+| `automationAccountName` | string |  | Name of the parent Automation Account. |
+| `name` | string |  | Name of the Automation Account runbook. |
+| `runbookType` | string | `[Graph, GraphPowerShell, GraphPowerShellWorkflow, PowerShell, PowerShellWorkflow]` | The type of the runbook. |
+
+**Optional parameters**
+| Parameter Name | Type | Default Value | Description |
+| :-- | :-- | :-- | :-- |
+| `baseTime` | string | `[utcNow('u')]` | Time used as a basis for e.g. the schedule start date. |
+| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `location` | string | `[resourceGroup().location]` | Location for all resources. |
+| `runbookDescription` | string |  | The description of the runbook. |
+| `sasTokenValidityLength` | string | `PT8H` | SAS token validity length. Usage: 'PT8H' - valid for 8 hours; 'P5D' - valid for 5 days; 'P1Y' - valid for 1 year. When not provided, the SAS token will be valid for 8 hours. |
+| `scriptStorageAccountId` | string |  | ID of the runbook storage account. |
+| `tags` | object | `{object}` | Tags of the Automation Account resource. |
+| `uri` | string |  | The uri of the runbook content. |
+| `version` | string |  | The version of the runbook content. |
+
 
 ### Parameter Usage: `tags`
 

@@ -2,6 +2,13 @@
 
 This template deploys a private DNS zone.
 
+## Navigation
+
+- [Resource types](#Resource-types)
+- [Parameters](#Parameters)
+- [Outputs](#Outputs)
+- [Template references](#Template-references)
+
 ## Resource types
 
 | Resource Type | API Version |
@@ -21,27 +28,31 @@ This template deploys a private DNS zone.
 
 ## Parameters
 
-| Parameter Name | Type | Default Value | Possible Values | Description |
+**Required parameters**
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `name` | string | Private DNS zone name. |
+
+**Optional parameters**
+| Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `a` | _[a](a/readme.md)_ array | `[]` |  | Optional. Array of A records. |
-| `aaaa` | _[aaaa](aaaa/readme.md)_ array | `[]` |  | Optional. Array of AAAA records. |
-| `cname` | _[cname](cname/readme.md)_ array | `[]` |  | Optional. Array of CNAME records. |
-| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `location` | string | `global` |  | Optional. The location of the PrivateDNSZone. Should be global. |
-| `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
-| `mx` | _[mx](mx/readme.md)_ array | `[]` |  | Optional. Array of MX records. |
-| `name` | string |  |  | Required. Private DNS zone name. |
-| `ptr` | _[ptr](ptr/readme.md)_ array | `[]` |  | Optional. Array of PTR records. |
-| `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
-| `soa` | _[soa](soa/readme.md)_ array | `[]` |  | Optional. Array of SOA records. |
-| `srv` | _[srv](srv/readme.md)_ array | `[]` |  | Optional. Array of SRV records. |
-| `tags` | object | `{object}` |  | Optional. Tags of the resource. |
-| `txt` | _[txt](txt/readme.md)_ array | `[]` |  | Optional. Array of TXT records. |
-| `virtualNetworkLinks` | _[virtualNetworkLinks](virtualNetworkLinks/readme.md)_ array | `[]` |  | Optional. Array of custom objects describing vNet links of the DNS zone. Each object should contain properties 'vnetResourceId' and 'registrationEnabled'. The 'vnetResourceId' is a resource ID of a vNet to link, 'registrationEnabled' (bool) enables automatic DNS registration in the zone for the linked vNet. |
+| `a` | _[a](a/readme.md)_ array | `[]` |  | Array of A records. |
+| `aaaa` | _[aaaa](aaaa/readme.md)_ array | `[]` |  | Array of AAAA records. |
+| `cname` | _[cname](cname/readme.md)_ array | `[]` |  | Array of CNAME records. |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `location` | string | `global` |  | The location of the PrivateDNSZone. Should be global. |
+| `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Specify the type of lock. |
+| `mx` | _[mx](mx/readme.md)_ array | `[]` |  | Array of MX records. |
+| `ptr` | _[ptr](ptr/readme.md)_ array | `[]` |  | Array of PTR records. |
+| `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
+| `soa` | _[soa](soa/readme.md)_ array | `[]` |  | Array of SOA records. |
+| `srv` | _[srv](srv/readme.md)_ array | `[]` |  | Array of SRV records. |
+| `tags` | object | `{object}` |  | Tags of the resource. |
+| `txt` | _[txt](txt/readme.md)_ array | `[]` |  | Array of TXT records. |
+| `virtualNetworkLinks` | _[virtualNetworkLinks](virtualNetworkLinks/readme.md)_ array | `[]` |  | Array of custom objects describing vNet links of the DNS zone. Each object should contain properties 'vnetResourceId' and 'registrationEnabled'. The 'vnetResourceId' is a resource ID of a vNet to link, 'registrationEnabled' (bool) enables automatic DNS registration in the zone for the linked vNet. |
+
 
 ### Parameter Usage: `roleAssignments`
-
-Create a role assignment for the given resource. If you want to assign a service principal / managed identity that is created in the same deployment, make sure to also specify the `'principalType'` parameter and set it to 'ServicePrincipal'. This will ensure the role assignment waits for the principal's propagation in Azure.
 
 ```json
 "roleAssignments": {

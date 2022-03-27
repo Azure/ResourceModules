@@ -2,6 +2,13 @@
 
 This module deploys a backup long-term retention policies for SQL Managed Instance databases
 
+## Navigation
+
+- [Resource Types](#Resource-Types)
+- [Parameters](#Parameters)
+- [Outputs](#Outputs)
+- [Template references](#Template-references)
+
 ## Resource Types
 
 | Resource Type | API Version |
@@ -10,16 +17,22 @@ This module deploys a backup long-term retention policies for SQL Managed Instan
 
 ## Parameters
 
-| Parameter Name | Type | Default Value | Possible Values | Description |
-| :-- | :-- | :-- | :-- | :-- |
-| `databaseName` | string |  |  | Required. The name of the managed instance database |
-| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `managedInstanceName` | string |  |  | Required. Name of the managed instance. |
-| `monthlyRetention` | string | `P1Y` |  | Optional. The monthly retention policy for an LTR backup in an ISO 8601 format. |
-| `name` | string |  |  | Required. The name of the Long Term Retention backup policy. For example "default". |
-| `weeklyRetention` | string | `P1M` |  | Optional. The weekly retention policy for an LTR backup in an ISO 8601 format. |
-| `weekOfYear` | int | `5` |  | Optional. The week of year to take the yearly backup in an ISO 8601 format. |
-| `yearlyRetention` | string | `P5Y` |  | Optional. The yearly retention policy for an LTR backup in an ISO 8601 format. |
+**Required parameters**
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `databaseName` | string | The name of the managed instance database |
+| `managedInstanceName` | string | Name of the managed instance. |
+| `name` | string | The name of the Long Term Retention backup policy. For example "default". |
+
+**Optional parameters**
+| Parameter Name | Type | Default Value | Description |
+| :-- | :-- | :-- | :-- |
+| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `monthlyRetention` | string | `P1Y` | The monthly retention policy for an LTR backup in an ISO 8601 format. |
+| `weeklyRetention` | string | `P1M` | The weekly retention policy for an LTR backup in an ISO 8601 format. |
+| `weekOfYear` | int | `5` | The week of year to take the yearly backup in an ISO 8601 format. |
+| `yearlyRetention` | string | `P5Y` | The yearly retention policy for an LTR backup in an ISO 8601 format. |
+
 
 ## Outputs
 

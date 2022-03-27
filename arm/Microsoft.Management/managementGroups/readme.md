@@ -7,6 +7,14 @@ This module has some known **limitations**:
 - It's not possible to change the display name of the root management group (the one that has the tenant GUID as ID)
 - It can't manage the Root (/) management group
 
+## Navigation
+
+- [Resource types](#Resource-types)
+- [Parameters](#Parameters)
+- [Outputs](#Outputs)
+- [Considerations](#Considerations)
+- [Template references](#Template-references)
+
 ## Resource types
 
 | Resource Type | API Version |

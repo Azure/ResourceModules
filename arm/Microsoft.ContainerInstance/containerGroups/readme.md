@@ -1,5 +1,12 @@
 # Container Instances `[Microsoft.ContainerInstance/containerGroups]`
 
+## Navigation
+
+- [Resource types](#Resource-types)
+- [Parameters](#Parameters)
+- [Outputs](#Outputs)
+- [Template references](#Template-references)
+
 ### Container groups in Azure Container Instances
 
 The top-level resource in Azure Container Instances is the container group. A container group is a collection of containers that get scheduled on the same host machine. The containers in a container group share a lifecycle, resources, local network, and storage volumes. It's similar in concept to a pod in Kubernetes.
@@ -13,25 +20,31 @@ The top-level resource in Azure Container Instances is the container group. A co
 
 ## Parameters
 
-| Parameter Name | Type | Default Value | Possible Values | Description |
+**Required parameters**
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `containername` | string | Name for the container. |
+| `image` | string | Name of the image. |
+| `name` | string | Name for the container group. |
+
+**Optional parameters**
+| Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `containername` | string |  |  | Required. Name for the container. |
-| `cpuCores` | int | `2` |  | Optional. The number of CPU cores to allocate to the container. |
-| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `environmentVariables` | array | `[]` |  | Optional. Envrionment variables of the container group. |
-| `image` | string |  |  | Required. Name of the image. |
-| `imageRegistryCredentials` | array | `[]` |  | Optional. The image registry credentials by which the container group is created from. |
-| `ipAddressType` | string | `Public` |  | Optional. Specifies if the IP is exposed to the public internet or private VNET. - Public or Private |
-| `location` | string | `[resourceGroup().location]` |  | Optional. Location for all Resources. |
-| `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
-| `memoryInGB` | int | `2` |  | Optional. The amount of memory to allocate to the container in gigabytes. |
-| `name` | string |  |  | Required. Name for the container group. |
-| `osType` | string | `Linux` |  | Optional. The operating system type required by the containers in the container group. - Windows or Linux. |
-| `ports` | array | `[System.Collections.Hashtable]` |  | Optional. Port to open on the container and the public IP address. |
-| `restartPolicy` | string | `Always` |  | Optional. Restart policy for all containers within the container group. - Always: Always restart. OnFailure: Restart on failure. Never: Never restart. - Always, OnFailure, Never |
-| `systemAssignedIdentity` | bool | `False` |  | Optional. Enables system assigned managed identity on the resource. |
-| `tags` | object | `{object}` |  | Optional. Tags of the resource. |
-| `userAssignedIdentities` | object | `{object}` |  | Optional. The ID(s) to assign to the resource. |
+| `cpuCores` | int | `2` |  | The number of CPU cores to allocate to the container. |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `environmentVariables` | array | `[]` |  | Envrionment variables of the container group. |
+| `imageRegistryCredentials` | array | `[]` |  | The image registry credentials by which the container group is created from. |
+| `ipAddressType` | string | `Public` |  | Specifies if the IP is exposed to the public internet or private VNET. - Public or Private |
+| `location` | string | `[resourceGroup().location]` |  | Location for all Resources. |
+| `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Specify the type of lock. |
+| `memoryInGB` | int | `2` |  | The amount of memory to allocate to the container in gigabytes. |
+| `osType` | string | `Linux` |  | The operating system type required by the containers in the container group. - Windows or Linux. |
+| `ports` | array | `[System.Collections.Hashtable]` |  | Port to open on the container and the public IP address. |
+| `restartPolicy` | string | `Always` |  | Restart policy for all containers within the container group. - Always: Always restart. OnFailure: Restart on failure. Never: Never restart. - Always, OnFailure, Never |
+| `systemAssignedIdentity` | bool | `False` |  | Enables system assigned managed identity on the resource. |
+| `tags` | object | `{object}` |  | Tags of the resource. |
+| `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. |
+
 
 ### Parameter Usage: `imageRegistryCredentials`
 

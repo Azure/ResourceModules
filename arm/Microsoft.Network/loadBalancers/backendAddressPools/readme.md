@@ -2,6 +2,13 @@
 
 This module deploys load balancer backend address pools.
 
+## Navigation
+
+- [Resource Types](#Resource-Types)
+- [Parameters](#Parameters)
+- [Outputs](#Outputs)
+- [Template references](#Template-references)
+
 ## Resource Types
 
 | Resource Type | API Version |
@@ -10,13 +17,19 @@ This module deploys load balancer backend address pools.
 
 ## Parameters
 
-| Parameter Name | Type | Default Value | Possible Values | Description |
-| :-- | :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `loadBalancerBackendAddresses` | array | `[]` |  | Optional. An array of backend addresses. |
-| `loadBalancerName` | string |  |  | Required. The name of the parent load balancer |
-| `name` | string |  |  | Required. The name of the backend address pool |
-| `tunnelInterfaces` | array | `[]` |  | Optional. An array of gateway load balancer tunnel interfaces. |
+**Required parameters**
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `loadBalancerName` | string | The name of the parent load balancer |
+| `name` | string | The name of the backend address pool |
+
+**Optional parameters**
+| Parameter Name | Type | Default Value | Description |
+| :-- | :-- | :-- | :-- |
+| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `loadBalancerBackendAddresses` | array | `[]` | An array of backend addresses. |
+| `tunnelInterfaces` | array | `[]` | An array of gateway load balancer tunnel interfaces. |
+
 
 ## Outputs
 

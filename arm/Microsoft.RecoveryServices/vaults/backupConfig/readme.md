@@ -2,6 +2,13 @@
 
 This module deploys recovery services vault backup config.
 
+## Navigation
+
+- [Resource Types](#Resource-Types)
+- [Parameters](#Parameters)
+- [Outputs](#Outputs)
+- [Template references](#Template-references)
+
 ## Resource Types
 
 | Resource Type | API Version |
@@ -10,17 +17,23 @@ This module deploys recovery services vault backup config.
 
 ## Parameters
 
-| Parameter Name | Type | Default Value | Possible Values | Description |
+**Required parameters**
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `recoveryVaultName` | string | Name of the Azure Recovery Service Vault |
+
+**Optional parameters**
+| Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `enhancedSecurityState` | string | `Enabled` | `[Disabled, Enabled]` | Optional. Enable this setting to protect hybrid backups against accidental deletes and add additional layer of authentication for critical operations. |
-| `name` | string | `vaultconfig` |  | Optional. Name of the Azure Recovery Service Vault Backup Policy |
-| `recoveryVaultName` | string |  |  | Required. Name of the Azure Recovery Service Vault |
-| `resourceGuardOperationRequests` | array | `[]` |  | Optional. ResourceGuard Operation Requests |
-| `softDeleteFeatureState` | string | `Enabled` | `[Disabled, Enabled]` | Optional. Enable this setting to protect backup data for Azure VM, SQL Server in Azure VM and SAP HANA in Azure VM from accidental deletes |
-| `storageModelType` | string | `GeoRedundant` | `[GeoRedundant, LocallyRedundant, ReadAccessGeoZoneRedundant, ZoneRedundant]` | Optional. Storage type |
-| `storageType` | string | `GeoRedundant` | `[GeoRedundant, LocallyRedundant, ReadAccessGeoZoneRedundant, ZoneRedundant]` | Optional. Storage type |
-| `storageTypeState` | string | `Locked` | `[Locked, Unlocked]` | Optional. Once a machine is registered against a resource, the storageTypeState is always Locked. |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enhancedSecurityState` | string | `Enabled` | `[Disabled, Enabled]` | Enable this setting to protect hybrid backups against accidental deletes and add additional layer of authentication for critical operations. |
+| `name` | string | `vaultconfig` |  | Name of the Azure Recovery Service Vault Backup Policy |
+| `resourceGuardOperationRequests` | array | `[]` |  | ResourceGuard Operation Requests |
+| `softDeleteFeatureState` | string | `Enabled` | `[Disabled, Enabled]` | Enable this setting to protect backup data for Azure VM, SQL Server in Azure VM and SAP HANA in Azure VM from accidental deletes |
+| `storageModelType` | string | `GeoRedundant` | `[GeoRedundant, LocallyRedundant, ReadAccessGeoZoneRedundant, ZoneRedundant]` | Storage type |
+| `storageType` | string | `GeoRedundant` | `[GeoRedundant, LocallyRedundant, ReadAccessGeoZoneRedundant, ZoneRedundant]` | Storage type |
+| `storageTypeState` | string | `Locked` | `[Locked, Unlocked]` | Once a machine is registered against a resource, the storageTypeState is always Locked. |
+
 
 ## Outputs
 
