@@ -28,10 +28,10 @@ This module deploys a backup long-term retention policies for SQL Managed Instan
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `monthlyRetention` | string | `P1Y` | The monthly retention policy for an LTR backup in an ISO 8601 format. |
-| `weeklyRetention` | string | `P1M` | The weekly retention policy for an LTR backup in an ISO 8601 format. |
+| `monthlyRetention` | string | `'P1Y'` | The monthly retention policy for an LTR backup in an ISO 8601 format. |
+| `weeklyRetention` | string | `'P1M'` | The weekly retention policy for an LTR backup in an ISO 8601 format. |
 | `weekOfYear` | int | `5` | The week of year to take the yearly backup in an ISO 8601 format. |
-| `yearlyRetention` | string | `P5Y` | The yearly retention policy for an LTR backup in an ISO 8601 format. |
+| `yearlyRetention` | string | `'P5Y'` | The yearly retention policy for an LTR backup in an ISO 8601 format. |
 
 
 ## Outputs

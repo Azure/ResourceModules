@@ -31,9 +31,9 @@ This module deploys an SQL Server Security Alert Policy.
 | `emailAddresses` | array | `[]` |  | Specifies an array of email addresses to which the alert is sent. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `retentionDays` | int | `0` |  | Specifies the number of days to keep in the Threat Detection audit logs. |
-| `state` | string | `Disabled` | `[Disabled, Enabled]` | Specifies the state of the policy, whether it is enabled or disabled or a policy has not been applied yet on the specific database. |
-| `storageAccountAccessKey` | secureString |  |  | Specifies the identifier key of the Threat Detection audit storage account.. |
-| `storageEndpoint` | string |  |  | Specifies the blob storage endpoint (e.g. https://mystorageaccount.blob.core.windows.net). This blob storage will hold all Threat Detection audit logs. |
+| `state` | string | `'Disabled'` | `[Disabled, Enabled]` | Specifies the state of the policy, whether it is enabled or disabled or a policy has not been applied yet on the specific database. |
+| `storageAccountAccessKey` | secureString | `''` |  | Specifies the identifier key of the Threat Detection audit storage account.. |
+| `storageEndpoint` | string | `''` |  | Specifies the blob storage endpoint (e.g. https://mystorageaccount.blob.core.windows.net). This blob storage will hold all Threat Detection audit logs. |
 
 
 ## Outputs

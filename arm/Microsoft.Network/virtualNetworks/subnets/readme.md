@@ -33,11 +33,11 @@ This module deploys a virtual network subnet.
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `ipAllocations` | array | `[]` |  | Array of IpAllocation which reference this subnet |
 | `name` | string |  |  | The Name of the subnet resource. |
-| `natGatewayId` | string |  |  | The resource ID of the NAT Gateway to use for the subnet |
-| `networkSecurityGroupId` | string |  |  | The resource ID of the network security group to assign to the subnet |
-| `privateEndpointNetworkPolicies` | string |  | `[Disabled, Enabled, ]` | enable or disable apply network policies on private endpoint in the subnet. |
-| `privateLinkServiceNetworkPolicies` | string |  | `[Disabled, Enabled, ]` | enable or disable apply network policies on private link service in the subnet. |
-| `routeTableId` | string |  |  | The resource ID of the route table to assign to the subnet |
+| `natGatewayId` | string | `''` |  | The resource ID of the NAT Gateway to use for the subnet |
+| `networkSecurityGroupId` | string | `''` |  | The resource ID of the network security group to assign to the subnet |
+| `privateEndpointNetworkPolicies` | string | `''` | `[Disabled, Enabled, ]` | enable or disable apply network policies on private endpoint in the subnet. |
+| `privateLinkServiceNetworkPolicies` | string | `''` | `[Disabled, Enabled, ]` | enable or disable apply network policies on private link service in the subnet. |
+| `routeTableId` | string | `''` |  | The resource ID of the route table to assign to the subnet |
 | `serviceEndpointPolicies` | array | `[]` |  | An array of service endpoint policies. |
 | `serviceEndpoints` | array | `[]` |  | The service endpoints to enable on the subnet |
 

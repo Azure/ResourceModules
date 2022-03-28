@@ -35,25 +35,25 @@ The following resources are required to be able to deploy this resource.
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `apiDescription` | string |  |  | Description of the API. May include HTML formatting tags. |
-| `apiRevision` | string |  |  | Describes the Revision of the API. If no value is provided, default revision 1 is created |
-| `apiRevisionDescription` | string |  |  | Description of the API Revision. |
-| `apiType` | string | `http` | `[http, soap]` | Type of API to create. * http creates a SOAP to REST API * soap creates a SOAP pass-through API. |
-| `apiVersion` | string |  |  | Indicates the Version identifier of the API if the API is versioned |
-| `apiVersionDescription` | string |  |  | Description of the API Version. |
-| `apiVersionSetId` | string |  |  | Indicates the Version identifier of the API version set |
+| `apiDescription` | string | `''` |  | Description of the API. May include HTML formatting tags. |
+| `apiRevision` | string | `''` |  | Describes the Revision of the API. If no value is provided, default revision 1 is created |
+| `apiRevisionDescription` | string | `''` |  | Description of the API Revision. |
+| `apiType` | string | `'http'` | `[http, soap]` | Type of API to create. * http creates a SOAP to REST API * soap creates a SOAP pass-through API. |
+| `apiVersion` | string | `''` |  | Indicates the Version identifier of the API if the API is versioned |
+| `apiVersionDescription` | string | `''` |  | Description of the API Version. |
+| `apiVersionSetId` | string | `''` |  | Indicates the Version identifier of the API version set |
 | `authenticationSettings` | object | `{object}` |  | Collection of authentication settings included into this API. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `format` | string | `openapi` | `[wadl-xml, wadl-link-json, swagger-json, swagger-link-json, wsdl, wsdl-link, openapi, openapi+json, openapi-link, openapi+json-link]` | Format of the Content in which the API is getting imported. |
+| `format` | string | `'openapi'` | `[wadl-xml, wadl-link-json, swagger-json, swagger-link-json, wsdl, wsdl-link, openapi, openapi+json, openapi-link, openapi+json-link]` | Format of the Content in which the API is getting imported. |
 | `isCurrent` | bool | `True` |  | Indicates if API revision is current API revision. |
 | `policies` | _[policies](policies/readme.md)_ array | `[]` |  | Array of Policies to apply to the Service API. |
 | `protocols` | array | `[https]` |  | Describes on which protocols the operations in this API can be invoked. - HTTP or HTTPS |
-| `serviceUrl` | string |  |  | Absolute URL of the backend service implementing this API. Cannot be more than 2000 characters long. |
-| `sourceApiId` | string |  |  | API identifier of the source API. |
+| `serviceUrl` | string | `''` |  | Absolute URL of the backend service implementing this API. Cannot be more than 2000 characters long. |
+| `sourceApiId` | string | `''` |  | API identifier of the source API. |
 | `subscriptionKeyParameterNames` | object | `{object}` |  | Protocols over which API is made available. |
 | `subscriptionRequired` | bool | `False` |  | Specifies whether an API or Product subscription is required for accessing the API. |
-| `type` | string | `http` | `[http, soap]` | Type of API. |
-| `value` | string |  |  | Content value when Importing an API. |
+| `type` | string | `'http'` | `[http, soap]` | Type of API. |
+| `value` | string | `''` |  | Content value when Importing an API. |
 | `wsdlSelector` | object | `{object}` |  | Criteria to limit import of WSDL to a subset of the document. |
 
 

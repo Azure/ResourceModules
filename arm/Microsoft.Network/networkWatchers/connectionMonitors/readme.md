@@ -28,7 +28,7 @@ This template deploys Connection Monitors.
 | `tags` | object | `{object}` | Tags of the resource. |
 | `testConfigurations` | array | `[]` | List of connection monitor test configurations. |
 | `testGroups` | array | `[]` | List of connection monitor test groups. |
-| `workspaceResourceId` | string |  | Specify the Log Analytics Workspace Resource ID |
+| `workspaceResourceId` | string | `''` | Specify the Log Analytics Workspace Resource ID |
 
 
 ### Parameter Usage: `tags`

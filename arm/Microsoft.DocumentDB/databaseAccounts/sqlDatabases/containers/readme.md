@@ -26,7 +26,7 @@
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `kind` | string | `Hash` | `[Hash, MultiHash, Range]` | Indicates the kind of algorithm used for partitioning |
+| `kind` | string | `'Hash'` | `[Hash, MultiHash, Range]` | Indicates the kind of algorithm used for partitioning |
 | `paths` | array | `[]` |  | List of paths using which data within the container can be partitioned |
 | `tags` | object | `{object}` |  | Tags of the SQL Database resource. |
 | `throughput` | int | `400` |  | Request Units per second |

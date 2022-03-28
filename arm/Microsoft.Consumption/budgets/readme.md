@@ -27,14 +27,14 @@ This module deploys budgets for subscriptions.
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `actionGroups` | array | `[]` |  | List of action group resource IDs that will receive the alert. |
-| `category` | string | `Cost` | `[Cost, Usage]` | The category of the budget, whether the budget tracks cost or usage. |
+| `category` | string | `'Cost'` | `[Cost, Usage]` | The category of the budget, whether the budget tracks cost or usage. |
 | `contactEmails` | array | `[]` |  | The list of email addresses to send the budget notification to when the thresholds are exceeded. |
 | `contactRoles` | array | `[]` |  | The list of contact roles to send the budget notification to when the thresholds are exceeded. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `endDate` | string |  |  | The end date for the budget. If not provided, it will default to 10 years from the start date. |
+| `endDate` | string | `''` |  | The end date for the budget. If not provided, it will default to 10 years from the start date. |
 | `location` | string | `[deployment().location]` |  | Location deployment metadata. |
-| `name` | string |  |  | The name of the budget. |
-| `resetPeriod` | string | `Monthly` | `[Monthly, Quarterly, Annually, BillingMonth, BillingQuarter, BillingAnnual]` | The time covered by a budget. Tracking of the amount will be reset based on the time grain. BillingMonth, BillingQuarter, and BillingAnnual are only supported by WD customers. |
+| `name` | string | `''` |  | The name of the budget. |
+| `resetPeriod` | string | `'Monthly'` | `[Monthly, Quarterly, Annually, BillingMonth, BillingQuarter, BillingAnnual]` | The time covered by a budget. Tracking of the amount will be reset based on the time grain. BillingMonth, BillingQuarter, and BillingAnnual are only supported by WD customers. |
 | `thresholds` | array | `[50, 75, 90, 100, 110]` |  | Percent thresholds of budget for when to get a notification. Can be up to 5 thresholds, where each must be between 1 and 1000. |
 
 

@@ -31,24 +31,24 @@ This module deploys a virtual hub.
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `allowBranchToBranchTraffic` | bool | `True` |  | Flag to control transit for VirtualRouter hub. |
-| `azureFirewallId` | string |  |  | Resource ID of the Azure Firewall to link to |
+| `azureFirewallId` | string | `''` |  | Resource ID of the Azure Firewall to link to |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `expressRouteGatewayId` | string |  |  | Resource ID of the Express Route Gateway to link to |
+| `expressRouteGatewayId` | string | `''` |  | Resource ID of the Express Route Gateway to link to |
 | `hubRouteTables` | _[hubRouteTables](hubRouteTables/readme.md)_ array | `[]` |  | Route tables to create for the virtual hub. |
 | `hubVirtualNetworkConnections` | _[hubVirtualNetworkConnections](hubVirtualNetworkConnections/readme.md)_ array | `[]` |  | Virtual network connections to create for the virtual hub. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
-| `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Specify the type of lock. |
-| `p2SVpnGatewayId` | string |  |  | Resource ID of the Point-to-Site VPN Gateway to link to |
-| `preferredRoutingGateway` | string |  | `[ExpressRoute, None, VpnGateway, ]` | The preferred routing gateway types |
+| `lock` | string | `'NotSpecified'` | `[CanNotDelete, NotSpecified, ReadOnly]` | Specify the type of lock. |
+| `p2SVpnGatewayId` | string | `''` |  | Resource ID of the Point-to-Site VPN Gateway to link to |
+| `preferredRoutingGateway` | string | `''` | `[ExpressRoute, None, VpnGateway, ]` | The preferred routing gateway types |
 | `routeTableRoutes` | array | `[]` |  | VirtualHub route tables |
-| `securityPartnerProviderId` | string |  |  | ID of the Security Partner Provider to link to |
-| `securityProviderName` | string |  |  | The Security Provider name. |
-| `sku` | string | `Standard` | `[Basic, Standard]` | The sku of this VirtualHub. |
+| `securityPartnerProviderId` | string | `''` |  | ID of the Security Partner Provider to link to |
+| `securityProviderName` | string | `''` |  | The Security Provider name. |
+| `sku` | string | `'Standard'` | `[Basic, Standard]` | The sku of this VirtualHub. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
 | `virtualHubRouteTableV2s` | array | `[]` |  | List of all virtual hub route table v2s associated with this VirtualHub. |
 | `virtualRouterAsn` | int | `-1` |  | VirtualRouter ASN. |
 | `virtualRouterIps` | array | `[]` |  | VirtualRouter IPs. |
-| `vpnGatewayId` | string |  |  | Resource ID of the VPN Gateway to link to |
+| `vpnGatewayId` | string | `''` |  | Resource ID of the VPN Gateway to link to |
 
 
 ### Parameter Usage: `tags`

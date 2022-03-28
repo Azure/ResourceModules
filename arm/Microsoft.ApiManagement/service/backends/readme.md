@@ -33,14 +33,14 @@ The following resources are required to be able to deploy this resource.
 **Optional parameters**
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
-| `backendDescription` | string |  | Backend Description. |
+| `backendDescription` | string | `''` | Backend Description. |
 | `credentials` | object | `{object}` | Backend Credentials Contract Properties. |
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `protocol` | string | `http` | Backend communication protocol. - http or soap |
+| `protocol` | string | `'http'` | Backend communication protocol. - http or soap |
 | `proxy` | object | `{object}` | Backend Proxy Contract Properties |
-| `resourceId` | string |  | Management Uri of the Resource in External System. This URL can be the Arm Resource ID of Logic Apps, Function Apps or API Apps. |
+| `resourceId` | string | `''` | Management Uri of the Resource in External System. This URL can be the Arm Resource ID of Logic Apps, Function Apps or API Apps. |
 | `serviceFabricCluster` | object | `{object}` | Backend Service Fabric Cluster Properties. |
-| `title` | string |  | Backend Title. |
+| `title` | string | `''` | Backend Title. |
 | `tls` | object | `{object}` | Backend TLS Properties |
 
 

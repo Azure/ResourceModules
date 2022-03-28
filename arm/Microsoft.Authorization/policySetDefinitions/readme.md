@@ -28,15 +28,15 @@ With this module you can create policy set definitions across the management gro
 **Optional parameters**
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
-| `description` | string |  | The description name of the Set Definition (Initiative) |
-| `displayName` | string |  | The display name of the Set Definition (Initiative). Maximum length is 128 characters. |
+| `description` | string | `''` | The description name of the Set Definition (Initiative) |
+| `displayName` | string | `''` | The display name of the Set Definition (Initiative). Maximum length is 128 characters. |
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `location` | string | `[deployment().location]` | Location deployment metadata. |
 | `managementGroupId` | string | `[managementGroup().name]` | The group ID of the Management Group (Scope). If not provided, will use the current scope for deployment. |
 | `metadata` | object | `{object}` | The Set Definition (Initiative) metadata. Metadata is an open ended object and is typically a collection of key-value pairs. |
 | `parameters` | object | `{object}` | The Set Definition (Initiative) parameters that can be used in policy definition references. |
 | `policyDefinitionGroups` | array | `[]` | The metadata describing groups of policy definition references within the Policy Set Definition (Initiative). |
-| `subscriptionId` | string |  | The subscription ID of the subscription (Scope). Cannot be used with managementGroupId |
+| `subscriptionId` | string | `''` | The subscription ID of the subscription (Scope). Cannot be used with managementGroupId |
 
 
 ### Parameter Usage: `managementGroupId`

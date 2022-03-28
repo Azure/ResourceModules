@@ -34,9 +34,9 @@ The following resources are required to be able to deploy this resource.
 **Optional parameters**
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
-| `cacheDescription` | string |  | Cache description |
+| `cacheDescription` | string | `''` | Cache description |
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `resourceId` | string |  | Original uri of entity in external system cache points to. |
+| `resourceId` | string | `''` | Original uri of entity in external system cache points to. |
 
 
 ## Outputs

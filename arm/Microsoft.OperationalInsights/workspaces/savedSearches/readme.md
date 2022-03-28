@@ -30,8 +30,8 @@ This template deploys a saved search for a Log Analytics workspace.
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `functionAlias` | string |  | The function alias if query serves as a function.. |
-| `functionParameters` | string |  | The optional function parameters if query serves as a function. Value should be in the following format: "param-name1:type1 = default_value1, param-name2:type2 = default_value2". For more examples and proper syntax please refer to /azure/kusto/query/functions/user-defined-functions. |
+| `functionAlias` | string | `''` | The function alias if query serves as a function.. |
+| `functionParameters` | string | `''` | The optional function parameters if query serves as a function. Value should be in the following format: "param-name1:type1 = default_value1, param-name2:type2 = default_value2". For more examples and proper syntax please refer to /azure/kusto/query/functions/user-defined-functions. |
 | `tags` | array | `[]` | Tags to configure in the resource. |
 | `version` | int | `2` | The version number of the query language. |
 

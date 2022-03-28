@@ -21,7 +21,7 @@ This module deploys an encryption protector for a SQL managed instance.
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `managedInstanceName` | string |  | Name of the SQL managed instance. |
-| `name` | string | `current` | The name of the encryptionProtector |
+| `name` | string | `'current'` | The name of the encryptionProtector |
 | `serverKeyName` | string |  | The name of the SQL managed instance key. |
 
 **Optional parameters**
@@ -29,7 +29,7 @@ This module deploys an encryption protector for a SQL managed instance.
 | :-- | :-- | :-- | :-- | :-- |
 | `autoRotationEnabled` | bool | `False` |  | Key auto rotation opt-in flag |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `serverKeyType` | string | `ServiceManaged` | `[AzureKeyVault, ServiceManaged]` | The encryption protector type like "ServiceManaged", "AzureKeyVault". |
+| `serverKeyType` | string | `'ServiceManaged'` | `[AzureKeyVault, ServiceManaged]` | The encryption protector type like "ServiceManaged", "AzureKeyVault". |
 
 
 ## Outputs

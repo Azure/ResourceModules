@@ -25,12 +25,12 @@
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `appInsightsType` | string | `web` | `[web, other]` | Application type |
+| `appInsightsType` | string | `'web'` | `[web, other]` | Application type |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `kind` | string |  |  | The kind of application that this component refers to, used to customize UI. This value is a freeform string, values should typically be one of the following: web, ios, other, store, java, phone. |
+| `kind` | string | `''` |  | The kind of application that this component refers to, used to customize UI. This value is a freeform string, values should typically be one of the following: web, ios, other, store, java, phone. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all Resources |
-| `publicNetworkAccessForIngestion` | string | `Enabled` | `[Enabled, Disabled]` | The network access type for accessing Application Insights ingestion. - Enabled or Disabled |
-| `publicNetworkAccessForQuery` | string | `Enabled` | `[Enabled, Disabled]` | The network access type for accessing Application Insights query. - Enabled or Disabled |
+| `publicNetworkAccessForIngestion` | string | `'Enabled'` | `[Enabled, Disabled]` | The network access type for accessing Application Insights ingestion. - Enabled or Disabled |
+| `publicNetworkAccessForQuery` | string | `'Enabled'` | `[Enabled, Disabled]` | The network access type for accessing Application Insights query. - Enabled or Disabled |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
 

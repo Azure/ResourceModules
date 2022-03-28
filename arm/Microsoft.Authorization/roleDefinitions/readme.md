@@ -30,14 +30,14 @@ This module deploys custom RBAC Role Definitions across the management group, su
 | `actions` | array | `[]` | List of allowed actions. |
 | `assignableScopes` | array | `[]` | Role definition assignable scopes. If not provided, will use the current scope provided. |
 | `dataActions` | array | `[]` | List of allowed data actions. This is not supported if the assignableScopes contains Management Group Scopes |
-| `description` | string |  | Description of the custom RBAC role to be created. |
+| `description` | string | `''` | Description of the custom RBAC role to be created. |
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `location` | string | `[deployment().location]` | Location deployment metadata. |
 | `managementGroupId` | string | `[managementGroup().name]` | The group ID of the Management Group where the Role Definition and Target Scope will be applied to. If not provided, will use the current scope for deployment. |
 | `notActions` | array | `[]` | List of denied actions. |
 | `notDataActions` | array | `[]` | List of denied data actions. This is not supported if the assignableScopes contains Management Group Scopes |
-| `resourceGroupName` | string |  | The name of the Resource Group where the Role Definition and Target Scope will be applied to. |
-| `subscriptionId` | string |  | The subscription ID where the Role Definition and Target Scope will be applied to. Use for both Subscription level and Resource Group Level. |
+| `resourceGroupName` | string | `''` | The name of the Resource Group where the Role Definition and Target Scope will be applied to. |
+| `subscriptionId` | string | `''` | The subscription ID where the Role Definition and Target Scope will be applied to. Use for both Subscription level and Resource Group Level. |
 
 
 ### Parameter Usage: `managementGroupId`

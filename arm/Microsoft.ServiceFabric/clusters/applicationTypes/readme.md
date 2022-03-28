@@ -20,13 +20,13 @@ This module deploys a ServiceFabric cluster application type.
 **Required parameters**
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
-| `serviceFabricClusterName` | string |  | Name of the Service Fabric cluster. |
+| `serviceFabricClusterName` | string | `''` | Name of the Service Fabric cluster. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `name` | string | `defaultApplicationType` | Application type name. |
+| `name` | string | `'defaultApplicationType'` | Application type name. |
 | `tags` | object | `{object}` | Tags of the resource. |
 
 

@@ -32,14 +32,14 @@ This module deploys VPN Gateways Connections.
 | `enableInternetSecurity` | bool | `False` |  | Enable internet security. |
 | `enableRateLimiting` | bool | `False` |  | Enable rate limiting. |
 | `ipsecPolicies` | array | `[]` |  | The IPSec policies to be considered by this connection. |
-| `remoteVpnSiteResourceId` | string |  |  | Reference to a VPN site to link to |
+| `remoteVpnSiteResourceId` | string | `''` |  | Reference to a VPN site to link to |
 | `routingConfiguration` | object | `{object}` |  | Routing configuration indicating the associated and propagated route tables for this connection. |
 | `routingWeight` | int | `0` |  | Routing weight for VPN connection. |
-| `sharedKey` | string |  |  | SharedKey for the VPN connection. |
+| `sharedKey` | string | `''` |  | SharedKey for the VPN connection. |
 | `trafficSelectorPolicies` | array | `[]` |  | The traffic selector policies to be considered by this connection. |
 | `useLocalAzureIpAddress` | bool | `False` |  | Use local Azure IP to initiate connection. |
 | `usePolicyBasedTrafficSelectors` | bool | `False` |  | Enable policy-based traffic selectors. |
-| `vpnConnectionProtocolType` | string | `IKEv2` | `[IKEv1, IKEv2]` | Gateway connection protocol. |
+| `vpnConnectionProtocolType` | string | `'IKEv2'` | `[IKEv1, IKEv2]` | Gateway connection protocol. |
 | `vpnLinkConnections` | array | `[]` |  | List of all VPN site link connections to the gateway. |
 
 

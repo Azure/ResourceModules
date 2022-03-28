@@ -39,15 +39,15 @@ The following resources are required to be able to deploy this resource.
 | `authorizationMethods` | array | `[GET]` | HTTP verbs supported by the authorization endpoint. GET must be always present. POST is optional. - HEAD, OPTIONS, TRACE, GET, POST, PUT, PATCH, DELETE |
 | `bearerTokenSendingMethods` | array | `[authorizationHeader]` | Specifies the mechanism by which access token is passed to the API. - authorizationHeader or query |
 | `clientAuthenticationMethod` | array | `[Basic]` | Method of authentication supported by the token endpoint of this authorization server. Possible values are Basic and/or Body. When Body is specified, client credentials and other parameters are passed within the request body in the application/x-www-form-urlencoded format. - Basic or Body |
-| `clientRegistrationEndpoint` | string |  | Optional reference to a page where client or app registration for this authorization server is performed. Contains absolute URL to entity being referenced. |
-| `defaultScope` | string |  | Access token scope that is going to be requested by default. Can be overridden at the API level. Should be provided in the form of a string containing space-delimited values. |
+| `clientRegistrationEndpoint` | string | `''` | Optional reference to a page where client or app registration for this authorization server is performed. Contains absolute URL to entity being referenced. |
+| `defaultScope` | string | `''` | Access token scope that is going to be requested by default. Can be overridden at the API level. Should be provided in the form of a string containing space-delimited values. |
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `resourceOwnerPassword` | string |  | Can be optionally specified when resource owner password grant type is supported by this authorization server. Default resource owner password. |
-| `resourceOwnerUsername` | string |  | Can be optionally specified when resource owner password grant type is supported by this authorization server. Default resource owner username. |
-| `serverDescription` | string |  | Description of the authorization server. Can contain HTML formatting tags. |
+| `resourceOwnerPassword` | string | `''` | Can be optionally specified when resource owner password grant type is supported by this authorization server. Default resource owner password. |
+| `resourceOwnerUsername` | string | `''` | Can be optionally specified when resource owner password grant type is supported by this authorization server. Default resource owner username. |
+| `serverDescription` | string | `''` | Description of the authorization server. Can contain HTML formatting tags. |
 | `supportState` | bool | `False` | If true, authorization server will include state parameter from the authorization request to its response. Client may use state parameter to raise protocol security. |
 | `tokenBodyParameters` | array | `[]` | Additional parameters required by the token endpoint of this authorization server represented as an array of JSON objects with name and value string properties, i.e. {"name" : "name value", "value": "a value"}. - TokenBodyParameterContract object |
-| `tokenEndpoint` | string |  | OAuth token endpoint. Contains absolute URI to entity being referenced. |
+| `tokenEndpoint` | string | `''` | OAuth token endpoint. Contains absolute URI to entity being referenced. |
 
 
 ## Outputs

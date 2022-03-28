@@ -36,7 +36,7 @@ remote/managing tenant.
 | :-- | :-- | :-- | :-- |
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `location` | string | `[deployment().location]` | Location deployment metadata. |
-| `resourceGroupName` | string |  | Specify the name of the Resource Group to delegate access to. If not provided, delegation will be done on the targeted subscription. |
+| `resourceGroupName` | string | `''` | Specify the name of the Resource Group to delegate access to. If not provided, delegation will be done on the targeted subscription. |
 
 
 ### Parameter Usage: `authorizations`

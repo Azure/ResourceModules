@@ -28,7 +28,7 @@ With this module you can create role definitions on a subscription level
 | `actions` | array | `[]` | List of allowed actions. |
 | `assignableScopes` | array | `[]` | Role definition assignable scopes. If not provided, will use the current scope provided. |
 | `dataActions` | array | `[]` | List of allowed data actions. This is not supported if the assignableScopes contains Management Group Scopes |
-| `description` | string |  | Description of the custom RBAC role to be created. |
+| `description` | string | `''` | Description of the custom RBAC role to be created. |
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `location` | string | `[deployment().location]` | Location deployment metadata. |
 | `notActions` | array | `[]` | List of denied actions. |

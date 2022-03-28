@@ -28,7 +28,7 @@ This module deploys load balancers inbound NAT rules.
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `backendAddressPoolName` | string |  |  | Name of the backend address pool |
+| `backendAddressPoolName` | string | `''` |  | Name of the backend address pool |
 | `backendPort` | int | `[parameters('frontendPort')]` |  | The port used for the internal endpoint. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `enableFloatingIP` | bool | `False` |  | Configures a virtual machine's endpoint for the floating IP capability required to configure a SQL AlwaysOn Availability Group. This setting is required when using the SQL AlwaysOn Availability Groups in SQL server. This setting can't be changed after you create the endpoint. |
@@ -36,7 +36,7 @@ This module deploys load balancers inbound NAT rules.
 | `frontendPortRangeEnd` | int | `-1` |  | The port range end for the external endpoint. This property is used together with BackendAddressPool and FrontendPortRangeStart. Individual inbound NAT rule port mappings will be created for each backend address from BackendAddressPool. |
 | `frontendPortRangeStart` | int | `-1` |  | The port range start for the external endpoint. This property is used together with BackendAddressPool and FrontendPortRangeEnd. Individual inbound NAT rule port mappings will be created for each backend address from BackendAddressPool. |
 | `idleTimeoutInMinutes` | int | `4` |  | The timeout for the TCP idle connection. The value can be set between 4 and 30 minutes. The default value is 4 minutes. This element is only used when the protocol is set to TCP. |
-| `protocol` | string | `Tcp` | `[All, Tcp, Udp]` | The transport protocol for the endpoint. |
+| `protocol` | string | `'Tcp'` | `[All, Tcp, Udp]` | The transport protocol for the endpoint. |
 
 
 ## Outputs

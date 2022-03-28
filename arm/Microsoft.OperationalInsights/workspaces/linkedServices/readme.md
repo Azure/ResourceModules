@@ -22,14 +22,14 @@ This template deploys a linked service for a Log Analytics workspace.
 | :-- | :-- | :-- | :-- |
 | `logAnalyticsWorkspaceName` | string |  | Name of the Log Analytics workspace |
 | `name` | string |  | Name of the link |
-| `resourceId` | string |  | The resource ID of the resource that will be linked to the workspace. This should be used for linking resources which require read access. |
+| `resourceId` | string | `''` | The resource ID of the resource that will be linked to the workspace. This should be used for linking resources which require read access. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `tags` | object | `{object}` | Tags to configure in the resource. |
-| `writeAccessResourceId` | string |  | The resource ID of the resource that will be linked to the workspace. This should be used for linking resources which require write access.  |
+| `writeAccessResourceId` | string | `''` | The resource ID of the resource that will be linked to the workspace. This should be used for linking resources which require write access.  |
 
 
 ### Parameter Usage: `tags`

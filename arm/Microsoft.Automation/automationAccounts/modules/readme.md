@@ -30,7 +30,7 @@ This module deploys an Azure Automation Account Module.
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `location` | string | `[resourceGroup().location]` | Location for all resources. |
 | `tags` | object | `{object}` | Tags of the Automation Account resource. |
-| `version` | string | `latest` | Module version or specify latest to get the latest version. |
+| `version` | string | `'latest'` | Module version or specify latest to get the latest version. |
 
 
 ### Parameter Usage: `tags`

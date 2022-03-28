@@ -29,18 +29,18 @@ This module deploys Network Security Group Security Rules.
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `access` | string | `Deny` | `[Allow, Deny]` | Whether network traffic is allowed or denied. |
-| `description` | string |  |  | A description for this rule |
-| `destinationAddressPrefix` | string |  |  | The destination address prefix. CIDR or destination IP range. Asterisk "*" can also be used to match all source IPs. Default tags such as "VirtualNetwork", "AzureLoadBalancer" and "Internet" can also be used. |
+| `access` | string | `'Deny'` | `[Allow, Deny]` | Whether network traffic is allowed or denied. |
+| `description` | string | `''` |  | A description for this rule |
+| `destinationAddressPrefix` | string | `''` |  | The destination address prefix. CIDR or destination IP range. Asterisk "*" can also be used to match all source IPs. Default tags such as "VirtualNetwork", "AzureLoadBalancer" and "Internet" can also be used. |
 | `destinationAddressPrefixes` | array | `[]` |  | The destination address prefixes. CIDR or destination IP ranges. |
 | `destinationApplicationSecurityGroups` | array | `[]` |  | The application security group specified as destination. |
-| `destinationPortRange` | string |  |  | The destination port or range. Integer or range between 0 and 65535. Asterisk "*" can also be used to match all ports. |
+| `destinationPortRange` | string | `''` |  | The destination port or range. Integer or range between 0 and 65535. Asterisk "*" can also be used to match all ports. |
 | `destinationPortRanges` | array | `[]` |  | The destination port ranges. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `sourceAddressPrefix` | string |  |  | The CIDR or source IP range. Asterisk "*" can also be used to match all source IPs. Default tags such as "VirtualNetwork", "AzureLoadBalancer" and "Internet" can also be used. If this is an ingress rule, specifies where network traffic originates from. |
+| `sourceAddressPrefix` | string | `''` |  | The CIDR or source IP range. Asterisk "*" can also be used to match all source IPs. Default tags such as "VirtualNetwork", "AzureLoadBalancer" and "Internet" can also be used. If this is an ingress rule, specifies where network traffic originates from. |
 | `sourceAddressPrefixes` | array | `[]` |  | The CIDR or source IP ranges. |
 | `sourceApplicationSecurityGroups` | array | `[]` |  | The application security group specified as source. |
-| `sourcePortRange` | string |  |  | The source port or range. Integer or range between 0 and 65535. Asterisk "*" can also be used to match all ports. |
+| `sourcePortRange` | string | `''` |  | The source port or range. Integer or range between 0 and 65535. Asterisk "*" can also be used to match all ports. |
 | `sourcePortRanges` | array | `[]` |  | The source port ranges. |
 
 

@@ -26,11 +26,11 @@ This module deploys a site config resource.
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `appInsightId` | string |  |  | Resource ID of the app insight to leverage for this resource. |
+| `appInsightId` | string | `''` |  | Resource ID of the app insight to leverage for this resource. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `functionsExtensionVersion` | string | `~3` |  | Version of the function extension. |
-| `functionsWorkerRuntime` | string |  | `[dotnet, node, python, java, powershell, ]` | Runtime of the function worker. |
-| `storageAccountId` | string |  |  | Required if app of kind functionapp. Resource ID of the storage account to manage triggers and logging function executions. |
+| `functionsExtensionVersion` | string | `'~3'` |  | Version of the function extension. |
+| `functionsWorkerRuntime` | string | `''` | `[dotnet, node, python, java, powershell, ]` | Runtime of the function worker. |
+| `storageAccountId` | string | `''` |  | Required if app of kind functionapp. Resource ID of the storage account to manage triggers and logging function executions. |
 
 
 ## Outputs

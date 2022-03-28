@@ -30,7 +30,7 @@ This module deploys an Azure Automation Account Job Schedule.
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `name` | string | `[newGuid()]` | Name of the Automation Account job schedule. Must be a GUID. If not provided, a new GUID is generated. |
 | `parameters` | object | `{object}` | List of job properties. |
-| `runOn` | string |  | The hybrid worker group that the scheduled job should run on. |
+| `runOn` | string | `''` | The hybrid worker group that the scheduled job should run on. |
 
 
 ## Outputs

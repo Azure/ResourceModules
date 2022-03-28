@@ -26,7 +26,7 @@ The following resources are required to be able to deploy this resource.
 **Required parameters**
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
-| `apiManagementServiceName` | string |  | The name of the of the API Management service. |
+| `apiManagementServiceName` | string | `''` | The name of the of the API Management service. |
 | `displayName` | string |  | Unique name of NamedValue. It may contain only letters, digits, period, dash, and underscore characters. |
 | `name` | string |  | Named value Name. |
 

@@ -32,7 +32,7 @@ This module deploys a virtual machine extension.
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `forceUpdateTag` | string |  | How the extension handler should be forced to update even if the extension configuration has not changed |
+| `forceUpdateTag` | string | `''` | How the extension handler should be forced to update even if the extension configuration has not changed |
 | `location` | string | `[resourceGroup().location]` | The location the extension is deployed to |
 | `protectedSettings` | secureObject | `{object}` | Any object that contains the extension specific protected settings |
 | `settings` | object | `{object}` | Any object that contains the extension specific settings |

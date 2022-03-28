@@ -29,19 +29,19 @@ With this module you can perform policy assignments across the management group,
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `description` | string |  |  | This message will be part of response in case of policy violation. |
-| `displayName` | string |  |  | The display name of the policy assignment. Maximum length is 128 characters. |
+| `description` | string | `''` |  | This message will be part of response in case of policy violation. |
+| `displayName` | string | `''` |  | The display name of the policy assignment. Maximum length is 128 characters. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `enforcementMode` | string | `Default` | `[Default, DoNotEnforce]` | The policy assignment enforcement mode. Possible values are Default and DoNotEnforce. - Default or DoNotEnforce |
-| `identity` | string | `SystemAssigned` | `[SystemAssigned, None]` | The managed identity associated with the policy assignment. Policy assignments must include a resource identity when assigning 'Modify' policy definitions. |
+| `enforcementMode` | string | `'Default'` | `[Default, DoNotEnforce]` | The policy assignment enforcement mode. Possible values are Default and DoNotEnforce. - Default or DoNotEnforce |
+| `identity` | string | `'SystemAssigned'` | `[SystemAssigned, None]` | The managed identity associated with the policy assignment. Policy assignments must include a resource identity when assigning 'Modify' policy definitions. |
 | `location` | string | `[deployment().location]` |  | Location for all resources. |
 | `managementGroupId` | string | `[managementGroup().name]` |  | The Target Scope for the Policy. The name of the management group for the policy assignment. If not provided, will use the current scope for deployment. |
 | `metadata` | object | `{object}` |  | The policy assignment metadata. Metadata is an open ended object and is typically a collection of key-value pairs. |
-| `nonComplianceMessage` | string |  |  | The messages that describe why a resource is non-compliant with the policy. |
+| `nonComplianceMessage` | string | `''` |  | The messages that describe why a resource is non-compliant with the policy. |
 | `notScopes` | array | `[]` |  | The policy excluded scopes |
 | `parameters` | object | `{object}` |  | Parameters for the policy assignment if needed. |
-| `resourceGroupName` | string |  |  | The Target Scope for the Policy. The name of the resource group for the policy assignment |
-| `subscriptionId` | string |  |  | The Target Scope for the Policy. The subscription ID of the subscription for the policy assignment |
+| `resourceGroupName` | string | `''` |  | The Target Scope for the Policy. The name of the resource group for the policy assignment |
+| `subscriptionId` | string | `''` |  | The Target Scope for the Policy. The subscription ID of the subscription for the policy assignment |
 
 
 ### Parameter Usage: `managementGroupId`

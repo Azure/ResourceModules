@@ -28,16 +28,16 @@ This module deploys Role Assignments across the management group, subscription o
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `condition` | string |  |  | The conditions on the role assignment. This limits the resources it can be assigned to |
-| `conditionVersion` | string | `2.0` | `[2.0]` | Version of the condition. Currently accepted value is "2.0" |
-| `delegatedManagedIdentityResourceId` | string |  |  | ID of the delegated managed identity resource |
-| `description` | string |  |  | Description of role assignment |
+| `condition` | string | `''` |  | The conditions on the role assignment. This limits the resources it can be assigned to |
+| `conditionVersion` | string | `'2.0'` | `[2.0]` | Version of the condition. Currently accepted value is "2.0" |
+| `delegatedManagedIdentityResourceId` | string | `''` |  | ID of the delegated managed identity resource |
+| `description` | string | `''` |  | Description of role assignment |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `location` | string | `[deployment().location]` |  | Location deployment metadata. |
 | `managementGroupId` | string | `[managementGroup().name]` |  | Group ID of the Management Group to assign the RBAC role to. If not provided, will use the current scope for deployment. |
-| `principalType` | string |  | `[ServicePrincipal, Group, User, ForeignGroup, Device, ]` | The principal type of the assigned principal ID. |
-| `resourceGroupName` | string |  |  | Name of the Resource Group to assign the RBAC role to. If Resource Group name is provided, and Subscription ID is provided, the module deploys at resource group level, therefore assigns the provided RBAC role to the resource group. |
-| `subscriptionId` | string |  |  | Subscription ID of the subscription to assign the RBAC role to. If no Resource Group name is provided, the module deploys at subscription level, therefore assigns the provided RBAC role to the subscription. |
+| `principalType` | string | `''` | `[ServicePrincipal, Group, User, ForeignGroup, Device, ]` | The principal type of the assigned principal ID. |
+| `resourceGroupName` | string | `''` |  | Name of the Resource Group to assign the RBAC role to. If Resource Group name is provided, and Subscription ID is provided, the module deploys at resource group level, therefore assigns the provided RBAC role to the resource group. |
+| `subscriptionId` | string | `''` |  | Subscription ID of the subscription to assign the RBAC role to. If no Resource Group name is provided, the module deploys at subscription level, therefore assigns the provided RBAC role to the subscription. |
 
 
 ### Parameter Usage: `managementGroupId`

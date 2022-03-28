@@ -32,29 +32,29 @@ This module deploys an Azure Automation Account Software update Configuration.
 | `azureVirtualMachines` | array | `[]` |  | List of azure resource IDs for azure virtual machines in scope for the deployment schedule. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `excludeUpdates` | array | `[]` |  | KB numbers or Linux packages excluded in the deployment schedule. |
-| `expiryTime` | string |  |  | The end time of the deployment schedule in ISO 8601 format. YYYY-MM-DDTHH:MM:SS, 2021-12-31T23:00:00 |
+| `expiryTime` | string | `''` |  | The end time of the deployment schedule in ISO 8601 format. YYYY-MM-DDTHH:MM:SS, 2021-12-31T23:00:00 |
 | `expiryTimeOffsetMinutes` | int | `0` |  | The expiry time's offset in minutes. |
 | `includeUpdates` | array | `[]` |  | KB numbers or Linux packages included in the deployment schedule. |
 | `interval` | int | `1` |  | The interval of the frequency for the deployment schedule. 1 Hour is every hour, 2 Day is every second day, etc. |
 | `isEnabled` | bool | `True` |  | Enables the deployment schedule. |
-| `maintenanceWindow` | string | `PT2H` |  | Maximum time allowed for the deployment schedule to run. Duration needs to be specified using the format PT[n]H[n]M[n]S as per ISO8601 |
+| `maintenanceWindow` | string | `'PT2H'` |  | Maximum time allowed for the deployment schedule to run. Duration needs to be specified using the format PT[n]H[n]M[n]S as per ISO8601 |
 | `monthDays` | array | `[]` | `[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31]` | Can be used with frequency 'Month'. Provides the specific days of the month to run the deployment schedule. |
 | `monthlyOccurrences` | array | `[]` |  | Can be used with frequency 'Month'. Provides the pattern/cadence for running the deployment schedule in a month. Takes objects formed like this {occurance(int),day(string)}. Day is the name of the day to run the deployment schedule, the occurance specifies which occurance of that day to run the deployment schedule. |
-| `nextRun` | string |  |  | The next time the deployment schedule runs in ISO 8601 format. YYYY-MM-DDTHH:MM:SS, 2021-12-31T23:00:00 |
+| `nextRun` | string | `''` |  | The next time the deployment schedule runs in ISO 8601 format. YYYY-MM-DDTHH:MM:SS, 2021-12-31T23:00:00 |
 | `nextRunOffsetMinutes` | int | `0` |  | The next run's offset in minutes. |
 | `nonAzureComputerNames` | array | `[]` |  | List of names of non-azure machines in scope for the deployment schedule. |
 | `nonAzureQueries` | array | `[]` |  | Array of functions from a Log Analytics workspace, used to scope the deployment schedule. |
 | `postTaskParameters` | object | `{object}` |  | Parameters provided to the task running after the deployment schedule. |
-| `postTaskSource` | string |  |  | The source of the task running after the deployment schedule. |
+| `postTaskSource` | string | `''` |  | The source of the task running after the deployment schedule. |
 | `preTaskParameters` | object | `{object}` |  | Parameters provided to the task running before the deployment schedule. |
-| `preTaskSource` | string |  |  | The source of the task running before the deployment schedule. |
-| `scheduleDescription` | string |  |  | The schedules description. |
+| `preTaskSource` | string | `''` |  | The source of the task running before the deployment schedule. |
+| `scheduleDescription` | string | `''` |  | The schedules description. |
 | `scopeByLocations` | array | `[]` |  | Specify locations to which to scope the deployment schedule to. |
 | `scopeByResources` | array | `[[subscription().id]]` |  | Specify the resources to scope the deployment schedule to. |
 | `scopeByTags` | object | `{object}` |  | Specify tags to which to scope the deployment schedule to. |
-| `scopeByTagsOperation` | string | `All` | `[All, Any]` | Enables the scopeByTags to require All (Tag A and Tag B) or Any (Tag A or Tag B). |
-| `startTime` | string |  |  | The start time of the deployment schedule in ISO 8601 format. To specify a specific time use YYYY-MM-DDTHH:MM:SS, 2021-12-31T23:00:00. For schedules where we want to start the deployment as soon as possible, specify the time segment only in 24 hour format, HH:MM, 22:00. |
-| `timeZone` | string | `UTC` |  | Time zone for the deployment schedule. IANA ID or a Windows Time Zone ID. |
+| `scopeByTagsOperation` | string | `'All'` | `[All, Any]` | Enables the scopeByTags to require All (Tag A and Tag B) or Any (Tag A or Tag B). |
+| `startTime` | string | `''` |  | The start time of the deployment schedule in ISO 8601 format. To specify a specific time use YYYY-MM-DDTHH:MM:SS, 2021-12-31T23:00:00. For schedules where we want to start the deployment as soon as possible, specify the time segment only in 24 hour format, HH:MM, 22:00. |
+| `timeZone` | string | `'UTC'` |  | Time zone for the deployment schedule. IANA ID or a Windows Time Zone ID. |
 | `updateClassifications` | array | `[Critical, Security]` | `[Critical, Security, UpdateRollup, FeaturePack, ServicePack, Definition, Tools, Updates, Other]` | Update classification included in the deployment schedule. |
 | `weekDays` | array | `[]` | `[Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday]` | Required when used with frequency 'Week'. Specified the day of the week to run the deployment schedule. |
 

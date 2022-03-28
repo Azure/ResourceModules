@@ -36,7 +36,7 @@ This template deploys volumes in a capacity pool of an Azure NetApp files.
 | `location` | string | `[resourceGroup().location]` |  | Location of the pool volume. |
 | `protocolTypes` | array | `[]` |  | Set of protocol types. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
-| `serviceLevel` | string | `Standard` | `[Premium, Standard, StandardZRS, Ultra]` | The pool service level. Must match the one of the parent capacity pool. |
+| `serviceLevel` | string | `'Standard'` | `[Premium, Standard, StandardZRS, Ultra]` | The pool service level. Must match the one of the parent capacity pool. |
 
 
 ### Parameter Usage: `roleAssignments`

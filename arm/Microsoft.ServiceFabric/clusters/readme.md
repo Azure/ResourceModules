@@ -25,7 +25,7 @@ This module deploys a service fabric cluster.
 | :-- | :-- | :-- | :-- |
 | `managementEndpoint` | string |  | The http management endpoint of the cluster. |
 | `maxUnusedVersionsToKeep` | int | `3` | Number of unused versions per application type to keep. |
-| `name` | string |  | Name of the Service Fabric cluster. |
+| `name` | string | `''` | Name of the Service Fabric cluster. |
 | `nodeTypes` | array | `[]` | The list of node types in the cluster. |
 
 **Optional parameters**
@@ -38,28 +38,28 @@ This module deploys a service fabric cluster.
 | `certificateCommonNames` | object | `{object}` |  | Describes a list of server certificates referenced by common name that are used to secure the cluster. |
 | `clientCertificateCommonNames` | array | `[]` |  | The list of client certificates referenced by common name that are allowed to manage the cluster. |
 | `clientCertificateThumbprints` | array | `[]` |  | The list of client certificates referenced by thumbprint that are allowed to manage the cluster. |
-| `clusterCodeVersion` | string |  |  | The Service Fabric runtime version of the cluster. This property can only by set the user when upgradeMode is set to "Manual". To get list of available Service Fabric versions for new clusters use ClusterVersion API. To get the list of available version for existing clusters use availableClusterVersions. |
+| `clusterCodeVersion` | string | `''` |  | The Service Fabric runtime version of the cluster. This property can only by set the user when upgradeMode is set to "Manual". To get list of available Service Fabric versions for new clusters use ClusterVersion API. To get the list of available version for existing clusters use availableClusterVersions. |
 | `diagnosticsStorageAccountConfig` | object | `{object}` |  | The storage account information for storing Service Fabric diagnostic logs. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `eventStoreServiceEnabled` | bool | `False` |  | Indicates if the event store service is enabled. |
 | `fabricSettings` | array | `[]` |  | The list of custom fabric settings to configure the cluster. |
 | `infrastructureServiceManager` | bool | `False` |  | Indicates if infrastructure service manager is enabled. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
-| `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Specify the type of lock. |
+| `lock` | string | `'NotSpecified'` | `[CanNotDelete, NotSpecified, ReadOnly]` | Specify the type of lock. |
 | `notifications` | array | `[]` |  | Indicates a list of notification channels for cluster events. |
 | `reliabilityLevel` | string |  | `[Bronze, Gold, None, Platinum, Silver]` | The reliability level sets the replica set size of system services. Learn about ReliabilityLevel (https://docs.microsoft.com/en-us/azure/service-fabric/service-fabric-cluster-capacity). - None - Run the System services with a target replica set count of 1. This should only be used for test clusters. - Bronze - Run the System services with a target replica set count of 3. This should only be used for test clusters. - Silver - Run the System services with a target replica set count of 5. - Gold - Run the System services with a target replica set count of 7. - Platinum - Run the System services with a target replica set count of 9. |
 | `reverseProxyCertificate` | object | `{object}` |  | Describes the certificate details. |
 | `reverseProxyCertificateCommonNames` | object | `{object}` |  | Describes a list of server certificates referenced by common name that are used to secure the cluster. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
-| `sfZonalUpgradeMode` | string | `Hierarchical` | `[Hierarchical, Parallel]` | This property controls the logical grouping of VMs in upgrade domains (UDs). This property cannot be modified if a node type with multiple Availability Zones is already present in the cluster. |
+| `sfZonalUpgradeMode` | string | `'Hierarchical'` | `[Hierarchical, Parallel]` | This property controls the logical grouping of VMs in upgrade domains (UDs). This property cannot be modified if a node type with multiple Availability Zones is already present in the cluster. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
 | `upgradeDescription` | object | `{object}` |  | Describes the policy used when upgrading the cluster. |
-| `upgradeMode` | string | `Automatic` | `[Automatic, Manual]` | The upgrade mode of the cluster when new Service Fabric runtime version is available. |
-| `upgradePauseEndTimestampUtc` | string |  |  | Indicates the end date and time to pause automatic runtime version upgrades on the cluster for an specific period of time on the cluster (UTC). |
-| `upgradePauseStartTimestampUtc` | string |  |  | Indicates the start date and time to pause automatic runtime version upgrades on the cluster for an specific period of time on the cluster (UTC). |
-| `upgradeWave` | string | `Wave0` | `[Wave0, Wave1, Wave2]` | Indicates when new cluster runtime version upgrades will be applied after they are released. By default is Wave0. |
-| `vmImage` | string |  |  | The VM image VMSS has been configured with. Generic names such as Windows or Linux can be used |
-| `vmssZonalUpgradeMode` | string | `Hierarchical` | `[Hierarchical, Parallel]` | This property defines the upgrade mode for the virtual machine scale set, it is mandatory if a node type with multiple Availability Zones is added. |
+| `upgradeMode` | string | `'Automatic'` | `[Automatic, Manual]` | The upgrade mode of the cluster when new Service Fabric runtime version is available. |
+| `upgradePauseEndTimestampUtc` | string | `''` |  | Indicates the end date and time to pause automatic runtime version upgrades on the cluster for an specific period of time on the cluster (UTC). |
+| `upgradePauseStartTimestampUtc` | string | `''` |  | Indicates the start date and time to pause automatic runtime version upgrades on the cluster for an specific period of time on the cluster (UTC). |
+| `upgradeWave` | string | `'Wave0'` | `[Wave0, Wave1, Wave2]` | Indicates when new cluster runtime version upgrades will be applied after they are released. By default is Wave0. |
+| `vmImage` | string | `''` |  | The VM image VMSS has been configured with. Generic names such as Windows or Linux can be used |
+| `vmssZonalUpgradeMode` | string | `'Hierarchical'` | `[Hierarchical, Parallel]` | This property defines the upgrade mode for the virtual machine scale set, it is mandatory if a node type with multiple Availability Zones is added. |
 | `waveUpgradePaused` | bool | `False` |  | Boolean to pause automatic runtime version upgrades to the cluster. |
 
 

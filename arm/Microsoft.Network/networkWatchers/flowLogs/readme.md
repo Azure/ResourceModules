@@ -36,7 +36,7 @@ This module controls the Network Security Group Flow Logs and analytics settings
 | `retentionInDays` | int | `365` |  | Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
 | `trafficAnalyticsInterval` | int | `60` | `[10, 60]` | The interval in minutes which would decide how frequently TA service should do flow analytics. |
-| `workspaceResourceId` | string |  |  | Specify the Log Analytics Workspace Resource ID |
+| `workspaceResourceId` | string | `''` |  | Specify the Log Analytics Workspace Resource ID |
 
 
 ### Parameter Usage: `tags`

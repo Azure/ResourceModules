@@ -29,7 +29,7 @@ This module deploys a compute image.
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `hyperVGeneration` | string | `V1` | Gets the HyperVGenerationType of the VirtualMachine created from the image. - V1 or V2 |
+| `hyperVGeneration` | string | `'V1'` | Gets the HyperVGenerationType of the VirtualMachine created from the image. - V1 or V2 |
 | `location` | string | `[resourceGroup().location]` | Location for all resources. |
 | `osAccountType` | string |  | Specifies the storage account type for the managed disk. NOTE: UltraSSD_LRS can only be used with data disks, it cannot be used with OS Disk. - Standard_LRS, Premium_LRS, StandardSSD_LRS, UltraSSD_LRS |
 | `osDiskCaching` | string |  | Specifies the caching requirements. Default: None for Standard storage. ReadOnly for Premium storage. - None, ReadOnly, ReadWrite |

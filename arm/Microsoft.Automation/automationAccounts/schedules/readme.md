@@ -29,12 +29,12 @@ This module deploys an Azure Automation Account Schedule.
 | `advancedSchedule` | object | `{object}` |  | The properties of the create Advanced Schedule. |
 | `baseTime` | string | `[utcNow('u')]` |  | Time used as a basis for e.g. the schedule start date. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `expiryTime` | string |  |  | The end time of the schedule. |
-| `frequency` | string | `OneTime` | `[Day, Hour, Minute, Month, OneTime, Week]` | The frequency of the schedule. |
+| `expiryTime` | string | `''` |  | The end time of the schedule. |
+| `frequency` | string | `'OneTime'` | `[Day, Hour, Minute, Month, OneTime, Week]` | The frequency of the schedule. |
 | `interval` | int | `0` |  | Anything |
-| `scheduleDescription` | string |  |  | The description of the schedule. |
-| `startTime` | string |  |  | The start time of the schedule. |
-| `timeZone` | string |  |  | The time zone of the schedule. |
+| `scheduleDescription` | string | `''` |  | The description of the schedule. |
+| `startTime` | string | `''` |  | The start time of the schedule. |
+| `timeZone` | string | `''` |  | The time zone of the schedule. |
 
 
 ## Outputs

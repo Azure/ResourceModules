@@ -27,7 +27,7 @@ This module deploys a variable to an Azure Automation Account.
 **Optional parameters**
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
-| `description` | string |  | The description of the variable. |
+| `description` | string | `''` | The description of the variable. |
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `isEncrypted` | bool | `True` | If the variable should be encrypted. For security reasons encryption of variables should be enabled |
 
