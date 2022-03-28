@@ -1,6 +1,13 @@
 # CARML overview
 
-The _CARML_ repository hosts a collection of [resource modules](./Modules) with the intend to cover as many Azure resources and their child-resources as possible.
+This section provides an overview of the Common Azure Resource Modules Library (CARML) repository.
+
+
+
+The purpose of the CARML initiative is twofold:
+- To host a collection
+
+The _CARML_ repository hosts a collection of Azure [resource modules](./The%20library) with the intent to cover as many Azure resources and their child-resources as possible.
 
 As such, users can use the modules as they are, alter them and or use them to deploy their environments.
 
