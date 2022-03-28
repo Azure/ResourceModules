@@ -180,7 +180,7 @@
                 ]
             }
         },
-        "customExtensionProtectedSetting": {
+        "extensionCustomScriptProtectedSetting": {
             "value": {
                 "commandToExecute": "sudo apt-get update"
             }

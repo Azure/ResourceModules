@@ -200,15 +200,15 @@ param extensionDSCConfig object = {
   enabled: false
 }
 
-@description('Optional. Any object that contains the extension specific protected settings')
-@secure()
-param customExtensionProtectedSetting object = {}
-
 @description('Optional. The configuration for the [Custom Script] extension. Must at least contain the ["enabled": true] property to be executed')
 param extensionCustomScriptConfig object = {
   enabled: false
   fileData: []
 }
+
+@description('Optional. Any object that contains the extension specific protected settings')
+@secure()
+param extensionCustomScriptProtectedSetting object = {}
 
 // Shared parameters
 @description('Optional. Location for all resources.')
@@ -565,7 +565,7 @@ module vm_customScriptExtension 'extensions/deploy.bicep' = if (extensionCustomS
     settings: {
       fileUris: [for fileData in extensionCustomScriptConfig.fileData: contains(fileData, 'storageAccountId') ? '${fileData.uri}?${listAccountSas(fileData.storageAccountId, '2019-04-01', accountSasProperties).accountSasToken}' : fileData.uri]
     }
-    protectedSettings: customExtensionProtectedSetting
+    protectedSettings: extensionCustomScriptProtectedSetting
   }
   dependsOn: [
     vm_desiredStateConfigurationExtension
