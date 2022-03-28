@@ -25,7 +25,7 @@
         },
         "configurationSettings": {
             "value": {
-                "helm-controller.enabled": "false",
+                // "helm-controller.enabled": "false",
                 "source-controller.enabled": "true",
                 "kustomize-controller.enabled": "true",
                 "notification-controller.enabled": "false",
