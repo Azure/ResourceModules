@@ -1,6 +1,6 @@
 # CARML overview
 
-The _CARML_ platform hosts a collection of [resource modules](./Modules) with the intend to cover as many Azure resources and their child-resources as possible.
+The _CARML_ repository hosts a collection of [resource modules](./Modules) with the intend to cover as many Azure resources and their child-resources as possible.
 
 As such, users can use the modules as they are, alter them and or use them to deploy their environments.
 

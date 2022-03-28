@@ -1,4 +1,4 @@
-This section describes the fundamental ideas we are following in the design of this repository and subsequently describe where it fits inside this greater picture. This is important to understand, as ***not*** all concepts described below are in scope of this platform, but are described to set it in context as a building block of the sum of the concepts.
+This section provides an overview of Infrastructure as Code (IaC) main concepts.
 
 ---
 
@@ -12,17 +12,16 @@ This section describes the fundamental ideas we are following in the design of t
 
 ---
 
-
-
 # What is IaC?
 
-_'Infrastructure as Code (IaC)'_ describes a declarative approach towards resource deployment & management. Using configuration & template files that represent the deployed infrastructure has several benefits:
-- You have a local representation of your deployed infrastructure
-- The configuration applied is version controlled and hence enabled roll-backs & analysis
-- You can deploy you infrastructure in a repeatable fashion - hence minimizing the possibility of manual errors
+_'Infrastructure as Code (IaC)'_ describes a declarative approach towards resource deployment & management.
+Using configuration & template files that represent the deployed infrastructure has several benefits:
+- You have a local representation of your deployed infrastructure is mapped to a local
+- Version control: The applied configuration is version controlled and hence enabled roll-backs & analysis
+- Repeatability: You can deploy you infrastructure in a repeatable fashion - hence minimizing the possibility of manual errors
 - You can use automation to deploy your infrastructure and establish for example a multi-stage deployment (i.e. continuous deployment) from a Sandbox environment, via integration to production using the same files
 
-In context of Bicep or ARM/JSON templates we usually leverage a combination of flexible templates that are deployed using different parameter files for different scenarios.
+In the context of Bicep or ARM/JSON templates we usually leverage a combination of flexible templates that are deployed using different parameter files for different scenarios.
 
 # How do we define a module?
 
