@@ -30,7 +30,7 @@ function Get-ScopeOfTemplateFile {
     if ((Split-Path $templateFilePath -Extension) -eq '.bicep') {
         # Bicep
         $bicepContent = Get-Content $templateFilePath
-        $bicepScope = $bicepContent | Where-Object { $_ -like '*targetscope =*' }
+        $bicepScope = $bicepContent | Where-Object { $_ -match '^targetscope = .+' }
         if (-not $bicepScope) {
             $deploymentScope = 'resourcegroup'
         } else {
