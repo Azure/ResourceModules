@@ -105,6 +105,9 @@ runs:
           )
         }
 
+        # upgrade Bicep
+        bicep upgrade
+
         # Set agent up
         Set-EnvironmentOnAgent -PSModules $Modules
 

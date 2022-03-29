@@ -56,7 +56,7 @@ resource managedCluster 'Microsoft.ContainerService/managedClusters@2021-10-01' 
 resource extension 'Microsoft.KubernetesConfiguration/extensions@2022-03-01' = {
   name: name
   scope: managedCluster
-  // identity: identity
+  identity: identity
   properties: {
     autoUpgradeMinorVersion: autoUpgradeMinorVersion
     configurationProtectedSettings: !empty(configurationProtectedSettings) ? configurationProtectedSettings : {}
