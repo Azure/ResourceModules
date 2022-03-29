@@ -13,7 +13,7 @@ Mandatory. The path to the root of the parameters folder to test with
 Mandatory. Path to the template file from root.
 
 .PARAMETER parameterFilePath
-Mandatory. Path to the parameter file from root.
+Optional. Path to the parameter file from root.
 
 .PARAMETER location
 Mandatory. Location to test in. E.g. WestEurope
@@ -31,23 +31,23 @@ Optional. Name of the management group to deploy into. Mandatory if deploying in
 Optional. Additional parameters you can provide with the deployment. E.g. @{ resourceGroupName = 'myResourceGroup' }
 
 .EXAMPLE
-Test-TemplateWithParameterFile templateFilePath 'ARM/KeyVault/deploy.json' -parameterFilePath 'ARM/KeyVault/.parameters/parameters.json' -location 'WestEurope' -resourceGroupName 'aLegendaryRg'
+Test-Template templateFilePath 'ARM/KeyVault/deploy.json' -parameterFilePath 'ARM/KeyVault/.parameters/parameters.json' -location 'WestEurope' -resourceGroupName 'aLegendaryRg'
 
 Test the deploy.json of the KeyVault module with the parameter file 'parameters.json' using the resource group 'aLegendaryRg' in location 'WestEurope'
 
 .EXAMPLE
-Test-TemplateWithParameterFile templateFilePath 'ARM/ResourceGroup/deploy.json' -parameterFilePath 'ARM/ResourceGroup/.parameters/parameters.json' -location 'WestEurope'
+Test-Template templateFilePath 'ARM/ResourceGroup/deploy.json' -parameterFilePath 'ARM/ResourceGroup/.parameters/parameters.json' -location 'WestEurope'
 
 Test the deploy.json of the ResourceGroup module with the parameter file 'parameters.json' in location 'WestEurope'
 #>
-function Test-TemplateWithParameterFile {
+function Test-Template {
 
     [CmdletBinding(SupportsShouldProcess)]
     param (
         [Parameter(Mandatory)]
         [string] $templateFilePath,
 
-        [Parameter(Mandatory)]
+        [Parameter(Mandatory = $false)]
         [string] $parameterFilePath,
 
         [Parameter(Mandatory)]
@@ -76,10 +76,12 @@ function Test-TemplateWithParameterFile {
     process {
 
         $DeploymentInputs = @{
-            TemplateFile          = $templateFilePath
-            TemplateParameterFile = $parameterFilePath
-            Verbose               = $true
-            OutVariable           = 'ValidationErrors'
+            TemplateFile = $templateFilePath
+            Verbose      = $true
+            OutVariable  = 'ValidationErrors'
+        }
+        if (-not [String]::IsNullOrEmpty($parameterFilePath)) {
+            $DeploymentInputs['TemplateParameterFile'] = $parameterFilePath
         }
         $ValidationErrors = $null
 

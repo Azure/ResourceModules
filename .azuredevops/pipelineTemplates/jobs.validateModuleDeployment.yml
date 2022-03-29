@@ -216,7 +216,7 @@ jobs:
               pwsh: true
               inline: |
                 # Load used functions
-                . (Join-Path '$(moduleRepoRoot)' '$(pipelineFunctionsPath)' 'resourceDeployment' 'Test-TemplateWithParameterFile.ps1')
+                . (Join-Path '$(moduleRepoRoot)' '$(pipelineFunctionsPath)' 'resourceDeployment' 'Test-Template.ps1')
 
                 if(-not [String]::IsNullOrEmpty('${{ deploymentBlock.templateFilePath }}')) {
                   $templateFilePath = Join-Path '$(moduleRepoRoot)' '${{ deploymentBlock.templateFilePath }}'
@@ -250,7 +250,7 @@ jobs:
                 Write-Verbose "Invoke task with" -Verbose
                 Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
-                Test-TemplateWithParameterFile @functionInput -Verbose
+                Test-Template @functionInput -Verbose
 
           # [Deployment] task(s)
           #---------------------

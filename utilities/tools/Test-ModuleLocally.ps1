@@ -123,7 +123,7 @@ function Test-ModuleLocally {
         . (Join-Path $PSScriptRoot '../pipelines/tokensReplacement/Convert-TokensInFile.ps1')
         # Load Modules Validation / Deployment Scripts
         . (Join-Path $PSScriptRoot '../pipelines/resourceDeployment/New-ModuleDeployment.ps1')
-        . (Join-Path $PSScriptRoot '../pipelines/resourceDeployment/Test-TemplateWithParameterFile.ps1')
+        . (Join-Path $PSScriptRoot '../pipelines/resourceDeployment/Test-Template.ps1')
     }
     process {
 
@@ -216,7 +216,7 @@ function Test-ModuleLocally {
                     # Loop through test parameter files
                     foreach ($paramFilePath in $moduleParameterFiles) {
                         Write-Verbose ('Validating module [{0}] with parameter file [{1}]' -f $ModuleName, (Split-Path $paramFilePath -Leaf)) -Verbose
-                        Test-TemplateWithParameterFile @functionInput -ParameterFilePath $paramFilePath
+                        Test-Template @functionInput -ParameterFilePath $paramFilePath
                     }
                 }
 
