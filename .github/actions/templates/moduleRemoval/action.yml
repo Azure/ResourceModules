@@ -87,7 +87,7 @@ runs:
 
     # [Deployment removal] task(s)
     # ----------------------------
-    - name: 'Remove [${{ inputs.templateFilePath }}] from parameters [${{ inputs.parameterFilePath }}]'
+    - name: 'Remove [${{ inputs.templateFilePath }}] from deployment name [${{ inputs.deploymentName }}]'
       shell: pwsh
       run: |
         # Grouping task logs
