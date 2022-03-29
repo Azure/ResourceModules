@@ -152,9 +152,9 @@ jobs:
     name: 'Remove dependencies'
     if: always() && needs.job_set_workflow_param.outputs.removeDeployment == 'true' && needs.job_dependencies_deploy_validation.outputs.deploymentName != ''
     needs:
-      # - job_set_workflow_param # Dependency is implicit via module deployment
+      - job_set_workflow_param
       - job_module_deploy_validation
-      # - job_dependencies_deploy_validation # Dependency is implicit via module deployment
+      - job_dependencies_deploy_validation
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
