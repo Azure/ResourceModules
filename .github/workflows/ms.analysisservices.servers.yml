@@ -95,9 +95,10 @@ jobs:
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
           templateFilePath: '${{ env.modulePath }}/.dependencies/dependencies.bicep'
-          resourceGroupName: ${{ env.resourceGroupName }}'
           location: '${{ env.defaultLocation }}'
+          resourceGroupName: ${{ env.resourceGroupName }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
+          managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
 
   ###################
   # Parameter tests #
