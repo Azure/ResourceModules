@@ -109,7 +109,7 @@ runs:
     # [Token replacement] task(s)
     # ---------------------------
     - name: 'Replace Parameter File Tokens [${{ inputs.parameterFilePath }}]'
-      if: ${{ inputs.parameterFilePath }} != ''
+      if: ${{ inputs.parameterFilePath != '' }}
       shell: pwsh
       run: |
         # Grouping task logs
