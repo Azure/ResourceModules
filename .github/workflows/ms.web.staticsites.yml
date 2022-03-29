@@ -81,11 +81,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        parameterFilePaths:
-          [
-            'min.parameters.json',
-            'parameters.json'
-          ]
+        parameterFilePaths: ['min.parameters.json', 'parameters.json']
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -96,7 +92,7 @@ jobs:
         with:
           variableFileName: 'global.variables'
       - name: 'Using parameter file [${{ matrix.parameterFilePaths }}]'
-        uses: ./.github/actions/templates/validateModuleDeployment
+        uses: ./.github/actions/templates/deployTemplate
         with:
           templateFilePath: '${{ env.modulePath }}/deploy.bicep'
           parameterFilePath: '${{ env.modulePath }}/.parameters/${{ matrix.parameterFilePaths }}'

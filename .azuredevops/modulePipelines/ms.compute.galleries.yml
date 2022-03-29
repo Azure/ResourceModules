@@ -42,7 +42,7 @@ stages:
   - stage: Deployment
     displayName: Deployment tests
     jobs:
-      - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
+      - template: /.azuredevops/pipelineTemplates/jobs.deployTemplate.yml
         parameters:
           removeDeployment: '${{ parameters.removeDeployment }}'
           deploymentBlocks:

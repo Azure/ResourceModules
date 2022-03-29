@@ -38,14 +38,14 @@ stages:
   - stage: Deployment
     displayName: Deployment tests
     jobs:
-      - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
+      - template: /.azuredevops/pipelineTemplates/jobs.deployTemplate.yml
         parameters:
           removeDeployment: '${{ parameters.removeDeployment }}'
           deploymentBlocks:
             - path: $(modulePath)/.parameters/min.parameters.json
             - path: $(modulePath)/.parameters/parameters.json
             - path: $(modulePath)/.parameters/encr.parameters.json
-            
+
   - stage: Publishing
     displayName: Publish module
     condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/main'), eq(variables['Build.SourceBranch'], 'refs/heads/master'), eq('${{ parameters.prerelease }}', 'true')))

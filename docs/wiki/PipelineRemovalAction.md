@@ -32,8 +32,8 @@ The removal process will remove all resources created during deployment. The lis
 After a resource is removed (this happens after each resource in the list), the script will execute, if defined, a **post removal operation**. This can be used for those resource types that requires a post processing, like purging a soft-deleted key vault.
 
 The procedure is initiated by the script `/utilities/pipelines/resourceRemoval/Initialize-DeploymentRemoval.ps1`, run during deployment by:
-- (Azure DevOps) `/.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml`
-- (GitHub) `/.github/actions/templates/validateModuleDeployment/action.yml`
+- (Azure DevOps) `/.azuredevops/pipelineTemplates/jobs.deployTemplate.yml`
+- (GitHub) `/.github/actions/templates/deployTemplate/action.yml`
 
 It uses several helper scripts that can be found in the `/utilities/pipelines/resourceRemoval/helper` folder
 # Create a specialized removal procedure

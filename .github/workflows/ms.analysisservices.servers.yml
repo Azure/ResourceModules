@@ -94,7 +94,7 @@ jobs:
           variableFileName: 'global.variables'
       - name: 'Using template file [${{ env.modulePath }}/.dependencies/dependencies.bicep]'
         id: deploy
-        uses: ./.github/actions/templates/validateModuleDeployment
+        uses: ./.github/actions/templates/deployTemplate
         with:
           templateFilePath: '${{ env.modulePath }}/.dependencies/dependencies.bicep'
           location: '${{ env.defaultLocation }}'
@@ -127,7 +127,7 @@ jobs:
           variableFileName: 'global.variables'
       - name: 'Using parameter file [${{ matrix.parameterFilePaths }}]'
         id: deploy
-        uses: ./.github/actions/templates/validateModuleDeployment
+        uses: ./.github/actions/templates/deployTemplate
         with:
           templateFilePath: '${{ env.modulePath }}/deploy.bicep'
           parameterFilePath: '${{ env.modulePath }}/.parameters/${{ matrix.parameterFilePaths }}'
@@ -136,7 +136,7 @@ jobs:
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
       - name: 'Remove deployment for parameter file [${{ matrix.parameterFilePaths }}]'
-        uses: ./.github/actions/templates/moduleRemoval
+        uses: ./.github/actions/templates/removeTemplateDeployment
         if: always() && needs.job_set_workflow_param.outputs.removeDeployment == 'true' && steps.deploy.outputs.deploymentName != ''
         with:
           templateFilePath: '${{ env.modulePath }}/deploy.bicep'
@@ -165,7 +165,7 @@ jobs:
         with:
           variableFileName: 'global.variables'
       - name: 'Remove deployment for template file [${{ env.modulePath }}/.dependencies/dependencies.bicep]'
-        uses: ./.github/actions/templates/moduleRemoval
+        uses: ./.github/actions/templates/removeTemplateDeployment
         with:
           templateFilePath: '${{ env.modulePath }}/.dependencies/dependencies.bicep'
           deploymentName: ${{ needs.job_dependencies_deploy_validation.outputs.deploymentName }}
