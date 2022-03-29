@@ -65,7 +65,16 @@ runs:
         # Load used functions
         . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'sharedScripts' 'Add-YamlListToFile.ps1')
 
+        $functionInput = @{
+          InputFilePath   = '${{ inputs.variablesPath }}'
+          ListName        = 'variables'
+          OutputFilePath  = '$Env:GITHUB_ENV'
+        }
+
+        Write-Verbose "Invoke task with" -Verbose
+        Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
+
         # Convert YAML Variable File to Environment Variables
-        Add-YamlListToFile -InputFilePath ${{ inputs.variablesPath }} -ListName variables -OutputFilePath $Env:GITHUB_ENV -Verbose
+        Add-YamlListToFile @functionInput -Verbose
 
         Write-Output "::endgroup::"
