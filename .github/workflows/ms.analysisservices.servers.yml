@@ -112,7 +112,7 @@ jobs:
         if: needs.job_set_workflow_param.outputs.removeDeployment == 'true'
         with:
           templateFilePath: '${{ env.modulePath }}/deploy.bicep'
-          deploymentName: ${{ steps.deploy.outputs.deploymentName.value }}
+          deploymentName: ${{ steps.deploy.outputs.deploymentName }}
           resourceGroupName: '${{ env.resourceGroupName }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
