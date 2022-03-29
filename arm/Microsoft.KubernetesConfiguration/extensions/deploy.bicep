@@ -1,11 +1,14 @@
 @description('Required. The name of the Flux Configuration')
 param name string
 
-@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
-param cuaId string = ''
+@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+param enableDefaultTelemetry bool = true
 
 @description('Optional. The name of the AKS cluster that should be configured.')
 param clusterName string
+
+@description('Optional. Location for all resources.')
+param location string = resourceGroup().location
 
 @description('Optional. Flag to note if this extension participates in auto upgrade of minor version, or not.')
 param autoUpgradeMinorVersion bool = true
@@ -31,9 +34,16 @@ param targetNamespace string = ''
 @description('Optional. Version of the extension for this extension, if it is "pinned" to a specific version. autoUpgradeMinorVersion must be "false".')
 param version string = ''
 
-module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
-  name: 'pid-${cuaId}'
-  params: {}
+resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
+  name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
+  properties: {
+    mode: 'Incremental'
+    template: {
+      '$schema': 'https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#'
+      contentVersion: '1.0.0.0'
+      resources: []
+    }
+  }
 }
 
 resource managedCluster 'Microsoft.ContainerService/managedClusters@2021-10-01' existing = {

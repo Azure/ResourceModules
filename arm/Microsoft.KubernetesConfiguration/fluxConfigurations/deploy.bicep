@@ -1,11 +1,14 @@
 @description('Required. The name of the Flux Configuration')
 param name string
 
-@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
-param cuaId string = ''
+@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+param enableDefaultTelemetry bool = true
 
 @description('Optional. The name of the AKS cluster that should be configured.')
 param clusterName string
+
+@description('Optional. Location for all resources.')
+param location string = resourceGroup().location
 
 @description('Optional. Parameters to reconcile to the GitRepository source kind type.')
 param bucket object = {}
@@ -39,9 +42,16 @@ param sourceKind string
 @description('Optional. Whether this configuration should suspend its reconciliation of its kustomizations and sources.')
 param suspend bool = false
 
-module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
-  name: 'pid-${cuaId}'
-  params: {}
+resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
+  name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
+  properties: {
+    mode: 'Incremental'
+    template: {
+      '$schema': 'https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#'
+      contentVersion: '1.0.0.0'
+      resources: []
+    }
+  }
 }
 
 resource managedCluster 'Microsoft.ContainerService/managedClusters@2021-10-01' existing = {

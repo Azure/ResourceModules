@@ -31,11 +31,11 @@ This module deploys KubernetesConfiguration FluxConfigurations.
 | `bucket` | object | `{object}` | Parameters to reconcile to the GitRepository source kind type. |
 | `clusterName` | string |  | The name of the AKS cluster that should be configured. |
 | `configurationProtectedSettings` | object | `{object}` | Key-value pairs of protected configuration settings for the configuration |
-| `cuaId` | string |  | Customer Usage Attribution ID (GUID). This GUID must be previously registered |
+| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `gitRepository` | object | `{object}` | Parameters to reconcile to the GitRepository source kind type. |
 | `kustomizations` | object | `{object}` | Array of kustomizations used to reconcile the artifact pulled by the source type on the cluster. |
+| `location` | string | `[resourceGroup().location]` | Location for all resources. |
 | `suspend` | bool | `False` | Whether this configuration should suspend its reconciliation of its kustomizations and sources. |
-
 
 ### Parameter Usage: `bucket`
 

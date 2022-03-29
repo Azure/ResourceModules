@@ -30,7 +30,8 @@ This module deploys KubernetesConfiguration Extensions.
 | `clusterName` | string |  | The name of the AKS cluster that should be configured. |
 | `configurationProtectedSettings` | object | `{object}` | Configuration settings that are sensitive, as name-value pairs for configuring this extension. |
 | `configurationSettings` | object | `{object}` | Configuration settings, as name-value pairs for configuring this extension. |
-| `cuaId` | string |  | Customer Usage Attribution ID (GUID). This GUID must be previously registered |
+| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `location` | string | `[resourceGroup().location]` | Location for all resources. |
 | `releaseNamespace` | string |  | Namespace where the extension Release must be placed, for a Cluster scoped extension. If this namespace does not exist, it will be created |
 | `releaseTrain` | string | `Stable` | ReleaseTrain this extension participates in for auto-upgrade (e.g. Stable, Preview, etc.) - only if autoUpgradeMinorVersion is "true". |
 | `targetNamespace` | string |  | Namespace where the extension will be created for an Namespace scoped extension. If this namespace does not exist, it will be created |
