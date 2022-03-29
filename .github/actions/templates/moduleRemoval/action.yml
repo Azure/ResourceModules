@@ -1,0 +1,113 @@
+#########################################################
+## 'Remove module' Composite Action                    ##
+#########################################################
+##
+## This composite action contains the logic to remove test deployed modules based on the used deployment name.
+##
+#########################################################
+##
+##-------------------------------------------##
+## ACTION PARAMETERS                         ##
+##-------------------------------------------##
+##
+##   |============================================================================================================================================================================|
+##   | Parameter                 | Required | Default | Description                                           | Example                                                           |
+##   |---------------------------|----------|---------|-------------------------------------------------------|-------------------------------------------------------------------|
+##   | templateFilePath          | true     | ''      | The path to the template file to use for deployment   | 'arm/Microsoft.ApiManagement/service/deploy.bicep'                |
+##   | deploymentName            | true     | ''      | The name of the deployment to remove                  | 'myDeployment-1234'                                               |
+##   | resourceGroupName         | false    | ''      | The resource group to deploy to                       | 'validation-rg'                                                   |
+##   | subscriptionId            | false    | ''      | The subscriptionId to deploy to                       | '1a97b80a-4dda-4f50-ab53-349e29344654'                            |
+##   | managementGroupId         | false    | ''      | The managementGroupId to deploy to                    | '1a97b80a-4dda-4f50-ab53-349e29344654'                            |
+##   |============================================================================================================================================================================|
+##
+##---------------------------------------------##
+
+name: 'Deploy module'
+description: 'Deploy module'
+
+inputs:
+  templateFilePath:
+    description: 'The path to the template file to use for deployment'
+    required: true
+  deploymentName:
+    description: 'The name of the deployment to remove'
+    required: true
+  resourceGroupName:
+    description: 'The resource group to deploy to'
+    required: false
+  subscriptionId:
+    description: 'The subscriptionId to deploy to'
+    required: false
+  managementGroupId:
+    description: 'The managementGroupId to deploy to'
+    required: false
+
+runs:
+  using: 'composite'
+  steps:
+    # [Setup] task(s)
+    # ---------------
+    - name: 'Setup agent'
+      shell: pwsh
+      run: |
+        # Grouping task logs
+        Write-Output "::group::Setup agent"
+
+        # Load used functions
+        . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
+
+        # Define PS modules to install on the runner
+        $Modules = @(
+            @{ Name = 'Az.Accounts' },
+            @{ Name = 'Az.Resources' }
+        )
+
+        # Additional PS modules need to be installed for the removal step in case it is enabled
+        if ('${{ inputs.removeDeployment}}' -eq 'true') {
+          $Modules += @(
+            @{ Name = 'Az.CognitiveServices' },
+            @{ Name = 'Az.Compute' },
+            @{ Name = 'Az.KeyVault' },
+            @{ Name = 'Az.Monitor' },
+            @{ Name = 'Az.OperationalInsights' },
+            @{ Name = 'Az.RecoveryServices' }
+          )
+        }
+
+        # Set agent up
+        Set-EnvironmentOnAgent -PSModules $Modules
+
+        Write-Output "::endgroup::"
+
+    - name: Azure Login
+      uses: Azure/login@v1
+      with:
+        creds: ${{ env.AZURE_CREDENTIALS }}
+        enable-AzPSSession: true
+
+    # [Deployment removal] task(s)
+    # ----------------------------
+    - name: 'Remove [${{ inputs.templateFilePath }}] from parameters [${{ inputs.parameterFilePath }}]'
+      shell: pwsh
+      # if: ${{ always() && inputs.removeDeployment == 'true' && steps.deploy_step.outputs.deploymentName != '' }}
+      run: |
+        # Grouping task logs
+        Write-Output "::group::Remove [${{ inputs.templateFilePath }}]]"
+
+        # Load used function
+        . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourceRemoval' 'Initialize-DeploymentRemoval.ps1')
+
+        $functionInput = @{
+          DeploymentName    = '${{ inputs.deploymentName }}'
+          TemplateFilePath  = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.templateFilePath }}'
+          ResourceGroupName = '${{ inputs.resourceGroupName }}'
+          ManagementGroupId = '${{ inputs.managementGroupId }}'
+          Verbose           = $true
+        }
+
+        Write-Verbose 'Invoke task with' -Verbose
+        Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
+
+        Initialize-DeploymentRemoval @functionInput
+
+        Write-Output "::endgroup::"

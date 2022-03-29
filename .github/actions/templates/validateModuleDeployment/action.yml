@@ -3,7 +3,6 @@
 #########################################################
 ##
 ## This composite action contains the logic to both test and execute a deployment of a given template and parameter file.
-## By default, tested deployments are also removed. Optionally, the removal step can be skipped.
 ##
 #########################################################
 ##
@@ -21,7 +20,6 @@
 ##   | subscriptionId            | false    | ''      | The subscriptionId to deploy to                       | '1a97b80a-4dda-4f50-ab53-349e29344654'                            |
 ##   | managementGroupId         | false    | ''      | The managementGroupId to deploy to                    | '1a97b80a-4dda-4f50-ab53-349e29344654'                            |
 ##   | customParameterFileTokens | false    | ''      | Additional parameter file token pairs in json format. | '{"tokenName":"tokenValue"}'                                      |
-##   | removeDeployment          | false    | 'true'  | Set "true" to set module up for removal               | 'true'                                                            |
 ##   |============================================================================================================================================================================|
 ##
 #########################################################
@@ -30,11 +28,12 @@
 ## ACTION OUTPUTS                         ##
 ##----------------------------------------##
 ##
-##   |================================================================|
-##   | Output           | Description                                 |
-##   |------------------|---------------------------------------------|
-##   | deploymentOutput | The module deployment output in json format |
-##   |================================================================|
+##   |===============================================================---=|
+##   | Output           | Description                                    |
+##   |------------------|------------------------------------------------|
+##   | deploymentName   | The deployment name used during the deployment |
+##   | deploymentOutput | The module deployment output in json format    |
+##   |===================================================================|
 ##
 ##---------------------------------------------##
 
@@ -69,6 +68,9 @@ inputs:
     required: false
 
 outputs:
+  deploymentName:
+    description: 'The used module deployment name'
+    value: ${{ steps.deploy_step.outputs.deploymentName }}
   deploymentOutput:
     description: 'The module deployment output in json format'
     value: ${{ steps.deploy_step.outputs.deploymentOutput }}
@@ -261,35 +263,6 @@ runs:
         if ($res.ContainsKey('exception')) {
           # Happens only if there is an exception
           throw $res.exception
-        }
-
-        Write-Output "::endgroup::"
-
-    # [Deployment removal] task(s)
-    # ----------------------------
-    - name: 'Remove [${{ inputs.templateFilePath }}] from parameters [${{ inputs.parameterFilePath }}]'
-      shell: pwsh
-      if: ${{ always() && inputs.removeDeployment == 'true' && steps.deploy_step.outputs.deploymentName != '' }}
-      run: |
-        # Grouping task logs
-        Write-Output "::group::Remove [${{ inputs.templateFilePath }}] from parameters [${{ inputs.parameterFilePath }}]"
-
-        # Load used function
-        . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourceRemoval' 'Initialize-DeploymentRemoval.ps1')
-
-        if (-not [String]::IsNullOrEmpty('${{ steps.deploy_step.outputs.deploymentName }}')) {
-          $functionInput = @{
-            DeploymentName    = '${{ steps.deploy_step.outputs.deploymentName }}'
-            TemplateFilePath  = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.templateFilePath }}'
-            ResourceGroupName = '${{ inputs.resourceGroupName }}'
-            ManagementGroupId = '${{ inputs.managementGroupId }}'
-            Verbose           = $true
-          }
-
-          Write-Verbose 'Invoke task with' -Verbose
-          Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
-
-          Initialize-DeploymentRemoval @functionInput
         }
 
         Write-Output "::endgroup::"
