@@ -5,6 +5,10 @@
             "value": "WestEurope"
         },
         {
+            "name": "resourceGroupName",
+            "value": "validation-rg"
+        },
+        {
             "name": "templateSpecsRGName",
             "value": "artifacts-rg"
         },
