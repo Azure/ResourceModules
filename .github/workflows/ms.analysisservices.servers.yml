@@ -98,6 +98,7 @@ jobs:
         with:
           variableFileName: 'global.variables'
       - name: 'Using parameter file [${{ matrix.parameterFilePaths }}]'
+        id: deploy
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
           templateFilePath: '${{ env.modulePath }}/deploy.bicep'
@@ -106,12 +107,12 @@ jobs:
           resourceGroupName: '${{ env.resourceGroupName }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
-      - name: 'Using parameter file [${{ matrix.parameterFilePaths }}]'
+      - name: 'Remove deployment for parameter file [${{ matrix.parameterFilePaths }}]'
         uses: ./.github/actions/templates/moduleRemoval
         if: needs.job_set_workflow_param.outputs.removeDeployment == 'true'
         with:
           templateFilePath: '${{ env.modulePath }}/deploy.bicep'
-          deploymentName: '${{ env.deploymentName }}'
+          deploymentName: ${{ steps.deploy.outputs.deploymentName.value }}
           resourceGroupName: '${{ env.resourceGroupName }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
