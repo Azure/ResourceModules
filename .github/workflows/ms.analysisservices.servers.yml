@@ -137,7 +137,7 @@ jobs:
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
       - name: 'Remove deployment for parameter file [${{ matrix.parameterFilePaths }}]'
         uses: ./.github/actions/templates/moduleRemoval
-        if: needs.job_set_workflow_param.outputs.removeDeployment == 'true' && steps.deploy.outputs.deploymentName != ''
+        if: always() && needs.job_set_workflow_param.outputs.removeDeployment == 'true' && steps.deploy.outputs.deploymentName != ''
         with:
           templateFilePath: '${{ env.modulePath }}/deploy.bicep'
           deploymentName: ${{ steps.deploy.outputs.deploymentName }}
@@ -150,7 +150,7 @@ jobs:
   job_dependencies_remove:
     runs-on: ubuntu-20.04
     name: 'Remove dependencies'
-    if: needs.job_set_workflow_param.outputs.removeDeployment == 'true' && needs.job_dependencies_deploy_validation.outputs.deploymentName != ''
+    if: always() && needs.job_set_workflow_param.outputs.removeDeployment == 'true' && needs.job_dependencies_deploy_validation.outputs.deploymentName != ''
     needs:
       # - job_set_workflow_param # Dependency is implicit via module deployment
       - job_module_deploy_validation
