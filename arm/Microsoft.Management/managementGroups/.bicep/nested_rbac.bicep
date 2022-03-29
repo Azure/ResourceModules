@@ -1,6 +1,6 @@
 targetScope = 'managementGroup'
 
-@sys.description('Required. The IDs of the prinicpals to assign to role to')
+@sys.description('Required. The IDs of the principals to assign the role to')
 param principalIds array
 
 @sys.description('Required. The name of the role to assign. If it cannot be found you can specify the role definition ID instead')
