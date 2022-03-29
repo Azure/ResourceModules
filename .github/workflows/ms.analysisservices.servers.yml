@@ -79,6 +79,8 @@ jobs:
   job_dependencies_deploy_validation:
     runs-on: ubuntu-20.04
     name: 'Deploy dependencies'
+    needs:
+      - job_module_pester_validation
     outputs:
       deploymentName: ${{ steps.deploy.outputs.deploymentName }}
     steps:
@@ -108,7 +110,7 @@ jobs:
     needs:
       - job_set_workflow_param
       - job_dependencies_deploy_validation
-      - job_module_pester_validation
+      #- job_module_pester_validation # Dependency is implicit via dependency deployment
     strategy:
       fail-fast: false
       matrix:
@@ -150,9 +152,9 @@ jobs:
     name: 'Remove dependencies'
     if: needs.job_set_workflow_param.outputs.removeDeployment == 'true' && needs.job_dependencies_deploy_validation.outputs.deploymentName != ''
     needs:
-      - job_set_workflow_param
+      # - job_set_workflow_param # Dependency is implicit via module deployment
       - job_module_deploy_validation
-      - job_dependencies_deploy_validation
+      # - job_dependencies_deploy_validation # Dependency is implicit via module deployment
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -179,7 +181,7 @@ jobs:
     if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master' || github.event.inputs.prerelease == 'true'
     runs-on: ubuntu-20.04
     needs:
-      - job_set_workflow_param
+      # - job_set_workflow_param # Dependency is implicit via module deployment
       - job_module_deploy_validation
     steps:
       - name: 'Checkout'
