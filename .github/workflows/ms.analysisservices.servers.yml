@@ -90,7 +90,7 @@ jobs:
         uses: deep-mm/set-variables@v1.0
         with:
           variableFileName: 'global.variables'
-      - name: 'Using template file [${{ matrix.parameterFilePaths }}]'
+      - name: 'Using template file [${{ env.modulePath }}/.dependencies/dependencies.bicep]'
         id: deploy
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
