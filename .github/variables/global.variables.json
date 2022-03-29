@@ -1,13 +1,13 @@
+// {
+//     "name": "resourceGroupName",
+//     "value": "validation-rg"
+// },
 {
     "variables": [
         {
             "name": "defaultLocation",
             "value": "WestEurope"
         },
-        // {
-        //     "name": "resourceGroupName",
-        //     "value": "validation-rg"
-        // },
         {
             "name": "templateSpecsRGName",
             "value": "artifacts-rg"
