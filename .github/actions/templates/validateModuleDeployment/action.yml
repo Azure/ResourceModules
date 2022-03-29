@@ -108,7 +108,8 @@ runs:
 
     # [Token replacement] task(s)
     # ---------------------------
-    - name: 'Replace Parameter File Tokens [${{ inputs.parameterFilePath }}] '
+    - name: 'Replace Parameter File Tokens [${{ inputs.parameterFilePath }}]'
+      if: ${{ inputs.parameterFilePath }} != ''
       shell: pwsh
       run: |
         # Grouping task logs
@@ -175,12 +176,23 @@ runs:
         # ----------- #
         $functionInput = @{
           templateFilePath     = '${{ inputs.templateFilePath }}'
-          parameterFilePath    = '${{ inputs.parameterFilePath }}'
           location             = '${{ inputs.location }}'
           resourceGroupName    = '${{ inputs.resourceGroupName }}'
           subscriptionId       = '${{ inputs.subscriptionId }}'
           managementGroupId    = '${{ inputs.managementGroupId }}'
           additionalParameters = @{}
+        }
+
+        # Enables us to pass the resource group name as a deployment parameter
+        if(-not [String]::IsNullOrEmpty('${{ inputs.resourceGroupName }}')) {
+          $resourceGroupName = '${{ inputs.resourceGroupName }}'
+          $functionInput['additionalParameters'] = @{
+            resourceGroupName = $resourceGroupName
+          }
+        }
+
+        if(-not [String]::IsNullOrEmpty('${{ inputs.parameterFilePath }}')) {
+          $functionInput['parameterFilePath'] = '${{ inputs.parameterFilePath }}'
         }
 
         $projectSettings = Get-Content -Path 'settings.json' | ConvertFrom-Json
