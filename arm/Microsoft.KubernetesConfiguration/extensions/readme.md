@@ -1,7 +1,6 @@
 # KubernetesConfiguration Extensions `[Microsoft.KubernetesConfiguration/extensions]`
 
 This module deploys KubernetesConfiguration Extensions.
-// TODO: Replace Resource and fill in description
 
 ## Navigation
 
@@ -36,11 +35,6 @@ This module deploys KubernetesConfiguration Extensions.
 | `releaseTrain` | string | `Stable` | ReleaseTrain this extension participates in for auto-upgrade (e.g. Stable, Preview, etc.) - only if autoUpgradeMinorVersion is "true". |
 | `targetNamespace` | string |  | Namespace where the extension will be created for an Namespace scoped extension. If this namespace does not exist, it will be created |
 | `version` | string |  | Version of the extension for this extension, if it is "pinned" to a specific version. autoUpgradeMinorVersion must be "false". |
-
-
-### Parameter Usage: `<ParameterPlaceholder>`
-
-// TODO: Fill in Parameter usage
 
 ## Outputs
 

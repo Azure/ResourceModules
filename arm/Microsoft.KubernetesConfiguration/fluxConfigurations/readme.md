@@ -1,7 +1,6 @@
 # KubernetesConfiguration FluxConfigurations `[Microsoft.KubernetesConfiguration/fluxConfigurations]`
 
 This module deploys KubernetesConfiguration FluxConfigurations.
-// TODO: Replace Resource and fill in description
 
 ## Navigation
 
@@ -38,9 +37,43 @@ This module deploys KubernetesConfiguration FluxConfigurations.
 | `suspend` | bool | `False` | Whether this configuration should suspend its reconciliation of its kustomizations and sources. |
 
 
-### Parameter Usage: `<ParameterPlaceholder>`
+### Parameter Usage: `bucket`
 
-// TODO: Fill in Parameter usage
+```json
+"bucket": {
+    "value": {
+      "accessKey": "string",
+      "bucketName": "string",
+      "insecure": "bool",
+      "localAuthRef": "string",
+      "syncIntervalInSeconds": "int",
+      "timeoutInSeconds": "int",
+      "url": "string"
+    }
+}
+```
+
+### Parameter Usage: `gitRepository`
+
+```json
+"gitRepository": {
+    "value": {
+      "httpsCACert": "string",
+      "httpsUser": "string",
+      "localAuthRef": "string",
+      "repositoryRef": {
+        "branch": "string",
+        "commit": "string",
+        "semver": "string",
+        "tag": "string"
+      },
+      "sshKnownHosts": "string",
+      "syncIntervalInSeconds": "int",
+      "timeoutInSeconds": "int",
+      "url": "string"
+    }
+}
+```
 
 ## Outputs
 

@@ -7,7 +7,7 @@ on:
         type: boolean
         description: 'Remove deployed module'
         required: false
-        default: false
+        default: true
       prerelease:
         type: boolean
         description: 'Publish prerelease module'
@@ -16,7 +16,6 @@ on:
   push:
     branches:
       - main
-      - users/rahalan/AddAksExtension
     paths:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.kubernetesconfiguration.extensions.yml'

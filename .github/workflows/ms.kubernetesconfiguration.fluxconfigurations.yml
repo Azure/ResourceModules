@@ -16,7 +16,6 @@ on:
   push:
     branches:
       - main
-      - users/rahalan/AddAksExtension
     paths:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.kubernetesconfiguration.fluxconfigurations.yml'
