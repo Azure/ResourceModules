@@ -63,7 +63,7 @@ function Add-YamlListToFile {
 
         # Process List (Hashtable)
         $KeyValuePair = $InputFileContent | ConvertFrom-Yaml | Select-Object -ExpandProperty $ListName
-        Write-Verbose "Found $($KeyValuePair.Count) Key-Value pairs in List: $ListName" -Verbose
+        Write-Verbose ('Found [{0}] Key-Value pairs in List [{1}]' -f $KeyValuePair.Count, $ListName) -Verbose
         if (-not $KeyValuePair) {
             throw "No key-value pairs found in List: $ListName"
         }
