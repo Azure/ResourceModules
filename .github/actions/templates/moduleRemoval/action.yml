@@ -89,7 +89,6 @@ runs:
     # ----------------------------
     - name: 'Remove [${{ inputs.templateFilePath }}] from parameters [${{ inputs.parameterFilePath }}]'
       shell: pwsh
-      # if: ${{ always() && inputs.removeDeployment == 'true' && steps.deploy_step.outputs.deploymentName != '' }}
       run: |
         # Grouping task logs
         Write-Output "::group::Remove [${{ inputs.templateFilePath }}]]"

@@ -87,7 +87,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        parameterFilePaths: ['min.parameters.json'] #, 'parameters.json', 'max.parameters.json']
+        parameterFilePaths: ['min.parameters.json', 'parameters.json'] #, 'max.parameters.json']
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -109,7 +109,7 @@ jobs:
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
       - name: 'Remove deployment for parameter file [${{ matrix.parameterFilePaths }}]'
         uses: ./.github/actions/templates/moduleRemoval
-        if: needs.job_set_workflow_param.outputs.removeDeployment == 'true'
+        if: needs.job_set_workflow_param.outputs.removeDeployment == 'true' && steps.deploy.outputs.deploymentName != ''
         with:
           templateFilePath: '${{ env.modulePath }}/deploy.bicep'
           deploymentName: ${{ steps.deploy.outputs.deploymentName }}
