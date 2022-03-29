@@ -40,12 +40,7 @@
                     "name": "<<namePrefix>>-az-evh-x-001",
                     "authorizationRules": [
                         {
-                            "name": "RootManageSharedAccessKey",
-                            "rights": [
-                                "Listen",
-                                "Manage",
-                                "Send"
-                            ]
+                            "name": "RootManageSharedAccessKey"
                         },
                         {
                             "name": "SendListenAccess",
