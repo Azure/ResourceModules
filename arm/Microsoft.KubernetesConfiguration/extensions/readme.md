@@ -34,28 +34,13 @@ This module deploys KubernetesConfiguration Extensions.
 | `cuaId` | string |  | Customer Usage Attribution ID (GUID). This GUID must be previously registered |
 | `releaseNamespace` | string |  | Namespace where the extension Release must be placed, for a Cluster scoped extension. If this namespace does not exist, it will be created |
 | `releaseTrain` | string | `Stable` | ReleaseTrain this extension participates in for auto-upgrade (e.g. Stable, Preview, etc.) - only if autoUpgradeMinorVersion is "true". |
-| `systemAssignedIdentity` | bool | `False` | Enables system assigned managed identity on the resource. |
 | `targetNamespace` | string |  | Namespace where the extension will be created for an Namespace scoped extension. If this namespace does not exist, it will be created |
-| `userAssignedIdentities` | object | `{object}` | The ID(s) to assign to the resource. |
 | `version` | string |  | Version of the extension for this extension, if it is "pinned" to a specific version. autoUpgradeMinorVersion must be "false". |
 
 
 ### Parameter Usage: `<ParameterPlaceholder>`
 
 // TODO: Fill in Parameter usage
-
-### Parameter Usage: `userAssignedIdentities`
-
-You can specify multiple user assigned identities to a resource by providing additional resource IDs using the following format:
-
-```json
-"userAssignedIdentities": {
-    "value": {
-        "/subscriptions/12345678-1234-1234-1234-123456789012/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001": {},
-        "/subscriptions/12345678-1234-1234-1234-123456789012/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002": {}
-    }
-},
-```
 
 ## Outputs
 

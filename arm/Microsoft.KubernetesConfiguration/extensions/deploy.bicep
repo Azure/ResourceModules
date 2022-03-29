@@ -31,19 +31,6 @@ param targetNamespace string = ''
 @description('Optional. Version of the extension for this extension, if it is "pinned" to a specific version. autoUpgradeMinorVersion must be "false".')
 param version string = ''
 
-@description('Optional. Enables system assigned managed identity on the resource.')
-param systemAssignedIdentity bool = false
-
-@description('Optional. The ID(s) to assign to the resource.')
-param userAssignedIdentities object = {}
-
-var identityType = systemAssignedIdentity ? (!empty(userAssignedIdentities) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned') : (!empty(userAssignedIdentities) ? 'UserAssigned' : 'None')
-
-var identity = identityType != 'None' ? {
-  type: identityType
-  userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
-} : null
-
 module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   name: 'pid-${cuaId}'
   params: {}
@@ -56,7 +43,6 @@ resource managedCluster 'Microsoft.ContainerService/managedClusters@2021-10-01' 
 resource extension 'Microsoft.KubernetesConfiguration/extensions@2022-03-01' = {
   name: name
   scope: managedCluster
-  // identity: identity
   properties: {
     autoUpgradeMinorVersion: autoUpgradeMinorVersion
     configurationProtectedSettings: !empty(configurationProtectedSettings) ? configurationProtectedSettings : {}
