@@ -51,33 +51,25 @@ function Add-YamlListToFile {
         }
 
         # Validate Input and Output Path
-        try {
-            if (-not ($InputFileContent = Get-Content -Path $InputFilePath)) {
-                throw "Invalid Input File Path: $InputFilePath"
-            }
-            if (-not (Test-Path $OutputFilePath)) {
-                throw "Invalid Output File Path: $OutputFilePath"
-            }
-        } catch {
-            throw $PSitem.Exception.Message
+        if (-not ($InputFileContent = Get-Content -Path $InputFilePath)) {
+            throw "Invalid Input File Path: $InputFilePath"
+        }
+        if (-not (Test-Path $OutputFilePath)) {
+            throw "Invalid Output File Path: $OutputFilePath"
         }
     }
 
     process {
 
         # Process List (Hashtable)
-        try {
-            $KeyValuePair = $InputFileContent | ConvertFrom-Yaml | Select-Object -ExpandProperty $ListName
-            Write-Verbose "Found $($KeyValuePair.Count) Key-Value pairs in List: $ListName" -Verbose
-            if (-not $KeyValuePair) {
-                throw "No key-value pairs found in List: $ListName"
-            }
-            # Process key value pairs in the list
-            foreach ($Key in $KeyValuePair.Keys.split(' ')) {
-                Write-Output "$Key=$($KeyValuePair[$Key])" | Out-File -FilePath $OutputFilePath -Encoding utf-8 -Append
-            }
-        } catch {
-            throw $PSitem.Exception.Message
+        $KeyValuePair = $InputFileContent | ConvertFrom-Yaml | Select-Object -ExpandProperty $ListName
+        Write-Verbose "Found $($KeyValuePair.Count) Key-Value pairs in List: $ListName" -Verbose
+        if (-not $KeyValuePair) {
+            throw "No key-value pairs found in List: $ListName"
+        }
+        # Process key value pairs in the list
+        foreach ($Key in $KeyValuePair.Keys.split(' ')) {
+            Write-Output "$Key=$($KeyValuePair[$Key])" | Out-File -FilePath $OutputFilePath -Encoding utf-8 -Append
         }
     }
 

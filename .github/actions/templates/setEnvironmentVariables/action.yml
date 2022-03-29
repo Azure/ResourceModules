@@ -2,7 +2,7 @@
 ## 'Set environment variables' Composite Action                   ##
 #########################################################
 ##
-## This composite action contains the logic to read a YAML file containing a list (dictionary) of key-value pairs and convert each key as an environment variable on the runner.
+## This composite action contains the logic to read a YAML file containing a list (dictionary) of key-value pairs and convert each key as an environment variable.
 ## Example YAML File content:
 ## listName:
 ##  key1: 'value1'
@@ -13,11 +13,11 @@
 ## ACTION PARAMETERS                         ##
 ##-------------------------------------------##
 ##
-##   |=======================================================================================================================================================================================================|
-##   | Parameter                | Required | Default | Description                                                                                      | Example                                            |
-##   |--------------------------|----------|---------|--------------------------------------------------------------------------------------------------|----------------------------------------------------|
-##   | variablesPath            | true     | ''      | The path to the YAML file that contains the key value pairs for environment variables            | './global.variables.yml'                           |
-##   |=======================================================================================================================================================================================================|
+##   |==================================================================================================================================================================|
+##   | Parameter          | Required | Default | Description                                                                              | Example                     |
+##   |--------------------|----------|---------|------------------------------------------------------------------------------------------|-----------------------------|
+##   | variablesPath      | true     | ''      | The path to the YAML file that contains the key value pairs for environment variables    | './global.variables.yml'    |
+##   |==================================================================================================================================================================|
 ##
 ##---------------------------------------------##
 
