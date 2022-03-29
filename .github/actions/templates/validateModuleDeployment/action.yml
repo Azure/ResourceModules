@@ -105,9 +105,6 @@ runs:
           )
         }
 
-        # update Bicep
-        az bicep upgrade
-
         # Set agent up
         Set-EnvironmentOnAgent -PSModules $Modules
 
