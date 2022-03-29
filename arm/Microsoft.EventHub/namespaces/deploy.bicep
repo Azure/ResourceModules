@@ -230,13 +230,11 @@ module eventHubNamespace_eventHubs 'eventhubs/deploy.bicep' = [for (eventHub, in
     authorizationRules: contains(eventHub, 'authorizationRules') ? eventHub.authorizationRules : [
       {
         name: 'RootManageSharedAccessKey'
-        properties: {
-          rights: [
-            'Listen'
-            'Manage'
-            'Send'
-          ]
-        }
+        rights: [
+          'Listen'
+          'Manage'
+          'Send'
+        ]
       }
     ]
     captureDescriptionDestinationArchiveNameFormat: contains(eventHub, 'captureDescriptionDestinationArchiveNameFormat') ? eventHub.captureDescriptionDestinationArchiveNameFormat : '{Namespace}/{EventHub}/{PartitionId}/{Year}/{Month}/{Day}/{Hour}/{Minute}/{Second}'
