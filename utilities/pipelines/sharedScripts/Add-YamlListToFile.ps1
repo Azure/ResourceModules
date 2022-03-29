@@ -1,6 +1,6 @@
 ﻿<#
 .SYNOPSIS
-Reads a YAML file that contains a list (List / hashtable) of key-value pairs within it and outputs a file with the key-value pair in a (key1=value1) format. Suitable for environment variables
+Reads a YAML file that contains a list (hashtable) of key-value pairs within it and outputs a file with the key-value pair in a (key1=value1) format. Suitable for environment variables
 
 .DESCRIPTION
 Accepts input for a YAML file that contains a List, which has key-value pairs (also known as scalars) like key1: 'value1' in each line, and outputs a file with the key-value pair in a (key1=value1) format.
@@ -21,7 +21,7 @@ Mandatory. The path to the YAML file that contains the key-value pairs List.
 Mandatory. The name of the List in the file that contains the key-value pair.
 
 .PARAMETER OutputFilePath
-Mandatory. The path to the file to converted key-value pairs to (format will be key1=value1)
+Mandatory. The path to the file to output the key-value pairs to (format will be key1=value1)
 
 .EXAMPLE
 Add-YamlListToFile -InputFilePath C:\MyFile.yaml -ListName variables -OutputFilePath C:\MyFile.txt -verbose
