@@ -27,6 +27,7 @@ on:
 env:
   modulePath: 'arm/Microsoft.AnalysisServices/servers'
   workflowPath: '.github/workflows/ms.analysisservices.servers.yml'
+  resourceGroupName: 'test-ms.analysisservices-servers-rg'
   AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
   ARM_SUBSCRIPTION_ID: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
   ARM_MGMTGROUP_ID: '${{ secrets.ARM_MGMTGROUP_ID }}'
@@ -75,6 +76,28 @@ jobs:
 
   #########################
   # Dependency deployment #
+  job_dependencies_deploy:
+    runs-on: ubuntu-20.04
+    name: 'Deploy dependencies'
+    outputs:
+      deploymentName: ${{ steps.deploy.outputs.deploymentName }}
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Set environment variables
+        uses: deep-mm/set-variables@v1.0
+        with:
+          variableFileName: 'global.variables'
+      - name: 'Using template file [${{ matrix.parameterFilePaths }}]'
+        id: deploy
+        uses: ./.github/actions/templates/validateModuleDeployment
+        with:
+          templateFilePath: '${{ env.modulePath }}/.dependencies/dependencies.bicep'
+          resourceGroupName: ${{ env.resourceGroupName }}'
+          location: '${{ env.defaultLocation }}'
+          subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
 
   ###################
   # Parameter tests #
@@ -83,6 +106,7 @@ jobs:
     name: 'Deployment tests'
     needs:
       - job_set_workflow_param
+      - job_dependencies_deploy
     #  - job_module_pester_validation
     strategy:
       fail-fast: false
@@ -104,7 +128,7 @@ jobs:
           templateFilePath: '${{ env.modulePath }}/deploy.bicep'
           parameterFilePath: '${{ env.modulePath }}/.parameters/${{ matrix.parameterFilePaths }}'
           location: '${{ env.defaultLocation }}'
-          resourceGroupName: '${{ env.resourceGroupName }}'
+          resourceGroupName: ${{ env.resourceGroupName }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
       - name: 'Remove deployment for parameter file [${{ matrix.parameterFilePaths }}]'
@@ -113,12 +137,36 @@ jobs:
         with:
           templateFilePath: '${{ env.modulePath }}/deploy.bicep'
           deploymentName: ${{ steps.deploy.outputs.deploymentName }}
-          resourceGroupName: '${{ env.resourceGroupName }}'
+          resourceGroupName: ${{ env.resourceGroupName }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
 
   ######################
   # Dependency removal #
+  job_dependencies_remove:
+    runs-on: ubuntu-20.04
+    name: 'Remove dependencies'
+    needs:
+      - job_module_deploy_validation
+      - job_dependencies_deploy
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Set environment variables
+        uses: deep-mm/set-variables@v1.0
+        with:
+          variableFileName: 'global.variables'
+      - name: 'Remove deployment for template file [${{ env.modulePath }}/.dependencies/dependencies.bicep]'
+        uses: ./.github/actions/templates/moduleRemoval
+        if: needs.job_set_workflow_param.outputs.removeDeployment == 'true' && needs.job_dependencies_deploy.outputs.deploymentName != ''
+        with:
+          templateFilePath: '${{ env.modulePath }}/.dependencies/dependencies.bicep'
+          deploymentName: ${{ needs.job_dependencies_deploy.outputs.deploymentName }}
+          resourceGroupName: ${{ env.resourceGroupName }}'
+          subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
+          managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
 
   ###############
   #   PUBLISH   #
