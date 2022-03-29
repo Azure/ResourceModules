@@ -38,7 +38,7 @@ param startTime string = ''
 @description('Optional. The time zone of the schedule.')
 param timeZone string = ''
 
-@description('Optional. Time used as a basis for e.g. the schedule start date.')
+@description('Generated. Time used as a basis for e.g. the schedule start date.')
 param baseTime string = utcNow('u')
 
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')

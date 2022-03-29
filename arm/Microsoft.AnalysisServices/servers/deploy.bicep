@@ -1,7 +1,7 @@
 @description('Required. The name of the Azure Analysis Services server to create.')
 param name string
 
-@description('Optional. The sku name of the Azure Analysis Services server to create.')
+@description('Optional. The SKU name of the Azure Analysis Services server to create.')
 param skuName string = 'S0'
 
 @description('Optional. The total number of query replica scale-out instances.')
