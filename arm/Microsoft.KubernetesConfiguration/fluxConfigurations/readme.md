@@ -2,6 +2,14 @@
 
 This module deploys KubernetesConfiguration FluxConfigurations.
 
+## Navigation
+
+- [Prerequisites](#Prerequisites)
+- [Resource Types](#Resource-Types)
+- [Parameters](#Parameters)
+- [Outputs](#Outputs)
+- [Template references](#Template-references)
+
 ## Prerequisites
 
 Registration of your subscription with the AKS-ExtensionManager feature flag. Use the following command:
@@ -19,13 +27,6 @@ az provider register --namespace Microsoft.KubernetesConfiguration
 ```
 
 For Details see [Prerequisites](https://docs.microsoft.com/en-us/azure/azure-arc/kubernetes/tutorial-use-gitops-flux2)
-
-## Navigation
-
-- [Resource Types](#Resource-Types)
-- [Parameters](#Parameters)
-- [Outputs](#Outputs)
-- [Template references](#Template-references)
 
 ## Resource Types
 
