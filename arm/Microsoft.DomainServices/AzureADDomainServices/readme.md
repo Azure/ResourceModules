@@ -44,88 +44,47 @@ This template deploys Azure Active Directory Domain Services (AADDS).
 | `roleAssignments  ` | array  | `[array]` |  | Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\' |
 | `logsToEnable   ` | array  | `[array]` |  | optional. The name of logs that will be streamed |
 
-### Parameter Usage: `subnets`
+### Parameter Usage: `Azure ADDS`
 
-Below you can find an example for the subnet property's usage. For all remaining properties, please refer to the _[subnets](subnets/readme.md)_ readme.
+Below you can find an example for the Azure Active Directory Domain Services(Azure ADDS) property's usage. For creating a key vault please refer to key vault module page.
 
 ```json
-"subnets": {
-    "value": [
-        {
-            "name": "GatewaySubnet",
-            "addressPrefix": "10.0.255.0/24"
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "domainName": {
+            "value": ""
         },
-        {
-            "name": "<<namePrefix>>-az-subnet-x-001",
-            "addressPrefix": "10.0.0.0/24",
-            "networkSecurityGroupId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/networkSecurityGroups/adp-<<namePrefix>>-az-nsg-x-001",
-            "serviceEndpoints": [
-                {
-                    "service": "Microsoft.Storage"
+        "sku": {
+            "value": "standard"
+        },
+        "subnetId": {
+            "value": ""
+        },
+        "pfxCertificate": {
+            "reference": {
+                "keyVault": {
+                    "id": "<< Key Vault resource Id path>>"
                 },
-                {
-                    "service": "Microsoft.Sql"
-                }
-            ],
-            "routeTableId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/routeTables/adp-<<namePrefix>>-az-udr-x-001",
-            "delegations": [
-                {
-                    "name": "netappDel",
-                    "properties": {
-                        "serviceName": "Microsoft.Netapp/volumes"
-                    }
-                }
-            ],
-            "privateEndpointNetworkPolicies": "Disabled",
-            "privateLinkServiceNetworkPolicies": "Enabled"
+                "secretName": "<<secret name>>"
+            }
+        },
+        "pfxCertificatePassword": {
+            "reference": {
+                "keyVault": {
+                    "id": "<< Key Vault resource Id path>>"
+                },
+                "secretName": "<<secret name>>"
+            }
+        },
+        "additionalRecipients": {
+            "value": "<<email address>>"
+        },
+        "diagnosticWorkspaceId": {
+            "value": "<< Log Analytics Workspace Resource Id"
         }
-    ]
-}
-```
-
-### Parameter Usage: `virtualNetworkPeerings`
-
-As the virtual network peering array allows you to deploy not only a one-way but also two-way peering (i.e reverse), you can use the following ***additional*** properties on top of what is documented in _[virtualNetworkPeerings](virtualNetworkPeerings/readme.md)_.
-
-| Parameter Name | Type | Default Value | Possible Values | Description |
-| :-- | :-- | :-- | :-- | :-- |
-| `remotePeeringEnabled` | bool | `false` |  | Optional. Set to true to also deploy the reverse peering for the configured remote virtual networks to the local network |
-| `remotePeeringName` | string | `'${last(split(peering.remoteVirtualNetworkId, '/'))}-${name}'` | | Optional. The Name of Vnet Peering resource. If not provided, default value will be <remoteVnetName>-<localVnetName> |
-| `remotePeeringAllowForwardedTraffic` | bool | `true` | | Optional. Whether the forwarded traffic from the VMs in the local virtual network will be allowed/disallowed in remote virtual network. |
-| `remotePeeringAllowGatewayTransit` | bool | `false` | | Optional. If gateway links can be used in remote virtual networking to link to this virtual network. |
-| `remotePeeringAllowVirtualNetworkAccess` | bool | `true` | | Optional. Whether the VMs in the local virtual network space would be able to access the VMs in remote virtual network space. |
-| `remotePeeringDoNotVerifyRemoteGateways` | bool | `true` | | Optional. If we need to verify the provisioning state of the remote gateway. |
-| `remotePeeringUseRemoteGateways` | bool | `false` | |  Optional. If remote gateways can be used on this virtual network. If the flag is set to `true`, and allowGatewayTransit on local peering is also `true`, virtual network will use gateways of local virtual network for transit. Only one peering can have this flag set to `true`. This flag cannot be set if virtual network already has a gateway.  |
-
-```json
-"virtualNetworkPeerings": {
-    "value": [
-        {
-            "remoteVirtualNetworkId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-peer01",
-            "allowForwardedTraffic": true,
-            "allowGatewayTransit": false,
-            "allowVirtualNetworkAccess": true,
-            "useRemoteGateways": false,
-            "remotePeeringEnabled": true,
-            "remotePeeringName": "customName",
-            "remotePeeringAllowVirtualNetworkAccess": true,
-            "remotePeeringAllowForwardedTraffic": true
-        }
-    ]
-}
-```
-
-### Parameter Usage: `addressPrefixes`
-
-The `addressPrefixes` parameter accepts a JSON Array of string values containing the IP Address Prefixes for the Virtual Network (vNet).
-
-Here's an example of specifying a single Address Prefix:
-
-```json
-"addressPrefixes": {
-    "value": [
-        "10.1.0.0/16"
-    ]
+    }
 }
 ```
 
@@ -174,17 +133,14 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 ## Considerations
 
-The network security group and route table resources must reside in the same resource group as the virtual network.
+The network security group has to be created prior to running this module and assign to the Azure ADDS Subnet and associating a route table to the same subnet is not recommended.
 
 ## Outputs
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the virtual network |
-| `resourceGroupName` | string | The resource group the virtual network was deployed into |
-| `resourceId` | string | The resource ID of the virtual network |
-| `subnetNames` | array | The names of the deployed subnets |
-| `subnetResourceIds` | array | The resource IDs of the deployed subnets |
+| `name` | string | The name of the Azure Active Directory Domain Services(Azure ADDS) |
+| `resourceId` | string | The resource ID of the Azure Active Directory Domain Services(Azure ADDS) |
 
 ## Template references
 
