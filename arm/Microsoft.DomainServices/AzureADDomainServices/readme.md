@@ -83,6 +83,9 @@ Below you can find an example for the Azure Active Directory Domain Services(Azu
         },
         "diagnosticWorkspaceId": {
             "value": "<< Log Analytics Workspace Resource Id"
+        },
+        "lock": {
+            "value": "CanNotDelete"
         }
     }
 }

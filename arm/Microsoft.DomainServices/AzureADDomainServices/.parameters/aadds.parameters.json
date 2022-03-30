@@ -2,16 +2,16 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "aaddsdomainname": {
+        "domainName": {
             "value": ""
         },
-        "aaddssku": {
+        "sku": {
             "value": "standard"
         },
-        "aaddssubnetId": {
+        "subnetId": {
             "value": ""
         },
-        "aaddspfxCertificate": {
+        "pfxCertificate": {
             "reference": {
                 "keyVault": {
                     "id": "<< Key Vault resource Id path>>"
@@ -19,7 +19,7 @@
                 "secretName": "<<secret name>>"
             }
         },
-        "aaddspfxCertificatePassword": {
+        "pfxCertificatePassword": {
             "reference": {
                 "keyVault": {
                     "id": "<< Key Vault resource Id path>>"
@@ -27,11 +27,14 @@
                 "secretName": "<<secret name>>"
             }
         },
-        "aaddsadditionalRecipients": {
+        "additionalRecipients": {
             "value": "<<email address>>"
         },
-        "aaddsdiagnosticWorkspaceId": {
+        "diagnosticWorkspaceId": {
             "value": "<< Log Analytics Workspace Resource Id"
+        },
+        "lock": {
+            "value": "CanNotDelete"
         }
     }
 }
