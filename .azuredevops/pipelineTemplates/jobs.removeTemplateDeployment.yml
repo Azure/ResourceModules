@@ -47,10 +47,10 @@ parameters:
   checkoutRepositories: ''
   dependsOn: []
   # Logic-related parameters
-  removeDeployment: false
   modulePath: '$(modulePath)'
   deploymentBlocks: ''
   templatePath: ''
+  deploymentName: ''
   location: '$(defaultLocation)'
   resourceGroupName: '$(defaultResourceGroupName)'
   subscriptionId: '$(ARM_SUBSCRIPTION_ID)'
@@ -66,115 +66,109 @@ parameters:
 ##---------------------------------------------##
 
 jobs:
-  - ${{ each deploymentBlock in parameters.deploymentBlocks }}:
-      - job: ${{ deploymentBlock.jobName }}
+  - job:
+      displayName: Remove deployment with name [${{ parameters. deploymentName}}]
+    timeoutInMinutes: ${{ parameters.defaultJobTimeoutInMinutes }}
+    ${{ if ne( parameters.dependsOn, '') }}:
+      dependsOn: ${{ parameters.dependsOn }}
+    pool:
+      ${{ if ne(parameters.vmImage, '') }}:
+        vmImage: ${{ parameters.vmImage }}
+      ${{ if ne(parameters.poolName, '') }}:
+        name: ${{ parameters.poolName }}
 
-        ${{ if ne( deploymentBlock.displayName, '') }}:
-          displayName: ${{ deploymentBlock.displayName }}
-        ${{ if eq( deploymentBlock.displayName, '') }}:
-          displayName: Deploy with [${{ replace( deploymentBlock.path, '$(modulePath)', '') }}]
-        timeoutInMinutes: ${{ parameters.defaultJobTimeoutInMinutes }}
-        ${{ if ne( parameters.dependsOn, '') }}:
-          dependsOn: ${{ parameters.dependsOn }}
-        pool:
-          ${{ if ne(parameters.vmImage, '') }}:
-            vmImage: ${{ parameters.vmImage }}
-          ${{ if ne(parameters.poolName, '') }}:
-            name: ${{ parameters.poolName }}
+    steps:
+      # [Checkout Repositories] task(s)
+      #--------------------------------
+      - checkout: self
+      - ${{ if ne(parameters.checkoutRepositories, '') }}:
+          - ${{ each checkoutRepository in parameters.checkoutRepositories }}:
+              - checkout: ${{ checkoutRepository }}
+                fetchDepth: 1 # the depth of commits to ask Git to fetch; if not set defaults to no limit
+                path: 's/${{ checkoutRepository }}'
 
-        steps:
-          # [Checkout Repositories] task(s)
-          #--------------------------------
-          - checkout: self
-          - ${{ if ne(parameters.checkoutRepositories, '') }}:
-              - ? ${{ each checkoutRepository in parameters.checkoutRepositories }}
-                : - checkout: ${{ checkoutRepository }}
-                    fetchDepth: 1 # the depth of commits to ask Git to fetch; if not set defaults to no limit
-                    path: 's/${{ checkoutRepository }}'
+      # [Agent] Prepare environment
+      #----------------------------
+      - task: PowerShell@2
+        displayName: 'Setup agent'
+        inputs:
+          targetType: inline
+          pwsh: true
+          script: |
+            # Load used functions
+            . (Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
 
-          # [Agent] Prepare environment
-          #----------------------------
-          - task: PowerShell@2
-            displayName: 'Setup agent'
-            inputs:
-              targetType: inline
-              pwsh: true
-              script: |
-                # Load used functions
-                . (Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
+            # Define PS modules to install on the runner
+            $Modules = @(
+              @{ Name = 'Az.Accounts' },
+              @{ Name = 'Az.Resources' }
+              @{ Name = 'Az.CognitiveServices' },
+              @{ Name = 'Az.Compute' },
+              @{ Name = 'Az.KeyVault' },
+              @{ Name = 'Az.Monitor' },
+              @{ Name = 'Az.OperationalInsights' },
+              @{ Name = 'Az.RecoveryServices' }
+            )
 
-                # Define PS modules to install on the runner
-                $Modules = @(
-                  @{ Name = 'Az.Accounts' },
-                  @{ Name = 'Az.Resources' }
-                  @{ Name = 'Az.CognitiveServices' },
-                  @{ Name = 'Az.Compute' },
-                  @{ Name = 'Az.KeyVault' },
-                  @{ Name = 'Az.Monitor' },
-                  @{ Name = 'Az.OperationalInsights' },
-                  @{ Name = 'Az.RecoveryServices' }
-                )
+            # Set agent up
+            Set-EnvironmentOnAgent -PSModules $Modules
 
-                # Set agent up
-                Set-EnvironmentOnAgent -PSModules $Modules
+      # [Multi Repo] Support task
+      #--------------------------
+      - task: PowerShell@2
+        displayName: Handle Multi-Repo Invocation
+        inputs:
+          targetType: inline
+          pwsh: true
+          script: |
+            # Handle multiple-repositories
+            if( "${{ join(';',parameters.checkoutRepositories) }}".length -gt 0) {
+              Write-Verbose "Multi-Repo Checkout" -Verbose
+              $moduleRepoRoot = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulesRepository)'
+              $parametersRepoRoot = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.parametersRepository }}'
+            } else {
+              Write-Verbose "No Multi-Repo Checkout" -Verbose
+              $moduleRepoRoot = '$(System.DefaultWorkingDirectory)'
+              $parametersRepoRoot = '$(System.DefaultWorkingDirectory)'
+            }
+            Write-Output "##vso[task.setvariable variable=ModuleRepoRoot]$moduleRepoRoot"
+            Write-Output "##vso[task.setvariable variable=parametersRepoRoot]$parametersRepoRoot"
 
-          # [Multi Repo] Support task
-          #--------------------------
-          - task: PowerShell@2
-            displayName: Handle Multi-Repo Invocation
-            inputs:
-              targetType: inline
-              pwsh: true
-              script: |
-                # Handle multiple-repositories
-                if( "${{ join(';',parameters.checkoutRepositories) }}".length -gt 0) {
-                  Write-Verbose "Multi-Repo Checkout" -Verbose
-                  $moduleRepoRoot = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulesRepository)'
-                  $parametersRepoRoot = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.parametersRepository }}'
-                } else {
-                  Write-Verbose "No Multi-Repo Checkout" -Verbose
-                  $moduleRepoRoot = '$(System.DefaultWorkingDirectory)'
-                  $parametersRepoRoot = '$(System.DefaultWorkingDirectory)'
-                }
-                Write-Output "##vso[task.setvariable variable=ModuleRepoRoot]$moduleRepoRoot"
-                Write-Output "##vso[task.setvariable variable=parametersRepoRoot]$parametersRepoRoot"
+      # [Removal] task(s)
+      #------------------
+      - task: AzurePowerShell@5
+        displayName: 'Remove deployed resources via [${{ parameters.serviceConnection }}]'
+        inputs:
+          azureSubscription: ${{ parameters.serviceConnection }}
+          azurePowerShellVersion: ${{ parameters.azurePowerShellVersion }}
+          preferredAzurePowerShellVersion: ${{ parameters.preferredAzurePowerShellVersion }}
+          ScriptType: InlineScript
+          failOnStandardError: false
+          pwsh: true
+          inline: |
+            # Load used function
+            . (Join-Path '$(moduleRepoRoot)' '$(pipelineFunctionsPath)' 'resourceRemoval' 'Initialize-DeploymentRemoval.ps1')
 
-          # [Removal] task(s)
-          #------------------
-          - task: AzurePowerShell@5
-            displayName: 'Remove deployed resources via [${{ parameters.serviceConnection }}]'
-            condition: and(succeededOrFailed(), eq( '${{ parameters.removeDeployment }}', 'true'), not(eq(variables['deploymentName'],'')))
-            inputs:
-              azureSubscription: ${{ parameters.serviceConnection }}
-              azurePowerShellVersion: ${{ parameters.azurePowerShellVersion }}
-              preferredAzurePowerShellVersion: ${{ parameters.preferredAzurePowerShellVersion }}
-              ScriptType: InlineScript
-              failOnStandardError: false
-              pwsh: true
-              inline: |
-                # Load used function
-                . (Join-Path '$(moduleRepoRoot)' '$(pipelineFunctionsPath)' 'resourceRemoval' 'Initialize-DeploymentRemoval.ps1')
+            if(-not [String]::IsNullOrEmpty('${{ deploymentBlock.templateFilePath }}')) {
+              $templateFilePath = Join-Path '$(moduleRepoRoot)' '${{ deploymentBlock.templateFilePath }}'
+            } else {
+              # Use default path
+              $templateFilePath = (Test-Path (Join-Path '$(ModuleRepoRoot)' '$(templatePath)')) ?
+                (Join-Path '$(ModuleRepoRoot)' '$(modulePath)' 'deploy.bicep') :
+                (Join-Path '$(ModuleRepoRoot)' '$(modulePath)' 'deploy.json')
+            }
 
-                if(-not [String]::IsNullOrEmpty('${{ deploymentBlock.templateFilePath }}')) {
-                  $templateFilePath = Join-Path '$(moduleRepoRoot)' '${{ deploymentBlock.templateFilePath }}'
-                } else {
-                  # Use default path
-                  $templateFilePath = (Test-Path (Join-Path '$(ModuleRepoRoot)' '$(modulePath)' 'deploy.bicep')) ?
-                    (Join-Path '$(ModuleRepoRoot)' '$(modulePath)' 'deploy.bicep') :
-                    (Join-Path '$(ModuleRepoRoot)' '$(modulePath)' 'deploy.json')
-                }
+            if (-not [String]::IsNullOrEmpty('$(deploymentName)')) {
+              $functionInput = @{
+                  DeploymentName    = '$(deploymentName)'
+                  TemplateFilePath  = $templateFilePath
+                  ResourceGroupName = '${{ parameters.resourceGroupName }}'
+                  ManagementGroupId = '${{ parameters.managementGroupId }}'
+                  Verbose           = $true
+              }
 
-                if (-not [String]::IsNullOrEmpty('$(deploymentName)')) {
-                  $functionInput = @{
-                      DeploymentName    = '$(deploymentName)'
-                      TemplateFilePath  = $templateFilePath
-                      ResourceGroupName = '${{ parameters.resourceGroupName }}'
-                      ManagementGroupId = '${{ parameters.managementGroupId }}'
-                      Verbose           = $true
-                  }
+              Write-Verbose 'Invoke task with' -Verbose
+              Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
-                  Write-Verbose 'Invoke task with' -Verbose
-                  Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
-
-                  Initialize-DeploymentRemoval @functionInput
-                }
+              Initialize-DeploymentRemoval @functionInput
+            }
