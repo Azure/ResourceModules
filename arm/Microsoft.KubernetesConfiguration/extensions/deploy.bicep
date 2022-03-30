@@ -60,12 +60,12 @@ resource extension 'Microsoft.KubernetesConfiguration/extensions@2022-03-01' = {
     extensionType: extensionType
     releaseTrain: !empty(releaseTrain) ? releaseTrain : null
     scope: {
-      cluster: empty(releaseNamespace) ? null : {
+      cluster: !empty(releaseNamespace) ? {
         releaseNamespace: releaseNamespace
-      }
-      namespace: empty(targetNamespace) ? null : {
+      } : null
+      namespace: !empty(targetNamespace) ? {
         targetNamespace: targetNamespace
-      }
+      } : null
     }
     version: !empty(version) ? version : null
   }
