@@ -3,8 +3,11 @@
 #
 
 # Please see the documentation for all configuration options:
-# https://microsoft.github.io/PSRule/
-# https://azure.github.io/PSRule.Rules.Azure/setup/configuring-options/
+# https://aka.ms/ps-rule/options
+# https://aka.ms/ps-rule-azure/options
+
+requires:
+  PSRule.Rules.Azure: '@pre >=1.13.4'
 
 input:
   pathIgnore:
@@ -38,3 +41,6 @@ configuration:
 
   # Enable automatic expansion of bicep source files
   AZURE_BICEP_FILE_EXPANSION: true
+
+# Specific suppressions can be added here
+suppression: {}
