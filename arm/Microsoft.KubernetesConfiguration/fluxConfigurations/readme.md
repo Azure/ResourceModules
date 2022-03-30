@@ -38,6 +38,7 @@ For Details see [Prerequisites](https://docs.microsoft.com/en-us/azure/azure-arc
 **Required parameters**
 | Parameter Name | Type | Allowed Values | Description |
 | :-- | :-- | :-- | :-- |
+| `clusterName` | string |  | The name of the AKS cluster that should be configured. |
 | `name` | string |  | The name of the Flux Configuration |
 | `namespace` | string |  | The namespace to which this configuration is installed to. Maximum of 253 lower case alphanumeric characters, hyphen and period only. |
 | `scope` | string | `[cluster, namespace]` | Scope at which the configuration will be installed. |
@@ -47,7 +48,6 @@ For Details see [Prerequisites](https://docs.microsoft.com/en-us/azure/azure-arc
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `bucket` | object | `{object}` | Parameters to reconcile to the GitRepository source kind type. |
-| `clusterName` | string |  | The name of the AKS cluster that should be configured. |
 | `configurationProtectedSettings` | object | `{object}` | Key-value pairs of protected configuration settings for the configuration |
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `gitRepository` | object | `{object}` | Parameters to reconcile to the GitRepository source kind type. |

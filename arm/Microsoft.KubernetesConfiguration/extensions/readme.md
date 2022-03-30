@@ -38,6 +38,7 @@ For Details see [Prerequisites](https://docs.microsoft.com/en-us/azure/azure-arc
 **Required parameters**
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
+| `clusterName` | string |  | The name of the AKS cluster that should be configured. |
 | `extensionType` | string | Type of the Extension, of which this resource is an instance of. It must be one of the Extension Types registered with Microsoft.KubernetesConfiguration by the Extension publisher. |
 | `name` | string | The name of the Flux Configuration |
 
@@ -45,7 +46,6 @@ For Details see [Prerequisites](https://docs.microsoft.com/en-us/azure/azure-arc
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `autoUpgradeMinorVersion` | bool | `True` | Flag to note if this extension participates in auto upgrade of minor version, or not. |
-| `clusterName` | string |  | The name of the AKS cluster that should be configured. |
 | `configurationProtectedSettings` | object | `{object}` | Configuration settings that are sensitive, as name-value pairs for configuring this extension. |
 | `configurationSettings` | object | `{object}` | Configuration settings, as name-value pairs for configuring this extension. |
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
