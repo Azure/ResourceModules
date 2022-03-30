@@ -1,0 +1,37 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "aaddsdomainname": {
+            "value": ""
+        },
+        "aaddssku": {
+            "value": "standard"
+        },
+        "aaddssubnetId": {
+            "value": ""
+        },
+        "aaddspfxCertificate": {
+            "reference": {
+                "keyVault": {
+                    "id": "<< Key Vault resource Id path>>"
+                },
+                "secretName": "<<secret name>>"
+            }
+        },
+        "aaddspfxCertificatePassword": {
+            "reference": {
+                "keyVault": {
+                    "id": "<< Key Vault resource Id path>>"
+                },
+                "secretName": "<<secret name>>"
+            }
+        },
+        "aaddsadditionalRecipients": {
+            "value": "<<email address>>"
+        },
+        "aaddsdiagnosticWorkspaceId": {
+            "value": "<< Log Analytics Workspace Resource Id"
+        }
+    }
+}
