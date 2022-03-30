@@ -19,7 +19,7 @@ This template deploys Azure Active Directory Domain Services (AADDS).
 | `sku` | string |  | Standard | Required. The name of the sku specific to Azure ADDS Services. |
 | `subnetId` | string |  |  | Required. The subnet Id to deploy the Azure ADDS Services. |
 | `location` | string |  |  | Required: The location to deploy the Azure ADDS Services. |
-| `pfxCertificate` | string | | | Required: The value is the base64encoded representation of the certificate pfx file. Refer below commands to generate this. |
+| `pfxCertificate` | string | | | Required: The value is the base64encoded representation of the certificate pfx file. Refer below section to generate this. |
 | `pfxCertificatePassword` | string | |  | Required: The value is to decrypt the provided Secure LDAP certificate pfx file. |
 | `additionalRecipients` | array |  |  | Required: The email recipient value to receive alerts. |
 | `domainConfigurationType` | string | `enabled` |  | Optional: The value is to provide domain configuration type. |
@@ -39,7 +39,7 @@ This template deploys Azure Active Directory Domain Services (AADDS).
 | `diagnosticEventHubAuthorizationRuleId ` | string  |  |  | Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName ` | string  | |  | Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
 | `tags ` | object | `{object}` |  | Optional. Tags of the resource. |
-| `diagnosticLogsRetentionInDays` | int  | |  | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
+| `diagnosticLogsRetentionInDays` | int  | 365 |  | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `lock  ` | string |  |  | Optional. Specify the type of lock. |
 | `roleAssignments  ` | array  | `[array]` |  | Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\' |
 | `logsToEnable   ` | array  | `[array]` |  | optional. The name of logs that will be streamed. |
@@ -136,7 +136,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 The network security group has to be created prior to running this module and assign to the Azure ADDS Subnet and associating a route table to the same subnet is not recommended.
 
 ## Get base64encoded code from pfx
-- Please follow the below powershell commands to generate the base65encoded code from a pfx file:
+Follow the below powershell commands to generate the base65encoded code from a pfx file:
 ```powershell
   $file=get-content "<<pfx certificate file path>>" -encoding byte
   [System.Convert]::ToBase64String($file) | Out-File pfx-encoded-bytes.txt
