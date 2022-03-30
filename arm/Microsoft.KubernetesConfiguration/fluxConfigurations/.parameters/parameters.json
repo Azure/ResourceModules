@@ -23,15 +23,9 @@
                 "timeoutInSeconds": 180,
                 "syncIntervalInSeconds": 300,
                 "repositoryRef": {
-                    "branch": "main",
-                    "tag": null,
-                    "semver": null,
-                    "commit": null
+                    "branch": "main"
                 },
-                "sshKnownHosts": "",
-                "httpsUser": null,
-                "httpsCACert": null,
-                "localAuthRef": null
+                "sshKnownHosts": ""
             }
         },
         "kustomizations": {
@@ -41,7 +35,6 @@
                     "dependsOn": [],
                     "timeoutInSeconds": 300,
                     "syncIntervalInSeconds": 300,
-                    "retryIntervalInSeconds": null,
                     "prune": true,
                     "force": false
                 }
