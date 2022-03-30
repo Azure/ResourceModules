@@ -15,25 +15,34 @@ This template deploys Azure Active Directory Domain Services (AADDS).
 
 | Parameter Name | Type | Default Value | Possible Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `addressPrefixes` | array |  |  | Required. An Array of 1 or more IP Address Prefixes for the Virtual Network. |
-| `ddosProtectionPlanId` | string |  |  | Optional. Resource ID of the DDoS protection plan to assign the VNET to. If it's left blank, DDoS protection will not be configured. If it's provided, the VNET created by this template will be attached to the referenced DDoS protection plan. The DDoS protection plan can exist in the same or in a different subscription. |
-| `diagnosticEventHubAuthorizationRuleId` | string |  |  | Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
-| `diagnosticEventHubName` | string |  |  | Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
-| `diagnosticLogCategoriesToEnable` | array | `[VMProtectionAlerts]` | `[VMProtectionAlerts]` | Optional. The name of logs that will be streamed. |
-| `diagnosticLogsRetentionInDays` | int | `365` |  | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
-| `diagnosticMetricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | Optional. The name of metrics that will be streamed. |
-| `diagnosticSettingsName` | string | `[format('{0}-diagnosticSettings', parameters('name'))]` |  | Optional. The name of the diagnostic setting, if deployed. |
-| `diagnosticStorageAccountId` | string |  |  | Optional. Resource ID of the diagnostic storage account. |
-| `diagnosticWorkspaceId` | string |  |  | Optional. Resource ID of the diagnostic log analytics workspace. |
-| `dnsServers` | array | `[]` |  | Optional. DNS Servers associated to the Virtual Network. |
-| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
-| `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
-| `name` | string |  |  | Required. The Virtual Network (vNet) Name. |
-| `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
-| `subnets` | _[subnets](subnets/readme.md)_ array | `[]` |  | Optional. An Array of subnets to deploy to the Virtual Network. |
-| `tags` | object | `{object}` |  | Optional. Tags of the resource. |
-| `virtualNetworkPeerings` | _[virtualNetworkPeerings](virtualNetworkPeerings/readme.md)_ array | `[]` |  | Optional. Virtual Network Peerings configurations |
+| `domainName` | string |  |  | Required. The domain name specific to Azure ADDS Services only - not recommended to use <<domain>>.onmicrosoft.com for production |
+| `sku` | string |  | Standard | Required. The name of the sku specific to Azure ADDS Services. |
+| `subnetId` | string |  |  | Required. The subnet Id to deploy the Azure ADDS Services. |
+| `location` | string |  |  | Required: The location to deploy the Azure ADDS Services. |
+| `pfxCertificate` | string |  | Required: The value is the base64encoded representation of the certificate pfx file. |
+| `pfxCertificatePassword` | string | |  | Required: The value is to decrypt the provided Secure LDAP certificate pfx file. |
+| `additionalRecipients` | array |  |  | Required: The email recipient value to receive alerts. |
+| `domainConfigurationType` | string | `enabled` |  | Optional: The value is to provide domain configuration type. |
+| `filteredSync` | string | `enabled`  |  | Optional: The value is to synchronise scoped users and groups. |
+| `tlsV1` | string | `enabled`  |  | Optional: The value is to enable clients making request using TLSv1. |
+| `ntlmV1` | string | `enabled` | | Optional: The value is to enable clients making request using NTLM v1. |
+| `syncNtlmPasswords` | string  | `enabled` |  | Optional: The value is to enable synchronised users to use NTLM authentication. |
+| `syncOnPremPasswords` | string | `enabled`  |  | Optional: The value is to enable on-premises users to authenticate against managed domain |
+| `kerberosRc4Encryption` | string | `enabled`  |  | Optional: The value is to enable Kerberos requests that use RC4 encryption |
+| `kerberosArmoring` | string | `enabled`  |  | Optional: The value is to enable to provide a protected channel between the Kerberos client and the KDC |
+| `notifyDcAdmins` | string  | `enabled`  |  | Optional: The value is to notify the DC Admins|
+| `notifyGlobalAdmins` | string | `enabled` |  | Optional: The value is to notify the Global Admins |
+| `ldapexternalaccess` | string  | `enabled`  |  | Required: The value is to enable the Secure LDAP for external services of Azure ADDS Services |
+| `secureldap` | string  | `enabled`  |  | Required: The value is to enable the Secure LDAP for Azure ADDS Services |
+| `diagnosticStorageAccountId ` | string  |  |  | Optional. Resource ID of the diagnostic storage account |
+| `diagnosticWorkspaceId ` | string  |  |  | Optional. Resource ID of the diagnostic log analytics workspace. |
+| `diagnosticEventHubAuthorizationRuleId ` | string  |  |  | Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to |
+| `diagnosticEventHubName ` | string  | |  | Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category |
+| `tags ` | object | `{object}` |  | Optional. Tags of the resource. |
+| `diagnosticLogsRetentionInDays` | int  | |  | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely |
+| `lock  ` | string |  |  | Optional. Specify the type of lock. |
+| `roleAssignments  ` | array  | `[array]` |  | Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\' |
+| `logsToEnable   ` | array  | `[array]` |  | optional. The name of logs that will be streamed |
 
 ### Parameter Usage: `subnets`
 

@@ -21,40 +21,40 @@ param pfxCertificatePassword string
 param additionalRecipients string
 
 @description('Optional: The value is to provide domain configuration type')
-var domainConfigurationType = 'FullySynced'
+param domainConfigurationType string = 'FullySynced'
 
 @description('Optional: The value is to synchronise scoped users and groups - This is enabled by default')
-var filteredSync = 'Enabled'
+param filteredSync string = 'Enabled'
 
 @description('Optional: The value is to enable clients making request using TLSv1 - This is enabled by default')
-var tlsV1 = 'Enabled'
+param tlsV1 string = 'Enabled'
 
 @description('Optional: The value is to enable clients making request using NTLM v1 - This is enabled by default')
-var ntlmV1 = 'Enabled'
+param ntlmV1 string = 'Enabled'
 
 @description('Optional: The value is to enable synchronised users to use NTLM authentication - This is enabled by default')
-var syncNtlmPasswords = 'Enabled'
+param syncNtlmPasswords string = 'Enabled'
 
 @description('Optional: The value is to enable on-premises users to authenticate against managed domain - This is enabled by default')
-var syncOnPremPasswords = 'Enabled'
+param syncOnPremPasswords string = 'Enabled'
 
 @description('Optional: The value is to enable Kerberos requests that use RC4 encryption - This is enabled by default')
-var kerberosRc4Encryption = 'Enabled'
+param kerberosRc4Encryption string = 'Enabled'
 
 @description('Optional: The value is to enable to provide a protected channel between the Kerberos client and the KDC - This is enabled by default')
-var kerberosArmoring = 'Enabled'
+param kerberosArmoring string = 'Enabled'
 
 @description('Optional: The value is to notify the DC Admins - This is enabled by default ')
-var notifyDcAdmins = 'Enabled'
+param notifyDcAdmins string = 'Enabled'
 
 @description('Optional: The value is to notify the Global Admins - This is enabled by default')
-var notifyGlobalAdmins = 'Enabled'
+param notifyGlobalAdmins string = 'Enabled'
 
 @description('Required: The value is to enable the Secure LDAP for external services of Azure ADDS Services')
-var ldapexternalaccess = 'Enabled'
+param ldapexternalaccess string = 'Enabled'
 
 @description('Required: The value is to enable the Secure LDAP for Azure ADDS Services')
-var secureldap = 'Enabled'
+param secureldap string = 'Enabled'
 
 @description('Optional. Resource ID of the diagnostic storage account.')
 param diagnosticStorageAccountId string = ''
