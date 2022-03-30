@@ -190,3 +190,9 @@ module domainName_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index)
     resourceId: domainName_resource.id
   }
 }]
+
+@description('The domain name of the Azure Active Directory Domain Services(Azure ADDS)')
+output name string = domainName_resource.name
+
+@description('The resource ID of the Azure Active Directory Domain Services(Azure ADDS)')
+output resourceId string = domainName_resource.id
