@@ -35,12 +35,28 @@ stages:
     jobs:
       - template: /.azuredevops/pipelineTemplates/jobs.validateModulePester.yml
 
-  - stage: Deployment
-    displayName: Deployment tests
+  - stage: DependencyDeployment
+    displayName: Dependency Deployment
     jobs:
       - template: /.azuredevops/pipelineTemplates/jobs.deployTemplate.yml
         parameters:
           templatePath: '$(modulePath)/.dependencies/dependencies.bicep'
+
+  - stage: Deployment
+    displayName: Deployment tests
+    jobs:
+      - job: deploy # name of the job, A-Z, a-z, 0-9, and underscore
+        displayName: string # friendly name to display in the UI
+        dependsOn: string | [ string ]
+        condition: string
+        strategy:
+          parallel: # parallel strategy
+          matrix:
+            ['min.parameters.json', 'parameters.json', 'max.parameters.json']
+        steps:
+          - template: 'deploy'
+          - template: 'remove'
+
       - template: /.azuredevops/pipelineTemplates/jobs.deployTemplate.yml
         parameters:
           removeDeployment: '${{ parameters.removeDeployment }}'
@@ -49,6 +65,7 @@ stages:
             - path: $(modulePath)/.parameters/min.parameters.json
             - path: $(modulePath)/.parameters/parameters.json
             - path: $(modulePath)/.parameters/max.parameters.json
+
       - template: /.azuredevops/pipelineTemplates/jobs.removeTemplateDeployment
         condition: and(succeededOrFailed(), eq( '${{ parameters.removeDeployment }}', 'true'), not(eq(variables['deploymentName'],'')))
         parameters:
