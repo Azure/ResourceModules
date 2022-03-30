@@ -9,6 +9,9 @@
 requires:
   PSRule.Rules.Azure: '@pre >=1.13.4'
 
+execution:
+  notProcessedWarning: false
+
 input:
   pathIgnore:
   - '.vscode/'
