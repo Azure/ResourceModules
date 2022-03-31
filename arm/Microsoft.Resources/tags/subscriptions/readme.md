@@ -2,6 +2,13 @@
 
 This module deploys Resources Tags on a subscription scope.
 
+## Navigation
+
+- [Resource Types](#Resource-Types)
+- [Parameters](#Parameters)
+- [Outputs](#Outputs)
+- [Template references](#Template-references)
+
 ## Resource Types
 
 | Resource Type | API Version |
@@ -10,13 +17,15 @@ This module deploys Resources Tags on a subscription scope.
 
 ## Parameters
 
-| Parameter Name | Type | Default Value | Possible Values | Description |
-| :-- | :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `location` | string | `[deployment().location]` |  | Optional. Location deployment metadata. |
-| `name` | string | `default` |  | Optional. The name of the tags resource. |
-| `onlyUpdate` | bool | `False` |  | Optional. Instead of overwriting the existing tags, combine them with the new tags |
-| `tags` | object | `{object}` |  | Optional. Tags for the resource group. If not provided, removes existing tags |
+**Optional parameters**
+| Parameter Name | Type | Default Value | Description |
+| :-- | :-- | :-- | :-- |
+| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `location` | string | `[deployment().location]` | Location deployment metadata. |
+| `name` | string | `'default'` | The name of the tags resource. |
+| `onlyUpdate` | bool | `False` | Instead of overwriting the existing tags, combine them with the new tags |
+| `tags` | object | `{object}` | Tags for the resource group. If not provided, removes existing tags |
+
 
 ### Parameter Usage: `tags`
 

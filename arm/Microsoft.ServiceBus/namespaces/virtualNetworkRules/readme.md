@@ -2,6 +2,13 @@
 
 This module deploys a virtual network rule for a service bus namespace.
 
+## Navigation
+
+- [Resource Types](#Resource-Types)
+- [Parameters](#Parameters)
+- [Outputs](#Outputs)
+- [Template references](#Template-references)
+
 ## Resource Types
 
 | Resource Type | API Version |
@@ -10,12 +17,18 @@ This module deploys a virtual network rule for a service bus namespace.
 
 ## Parameters
 
-| Parameter Name | Type | Default Value | Possible Values | Description |
-| :-- | :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `name` | string | `[format('{0}-vnr', parameters('namespaceName'))]` |  | Optional. The name of the virtual network rule |
-| `namespaceName` | string |  |  | Required. Name of the parent Service Bus Namespace for the Service Bus Queue. |
-| `virtualNetworkSubnetId` | string |  |  | Required. Resource ID of Virtual Network Subnet |
+**Required parameters**
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `namespaceName` | string | Name of the parent Service Bus Namespace for the Service Bus Queue. |
+| `virtualNetworkSubnetId` | string | Resource ID of Virtual Network Subnet |
+
+**Optional parameters**
+| Parameter Name | Type | Default Value | Description |
+| :-- | :-- | :-- | :-- |
+| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `name` | string | `[format('{0}-vnr', parameters('namespaceName'))]` | The name of the virtual network rule |
+
 
 ## Outputs
 

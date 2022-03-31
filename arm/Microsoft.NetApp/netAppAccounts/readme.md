@@ -2,6 +2,13 @@
 
 This template deploys Azure NetApp Files.
 
+## Navigation
+
+- [Resource types](#Resource-types)
+- [Parameters](#Parameters)
+- [Outputs](#Outputs)
+- [Template references](#Template-references)
+
 ## Resource types
 
 | Resource Type | API Version |
@@ -14,25 +21,31 @@ This template deploys Azure NetApp Files.
 
 ## Parameters
 
-| Parameter Name | Type | Default Value | Possible Values | Description |
+**Required parameters**
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `name` | string | The name of the NetApp account. |
+
+**Optional parameters**
+| Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `capacityPools` | _[capacityPools](capacityPools/readme.md)_ array | `[]` |  | Optional. Capacity pools to create. |
-| `dnsServers` | string |  |  | Optional. Required if domainName is specified. Comma separated list of DNS server IP addresses (IPv4 only) required for the Active Directory (AD) domain join and SMB authentication operations to succeed. |
-| `domainJoinOU` | string |  |  | Optional. Used only if domainName is specified. LDAP Path for the Organization Unit (OU) where SMB Server machine accounts will be created (i.e. 'OU=SecondLevel,OU=FirstLevel'). |
-| `domainJoinPassword` | secureString |  |  | Optional. Required if domainName is specified. Password of the user specified in domainJoinUser parameter |
-| `domainJoinUser` | string |  |  | Optional. Required if domainName is specified. Username of Active Directory domain administrator, with permissions to create SMB server machine account in the AD domain. |
-| `domainName` | string |  |  | Optional. Fully Qualified Active Directory DNS Domain Name (e.g. 'contoso.com') |
-| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
-| `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
-| `name` | string |  |  | Required. The name of the NetApp account. |
-| `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
-| `smbServerNamePrefix` | string |  |  | Optional. Required if domainName is specified. NetBIOS name of the SMB server. A computer account with this prefix will be registered in the AD and used to mount volumes |
-| `tags` | object | `{object}` |  | Optional. Tags for all resources. |
+| `capacityPools` | _[capacityPools](capacityPools/readme.md)_ array | `[]` |  | Capacity pools to create. |
+| `dnsServers` | string | `''` |  | Required if domainName is specified. Comma separated list of DNS server IP addresses (IPv4 only) required for the Active Directory (AD) domain join and SMB authentication operations to succeed. |
+| `domainJoinOU` | string | `''` |  | Used only if domainName is specified. LDAP Path for the Organization Unit (OU) where SMB Server machine accounts will be created (i.e. 'OU=SecondLevel,OU=FirstLevel'). |
+| `domainJoinPassword` | secureString | `''` |  | Required if domainName is specified. Password of the user specified in domainJoinUser parameter |
+| `domainJoinUser` | string | `''` |  | Required if domainName is specified. Username of Active Directory domain administrator, with permissions to create SMB server machine account in the AD domain. |
+| `domainName` | string | `''` |  | Fully Qualified Active Directory DNS Domain Name (e.g. 'contoso.com') |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
+| `lock` | string | `'NotSpecified'` | `[CanNotDelete, NotSpecified, ReadOnly]` | Specify the type of lock. |
+| `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
+| `smbServerNamePrefix` | string | `''` |  | Required if domainName is specified. NetBIOS name of the SMB server. A computer account with this prefix will be registered in the AD and used to mount volumes |
+| `tags` | object | `{object}` |  | Tags for all resources. |
+
 
 ### Parameter Usage: `roleAssignments`
 
-Create a role assignment for the given resource. If you want to assign a service principal / managed identity that is created in the same deployment, make sure to also specify the `'principalType'` parameter and set it to 'ServicePrincipal'. This will ensure the role assignment waits for the principal's propagation in Azure.
+Create a role assignment for the given resource. If you want to assign a service principal / managed identity that is created in the same deployment, make sure to also specify the `'principalType'` parameter and set it to `'ServicePrincipal'`. This will ensure the role assignment waits for the principal's propagation in Azure.
 
 ```json
 "roleAssignments": {

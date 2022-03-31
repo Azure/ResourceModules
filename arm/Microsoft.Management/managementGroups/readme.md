@@ -32,16 +32,16 @@ This module has some known **limitations**:
 **Optional parameters**
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
-| `displayName` | string |  | The friendly name of the management group. If no value is passed then this field will be set to the group ID. |
+| `displayName` | string | `''` | The friendly name of the management group. If no value is passed then this field will be set to the group ID. |
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `location` | string | `[deployment().location]` | Location deployment metadata. |
-| `parentId` | string |  | The management group parent ID. Defaults to current scope. |
+| `parentId` | string | `''` | The management group parent ID. Defaults to current scope. |
 | `roleAssignments` | array | `[]` | Array of role assignment objects to define RBAC on this resource. |
 
 
 ### Parameter Usage: `roleAssignments`
 
-Create a role assignment for the given resource. If you want to assign a service principal / managed identity that is created in the same deployment, make sure to also specify the `'principalType'` parameter and set it to 'ServicePrincipal'. This will ensure the role assignment waits for the principal's propagation in Azure.
+Create a role assignment for the given resource. If you want to assign a service principal / managed identity that is created in the same deployment, make sure to also specify the `'principalType'` parameter and set it to `'ServicePrincipal'`. This will ensure the role assignment waits for the principal's propagation in Azure.
 
 ```json
 "roleAssignments": {
