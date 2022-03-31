@@ -61,7 +61,7 @@ The following resources are required to be able to deploy this resource.
 | `doNotRunExtensionsOnOverprovisionedVMs` | bool | `False` |  | When Overprovision is enabled, extensions are launched only on the requested number of VMs which are finally kept. This property will hence ensure that the extensions do not run on the extra overprovisioned VMs. |
 | `enableAutomaticOSUpgrade` | bool | `False` |  | Indicates whether OS upgrades should automatically be applied to scale set instances in a rolling fashion when a newer version of the OS image becomes available. Default value is false. If this is set to true for Windows based scale sets, enableAutomaticUpdates is automatically set to false and cannot be set to true. |
 | `enableAutomaticUpdates` | bool | `True` |  | Indicates whether Automatic Updates is enabled for the Windows virtual machine. Default value is true. For virtual machine scale sets, this property can be updated and updates will take effect on OS reprovisioning. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage: Attribution ID (GUID). |
 | `enableEvictionPolicy` | bool | `False` |  | Specifies the eviction policy for the low priority virtual machine. Will result in 'Deallocate' eviction policy. |
 | `enableServerSideEncryption` | bool | `False` |  | Specifies if Windows VM disks should be encrypted with Server-side encryption + Customer managed Key. |
 | `encryptionAtHost` | bool | `True` |  | This property can be used by user in the request to enable or disable the Host Encryption for the virtual machine. This will enable the encryption for all the disks including Resource/Temp disk at host itself. For security reasons, it is recommended to set encryptionAtHost to True. Restrictions: Cannot be enabled if Azure Disk Encryption (guest-VM encryption using bitlocker/DM-Crypt) is enabled on your virtual machine scale sets. |
@@ -196,7 +196,7 @@ The following resources are required to be able to deploy this resource.
 }
 ```
 
-### Parameter Usage `nicConfigurations`
+### Parameter Usage: `nicConfigurations`
 
 ```json
 "nicConfigurations": {
@@ -219,7 +219,7 @@ The following resources are required to be able to deploy this resource.
 ```
 
 
-### Parameter Usage `extensionDomainJoinConfig`
+### Parameter Usage: `extensionDomainJoinConfig`
 
 
 ```json
@@ -239,7 +239,7 @@ The following resources are required to be able to deploy this resource.
 }
 ```
 
-### Parameter Usage `extensionNetworkWatcherAgentConfig`
+### Parameter Usage: `extensionNetworkWatcherAgentConfig`
 
 ```json
 "extensionNetworkWatcherAgentConfig": {
@@ -249,30 +249,30 @@ The following resources are required to be able to deploy this resource.
 }
 ```
 
-### Parameter Usage: `microsoftAntiMalwareSettings`
+### Parameter Usage: `extensionAntiMalwareConfig`
 
 Only for OSType Windows
 
 ```json
 "extensionAntiMalwareConfig": {
-    "value": {
-        "enabled": true,
-        "settings": {
-            "AntimalwareEnabled": true,
-            "Exclusions": {
-                "Extensions": ".log;.ldf",
-                "Paths": "D:\\IISlogs;D:\\DatabaseLogs",
-                "Processes": "mssence.svc"
-            },
-            "RealtimeProtectionEnabled": true,
-            "ScheduledScanSettings": {
-                "isEnabled": "true",
-                "scanType": "Quick",
-                "day": "7",
-                "time": "120"
-            }
-        }
+  "value": {
+    "enabled": true,
+    "settings": {
+      "AntimalwareEnabled": true,
+      "Exclusions": {
+        "Extensions": ".log;.ldf",
+        "Paths": "D:\\IISlogs;D:\\DatabaseLogs",
+        "Processes": "mssence.svc"
+      },
+      "RealtimeProtectionEnabled": true,
+      "ScheduledScanSettings": {
+        "isEnabled": "true",
+        "scanType": "Quick",
+        "day": "7",
+        "time": "120"
+      }
     }
+  }
 }
 ```
 
@@ -280,67 +280,48 @@ Only for OSType Windows
 
 ```json
 "extensionDiskEncryptionConfig": {
-    "value": {
-        "enabled": true,
-        "settings": {
-            "EncryptionOperation": "EnableEncryption",
-            "KeyVaultURL": "https://mykeyvault.vault.azure.net/",
-            "KeyVaultResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-sxx-az-kv-x-001",
-            "KeyEncryptionKeyURL": "https://mykeyvault.vault.azure.net/keys/keyEncryptionKey/3e13110def0d4a26ac38341c73c059bb",
-            "KekVaultResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-sxx-az-kv-x-001",
-            "KeyEncryptionAlgorithm": "RSA-OAEP",
-            "VolumeType": "All",
-            "ResizeOSDisk": "false"
-        }
+  "value": {
+    "enabled": true,
+    "settings": {
+      "EncryptionOperation": "EnableEncryption",
+      "KeyVaultURL": "https://mykeyvault.vault.azure.net/",
+      "KeyVaultResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-sxx-az-kv-x-001",
+      "KeyEncryptionKeyURL": "https://mykeyvault.vault.azure.net/keys/keyEncryptionKey/bc3bb46d95c64367975d722f473eeae5", // ID must be updated for new keys
+      "KekVaultResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-sxx-az-kv-x-001",
+      "KeyEncryptionAlgorithm": "RSA-OAEP", //'RSA-OAEP'/'RSA-OAEP-256'/'RSA1_5'
+      "VolumeType": "All", //'OS'/'Data'/'All'
+      "ResizeOSDisk": "false"
     }
+  }
 }
 ```
 
-### Parameter Usage: `windowsScriptExtensionFileData`
+### Parameter Usage: `extensionCustomScriptConfig`
 
 ```json
 "extensionCustomScriptConfig": {
-    "value": {
-        "enabled": true,
-        "fileData": [
-             //storage accounts with SAS token requirement
-            {
-                "uri": "https://<<storageAccountName>>.blob.core.windows.net/scripts/File1.ps1",
-                "storageAccountId": "/subscriptions/<<subscriptionId>>/resourceGroups/WVD-Mgmt-TO-RG/providers/Microsoft.Storage/storageAccounts/wvdtoassetsstore"
-            },
-            {
-                "uri": "https://<<storageAccountName>>.blob.core.windows.net/scripts/File2.ps1",
-                "storageAccountId": "/subscriptions/<<subscriptionId>>/resourceGroups/WVD-Mgmt-TO-RG/providers/Microsoft.Storage/storageAccounts/wvdtoassetsstore"
-            },
-             //storage account with public container (no SAS token is required) OR other public URL (not a storage account)
-            {
-                "uri": "https://github.com/myProject/File3.ps1"
-            }
-        ],
-        "protectedSettings": {
-            "commandToExecute": "powershell -ExecutionPolicy Unrestricted -Command \"& .\\scriptExtensionMasterInstaller.ps1\""
-        }
+  "value": {
+    "enabled": true,
+    "fileData": [
+      //storage accounts with SAS token requirement
+      {
+        "uri": "https://mystorageaccount.blob.core.windows.net/avdscripts/File1.ps1",
+        "storageAccountId": "/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/rgName/providers/Microsoft.Storage/storageAccounts/storageAccountName"
+      },
+      {
+        "uri": "https://mystorageaccount.blob.core.windows.net/avdscripts/File2.ps1",
+        "storageAccountId": "/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/rgName/providers/Microsoft.Storage/storageAccounts/storageAccountName"
+      },
+      //storage account with public container (no SAS token is required) OR other public URL (not a storage account)
+      {
+        "uri": "https://github.com/myProject/File3.ps1",
+        "storageAccountId": ""
+      }
+    ],
+    "settings": {
+      "commandToExecute": "powershell -ExecutionPolicy Unrestricted -File testscript.ps1"
     }
-}
-```
-
-### Parameter Usage: `windowsScriptExtensionFileData` with native storage account key support
-
-```json
-"extensionCustomScriptConfig": {
-    "value": {
-        "enabled": true,
-        "fileData": [
-            {
-                "uri": "https://<<storageAccountName>>.blob.core.windows.net/scripts/File1.ps1"
-            }
-        ],
-        "protectedSettings": {
-            "commandToExecute": "powershell -ExecutionPolicy Unrestricted -Command \"& .\\scriptExtensionMasterInstaller.ps1\"",
-            "cseStorageAccountName": "mystorageaccount",
-            "cseStorageAccountKey": "MyPlaceholder",
-        }
-    }
+  }
 }
 ```
 
@@ -348,40 +329,42 @@ Only for OSType Windows
 
 ```json
 "extensionDSCConfig": {
-    "value": {
-        "enabled": true,
-        "settings": {
-            "wmfVersion": "latest",
-            "configuration": {
-                "url": "http://validURLToConfigLocation",
-                "script": "ConfigurationScript.ps1",
-                "function": "ConfigurationFunction"
-            },
-            "configurationArguments": {
-                "argument1": "Value1",
-                "argument2": "Value2"
-            },
-            "configurationData": {
-                "url": "https://foo.psd1"
-            },
-            "privacy": {
-                "dataCollection": "enable"
-            },
-            "advancedOptions": {
-                "forcePullAndApply": false,
-                "downloadMappings": {
-                    "specificDependencyKey": "https://myCustomDependencyLocation"
-                }
-            }
+  "value": {
+    {
+      "enabled": true,
+      "settings": {
+        "wmfVersion": "latest",
+        "configuration": {
+          "url": "http://validURLToConfigLocation",
+          "script": "ConfigurationScript.ps1",
+          "function": "ConfigurationFunction"
         },
-        "protectedSettings": {
-            "configurationArguments": {
-                "mySecret": "MyPlaceholder"
-            },
-            "configurationUrlSasToken": "MyPlaceholder",
-            "configurationDataUrlSasToken": "MyPlaceholder"
+        "configurationArguments": {
+          "argument1": "Value1",
+          "argument2": "Value2"
+        },
+        "configurationData": {
+          "url": "https://foo.psd1"
+        },
+        "privacy": {
+          "dataCollection": "enable"
+        },
+        "advancedOptions": {
+          "forcePullAndApply": false,
+          "downloadMappings": {
+            "specificDependencyKey": "https://myCustomDependencyLocation"
+          }
         }
+      },
+      "protectedSettings": {
+        "configurationArguments": {
+          "mySecret": "MyPlaceholder"
+        },
+        "configurationUrlSasToken": "MyPlaceholder",
+        "configurationDataUrlSasToken": "MyPlaceholder"
+      }
     }
+  }
 }
 ```
 

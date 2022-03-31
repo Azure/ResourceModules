@@ -330,22 +330,22 @@ Comments:
 }
 ```
 
-### Parameter Usage: `domainJoinSettings`
+### Parameter Usage: `extensionDomainJoinConfig`
 
 ```json
-"enableDomainJoinExtension": {
-  "value": true
-},
-"domainJoinSettings": {
+"extensionDomainJoinConfig": {
   "value": {
+    "enabled": true,
+    "settings": {
       "domainName": "contoso.com",
       "domainJoinUser": "test.user@testcompany.com",
       "domainJoinOU": "OU=testOU; DC=contoso; DC=com",
       "domainJoinRestart": true,
       "domainJoinOptions": 3
     }
+  }
 },
-"domainJoinPassword": {
+"extensionDomainJoinPassword": {
   "keyVault": {
     "id": "/subscriptions/62826c76-d304-46d8-a0f6-718dbdcc536c/resourceGroups/WVD-Mgmt-TO-RG/providers/Microsoft.KeyVault/vaults/wvd-to-kvlt"
   },
@@ -353,41 +353,40 @@ Comments:
 }
 ```
 
-### Parameter Usage: `microsoftAntiMalwareSettings`
+### Parameter Usage: `extensionAntiMalwareConfig`
 
 Only for OSType Windows
 
 ```json
-"enableMicrosoftAntiMalware": {
-  "value": true
-},
-"microsoftAntiMalwareSettings": {
+"extensionAntiMalwareConfig": {
   "value": {
-    "AntimalwareEnabled": true,
-    "Exclusions": {
-      "Extensions": ".log;.ldf",
-      "Paths": "D:\\IISlogs;D:\\DatabaseLogs",
-      "Processes": "mssence.svc"
-    },
-    "RealtimeProtectionEnabled": true,
-    "ScheduledScanSettings": {
-      "isEnabled": "true",
-      "scanType": "Quick",
-      "day": "7",
-      "time": "120"
+    "enabled": true,
+    "settings": {
+      "AntimalwareEnabled": true,
+      "Exclusions": {
+        "Extensions": ".log;.ldf",
+        "Paths": "D:\\IISlogs;D:\\DatabaseLogs",
+        "Processes": "mssence.svc"
+      },
+      "RealtimeProtectionEnabled": true,
+      "ScheduledScanSettings": {
+        "isEnabled": "true",
+        "scanType": "Quick",
+        "day": "7",
+        "time": "120"
+      }
     }
   }
 }
 ```
 
-### Parameter Usage: `diskEncryptionSettings`
+### Parameter Usage: `extensionDiskEncryptionConfig`
 
 ```json
-"enableWindowsDiskEncryption": {
-  "value": true
-},
-"diskEncryptionSettings": {
+"extensionDiskEncryptionConfig": {
   "value": {
+    "enabled": true,
+    "settings": {
       "EncryptionOperation": "EnableEncryption",
       "KeyVaultURL": "https://mykeyvault.vault.azure.net/",
       "KeyVaultResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-sxx-az-kv-x-001",
@@ -397,101 +396,79 @@ Only for OSType Windows
       "VolumeType": "All", //'OS'/'Data'/'All'
       "ResizeOSDisk": "false"
     }
+  }
 }
 ```
 
-### Parameter Usage: `desiredStateConfigurationSettings`
+### Parameter Usage: `extensionDSCConfig`
 
 ```json
-"enableDesiredStateConfiguration": {
-  "value": true
-},
-"desiredStateConfigurationSettings": {
+"extensionDSCConfig": {
   "value": {
     {
-      "wmfVersion": "latest",
-      "configuration": {
-        "url": "http://validURLToConfigLocation",
-        "script": "ConfigurationScript.ps1",
-        "function": "ConfigurationFunction"
-      },
-      "configurationArguments": {
-        "argument1": "Value1",
-        "argument2": "Value2"
-      },
-      "configurationData": {
-        "url": "https://foo.psd1"
-      },
-      "privacy": {
-        "dataCollection": "enable"
-      },
-      "advancedOptions": {
-        "forcePullAndApply": false,
-        "downloadMappings": {
-          "specificDependencyKey": "https://myCustomDependencyLocation"
+      "enabled": true,
+      "settings": {
+        "wmfVersion": "latest",
+        "configuration": {
+          "url": "http://validURLToConfigLocation",
+          "script": "ConfigurationScript.ps1",
+          "function": "ConfigurationFunction"
+        },
+        "configurationArguments": {
+          "argument1": "Value1",
+          "argument2": "Value2"
+        },
+        "configurationData": {
+          "url": "https://foo.psd1"
+        },
+        "privacy": {
+          "dataCollection": "enable"
+        },
+        "advancedOptions": {
+          "forcePullAndApply": false,
+          "downloadMappings": {
+            "specificDependencyKey": "https://myCustomDependencyLocation"
+          }
         }
+      },
+      "protectedSettings": {
+        "configurationArguments": {
+          "mySecret": "MyPlaceholder"
+        },
+        "configurationUrlSasToken": "MyPlaceholder",
+        "configurationDataUrlSasToken": "MyPlaceholder"
       }
     }
   }
-},
-"desiredStateConfigurationProtectedSettings":{
-  "value":{
-    "configurationArguments": {
-      "mySecret": "MyPlaceholder"
-    },
-    "configurationUrlSasToken": "MyPlaceholder",
-    "configurationDataUrlSasToken": "MyPlaceholder"
+}
+```
+
+### Parameter Usage: `extensionCustomScriptConfig`
+
+```json
+"extensionCustomScriptConfig": {
+  "value": {
+    "enabled": true,
+    "fileData": [
+      //storage accounts with SAS token requirement
+      {
+        "uri": "https://mystorageaccount.blob.core.windows.net/avdscripts/File1.ps1",
+        "storageAccountId": "/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/rgName/providers/Microsoft.Storage/storageAccounts/storageAccountName"
+      },
+      {
+        "uri": "https://mystorageaccount.blob.core.windows.net/avdscripts/File2.ps1",
+        "storageAccountId": "/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/rgName/providers/Microsoft.Storage/storageAccounts/storageAccountName"
+      },
+      //storage account with public container (no SAS token is required) OR other public URL (not a storage account)
+      {
+        "uri": "https://github.com/myProject/File3.ps1",
+        "storageAccountId": ""
+      }
+    ],
+    "settings": {
+      "commandToExecute": "powershell -ExecutionPolicy Unrestricted -File testscript.ps1"
+    }
   }
-}
-```
-
-### Parameter Usage: `windowsScriptExtensionFileData`
-
-```json
-"enableCustomScriptExtension": {
-  "value": true
-},
-"windowsScriptExtensionFileData": {
-  "value": [
-    //storage accounts with SAS token requirement
-    {
-      "uri": "https://mystorageaccount.blob.core.windows.net/avdscripts/File1.ps1",
-      "storageAccountId": "/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/rgName/providers/Microsoft.Storage/storageAccounts/storageAccountName"
-    },
-    {
-      "uri": "https://mystorageaccount.blob.core.windows.net/avdscripts/File2.ps1",
-      "storageAccountId": "/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/rgName/providers/Microsoft.Storage/storageAccounts/storageAccountName"
-    },
-    //storage account with public container (no SAS token is required) OR other public URL (not a storage account)
-    {
-      "uri": "https://github.com/myProject/File3.ps1",
-      "storageAccountId": ""
-    }
-  ]
-}
-```
-
-### Parameter Usage: `windowsScriptExtensionFileData` with native storage account key support
-
-```json
-"enableCustomScriptExtension": {
-  "value": true
-},
-"windowsScriptExtensionFileData": {
-  "value": [
-    {
-      "https://mystorageaccount.blob.core.windows.net/avdscripts/testscript.ps1"
-    }
-  ]
-},
-"windowsScriptExtensionCommandToExecute": {
-  "value": "powershell -ExecutionPolicy Unrestricted -File testscript.ps1"
-},
-"cseStorageAccountName": {
-  "value": "mystorageaccount"
-},
-"cseStorageAccountKey": {
-  "value": "MyPlaceholder"
 }
 ```
 
