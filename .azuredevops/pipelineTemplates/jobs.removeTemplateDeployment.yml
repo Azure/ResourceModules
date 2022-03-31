@@ -44,11 +44,8 @@ parameters:
   poolName: '$(poolName)'
   vmImage: '$(vmImage)'
   defaultJobTimeoutInMinutes: 120
-  checkoutRepositories: ''
-  dependsOn: []
   # Logic-related parameters
   modulePath: '$(modulePath)'
-  deploymentBlocks: ''
   templatePath: ''
   deploymentName: ''
   location: '$(defaultLocation)'
@@ -81,11 +78,6 @@ jobs:
       # [Checkout Repositories] task(s)
       #--------------------------------
       - checkout: self
-      - ${{ if ne(parameters.checkoutRepositories, '') }}:
-          - ${{ each checkoutRepository in parameters.checkoutRepositories }}:
-              - checkout: ${{ checkoutRepository }}
-                fetchDepth: 1 # the depth of commits to ask Git to fetch; if not set defaults to no limit
-                path: 's/${{ checkoutRepository }}'
 
       # [Agent] Prepare environment
       #----------------------------
