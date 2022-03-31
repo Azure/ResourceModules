@@ -2,6 +2,13 @@
 
 This module deploys an app service plan.
 
+## Navigation
+
+- [Resource Types](#Resource-Types)
+- [Parameters](#Parameters)
+- [Outputs](#Outputs)
+- [Template references](#Template-references)
+
 ## Resource Types
 
 | Resource Type | API Version |
@@ -12,22 +19,28 @@ This module deploys an app service plan.
 
 ## Parameters
 
-| Parameter Name | Type | Default Value | Possible Values | Description |
+**Required parameters**
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `name` | string | The name of the app service plan to deploy. |
+| `sku` | object | Defines the name, tier, size, family and capacity of the App Service Plan. |
+
+**Optional parameters**
+| Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `appServiceEnvironmentId` | string |  |  | Optional. The Resource ID of the App Service Environment to use for the App Service Plan. |
-| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
-| `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
-| `maximumElasticWorkerCount` | int | `1` |  | Optional. Maximum number of total workers allowed for this ElasticScaleEnabled App Service Plan. |
-| `name` | string |  |  | Required. The name of the app service plan to deploy. |
-| `perSiteScaling` | bool | `False` |  | Optional. If true, apps assigned to this App Service plan can be scaled independently. If false, apps assigned to this App Service plan will scale to all instances of the plan. |
-| `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
-| `serverOS` | string | `Windows` | `[Windows, Linux]` | Optional. Kind of server OS. |
-| `sku` | object |  |  | Required. Defines the name, tier, size, family and capacity of the App Service Plan. |
-| `tags` | object | `{object}` |  | Optional. Tags of the resource. |
-| `targetWorkerCount` | int | `0` |  | Optional. Scaling worker count. |
-| `targetWorkerSize` | int | `0` | `[0, 1, 2]` | Optional. The instance size of the hosting plan (small, medium, or large). |
-| `workerTierName` | string |  |  | Optional. Target worker tier assigned to the App Service plan. |
+| `appServiceEnvironmentId` | string | `''` |  | The Resource ID of the App Service Environment to use for the App Service Plan. |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
+| `lock` | string | `'NotSpecified'` | `[CanNotDelete, NotSpecified, ReadOnly]` | Specify the type of lock. |
+| `maximumElasticWorkerCount` | int | `1` |  | Maximum number of total workers allowed for this ElasticScaleEnabled App Service Plan. |
+| `perSiteScaling` | bool | `False` |  | If true, apps assigned to this App Service plan can be scaled independently. If false, apps assigned to this App Service plan will scale to all instances of the plan. |
+| `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
+| `serverOS` | string | `'Windows'` | `[Windows, Linux]` | Kind of server OS. |
+| `tags` | object | `{object}` |  | Tags of the resource. |
+| `targetWorkerCount` | int | `0` |  | Scaling worker count. |
+| `targetWorkerSize` | int | `0` | `[0, 1, 2]` | The instance size of the hosting plan (small, medium, or large). |
+| `workerTierName` | string | `''` |  | Target worker tier assigned to the App Service plan. |
+
 
 ### Parameter Usage: `sku`
 
@@ -45,7 +58,7 @@ This module deploys an app service plan.
 
 ### Parameter Usage: `roleAssignments`
 
-Create a role assignment for the given resource. If you want to assign a service principal / managed identity that is created in the same deployment, make sure to also specify the `'principalType'` parameter and set it to 'ServicePrincipal'. This will ensure the role assignment waits for the principal's propagation in Azure.
+Create a role assignment for the given resource. If you want to assign a service principal / managed identity that is created in the same deployment, make sure to also specify the `'principalType'` parameter and set it to `'ServicePrincipal'`. This will ensure the role assignment waits for the principal's propagation in Azure.
 
 ```json
 "roleAssignments": {

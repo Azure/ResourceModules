@@ -29,12 +29,12 @@ This module deploys an Azure Automation Account Runbook.
 | :-- | :-- | :-- | :-- |
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `location` | string | `[resourceGroup().location]` | Location for all resources. |
-| `runbookDescription` | string |  | The description of the runbook. |
-| `sasTokenValidityLength` | string | `PT8H` | SAS token validity length. Usage: 'PT8H' - valid for 8 hours; 'P5D' - valid for 5 days; 'P1Y' - valid for 1 year. When not provided, the SAS token will be valid for 8 hours. |
-| `scriptStorageAccountId` | string |  | ID of the runbook storage account. |
+| `runbookDescription` | string | `''` | The description of the runbook. |
+| `sasTokenValidityLength` | string | `'PT8H'` | SAS token validity length. Usage: 'PT8H' - valid for 8 hours; 'P5D' - valid for 5 days; 'P1Y' - valid for 1 year. When not provided, the SAS token will be valid for 8 hours. |
+| `scriptStorageAccountId` | string | `''` | ID of the runbook storage account. |
 | `tags` | object | `{object}` | Tags of the Automation Account resource. |
-| `uri` | string |  | The uri of the runbook content. |
-| `version` | string |  | The version of the runbook content. |
+| `uri` | string | `''` | The uri of the runbook content. |
+| `version` | string | `''` | The version of the runbook content. |
 
 **Generated parameters**
 | Parameter Name | Type | Default Value | Description |
