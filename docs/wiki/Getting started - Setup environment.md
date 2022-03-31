@@ -291,7 +291,7 @@ The primary pipeline variable file `.azuredevops/pipelineVariables/global.variab
 | - | - | - |
 | `bicepRegistryName` | `'adpsxxazacrx001'` | The container registry to publish Bicep templates to. <p> **NOTE:** Must be globally unique |
 | `bicepRegistryRGName` | `'artifacts-rg'` | The resource group of the container registry to publish Bicep templates to. Is used to create a new container registry if not yet existing |
-| `bicepRegistryRGName` | `'artifacts-rg'` | The location of the resource group of the container registry to publish Bicep templates to. Is used to create a new resource group if not yet existing |
+| `bicepRegistryRgLocation` | `'West Europe'` | The location of the resource group of the container registry to publish Bicep templates to. Is used to create a new resource group if not yet existing |
 | `bicepRegistryDoPublish` | `'true'` | A central switch to enable/disable publishing to the private Bicep registry |
 
 </details>
