@@ -109,7 +109,7 @@ param roleAssignments array = []
   'HostRegistration'
   'AgentHealthStatus'
 ])
-param logsToEnable array = [
+param diagnosticLogCategoriesToEnable array = [
   'Checkpoint'
   'Error'
   'Management'
@@ -118,8 +118,11 @@ param logsToEnable array = [
   'AgentHealthStatus'
 ]
 
-var diagnosticsLogs = [for log in logsToEnable: {
-  category: log
+@description('Optional. The name of the diagnostic setting, if deployed.')
+param diagnosticSettingsName string = '${name}-diagnosticSettings'
+
+var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
+  category: category
   enabled: true
   retentionPolicy: {
     enabled: true
@@ -176,7 +179,7 @@ resource hostPool_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 
 }
 
 resource hostPool_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(diagnosticWorkspaceId)) || (!empty(diagnosticEventHubAuthorizationRuleId)) || (!empty(diagnosticEventHubName))) {
-  name: '${hostPool.name}-diagnosticsetting'
+  name: diagnosticSettingsName
   properties: {
     storageAccountId: !empty(diagnosticStorageAccountId) ? diagnosticStorageAccountId : null
     workspaceId: !empty(diagnosticWorkspaceId) ? diagnosticWorkspaceId : null
@@ -192,6 +195,7 @@ module hostPool_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) i
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
     principalIds: roleAssignment.principalIds
+    principalType: contains(roleAssignment, 'principalType') ? roleAssignment.principalType : ''
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
     resourceId: hostPool.id
   }

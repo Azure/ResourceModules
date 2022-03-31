@@ -1,20 +1,20 @@
-@description('Optional. The collation of the database.')
-param collation string
-
 @description('Required. The name of the database.')
 param name string
 
-@description('Optional. The tier or edition of the particular SKU.')
-param tier string
-
-@description('Required. The name of the SKU.')
-param skuName string
-
-@description('Optional. The max size of the database expressed in bytes.')
-param maxSizeBytes int
-
 @description('Required. The Name of SQL Server')
 param serverName string
+
+@description('Optional. The collation of the database.')
+param collation string = 'SQL_Latin1_General_CP1_CI_AS'
+
+@description('Optional. The tier or edition of the particular SKU.')
+param tier string = 'GeneralPurpose'
+
+@description('Optional. The name of the SKU.')
+param skuName string = 'GP_Gen5_2'
+
+@description('Optional. The max size of the database expressed in bytes.')
+param maxSizeBytes int = 34359738368
 
 @description('Optional. The name of the sample schema to apply when creating this database.')
 param sampleName string = ''
@@ -75,32 +75,43 @@ param diagnosticEventHubName string = ''
   'QueryStoreWaitStatistics'
   'Errors'
   'DatabaseWaitStatistics'
-  'Timouts'
+  'Timeouts'
   'Blocks'
   'Deadlocks'
+  'DevOpsOperationsAudit'
+  'SQLSecurityAuditEvents'
 ])
-param logsToEnable array = [
+param diagnosticLogCategoriesToEnable array = [
   'SQLInsights'
   'AutomaticTuning'
   'QueryStoreRuntimeStatistics'
   'QueryStoreWaitStatistics'
   'Errors'
   'DatabaseWaitStatistics'
-  'Timouts'
+  'Timeouts'
   'Blocks'
   'Deadlocks'
+  'DevOpsOperationsAudit'
+  'SQLSecurityAuditEvents'
 ]
 
 @description('Optional. The name of metrics that will be streamed.')
 @allowed([
   'Basic'
+  'InstanceAndAppAdvanced'
+  'WorkloadManagement'
 ])
-param metricsToEnable array = [
+param diagnosticMetricsToEnable array = [
   'Basic'
+  'InstanceAndAppAdvanced'
+  'WorkloadManagement'
 ]
 
-var diagnosticsLogs = [for log in logsToEnable: {
-  category: log
+@description('Optional. The name of the diagnostic setting, if deployed.')
+param diagnosticSettingsName string = '${name}-diagnosticSettings'
+
+var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
+  category: category
   enabled: true
   retentionPolicy: {
     enabled: true
@@ -108,7 +119,7 @@ var diagnosticsLogs = [for log in logsToEnable: {
   }
 }]
 
-var diagnosticsMetrics = [for metric in metricsToEnable: {
+var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
   category: metric
   timeGrain: null
   enabled: true
@@ -175,7 +186,7 @@ resource database 'Microsoft.Sql/servers/databases@2021-02-01-preview' = {
 }
 
 resource database_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(diagnosticWorkspaceId)) || (!empty(diagnosticEventHubAuthorizationRuleId)) || (!empty(diagnosticEventHubName))) {
-  name: '${last(split(database.name, '/'))}-diagnosticSettings'
+  name: diagnosticSettingsName
   properties: {
     storageAccountId: !empty(diagnosticStorageAccountId) ? diagnosticStorageAccountId : null
     workspaceId: !empty(diagnosticWorkspaceId) ? diagnosticWorkspaceId : null

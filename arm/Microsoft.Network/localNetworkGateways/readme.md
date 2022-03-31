@@ -29,6 +29,8 @@ This module deploys a local network gateway.
 
 ### Parameter Usage: `roleAssignments`
 
+Create a role assignment for the given resource. If you want to assign a service principal / managed identity that is created in the same deployment, make sure to also specify the `'principalType'` parameter and set it to 'ServicePrincipal'. This will ensure the role assignment waits for the principal's propagation in Azure.
+
 ```json
 "roleAssignments": {
     "value": [
@@ -44,7 +46,8 @@ This module deploys a local network gateway.
             "roleDefinitionIdOrName": "/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11",
             "principalIds": [
                 "12345678-1234-1234-1234-123456789012" // object 1
-            ]
+            ],
+            "principalType": "ServicePrincipal"
         }
     ]
 }
@@ -77,6 +80,6 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 ## Template references
 
-- [Define resources with Bicep and ARM templates](https://docs.microsoft.com/en-us/azure/templates)
 - [Localnetworkgateways](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/localNetworkGateways)
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)

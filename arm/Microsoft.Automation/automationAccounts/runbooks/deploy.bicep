@@ -26,7 +26,7 @@ param version string = ''
 @description('Optional. ID of the runbook storage account.')
 param scriptStorageAccountId string = ''
 
-@description('Optional. Time used as a basis for e.g. the schedule start date.')
+@description('Generated. Time used as a basis for e.g. the schedule start date.')
 param baseTime string = utcNow('u')
 
 @description('Optional. SAS token validity length. Usage: \'PT8H\' - valid for 8 hours; \'P5D\' - valid for 5 days; \'P1Y\' - valid for 1 year. When not provided, the SAS token will be valid for 8 hours.')

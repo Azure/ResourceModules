@@ -19,7 +19,9 @@ This module deploys an app service environment.
 | `clusterSettings` | array | `[]` |  | Optional. Custom settings for changing the behavior of the App Service Environment |
 | `diagnosticEventHubAuthorizationRuleId` | string |  |  | Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string |  |  | Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
+| `diagnosticLogCategoriesToEnable` | array | `[AppServiceEnvironmentPlatformLogs]` | `[AppServiceEnvironmentPlatformLogs]` | Optional. The name of logs that will be streamed. |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
+| `diagnosticSettingsName` | string | `[format('{0}-diagnosticSettings', parameters('name'))]` |  | Optional. The name of the diagnostic setting, if deployed. |
 | `diagnosticStorageAccountId` | string |  |  | Optional. Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string |  |  | Optional. Resource ID of the diagnostic log analytics workspace. |
 | `dnsSuffix` | string |  |  | Optional. DNS suffix of the App Service Environment. |
@@ -32,7 +34,6 @@ This module deploys an app service environment.
 | `kind` | string | `ASEV2` |  | Optional. Kind of resource. |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
-| `logsToEnable` | array | `[AppServiceEnvironmentPlatformLogs]` | `[AppServiceEnvironmentPlatformLogs]` | Optional. The name of logs that will be streamed. |
 | `multiRoleCount` | int | `2` |  | Optional. Number of frontend instances. |
 | `multiSize` | string | `Standard_D1_V2` | `[Medium, Large, ExtraLarge, Standard_D2, Standard_D3, Standard_D4, Standard_D1_V2, Standard_D2_V2, Standard_D3_V2, Standard_D4_V2]` | Optional. Frontend VM size, e.g. Medium, Large |
 | `name` | string |  |  | Required. Name of the App Service Environment |
@@ -45,6 +46,8 @@ This module deploys an app service environment.
 | `workerPools` | array | `[]` |  | Optional. Description of worker pools with worker size IDs, VM sizes, and number of workers in each pool.. |
 
 ### Parameter Usage: `roleAssignments`
+
+Create a role assignment for the given resource. If you want to assign a service principal / managed identity that is created in the same deployment, make sure to also specify the `'principalType'` parameter and set it to 'ServicePrincipal'. This will ensure the role assignment waits for the principal's propagation in Azure.
 
 ```json
 "roleAssignments": {
@@ -61,7 +64,8 @@ This module deploys an app service environment.
             "roleDefinitionIdOrName": "/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11",
             "principalIds": [
                 "12345678-1234-1234-1234-123456789012" // object 1
-            ]
+            ],
+            "principalType": "ServicePrincipal"
         }
     ]
 }

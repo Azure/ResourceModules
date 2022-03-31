@@ -34,7 +34,7 @@ param enableDefaultTelemetry bool = true
   'StorageWrite'
   'StorageDelete'
 ])
-param logsToEnable array = [
+param diagnosticLogCategoriesToEnable array = [
   'StorageRead'
   'StorageWrite'
   'StorageDelete'
@@ -44,12 +44,15 @@ param logsToEnable array = [
 @allowed([
   'Transaction'
 ])
-param metricsToEnable array = [
+param diagnosticMetricsToEnable array = [
   'Transaction'
 ]
 
-var diagnosticsLogs = [for log in logsToEnable: {
-  category: log
+@description('Optional. The name of the diagnostic setting, if deployed.')
+param diagnosticSettingsName string = '${name}-diagnosticSettings'
+
+var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
+  category: category
   enabled: true
   retentionPolicy: {
     enabled: true
@@ -57,7 +60,7 @@ var diagnosticsLogs = [for log in logsToEnable: {
   }
 }]
 
-var diagnosticsMetrics = [for metric in metricsToEnable: {
+var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
   category: metric
   timeGrain: null
   enabled: true
@@ -90,7 +93,7 @@ resource queueServices 'Microsoft.Storage/storageAccounts/queueServices@2021-04-
 }
 
 resource queueServices_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(diagnosticWorkspaceId)) || (!empty(diagnosticEventHubAuthorizationRuleId)) || (!empty(diagnosticEventHubName))) {
-  name: '${queueServices.name}-diagnosticSettings'
+  name: diagnosticSettingsName
   properties: {
     storageAccountId: !empty(diagnosticStorageAccountId) ? diagnosticStorageAccountId : null
     workspaceId: !empty(diagnosticWorkspaceId) ? diagnosticWorkspaceId : null

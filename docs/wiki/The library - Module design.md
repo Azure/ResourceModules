@@ -174,13 +174,14 @@ module <mainResource>_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, in
 
 Here you specify the platform roles available for the main resource.
 
-The `builtInRoleNames` variable contains the list of applicable roles for the specific resource to which the nested_rbac.bicep module applies.
+The `builtInRoleNames` variable contains the list of applicable roles for the specific resource which the `nested_rbac.bicep` template applies.
 >**Note**: You use the helper script [Get-FormattedRBACRoles.ps1](./Contribution%20guide%20-%20Get%20formatted%20RBAC%20roles) to extract a formatted list of RBAC roles used in the CARML modules based on the RBAC lists in Azure.
 
 The element requires you to provide both the `principalIds` & `roleDefinitionOrIdName` to assign to the principal IDs. Also, the `resourceId` is target resource's resource ID that allows us to reference it as an `existing` resource. Note, the implementation of the `split` in the resource reference becomes longer the deeper you go in the child-resource hierarchy.
 
 ```bicep
 param principalIds array
+param principalType string = ''
 param roleDefinitionIdOrName string
 param resourceId string
 
@@ -206,6 +207,7 @@ resource roleAssignment 'Microsoft.Authorization/roleAssignments@2021-04-01-prev
   properties: {
     roleDefinitionId: contains(builtInRoleNames, roleDefinitionIdOrName) ? builtInRoleNames[roleDefinitionIdOrName] : roleDefinitionIdOrName
     principalId: principalId
+    principalType: !empty(principalType) ? principalType : null
   }
   scope: <mainResource>
 }]
@@ -237,7 +239,7 @@ param diagnosticEventHubName string = ''
 @allowed([
   <LogsIfAny>
 ])
-param logsToEnable array = [
+param diagnosticLogCategoriesToEnable array = [
   <LogsIfAny>
 ]
 
@@ -245,12 +247,15 @@ param logsToEnable array = [
 @allowed([
   <MetricsIfAny>
 ])
-param metricsToEnable array = [
+param diagnosticMetricsToEnable array = [
   <MetricsIfAny>
 ]
 
-var diagnosticsLogs = [for log in logsToEnable: {
-  category: log
+@description('Optional. The name of the diagnostic setting, if deployed.')
+param diagnosticSettingsName string = '${name}-diagnosticSettings'
+
+var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
+  category: category
   enabled: true
   retentionPolicy: {
     enabled: true
@@ -258,7 +263,7 @@ var diagnosticsLogs = [for log in logsToEnable: {
   }
 }]
 
-var diagnosticsMetrics = [for metric in metricsToEnable: {
+var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
   category: metric
   timeGrain: null
   enabled: true
@@ -269,7 +274,7 @@ var diagnosticsMetrics = [for metric in metricsToEnable: {
 }]
 
 resource <mainResource>_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2021-05-01-preview' = if (!empty(diagnosticStorageAccountId) || !empty(diagnosticWorkspaceId) || !empty(diagnosticEventHubAuthorizationRuleId) || !empty(diagnosticEventHubName)) {
-  name: '${<mainResource>.name}-diagnosticSettings'
+  name: diagnosticSettingsName
   properties: {
     storageAccountId: !empty(diagnosticStorageAccountId) ? diagnosticStorageAccountId : null
     workspaceId: !empty(diagnosticWorkspaceId) ? diagnosticWorkspaceId : null
@@ -374,10 +379,11 @@ Within a bicep file, use the following conventions:
 
 - Parameter names are in camelCase, e.g. `allowBlobPublicAccess`.
 - Descriptions contain type of requirement:
-  - `Optional` - Is not needed at any point. Module contains default values.
-  - `Required` - Is required to be provided. Module does not have a default value and will expect input.
-  - `Generated` - Should not be used to provide a parameter. Used to generate data used in the deployment that cannot be generated other places in the template. i.e. the `utcNow()` function.
-  - `Conditional` - Optional or required parameter depending on other inputs.
+  - `Required` - The parameter value must be provided. The parameter does not have a default value and hence the module expects input.
+  - `Conditional` - The parameter value can be optional or required based on a condition, mostly based on the value provided to other parameters.
+  - `Optional` - The parameter value is not mandatory. The module provides a default value for the parameter.
+  - `Generated` - The parameter value is generated within the module and should not be specified as input.
+
 
 ## Variables
 

@@ -108,7 +108,7 @@ param disasterRecoveryConfig object = {}
   'CustomerManagedKeyUserLogs'
   'AutoScaleLogs'
 ])
-param logsToEnable array = [
+param diagnosticLogCategoriesToEnable array = [
   'ArchiveLogs'
   'OperationalLogs'
   'KafkaCoordinatorLogs'
@@ -122,7 +122,7 @@ param logsToEnable array = [
 @allowed([
   'AllMetrics'
 ])
-param metricsToEnable array = [
+param diagnosticMetricsToEnable array = [
   'AllMetrics'
 ]
 
@@ -141,8 +141,11 @@ var networkAcls_var = {
   ipRules: !empty(networkAcls) ? (length(networkAcls.ipRules) > 0 ? networkAcls.ipRules : null) : null
 }
 
-var diagnosticsLogs = [for log in logsToEnable: {
-  category: log
+@description('Optional. The name of the diagnostic setting, if deployed.')
+param diagnosticSettingsName string = '${name}-diagnosticSettings'
+
+var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
+  category: category
   enabled: true
   retentionPolicy: {
     enabled: true
@@ -150,7 +153,7 @@ var diagnosticsLogs = [for log in logsToEnable: {
   }
 }]
 
-var diagnosticsMetrics = [for metric in metricsToEnable: {
+var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
   category: metric
   timeGrain: null
   enabled: true
@@ -207,7 +210,7 @@ resource eventHubNamespace_lock 'Microsoft.Authorization/locks@2017-04-01' = if 
 }
 
 resource eventHubNamespace_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(diagnosticWorkspaceId)) || (!empty(diagnosticEventHubAuthorizationRuleId)) || (!empty(diagnosticEventHubName))) {
-  name: '${eventHubNamespace.name}-diagnosticSettings'
+  name: diagnosticSettingsName
   properties: {
     storageAccountId: !empty(diagnosticStorageAccountId) ? diagnosticStorageAccountId : null
     workspaceId: !empty(diagnosticWorkspaceId) ? diagnosticWorkspaceId : null
@@ -227,13 +230,11 @@ module eventHubNamespace_eventHubs 'eventhubs/deploy.bicep' = [for (eventHub, in
     authorizationRules: contains(eventHub, 'authorizationRules') ? eventHub.authorizationRules : [
       {
         name: 'RootManageSharedAccessKey'
-        properties: {
-          rights: [
-            'Listen'
-            'Manage'
-            'Send'
-          ]
-        }
+        rights: [
+          'Listen'
+          'Manage'
+          'Send'
+        ]
       }
     ]
     captureDescriptionDestinationArchiveNameFormat: contains(eventHub, 'captureDescriptionDestinationArchiveNameFormat') ? eventHub.captureDescriptionDestinationArchiveNameFormat : '{Namespace}/{EventHub}/{PartitionId}/{Year}/{Month}/{Day}/{Hour}/{Minute}/{Second}'
@@ -287,6 +288,7 @@ module eventHubNamespace_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment,
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
     principalIds: roleAssignment.principalIds
+    principalType: contains(roleAssignment, 'principalType') ? roleAssignment.principalType : ''
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
     resourceId: eventHubNamespace.id
   }

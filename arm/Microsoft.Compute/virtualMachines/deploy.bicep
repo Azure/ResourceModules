@@ -108,13 +108,16 @@ param availabilityZone int = 0
 @description('Required. Configures NICs and PIPs.')
 param nicConfigurations array
 
+@description('Optional. The name of the PIP diagnostic setting, if deployed.')
+param pipDiagnosticSettingsName string = '${name}-diagnosticSettings'
+
 @description('Optional. The name of logs that will be streamed.')
 @allowed([
   'DDoSProtectionNotifications'
   'DDoSMitigationFlowLogs'
   'DDoSMitigationReports'
 ])
-param pipLogsToEnable array = [
+param pipdiagnosticLogCategoriesToEnable array = [
   'DDoSProtectionNotifications'
   'DDoSMitigationFlowLogs'
   'DDoSMitigationReports'
@@ -124,15 +127,18 @@ param pipLogsToEnable array = [
 @allowed([
   'AllMetrics'
 ])
-param pipMetricsToEnable array = [
+param pipdiagnosticMetricsToEnable array = [
   'AllMetrics'
 ]
+
+@description('Optional. The name of the NIC diagnostic setting, if deployed.')
+param nicDiagnosticSettingsName string = '${name}-diagnosticSettings'
 
 @description('Optional. The name of metrics that will be streamed.')
 @allowed([
   'AllMetrics'
 ])
-param nicMetricsToEnable array = [
+param nicdiagnosticMetricsToEnable array = [
   'AllMetrics'
 ]
 
@@ -342,9 +348,11 @@ module virtualMachine_nic '.bicep/nested_networkInterface.bicep' = [for (nicConf
     diagnosticWorkspaceId: diagnosticWorkspaceId
     diagnosticEventHubAuthorizationRuleId: diagnosticEventHubAuthorizationRuleId
     diagnosticEventHubName: diagnosticEventHubName
-    metricsToEnable: nicMetricsToEnable
-    pipMetricsToEnable: pipMetricsToEnable
-    pipLogsToEnable: pipLogsToEnable
+    pipDiagnosticSettingsName: pipDiagnosticSettingsName
+    nicDiagnosticSettingsName: nicDiagnosticSettingsName
+    pipdiagnosticMetricsToEnable: pipdiagnosticMetricsToEnable
+    pipdiagnosticLogCategoriesToEnable: pipdiagnosticLogCategoriesToEnable
+    nicDiagnosticMetricsToEnable: nicdiagnosticMetricsToEnable
     roleAssignments: contains(nicConfiguration, 'roleAssignments') ? (!empty(nicConfiguration.roleAssignments) ? nicConfiguration.roleAssignments : []) : []
   }
 }]
@@ -613,6 +621,7 @@ module virtualMachine_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, in
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
     principalIds: roleAssignment.principalIds
+    principalType: contains(roleAssignment, 'principalType') ? roleAssignment.principalType : ''
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
     resourceId: virtualMachine.id
   }
