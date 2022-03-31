@@ -2,7 +2,7 @@
     "variables": [
         {
             "name": "defaultLocation",
-            "value": "EastUS"
+            "value": "WestEurope"
         },
         {
             "name": "resourceGroupName",
@@ -14,7 +14,7 @@
         },
         {
             "name": "templateSpecsRGLocation",
-            "value": "EastUS"
+            "value": "WestEurope"
         },
         {
             "name": "templateSpecsDescription",
@@ -26,7 +26,7 @@
         },
         {
             "name": "bicepRegistryName",
-            "value": "lsnsxxazacrx001"
+            "value": "adpsxxazacrx001"
         },
         {
             "name": "bicepRegistryRGName",
@@ -34,7 +34,7 @@
         },
         {
             "name": "bicepRegistryRgLocation",
-            "value": "EastUS"
+            "value": "WestEurope"
         },
         {
             "name": "bicepRegistryDoPublish",
