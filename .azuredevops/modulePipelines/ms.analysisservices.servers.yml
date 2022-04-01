@@ -46,16 +46,17 @@ stages:
     displayName: Deployment tests
     jobs:
       - job: deploy # name of the job, A-Z, a-z, 0-9, and underscore
-        displayName: string # friendly name to display in the UI
-        dependsOn: string | [ string ]
-        condition: string
+        displayName: Deploy
         strategy:
           parallel: # parallel strategy
-          matrix:
-            ['min.parameters.json', 'parameters.json', 'max.parameters.json']
+          matrix: ['min.parameters.json'] # , 'parameters.json', 'max.parameters.json']
         steps:
-          - template: 'deploy'
-          - template: 'remove'
+          - template: /.azuredevops/pipelineTemplates/steps.deployTemplate.yml
+            parameters:
+              TemplatePath: ''
+          - template: /.azuredevops/pipelineTemplates/steps.removeTemplateDeployment.yml
+            parameters:
+              TemplatePath: ''
 
       - template: /.azuredevops/pipelineTemplates/jobs.deployTemplate.yml
         parameters:
