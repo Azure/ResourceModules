@@ -39,7 +39,7 @@ parameters:
   serviceConnection: '$(serviceConnection)'
 
   # Logic-related parameters
-  templatePath:
+  templatePath: '${{ env.modulePath }}/deploy.bicep'
   parameterFilePath:
   location: '$(defaultLocation)'
   resourceGroupName: '$(defaultResourceGroupName)'

@@ -53,19 +53,19 @@ stages:
         steps:
           - template: /.azuredevops/pipelineTemplates/steps.deployTemplate.yml
             parameters:
-              TemplatePath: ''
+              parameterFilePath: ''
           - template: /.azuredevops/pipelineTemplates/steps.removeTemplateDeployment.yml
             parameters:
-              TemplatePath: ''
+              parameterFilePath: ''
 
-      - template: /.azuredevops/pipelineTemplates/jobs.deployTemplate.yml
-        parameters:
-          removeDeployment: '${{ parameters.removeDeployment }}'
-          templatePath: '$(modulePath)/deploy.bicep'
-          deploymentBlocks: # TODO: Transform to Job-Level matrix?
-            - path: $(modulePath)/.parameters/min.parameters.json
-            - path: $(modulePath)/.parameters/parameters.json
-            - path: $(modulePath)/.parameters/max.parameters.json
+      # - template: /.azuredevops/pipelineTemplates/jobs.deployTemplate.yml
+      #   parameters:
+      #     removeDeployment: '${{ parameters.removeDeployment }}'
+      #     templatePath: '$(modulePath)/deploy.bicep'
+      #     deploymentBlocks: # TODO: Transform to Job-Level matrix?
+      #       - path: $(modulePath)/.parameters/min.parameters.json
+      #       - path: $(modulePath)/.parameters/parameters.json
+      #       - path: $(modulePath)/.parameters/max.parameters.json
 
       - template: /.azuredevops/pipelineTemplates/jobs.removeTemplateDeployment
         condition: and(succeededOrFailed(), eq( '${{ parameters.removeDeployment }}', 'true'), not(eq(variables['deploymentName'],'')))
