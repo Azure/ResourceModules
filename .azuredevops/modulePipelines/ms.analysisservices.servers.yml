@@ -82,9 +82,10 @@ stages:
           - template: /.azuredevops/pipelineTemplates/steps.deployTemplate.yml
             parameters:
               parameterFilePath: '$(modulePath)/$(parameterFilePath)'
-          - template: /.azuredevops/pipelineTemplates/steps.removeTemplateDeployment.yml
-            parameters:
-              parameterFilePath: '$(modulePath)/$(parameterFilePath)'
+          - ? ${{ if and(succeededOrFailed(), eq( parameters.removeDeployment, 'true'), not(eq(variables['deploymentName'],''))) }}
+            : - template: /.azuredevops/pipelineTemplates/steps.removeTemplateDeployment.yml
+                parameters:
+                  parameterFilePath: '$(modulePath)/$(parameterFilePath)'
 
       # - template: /.azuredevops/pipelineTemplates/jobs.deployTemplate.yml
       #   parameters:
@@ -95,11 +96,11 @@ stages:
       #       - path: $(modulePath)/.parameters/parameters.json
       #       - path: $(modulePath)/.parameters/max.parameters.json
 
-      - template: /.azuredevops/pipelineTemplates/jobs.removeTemplateDeployment
-        condition: and(succeededOrFailed(), eq( '${{ parameters.removeDeployment }}', 'true'), not(eq(variables['deploymentName'],'')))
-        parameters:
-          templatePath: '$(modulePath)/.dependencies/dependencies.bicep'
-          deploymentName: ''
+      - ? ${{ if and(succeededOrFailed(), eq( parameters.removeDeployment, 'true'), not(eq(variables['deploymentName'],''))) }}
+        : - template: /.azuredevops/pipelineTemplates/jobs.removeTemplateDeployment
+            parameters:
+              templatePath: '$(modulePath)/.dependencies/dependencies.bicep'
+              deploymentName: ''
 
   - stage: Publishing
     displayName: Publish module
