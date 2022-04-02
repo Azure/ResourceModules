@@ -136,7 +136,10 @@ steps:
   # [Validation] task(s)
   #---------------------
   - task: AzurePowerShell@5
-    displayName: 'Validate [${{ parameters.parameterFilePath }}] via connection [${{ parameters.serviceConnection }}]'
+    ${{ if not(eq(parameters.parameterFilePath,'')) }}:
+      displayName: 'Validate [${{ parameters.parameterFilePath }}] via connection [${{ parameters.serviceConnection }}]'
+    ${{ if eq(parameters.parameterFilePath,'') }}:
+      displayName: 'Validate [${{ parameters.templateFilePath }}] via connection [${{ parameters.serviceConnection }}]'
     inputs:
       azureSubscription: ${{ parameters.serviceConnection }}
       azurePowerShellVersion: 'latestVersion'
@@ -178,7 +181,10 @@ steps:
   # [Deployment] task(s)
   #---------------------
   - task: AzurePowerShell@5
-    displayName: 'Deploy [${{ parameters.parameterFilePath }}] via connection [${{ parameters.serviceConnection }}]'
+    ${{ if not(eq(parameters.parameterFilePath,'')) }}:
+      displayName: 'Deploy [${{ parameters.parameterFilePath }}] via connection [${{ parameters.serviceConnection }}]'
+    ${{ if eq(parameters.parameterFilePath,'') }}:
+      displayName: 'Deploy [${{ parameters.templateFilePath }}] via connection [${{ parameters.serviceConnection }}]'
     name: 'DeployModule'
     inputs:
       azureSubscription: ${{ parameters.serviceConnection }}
