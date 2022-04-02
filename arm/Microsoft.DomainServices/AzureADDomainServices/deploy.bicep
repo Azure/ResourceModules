@@ -120,7 +120,7 @@ var diagnosticsLogs = [for log in logsToEnable: {
   }
 }]
 
-resource domainName_resource 'Microsoft.AAD/DomainServices@2021-05-01' = {
+resource domainService 'Microsoft.AAD/DomainServices@2021-05-01' = {
   name: domainName
   location: location
   tags: tags
