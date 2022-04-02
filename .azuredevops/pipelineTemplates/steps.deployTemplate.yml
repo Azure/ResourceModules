@@ -40,7 +40,7 @@ parameters:
 
   # Logic-related parameters
   templateFilePath:
-  parameterFilePath:
+  parameterFilePath: ''
   location: '$(defaultLocation)'
   resourceGroupName: '$(defaultResourceGroupName)'
   subscriptionId: '$(ARM_SUBSCRIPTION_ID)'
@@ -137,9 +137,9 @@ steps:
   #---------------------
   - task: AzurePowerShell@5
     ${{ if not(eq(parameters.parameterFilePath,'')) }}:
-      displayName: 'Validate [${{ parameters.parameterFilePath }}] via connection [${{ parameters.serviceConnection }}]'
+      displayName: 'Validate parameter file [${{ parameters.parameterFilePath }}] via connection [${{ parameters.serviceConnection }}]'
     ${{ if eq(parameters.parameterFilePath,'') }}:
-      displayName: 'Validate [${{ parameters.templateFilePath }}] via connection [${{ parameters.serviceConnection }}]'
+      displayName: 'Validate template file [${{ parameters.templateFilePath }}] via connection [${{ parameters.serviceConnection }}]'
     inputs:
       azureSubscription: ${{ parameters.serviceConnection }}
       azurePowerShellVersion: 'latestVersion'
@@ -182,9 +182,9 @@ steps:
   #---------------------
   - task: AzurePowerShell@5
     ${{ if not(eq(parameters.parameterFilePath,'')) }}:
-      displayName: 'Deploy [${{ parameters.parameterFilePath }}] via connection [${{ parameters.serviceConnection }}]'
+      displayName: 'Deploy parameter file [${{ parameters.parameterFilePath }}] via connection [${{ parameters.serviceConnection }}]'
     ${{ if eq(parameters.parameterFilePath,'') }}:
-      displayName: 'Deploy [${{ parameters.templateFilePath }}] via connection [${{ parameters.serviceConnection }}]'
+      displayName: 'Deploy template file [${{ parameters.templateFilePath }}] via connection [${{ parameters.serviceConnection }}]'
     name: 'DeployModule'
     inputs:
       azureSubscription: ${{ parameters.serviceConnection }}

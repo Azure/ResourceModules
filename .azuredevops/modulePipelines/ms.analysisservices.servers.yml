@@ -48,7 +48,7 @@ stages:
         steps:
           - template: /.azuredevops/pipelineTemplates/steps.deployTemplate.yml
             parameters:
-              templatePath: '$(modulePath)/.dependencies/dependencies.bicep'
+              templateFilePath: '$(modulePath)/.dependencies/dependencies.bicep'
 
   - stage: Deployment
     displayName: Deployment tests
@@ -127,7 +127,7 @@ stages:
         steps:
           - template: /.azuredevops/pipelineTemplates/steps.removeTemplateDeployment.yml
             parameters:
-              templatePath: '$(modulePath)/.dependencies/dependencies.bicep'
+              templateFilePath: '$(modulePath)/.dependencies/dependencies.bicep'
               deploymentName: '$(deploymentName)'
 
   - stage: Publishing

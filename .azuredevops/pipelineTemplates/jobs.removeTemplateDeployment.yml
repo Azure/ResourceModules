@@ -46,7 +46,7 @@ parameters:
   defaultJobTimeoutInMinutes: 120
   # Logic-related parameters
   modulePath: '$(modulePath)'
-  templatePath: ''
+  templateFilePath: ''
   deploymentName: ''
   location: '$(defaultLocation)'
   resourceGroupName: '$(defaultResourceGroupName)'
@@ -145,7 +145,7 @@ jobs:
               $templateFilePath = Join-Path '$(moduleRepoRoot)' '${{ deploymentBlock.templateFilePath }}'
             } else {
               # Use default path
-              $templateFilePath = (Test-Path (Join-Path '$(ModuleRepoRoot)' '$(templatePath)')) ?
+              $templateFilePath = (Test-Path (Join-Path '$(ModuleRepoRoot)' '$(templateFilePath)')) ?
                 (Join-Path '$(ModuleRepoRoot)' '$(modulePath)' 'deploy.bicep') :
                 (Join-Path '$(ModuleRepoRoot)' '$(modulePath)' 'deploy.json')
             }
