@@ -55,7 +55,7 @@ parameters:
 steps:
   # [Checkout Repositories] task(s)
   #--------------------------------
-  - checkout: self
+  # - checkout: self
 
   # [Agent] Prepare environment
   #----------------------------
