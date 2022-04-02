@@ -1,5 +1,5 @@
 @description('Optional. The name of the AADDS resource. Defaults to the domain name specific to the Azure ADDS service.')
-param domainName string
+param name string = domainName
 
 @description('Required: The name of the sku specific to Azure ADDS Services - Standard is the default')
 param sku string
