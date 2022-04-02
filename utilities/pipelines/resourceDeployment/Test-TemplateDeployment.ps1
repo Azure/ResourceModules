@@ -109,6 +109,7 @@ function Test-TemplateDeployment {
             }
             'subscription' {
                 if ($subscriptionId -and ($Context = Get-AzContext -ListAvailable | Where-Object { $_.Subscription.Id -eq $subscriptionId })) {
+                    Write-Verbose ('Setting context to subscription [{0}]' -f $Context.Subscription.Name)
                     $null = $Context | Set-AzContext
                 }
                 if ($PSCmdlet.ShouldProcess('Subscription level deployment', 'Test')) {
