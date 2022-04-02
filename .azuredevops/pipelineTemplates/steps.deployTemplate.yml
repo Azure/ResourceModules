@@ -195,13 +195,16 @@ steps:
         # ----------------- #
         $functionInput = @{
           templateFilePath     = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.templateFilePath }}'
-          parameterFilePath    = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.parameterFilePath }}'
           location             = '${{ parameters.location }}'
           resourceGroupName    = '${{ parameters.resourceGroupName }}'
           subscriptionId       = '${{ parameters.subscriptionId }}'
           managementGroupId    = '${{ parameters.managementGroupId }}'
           doNotThrow           = $true
           additionalParameters = @{}
+        }
+
+        if(-not [String]::IsNullOrEmpty('${{ parameters.parameterFilePath }}')) {
+          $functionInput['parameterFilePath'] = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.parameterFilePath }}'
         }
 
         $projectSettings = Get-Content -Path 'settings.json' | ConvertFrom-Json
