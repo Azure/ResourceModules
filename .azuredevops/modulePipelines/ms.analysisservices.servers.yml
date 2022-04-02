@@ -89,23 +89,28 @@ stages:
             : - template: /.azuredevops/pipelineTemplates/steps.removeTemplateDeployment.yml
                 parameters:
                   parameterFilePath: '$(modulePath)/$(parameterFilePath)'
+                  deploymentName: '$(deploymentName)'
 
-      # - template: /.azuredevops/pipelineTemplates/jobs.deployTemplate.yml
-      #   parameters:
-      #     removeDeployment: '${{ parameters.removeDeployment }}'
-      #     templatePath: '$(modulePath)/deploy.bicep'
-      #     deploymentBlocks: # TODO: Transform to Job-Level matrix?
-      #       - path: $(modulePath)/.parameters/min.parameters.json
-      #       - path: $(modulePath)/.parameters/parameters.json
-      #       - path: $(modulePath)/.parameters/max.parameters.json
-
-      - ? ${{ if and(succeededOrFailed(), eq( parameters.removeDeployment, 'true'), not(eq(variables['deploymentName'],''))) }}
-        : - template: /.azuredevops/pipelineTemplates/jobs.removeTemplateDeployment
+  - stage: DependencyRemoval
+    displayName: Dependency Removal
+    dependsOn:
+      - DependencyDeployment
+      - Deployment
+    condition: ${{ if and(succeededOrFailed(), eq( parameters.removeDeployment, 'true'), not(eq(variables['deploymentName'],''))) }}
+    jobs:
+      - job: remove
+        variables:
+          deploymentName: $[ stageDependencies.DependencyDeployment.deploy.outputs['DeployModule.deploymentName'] ]
+        displayName: Remove dependencies
+        steps:
+          - template: /.azuredevops/pipelineTemplates/jobs.removeTemplateDeployment
             parameters:
               templatePath: '$(modulePath)/.dependencies/dependencies.bicep'
-              deploymentName: ''
+              deploymentName: '$(deploymentName)'
 
   - stage: Publishing
+    dependsOn:
+      - Deployment
     displayName: Publish module
     condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/main'), eq(variables['Build.SourceBranch'], 'refs/heads/master'), eq('${{ parameters.prerelease }}', 'true')))
     jobs:
