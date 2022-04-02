@@ -84,7 +84,7 @@ stages:
         steps:
           - template: /.azuredevops/pipelineTemplates/steps.deployTemplate.yml
             parameters:
-              templateFilePath: '${{ env.modulePath }}/deploy.bicep'
+              templateFilePath: '$(modulePath)/deploy.bicep'
               parameterFilePath: '$(modulePath)/$(parameterFilePath)'
           - ? ${{ if and(eq( parameters.removeDeployment, 'true'), not(eq(variables['deploymentName'],''))) }}
             : - template: /.azuredevops/pipelineTemplates/steps.removeTemplateDeployment.yml
