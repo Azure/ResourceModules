@@ -121,7 +121,7 @@ var diagnosticsLogs = [for log in logsToEnable: {
 }]
 
 resource domainService 'Microsoft.AAD/DomainServices@2021-05-01' = {
-  name: domainName
+  name: name
   location: location
   tags: tags
   properties: {
