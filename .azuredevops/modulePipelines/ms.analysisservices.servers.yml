@@ -49,6 +49,7 @@ stages:
     displayName: Deployment tests
     jobs:
       - job: getParameterFilePaths
+        displayName: Get parameter file paths
         steps:
           - task: PowerShell@2
             displayName: 'Fetch parameter files'
