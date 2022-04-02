@@ -56,40 +56,7 @@ stages:
   - stage: Deployment
     displayName: Deployment tests
     jobs:
-      - job: getParameterFilePaths
-        displayName: Get parameter file paths
-        pool:
-          ${{ if ne(variables['vmImage'], '') }}:
-            vmImage: ${{ variables['vmImage'] }}
-          ${{ if ne(variables['poolName'], '') }}:
-            name: ${{ variables['poolName'] }}
-        steps:
-          - task: PowerShell@2
-            displayName: 'Fetch parameter files'
-            name: getParameterFilePathsTask
-            inputs:
-              targetType: inline
-              pwsh: true
-              script: |
-                # Load used functions
-                . (Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'pipelines' 'sharedScripts' 'Get-ModuleParameterFiles.ps1')
-
-                $inputObject = @{
-                  ModulePath = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)'
-                }
-
-                # Set agent up
-                $parameterFilePaths = Get-ModuleParameterFiles @inputObject -Verbose
-
-                $testTable = @{}
-                foreach($parameterFilePath in $parameterFilePaths) {
-                  $parameterFileName = Split-Path $parameterFilePath -Leaf
-                  $testTable[$parameterFileName] = @{
-                    parameterFilePath = $parameterFilePath
-                  }
-                }
-                Write-Host ('##vso[task.setVariable variable=parameterTests;isOutput=true]{0}' -f ($testTable | ConvertTo-Json -Compress))
-
+      - template: /.azuredevops/pipelineTemplates/jobs.getParameterFiles.yml
       - job: deploy
         displayName: Deploy
         dependsOn: getParameterFilePaths
