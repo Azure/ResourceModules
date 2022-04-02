@@ -45,18 +45,42 @@ stages:
   - stage: Deployment
     displayName: Deployment tests
     jobs:
-      - job: deploy # name of the job, A-Z, a-z, 0-9, and underscore
+      - job: getParameterFilePaths
+        steps:
+          - task: PowerShell@2
+            displayName: 'Fetch parameter files'
+            name: getParameterFilePathsTask
+            inputs:
+              targetType: inline
+              pwsh: true
+              script: |
+                # Load used functions
+                . (Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
+
+                # Set agent up
+                $parameterFilePaths = Get-ModuleParameterFiles -ModulePath '$(modulePath)'
+
+                $testTable = @{}
+                foreach($parameterFilePath in $parameterFilePaths) {
+                  $parameterFileName = Split-Path $parameterFilePath -Leaf
+                  $testTable[$parameterFileName] = @{
+                    parameterFilePath = $parameterFilePath
+                  }
+                }
+                Write-Host ('##vso[task.setVariable variable=parameterTests;isOutput=true]{0}' -f ($testTable | ConvertTo-Json -Compress))
+
+      - job: deploy
         displayName: Deploy
+        dependsOn: getParameterFilePaths
         strategy:
-          parallel: # parallel strategy
-          matrix: ['min.parameters.json'] # , 'parameters.json', 'max.parameters.json']
+          matrix: $[ dependencies.getParameterFilePaths.outputs['getParameterFilePathsTask.parameterTests'] ]
         steps:
           - template: /.azuredevops/pipelineTemplates/steps.deployTemplate.yml
             parameters:
-              parameterFilePath: ''
+              parameterFilePath: '$(modulePath)/$(parameterFilePath)'
           - template: /.azuredevops/pipelineTemplates/steps.removeTemplateDeployment.yml
             parameters:
-              parameterFilePath: ''
+              parameterFilePath: '$(modulePath)/$(parameterFilePath)'
 
       # - template: /.azuredevops/pipelineTemplates/jobs.deployTemplate.yml
       #   parameters:
