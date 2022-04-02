@@ -41,10 +41,10 @@ stages:
       - job: deploy
         displayName: Deploy dependencies
         pool:
-          ${{ if ne(parameters.vmImage, '') }}:
-            vmImage: ${{ parameters.vmImage }}
-          ${{ if ne(parameters.poolName, '') }}:
-            name: ${{ parameters.poolName }}
+          ${{ if ne(variables['vmImage'], '') }}:
+            vmImage: ${{ variables['vmImage'] }}
+          ${{ if ne(variables['poolName'], '') }}:
+            name: ${{ variables['poolName'] }}
         steps:
           - template: /.azuredevops/pipelineTemplates/steps.deployTemplate.yml
             parameters:
@@ -56,10 +56,10 @@ stages:
       - job: getParameterFilePaths
         displayName: Get parameter file paths
         pool:
-          ${{ if ne(parameters.vmImage, '') }}:
-            vmImage: ${{ parameters.vmImage }}
-          ${{ if ne(parameters.poolName, '') }}:
-            name: ${{ parameters.poolName }}
+          ${{ if ne(variables['vmImage'], '') }}:
+            vmImage: ${{ variables['vmImage'] }}
+          ${{ if ne(variables['poolName'], '') }}:
+            name: ${{ variables['poolName'] }}
         steps:
           - task: PowerShell@2
             displayName: 'Fetch parameter files'
@@ -91,10 +91,10 @@ stages:
         displayName: Deploy
         dependsOn: getParameterFilePaths
         pool:
-          ${{ if ne(parameters.vmImage, '') }}:
-            vmImage: ${{ parameters.vmImage }}
-          ${{ if ne(parameters.poolName, '') }}:
-            name: ${{ parameters.poolName }}
+          ${{ if ne(variables['vmImage'], '') }}:
+            vmImage: ${{ variables['vmImage'] }}
+          ${{ if ne(variables['poolName'], '') }}:
+            name: ${{ variables['poolName'] }}
         strategy:
           matrix: $[ dependencies.getParameterFilePaths.outputs['getParameterFilePathsTask.parameterTests'] ]
         steps:
@@ -118,10 +118,10 @@ stages:
       - job: remove
         displayName: Remove dependencies
         pool:
-          ${{ if ne(parameters.vmImage, '') }}:
-            vmImage: ${{ parameters.vmImage }}
-          ${{ if ne(parameters.poolName, '') }}:
-            name: ${{ parameters.poolName }}
+          ${{ if ne(variables['vmImage'], '') }}:
+            vmImage: ${{ variables['vmImage'] }}
+          ${{ if ne(variables['poolName'], '') }}:
+            name: ${{ variables['poolName'] }}
         variables:
           deploymentName: $[ stageDependencies.DependencyDeployment.deploy.outputs['DeployModule.deploymentName'] ]
         steps:
