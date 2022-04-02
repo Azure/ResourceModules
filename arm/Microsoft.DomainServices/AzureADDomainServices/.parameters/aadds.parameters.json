@@ -28,7 +28,7 @@
             }
         },
         "additionalRecipients": {
-            "value": "<<email address>>"
+            "value": "CARML@noreply.github.com"
         },
         "diagnosticWorkspaceId": {
            "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001"
