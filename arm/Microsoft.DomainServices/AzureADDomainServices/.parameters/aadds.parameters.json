@@ -34,7 +34,7 @@
             "value": "<< Log Analytics Workspace Resource Id"
         },
         "lock": {
-            "value": "CanNotDelete"
+            "value": "NotSpecified"
         }
     }
 }
