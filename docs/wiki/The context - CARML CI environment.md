@@ -1,5 +1,7 @@
 This page provides an overview of the CARML CI environment. For further details refer to the dedicated Wiki section [The CI environment](./The%20CI%20environment)
 
+To ensure the modules are valid and can perform the intended deployments, the repository comes with a continuous integration (CI) environment for each module.
+
 ---
 
 ### _Navigation_
