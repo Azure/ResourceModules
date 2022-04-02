@@ -68,7 +68,6 @@ steps:
         # Load used functions
         . (Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
 
-
         # Define PS modules to install on the runner
         $Modules = @(
             @{ Name = 'Az.Accounts' },
