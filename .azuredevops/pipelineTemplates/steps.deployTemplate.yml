@@ -53,10 +53,6 @@ parameters:
 ##---------------------------------------------##
 
 steps:
-  # [Checkout Repositories] task(s)
-  #--------------------------------
-  # - checkout: self
-
   # [Agent] Prepare environment
   #----------------------------
   - task: PowerShell@2
@@ -136,9 +132,9 @@ steps:
   #---------------------
   - task: AzurePowerShell@5
     ${{ if not(eq(parameters.parameterFilePath,'')) }}:
-      displayName: 'Validate parameter file [${{ parameters.parameterFilePath }}] via connection [${{ parameters.serviceConnection }}]'
+      displayName: 'Validate parameter file via connection [${{ parameters.serviceConnection }}]'
     ${{ if eq(parameters.parameterFilePath,'') }}:
-      displayName: 'Validate template file [${{ parameters.templateFilePath }}] via connection [${{ parameters.serviceConnection }}]'
+      displayName: 'Validate template file via connection [${{ parameters.serviceConnection }}]'
     inputs:
       azureSubscription: ${{ parameters.serviceConnection }}
       azurePowerShellVersion: 'latestVersion'
@@ -162,7 +158,7 @@ steps:
         }
 
         if(-not [String]::IsNullOrEmpty('${{ parameters.parameterFilePath }}')) {
-          $functionInput['parameterFilePath'] = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.parameterFilePath }}'
+          $functionInput['parameterFilePath'] = '${{ parameters.parameterFilePath }}'
         }
 
         # Enables us to pass the resource group name as a deployment parameter
@@ -188,9 +184,9 @@ steps:
   #---------------------
   - task: AzurePowerShell@5
     ${{ if not(eq(parameters.parameterFilePath,'')) }}:
-      displayName: 'Deploy parameter file [${{ parameters.parameterFilePath }}] via connection [${{ parameters.serviceConnection }}]'
+      displayName: 'Deploy parameter file via connection [${{ parameters.serviceConnection }}]'
     ${{ if eq(parameters.parameterFilePath,'') }}:
-      displayName: 'Deploy template file [${{ parameters.templateFilePath }}] via connection [${{ parameters.serviceConnection }}]'
+      displayName: 'Deploy template file via connection [${{ parameters.serviceConnection }}]'
     name: 'DeployModule'
     inputs:
       azureSubscription: ${{ parameters.serviceConnection }}
@@ -216,7 +212,7 @@ steps:
         }
 
         if(-not [String]::IsNullOrEmpty('${{ parameters.parameterFilePath }}')) {
-          $functionInput['parameterFilePath'] = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.parameterFilePath }}'
+          $functionInput['parameterFilePath'] = '${{ parameters.parameterFilePath }}'
         }
 
         # Enables us to pass the resource group name as a deployment parameter

@@ -10,10 +10,6 @@ parameters:
   managementGroupId: '$(ARM_MGMTGROUP_ID)'
 
 steps:
-  # [Checkout Repositories] task(s)
-  #--------------------------------
-  - checkout: self
-
   # [Agent] Prepare environment
   #----------------------------
   - task: PowerShell@2
