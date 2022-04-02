@@ -57,8 +57,12 @@ stages:
                 # Load used functions
                 . (Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
 
+                $inputObject = @{
+                  ModulePath = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)'
+                }
+
                 # Set agent up
-                $parameterFilePaths = Get-ModuleParameterFiles -ModulePath '$(modulePath)'
+                $parameterFilePaths = Get-ModuleParameterFiles @inputObject
 
                 $testTable = @{}
                 foreach($parameterFilePath in $parameterFilePaths) {
