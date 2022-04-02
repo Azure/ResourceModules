@@ -3,8 +3,8 @@ parameters:
   serviceConnection: '$(serviceConnection)'
 
   # Logic-related parameters
-  deploymentName:
-  templateFilePath:
+  deploymentName: ''
+  templateFilePath: ''
   resourceGroupName: '$(defaultResourceGroupName)'
   subscriptionId: '$(ARM_SUBSCRIPTION_ID)'
   managementGroupId: '$(ARM_MGMTGROUP_ID)'
