@@ -28,6 +28,8 @@ variables:
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
     value: '/arm/Microsoft.AnalysisServices/servers'
+  - name: 'moduleResourceGroupName'
+    value: 'test-ms.analysisservices-servers-rg'
 
 stages:
   # - stage: Validation
@@ -102,11 +104,13 @@ stages:
             parameters:
               templateFilePath: '$(modulePath)/deploy.bicep'
               parameterFilePath: '$(modulePath)/$(parameterFilePath)'
+              resourceGroupName: '$(moduleResourceGroupName)'
           - ? ${{ if and( eq(parameters.removeDeployment, 'true'), not(eq(variables['deploymentName'],'')) ) }}
             : - template: /.azuredevops/pipelineTemplates/steps.removeTemplateDeployment.yml
                 parameters:
                   parameterFilePath: '$(modulePath)/$(parameterFilePath)'
                   deploymentName: '$(deploymentName)'
+                  resourceGroupName: '$(moduleResourceGroupName)'
 
   - stage: DependencyRemoval
     displayName: Dependency Removal
@@ -129,6 +133,7 @@ stages:
             parameters:
               templateFilePath: '$(modulePath)/.dependencies/dependencies.bicep'
               deploymentName: '$(deploymentName)'
+              resourceGroupName: '$(moduleResourceGroupName)'
 
   - stage: Publishing
     dependsOn:
