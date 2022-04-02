@@ -13,7 +13,7 @@ steps:
   # [Agent] Prepare environment
   #----------------------------
   - task: PowerShell@2
-    displayName: 'Setup agent'
+    displayName: 'Setup agent for removal'
     condition: and( succeededOrFailed(), ne('$(deploymentName)','') )
     inputs:
       targetType: inline

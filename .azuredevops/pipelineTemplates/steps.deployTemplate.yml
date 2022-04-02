@@ -56,7 +56,7 @@ steps:
   # [Agent] Prepare environment
   #----------------------------
   - task: PowerShell@2
-    displayName: 'Setup agent'
+    displayName: 'Setup agent for deployment'
     inputs:
       targetType: inline
       pwsh: true

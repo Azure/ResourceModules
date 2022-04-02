@@ -109,9 +109,9 @@ stages:
           - ${{ if eq(parameters.removeDeployment, 'true') }}:
               - template: /.azuredevops/pipelineTemplates/steps.removeTemplateDeployment.yml
                 parameters:
-                  parameterFilePath: '$(parameterFilePath)'
-                  deploymentName: '$(deploymentName)'
+                  templateFilePath: '$(modulePath)/deploy.bicep'
                   resourceGroupName: '$(moduleResourceGroupName)'
+                  deploymentName: '$(deploymentName)'
 
   # - ${{ if eq(parameters.removeDeployment, 'true') }}:
   #     - stage: DependencyRemoval
