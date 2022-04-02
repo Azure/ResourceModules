@@ -75,7 +75,7 @@ steps:
 
   # [Agent] Replace tokens
   #-----------------------
-  - ${{ if not(eq(parameters.parameterFilePath,'')) }}:
+  - ${{ if ne(parameters.parameterFilePath,'') }}:
       - task: AzurePowerShell@5
         displayName: 'Replace Tokens [${{ parameters.parameterFilePath }}] via connection [${{ parameters.serviceConnection }}]'
         inputs:
@@ -131,7 +131,7 @@ steps:
   # [Validation] task(s)
   #---------------------
   - task: AzurePowerShell@5
-    ${{ if not(eq(parameters.parameterFilePath,'')) }}:
+    ${{ if ne(parameters.parameterFilePath,'') }}:
       displayName: 'Validate parameter file via connection [${{ parameters.serviceConnection }}]'
     ${{ if eq(parameters.parameterFilePath,'') }}:
       displayName: 'Validate template file via connection [${{ parameters.serviceConnection }}]'
@@ -183,7 +183,7 @@ steps:
   # [Deployment] task(s)
   #---------------------
   - task: AzurePowerShell@5
-    ${{ if not(eq(parameters.parameterFilePath,'')) }}:
+    ${{ if ne(parameters.parameterFilePath,'') }}:
       displayName: 'Deploy parameter file via connection [${{ parameters.serviceConnection }}]'
     ${{ if eq(parameters.parameterFilePath,'') }}:
       displayName: 'Deploy template file via connection [${{ parameters.serviceConnection }}]'

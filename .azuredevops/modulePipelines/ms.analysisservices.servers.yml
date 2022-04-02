@@ -119,7 +119,7 @@ stages:
   #       dependsOn:
   #         - DependencyDeployment
   #         - Deployment
-  #       condition: and(succeededOrFailed(), not(eq(variables['deploymentName'],'')))
+  #       condition: and(succeededOrFailed(), ne(variables['deploymentName'],''))
   #       jobs:
   #         - job: remove
   #           displayName: Remove dependencies
