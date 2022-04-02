@@ -69,7 +69,7 @@ stages:
               ${{ if ne(variables['poolName'], '') }}:
                 name: ${{ variables['poolName'] }}
             variables:
-              deploymentName: $[ stageDependencies.dependencyDeployment.deploy.outputs['DeployModule.deploymentName'] ]
+              deploymentName: $[ stageDependencies.dependencyDeployment.deploy.outputs['deployModule.deploymentName'] ]
             steps:
               - template: /.azuredevops/pipelineTemplates/steps.removeTemplateDeployment.yml
                 parameters:
