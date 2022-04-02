@@ -51,6 +51,7 @@ stages:
           - template: /.azuredevops/pipelineTemplates/steps.deployTemplate.yml
             parameters:
               templateFilePath: '$(modulePath)/.dependencies/dependencies.bicep'
+              resourceGroupName: '$(moduleResourceGroupName)'
 
   - stage: Deployment
     displayName: Deployment tests
