@@ -113,7 +113,6 @@ function Test-TemplateDeployment {
                     $null = $Context | Set-AzContext
                 }
                 if ($PSCmdlet.ShouldProcess('Subscription level deployment', 'Test')) {
-                    $DeploymentInputs
                     $res = Test-AzSubscriptionDeployment @DeploymentInputs -Location $Location
                 }
                 break
