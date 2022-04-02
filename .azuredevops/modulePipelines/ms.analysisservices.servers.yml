@@ -86,7 +86,7 @@ stages:
         dependsOn:
           - DependencyDeployment
           - Deployment
-        condition: and(succeededOrFailed(), ne(variables['deploymentName'],''))
+        condition: and(succeededOrFailed(), ne(dependencies.DependencyDeployment.outputs['deploy.DeployModule.deploymentName'],''))
         jobs:
           - job: remove
             displayName: Remove dependencies
