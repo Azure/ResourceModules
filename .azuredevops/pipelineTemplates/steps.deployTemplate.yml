@@ -187,7 +187,7 @@ steps:
       displayName: 'Deploy parameter file via connection [${{ parameters.serviceConnection }}]'
     ${{ if eq(parameters.parameterFilePath,'') }}:
       displayName: 'Deploy template file via connection [${{ parameters.serviceConnection }}]'
-    name: 'DeployModule'
+    name: deployModule
     inputs:
       azureSubscription: ${{ parameters.serviceConnection }}
       azurePowerShellVersion: 'latestVersion'

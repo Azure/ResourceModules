@@ -5,12 +5,12 @@ parameters:
   moduleResourceGroupName: ''
 
 stages:
-  - stage: Validation
+  - stage: validation
     displayName: Pester tests
     jobs:
       - template: /.azuredevops/pipelineTemplates/jobs.validateModulePester.yml
 
-  - stage: DependencyDeployment
+  - stage: dependencyDeployment
     displayName: Dependency Deployment
     jobs:
       - job: deploy
@@ -26,7 +26,7 @@ stages:
               templateFilePath: '$(modulePath)/.dependencies/dependencies.bicep'
               resourceGroupName: '${{ parameters.moduleResourceGroupName }}'
 
-  - stage: Deployment
+  - stage: deployment
     displayName: Deployment tests
     jobs:
       - template: /.azuredevops/pipelineTemplates/jobs.getParameterFiles.yml
@@ -54,12 +54,12 @@ stages:
                   deploymentName: '$(deploymentName)'
 
   - ${{ if eq(parameters.removeDeployment, 'true') }}:
-      - stage: DependencyRemoval
+      - stage: dependencyRemoval
         displayName: Dependency Removal
         dependsOn:
-          - DependencyDeployment
-          - Deployment
-        condition: and(succeededOrFailed(), ne(dependencies.DependencyDeployment.outputs['deploy.DeployModule.deploymentName'],''))
+          - dependencyDeployment
+          - deployment
+        condition: and(succeededOrFailed(), ne(dependencies.dependencyDeployment.outputs['deploy.deployModule.deploymentName'],''))
         jobs:
           - job: remove
             displayName: Remove dependencies
@@ -69,7 +69,7 @@ stages:
               ${{ if ne(variables['poolName'], '') }}:
                 name: ${{ variables['poolName'] }}
             variables:
-              deploymentName: $[ stageDependencies.DependencyDeployment.deploy.outputs['DeployModule.deploymentName'] ]
+              deploymentName: $[ stageDependencies.dependencyDeployment.deploy.outputs['DeployModule.deploymentName'] ]
             steps:
               - template: /.azuredevops/pipelineTemplates/steps.removeTemplateDeployment.yml
                 parameters:
@@ -79,7 +79,7 @@ stages:
 
   - stage: Publishing
     dependsOn:
-      - Deployment
+      - deployment
     displayName: Publish module
     condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/main'), eq(variables['Build.SourceBranch'], 'refs/heads/master'), eq('${{ parameters.prerelease }}', 'true')))
     jobs:
