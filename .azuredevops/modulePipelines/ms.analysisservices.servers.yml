@@ -104,7 +104,7 @@ stages:
           deploymentName: $[ stageDependencies.DependencyDeployment.deploy.outputs['DeployModule.deploymentName'] ]
         displayName: Remove dependencies
         steps:
-          - template: /.azuredevops/pipelineTemplates/steps.removeTemplateDeployment
+          - template: /.azuredevops/pipelineTemplates/steps.removeTemplateDeployment.yml
             parameters:
               templatePath: '$(modulePath)/.dependencies/dependencies.bicep'
               deploymentName: '$(deploymentName)'
