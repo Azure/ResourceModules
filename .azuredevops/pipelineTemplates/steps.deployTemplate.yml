@@ -94,7 +94,7 @@ steps:
             # Construct Token Function Input
             $ConvertTokensInputs = @{
                 Tokens      = @{}
-                FilePath    = Join-Path '${{ parameters.parameterFilePath }}'
+                FilePath    = '${{ parameters.parameterFilePath }}'
                 TokenPrefix = $Settings.parameterFileTokens.tokenPrefix
                 TokenSuffix = $Settings.parameterFileTokens.tokenSuffix
             }
