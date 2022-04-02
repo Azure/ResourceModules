@@ -21,5 +21,10 @@ function Get-ModuleParameterFiles {
         [string] $ModulePath
     )
 
-    return (Get-ChildItem -Path (Join-Path $ModulePath '.parameters') -Filter '*.json').FullName
+    $parameterFilePaths = (Get-ChildItem -Path (Join-Path $ModulePath '.parameters') -Filter '*.json').FullName
+
+    Write-Verbose 'Found parameter files'
+    $parameterFilePaths | ForEach-Object { Write-Verbose "- $_" }
+
+    return $parameterFilePaths
 }

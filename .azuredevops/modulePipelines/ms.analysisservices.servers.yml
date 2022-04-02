@@ -79,7 +79,7 @@ stages:
                 }
 
                 # Set agent up
-                $parameterFilePaths = Get-ModuleParameterFiles @inputObject
+                $parameterFilePaths = Get-ModuleParameterFiles @inputObject -Verbose
 
                 $testTable = @{}
                 foreach($parameterFilePath in $parameterFilePaths) {
