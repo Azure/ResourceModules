@@ -39,7 +39,7 @@ parameters:
   serviceConnection: '$(serviceConnection)'
 
   # Logic-related parameters
-  templateFilePath:
+  templateFilePath: ''
   parameterFilePath: ''
   location: '$(defaultLocation)'
   resourceGroupName: '$(defaultResourceGroupName)'

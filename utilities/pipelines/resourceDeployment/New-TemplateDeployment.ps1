@@ -226,11 +226,8 @@ function New-DeploymentWithParameterFile {
                         break
                     }
                     'subscription' {
-                        if ($subscriptionId) {
-                            $Context = Get-AzContext -ListAvailable | Where-Object Subscription -Match $subscriptionId
-                            if ($Context) {
-                                $null = $Context | Set-AzContext
-                            }
+                        if ($subscriptionId -and ($Context = Get-AzContext -ListAvailable | Where-Object { $_.Subscription.Id -eq $subscriptionId })) {
+                            $null = $Context | Set-AzContext
                         }
                         if ($PSCmdlet.ShouldProcess('Subscription level deployment', 'Create')) {
                             $res = New-AzSubscriptionDeployment @DeploymentInputs -Location $location
