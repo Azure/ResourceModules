@@ -38,9 +38,12 @@ stages:
   - stage: DependencyDeployment
     displayName: Dependency Deployment
     jobs:
-      - template: /.azuredevops/pipelineTemplates/steps.deployTemplate.yml
-        parameters:
-          templatePath: '$(modulePath)/.dependencies/dependencies.bicep'
+      - job: deploy
+        displayName: Deploy dependencies
+        steps:
+          - template: /.azuredevops/pipelineTemplates/steps.deployTemplate.yml
+            parameters:
+              templatePath: '$(modulePath)/.dependencies/dependencies.bicep'
 
   - stage: Deployment
     displayName: Deployment tests
