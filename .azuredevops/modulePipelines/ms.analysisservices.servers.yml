@@ -86,11 +86,11 @@ stages:
             parameters:
               templateFilePath: '$(modulePath)/deploy.bicep'
               parameterFilePath: '$(modulePath)/$(parameterFilePath)'
-          - ? ${{ if and( eq(parameters.removeDeployment, 'true'), not(eq(variables['deploymentName'],'')) ) }}
-            : - template: /.azuredevops/pipelineTemplates/steps.removeTemplateDeployment.yml
-                parameters:
-                  parameterFilePath: '$(modulePath)/$(parameterFilePath)'
-                  deploymentName: '$(deploymentName)'
+          - ${{ if and( eq(parameters.removeDeployment, 'true'), not(eq(variables['deploymentName'],'')) ) }}:
+            - template: /.azuredevops/pipelineTemplates/steps.removeTemplateDeployment.yml
+              parameters:
+                parameterFilePath: '$(modulePath)/$(parameterFilePath)'
+                deploymentName: '$(deploymentName)'
 
   - stage: DependencyRemoval
     displayName: Dependency Removal
