@@ -30,10 +30,10 @@ variables:
     value: '/arm/Microsoft.AnalysisServices/servers'
 
 stages:
-  - stage: Validation
-    displayName: Pester tests
-    jobs:
-      - template: /.azuredevops/pipelineTemplates/jobs.validateModulePester.yml
+  # - stage: Validation
+  #   displayName: Pester tests
+  #   jobs:
+  #     - template: /.azuredevops/pipelineTemplates/jobs.validateModulePester.yml
 
   - stage: DependencyDeployment
     displayName: Dependency Deployment
