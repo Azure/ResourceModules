@@ -37,21 +37,21 @@ stages:
   #   jobs:
   #     - template: /.azuredevops/pipelineTemplates/jobs.validateModulePester.yml
 
-  - stage: DependencyDeployment
-    displayName: Dependency Deployment
-    jobs:
-      - job: deploy
-        displayName: Deploy dependencies
-        pool:
-          ${{ if ne(variables['vmImage'], '') }}:
-            vmImage: ${{ variables['vmImage'] }}
-          ${{ if ne(variables['poolName'], '') }}:
-            name: ${{ variables['poolName'] }}
-        steps:
-          - template: /.azuredevops/pipelineTemplates/steps.deployTemplate.yml
-            parameters:
-              templateFilePath: '$(modulePath)/.dependencies/dependencies.bicep'
-              resourceGroupName: '$(moduleResourceGroupName)'
+  # - stage: DependencyDeployment
+  #   displayName: Dependency Deployment
+  #   jobs:
+  #     - job: deploy
+  #       displayName: Deploy dependencies
+  #       pool:
+  #         ${{ if ne(variables['vmImage'], '') }}:
+  #           vmImage: ${{ variables['vmImage'] }}
+  #         ${{ if ne(variables['poolName'], '') }}:
+  #           name: ${{ variables['poolName'] }}
+  #       steps:
+  #         - template: /.azuredevops/pipelineTemplates/steps.deployTemplate.yml
+  #           parameters:
+  #             templateFilePath: '$(modulePath)/.dependencies/dependencies.bicep'
+  #             resourceGroupName: '$(moduleResourceGroupName)'
 
   - stage: Deployment
     displayName: Deployment tests
@@ -113,28 +113,28 @@ stages:
                   deploymentName: '$(deploymentName)'
                   resourceGroupName: '$(moduleResourceGroupName)'
 
-  - stage: DependencyRemoval
-    displayName: Dependency Removal
-    dependsOn:
-      - DependencyDeployment
-      - Deployment
-    condition: and(succeededOrFailed(), eq(${{ parameters.removeDeployment }}, 'true'), not(eq(variables['deploymentName'],'')))
-    jobs:
-      - job: remove
-        displayName: Remove dependencies
-        pool:
-          ${{ if ne(variables['vmImage'], '') }}:
-            vmImage: ${{ variables['vmImage'] }}
-          ${{ if ne(variables['poolName'], '') }}:
-            name: ${{ variables['poolName'] }}
-        variables:
-          deploymentName: $[ stageDependencies.DependencyDeployment.deploy.outputs['DeployModule.deploymentName'] ]
-        steps:
-          - template: /.azuredevops/pipelineTemplates/steps.removeTemplateDeployment.yml
-            parameters:
-              templateFilePath: '$(modulePath)/.dependencies/dependencies.bicep'
-              deploymentName: '$(deploymentName)'
-              resourceGroupName: '$(moduleResourceGroupName)'
+  # - stage: DependencyRemoval
+  #   displayName: Dependency Removal
+  #   dependsOn:
+  #     - DependencyDeployment
+  #     - Deployment
+  #   condition: and(succeededOrFailed(), eq(${{ parameters.removeDeployment }}, 'true'), not(eq(variables['deploymentName'],'')))
+  #   jobs:
+  #     - job: remove
+  #       displayName: Remove dependencies
+  #       pool:
+  #         ${{ if ne(variables['vmImage'], '') }}:
+  #           vmImage: ${{ variables['vmImage'] }}
+  #         ${{ if ne(variables['poolName'], '') }}:
+  #           name: ${{ variables['poolName'] }}
+  #       variables:
+  #         deploymentName: $[ stageDependencies.DependencyDeployment.deploy.outputs['DeployModule.deploymentName'] ]
+  #       steps:
+  #         - template: /.azuredevops/pipelineTemplates/steps.removeTemplateDeployment.yml
+  #           parameters:
+  #             templateFilePath: '$(modulePath)/.dependencies/dependencies.bicep'
+  #             deploymentName: '$(deploymentName)'
+  #             resourceGroupName: '$(moduleResourceGroupName)'
 
   - stage: Publishing
     dependsOn:
