@@ -183,7 +183,7 @@ resource domainService_lock 'Microsoft.Authorization/locks@2017-04-01' = if (loc
   scope: domainName_resource
 }
 
-module domainName_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+module domainService_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-VNet-Rbac-${index}'
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
