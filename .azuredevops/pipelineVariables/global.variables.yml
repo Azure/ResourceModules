@@ -5,7 +5,7 @@ variables:
 
   vmImage: 'ubuntu-latest' # Use this for Microsoft-hosted agents
   poolName: '' # Use this for self-hosted agents
-  serviceConnection: 'USERS-ALSEHR-INTERNAL'
+  serviceConnection: 'CARML-CSU-Tenant-Connection'
 
   ######################################
   # Source
