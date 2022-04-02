@@ -1,0 +1,86 @@
+parameters:
+  removeDeployment: true
+  prerelease: false
+  templateFilePath: ''
+  moduleResourceGroupName: ''
+
+stages:
+  - stage: Validation
+    displayName: Pester tests
+    jobs:
+      - template: /.azuredevops/pipelineTemplates/jobs.validateModulePester.yml
+
+  - stage: DependencyDeployment
+    displayName: Dependency Deployment
+    jobs:
+      - job: deploy
+        displayName: Deploy dependencies
+        pool:
+          ${{ if ne(variables['vmImage'], '') }}:
+            vmImage: ${{ variables['vmImage'] }}
+          ${{ if ne(variables['poolName'], '') }}:
+            name: ${{ variables['poolName'] }}
+        steps:
+          - template: /.azuredevops/pipelineTemplates/steps.deployTemplate.yml
+            parameters:
+              templateFilePath: '$(modulePath)/.dependencies/dependencies.bicep'
+              resourceGroupName: '${{ parameters.moduleResourceGroupName }}'
+
+  - stage: Deployment
+    displayName: Deployment tests
+    jobs:
+      - template: /.azuredevops/pipelineTemplates/jobs.getParameterFiles.yml
+      - job: deploy
+        displayName: Deploy
+        dependsOn: getParameterFilePaths
+        pool:
+          ${{ if ne(variables['vmImage'], '') }}:
+            vmImage: ${{ variables['vmImage'] }}
+          ${{ if ne(variables['poolName'], '') }}:
+            name: ${{ variables['poolName'] }}
+        strategy:
+          matrix: $[ dependencies.getParameterFilePaths.outputs['getParameterFilePathsTask.parameterTests'] ]
+        steps:
+          - template: /.azuredevops/pipelineTemplates/steps.deployTemplate.yml
+            parameters:
+              templateFilePath: '$(modulePath)/deploy.bicep'
+              parameterFilePath: '$(parameterFilePath)'
+              resourceGroupName: '${{ parameters.moduleResourceGroupName }}'
+          - ${{ if eq(parameters.removeDeployment, 'true') }}:
+              - template: /.azuredevops/pipelineTemplates/steps.removeTemplateDeployment.yml
+                parameters:
+                  templateFilePath: '$(modulePath)/deploy.bicep'
+                  resourceGroupName: '${{ parameters.moduleResourceGroupName }}'
+                  deploymentName: '$(deploymentName)'
+
+  - ${{ if eq(parameters.removeDeployment, 'true') }}:
+      - stage: DependencyRemoval
+        displayName: Dependency Removal
+        dependsOn:
+          - DependencyDeployment
+          - Deployment
+        condition: and(succeededOrFailed(), ne(dependencies.DependencyDeployment.outputs['deploy.DeployModule.deploymentName'],''))
+        jobs:
+          - job: remove
+            displayName: Remove dependencies
+            pool:
+              ${{ if ne(variables['vmImage'], '') }}:
+                vmImage: ${{ variables['vmImage'] }}
+              ${{ if ne(variables['poolName'], '') }}:
+                name: ${{ variables['poolName'] }}
+            variables:
+              deploymentName: $[ stageDependencies.DependencyDeployment.deploy.outputs['DeployModule.deploymentName'] ]
+            steps:
+              - template: /.azuredevops/pipelineTemplates/steps.removeTemplateDeployment.yml
+                parameters:
+                  templateFilePath: '$(modulePath)/.dependencies/dependencies.bicep'
+                  deploymentName: '$(deploymentName)'
+                  resourceGroupName: '${{ parameters.moduleResourceGroupName }}'
+
+  - stage: Publishing
+    dependsOn:
+      - Deployment
+    displayName: Publish module
+    condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/main'), eq(variables['Build.SourceBranch'], 'refs/heads/master'), eq('${{ parameters.prerelease }}', 'true')))
+    jobs:
+      - template: /.azuredevops/pipelineTemplates/jobs.publishModule.yml
