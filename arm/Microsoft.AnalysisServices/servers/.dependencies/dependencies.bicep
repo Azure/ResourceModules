@@ -33,7 +33,7 @@ module diagnosticDependencies '../../../.global/dependencyConstructs/diagnostic.
   scope: az.resourceGroup(resourceGroupName)
   name: '${uniqueString(deployment().name, location)}-diagDep'
   params: {
-    resourceGroupName: resourceGroupName
+    resourceGroupName: resourceGroup.outputs.name
     storageAccountName: 'adpsxxazsa${serviceShort}01'
     logAnalyticsWorkspaceName: 'adp-sxx-law-${serviceShort}-01'
     eventHubNamespaceEventHubName: 'adp-sxx-evh-${serviceShort}-01'
