@@ -183,16 +183,15 @@ runs:
           additionalParameters = @{}
         }
 
-        # Enables us to pass the resource group name as a deployment parameter
-        if(-not [String]::IsNullOrEmpty('${{ inputs.resourceGroupName }}')) {
-          $resourceGroupName = '${{ inputs.resourceGroupName }}'
-          $functionInput['additionalParameters'] = @{
-            resourceGroupName = $resourceGroupName
-          }
-        }
-
         if(-not [String]::IsNullOrEmpty('${{ inputs.parameterFilePath }}')) {
           $functionInput['parameterFilePath'] = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.parameterFilePath }}'
+        }
+
+        # Enables us to pass the resource group name as a deployment parameter
+        if(-not [String]::IsNullOrEmpty('${{ inputs.resourceGroupName }}')) {
+          $functionInput['additionalParameters'] = @{
+            resourceGroupName = '${{ inputs.resourceGroupName }}'
+          }
         }
 
         $projectSettings = Get-Content -Path 'settings.json' | ConvertFrom-Json
@@ -231,16 +230,15 @@ runs:
           additionalParameters = @{}
         }
 
-        # Enables us to pass the resource group name as a deployment parameter
-        if(-not [String]::IsNullOrEmpty('${{ inputs.resourceGroupName }}')) {
-          $resourceGroupName = '${{ inputs.resourceGroupName }}'
-          $functionInput['additionalParameters'] = @{
-            resourceGroupName = $resourceGroupName
-          }
-        }
-
         if(-not [String]::IsNullOrEmpty('${{ inputs.parameterFilePath }}')) {
           $functionInput['parameterFilePath'] = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.parameterFilePath }}'
+        }
+
+        # Enables us to pass the resource group name as a deployment parameter
+        if(-not [String]::IsNullOrEmpty('${{ inputs.resourceGroupName }}')) {
+          $functionInput['additionalParameters'] = @{
+            resourceGroupName = '${{ inputs.resourceGroupName }}'
+          }
         }
 
         $projectSettings = Get-Content -Path 'settings.json' | ConvertFrom-Json
