@@ -169,7 +169,7 @@ runs:
         Write-Output "::group::Validate [${{ inputs.templateFilePath }}]"
 
         # Load used functions
-        . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourceDeployment' 'Test-Template.ps1')
+        . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourceDeployment' 'Test-TemplateDeployment.ps1')
 
         # ----------- #
         # INVOKE TEST #
@@ -204,7 +204,7 @@ runs:
         Write-Verbose "Invoke task with" -Verbose
         Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
-        Test-Template @functionInput -Verbose
+        Test-TemplateDeployment @functionInput -Verbose
 
         Write-Output "::endgroup::"
 
@@ -218,7 +218,7 @@ runs:
         Write-Output "::group::Deploy [${{ inputs.templateFilePath }}] with parameters [${{ inputs.parameterFilePath }}]"
 
         # Load used functions
-        . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourceDeployment' 'New-ModuleDeployment.ps1')
+        . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourceDeployment' 'New-TemplateDeployment.ps1')
 
         $functionInput = @{
           templateFilePath     = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.templateFilePath }}'
@@ -252,7 +252,7 @@ runs:
         Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
         # Invoke deployment
-        $res = New-ModuleDeployment @functionInput -Verbose
+        $res = New-TemplateDeployment @functionInput -Verbose
 
         # Get deployment name
         Write-Output ('::set-output name={0}::{1}' -f 'deploymentName', $res.deploymentName)

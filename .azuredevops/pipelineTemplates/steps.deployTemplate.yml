@@ -148,7 +148,7 @@ steps:
       pwsh: true
       inline: |
         # Load used functions
-        . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourceDeployment' 'Test-Template.ps1')
+        . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourceDeployment' 'Test-TemplateDeployment.ps1')
 
         # ----------- #
         # INVOKE TEST #
@@ -183,7 +183,7 @@ steps:
         Write-Verbose "Invoke task with" -Verbose
         Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
-        Test-Template @functionInput -Verbose
+        Test-TemplateDeployment @functionInput -Verbose
 
   # [Deployment] task(s)
   #---------------------
@@ -201,7 +201,7 @@ steps:
       ScriptType: InlineScript
       inline: |
         # Load used functions
-        . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourceDeployment' 'New-ModuleDeployment.ps1')
+        . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourceDeployment' 'New-TemplateDeployment.ps1')
 
         # ----------------- #
         # INVOKE DEPLOYMENT #
@@ -238,7 +238,7 @@ steps:
         Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
         # Invoke deployment
-        $res = New-ModuleDeployment @functionInput -Verbose
+        $res = New-TemplateDeployment @functionInput -Verbose
 
         # Get deployment name
         Write-Host ('##vso[task.setvariable variable=deploymentName]{0}' -f $res.deploymentName)

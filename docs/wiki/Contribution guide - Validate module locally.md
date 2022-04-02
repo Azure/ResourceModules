@@ -24,8 +24,8 @@ If the switch for either the validation test (`-ValidationTest`) or deployment t
    - of the subscriptionID & managementGroupID of the provided `ValidateOrDeployParameters` object,
    - add all key-value pairs of the `-AdditionalTokens` object to it,
    - and optionally also add all key-value pairs specified in the `settings.json`'s `parameterFileTokens` object
-1. If the `-ValidationTest` parameter was set, it runs a deployment validation using the `Test-Template` script
-1. If the `-DeploymentTest` parameter was set, it runs a deployment using the `New-ModuleDeployment` script (with no retries).
+1. If the `-ValidationTest` parameter was set, it runs a deployment validation using the `Test-TemplateDeployment` script
+1. If the `-DeploymentTest` parameter was set, it runs a deployment using the `New-TemplateDeployment` script (with no retries).
 1. As a final step it rolls the parameter files back to their original state if either the `-ValidationTest` or `-DeploymentTest` parameters were provided.
 
 # How to use it

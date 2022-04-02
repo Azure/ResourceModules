@@ -31,27 +31,27 @@ Optional. Name of the management group to deploy into. Mandatory if deploying in
 Optional. Additional parameters you can provide with the deployment. E.g. @{ resourceGroupName = 'myResourceGroup' }
 
 .EXAMPLE
-Test-Template templateFilePath 'ARM/KeyVault/deploy.json' -parameterFilePath 'ARM/KeyVault/.parameters/parameters.json' -location 'WestEurope' -resourceGroupName 'aLegendaryRg'
+Test-TemplateDeploymentWithParameterFile templateFilePath 'ARM/KeyVault/deploy.json' -parameterFilePath 'ARM/KeyVault/.parameters/parameters.json' -location 'WestEurope' -resourceGroupName 'aLegendaryRg'
 
 Test the deploy.json of the KeyVault module with the parameter file 'parameters.json' using the resource group 'aLegendaryRg' in location 'WestEurope'
 
 .EXAMPLE
-Test-Template templateFilePath 'ARM/ResourceGroup/deploy.json' -parameterFilePath 'ARM/ResourceGroup/.parameters/parameters.json' -location 'WestEurope'
+Test-TemplateDeploymentWithParameterFile templateFilePath 'ARM/ResourceGroup/deploy.json' -parameterFilePath 'ARM/ResourceGroup/.parameters/parameters.json' -location 'WestEurope'
 
 Test the deploy.json of the ResourceGroup module with the parameter file 'parameters.json' in location 'WestEurope'
 #>
-function Test-Template {
+function Test-TemplateDeployment {
 
     [CmdletBinding(SupportsShouldProcess)]
     param (
         [Parameter(Mandatory)]
         [string] $templateFilePath,
 
-        [Parameter(Mandatory = $false)]
-        [string] $parameterFilePath,
-
         [Parameter(Mandatory)]
         [string] $location,
+
+        [Parameter(Mandatory = $false)]
+        [string] $parameterFilePath,
 
         [Parameter(Mandatory = $false)]
         [string] $resourceGroupName,
