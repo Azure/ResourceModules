@@ -174,7 +174,7 @@ resource domainService_diagnosticSettings 'Microsoft.Insights/diagnosticSettings
   scope: domainName_resource
 }
 
-resource domainName_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
+resource domainService_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
   name: '${domainName}-${lock}-lock'
   properties: {
     level: lock
