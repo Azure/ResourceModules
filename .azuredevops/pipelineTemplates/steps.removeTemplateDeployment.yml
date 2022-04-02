@@ -14,6 +14,7 @@ steps:
   #----------------------------
   - task: PowerShell@2
     displayName: 'Setup agent'
+    condition: and(succeededOrFailed(), not(eq('$(deploymentName)','')) ) }}
     inputs:
       targetType: inline
       pwsh: true
@@ -40,6 +41,7 @@ steps:
   #------------------
   - task: AzurePowerShell@5
     displayName: 'Remove deployed resources via [${{ parameters.serviceConnection }}]'
+    condition: and(succeededOrFailed(), not(eq('$(deploymentName)','')) ) }}
     inputs:
       azureSubscription: ${{ parameters.serviceConnection }}
       azurePowerShellVersion: 'latestVersion'
