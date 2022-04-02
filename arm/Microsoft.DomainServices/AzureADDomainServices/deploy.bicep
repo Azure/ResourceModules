@@ -1,4 +1,4 @@
-@description('Required: The domain name specific to Azure ADDS Services only - not recommended to use <<domain>>.onmicrosoft.com for production')
+@description('Optional. The name of the AADDS resource. Defaults to the domain name specific to the Azure ADDS service.')
 param domainName string
 
 @description('Required: The name of the sku specific to Azure ADDS Services - Standard is the default')
