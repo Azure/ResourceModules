@@ -30,7 +30,7 @@ function Get-ModuleParameterFiles {
 
     Write-Host '22222222222222222'
     $b = Get-ChildItem -Path $ModulePath -Recurse
-    Write-Host ($t | ConvertTo-Json | Out-String)
+    Write-Host ($b | ConvertTo-Json | Out-String)
 
     if (-not $parameterFilePaths) {
         throw "No parameter files found for module [$ModulePath]"
