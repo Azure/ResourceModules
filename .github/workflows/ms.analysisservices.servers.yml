@@ -76,9 +76,9 @@ jobs:
         with:
           modulePath: '${{ env.modulePath }}'
 
-  # ###################
-  # Deployment tests #
-  # ###################
+  ######################
+  #   Deployment tests #
+  ######################
 
   #########################
   # Dependency deployment #
