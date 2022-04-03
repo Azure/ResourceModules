@@ -48,9 +48,11 @@ This module deploys an Azure SQL Server.
 | `readScale` | string | `'Disabled'` | `[Enabled, Disabled]` | The state of read-only routing. |
 | `requestedBackupStorageRedundancy` | string | `''` | `[Geo, Local, Zone, ]` | The storage account type to be used to store backups for this database. |
 | `sampleName` | string | `''` |  | The name of the sample schema to apply when creating this database. |
+| `skuCapacity` | int | `-1` |  | Capacity of the particular SKU. |
+| `skuFamily` | string | `''` |  | If the service has different generations of hardware, for the same SKU, then that can be captured here. |
 | `skuName` | string | `'GP_Gen5_2'` |  | The name of the SKU. |
+| `skuTier` | string | `'GeneralPurpose'` |  | The skuTier or edition of the particular SKU. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
-| `tier` | string | `'GeneralPurpose'` |  | The tier or edition of the particular SKU. |
 | `zoneRedundant` | bool | `False` |  | Whether or not this database is zone redundant. |
 
 
