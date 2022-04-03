@@ -22,7 +22,7 @@ function Get-ModuleParameterFiles {
         [string] $ModulePath
     )
 
-    $parameterFilePaths = (Get-ChildItem -Recurse -Path $ModulePath -Filter '*parameters.json' -File).FullName
+    $parameterFilePaths = (Get-ChildItem -Recurse -Path $ModulePath.Replace('\', '/') -Filter '*parameters.json' -File).FullName
 
     if (-not $parameterFilePaths) {
         throw "No parameter files found for module [$ModulePath]"
