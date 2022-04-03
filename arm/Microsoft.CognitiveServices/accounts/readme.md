@@ -52,7 +52,7 @@ This module deploys different kinds of cognitive services resources
 | `networkAcls` | object | `{object}` |  | Service endpoint object information |
 | `privateEndpoints` | array | `[]` |  | Configuration Details for private endpoints. |
 | `publicNetworkAccess` | string | `'Enabled'` | `[Enabled, Disabled]` | Subdomain name used for token-based authentication. Must be set if 'networkAcls' are set. |
-| `restore` | bool | `True` |  | Restore a soft-deleted cognitive service. |
+| `restore` | bool | `False` |  | Restore a soft-deleted cognitive service. |
 | `restrictOutboundNetworkAccess` | bool | `True` |  | Restrict outbound network access |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
 | `sku` | string | `'S0'` | `[C2, C3, C4, F0, F1, S, S0, S1, S10, S2, S3, S4, S5, S6, S7, S8, S9]` | SKU of the Cognitive Services resource. Use 'Get-AzCognitiveServicesAccountSku' to determine a valid combinations of 'kind' and 'sku' for your Azure region. |
