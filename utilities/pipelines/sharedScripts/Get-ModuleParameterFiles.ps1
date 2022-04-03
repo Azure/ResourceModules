@@ -22,11 +22,17 @@ function Get-ModuleParameterFiles {
         [string] $ModulePath
     )
 
-    if ($parameterFilePaths = (Get-ChildItem -Path $ModulePath -Filter '*parameters.json' -Recurse).FullName) {
+    $parameterFilePaths = (Get-ChildItem -Path $ModulePath -Filter '*parameters.json' -Recurse).FullName
+    $PSVersionTable
+
+    if (-not $parameterFilePaths) {
+        throw "No parameter files found for module [$ModulePath]"
+    } else {
         $parameterFilePaths = $parameterFilePaths | ForEach-Object {
             $_.Replace($ModulePath, '').Trim('\').Trim('/')
         }
     }
+
 
     Write-Verbose 'Found parameter files'
     $parameterFilePaths | ForEach-Object { Write-Verbose "- $_" }
