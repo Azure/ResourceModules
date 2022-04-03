@@ -86,6 +86,7 @@ jobs:
     runs-on: ubuntu-20.04
     name: 'Deploy dependencies'
     needs:
+      - job_prepare_pipeline
       - job_module_pester_validation
     outputs:
       deploymentName: ${{ steps.deploy.outputs.deploymentName }}
