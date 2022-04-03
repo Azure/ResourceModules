@@ -110,8 +110,11 @@ module server_databases 'databases/deploy.bicep' = [for (database, index) in dat
   params: {
     name: database.name
     serverName: server.name
-    tier: contains(database, 'tier') ? database.tier : 'GeneralPurpose'
+    skuTier: contains(database, 'tier') ? database.tier : 'GeneralPurpose'
     skuName: contains(database, 'skuName') ? database.skuName : 'GP_Gen5_2'
+    skuCapacity: contains(database, 'skuCapacity') ? database.skuCapacity : -1
+    skuFamily: contains(database, 'skuFamily') ? database.skuFamily : ''
+    skuSize: contains(database, 'skuSize') ? database.skuSize : ''
     collation: contains(database, 'collation') ? database.collation : 'SQL_Latin1_General_CP1_CI_AS'
     maxSizeBytes: contains(database, 'maxSizeBytes') ? database.maxSizeBytes : 34359738368
     autoPauseDelay: contains(database, 'autoPauseDelay') ? database.autoPauseDelay : ''
