@@ -51,7 +51,7 @@ param tags object = {}
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
 
-@description('Required. The local Virtual Network Gateway.')
+@description('Required. The primary Virtual Network Gateway.')
 param virtualNetworkGateway1 object
 
 @description('Optional. The remote Virtual Network Gateway. Used for connection type [Vnet2Vnet]')

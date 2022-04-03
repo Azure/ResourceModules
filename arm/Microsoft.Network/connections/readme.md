@@ -22,7 +22,7 @@ This template deploys a virtual network gateway connection.
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | Remote connection name |
-| `virtualNetworkGateway1` | object | The local Virtual Network Gateway. |
+| `virtualNetworkGateway1` | object | The primary Virtual Network Gateway. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
@@ -41,6 +41,26 @@ This template deploys a virtual network gateway connection.
 | `virtualNetworkGatewayConnectionType` | string | `'IPsec'` | `[IPsec, Vnet2Vnet, ExpressRoute, VPNClient]` | Gateway connection type. |
 | `vpnSharedKey` | string | `''` |  | Specifies a VPN shared key. The same value has to be specified on both Virtual Network Gateways |
 
+
+### Parameter Usage: `virtualNetworkGateway1`
+
+The primary virtual network gateway object.
+
+```json
+"virtualNetworkGateway1" : {
+    "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.Network/virtualNetworkGateways/myGateway",
+}
+```
+
+### Parameter Usage: `localNetworkGateway2`
+
+The local virtual network gateway object.
+
+```json
+"localNetworkGateway2" : {
+    "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.Network/virtualNetworkGateways/myGateway",
+}
+```
 
 ### Parameter Usage: `customIPSecPolicy`
 
