@@ -122,7 +122,7 @@ param encryption object = {}
 param migrationToken string = ''
 
 @description('Optional. Restore a soft-deleted cognitive service.')
-param restore bool = true
+param restore bool = false
 
 @description('Optional. Restrict outbound network access')
 param restrictOutboundNetworkAccess bool = true
