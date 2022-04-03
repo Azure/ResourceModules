@@ -154,11 +154,13 @@ function New-DeploymentWithParameterFile {
     }
 
     process {
-        $moduleName = Split-Path -Path (Split-Path $templateFilePath -Parent) -LeafBase
-
+        $deploymentNamePrefix = Split-Path -Path (Split-Path $templateFilePath -Parent) -LeafBase
+        if ([String]::IsNullOrEmpty($deploymentNamePrefix)) {
+            $deploymentNamePrefix = 'templateDeployment-{0}' -f (Split-Path $templateFilePath -LeafBase)
+        }
         # Generate a valid deployment name. Must match ^[-\w\._\(\)]+$
         do {
-            $deploymentName = "$moduleName-$(-join (Get-Date -Format yyyyMMddTHHMMssffffZ)[0..63])"
+            $deploymentName = "$deploymentNamePrefix-$(-join (Get-Date -Format yyyyMMddTHHMMssffffZ)[0..63])"
         } while ($deploymentName -notmatch '^[-\w\._\(\)]+$')
 
         Write-Verbose "Deploying with deployment name [$deploymentName]" -Verbose
