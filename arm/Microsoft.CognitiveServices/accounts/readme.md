@@ -16,7 +16,7 @@ This module deploys different kinds of cognitive services resources
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2017-04-01 |
 | `Microsoft.Authorization/roleAssignments` | 2021-04-01-preview |
-| `Microsoft.CognitiveServices/accounts` | 2017-04-18 |
+| `Microsoft.CognitiveServices/accounts` | 2021-10-01 |
 | `Microsoft.Insights/diagnosticSettings` | 2021-05-01-preview |
 | `Microsoft.Network/privateEndpoints` | 2021-05-01 |
 | `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | 2021-02-01 |
@@ -32,6 +32,8 @@ This module deploys different kinds of cognitive services resources
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
+| `allowedFqdnList` | array | `[]` |  | List of allowed FQDN. |
+| `apiProperties` | object | `{object}` |  | The api properties for special APIs. |
 | `customSubDomainName` | string | `''` |  | Subdomain name used for token-based authentication. Required if 'networkAcls' are set. |
 | `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
@@ -41,17 +43,23 @@ This module deploys different kinds of cognitive services resources
 | `diagnosticSettingsName` | string | `[format('{0}-diagnosticSettings', parameters('name'))]` |  | The name of the diagnostic setting, if deployed. |
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
+| `disableLocalAuth` | bool | `False` |  | Allow only Azure AD authentication. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `encryption` | object | `{object}` |  | Properties to configure Encryption |
 | `location` | string | `[resourceGroup().location]` |  | Location for all Resources. |
 | `lock` | string | `'NotSpecified'` | `[CanNotDelete, NotSpecified, ReadOnly]` | Specify the type of lock. |
+| `migrationToken` | string |  |  | Resource migration token. |
 | `networkAcls` | object | `{object}` |  | Service endpoint object information |
 | `privateEndpoints` | array | `[]` |  | Configuration Details for private endpoints. |
 | `publicNetworkAccess` | string | `'Enabled'` | `[Enabled, Disabled]` | Subdomain name used for token-based authentication. Must be set if 'networkAcls' are set. |
+| `restore` | bool | `True` |  | Restore a soft-deleted cognitive service. |
+| `restrictOutboundNetworkAccess` | bool |  |  | Restrict outbound network access |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
 | `sku` | string | `'S0'` | `[C2, C3, C4, F0, F1, S, S0, S1, S10, S2, S3, S4, S5, S6, S7, S8, S9]` | SKU of the Cognitive Services resource. Use 'Get-AzCognitiveServicesAccountSku' to determine a valid combinations of 'kind' and 'sku' for your Azure region. |
 | `systemAssignedIdentity` | bool | `False` |  | Enables system assigned managed identity on the resource. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
 | `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. |
+| `userOwnedStorage` | array | `[]` |  | The storage accounts for this resource. |
 
 
 ### Parameter Usage: `privateEndpoints`
@@ -187,7 +195,7 @@ You can specify multiple user assigned identities to a resource by providing add
 
 ## Template references
 
-- [Accounts](https://docs.microsoft.com/en-us/azure/templates/Microsoft.CognitiveServices/2017-04-18/accounts)
+- [Accounts](https://docs.microsoft.com/en-us/azure/templates/Microsoft.CognitiveServices/2021-10-01/accounts)
 - [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings)
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
 - [Privateendpoints](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/privateEndpoints)
