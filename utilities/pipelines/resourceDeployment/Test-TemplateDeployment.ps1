@@ -83,8 +83,7 @@ function Test-TemplateDeployment {
             $deploymentName = "$deploymentNamePrefix-$(-join (Get-Date -Format yyyyMMddTHHMMssffffZ)[0..63])"
         } while ($deploymentName -notmatch '^[-\w\._\(\)]+$')
 
-        Write-Verbose "Deploying with deployment name [$deploymentName]" -Verbose
-
+        Write-Verbose "Testing with deployment name [$deploymentName]" -Verbose
 
         $DeploymentInputs = @{
             DeploymentName = $deploymentName
