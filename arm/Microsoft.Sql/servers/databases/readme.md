@@ -51,6 +51,7 @@ This module deploys an Azure SQL Server.
 | `skuCapacity` | int | `-1` |  | Capacity of the particular SKU. |
 | `skuFamily` | string | `''` |  | If the service has different generations of hardware, for the same SKU, then that can be captured here. |
 | `skuName` | string | `'GP_Gen5_2'` |  | The name of the SKU. |
+| `skuSize` | string | `''` |  | Size of the particular SKU. |
 | `skuTier` | string | `'GeneralPurpose'` |  | The skuTier or edition of the particular SKU. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
 | `zoneRedundant` | bool | `False` |  | Whether or not this database is zone redundant. |

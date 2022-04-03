@@ -19,7 +19,7 @@ param skuCapacity int = -1
 @description('Optional. If the service has different generations of hardware, for the same SKU, then that can be captured here.')
 param skuFamily string = ''
 
-@description('Optional.	Size of the particular SKU')
+@description('Optional. Size of the particular SKU.')
 param skuSize string = ''
 
 @description('Optional. The max size of the database expressed in bytes.')
