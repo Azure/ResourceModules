@@ -28,12 +28,15 @@ jobs:
             # Load used functions
             . (Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'pipelines' 'sharedScripts' 'Get-ModuleParameterFiles.ps1')
 
-            $inputObject = @{
+            $functionInput = @{
               ModulePath = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)'
             }
 
+            Write-Verbose "Invoke task with" -Verbose
+            Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
+
             # Set agent up
-            $parameterFilePaths = Get-ModuleParameterFiles @inputObject -Verbose
+            $parameterFilePaths = Get-ModuleParameterFiles @functionInput -Verbose
 
             $testTable = @{}
             foreach($parameterFilePath in $parameterFilePaths) {
