@@ -22,14 +22,10 @@ function Get-ModuleParameterFiles {
         [string] $ModulePath
     )
 
-    $parameterFilePaths = (Get-ChildItem -Path $ModulePath -Filter '*parameters.json' -Recurse).FullName
-
-    Write-Host '1111111111111111'
-    $t = Get-ChildItem -Path $ModulePath -Filter '*parameters.json' -Recurse
-    Write-Host ($t | ConvertTo-Json | Out-String)
+    $parameterFilePaths = (Get-ChildItem -Path $ModulePath -Filter '*parameters.json' -File -Recurse).FullName
 
     Write-Host '22222222222222222'
-    $b = Get-ChildItem -Path $ModulePath -Recurse
+    $b = (Get-ChildItem -Path $ModulePath -Recurse -File).FullName
     Write-Host ($b | ConvertTo-Json | Out-String)
 
     if (-not $parameterFilePaths) {
