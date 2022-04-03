@@ -101,7 +101,7 @@ resource connection 'Microsoft.Network/connections@2021-05-01' = {
     sharedKey: virtualNetworkGatewayConnectionType != 'ExpressRoute' ? vpnSharedKey : null
     usePolicyBasedTrafficSelectors: usePolicyBasedTrafficSelectors
     ipsecPolicies: !empty(customIPSecPolicy.ipsecEncryption) ? customIPSecPolicy_var : customIPSecPolicy.ipsecEncryption
-    routingWeight: (routingWeight != -1) ? routingWeight : null
+    routingWeight: routingWeight != -1 ? routingWeight : null
     enableBgp: enableBgp
   }
 }
