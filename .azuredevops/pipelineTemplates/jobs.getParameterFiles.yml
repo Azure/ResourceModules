@@ -19,7 +19,7 @@ jobs:
         name: ${{ parameters.poolName }}
     steps:
       - task: PowerShell@2
-        displayName: 'Fetch parameter files'
+        displayName: 'Get parameter files'
         name: getParameterFilePathsTask
         inputs:
           targetType: inline

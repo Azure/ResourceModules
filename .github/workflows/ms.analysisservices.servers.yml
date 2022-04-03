@@ -60,54 +60,54 @@ jobs:
       removeDeployment: ${{ steps.get-workflow-param.outputs.removeDeployment }}
       parameterFilePaths: ${{ steps.get-parameter-file-paths.outputs.parameterFilePaths }}
 
-  ####################
-  #   Pester Tests   #
-  ####################
-  job_module_pester_validation:
-    runs-on: ubuntu-20.04
-    name: 'Pester tests'
-    steps:
-      - name: 'Checkout'
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-      - name: 'Run tests'
-        uses: ./.github/actions/templates/validateModulePester
-        with:
-          modulePath: '${{ env.modulePath }}'
+  # ####################
+  # #   Pester Tests   #
+  # ####################
+  # job_module_pester_validation:
+  #   runs-on: ubuntu-20.04
+  #   name: 'Pester tests'
+  #   steps:
+  #     - name: 'Checkout'
+  #       uses: actions/checkout@v2
+  #       with:
+  #         fetch-depth: 0
+  #     - name: 'Run tests'
+  #       uses: ./.github/actions/templates/validateModulePester
+  #       with:
+  #         modulePath: '${{ env.modulePath }}'
 
   ####################
   # Deployment tests #
   ####################
 
-  #########################
-  # Dependency deployment #
-  job_dependencies_deploy_validation:
-    runs-on: ubuntu-20.04
-    name: 'Deploy dependencies'
-    needs:
-      - job_prepare_pipeline
-      - job_module_pester_validation
-    outputs:
-      deploymentName: ${{ steps.deploy.outputs.deploymentName }}
-    steps:
-      - name: 'Checkout'
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-      - name: Set environment variables
-        uses: deep-mm/set-variables@v1.0
-        with:
-          variableFileName: 'global.variables'
-      - name: 'Using template file [${{ env.modulePath }}/.dependencies/dependencies.bicep]'
-        id: deploy
-        uses: ./.github/actions/templates/deployTemplate
-        with:
-          templateFilePath: '${{ env.modulePath }}/.dependencies/dependencies.bicep'
-          location: '${{ env.defaultLocation }}'
-          resourceGroupName: '${{ env.customResourceGroupName }}'
-          subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
-          managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
+  # #########################
+  # # Dependency deployment #
+  # job_dependencies_deploy_validation:
+  #   runs-on: ubuntu-20.04
+  #   name: 'Deploy dependencies'
+  #   needs:
+  #     - job_prepare_pipeline
+  #     - job_module_pester_validation
+  #   outputs:
+  #     deploymentName: ${{ steps.deploy.outputs.deploymentName }}
+  #   steps:
+  #     - name: 'Checkout'
+  #       uses: actions/checkout@v2
+  #       with:
+  #         fetch-depth: 0
+  #     - name: Set environment variables
+  #       uses: deep-mm/set-variables@v1.0
+  #       with:
+  #         variableFileName: 'global.variables'
+  #     - name: 'Using template file [${{ env.modulePath }}/.dependencies/dependencies.bicep]'
+  #       id: deploy
+  #       uses: ./.github/actions/templates/deployTemplate
+  #       with:
+  #         templateFilePath: '${{ env.modulePath }}/.dependencies/dependencies.bicep'
+  #         location: '${{ env.defaultLocation }}'
+  #         resourceGroupName: '${{ env.customResourceGroupName }}'
+  #         subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
+  #         managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
 
   ###################
   # Parameter tests #
@@ -116,7 +116,7 @@ jobs:
     name: 'Deployment tests'
     needs:
       - job_prepare_pipeline
-      - job_dependencies_deploy_validation
+      #- job_dependencies_deploy_validation
       #- job_module_pester_validation # Dependency is implicit via dependency deployment
     strategy:
       fail-fast: false
@@ -151,62 +151,62 @@ jobs:
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
 
-  ######################
-  # Dependency removal #
-  job_dependencies_remove:
-    runs-on: ubuntu-20.04
-    name: 'Remove dependencies'
-    if: always() && needs.job_prepare_pipeline.outputs.removeDeployment == 'true' && needs.job_dependencies_deploy_validation.outputs.deploymentName != ''
-    needs:
-      - job_prepare_pipeline
-      - job_module_deploy_validation
-      - job_dependencies_deploy_validation
-    steps:
-      - name: 'Checkout'
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-      - name: Set environment variables
-        uses: deep-mm/set-variables@v1.0
-        with:
-          variableFileName: 'global.variables'
-      - name: 'Remove deployment for template file [${{ env.modulePath }}/.dependencies/dependencies.bicep]'
-        uses: ./.github/actions/templates/removeTemplateDeployment
-        with:
-          templateFilePath: '${{ env.modulePath }}/.dependencies/dependencies.bicep'
-          deploymentName: ${{ needs.job_dependencies_deploy_validation.outputs.deploymentName }}
-          resourceGroupName: '${{ env.customResourceGroupName }}'
-          subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
-          managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
+  # ######################
+  # # Dependency removal #
+  # job_dependencies_remove:
+  #   runs-on: ubuntu-20.04
+  #   name: 'Remove dependencies'
+  #   if: always() && needs.job_prepare_pipeline.outputs.removeDeployment == 'true' && needs.job_dependencies_deploy_validation.outputs.deploymentName != ''
+  #   needs:
+  #     - job_prepare_pipeline
+  #     - job_module_deploy_validation
+  #     - job_dependencies_deploy_validation
+  #   steps:
+  #     - name: 'Checkout'
+  #       uses: actions/checkout@v2
+  #       with:
+  #         fetch-depth: 0
+  #     - name: Set environment variables
+  #       uses: deep-mm/set-variables@v1.0
+  #       with:
+  #         variableFileName: 'global.variables'
+  #     - name: 'Remove deployment for template file [${{ env.modulePath }}/.dependencies/dependencies.bicep]'
+  #       uses: ./.github/actions/templates/removeTemplateDeployment
+  #       with:
+  #         templateFilePath: '${{ env.modulePath }}/.dependencies/dependencies.bicep'
+  #         deploymentName: ${{ needs.job_dependencies_deploy_validation.outputs.deploymentName }}
+  #         resourceGroupName: '${{ env.customResourceGroupName }}'
+  #         subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
+  #         managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
 
-  # ##############
-  #   PUBLISH   #
-  # ##############
-  job_publish_module:
-    name: 'Publish module'
-    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master' || github.event.inputs.prerelease == 'true'
-    runs-on: ubuntu-20.04
-    needs:
-      # - job_prepare_pipeline # Dependency is implicit via module deployment
-      - job_module_deploy_validation
-    steps:
-      - name: 'Checkout'
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-      - name: Set environment variables
-        uses: deep-mm/set-variables@v1.0
-        with:
-          variableFileName: 'global.variables'
-      - name: 'Publish module'
-        uses: ./.github/actions/templates/publishModule
-        with:
-          templateFilePath: '${{ env.modulePath }}/deploy.bicep'
-          templateSpecsRGName: '${{ env.templateSpecsRGName }}'
-          templateSpecsRGLocation: '${{ env.templateSpecsRGLocation }}'
-          templateSpecsDescription: '${{ env.templateSpecsDescription }}'
-          templateSpecsDoPublish: '${{ env.templateSpecsDoPublish }}'
-          bicepRegistryName: '${{ env.bicepRegistryName }}'
-          bicepRegistryRGName: '${{ env.bicepRegistryRGName }}'
-          bicepRegistryRgLocation: '${{ env.bicepRegistryRgLocation }}'
-          bicepRegistryDoPublish: '${{ env.bicepRegistryDoPublish }}'
+  # # ##############
+  # #   PUBLISH   #
+  # # ##############
+  # job_publish_module:
+  #   name: 'Publish module'
+  #   if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master' || github.event.inputs.prerelease == 'true'
+  #   runs-on: ubuntu-20.04
+  #   needs:
+  #     # - job_prepare_pipeline # Dependency is implicit via module deployment
+  #     - job_module_deploy_validation
+  #   steps:
+  #     - name: 'Checkout'
+  #       uses: actions/checkout@v2
+  #       with:
+  #         fetch-depth: 0
+  #     - name: Set environment variables
+  #       uses: deep-mm/set-variables@v1.0
+  #       with:
+  #         variableFileName: 'global.variables'
+  #     - name: 'Publish module'
+  #       uses: ./.github/actions/templates/publishModule
+  #       with:
+  #         templateFilePath: '${{ env.modulePath }}/deploy.bicep'
+  #         templateSpecsRGName: '${{ env.templateSpecsRGName }}'
+  #         templateSpecsRGLocation: '${{ env.templateSpecsRGLocation }}'
+  #         templateSpecsDescription: '${{ env.templateSpecsDescription }}'
+  #         templateSpecsDoPublish: '${{ env.templateSpecsDoPublish }}'
+  #         bicepRegistryName: '${{ env.bicepRegistryName }}'
+  #         bicepRegistryRGName: '${{ env.bicepRegistryRGName }}'
+  #         bicepRegistryRgLocation: '${{ env.bicepRegistryRgLocation }}'
+  #         bicepRegistryDoPublish: '${{ env.bicepRegistryDoPublish }}'

@@ -26,6 +26,6 @@ runs:
         $parameterFilePaths = Get-ModuleParameterFiles @inputObject -Verbose
 
         # Output values to be accessed by next jobs
-        Write-Output ('::set-output name=parameterFilePaths::{0}' -f ($parameterFilePaths | ConvertTo-Json))
+        Write-Output ('::set-output name=parameterFilePaths::{0}' -f ($parameterFilePaths | ConvertTo-Json -Compress))
 
         Write-Output "::endgroup::"
