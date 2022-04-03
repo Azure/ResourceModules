@@ -1,0 +1,31 @@
+name: 'Get parameter files'
+description: 'Retrieve the parameter file paths of a given module'
+
+inputs:
+  modulePath:
+    description: "The path to the module's folder"
+    required: true
+
+runs:
+  using: 'composite'
+  steps:
+    - name: 'Get parameter file paths'
+      shell: pwsh
+      run: |
+        # Grouping task logs
+        Write-Output "::group::Get parameter files"
+
+        # Load used functions
+        . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'sharedScripts' 'Get-ModuleParameterFiles.ps1')
+
+        $inputObject = @{
+          ModulePath = Join-Path $env:GITHUB_WORKSPACE '$(modulePath)'
+        }
+
+        # Set agent up
+        $parameterFilePaths = Get-ModuleParameterFiles @inputObject -Verbose
+
+        # Output values to be accessed by next jobs
+        Write-Output ('::set-output name=parameterFilePaths::{0}' -f ($parameterFilePaths | ConvertTo-Json))
+
+        Write-Output "::endgroup::"

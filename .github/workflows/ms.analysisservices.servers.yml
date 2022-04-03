@@ -36,23 +36,29 @@ env:
 
 jobs:
   ############################
-  #   SET INPUT PARAMETERS   #
+  #   PREPARE PIPELINE   #
   ############################
-  job_set_workflow_param:
+  job_prepare_pipeline:
     runs-on: ubuntu-20.04
-    name: 'Set input parameters to output variables'
+    name: 'Prepare pipeline'
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - name: 'Set input parameters'
+      - name: 'Set input parameters to output variables'
         id: get-workflow-param
         uses: ./.github/actions/templates/getWorkflowInput
         with:
           workflowPath: '${{ env.workflowPath}}'
+      - name: 'Get parameter file paths'
+        id: get-parameter-file-paths
+        uses: ./.github/actions/templates/getParameterFiles
+        with:
+          modulePath: '${{ env.modulePath }}'
     outputs:
       removeDeployment: ${{ steps.get-workflow-param.outputs.removeDeployment }}
+      parameterFilePaths: ${{ steps.get-parameter-file-paths.outputs.parameterFilePaths }}
 
   ####################
   #   Pester Tests   #
@@ -108,14 +114,13 @@ jobs:
     runs-on: ubuntu-20.04
     name: 'Deployment tests'
     needs:
-      - job_set_workflow_param
+      - job_prepare_pipeline
       - job_dependencies_deploy_validation
       #- job_module_pester_validation # Dependency is implicit via dependency deployment
     strategy:
       fail-fast: false
       matrix:
-        parameterFilePaths:
-          ['min.parameters.json', 'parameters.json', 'max.parameters.json']
+        parameterFilePaths: ${{ fromJSON(needs.job_prepare_pipeline.outputs.parameterFilePaths) }}
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -137,7 +142,7 @@ jobs:
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
       - name: 'Remove deployment for parameter file [${{ matrix.parameterFilePaths }}]'
         uses: ./.github/actions/templates/removeTemplateDeployment
-        if: always() && needs.job_set_workflow_param.outputs.removeDeployment == 'true' && steps.deploy.outputs.deploymentName != ''
+        if: always() && needs.job_prepare_pipeline.outputs.removeDeployment == 'true' && steps.deploy.outputs.deploymentName != ''
         with:
           templateFilePath: '${{ env.modulePath }}/deploy.bicep'
           deploymentName: ${{ steps.deploy.outputs.deploymentName }}
@@ -150,9 +155,9 @@ jobs:
   job_dependencies_remove:
     runs-on: ubuntu-20.04
     name: 'Remove dependencies'
-    if: always() && needs.job_set_workflow_param.outputs.removeDeployment == 'true' && needs.job_dependencies_deploy_validation.outputs.deploymentName != ''
+    if: always() && needs.job_prepare_pipeline.outputs.removeDeployment == 'true' && needs.job_dependencies_deploy_validation.outputs.deploymentName != ''
     needs:
-      - job_set_workflow_param
+      - job_prepare_pipeline
       - job_module_deploy_validation
       - job_dependencies_deploy_validation
     steps:
@@ -181,7 +186,7 @@ jobs:
     if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master' || github.event.inputs.prerelease == 'true'
     runs-on: ubuntu-20.04
     needs:
-      # - job_set_workflow_param # Dependency is implicit via module deployment
+      # - job_prepare_pipeline # Dependency is implicit via module deployment
       - job_module_deploy_validation
     steps:
       - name: 'Checkout'
