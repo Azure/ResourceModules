@@ -28,7 +28,6 @@ function Get-ModuleParameterFiles {
         }
     }
 
-
     Write-Verbose 'Found parameter files'
     $parameterFilePaths | ForEach-Object { Write-Verbose "- $_" }
 
