@@ -22,9 +22,12 @@ function Get-ModuleParameterFiles {
         [string] $ModulePath
     )
 
-    $parameterFilePaths = (Get-ChildItem -Path $ModulePath -Filter '*parameters.json' -Recurse).FullName | ForEach-Object {
-        $_.Replace("$ModulePath", '').Trim('\').Trim('/')
+    if ($parameterFilePaths = (Get-ChildItem -Path $ModulePath -Filter '*parameters.json' -Recurse).FullName) {
+        $parameterFilePaths = $parameterFilePaths | ForEach-Object {
+            $_.Replace("$ModulePath", '').Trim('\').Trim('/')
+        }
     }
+
 
     Write-Verbose 'Found parameter files'
     $parameterFilePaths | ForEach-Object { Write-Verbose "- $_" }
