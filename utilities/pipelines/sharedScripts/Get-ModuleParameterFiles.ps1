@@ -24,7 +24,7 @@ function Get-ModuleParameterFiles {
 
     if ($parameterFilePaths = (Get-ChildItem -Path $ModulePath -Filter '*parameters.json' -Recurse).FullName) {
         $parameterFilePaths = $parameterFilePaths | ForEach-Object {
-            $_.Replace("$ModulePath", '').Trim('\').Trim('/')
+            $_.Replace($ModulePath, '').Trim('\').Trim('/')
         }
     }
 
