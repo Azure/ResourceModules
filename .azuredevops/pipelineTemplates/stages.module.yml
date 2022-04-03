@@ -44,7 +44,7 @@ stages:
           - template: /.azuredevops/pipelineTemplates/steps.deployTemplate.yml
             parameters:
               templateFilePath: '$(modulePath)/deploy.bicep'
-              parameterFilePath: '$(parameterFilePath)'
+              parameterFilePath: '$(modulePath)/$(parameterFilePath)'
               resourceGroupName: '${{ parameters.moduleResourceGroupName }}'
           - ${{ if eq(parameters.removeDeployment, 'true') }}:
               - template: /.azuredevops/pipelineTemplates/steps.removeTemplateDeployment.yml
