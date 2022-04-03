@@ -34,7 +34,6 @@ module storageAccount '../../Microsoft.Storage/storageAccounts/deploy.bicep' = {
     storageAccountSku: 'Standard_LRS'
     allowBlobPublicAccess: false
     location: location
-    enableDefaultTelemetry: false
   }
 }
 
@@ -44,7 +43,6 @@ module logAnalyticsWorkspace '../../Microsoft.OperationalInsights/workspaces/dep
   params: {
     name: logAnalyticsWorkspaceName
     location: location
-    enableDefaultTelemetry: false
   }
 }
 
@@ -52,12 +50,10 @@ module eventHubNamespace '../../Microsoft.EventHub/namespaces/deploy.bicep' = {
   scope: az.resourceGroup(resourceGroupName)
   name: '${uniqueString(deployment().name, location)}-ehn'
   params: {
-    enableDefaultTelemetry: false
     name: eventHubNamespaceName
     eventHubs: [
       {
         name: eventHubNamespaceEventHubName
-        enableDefaultTelemetry: false
       }
     ]
     authorizationRules: [
@@ -68,7 +64,6 @@ module eventHubNamespace '../../Microsoft.EventHub/namespaces/deploy.bicep' = {
           'Manage'
           'Send'
         ]
-        enableDefaultTelemetry: false
       }
     ]
     location: location
