@@ -52,13 +52,33 @@ The primary virtual network gateway object.
 }
 ```
 
+### Parameter Usage: `virtualNetworkGateway2`
+
+The seconday virtual network gateway used for VNET to VNET connections.
+
+```json
+"virtualNetworkGateway1" : {
+    "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.Network/virtualNetworkGateways/myGateway",
+}
+```
+
 ### Parameter Usage: `localNetworkGateway2`
 
 The local virtual network gateway object.
 
 ```json
 "localNetworkGateway2" : {
-    "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.Network/virtualNetworkGateways/myGateway",
+    "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.Network/localNetworkGateways/myGateway",
+}
+```
+
+### Parameter Usage: `localNetworkGateway2`
+
+The local virtual network gateway object.
+
+```json
+"peer" : {
+    "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.Network/expressRouteCircuits/expressRoute",
 }
 ```
 
