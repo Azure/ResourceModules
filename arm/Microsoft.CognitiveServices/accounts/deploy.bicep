@@ -119,7 +119,7 @@ param disableLocalAuth bool = false
 param encryption object = {}
 
 @description('Optional. Resource migration token.')
-param migrationToken string
+param migrationToken string = ''
 
 @description('Optional. Restore a soft-deleted cognitive service.')
 param restore bool = true
@@ -215,7 +215,7 @@ resource cognitiveServices 'Microsoft.CognitiveServices/accounts@2021-10-01' = {
     apiProperties: apiProperties
     disableLocalAuth: disableLocalAuth
     encryption: encryption
-    migrationToken: migrationToken
+    migrationToken: !empty(migrationToken) ? migrationToken : null
     restore: restore
     restrictOutboundNetworkAccess: restrictOutboundNetworkAccess
     userOwnedStorage: userOwnedStorage
