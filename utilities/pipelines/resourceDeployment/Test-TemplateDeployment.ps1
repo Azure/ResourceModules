@@ -74,11 +74,23 @@ function Test-TemplateDeployment {
     }
 
     process {
+        $deploymentNamePrefix = Split-Path -Path (Split-Path $templateFilePath -Parent) -LeafBase
+        if ([String]::IsNullOrEmpty($deploymentNamePrefix)) {
+            $deploymentNamePrefix = 'templateDeployment-{0}' -f (Split-Path $templateFilePath -LeafBase)
+        }
+        # Generate a valid deployment name. Must match ^[-\w\._\(\)]+$
+        do {
+            $deploymentName = "$deploymentNamePrefix-$(-join (Get-Date -Format yyyyMMddTHHMMssffffZ)[0..63])"
+        } while ($deploymentName -notmatch '^[-\w\._\(\)]+$')
+
+        Write-Verbose "Deploying with deployment name [$deploymentName]" -Verbose
+
 
         $DeploymentInputs = @{
-            TemplateFile = $templateFilePath
-            Verbose      = $true
-            OutVariable  = 'ValidationErrors'
+            DeploymentName = $deploymentName
+            TemplateFile   = $templateFilePath
+            Verbose        = $true
+            OutVariable    = 'ValidationErrors'
         }
         if (-not [String]::IsNullOrEmpty($parameterFilePath)) {
             $DeploymentInputs['TemplateParameterFile'] = $parameterFilePath
