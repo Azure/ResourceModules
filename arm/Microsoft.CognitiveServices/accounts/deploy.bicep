@@ -125,7 +125,7 @@ param migrationToken string = ''
 param restore bool = true
 
 @description('Optional. Restrict outbound network access')
-param restrictOutboundNetworkAccess bool
+param restrictOutboundNetworkAccess bool = true
 
 @description('Optional. The storage accounts for this resource.')
 param userOwnedStorage array = []
