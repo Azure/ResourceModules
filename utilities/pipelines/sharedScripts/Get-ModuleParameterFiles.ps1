@@ -24,18 +24,13 @@ function Get-ModuleParameterFiles {
 
     $parameterFilePaths = (Get-ChildItem -Recurse -Path $ModulePath -Filter '*parameters.json' -File).FullName
 
-    Write-Host '22222222222222222'
-    $b = (Get-ChildItem -Recurse -Path $ModulePath -File).FullName
-    Write-Host ($b | ConvertTo-Json | Out-String)
-
     if (-not $parameterFilePaths) {
         throw "No parameter files found for module [$ModulePath]"
-    } else {
-        $parameterFilePaths = $parameterFilePaths | ForEach-Object {
-            $_.Replace($ModulePath, '').Trim('\').Trim('/')
-        }
     }
 
+    $parameterFilePaths = $parameterFilePaths | ForEach-Object {
+        $_.Replace($ModulePath, '').Trim('\').Trim('/')
+    }
 
     Write-Verbose 'Found parameter files'
     $parameterFilePaths | ForEach-Object { Write-Verbose "- $_" }
