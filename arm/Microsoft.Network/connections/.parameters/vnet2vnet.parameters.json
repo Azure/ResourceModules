@@ -5,8 +5,15 @@
         "name": {
             "value": "<<namePrefix>>-az-vnetgwc-x-001"
         },
-        "localVirtualNetworkGatewayName": {
-            "value": "<<namePrefix>>-az-vnet-vpn-gw-p-001"
+        "virtualNetworkGateway1": {
+            "value": {
+                "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/Microsoft.Network/virtualNetworkGateways/<<namePrefix>>-az-vnet-vpn-gw-p-001"
+            }
+        },
+        "virtualNetworkGateway2": {
+            "value": {
+                "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/Microsoft.Network/virtualNetworkGateways/<<namePrefix>>-az-vnet-vpn-gw-p-002"
+            }
         },
         "vpnSharedKey": {
             "reference": {
@@ -18,15 +25,6 @@
         },
         "virtualNetworkGatewayConnectionType": {
             "value": "VNet2VNet"
-        },
-        "remoteEntityName": {
-            "value": "<<namePrefix>>-az-vnet-vpn-gw-p-002"
-        },
-        "remoteEntityResourceGroup": {
-            "value": ""
-        },
-        "remoteEntitySubscriptionId": {
-            "value": ""
         },
         "enableBgp": {
             "value": false

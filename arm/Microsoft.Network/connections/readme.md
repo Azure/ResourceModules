@@ -21,9 +21,8 @@ This template deploys a virtual network gateway connection.
 **Required parameters**
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `localVirtualNetworkGatewayName` | string | Specifies the local Virtual Network Gateway name |
 | `name` | string | Remote connection name |
-| `remoteEntityName` | string | Specifies the remote Virtual Network Gateway/ExpressRoute |
+| `virtualNetworkGateway1` | object | The local Virtual Network Gateway. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
@@ -31,14 +30,15 @@ This template deploys a virtual network gateway connection.
 | `customIPSecPolicy` | object | `{object}` |  | The IPSec Policies to be considered by this connection |
 | `enableBgp` | bool | `False` |  | Value to specify if BGP is enabled or not |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `localNetworkGateway2` | object | `{object}` |  | The local network gateway. Used for connection type [IPsec] |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `'NotSpecified'` | `[CanNotDelete, NotSpecified, ReadOnly]` | Specify the type of lock. |
-| `remoteEntityResourceGroup` | string | `''` |  | Remote Virtual Network Gateway/ExpressRoute resource group name |
-| `remoteEntitySubscriptionId` | string | `''` |  | Remote Virtual Network Gateway/ExpressRoute Subscription ID |
-| `routingWeight` | string | `''` |  | The weight added to routes learned from this BGP speaker. |
+| `peer` | object | `{object}` |  | The remote peer. Used for connection type [ExpressRoute] |
+| `routingWeight` | int | `-1` |  | The weight added to routes learned from this BGP speaker. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
 | `usePolicyBasedTrafficSelectors` | bool | `False` |  | Enable policy-based traffic selectors |
-| `virtualNetworkGatewayConnectionType` | string | `'Ipsec'` | `[Ipsec, VNet2VNet, ExpressRoute, VPNClient]` | Gateway connection type. |
+| `virtualNetworkGateway2` | object | `{object}` |  | The remote Virtual Network Gateway. Used for connection type [Vnet2Vnet] |
+| `virtualNetworkGatewayConnectionType` | string | `'IPsec'` | `[IPsec, Vnet2Vnet, ExpressRoute, VPNClient]` | Gateway connection type. |
 | `vpnSharedKey` | string | `''` |  | Specifies a VPN shared key. The same value has to be specified on both Virtual Network Gateways |
 
 
