@@ -24,7 +24,13 @@ function Get-ModuleParameterFiles {
 
     $parameterFilePaths = (Get-ChildItem -Path $ModulePath -Filter '*parameters.json' -Recurse).FullName
 
-    Write-Host ($PSVersionTable | ConvertTo-Json | Out-String)
+    Write-Host '1111111111111111'
+    $t = Get-ChildItem -Path $ModulePath -Filter '*parameters.json' -Recurse
+    Write-Host ($t | ConvertTo-Json | Out-String)
+
+    Write-Host '22222222222222222'
+    $b = Get-ChildItem -Path $ModulePath -Recurse
+    Write-Host ($t | ConvertTo-Json | Out-String)
 
     if (-not $parameterFilePaths) {
         throw "No parameter files found for module [$ModulePath]"
