@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "<<namePrefix>>-az-sqlsrv-x-001"
+            "value": "<<namePrefix>>-az-sqlsrv-x-002"
         },
         "administratorLogin": {
             "reference": {
@@ -41,7 +41,7 @@
                     "collation": "SQL_Latin1_General_CP1_CI_AS",
                     "skuTier": "BusinessCritical",
                     "skuName": "BC_Gen5",
-                    "skuCapacity": 50,
+                    "skuCapacity": 12,
                     "skuFamily": "Gen5",
                     "maxSizeBytes": 34359738368,
                     "licenseType": "LicenseIncluded",
