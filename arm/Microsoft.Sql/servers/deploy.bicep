@@ -110,7 +110,7 @@ module server_databases 'databases/deploy.bicep' = [for (database, index) in dat
   params: {
     name: database.name
     serverName: server.name
-    skuTier: contains(database, 'tier') ? database.tier : 'GeneralPurpose'
+    skuTier: contains(database, 'skuTier') ? database.skuTier : 'GeneralPurpose'
     skuName: contains(database, 'skuName') ? database.skuName : 'GP_Gen5_2'
     skuCapacity: contains(database, 'skuCapacity') ? database.skuCapacity : -1
     skuFamily: contains(database, 'skuFamily') ? database.skuFamily : ''
