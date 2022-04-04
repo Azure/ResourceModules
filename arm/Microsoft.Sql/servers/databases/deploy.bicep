@@ -153,7 +153,8 @@ param isLedgerOn bool = false
 @description('Optional. Maintenance configuration ID assigned to the database. This configuration defines the period when the maintenance updates will occur.')
 param maintenanceConfigurationId string = ''
 
-// SKU object must be built in variable the alternative null values lead to indefinite deployments
+// The SKU object must be built in a variable
+// The alternative, 'null' as default values, leads to non-terminating deployments
 var skuVar = union({
   name: skuName
   tier: skuTier
