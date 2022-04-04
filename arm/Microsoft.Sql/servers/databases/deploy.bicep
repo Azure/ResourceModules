@@ -191,9 +191,9 @@ resource database 'Microsoft.Sql/servers/databases@2021-02-01-preview' = {
   sku: {
     name: skuName
     tier: skuTier
-    capacity: (skuCapacity != -1) ? skuCapacity : null
-    family: !empty(skuFamily) ? skuFamily : null
-    size: !empty(skuSize) ? skuSize : null
+    // capacity: (skuCapacity != -1) ? skuCapacity : null
+    // family: !empty(skuFamily) ? skuFamily : null
+    // size: !empty(skuSize) ? skuSize : null
   }
 }
 
