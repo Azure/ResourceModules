@@ -7,11 +7,20 @@ param serverName string
 @description('Optional. The collation of the database.')
 param collation string = 'SQL_Latin1_General_CP1_CI_AS'
 
-@description('Optional. The tier or edition of the particular SKU.')
-param tier string = 'GeneralPurpose'
+@description('Optional. The skuTier or edition of the particular SKU.')
+param skuTier string = 'GeneralPurpose'
 
 @description('Optional. The name of the SKU.')
 param skuName string = 'GP_Gen5_2'
+
+@description('Optional. Capacity of the particular SKU.')
+param skuCapacity int = -1
+
+@description('Optional. If the service has different generations of hardware, for the same SKU, then that can be captured here.')
+param skuFamily string = ''
+
+@description('Optional.	Size of the particular SKU')
+param skuSize string = ''
 
 @description('Optional. The max size of the database expressed in bytes.')
 param maxSizeBytes int = 34359738368
@@ -181,7 +190,10 @@ resource database 'Microsoft.Sql/servers/databases@2021-02-01-preview' = {
   }
   sku: {
     name: skuName
-    tier: tier
+    tier: skuTier
+    capacity: (skuCapacity != -1) ? skuCapacity : null
+    family: !empty(skuFamily) ? skuFamily : null
+    size: !empty(skuSize) ? skuSize : null
   }
 }
 

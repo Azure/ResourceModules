@@ -39,8 +39,11 @@
                 {
                     "name": "<<namePrefix>>-az-sqldb-x-001",
                     "collation": "SQL_Latin1_General_CP1_CI_AS",
-                    "tier": "GeneralPurpose",
-                    "skuName": "GP_Gen5_2",
+                    "skuTier": "BusinessCritical",
+                    "skuName": "BC_Gen5",
+                    "skuCapacity": 12,
+                    "skuFamily": "Gen5",
+                    "skuSize": "",
                     "maxSizeBytes": 34359738368,
                     "licenseType": "LicenseIncluded",
                     "diagnosticLogsRetentionInDays": 7,

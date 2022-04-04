@@ -33,7 +33,7 @@ This module deploys Network FirewallPolicies Rule Groups.
 
 ### Parameter Usage: `rules`
 
-For remaining properties, see [FirewallPolicyRule objects](https://docs.microsoft.com/en-us/azure/templates/microsoft.network/2020-04-01/firewallpolicies/rulegroups?tabs=json#firewallpolicyrule-objects)
+For remaining properties, see [FirewallPolicyRule objects](https://docs.microsoft.com/en-us/azure/templates/microsoft.network/firewallpolicies/rulecollectiongroups?#firewallpolicyrule-objects)
 
 ```json
 "rules": [
