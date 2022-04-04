@@ -48,7 +48,7 @@ The primary virtual network gateway object.
 
 ```json
 "virtualNetworkGateway1" : {
-    "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.Network/virtualNetworkGateways/myGateway",
+    "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.Network/virtualNetworkGateways/myGateway01",
 }
 ```
 
