@@ -153,7 +153,7 @@ var networkAcls_var = {
   bypass: !empty(networkAcls) ? networkAcls.bypass : null
   defaultAction: !empty(networkAcls) ? networkAcls.defaultAction : null
   virtualNetworkRules: !empty(networkAcls) ? virtualNetworkRules : null
-  ipRules: (!empty(networkAcls) && length(networkAcls.ipRules) != 0) ? networkAcls.ipRules : null
+  ipRules: (!empty(networkAcls) && contains(networkAcls, 'ipRules')) ? networkAcls.ipRules : []
 }
 
 var formattedAccessPolicies = [for accessPolicy in accessPolicies: {
