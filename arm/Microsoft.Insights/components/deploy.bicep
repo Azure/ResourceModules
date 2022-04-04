@@ -25,6 +25,25 @@ param publicNetworkAccessForIngestion string = 'Enabled'
 ])
 param publicNetworkAccessForQuery string = 'Enabled'
 
+@description('Optional. Retention period in days.')
+@allowed([
+  30
+  60
+  90
+  120
+  180
+  270
+  365
+  550
+  730
+])
+param retentionInDays int = 365
+
+@description('Optional. Percentage of the data produced by the application being monitored that is being sampled for Application Insights telemetry.')
+@minValue(0)
+@maxValue(100)
+param samplingPercentage int = 100
+
 @description('Optional. The kind of application that this component refers to, used to customize UI. This value is a freeform string, values should typically be one of the following: web, ios, other, store, java, phone.')
 param kind string = ''
 
@@ -62,6 +81,8 @@ resource appInsights 'Microsoft.Insights/components@2020-02-02' = {
     WorkspaceResourceId: workspaceResourceId
     publicNetworkAccessForIngestion: publicNetworkAccessForIngestion
     publicNetworkAccessForQuery: publicNetworkAccessForQuery
+    RetentionInDays: retentionInDays
+    SamplingPercentage: samplingPercentage
   }
 }
 
