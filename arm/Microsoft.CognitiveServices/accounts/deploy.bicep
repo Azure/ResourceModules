@@ -115,7 +115,7 @@ param apiProperties object = {}
 @description('Optional. Allow only Azure AD authentication.')
 param disableLocalAuth bool = false
 
-@description('Optional. Properties to configure Encryption')
+@description('Optional. Properties to configure encryption')
 param encryption object = {}
 
 @description('Optional. Resource migration token.')
