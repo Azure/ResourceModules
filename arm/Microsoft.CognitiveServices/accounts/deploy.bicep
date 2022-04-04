@@ -124,7 +124,7 @@ param migrationToken string = ''
 @description('Optional. Restore a soft-deleted cognitive service at deployment time. Will fail if no such soft-deleted resource exists.')
 param restore bool = false
 
-@description('Optional. Restrict outbound network access')
+@description('Optional. Restrict outbound network access.')
 param restrictOutboundNetworkAccess bool = true
 
 @description('Optional. The storage accounts for this resource.')
