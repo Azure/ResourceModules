@@ -58,7 +58,7 @@ The seconday virtual network gateway used for VNET to VNET connections.
 
 ```json
 "virtualNetworkGateway2" : {
-    "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.Network/virtualNetworkGateways/myGateway",
+    "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.Network/virtualNetworkGateways/myGateway02",
 }
 ```
 
