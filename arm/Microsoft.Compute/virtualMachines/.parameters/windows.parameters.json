@@ -29,6 +29,26 @@
                 }
             }
         },
+        "dataDisks": {
+            "value": [
+                {
+                    "createOption": "Empty",
+                    "deleteOption": "Delete",
+                    "diskSizeGB": "128",
+                    "managedDisk": {
+                        "storageAccountType": "Premium_LRS"
+                    }
+                },
+                {
+                    "createOption": "Empty",
+                    "deleteOption": "Delete",
+                    "diskSizeGB": "128",
+                    "managedDisk": {
+                        "storageAccountType": "Premium_LRS"
+                    }
+                }
+            ]
+        },
         "availabilityZone": {
             "value": 2
         },
@@ -73,7 +93,6 @@
                                     "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationSecurityGroups/adp-<<namePrefix>>-az-asg-x-001"
                                 }
                             ]
-
                         }
                     ],
                     "roleAssignments": [
