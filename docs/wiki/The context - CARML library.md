@@ -7,7 +7,7 @@ This page provides an overview of the CARML library. For further details refer t
 - [Infrastructure as Code](#infrastructure-as-code)
 - [A module in CARML](#a-module-in-CARML)
     - [CARML module features](#CARML-module-features)
-    - [Example: multiple Storage Account variants](#example:-multiple-storage-account-variants)
+    - [Example: multiple Storage Account variants](#example-multiple-storage-account-variants)
 ---
 
 # Infrastructure as Code

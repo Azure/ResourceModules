@@ -9,7 +9,7 @@ To ensure the modules are valid and can perform the intended deployments, the re
 - [What is the intended deployment model?](#what-is-the-intended-the-deployment-model)
 - [What is the intended deployment flow?](#what-is-the-intended-deployment-flow)
 - [Why use versioned modules?](#why-use-versioned-modules)
-
+- [Where does this platform fit in?](#where-does-this-platform-fit-in)
 ---
 
 # What is the intended the deployment model?
@@ -72,16 +72,20 @@ As described earlier, if all tests for a module succeed, the pipeline will _publ
 
 > Note: These first two phases are covered by the [CARML](#where-does-this-platform-fit-in) platform.
 
-Finally, one the right you can see examples of the orchestration that deploys the environment using the published modules.
-No matter the platform we can differentiate two different deployment approaches:
- - **_Template-orchestration_**: These types of deployments reference individual modules from a 'main/environment' bicep/ARM template and use its capabilities to pass parameters & orchestrate the deployments. By default, deployments are deployed in parallel by the Azure Resource Manager while accounting for all dependencies defined. Furthermore, the deploying pipeline only needs one deployment job that triggers the template's deployment.
-
-   <img src="media/templateOrchestration.png" alt="Template orchestration" height="250">
-
- - **_Pipeline-orchestration_**: This approach uses the platform specific pipeline capabilities (for example pipeline jobs) to trigger the deployment of individual modules, where each job deploys one module. By defining dependencies in between jobs you can make sure your resources are deployed in order. Parallelization is achieved by using a pool of pipeline agents that execute the jobs, while accounting for all dependencies defined.
-Both the _template-orchestration_ as well as _pipeline-orchestration_ may run a validation and subsequent deployment on the bottom-right _Azure_ subscription. This subscription, in turn, should be the subscription where you want to host your environment. However, you can extend the concept and for example deploy the environment first to an integration and then a production subscription.
-
-   <img src="media/pipelineOrchestration.png" alt="Pipeline orchestration" height="400">
-
 # Why use versioned modules?
 Deploying resources by referencing their corresponding modules from source control has one major drawback: If your deployments rely on what you have in your source repository then they will 'by definition' use the **latest** code. Applying software development lifecycle concepts like 'publishing build artifacts and versioning' enables you to have a point in time version of an Azure Resource Module. By introducing versions to your modules, the consuming orchestration can and should specify a module version it wants to use and deploy the Azure environment using them. If we now have the case that a breaking change is introduced and an updated version is published, no deployments are affected because they still reference the previously published version. Instead, they must make the deliberate decision to upgrade the module to reference newer versions.
+
+
+# Where does this platform fit in?
+
+The _CARML_ platform hosts a collection of [resource modules](./Modules) with the intend to cover as many Azure resources and their child-resources as possible.
+
+As such, users can use the modules as they are, alter them and or use them to deploy their environments.
+
+To ensure the modules are valid and can perform the intended deployments, the repository comes with a [validation & test](./Testing) [pipeline](./Pipelines) for each module. If successful it will also publish them in one or multiple target locations.
+
+As such, _CARML_ covers the `bottom box` of the [deployment model](#what-is-the-intended-the-deployment-model) section and `Phase #1` & `Phase #2` of the [deployment flow](#what-is-the-intended-deployment-flow) section.
+
+<img src="media/completeFlowTransp.png" alt="Complete deployment flow filtered" height="500">
+
+As we want to enable any user of this repository's content to not only leverage its modules but actually also re-use the platform, the platform itself is set up so that you can plug it into your own environment with just a few basic steps described in the [Getting Started](./GettingStarted) section. You may choose to add or remove modules, define your own locations you want to publish to and as such create your own open- or inner-source library.
