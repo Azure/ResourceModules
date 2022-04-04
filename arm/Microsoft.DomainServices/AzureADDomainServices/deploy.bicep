@@ -1,7 +1,7 @@
 @description('Optional. The name of the AADDS resource. Defaults to the domain name specific to the Azure ADDS service.')
 param name string = domainName
 
-@sys.description("Required. The domain name specific to the Azure ADDS service.")
+@sys.description('Required. The domain name specific to the Azure ADDS service.')
 param domainName string
 
 @description('Required: The name of the sku specific to Azure ADDS Services - Standard is the default')
@@ -12,6 +12,9 @@ param subnetId string
 
 @description('Required: The location to deploy the Azure ADDS Services')
 param location string
+
+@description('Optional: Additional replica set for the managed domain')
+param replicaSets array = []
 
 @description('Required: The value is the base64encoded representation of the certificate pfx file')
 param pfxCertificate string
@@ -171,7 +174,7 @@ resource domainService_diagnosticSettings 'Microsoft.Insights/diagnosticSettings
     eventHubName: !empty(diagnosticEventHubName) ? diagnosticEventHubName : null
     logs: diagnosticsLogs
   }
-  scope: domainName_resource
+  scope: domainService
 }
 
 resource domainService_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
@@ -180,7 +183,7 @@ resource domainService_lock 'Microsoft.Authorization/locks@2017-04-01' = if (loc
     level: lock
     notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
-  scope: domainName_resource
+  scope: domainService
 }
 
 module domainService_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
@@ -190,7 +193,7 @@ module domainService_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, ind
     principalIds: roleAssignment.principalIds
     principalType: contains(roleAssignment, 'principalType') ? roleAssignment.principalType : ''
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
-    resourceId: domainName_resource.id
+    resourceId: domainService.id
   }
 }]
 

@@ -54,18 +54,18 @@ Below you can find an example for the Azure Active Directory Domain Services(Azu
     "contentVersion": "1.0.0.0",
     "parameters": {
         "domainName": {
-            "value": ""
+            "value": "carml.onmicrosoft.com"
         },
         "sku": {
             "value": "standard"
         },
         "subnetId": {
-            "value": ""
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001"
         },
         "pfxCertificate": {
             "reference": {
                 "keyVault": {
-                    "id": "<< Key Vault resource Id path>>"
+                    "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/<<namePrefix>>-az-kv-x-001"
                 },
                 "secretName": "<<secret name>>"
             }
@@ -73,19 +73,28 @@ Below you can find an example for the Azure Active Directory Domain Services(Azu
         "pfxCertificatePassword": {
             "reference": {
                 "keyVault": {
-                    "id": "<< Key Vault resource Id path>>"
+                    "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/<<namePrefix>>-az-kv-x-001"
                 },
                 "secretName": "<<secret name>>"
             }
         },
         "additionalRecipients": {
-            "value": "<<email address>>"
+            "value": "CARML@noreply.github.com"
         },
         "diagnosticWorkspaceId": {
-            "value": "<< Log Analytics Workspace Resource Id"
+           "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001"
+        },
+        "diagnosticStorageAccountId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
+        },
+        "diagnosticEventHubAuthorizationRuleId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
+        },
+        "diagnosticEventHubName": {
+            "value": "adp-<<namePrefix>>-az-evh-x-001"
         },
         "lock": {
-            "value": "CanNotDelete"
+            "value": "NotSpecified"
         }
     }
 }
@@ -139,7 +148,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 The network security group has to be created prior to running this module and assign to the Azure ADDS Subnet and associating a route table to the same subnet is not recommended.
 
 ## Get base64encoded code from pfx
-Follow the below powershell commands to generate the base65encoded code from a pfx file:
+Follow the below powershell commands to generate the base64 encoded code from a pfx file:
 ```powershell
   $file=get-content "<<pfx certificate file path>>" -encoding byte
   [System.Convert]::ToBase64String($file) | Out-File pfx-encoded-bytes.txt
@@ -150,6 +159,7 @@ Follow the below powershell commands to generate the base65encoded code from a p
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The name of the Azure Active Directory Domain Services(Azure ADDS) |
+| `resourceGroupName` | string | The name of the resource group the Azure Active Directory Domain Services(Azure ADDS) was created in |
 | `resourceId` | string | The resource ID of the Azure Active Directory Domain Services(Azure ADDS) |
 
 ## Template references
