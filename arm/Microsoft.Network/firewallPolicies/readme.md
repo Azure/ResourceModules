@@ -15,7 +15,6 @@ This module deploys Network Firewall Policies.
 | :-- | :-- |
 | `Microsoft.Network/firewallPolicies` | 2021-05-01 |
 | `Microsoft.Network/firewallPolicies/ruleCollectionGroups` | 2021-05-01 |
-| `Microsoft.Network/firewallPolicies/ruleGroups` | 2020-04-01 |
 
 ## Parameters
 
@@ -42,7 +41,6 @@ This module deploys Network Firewall Policies.
 | `privateRanges` | array | `[]` |  | List of private IP addresses/IP address ranges to not be SNAT. |
 | `retentionDays` | int | `365` |  | Number of days the insights should be enabled on the policy. |
 | `ruleCollectionGroups` | _[ruleCollectionGroups](ruleCollectionGroups/readme.md)_ array | `[]` |  | Rule collection groups. |
-| `ruleGroups` | _[ruleGroups](ruleGroups/readme.md)_ array | `[]` |  | Rule groups. |
 | `servers` | array | `[]` |  | List of Custom DNS Servers. |
 | `signatureOverrides` | array | `[]` |  | List of specific signatures states. |
 | `systemAssignedIdentity` | bool | `False` |  | Enables system assigned managed identity on the resource. |
@@ -93,6 +91,5 @@ You can specify multiple user assigned identities to a resource by providing add
 
 ## Template references
 
-- ['firewallPolicies/ruleGroups' Parent Documentation](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/firewallPolicies)
 - [Firewallpolicies](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/firewallPolicies)
 - [Firewallpolicies/Rulecollectiongroups](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/firewallPolicies/ruleCollectionGroups)
