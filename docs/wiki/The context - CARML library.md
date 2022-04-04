@@ -4,28 +4,56 @@ This page provides an overview of the CARML library. For further details refer t
 
 ### _Navigation_
 
-- [What is IaC?](#what-is-iac)
-- [How do we define a module?](#how-do-we-define-a-module)
-
+- [Infrastructure as Code](#infrastructure-as-code)
+- [A module in CARML](#a-module-in-CARML)
+    - [CARML module features](#CARML-module-features)
+    - [Example: multiple Storage Account variants](#example:-multiple-storage-account-variants)
 ---
 
-# What is IaC?
+# Infrastructure as Code
 
 _'Infrastructure as Code (IaC)'_ describes a declarative approach towards resource deployment & management.
 Using configuration & template files that represent the deployed infrastructure has several benefits:
-- You have a local representation of your deployed infrastructure is mapped to a local
-- Version control: The applied configuration is version controlled and hence enabled roll-backs & analysis
-- Repeatability: You can deploy you infrastructure in a repeatable fashion - hence minimizing the possibility of manual errors
-- Reusability: You can use automation to deploy your infrastructure and establish for example a multi-stage deployment (i.e. continuous deployment) from a Sandbox environment, via integration to production using the same files
+- Local representation: Your deployed infrastructure is mapped to a local representation as code in your repository.
+- Version control: The applied configuration is version controlled and hence enables roll-backs & analysis.
+- Repeatability: You can deploy you infrastructure in a repeatable fashion, hence minimizing the possibility of manual errors.
+- Reusability: You can reuse your automation to deploy the same infrastructure to different environments. For example leveraging a multi-stage deployment from a Sandbox environment, via integration to production using the same code.
 
-In the context of Bicep or ARM/JSON templates we usually leverage a combination of flexible templates that are deployed using different parameter files for different scenarios.
+In the context of Bicep or ARM/JSON templates we usually leverage a combination of flexible templates that are deployed using multiple parameter files mapped to different scenarios.
 
-# How do we define a module?
+# A module in CARML
 
-In the context of _CARML_ we define a module as a reusable, template-based building block to deploy Azure resources. As such it is the foundation to apply _Infrastructure as Code_.
+In the context of _CARML_ we define a module as a reusable, template-based **building block** for Infrastructure as Code deployments of Azure resources.
 
-By default each module can deploy one instance of a resource and n-amount of its child-resources (for example `1` storage account and `n`-amount of containers). In some instances a module may also deploy strongly coupled resources (for example `1` virtual machine and `n`-amount of data discs).
+Each module is generalized for maximum flexibility. Each template should be able to cover as many resource-specific scenarios as possible and not restrict the user by making assumptions on the users' behalf. Eventually the injected parameters should decide what the template deploys.
 
-Each module is generalized for maximum flexibility and optimized for easy usability. The idea is that the template should be able to cover as many resource-specific scenarios as possible and not restrict the user by making assumptions on the users behalf. Eventually the injected parameters should decide what the template does.
+Furthermore, each module comes with default values for its optional parameters, a detailed documentation for its usage and one or multiple parameter files to proof its correctness.
 
-Furthermore, each module comes with meaningful default values for it's optional parameters, a detailed documentation for its usage and one or multiple parameter files to proof is correctness.
+## CARML module features
+
+A CARML module should comply with the following characteristics:
+
+- **Atomic unit**: Each module is tied to a specific resource type or strongly correlated services.
+  > For example a virtual machine module also deploys related OS disks and network interfaces.
+- **Reusable**: Several modules can be combined together to create & orchestrate more complex Azure deployments like single services or workloads.
+  > For example resource group, network security group and virtual network modules can be combined to create a resource group hosting a virtual network and multiple subnets in it associated to specific NSGs.
+- **Multi-purpose**: Each module aims to cover most of the main resource's capabilities, without the need to maintain multiple module instances for different use cases. Instead, the consumption of a generalized module happens through parameter files​.
+  > For example the same virtual machine module can deploy a Windows OS VM or a Linux based VM depending on input parameters.
+- **Integrates child resources**: Each module can deploy one instance of a resource and, optionally, n-amount of its child-resources.
+  > For example a key vault can optionally deploy n-amount of key vault access policies.
+- **Integrates extension resources**: Extension resources are integrated with resource modules supporting them. Intended extension resources are diagnostic settings, role assignments, private endpoints, locks and managed identities.
+  > For example an automation account can optionally deploy private endpoints and/or diagnostic settings to support monitoring.
+
+## Example: Multiple Storage Account variants
+
+The following aims to illustrate the previously described module features applied to the storage account module example.
+
+Leveraging five different parameter files, the same storage account module is able to deploy five different storage account configurations.
+
+<img src="media\Context\Library_storage-variants.png" alt="Library: storage variants">
+
+> - **Variant 1**: A plain storage account, with no child or extension resources applied, with a defined storage account sku and kind.
+> - **Variant 2**: Another plain storage account with no child or extension resources, with a different sku and kind.
+> - **Variant 3**: A storage account hosting two file shares and one blob container.
+> - **Variant 4**: A storage account with a specific lock applied.
+> - **Variant 5**: A storage account hosting a file share with a specific role assignment applied on the file share level.

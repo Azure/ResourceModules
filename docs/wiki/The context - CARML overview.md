@@ -1,6 +1,6 @@
 This section provides an overview of the Common Azure Resource Modules Library (CARML) repository.
 
-<img src="media\Context\CARLM_overview_white.png" alt="CARML overview" height="500">
+<img src="media\Context\CARLM_overview.png" alt="CARML overview" height="500">
 
 The contents of this repository are twofold: a library of comprehensive Azure resource modules that conform to the Azure Resource Reference, as well as a continuous integration (CI) environment that enables testing and versioning.
 
