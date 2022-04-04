@@ -57,18 +57,18 @@ jobs:
   ####################
   #   Pester Tests   #
   ####################
-  # job_module_pester_validation:
-  #   runs-on: ubuntu-20.04
-  #   name: 'Pester tests'
-  #   steps:
-  #     - name: 'Checkout'
-  #       uses: actions/checkout@v2
-  #       with:
-  #         fetch-depth: 0
-  #     - name: 'Run tests'
-  #       uses: ./.github/actions/templates/validateModulePester
-  #       with:
-  #         modulePath: '${{ env.modulePath }}'
+  job_module_pester_validation:
+    runs-on: ubuntu-20.04
+    name: 'Pester tests'
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: 'Run tests'
+        uses: ./.github/actions/templates/validateModulePester
+        with:
+          modulePath: '${{ env.modulePath }}'
 
   ####################
   # Deployment tests #
@@ -78,12 +78,11 @@ jobs:
     name: 'Deployment tests'
     needs:
       - job_set_workflow_param
-    #  - job_module_pester_validation
+      - job_module_pester_validation
     strategy:
       fail-fast: false
       matrix:
-        # parameterFilePaths: ['admin.parameters.json', 'parameters.json']
-        parameterFilePaths: ['parameters.json']
+        parameterFilePaths: ['admin.parameters.json', 'parameters.json']
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
