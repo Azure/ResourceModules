@@ -72,9 +72,9 @@ The local virtual network gateway object.
 }
 ```
 
-### Parameter Usage: `localNetworkGateway2`
+### Parameter Usage: `peer`
 
-The local virtual network gateway object.
+The remote peer object used for ExpressRoute connections
 
 ```json
 "peer" : {
