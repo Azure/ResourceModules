@@ -19,7 +19,7 @@ param skuCapacity int = -1
 @description('Optional. If the service has different generations of hardware, for the same SKU, then that can be captured here.')
 param skuFamily string = ''
 
-@description('Optional.	Size of the particular SKU')
+@description('Optional. Size of the particular SKU.')
 param skuSize string = ''
 
 @description('Optional. The max size of the database expressed in bytes.')
@@ -153,6 +153,19 @@ param isLedgerOn bool = false
 @description('Optional. Maintenance configuration ID assigned to the database. This configuration defines the period when the maintenance updates will occur.')
 param maintenanceConfigurationId string = ''
 
+// The SKU object must be built in a variable
+// The alternative, 'null' as default values, leads to non-terminating deployments
+var skuVar = union({
+  name: skuName
+  tier: skuTier
+}, (skuCapacity != -1) ? {
+  capacity: skuCapacity
+} : !empty(skuFamily) ? {
+  family: skuFamily
+} : !empty(skuSize) ? {
+  size: skuSize
+} : {})
+
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
   properties: {
@@ -188,13 +201,7 @@ resource database 'Microsoft.Sql/servers/databases@2021-02-01-preview' = {
     isLedgerOn: isLedgerOn
     maintenanceConfigurationId: !empty(maintenanceConfigurationId) ? maintenanceConfigurationId : null
   }
-  sku: {
-    name: skuName
-    tier: skuTier
-    capacity: (skuCapacity != -1) ? skuCapacity : null
-    family: !empty(skuFamily) ? skuFamily : null
-    size: !empty(skuSize) ? skuSize : null
-  }
+  sku: skuVar
 }
 
 resource database_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(diagnosticWorkspaceId)) || (!empty(diagnosticEventHubAuthorizationRuleId)) || (!empty(diagnosticEventHubName))) {
