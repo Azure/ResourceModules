@@ -109,7 +109,7 @@ param tags object = {}
 @description('Optional. List of allowed FQDN.')
 param allowedFqdnList array = []
 
-@description('Optional. The api properties for special APIs.')
+@description('Optional. The API properties for special APIs.')
 param apiProperties object = {}
 
 @description('Optional. Allow only Azure AD authentication.')
