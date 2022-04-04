@@ -54,7 +54,7 @@ The primary virtual network gateway object.
 
 ### Parameter Usage: `virtualNetworkGateway2`
 
-The seconday virtual network gateway used for VNET to VNET connections.
+The secondary virtual network gateway used for VNET to VNET connections.
 
 ```json
 "virtualNetworkGateway2" : {
