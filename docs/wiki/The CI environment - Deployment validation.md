@@ -1,4 +1,8 @@
 
+<img src=".\media\CIEnvironment\deploymentValidationStep.png" alt="Deployment Validation Step" height="500">
+
+<img src=".\media\CIEnvironment\deploymentValidationOutput.png" alt="Deployment Validation Output" height="400">
+
 # Template validation
 
 The template validation tests execute a dry-run with each parameter file provided & configured for a module. For example, if you have two parameter files for a module, one with the minimum set of parameters, one with the maximum, the tests will run an `Test-AzDeployment` (_- the command may vary based on the template schema_) with each of the two parameter files to see if the template would be able to be deployed with them. This test could fail either because the template is invalid, or because any of the parameter files is configured incorrectly.
