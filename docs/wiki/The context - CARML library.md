@@ -7,7 +7,7 @@ This page provides an overview of the CARML library. For further details refer t
 - [Infrastructure as Code](#infrastructure-as-code)
 - [A module in CARML](#a-module-in-CARML)
     - [CARML module features](#CARML-module-features)
-    - [Example: multiple Storage Account variants](#example-multiple-storage-account-variants)
+    - [Example: Multiple Storage Account variants](#example-multiple-storage-account-variants)
 ---
 
 # Infrastructure as Code
@@ -16,8 +16,8 @@ _'Infrastructure as Code (IaC)'_ describes a declarative approach towards resour
 Using configuration & template files that represent the deployed infrastructure has several benefits:
 - Local representation: Your deployed infrastructure is mapped to a local representation as code in your repository.
 - Version control: The applied configuration is version controlled and hence enables roll-backs & analysis.
-- Repeatability: You can deploy you infrastructure in a repeatable fashion, hence minimizing the possibility of manual errors.
-- Reusability: You can reuse your automation to deploy the same infrastructure to different environments. For example leveraging a multi-stage deployment from a Sandbox environment, via integration to production using the same code.
+- Repeatability: You can deploy your infrastructure in a repeatable fashion, hence minimizing the chance of manual errors.
+- Reusability: You can reuse your automation to deploy the same infrastructure to different environments. For example leveraging a multi-stage deployment from a sandbox environment, via integration to production using the same code.
 
 In the context of Bicep or ARM/JSON templates we usually leverage a combination of flexible templates that are deployed using multiple parameter files mapped to different scenarios.
 
@@ -25,7 +25,7 @@ In the context of Bicep or ARM/JSON templates we usually leverage a combination 
 
 In the context of _CARML_ we define a module as a reusable, template-based **building block** for Infrastructure as Code deployments of Azure resources.
 
-Each module is generalized for maximum flexibility. Each template should be able to cover as many resource-specific scenarios as possible and not restrict the user by making assumptions on the users' behalf. Eventually the injected parameters should decide what the template deploys.
+Each module is generalized for maximum flexibility. Each template should be able to cover as many resource-specific scenarios as possible and not restrict the user by making assumptions on the users' behalf. Eventually, the injected parameters should decide what the template deploys.
 
 Furthermore, each module comes with default values for its optional parameters, a detailed documentation for its usage and one or multiple parameter files to proof its correctness.
 
@@ -50,7 +50,7 @@ The following aims to illustrate the previously described module features applie
 
 Leveraging five different parameter files, the same storage account module is able to deploy five different storage account configurations.
 
-<img src="media\Context\Library_storage-variants.png" alt="Library: storage variants">
+<img src="media\Context\Library_storage-variants.png" alt="Library: storage variants" height="350">
 
 > - **Variant 1**: A plain storage account, with no child or extension resources applied, with a defined storage account sku and kind.
 > - **Variant 2**: Another plain storage account with no child or extension resources, with a different sku and kind.
