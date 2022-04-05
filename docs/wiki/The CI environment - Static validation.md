@@ -4,6 +4,10 @@ This section provides an overview of the principles the static validation is bui
 - [API version validation](#api-version-validation)
 - [Verify the static validation of your module locally](#verify-the-static-validation-of-your-module-locally)
 
+<img src=".\media\CIEnvironment\staticValidationStep.png" alt="Static Validation Step" height="300">
+
+---
+
 # Static code validation
 
 All Module Unit tests are performed with the help of [Pester](https://github.com/pester/Pester) and are required to have consistent, clean and syntactically correct tests to ensure that our modules are configured correctly, documentation is up to date, and modules don't turn stale.
@@ -25,6 +29,10 @@ The following activities are run executing the `arm/.global/global.module.tests.
 - **Parameter Files**. e.g.:
   - at least one `*parameters.json` should exist
   - files should be valid JSON
+
+## Output example
+
+<img src=".\media\CIEnvironment\staticValidationOutput.png" alt="Static Validation Output" height="400">
 
 ## Additional resources
 
@@ -64,3 +72,4 @@ Test-ModuleLocally @TestModuleLocallyInput -Verbose
 ```
 
 > You can use the `Get-Help` cmdlet to show more options on how you can use this script.
+

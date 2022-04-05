@@ -12,6 +12,7 @@ Besides the execution of a the publishing phase, there is also the possibility t
 
 <img src=".\media\CIEnvironment\publishingStep.png" alt="Publishing Step" height="500">
 
+
 The publishing works as follows:
 
 1. The script `utilities/pipelines/resourcePublish/Get-ModulesToPublish.ps1` gets all changed module files including child modules and handles the logic of propagating the appropriate module version to be used:
@@ -57,5 +58,7 @@ C499 -> C500 ---> C501 ---> C502 ---> C503 (503)
 `Cx` - Commits on main,
 `Dx` - Commits on development branch,
 `(x)` - Calculated patch version
+
+## Output example
 
 <img src=".\media\CIEnvironment\publishingOutput.png" alt="Publishing Output" height="300">
