@@ -1,6 +1,6 @@
-The publishing phase concludes each module's pipeline. If all previous tests succeeded (i.e. no phase failed) and the pipeline was executed in the `main` or `master` branch, a new module version is published to all configured target locations. Currently we support the following target locations:
+The publishing phase concludes each module's pipeline. If all previous tests succeed (i.e. no phase failed) and the pipeline is executed in the `main` or `master` branch, a new module version is published to all configured target locations. Currently we support the following target locations:
 
--  _[Template specs](https://docs.microsoft.com/en-us/azure/azure-resource-manager/templates/template-specs?tabs=azure-powershell)_
+- _[Template specs](https://docs.microsoft.com/en-us/azure/azure-resource-manager/templates/template-specs?tabs=azure-powershell)_
 - _[Private Bicep registry](https://docs.microsoft.com/en-gb/azure/azure-resource-manager/bicep/private-module-registry)_
 - _[Azure DevOps universal packages](https://docs.microsoft.com/en-us/azure/devops/artifacts/concepts/feeds?view=azure-devops)_.
    > Note: this is only available if using Azure DevOps pipelines.
@@ -8,7 +8,9 @@ The publishing phase concludes each module's pipeline. If all previous tests suc
 Besides the execution of a the publishing phase, there is also the possibility to set the switch `Publish prerelease module`. This switch makes it possible to publish a pre-release version in every workflow run that is not based on main or master.
 
 > **Note**<br>
-> The `version` used for publishing any artifact will be the same in all three target locations which reduces the maintenance effort.
+> The `version` used for publishing any artifact is the same for all three target locations, which reduces the maintenance effort.
+
+<img src=".\media\CIEnvironment\publishingStep.png" alt="Publishing Step" height="500">
 
 The publishing works as follows:
 
@@ -55,3 +57,5 @@ C499 -> C500 ---> C501 ---> C502 ---> C503 (503)
 `Cx` - Commits on main,
 `Dx` - Commits on development branch,
 `(x)` - Calculated patch version
+
+<img src=".\media\CIEnvironment\publishingOutput.png" alt="Publishing Output" height="300">
