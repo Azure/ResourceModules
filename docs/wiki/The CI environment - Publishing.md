@@ -1,10 +1,11 @@
 The publishing phase concludes each module's pipeline. If all previous tests succeeded (i.e. no phase failed) and the pipeline was executed in the `main` or `master` branch, a new module version is published to all configured target locations. Currently we support the following target locations:
 
-- _template specs_
-- _private Bicep registry_
-- _universal artifacts_ (_Azure DevOps_ only)
+-  _[Template specs](https://docs.microsoft.com/en-us/azure/azure-resource-manager/templates/template-specs?tabs=azure-powershell)_
+- _[Private Bicep registry](https://docs.microsoft.com/en-gb/azure/azure-resource-manager/bicep/private-module-registry)_
+- _[Azure DevOps universal packages](https://docs.microsoft.com/en-us/azure/devops/artifacts/concepts/feeds?view=azure-devops)_.
+   > Note: this is only available if using Azure DevOps pipelines.
 
-Besides the execution of a publish, there is also the possibility to set the switch `Publish prerelease module`. This switch makes it possible to publish a pre-release version in every workflow run that is not based on main or master.
+Besides the execution of a the publishing phase, there is also the possibility to set the switch `Publish prerelease module`. This switch makes it possible to publish a pre-release version in every workflow run that is not based on main or master.
 
 > **Note**<br>
 > The `version` used for publishing any artifact will be the same in all three target locations which reduces the maintenance effort.
