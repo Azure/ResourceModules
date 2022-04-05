@@ -16,6 +16,7 @@ When it comes to environment deployment leveraging modules, we can differentiate
 Both the _template-orchestration_ as well as _pipeline-orchestration_ may run a validation and subsequent deployment on the bottom-right _Azure_ subscription. This subscription, in turn, should be the subscription where you want to host your environment. However, you can extend the concept and for example deploy the environment first to an integration and then a production subscription.
 
    <img src="media/pipelineOrchestration.png" alt="Pipeline orchestration" height="400">
+
 # Template-orchestration
 
 The _template-orchestrated_ approach means using a _main_ or so-called _master template_ for deploying resources in Azure. This template will only contain nested deployments, where the modules - instead of embedding their content into the _master template_ - will be referenced by the _master template_.
