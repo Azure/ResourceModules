@@ -39,3 +39,37 @@ Note that, for the deployments we have to account for certain [prerequisites](#p
 The removal phase takes care of removing all resources deployed as part of the previous deployment phase. The reason is twofold: keeping validation subscriptions costs down and allow deployments from scratch at every run.
 
 For additional details on how removal works please refer to the dedicated [Removal action](PipelineRemovalAction) page.
+
+# Verify the deployment validation of your module locally
+
+This paragraph is intended for CARML contributors or more generally for those leveraging the CARML CI environment and having the need to update or add a new module to the library.
+
+Refer to the below snippet to optionally leverage the 'Test-ModuleLocally.ps1' script and verify if your module will comply with the deployment validation step before pushing to source control.
+
+```powershell
+#########[ Function Test-ModulesLocally.ps1 ]#############
+$pathToRepository = '<pathToClonedRepo>'
+. "$pathToRepository\utilities\tools\Test-ModuleLocally.ps1"
+
+# REQUIRED INPUT FOR TESTING
+$TestModuleLocallyInput = @{
+    templateFilePath              = "$pathToRepository\arm\Microsoft.Authorization\roleDefinitions\deploy.bicep"
+    PesterTest                    = $false
+    DeploymentTest                = $true
+    ValidationTest                = $true
+    ValidateOrDeployParameters    = @{
+        Location          = '<ReplaceWith-TargetLocation>'
+        ResourceGroupName = 'validation-rg'
+        SubscriptionId    = '<ReplaceWith-TargetSubscriptionId>'
+        ManagementGroupId = '<ReplaceWith-TargetManagementGroupName>'
+    }
+    AdditionalTokens              = @{
+        'deploymentSpId' = '<ReplaceWith-SPNObjectId>'
+        'tenantId'       = '<ReplaceWith-TargetTenantId>'
+    }
+}
+
+Test-ModuleLocally @TestModuleLocallyInput -Verbose
+```
+
+> You can use the `Get-Help` cmdlet to show more options on how you can use this script.
