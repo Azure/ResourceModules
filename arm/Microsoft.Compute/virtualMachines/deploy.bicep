@@ -380,9 +380,10 @@ resource virtualMachine 'Microsoft.Compute/virtualMachines@2021-07-01' = {
       imageReference: imageReference
       osDisk: {
         name: '${name}-disk-os-01'
-        createOption: osDisk.createOption
+        createOption: contains(osDisk, 'createOption') ? osDisk.createOption : 'FromImage'
         deleteOption: contains(osDisk, 'deleteOption') ? osDisk.deleteOption : 'Delete'
         diskSizeGB: osDisk.diskSizeGB
+        caching: contains(osDisk, 'caching') ? osDisk.caching : 'ReadOnly'
         managedDisk: {
           storageAccountType: osDisk.managedDisk.storageAccountType
           diskEncryptionSet: contains(osDisk.managedDisk, 'diskEncryptionSet') ? osDisk.managedDisk.diskEncryptionSet : null
@@ -392,9 +393,9 @@ resource virtualMachine 'Microsoft.Compute/virtualMachines@2021-07-01' = {
         lun: index
         name: '${name}-disk-data-${padLeft((index + 1), 2, '0')}'
         diskSizeGB: dataDisk.diskSizeGB
-        createOption: dataDisk.createOption
+        createOption: contains(dataDisk, 'createOption') ? dataDisk.createOption : 'Empty'
         deleteOption: contains(dataDisk, 'deleteOption') ? dataDisk.deleteOption : 'Delete'
-        caching: dataDisk.caching
+        caching: contains(dataDisk, 'caching') ? dataDisk.caching : 'ReadOnly'
         managedDisk: {
           storageAccountType: dataDisk.managedDisk.storageAccountType
           diskEncryptionSet: {
