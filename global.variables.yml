@@ -1,4 +1,37 @@
 variables:
+  ###########################################################################################################################
+  ################################################## Common Variables #######################################################
+  ###########################################################################################################################
+
+  ######################################
+  # Validation deployment settings
+  ######################################
+
+  location: 'West Europe' # The default location to test deploy resources to
+  resourceGroupName: 'validation-rg' # The default resource group to test deployment resources into
+
+  ######################################
+  # Publish: Template-Spec settings
+  ######################################
+
+  templateSpecsDoPublish: true # Set to true, if you would like to publish module templates as template specs
+  templateSpecsRGName: 'artifacts-rg' # The name of the resource group to publish to. If the resource group does not exist, it will be created.
+  templateSpecsRGLocation: 'West Europe' # The location of the resource group to publish to
+  templateSpecsDescription: components # The description to add to template specs published by this platform
+
+  ######################################
+  # Publish: Private Bicep Registry settings
+  ######################################
+
+  bicepRegistryDoPublish: true # Set to true, if you would like to publish module templates to a bicep registry
+  bicepRegistryName: adpsxxazacrx001 # The name of the bicep registry (ACR) to publish to. If it does not exist, it will be created.
+  bicepRegistryRGName: 'artifacts-rg' # The resource group that hosts the private bicep registry (ACR)
+  bicepRegistryRgLocation: 'West Europe' # The location of the resource group to publish to
+
+  ###########################################################################################################################
+  ################################################## Azure DevOps Only ######################################################
+  ###########################################################################################################################
+
   ######################################
   # Agent settings
   ######################################
@@ -14,24 +47,7 @@ variables:
   vstsOrganizationURI: '$(System.CollectionUri)' # The URI of the TFS collection or Azure DevOps organization. For example: https://dev.azure.com/fabrikam/.
   vstsProject: '$(System.TeamProject)'
   modulesRepository: ResourceModules # The repository hosting the deployment code (i.e. 'Components'). MUST be provided as a variable with every pipeline
-  modulePath: arm/$(moduleName) # only use in module pipelines
   pipelineFunctionsPath: 'utilities/pipelines'
-
-  ######################################
-  # Validation deployment settings
-  ######################################
-
-  defaultLocation: 'West Europe' # The default location to test deploy resources to
-  defaultResourceGroupName: 'validation-rg' # The default resource group to test deployment resources into
-
-  ######################################
-  # Publish: Template-Spec settings
-  ######################################
-
-  templateSpecsDoPublish: true # Set to true, if you would like to publish module templates as template specs
-  templateSpecsRGName: 'artifacts-rg' # The name of the resource group to publish to. If the resource group does not exist, it will be created.
-  templateSpecsRGLocation: 'West Europe' # The location of the resource group to publish to
-  templateSpecsDescription: components # The description to add to template specs published by this platform
 
   ######################################
   # Publish: Universal packages settings
@@ -41,15 +57,6 @@ variables:
   vstsFeedName: 'ResourceModules' # The name of the Azure DevOps universal packages feed to publish to
   vstsFeedProject: '$(System.TeamProject)' # The project that hosts the feed
   vstsFeedToken: $(System.AccessToken) # The token used to publish universal packages into the feed above
-
-  ######################################
-  # Publish: Private Bicep Registry settings
-  ######################################
-
-  bicepRegistryDoPublish: true # Set to true, if you would like to publish module templates to a bicep registry
-  bicepRegistryName: adpsxxazacrx001 # The name of the bicep registry (ACR) to publish to. If it does not exist, it will be created.
-  bicepRegistryRGName: 'artifacts-rg' # The resource group that hosts the private bicep registry (ACR)
-  bicepRegistryRgLocation: 'West Europe' # The location of the resource group to publish to
 
   ######################################
   # Azure PowerShell Version
