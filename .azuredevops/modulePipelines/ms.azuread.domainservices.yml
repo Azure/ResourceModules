@@ -1,4 +1,4 @@
-name: "AzureAD - DomainServices"
+name: "DomainServices - AzureADDomainServices"
 
 parameters:
   - name: removeDeployment
