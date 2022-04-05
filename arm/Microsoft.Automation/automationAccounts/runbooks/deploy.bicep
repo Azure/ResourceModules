@@ -26,7 +26,7 @@ param version string = ''
 @description('Optional. ID of the runbook storage account.')
 param scriptStorageAccountId string = ''
 
-@description('Optional. Time used as a basis for e.g. the schedule start date.')
+@description('Generated. Time used as a basis for e.g. the schedule start date.')
 param baseTime string = utcNow('u')
 
 @description('Optional. SAS token validity length. Usage: \'PT8H\' - valid for 8 hours; \'P5D\' - valid for 5 days; \'P1Y\' - valid for 1 year. When not provided, the SAS token will be valid for 8 hours.')
@@ -38,8 +38,8 @@ param location string = resourceGroup().location
 @description('Optional. Tags of the Automation Account resource.')
 param tags object = {}
 
-@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered.')
-param cuaId string = ''
+@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+param enableDefaultTelemetry bool = true
 
 var accountSasProperties = {
   signedServices: 'b'
@@ -49,9 +49,16 @@ var accountSasProperties = {
   signedProtocol: 'https'
 }
 
-module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
-  name: 'pid-${cuaId}'
-  params: {}
+resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
+  name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
+  properties: {
+    mode: 'Incremental'
+    template: {
+      '$schema': 'https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#'
+      contentVersion: '1.0.0.0'
+      resources: []
+    }
+  }
 }
 
 resource automationAccount 'Microsoft.Automation/automationAccounts@2020-01-13-preview' existing = {

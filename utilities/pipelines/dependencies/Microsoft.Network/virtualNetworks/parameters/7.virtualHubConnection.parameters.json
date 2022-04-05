@@ -15,7 +15,7 @@
                 {
                     "name": "default", // Hub connection subnet
                     "addressPrefix": "10.7.0.0/24",
-                    "networkSecurityGroupName": "adp-<<namePrefix>>-az-nsg-x-001"
+                    "networkSecurityGroupId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/networkSecurityGroups/adp-<<namePrefix>>-az-nsg-x-001"
                 }
             ]
         }

@@ -1,0 +1,68 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": "<<namePrefix>>-az-rsv-dr-001"
+        },
+        "replicationFabrics": {
+            "value": [
+                {
+                    "location": "NorthEurope",
+                    "replicationContainers": [
+                        {
+                            "name": "ne-container1",
+                            "replicationContainerMappings": [
+                                {
+                                    "targetProtectionContainerId": "/Subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.RecoveryServices/vaults/<<namePrefix>>-az-rsv-min-001/replicationFabrics/NorthEurope/replicationProtectionContainers/ne-container2",
+                                    "policyName": "Default_values",
+                                    "targetContainerName": "pluto"
+                                }
+                            ]
+                        },
+                        {
+                            "name": "ne-container2",
+                            "replicationContainerMappings": [
+                                {
+                                    "policyName": "Default_values",
+                                    "targetContainerFabricName": "WE-2",
+                                    "targetContainerName": "we-container1"
+                                }
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "name": "WE-2",
+                    "location": "WestEurope",
+                    "replicationContainers": [
+                        {
+                            "name": "we-container1",
+                            "replicationContainerMappings": [
+                                {
+                                    "policyName": "Default_values",
+                                    "targetContainerFabricName": "NorthEurope",
+                                    "targetContainerName": "ne-container2"
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        "replicationPolicies": {
+            "value": [
+                {
+                    "name": "Default_values"
+                },
+                {
+                    "name": "Custom_values",
+                    "appConsistentFrequencyInMinutes": 240,
+                    "crashConsistentFrequencyInMinutes": 7,
+                    "multiVmSyncStatus": "Disable",
+                    "recoveryPointHistory": 2880
+                }
+            ]
+        }
+    }
+}

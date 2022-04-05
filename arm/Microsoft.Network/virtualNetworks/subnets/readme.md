@@ -2,6 +2,14 @@
 
 This module deploys a virtual network subnet.
 
+## Navigation
+
+- [Resource Types](#Resource-Types)
+- [Parameters](#Parameters)
+- [Considerations](#Considerations)
+- [Outputs](#Outputs)
+- [Template references](#Template-references)
+
 ## Resource Types
 
 | Resource Type | API Version |
@@ -10,24 +18,29 @@ This module deploys a virtual network subnet.
 
 ## Parameters
 
-| Parameter Name | Type | Default Value | Possible Values | Description |
+**Required parameters**
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `addressPrefix` | string | The address prefix for the subnet. |
+| `virtualNetworkName` | string | The name of the parent virtual network |
+
+**Optional parameters**
+| Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `addressPrefix` | string |  |  | Required. The address prefix for the subnet. |
-| `addressPrefixes` | array | `[]` |  | Optional. List of address prefixes for the subnet. |
-| `applicationGatewayIpConfigurations` | array | `[]` |  | Optional. Application gateway IP configurations of virtual network resource. |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
-| `delegations` | array | `[]` |  | Optional. The delegations to enable on the subnet |
-| `ipAllocations` | array | `[]` |  | Optional. Array of IpAllocation which reference this subnet |
-| `name` | string |  |  | Optional. The Name of the subnet resource. |
-| `natGatewayName` | string |  |  | Optional. The name of the NAT Gateway to use for the subnet |
-| `networkSecurityGroupName` | string |  |  | Optional. The network security group to assign to the subnet |
-| `networkSecurityGroupNameResourceGroupName` | string | `[resourceGroup().name]` |  | Optional. Resource Group where NSGs are deployed, if different than VNET Resource Group. |
-| `privateEndpointNetworkPolicies` | string |  | `[Disabled, Enabled, ]` | Optional. enable or disable apply network policies on private end point in the subnet. |
-| `privateLinkServiceNetworkPolicies` | string |  | `[Disabled, Enabled, ]` | Optional. enable or disable apply network policies on private link service in the subnet. |
-| `routeTableName` | string |  |  | Optional. The route table to assign to the subnet |
-| `serviceEndpointPolicies` | array | `[]` |  | Optional. An array of service endpoint policies. |
-| `serviceEndpoints` | array | `[]` |  | Optional. The service endpoints to enable on the subnet |
-| `virtualNetworkName` | string |  |  | Required. The name of the parent virtual network |
+| `addressPrefixes` | array | `[]` |  | List of address prefixes for the subnet. |
+| `applicationGatewayIpConfigurations` | array | `[]` |  | Application gateway IP configurations of virtual network resource. |
+| `delegations` | array | `[]` |  | The delegations to enable on the subnet |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `ipAllocations` | array | `[]` |  | Array of IpAllocation which reference this subnet |
+| `name` | string |  |  | The Name of the subnet resource. |
+| `natGatewayId` | string | `''` |  | The resource ID of the NAT Gateway to use for the subnet |
+| `networkSecurityGroupId` | string | `''` |  | The resource ID of the network security group to assign to the subnet |
+| `privateEndpointNetworkPolicies` | string | `''` | `[Disabled, Enabled, ]` | enable or disable apply network policies on private endpoint in the subnet. |
+| `privateLinkServiceNetworkPolicies` | string | `''` | `[Disabled, Enabled, ]` | enable or disable apply network policies on private link service in the subnet. |
+| `routeTableId` | string | `''` |  | The resource ID of the route table to assign to the subnet |
+| `serviceEndpointPolicies` | array | `[]` |  | An array of service endpoint policies. |
+| `serviceEndpoints` | array | `[]` |  | The service endpoints to enable on the subnet |
+
 
 ### Parameter Usage: `delegations`
 

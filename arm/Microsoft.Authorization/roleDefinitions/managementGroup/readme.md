@@ -2,6 +2,13 @@
 
 With this module you can create role definitions on a management group level
 
+## Navigation
+
+- [Resource Types](#Resource-Types)
+- [Parameters](#Parameters)
+- [Outputs](#Outputs)
+- [Template references](#Template-references)
+
 ## Resource Types
 
 | Resource Type | API Version |
@@ -10,14 +17,22 @@ With this module you can create role definitions on a management group level
 
 ## Parameters
 
-| Parameter Name | Type | Default Value | Possible Values | Description |
-| :-- | :-- | :-- | :-- | :-- |
-| `actions` | array | `[]` |  | Optional. List of allowed actions. |
-| `assignableScopes` | array | `[]` |  | Optional. Role definition assignable scopes. If not provided, will use the current scope provided. |
-| `description` | string |  |  | Optional. Description of the custom RBAC role to be created. |
-| `managementGroupId` | string | `[managementGroup().name]` |  | Optional. The group ID of the Management Group where the Role Definition and Target Scope will be applied to. If not provided, will use the current scope for deployment. |
-| `notActions` | array | `[]` |  | Optional. List of denied actions. |
-| `roleName` | string |  |  | Required. Name of the custom RBAC role to be created. |
+**Required parameters**
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `roleName` | string | Name of the custom RBAC role to be created. |
+
+**Optional parameters**
+| Parameter Name | Type | Default Value | Description |
+| :-- | :-- | :-- | :-- |
+| `actions` | array | `[]` | List of allowed actions. |
+| `assignableScopes` | array | `[]` | Role definition assignable scopes. If not provided, will use the current scope provided. |
+| `description` | string | `''` | Description of the custom RBAC role to be created. |
+| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `location` | string | `[deployment().location]` | Location deployment metadata. |
+| `managementGroupId` | string | `[managementGroup().name]` | The group ID of the Management Group where the Role Definition and Target Scope will be applied to. If not provided, will use the current scope for deployment. |
+| `notActions` | array | `[]` | List of denied actions. |
+
 
 ## Outputs
 

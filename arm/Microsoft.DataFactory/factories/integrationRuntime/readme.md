@@ -2,6 +2,13 @@
 
 This module deploys a Managed or Self-Hosted Integration Runtime for an Azure Data Factory
 
+## Navigation
+
+- [Resource types](#Resource-types)
+- [Parameters](#Parameters)
+- [Outputs](#Outputs)
+- [Template references](#Template-references)
+
 ## Resource types
 
 | Resource Type | API Version |
@@ -10,14 +17,20 @@ This module deploys a Managed or Self-Hosted Integration Runtime for an Azure Da
 
 ## Parameters
 
-| Parameter Name | Type | Default Value | Possible Values | Description |
-| :-- | :-- | :-- | :-- | :-- |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
-| `dataFactoryName` | string |  |  | Required. The name of the Azure Data Factory |
-| `managedVirtualNetworkName` | string |  |  | Optional. The name of the Managed Virtual Network if using type "Managed"  |
-| `name` | string |  |  | Required. The name of the Integration Runtime |
-| `type` | string |  | `[Managed, SelfHosted]` | Required. The type of Integration Runtime |
-| `typeProperties` | object |  |  | Required. Integration Runtime type properties. |
+**Required parameters**
+| Parameter Name | Type | Allowed Values | Description |
+| :-- | :-- | :-- | :-- |
+| `dataFactoryName` | string |  | The name of the Azure Data Factory |
+| `name` | string |  | The name of the Integration Runtime |
+| `type` | string | `[Managed, SelfHosted]` | The type of Integration Runtime |
+| `typeProperties` | object |  | Integration Runtime type properties. |
+
+**Optional parameters**
+| Parameter Name | Type | Default Value | Description |
+| :-- | :-- | :-- | :-- |
+| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `managedVirtualNetworkName` | string | `''` | The name of the Managed Virtual Network if using type "Managed"  |
+
 
 ### Parameter Usage: [`typeProperties`](https://docs.microsoft.com/en-us/azure/templates/microsoft.datafactory/factories/integrationruntimes?tabs=bicep#integrationruntime-objects)
 

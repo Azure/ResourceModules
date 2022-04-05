@@ -24,7 +24,7 @@ trigger:
       - '/**/*.md'
 
 variables:
-  - template: '/.azuredevops/pipelineVariables/global.variables.yml'
+  - template: '../../global.variables.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
     value: '/arm/Microsoft.RecoveryServices/vaults'
@@ -43,6 +43,11 @@ stages:
           removeDeployment: '${{ parameters.removeDeployment }}'
           deploymentBlocks:
             - path: $(modulePath)/.parameters/parameters.json
+              templateFilePath: $(modulePath)/deploy.bicep
+            - path: $(modulePath)/.parameters/min.parameters.json
+              templateFilePath: $(modulePath)/deploy.bicep
+            - path: $(modulePath)/.parameters/dr.parameters.json
+              templateFilePath: $(modulePath)/deploy.bicep
 
   - stage: Publishing
     displayName: Publish module

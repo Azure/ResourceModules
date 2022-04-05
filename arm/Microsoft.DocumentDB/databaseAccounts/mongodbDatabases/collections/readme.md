@@ -2,6 +2,13 @@
 
 This module deploys a collection within a MongoDB.
 
+## Navigation
+
+- [Resource Types](#Resource-Types)
+- [Parameters](#Parameters)
+- [Outputs](#Outputs)
+- [Template references](#Template-references)
+
 ## Resource Types
 
 | Resource Type | API Version |
@@ -10,15 +17,21 @@ This module deploys a collection within a MongoDB.
 
 ## Parameters
 
-| Parameter Name | Type | Default Value | Possible Values | Description |
-| :-- | :-- | :-- | :-- | :-- |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
-| `databaseAccountName` | string |  |  | Required. Name of the Cosmos DB database account. |
-| `indexes` | array |  |  | Required. Indexes for the collection |
-| `mongodbDatabaseName` | string |  |  | Required. Name of the mongodb database |
-| `name` | string |  |  | Required. Name of the collection |
-| `shardKey` | object |  |  | Required. ShardKey for the collection |
-| `throughput` | int | `400` |  | Optional. Name of the mongodb database |
+**Required parameters**
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `databaseAccountName` | string | Name of the Cosmos DB database account. |
+| `indexes` | array | Indexes for the collection |
+| `mongodbDatabaseName` | string | Name of the mongodb database |
+| `name` | string | Name of the collection |
+| `shardKey` | object | ShardKey for the collection |
+
+**Optional parameters**
+| Parameter Name | Type | Default Value | Description |
+| :-- | :-- | :-- | :-- |
+| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `throughput` | int | `400` | Name of the mongodb database |
+
 
 ### Parameter Usage: `indexes`
 

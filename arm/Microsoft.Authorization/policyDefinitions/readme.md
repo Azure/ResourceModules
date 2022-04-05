@@ -2,6 +2,14 @@
 
 With this module you can create policy definitions across the management group or subscription scope.
 
+## Navigation
+
+- [Resource types](#Resource-types)
+- [Parameters](#Parameters)
+- [Module Usage Guidance](#Module-Usage-Guidance)
+- [Outputs](#Outputs)
+- [Template references](#Template-references)
+
 ## Resource types
 
 | Resource Type | API Version |
@@ -10,18 +18,25 @@ With this module you can create policy definitions across the management group o
 
 ## Parameters
 
-| Parameter Name | Type | Default Value | Possible Values | Description |
+**Required parameters**
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `name` | string | Specifies the name of the policy definition. Maximum length is 64 characters for management group scope and subscription scope. |
+| `policyRule` | object | The Policy Rule details for the Policy Definition |
+
+**Optional parameters**
+| Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `description` | string |  |  | Optional. The policy definition description. |
-| `displayName` | string |  |  | Optional. The display name of the policy definition. Maximum length is 128 characters. |
-| `location` | string | `[deployment().location]` |  | Optional. Location for all resources. |
-| `managementGroupId` | string | `[managementGroup().name]` |  | Optional. The group ID of the Management Group (Scope). If not provided, will use the current scope for deployment. |
-| `metadata` | object | `{object}` |  | Optional. The policy Definition metadata. Metadata is an open ended object and is typically a collection of key-value pairs. |
-| `mode` | string | `All` | `[All, Indexed, Microsoft.KeyVault.Data, Microsoft.ContainerService.Data, Microsoft.Kubernetes.Data]` | Optional. The policy definition mode. Default is All, Some examples are All, Indexed, Microsoft.KeyVault.Data. |
-| `name` | string |  |  | Required. Specifies the name of the policy definition. Maximum length is 64 characters for management group scope and subscription scope. |
-| `parameters` | object | `{object}` |  | Optional. The policy definition parameters that can be used in policy definition references. |
-| `policyRule` | object |  |  | Required. The Policy Rule details for the Policy Definition |
-| `subscriptionId` | string |  |  | Optional. The subscription ID of the subscription (Scope). Cannot be used with managementGroupId |
+| `description` | string | `''` |  | The policy definition description. |
+| `displayName` | string | `''` |  | The display name of the policy definition. Maximum length is 128 characters. |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `location` | string | `[deployment().location]` |  | Location deployment metadata. |
+| `managementGroupId` | string | `[managementGroup().name]` |  | The group ID of the Management Group (Scope). If not provided, will use the current scope for deployment. |
+| `metadata` | object | `{object}` |  | The policy Definition metadata. Metadata is an open ended object and is typically a collection of key-value pairs. |
+| `mode` | string | `'All'` | `[All, Indexed, Microsoft.KeyVault.Data, Microsoft.ContainerService.Data, Microsoft.Kubernetes.Data]` | The policy definition mode. Default is All, Some examples are All, Indexed, Microsoft.KeyVault.Data. |
+| `parameters` | object | `{object}` |  | The policy definition parameters that can be used in policy definition references. |
+| `subscriptionId` | string | `''` |  | The subscription ID of the subscription (Scope). Cannot be used with managementGroupId |
+
 
 ### Parameter Usage: `managementGroupId`
 
