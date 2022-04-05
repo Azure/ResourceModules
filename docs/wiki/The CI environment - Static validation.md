@@ -1,0 +1,66 @@
+This section provides an overview of the principles the static validation is built upon, how it is set up, and how you can interact with it.
+
+- [Static code validation](#static-code-validation)
+- [API version validation](#api-version-validation)
+- [Verify the static validation of your module locally](#verify-the-static-validation-of-your-module-locally)
+
+# Static code validation
+
+All Module Unit tests are performed with the help of [Pester](https://github.com/pester/Pester) and are required to have consistent, clean and syntactically correct tests to ensure that our modules are configured correctly, documentation is up to date, and modules don't turn stale.
+
+The following activities are run executing the `arm/.global/global.module.tests.ps1` script.
+
+- **File & folder tests** validate that the module folder structure is set up in the intended way. e.g.:
+  - reame.md must exists
+  - template file (either deploy.json or deploy.bicep) exists
+  - compliance with file naming convention
+- **Deployment template tests** check the template's structure and elements for errors as well as consistency matters. e.g.
+  - template file (or the built bicep template) converts from JSON and has all expected properties
+  - variable names are camelCase
+  - the minimum set of outputs are returned
+- **Module (readme.md) documentation** contains all required sections. e.g.:
+  - is not empty
+  - contains all the mandatory sections
+  - describes all the parameters
+- **Parameter Files**. e.g.:
+  - at least one `*parameters.json` should exist
+  - files should be valid JSON
+
+## Additional resources
+
+- [Pester Wiki](https://github.com/pester/Pester/wiki)
+- [Pester on GitHub](https://github.com/pester/Pester)
+- [Pester Installation and Update](https://pester.dev/docs/introduction/installation)
+
+# API version validation
+
+In this phase, Pester analyzes the API version of each resource type deployed by the module.
+
+In particular, each resource's API version is compared with those currently available on Azure. Accepted are both the latest 5 versions (including preview versions) as well as the latest 5 non-preview versions.
+
+This test also leverages the `arm/.global/global.module.tests.ps1` script.
+
+# Verify the static validation of your module locally
+
+
+This paragraph is intended for CARML contributors or more generally for those leveraging the CARML CI environment and having the need to update or add a new module to the library.
+
+Refer to the below snippet to leverage the 'Test-ModuleLocally.ps1' script and verify if your module will comply to the static validation before pushing to source control.
+
+```powershell
+#########[ Function Test-ModulesLocally.ps1 ]#############
+$pathToRepository = '<pathToClonedRepo>'
+. "$pathToRepository\utilities\tools\Test-ModuleLocally.ps1"
+
+# REQUIRED INPUT FOR TESTING
+$TestModuleLocallyInput = @{
+    templateFilePath              = "$pathToRepository\arm\Microsoft.Authorization\roleDefinitions\deploy.bicep"
+    PesterTest                    = $true
+    DeploymentTest                = $false
+    ValidationTest                = $false
+}
+
+Test-ModuleLocally @TestModuleLocallyInput -Verbose
+```
+
+> You can use the `Get-Help` cmdlet to show more options on how you can use this script.
