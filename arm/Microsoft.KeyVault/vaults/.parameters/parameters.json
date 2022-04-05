@@ -23,7 +23,8 @@
             "value": {
                 "bypass": "AzureServices",
                 "defaultAction": "Deny",
-                "virtualNetworkRules": []
+                "virtualNetworkRules": [],
+                "ipRules": []
             }
         },
         "roleAssignments": {
