@@ -84,9 +84,6 @@ param enableDefaultTelemetry bool = true
 @description('Optional. Rule collection groups.')
 param ruleCollectionGroups array = []
 
-@description('Optional. Rule groups.')
-param ruleGroups array = []
-
 var identityType = systemAssignedIdentity ? (!empty(userAssignedIdentities) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned') : (!empty(userAssignedIdentities) ? 'UserAssigned' : 'None')
 
 var identity = identityType != 'None' ? {
@@ -164,17 +161,6 @@ module firewallPolicy_ruleCollectionGroups 'ruleCollectionGroups/deploy.bicep' =
     name: ruleCollectionGroup.name
     priority: ruleCollectionGroup.priority
     ruleCollections: ruleCollectionGroup.ruleCollections
-  }
-}]
-
-@batchSize(1)
-module firewallPolicy_ruleGroups 'ruleGroups/deploy.bicep' = [for (ruleGroup, index) in ruleGroups: {
-  name: '${uniqueString(deployment().name, location)}-firewallPolicy_ruleGroups-${index}'
-  params: {
-    firewallPolicyName: firewallPolicy.name
-    name: ruleGroup.name
-    priority: ruleGroup.priority
-    rules: ruleGroup.rules
   }
 }]
 
