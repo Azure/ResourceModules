@@ -317,7 +317,7 @@ The example assumes you are using a [`bicepconfig.json`](https://docs.microsoft.
 
 ## Solution deployment
 
-The bicep modules provided by this repo can also be clubbed together to create more complex infrastructures and in the form a completely reusable solutions or products.
+The modules provided by this repo can be orchestrated to create more complex infrastructures and as such reusable solutions or products.
 
 ### Sample solution
 
