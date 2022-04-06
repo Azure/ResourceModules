@@ -6,6 +6,7 @@ This section shows you how you can orchestrate a deployment using multiple resou
 
 ### _Navigation_
 
+- [Orchestration overview](#orchestration-overview)
 - [Template orchestration](#Template-orchestration)
   - [Example with local file references](#Example-with-local-file-references)
   - [Example with a Private Bicep Registry](#Example-with-a-Private-Bicep-Registry)
@@ -20,8 +21,6 @@ This section shows you how you can orchestrate a deployment using multiple resou
 ---
 
 > **Note:** For the sake of the below examples we assume you leverage Bicep as your primary DSL.
-- [Orchestration overview](#orchestration-overview)
-- [Template-orchestration](#template-orchestration)
 
 # Orchestration overview
 
