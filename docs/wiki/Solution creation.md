@@ -337,7 +337,7 @@ The example assumes you are using a [`bicepconfig.json`](https://docs.microsoft.
 
 # Pipeline-orchestration
 
-The modules provided by this repo can be orchestrated to create more complex infrastructures and as such reusable solutions or products.
+The modules provided by this repo can be orchestrated to create more complex infrastructures and as such reusable solutions or products. This approach leverages the main 'ResourceModules' repository alongside its contained modules & pipeline templates to deploy resources. Each pipeline job deploys one instance of a resources and their order is controlled by specifying dependencies in the pipeline itself. 
 
 ## ***Sample solution for multi-repository approach***
 
