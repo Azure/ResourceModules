@@ -57,7 +57,7 @@ From left to right there are the three phases introduced before, _Develop module
 1. The **Publish modules** phase is shown in the center box of the diagram. If all tests for a module succeed, the module is published to a given target location. Currently, the target locations supported by the CARML CI environment are:
    - _[Template specs](https://docs.microsoft.com/en-us/azure/azure-resource-manager/templates/template-specs?tabs=azure-powershell)_
    - _[Private Bicep registry](https://docs.microsoft.com/en-gb/azure/azure-resource-manager/bicep/private-module-registry)_
-   - _[Azure DevOps universal packages](https://docs.microsoft.com/en-us/azure/devops/artifacts/concepts/feeds?view=azure-devops)_.
+   - _[Azure DevOps Universal Packages](https://docs.microsoft.com/en-us/azure/devops/artifacts/concepts/feeds?view=azure-devops)_.
      > Note: this is only available if using Azure DevOps pipelines.
 
 1. The third phase **Consume modules** is represented on the right. The top right corner provides examples of orchestrations deploying the target solutions by referencing the published modules. The deployments performed in this third phase are supposed to occur to an integration/production environment. This phase references the validated and published modules coming out of the CARML CI environment and leverages them with the correctly configured parameters to orchestrate their deployment in the intended order.
