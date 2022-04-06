@@ -10,7 +10,7 @@ This section provides an overview of the design principles followed by the CARML
   - [Module pipeline inputs](#module-pipeline-inputs)
 - [Platform pipelines](#platform-pipelines)
   - [Dependencies pipeline](#dependencies-pipeline)
-    -[Dependencies pipeline inputs](#dependencies-pipeline-inputs)
+    - [Dependencies pipeline inputs](#dependencies-pipeline-inputs)
   - [ReadMe pipeline](#readme-pipeline)
   - [Wiki pipeline](#wiki-pipeline)
 
