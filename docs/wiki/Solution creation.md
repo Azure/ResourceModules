@@ -12,7 +12,7 @@ This section shows you how you can orchestrate a deployment using multiple resou
   - [Example with a Private Bicep Registry](#Example-with-a-Private-Bicep-Registry)
   - [Example with template-specs](#Example-with-template-specs)
 - [Pipeline orchestration](#Pipeline-orchestration)
-  - [Sample solution for multi-repository approach](#Sample-solution-for-multi-repository-approach)
+  - [[GitHub] Sample solution for multi-repository approach](#[GitHub]-Sample-solution-for-multi-repository-approach)
     - [Summary](#Summary)
     - [Repo structure](#repo-structure)
     - [YAML pipeline](#yaml-pipeline)
@@ -337,13 +337,13 @@ The example assumes you are using a [`bicepconfig.json`](https://docs.microsoft.
 
 # Pipeline-orchestration
 
-The modules provided by this repo can be orchestrated to create more complex infrastructures and as such reusable solutions or products. This approach leverages the main 'ResourceModules' repository alongside its contained modules & pipeline templates to deploy resources. Each pipeline job deploys one instance of a resources and their order is controlled by specifying dependencies in the pipeline itself. 
+The modules provided by this repo can be orchestrated to create more complex infrastructures and as such reusable solutions or products. This approach leverages the main 'ResourceModules' repository alongside its contained modules & pipeline templates to deploy resources. Each pipeline job deploys one instance of a resources and their order is controlled by specifying dependencies in the pipeline itself.
 
-## ***Sample solution for multi-repository approach***
+## ***[GitHub] Sample solution for multi-repository approach***
 
 ### Summary
 
-1. Below you can find an example which uses makes use of multiple repositories to orchestrat the deployment (also known as a _multi-repository_ approach)
+1. Below you can find an example which uses makes use of multiple repositories to orchestrate the deployment (also known as a _multi-repository_ approach) in GitHub
 1. It fetches the _public_ **Azure/ResourceModules** repo for consuming bicep modules and uses the parameter files present in the _private_ **Contoso/MultiRepoTest** repo for deploying infrastructure
 1. This example is creating a Resource group, an NSG and a VNet -
     1. Job: **Deploy multi-repo solution**
