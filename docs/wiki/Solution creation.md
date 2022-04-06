@@ -12,7 +12,7 @@ This section shows you how you can orchestrate a deployment using multiple resou
   - [Example with a Private Bicep Registry](#Example-with-a-Private-Bicep-Registry)
   - [Example with template-specs](#Example-with-template-specs)
 - [Pipeline orchestration](#Pipeline-orchestration)
-  - [[GitHub] Sample solution for multi-repository approach](#\[GitHub\]-Sample-solution-for-multi-repository-approach)
+  - [\[GitHub\] Sample solution for multi-repository approach](#[GitHub]-Sample-solution-for-multi-repository-approach)
     - [Summary](#Summary)
     - [Repo structure](#repo-structure)
     - [YAML pipeline](#yaml-pipeline)
