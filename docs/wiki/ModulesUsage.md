@@ -15,13 +15,6 @@ This section gives you an overview of how to use the bicep modules.
     - [**Remote:** Azure CLI](#remote-azure-cli)
 - [Orchestrate deployment](#orchestrate-deployment)
   - [Template-orchestration](#template-orchestration)
-  - [Pipeline-orchestration](#pipeline-orchestration)
-    - [Multi Repository approach](#multi-repository-approach)
-      - [Sample solution](#sample-solution)
-        - [Summary](#Summary)
-        - [Repo structure](#repo-structure)
-        - [YAML pipeline](#yaml-pipeline)
-        - [Notes](#notes)
 
 ---
 
@@ -144,7 +137,7 @@ param vNetAddressPrefixes array = [
   '10.0.0.0/16'
 ]
 
-@description('Optional. An Array of subnets to deploy to the Virtual Network.')
+@description('Optional. An Array of subnets to deploy to the Virual Network.')
 param subnets array = [
   {
     name: 'PrimarySubnet'
@@ -245,7 +238,7 @@ param vNetAddressPrefixes array = [
   '10.0.0.0/16'
 ]
 
-@description('Optional. An Array of subnets to deploy to the Virtual Network.')
+@description('Optional. An Array of subnets to deploy to the Virual Network.')
 param subnets array = [
   {
     name: 'PrimarySubnet'
