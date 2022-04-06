@@ -15,7 +15,6 @@ This section gives you an overview of how to use the bicep modules.
     - [**Remote:** Azure CLI](#remote-azure-cli)
 - [Orchestrate deployment](#orchestrate-deployment)
   - [Template-orchestration](#template-orchestration)
-
 ---
 
 # Deploy template
