@@ -4,41 +4,18 @@ This section provides a guideline on how to use the CARML CI environment pipelin
 
 ### _Navigation_
 
-- [General](#general)
-- [How to](#how-to)
-  - [Operate the module pipelines](#operate-the-module-pipelines)
-  - [Operate the dependency pipelines](#operate-the-dependency-pipeline)
+
+- [Operate the module pipelines](#operate-the-module-pipelines)
+  - [Add a new module pipeline](#add-a-new-module-pipeline)
+- [Operate the dependency pipelines](#operate-the-dependency-pipeline)
+  - [Add a new dependency](#add-a-new-dependency)
 - [DevOps-Tool-specific](#devops-tool-specific-guidance)
   - [GitHub workflows](#github-workflows)
   - [Azure DevOps pipelines](#azure-devops-pipelines)
 
 ---
 
-# General
-
-When working with the CARML CI environment pipelines it is important to understand first which pipelines serve which purpose, when they are triggered and how you can use them to test your modules.
-
-As described in the [Pipelines Design](./PipelinesDesign) section we offer the following pipelines:
-
-| Pipeline | Target | Trigger | Notes |
-| - | - | - | - |
-| [Module Pipelines](./PipelinesDesign#module-pipelines) | Module | Changes to [module\|workflow] files in branch [main\|master] or manual | Used to test & publish modules. This is the most common pipeline you will interact with when working on modules. |
-| [Dependencies pipeline](./PipelinesDesign#dependencies-pipeline) | All required dependency resources | Manual | Deploys resources we reference in the module tests. Should be run once before testing modules. |
-| [ReadMe pipeline](./PipelinesDesign#readme-pipeline) | `README.md` in `<root>` & `<root>/arm` | Changes to [template files] in branch [main\|master] | Keeps the target ReadMe files aligned with the modules in the repository.  |
-| [Wiki pipeline](./PipelinesDesign#wiki-pipeline) | Wiki | Changes in [docs/wiki] in branch [main\|master] | Keeps the Wiki-repository in sync with the wiki folder in the modules repository |
-
----
-
-# How to
-
-This section will give you instructions on how to use our interactive pipelines - independent of the DevOps tooling.
-
-- [Operate the module pipelines](#operate-the-module-pipelines)
-- [Operate the dependency pipelines](#operate-the-dependency-pipeline)
-
-## Operate the module pipelines
-
-If not executing tests locally, the module pipelines are your tool of choice to validate the templates current performance.
+# Operate the module pipelines
 
 To validate any updates you did to a module template you can perform the following steps:
 
@@ -46,26 +23,28 @@ To validate any updates you did to a module template you can perform the followi
 1. Push the local changes to the repository (using a branch that is not [main\|master]).
 1. On the DevOps platform, navigate to your pipelines and select the pipeline that was registered for the module you updated.
 1. Select the branch with your updated template.
-1. (Optionally) adjust the `removal` flag in case you don't want to apply the default behavior, and want to for example not delete the test-deployed resource to check it after deployment.
+1. (Optionally) disable the `Remove deployed module` input parameter in case you don't want to apply the default behavior, and want to skip the deletion of the test-deployed resource to check it after deployment.
+1. (Optionally) adjust the `Publish prerelease module` flag in case you want to publish a prerelease version of your updated module from your development branch.
 1.  Trigger the pipeline.
 
-Once the pipeline concluded, it will either be in a green (success) or red (failed) state, depending on how the module performed.
+Once the pipeline concludes, it will either be in a green (success) or red (failed) state, depending on how the module performed.
 
-If you open the pipeline's run, you should be able to investigate the logs and the execution. In case any of the [validation](./PipelinesDesign#Validate) steps failed, the pipeline should give you detailed information of any error. In some cases in which Pester tests failed, you may only see the failed test and need to `expand` the error message. How this looks like depends on the [DevOps platform](#devops-tool-specific-guidance) you use.
-
-## Operate the dependency pipeline
-
-The dependency pipeline must be triggered manually and deploys a set of resources we reference as part of our module tests (e.g. Virtual Networks, Log Analytics Workspace, Key Vaults).
-
-Triggering the pipeline is as easy as navigating to it in your corresponding DevOps tool and running the pipeline. No additional steps or input parameters are required.
-
-> **Note:** While operating the dependency pipeline is simple, make sure to set it up correctly as described in the [Getting Started - Dependency pipeline](./Getting%20started%20-%20Dependency%20pipeline) section.
-
-Depending on what you want to test in your module pipeline, you may want to include additional resources to your dependency pipeline. If so, make sure to include an additional parameter file for each service you require under `utilities/pipelines/dependencies`. Once done, you need to add the deployment to the pipeline itself making sure to deploy the new resources in the correct order. The implementation depends on the [DevOps tool](#devops-tool-specific-guidance) you're using.
+Pipeline logs are available for troubleshooting and provide detailed information in case of failures. If errors occur in the [Static validation](./The%20CI%20environment%20-%20Static%20validation) phase, you may only see the failed test and need to `expand` the error message. How this looks like depends on the [DevOps platform](#devops-tool-specific-guidance) you use.
 
 ## Add a new module pipeline
 
-To add a new module pipeline we recommend to create a copy of a currently existing module pipeline and adjust all module-specific properties. The registration of the pipeline depends on the [DevOps tool](#devops-tool-specific-guidance) you're using.
+To add a new module pipeline we recommend to create a copy of a currently existing module pipeline and adjust all module-specific properties. The registration of the pipeline depends on the [DevOps platform](#devops-tool-specific-guidance) you're using.
+# Operate the dependency pipeline
+
+The dependency pipeline must be triggered manually and deploys a set of resources we reference as part of our module tests (e.g. Virtual Networks, Log Analytics Workspace, Key Vaults).
+
+Triggering the pipeline is as easy as navigating to it in your corresponding DevOps tool and running the pipeline.
+
+> **Note:** While operating the dependency pipeline is simple, make sure to set it up correctly as described in the [Getting Started - Dependency pipeline](./Getting%20started%20-%20Dependency%20pipeline) section.
+
+## Add a new dependency
+
+Depending on what you want to test in your module pipeline, you may want to include additional resources to your dependency pipeline. If so, make sure to include an additional parameter file for each service you require under `utilities/pipelines/dependencies`. Once done, you need to add the deployment to the pipeline itself making sure to deploy the new resources in the correct order. The implementation depends on the [DevOps platform](#devops-tool-specific-guidance) you're using.
 
 ---
 
@@ -80,19 +59,21 @@ This section focuses on _GitHub_ Actions & Workflows.
 <details>
 <summary>GitHub workflows</summary>
 
-  ### Trigger a pipeline
+  ### Trigger a workflow
 
-  To trigger a pipeline in _GitHub_, first navigate to the 'Actions' tab in your repository.
+  To trigger a workflow in _GitHub_:
 
-  <img src="./media/ghActionsTab.png" alt="Actions tab" height="100">
+  1. Navigate to the 'Actions' tab in your repository.
 
-  then select the pipeline of your choice from the list on the left, followed by 'Run workflow' to the right. You can then select the branch of your choice and confirm the execution by clicking on the green 'Run workflow' button.
+     <img src="./media/ghActionsTab.png" alt="Actions tab" height="100">
 
-  <img src="./media/gHtriggerPipeline.png" alt="Run workflow" height="350">
+  1. Select the pipeline of your choice from the list on the left, followed by 'Run workflow' to the right. You can then select the branch of your choice and confirm the execution by clicking on the green 'Run workflow' button.
 
-  Depending on the pipeline you selected you may have additional input parameters you can provide aside from the branch. An outline can be found [here](./PipelinesDesign#module-pipeline-inputs).
+     <img src="./media/gHtriggerPipeline.png" alt="Run workflow" height="350">
 
-  ### Register a pipeline
+  >**Note**: Depending on the pipeline you selected you may have additional input parameters you can provide aside from the branch. An outline can be found in the [Module pipeline inputs](./The%20CI%20environment%20-%20Pipeline%20design#module#module-pipeline-inputs) section.
+
+  ### Register a workflow
 
   To register a workflow in _GitHub_ you have to create the workflow file (`.yml`) and store it inside the folder `.github/workflows`.
   > ***Note:*** Once merged to [main\|master], GitHub will automatically list the new workflow in the 'Actions' tab.
@@ -108,49 +89,53 @@ This section focuses on _Azure DevOps_ pipelines.
 
   ### Trigger a pipeline
 
-  To trigger a pipeline in _Azure DevOps_, first navigate to the 'Pipelines' section (blue rocket) and select the pipeline you want to trigger.
+  To trigger a pipeline in _Azure DevOps_:
 
-  <img src="./media/pipelineStart.png" alt="Pipeline start step 1" height="200">
+  1. Navigate to the 'Pipelines' section (blue rocket) and select the pipeline you want to trigger.
 
-  Once selected, click on the 'Run pipeline' button on the top right.
+     <img src="./media/pipelineStart.png" alt="Pipeline start step 1" height="200">
 
-  <img src="./media/pipelineStart2.png" alt="Pipeline start step 2" height="60">
+  1. Once selected, click on the 'Run pipeline' button on the top right.
 
-  Now you can trigger the pipeline by selecting the 'Run' button on the bottom right.
+     <img src="./media/pipelineStart2.png" alt="Pipeline start step 2" height="60">
 
-  <img src="./media/pipelineStart3.png" alt="Pipeline start step 3" height="400">
+  1. Now you can trigger the pipeline by selecting the 'Run' button on the bottom right.
 
-  Depending on the pipeline you selected you may have additional input parameters you can provide aside from the branch. An outline can be found [here](./PipelinesDesign#module-pipeline-inputs).
+     <img src="./media/pipelineStart3.png" alt="Pipeline start step 3" height="400">
+
+  >**Note**: Depending on the pipeline you selected you may have additional input parameters you can provide aside from the branch. An outline can be found in the [Module pipeline inputs](./The%20CI%20environment%20-%20Pipeline%20design#module#module-pipeline-inputs) section.
 
   ### Register a pipeline
 
-  To register a pipeline in _Azure DevOps_ you first have to create a workflow file (.yml) and upload it to a repository of your choice (e.g. in _Azure DevOps_ or _GitHub_).
+  To register a pipeline in _Azure DevOps_:
 
-  Then, navigate to the 'Pipelines' section (blue rocket) and select the 'New pipeline' button on the top right.
+  1. Create a workflow file (.yml) and upload it to a repository of your choice (e.g. in _Azure DevOps_ or _GitHub_).
 
-  <img src="./media/pipelineNew.png" alt="Register new pipeline step 1" height="200">
+  1. Navigate to the 'Pipelines' section (blue rocket) and select the 'New pipeline' button on the top right.
 
-  Next, select the repository-type you stored your template in. _Azure DevOps_ will then try to fetch all repositories you have access to.
+     <img src="./media/pipelineNew.png" alt="Register new pipeline step 1" height="200">
 
-  <img src="./media/pipelineNew2.png" alt="Register new pipeline step 2" height="300">
+  1. Next, select the repository-type you stored your template in. _Azure DevOps_ will then try to fetch all repositories you have access to.
 
-  Now we have to select the particular repository to get the pipeline file from.
+     <img src="./media/pipelineNew2.png" alt="Register new pipeline step 2" height="300">
 
-  <img src="./media/pipelineNew3.png" alt="Register new pipeline step 3" height="240">
+  1. Now we have to select the particular repository to get the pipeline file from.
 
-  Following, choose 'Existing Azure Pipelines YAML file' on the bottom of the list.
+     <img src="./media/pipelineNew3.png" alt="Register new pipeline step 3" height="240">
 
-  <img src="./media/pipelineNew4.png" alt="Register new pipeline step 4" height="430">
+  1. Following, choose 'Existing Azure Pipelines YAML file' on the bottom of the list.
 
-  The previous action will open a new blade that asks you for the branch you stored the pipeline file in (e.g. `master`) and then asks for the relative path (from root of the repository) of the pipeline file.
+     <img src="./media/pipelineNew4.png" alt="Register new pipeline step 4" height="430">
 
-  <img src="./media/pipelineNew5.png" alt="Register new pipeline step 5" height="240">
+  1. The previous action will open a new blade that asks you for the branch you stored the pipeline file in (e.g. `master`) and then asks for the relative path (from root of the repository) of the pipeline file.
 
-  Finally, _Azure DevOps_ should show you the pipeline file you created. The last thing you have to do is to either select 'Run' on the top right (which will save & run the pipeline), or click the little arrow next to it and just save the pipeline.
+     <img src="./media/pipelineNew5.png" alt="Register new pipeline step 5" height="240">
 
-  Once saved you can also re-name / move the pipeline in the same view. However, this only works once you saved the pipeline at least once.
+  1. Finally, _Azure DevOps_ should show you the pipeline file you created. The last thing you have to do is to either select 'Run' on the top right (which will save & run the pipeline), or click the little arrow next to it and just save the pipeline.
 
-  <img src="./media/pipelineNew6.png" alt="Register new pipeline step 6" height="180">
+  1. Once saved you can also re-name / move the pipeline in the same view. However, this only works once you saved the pipeline at least once.
+
+     <img src="./media/pipelineNew6.png" alt="Register new pipeline step 6" height="180">
 
 </details>
 

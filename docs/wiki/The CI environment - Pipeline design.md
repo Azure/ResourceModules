@@ -95,7 +95,7 @@ Each module pipeline comes with the following runtime parameters:
 
 - `'Branch' dropdown`: A dropdown to select the branch to run the pipeline from.
 - `'Remove deployed module' switch`: Can be enabled or disabled and controls whether the test-deployed resources are removed after testing. It is enabled by default.
-- `'Publish prerelease module' switch`: Can be enabled or disabled and allows you to publish a prerelease version for the corresponding module when running the pipeline from a branch different than [main|master]. It is disabled by default. For further information of how the input is processed refer to the [Publishing](./The%20CI%20environment%20-%20Publishing) dedicated page.
+- `'Publish prerelease module' switch`: Can be enabled or disabled and allows publishing a prerelease version for the corresponding module when running the pipeline from a branch different than [main|master]. It is disabled by default. For further information of how the input is processed refer to the [Publishing](./The%20CI%20environment%20-%20Publishing) dedicated page.
 
   <img src=".\media\CIEnvironment\modulePipelineInput.png" alt="Module Pipeline Input" height="300">
 
@@ -113,7 +113,7 @@ In addition to module pipelines, the repository includes several platform pipeli
 
 In order to successfully run module pipelines to validate and publish CARML modules to the target environment, certain Azure resources need to be deployed beforehand.
 
-For example a Virtual Machine needs an existing virtual network to be connected to and a key vault hosting its required local admin credentials to be referenced.
+For example any instance of the [Virtual Machine] module needs an existing virtual network to be connected to and a key vault hosting its required local admin credentials to be referenced.
 
 The dependencies pipeline covers this requirement and is intended to be run before executing module pipelines successfully.
 
@@ -133,7 +133,7 @@ The dependencies pipeline comes with the following runtime parameters:
 
 The repository includes two major ReadMe files that require to stay in sync with the provided modules.
 
-The first can be found in root (`README.md`) and the second in the modules folder (`arm/README.md`).
+The first can be found in the repository root (`README.md`) and the second in the modules folder (`arm/README.md`).
 
 The ReadMe pipeline is triggered each time changes are pushed to the `main` branch and only if a template in the `arm` folder is being altered.
 
