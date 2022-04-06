@@ -79,15 +79,15 @@ The mapping to the specific composite action is provided below:
 | Composite Action | Pipeline phase |
 | - | - |
 | **validateModulePester** | Static validation |
-| **validateModuleDeployment:** | Deployment validation |
-| **publishModule:** | Publishing |
+| **validateModuleDeployment** | Deployment validation |
+| **publishModule** | Publishing |
 
 In addition, workflows leverage the following composite actions:
 
 | Composite Action | Description |
 | - | - |
-| **getWorkflowInput:** | This action allows fetching workflow input values from the module's workflow file, even if the pipeline was not triggered via a `workflow_dispatch` action. Without it we would not be able to process the contained information and would need to duplicate the configuration as workflow variables. Such input values are for example the removal switch `removeDeployment`. |
-| **setEnvironmentVariables:** | This action parses the variables file `global.variables.yml` and sets the key-value pairs in the `variables` list as environment variables. |
+| **getWorkflowInput** | This action allows fetching workflow input values from the module's workflow file, even if the pipeline was not triggered via a `workflow_dispatch` action. Without it we would not be able to process the contained information and would need to duplicate the configuration as workflow variables. Such input values are for example the removal switch `removeDeployment`. |
+| **setEnvironmentVariables** | This action parses the variables file `global.variables.yml` and sets the key-value pairs in the `variables` list as environment variables. |
 
 Technical documentation for each composite action, such as required input and output variables, is included in each `action.yml` file located in path `.github/actions/templates`.
 
@@ -197,7 +197,7 @@ Please review the Parameter File Tokens [Design](./ParameterFileTokens) for more
 
 # Platform pipelines
 
-Outside of the previously described platform pipelines we implemented several additional pipelines to help us with some additional tasks.
+In addition to module pipelines, the repository includes several platform pipelines covering further tasks as described below.
 
 - [Dependencies pipeline](#dependencies-pipeline)
 - [ReadMe pipeline](#readme-pipeline)
@@ -205,37 +205,39 @@ Outside of the previously described platform pipelines we implemented several ad
 
 ## Dependencies pipeline
 
-In order to successfully deploy and test all ARM/Bicep modules in your desired environment some modules require certain Azure resources to be deployed beforehand.
+In order to successfully run module pipelines to validate and publish CARML modules to the target environment, certain Azure resources need to be deployed beforehand.
 
-For example a Virtual Machine needs an existing virtual network to be connected to and a key vault hosting its admin credentials to be refeneced.
+For example a Virtual Machine needs an existing virtual network to be connected to and a key vault hosting its required local admin credentials to be referenced.
 
-This platform pipeline should be prepared and executed as a prerequisite before running module pipelines successfully.
+The dependencies pipeline covers this requirement and is intended to be run before executing module pipelines successfully.
 
-**TODO move here content from getting started**
-
-You can find further details about this pipeline [here](./Getting%20started%20-%20Dependency%20pipeline).
+You can find further details about the dependencies pipeline in the  [Getting started - Dependency pipeline](./Getting%20started%20-%20Dependency%20pipeline) section.
 
 ### Dependencies pipeline inputs
 
 The dependencies pipeline comes with the following runtime parameters:
 
 - `'Branch' dropdown`: A dropdown to select the branch to run the pipeline from.
-- `'Enable SqlMI dependency deployment' switch`: Can be enabled or disabled and controls whether the dependencies for the [SqlMI] module are deployed during execution. It is disabled by default.
-- `'Enable deployment of a vhd stored in a blob container' switch`: Can be enabled or disabled and controls whether including the baking of a vhd and subsequent backup to a target storage blob container during the execution. This is a dependency for the [Compute Images] and [Compute Disks] modules. This task requires up to two hours completion and is disabled by default.
+- `'Enable SqlMI dependency deployment' switch`: Can be enabled or disabled and controls whether the dependencies for the [SQL managed instance] module are deployed during execution. It is disabled by default.
+- `'Enable deployment of a vhd stored in a blob container' switch`: Can be enabled or disabled and controls whether including the baking of a VHD and subsequent backup to a target storage blob container during the execution. This is a dependency for the [Compute Images] and [Compute Disks] modules. This task requires up to two hours completion and is disabled by default.
 
   <img src=".\media\CIEnvironment\dependencyPipelineInput.png" alt="Dependency Pipeline Input" height="300">
 
 ## ReadMe pipeline
 
-We have two major ReadMe files that we want to stay in sync with the modules in the repository. The first can be found in root (`README.md`) and the second in the modules folder (`arm/README.md`). The pipeline is triggered each time changes are pushed to the `main` branch and only if a template in the `arm` folder was altered.
+The repository includes two major ReadMe files that require to stay in sync with the provided modules.
 
-Once triggered it will crawl through the library and update the tables in each corresponding ReadMe, creating links to the pipelines, adding/removing entries and so on.
+The first can be found in root (`README.md`) and the second in the modules folder (`arm/README.md`).
+
+The ReadMe pipeline is triggered each time changes are pushed to the `main` branch and only if a template in the `arm` folder is being altered.
+
+Once triggered, the pipeline crawls through the library and updates the tables in each corresponding ReadMe file, creating links to the corresponding pipeline runs and updating the list of entries.
 
 ## Wiki pipeline
 
-The purpose of this pipeline is to sync any files from the `docs/wiki` folder to the GitHub wiki repository. It is triggered each time changes are pushed to the `main` branch and only if files in the `docs/wiki` folder were altered.
+The purpose of the Wiki pipeline is to sync any files from the `docs/wiki` folder to the GitHub wiki repository. It is triggered each time changes are pushed to the `main` branch and only if files in the `docs/wiki` folder are altered.
 
-> **Note:** any changes performed directly on the Wiki via the UI will be overwritten by this pipeline.
+> **Note:** Any changes performed directly on the Wiki via the UI will be overwritten by this pipeline.
 
 ---
 
