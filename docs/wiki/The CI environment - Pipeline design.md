@@ -5,33 +5,14 @@ This section provides an overview of the design principles followed by the CARML
 ### _Navigation_
 
 - [Module Pipelines](#module-pipelines)
-  - [Module pipeline inputs](#module-pipeline-inputs)
   - [Pipeline phases](#pipeline-phases)
-    - [Validate](#validate)
-    - [Test deploy](#test-deploy)
-      - [Removal](#removal)
-    - [Publish](#publish)
-  - [Shared concepts](#shared-concepts)
-    - [Prerequisites](#prerequisites)
-    - [Pipeline secrets](#pipeline-secrets)
-    - [Pipeline variables](#pipeline-variables)
-    - [Tokens Replacement](#tokens-replacement)
+    - [DevOps-Tool-specific design](#devops-tool-specific-design)
+  - [Module pipeline inputs](#module-pipeline-inputs)
 - [Platform pipelines](#platform-pipelines)
   - [Dependencies pipeline](#dependencies-pipeline)
+    -[Dependenciespipeline inputs](#dependencies-pipeline-inputs)
   - [ReadMe pipeline](#readme-pipeline)
   - [Wiki pipeline](#wiki-pipeline)
-- [DevOps-Tool-specific considerations](#devops-tool-specific-considerations)
-  - [GitHub Workflows](#github-workflows)
-    - [Component: GitHub secret](#github-component-github-secrets)
-    - [Component: Variable file](#github-component-variable-file)
-    - [Component: Composite actions](#github-component-composite-actions)
-    - [Component: Workflows](#github-component-workflows)
-  - [Azure DevOps Pipelines](#azure-devops-pipelines)
-    - [Component: Service connection](#azure-devops-component-service-connection)
-    - [Component: Variable group](#azure-devops-component-variable-group)
-    - [Component: Variable file](#azure-devops-component-variable-file)
-    - [Component: Pipeline templates](#azure-devops-component-pipeline-templates)
-    - [Component: Pipelines](#azure-devops-component-pipelines)
 
 ---
 
@@ -42,7 +23,7 @@ The repository hosts one pipeline for each module in the CARML library.
 The purpose of each module pipeline is twofold:
 
 1. **Validation**: To ensure the modules hosted by the CARML library are valid and can perform the intended deployments.
-1. **Publishing**: To publish _versioned_ modules to one or multiple target locations, from where they can be referenced by solutions consuming them.
+1. **Publishing**: To publish _versioned_ and already validated modules to one or multiple target locations, from where they can be referenced by solutions consuming them.
 
 As such each pipeline can be mapped to `Phases 1 and 2` described in the [Deployment flow](./The%20context%20-%20CARML%20CI%20environment#deployment-flow) section.
 
@@ -57,9 +38,8 @@ The following paragraphs provide an overview of the different phases and shared 
 
 This paragraph provides an overview of the three phases executed by each module pipeline. Further details about the implementation and design of each phase are provided in the dedicated pages linked below.
 
-1. **Static Validation**:
-   - _Static code validation_ Running a set of static Pester tests against the template.
-   - _API version validation_ Validating the template by invoking Azure's validation API.
+1. **Static Validation**: Executes a set of static Pester tests against the module template, to ensure they comply with the intended module design principles.
+
 1. **Deployment Validation**: we deploy each module by using a predefined set of parameters to a 'sandbox' subscription in Azure to see if it's really working
    1. **Removal**: The test suite is cleaned up by removing all deployed test resources again
 1. **Publishing**: the proven results are published to a configured location such as template specs, the bicep registry, Azure DevOps artifacts.
