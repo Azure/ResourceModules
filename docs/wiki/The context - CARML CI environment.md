@@ -32,7 +32,7 @@ Applying software development lifecycle concepts like _publishing build artifact
 
 In case a breaking change is introduced and an updated version is published, no deployments are affected because they still reference the previously published version. Instead, they must make the deliberate decision to upgrade the module to reference newer versions.
 
-Also, if you reference a module version that was tested in and has passed through the CI environment , you can trust that it complies the qualitative and functional standards.
+Also, if you reference a module version that was tested in and has passed through the CI environment, you can trust that it complies the qualitative and functional standards.
 
 # Where does the CARML CI environment fit in?
 
