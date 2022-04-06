@@ -20,7 +20,7 @@ When it comes to Infrastructure as Code (IaC) deployments, the flow generally co
 
 1. In the **Develop modules** phase modules are first implemented/updated and then validated using one or multiple test-parameter files, testing their successful deployment against a sandbox subscription to prove their correctness.
 
-1. The next phase, **Publish modules**, publishes the tested and approved modules to a target location for them to be later consumed. The target location should support versioning to allow referencing a specific module version and to avoid breaking changes when referencing them.
+1. The next phase, **Publish modules**, publishes the tested and approved modules to a target location for them to be consumed later. The target location should support versioning to allow referencing a specific module version and to avoid breaking changes when referencing them.
 
 1. In the final **Consume modules** phase published modules are referenced and combined to deploy more complex architectures such as services or workloads.
 
