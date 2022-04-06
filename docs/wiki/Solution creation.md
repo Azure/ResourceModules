@@ -302,3 +302,105 @@ The example assumes you are using a [`bicepconfig.json`](https://docs.microsoft.
     }
 }
 ```
+
+# Pipeline-orchestration
+
+The modules provided by this repo can be orchestrated to create more complex infrastructures and as such reusable solutions or products.
+
+## ***Sample solution for multi-repository approach***
+
+### Summary
+
+1. Below you can find an example which uses makes use of multiple repositories to orchestrat the deployment (also known as a _multi-repository_ approach)
+1. It fetches the _public_ **Azure/ResourceModules** repo for consuming bicep modules and uses the parameter files present in the _private_ **Contoso/MultiRepoTest** repo for deploying infrastructure
+1. This example is creating a Resource group, an NSG and a VNet -
+    1. Job: **Deploy multi-repo solution**
+        1. Checkout 'Azure/ResourceModules' repo at root of the agent
+        1. Set environment variables for the agent
+        1. Checkout 'contoso/MultiRepoTest' repo containing the parameter files in a nested folder - "MultiRepoTestParentFolder"
+        1. Deploy resource group in target Azure subscription
+        1. Deploy network security group
+        1. Deploy virtual network A
+
+### Repo structure
+
+![RepoStructure](/docs/media/MultiRepoTestFolderStructure.png)
+
+### YAML pipeline
+
+``` YAML
+name: 'Multi-Repo solution deployment'
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'network-hub-rg/Parameters/**'
+      - '.github/workflows/network-hub.yml'
+
+env:
+  AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
+  removeDeployment: false
+
+jobs:
+  job_deploy_multi_repo_solution:
+    runs-on: ubuntu-20.04
+    name: 'Deploy multi-repo solution'
+    steps:
+      - name: 'Checkout ResourceModules repo at the root location'
+        uses: actions/checkout@v2
+        with:
+          repository: 'Azure/ResourceModules'
+          fetch-depth: 0
+
+      - name: 'Set environment variables'
+        uses: deep-mm/set-variables@v1.0
+        with:
+          variableFileName: 'global.variables'
+
+      - name: 'Checkout MultiRepoTest repo in a nested MultiRepoTestParentFolder'
+        uses: actions/checkout@v2
+        with:
+          repository: 'contoso/MultiRepoTest'
+          fetch-depth: 0
+          path: 'MultiRepoTestParentFolder'
+
+      - name: 'Deploy resource group'
+        uses: ./.github/actions/templates/validateModuleDeployment
+        with:
+          templateFilePath: './arm/Microsoft.Resources/resourceGroups/deploy.bicep'
+          parameterFilePath: './MultiRepoTestParentFolder/network-hub-rg/Parameters/ResourceGroup/parameters.json'
+          location: '${{ env.defaultLocation }}'
+          resourceGroupName: '${{ env.resourceGroupName }}'
+          subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
+          managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
+          removeDeployment: $(removeDeployment)
+
+      - name: 'Deploy network security group'
+        uses: ./.github/actions/templates/validateModuleDeployment
+        with:
+          templateFilePath: './arm/Microsoft.Network/networkSecurityGroups/deploy.bicep'
+          parameterFilePath: './MultiRepoTestParentFolder/network-hub-rg/Parameters/NetworkSecurityGroups/parameters.json'
+          location: '${{ env.defaultLocation }}'
+          resourceGroupName: '${{ env.resourceGroupName }}'
+          subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
+          managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
+          removeDeployment: $(removeDeployment)
+
+      - name: 'Deploy virtual network A'
+        uses: ./.github/actions/templates/validateModuleDeployment
+        with:
+          templateFilePath: './arm/Microsoft.Network/virtualNetworks/deploy.bicep'
+          parameterFilePath: './MultiRepoTestParentFolder/network-hub-rg/Parameters/VirtualNetwork/vnet-A.parameters.json'
+          location: '${{ env.defaultLocation }}'
+          resourceGroupName: '${{ env.resourceGroupName }}'
+          subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
+          managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
+          removeDeployment: $(removeDeployment)
+```
+
+### Notes
+
+> 1. 'Azure/ResourceModules' repo has been checked out at the root location intentionally because the `deep-mm/set-variables@v1.0` task expects the _global.variables.json_ file in the _.github/variables/_ location. The GitHub Actions also expect the underlying utility scripts at a specific location
+> 1. 'contoso/MultiRepoTest' repo has been checked out in a nested folder called as "MultiRepoTestParentFolder" to distinguish it from the folders from the other repo in the agent but can be downloaded at the root location too if desired
