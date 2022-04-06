@@ -52,7 +52,7 @@ From left to right there are the three phases introduced before, _Develop module
 1. Starting with **Develop modules**, the top left box shows the test pipelines we have for each module, executing the following:
    - _Static validation_: Pester tests are run against each module to ensure a baseline code quality across the library.
    - _Deployment validation_: An actual Azure deployment is run against a validation/sandbox subscription, shown in the bottom left corner. The subscription is intended to be without any link to production. Resources deployed here should be considered temporary and be removed after testing.
-   - _Publishing_: Runs only if the previous steps are successful and triggers the second phase as described below.
+   - _Publishing_: Runs only if the previous steps are successful and initiates the second phase as described below.
 
 1. The **Publish modules** phase is shown in the center box of the diagram. If all tests for a module succeed, the module is published to a given target location. Currently, the target locations supported by the CARML CI environment are:
    -  _[Template specs](https://docs.microsoft.com/en-us/azure/azure-resource-manager/templates/template-specs?tabs=azure-powershell)_
