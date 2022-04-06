@@ -41,7 +41,7 @@ As such, the CARML CI environment covers `Phase #1`, i.e. the validation, & `Pha
 
 <img src="media\Context\Deployment_flow_users.png" alt="Deployment flow" height="400">
 
-The below diagram provides a drill down of how the different phases are interconnected.
+The below diagram provides a drill down of how the different phases are interconnected:
 
 <img src="media\Context\Deployment_flow_detail_white.png" alt="Complete deployment flow" height="500">
 
