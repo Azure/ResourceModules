@@ -16,7 +16,7 @@
     "editor.tabSize": 2
   },
   "editor.formatOnPaste": true,
-  "editor.formatOnSave": false,
+  "editor.formatOnSave": true,
   "editor.insertSpaces": true,
   "files.insertFinalNewline": true,
   "files.trimTrailingWhitespace": true,
