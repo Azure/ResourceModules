@@ -315,7 +315,7 @@ The example assumes you are using a [`bicepconfig.json`](https://docs.microsoft.
 }
 ```
 
-## Solution deployment
+## Pipeline-orchestration
 
 The modules provided by this repo can be orchestrated to create more complex infrastructures and as such reusable solutions or products.
 
