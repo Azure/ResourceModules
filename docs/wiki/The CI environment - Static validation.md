@@ -15,7 +15,7 @@ All Module Unit tests are performed with the help of [Pester](https://github.com
 The following activities are run executing the `arm/.global/global.module.tests.ps1` script.
 
 - **File & folder tests** validate that the module folder structure is set up in the intended way. e.g.:
-  - reame.md must exists
+  - readme.md file exists
   - template file (either deploy.json or deploy.bicep) exists
   - compliance with file naming convention
 - **Deployment template tests** check the template's structure and elements for errors as well as consistency matters. e.g.
@@ -27,7 +27,7 @@ The following activities are run executing the `arm/.global/global.module.tests.
   - contains all the mandatory sections
   - describes all the parameters
 - **Parameter Files**. e.g.:
-  - at least one `*parameters.json` should exist
+  - at least one `*parameters.json` exists
   - files should be valid JSON
 
 ## Output example

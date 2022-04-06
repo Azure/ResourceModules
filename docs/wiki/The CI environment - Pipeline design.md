@@ -37,11 +37,79 @@ This section provides an overview of the design principles followed by the CARML
 
 # Module Pipelines
 
-This section provides an overview of the different phases and shared logic the module pipelines use.
+The repository hosts one pipeline for each module in the CARML library.
 
-- [Module pipeline inputs](#module-pipeline-inputs)
+The purpose of each module pipeline is twofold:
+
+1. **Validation**: To ensure the modules hosted by the CARML library are valid and can perform the intended deployments.
+1. **Publishing**: To publish _versioned_ modules to one or multiple target locations, from where they can be referenced by solutions consuming them.
+
+As such each pipeline can be mapped to `Phases 1 and 2` described in the [Deployment flow](./The%20context%20-%20CARML%20CI%20environment#deployment-flow) section.
+
+<img src=".\media\CIEnvironment\pipelineDesign.png" alt="Pipeline phases" height="500">
+
+The following paragraphs provide an overview of the different phases and shared logic the module pipelines use.
+
 - [Pipeline phases](#pipeline-phases)
-- [Shared concepts](#shared-concepts)
+- [Module pipeline inputs](#module-pipeline-inputs)
+
+## Pipeline phases
+
+This paragraph provides an overview of the three phases executed by each module pipeline. Further details about the implementation and design of each phase are provided in the dedicated pages linked below.
+
+1. **Static Validation**:
+   - _Static code validation_ Running a set of static Pester tests against the template.
+   - _API version validation_ Validating the template by invoking Azure's validation API.
+1. **Deployment Validation**: we deploy each module by using a predefined set of parameters to a 'sandbox' subscription in Azure to see if it's really working
+   1. **Removal**: The test suite is cleaned up by removing all deployed test resources again
+1. **Publishing**: the proven results are published to a configured location such as template specs, the bicep registry, Azure DevOps artifacts.
+
+   <img src=".\media\CIEnvironment\pipelineDesignPhases.png" alt="Pipeline phases" height="200">
+
+### DevOps-Tool-specific design
+
+<details>
+<summary>GitHub</summary>
+
+<img src=".\media\CIEnvironment\pipelinePhasesGH.png" alt="Pipeline phases GH" height="150">
+
+GitHub workflows map each pipeline phase to a dedicated composite action, to maximize code reusability.
+The mapping to the specific composite action is provided below:
+
+| Composite Action | Pipeline phase |
+| - | - |
+| **validateModulePester** | Static validation |
+| **validateModuleDeployment:** | Deployment validation |
+| **publishModule:** | Publishing |
+
+In addition, workflows leverage the following composite actions:
+
+| Composite Action | Description |
+| - | - |
+| **getWorkflowInput:** | This action allows fetching workflow input values from the module's workflow file, even if the pipeline was not triggered via a `workflow_dispatch` action. Without it we would not be able to process the contained information and would need to duplicate the configuration as workflow variables. Such input values are for example the removal switch `removeDeployment`. |
+| **setEnvironmentVariables:** | This action parses the variables file `global.variables.yml` and sets the key-value pairs in the `variables` list as environment variables. |
+
+Technical documentation for each composite action, such as required input and output variables, is included in each `action.yml` file located in path `.github/actions/templates`.
+
+</details>
+
+<details>
+<summary>Azure DevOps</summary>
+
+<img src=".\media\CIEnvironment\pipelinePhasesADO.png" alt="Pipeline phases ADO" height="300">
+
+Azure DevOps pipelines map each pipeline phase to a dedicated pipeline template, to maximize code reusability.
+The mapping to the specific yaml template file is provided below:
+
+| Template Name | Pipeline phase |
+| - | - |
+| **jobs.validateModulePester.yml** | Static validation |
+| **jobs.validateModuleDeployment.yml** | Deployment validation |
+| **jobs.publishModule.yml** | Publishing |
+
+Technical documentation for each template, such as required input and output variables, is included in each `.yml` file located in path `.azuredevops/pipelineTemplates`.
+
+</details>
 
 ## Module pipeline inputs
 
@@ -49,43 +117,27 @@ Each module pipeline comes with the following runtime parameters:
 
 - `'Branch' dropdown`: A dropdown to select the branch to run the pipeline from.
 - `'Remove deployed module' switch`: Can be enabled or disabled and controls whether the test-deployed resources are removed after testing. It is enabled by default.
-- `'Publish prerelease module' switch`: Can be enabled or disabled and allows you to publish a prerelease module when running the pipeline from a branch different than [main|master]. It is disabled by default. For further information of how the input is processed refer to the [Publishing](./The%20CI%20environment%20-%20Publishing) dedicated section.
+- `'Publish prerelease module' switch`: Can be enabled or disabled and allows you to publish a prerelease version for the corresponding module when running the pipeline from a branch different than [main|master]. It is disabled by default. For further information of how the input is processed refer to the [Publishing](./The%20CI%20environment%20-%20Publishing) dedicated page.
 
-## Pipeline phases
+  <img src=".\media\CIEnvironment\modulePipelineInput.png" alt="Module Pipeline Input" height="300">
 
-To "build"/"bake" the modules, a dedicated pipeline is used for each module to validate their production readiness, by:
-
-1. **Static Validation**:
-   1. Running a set of static Pester tests against the template
-   1. Validating the template by invoking Azure's validation API (Test-AzResourceGroupDeployment - or the same for other scopes)
-1. **Deployment Validation**: we deploy each module by using a predefined set of parameters to a 'sandbox' subscription in Azure to see if it's really working
-   1. **Removal**: The test suite is cleaned up by removing all deployed test resources again
-1. **Publishing**: the proven results are copied/published to a configured location such as template specs, the bicep registry, Azure DevOps artifacts, etc.
-
-<img src=".\media\CIEnvironment\pipelineDesign.png" alt="Pipeline phases" height="500">
-
-Using this flow, validated modules can be consumed by other any consumer / template / orchestration to deploy a service, workload, or entire environment such as a landing zone.
-
-These 'ad-hoc' test pipelines are important since every customer environment might be different due to applied Azure Policies or security policies, modules might behave differently or naming conventions need to be tested and applied beforehand.
-
-
-## Shared concepts
+<!-- ## Shared concepts
 
 There are several concepts that are shared among the phases. Most notably
 
 - [Prerequisites](#prerequisites)
 - [Pipeline secrets](#pipeline-serets)
 - [Pipeline variables](#pipeline-variables)
-- [Tokens Replacement](#tokens-replacement)
+- [Tokens Replacement](#tokens-replacement) -->
 
-### Prerequisites
+<!-- ### Prerequisites
 
 For both the [simulated deployment validation](#simulated-deployment-validation) as well as the [test deployment](#test-deployment) we should account for the following prerequisites:
 
 - A _"Sandbox"_ or _"Engineering"_ **validation subscription** (in Azure) has to be used to test if the modules (or other components) are deployable. This subscription must not have connectivity to any on-premises or other Azure networks.
-- An Azure Active Directory [service principal](https://docs.microsoft.com/en-us/azure/active-directory/develop/app-objects-and-service-principals#service-principal-object) (AAD SPN) to authenticate to the validation subscription and run the test deployments of the modules.
+- An Azure Active Directory [service principal](https://docs.microsoft.com/en-us/azure/active-directory/develop/app-objects-and-service-principals#service-principal-object) (AAD SPN) to authenticate to the validation subscription and run the test deployments of the modules. -->
 
-### Pipeline secrets
+<!-- ### Pipeline secrets
 
 To use the platform pipelines you need several secrets set up in your DevOps platform. Contrary to the pipeline variables we describe in the [subsequent section](#pipeline-variables) these following variables are considered sensitive.
 
@@ -96,9 +148,11 @@ To use the platform pipelines you need several secrets set up in your DevOps pla
 | `ARM_TENANT_ID` | `9734cec9-4384-445b-bbb6-767e7be6e5ec` | The tenant ID of the tenant to test deploy modules of that level in. |
 | `DEPLOYMENT_SP_ID` | `de33a0e7-64d9-4a94-8fe9-b018cedf1e05` | This is the Principal (Object ID) for the Service Principal used as the Azure service connection. It is used for Default Role Assignments when Modules are being deployed into Azure |
 
-The location where to set these secrets up depends on the DevOps platform you use. Also, there may be additional platform-specific secrets to set up. For further information please refer to [this section](#devops-tool-specific-considerations).
+The location where to set these secrets up depends on the DevOps platform you use. Also, there may be additional platform-specific secrets to set up. For further information please refer to [this section](#devops-tool-specific-considerations). -->
 
-### Pipeline variables
+### Check pipeline variables covered by setup env
+
+<!-- ### Pipeline variables
 
 The primary pipeline variable file hosts the fundamental pipeline configuration and is stored in a different location, based on the [DevOps platform](#devops-tool-specific-considerations). In here you will find and can configure information such as:
 
@@ -125,9 +179,11 @@ The primary pipeline variable file hosts the fundamental pipeline configuration 
 | `bicepRegistryName` | "adpsxxazacrx001" | The container registry to publish bicep templates to |
 | `bicepRegistryRGName` | "artifacts-rg" | The resource group of the container registry to publish bicep templates to. Is used to create a new container registry if not yet existing |
 | `bicepRegistryRGName` | "artifacts-rg" | The location of the resource group of the container registry to publish bicep templates to. Is used to create a new resource group if not yet existing |
-| `bicepRegistryDoPublish` | "true" | A central switch to enable/disable publishing to the private bicep registry |
+| `bicepRegistryDoPublish` | "true" | A central switch to enable/disable publishing to the private bicep registry | -->
 
-### Tokens Replacement
+### Check all token replacement covered by the dedicated page
+
+<!-- ### Tokens Replacement
 
 The validation or deploy actions/templates includes a step that replaces certain strings in a parameter file with values that are provided from the module workflow. This helps achieve the following:
 
@@ -135,7 +191,7 @@ Dynamic parameters that do not need to be hardcoded in the parameter file, and t
 
 For example, some modules require referencing Azure resources with the Resource ID. This ID typically contains the `subscriptionId` in the format of `/subscriptions/<<subscriptionId>>/...`. This task substitutes the `<<subscriptionId>>` with the correct value, based on the different token types.
 
-Please review the Parameter File Tokens [Design](./ParameterFileTokens) for more details on the different token types and how you can use them to remove hardcoded values from your parameter files.
+Please review the Parameter File Tokens [Design](./ParameterFileTokens) for more details on the different token types and how you can use them to remove hardcoded values from your parameter files. -->
 
 ---
 
@@ -149,14 +205,25 @@ Outside of the previously described platform pipelines we implemented several ad
 
 ## Dependencies pipeline
 
-As the modules we test often times have dependencies to other services, we created a pipeline to deploys several standard services like VirtualNetworks and KeyVaults (alongside dummy secrets) for the modules to use. This _dependency_ pipeline should be prepared and executed before you start running any pipelines on your own. In case you need to rename any services there (for example because a certain globally unique resource name was already taken) make sure to update any references to this name in the module parameter files. You can find further details about this pipeline [here](./TestingDesign#Module-Dependencies).
+In order to successfully deploy and test all ARM/Bicep modules in your desired environment some modules require certain Azure resources to be deployed beforehand.
+
+For example a Virtual Machine needs an existing virtual network to be connected to and a key vault hosting its admin credentials to be refeneced.
+
+This platform pipeline should be prepared and executed as a prerequisite before running module pipelines successfully.
+
+**TODO move here content from getting started**
+
+You can find further details about this pipeline [here](./Getting%20started%20-%20Dependency%20pipeline).
 
 ### Dependencies pipeline inputs
 
-Note that the pipeline comes with 2 runtime parameters you can provide when you trigger it:
+The dependencies pipeline comes with the following runtime parameters:
 
-- `'Branch' dropdown`: A dropdown to select the branch to run the pipeline from
-- `'Enable SQL MI dependency deployment' switch`: Can be set to 'true' or 'false' and controls whether the dependencies for the SQL-MI are deployed during execution or not
+- `'Branch' dropdown`: A dropdown to select the branch to run the pipeline from.
+- `'Enable SqlMI dependency deployment' switch`: Can be enabled or disabled and controls whether the dependencies for the [SqlMI] module are deployed during execution. It is disabled by default.
+- `'Enable deployment of a vhd stored in a blob container' switch`: Can be enabled or disabled and controls whether including the baking of a vhd and subsequent backup to a target storage blob container during the execution. This is a dependency for the [Compute Images] and [Compute Disks] modules. This task requires up to two hours completion and is disabled by default.
+
+  <img src=".\media\CIEnvironment\dependencyPipelineInput.png" alt="Dependency Pipeline Input" height="300">
 
 ## ReadMe pipeline
 
@@ -172,7 +239,9 @@ The purpose of this pipeline is to sync any files from the `docs/wiki` folder to
 
 ---
 
-# DevOps-Tool-specific considerations
+# check DevOps-Tool-specific considerations already covered
+
+<!-- # DevOps-Tool-specific considerations
 
 Depending on what DevOps tool you want to use to host the platform you will find the corresponding code in different locations. This section will give you an overview of these locations and what they are used for.
 
@@ -367,4 +436,4 @@ While they look very similar they have specific areas in which they differ:
 
 #### Azure DevOps Artifacts
 
-For _Azure DevOps_ we offer also the option to publish to _Azure DevOps_ universal packages. As the code is already available in the pipeline's publish template (`.azuredevops/pipelineTemplates/jobs.publishModule.yml`) you only have to specify the required information in the shared global variables file (`global.variables.yml`) to enable the feature. For detailed information please refer to the variable file's `Publish: Universal packages settings` section.
+For _Azure DevOps_ we offer also the option to publish to _Azure DevOps_ universal packages. As the code is already available in the pipeline's publish template (`.azuredevops/pipelineTemplates/jobs.publishModule.yml`) you only have to specify the required information in the shared global variables file (`global.variables.yml`) to enable the feature. For detailed information please refer to the variable file's `Publish: Universal packages settings` section. -->

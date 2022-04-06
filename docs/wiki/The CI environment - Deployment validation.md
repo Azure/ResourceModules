@@ -34,6 +34,9 @@ The parameter files used in this stage should ideally cover as many scenarios as
 
 Note that, for the deployments we have to account for certain [prerequisites](#prerequisites) and also consider the [tokens replacement](#tokens-replacement) logic we leverage on this platform.
 
+**importance of running in sandbox subscription**
+> **Note**: Since every customer environment might be different due to applied Azure Policies or security policies, modules might behave differently or naming conventions need to be tested and applied beforehand.
+
 #### Removal
 
 The removal phase takes care of removing all resources deployed as part of the previous deployment phase. The reason is twofold: keeping validation subscriptions costs down and allow deployments from scratch at every run.
