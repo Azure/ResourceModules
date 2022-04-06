@@ -1,6 +1,6 @@
 This section provides an overview of the principles the deployment validation is built upon, how it is set up, and how you can interact with it.
 
-- [Deployment validation phases](#deployment-validation-phases)
+- [Deployment validation steps](#deployment-validation-steps)
     - [Template validation](#template-validation)
     - [Azure deployment validation](#azure-deployment-validation)
         - [Output example]
@@ -9,39 +9,31 @@ This section provides an overview of the principles the deployment validation is
         - [Create a specialized removal procedure](#create-a-specialized-removal-procedure)
 - [Verify the deployment validation of your module locally](#verify-the-deployment-validation-of-your-module-locally)
 
-
-# Deployment validation phases
-
 <img src=".\media\CIEnvironment\deploymentValidationStep.png" alt="Deployment Validation Step" height="500">
+
+# Deployment validation steps
+
+The deployment validation phase can in turn be divided into three steps, running in sequence:
+
+- Template validation: Tests the module template is valid before the actual deployment.
+- Azure deployment validation: Performs the actual Azure deployments.
+- Resource removal: Deletes deployed resources.
 
 # Template validation
 
-The template validation tests execute a dry-run with each parameter file provided & configured for a module. For example, if you have two parameter files for a module, one with the minimum set of parameters, one with the maximum, the tests will run an `Test-AzDeployment` (_- the command may vary based on the template schema_) with each of the two parameter files to see if the template would be able to be deployed with them. This test could fail either because the template is invalid, or because any of the parameter files is configured incorrectly.
+The template validation step executes a dry-run with each parameter file provided & configured for a module.
 
-This test executes validation tests such as `Test-AzResourceGroupDeployment` using both the module's template, as well as each specified parameter file. The intention of this test is to fail fast, before we even get to the later deployment test.
+In particular, the step executes a `Test-AzDeployment` cmdlet (_- the command may vary based on the template schema_) with each provided module parameter file to verify if the template would be able to be deployed using them.
 
-However, even for such a simulated deployment we have to account for certain [prerequisites](#prerequisites) and also consider the [tokens replacement](#tokens-replacement) logic we leverage on this platform.
+The intention of this test is to **fail fast**, before getting to the later deployment step. The template validation could fail either because the template is invalid, or because any of the parameter files is configured incorrectly.
 
 # Azure deployment validation
 
-If all other tests passed, the deployment tests are the ultimate module validation. Using the available & configured parameter files for a module, each is deployed to Azure (in parallel) and verifies if the deployment works end-to-end.
+This step performs the actual Azure deployments using each available & configured module parameter file. The purpose of this step is to prove the module can be deployed in different configurations based on the different input provided. Deployments for the different variants happen in parallel.
 
-Most of the resources are deleted by default after their deployment, to keep costs down and to be able to retest resource modules from scratch in the next run. However, the removal step can be skipped in case further investigation on the deployed resource is needed. For further details, please refer to the (./PipelinesUsage) section.
+The parameter files used in this stage should ideally cover as many configurations as possible to validate the template flexibility, i.e. to verify that the module can cover multiple scenarios in which the same Azure resource may be used. Using the example of a CosmosDB module we may want to have one parameter file for the minimum amount of required parameters, one parameter file for each CosmosDB type to test individual configurations and at least one parameter file testing the supported extension resources such as RBAC & diagnostic settings.
 
-This happens using the `utilities/pipelines/resourceDeployment/Test-TemplateWithParameterFile.ps1` script.
-
-> **Note**<br>
-Currently the list of the parameter file used to test the module is hardcoded in the module specific workflow, as the **parameterFilePaths** in the _job_deploy_module_ and _job_tests_module_deploy_validate_ jobs.
-
-The deployment phase uses a combination of both the module's template file as well as each specified parameter file to run a parallel deployment towards a given Azure environment.
-
-The parameter files used in this stage should ideally cover as many scenarios as possible to ensure we can use the template for all use cases we may have when deploying to production eventually. Using the example of a CosmosDB module we may want to have one parameter file for the minimum amount of required parameters, one parameter file for each CosmosDB type to test individual configurations and at least one parameter file that tests the supported providers such as RBAC & diagnostic settings.
-
-Note that, for the deployments we have to account for certain [prerequisites](#prerequisites) and also consider the [tokens replacement](#tokens-replacement) logic we leverage on this platform.
-
-
-**importance of running in sandbox subscription**
-> **Note**: Since every customer environment might be different due to applied Azure Policies or security policies, modules might behave differently or naming conventions need to be tested and applied beforehand.
+> **Note**: Since every customer environment might be different due to applied Azure Policies or security policies, modules might behave differently and naming conventions need to be verified beforehand.
 
 ### Output example
 
@@ -51,9 +43,12 @@ Note that, for the deployments we have to account for certain [prerequisites](#p
 
 This paragraph describes how the removal of resources deployed by a module is performed and how to modify the default behavior if a specific module or resource type needs it.
 
-The removal phase is triggered after the deployment completes. It takes care of removing all resources deployed as part of the previous deployment phase. The reason is twofold:
+The removal step is triggered after the deployment completes. It takes care of removing all resources deployed as part of the previous deployment step. The reason is twofold:
+
 - Make sure to keep the validation subscription cost as low as possible.
 - Allow test deployments from scratch at every run.
+
+However, the removal step can be skipped in case further investigation on the deployed resource is needed. This can be controlled when running the module pipeline leveraging [Module pipeline inputs](./The%20CI%20environment%20-%20Pipeline%20design#module#module-pipeline-inputs)
 
 ### How it works
 
