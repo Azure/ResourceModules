@@ -88,7 +88,7 @@ param enableDefaultTelemetry bool = true
   'AzureFirewallNetworkRule'
   'AzureFirewallDnsProxy'
 ])
-param logsToEnable array = [
+param diagnosticLogCategoriesToEnable array = [
   'AzureFirewallApplicationRule'
   'AzureFirewallNetworkRule'
   'AzureFirewallDnsProxy'
@@ -98,7 +98,7 @@ param logsToEnable array = [
 @allowed([
   'AllMetrics'
 ])
-param metricsToEnable array = [
+param diagnosticMetricsToEnable array = [
   'AllMetrics'
 ]
 
@@ -114,8 +114,11 @@ var ipConfigurations_var = [for ipConfiguration in ipConfigurations: {
   }
 }]
 
-var diagnosticsLogs = [for log in logsToEnable: {
-  category: log
+@description('Optional. The name of the diagnostic setting, if deployed.')
+param diagnosticSettingsName string = '${name}-diagnosticSettings'
+
+var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
+  category: category
   enabled: true
   retentionPolicy: {
     enabled: true
@@ -123,7 +126,7 @@ var diagnosticsLogs = [for log in logsToEnable: {
   }
 }]
 
-var diagnosticsMetrics = [for metric in metricsToEnable: {
+var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
   category: metric
   timeGrain: null
   enabled: true
@@ -176,7 +179,7 @@ resource azureFirewall_lock 'Microsoft.Authorization/locks@2017-04-01' = if (loc
 }
 
 resource azureFirewall_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = if (!empty(diagnosticStorageAccountId) || !empty(diagnosticWorkspaceId) || !empty(diagnosticEventHubAuthorizationRuleId) || !empty(diagnosticEventHubName)) {
-  name: '${azureFirewall.name}-diagnosticSettings'
+  name: diagnosticSettingsName
   properties: {
     storageAccountId: !empty(diagnosticStorageAccountId) ? diagnosticStorageAccountId : null
     workspaceId: !empty(diagnosticWorkspaceId) ? diagnosticWorkspaceId : null
@@ -193,6 +196,7 @@ module azureFirewall_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, ind
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
     principalIds: roleAssignment.principalIds
+    principalType: contains(roleAssignment, 'principalType') ? roleAssignment.principalType : ''
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
     resourceId: azureFirewall.id
   }

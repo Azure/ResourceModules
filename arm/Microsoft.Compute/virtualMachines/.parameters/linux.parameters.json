@@ -34,11 +34,34 @@
             "value": {
                 "createOption": "fromImage",
                 "deleteOption": "Delete",
+                "caching": "ReadOnly",
                 "diskSizeGB": "128",
                 "managedDisk": {
                     "storageAccountType": "Premium_LRS"
                 }
             }
+        },
+        "dataDisks": {
+            "value": [
+                {
+                    "createOption": "Empty",
+                    "deleteOption": "Delete",
+                    "caching": "ReadWrite",
+                    "diskSizeGB": "128",
+                    "managedDisk": {
+                        "storageAccountType": "Premium_LRS"
+                    }
+                },
+                {
+                    "createOption": "Empty",
+                    "deleteOption": "Delete",
+                    "caching": "ReadWrite",
+                    "diskSizeGB": "128",
+                    "managedDisk": {
+                        "storageAccountType": "Premium_LRS"
+                    }
+                }
+            ]
         },
         "adminUsername": {
             "value": "localAdminUser"

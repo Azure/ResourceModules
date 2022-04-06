@@ -163,14 +163,14 @@ To use the environment's pipelines you should use the information you gathered d
 
 ### 3.2.2 Setup variables file
 
-The primary pipeline variable file `.github/variables/global.variables.json` hosts the fundamental pipeline configuration. In the file you will find and can configure settings such as:
+The primary pipeline variable file `global.variables.yml` hosts the fundamental pipeline configuration. In the file you will find and can configure settings such as:
 
 <details>
 <summary>General</summary>
 
 | Variable Name | Example Value | Description |
 | - | - | - |
-| `defaultLocation` | `"WestEurope"` | The default location to deploy resources to and store deployment metadata at. If no location is specified in the deploying parameter file, this location is used |
+| `location` | `"WestEurope"` | The default location to deploy resources to and store deployment metadata at. If no location is specified in the deploying parameter file, this location is used |
 | `resourceGroupName` | `"validation-rg"` | The resource group to deploy all resources for validation to |
 
 </details>
@@ -259,15 +259,15 @@ variables:
 
 ### 3.2.3 Setup variables file
 
-The primary pipeline variable file `.azuredevops/pipelineVariables/global.variables.yml` hosts the fundamental pipeline configuration. In the file you will find and can configure information such as:
+The primary pipeline variable file `global.variables.yml` hosts the fundamental pipeline configuration. In the file you will find and can configure information such as:
 
 <details>
 <summary>General</summary>
 
 | Variable Name | Example Value | Description |
 | - | - | - |
-| `defaultLocation` | `'WestEurope'` | The default location to deploy resources to. If no location is specified in the deploying parameter file, this location is used |
-| `defaultResourceGroupName` | `'validation-rg'` | The resource group to deploy all resources for validation into |
+| `location` | `'WestEurope'` | The default location to deploy resources to. If no location is specified in the deploying parameter file, this location is used |
+| `resourceGroupName` | `'validation-rg'` | The resource group to deploy all resources for validation into |
 | `serviceConnection` | `'Contoso-Connection'` | The service connection that points to the subscription to test in and publish to |
 
 </details>

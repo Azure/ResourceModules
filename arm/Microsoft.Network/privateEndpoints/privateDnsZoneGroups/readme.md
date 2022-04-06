@@ -2,6 +2,13 @@
 
 This module deploys a private endpoint private DNS zone group
 
+## Navigation
+
+- [Resource Types](#Resource-Types)
+- [Parameters](#Parameters)
+- [Outputs](#Outputs)
+- [Template references](#Template-references)
+
 ## Resource Types
 
 | Resource Type | API Version |
@@ -10,12 +17,18 @@ This module deploys a private endpoint private DNS zone group
 
 ## Parameters
 
-| Parameter Name | Type | Default Value | Possible Values | Description |
-| :-- | :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `name` | string | `default` |  | Optional. The name of the private DNS Zone Group |
-| `privateDNSResourceIds` | array |  |  | Required. List of private DNS resource IDs |
-| `privateEndpointName` | string |  |  | Required. The name of the private endpoint |
+**Required parameters**
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `privateDNSResourceIds` | array | List of private DNS resource IDs |
+| `privateEndpointName` | string | The name of the private endpoint |
+
+**Optional parameters**
+| Parameter Name | Type | Default Value | Description |
+| :-- | :-- | :-- | :-- |
+| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `name` | string | `'default'` | The name of the private DNS Zone Group |
+
 
 ## Outputs
 

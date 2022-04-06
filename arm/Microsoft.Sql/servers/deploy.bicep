@@ -99,6 +99,7 @@ module server_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in 
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
     principalIds: roleAssignment.principalIds
+    principalType: contains(roleAssignment, 'principalType') ? roleAssignment.principalType : ''
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
     resourceId: server.id
   }
@@ -109,10 +110,13 @@ module server_databases 'databases/deploy.bicep' = [for (database, index) in dat
   params: {
     name: database.name
     serverName: server.name
-    maxSizeBytes: database.maxSizeBytes
-    tier: database.tier
-    skuName: database.skuName
-    collation: database.collation
+    skuTier: contains(database, 'skuTier') ? database.skuTier : 'GeneralPurpose'
+    skuName: contains(database, 'skuName') ? database.skuName : 'GP_Gen5_2'
+    skuCapacity: contains(database, 'skuCapacity') ? database.skuCapacity : -1
+    skuFamily: contains(database, 'skuFamily') ? database.skuFamily : ''
+    skuSize: contains(database, 'skuSize') ? database.skuSize : ''
+    collation: contains(database, 'collation') ? database.collation : 'SQL_Latin1_General_CP1_CI_AS'
+    maxSizeBytes: contains(database, 'maxSizeBytes') ? database.maxSizeBytes : 34359738368
     autoPauseDelay: contains(database, 'autoPauseDelay') ? database.autoPauseDelay : ''
     diagnosticLogsRetentionInDays: contains(database, 'diagnosticLogsRetentionInDays') ? database.diagnosticLogsRetentionInDays : 365
     diagnosticStorageAccountId: contains(database, 'diagnosticStorageAccountId') ? database.diagnosticStorageAccountId : ''
@@ -120,11 +124,11 @@ module server_databases 'databases/deploy.bicep' = [for (database, index) in dat
     diagnosticEventHubName: contains(database, 'diagnosticEventHubName') ? database.diagnosticEventHubName : ''
     isLedgerOn: contains(database, 'isLedgerOn') ? database.isLedgerOn : false
     location: contains(database, 'location') ? database.location : server.location
-    logsToEnable: contains(database, 'logsToEnable') ? database.logsToEnable : []
+    diagnosticLogCategoriesToEnable: contains(database, 'diagnosticLogCategoriesToEnable') ? database.diagnosticLogCategoriesToEnable : []
     licenseType: contains(database, 'licenseType') ? database.licenseType : ''
     maintenanceConfigurationId: contains(database, 'maintenanceConfigurationId') ? database.maintenanceConfigurationId : ''
     minCapacity: contains(database, 'minCapacity') ? database.minCapacity : ''
-    metricsToEnable: contains(database, 'metricsToEnable') ? database.metricsToEnable : []
+    diagnosticMetricsToEnable: contains(database, 'diagnosticMetricsToEnable') ? database.diagnosticMetricsToEnable : []
     highAvailabilityReplicaCount: contains(database, 'highAvailabilityReplicaCount') ? database.highAvailabilityReplicaCount : 0
     readScale: contains(database, 'readScale') ? database.readScale : 'Disabled'
     requestedBackupStorageRedundancy: contains(database, 'requestedBackupStorageRedundancy') ? database.requestedBackupStorageRedundancy : ''

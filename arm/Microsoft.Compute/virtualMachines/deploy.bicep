@@ -108,13 +108,16 @@ param availabilityZone int = 0
 @description('Required. Configures NICs and PIPs.')
 param nicConfigurations array
 
+@description('Optional. The name of the PIP diagnostic setting, if deployed.')
+param pipDiagnosticSettingsName string = '${name}-diagnosticSettings'
+
 @description('Optional. The name of logs that will be streamed.')
 @allowed([
   'DDoSProtectionNotifications'
   'DDoSMitigationFlowLogs'
   'DDoSMitigationReports'
 ])
-param pipLogsToEnable array = [
+param pipdiagnosticLogCategoriesToEnable array = [
   'DDoSProtectionNotifications'
   'DDoSMitigationFlowLogs'
   'DDoSMitigationReports'
@@ -124,15 +127,18 @@ param pipLogsToEnable array = [
 @allowed([
   'AllMetrics'
 ])
-param pipMetricsToEnable array = [
+param pipdiagnosticMetricsToEnable array = [
   'AllMetrics'
 ]
+
+@description('Optional. The name of the NIC diagnostic setting, if deployed.')
+param nicDiagnosticSettingsName string = '${name}-diagnosticSettings'
 
 @description('Optional. The name of metrics that will be streamed.')
 @allowed([
   'AllMetrics'
 ])
-param nicMetricsToEnable array = [
+param nicdiagnosticMetricsToEnable array = [
   'AllMetrics'
 ]
 
@@ -342,9 +348,11 @@ module virtualMachine_nic '.bicep/nested_networkInterface.bicep' = [for (nicConf
     diagnosticWorkspaceId: diagnosticWorkspaceId
     diagnosticEventHubAuthorizationRuleId: diagnosticEventHubAuthorizationRuleId
     diagnosticEventHubName: diagnosticEventHubName
-    metricsToEnable: nicMetricsToEnable
-    pipMetricsToEnable: pipMetricsToEnable
-    pipLogsToEnable: pipLogsToEnable
+    pipDiagnosticSettingsName: pipDiagnosticSettingsName
+    nicDiagnosticSettingsName: nicDiagnosticSettingsName
+    pipdiagnosticMetricsToEnable: pipdiagnosticMetricsToEnable
+    pipdiagnosticLogCategoriesToEnable: pipdiagnosticLogCategoriesToEnable
+    nicDiagnosticMetricsToEnable: nicdiagnosticMetricsToEnable
     roleAssignments: contains(nicConfiguration, 'roleAssignments') ? (!empty(nicConfiguration.roleAssignments) ? nicConfiguration.roleAssignments : []) : []
   }
 }]
@@ -372,9 +380,10 @@ resource virtualMachine 'Microsoft.Compute/virtualMachines@2021-07-01' = {
       imageReference: imageReference
       osDisk: {
         name: '${name}-disk-os-01'
-        createOption: osDisk.createOption
+        createOption: contains(osDisk, 'createOption') ? osDisk.createOption : 'FromImage'
         deleteOption: contains(osDisk, 'deleteOption') ? osDisk.deleteOption : 'Delete'
         diskSizeGB: osDisk.diskSizeGB
+        caching: contains(osDisk, 'caching') ? osDisk.caching : 'ReadOnly'
         managedDisk: {
           storageAccountType: osDisk.managedDisk.storageAccountType
           diskEncryptionSet: contains(osDisk.managedDisk, 'diskEncryptionSet') ? osDisk.managedDisk.diskEncryptionSet : null
@@ -384,9 +393,9 @@ resource virtualMachine 'Microsoft.Compute/virtualMachines@2021-07-01' = {
         lun: index
         name: '${name}-disk-data-${padLeft((index + 1), 2, '0')}'
         diskSizeGB: dataDisk.diskSizeGB
-        createOption: dataDisk.createOption
+        createOption: contains(dataDisk, 'createOption') ? dataDisk.createOption : 'Empty'
         deleteOption: contains(dataDisk, 'deleteOption') ? dataDisk.deleteOption : 'Delete'
-        caching: dataDisk.caching
+        caching: contains(dataDisk, 'caching') ? dataDisk.caching : 'ReadOnly'
         managedDisk: {
           storageAccountType: dataDisk.managedDisk.storageAccountType
           diskEncryptionSet: {
@@ -613,6 +622,7 @@ module virtualMachine_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, in
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
     principalIds: roleAssignment.principalIds
+    principalType: contains(roleAssignment, 'principalType') ? roleAssignment.principalType : ''
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
     resourceId: virtualMachine.id
   }

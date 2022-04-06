@@ -37,7 +37,10 @@
         "eventHubs": {
             "value": [
                 {
-                    "name": "<<namePrefix>>-az-evh-x-001",
+                    "name": "<<namePrefix>>-az-evh-x-001"
+                },
+                {
+                    "name": "<<namePrefix>>-az-evh-x-002",
                     "authorizationRules": [
                         {
                             "name": "RootManageSharedAccessKey",

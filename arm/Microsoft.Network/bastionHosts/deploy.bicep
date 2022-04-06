@@ -61,12 +61,15 @@ param enableDefaultTelemetry bool = true
 @allowed([
   'BastionAuditLogs'
 ])
-param logsToEnable array = [
+param diagnosticLogCategoriesToEnable array = [
   'BastionAuditLogs'
 ]
 
-var diagnosticsLogs = [for log in logsToEnable: {
-  category: log
+@description('Optional. The name of the diagnostic setting, if deployed.')
+param diagnosticSettingsName string = '${name}-diagnosticSettings'
+
+var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
+  category: category
   enabled: true
   retentionPolicy: {
     enabled: true
@@ -102,12 +105,12 @@ module publicIPAddress '.bicep/nested_publicIPAddress.bicep' = if (empty(publicI
     skuName: contains(publicIPAddressObject, 'skuName') ? (!(empty(publicIPAddressObject.skuName)) ? publicIPAddressObject.skuName : 'Standard') : 'Standard'
     skuTier: contains(publicIPAddressObject, 'skuTier') ? (!(empty(publicIPAddressObject.skuTier)) ? publicIPAddressObject.skuTier : 'Regional') : 'Regional'
     roleAssignments: contains(publicIPAddressObject, 'roleAssignments') ? (!empty(publicIPAddressObject.roleAssignments) ? publicIPAddressObject.roleAssignments : []) : []
-    metricsToEnable: contains(publicIPAddressObject, 'metricsToEnable') ? (!(empty(publicIPAddressObject.metricsToEnable)) ? publicIPAddressObject.metricsToEnable : [
+    diagnosticMetricsToEnable: contains(publicIPAddressObject, 'diagnosticMetricsToEnable') ? (!(empty(publicIPAddressObject.diagnosticMetricsToEnable)) ? publicIPAddressObject.diagnosticMetricsToEnable : [
       'AllMetrics'
     ]) : [
       'AllMetrics'
     ]
-    logsToEnable: contains(publicIPAddressObject, 'logsToEnable') ? (!(empty(publicIPAddressObject.logsToEnable)) ? publicIPAddressObject.logsToEnable : [
+    diagnosticLogCategoriesToEnable: contains(publicIPAddressObject, 'diagnosticLogCategoriesToEnable') ? (!(empty(publicIPAddressObject.diagnosticLogCategoriesToEnable)) ? publicIPAddressObject.diagnosticLogCategoriesToEnable : [
       'DDoSProtectionNotifications'
       'DDoSMitigationFlowLogs'
       'DDoSMitigationReports'
@@ -162,7 +165,7 @@ resource azureBastion_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock
 }
 
 resource azureBastion_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = if (!empty(diagnosticStorageAccountId) || !empty(diagnosticWorkspaceId) || !empty(diagnosticEventHubAuthorizationRuleId) || !empty(diagnosticEventHubName)) {
-  name: '${azureBastion.name}-diagnosticSettings'
+  name: diagnosticSettingsName
   properties: {
     storageAccountId: !empty(diagnosticStorageAccountId) ? diagnosticStorageAccountId : null
     workspaceId: !empty(diagnosticWorkspaceId) ? diagnosticWorkspaceId : null
@@ -178,6 +181,7 @@ module azureBastion_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, inde
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
     principalIds: roleAssignment.principalIds
+    principalType: contains(roleAssignment, 'principalType') ? roleAssignment.principalType : ''
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
     resourceId: azureBastion.id
   }

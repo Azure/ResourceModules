@@ -2,6 +2,13 @@
 
 This module deploys API Management Service Portal Setting.
 
+## Navigation
+
+- [Resource Types](#Resource-Types)
+- [Parameters](#Parameters)
+- [Outputs](#Outputs)
+- [Template references](#Template-references)
+
 ## Resource Types
 
 | Resource Type | API Version |
@@ -10,12 +17,18 @@ This module deploys API Management Service Portal Setting.
 
 ## Parameters
 
-| Parameter Name | Type | Default Value | Possible Values | Description |
-| :-- | :-- | :-- | :-- | :-- |
-| `apiManagementServiceName` | string |  |  | Required. The name of the of the API Management service. |
-| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `name` | string |  | `[delegation, signin, signup]` | Required. Portal setting name |
-| `properties` | object | `{object}` |  | Optional. Portal setting properties. |
+**Required parameters**
+| Parameter Name | Type | Allowed Values | Description |
+| :-- | :-- | :-- | :-- |
+| `apiManagementServiceName` | string |  | The name of the of the API Management service. |
+| `name` | string | `[delegation, signin, signup]` | Portal setting name |
+
+**Optional parameters**
+| Parameter Name | Type | Default Value | Description |
+| :-- | :-- | :-- | :-- |
+| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `properties` | object | `{object}` | Portal setting properties. |
+
 
 ## Outputs
 

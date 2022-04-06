@@ -106,6 +106,30 @@ param roleAssignments array = []
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
+@description('Optional. List of allowed FQDN.')
+param allowedFqdnList array = []
+
+@description('Optional. The API properties for special APIs.')
+param apiProperties object = {}
+
+@description('Optional. Allow only Azure AD authentication.')
+param disableLocalAuth bool = false
+
+@description('Optional. Properties to configure encryption')
+param encryption object = {}
+
+@description('Optional. Resource migration token.')
+param migrationToken string = ''
+
+@description('Optional. Restore a soft-deleted cognitive service at deployment time. Will fail if no such soft-deleted resource exists.')
+param restore bool = false
+
+@description('Optional. Restrict outbound network access.')
+param restrictOutboundNetworkAccess bool = true
+
+@description('Optional. The storage accounts for this resource.')
+param userOwnedStorage array = []
+
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
 
@@ -114,7 +138,7 @@ param enableDefaultTelemetry bool = true
   'Audit'
   'RequestResponse'
 ])
-param logsToEnable array = [
+param diagnosticLogCategoriesToEnable array = [
   'Audit'
   'RequestResponse'
 ]
@@ -123,12 +147,15 @@ param logsToEnable array = [
 @allowed([
   'AllMetrics'
 ])
-param metricsToEnable array = [
+param diagnosticMetricsToEnable array = [
   'AllMetrics'
 ]
 
-var diagnosticsLogs = [for log in logsToEnable: {
-  category: log
+@description('Optional. The name of the diagnostic setting, if deployed.')
+param diagnosticSettingsName string = '${name}-diagnosticSettings'
+
+var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
+  category: category
   enabled: true
   retentionPolicy: {
     enabled: true
@@ -136,7 +163,7 @@ var diagnosticsLogs = [for log in logsToEnable: {
   }
 }]
 
-var diagnosticsMetrics = [for metric in metricsToEnable: {
+var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
   category: metric
   timeGrain: null
   enabled: true
@@ -154,9 +181,9 @@ var identity = identityType != 'None' ? {
 } : null
 
 var networkAcls_var = {
-  defaultAction: ((empty(networkAcls)) ? null : networkAcls.defaultAction)
-  virtualNetworkRules: ((empty(networkAcls)) ? null : ((length(networkAcls.virtualNetworkRules) == 0) ? [] : networkAcls.virtualNetworkRules))
-  ipRules: ((empty(networkAcls)) ? null : ((length(networkAcls.ipRules) == 0) ? [] : networkAcls.ipRules))
+  defaultAction: !empty(networkAcls) ? networkAcls.defaultAction : null
+  virtualNetworkRules: !empty(networkAcls) ? ((length(networkAcls.virtualNetworkRules) == 0) ? [] : networkAcls.virtualNetworkRules) : null
+  ipRules: !empty(networkAcls) ? ((length(networkAcls.ipRules) == 0) ? [] : networkAcls.ipRules) : null
 }
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
@@ -171,7 +198,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource cognitiveServices 'Microsoft.CognitiveServices/accounts@2017-04-18' = {
+resource cognitiveServices 'Microsoft.CognitiveServices/accounts@2021-10-01' = {
   name: name
   kind: kind
   identity: identity
@@ -181,9 +208,17 @@ resource cognitiveServices 'Microsoft.CognitiveServices/accounts@2017-04-18' = {
     name: sku
   }
   properties: {
-    customSubDomainName: (empty(customSubDomainName) ? null : customSubDomainName)
-    networkAcls: ((empty(networkAcls)) ? null : networkAcls_var)
+    customSubDomainName: !empty(customSubDomainName) ? customSubDomainName : null
+    networkAcls: !empty(networkAcls) ? networkAcls_var : null
     publicNetworkAccess: publicNetworkAccess
+    allowedFqdnList: allowedFqdnList
+    apiProperties: apiProperties
+    disableLocalAuth: disableLocalAuth
+    encryption: !empty(encryption) ? encryption : null
+    migrationToken: !empty(migrationToken) ? migrationToken : null
+    restore: restore
+    restrictOutboundNetworkAccess: restrictOutboundNetworkAccess
+    userOwnedStorage: !empty(userOwnedStorage) ? userOwnedStorage : null
   }
 }
 
@@ -197,7 +232,7 @@ resource cognitiveServices_lock 'Microsoft.Authorization/locks@2017-04-01' = if 
 }
 
 resource cognitiveServices_diagnosticSettingName 'Microsoft.Insights/diagnosticsettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(diagnosticWorkspaceId)) || (!empty(diagnosticEventHubAuthorizationRuleId)) || (!empty(diagnosticEventHubName))) {
-  name: '${cognitiveServices.name}-diagnosticSettings'
+  name: diagnosticSettingsName
   properties: {
     storageAccountId: !empty(diagnosticStorageAccountId) ? diagnosticStorageAccountId : null
     workspaceId: !empty(diagnosticWorkspaceId) ? diagnosticWorkspaceId : null
@@ -224,6 +259,7 @@ module cognitiveServices_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment,
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
     principalIds: roleAssignment.principalIds
+    principalType: contains(roleAssignment, 'principalType') ? roleAssignment.principalType : ''
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
     resourceId: cognitiveServices.id
   }

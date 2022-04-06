@@ -2,6 +2,14 @@
 
 This template deploys a virtual network (vNet).
 
+## Navigation
+
+- [Resource types](#Resource-types)
+- [Parameters](#Parameters)
+- [Considerations](#Considerations)
+- [Outputs](#Outputs)
+- [Template references](#Template-references)
+
 ## Resource types
 
 | Resource Type | API Version |
@@ -15,26 +23,72 @@ This template deploys a virtual network (vNet).
 
 ## Parameters
 
-| Parameter Name | Type | Default Value | Possible Values | Description |
+**Required parameters**
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `addressPrefixes` | array | An Array of 1 or more IP Address Prefixes for the Virtual Network. |
+| `name` | string | The Virtual Network (vNet) Name. |
+
+**Optional parameters**
+| Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `addressPrefixes` | array |  |  | Required. An Array of 1 or more IP Address Prefixes for the Virtual Network. |
-| `ddosProtectionPlanId` | string |  |  | Optional. Resource ID of the DDoS protection plan to assign the VNET to. If it's left blank, DDoS protection will not be configured. If it's provided, the VNET created by this template will be attached to the referenced DDoS protection plan. The DDoS protection plan can exist in the same or in a different subscription. |
-| `diagnosticEventHubAuthorizationRuleId` | string |  |  | Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
-| `diagnosticEventHubName` | string |  |  | Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
-| `diagnosticLogsRetentionInDays` | int | `365` |  | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
-| `diagnosticStorageAccountId` | string |  |  | Optional. Resource ID of the diagnostic storage account. |
-| `diagnosticWorkspaceId` | string |  |  | Optional. Resource ID of the diagnostic log analytics workspace. |
-| `dnsServers` | array | `[]` |  | Optional. DNS Servers associated to the Virtual Network. |
-| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
-| `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
-| `logsToEnable` | array | `[VMProtectionAlerts]` | `[VMProtectionAlerts]` | Optional. The name of logs that will be streamed. |
-| `metricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | Optional. The name of metrics that will be streamed. |
-| `name` | string |  |  | Required. The Virtual Network (vNet) Name. |
-| `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
-| `subnets` | _[subnets](subnets/readme.md)_ array | `[]` |  | Optional. An Array of subnets to deploy to the Virtual Network. |
-| `tags` | object | `{object}` |  | Optional. Tags of the resource. |
-| `virtualNetworkPeerings` | _[virtualNetworkPeerings](virtualNetworkPeerings/readme.md)_ array | `[]` |  | Optional. Virtual Network Peerings configurations |
+| `ddosProtectionPlanId` | string | `''` |  | Resource ID of the DDoS protection plan to assign the VNET to. If it's left blank, DDoS protection will not be configured. If it's provided, the VNET created by this template will be attached to the referenced DDoS protection plan. The DDoS protection plan can exist in the same or in a different subscription. |
+| `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
+| `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
+| `diagnosticLogCategoriesToEnable` | array | `[VMProtectionAlerts]` | `[VMProtectionAlerts]` | The name of logs that will be streamed. |
+| `diagnosticLogsRetentionInDays` | int | `365` |  | Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
+| `diagnosticMetricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | The name of metrics that will be streamed. |
+| `diagnosticSettingsName` | string | `[format('{0}-diagnosticSettings', parameters('name'))]` |  | The name of the diagnostic setting, if deployed. |
+| `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
+| `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
+| `dnsServers` | array | `[]` |  | DNS Servers associated to the Virtual Network. |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
+| `lock` | string | `'NotSpecified'` | `[CanNotDelete, NotSpecified, ReadOnly]` | Specify the type of lock. |
+| `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
+| `subnets` | _[subnets](subnets/readme.md)_ array | `[]` |  | An Array of subnets to deploy to the Virtual Network. |
+| `tags` | object | `{object}` |  | Tags of the resource. |
+| `virtualNetworkPeerings` | _[virtualNetworkPeerings](virtualNetworkPeerings/readme.md)_ array | `[]` |  | Virtual Network Peerings configurations |
+
+
+### Parameter Usage: `subnets`
+
+Below you can find an example for the subnet property's usage. For all remaining properties, please refer to the _[subnets](subnets/readme.md)_ readme.
+
+```json
+"subnets": {
+    "value": [
+        {
+            "name": "GatewaySubnet",
+            "addressPrefix": "10.0.255.0/24"
+        },
+        {
+            "name": "<<namePrefix>>-az-subnet-x-001",
+            "addressPrefix": "10.0.0.0/24",
+            "networkSecurityGroupId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/networkSecurityGroups/adp-<<namePrefix>>-az-nsg-x-001",
+            "serviceEndpoints": [
+                {
+                    "service": "Microsoft.Storage"
+                },
+                {
+                    "service": "Microsoft.Sql"
+                }
+            ],
+            "routeTableId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/routeTables/adp-<<namePrefix>>-az-udr-x-001",
+            "delegations": [
+                {
+                    "name": "netappDel",
+                    "properties": {
+                        "serviceName": "Microsoft.Netapp/volumes"
+                    }
+                }
+            ],
+            "privateEndpointNetworkPolicies": "Disabled",
+            "privateLinkServiceNetworkPolicies": "Enabled"
+        }
+    ]
+}
+```
 
 ### Parameter Usage: `virtualNetworkPeerings`
 
@@ -49,6 +103,24 @@ As the virtual network peering array allows you to deploy not only a one-way but
 | `remotePeeringAllowVirtualNetworkAccess` | bool | `true` | | Optional. Whether the VMs in the local virtual network space would be able to access the VMs in remote virtual network space. |
 | `remotePeeringDoNotVerifyRemoteGateways` | bool | `true` | | Optional. If we need to verify the provisioning state of the remote gateway. |
 | `remotePeeringUseRemoteGateways` | bool | `false` | |  Optional. If remote gateways can be used on this virtual network. If the flag is set to `true`, and allowGatewayTransit on local peering is also `true`, virtual network will use gateways of local virtual network for transit. Only one peering can have this flag set to `true`. This flag cannot be set if virtual network already has a gateway.  |
+
+```json
+"virtualNetworkPeerings": {
+    "value": [
+        {
+            "remoteVirtualNetworkId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-peer01",
+            "allowForwardedTraffic": true,
+            "allowGatewayTransit": false,
+            "allowVirtualNetworkAccess": true,
+            "useRemoteGateways": false,
+            "remotePeeringEnabled": true,
+            "remotePeeringName": "customName",
+            "remotePeeringAllowVirtualNetworkAccess": true,
+            "remotePeeringAllowForwardedTraffic": true
+        }
+    ]
+}
+```
 
 ### Parameter Usage: `addressPrefixes`
 
@@ -66,6 +138,8 @@ Here's an example of specifying a single Address Prefix:
 
 ### Parameter Usage: `roleAssignments`
 
+Create a role assignment for the given resource. If you want to assign a service principal / managed identity that is created in the same deployment, make sure to also specify the `'principalType'` parameter and set it to `'ServicePrincipal'`. This will ensure the role assignment waits for the principal's propagation in Azure.
+
 ```json
 "roleAssignments": {
     "value": [
@@ -81,7 +155,8 @@ Here's an example of specifying a single Address Prefix:
             "roleDefinitionIdOrName": "/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11",
             "principalIds": [
                 "12345678-1234-1234-1234-123456789012" // object 1
-            ]
+            ],
+            "principalType": "ServicePrincipal"
         }
     ]
 }

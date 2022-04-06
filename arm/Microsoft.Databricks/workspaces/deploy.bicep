@@ -65,7 +65,7 @@ param enableDefaultTelemetry bool = true
   'sqlPermissions'
   'instancePools'
 ])
-param logsToEnable array = [
+param diagnosticLogCategoriesToEnable array = [
   'dbfs'
   'clusters'
   'accounts'
@@ -78,8 +78,11 @@ param logsToEnable array = [
   'instancePools'
 ]
 
-var diagnosticsLogs = [for log in logsToEnable: {
-  category: log
+@description('Optional. The name of the diagnostic setting, if deployed.')
+param diagnosticSettingsName string = '${name}-diagnosticSettings'
+
+var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
+  category: category
   enabled: true
   retentionPolicy: {
     enabled: true
@@ -124,8 +127,9 @@ resource workspace_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock !=
   scope: workspace
 }
 
-resource workspace_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(diagnosticWorkspaceId)) || (!empty(diagnosticEventHubAuthorizationRuleId)) || (!empty(diagnosticEventHubName))) {
-  name: '${workspace.name}-diagnosticSettings'
+// Note: Diagnostic Settings are only supported by the premium tier
+resource workspace_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2021-05-01-preview' = if (pricingTier == 'premium' && ((!empty(diagnosticStorageAccountId)) || (!empty(diagnosticWorkspaceId)) || (!empty(diagnosticEventHubAuthorizationRuleId)) || (!empty(diagnosticEventHubName)))) {
+  name: diagnosticSettingsName
   properties: {
     storageAccountId: !empty(diagnosticStorageAccountId) ? diagnosticStorageAccountId : null
     workspaceId: !empty(diagnosticWorkspaceId) ? diagnosticWorkspaceId : null
@@ -141,6 +145,7 @@ module workspace_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) 
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
     principalIds: roleAssignment.principalIds
+    principalType: contains(roleAssignment, 'principalType') ? roleAssignment.principalType : ''
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
     resourceId: workspace.id
   }

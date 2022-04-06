@@ -57,7 +57,7 @@ param enableDefaultTelemetry bool = true
 @allowed([
   'VMProtectionAlerts'
 ])
-param logsToEnable array = [
+param diagnosticLogCategoriesToEnable array = [
   'VMProtectionAlerts'
 ]
 
@@ -65,12 +65,15 @@ param logsToEnable array = [
 @allowed([
   'AllMetrics'
 ])
-param metricsToEnable array = [
+param diagnosticMetricsToEnable array = [
   'AllMetrics'
 ]
 
-var diagnosticsLogs = [for log in logsToEnable: {
-  category: log
+@description('Optional. The name of the diagnostic setting, if deployed.')
+param diagnosticSettingsName string = '${name}-diagnosticSettings'
+
+var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
+  category: category
   enabled: true
   retentionPolicy: {
     enabled: true
@@ -78,7 +81,7 @@ var diagnosticsLogs = [for log in logsToEnable: {
   }
 }]
 
-var diagnosticsMetrics = [for metric in metricsToEnable: {
+var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
   category: metric
   timeGrain: null
   enabled: true
@@ -177,7 +180,7 @@ module virtualNetwork_subnets 'subnets/deploy.bicep' = [for (subnet, index) in s
 module virtualNetwork_peering_local 'virtualNetworkPeerings/deploy.bicep' = [for (peering, index) in virtualNetworkPeerings: {
   name: '${uniqueString(deployment().name, location)}-virtualNetworkPeering-local-${index}'
   params: {
-    localVnetName: name
+    localVnetName: virtualNetwork.name
     remoteVirtualNetworkId: peering.remoteVirtualNetworkId
     name: contains(peering, 'name') ? peering.name : '${name}-${last(split(peering.remoteVirtualNetworkId, '/'))}'
     allowForwardedTraffic: contains(peering, 'allowForwardedTraffic') ? peering.allowForwardedTraffic : true
@@ -186,9 +189,6 @@ module virtualNetwork_peering_local 'virtualNetworkPeerings/deploy.bicep' = [for
     doNotVerifyRemoteGateways: contains(peering, 'doNotVerifyRemoteGateways') ? peering.doNotVerifyRemoteGateways : true
     useRemoteGateways: contains(peering, 'useRemoteGateways') ? peering.useRemoteGateways : false
   }
-  dependsOn: [
-    virtualNetwork_subnets
-  ]
 }]
 
 // Remote to local peering (reverse)
@@ -205,9 +205,6 @@ module virtualNetwork_peering_remote 'virtualNetworkPeerings/deploy.bicep' = [fo
     doNotVerifyRemoteGateways: contains(peering, 'remotePeeringDoNotVerifyRemoteGateways') ? peering.remotePeeringDoNotVerifyRemoteGateways : true
     useRemoteGateways: contains(peering, 'remotePeeringUseRemoteGateways') ? peering.remotePeeringUseRemoteGateways : false
   }
-  dependsOn: [
-    virtualNetwork_subnets
-  ]
 }]
 
 resource virtualNetwork_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
@@ -220,7 +217,7 @@ resource virtualNetwork_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lo
 }
 
 resource appServiceEnvironment_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = if (!empty(diagnosticStorageAccountId) || !empty(diagnosticWorkspaceId) || !empty(diagnosticEventHubAuthorizationRuleId) || !empty(diagnosticEventHubName)) {
-  name: '${virtualNetwork.name}-diagnosticSettings'
+  name: diagnosticSettingsName
   properties: {
     storageAccountId: !empty(diagnosticStorageAccountId) ? diagnosticStorageAccountId : null
     workspaceId: !empty(diagnosticWorkspaceId) ? diagnosticWorkspaceId : null
@@ -237,6 +234,7 @@ module virtualNetwork_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, in
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
     principalIds: roleAssignment.principalIds
+    principalType: contains(roleAssignment, 'principalType') ? roleAssignment.principalType : ''
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
     resourceId: virtualNetwork.id
   }

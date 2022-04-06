@@ -2,6 +2,13 @@
 
 This module deploys a migration configuration for a service bus namespace
 
+## Navigation
+
+- [Resource Types](#Resource-Types)
+- [Parameters](#Parameters)
+- [Outputs](#Outputs)
+- [Template references](#Template-references)
+
 ## Resource Types
 
 | Resource Type | API Version |
@@ -10,13 +17,19 @@ This module deploys a migration configuration for a service bus namespace
 
 ## Parameters
 
-| Parameter Name | Type | Default Value | Possible Values | Description |
-| :-- | :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `name` | string | `$default` |  | Optional. The name of the migration configuration |
-| `namespaceName` | string |  |  | Required. Name of the parent Service Bus Namespace for the Service Bus Queue. |
-| `postMigrationName` | string |  |  | Required. Name to access Standard Namespace after migration |
-| `targetNamespaceResourceId` | string |  |  | Required. Existing premium Namespace resource ID which has no entities, will be used for migration |
+**Required parameters**
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `namespaceName` | string | Name of the parent Service Bus Namespace for the Service Bus Queue. |
+| `postMigrationName` | string | Name to access Standard Namespace after migration |
+| `targetNamespaceResourceId` | string | Existing premium Namespace resource ID which has no entities, will be used for migration |
+
+**Optional parameters**
+| Parameter Name | Type | Default Value | Description |
+| :-- | :-- | :-- | :-- |
+| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `name` | string | `'$default'` | The name of the migration configuration |
+
 
 ## Outputs
 
