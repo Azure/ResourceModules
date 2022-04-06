@@ -206,7 +206,6 @@ The example assumes you are using a [`bicepconfig.json`](https://docs.microsoft.
     }
 }
 ```
-
 ### ***Example with template-specs***
 
 The following example shows how you could orchestrate a deployment of multiple resources using template specs. In this example we will deploy a NSG and use the same in a subsequent VNET deployment.
