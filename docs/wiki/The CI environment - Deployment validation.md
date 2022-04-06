@@ -3,7 +3,7 @@ This section provides an overview of the principles the deployment validation is
 - [Deployment validation steps](#deployment-validation-steps)
     - [Template validation](#template-validation)
     - [Azure deployment validation](#azure-deployment-validation)
-        - [Output example]
+        - [Output example](#output-example)
     - [Resource removal](#removal)
         - [How it works](#how-it-works)
         - [Create a specialized removal procedure](#create-a-specialized-removal-procedure)
@@ -23,7 +23,7 @@ The deployment validation phase can in turn be divided into three steps, running
 
 The template validation step executes a dry-run with each parameter file provided & configured for a module.
 
-In particular, the step executes a `Test-AzDeployment` cmdlet (_- the command may vary based on the template schema_) with each provided module parameter file to verify if the template would be able to be deployed using them.
+In particular, the step executes a `Test-AzDeployment` cmdlet (_the command may vary based on the template schema_) with each provided module parameter file to verify if the template would be able to be deployed using them.
 
 The intention of this test is to **fail fast**, before getting to the later deployment step. The template validation could fail either because the template is invalid, or because any of the parameter files is configured incorrectly.
 
@@ -48,7 +48,7 @@ The removal step is triggered after the deployment completes. It takes care of r
 - Make sure to keep the validation subscription cost as low as possible.
 - Allow test deployments from scratch at every run.
 
-However, the removal step can be skipped in case further investigation on the deployed resource is needed. This can be controlled when running the module pipeline leveraging [Module pipeline inputs](./The%20CI%20environment%20-%20Pipeline%20design#module#module-pipeline-inputs)
+However, the removal step can be skipped in case further investigation on the deployed resource is needed. This can be controlled when running the module pipeline leveraging [Module pipeline inputs](./The%20CI%20environment%20-%20Pipeline%20design#module#module-pipeline-inputs).
 
 ### How it works
 

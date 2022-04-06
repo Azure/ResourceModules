@@ -1,3 +1,14 @@
+This section provides an overview of the principles the publishing is built upon, how it is set up, and how you can interact with it.
+
+- [Publishing overview](#publishing-overview)
+- [How it works](#how-it-works)
+    - [Example scenario](#example-scenario)
+    - [Output example](#output-example)
+
+
+<img src=".\media\CIEnvironment\publishingStep.png" alt="Publishing Step" height="500">
+
+# Publishing overview
 The publishing phase concludes each module's pipeline. If all previous tests succeed (i.e. no phase failed) and the pipeline is executed in the `main` or `master` branch, a new module version is published to all configured target locations. Currently we support the following target locations:
 
 - _[Template specs](https://docs.microsoft.com/en-us/azure/azure-resource-manager/templates/template-specs?tabs=azure-powershell)_
@@ -5,13 +16,13 @@ The publishing phase concludes each module's pipeline. If all previous tests suc
 - _[Azure DevOps universal packages](https://docs.microsoft.com/en-us/azure/devops/artifacts/concepts/feeds?view=azure-devops)_.
    > Note: this is only available if using Azure DevOps pipelines.
 
-Besides the execution of a the publishing phase, there is also the possibility to set the switch `Publish prerelease module`. This switch makes it possible to publish a pre-release version in every workflow run that is not based on main or master.
+Besides the execution of a the publishing phase, there is also the possibility to set the switch `Publish prerelease module`. This switch makes it possible to publish a pre-release version in every workflow run that is not based on main or master. This can be controlled when running the module pipeline leveraging [Module pipeline inputs](./The%20CI%20environment%20-%20Pipeline%20design#module#module-pipeline-inputs).
 
 > **Note**<br>
 > The `version` used for publishing any artifact is the same for all three target locations, which reduces the maintenance effort.
 
-<img src=".\media\CIEnvironment\publishingStep.png" alt="Publishing Step" height="500">
 
+# How it works
 
 The publishing works as follows:
 
@@ -23,7 +34,7 @@ The publishing works as follows:
    1. The list of module files paths and their versions are passed on as a array list.
 2. The different publishing scripts run (Artifact, Template Spec or Bicep Registry) and publish the module to the respective target location for each item on the list.
 
-**Example scenario**
+## Example scenario
 
 Lets look at an example run where we would do a patch change on the `fileShares` module:
 1. A new branch is created for further development of the `fileShare` module. Let's assume the new branch started from commit `500` on the default branch and the `version.json` of the `fileShare` module contains major and minor `0.3`.

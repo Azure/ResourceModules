@@ -65,7 +65,7 @@ Depending on what you want to test in your module pipeline, you may want to incl
 
 ## Add a new module pipeline
 
-To add a new module pipeline we recommend to create a copy of a currently existing module pipeline and adjust all module-specific properties documented [here](./PipelinesDesign#component-workflows). The registration of the pipeline depends on the [DevOps tool](#devops-tool-specific-guidance) you're using.
+To add a new module pipeline we recommend to create a copy of a currently existing module pipeline and adjust all module-specific properties. The registration of the pipeline depends on the [DevOps tool](#devops-tool-specific-guidance) you're using.
 
 ---
 
