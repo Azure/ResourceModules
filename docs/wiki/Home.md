@@ -4,43 +4,9 @@ The objective of this repository is to provide a template library that can be re
 
 This wiki describes the content of this repository, the modules, pipelines, possible options on how to use them and how to contribute to this project.
 
-If you're unfamiliar with Infrastructure as Code, or wonder how you can use the contents of this repository in your deployments please check out the [context](./Context) section of this wiki.
+If you're unfamiliar with Infrastructure as Code, or wonder how you can use the contents of this repository in your deployments please check out [The context](./The%20context) section of this wiki.
 
 ### _Navigation_
-
-- [Context](./Context)
-  - [Infrastructure as Code](./Context#infrastructure-as-code-iac)
-  - [Where does this platform fit in?](./Context#where-does-this-platform-fit-in)
-- [Getting Started](./GettingStarted)
-  - [General prerequisites](./GettingStarted#General-prerequisites)
-  - [Where to start](./GettingStarted#Where-to-start)
-- [Modules](./Modules)
-  - [Design](./ModulesDesign)
-  - [Usage](./ModulesUsage)
-- [Testing](./Testing)
-  - [Design](./TestingDesign)
-  - [Usage](./TestingUsage)
-- [Utilities](./Utilities)
-  - [Bicep to ARM conversion script](./UtilitiesConvertToARMTemplate)
-  - [Register Azure DevOps pipelines script](./UtilitiesRegisterAzureDevOpsPipeline)
-  - [Set Module ReadMe script](./UtilitiesSetModuleReadMe)
-  - [Get formatted RBAC roles script](./UtilitiesGetFormattedRBACRoleList)
-  - [GitHub readMe module table update script](./UtilitiesSetGitHubReadMeModuleTable.md)
-- [Pipelines](./Pipelines)
-  - [Design](./PipelinesDesign)
-    - [Parameter File Tokens](./ParameterFileTokens)
-    - [Removal action](./PipelineRemovalAction)
-  - [Usage](./PipelinesUsage)
-- [Contribution Guide](./ContributionGuide)
-- Upgrade guidelines
-  - [Migration from 0.3.1 to 0.4.0](./Migration%20from%200.3.1%20to%200.4.0.md)
-- [Known Issues](./KnownIssues)
-
----
-
-> **Note**: the following table of contents is still a work in progress and intended to replace the above going forward.
-
-### _Updated Navigation_
 
 - [The context](./The%20context)
   - [CARML overview](./The%20context%20-%20CARML%20overview)
