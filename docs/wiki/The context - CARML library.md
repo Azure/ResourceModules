@@ -40,7 +40,7 @@ A CARML module should comply with the following characteristics:
 - **Multi-purpose**: Each module aims to cover most of the main resource's capabilities, without the need to maintain multiple module instances for different use cases. Instead, the consumption of a generalized module happens through parameter files​.
   > For example the same virtual machine module can deploy a Windows OS VM or a Linux-based VM depending on input parameters.
 - **Integrates child resources**: Each module can deploy **_one_** instance of a resource and optionally **_n_** instances of its child-resources.
-  > For example a key vault can optionally deploy n-amount of key vault access policies.
+  > For example, the key vault module can deploy **_one_** key vault and optionally **_n_** key vault access policies.
 - **Integrates extension resources**: Extension resources are integrated with resource modules supporting them. Intended extension resources are diagnostic settings, role assignments, private endpoints, locks and managed identities.
   > For example an automation account can optionally deploy private endpoints and/or diagnostic settings to support monitoring.
 
