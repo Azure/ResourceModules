@@ -323,7 +323,7 @@ The modules provided by this repo can be orchestrated to create more complex inf
 
 #### Summary
 
-1. Below is an example which uses a _multi-repository_ approach
+1. Below you can find an example which uses makes use of multiple repositories to orchestrat the deployment (also known as a _multi-repository_ approach)
 1. It fetches the _public_ **Azure/ResourceModules** repo for consuming bicep modules and uses the parameter files present in the _private_ **Contoso/MultiRepoTest** repo for deploying infrastructure
 1. This example is creating a Resource group, an NSG and a VNet -
     1. Job: **Deploy multi-repo solution**
