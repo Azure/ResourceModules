@@ -43,7 +43,7 @@ The parameter files used in this stage should ideally cover as many configuratio
 
 This paragraph describes how the removal of resources deployed by a module is performed and how to modify the default behavior if a specific module or resource type needs it.
 
-The removal step is triggered after the deployment completes. It takes care of removing all resources deployed as part of the previous deployment step. The reason is twofold:
+The removal step is triggered after the deployment completes. It removes all resources deployed in the previous deployment step. The reason is twofold:
 
 - Make sure to keep the validation subscription cost as low as possible.
 - Allow test deployments from scratch at every run.
