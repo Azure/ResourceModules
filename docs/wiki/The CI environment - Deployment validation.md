@@ -29,7 +29,7 @@ The intention of this test is to **fail fast**, before getting to the later depl
 
 # Azure deployment validation
 
-This step performs the actual Azure deployments using each available & configured module parameter file. The purpose of this step is to prove the module can be deployed in different configurations based on the different input provided. Deployments for the different variants happen in parallel.
+This step performs the actual Azure deployments using each available & configured module parameter file. The purpose of this step is to prove the module can be deployed in different configurations based on the different parameters provided. Deployments for the different variants happen in parallel.
 
 The parameter files used in this stage should ideally cover as many configurations as possible to validate the template flexibility, i.e. to verify that the module can cover multiple scenarios in which the same Azure resource may be used. Using the example of a CosmosDB module we may want to have one parameter file for the minimum amount of required parameters, one parameter file for each CosmosDB type to test individual configurations and at least one parameter file testing the supported extension resources such as RBAC & diagnostic settings.
 
