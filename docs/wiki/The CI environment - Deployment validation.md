@@ -54,7 +54,7 @@ However, the removal step can be skipped in case further investigation on the de
 
 The removal process will remove all resources created by the deployment. The list of resources is identified by:
 
-1. Recursively fetching the list of resource IDs created through your deployment (resources created by deployments created by the parent one will be fetched too).
+1. Recursively fetching the list of resource IDs created in the deployment (identified via the used deployment name).
 1. Ordering the list based on resource IDs segment count (ensures child resources are removed first. E.g. `storageAccount/blobServices` comes before `storageAccount` as it has one more segments delimited by `/`).
 1. Filtering out from the list any resource used as dependencies for different modules (e.g. the commonly used Log Analytics workspace).
 1. Moving specific resource types to the top of the list (if a certain order is required). For example `vWAN` requires its `Virtual Hubs` to be removed first, even though they are no child-resources.
