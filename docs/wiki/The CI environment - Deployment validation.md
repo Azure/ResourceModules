@@ -15,7 +15,7 @@ This section provides an overview of the principles the deployment validation is
 
 The deployment validation phase can be divided into three steps, running in sequence:
 
-- Template validation: Tests the module template is valid before the actual deployment.
+- **Template validation:** Tests the module template is valid before the actual deployment.
 - **Azure deployment validation:** Performs the actual Azure deployments.
 - **Resource removal:** Deletes deployed resources.
 
