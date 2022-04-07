@@ -52,7 +52,7 @@ However, the removal step can be skipped in case further investigation on the de
 
 ### How it works
 
-The removal process will remove all resources created during deployment. The list is identified by:
+The removal process will remove all resources created by the deployment. The list of resources is identified by:
 
 1. Recursively fetching the list of resource IDs created through your deployment (resources created by deployments created by the parent one will be fetched too).
 1. Ordering the list based on resource IDs segment count (ensures child resources are removed first. E.g. `storageAccount/blobServices` comes before `storageAccount` as it has one more segments delimited by `/`).
