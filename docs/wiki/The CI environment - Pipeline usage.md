@@ -77,7 +77,7 @@ This section focuses on _GitHub_ Actions & Workflows.
   ### Register a workflow
 
   To register a workflow in _GitHub_ you have to create the workflow file (`.yml`) and store it inside the folder `.github/workflows`.
-  > ***Note:*** Once merged to [main\|master], GitHub will automatically list the new workflow in the 'Actions' tab.
+  > ***Note:*** Once merged to [main\|master], GitHub will automatically list the new workflow in the 'Actions' tab. Workflows are not registered from a branch unless you specify a temporal push trigger targeting your branch.
 
 </details>
 
