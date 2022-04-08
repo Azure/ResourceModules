@@ -21,7 +21,7 @@ The following activities are run executing the `arm/.global/global.module.tests.
 - **Deployment template tests** check the template's structure and elements for errors as well as consistency matters. e.g.
   - template file (or the built bicep template) converts from JSON and has all expected properties
   - variable names are camelCase
-  - the minimum set of outputs are returned
+  - the minimum set of outputs is returned
 - **Module (readme.md) documentation** contains all required sections. e.g.:
   - is not empty
   - contains all the mandatory sections
