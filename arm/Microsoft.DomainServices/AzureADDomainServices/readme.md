@@ -2,107 +2,125 @@
 
 This template deploys Azure Active Directory Domain Services (AADDS).
 
+## Navigation
+
+- [Resource types](#Resource-types)
+- [Parameters](#Parameters)
+- [Considerations](#Considerations)
+- [Get base64encoded code from pfx](#Get-base64encoded-code-from-pfx)
+- [Outputs](#Outputs)
+- [Template references](#Template-references)
+
 ## Resource types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.AAD/DomainServices` | 2021-05-01 |
-| `Microsoft.Insights/diagnosticSettings` | 2021-05-01-preview |
+| `Microsoft.AAD/domainServices` | 2021-05-01 |
 | `Microsoft.Authorization/locks` | 2017-04-01 |
 | `Microsoft.Authorization/roleAssignments` | 2021-04-01-preview |
+| `Microsoft.Insights/diagnosticSettings` | 2021-05-01-preview |
 
 ## Parameters
 
-| Parameter Name | Type | Default Value | Possible Values | Description |
+**Required parameters**
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `domainName` | string | The domain name specific to the Azure ADDS service. |
+
+**Optional parameters**
+| Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `domainName` | string |  |  | Required. The domain name specific to Azure ADDS Services only - not recommended to use <<domain>>.onmicrosoft.com for production |
-| `sku` | string |  | Standard | Required. The name of the sku specific to Azure ADDS Services. |
-| `subnetId` | string |  |  | Required. The subnet Id to deploy the Azure ADDS Services. |
-| `location` | string |  |  | Required: The location to deploy the Azure ADDS Services. |
-| `pfxCertificate` | string | | | Required: The value is the base64encoded representation of the certificate pfx file. Refer below section to generate this. |
-| `pfxCertificatePassword` | string | |  | Required: The value is to decrypt the provided Secure LDAP certificate pfx file. |
-| `additionalRecipients` | array |  |  | Required: The email recipient value to receive alerts. |
-| `domainConfigurationType` | string | `enabled` |  | Optional: The value is to provide domain configuration type. |
-| `filteredSync` | string | `enabled`  |  | Optional: The value is to synchronise scoped users and groups. |
-| `tlsV1` | string | `enabled`  |  | Optional: The value is to enable clients making request using TLSv1. |
-| `ntlmV1` | string | `enabled` | | Optional: The value is to enable clients making request using NTLM v1. |
-| `syncNtlmPasswords` | string  | `enabled` |  | Optional: The value is to enable synchronised users to use NTLM authentication. |
-| `syncOnPremPasswords` | string | `enabled`  |  | Optional: The value is to enable on-premises users to authenticate against managed domain. |
-| `kerberosRc4Encryption` | string | `enabled`  |  | Optional: The value is to enable Kerberos requests that use RC4 encryption. |
-| `kerberosArmoring` | string | `enabled`  |  | Optional: The value is to enable to provide a protected channel between the Kerberos client and the KDC. |
-| `notifyDcAdmins` | string  | `enabled`  |  | Optional: The value is to notify the DC Admins. |
-| `notifyGlobalAdmins` | string | `enabled` |  | Optional: The value is to notify the Global Admins. |
-| `ldapexternalaccess` | string  | `enabled`  |  | Required: The value is to enable the Secure LDAP for external services of Azure ADDS Services. |
-| `secureldap` | string  | `enabled`  |  | Required: The value is to enable the Secure LDAP for Azure ADDS Services.|
-| `diagnosticStorageAccountId ` | string  |  |  | Optional. Resource ID of the diagnostic storage account. |
-| `diagnosticWorkspaceId ` | string  |  |  | Optional. Resource ID of the diagnostic log analytics workspace. |
-| `diagnosticEventHubAuthorizationRuleId ` | string  |  |  | Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
-| `diagnosticEventHubName ` | string  | |  | Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
-| `tags ` | object | `{object}` |  | Optional. Tags of the resource. |
-| `diagnosticLogsRetentionInDays` | int  | 365 |  | Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
-| `lock  ` | string |  |  | Optional. Specify the type of lock. |
-| `roleAssignments  ` | array  | `[array]` |  | Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\' |
-| `logsToEnable   ` | array  | `[array]` |  | optional. The name of logs that will be streamed. |
+| `diagnosticEventHubAuthorizationRuleId` | string |  |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
+| `diagnosticEventHubName` | string |  |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
+| `diagnosticLogsRetentionInDays` | int | `365` |  | Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
+| `diagnosticStorageAccountId` | string |  |  | Resource ID of the diagnostic storage account. |
+| `diagnosticWorkspaceId` | string |  |  | Resource ID of the diagnostic log analytics workspace. |
+| `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Specify the type of lock. |
+| `logsToEnable` | array | `[SystemSecurity, AccountManagement, LogonLogoff, ObjectAccess, PolicyChange, PrivilegeUse, DetailTracking, DirectoryServiceAccess, AccountLogon]` | `[SystemSecurity, AccountManagement, LogonLogoff, ObjectAccess, PolicyChange, PrivilegeUse, DetailTracking, DirectoryServiceAccess, AccountLogon]` | The name of logs that will be streamed. |
+| `name` | string | `[parameters('domainName')]` |  | The name of the AADDS resource. Defaults to the domain name specific to the Azure ADDS service. |
+| `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
+| `tags` | object | `{object}` |  | Tags of the resource. |
 
-### Parameter Usage: `Azure ADDS`
+**Required: The email recipient value to receive alerts parameters**
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
 
-Below you can find an example for the Azure Active Directory Domain Services(Azure ADDS) property's usage. For creating a key vault please refer to key vault module page.
+**Optional: The value is to enable Kerberos requests that use RC4 encryption - This is enabled by default parameters**
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
 
-```json
-{
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "domainName": {
-            "value": "carml.onmicrosoft.com"
-        },
-        "sku": {
-            "value": "standard"
-        },
-        "subnetId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001"
-        },
-        "pfxCertificate": {
-            "reference": {
-                "keyVault": {
-                    "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/<<namePrefix>>-az-kv-x-001"
-                },
-                "secretName": "<<secret name>>"
-            }
-        },
-        "pfxCertificatePassword": {
-            "reference": {
-                "keyVault": {
-                    "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/<<namePrefix>>-az-kv-x-001"
-                },
-                "secretName": "<<secret name>>"
-            }
-        },
-        "additionalRecipients": {
-            "value": "CARML@noreply.github.com"
-        },
-        "diagnosticWorkspaceId": {
-           "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001"
-        },
-        "diagnosticStorageAccountId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
-        },
-        "diagnosticEventHubAuthorizationRuleId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
-        },
-        "diagnosticEventHubName": {
-            "value": "adp-<<namePrefix>>-az-evh-x-001"
-        },
-        "lock": {
-            "value": "NotSpecified"
-        }
-    }
-}
-```
+**Optional: The value is to enable synchronised users to use NTLM authentication - This is enabled by default parameters**
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+
+**Required: The location to deploy the Azure ADDS Services parameters**
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+
+**Optional: The value is to enable to provide a protected channel between the Kerberos client and the KDC - This is enabled by default parameters**
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+
+**Required: The value is the base64encoded representation of the certificate pfx file parameters**
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+
+**Required: The value is to decrypt the provided Secure LDAP certificate pfx file parameters**
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+
+**Optional: The value is to notify the Global Admins - This is enabled by default parameters**
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+
+**Optional: The value is to notify the DC Admins - This is enabled by default  parameters**
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+
+**Required: The value is to enable the Secure LDAP for external services of Azure ADDS Services parameters**
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+
+**Optional: The value is to enable clients making request using TLSv1 - This is enabled by default parameters**
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+
+**Required: The subnet Id to deploy the Azure ADDS Services parameters**
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+
+**Required: The value is to enable the Secure LDAP for Azure ADDS Services parameters**
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+
+**Optional: Additional replica set for the managed domain parameters**
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+
+**Optional: The value is to enable on-premises users to authenticate against managed domain - This is enabled by default parameters**
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+
+**Optional: The value is to enable clients making request using NTLM v1 - This is enabled by default parameters**
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+
+**Optional: The value is to synchronise scoped users and groups - This is enabled by default parameters**
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+
+**Required: The name of the sku specific to Azure ADDS Services - Standard is the default parameters**
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+
+**Optional: The value is to provide domain configuration type parameters**
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+
 
 ### Parameter Usage: `roleAssignments`
 
-Create a role assignment for the given resource. If you want to assign a service principal / managed identity that is created in the same deployment, make sure to also specify the `'principalType'` parameter and set it to 'ServicePrincipal'. This will ensure the role assignment waits for the principal's propagation in Azure.
+Create a role assignment for the given resource. If you want to assign a service principal / managed identity that is created in the same deployment, make sure to also specify the `'principalType'` parameter and set it to `'ServicePrincipal'`. This will ensure the role assignment waits for the principal's propagation in Azure.
 
 ```json
 "roleAssignments": {
@@ -158,13 +176,13 @@ Follow the below powershell commands to generate the base64 encoded code from a 
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the Azure Active Directory Domain Services(Azure ADDS) |
-| `resourceGroupName` | string | The name of the resource group the Azure Active Directory Domain Services(Azure ADDS) was created in |
+| `name` | string | The domain name of the Azure Active Directory Domain Services(Azure ADDS) |
+| `resourceGroupName` | string | The name of the resource group the Azure Active Directory Domain Services(Azure ADDS) was created in. |
 | `resourceId` | string | The resource ID of the Azure Active Directory Domain Services(Azure ADDS) |
 
 ## Template references
 
-- [AzureADDS](https://docs.microsoft.com/en-us/azure/templates/microsoft.aad/2021-05-01/domainservices)
 - [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings)
+- [Domainservices](https://docs.microsoft.com/en-us/azure/templates/Microsoft.AAD/2021-05-01/domainServices)
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
 - [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)
