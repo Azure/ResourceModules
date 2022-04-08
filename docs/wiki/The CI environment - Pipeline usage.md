@@ -25,6 +25,7 @@ To validate updates to a module template, you can perform the following steps:
 1. Select the branch with your updated template.
 1. (Optionally) disable the `Remove deployed module` input parameter in case you don't want to apply the default behavior and want to skip the deletion of the test-deployed resources to check them post-deployment.
 1. (Optionally) adjust the `Publish prerelease module` flag in case you want to publish a prerelease version of your updated module from your development branch.
+   > **Note:** The module version is assigned a prerelease suffix
 1.  Trigger the pipeline.
 
 Once the pipeline concludes, it will either be in a green (success) or red (failed) state, depending on how the module performed.
