@@ -32,7 +32,7 @@ The publishing works as follows:
    3. The module is published with a patch specific version (`x.y.z`). For Template Specs and Bicep Registry a major (`x`) and minor (`x.x`) version is also updated, allowing a consumer to use the latest version of any major or minor version.
    1. For a changed child module, the direct parent hierarchy is also registered for an update, following the same procedure as above.
    1. The list of module files paths and their versions are passed on as a array list.
-2. The different publishing scripts run (Artifact, Template Spec or Bicep Registry) and publish the module to the respective target location for each item on the list.
+1. The different publishing scripts run (Artifact, Template Spec or Bicep Registry) and publish the module to the respective target location for each item on the list.
 
 ## Example scenario
 
