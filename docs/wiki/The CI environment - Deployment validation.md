@@ -73,7 +73,7 @@ This paragraph is intended for CARML contributors who want to add a new module t
 
 The default removal procedure works for most of the modules. As such it is unlikely you'll have to change anything to enable your new module for removal post-deployment.
 
-You can define a custom removal procedure by:
+However, if you need to, you can define a custom removal procedure by:
 1. influencing the **order** in which resources are removed by prioritizing specific resource types
     > **Example** Removing a _Virtual WAN_ resource requires related resources to be deleted in a specific order
 1. defining a **custom removal action** to remove a resource of a _specific resource type_
