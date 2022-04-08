@@ -71,7 +71,7 @@ It uses several helper scripts that can be found in its `helper` sub-folder
 
 This paragraph is intended for CARML contributors who want to add a new module to the library. It contains instructions on how to customize the removal scripts if needed for any specific resource.
 
-The default removal procedure works fine for most of the modules created so far, so it's likely you won't have to change anything to make the module you're editing to be removed correctly after deployment.
+The default removal procedure works for most of the modules. As such it is unlikely you'll have to change anything to enable your new module for removal post-deployment.
 
 You can define a custom removal procedure by:
 1. influencing the **order** in which resources are removed by prioritizing specific resource types
