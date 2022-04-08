@@ -50,7 +50,7 @@ Lets look at an example run where we would do a patch change on the `fileShares`
    - `0.3.503-prerelease`
    - ...
    - `0.3.506-prerelease`
-6. When the branch is merged to the default branch, the only thing that changes is the patch version and the removal of the `-prerelease` segment.
+1. When the branch is merged to the default branch, the only thing that changes is the patch version and the removal of the `-prerelease` segment.
    - The number of commits will at this point be calculated based on the number of commits on the default branch.
    - Assuming the development branch started from commit 500 on the default branch, and the author added 6 commits on the development branch, the prerelease versions will reach `0.3.506-prerelease`.
    - Meanwhile, there can be changes (let's say 2 squashed PR merges) on the default branch that is pushing its number of commits in history further.
