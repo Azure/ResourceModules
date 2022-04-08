@@ -39,9 +39,14 @@ To add a new module pipeline we recommend to create a copy of a currently existi
 
 The dependency pipeline must be triggered manually and deploys a set of resources we reference as part of our module tests (e.g. Virtual Networks, Log Analytics Workspace, Key Vaults).
 
-Triggering the pipeline is as easy as navigating to it in your corresponding DevOps tool and running the pipeline.
+1. On the DevOps platform, navigate to the dependencies pipeline.
+1. (Optionally) Select the branch with your updated template.
+1. (Optionally) enable the `'Enable SqlMI dependency deployment' switch` to include the deployment of the dependencies for the [SQL managed instance] module.
+1. (Optionally) enable the `'Enable deployment of a vhd stored in a blob container' switch` to include the deployment of the dependencies for the [Compute Images] and [Compute Disks] modules.
+  > Note: This task requires up to two hours completion.
+1.  Trigger the pipeline.
 
-> **Note:** While operating the dependency pipeline is simple, make sure to set it up correctly as described in the [Getting Started - Dependency pipeline](./Getting%20started%20-%20Dependency%20pipeline) section.
+> **Note:** For details about the dependencies pipeline design please refer to the dedicated [Dependencies pipeline design](./The%20CI%20environment%20-%20Pipeline%20design.md#dependencies-pipeline) section.
 
 ## Add a new dependency
 
