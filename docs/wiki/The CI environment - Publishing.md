@@ -55,7 +55,7 @@ Lets look at an example run where we would do a patch change on the `fileShares`
    - Assuming the development branch started from commit 500 on the default branch, and the author added 6 commits on the development branch, the prerelease versions will reach `0.3.506-prerelease`.
    - Meanwhile, there can be changes (let's say 2 squashed PR merges) on the default branch that is pushing its number of commits in history further.
    - If the PR for the changes to `fileShare` is squash merged as commit number 503, the patch version on the child and parent module is then `503`, resulting in a version `0.3.503` being published.
-7. The merge triggers cascading updates in the following way:
+1. The merge triggers cascading updates in the following way:
    - The module is published with a `major.minor.patch` version as well as a `major.minor` and `major` version updates, allowing consumers to target the latest major or minor version with ease.
    - All parent module are published following the steps mentioned above.
 
