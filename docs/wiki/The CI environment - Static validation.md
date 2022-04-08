@@ -10,7 +10,7 @@ This section provides an overview of the principles the static validation is bui
 
 # Static code validation
 
-All module Unit tests are performed with the help of [Pester](https://github.com/pester/Pester) and are required to have consistent, clean and syntactically correct tests to ensure that our modules are configured correctly, documentation is up to date, and modules don't turn stale.
+All module Unit tests are performed with the help of [Pester](https://github.com/pester/Pester) and ensure that our modules are configured correctly, documentation is up to date, and modules don't turn stale.
 
 The following activities are run executing the `arm/.global/global.module.tests.ps1` script.
 
@@ -21,7 +21,7 @@ The following activities are run executing the `arm/.global/global.module.tests.
 - **Deployment template tests** check the template's structure and elements for errors as well as consistency matters. e.g.
   - template file (or the built bicep template) converts from JSON and has all expected properties
   - variable names are camelCase
-  - the minimum set of outputs are returned
+  - the minimum set of outputs is returned
 - **Module (readme.md) documentation** contains all required sections. e.g.:
   - is not empty
   - contains all the mandatory sections
@@ -29,6 +29,7 @@ The following activities are run executing the `arm/.global/global.module.tests.
 - **Parameter Files**. e.g.:
   - at least one `*parameters.json` exists
   - files should be valid JSON
+  - contains all required parameters
 
 ## Output example
 

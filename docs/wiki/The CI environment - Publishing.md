@@ -28,34 +28,34 @@ The publishing works as follows:
 
 1. The script `utilities/pipelines/resourcePublish/Get-ModulesToPublish.ps1` gets all changed module files including child modules and handles the logic of propagating the appropriate module version to be used:
    1. The major (`x.0`) and minor (`0.x`) version are set based on the file `version.json` in the module folder.
-   2. The patch (`0.0.x`) version is calculated based on the number of commits on the `HEAD` ref (aka. git height). This will cause the patch version to never reset to 0 with major and/or minor increment, as specified for [semver](https://semver.org/).
+   1. The patch (`0.0.x`) version is calculated based on the number of commits on the `HEAD` ref (aka. git height). This will cause the patch version to never reset to 0 with major and/or minor increment, as specified for [semver](https://semver.org/).
    3. The module is published with a patch specific version (`x.y.z`). For Template Specs and Bicep Registry a major (`x`) and minor (`x.x`) version is also updated, allowing a consumer to use the latest version of any major or minor version.
    1. For a changed child module, the direct parent hierarchy is also registered for an update, following the same procedure as above.
    1. The list of module files paths and their versions are passed on as a array list.
-2. The different publishing scripts run (Artifact, Template Spec or Bicep Registry) and publish the module to the respective target location for each item on the list.
+1. The different publishing scripts run (Artifact, Template Spec or Bicep Registry) and publish the module to the respective target location for each item on the list.
 
 ## Example scenario
 
 Lets look at an example run where we would do a patch change on the `fileShares` module:
 1. A new branch is created for further development of the `fileShare` module. Let's assume the new branch started from commit `500` on the default branch and the `version.json` of the `fileShare` module contains major and minor `0.3`.
-2. Bug-fixes, documentation, and security updates are added to the `fileShare` module by the author. The `version.json` file is not changed in either the child or parent module folders.
-3. The author runs a manual workflow based on their development branch, with the 'publish pre-release' option enabled.
-4. A prerelease run of publishing triggers after test and validation of the module.
+1. Bug-fixes, documentation, and security updates are added to the `fileShare` module by the author. The `version.json` file is not changed in either the child or parent module folders.
+1. The author runs a manual workflow based on their development branch, with the 'publish prerelease' option enabled.
+1. A prerelease run of publishing triggers after test and validation of the module.
    - For the child and parent modules, the module version's major and minor version is read from the `version.json` file in the module folder respectively. Being unchanged, it still contains the version `0.3`.
    - The patch is calculated based on the total number of commits in history on the branch (independent on the module). The new branch started from commit `500` on the default branch and 1 commit has been pushed, so the total number of commits on the new branch is `501`.
    - As the pipeline is not running based on the 'default branch', a prerelease segment (`-prerelease`) is added to the version.
    - The version results in being `0.3.501-prerelease`. The child and parent modules may have different major and minor versions, but the patch version will be the same in this case. Other unmodified child modules of `storageAccount` will not be republished and remain with the existing version.
-5. Sequential commits on the branch and runs of the module pipeline, with the 'publish pre-release' option enabled results in the following versions being published:
+1. Sequential commits on the branch and runs of the module pipeline, with the 'publish pre-release' option enabled results in the following versions being published:
    - `0.3.502-prerelease`
    - `0.3.503-prerelease`
    - ...
    - `0.3.506-prerelease`
-6. When the branch is merged to the default branch, the only thing that changes is the patch version and the removal of the `-prerelease` segment.
+1. When the branch is merged to the default branch, the only thing that changes is the patch version and the removal of the `-prerelease` segment.
    - The number of commits will at this point be calculated based on the number of commits on the default branch.
    - Assuming the development branch started from commit 500 on the default branch, and the author added 6 commits on the development branch, the prerelease versions will reach `0.3.506-prerelease`.
    - Meanwhile, there can be changes (let's say 2 squashed PR merges) on the default branch that is pushing its number of commits in history further.
    - If the PR for the changes to `fileShare` is squash merged as commit number 503, the patch version on the child and parent module is then `503`, resulting in a version `0.3.503` being published.
-7. The merge triggers cascading updates in the following way:
+1. The merge triggers cascading updates in the following way:
    - The module is published with a `major.minor.patch` version as well as a `major.minor` and `major` version updates, allowing consumers to target the latest major or minor version with ease.
    - All parent module are published following the steps mentioned above.
 

@@ -1,4 +1,4 @@
-This section provides an overview of the design principles followed by the CARML CI environment pipelines.
+This section provides an overview of the design principles applied to the CARML CI environment pipelines.
 
 ---
 
@@ -131,7 +131,7 @@ The dependencies pipeline comes with the following runtime parameters:
 
 ## ReadMe pipeline
 
-The repository includes two major ReadMe files that require to stay in sync with the provided modules.
+The repository includes two major ReadMe files that should stay in sync with the available modules.
 
 The first can be found in the repository root (`README.md`) and the second in the modules folder (`arm/README.md`).
 
@@ -141,6 +141,6 @@ Once triggered, the pipeline crawls through the library and updates the tables i
 
 ## Wiki pipeline
 
-The purpose of the Wiki pipeline is to sync any files from the `docs/wiki` folder to the GitHub wiki repository. It is triggered each time changes are pushed to the `main` branch and only if files in the `docs/wiki` folder are altered.
+The purpose of the Wiki pipeline is to sync any files from the `docs/wiki` folder to the wiki repository. It is triggered each time changes are pushed to the `main` branch and only if files in the `docs/wiki` folder are altered.
 
 > **Note:** Any changes performed directly on the Wiki via the UI will be overwritten by this pipeline.

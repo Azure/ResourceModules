@@ -16,14 +16,15 @@ This section provides a guideline on how to use the CARML CI environment pipelin
 
 # Operate the module pipelines
 
-To validate any updates you did to a module template you can perform the following steps:
+To validate updates to a module template, you can perform the following steps:
 
 1. (Optionally) Update the module's parameter files to reflect your changes.
 1. Push the local changes to the repository (using a branch that is not [main\|master]).
 1. On the DevOps platform, navigate to your pipelines and select the pipeline that was registered for the module you updated.
 1. Select the branch with your updated template.
-1. (Optionally) disable the `Remove deployed module` input parameter in case you don't want to apply the default behavior, and want to skip the deletion of the test-deployed resource to check it after deployment.
+1. (Optionally) disable the `Remove deployed module` input parameter in case you don't want to apply the default behavior and want to skip the deletion of the test-deployed resources to check them post-deployment.
 1. (Optionally) adjust the `Publish prerelease module` flag in case you want to publish a prerelease version of your updated module from your development branch.
+   > **Note:** The module version is assigned a prerelease suffix
 1.  Trigger the pipeline.
 
 Once the pipeline concludes, it will either be in a green (success) or red (failed) state, depending on how the module performed.
@@ -76,7 +77,7 @@ This section focuses on _GitHub_ Actions & Workflows.
   ### Register a workflow
 
   To register a workflow in _GitHub_ you have to create the workflow file (`.yml`) and store it inside the folder `.github/workflows`.
-  > ***Note:*** Once merged to [main\|master], GitHub will automatically list the new workflow in the 'Actions' tab.
+  > ***Note:*** Once merged to [main\|master], GitHub will automatically list the new workflow in the 'Actions' tab. Workflows are not registered from a branch unless you specify a temporal push trigger targeting your branch.
 
 </details>
 
