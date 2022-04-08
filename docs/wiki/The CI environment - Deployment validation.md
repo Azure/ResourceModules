@@ -56,7 +56,7 @@ The removal process will remove all resources created by the deployment. The lis
 
 1. Recursively fetching the list of resource IDs created in the deployment (identified via the used deployment name).
 1. Ordering the list based on resource IDs segment count (ensures child resources are removed first. E.g. `storageAccount/blobServices` comes before `storageAccount` as it has one more segments delimited by `/`).
-1. Filtering out from the list any resource used as dependencies for different modules (e.g. the commonly used Log Analytics workspace).
+1. Filtering out resources used as dependencies for different modules from the list (e.g. the commonly used Log Analytics workspace).
 1. Moving specific resource types to the top of the list (if a certain order is required). For example `vWAN` requires its `Virtual Hubs` to be removed first, even though they are no child-resources.
 
 After a resource is removed (this happens after each resource in the list), the script will execute, if defined, a **post removal operation**. This can be used for those resource types that requires a post processing, like purging a soft-deleted key vault.
