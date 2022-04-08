@@ -43,7 +43,7 @@ The dependency pipeline must be triggered manually and deploys a set of resource
 1. (Optionally) Select the branch with your updated template.
 1. (Optionally) enable the `'Enable SqlMI dependency deployment' switch` to include the deployment of the dependencies for the [SQL managed instance] module.
 1. (Optionally) enable the `'Enable deployment of a vhd stored in a blob container' switch` to include the deployment of the dependencies for the [Compute Images] and [Compute Disks] modules.
-  > Note: This task requires up to two hours completion.
+   > Note: This task requires up to two hours completion.
 1.  Trigger the pipeline.
 
 > **Note:** For details about the dependencies pipeline design please refer to the dedicated [Dependencies pipeline design](./The%20CI%20environment%20-%20Pipeline%20design.md#dependencies-pipeline) section.

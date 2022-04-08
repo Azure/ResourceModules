@@ -117,6 +117,10 @@ For example any instance of the [Virtual Machine] module needs an existing virtu
 
 The dependencies pipeline covers this requirement and is intended to be run before executing module pipelines successfully.
 
+The pipeline leverages resource parameters from the `utilities\dependencies` subfolder and either one of the following pipelines:
+- GitHub workflow: `.github\workflows\platform.dependencies.yml`
+- Azure DevOps pipeline: `.azuredevops\platformPipelines\platform.dependencies.yml`
+
 ### Dependencies pipeline inputs
 
 The dependencies pipeline comes with the following runtime parameters:
@@ -129,13 +133,9 @@ The dependencies pipeline comes with the following runtime parameters:
 
 ### Resources deployed by the dependency workflow
 
-Together with the resource modules pipelines, we are providing a dependency pipeline, leveraging resource parameters from the `utilities\dependencies` subfolder and either one of the following pipelines:
-- GitHub workflow: `.github\workflows\platform.dependencies.yml`
-- Azure DevOps pipeline: `.azuredevops\platformPipelines\platform.dependencies.yml`
+The resources deployed by the dependency workflow need to be in place before testing all the modules.
 
-The resources deployed by the dependency workflow need to be in place before testing all the modules. Some of them (e.g. [storage account], [key vault] and [event hub namespace]) require a globally unique resource name. Before running the dependency workflow, it is required to update those values and their corresponding references in the resource modules parameters.
-
-> Note: By default, the parameter files make use of the placeholder token `'<<namePrefix>>'` to make all resource names specific to an environment. Refer to [Parameter File Tokens Design](./The%20CI%20environment%20-%20Token%20replacement) for more details.
+> Note: Some dependency resources (e.g. [storage account], [key vault] and [event hub namespace]) require a globally unique resource name. By default, the parameter files make use of the placeholder token `'<<namePrefix>>'` to make all resource names specific to an environment. Refer to [Parameter File Tokens Design](./The%20CI%20environment%20-%20Token%20replacement) for more details.
 
 Since also dependency resources are in turn subject to dependencies with each other, resources are deployed in the following grouped order.
 
