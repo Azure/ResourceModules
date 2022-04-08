@@ -107,7 +107,7 @@ To add a **post-removal** step:
 
 # Verify the deployment validation of your module locally
 
-This paragraph is intended for CARML contributors or more generally for those leveraging the CARML CI environment and having the need to update or add a new module to the library.
+This paragraph is intended for CARML contributors or more generally for those leveraging the CARML CI environment and want to update or add a new module to the library.
 
 Refer to the below snippet to optionally leverage the 'Test-ModuleLocally.ps1' script and verify if your module will comply with the deployment validation step before pushing to source control.
 
