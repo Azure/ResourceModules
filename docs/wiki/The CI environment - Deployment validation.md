@@ -118,7 +118,8 @@ $pathToRepository = '<pathToClonedRepo>'
 
 # REQUIRED INPUT FOR TESTING
 $TestModuleLocallyInput = @{
-    templateFilePath              = "$pathToRepository\arm\Microsoft.Authorization\roleDefinitions\deploy.bicep"
+    templateFilePath              = '<Path to a module deploy.bicep>'
+    parameterFilePath            = '<Optional path to a module parameter.json>'
     PesterTest                    = $false
     DeploymentTest                = $true
     ValidationTest                = $true
