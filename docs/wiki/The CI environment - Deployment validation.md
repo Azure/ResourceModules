@@ -65,7 +65,7 @@ The procedure is initiated by the script `/utilities/pipelines/resourceRemoval/I
 - (Azure DevOps) `/.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml`
 - (GitHub) `/.github/actions/templates/validateModuleDeployment/action.yml`
 
-It uses several helper scripts that can be found in the `/utilities/pipelines/resourceRemoval/helper` folder
+It uses several helper scripts that can be found in its `helper` sub-folder
 
 ### Create a specialized removal procedure
 
