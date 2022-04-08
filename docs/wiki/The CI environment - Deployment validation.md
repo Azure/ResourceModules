@@ -102,7 +102,7 @@ To add a **post-removal** step:
 1. Open the `/utilities/pipelines/resourceRemoval/helper/Invoke-ResourcePostRemoval.ps1` file.
 1. Look for the following comment: `### CODE LOCATION: Add custom post-removal operation here`
 1. Add a case value that matches the resource type you want to add a post-removal operation for
-1. In the case block, define the resource-type-specific post removal action
+1. In the case block, define the resource-type-specific post-removal action
 
 
 # Verify the deployment validation of your module locally
