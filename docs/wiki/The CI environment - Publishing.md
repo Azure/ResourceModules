@@ -45,7 +45,7 @@ Lets look at an example run where we would do a patch change on the `fileShares`
    - The patch is calculated based on the total number of commits in history on the branch (independent on the module). The new branch started from commit `500` on the default branch and 1 commit has been pushed, so the total number of commits on the new branch is `501`.
    - As the pipeline is not running based on the 'default branch', a prerelease segment (`-prerelease`) is added to the version.
    - The version results in being `0.3.501-prerelease`. The child and parent modules may have different major and minor versions, but the patch version will be the same in this case. Other unmodified child modules of `storageAccount` will not be republished and remain with the existing version.
-5. Sequential commits on the branch and runs of the module pipeline, with the 'publish pre-release' option enabled results in the following versions being published:
+1. Sequential commits on the branch and runs of the module pipeline, with the 'publish pre-release' option enabled results in the following versions being published:
    - `0.3.502-prerelease`
    - `0.3.503-prerelease`
    - ...
