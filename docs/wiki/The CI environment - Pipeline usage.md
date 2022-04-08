@@ -4,7 +4,6 @@ This section provides a guideline on how to use the CARML CI environment pipelin
 
 ### _Navigation_
 
-
 - [Operate the module pipelines](#operate-the-module-pipelines)
   - [Add a new module pipeline](#add-a-new-module-pipeline)
 - [Operate the dependency pipelines](#operate-the-dependency-pipeline)
@@ -34,6 +33,7 @@ Pipeline logs are available for troubleshooting and provide detailed information
 ## Add a new module pipeline
 
 To add a new module pipeline we recommend to create a copy of a currently existing module pipeline and adjust all module-specific properties. The registration of the pipeline depends on the [DevOps platform](#devops-tool-specific-guidance) you're using.
+
 # Operate the dependency pipeline
 
 The dependency pipeline must be triggered manually and deploys a set of resources we reference as part of our module tests (e.g. Virtual Networks, Log Analytics Workspace, Key Vaults).

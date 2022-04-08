@@ -83,8 +83,6 @@ You can define a custom removal procedure by:
 
 Those methods can be combined independently.
 
-> **Important**: _custom_ and _post-removal_ actions will be executed when a resource of the type you specify is removed **regardless** of which deployment triggered the deployment. Make sure you do not assume the resource is in a particular state defined by your module.
-
 To modify the resource types removal **order**:
 1. Open the `/utilities/pipelines/resourceRemoval/Initialize-DeploymentRemoval.ps1` file.
 1. Look for the following comment: `### CODE LOCATION: Add custom removal sequence here`
