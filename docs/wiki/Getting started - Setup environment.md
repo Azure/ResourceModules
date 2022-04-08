@@ -2,21 +2,12 @@ The repository is built so that you can create your own 1:1 instance and be able
 
 This requires several steps:
 
-- [1. Configure your Azure environment](#1-configure-your-azure-environment)
-- [2. Fork/clone the repository into your DevOps environment](#2-forkclone-the-repository-into-your-devops-environment)
-- [3. Configure the CI environment](#3-configure-the-ci-environment)
-  - [3.1 Update default `namePrefix`](#31-update-default-nameprefix)
-  - [3.2 Setup CI-environment-specific configuration](#32-setup-ci-environment-specific-configuration)
-    - [3.2.1 Setup secrets](#321-setup-secrets)
-    - [3.2.2 Setup variables file](#322-setup-variables-file)
-    - [3.2.3 Enable actions](#323-enable-actions)
-    - [3.2.1 Setup service connection](#321-setup-service-connection)
-    - [3.2.2 Setup secrets in variable group](#322-setup-secrets-in-variable-group)
-    - [3.2.3 Setup variables file](#323-setup-variables-file)
-    - [3.2.4 Register pipelines](#324-register-pipelines)
-- [4. Deploy dependencies](#4-deploy-dependencies)
-- [5. Update module parameter files](#5-update-module-parameter-files)
-- [6. (Optional) Convert library to ARM](#6-optional-convert-library-to-arm)
+1. [Configure your Azure environment](#1-configure-your-azure-environment)
+1. [Fork/clone the repository into your DevOps environment](#2-forkclone-the-repository-into-your-devops-environment)
+1. [Configure the CI environment](#3-configure-the-ci-environment)
+1. [Deploy dependencies](#4-deploy-dependencies)
+1. [Update module parameter files](#5-update-module-parameter-files)
+1. [(Optional) Convert library to ARM](#6-optional-convert-library-to-arm)
 
 Depending on the DevOps environment you choose (GitHub or Azure DevOps) make sure you also account for the specific requirements outlined below.
 
