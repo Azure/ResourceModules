@@ -141,6 +141,6 @@ Once triggered, the pipeline crawls through the library and updates the tables i
 
 ## Wiki pipeline
 
-The purpose of the Wiki pipeline is to sync any files from the `docs/wiki` folder to the GitHub wiki repository. It is triggered each time changes are pushed to the `main` branch and only if files in the `docs/wiki` folder are altered.
+The purpose of the Wiki pipeline is to sync any files from the `docs/wiki` folder to the wiki repository. It is triggered each time changes are pushed to the `main` branch and only if files in the `docs/wiki` folder are altered.
 
 > **Note:** Any changes performed directly on the Wiki via the UI will be overwritten by this pipeline.
