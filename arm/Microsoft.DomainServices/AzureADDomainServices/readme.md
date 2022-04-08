@@ -23,100 +23,41 @@ This template deploys Azure Active Directory Domain Services (AADDS).
 ## Parameters
 
 **Required parameters**
-| Parameter Name | Type | Description |
-| :-- | :-- | :-- |
-| `domainName` | string | The domain name specific to the Azure ADDS service. |
+| Parameter Name | Type | Default Value | Description |
+| :-- | :-- | :-- | :-- |
+| `domainName` | string |  | The domain name specific to the Azure ADDS service. |
+| `ldapexternalaccess` | string | `Enabled` | The value is to enable the Secure LDAP for external services of Azure ADDS Services |
+| `location` | string |  | The location to deploy the Azure ADDS Services |
+| `pfxCertificate` | string |  | The value is the base64encoded representation of the certificate pfx file |
+| `pfxCertificatePassword` | secureString |  | The value is to decrypt the provided Secure LDAP certificate pfx file |
+| `secureldap` | string | `Enabled` | The value is to enable the Secure LDAP for Azure ADDS Services |
+| `sku` | string |  | The name of the sku specific to Azure ADDS Services - Standard is the default |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
+| `additionalRecipients` | string |  |  | The email recipient value to receive alerts |
 | `diagnosticEventHubAuthorizationRuleId` | string |  |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string |  |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticStorageAccountId` | string |  |  | Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string |  |  | Resource ID of the diagnostic log analytics workspace. |
+| `domainConfigurationType` | string | `FullySynced` |  | The value is to provide domain configuration type |
+| `filteredSync` | string | `Enabled` |  | The value is to synchronise scoped users and groups - This is enabled by default |
+| `kerberosArmoring` | string | `Enabled` |  | The value is to enable to provide a protected channel between the Kerberos client and the KDC - This is enabled by default |
+| `kerberosRc4Encryption` | string | `Enabled` |  | The value is to enable Kerberos requests that use RC4 encryption - This is enabled by default |
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Specify the type of lock. |
 | `logsToEnable` | array | `[SystemSecurity, AccountManagement, LogonLogoff, ObjectAccess, PolicyChange, PrivilegeUse, DetailTracking, DirectoryServiceAccess, AccountLogon]` | `[SystemSecurity, AccountManagement, LogonLogoff, ObjectAccess, PolicyChange, PrivilegeUse, DetailTracking, DirectoryServiceAccess, AccountLogon]` | The name of logs that will be streamed. |
 | `name` | string | `[parameters('domainName')]` |  | The name of the AADDS resource. Defaults to the domain name specific to the Azure ADDS service. |
+| `notifyDcAdmins` | string | `Enabled` |  | The value is to notify the DC Admins - This is enabled by default  |
+| `notifyGlobalAdmins` | string | `Enabled` |  | The value is to notify the Global Admins - This is enabled by default |
+| `ntlmV1` | string | `Enabled` |  | The value is to enable clients making request using NTLM v1 - This is enabled by default |
+| `replicaSets` | array | `[]` |  | Additional replica set for the managed domain |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
+| `syncNtlmPasswords` | string | `Enabled` |  | The value is to enable synchronised users to use NTLM authentication - This is enabled by default |
+| `syncOnPremPasswords` | string | `Enabled` |  | The value is to enable on-premises users to authenticate against managed domain - This is enabled by default |
 | `tags` | object | `{object}` |  | Tags of the resource. |
-
-
-| Parameter Name | Type | Description |
-| :-- | :-- | :-- |
-| additionalRecipients | string | **Required: The email recipient value to receive alerts parameters** |
-
-**Optional: The value is to enable Kerberos requests that use RC4 encryption - This is enabled by default parameters**
-| Parameter Name | Type | Description |
-| :-- | :-- | :-- |
-
-**Optional: The value is to enable synchronised users to use NTLM authentication - This is enabled by default parameters**
-| Parameter Name | Type | Description |
-| :-- | :-- | :-- |
-
-**Required: The location to deploy the Azure ADDS Services parameters**
-| Parameter Name | Type | Description |
-| :-- | :-- | :-- |
-
-**Optional: The value is to enable to provide a protected channel between the Kerberos client and the KDC - This is enabled by default parameters**
-| Parameter Name | Type | Description |
-| :-- | :-- | :-- |
-
-**Required: The value is the base64encoded representation of the certificate pfx file parameters**
-| Parameter Name | Type | Description |
-| :-- | :-- | :-- |
-
-**Required: The value is to decrypt the provided Secure LDAP certificate pfx file parameters**
-| Parameter Name | Type | Description |
-| :-- | :-- | :-- |
-
-**Optional: The value is to notify the Global Admins - This is enabled by default parameters**
-| Parameter Name | Type | Description |
-| :-- | :-- | :-- |
-
-**Optional: The value is to notify the DC Admins - This is enabled by default  parameters**
-| Parameter Name | Type | Description |
-| :-- | :-- | :-- |
-
-**Required: The value is to enable the Secure LDAP for external services of Azure ADDS Services parameters**
-| Parameter Name | Type | Description |
-| :-- | :-- | :-- |
-
-**Optional: The value is to enable clients making request using TLSv1 - This is enabled by default parameters**
-| Parameter Name | Type | Description |
-| :-- | :-- | :-- |
-
-**Required: The subnet Id to deploy the Azure ADDS Services parameters**
-| Parameter Name | Type | Description |
-| :-- | :-- | :-- |
-
-**Required: The value is to enable the Secure LDAP for Azure ADDS Services parameters**
-| Parameter Name | Type | Description |
-| :-- | :-- | :-- |
-
-**Optional: Additional replica set for the managed domain parameters**
-| Parameter Name | Type | Description |
-| :-- | :-- | :-- |
-
-**Optional: The value is to enable on-premises users to authenticate against managed domain - This is enabled by default parameters**
-| Parameter Name | Type | Description |
-| :-- | :-- | :-- |
-
-**Optional: The value is to enable clients making request using NTLM v1 - This is enabled by default parameters**
-| Parameter Name | Type | Description |
-| :-- | :-- | :-- |
-
-**Optional: The value is to synchronise scoped users and groups - This is enabled by default parameters**
-| Parameter Name | Type | Description |
-| :-- | :-- | :-- |
-
-**Required: The name of the sku specific to Azure ADDS Services - Standard is the default parameters**
-| Parameter Name | Type | Description |
-| :-- | :-- | :-- |
-
-**Optional: The value is to provide domain configuration type parameters**
-| Parameter Name | Type | Description |
-| :-- | :-- | :-- |
+| `tlsV1` | string | `Enabled` |  | The value is to enable clients making request using TLSv1 - This is enabled by default |
 
 
 ### Parameter Usage: `roleAssignments`
