@@ -49,13 +49,13 @@ This example targets a resource group level template.
 
 ```bash
 az group create --name 'ExampleGroup' --location "Central US"
-$inputObject = @(
-    '--name',           'ExampleDeployment',
-    '--resource-group', 'ExampleGroup',
-    '--template-file',  "$home\ResourceModules\arm\Microsoft.KeyVault\vault\deploy.bicep",
-    '--parameters',     'storageAccountType=Standard_GRS',
+inputObject=(
+    '--name'           'ExampleDeployment'
+    '--resource-group' 'ExampleGroup'
+    '--template-file'  "$home/ResourceModules/arm/Microsoft.KeyVault/vault/deploy.bicep"
+    '--parameters'     'storageAccountType=Standard_GRS'
 )
-az deployment group create @inputObject
+az deployment group create ${inputObject[@]}
 ```
 
 ## Deploy remote template
@@ -79,14 +79,13 @@ New-AzResourceGroupDeployment @inputObject
 
 ```bash
 az group create --name 'ExampleGroup' --location "Central US"
-
-$inputObject = @(
-    '--name',           'ExampleDeployment',
-    '--resource-group', 'ExampleGroup',
-    '--template-uri',   'https://raw.githubusercontent.com/Azure/ResourceModules/main/arm/Microsoft.KeyVault/vaults/deploy.bicep',
-    '--parameters',     'storageAccountType=Standard_GRS',
+inputObject=(
+    '--name'           'ExampleDeployment'
+    '--resource-group' 'ExampleGroup'
+    '--template-file'  'https://raw.githubusercontent.com/Azure/ResourceModules/main/arm/Microsoft.KeyVault/vaults/deploy.bicep',
+    '--parameters'     'storageAccountType=Standard_GRS'
 )
-az deployment group create @inputObject
+az deployment group create ${inputObject[@]}
 ```
 
 ---
