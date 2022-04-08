@@ -77,7 +77,7 @@ However, if you need to, you can define a custom removal procedure by:
 1. influencing the **order** in which resources are removed by prioritizing specific resource types
     > **Example** Removing a _Virtual WAN_ resource requires related resources to be deleted in a specific order
 1. defining a **custom removal action** to remove a resource of a _specific resource type_
-    > **Example** A _Recovery Services Vault_ resource requires some protected items to be identified and removed beforehand
+    > **Example** A _Recovery Services Vault_ resource requires some protected items to be identified and removed before the vault itself can be removed
 1. defining a custom **post-removal action** to be run after removing a resource of a _specific resource type_
     > **Example** A _Key Vault_ resource needs to be purged when soft deletion is enforced
 
