@@ -29,6 +29,7 @@ The following activities are run executing the `arm/.global/global.module.tests.
 - **Parameter Files**. e.g.:
   - at least one `*parameters.json` exists
   - files should be valid JSON
+  - contains all required parameters
 
 ## Output example
 
