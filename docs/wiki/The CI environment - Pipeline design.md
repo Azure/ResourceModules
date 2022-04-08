@@ -131,7 +131,7 @@ The dependencies pipeline comes with the following runtime parameters:
 
 ## ReadMe pipeline
 
-The repository includes two major ReadMe files that require to stay in sync with the provided modules.
+The repository includes two major ReadMe files that should stay in sync with the available modules.
 
 The first can be found in the repository root (`README.md`) and the second in the modules folder (`arm/README.md`).
 
