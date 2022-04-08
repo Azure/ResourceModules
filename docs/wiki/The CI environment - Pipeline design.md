@@ -1,4 +1,4 @@
-This section provides an overview of the design principles followed by the CARML CI environment pipelines.
+This section provides an overview of the design principles applied to the CARML CI environment pipelines.
 
 ---
 
