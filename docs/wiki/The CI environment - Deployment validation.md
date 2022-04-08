@@ -95,7 +95,7 @@ To modify the resource types removal **order**:
 To define a **custom removal** action:
 1. Open the `/utilities/pipelines/resourceRemoval/helper/Invoke-ResourceRemoval.ps1` file.
 1. Look for the following comment: `### CODE LOCATION: Add custom removal action here`
-1. Add a case value that matches the resource type you want to modify the removal action for
+1. Add a case value that matches the resource type you want to customize the removal action for
 1. In the case block, define the resource-type-specific removal action
 
 To add a **post-removal** step:
