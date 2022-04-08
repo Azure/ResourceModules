@@ -88,7 +88,7 @@ Those methods can be combined independently.
 To modify the resource types removal **order**:
 1. Open the `/utilities/pipelines/resourceRemoval/Initialize-DeploymentRemoval.ps1` file.
 1. Look for the following comment: `### CODE LOCATION: Add custom removal sequence here`
-1. Add a case value that matches your module name
+1. Add a case value that matches your resource type
 1. In the case block, update the `$removalSequence` variable value to accommodate your module requirements
 1. Remember to add the `break` statement.
 
