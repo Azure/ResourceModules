@@ -69,7 +69,7 @@ It uses several helper scripts that can be found in its `helper` sub-folder
 
 ### Create a specialized removal procedure
 
-This paragraph is intended for CARML contributors who are willing to add a new module to the library. It contains instructions on how to operate with the removal scripts in case a customized removal is needed for any specific resource.
+This paragraph is intended for CARML contributors who want to add a new module to the library. It contains instructions on how to customize the removal scripts if needed for any specific resource.
 
 The default removal procedure works fine for most of the modules created so far, so it's likely you won't have to change anything to make the module you're editing to be removed correctly after deployment.
 
