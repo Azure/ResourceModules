@@ -43,6 +43,7 @@ This template deploys Azure Active Directory Domain Services (AADDS).
 
 
 | Parameter Name | Type | Description |
+| :-- | :-- | :-- |
 | additionalRecipients | string | **Required: The email recipient value to receive alerts parameters** |
 
 **Optional: The value is to enable Kerberos requests that use RC4 encryption - This is enabled by default parameters**
