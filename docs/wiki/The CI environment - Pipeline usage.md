@@ -17,7 +17,7 @@ This section provides a guideline on how to use the CARML CI environment pipelin
 
 # Operate the module pipelines
 
-To validate any updates you did to a module template you can perform the following steps:
+To validate updates to a module template, you can perform the following steps:
 
 1. (Optionally) Update the module's parameter files to reflect your changes.
 1. Push the local changes to the repository (using a branch that is not [main\|master]).
