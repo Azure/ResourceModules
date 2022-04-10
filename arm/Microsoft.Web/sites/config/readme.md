@@ -18,19 +18,18 @@ This module deploys a site config resource.
 ## Parameters
 
 **Required parameters**
-| Parameter Name | Type | Allowed Values | Description |
-| :-- | :-- | :-- | :-- |
-| `appName` | string |  | Name of the site parent resource. |
-| `name` | string | `[appsettings]` | Name of the site config. |
-
-**Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `appInsightId` | string | `''` |  | Resource ID of the app insight to leverage for this resource. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `functionsExtensionVersion` | string | `'~3'` |  | Version of the function extension. |
-| `functionsWorkerRuntime` | string | `''` | `[dotnet, node, python, java, powershell, ]` | Runtime of the function worker. |
-| `storageAccountId` | string | `''` |  | Required if app of kind functionapp. Resource ID of the storage account to manage triggers and logging function executions. |
+| `appName` | string |  |  | Name of the site parent resource. |
+| `appSettings` | object |  |  | The app settings to apply to the app |
+| `name` | string | `'appsettings'` | `[appsettings]` | Name of the site config. |
+
+**Optional parameters**
+| Parameter Name | Type | Default Value | Description |
+| :-- | :-- | :-- | :-- |
+| `appInsightId` | string | `''` | Resource ID of the app insight to leverage for this resource. |
+| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `storageAccountId` | string | `''` | Required if app of kind functionapp. Resource ID of the storage account to manage triggers and logging function executions. |
 
 
 ## Outputs

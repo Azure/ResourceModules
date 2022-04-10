@@ -2,33 +2,29 @@
 @allowed([
   'appsettings'
 ])
-param name string
+param name string = 'appsettings'
 
 @description('Required. Name of the site parent resource.')
 param appName string
 
+@description('Required. The app settings to apply to the app')
+param appSettings object
+
 @description('Optional. Required if app of kind functionapp. Resource ID of the storage account to manage triggers and logging function executions.')
 param storageAccountId string = ''
-
-@description('Optional. Runtime of the function worker.')
-@allowed([
-  'dotnet'
-  'node'
-  'python'
-  'java'
-  'powershell'
-  ''
-])
-param functionsWorkerRuntime string = ''
-
-@description('Optional. Version of the function extension.')
-param functionsExtensionVersion string = '~3'
 
 @description('Optional. Resource ID of the app insight to leverage for this resource.')
 param appInsightId string = ''
 
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
+
+var expandedAppSettings = union(appSettings, !empty(storageAccountId) ? {
+  AzureWebJobsStorage: 'DefaultEndpointsProtocol=https;AccountName=${storageAccount.name};AccountKey=${storageAccount.listKeys().keys[0].value};'
+} : {}, !empty(appInsightId) ? {
+  APPINSIGHTS_INSTRUMENTATIONKEY: appInsight.properties.InstrumentationKey
+  APPLICATIONINSIGHTS_CONNECTION_STRING: appInsight.properties.ConnectionString
+} : {})
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name)}'
@@ -59,14 +55,7 @@ resource app 'Microsoft.Web/sites@2020-12-01' existing = {
 resource config 'Microsoft.Web/sites/config@2021-02-01' = {
   name: name
   parent: app
-  properties: {
-    AzureWebJobsStorage: !empty(storageAccountId) ? 'DefaultEndpointsProtocol=https;AccountName=${storageAccount.name};AccountKey=${storageAccount.listKeys().keys[0].value};' : any(null)
-    AzureWebJobsDashboard: !empty(storageAccountId) ? 'DefaultEndpointsProtocol=https;AccountName=${storageAccount.name};AccountKey=${storageAccount.listKeys().keys[0].value};' : any(null)
-    FUNCTIONS_EXTENSION_VERSION: app.kind == 'functionapp' && !empty(functionsExtensionVersion) ? functionsExtensionVersion : any(null)
-    FUNCTIONS_WORKER_RUNTIME: app.kind == 'functionapp' && !empty(functionsWorkerRuntime) ? functionsWorkerRuntime : any(null)
-    APPINSIGHTS_INSTRUMENTATIONKEY: !empty(appInsightId) ? appInsight.properties.InstrumentationKey : ''
-    APPLICATIONINSIGHTS_CONNECTION_STRING: !empty(appInsightId) ? appInsight.properties.ConnectionString : ''
-  }
+  properties: expandedAppSettings
 }
 
 @description('The name of the site config.')

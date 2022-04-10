@@ -15,6 +15,12 @@
             "value": {
                 "alwaysOn": true
             }
+        },
+        "appSettings": {
+            "value": {
+                "FUNCTIONS_EXTENSION_VERSION": "~3",
+                "FUNCTIONS_WORKER_RUNTIME": "powershell"
+            }
         }
     }
 }

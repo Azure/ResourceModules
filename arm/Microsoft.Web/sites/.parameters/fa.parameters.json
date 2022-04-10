@@ -19,11 +19,11 @@
                 "alwaysOn": true
             }
         },
-        "storageAccountId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsafa001"
-        },
-        "functionsWorkerRuntime": {
-            "value": "powershell"
+        "appSettings": {
+            "value": {
+                "FUNCTIONS_EXTENSION_VERSION": "~3",
+                "FUNCTIONS_WORKER_RUNTIME": "powershell"
+            }
         },
         "systemAssignedIdentity": {
             "value": true

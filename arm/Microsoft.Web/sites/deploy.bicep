@@ -23,20 +23,6 @@ param siteConfig object = {}
 @description('Optional. Required if functionapp kind. The resource ID of the storage account to manage triggers and logging function executions.')
 param storageAccountId string = ''
 
-@description('Optional. Runtime of the function worker.')
-@allowed([
-  'dotnet'
-  'node'
-  'python'
-  'java'
-  'powershell'
-  ''
-])
-param functionsWorkerRuntime string = ''
-
-@description('Optional. Version if the function extension.')
-param functionsExtensionVersion string = '~3'
-
 @description('Optional. The resource ID of the app service plan to use for the site.')
 param serverFarmResourceId string = ''
 
@@ -74,6 +60,9 @@ param enableDefaultTelemetry bool = true
 
 @description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
 param roleAssignments array = []
+
+@description('Required. The app settings to apply to the app')
+param appSettings object
 
 @description('Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.')
 @minValue(0)
@@ -195,10 +184,9 @@ module app_appsettings 'config/deploy.bicep' = {
   params: {
     name: 'appsettings'
     appName: app.name
+    appSettings: appSettings
     storageAccountId: !empty(storageAccountId) ? storageAccountId : ''
     appInsightId: !empty(appInsightId) ? appInsightId : !empty(appInsightObject) ? appInsight.outputs.resourceId : ''
-    functionsWorkerRuntime: !empty(functionsWorkerRuntime) ? functionsWorkerRuntime : ''
-    functionsExtensionVersion: !empty(functionsExtensionVersion) ? functionsExtensionVersion : '~3'
   }
 }
 

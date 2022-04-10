@@ -27,6 +27,7 @@ This module deploys a web or function app.
 **Required parameters**
 | Parameter Name | Type | Allowed Values | Description |
 | :-- | :-- | :-- | :-- |
+| `appSettings` | object |  | The app settings to apply to the app |
 | `kind` | string | `[functionapp, app]` | Type of site to deploy. |
 | `name` | string |  | Name of the site. |
 
@@ -46,8 +47,6 @@ This module deploys a web or function app.
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of log analytics workspace. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `functionsExtensionVersion` | string | `'~3'` |  | Version if the function extension. |
-| `functionsWorkerRuntime` | string | `''` | `[dotnet, node, python, java, powershell, ]` | Runtime of the function worker. |
 | `httpsOnly` | bool | `True` |  | Configures a site to accept only HTTPS requests. Issues redirect for HTTP requests. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all Resources. |
 | `lock` | string | `'NotSpecified'` | `[CanNotDelete, NotSpecified, ReadOnly]` | Specify the type of lock. |
