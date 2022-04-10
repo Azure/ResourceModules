@@ -20,16 +20,16 @@ param clientAffinityEnabled bool = true
 @description('Optional. Configuration of the app.')
 param siteConfig object = {}
 
-@description('Optional. Required if functionapp kind. The resource ID of the storage account to manage triggers and logging function executions.')
+@description('Conditional. Required if app of kind functionapp. Resource ID of the storage account to manage triggers and logging function executions. If provided, the `AzureWebJobsStorage` setting is added to the app\'s app settings.')
 param storageAccountId string = ''
 
 @description('Optional. The resource ID of the app service plan to use for the site.')
 param serverFarmResourceId string = ''
 
-@description('Optional. The resource ID of the existing app insight to leverage for the app. If the resource ID is not provided, the appInsightObject can be used to create a new app insight.')
+@description('Optional. The resource ID of the existing app insight to leverage for the app. If the resource ID is not provided, the appInsightObject can be used to create a new app insight. If provided, both the `APPINSIGHTS_INSTRUMENTATIONKEY` & `APPLICATIONINSIGHTS_CONNECTION_STRING` setting are added to the app\'s app settings.')
 param appInsightId string = ''
 
-@description('Optional. Used to deploy a new app insight if no appInsightId is provided.')
+@description('Optional. Used to deploy a new app insight if no appInsightId is provided. If provided, both the `APPINSIGHTS_INSTRUMENTATIONKEY` & `APPLICATIONINSIGHTS_CONNECTION_STRING` setting are added to the app\'s app settings.')
 param appInsightObject object = {}
 
 @description('Optional. The resource ID of the app service environment to use for this resource.')

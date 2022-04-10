@@ -30,11 +30,16 @@ This module deploys a web or function app.
 | `kind` | string | `[functionapp, app]` | Type of site to deploy. |
 | `name` | string |  | Name of the site. |
 
+**Conditional parameters**
+| Parameter Name | Type | Default Value | Description |
+| :-- | :-- | :-- | :-- |
+| `storageAccountId` | string | `''` | Required if app of kind functionapp. Resource ID of the storage account to manage triggers and logging function executions. If provided, the `AzureWebJobsStorage` setting is added to the app's app settings. |
+
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `appInsightId` | string | `''` |  | The resource ID of the existing app insight to leverage for the app. If the resource ID is not provided, the appInsightObject can be used to create a new app insight. |
-| `appInsightObject` | object | `{object}` |  | Used to deploy a new app insight if no appInsightId is provided. |
+| `appInsightId` | string | `''` |  | The resource ID of the existing app insight to leverage for the app. If the resource ID is not provided, the appInsightObject can be used to create a new app insight. If provided, both the `APPINSIGHTS_INSTRUMENTATIONKEY` & `APPLICATIONINSIGHTS_CONNECTION_STRING` setting are added to the app's app settings. |
+| `appInsightObject` | object | `{object}` |  | Used to deploy a new app insight if no appInsightId is provided. If provided, both the `APPINSIGHTS_INSTRUMENTATIONKEY` & `APPLICATIONINSIGHTS_CONNECTION_STRING` setting are added to the app's app settings. |
 | `appServiceEnvironmentId` | string | `''` |  | The resource ID of the app service environment to use for this resource. |
 | `clientAffinityEnabled` | bool | `True` |  | If client affinity is enabled. |
 | `customAppSettings` | object | `{object}` |  | Custom app settings to apply to the app |
@@ -54,7 +59,6 @@ This module deploys a web or function app.
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `serverFarmResourceId` | string | `''` |  | The resource ID of the app service plan to use for the site. |
 | `siteConfig` | object | `{object}` |  | Configuration of the app. |
-| `storageAccountId` | string | `''` |  | Required if functionapp kind. The resource ID of the storage account to manage triggers and logging function executions. |
 | `systemAssignedIdentity` | bool | `False` |  | Enables system assigned managed identity on the resource. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
 | `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. |
