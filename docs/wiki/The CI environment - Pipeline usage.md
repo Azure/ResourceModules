@@ -39,12 +39,18 @@ To add a new module pipeline we recommend to create a copy of a currently existi
 
 The dependencies pipeline must be triggered manually and deploys a set of resources we reference as part of our module tests (e.g. Virtual Networks, Log Analytics Workspace, Key Vaults).
 
+To run the dependencies pipeline you can perform the following steps:
+
+1. (Optionally) Verify if you are good with the dependency resource names by checking dependency parameter files stored in path `utilities\pipelines\dependencies`. If not, make the necessary updates to you local branch and push the local changes to the repository.
+   > **Note:** If you want to rename any dependency resources, make sure to update any references to their name in the module parameter files too.
 1. On the DevOps platform, navigate to the dependencies pipeline.
-1. (Optionally) Select the branch with your updated template.
-1. (Optionally) enable the `'Enable SqlMI dependency deployment' switch` to include the deployment of the dependencies for the [SQL managed instance] module.
-1. (Optionally) enable the `'Enable deployment of a vhd stored in a blob container' switch` to include the deployment of the dependencies for the [Compute Images] and [Compute Disks] modules.
-   > Note: This task requires up to two hours completion.
+1. Select the branch you intend to run.
+1. (Optionally) Enable the `'Enable SqlMI dependency deployment' switch` to include the deployment of the dependencies for the [SQL managed instance] module.
+1. (Optionally) Enable the `'Enable deployment of a vhd stored in a blob container' switch` to include the deployment of the dependencies for the [Compute Images] and [Compute Disks] modules.
+   > Note: This option requires up to two hours completion.
 1.  Trigger the pipeline.
+
+By default, i.e. by keeping the optional flags disables, the dependencies pipeline may take up to 30 minutes to execute.
 
 > **Note:** For details about the dependencies pipeline design please refer to the dedicated [Dependencies pipeline design](./The%20CI%20environment%20-%20Pipeline%20design.md#dependencies-pipeline) section.
 

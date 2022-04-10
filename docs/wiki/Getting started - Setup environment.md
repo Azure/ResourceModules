@@ -322,26 +322,13 @@ To use the pipelines that come with the environment in Azure DevOps, you need to
 
 # 4. Deploy dependencies
 
-In order to successfully deploy and test all modules in your desired environment some modules require resources to be deployed beforehand.
+In order to successfully deploy and test all modules in your desired environment, some modules require resources to be deployed beforehand.
 
-The repository comes with a platform pipeline deploying all dependencies
+The repository comes with a platform pipeline, the dependencies pipeline, that provides the modules with various persisting standard services such as virtual networks and key vaults (along with dummy secrets).
 
-To run the dependencies pipeline refer to the specific paragraph in the [Dependencies pipeline usage](./The%20CI%20environment%20-%20Pipeline%20usage#)
+Run the dependencies pipeline by following instructions provided in the specific [Dependencies pipeline usage](./The%20CI%20environment%20-%20Pipeline%20usage#) section.
 
-To know more about , please refer to the dedicated paragraph in the
-
- - [Dependencies pipeline design](./The%20CI%20environment%20-%20Pipeline%20design#Dependencies-pipeline)
-
-  - [Pipeline usage](./The%20CI%20environment%20-%20Pipeline%20usage#operate-the-dependencies-pipeline)
-
-Since the modules we tested often depend on other services, we created a pipeline that provides the modules with various persisting standard services such as virtual networks and key vaults (along with dummy secrets). This _dependency_ pipeline should be prepared and executed before you start running all module pipelines.
-> Note, not all modules require dependencies or only a subset of the deployed.
-
-It has to components to it to function:
-- The dependencies pipeline itself that orchestrates deployments
-- The parameter files used by the dependencies pipeline, stored in path `utilities\pipelines\dependencies`
-
-> **Note:** If you want to rename any dependency resources, make sure to update any references to their name in the module parameter files too. You can find further details about this pipeline [here](./Getting%20started%20-%20Dependency%20pipeline).
+> **Note**: For details about the dependencies pipeline design please refer to the dedicated [Dependencies pipeline design](./The%20CI%20environment%20-%20Pipeline%20design.md#dependencies-pipeline) section.
 
 # 5. Update module parameter files
 

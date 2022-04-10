@@ -11,6 +11,8 @@ This section provides an overview of the design principles applied to the CARML 
 - [Platform pipelines](#platform-pipelines)
   - [Dependencies pipeline](#dependencies-pipeline)
     - [Dependencies pipeline inputs](#dependencies-pipeline-inputs)
+    - [Resources deployed by the dependencies pipeline](#resources-deployed-by-the-dependencies-pipeline)
+    - [Required secrets and keys](#required-secrets-and-keys)
   - [ReadMe pipeline](#readme-pipeline)
   - [Wiki pipeline](#wiki-pipeline)
 
@@ -131,9 +133,9 @@ The dependencies pipeline comes with the following runtime parameters:
 
   <img src=".\media\CIEnvironment\dependencyPipelineInput.png" alt="Dependency Pipeline Input" height="300">
 
-### Resources deployed by the dependency workflow
+### Resources deployed by the dependencies pipeline
 
-The resources deployed by the dependency workflow need to be in place before testing all the modules.
+The resources deployed by the dependencies pipeline need to be in place before testing all the modules.
 
 > Note: Some dependency resources (e.g. [storage account], [key vault] and [event hub namespace]) require a globally unique resource name. By default, the parameter files make use of the placeholder token `'<<namePrefix>>'` to make all resource names specific to an environment. Refer to [Parameter File Tokens Design](./The%20CI%20environment%20-%20Token%20replacement) for more details.
 
