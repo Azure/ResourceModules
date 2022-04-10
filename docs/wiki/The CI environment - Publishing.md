@@ -30,6 +30,7 @@ The publishing works as follows:
    1. The major (`x.0`) and minor (`0.x`) version are set based on the file `version.json` in the module folder.
    1. The patch (`0.0.x`) version is calculated based on the number of commits on the `HEAD` ref (aka. git height). This will cause the patch version to never reset to 0 with major and/or minor increment, as specified for [semver](https://semver.org/).
    1. The module is published with a patch specific version (`x.y.z`). For Template Specs and Bicep Registry a major (`x`) and minor (`x.x`) version is also updated, allowing a consumer to use the latest version of any major or minor version.
+      > Using for example the Bicep registry, the reference could look like: `br/modules:microsoft.resources.resourcegroups:0.4` which means that the template will always consume whatever the potentially overwritten/updated version 0.4 contains.
    1. For a changed child module, the direct parent hierarchy is also registered for an update, following the same procedure as above.
    1. The list of module files paths and their versions are passed on as a array list.
 1. The different publishing scripts run (Artifact, Template Spec or Bicep Registry) and publish the module to the respective target location for each item on the list.
