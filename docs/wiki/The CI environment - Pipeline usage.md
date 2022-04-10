@@ -6,7 +6,7 @@ This section provides a guideline on how to use the CARML CI environment pipelin
 
 - [Operate the module pipelines](#operate-the-module-pipelines)
   - [Add a new module pipeline](#add-a-new-module-pipeline)
-- [Operate the dependency pipelines](#operate-the-dependency-pipeline)
+- [Operate the dependencies pipelines](#operate-the-dependency-pipeline)
   - [Add a new dependency](#add-a-new-dependency)
 - [DevOps-Tool-specific](#devops-tool-specific-guidance)
   - [GitHub workflows](#github-workflows)
@@ -35,9 +35,9 @@ Pipeline logs are available for troubleshooting and provide detailed information
 
 To add a new module pipeline we recommend to create a copy of a currently existing module pipeline and adjust all module-specific properties. The registration of the pipeline depends on the [DevOps platform](#devops-tool-specific-guidance) you're using.
 
-# Operate the dependency pipeline
+# Operate the dependencies pipeline
 
-The dependency pipeline must be triggered manually and deploys a set of resources we reference as part of our module tests (e.g. Virtual Networks, Log Analytics Workspace, Key Vaults).
+The dependencies pipeline must be triggered manually and deploys a set of resources we reference as part of our module tests (e.g. Virtual Networks, Log Analytics Workspace, Key Vaults).
 
 1. On the DevOps platform, navigate to the dependencies pipeline.
 1. (Optionally) Select the branch with your updated template.
@@ -50,7 +50,7 @@ The dependency pipeline must be triggered manually and deploys a set of resource
 
 ## Add a new dependency
 
-Depending on what you want to test in your module pipeline, you may want to include additional resources to your dependency pipeline. If so, make sure to include an additional parameter file for each service you require under `utilities/pipelines/dependencies`. Once done, you need to add the deployment to the pipeline itself making sure to deploy the new resources in the correct order. The implementation depends on the [DevOps platform](#devops-tool-specific-guidance) you're using.
+Depending on what you want to test in your module pipeline, you may want to include additional resources to your dependencies pipeline. If so, make sure to include an additional parameter file for each service you require under `utilities/pipelines/dependencies`. Once done, you need to add the deployment to the pipeline itself making sure to deploy the new resources in the correct order. The implementation depends on the [DevOps platform](#devops-tool-specific-guidance) you're using.
 
 ---
 

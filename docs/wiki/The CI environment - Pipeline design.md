@@ -161,7 +161,7 @@ This group of resources has a dependency only on the resource group which will h
       - '_adp-\<<namePrefix\>>-az-law-aut-001_': Dedicated LAW to be leveraged by the [automation account] resource.
       - '_adp-\<<namePrefix\>>-az-law-appi-001_': Dedicated LAW to be leveraged by the [application insights] resource.
   1. User assigned identity: This resource is leveraged by the [role assignment], [key vault] and [recovery services vault] dependency resources.
-      > **Note**: The object ID of the [user assigned identity] is needed by several dependency parameter files. However, before running the dependency pipeline for the first time, the [user assigned identity] resource does not exist yet, thus its object ID is unknown. For this reason, instead of the object ID value, some dependency parameter files contain the `"<<msiPrincipalId>>"` token, for which the correct value is retrieved and replaced by the pipeline at runtime.
+      > **Note**: The object ID of the [user assigned identity] is needed by several dependency parameter files. However, before running the dependencies pipeline for the first time, the [user assigned identity] resource does not exist yet, thus its object ID is unknown. For this reason, instead of the object ID value, some dependency parameter files contain the `"<<msiPrincipalId>>"` token, for which the correct value is retrieved and replaced by the pipeline at runtime.
   1. Shared image gallery and definition: These resources are leveraged by the [image template] resource.
   1. Route table: This resource is leveraged by the virtual network subnet dedicated to test [SQL managed instance].
       >**Note**: This resource is deployed and configured only if sqlmi dependency resources are enabled.
