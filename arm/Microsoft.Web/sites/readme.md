@@ -27,7 +27,6 @@ This module deploys a web or function app.
 **Required parameters**
 | Parameter Name | Type | Allowed Values | Description |
 | :-- | :-- | :-- | :-- |
-| `appSettings` | object |  | The app settings to apply to the app |
 | `kind` | string | `[functionapp, app]` | Type of site to deploy. |
 | `name` | string |  | Name of the site. |
 
@@ -38,6 +37,7 @@ This module deploys a web or function app.
 | `appInsightObject` | object | `{object}` |  | Used to deploy a new app insight if no appInsightId is provided. |
 | `appServiceEnvironmentId` | string | `''` |  | The resource ID of the app service environment to use for this resource. |
 | `clientAffinityEnabled` | bool | `True` |  | If client affinity is enabled. |
+| `customAppSettings` | object | `{object}` |  | Custom app settings to apply to the app |
 | `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
 | `diagnosticLogCategoriesToEnable` | array | `[if(equals(parameters('kind'), 'functionapp'), createArray('FunctionAppLogs'), createArray('AppServiceHTTPLogs', 'AppServiceConsoleLogs', 'AppServiceAppLogs', 'AppServiceAuditLogs', 'AppServiceIPSecAuditLogs', 'AppServicePlatformLogs'))]` | `[AppServiceHTTPLogs, AppServiceConsoleLogs, AppServiceAppLogs, AppServiceAuditLogs, AppServiceIPSecAuditLogs, AppServicePlatformLogs, FunctionAppLogs]` | The name of logs that will be streamed. |

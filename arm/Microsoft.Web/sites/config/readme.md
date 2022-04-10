@@ -21,13 +21,13 @@ This module deploys a site config resource.
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `appName` | string |  |  | Name of the site parent resource. |
-| `appSettings` | object |  |  | The app settings to apply to the app |
 | `name` | string | `'appsettings'` | `[appsettings]` | Name of the site config. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `appInsightId` | string | `''` | Resource ID of the app insight to leverage for this resource. |
+| `customAppSettings` | object | `{object}` | Custom app settings to apply to the app |
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `storageAccountId` | string | `''` | Required if app of kind functionapp. Resource ID of the storage account to manage triggers and logging function executions. |
 

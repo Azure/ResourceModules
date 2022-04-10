@@ -7,8 +7,8 @@ param name string = 'appsettings'
 @description('Required. Name of the site parent resource.')
 param appName string
 
-@description('Required. The app settings to apply to the app')
-param appSettings object
+@description('Optional. Custom app settings to apply to the app')
+param customAppSettings object = {}
 
 @description('Optional. Required if app of kind functionapp. Resource ID of the storage account to manage triggers and logging function executions.')
 param storageAccountId string = ''
@@ -19,7 +19,7 @@ param appInsightId string = ''
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
 
-var expandedAppSettings = union(appSettings, !empty(storageAccountId) ? {
+var expandedAppSettings = union(customAppSettings, !empty(storageAccountId) ? {
   AzureWebJobsStorage: 'DefaultEndpointsProtocol=https;AccountName=${storageAccount.name};AccountKey=${storageAccount.listKeys().keys[0].value};'
 } : {}, !empty(appInsightId) ? {
   APPINSIGHTS_INSTRUMENTATIONKEY: appInsight.properties.InstrumentationKey
