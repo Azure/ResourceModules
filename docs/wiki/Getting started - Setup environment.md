@@ -194,7 +194,7 @@ The primary pipeline variable file `global.variables.yml` hosts the fundamental 
 | - | - | - |
 | `bicepRegistryName` | `"adpsxxazacrx001"` | The container registry to publish Bicep templates to. <p> **NOTE:** Must be globally unique |
 | `bicepRegistryRGName` | `"artifacts-rg"` | The resource group of the container registry to publish Bicep templates into. It is used to create a new container registry if not yet existing |
-| `bicepRegistryRGName` | `"artifacts-rg"` | The location of the resource group of the container registry to publish Bicep templates into. Is used to create a new resource group if not yet existing |
+| `bicepRegistryRgLocation` | `'West Europe'` | The location of the resource group of the container registry to publish Bicep templates into. Is used to create a new resource group if not yet existing |
 | `bicepRegistryDoPublish` | `"true"` | A central switch to enable/disable publishing to the private Bicep registry |
 
 </details>
@@ -291,7 +291,7 @@ The primary pipeline variable file `global.variables.yml` hosts the fundamental 
 | - | - | - |
 | `bicepRegistryName` | `'adpsxxazacrx001'` | The container registry to publish Bicep templates to. <p> **NOTE:** Must be globally unique |
 | `bicepRegistryRGName` | `'artifacts-rg'` | The resource group of the container registry to publish Bicep templates to. Is used to create a new container registry if not yet existing |
-| `bicepRegistryRGName` | `'artifacts-rg'` | The location of the resource group of the container registry to publish Bicep templates to. Is used to create a new resource group if not yet existing |
+| `bicepRegistryRgLocation` | `'West Europe'` | The location of the resource group of the container registry to publish Bicep templates to. Is used to create a new resource group if not yet existing |
 | `bicepRegistryDoPublish` | `'true'` | A central switch to enable/disable publishing to the private Bicep registry |
 
 </details>
@@ -326,6 +326,10 @@ At this stage you can execute your first pipeline, that is, the dependency pipel
 
 Since the modules we tested often depend on other services, we created a pipeline that provides the modules with various persisting standard services such as virtual networks and key vaults (along with dummy secrets). This _dependency_ pipeline should be prepared and executed before you start running all module pipelines.
 > Note, not all modules require dependencies or only a subset of the deployed.
+> **Note:** Before executing the pipeline for the first time make sure to update the following values:
+> | File | Parameter | Description |
+> | - | - | - |
+> | `utilities\pipelines\dependencies\Microsoft.KeyVault\vaults\parameters\parameters.json` | `accessPolicies.value[0].objectId` | The 'Backup Management Service' needs access to back up the keys and secrets, along with the associated VMs. The Enterprise Application's object ID is unique per tenant. |
 
 It has to components to it to function:
 - The dependency pipeline itself that orchestrates deployments
