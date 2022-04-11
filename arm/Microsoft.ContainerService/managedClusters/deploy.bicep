@@ -363,7 +363,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource managedCluster 'Microsoft.ContainerService/managedClusters@2021-11-01-preview' = {
+resource managedCluster 'Microsoft.ContainerService/managedClusters@2022-01-01' = {
   name: name
   location: location
   tags: (empty(tags) ? null : tags)

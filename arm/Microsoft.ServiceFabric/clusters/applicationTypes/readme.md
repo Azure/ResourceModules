@@ -2,6 +2,13 @@
 
 This module deploys a ServiceFabric cluster application type.
 
+## Navigation
+
+- [Resource Types](#Resource-Types)
+- [Parameters](#Parameters)
+- [Outputs](#Outputs)
+- [Template references](#Template-references)
+
 ## Resource Types
 
 | Resource Type | API Version |
@@ -10,12 +17,18 @@ This module deploys a ServiceFabric cluster application type.
 
 ## Parameters
 
-| Parameter Name | Type | Default Value | Possible Values | Description |
-| :-- | :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `name` | string | `defaultApplicationType` |  | Optional. Application type name. |
-| `serviceFabricClusterName` | string |  |  | Required. Name of the Service Fabric cluster. |
-| `tags` | object | `{object}` |  | Optional. Tags of the resource. |
+**Required parameters**
+| Parameter Name | Type | Default Value | Description |
+| :-- | :-- | :-- | :-- |
+| `serviceFabricClusterName` | string | `''` | Name of the Service Fabric cluster. |
+
+**Optional parameters**
+| Parameter Name | Type | Default Value | Description |
+| :-- | :-- | :-- | :-- |
+| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `name` | string | `'defaultApplicationType'` | Application type name. |
+| `tags` | object | `{object}` | Tags of the resource. |
+
 
 ### Parameter Usage: `tags`
 

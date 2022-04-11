@@ -4,6 +4,13 @@ This module deploys a Replication Fabric for Azure to Azure disaster recovery sc
 
 > Note: this module currently support only the `instanceType: 'Azure'` scenario.
 
+## Navigation
+
+- [Resource Types](#Resource-Types)
+- [Parameters](#Parameters)
+- [Outputs](#Outputs)
+- [Template references](#Template-references)
+
 ## Resource Types
 
 | Resource Type | API Version |
@@ -14,13 +21,19 @@ This module deploys a Replication Fabric for Azure to Azure disaster recovery sc
 
 ## Parameters
 
-| Parameter Name | Type | Default Value | Possible Values | Description |
-| :-- | :-- | :-- | :-- | :-- |
-| `location` | string | `[resourceGroup().location]` |  | Required. The recovery location the fabric represents |
-| `name` | string | `[parameters('location')]` |  | Optional. The name of the fabric |
-| `recoveryVaultName` | string |  |  | Required. Name of the Azure Recovery Service Vault |
-| `replicationContainers` | array | `[]` |  | Optional. Replication containers to create. |
-| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
+**Required parameters**
+| Parameter Name | Type | Default Value | Description |
+| :-- | :-- | :-- | :-- |
+| `location` | string | `[resourceGroup().location]` | The recovery location the fabric represents |
+| `recoveryVaultName` | string |  | Name of the Azure Recovery Service Vault |
+
+**Optional parameters**
+| Parameter Name | Type | Default Value | Description |
+| :-- | :-- | :-- | :-- |
+| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `name` | string | `[parameters('location')]` | The name of the fabric |
+| `replicationContainers` | array | `[]` | Replication containers to create. |
+
 
 ### Parameter Usage: `replicationContainers`
 
@@ -55,3 +68,4 @@ This module deploys a Replication Fabric for Azure to Azure disaster recovery sc
 
 - [Vaults/Replicationfabrics](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2021-12-01/vaults/replicationFabrics)
 - [Vaults/Replicationfabrics/Replicationprotectioncontainers](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2021-12-01/vaults/replicationFabrics/replicationProtectionContainers)
+- [Vaults/Replicationfabrics/Replicationprotectioncontainers/Replicationprotectioncontainermappings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2021-12-01/vaults/replicationFabrics/replicationProtectionContainers/replicationProtectionContainerMappings)
