@@ -102,7 +102,7 @@ jobs:
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
           templateFilePath: '${{ env.modulePath }}/deploy.bicep'
-          parameterFilePath: '${{ env.modulePath }}/.parameters/${{ matrix.parameterFilePaths }}'
+          parameterFilePath: '${{ env.modulePath }}/${{ matrix.parameterFilePaths }}'
           location: '${{ env.location }}'
           resourceGroupName: '${{ env.resourceGroupName }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
