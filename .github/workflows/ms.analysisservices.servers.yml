@@ -40,7 +40,7 @@ jobs:
   ############################
   job_prepare_pipeline:
     runs-on: ubuntu-20.04
-    name: 'Prepare pipeline'
+    name: 'Initialize pipeline'
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
