@@ -138,33 +138,34 @@ jobs:
   #         managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
   #         removeDeployment: '${{ needs.job_set_workflow_param.outputs.removeDeployment }}'
 
-  # ######################
-  # # Dependency removal #
-  # job_dependencies_remove:
-  #   runs-on: ubuntu-20.04
-  #   name: 'Remove dependencies'
-  #   if: always() && needs.job_prepare_pipeline.outputs.removeDeployment == 'true' && needs.job_dependencies_deploy_validation.outputs.deploymentName != ''
-  #   needs:
-  #     - job_prepare_pipeline
-  #     - job_module_deploy_validation
-  #     - job_dependencies_deploy_validation
-  #   steps:
-  #     - name: 'Checkout'
-  #       uses: actions/checkout@v2
-  #       with:
-  #         fetch-depth: 0
-  #     - name: Set environment variables
-  #       uses: deep-mm/set-variables@v1.0
-  #       with:
-  #         variableFileName: 'global.variables'
-  #     - name: 'Remove deployment for template file [${{ env.modulePath }}/.dependencies/dependencies.bicep]'
-  #       uses: ./.github/actions/templates/removeTemplateDeployment
-  #       with:
-  #         templateFilePath: '${{ env.modulePath }}/.dependencies/dependencies.bicep'
-  #         deploymentName: ${{ needs.job_dependencies_deploy_validation.outputs.deploymentName }}
-  #         resourceGroupName: '${{ env.customResourceGroupName }}'
-  #         subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
-  #         managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
+  ######################
+  # Dependency removal #
+  job_dependencies_remove:
+    runs-on: ubuntu-20.04
+    name: 'Remove dependencies'
+    if: always() && needs.job_set_workflow_param.outputs.removeDeployment == 'true' && needs.job_dependencies_deploy_validation.outputs.deploymentName != ''
+    needs:
+      - job_set_workflow_param
+      - job_dependencies_deploy_validation
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Set environment variables
+        uses: ./.github/actions/templates/setEnvironmentVariables
+        with:
+          variablesPath: ${{ env.variablesPath }}
+      - name: 'Remove deployment for template file [${{ env.modulePath }}/.dependencies/dependencies.bicep]'
+        uses: ./.github/actions/templates/validateModuleDeployment
+        with:
+          templateFilePath: '${{ env.modulePath }}/.dependencies/dependencies.bicep'
+          deploymentName: ${{ needs.job_dependencies_deploy_validation.outputs.deploymentName }}
+          resourceGroupName: '${{ env.customResourceGroupName }}'
+          subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
+          managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
+          removeDeployment: 'false'
+          enableDeployment: 'false'
 
   # # ####################
   # # # Deployment tests #

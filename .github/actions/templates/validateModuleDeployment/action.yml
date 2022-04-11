@@ -67,6 +67,13 @@ inputs:
     description: 'Set "true" to set module up for removal'
     default: 'true'
     required: false
+  enableDeployment:
+    description: 'Set "true" to set module up for deployment'
+    default: 'true'
+    required: false
+  deploymentName:
+    description: 'The used module deployment name'
+    required: false
 
 outputs:
   deploymentName:
@@ -225,6 +232,7 @@ runs:
     # ------------------------------
     - name: 'Deploy [${{ inputs.templateFilePath }}] with parameters [${{ inputs.parameterFilePath }}]'
       shell: pwsh
+      if: ${{ always() && inputs.enableDeployment == 'true'}}
       id: deploy_step
       run: |
         # Grouping task logs
