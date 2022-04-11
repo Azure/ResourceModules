@@ -92,6 +92,6 @@ Create a role assignment for the given resource. If you want to assign a service
 
 ## Template references
 
-- [Define resources with Bicep and ARM templates](https://docs.microsoft.com/en-us/azure/templates)
 - [Netappaccounts/Capacitypools](https://docs.microsoft.com/en-us/azure/templates/Microsoft.NetApp/2021-06-01/netAppAccounts/capacityPools)
 - [Netappaccounts/Capacitypools/Volumes](https://docs.microsoft.com/en-us/azure/templates/Microsoft.NetApp/2021-06-01/netAppAccounts/capacityPools/volumes)
+- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)
