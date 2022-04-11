@@ -160,11 +160,11 @@ jobs:
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
           templateFilePath: '${{ env.modulePath }}/.dependencies/dependencies.bicep'
-          deploymentName: ${{ needs.job_dependencies_deploy_validation.outputs.deploymentName }}
+          deploymentNameToRemove: ${{ needs.job_dependencies_deploy_validation.outputs.deploymentName }}
           resourceGroupName: '${{ env.customResourceGroupName }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
-          removeDeployment: 'false'
+          removeDeployment: '${{ needs.job_set_workflow_param.outputs.removeDeployment }}'
           enableDeployment: 'false'
 
   # # ####################
