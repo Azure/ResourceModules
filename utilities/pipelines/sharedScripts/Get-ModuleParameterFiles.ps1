@@ -1,6 +1,6 @@
 ﻿<#
 .SYNOPSIS
-Get the relative file paths of all parameter files in the given module
+Get the relative file paths of all parameter files in the given module.
 
 .DESCRIPTION
 Get the relative file paths of all parameter files in the given module.
