@@ -350,6 +350,7 @@ For this reason, make sure to update the references in the following modules onc
 | `arm\Microsoft.Compute\virtualMachineScaleSets\.parameters\windows.parameters.json` | `extensionDiskEncryptionConfig.value.settings.KeyEncryptionKeyURL` |
 | `arm\Microsoft.Sql\managedInstances\.parameters\parameters.json` | `keys.value.uri` |
 | `arm\Microsoft.Network\applicationGateways\.parameters\parameters.json` | `sslCertificates.value.properties.keyVaultSecretId` |
+| `utilities\pipelines\dependencies\Microsoft.KeyVault\vaults\parameters\parameters.json` | `accessPolicies.value[0].objectId` |
 
 </details>
 
