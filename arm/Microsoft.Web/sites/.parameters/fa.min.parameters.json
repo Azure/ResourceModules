@@ -24,6 +24,6 @@
         },
         "storageAccountId": {
             "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsafa001"
-        },
+        }
     }
 }

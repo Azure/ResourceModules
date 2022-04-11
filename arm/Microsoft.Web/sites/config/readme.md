@@ -26,7 +26,7 @@ This module deploys a site config resource.
 **Conditional parameters**
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
-| `storageAccountId` | string | `''` | Required if app of kind functionapp. Resource ID of the storage account to manage triggers and logging function executions. If provided, the `AzureWebJobsStorage` setting is added to the app's app settings. |
+| `storageAccountId` | string | `''` | Required if the site parent resource is of kind functionapp. Resource ID of the storage account to manage triggers and logging function executions. If provided, the `AzureWebJobsStorage` setting is added to the app's app settings. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Description |
