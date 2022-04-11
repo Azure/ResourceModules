@@ -1,10 +1,10 @@
-name: 'Network - LocalNetworkGateways'
+name: 'KubernetesConfiguration: FluxConfigurations'
 
 parameters:
   - name: removeDeployment
     displayName: Remove deployed module
     type: boolean
-    default: true
+    default: false
   - name: prerelease
     displayName: Publish prerelease module
     type: boolean
@@ -17,17 +17,17 @@ trigger:
       - main
   paths:
     include:
-      - '/.azuredevops/modulePipelines/ms.network.localnetworkgateways.yml'
+      - '/.azuredevops/modulePipelines/ms.kubernetesconfiguration.fluxconfigurations.yml'
       - '/.azuredevops/pipelineTemplates/module.*.yml'
-      - '/arm/Microsoft.Network/localNetworkGateways/*'
+      - '/arm/Microsoft.KubernetesConfiguration/fluxConfigurations/*'
     exclude:
       - '/**/*.md'
 
 variables:
-  - template: '../../global.variables.yml'
+  - template: '/.azuredevops/pipelineVariables/global.variables.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/arm/Microsoft.Network/localNetworkGateways'
+    value: '/arm/Microsoft.KubernetesConfiguration/fluxConfigurations'
 
 stages:
   - stage: Validation
@@ -42,6 +42,7 @@ stages:
         parameters:
           removeDeployment: '${{ parameters.removeDeployment }}'
           deploymentBlocks:
+            - path: $(modulePath)/.parameters/min.parameters.json
             - path: $(modulePath)/.parameters/parameters.json
 
   - stage: Publishing
