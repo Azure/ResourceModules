@@ -7,7 +7,7 @@ Get the relative file paths of all parameter files in the given module.
 The relative path is returned instead of the full one to make paths easier to read in the pipeline.
 
 .PARAMETER ModulePath
-Mandatory. The module path to search in
+Mandatory. The module path to search in.
 
 .EXAMPLE
 Get-ModuleParameterFiles -ModulePath 'C:\ResourceModules\arm\Microsoft.Compute\virtualMachines'
