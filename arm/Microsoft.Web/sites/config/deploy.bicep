@@ -10,7 +10,7 @@ param appName string
 @description('Optional. Custom app settings to apply to the app')
 param customAppSettings object = {}
 
-@description('Conditional. Required if app of kind functionapp. Resource ID of the storage account to manage triggers and logging function executions. If provided, the `AzureWebJobsStorage` setting is added to the app\'s app settings.')
+@description('Conditional. Required if the site parent resource is of kind functionapp. Resource ID of the storage account to manage triggers and logging function executions. If provided, the `AzureWebJobsStorage` setting is added to the app\'s app settings.')
 param storageAccountId string = ''
 
 @description('Optional. Resource ID of the app insight to leverage for this resource. If provided, both the `APPINSIGHTS_INSTRUMENTATIONKEY` & `APPLICATIONINSIGHTS_CONNECTION_STRING` setting are added to the app\'s app settings.')
