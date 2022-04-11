@@ -71,7 +71,7 @@ inputs:
     description: 'Set "true" to set module up for deployment'
     default: 'true'
     required: false
-  deploymentName:
+  deploymentNameToRemove:
     description: 'The used module deployment name'
     required: false
 
@@ -302,7 +302,7 @@ runs:
     # ----------------------------
     - name: 'Remove [${{ inputs.templateFilePath }}] from parameters [${{ inputs.parameterFilePath }}]'
       shell: pwsh
-      if: ${{ always() && inputs.removeDeployment == 'true' && steps.deploy_step.outputs.deploymentName != '' }}
+      if: ${{ always() && inputs.removeDeployment == 'true' && ( steps.deploy_step.outputs.deploymentName != '' || inputs.deploymentNameToRemove != '' ) }}
       run: |
         # Grouping task logs
         Write-Output "::group::Remove [${{ inputs.templateFilePath }}] from parameters [${{ inputs.parameterFilePath }}]"
@@ -312,12 +312,19 @@ runs:
 
         if (-not [String]::IsNullOrEmpty('${{ steps.deploy_step.outputs.deploymentName }}')) {
           $functionInput = @{
-            DeploymentName    = '${{ steps.deploy_step.outputs.deploymentName }}'
             TemplateFilePath  = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.templateFilePath }}'
             ResourceGroupName = '${{ inputs.resourceGroupName }}'
             ManagementGroupId = '${{ inputs.managementGroupId }}'
             Verbose           = $true
           }
+
+        if(-not [String]::IsNullOrEmpty('${{ steps.deploy_step.outputs.deploymentName }}')) {
+          $functionInput['DeploymentName'] = '${{ steps.deploy_step.outputs.deploymentName }}'
+        }
+
+        if(-not [String]::IsNullOrEmpty('${{ inputs.deploymentNameToRemove }}')) {
+          $functionInput['DeploymentName'] = '${{ inputs.deploymentNameToRemove }}'
+        }
 
           Write-Verbose 'Invoke task with' -Verbose
           Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
