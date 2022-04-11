@@ -6,7 +6,7 @@ This section provides a guideline on how to use the CARML CI environment pipelin
 
 - [Operate the module pipelines](#operate-the-module-pipelines)
   - [Add a new module pipeline](#add-a-new-module-pipeline)
-- [Operate the dependencies pipelines](#operate-the-dependency-pipeline)
+- [Operate the dependencies pipeline](#operate-the-dependencies-pipeline)
   - [Add a new dependency](#add-a-new-dependency)
 - [DevOps-Tool-specific](#devops-tool-specific-guidance)
   - [GitHub workflows](#github-workflows)
