@@ -324,7 +324,7 @@ To use the pipelines that come with the environment in Azure DevOps, you need to
 
 In order to successfully deploy and test all modules in your desired environment, some modules require resources to be deployed beforehand.
 
-The repository comes with a platform pipeline, the dependencies pipeline, that provides the modules with various persisting standard services such as virtual networks and key vaults (along with dummy secrets).
+The repository comes with a platform pipeline, the dependencies pipeline, that deploys a set of Azure services such as Virtual Networks and Key Vaults (along with dummy secrets) to be used by the module pipeline tests.
 
 Run the dependencies pipeline by following instructions provided in the specific [Dependencies pipeline usage](./The%20CI%20environment%20-%20Pipeline%20usage#) section.
 
