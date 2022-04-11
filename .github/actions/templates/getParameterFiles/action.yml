@@ -27,7 +27,7 @@ runs:
         }
         Write-Verbose "Invoke task with" -Verbose
         Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
-        # Set agent up
+        # Get the list of parameter file paths
         $parameterFilePaths = Get-ModuleParameterFiles @functionInput -Verbose
         # Output values to be accessed by next jobs
         Write-Output ('::set-output name=parameterFilePaths::{0}' -f ($parameterFilePaths | ConvertTo-Json -Compress))
