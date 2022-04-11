@@ -36,23 +36,29 @@ env:
 
 jobs:
   ############################
-  #   SET INPUT PARAMETERS   #
+  #   PREPARE PIPELINE   #
   ############################
-  job_set_workflow_param:
+  job_prepare_pipeline:
     runs-on: ubuntu-20.04
-    name: 'Set input parameters to output variables'
+    name: 'Prepare pipeline'
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - name: 'Set input parameters'
+      - name: 'Set input parameters to output variables'
         id: get-workflow-param
         uses: ./.github/actions/templates/getWorkflowInput
         with:
           workflowPath: '${{ env.workflowPath}}'
+      - name: 'Get parameter file paths'
+        id: get-parameter-file-paths
+        uses: ./.github/actions/templates/getParameterFiles
+        with:
+          modulePath: '${{ env.modulePath }}'
     outputs:
       removeDeployment: ${{ steps.get-workflow-param.outputs.removeDeployment }}
+      parameterFilePaths: ${{ steps.get-parameter-file-paths.outputs.parameterFilePaths }}
 
   ####################
   #   Pester Tests   #
@@ -77,18 +83,12 @@ jobs:
     runs-on: ubuntu-20.04
     name: 'Deployment tests'
     needs:
-      - job_set_workflow_param
+      - job_prepare_pipeline
       - job_module_pester_validation
     strategy:
       fail-fast: false
       matrix:
-        parameterFilePaths:
-          [
-            'parameters.json',
-            'min.parameters.json',
-            'image.parameters.json',
-            'import.parameters.json',
-          ]
+        parameterFilePaths: ${{ fromJSON(needs.job_prepare_pipeline.outputs.parameterFilePaths) }}
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -107,7 +107,7 @@ jobs:
           resourceGroupName: '${{ env.resourceGroupName }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
-          removeDeployment: '${{ needs.job_set_workflow_param.outputs.removeDeployment }}'
+          removeDeployment: '${{ needs.job_prepare_pipeline.outputs.removeDeployment }}'
 
   ###############
   #   PUBLISH   #
@@ -117,7 +117,7 @@ jobs:
     if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master' || github.event.inputs.prerelease == 'true'
     runs-on: ubuntu-20.04
     needs:
-      - job_set_workflow_param
+      - job_prepare_pipeline
       - job_module_deploy_validation
     steps:
       - name: 'Checkout'
