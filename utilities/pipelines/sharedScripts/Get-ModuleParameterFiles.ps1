@@ -4,7 +4,7 @@ Get the relative file paths of all parameter files in the given module
 
 .DESCRIPTION
 Get the relative file paths of all parameter files in the given module.
-We return the relative instead of the full-path to make paths easier to read in the pipeline.
+The relative path is returned instead of the full one to make paths easier to read in the pipeline.
 
 .PARAMETER ModulePath
 Mandatory. The module path to search in
