@@ -41,6 +41,11 @@ The dependencies pipeline must be triggered manually and deploys a set of resour
 
 To run the dependencies pipeline you can perform the following steps:
 
+1. Before executing the pipeline for the first time make sure to update the following values:
+
+   | File | Parameter | Description |
+   | - | - | - |
+   | `utilities\pipelines\dependencies\Microsoft.KeyVault\vaults\parameters\parameters.json` | `accessPolicies.value[0].objectId` | The 'Backup Management Service' needs access to back up the keys and secrets, along with the associated VMs. The Enterprise Application's object ID is unique per tenant. |
 1. (Optionally) Verify if you are good with the dependency resource names by checking dependency parameter files stored in path `utilities\pipelines\dependencies`. If not, make the necessary updates to you local branch and push the local changes to the repository.
    > **Note:** If you want to rename any dependency resources, make sure to update any references to their name in the module parameter files too.
 1. On the DevOps platform, navigate to the dependencies pipeline.
