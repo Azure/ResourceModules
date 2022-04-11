@@ -54,21 +54,21 @@ jobs:
     outputs:
       removeDeployment: ${{ steps.get-workflow-param.outputs.removeDeployment }}
 
-  ####################
-  #   Pester Tests   #
-  ####################
-  job_module_pester_validation:
-    runs-on: ubuntu-20.04
-    name: 'Pester tests'
-    steps:
-      - name: 'Checkout'
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-      - name: 'Run tests'
-        uses: ./.github/actions/templates/validateModulePester
-        with:
-          modulePath: '${{ env.modulePath }}'
+  # ####################
+  # #   Pester Tests   #
+  # ####################
+  # job_module_pester_validation:
+  #   runs-on: ubuntu-20.04
+  #   name: 'Pester tests'
+  #   steps:
+  #     - name: 'Checkout'
+  #       uses: actions/checkout@v2
+  #       with:
+  #         fetch-depth: 0
+  #     - name: 'Run tests'
+  #       uses: ./.github/actions/templates/validateModulePester
+  #       with:
+  #         modulePath: '${{ env.modulePath }}'
 
   ######################
   #   Deployment tests #
@@ -81,7 +81,7 @@ jobs:
     name: 'Deploy dependencies'
     needs:
       - job_set_workflow_param
-      - job_module_pester_validation
+      # - job_module_pester_validation
     outputs:
       deploymentName: ${{ steps.deploy.outputs.deploymentName }}
     steps:
@@ -90,9 +90,9 @@ jobs:
         with:
           fetch-depth: 0
       - name: Set environment variables
-        uses: deep-mm/set-variables@v1.0
+        uses: ./.github/actions/templates/setEnvironmentVariables
         with:
-          variableFileName: 'global.variables'
+          variablesPath: ${{ env.variablesPath }}
       - name: 'Using template file [${{ env.modulePath }}/.dependencies/dependencies.bicep]'
         id: deploy
         uses: ./.github/actions/templates/validateModuleDeployment
