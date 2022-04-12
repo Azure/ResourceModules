@@ -13,7 +13,7 @@ Mandatory. The path to the root of the parameters folder to test with
 Mandatory. Path to the template file from root.
 
 .PARAMETER parameterFilePath
-Mandatory. Path to the parameter file from root.
+Optional. Path to the parameter file from root.
 
 .PARAMETER location
 Mandatory. Location to test in. E.g. WestEurope
@@ -31,16 +31,16 @@ Optional. Name of the management group to deploy into. Mandatory if deploying in
 Optional. Additional parameters you can provide with the deployment. E.g. @{ resourceGroupName = 'myResourceGroup' }
 
 .EXAMPLE
-Test-TemplateWithParameterFile templateFilePath 'ARM/KeyVault/deploy.json' -parameterFilePath 'ARM/KeyVault/.parameters/parameters.json' -location 'WestEurope' -resourceGroupName 'aLegendaryRg'
+Test-TemplateDeploymentWithParameterFile templateFilePath 'ARM/KeyVault/deploy.json' -parameterFilePath 'ARM/KeyVault/.parameters/parameters.json' -location 'WestEurope' -resourceGroupName 'aLegendaryRg'
 
 Test the deploy.json of the KeyVault module with the parameter file 'parameters.json' using the resource group 'aLegendaryRg' in location 'WestEurope'
 
 .EXAMPLE
-Test-TemplateWithParameterFile templateFilePath 'ARM/ResourceGroup/deploy.json' -parameterFilePath 'ARM/ResourceGroup/.parameters/parameters.json' -location 'WestEurope'
+Test-TemplateDeploymentWithParameterFile templateFilePath 'ARM/ResourceGroup/deploy.json' -parameterFilePath 'ARM/ResourceGroup/.parameters/parameters.json' -location 'WestEurope'
 
 Test the deploy.json of the ResourceGroup module with the parameter file 'parameters.json' in location 'WestEurope'
 #>
-function Test-TemplateWithParameterFile {
+function Test-TemplateDeployment {
 
     [CmdletBinding(SupportsShouldProcess)]
     param (
@@ -48,10 +48,10 @@ function Test-TemplateWithParameterFile {
         [string] $templateFilePath,
 
         [Parameter(Mandatory)]
-        [string] $parameterFilePath,
-
-        [Parameter(Mandatory)]
         [string] $location,
+
+        [Parameter(Mandatory = $false)]
+        [string] $parameterFilePath,
 
         [Parameter(Mandatory = $false)]
         [string] $resourceGroupName,
@@ -74,12 +74,25 @@ function Test-TemplateWithParameterFile {
     }
 
     process {
+        $deploymentNamePrefix = Split-Path -Path (Split-Path $templateFilePath -Parent) -LeafBase
+        if ([String]::IsNullOrEmpty($deploymentNamePrefix)) {
+            $deploymentNamePrefix = 'templateDeployment-{0}' -f (Split-Path $templateFilePath -LeafBase)
+        }
+        # Generate a valid deployment name. Must match ^[-\w\._\(\)]+$
+        do {
+            $deploymentName = "$deploymentNamePrefix-$(-join (Get-Date -Format yyyyMMddTHHMMssffffZ)[0..63])"
+        } while ($deploymentName -notmatch '^[-\w\._\(\)]+$')
+
+        Write-Verbose "Testing with deployment name [$deploymentName]" -Verbose
 
         $DeploymentInputs = @{
-            TemplateFile          = $templateFilePath
-            TemplateParameterFile = $parameterFilePath
-            Verbose               = $true
-            OutVariable           = 'ValidationErrors'
+            DeploymentName = $deploymentName
+            TemplateFile   = $templateFilePath
+            Verbose        = $true
+            OutVariable    = 'ValidationErrors'
+        }
+        if (-not [String]::IsNullOrEmpty($parameterFilePath)) {
+            $DeploymentInputs['TemplateParameterFile'] = $parameterFilePath
         }
         $ValidationErrors = $null
 
@@ -106,11 +119,9 @@ function Test-TemplateWithParameterFile {
                 break
             }
             'subscription' {
-                if ($subscriptionId) {
-                    $Context = Get-AzContext -ListAvailable | Where-Object Subscription -Match $subscriptionId
-                    if ($Context) {
-                        $null = $Context | Set-AzContext
-                    }
+                if ($subscriptionId -and ($Context = Get-AzContext -ListAvailable | Where-Object { $_.Subscription.Id -eq $subscriptionId })) {
+                    Write-Verbose ('Setting context to subscription [{0}]' -f $Context.Subscription.Name)
+                    $null = $Context | Set-AzContext
                 }
                 if ($PSCmdlet.ShouldProcess('Subscription level deployment', 'Test')) {
                     $res = Test-AzSubscriptionDeployment @DeploymentInputs -Location $Location

@@ -178,19 +178,29 @@ runs:
         Write-Output "::group::Validate [${{ inputs.templateFilePath }}]"
 
         # Load used functions
-        . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourceDeployment' 'Test-TemplateWithParameterFile.ps1')
+        . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourceDeployment' 'Test-TemplateDeployment.ps1')
 
         # ----------- #
         # INVOKE TEST #
         # ----------- #
         $functionInput = @{
           templateFilePath     = '${{ inputs.templateFilePath }}'
-          parameterFilePath    = '${{ inputs.parameterFilePath }}'
           location             = '${{ inputs.location }}'
           resourceGroupName    = '${{ inputs.resourceGroupName }}'
           subscriptionId       = '${{ inputs.subscriptionId }}'
           managementGroupId    = '${{ inputs.managementGroupId }}'
           additionalParameters = @{}
+        }
+
+        if(-not [String]::IsNullOrEmpty('${{ inputs.parameterFilePath }}')) {
+          $functionInput['parameterFilePath'] = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.parameterFilePath }}'
+        }
+
+        # Enables us to pass the resource group name as a deployment parameter
+        if(-not [String]::IsNullOrEmpty('${{ inputs.resourceGroupName }}')) {
+          $functionInput['additionalParameters'] = @{
+            resourceGroupName = '${{ inputs.resourceGroupName }}'
+          }
         }
 
         $projectSettings = Get-Content -Path 'settings.json' | ConvertFrom-Json
@@ -203,7 +213,7 @@ runs:
         Write-Verbose "Invoke task with" -Verbose
         Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
-        Test-TemplateWithParameterFile @functionInput -Verbose
+        Test-TemplateDeployment @functionInput -Verbose
 
         Write-Output "::endgroup::"
 
@@ -217,17 +227,27 @@ runs:
         Write-Output "::group::Deploy [${{ inputs.templateFilePath }}] with parameters [${{ inputs.parameterFilePath }}]"
 
         # Load used functions
-        . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourceDeployment' 'New-ModuleDeployment.ps1')
+        . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourceDeployment' 'New-TemplateDeployment.ps1')
 
         $functionInput = @{
           templateFilePath     = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.templateFilePath }}'
-          parameterFilePath    = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.parameterFilePath }}'
           location             = '${{ inputs.location }}'
           resourceGroupName    = '${{ inputs.resourceGroupName }}'
           subscriptionId       = '${{ inputs.subscriptionId }}'
           managementGroupId    = '${{ inputs.managementGroupId }}'
           doNotThrow           = $true
           additionalParameters = @{}
+        }
+
+        if(-not [String]::IsNullOrEmpty('${{ inputs.parameterFilePath }}')) {
+          $functionInput['parameterFilePath'] = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.parameterFilePath }}'
+        }
+
+        # Enables us to pass the resource group name as a deployment parameter
+        if(-not [String]::IsNullOrEmpty('${{ inputs.resourceGroupName }}')) {
+          $functionInput['additionalParameters'] = @{
+            resourceGroupName = '${{ inputs.resourceGroupName }}'
+          }
         }
 
         $projectSettings = Get-Content -Path 'settings.json' | ConvertFrom-Json
@@ -241,7 +261,7 @@ runs:
         Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
         # Invoke deployment
-        $res = New-ModuleDeployment @functionInput -Verbose
+        $res = New-TemplateDeployment @functionInput -Verbose
 
         # Get deployment name
         Write-Output ('::set-output name={0}::{1}' -f 'deploymentName', $res.deploymentName)
