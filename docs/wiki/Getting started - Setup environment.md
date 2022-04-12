@@ -322,28 +322,21 @@ To use the pipelines that come with the environment in Azure DevOps, you need to
 
 # 4. Deploy dependencies
 
-At this stage you can execute your first pipeline, that is, the dependency pipeline.
+In order to successfully deploy and test all modules in your desired environment, some modules require resources to be deployed beforehand.
 
-Since the modules we tested often depend on other services, we created a pipeline that provides the modules with various persisting standard services such as virtual networks and key vaults (along with dummy secrets). This _dependency_ pipeline should be prepared and executed before you start running all module pipelines.
-> Note, not all modules require dependencies or only a subset of the deployed.
-> **Note:** Before executing the pipeline for the first time make sure to update the following values:
-> | File | Parameter | Description |
-> | - | - | - |
-> | `utilities\pipelines\dependencies\Microsoft.KeyVault\vaults\parameters\parameters.json` | `accessPolicies.value[0].objectId` | The 'Backup Management Service' needs access to back up the keys and secrets, along with the associated VMs. The Enterprise Application's object ID is unique per tenant. |
+The repository comes with a platform pipeline, the dependencies pipeline, that deploys a set of Azure services such as Virtual Networks and Key Vaults (along with dummy secrets) to be used by the module pipeline tests.
 
-It has to components to it to function:
-- The dependency pipeline itself that orchestrates deployments
-- The parameter files used by the dependency pipeline, stored in path `utilities\pipelines\dependencies`
+Run the dependencies pipeline by following instructions provided in the specific [Dependencies pipeline usage](./The%20CI%20environment%20-%20Pipeline%20usage#operate-the-dependencies-pipeline) section.
 
-> **Note:** If you want to rename any dependency resources, make sure to update any references to their name in the module parameter files too. You can find further details about this pipeline [here](./Getting%20started%20-%20Dependency%20pipeline).
+> **Note**: For details about the dependencies pipeline design please refer to the dedicated [Dependencies pipeline design](./The%20CI%20environment%20-%20Pipeline%20design.md#dependencies-pipeline) section.
 
 # 5. Update module parameter files
 
 Once the required dependencies are deployed, there is one more step left to get as many module pipelines running as possible.
 
-Several module parameters reference resources with unique values. For example, if a module references a Key Vault key, its version identifier will only be available once the dependency pipeline executed once.
+Several module parameters reference resources with unique values. For example, if a module references a Key Vault key, its version identifier will only be available once the dependencies pipeline executed once.
 
-For this reason, make sure to update the references in the following modules once the dependency pipeline concluded:
+For this reason, make sure to update the references in the following modules once the dependencies pipeline concluded:
 
 | File | Parameter |
 | - | - |
