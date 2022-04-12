@@ -61,21 +61,21 @@ jobs:
       removeDeployment: ${{ steps.get-workflow-param.outputs.removeDeployment }}
       parameterFilePaths: ${{ steps.get-parameter-file-paths.outputs.parameterFilePaths }}
 
-  # ####################
-  # #   Pester Tests   #
-  # ####################
-  # job_module_pester_validation:
-  #   runs-on: ubuntu-20.04
-  #   name: 'Pester tests'
-  #   steps:
-  #     - name: 'Checkout'
-  #       uses: actions/checkout@v2
-  #       with:
-  #         fetch-depth: 0
-  #     - name: 'Run tests'
-  #       uses: ./.github/actions/templates/validateModulePester
-  #       with:
-  #         modulePath: '${{ env.modulePath }}'
+  ####################
+  #   Pester Tests   #
+  ####################
+  job_module_pester_validation:
+    runs-on: ubuntu-20.04
+    name: 'Pester tests'
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: 'Run tests'
+        uses: ./.github/actions/templates/validateModulePester
+        with:
+          modulePath: '${{ env.modulePath }}'
 
   ######################
   #   Deployment tests #
@@ -88,7 +88,7 @@ jobs:
     name: 'Deploy dependencies'
     needs:
       - job_prepare_pipeline
-      # - job_module_pester_validation
+      - job_module_pester_validation
     outputs:
       deploymentName: ${{ steps.deploy.outputs.deploymentName }}
     steps:
@@ -119,7 +119,6 @@ jobs:
     needs:
       - job_prepare_pipeline
       - job_dependencies_deploy_validation
-      #- job_module_pester_validation # Dependency is implicit via dependency deployment
     strategy:
       fail-fast: false
       matrix:
@@ -208,34 +207,34 @@ jobs:
   # #         managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
   # #         removeDeployment: '${{ needs.job_set_workflow_param.outputs.removeDeployment }}'
 
-  # ###############
-  # #   PUBLISH   #
-  # ###############
-  # job_publish_module:
-  #   name: 'Publish module'
-  #   if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master' || github.event.inputs.prerelease == 'true'
-  #   runs-on: ubuntu-20.04
-  #   needs:
-  #     - job_prepare_pipeline
-  #     - job_module_deploy_validation
-  #   steps:
-  #     - name: 'Checkout'
-  #       uses: actions/checkout@v2
-  #       with:
-  #         fetch-depth: 0
-  #     - name: Set environment variables
-  #       uses: ./.github/actions/templates/setEnvironmentVariables
-  #       with:
-  #         variablesPath: ${{ env.variablesPath }}
-  #     - name: 'Publish module'
-  #       uses: ./.github/actions/templates/publishModule
-  #       with:
-  #         templateFilePath: '${{ env.modulePath }}/deploy.bicep'
-  #         templateSpecsRGName: '${{ env.templateSpecsRGName }}'
-  #         templateSpecsRGLocation: '${{ env.templateSpecsRGLocation }}'
-  #         templateSpecsDescription: '${{ env.templateSpecsDescription }}'
-  #         templateSpecsDoPublish: '${{ env.templateSpecsDoPublish }}'
-  #         bicepRegistryName: '${{ env.bicepRegistryName }}'
-  #         bicepRegistryRGName: '${{ env.bicepRegistryRGName }}'
-  #         bicepRegistryRgLocation: '${{ env.bicepRegistryRgLocation }}'
-  #         bicepRegistryDoPublish: '${{ env.bicepRegistryDoPublish }}'
+  ###############
+  #   PUBLISH   #
+  ###############
+  job_publish_module:
+    name: 'Publish module'
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master' || github.event.inputs.prerelease == 'true'
+    runs-on: ubuntu-20.04
+    needs:
+      - job_prepare_pipeline
+      - job_module_deploy_validation
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Set environment variables
+        uses: ./.github/actions/templates/setEnvironmentVariables
+        with:
+          variablesPath: ${{ env.variablesPath }}
+      - name: 'Publish module'
+        uses: ./.github/actions/templates/publishModule
+        with:
+          templateFilePath: '${{ env.modulePath }}/deploy.bicep'
+          templateSpecsRGName: '${{ env.templateSpecsRGName }}'
+          templateSpecsRGLocation: '${{ env.templateSpecsRGLocation }}'
+          templateSpecsDescription: '${{ env.templateSpecsDescription }}'
+          templateSpecsDoPublish: '${{ env.templateSpecsDoPublish }}'
+          bicepRegistryName: '${{ env.bicepRegistryName }}'
+          bicepRegistryRGName: '${{ env.bicepRegistryRGName }}'
+          bicepRegistryRgLocation: '${{ env.bicepRegistryRgLocation }}'
+          bicepRegistryDoPublish: '${{ env.bicepRegistryDoPublish }}'
