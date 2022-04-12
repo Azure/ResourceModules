@@ -291,38 +291,35 @@ var builtInRoleNames = {
   'Azure Maps Contributor': '/providers/Microsoft.Authorization/roleDefinitions/dba33070-676a-4fb0-87fa-064dc56ff7fb'
 }
 
-module roleAssignments_mg '../../../../arm/Microsoft.Authorization/roleAssignments/.bicep/nested_rbac_mg.bicep' = [for principalId in principalIds: if (!empty(managementGroupId) && empty(subscriptionId) && empty(resourceGroupName)) {
+module roleAssignments_mg '../../../../arm/Microsoft.Authorization/roleAssignments/managementGroup/deploy.bicep' = [for principalId in principalIds: if (!empty(managementGroupId) && empty(subscriptionId) && empty(resourceGroupName)) {
   name: 'roleAssignments_mg-${guid(deployment().name, location, principalId)}'
   scope: managementGroup(managementGroupId)
   params: {
     managementGroupId: managementGroupId
     roleDefinitionIdOrName: contains(builtInRoleNames, roleDefinitionIdOrName) ? builtInRoleNames[roleDefinitionIdOrName] : roleDefinitionIdOrName
     principalId: principalId
-    location: location
   }
 }]
 
-module roleAssignments_sub '../../../../arm/Microsoft.Authorization/roleAssignments/.bicep/nested_rbac_sub.bicep' = [for principalId in principalIds: if (empty(managementGroupId) && !empty(subscriptionId) && empty(resourceGroupName)) {
+module roleAssignments_sub '../../../../arm/Microsoft.Authorization/roleAssignments/subscription/deploy.bicep' = [for principalId in principalIds: if (empty(managementGroupId) && !empty(subscriptionId) && empty(resourceGroupName)) {
   name: 'roleAssignments_sub-${guid(deployment().name, location, principalId)}'
   scope: subscription(subscriptionId)
   params: {
     subscriptionId: subscriptionId
     roleDefinitionIdOrName: contains(builtInRoleNames, roleDefinitionIdOrName) ? builtInRoleNames[roleDefinitionIdOrName] : roleDefinitionIdOrName
     principalId: principalId
-    location: location
   }
 }]
 
-module roleAssignments_rg '../../../../arm/Microsoft.Authorization/roleAssignments/.bicep/nested_rbac_rg.bicep' = [for principalId in principalIds: if (empty(managementGroupId) && !empty(resourceGroupName) && !empty(subscriptionId)) {
+module roleAssignments_rg '../../../../arm/Microsoft.Authorization/roleAssignments/resourceGroup/deploy.bicep' = [for principalId in principalIds: if (empty(managementGroupId) && !empty(resourceGroupName) && !empty(subscriptionId)) {
   name: 'roleAssignments_rg-${guid(deployment().name, location, principalId)}'
   scope: resourceGroup(subscriptionId, resourceGroupName)
   params: {
     subscriptionId: subscriptionId
     roleDefinitionIdOrName: contains(builtInRoleNames, roleDefinitionIdOrName) ? builtInRoleNames[roleDefinitionIdOrName] : roleDefinitionIdOrName
     principalId: principalId
-    location: location
   }
 }]
 
 @description('The scope of the role assignments')
-output roleAssignmentScope string = !empty(managementGroupId) ? roleAssignments_mg[0].outputs.roleAssignmentScope : (!empty(resourceGroupName) ? roleAssignments_rg[0].outputs.roleAssignmentScope : roleAssignments_sub[0].outputs.roleAssignmentScope)
+output roleAssignmentScope string = !empty(managementGroupId) ? roleAssignments_mg[0].outputs.scope : (!empty(resourceGroupName) ? roleAssignments_rg[0].outputs.scope : roleAssignments_sub[0].outputs.scope)

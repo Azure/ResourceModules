@@ -20,10 +20,10 @@ variables:
 jobs:
   - job: Update_module_tables
     pool:
-      ${{ if ne($(vmImage), '') }}:
-        vmImage: '$(vmImage)'
-      ${{ if ne($(poolName), '') }}:
-        name: '$(poolName)'
+      ${{ if ne(variables.vmImage, '') }}:
+        vmImage: ${{ variables.vmImage }}
+      ${{ if ne(variables.poolName, '') }}:
+        name: ${{ variables.poolName }}
     steps:
       - checkout: self
         persistCredentials: true
@@ -34,21 +34,23 @@ jobs:
           pwsh: true
           script: |
             # Load used functions
-            . (Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'tools' 'Set-GitHubReadMeModuleTable.ps1')
+            . (Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'tools' 'Set-ReadMeModuleTable.ps1')
 
             $functionInput = @{
               ModulesPath    = Join-Path '$(System.DefaultWorkingDirectory)' 'arm'
               FilePath       = Join-Path '$(System.DefaultWorkingDirectory)' 'README.md'
-              Organization   = ('$(Build.Repository.Name)').split('/')[0]
-              RepositoryName = ('$(Build.Repository.Name)').split('/')[1]
+              Organization   = '$(System.CollectionUri)'.Split('/')[3]
+              RepositoryName = '$(Build.Repository.Name)'
               ColumnsInOrder = @('Name', 'Status')
               SortByColumn   = 'Name'
+              Environment    = 'ADO'
+              ProjectName    = '$(System.TeamProject)'
             }
 
             Write-Verbose "Invoke task with" -Verbose
             Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
-            Set-GitHubReadMeModuleTable @functionInput -Verbose
+            Set-ReadMeModuleTable @functionInput -Verbose
       - task: PowerShell@2
         displayName: 'Update module folder ReadMe'
         inputs:
@@ -56,20 +58,22 @@ jobs:
           pwsh: true
           script: |
             # Load used functions
-            . (Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'tools' 'Set-GitHubReadMeModuleTable.ps1')
+            . (Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'tools' 'Set-ReadMeModuleTable.ps1')
 
             $functionInput = @{
               ModulesPath    = Join-Path '$(System.DefaultWorkingDirectory)' 'arm'
               FilePath       = Join-Path '$(System.DefaultWorkingDirectory)' 'arm/README.md'
-              Organization   = ('$(Build.Repository.Name)').split('/')[0]
-              RepositoryName = ('$(Build.Repository.Name)').split('/')[1]
+              Organization   = '$(System.CollectionUri)'.Split('/')[3]
+              RepositoryName = '$(Build.Repository.Name)'
               ColumnsInOrder = @('Name', 'ProviderNamespace','ResourceType')
+              Environment    = 'ADO'
+              ProjectName    = '$(System.TeamProject)'
             }
 
             Write-Verbose "Invoke task with" -Verbose
             Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
-            Set-GitHubReadMeModuleTable @functionInput -Verbose
+            Set-ReadMeModuleTable @functionInput -Verbose
       - task: PowerShell@2
         displayName: 'Push changes'
         inputs:

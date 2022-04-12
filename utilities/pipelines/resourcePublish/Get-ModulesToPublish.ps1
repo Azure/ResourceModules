@@ -1,11 +1,11 @@
-﻿#region Helper functions
+#region Helper functions
 
 <#
 .SYNOPSIS
-Get modified files between two commits.
+Get modified files between previous and current commit depending on if you are running on main/master or a custom branch.
 
 .EXAMPLE
-Get-ModifiedFileList 
+Get-ModifiedFileList
 
     Directory: C:\Repo\Azure\ResourceModules\utilities\pipelines\resourcePublish
 
@@ -13,19 +13,20 @@ Mode                 LastWriteTime         Length Name
 ----                 -------------         ------ ----
 la---          08.12.2021    15:50           7133 Script.ps1
 
-Get modified files between previous and origin/main.
+Get modified files between previous and current commit depending on if you are running on main/master or a custom branch.
 #>
 function Get-ModifiedFileList {
-    [CmdletBinding()]
-    param ()
-
     $CurrentBranch = Get-GitBranchName
     if (($CurrentBranch -eq 'main') -or ($CurrentBranch -eq 'master')) {
-        Write-Verbose "Gathering modified files on last commit on main" -Verbose
-        $Diff = git diff --name-only --diff-filter=AM $CurrentBranch^..$CurrentBranch
+        Write-Verbose 'Gathering modified files from the pull request' -Verbose
+        $Diff = git diff --name-only --diff-filter=AM HEAD^ HEAD
     } else {
-        Write-Verbose "Gathering modified files between current branch and main" -Verbose
+        Write-Verbose 'Gathering modified files between current branch and main' -Verbose
         $Diff = git diff --name-only --diff-filter=AM origin/main
+        if ($Diff.count -eq 0) {
+            Write-Verbose 'Gathering modified files between current branch and master' -Verbose
+            $Diff = git diff --name-only --diff-filter=AM origin/master
+        }
     }
     $ModifiedFiles = $Diff | Get-Item -Force
 
@@ -78,7 +79,7 @@ This function will search the current directory and all parent directories for a
 Mandatory. Path to the folder/file that should be searched
 
 .EXAMPLE
-Find-TemplateFile -Path "C:\Repos\Azure\ResourceModules\arm\Microsoft.Storage\storageAccounts\tableServices\tables\.bicep\nested_cuaId.bicep"
+Find-TemplateFile -Path "C:\Repos\Azure\ResourceModules\arm\Microsoft.Storage\storageAccounts\tableServices\tables\.bicep\nested_rbac.bicep"
 
     Directory: C:\Repos\Azure\ResourceModules\arm\Microsoft.Storage\storageAccounts\tableServices\tables
 

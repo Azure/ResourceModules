@@ -100,8 +100,8 @@ param lock string = 'NotSpecified'
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
-param cuaId string = ''
+@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+param enableDefaultTelemetry bool = true
 
 @description('Optional. The name of logs that will be streamed.')
 @allowed([
@@ -109,7 +109,7 @@ param cuaId string = ''
   'DDoSMitigationFlowLogs'
   'DDoSMitigationReports'
 ])
-param publicIpLogsToEnable array = [
+param publicIpdiagnosticLogCategoriesToEnable array = [
   'DDoSProtectionNotifications'
   'DDoSMitigationFlowLogs'
   'DDoSMitigationReports'
@@ -123,7 +123,7 @@ param publicIpLogsToEnable array = [
   'IKEDiagnosticLog'
   'P2SDiagnosticLog'
 ])
-param virtualNetworkGatewayLogsToEnable array = [
+param virtualNetworkGatewaydiagnosticLogCategoriesToEnable array = [
   'GatewayDiagnosticLog'
   'TunnelDiagnosticLog'
   'RouteDiagnosticLog'
@@ -135,20 +135,18 @@ param virtualNetworkGatewayLogsToEnable array = [
 @allowed([
   'AllMetrics'
 ])
-param metricsToEnable array = [
+param diagnosticMetricsToEnable array = [
   'AllMetrics'
 ]
 
-var virtualNetworkGatewayDiagnosticsLogs = [for log in virtualNetworkGatewayLogsToEnable: {
-  category: log
-  enabled: true
-  retentionPolicy: {
-    enabled: true
-    days: diagnosticLogsRetentionInDays
-  }
-}]
-var publicIpDiagnosticsLogs = [for log in publicIpLogsToEnable: {
-  category: log
+@description('Optional. The name of the diagnostic setting, if deployed.')
+param virtualNetworkGatewayDiagnosticSettingsName string = '${name}-diagnosticSettings'
+
+@description('Optional. The name of the diagnostic setting, if deployed.')
+param publicIpDiagnosticSettingsName string = '${name}-diagnosticSettings'
+
+var virtualNetworkGatewayDiagnosticsLogs = [for category in virtualNetworkGatewaydiagnosticLogCategoriesToEnable: {
+  category: category
   enabled: true
   retentionPolicy: {
     enabled: true
@@ -156,7 +154,16 @@ var publicIpDiagnosticsLogs = [for log in publicIpLogsToEnable: {
   }
 }]
 
-var diagnosticsMetrics = [for metric in metricsToEnable: {
+var publicIpDiagnosticsLogs = [for category in publicIpdiagnosticLogCategoriesToEnable: {
+  category: category
+  enabled: true
+  retentionPolicy: {
+    enabled: true
+    days: diagnosticLogsRetentionInDays
+  }
+}]
+
+var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
   category: metric
   timeGrain: null
   enabled: true
@@ -270,9 +277,16 @@ var vpnClientConfiguration = {
   vpnClientRevokedCertificates: !empty(clientRevokedCertThumbprint) ? vpmClientRevokedCertificates : null
 }
 
-module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
-  name: 'pid-${cuaId}'
-  params: {}
+resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
+  name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
+  properties: {
+    mode: 'Incremental'
+    template: {
+      '$schema': 'https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#'
+      contentVersion: '1.0.0.0'
+      resources: []
+    }
+  }
 }
 
 // Public IPs
@@ -307,7 +321,7 @@ resource virtualGatewayPublicIP_lock 'Microsoft.Authorization/locks@2017-04-01' 
 
 @batchSize(1)
 resource virtualNetworkGatewayPublicIp_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2021-05-01-preview' = [for (virtualGatewayPublicIpName, index) in virtualGatewayPipName_var: if ((!empty(diagnosticStorageAccountId)) || (!empty(diagnosticWorkspaceId)) || (!empty(diagnosticEventHubAuthorizationRuleId)) || (!empty(diagnosticEventHubName))) {
-  name: '${virtualGatewayPublicIpName}-diagnosticSettings'
+  name: publicIpDiagnosticSettingsName
   properties: {
     storageAccountId: !empty(diagnosticStorageAccountId) ? diagnosticStorageAccountId : null
     workspaceId: !empty(diagnosticWorkspaceId) ? diagnosticWorkspaceId : null
@@ -329,7 +343,7 @@ resource virtualNetworkGateway 'Microsoft.Network/virtualNetworkGateways@2021-05
     ipConfigurations: activeActive_var ? activeActiveIpConfiguration : activePassiveIpConfiguration
     activeActive: activeActive_var
     enableBgp: enableBgp_var
-    bgpSettings: virtualNetworkGatewayType == 'ExpressRoute' ? null : bgpSettings
+    bgpSettings: enableBgp_var ? bgpSettings : null
     sku: {
       name: virtualNetworkGatewaySku
       tier: virtualNetworkGatewaySku
@@ -353,7 +367,7 @@ resource virtualNetworkGateway_lock 'Microsoft.Authorization/locks@2017-04-01' =
 }
 
 resource virtualNetworkGateway_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = if (!empty(diagnosticStorageAccountId) || !empty(diagnosticWorkspaceId) || !empty(diagnosticEventHubAuthorizationRuleId) || !empty(diagnosticEventHubName)) {
-  name: '${virtualNetworkGateway.name}-diagnosticSettings'
+  name: virtualNetworkGatewayDiagnosticSettingsName
   properties: {
     storageAccountId: !empty(diagnosticStorageAccountId) ? diagnosticStorageAccountId : null
     workspaceId: !empty(diagnosticWorkspaceId) ? diagnosticWorkspaceId : null
@@ -368,7 +382,9 @@ resource virtualNetworkGateway_diagnosticSettings 'Microsoft.Insights/diagnostic
 module virtualNetworkGateway_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-VNetGateway-Rbac-${index}'
   params: {
+    description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
     principalIds: roleAssignment.principalIds
+    principalType: contains(roleAssignment, 'principalType') ? roleAssignment.principalType : ''
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
     resourceId: virtualNetworkGateway.id
   }

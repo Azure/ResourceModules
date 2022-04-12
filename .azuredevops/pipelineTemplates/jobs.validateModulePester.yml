@@ -30,8 +30,8 @@
 ##   | defaultJobTimeoutInMinutes      | 120                                  | The timeout for the job in this pipeline                                                                  | 120                                    |
 ##   | checkoutRepositories            | ''                                   | An optional list of repositories to check out at the beginning of this job in addition to the source      | 'Components'                           |
 ##   | modulePath                      | '$(modulePath)'                      | The path to the module to deploy. E.g. [c:/KeyVault]                                                      | 'c:/KeyVault'                          |
-##   | location                        | '$(defaultLocation)'                 | The location to validate with                                                                             | 'France Central'                       |
-##   | resourceGroupName               | '$(defaultResourceGroupName)'        | The resourcegroup to validate into. Required only for Resource-Group-Level validations                    | 'validation-rg'                        |
+##   | location                        | '$(location)'                 | The location to validate with                                                                             | 'France Central'                       |
+##   | resourceGroupName               | '$(resourceGroupName)'        | The resourcegroup to validate into. Required only for Resource-Group-Level validations                    | 'validation-rg'                        |
 ##   | subscriptionId                  | '$(ARM_SUBSCRIPTION_ID)'             | The id of the subscription to validate with when using a Management group service connection              | 'aed7c000-6387-412e-bed0-24dfddf4bbc6' |
 ##   | managementGroupId               | '$(ARM_MGMTGROUP_ID)'                | The id of the management group to validate with. Required only for Management-Group-Level validations     | '477c9620-cb01-454f-9ebc-fc6b1df48c14' |
 ##   | parametersRepository            | '$(Build.Repository.Name)'           | The respository with the parameter files. Defaults to the triggering repository                           | 'Solutions'                            |
@@ -52,8 +52,8 @@ parameters:
   # Logic-related parameters
   modulePath: '$(modulePath)'
   parametersRepository: '$(Build.Repository.Name)'
-  location: '$(defaultLocation)'
-  resourceGroupName: '$(defaultResourceGroupName)'
+  location: '$(location)'
+  resourceGroupName: '$(resourceGroupName)'
   subscriptionId: '$(ARM_SUBSCRIPTION_ID)'
   managementGroupId: '$(ARM_MGMTGROUP_ID)'
   modulesRepository: '$(modulesRepository)'
@@ -172,7 +172,7 @@ jobs:
           testRunTitle: 'Global Module Tests'
           testResultsFormat: NUnit
           testResultsFiles: global-testResults.xml
-          failTaskOnFailedTests: false
+          failTaskOnFailedTests: true
           searchFolder: 'arm/.global'
         continueOnError: false
         condition: succeededOrFailed()
@@ -277,7 +277,7 @@ jobs:
           testRunTitle: 'Global Module API Tests'
           testResultsFormat: NUnit
           testResultsFiles: api-testResults.xml
-          failTaskOnFailedTests: false
+          failTaskOnFailedTests: true
           searchFolder: 'arm/.global'
         continueOnError: false
         condition: succeededOrFailed()

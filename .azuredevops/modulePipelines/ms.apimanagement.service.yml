@@ -24,7 +24,7 @@ trigger:
       - '/**/*.md'
 
 variables:
-  - template: '/.azuredevops/pipelineVariables/global.variables.yml'
+  - template: '../../global.variables.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
     value: '/arm/Microsoft.ApiManagement/service'
@@ -44,6 +44,7 @@ stages:
           deploymentBlocks:
             - path: $(modulePath)/.parameters/max.parameters.json
             - path: $(modulePath)/.parameters/parameters.json
+            - path: $(modulePath)/.parameters/min.parameters.json
 
   - stage: Publishing
     displayName: Publish module

@@ -2,6 +2,13 @@
 
 This module deploys an alert based on metrics.
 
+## Navigation
+
+- [Resource types](#Resource-types)
+- [Parameters](#Parameters)
+- [Outputs](#Outputs)
+- [Template references](#Template-references)
+
 ## Resource types
 
 | Resource Type | API Version |
@@ -11,25 +18,31 @@ This module deploys an alert based on metrics.
 
 ## Parameters
 
-| Parameter Name | Type | Default Value | Possible Values | Description |
+**Required parameters**
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `criterias` | array | Criterias to trigger the alert. Array of 'Microsoft.Azure.Monitor.SingleResourceMultipleMetricCriteria' or 'Microsoft.Azure.Monitor.MultipleResourceMultipleMetricCriteria' objects |
+| `name` | string | The name of the alert. |
+
+**Optional parameters**
+| Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `actions` | array | `[]` |  | Optional. The list of actions to take when alert triggers. |
-| `alertCriteriaType` | string | `Microsoft.Azure.Monitor.MultipleResourceMultipleMetricCriteria` | `[Microsoft.Azure.Monitor.SingleResourceMultipleMetricCriteria, Microsoft.Azure.Monitor.MultipleResourceMultipleMetricCriteria, Microsoft.Azure.Monitor.WebtestLocationAvailabilityCriteria]` | Optional. Maps to the 'odata.type' field. Specifies the type of the alert criteria. |
-| `alertDescription` | string |  |  | Optional. Description of the alert. |
-| `autoMitigate` | bool | `True` |  | Optional. The flag that indicates whether the alert should be auto resolved or not. |
-| `criterias` | array |  |  | Required. Criterias to trigger the alert. Array of 'Microsoft.Azure.Monitor.SingleResourceMultipleMetricCriteria' or 'Microsoft.Azure.Monitor.MultipleResourceMultipleMetricCriteria' objects |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
-| `enabled` | bool | `True` |  | Optional. Indicates whether this alert is enabled. |
-| `evaluationFrequency` | string | `PT5M` | `[PT1M, PT5M, PT15M, PT30M, PT1H]` | Optional. how often the metric alert is evaluated represented in ISO 8601 duration format. |
-| `location` | string | `global` |  | Optional. Location for all resources. |
-| `name` | string |  |  | Required. The name of the alert. |
-| `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
-| `scopes` | array | `[[subscription().id]]` |  | Optional. the list of resource IDs that this metric alert is scoped to. |
-| `severity` | int | `3` | `[0, 1, 2, 3, 4]` | Optional. The severity of the alert. |
-| `tags` | object | `{object}` |  | Optional. Tags of the resource. |
-| `targetResourceRegion` | string |  |  | Optional. The region of the target resource(s) on which the alert is created/updated. Mandatory for MultipleResourceMultipleMetricCriteria. |
-| `targetResourceType` | string |  |  | Optional. The resource type of the target resource(s) on which the alert is created/updated. Mandatory for MultipleResourceMultipleMetricCriteria. |
-| `windowSize` | string | `PT15M` | `[PT1M, PT5M, PT15M, PT30M, PT1H, PT6H, PT12H, P1D]` | Optional. the period of time (in ISO 8601 duration format) that is used to monitor alert activity based on the threshold. |
+| `actions` | array | `[]` |  | The list of actions to take when alert triggers. |
+| `alertCriteriaType` | string | `'Microsoft.Azure.Monitor.MultipleResourceMultipleMetricCriteria'` | `[Microsoft.Azure.Monitor.SingleResourceMultipleMetricCriteria, Microsoft.Azure.Monitor.MultipleResourceMultipleMetricCriteria, Microsoft.Azure.Monitor.WebtestLocationAvailabilityCriteria]` | Maps to the 'odata.type' field. Specifies the type of the alert criteria. |
+| `alertDescription` | string | `''` |  | Description of the alert. |
+| `autoMitigate` | bool | `True` |  | The flag that indicates whether the alert should be auto resolved or not. |
+| `enabled` | bool | `True` |  | Indicates whether this alert is enabled. |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `evaluationFrequency` | string | `'PT5M'` | `[PT1M, PT5M, PT15M, PT30M, PT1H]` | how often the metric alert is evaluated represented in ISO 8601 duration format. |
+| `location` | string | `'global'` |  | Location for all resources. |
+| `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
+| `scopes` | array | `[[subscription().id]]` |  | the list of resource IDs that this metric alert is scoped to. |
+| `severity` | int | `3` | `[0, 1, 2, 3, 4]` | The severity of the alert. |
+| `tags` | object | `{object}` |  | Tags of the resource. |
+| `targetResourceRegion` | string | `''` |  | The region of the target resource(s) on which the alert is created/updated. Mandatory for MultipleResourceMultipleMetricCriteria. |
+| `targetResourceType` | string | `''` |  | The resource type of the target resource(s) on which the alert is created/updated. Mandatory for MultipleResourceMultipleMetricCriteria. |
+| `windowSize` | string | `'PT15M'` | `[PT1M, PT5M, PT15M, PT30M, PT1H, PT6H, PT12H, P1D]` | the period of time (in ISO 8601 duration format) that is used to monitor alert activity based on the threshold. |
+
 
 ### Parameter Usage: actions
 
@@ -115,11 +128,14 @@ The following sample can be use both for Single and Multiple criterias. The othe
 
 ### Parameter Usage: `roleAssignments`
 
+Create a role assignment for the given resource. If you want to assign a service principal / managed identity that is created in the same deployment, make sure to also specify the `'principalType'` parameter and set it to `'ServicePrincipal'`. This will ensure the role assignment waits for the principal's propagation in Azure.
+
 ```json
 "roleAssignments": {
     "value": [
         {
             "roleDefinitionIdOrName": "Reader",
+            "description": "Reader Role Assignment",
             "principalIds": [
                 "12345678-1234-1234-1234-123456789012", // object 1
                 "78945612-1234-1234-1234-123456789012" // object 2
@@ -129,7 +145,8 @@ The following sample can be use both for Single and Multiple criterias. The othe
             "roleDefinitionIdOrName": "/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11",
             "principalIds": [
                 "12345678-1234-1234-1234-123456789012" // object 1
-            ]
+            ],
+            "principalType": "ServicePrincipal"
         }
     ]
 }

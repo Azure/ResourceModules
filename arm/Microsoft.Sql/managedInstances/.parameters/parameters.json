@@ -42,6 +42,9 @@
         "hardwareFamily": {
             "value": "Gen5"
         },
+        "servicePrincipal": {
+            "value": "SystemAssigned"
+        },
         "dnsZonePartner": {
             "value": ""
         },

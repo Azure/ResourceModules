@@ -2,6 +2,13 @@
 
 This module deploys an EventHub Namespace EventHubs Consumer Group
 
+## Navigation
+
+- [Resource Types](#Resource-Types)
+- [Parameters](#Parameters)
+- [Outputs](#Outputs)
+- [Template references](#Template-references)
+
 ## Resource Types
 
 | Resource Type | API Version |
@@ -10,13 +17,19 @@ This module deploys an EventHub Namespace EventHubs Consumer Group
 
 ## Parameters
 
-| Parameter Name | Type | Default Value | Possible Values | Description |
-| :-- | :-- | :-- | :-- | :-- |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
-| `eventHubName` | string |  |  | Required. The name of the event hub namespace event hub |
-| `name` | string |  |  | Required. The name of the consumer group |
-| `namespaceName` | string |  |  | Required. The name of the event hub namespace |
-| `userMetadata` | string |  |  | Optional. User Metadata is a placeholder to store user-defined string data with maximum length 1024. e.g. it can be used to store descriptive data, such as list of teams and their contact information also user-defined configuration settings can be stored. |
+**Required parameters**
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `eventHubName` | string | The name of the event hub namespace event hub |
+| `name` | string | The name of the consumer group |
+| `namespaceName` | string | The name of the event hub namespace |
+
+**Optional parameters**
+| Parameter Name | Type | Default Value | Description |
+| :-- | :-- | :-- | :-- |
+| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `userMetadata` | string | `''` | User Metadata is a placeholder to store user-defined string data with maximum length 1024. e.g. it can be used to store descriptive data, such as list of teams and their contact information also user-defined configuration settings can be stored. |
+
 
 ## Outputs
 

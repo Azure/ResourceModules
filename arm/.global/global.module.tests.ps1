@@ -269,29 +269,46 @@ Describe 'Readme tests' -Tag Readme {
             $parameters = $templateContent.parameters.Keys
 
             # Get ReadMe data
+            ## Get section start index
             $parametersSectionStartIndex = 0
             while ($readMeContent[$parametersSectionStartIndex] -notlike '*# Parameters' -and -not ($parametersSectionStartIndex -ge $readMeContent.count)) {
                 $parametersSectionStartIndex++
             }
-
-            $parametersTableStartIndex = $parametersSectionStartIndex + 1
-            while ($readMeContent[$parametersTableStartIndex] -notlike '*|*' -and -not ($parametersTableStartIndex -ge $readMeContent.count)) {
-                $parametersTableStartIndex++
-            }
+            Write-Verbose ("Start row of the parameters section in the readme: $parametersSectionStartIndex")
 
             if ($parametersSectionStartIndex -ge $readMeContent.count) {
                 throw 'Parameters section is missing in the Readme. Please add and re-run the tests.'
             }
 
-            $parametersTableEndIndex = $parametersTableStartIndex + 2 # Header row + table separator row
-            while ($readMeContent[$parametersTableEndIndex] -like '*|*' -and -not ($parametersTableEndIndex -ge $readMeContent.count)) {
-                $parametersTableEndIndex++
+            ## Get section end index
+            $parametersSectionEndIndex = $parametersSectionStartIndex + 1
+            while ($readMeContent[$parametersSectionEndIndex] -notlike '*# *' -and -not ($parametersSectionEndIndex -ge $readMeContent.count)) {
+                $parametersSectionEndIndex++
             }
-            $parametersTableEndIndex-- # remove one index as the while loop will move one index past the last table row
+            Write-Verbose ("End row of the parameters section in the readme: $parametersSectionEndIndex")
 
+            ## Iterate over all parameter tables
             $parametersList = [System.Collections.ArrayList]@()
-            for ($index = $parametersTableStartIndex + 2; $index -le $parametersTableEndIndex; $index++) {
-                $parametersList += $readMeContent[$index].Split('|')[1].Replace('`', '').Trim()
+            $sectionIndex = $parametersSectionStartIndex
+            while ($sectionIndex -lt $parametersSectionEndIndex) {
+                ### Get table start index
+                $parametersTableStartIndex = $sectionIndex
+                while ($readMeContent[$parametersTableStartIndex] -notlike '*|*' -and -not ($parametersTableStartIndex -ge $readMeContent.count)) {
+                    $parametersTableStartIndex++
+                }
+                Write-Verbose ("[loop] Start row of the parameter table: $parametersTableStartIndex")
+
+                ### Get table end index
+                $parametersTableEndIndex = $parametersTableStartIndex + 2 # Header row + table separator row
+                while ($readMeContent[$parametersTableEndIndex] -like '*|*' -and -not ($parametersTableEndIndex -ge $readMeContent.count)) {
+                    $parametersTableEndIndex++
+                }
+                Write-Verbose ("[loop] End row of the parameter table: $parametersTableEndIndex")
+
+                for ($tableIndex = $parametersTableStartIndex + 2; $tableIndex -lt $parametersTableEndIndex; $tableIndex++) {
+                    $parametersList += $readMeContent[$tableIndex].Split('|')[1].Replace('`', '').Trim()
+                }
+                $sectionIndex = $parametersTableEndIndex + 1
             }
 
             # Test
@@ -600,16 +617,16 @@ Describe 'Deployment template tests' -Tag Template {
                 $moduleFolderName,
                 $templateContent
             )
-            $CuaIDFlag = @()
+            $enableDefaultTelemetryFlag = @()
             $Schemaverion = $templateContent.'$schema'
             if ((($Schemaverion.Split('/')[5]).Split('.')[0]) -eq (($RGdeployment.Split('/')[5]).Split('.')[0])) {
-                if (($templateContent.resources.type -ccontains 'Microsoft.Resources/deployments' -and $templateContent.resources.condition -like "*[not(empty(parameters('cuaId')))]*") -or ($templateContent.resources.resources.type -ccontains 'Microsoft.Resources/deployments' -and $templateContent.resources.resources.condition -like "*[not(empty(parameters('cuaId')))]*")) {
-                    $CuaIDFlag += $true
+                if (($templateContent.resources.type -ccontains 'Microsoft.Resources/deployments' -and $templateContent.resources.condition -like "*[parameters('enableDefaultTelemetry')]*") -or ($templateContent.resources.resources.type -ccontains 'Microsoft.Resources/deployments' -and $templateContent.resources.resources.condition -like "*[parameters('enableDefaultTelemetry')]*")) {
+                    $enableDefaultTelemetryFlag += $true
                 } else {
-                    $CuaIDFlag += $false
+                    $enableDefaultTelemetryFlag += $false
                 }
             }
-            $CuaIDFlag | Should -Not -Contain $false
+            $enableDefaultTelemetryFlag | Should -Not -Contain $false
         }
 
         It "[<moduleFolderName>] The Location should be defined as a parameter, with the default value of 'resourceGroup().Location' or global for ResourceGroup deployment scope" -TestCases $deploymentFolderTestCases {
@@ -689,29 +706,27 @@ Describe 'Deployment template tests' -Tag Template {
 
         }
 
-        It "[<moduleFolderName>] parameters' description shoud start either by 'Optional.' or 'Required.' or 'Generated.'" -TestCases $deploymentFolderTestCases {
+        It "[<moduleFolderName>] parameters' description shoud start with a one word category followed by a dot, a space and the actual description text." -TestCases $deploymentFolderTestCases {
             param(
                 $moduleFolderName,
                 $templateContent
             )
 
             if (-not $templateContent.parameters) {
+                # Skip test
                 $true | Should -Be $true
                 return
             }
 
-            $ParamDescriptionFlag = @()
+            $IncorrectParameters = @()
             $Paramdescoutput = $templateContent.parameters.Keys
             foreach ($Param in $Paramdescoutput) {
                 $Data = ($templateContent.parameters.$Param.metadata).description
-                if ($Data -like 'Optional. [a-zA-Z]*' -or $Data -like 'Required. [a-zA-Z]*' -or $Data -like 'Generated. [a-zA-Z]*') {
-                    $true | Should -Be $true
-                    $ParamDescriptionFlag += $true
-                } else {
-                    $ParamDescriptionFlag += $false
+                if ($Data -notmatch '^[a-zA-Z]+\. .+') {
+                    $IncorrectParameters += $Param
                 }
             }
-            $ParamDescriptionFlag | Should -Not -Contain $false
+            $IncorrectParameters | Should -BeNullOrEmpty
         }
 
         # PARAMETER Tests
@@ -849,7 +864,7 @@ Describe "API version tests [All apiVersions in the template should be 'recent']
         }
     }
 
-    It 'In [<moduleName>] used resource type [<resourceType>] should use on of the recent API version(s). Currently using [<TargetApi>]' -TestCases $TestCases {
+    It 'In [<moduleName>] used resource type [<resourceType>] should use one of the recent API version(s). Currently using [<TargetApi>]' -TestCases $TestCases {
         param(
             $moduleName,
             $resourceType,

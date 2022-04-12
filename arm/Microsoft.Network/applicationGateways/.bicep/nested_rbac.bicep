@@ -1,6 +1,25 @@
+@sys.description('Required. The IDs of the prinicpals to assign to role to')
 param principalIds array
+
+@sys.description('Required. The name of the role to assign. If it cannot be found you can specify the role definition ID instead')
 param roleDefinitionIdOrName string
+
+@sys.description('Required. The resource ID of the resource to apply the role assignment to')
 param resourceId string
+
+@sys.description('Optional. The principal type of the assigned principal ID.')
+@allowed([
+  'ServicePrincipal'
+  'Group'
+  'User'
+  'ForeignGroup'
+  'Device'
+  ''
+])
+param principalType string = ''
+
+@sys.description('Optional. Description of role assignment')
+param description string = ''
 
 var builtInRoleNames = {
   'Owner': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '8e3af657-a8ff-443c-a75c-2fe8c4bcb635')
@@ -26,15 +45,17 @@ var builtInRoleNames = {
   'Virtual Machine Contributor': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '9980e02c-c2be-4d73-94e8-173b1dc7cf3c')
 }
 
-resource applicationGateway 'Microsoft.Network/applicationGateways@2021-02-01' existing = {
+resource applicationGateway 'Microsoft.Network/applicationGateways@2021-05-01' existing = {
   name: last(split(resourceId, '/'))
 }
 
 resource roleAssignment 'Microsoft.Authorization/roleAssignments@2021-04-01-preview' = [for principalId in principalIds: {
   name: guid(applicationGateway.name, principalId, roleDefinitionIdOrName)
   properties: {
+    description: description
     roleDefinitionId: contains(builtInRoleNames, roleDefinitionIdOrName) ? builtInRoleNames[roleDefinitionIdOrName] : roleDefinitionIdOrName
     principalId: principalId
+    principalType: !empty(principalType) ? principalType : null
   }
   scope: applicationGateway
 }]

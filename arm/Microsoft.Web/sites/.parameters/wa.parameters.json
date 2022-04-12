@@ -8,21 +8,13 @@
         "kind": {
             "value": "app"
         },
-        "appServicePlanObject": {
-            "value": {
-                "name": "<<namePrefix>>-az-wa-x-001-asp",
-                "serverOS": "Linux",
-                "skuName": "P1v2",
-                "skuCapacity": 2,
-                "skuTier": "PremiumV2",
-                "skuSize": "P1v2",
-                "skuFamily": "Pv2"
-            }
+        "serverFarmResourceId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Web/serverFarms/adp-<<namePrefix>>-az-asp-x-001"
         },
         "appInsightObject": {
             "value": {
                 "name": "<<namePrefix>>-az-wa-x-001-appi",
-                "workspaceResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.OperationalInsights/workspaces/adp-<<namePrefix>>-az-law-x-002"
+                "workspaceResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.OperationalInsights/workspaces/adp-<<namePrefix>>-az-law-appi-001"
             }
         },
         "siteConfig": {
