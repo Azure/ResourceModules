@@ -773,17 +773,14 @@ Describe 'Deployment template tests' -Tag Template {
             if (Test-Path (Join-Path $moduleFolderPath '.parameters')) {
                 $ParameterFilePaths = (Get-ChildItem (Join-Path -Path $moduleFolderPath -ChildPath '.parameters' -AdditionalChildPath '*parameters.json') -Recurse -Force).FullName
                 foreach ($ParameterFilePath in $ParameterFilePaths) {
-                    $parameterFile_AllParameterNames = ((Get-Content $ParameterFilePath) | ConvertFrom-Json -AsHashtable).parameters.Keys | Sort-Object
-
                     foreach ($token in $tokensToAvoid.Keys) {
                         $parameterFileTokenTestCases += @{
-                            parameterFilePath               = $ParameterFilePath
-                            parameterFileName               = Split-Path $ParameterFilePath -Leaf
-                            parameterFile_AllParameterNames = $parameterFile_AllParameterNames
-                            tokenSettings                   = $Settings.parameterFileTokens
-                            tokenName                       = $token
-                            tokenValue                      = $tokensToAvoid[$token]
-                            moduleFolderName                = $moduleFolderPath.Replace('\', '/').Split('/arm/')[1]
+                            parameterFilePath = $ParameterFilePath
+                            parameterFileName = Split-Path $ParameterFilePath -Leaf
+                            tokenSettings     = $Settings.parameterFileTokens
+                            tokenName         = $token
+                            tokenValue        = $tokensToAvoid[$token]
+                            moduleFolderName  = $moduleFolderPath.Replace('\', '/').Split('/arm/')[1]
                         }
                     }
                 }
@@ -794,7 +791,6 @@ Describe 'Deployment template tests' -Tag Template {
             param (
                 [string] $parameterFilePath,
                 [string] $parameterFileName,
-                [string[]] $parameterFile_AllParameterNames,
                 [hashtable] $tokenSettings,
                 [string] $tokenName,
                 [string] $tokenValue,
