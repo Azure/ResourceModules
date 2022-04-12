@@ -32,5 +32,5 @@ runs:
         # Output values to be accessed by next jobs
         $compressedOutput = $parameterFilePaths | ConvertTo-Json -Compress
         Write-Verbose "Publishing output: $compressedOutput" -Verbose
-        Write-Output ('::set-output name=parameterFilePaths::$compressedOutput')
+        Write-Output "::set-output name=parameterFilePaths::$compressedOutput"
         Write-Output "::endgroup::"
