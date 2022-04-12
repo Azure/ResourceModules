@@ -30,5 +30,7 @@ runs:
         # Get the list of parameter file paths
         [array]$parameterFilePaths = Get-ModuleParameterFiles @functionInput -Verbose
         # Output values to be accessed by next jobs
-        Write-Output ('::set-output name=parameterFilePaths::{0}' -f ($parameterFilePaths | ConvertTo-Json -Compress))
+        $compressedOutput = $parameterFilePaths | ConvertTo-Json -Compress
+        Write-Verbose "Publishing output: $compressedOutput" -Verbose
+        Write-Output ('::set-output name=parameterFilePaths::$compressedOutput')
         Write-Output "::endgroup::"
