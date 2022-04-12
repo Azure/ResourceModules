@@ -30,12 +30,11 @@ param enableDefaultTelemetry bool = true
 // =========== //
 // Variables   //
 // =========== //
-var azureWebJobsValues = !empty(storageAccountId) && setAzureWebJobsDashboard == true ? {
+var azureWebJobsValues = !empty(storageAccountId) ? union({
   AzureWebJobsStorage: 'DefaultEndpointsProtocol=https;AccountName=${storageAccount.name};AccountKey=${storageAccount.listKeys().keys[0].value};'
+}, ((setAzureWebJobsDashboard == true) ? {
   AzureWebJobsDashboard: 'DefaultEndpointsProtocol=https;AccountName=${storageAccount.name};AccountKey=${storageAccount.listKeys().keys[0].value};'
-} : !empty(storageAccountId) && setAzureWebJobsDashboard == false ? {
-  AzureWebJobsStorage: 'DefaultEndpointsProtocol=https;AccountName=${storageAccount.name};AccountKey=${storageAccount.listKeys().keys[0].value};'
-} : {}
+} : {})) : {}
 
 var appInsightsValues = !empty(appInsightId) ? {
   APPINSIGHTS_INSTRUMENTATIONKEY: appInsight.properties.InstrumentationKey
