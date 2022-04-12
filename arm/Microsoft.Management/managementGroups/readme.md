@@ -7,6 +7,14 @@ This module has some known **limitations**:
 - It's not possible to change the display name of the root management group (the one that has the tenant GUID as ID)
 - It can't manage the Root (/) management group
 
+## Navigation
+
+- [Resource types](#Resource-types)
+- [Parameters](#Parameters)
+- [Outputs](#Outputs)
+- [Considerations](#Considerations)
+- [Template references](#Template-references)
+
 ## Resource types
 
 | Resource Type | API Version |
@@ -16,18 +24,24 @@ This module has some known **limitations**:
 
 ## Parameters
 
-| Parameter Name | Type | Default Value | Possible Values | Description |
-| :-- | :-- | :-- | :-- | :-- |
-| `displayName` | string |  |  | Optional. The friendly name of the management group. If no value is passed then this field will be set to the group ID. |
-| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `location` | string | `[deployment().location]` |  | Optional. Location deployment metadata. |
-| `name` | string |  |  | Required. The group ID of the Management group |
-| `parentId` | string |  |  | Optional. The management group parent ID. Defaults to current scope. |
-| `roleAssignments` | array | `[]` |  | Optional. Array of role assignment objects to define RBAC on this resource. |
+**Required parameters**
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `name` | string | The group ID of the Management group |
+
+**Optional parameters**
+| Parameter Name | Type | Default Value | Description |
+| :-- | :-- | :-- | :-- |
+| `displayName` | string | `''` | The friendly name of the management group. If no value is passed then this field will be set to the group ID. |
+| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `location` | string | `[deployment().location]` | Location deployment metadata. |
+| `parentId` | string | `''` | The management group parent ID. Defaults to current scope. |
+| `roleAssignments` | array | `[]` | Array of role assignment objects to define RBAC on this resource. |
+
 
 ### Parameter Usage: `roleAssignments`
 
-Create a role assignment for the given resource. If you want to assign a service principal / managed identity that is created in the same deployment, make sure to also specify the `'principalType'` parameter and set it to 'ServicePrincipal'. This will ensure the role assignment waits for the principal's propagation in Azure.
+Create a role assignment for the given resource. If you want to assign a service principal / managed identity that is created in the same deployment, make sure to also specify the `'principalType'` parameter and set it to `'ServicePrincipal'`. This will ensure the role assignment waits for the principal's propagation in Azure.
 
 ```json
 "roleAssignments": {

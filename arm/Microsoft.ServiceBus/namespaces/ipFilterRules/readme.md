@@ -2,6 +2,13 @@
 
 This module deploys IP filter rules for a service bus namespace
 
+## Navigation
+
+- [Resource Types](#Resource-Types)
+- [Parameters](#Parameters)
+- [Outputs](#Outputs)
+- [Template references](#Template-references)
+
 ## Resource Types
 
 | Resource Type | API Version |
@@ -10,14 +17,20 @@ This module deploys IP filter rules for a service bus namespace
 
 ## Parameters
 
-| Parameter Name | Type | Default Value | Possible Values | Description |
-| :-- | :-- | :-- | :-- | :-- |
-| `action` | string |  | `[Accept]` | Required. The IP Filter Action |
-| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `filterName` | string |  |  | Required. IP Filter name |
-| `ipMask` | string |  |  | Required. IP Mask |
-| `name` | string | `[parameters('filterName')]` |  | Optional. The name of the ip filter rule |
-| `namespaceName` | string |  |  | Required. Name of the parent Service Bus Namespace for the Service Bus Queue. |
+**Required parameters**
+| Parameter Name | Type | Allowed Values | Description |
+| :-- | :-- | :-- | :-- |
+| `action` | string | `[Accept]` | The IP Filter Action |
+| `filterName` | string |  | IP Filter name |
+| `ipMask` | string |  | IP Mask |
+| `namespaceName` | string |  | Name of the parent Service Bus Namespace for the Service Bus Queue. |
+
+**Optional parameters**
+| Parameter Name | Type | Default Value | Description |
+| :-- | :-- | :-- | :-- |
+| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `name` | string | `[parameters('filterName')]` | The name of the ip filter rule |
+
 
 ## Outputs
 

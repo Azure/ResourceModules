@@ -23,11 +23,34 @@
             "value": {
                 "createOption": "fromImage",
                 "deleteOption": "Delete",
+                "caching": "None",
                 "diskSizeGB": "128",
                 "managedDisk": {
                     "storageAccountType": "Premium_LRS"
                 }
             }
+        },
+        "dataDisks": {
+            "value": [
+                {
+                    "createOption": "Empty",
+                    "deleteOption": "Delete",
+                    "caching": "None",
+                    "diskSizeGB": "128",
+                    "managedDisk": {
+                        "storageAccountType": "Premium_LRS"
+                    }
+                },
+                {
+                    "createOption": "Empty",
+                    "deleteOption": "Delete",
+                    "caching": "None",
+                    "diskSizeGB": "128",
+                    "managedDisk": {
+                        "storageAccountType": "Premium_LRS"
+                    }
+                }
+            ]
         },
         "availabilityZone": {
             "value": 2

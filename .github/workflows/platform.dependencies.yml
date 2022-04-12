@@ -23,7 +23,7 @@ on:
   #     - 'utilities/pipelines/dependencies/**'
 
 env:
-  defaultLocation: 'WestEurope'
+  location: 'WestEurope'
   defaultResourceGroupName: 'validation-rg'
   resourceGroupNameArtifacts: 'artifacts-rg'
   removeDeployment: 'false'
@@ -54,7 +54,7 @@ jobs:
         with:
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
-          location: '${{ env.defaultLocation }}'
+          location: '${{ env.location }}'
           resourceGroupName: '${{ env.defaultResourceGroupName }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
@@ -81,7 +81,7 @@ jobs:
         with:
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
-          location: '${{ env.defaultLocation }}'
+          location: '${{ env.location }}'
           resourceGroupName: '${{ env.defaultResourceGroupName }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
@@ -111,7 +111,7 @@ jobs:
         with:
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
-          location: '${{ env.defaultLocation }}'
+          location: '${{ env.location }}'
           resourceGroupName: '${{ env.defaultResourceGroupName }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
@@ -148,7 +148,7 @@ jobs:
         with:
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
-          location: '${{ env.defaultLocation }}'
+          location: '${{ env.location }}'
           resourceGroupName: '${{ env.defaultResourceGroupName }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
@@ -175,7 +175,7 @@ jobs:
         with:
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
-          location: '${{ env.defaultLocation }}'
+          location: '${{ env.location }}'
           resourceGroupName: '${{ env.defaultResourceGroupName }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
@@ -202,7 +202,7 @@ jobs:
         with:
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
-          location: '${{ env.defaultLocation }}'
+          location: '${{ env.location }}'
           resourceGroupName: '${{ env.defaultResourceGroupName }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
@@ -230,7 +230,7 @@ jobs:
         with:
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
-          location: '${{ env.defaultLocation }}'
+          location: '${{ env.location }}'
           resourceGroupName: '${{ env.defaultResourceGroupName }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
@@ -258,7 +258,7 @@ jobs:
         with:
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
-          location: '${{ env.defaultLocation }}'
+          location: '${{ env.location }}'
           resourceGroupName: '${{ env.defaultResourceGroupName }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
@@ -362,7 +362,7 @@ jobs:
         with:
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
-          location: '${{ env.defaultLocation }}'
+          location: '${{ env.location }}'
           resourceGroupName: '${{ env.defaultResourceGroupName }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
@@ -395,7 +395,7 @@ jobs:
         with:
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
-          location: '${{ env.defaultLocation }}'
+          location: '${{ env.location }}'
           resourceGroupName: '${{ env.defaultResourceGroupName }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
@@ -552,7 +552,7 @@ jobs:
         with:
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
-          location: '${{ env.defaultLocation }}'
+          location: '${{ env.location }}'
           resourceGroupName: '${{ env.defaultResourceGroupName }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
@@ -579,7 +579,7 @@ jobs:
         with:
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
-          location: '${{ env.defaultLocation }}'
+          location: '${{ env.location }}'
           resourceGroupName: '${{ env.defaultResourceGroupName }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
@@ -606,7 +606,7 @@ jobs:
         with:
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
-          location: '${{ env.defaultLocation }}'
+          location: '${{ env.location }}'
           resourceGroupName: '${{ env.defaultResourceGroupName }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
@@ -634,7 +634,7 @@ jobs:
         with:
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
-          location: '${{ env.defaultLocation }}'
+          location: '${{ env.location }}'
           resourceGroupName: '${{ env.defaultResourceGroupName }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
@@ -669,7 +669,7 @@ jobs:
         with:
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
-          location: '${{ env.defaultLocation }}'
+          location: '${{ env.location }}'
           resourceGroupName: '${{ env.defaultResourceGroupName }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
@@ -699,7 +699,7 @@ jobs:
         with:
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
-          location: '${{ env.defaultLocation }}'
+          location: '${{ env.location }}'
           resourceGroupName: '${{ env.defaultResourceGroupName }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
@@ -735,7 +735,7 @@ jobs:
         with:
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
-          location: '${{ env.defaultLocation }}'
+          location: '${{ env.location }}'
           resourceGroupName: '${{ env.defaultResourceGroupName }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
@@ -764,7 +764,7 @@ jobs:
         with:
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
-          location: '${{ env.defaultLocation }}'
+          location: '${{ env.location }}'
           resourceGroupName: '${{ env.defaultResourceGroupName }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
@@ -793,7 +793,7 @@ jobs:
         with:
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
-          location: '${{ env.defaultLocation }}'
+          location: '${{ env.location }}'
           resourceGroupName: '${{ env.defaultResourceGroupName }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
@@ -822,7 +822,7 @@ jobs:
         with:
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
-          location: '${{ env.defaultLocation }}'
+          location: '${{ env.location }}'
           resourceGroupName: '${{ env.defaultResourceGroupName }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
@@ -852,7 +852,7 @@ jobs:
         with:
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
-          location: '${{ env.defaultLocation }}'
+          location: '${{ env.location }}'
           resourceGroupName: '${{ env.defaultResourceGroupName }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
@@ -872,7 +872,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        parameterFilePaths: ['parameters.json', 'pe.parameters.json', 'nopr.parameters.json']
+        parameterFilePaths:
+          ['parameters.json', 'pe.parameters.json', 'nopr.parameters.json']
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -883,7 +884,7 @@ jobs:
         with:
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
-          location: '${{ env.defaultLocation }}'
+          location: '${{ env.location }}'
           resourceGroupName: '${{ env.defaultResourceGroupName }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
@@ -1013,7 +1014,7 @@ jobs:
             ) | ForEach-Object {
                 $null = Add-AzKeyVaultKey -VaultName $noprKeyVaultName -Name $_.name -Destination $_.Destination
                 Write-Verbose ('Added key [{0}] to key vault [{1}]' -f $_.name, $noprKeyVaultName) -Verbose
-                
+
             }
           azPSVersion: 'latest'
 
@@ -1042,7 +1043,7 @@ jobs:
         with:
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
-          location: '${{ env.defaultLocation }}'
+          location: '${{ env.location }}'
           resourceGroupName: '${{ env.defaultResourceGroupName }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
@@ -1161,7 +1162,7 @@ jobs:
         with:
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
-          location: '${{ env.defaultLocation }}'
+          location: '${{ env.location }}'
           resourceGroupName: '${{ env.defaultResourceGroupName }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
@@ -1188,7 +1189,7 @@ jobs:
         with:
           templateFilePath: 'arm/${{ env.namespace }}/subscription/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
-          location: '${{ env.defaultLocation }}'
+          location: '${{ env.location }}'
           resourceGroupName: '${{ env.defaultResourceGroupName }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
@@ -1225,7 +1226,7 @@ jobs:
         with:
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
-          location: '${{ env.defaultLocation }}'
+          location: '${{ env.location }}'
           resourceGroupName: '${{ env.defaultResourceGroupName }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
@@ -1254,7 +1255,7 @@ jobs:
         with:
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
-          location: '${{ env.defaultLocation }}'
+          location: '${{ env.location }}'
           resourceGroupName: '${{ env.defaultResourceGroupName }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
@@ -1281,7 +1282,7 @@ jobs:
         with:
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
-          location: '${{ env.defaultLocation }}'
+          location: '${{ env.location }}'
           resourceGroupName: '${{ env.defaultResourceGroupName }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
@@ -1310,7 +1311,7 @@ jobs:
         with:
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
-          location: '${{ env.defaultLocation }}'
+          location: '${{ env.location }}'
           resourceGroupName: '${{ env.defaultResourceGroupName }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
@@ -1337,7 +1338,7 @@ jobs:
         with:
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
-          location: '${{ env.defaultLocation }}'
+          location: '${{ env.location }}'
           resourceGroupName: '${{ env.defaultResourceGroupName }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
