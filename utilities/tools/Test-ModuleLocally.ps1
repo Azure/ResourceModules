@@ -154,7 +154,7 @@ function Test-ModuleLocally {
                 if ($AdditionalTokens.ContainsKey('SubscriptionId')) {
                     $tokensToAvoid['subscriptionId'] = $ValidateOrDeployParameters.SubscriptionId
                 }
-                if ($AdditionalTokens.ContainsKey('deploymentSpId')) {
+                if ($AdditionalTokens.ContainsKey('managementGroupId')) {
                     $tokensToAvoid['managementGroupId'] = $ValidateOrDeployParameters.ManagementGroupId
                 }
                 if ($AdditionalTokens.ContainsKey('deploymentSpId')) {
