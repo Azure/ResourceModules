@@ -149,6 +149,12 @@ jobs:
               Run        = @{
                 Container = New-PesterContainer -Path (Join-Path '$(moduleRepoRoot)' 'arm' '.global' 'global.module.tests.ps1') -Data @{
                   moduleFolderPaths = $moduleFolderPaths
+                  tokensToAvoid = @{
+                    subscriptionId    = '${{ parameters.subscriptionId }}'
+                    managementGroupId = '${{ parameters.managementGroupId }}'
+                    tenantId          = '$(ARM_TENANT_ID)'
+                    deploymentSpId    = '$(DEPLOYMENT_SP_ID)'
+                  }
                 }
               }
               Filter     = @{

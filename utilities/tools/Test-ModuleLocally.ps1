@@ -133,10 +133,22 @@ function Test-ModuleLocally {
         if ($PesterTest) {
             Write-Verbose "Pester Testing Module: $ModuleName"
             try {
+                $tokensToAvoid = @{
+                    subscriptionId    = $ValidateOrDeployParameters.SubscriptionId
+                    managementGroupId = $ValidateOrDeployParameters.ManagementGroupId
+                }
+                if ($AdditionalTokens.ContainsKey('deploymentSpId')) {
+                    $tokensToAvoid['deploymentSpId'] = $AdditionalTokens['deploymentSpId']
+                }
+                if ($AdditionalTokens.ContainsKey('tenantId')) {
+                    $tokensToAvoid['tenantId'] = $AdditionalTokens['tenantId']
+                }
+
                 Invoke-Pester -Configuration @{
                     Run    = @{
                         Container = New-PesterContainer -Path (Join-Path (Get-Item $PSScriptRoot).Parent.Parent 'arm/.global/global.module.tests.ps1') -Data @{
                             moduleFolderPaths = Split-Path $TemplateFilePath -Parent
+                            tokensToAvoid     = $tokensToAvoid
                         }
                     }
                     Output = @{
