@@ -430,7 +430,7 @@ Describe 'Readme tests' -Tag Readme {
             # Load function
             . (Join-Path $repoRoot 'utilities' 'tools' 'Set-ModuleReadMe.ps1')
 
-            # Apply update
+            # Apply update with already compiled template content
             Set-ModuleReadMe -TemplateFilePath $templateFilePath -TemplateFileContent $templateContent
 
             # Get hash after 'update'
