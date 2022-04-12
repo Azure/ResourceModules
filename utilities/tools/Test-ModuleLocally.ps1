@@ -151,7 +151,7 @@ function Test-ModuleLocally {
             Write-Verbose "Pester Testing Module: $ModuleName"
             try {
                 $tokensToAvoid = @{}
-                if ($AdditionalTokens.ContainsKey('deploymentSpId')) {
+                if ($AdditionalTokens.ContainsKey('SubscriptionId')) {
                     $tokensToAvoid['subscriptionId'] = $ValidateOrDeployParameters.SubscriptionId
                 }
                 if ($AdditionalTokens.ContainsKey('deploymentSpId')) {
