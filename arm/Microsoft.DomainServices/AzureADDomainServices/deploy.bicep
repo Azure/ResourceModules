@@ -20,7 +20,7 @@ param pfxCertificate string
 @secure()
 param pfxCertificatePassword string
 
-@description('Optional. The email recipient value to receive alerts')
+@description('Required. The email recipient value to receive alerts')
 param additionalRecipients string
 
 @description('Optional. The value is to provide domain configuration type')
