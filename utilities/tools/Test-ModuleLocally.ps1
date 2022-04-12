@@ -86,6 +86,23 @@ Test-ModuleLocally @TestModuleLocallyInput -Verbose
 
 Run all Pester tests for the given template file
 
+.EXAMPLE
+
+$TestModuleLocallyInput = @{
+    TemplateFilePath           = 'C:\Microsoft.Network\routeTables\deploy.bicep'
+    PesterTest                 = $true
+    ValidateOrDeployParameters = @{
+        SubscriptionId    = '00000000-0000-0000-0000-000000000000'
+        ManagementGroupId = '00000000-0000-0000-0000-000000000000'
+    }
+    AdditionalTokens           = @{
+        deploymentSpId = '00000000-0000-0000-0000-000000000000'
+    }
+}
+Test-ModuleLocally @TestModuleLocallyInput -Verbose
+
+Run all Pester tests for the given template file including tests for the use of tokens
+
 .NOTES
 - Make sure you provide the right information in the 'ValidateOrDeployParameters' parameter for this function to work.
 - Ensure you have the ability to perform the deployment operations using your account (if planning to test deploy)
