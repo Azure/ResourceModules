@@ -6,7 +6,7 @@ This section provides a guideline on how to use the CARML CI environment pipelin
 
 - [Operate the module pipelines](#operate-the-module-pipelines)
   - [Add a new module pipeline](#add-a-new-module-pipeline)
-- [Operate the dependencies pipelines](#operate-the-dependency-pipeline)
+- [Operate the dependencies pipeline](#operate-the-dependencies-pipeline)
   - [Add a new dependency](#add-a-new-dependency)
 - [DevOps-Tool-specific](#devops-tool-specific-guidance)
   - [GitHub workflows](#github-workflows)
@@ -33,7 +33,7 @@ Pipeline logs are available for troubleshooting and provide detailed information
 
 ## Add a new module pipeline
 
-To add a new module pipeline we recommend to create a copy of a currently existing module pipeline and adjust all module-specific properties. The registration of the pipeline depends on the [DevOps platform](#devops-tool-specific-guidance) you're using.
+To add a new module pipeline we recommend to create a copy of a currently existing module pipeline and adjust all module-specific properties, e.g. triggers and module paths. The registration of the pipeline depends on the [DevOps platform](#devops-tool-specific-guidance) you're using.
 
 # Operate the dependencies pipeline
 
