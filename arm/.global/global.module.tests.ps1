@@ -110,9 +110,11 @@ Describe 'Readme tests' -Tag Readme {
         foreach ($moduleFolderPath in $moduleFolderPaths) {
 
             if (Test-Path (Join-Path $moduleFolderPath 'deploy.bicep')) {
-                $templateContent = az bicep build --file (Join-Path $moduleFolderPath 'deploy.bicep') --stdout | ConvertFrom-Json -AsHashtable
+                $templateFilePath = Join-Path $moduleFolderPath 'deploy.bicep'
+                $templateContent = az bicep build --file $templateFilePath --stdout | ConvertFrom-Json -AsHashtable
             } elseif (Test-Path (Join-Path $moduleFolderPath 'deploy.json')) {
-                $templateContent = Get-Content (Join-Path $moduleFolderPath 'deploy.json') -Raw | ConvertFrom-Json -AsHashtable
+                $templateFilePath = Join-Path $moduleFolderPath 'deploy.json'
+                $templateContent = Get-Content $templateFilePath -Raw | ConvertFrom-Json -AsHashtable
             } else {
                 throw "No template file found in folder [$moduleFolderPath]"
             }
@@ -121,6 +123,8 @@ Describe 'Readme tests' -Tag Readme {
                 moduleFolderName = $moduleFolderPath.Replace('\', '/').Split('/arm/')[1]
                 moduleFolderPath = $moduleFolderPath
                 templateContent  = $templateContent
+                templateFilePath = $templateFilePath
+                readMeFilePath   = Join-Path -Path $moduleFolderPath 'readme.md'
                 readMeContent    = Get-Content (Join-Path -Path $moduleFolderPath 'readme.md')
             }
         }
@@ -405,6 +409,24 @@ Describe 'Readme tests' -Tag Readme {
             ($ReadmeHTML[$StartIndex].Contains('href')) | Should -Be $true
         }
 
+        It '[<moduleFolderName>] Set-ModuleReadMe script should not apply any updates' -TestCases $readmeFolderTestCases {
+            param(
+                [string] $moduleFolderName,
+                [string] $templateFilePath,
+                [string] $readMeFilePath
+            )
+
+            $fileHashBefore = (Get-FileHash $readMeFilePath).Hash
+
+            # Load function
+            $rootPath = (Get-Item $PSScriptRoot).Parent.Parent.Parent.Parent
+            . (Join-Path $rootPath 'utilities' 'tools' 'Set-ModuleReadMe.ps1')
+            Set-ModuleReadMe -TemplateFilePath $templateFilePath
+
+            $fileHashAfter = (Get-FileHash $readMeFilePath).Hash
+
+            $fileHashBefore -eq $fileHashAfter | Should -Be $true -Because 'The file hashes before and after applying the Set-ModuleReadMe function should be identical'
+        }
     }
 }
 
