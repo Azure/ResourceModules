@@ -3,8 +3,13 @@
 ***Feel free to remove this sample text***
 >Thank you for your contribution !
 Please include a summary of the change and which issue is fixed.
-Please also include relevant motivation and context.
+Please also include the context.
 List any dependencies that are required for this change.
+
+### Pipeline references (for module/pipeline changes)
+| Pipeline |
+| - |
+| |
 
 ## Type of Change
 
