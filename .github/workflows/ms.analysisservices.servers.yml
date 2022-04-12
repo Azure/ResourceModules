@@ -146,6 +146,7 @@ jobs:
     if: always() && needs.job_set_workflow_param.outputs.removeDeployment == 'true' && needs.job_dependencies_deploy_validation.outputs.deploymentName != ''
     needs:
       - job_set_workflow_param
+      - job_module_deploy_validation
       - job_dependencies_deploy_validation
     steps:
       - name: 'Checkout'
