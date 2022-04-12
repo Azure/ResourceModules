@@ -23,7 +23,7 @@ on:
   #     - 'utilities/pipelines/dependencies/**'
 
 env:
-  defaultLocation: 'WestEurope'
+  location: 'WestEurope'
   defaultResourceGroupName: 'validation-rg'
   resourceGroupNameArtifacts: 'artifacts-rg'
   removeDeployment: 'false'
@@ -54,7 +54,7 @@ jobs:
         with:
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
-          location: '${{ env.defaultLocation }}'
+          location: '${{ env.location }}'
           resourceGroupName: '${{ env.defaultResourceGroupName }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
@@ -70,7 +70,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        parameterFilePaths: ['parameters.json']
+        parameterFilePaths: ${{ fromJSON(needs.job_prepare_pipeline.outputs.parameterFilePaths) }}
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -81,7 +81,7 @@ jobs:
         with:
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
-          location: '${{ env.defaultLocation }}'
+          location: '${{ env.location }}'
           resourceGroupName: '${{ env.defaultResourceGroupName }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
@@ -99,7 +99,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        parameterFilePaths: ['parameters.json']
+        parameterFilePaths: ${{ fromJSON(needs.job_prepare_pipeline.outputs.parameterFilePaths) }}
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -111,7 +111,7 @@ jobs:
         with:
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
-          location: '${{ env.defaultLocation }}'
+          location: '${{ env.location }}'
           resourceGroupName: '${{ env.defaultResourceGroupName }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
@@ -137,7 +137,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        parameterFilePaths: ['parameters.json']
+        parameterFilePaths: ${{ fromJSON(needs.job_prepare_pipeline.outputs.parameterFilePaths) }}
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -148,7 +148,7 @@ jobs:
         with:
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
-          location: '${{ env.defaultLocation }}'
+          location: '${{ env.location }}'
           resourceGroupName: '${{ env.defaultResourceGroupName }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
@@ -175,7 +175,7 @@ jobs:
         with:
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
-          location: '${{ env.defaultLocation }}'
+          location: '${{ env.location }}'
           resourceGroupName: '${{ env.defaultResourceGroupName }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
@@ -191,7 +191,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        parameterFilePaths: ['parameters.json']
+        parameterFilePaths: ${{ fromJSON(needs.job_prepare_pipeline.outputs.parameterFilePaths) }}
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -202,7 +202,7 @@ jobs:
         with:
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
-          location: '${{ env.defaultLocation }}'
+          location: '${{ env.location }}'
           resourceGroupName: '${{ env.defaultResourceGroupName }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
@@ -230,7 +230,7 @@ jobs:
         with:
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
-          location: '${{ env.defaultLocation }}'
+          location: '${{ env.location }}'
           resourceGroupName: '${{ env.defaultResourceGroupName }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
@@ -258,7 +258,7 @@ jobs:
         with:
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
-          location: '${{ env.defaultLocation }}'
+          location: '${{ env.location }}'
           resourceGroupName: '${{ env.defaultResourceGroupName }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
@@ -351,7 +351,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        parameterFilePaths: ['parameters.json']
+        parameterFilePaths: ${{ fromJSON(needs.job_prepare_pipeline.outputs.parameterFilePaths) }}
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -362,7 +362,7 @@ jobs:
         with:
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
-          location: '${{ env.defaultLocation }}'
+          location: '${{ env.location }}'
           resourceGroupName: '${{ env.defaultResourceGroupName }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
@@ -383,7 +383,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        parameterFilePaths: ['parameters.json']
+        parameterFilePaths: ${{ fromJSON(needs.job_prepare_pipeline.outputs.parameterFilePaths) }}
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -395,7 +395,7 @@ jobs:
         with:
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
-          location: '${{ env.defaultLocation }}'
+          location: '${{ env.location }}'
           resourceGroupName: '${{ env.defaultResourceGroupName }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
@@ -541,7 +541,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        parameterFilePaths: ['parameters.json']
+        parameterFilePaths: ${{ fromJSON(needs.job_prepare_pipeline.outputs.parameterFilePaths) }}
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -552,7 +552,7 @@ jobs:
         with:
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
-          location: '${{ env.defaultLocation }}'
+          location: '${{ env.location }}'
           resourceGroupName: '${{ env.defaultResourceGroupName }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
@@ -568,7 +568,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        parameterFilePaths: ['parameters.json']
+        parameterFilePaths: ${{ fromJSON(needs.job_prepare_pipeline.outputs.parameterFilePaths) }}
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -579,7 +579,7 @@ jobs:
         with:
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
-          location: '${{ env.defaultLocation }}'
+          location: '${{ env.location }}'
           resourceGroupName: '${{ env.defaultResourceGroupName }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
@@ -595,7 +595,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        parameterFilePaths: ['parameters.json']
+        parameterFilePaths: ${{ fromJSON(needs.job_prepare_pipeline.outputs.parameterFilePaths) }}
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -606,7 +606,7 @@ jobs:
         with:
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
-          location: '${{ env.defaultLocation }}'
+          location: '${{ env.location }}'
           resourceGroupName: '${{ env.defaultResourceGroupName }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
@@ -634,7 +634,7 @@ jobs:
         with:
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
-          location: '${{ env.defaultLocation }}'
+          location: '${{ env.location }}'
           resourceGroupName: '${{ env.defaultResourceGroupName }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
@@ -669,7 +669,7 @@ jobs:
         with:
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
-          location: '${{ env.defaultLocation }}'
+          location: '${{ env.location }}'
           resourceGroupName: '${{ env.defaultResourceGroupName }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
@@ -699,7 +699,7 @@ jobs:
         with:
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
-          location: '${{ env.defaultLocation }}'
+          location: '${{ env.location }}'
           resourceGroupName: '${{ env.defaultResourceGroupName }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
@@ -735,7 +735,7 @@ jobs:
         with:
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
-          location: '${{ env.defaultLocation }}'
+          location: '${{ env.location }}'
           resourceGroupName: '${{ env.defaultResourceGroupName }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
@@ -753,7 +753,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        parameterFilePaths: ['parameters.json']
+        parameterFilePaths: ${{ fromJSON(needs.job_prepare_pipeline.outputs.parameterFilePaths) }}
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -764,7 +764,7 @@ jobs:
         with:
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
-          location: '${{ env.defaultLocation }}'
+          location: '${{ env.location }}'
           resourceGroupName: '${{ env.defaultResourceGroupName }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
@@ -782,7 +782,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        parameterFilePaths: ['parameters.json']
+        parameterFilePaths: ${{ fromJSON(needs.job_prepare_pipeline.outputs.parameterFilePaths) }}
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -793,7 +793,7 @@ jobs:
         with:
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
-          location: '${{ env.defaultLocation }}'
+          location: '${{ env.location }}'
           resourceGroupName: '${{ env.defaultResourceGroupName }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
@@ -811,7 +811,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        parameterFilePaths: ['parameters.json']
+        parameterFilePaths: ${{ fromJSON(needs.job_prepare_pipeline.outputs.parameterFilePaths) }}
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -822,7 +822,7 @@ jobs:
         with:
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
-          location: '${{ env.defaultLocation }}'
+          location: '${{ env.location }}'
           resourceGroupName: '${{ env.defaultResourceGroupName }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
@@ -841,7 +841,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        parameterFilePaths: ['parameters.json']
+        parameterFilePaths: ${{ fromJSON(needs.job_prepare_pipeline.outputs.parameterFilePaths) }}
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -852,7 +852,7 @@ jobs:
         with:
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
-          location: '${{ env.defaultLocation }}'
+          location: '${{ env.location }}'
           resourceGroupName: '${{ env.defaultResourceGroupName }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
@@ -884,7 +884,7 @@ jobs:
         with:
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
-          location: '${{ env.defaultLocation }}'
+          location: '${{ env.location }}'
           resourceGroupName: '${{ env.defaultResourceGroupName }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
@@ -1043,7 +1043,7 @@ jobs:
         with:
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
-          location: '${{ env.defaultLocation }}'
+          location: '${{ env.location }}'
           resourceGroupName: '${{ env.defaultResourceGroupName }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
@@ -1151,7 +1151,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        parameterFilePaths: ['parameters.json']
+        parameterFilePaths: ${{ fromJSON(needs.job_prepare_pipeline.outputs.parameterFilePaths) }}
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -1162,7 +1162,7 @@ jobs:
         with:
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
-          location: '${{ env.defaultLocation }}'
+          location: '${{ env.location }}'
           resourceGroupName: '${{ env.defaultResourceGroupName }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
@@ -1178,7 +1178,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        parameterFilePaths: ['parameters.json']
+        parameterFilePaths: ${{ fromJSON(needs.job_prepare_pipeline.outputs.parameterFilePaths) }}
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -1189,7 +1189,7 @@ jobs:
         with:
           templateFilePath: 'arm/${{ env.namespace }}/subscription/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
-          location: '${{ env.defaultLocation }}'
+          location: '${{ env.location }}'
           resourceGroupName: '${{ env.defaultResourceGroupName }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
@@ -1226,7 +1226,7 @@ jobs:
         with:
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
-          location: '${{ env.defaultLocation }}'
+          location: '${{ env.location }}'
           resourceGroupName: '${{ env.defaultResourceGroupName }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
@@ -1255,7 +1255,7 @@ jobs:
         with:
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
-          location: '${{ env.defaultLocation }}'
+          location: '${{ env.location }}'
           resourceGroupName: '${{ env.defaultResourceGroupName }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
@@ -1271,7 +1271,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        parameterFilePaths: ['parameters.json']
+        parameterFilePaths: ${{ fromJSON(needs.job_prepare_pipeline.outputs.parameterFilePaths) }}
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -1282,7 +1282,7 @@ jobs:
         with:
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
-          location: '${{ env.defaultLocation }}'
+          location: '${{ env.location }}'
           resourceGroupName: '${{ env.defaultResourceGroupName }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
@@ -1300,7 +1300,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        parameterFilePaths: ['parameters.json']
+        parameterFilePaths: ${{ fromJSON(needs.job_prepare_pipeline.outputs.parameterFilePaths) }}
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -1311,7 +1311,7 @@ jobs:
         with:
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
-          location: '${{ env.defaultLocation }}'
+          location: '${{ env.location }}'
           resourceGroupName: '${{ env.defaultResourceGroupName }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
@@ -1338,7 +1338,7 @@ jobs:
         with:
           templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
           parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
-          location: '${{ env.defaultLocation }}'
+          location: '${{ env.location }}'
           resourceGroupName: '${{ env.defaultResourceGroupName }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'

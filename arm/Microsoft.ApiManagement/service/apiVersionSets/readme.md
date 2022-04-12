@@ -2,6 +2,13 @@
 
 This module deploys API Management Service APIs Version Set.
 
+## Navigation
+
+- [Resource Types](#Resource-Types)
+- [Parameters](#Parameters)
+- [Outputs](#Outputs)
+- [Template references](#Template-references)
+
 ## Resource Types
 
 | Resource Type | API Version |
@@ -10,12 +17,18 @@ This module deploys API Management Service APIs Version Set.
 
 ## Parameters
 
-| Parameter Name | Type | Default Value | Possible Values | Description |
-| :-- | :-- | :-- | :-- | :-- |
-| `apiManagementServiceName` | string |  |  | Required. The name of the of the API Management service. |
-| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `name` | string | `default` |  | Optional. API Version set name |
-| `properties` | object | `{object}` |  | Optional. API Version set properties |
+**Required parameters**
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `apiManagementServiceName` | string | The name of the of the API Management service. |
+
+**Optional parameters**
+| Parameter Name | Type | Default Value | Description |
+| :-- | :-- | :-- | :-- |
+| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `name` | string | `'default'` | API Version set name |
+| `properties` | object | `{object}` | API Version set properties |
+
 
 ## Outputs
 

@@ -163,14 +163,14 @@ To use the environment's pipelines you should use the information you gathered d
 
 ### 3.2.2 Setup variables file
 
-The primary pipeline variable file `.github/variables/global.variables.json` hosts the fundamental pipeline configuration. In the file you will find and can configure settings such as:
+The primary pipeline variable file `global.variables.yml` hosts the fundamental pipeline configuration. In the file you will find and can configure settings such as:
 
 <details>
 <summary>General</summary>
 
 | Variable Name | Example Value | Description |
 | - | - | - |
-| `defaultLocation` | `"WestEurope"` | The default location to deploy resources to and store deployment metadata at. If no location is specified in the deploying parameter file, this location is used |
+| `location` | `"WestEurope"` | The default location to deploy resources to and store deployment metadata at. If no location is specified in the deploying parameter file, this location is used |
 | `resourceGroupName` | `"validation-rg"` | The resource group to deploy all resources for validation to |
 
 </details>
@@ -194,7 +194,7 @@ The primary pipeline variable file `.github/variables/global.variables.json` hos
 | - | - | - |
 | `bicepRegistryName` | `"adpsxxazacrx001"` | The container registry to publish Bicep templates to. <p> **NOTE:** Must be globally unique |
 | `bicepRegistryRGName` | `"artifacts-rg"` | The resource group of the container registry to publish Bicep templates into. It is used to create a new container registry if not yet existing |
-| `bicepRegistryRGName` | `"artifacts-rg"` | The location of the resource group of the container registry to publish Bicep templates into. Is used to create a new resource group if not yet existing |
+| `bicepRegistryRgLocation` | `'West Europe'` | The location of the resource group of the container registry to publish Bicep templates into. Is used to create a new resource group if not yet existing |
 | `bicepRegistryDoPublish` | `"true"` | A central switch to enable/disable publishing to the private Bicep registry |
 
 </details>
@@ -259,15 +259,15 @@ variables:
 
 ### 3.2.3 Setup variables file
 
-The primary pipeline variable file `.azuredevops/pipelineVariables/global.variables.yml` hosts the fundamental pipeline configuration. In the file you will find and can configure information such as:
+The primary pipeline variable file `global.variables.yml` hosts the fundamental pipeline configuration. In the file you will find and can configure information such as:
 
 <details>
 <summary>General</summary>
 
 | Variable Name | Example Value | Description |
 | - | - | - |
-| `defaultLocation` | `'WestEurope'` | The default location to deploy resources to. If no location is specified in the deploying parameter file, this location is used |
-| `defaultResourceGroupName` | `'validation-rg'` | The resource group to deploy all resources for validation into |
+| `location` | `'WestEurope'` | The default location to deploy resources to. If no location is specified in the deploying parameter file, this location is used |
+| `resourceGroupName` | `'validation-rg'` | The resource group to deploy all resources for validation into |
 | `serviceConnection` | `'Contoso-Connection'` | The service connection that points to the subscription to test in and publish to |
 
 </details>
@@ -291,7 +291,7 @@ The primary pipeline variable file `.azuredevops/pipelineVariables/global.variab
 | - | - | - |
 | `bicepRegistryName` | `'adpsxxazacrx001'` | The container registry to publish Bicep templates to. <p> **NOTE:** Must be globally unique |
 | `bicepRegistryRGName` | `'artifacts-rg'` | The resource group of the container registry to publish Bicep templates to. Is used to create a new container registry if not yet existing |
-| `bicepRegistryRGName` | `'artifacts-rg'` | The location of the resource group of the container registry to publish Bicep templates to. Is used to create a new resource group if not yet existing |
+| `bicepRegistryRgLocation` | `'West Europe'` | The location of the resource group of the container registry to publish Bicep templates to. Is used to create a new resource group if not yet existing |
 | `bicepRegistryDoPublish` | `'true'` | A central switch to enable/disable publishing to the private Bicep registry |
 
 </details>
@@ -322,24 +322,21 @@ To use the pipelines that come with the environment in Azure DevOps, you need to
 
 # 4. Deploy dependencies
 
-At this stage you can execute your first pipeline, that is, the dependency pipeline.
+In order to successfully deploy and test all modules in your desired environment, some modules require resources to be deployed beforehand.
 
-Since the modules we tested often depend on other services, we created a pipeline that provides the modules with various persisting standard services such as virtual networks and key vaults (along with dummy secrets). This _dependency_ pipeline should be prepared and executed before you start running all module pipelines.
-> Note, not all modules require dependencies or only a subset of the deployed.
+The repository comes with a platform pipeline, the dependencies pipeline, that deploys a set of Azure services such as Virtual Networks and Key Vaults (along with dummy secrets) to be used by the module pipeline tests.
 
-It has to components to it to function:
-- The dependency pipeline itself that orchestrates deployments
-- The parameter files used by the dependency pipeline, stored in path `utilities\pipelines\dependencies`
+Run the dependencies pipeline by following instructions provided in the specific [Dependencies pipeline usage](./The%20CI%20environment%20-%20Pipeline%20usage#operate-the-dependencies-pipeline) section.
 
-> **Note:** If you want to rename any dependency resources, make sure to update any references to their name in the module parameter files too. You can find further details about this pipeline [here](./Getting%20started%20-%20Dependency%20pipeline).
+> **Note**: For details about the dependencies pipeline design please refer to the dedicated [Dependencies pipeline design](./The%20CI%20environment%20-%20Pipeline%20design.md#dependencies-pipeline) section.
 
 # 5. Update module parameter files
 
 Once the required dependencies are deployed, there is one more step left to get as many module pipelines running as possible.
 
-Several module parameters reference resources with unique values. For example, if a module references a Key Vault key, its version identifier will only be available once the dependency pipeline executed once.
+Several module parameters reference resources with unique values. For example, if a module references a Key Vault key, its version identifier will only be available once the dependencies pipeline executed once.
 
-For this reason, make sure to update the references in the following modules once the dependency pipeline concluded:
+For this reason, make sure to update the references in the following modules once the dependencies pipeline concluded:
 
 | File | Parameter |
 | - | - |

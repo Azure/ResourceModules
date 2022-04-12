@@ -1,13 +1,13 @@
 ﻿<#
 .SYNOPSIS
-Get the relative file paths of all parameter files in the given module
+Get the relative file paths of all parameter files in the given module.
 
 .DESCRIPTION
 Get the relative file paths of all parameter files in the given module.
-We return the relative instead of the full-path to make paths easier to read in the pipeline.
+The relative path is returned instead of the full one to make paths easier to read in the pipeline.
 
 .PARAMETER ModulePath
-Mandatory. The module path to search in
+Mandatory. The module path to search in.
 
 .EXAMPLE
 Get-ModuleParameterFiles -ModulePath 'C:\ResourceModules\arm\Microsoft.Compute\virtualMachines'
@@ -22,7 +22,7 @@ function Get-ModuleParameterFiles {
         [string] $ModulePath
     )
 
-    # Note: Should be 'recurse', but is not working with powershell 7.2.1 on GitHub hosted agents
+    # Note: Should be 'recurse', but is not working with powershell 7.2.1 on GitHub hosted agents but needs 7.2.2
     # $parameterFilePaths = (Get-ChildItem -Recurse -Path $ModulePath -Filter '*parameters.json' -File).FullName
 
     $parameterFilePaths = (Get-ChildItem -Path "$ModulePath/.parameters" -Filter '*parameters.json' -File).FullName

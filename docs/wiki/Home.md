@@ -43,12 +43,12 @@ If you're unfamiliar with Infrastructure as Code, or wonder how you can use the 
 ### _Updated Navigation_
 
 - [The context](./The%20context)
-  - [Infrastructure as Code](./The%20context%20-%20IaC)
   - [CARML overview](./The%20context%20-%20CARML%20overview)
+    - [The library](./The%20context%20-%20CARML%20library)
+    - [The CI environment](./The%20context%20-%20CARML%20CI%20environment)
 - [Getting started](./Getting%20started)
   - [Setup environment](./Getting%20started%20-%20Setup%20environment)
   - [Consume library](./Getting%20started%20-%20Consume%20library)
-  - [Dependency pipeline](./Getting%20started%20-%20Dependency%20pipeline)
 - [The library](./The%20library)
   - [Module design](./The%20library%20-%20Module%20design)
   - [Module usage](./The%20library%20-%20Module%20usage)
