@@ -1,4 +1,4 @@
-name: Feature request \U0001F680
+name: Feature request
 description: Suggest an idea for this project
 title: '[Feature Request]: '
 labels: ['enhancement']
@@ -8,7 +8,7 @@ body:
       value: |
         Thank you for suggesting a new feature
 
-        <!-- Please search existing issues to avoid creating duplicates. -->
+        > Note: Please search existing issues to avoid creating duplicates.
   - type: textarea
     id: bdescription
     attributes:
