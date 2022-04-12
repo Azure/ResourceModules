@@ -210,7 +210,7 @@ function Set-ParametersSection {
             # Add external single quotes to all default values of type string except for those using functions
             $defaultValue = ($parameter.defaultValue -is [array]) ? ('[{0}]' -f ($parameter.defaultValue -join ', ')) : (($parameter.defaultValue -is [hashtable]) ? '{object}' : (($parameter.defaultValue -is [string]) -and ($parameter.defaultValue -notmatch '\[\w+\(.*\).*\]') ? '''' + $parameter.defaultValue + '''' : $parameter.defaultValue))
             $allowedValue = ($parameter.allowedValues -is [array]) ? ('[{0}]' -f ($parameter.allowedValues -join ', ')) : (($parameter.allowedValues -is [hashtable]) ? '{object}' : $parameter.allowedValues)
-            $description = $parameter.metadata.description
+            $description = $parameter.metadata.description.Replace("`r`n", '<p>').Replace("`n", '<p>')
 
             # Update parameter table content based on parameter category
             ## Remove category from parameter description
@@ -299,7 +299,8 @@ function Set-OutputsSection {
         )
         foreach ($outputName in ($templateFileContent.outputs.Keys | Sort-Object -Culture en-US)) {
             $output = $TemplateFileContent.outputs[$outputName]
-            $SectionContent += ("| ``{0}`` | {1} | {2} |" -f $outputName, $output.type, $output.metadata.description)
+            $description = $output.metadata.description.Replace("`r`n", '<p>').Replace("`n", '<p>')
+            $SectionContent += ("| ``{0}`` | {1} | {2} |" -f $outputName, $output.type, $description)
         }
     } else {
         $SectionContent = [System.Collections.ArrayList]@(
@@ -499,7 +500,7 @@ Generate the Module ReadMe files into a specific folder path
 
 .EXAMPLE
 $templatePaths = (Get-ChildItem 'C:/Microsoft.Network' -Filter 'deploy.bicep' -Recurse).FullName
-$templatePaths | ForEach-Object { Set-ModuleReadMe -TemplateFilePath $_ }
+$templatePaths | ForEach-Object -Parallel { . '<PathToRepo>/utilities/tools/Set-ModuleReadMe.ps1' ; Set-ModuleReadMe -TemplateFilePath $_ }
 
 Generate the Module ReadMe for any template in a folder path
 

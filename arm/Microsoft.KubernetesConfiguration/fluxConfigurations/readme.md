@@ -56,6 +56,7 @@ For Details see [Prerequisites](https://docs.microsoft.com/en-us/azure/azure-arc
 | `location` | string | `[resourceGroup().location]` | Location for all resources. |
 | `suspend` | bool | `False` | Whether this configuration should suspend its reconciliation of its kustomizations and sources. |
 
+
 ### Parameter Usage: `bucket`
 
 ```json
