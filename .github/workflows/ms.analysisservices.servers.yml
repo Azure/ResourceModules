@@ -173,40 +173,6 @@ jobs:
           deploymentName: ${{ needs.job_dependencies_deploy_validation.outputs.deploymentName }}
           enableDeployment: 'false'
 
-  # # ####################
-  # # # Deployment tests #
-  # # ####################
-  # # job_module_deploy_validation:
-  # #   runs-on: ubuntu-20.04
-  # #   name: 'Deployment tests'
-  # #   needs:
-  # #     - job_prepare_pipeline
-  # #     - job_module_pester_validation
-  # #   strategy:
-  # #     fail-fast: false
-  # #     matrix:
-  # #       parameterFilePaths:
-  # #         ['min.parameters.json', 'parameters.json', 'max.parameters.json']
-  # #   steps:
-  # #     - name: 'Checkout'
-  # #       uses: actions/checkout@v2
-  # #       with:
-  # #         fetch-depth: 0
-  # #     - name: Set environment variables
-  # #       uses: ./.github/actions/templates/setEnvironmentVariables
-  # #       with:
-  # #         variablesPath: ${{ env.variablesPath }}
-  # #     - name: 'Using parameter file [${{ matrix.parameterFilePaths }}]'
-  # #       uses: ./.github/actions/templates/validateModuleDeployment
-  # #       with:
-  # #         templateFilePath: '${{ env.modulePath }}/deploy.bicep'
-  # #         parameterFilePath: '${{ env.modulePath }}/.parameters/${{ matrix.parameterFilePaths }}'
-  # #         location: '${{ env.location }}'
-  # #         resourceGroupName: '${{ env.resourceGroupName }}'
-  # #         subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
-  # #         managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
-  # #         removeDeployment: '${{ needs.job_set_workflow_param.outputs.removeDeployment }}'
-
   ###############
   #   PUBLISH   #
   ###############
