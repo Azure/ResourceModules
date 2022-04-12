@@ -184,6 +184,7 @@ runs:
     # # -------------------------------
     # - name: 'Validate [${{ inputs.templateFilePath }}]'
     #   shell: pwsh
+    #   if: ${{ always() && inputs.enableDeployment == 'true'}}
     #   run: |
     #     # Grouping task logs
     #     Write-Output "::group::Validate [${{ inputs.templateFilePath }}]"
