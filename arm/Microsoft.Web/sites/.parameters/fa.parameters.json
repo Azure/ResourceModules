@@ -6,25 +6,99 @@
             "value": "<<namePrefix>>-az-fa-x-001"
         },
         "kind": {
-            "value": "functionapp"
+            "value": "functionapp,linux"
         },
         "serverFarmResourceId": {
             "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Web/serverFarms/adp-<<namePrefix>>-az-asp-x-001"
         },
+        "siteConfig": {
+            "value": {
+                "alwaysOn": true,
+                "use32BitWorkerProcess": false,
+                "linuxFxVersion": "DOTNET|6.0"
+            }
+        },
         "appInsightId": {
             "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Insights/components/adp-<<namePrefix>>-az-appi-x-001"
         },
-        "siteConfig": {
+        "storageAccountId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
+        },
+        "setAzureWebJobsDashboard": {
+            "value": true
+        },
+        "appSettingsKeyValuePairs": {
             "value": {
-                "alwaysOn": true
+                "FUNCTIONS_EXTENSION_VERSION": "~4",
+                "FUNCTIONS_WORKER_RUNTIME": "dotnet",
+                "AzureFunctionsJobHost__logging__logLevel__default": "Trace",
+                "EASYAUTH_SECRET": "testsecret"
             }
         },
-        "storageAccountId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsafa001"
-        },
-        "functionsWorkerRuntime": {
-            "value": "powershell"
-        },
+        // "authSettingV2Configuration": {
+        //     "value": {
+        //         "globalValidation": {
+        //             "requireAuthentication": true,
+        //             "unauthenticatedClientAction": "Return401"
+        //         },
+        //         "httpSettings": {
+        //             "forwardProxy": {
+        //                 "convention": "NoProxy"
+        //             },
+        //             "requireHttps": true,
+        //             "routes": {
+        //                 "apiPrefix": "/.auth"
+        //             }
+        //         },
+        //         "identityProviders": {
+        //             "azureActiveDirectory": {
+        //                 "enabled": true,
+        //                 "login": {
+        //                     "disableWWWAuthenticate": false
+        //                 },
+        //                 "registration": {
+        //                     "openIdIssuer": "https://sts.windows.net/<<tenantId>>/v2.0/",
+        //                     "clientId": "testappid",
+        //                     "clientSecretSettingName": "EASYAUTH_SECRET"
+        //                 },
+        //                 "validation": {
+        //                     "allowedAudiences": [
+        //                         "api://testappid"
+        //                     ],
+        //                     "defaultAuthorizationPolicy": {
+        //                         "allowedPrincipals": {}
+        //                     },
+        //                     "jwtClaimChecks": {}
+        //                 }
+        //             }
+        //         },
+        //         "login": {
+        //             "allowedExternalRedirectUrls": [
+        //                 "string"
+        //             ],
+        //             "cookieExpiration": {
+        //                 "convention": "FixedTime",
+        //                 "timeToExpiration": "08:00:00"
+        //             },
+        //             "nonce": {
+        //                 "nonceExpirationInterval": "00:05:00",
+        //                 "validateNonce": true
+        //             },
+        //             "preserveUrlFragmentsForLogins": false,
+        //             "routes": {},
+        //             "tokenStore": {
+        //                 "azureBlobStorage": {},
+        //                 "enabled": true,
+        //                 "fileSystem": {},
+        //                 "tokenRefreshExtensionHours": 72
+        //             }
+        //         },
+        //         "platform": {
+        //             "enabled": true,
+        //             "runtimeVersion": "~1"
+        //         }
+        //     }
+        // },
         "systemAssignedIdentity": {
             "value": true
         },

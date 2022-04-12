@@ -1,6 +1,6 @@
 # Web Site Config `[Microsoft.Web/sites/config]`
 
-This module deploys a site config resource.
+This module deploys the auth settings v2.
 
 ## Navigation
 
@@ -21,17 +21,26 @@ This module deploys a site config resource.
 | Parameter Name | Type | Allowed Values | Description |
 | :-- | :-- | :-- | :-- |
 | `appName` | string |  | Name of the site parent resource. |
-| `name` | string | `[appsettings]` | Name of the site config. |
+| `authSettingV2Configuration` | object |  |  | The auth settings V2 configuration. |
+| `kind` | string | `[functionapp, "functionapp,linux", app]` | Type of site to deploy. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `appInsightId` | string | `''` |  | Resource ID of the app insight to leverage for this resource. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `functionsExtensionVersion` | string | `'~3'` |  | Version of the function extension. |
-| `functionsWorkerRuntime` | string | `''` | `[dotnet, node, python, java, powershell, ]` | Runtime of the function worker. |
-| `storageAccountId` | string | `''` |  | Required if app of kind functionapp. Resource ID of the storage account to manage triggers and logging function executions. |
 
+
+### Parameter Usage: `authSettingV2Configuration`
+
+The auth settings V2 configuration.
+
+```json
+"siteConfig": {
+    "value": [
+        // Check out https://docs.microsoft.com/en-us/azure/templates/microsoft.web/sites/config-authsettingsv2?tabs=bicep#siteauthsettingsv2properties for possible properties
+    ]
+}
+```
 
 ## Outputs
 
@@ -43,4 +52,4 @@ This module deploys a site config resource.
 
 ## Template references
 
-- ['sites/config' Parent Documentation](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Web/sites)
+- ['config-authsettings v2' Documentation](https://docs.microsoft.com/en-us/azure/templates/microsoft.web/sites/config-authsettingsv2)
