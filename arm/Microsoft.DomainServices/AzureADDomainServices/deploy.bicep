@@ -53,7 +53,7 @@ param notifyDcAdmins string = 'Enabled'
 @description('Optional. The value is to notify the Global Admins - This is enabled by default')
 param notifyGlobalAdmins string = 'Enabled'
 
-@description('Required. The value is to enable the Secure LDAP for external services of Azure ADDS Services')
+@description('Optional. The value is to enable the Secure LDAP for external services of Azure ADDS Services')
 param ldapexternalaccess string = 'Enabled'
 
 @description('Required. The value is to enable the Secure LDAP for Azure ADDS Services')
