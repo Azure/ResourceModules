@@ -30,6 +30,7 @@ The following activities are run executing the `arm/.global/global.module.tests.
   - at least one `*parameters.json` exists
   - files should be valid JSON
   - contains all required parameters
+  - (if tokens are used) No actual GUID values for tokens used in the environment (i.e. `deploymentSpId`, `subscriptionId`, `managementGroupId`, `tenantId`) are in the parameter files
 
 ## Output example
 
