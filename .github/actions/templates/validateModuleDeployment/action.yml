@@ -71,13 +71,13 @@ inputs:
     description: 'Set "true" to set module up for deployment'
     default: 'true'
     required: false
-  deploymentNameToRemove:
-    description: 'The used module deployment name'
+  deploymentName:
+    description: 'The name of the deployment to remove'
     required: false
 
 outputs:
   deploymentName:
-    description: 'The used module deployment name'
+    description: 'The deployment name used during the deployment'
     value: ${{ steps.deploy_step.outputs.deploymentName }}
   deploymentOutput:
     description: 'The module deployment output in json format'
@@ -302,7 +302,7 @@ runs:
     # ----------------------------
     - name: 'Remove [${{ inputs.templateFilePath }}] from parameters [${{ inputs.parameterFilePath }}]'
       shell: pwsh
-      if: ${{ always() && inputs.removeDeployment == 'true' && ( steps.deploy_step.outputs.deploymentName != '' || inputs.deploymentNameToRemove != '' ) }}
+      if: ${{ always() && inputs.removeDeployment == 'true' && ( steps.deploy_step.outputs.deploymentName != '' || inputs.deploymentName != '' ) }}
       run: |
         # Grouping task logs
         Write-Output "::group::Remove [${{ inputs.templateFilePath }}] from parameters [${{ inputs.parameterFilePath }}]"
@@ -321,8 +321,8 @@ runs:
           $functionInput['DeploymentName'] = '${{ steps.deploy_step.outputs.deploymentName }}'
         }
 
-        if(-not [String]::IsNullOrEmpty('${{ inputs.deploymentNameToRemove }}')) {
-          $functionInput['DeploymentName'] = '${{ inputs.deploymentNameToRemove }}'
+        if(-not [String]::IsNullOrEmpty('${{ inputs.deploymentName }}')) {
+          $functionInput['DeploymentName'] = '${{ inputs.deploymentName }}'
         }
 
         Write-Verbose 'Invoke task with' -Verbose
