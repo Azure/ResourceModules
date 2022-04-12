@@ -310,7 +310,7 @@ runs:
         # Load used function
         . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourceRemoval' 'Initialize-DeploymentRemoval.ps1')
 
-        if (-not [String]::IsNullOrEmpty('${{ steps.deploy_step.outputs.deploymentName }}')) {
+        # if (-not [String]::IsNullOrEmpty('${{ steps.deploy_step.outputs.deploymentName }}')) {
           $functionInput = @{
             TemplateFilePath  = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.templateFilePath }}'
             ResourceGroupName = '${{ inputs.resourceGroupName }}'
@@ -330,6 +330,6 @@ runs:
           Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
           Initialize-DeploymentRemoval @functionInput
-        }
+        # }
 
         Write-Output "::endgroup::"
