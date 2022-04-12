@@ -1,0 +1,76 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": "adp-<<namePrefix>>-az-lb-internal-001"
+        },
+        "loadBalancerSku": {
+            "value": "Standard"
+        },
+        "frontendIPConfigurations": {
+            "value": [
+                {
+                    "name": "privateIPConfig1",
+                    "subnetId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001"
+                }
+            ]
+        },
+        "backendAddressPools": {
+            "value": [
+                {
+                    "name": "servers"
+                }
+            ]
+        },
+        "probes": {
+            "value": [
+                {
+                    "name": "probe1",
+                    "protocol": "Tcp",
+                    "port": "62000",
+                    "intervalInSeconds": 5,
+                    "numberOfProbes": 2
+                }
+            ]
+        },
+        "loadBalancingRules": {
+            "value": [
+                {
+                    "name": "privateIPLBRule1",
+                    "frontendIPConfigurationName": "privateIPConfig1",
+                    "frontendPort": 0,
+                    "backendPort": 0,
+                    "enableFloatingIP": true,
+                    "idleTimeoutInMinutes": 4,
+                    "protocol": "All",
+                    "loadDistribution": "Default",
+                    "probeName": "probe1",
+                    "disableOutboundSnat": true,
+                    "enableTcpReset": false,
+                    "backendAddressPoolName": "servers"
+                }
+            ]
+        },
+        "inboundNatRules": {
+            "value": [
+                {
+                    "name": "inboundNatRule1",
+                    "frontendIPConfigurationName": "privateIPConfig1",
+                    "frontendPort": 443,
+                    "backendPort": 443,
+                    "enableFloatingIP": false,
+                    "idleTimeoutInMinutes": 4,
+                    "protocol": "Tcp",
+                    "enableTcpReset": false
+                },
+                {
+                    "name": "inboundNatRule2",
+                    "frontendIPConfigurationName": "privateIPConfig1",
+                    "frontendPort": 3389,
+                    "backendPort": 3389
+                }
+            ]
+        }
+    }
+}

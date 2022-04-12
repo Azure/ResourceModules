@@ -2,6 +2,13 @@
 
 This module deploys a MongoDB within a CosmosDB account.
 
+## Navigation
+
+- [Resource Types](#Resource-Types)
+- [Parameters](#Parameters)
+- [Outputs](#Outputs)
+- [Template references](#Template-references)
+
 ## Resource Types
 
 | Resource Type | API Version |
@@ -11,14 +18,20 @@ This module deploys a MongoDB within a CosmosDB account.
 
 ## Parameters
 
-| Parameter Name | Type | Default Value | Possible Values | Description |
-| :-- | :-- | :-- | :-- | :-- |
-| `collections` | _[collections](collections/readme.md)_ array | `[]` |  | Optional. Collections in the mongodb database |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
-| `databaseAccountName` | string |  |  | Required. Name of the Cosmos DB database account. |
-| `name` | string |  |  | Required. Name of the mongodb database |
-| `tags` | object | `{object}` |  | Optional. Tags of the resource. |
-| `throughput` | int | `400` |  | Optional. Name of the mongodb database |
+**Required parameters**
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `databaseAccountName` | string | Name of the Cosmos DB database account. |
+| `name` | string | Name of the mongodb database |
+
+**Optional parameters**
+| Parameter Name | Type | Default Value | Description |
+| :-- | :-- | :-- | :-- |
+| `collections` | _[collections](collections/readme.md)_ array | `[]` | Collections in the mongodb database |
+| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `tags` | object | `{object}` | Tags of the resource. |
+| `throughput` | int | `400` | Name of the mongodb database |
+
 
 ### Parameter Usage: `tags`
 

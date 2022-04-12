@@ -1,5 +1,12 @@
 # DocumentDB Database Account SQL Databases `[Microsoft.DocumentDB/databaseAccounts/sqlDatabases]`
 
+## Navigation
+
+- [Resource Types](#Resource-Types)
+- [Parameters](#Parameters)
+- [Outputs](#Outputs)
+- [Template references](#Template-references)
+
 ## Resource Types
 
 | Resource Type | API Version |
@@ -9,14 +16,20 @@
 
 ## Parameters
 
-| Parameter Name | Type | Default Value | Possible Values | Description |
-| :-- | :-- | :-- | :-- | :-- |
-| `containers` | _[containers](containers/readme.md)_ array | `[]` |  | Optional. Array of containers to deploy in the SQL database. |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
-| `databaseAccountName` | string |  |  | Required. ID of the Cosmos DB database account. |
-| `name` | string |  |  | Required. Name of the SQL database  |
-| `tags` | object | `{object}` |  | Optional. Tags of the SQL database resource. |
-| `throughput` | int | `400` |  | Optional. Request units per second |
+**Required parameters**
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `databaseAccountName` | string | ID of the Cosmos DB database account. |
+| `name` | string | Name of the SQL database  |
+
+**Optional parameters**
+| Parameter Name | Type | Default Value | Description |
+| :-- | :-- | :-- | :-- |
+| `containers` | _[containers](containers/readme.md)_ array | `[]` | Array of containers to deploy in the SQL database. |
+| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `tags` | object | `{object}` | Tags of the SQL database resource. |
+| `throughput` | int | `400` | Request units per second |
+
 
 ### Parameter Usage: `tags`
 

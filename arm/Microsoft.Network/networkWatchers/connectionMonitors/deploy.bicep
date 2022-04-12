@@ -22,8 +22,8 @@ param testGroups array = []
 @description('Optional. Specify the Log Analytics Workspace Resource ID')
 param workspaceResourceId string = ''
 
-@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
-param cuaId string = ''
+@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+param enableDefaultTelemetry bool = true
 
 var outputs = !empty(workspaceResourceId) ? [
   {
@@ -34,16 +34,23 @@ var outputs = !empty(workspaceResourceId) ? [
   }
 ] : null
 
-module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
-  name: 'pid-${cuaId}'
-  params: {}
+resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
+  name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
+  properties: {
+    mode: 'Incremental'
+    template: {
+      '$schema': 'https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#'
+      contentVersion: '1.0.0.0'
+      resources: []
+    }
+  }
 }
 
-resource networkWatcher 'Microsoft.Network/networkWatchers@2021-03-01' existing = {
+resource networkWatcher 'Microsoft.Network/networkWatchers@2021-05-01' existing = {
   name: networkWatcherName
 }
 
-resource connectionMonitor 'Microsoft.Network/networkWatchers/connectionMonitors@2021-03-01' = {
+resource connectionMonitor 'Microsoft.Network/networkWatchers/connectionMonitors@2021-05-01' = {
   name: name
   parent: networkWatcher
   tags: tags

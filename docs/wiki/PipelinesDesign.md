@@ -114,9 +114,13 @@ Besides the execution of a publish, there is also the possibility to set the swi
 
 The publishing works as follows:
 
-1. The script `utilities/pipelines/resourcePublish/Get-ModulesToUpdate.ps1` gets all changed module files including child modules and handles the logic of propagating the appropriate module version to be used:
+1. The script `utilities/pipelines/resourcePublish/Get-ModulesToPublish.ps1` gets all changed module files including child modules and handles the logic of propagating the appropriate module version to be used:
    1. The major (`x.0`) and minor (`0.x`) version are set based on the file `version.json` in the module folder.
-   1. The patch (`0.0.x`) version is calculated based on the number of commits on the `HEAD` ref. This will cause the patch version to never reset to 0 with major and/or minor increment, as specified for [semver](https://semver.org/).
+   2. The patch (`0.0.x`) version is calculated based on the number of commits on the `HEAD` ref (aka. git height). This will cause the patch version to never reset to 0 with major and/or minor increment, as specified for [semver](https://semver.org/).
+   3. The module is published with a patch specific version (`x.y.z`). For Template Specs and Bicep Registry a major (`x`) and minor (`x.x`) version is also updated, allowing a consumer to use the latest version of any major or minor version.
+   1. For a changed child module, the direct parent hierarchy is also registered for an update, following the same procedure as above.
+   1. The list of module files paths and their versions are passed on as a array list.
+2. The different publishing scripts run (Artifact, Template Spec or Bicep Registry) and publish the module to the respective target location for each item on the list.
 
 **Example scenario**
 
@@ -139,7 +143,9 @@ Lets look at an example run where we would do a patch change on the `fileShares`
    - Assuming the development branch started from commit 500 on the default branch, and the author added 6 commits on the development branch, the prerelease versions will reach `0.3.506-prerelease`.
    - Meanwhile, there can be changes (let's say 2 squashed PR merges) on the default branch that is pushing its number of commits in history further.
    - If the PR for the changes to `fileShare` is squash merged as commit number 503, the patch version on the child and parent module is then `503`, resulting in a version `0.3.503` being published.
-
+7. The merge triggers cascading updates in the following way:
+   - The module is published with a `major.minor.patch` version as well as a `major.minor` and `major` version updates, allowing consumers to target the latest major or minor version with ease.
+   - All parent module are published following the steps mentioned above.
 ```
                   \         \
 C499 -> C500 ---> C501 ---> C502 ---> C503 (503)
@@ -188,7 +194,7 @@ The primary pipeline variable file hosts the fundamental pipeline configuration 
 
 | Variable Name | Example Value | Description |
 | - | - | - |
-| `defaultLocation` | "WestEurope" | The default location to deploy resources to. If no location is specified in the deploying parameter file, this location is used |
+| `location` | "WestEurope" | The default location to deploy resources to. If no location is specified in the deploying parameter file, this location is used |
 | `resourceGroupName` | "validation-rg" | The resource group to deploy all resources for validation to |
 
 #### **_Template-specs specific (publishing)_**
@@ -285,7 +291,7 @@ For _GitHub_ in particular we need the following secrets in addition to those de
 
 ### **GitHub Component:** Variable file
 
-The [pipeline configuration file](#pipeline-variables) can be found at `.github/variables/global.variables.json`.
+The [pipeline configuration file](#pipeline-variables) can be found at `global.variables.yml`.
 
 ### **GitHub Component:** Composite Actions
 
@@ -297,6 +303,7 @@ We use several composite actions to perform various tasks shared by our module w
 | **validateModuleDeployment:** | This action performs the following tasks: <li> A [simulated deployment](#simulated-deployment-validation) using a provided parameter file. <li>An [actual deployment](#test-deploy) to Azure using a provided parameter file. <li>The [removal](#removal) of the test-deployed resources |
 | **publishModule:** | This action is capable of [publishing](#publish) the given template to a location specified in the pipeline [variable file](#github-component-variable-file). |
 | **getWorkflowInput:** | This action allows us to fetch workflow input values from the module's workflow file, even if the pipeline was not triggered via a `workflow_dispatch` action. Without it we would not be able to process the contained information and would need to duplicate the configuration as workflow variables. Such input values are for example the removal switch `removeDeployment`. |
+| **setEnvironmentVariables:** | This action read the variables file `global.variables.yml` and sets the key-value pairs in the `variables` list as environment variables |
 
 ### **GitHub Component:** Workflows
 
@@ -367,7 +374,7 @@ variables:
 
 ### **Azure DevOps Component:** Variable file
 
-The variable file is a source controlled configuration file to control the behavior of the pipeline. The file is stored in path `.azuredevops/pipelineVariables/global.variables.yml`.
+The variable file is a source controlled configuration file to control the behaviour of the pipeline. The file is stored in path `global.variables.yml`.
 
 This file is divided into multiple categories of variables used in the pipelines:
 
@@ -432,7 +439,7 @@ While they look very similar they have specific areas in which they differ:
   The variables are leveraged by the pipelines to fundamentally process the module. We need:
   | Variable | Description | Example |
   | - | - | - |
-  | `template: (...)` | Reference to the [shared variable file](#azure-devops-component-variable-file) | `- template: '/.azuredevops/pipelineVariables/global.variables.yml'` |
+  | `template: (...)` | Reference to the [shared variable file](#azure-devops-component-variable-file) | `- template: '../../global.variables.yml'` |
   | `group: (...)` | Reference to the [variable group](#azure-devops-component-variable-group) with the platform secrets | `- group: PLATFORM_VARIABLES` |
   | `modulePath` | Relative path to the module folder | <code>- name: modulePath<p>&nbsp;&nbsp;value: '/arm/Microsoft.AnalysisServices/servers'</code> |
 
@@ -440,7 +447,7 @@ While they look very similar they have specific areas in which they differ:
 
   ```yaml
   variables:
-    - template: '/.azuredevops/pipelineVariables/global.variables.yml'
+    - template: '../../global.variables.yml'
     - group: 'PLATFORM_VARIABLES'
     - name: modulePath
       value: '/arm/Microsoft.AnalysisServices/servers'
@@ -448,4 +455,4 @@ While they look very similar they have specific areas in which they differ:
 
 #### Azure DevOps Artifacts
 
-For _Azure DevOps_ we offer also the option to publish to _Azure DevOps_ universal packages. As the code is already available in the pipeline's publish template (`.azuredevops/pipelineTemplates/jobs.publishModule.yml`) you only have to specify the required information in the shared global variables file (`.azuredevops/pipelineVariables/global.variables.yml`) to enable the feature. For detailed information please refer to the variable file's `Publish: Universal packages settings` section.
+For _Azure DevOps_ we offer also the option to publish to _Azure DevOps_ universal packages. As the code is already available in the pipeline's publish template (`.azuredevops/pipelineTemplates/jobs.publishModule.yml`) you only have to specify the required information in the shared global variables file (`global.variables.yml`) to enable the feature. For detailed information please refer to the variable file's `Publish: Universal packages settings` section.

@@ -32,7 +32,47 @@ If you're unfamiliar with Infrastructure as Code, or wonder how you can use the 
     - [Removal action](./PipelineRemovalAction)
   - [Usage](./PipelinesUsage)
 - [Contribution Guide](./ContributionGuide)
+- Upgrade guidelines
+  - [Migration from 0.3.1 to 0.4.0](./Migration%20from%200.3.1%20to%200.4.0.md)
 - [Known Issues](./KnownIssues)
+
+---
+
+> **Note**: the following table of contents is still a work in progress and intended to replace the above going forward.
+
+### _Updated Navigation_
+
+- [The context](./The%20context)
+  - [CARML overview](./The%20context%20-%20CARML%20overview)
+    - [The library](./The%20context%20-%20CARML%20library)
+    - [The CI environment](./The%20context%20-%20CARML%20CI%20environment)
+- [Getting started](./Getting%20started)
+  - [Setup environment](./Getting%20started%20-%20Setup%20environment)
+  - [Consume library](./Getting%20started%20-%20Consume%20library)
+- [The library](./The%20library)
+  - [Module design](./The%20library%20-%20Module%20design)
+  - [Module usage](./The%20library%20-%20Module%20usage)
+- [The CI environment](./The%20CI%20environment)
+  - [Pipeline design](./The%20CI%20environment%20-%20Pipeline%20design)
+    - [Static validation](./The%20CI%20environment%20-%20Static%20validation)
+    - [Deployment validation](./The%20CI%20environment%20-%20Deployment%20validation)
+    - [Publishing](./The%20CI%20environment%20-%20Publishing)
+    - [Token replacement](./The%20CI%20environment%20-%20Token%20replacement)
+  - [Pipeline usage](./The%20CI%20environment%20-%20Pipeline%20usage)
+- [Interoperability](./Interoperability)
+  - [Bicep to ARM/JSON conversion](./Interoperability%20-%20Bicep%20to%20ARM%20conversion)
+  - [Register Azure DevOps pipelines](./Interoperability%20-%20Register%20Azure%20DevOps%20pipelines)
+- [Contribution guide](./Contribution%20guide)
+  - [Contribution flow](./Contribution%20guide%20-%20Contribution%20flow)
+  - [Generate module Readme](./Contribution%20guide%20-%20Generate%20module%20Readme)
+  - [Get formatted RBAC roles](./Contribution%20guide%20-%20Get%20formatted%20RBAC%20roles)
+  - [Validate module locally](./Contribution%20guide%20-%20Validate%20module%20locally)
+- [Solution creation](./Solution%20creation)
+- Upgrade guidelines
+  - [Upgrade from 0.3.1 to 0.4.0](./Upgrade%20from%200.3.1%20to%200.4.0)
+- [Known issues](./Known%20issues)
+
+---
 
 # Scope
 

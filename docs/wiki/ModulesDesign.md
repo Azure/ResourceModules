@@ -21,11 +21,11 @@ This section gives you an overview of the design principals the bicep modules fo
 
 ---
 
-Modules are written in a quite flexible way, therefore you don’t need to modify them from project to project, as the aim is to cover most of the functionality that a given resource type can provide, in a way that you can interact with any module just by sending the required parameters to it – i.e. you don’t have to know how the template of the particular module works inside, just take a look at the `readme.md` file of the given module to consume it.
+Modules are written in a quite flexible way, therefore you don't need to modify them from project to project, as the aim is to cover most of the functionality that a given resource type can provide, in a way that you can interact with any module just by sending the required parameters to it - i.e. you don't have to know how the template of the particular module works inside, just take a look at the `readme.md` file of the given module to consume it.
 
-The modules are multi-purpose, therefore contain a lot of dynamic expressions (functions, variables, etc.), so there’s no need to maintain multiple instances for different use cases.
+The modules are multi-purpose, therefore contain a lot of dynamic expressions (functions, variables, etc.), so there's no need to maintain multiple instances for different use cases.
 
-They can be deployed in different configurations just by changing the input parameters. They are perceived by the **user** as black boxes, where they don’t have to worry about the internal complexity of the code, as they only interact with them by their parameters.
+They can be deployed in different configurations just by changing the input parameters. They are perceived by the **user** as black boxes, where they don't have to worry about the internal complexity of the code, as they only interact with them by their parameters.
 
 # General guidelines
 
@@ -87,8 +87,6 @@ param databases array = []
 module server_databases 'databases/deploy.bicep' = [for (database, index) in databases: {}]
 ```
 
-Each module should come with a `.bicep` folder with a least the `nested_cuaId.bicep` file in it
-
 ## Naming
 
 Use the following naming standard for module files and folders:
@@ -114,7 +112,6 @@ Use the following naming standard for module files and folders:
   >└─ sites
   >    ├─ .bicep
   >    |  ├─ nested_components.bicep
-  >    |  ├─ nested_cuaId.bicep
   >    |  ├─ nested_privateEndpoint.bicep
   >    |  ├─ nested_rbac.bicep
   >    |  └─ nested_serverfarms.bicep
@@ -186,6 +183,7 @@ The element requires you to provide both the `principalIds` & `roleDefinitionOrI
 
 ```bicep
 param principalIds array
+param principalType string = ''
 param roleDefinitionIdOrName string
 param resourceId string
 
@@ -211,6 +209,7 @@ resource roleAssignment 'Microsoft.Authorization/roleAssignments@2021-04-01-prev
   properties: {
     roleDefinitionId: contains(builtInRoleNames, roleDefinitionIdOrName) ? builtInRoleNames[roleDefinitionIdOrName] : roleDefinitionIdOrName
     principalId: principalId
+    principalType: !empty(principalType) ? principalType : null
   }
   scope: <mainResource>
 }]
@@ -242,7 +241,7 @@ param diagnosticEventHubName string = ''
 @allowed([
   <LogsIfAny>
 ])
-param logsToEnable array = [
+param diagnosticLogCategoriesToEnable array = [
   <LogsIfAny>
 ]
 
@@ -250,12 +249,15 @@ param logsToEnable array = [
 @allowed([
   <MetricsIfAny>
 ])
-param metricsToEnable array = [
+param diagnosticMetricsToEnable array = [
   <MetricsIfAny>
 ]
 
-var diagnosticsLogs = [for log in logsToEnable: {
-  category: log
+@description('Optional. The name of the diagnostic setting, if deployed.')
+param diagnosticSettingsName string = '${name}-diagnosticSettings'
+
+var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
+  category: category
   enabled: true
   retentionPolicy: {
     enabled: true
@@ -263,7 +265,7 @@ var diagnosticsLogs = [for log in logsToEnable: {
   }
 }]
 
-var diagnosticsMetrics = [for metric in metricsToEnable: {
+var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
   category: metric
   timeGrain: null
   enabled: true
@@ -274,7 +276,7 @@ var diagnosticsMetrics = [for metric in metricsToEnable: {
 }]
 
 resource <mainResource>_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2021-05-01-preview' = if (!empty(diagnosticStorageAccountId) || !empty(diagnosticWorkspaceId) || !empty(diagnosticEventHubAuthorizationRuleId) || !empty(diagnosticEventHubName)) {
-  name: '${<mainResource>.name}-diagnosticSettings'
+  name: diagnosticSettingsName
   properties: {
     storageAccountId: !empty(diagnosticStorageAccountId) ? diagnosticStorageAccountId : null
     workspaceId: !empty(diagnosticWorkspaceId) ? diagnosticWorkspaceId : null
@@ -327,7 +329,7 @@ var privateEndpoint_var = {
   customDnsConfigs: contains(privateEndpointObj, 'customDnsConfigs') ? (empty(privateEndpointObj.customDnsConfigs) ? null : privateEndpointObj.customDnsConfigs) : null
 }
 
-resource privateEndpoint 'Microsoft.Network/privateEndpoints@2021-03-01' = {
+resource privateEndpoint 'Microsoft.Network/privateEndpoints@2021-05-01' = {
   name: privateEndpoint_var.name
   location: privateEndpointVnetLocation
   tags: tags
@@ -349,7 +351,7 @@ resource privateEndpoint 'Microsoft.Network/privateEndpoints@2021-03-01' = {
   }
 }
 
-resource privateDnsZoneGroups 'Microsoft.Network/privateEndpoints/privateDnsZoneGroups@2021-03-01' = if (!empty(privateEndpoint_var.privateDnsZoneResourceIds)) {
+resource privateDnsZoneGroups 'Microsoft.Network/privateEndpoints/privateDnsZoneGroups@2021-05-01' = if (!empty(privateEndpoint_var.privateDnsZoneResourceIds)) {
   name: 'default'
   properties: {
     privateDnsZoneConfigs: [for privateDnsZoneResourceId in privateEndpoint_var.privateDnsZoneResourceIds: {

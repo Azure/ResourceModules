@@ -2,6 +2,13 @@
 
 This module deploys API Management Service Product Groups.
 
+## Navigation
+
+- [Resource Types](#Resource-Types)
+- [Parameters](#Parameters)
+- [Outputs](#Outputs)
+- [Template references](#Template-references)
+
 ## Resource Types
 
 | Resource Type | API Version |
@@ -10,12 +17,18 @@ This module deploys API Management Service Product Groups.
 
 ## Parameters
 
-| Parameter Name | Type | Default Value | Possible Values | Description |
-| :-- | :-- | :-- | :-- | :-- |
-| `apiManagementServiceName` | string |  |  | Required. The name of the of the API Management service. |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
-| `name` | string |  |  | Required. Name of the product group. |
-| `productName` | string |  |  | Required. The name of the of the Product. |
+**Required parameters**
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `apiManagementServiceName` | string | The name of the of the API Management service. |
+| `name` | string | Name of the product group. |
+| `productName` | string | The name of the of the Product. |
+
+**Optional parameters**
+| Parameter Name | Type | Default Value | Description |
+| :-- | :-- | :-- | :-- |
+| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+
 
 ## Outputs
 

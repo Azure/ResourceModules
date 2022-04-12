@@ -10,19 +10,26 @@ param priority int
 @description('Optional. Group of Firewall Policy rule collections.')
 param ruleCollections array = []
 
-@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
-param cuaId string = ''
+@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+param enableDefaultTelemetry bool = true
 
-module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
-  name: 'pid-${cuaId}'
-  params: {}
+resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
+  name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name)}'
+  properties: {
+    mode: 'Incremental'
+    template: {
+      '$schema': 'https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#'
+      contentVersion: '1.0.0.0'
+      resources: []
+    }
+  }
 }
 
-resource firewallPolicy 'Microsoft.Network/firewallPolicies@2021-03-01' existing = {
+resource firewallPolicy 'Microsoft.Network/firewallPolicies@2021-05-01' existing = {
   name: firewallPolicyName
 }
 
-resource ruleCollectionGroup 'Microsoft.Network/firewallPolicies/ruleCollectionGroups@2021-03-01' = {
+resource ruleCollectionGroup 'Microsoft.Network/firewallPolicies/ruleCollectionGroups@2021-05-01' = {
   name: name
   parent: firewallPolicy
   properties: {

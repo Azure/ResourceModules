@@ -97,6 +97,38 @@
                 }
             ]
         },
+        "topics": {
+            "value": [
+                {
+                    "name": "<<namePrefix>>-az-sbt-x-001",
+                    "roleAssignments": [
+                        {
+                            "roleDefinitionIdOrName": "Reader",
+                            "principalIds": [
+                                "<<deploymentSpId>>"
+                            ]
+                        }
+                    ],
+                    "authorizationRules": [
+                        {
+                            "name": "RootManageSharedAccessKey",
+                            "rights": [
+                                "Listen",
+                                "Manage",
+                                "Send"
+                            ]
+                        },
+                        {
+                            "name": "AnotherKey",
+                            "rights": [
+                                "Listen",
+                                "Send"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
         "diagnosticLogsRetentionInDays": {
             "value": 7
         },
