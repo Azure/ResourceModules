@@ -200,10 +200,12 @@
                         "uri": "https://adp<<namePrefix>>azsax001.blob.core.windows.net/scripts/scriptExtensionMasterInstaller.ps1",
                         "storageAccountId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
                     }
-                ],
-                "protectedSettings": {
-                    "commandToExecute": "sudo apt-get update"
-                }
+                ]
+            }
+        },
+        "extensionCustomScriptProtectedSetting": {
+            "value": {
+                "commandToExecute": "sudo apt-get update"
             }
         },
         "configurationProfileAssignments": {
