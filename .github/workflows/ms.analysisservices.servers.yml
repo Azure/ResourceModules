@@ -139,7 +139,7 @@ jobs:
           templateFilePath: '${{ env.modulePath }}/deploy.bicep'
           parameterFilePath: '${{ env.modulePath }}/${{ matrix.parameterFilePaths }}'
           location: '${{ env.location }}'
-          resourceGroupName: '${{ env.resourceGroupName }}'
+          resourceGroupName: '${{ env.customResourceGroupName }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
           removeDeployment: '${{ needs.job_prepare_pipeline.outputs.removeDeployment }}'
@@ -151,6 +151,7 @@ jobs:
     name: 'Remove dependencies'
     if: always() && needs.job_prepare_pipeline.outputs.removeDeployment == 'true' && needs.job_dependencies_deploy_validation.outputs.deploymentName != ''
     needs:
+      - job_prepare_pipeline
       - job_module_deploy_validation
       - job_dependencies_deploy_validation
     steps:
