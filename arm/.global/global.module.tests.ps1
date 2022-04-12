@@ -416,15 +416,20 @@ Describe 'Readme tests' -Tag Readme {
                 [string] $readMeFilePath
             )
 
+            # Get current hash
             $fileHashBefore = (Get-FileHash $readMeFilePath).Hash
 
             # Load function
-            $rootPath = (Get-Item $PSScriptRoot).Parent.Parent.Parent.Parent
+            $rootPath = (Get-Item $PSScriptRoot).Parent.Parent
             . (Join-Path $rootPath 'utilities' 'tools' 'Set-ModuleReadMe.ps1')
+
+            # Apply update
             Set-ModuleReadMe -TemplateFilePath $templateFilePath
 
+            # Get hash after 'update'
             $fileHashAfter = (Get-FileHash $readMeFilePath).Hash
 
+            # Compare
             $fileHashBefore -eq $fileHashAfter | Should -Be $true -Because 'The file hashes before and after applying the Set-ModuleReadMe function should be identical'
         }
     }
