@@ -1,20 +1,35 @@
----
-name: "Bug report \U0001F41B"
-about: Report errors or unexpected behaviour
-title: 'Bug Report'
-labels: bug
-assignees: ''
----
-
-<!-- Please search existing issues to avoid creating duplicates. -->
-
-## Description
-
-Please describe your bug as detailed as possible.
-
-### Steps to reproduce
-
-1.
-2.
-
-### Screenshots
+name: Bug Report
+description: File a bug report
+title: "[Bug Report]: "
+labels: ["Bug Report"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to fill out this bug report!
+  - type: textarea
+    id: bug-description
+    attributes:
+      label: Describe the bug
+      description: A clear and concise description of what the bug is vs. what you expected to happen.
+    validations:
+      required: true
+  - type: textarea
+    id: steps-to-reproduce
+    attributes:
+      label: To reproduce
+      description: Steps to reproduce the problem.
+    validations:
+      required: true
+  - type: textarea
+    id: code-snippet
+    attributes:
+      label: Code snippet
+      description: Please copy and paste any code snippet that can help reproduce the problem.
+      render: Bicep
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant log output
+      description: Please copy and paste any relevant log output.
+      render: Shell
