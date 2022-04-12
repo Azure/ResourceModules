@@ -52,7 +52,6 @@ function Initialize-DeploymentRemoval {
         # The initial sequence is a general order-recommendation
         $removalSequence = @(
             'Microsoft.Insights/diagnosticSettings',
-            'Microsoft.Resources/resourceGroups',
             'Microsoft.Compute/virtualMachines'
         )
         Write-Verbose ('Template file path: [{0}]' -f $templateFilePath) -Verbose
