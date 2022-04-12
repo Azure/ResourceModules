@@ -110,15 +110,16 @@ Describe 'Readme tests' -Tag Readme {
         $readmeFolderTestCases = [System.Collections.ArrayList] @()
         foreach ($moduleFolderPath in $moduleFolderPaths) {
 
-            if (Test-Path (Join-Path $moduleFolderPath 'deploy.bicep')) {
-                $templateFilePath = Join-Path $moduleFolderPath 'deploy.bicep'
-                $templateContent = az bicep build --file $templateFilePath --stdout | ConvertFrom-Json -AsHashtable
-            } elseif (Test-Path (Join-Path $moduleFolderPath 'deploy.json')) {
-                $templateFilePath = Join-Path $moduleFolderPath 'deploy.json'
-                $templateContent = Get-Content $templateFilePath -Raw | ConvertFrom-Json -AsHashtable
-            } else {
-                throw "No template file found in folder [$moduleFolderPath]"
+            $jsonTemplatePath = Join-Path $moduleFolderPath 'deploy.json'
+            if (-not (Test-Path $jsonTemplatePath)) {
+
+                $bicepTemplatePath = Join-Path $moduleFolderPath 'deploy.bicep'
+                if (-not (Test-Path $bicepTemplatePath)) {
+                    throw "No template file found in folder [$moduleFolderPath]"
+                }
+                az bicep build --file $bicepTemplatePath
             }
+            $templateContent = Get-Content -Path $jsonTemplatePath -Raw | ConvertFrom-Json -AsHashtable
 
             $readmeFolderTestCases += @{
                 moduleFolderName = $moduleFolderPath.Replace('\', '/').Split('/arm/')[1]
@@ -443,13 +444,16 @@ Describe 'Deployment template tests' -Tag Template {
         $deploymentFolderTestCasesException = [System.Collections.ArrayList] @()
         foreach ($moduleFolderPath in $moduleFolderPaths) {
 
-            if (Test-Path (Join-Path $moduleFolderPath 'deploy.bicep')) {
-                $templateContent = az bicep build --file (Join-Path $moduleFolderPath 'deploy.bicep') --stdout | ConvertFrom-Json -AsHashtable
-            } elseif (Test-Path (Join-Path $moduleFolderPath 'deploy.json')) {
-                $templateContent = Get-Content (Join-Path $moduleFolderPath 'deploy.json') -Raw | ConvertFrom-Json -AsHashtable
-            } else {
-                throw "No template file found in folder [$moduleFolderPath]"
+            $jsonTemplatePath = Join-Path $moduleFolderPath 'deploy.json'
+            if (-not (Test-Path $jsonTemplatePath)) {
+
+                $bicepTemplatePath = Join-Path $moduleFolderPath 'deploy.bicep'
+                if (-not (Test-Path $bicepTemplatePath)) {
+                    throw "No template file found in folder [$moduleFolderPath]"
+                }
+                az bicep build --file $bicepTemplatePath
             }
+            $templateContent = Get-Content -Path $jsonTemplatePath -Raw | ConvertFrom-Json -AsHashtable
 
             # Parameter file test cases
             $parameterFileTestCases = @()
@@ -821,13 +825,16 @@ Describe "API version tests [All apiVersions in the template should be 'recent']
 
         $moduleFolderName = $moduleFolderPath.Replace('\', '/').Split('/arm/')[1]
 
-        if (Test-Path (Join-Path $moduleFolderPath 'deploy.bicep')) {
-            $templateContent = az bicep build --file (Join-Path $moduleFolderPath 'deploy.bicep') --stdout | ConvertFrom-Json -AsHashtable
-        } elseif (Test-Path (Join-Path $moduleFolderPath 'deploy.json')) {
-            $templateContent = Get-Content (Join-Path $moduleFolderPath 'deploy.json') -Raw | ConvertFrom-Json -AsHashtable
-        } else {
-            throw "No template file found in folder [$moduleFolderPath]"
+        $jsonTemplatePath = Join-Path $moduleFolderPath 'deploy.json'
+        if (-not (Test-Path $jsonTemplatePath)) {
+
+            $bicepTemplatePath = Join-Path $moduleFolderPath 'deploy.bicep'
+            if (-not (Test-Path $bicepTemplatePath)) {
+                throw "No template file found in folder [$moduleFolderPath]"
+            }
+            az bicep build --file $bicepTemplatePath
         }
+        $templateContent = Get-Content -Path $jsonTemplatePath -Raw | ConvertFrom-Json -AsHashtable
 
         $nestedResources = Get-NestedResourceList -TemplateContent $templateContent | Where-Object {
             $_.type -notin @('Microsoft.Resources/deployments') -and $_
