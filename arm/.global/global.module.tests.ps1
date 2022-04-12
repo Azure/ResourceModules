@@ -3,7 +3,11 @@
 param (
     [array] $moduleFolderPaths = ((Get-ChildItem (Split-Path $PSScriptRoot -Parent) -Recurse -Directory -Force).FullName | Where-Object {
         (Get-ChildItem $_ -File -Depth 0 -Include @('deploy.json', 'deploy.bicep') -Force).Count -gt 0
-        })
+        }),
+    [hashtable] $tokensToAvoid = @{
+        subscriptionId = ''
+        tenantId       = ''
+    }
 )
 
 $script:Settings = Get-Content -Path (Join-Path $PSScriptRoot '..\..\settings.json') | ConvertFrom-Json
