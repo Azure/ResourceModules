@@ -1,4 +1,4 @@
-@description('Required. The name of the Azure Analysis Services server to create.')
+@description('Required. The name of the Azure Analysis Services server to create...')
 param name string
 
 @description('Optional. The SKU name of the Azure Analysis Services server to create.')
