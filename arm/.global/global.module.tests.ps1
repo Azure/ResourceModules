@@ -6,7 +6,7 @@ param (
         })
 )
 
-$script:RepoRoot = (Get-Item $PSScriptRoot).Parent.Parent
+$script:RepoRoot = Split-Path (Split-Path $PSScriptRoot -Parent) -Parent
 $script:Settings = Get-Content -Path (Join-Path $PSScriptRoot '..\..\settings.json') | ConvertFrom-Json
 $script:RGdeployment = 'https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#'
 $script:Subscriptiondeployment = 'https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#'
