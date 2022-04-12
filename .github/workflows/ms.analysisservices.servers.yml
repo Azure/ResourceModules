@@ -149,7 +149,7 @@ jobs:
   job_dependencies_remove:
     runs-on: ubuntu-20.04
     name: 'Remove dependencies'
-    if: always() && needs.job_set_workflow_param.outputs.removeDeployment == 'true' && needs.job_dependencies_deploy_validation.outputs.deploymentName != ''
+    if: always() && needs.job_prepare_pipeline.outputs.removeDeployment == 'true' && needs.job_dependencies_deploy_validation.outputs.deploymentName != ''
     needs:
       - job_module_deploy_validation
       - job_dependencies_deploy_validation
@@ -170,7 +170,7 @@ jobs:
           resourceGroupName: '${{ env.customResourceGroupName }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
-          removeDeployment: '${{ needs.job_set_workflow_param.outputs.removeDeployment }}'
+          removeDeployment: '${{ needs.job_prepare_pipeline.outputs.removeDeployment }}'
           enableDeployment: 'false'
 
   # # ####################
