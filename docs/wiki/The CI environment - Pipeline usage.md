@@ -33,7 +33,7 @@ Pipeline logs are available for troubleshooting and provide detailed information
 
 ## Add a new module pipeline
 
-To add a new module pipeline we recommend to create a copy of a currently existing module pipeline and adjust all module-specific properties. The registration of the pipeline depends on the [DevOps platform](#devops-tool-specific-guidance) you're using.
+To add a new module pipeline we recommend to create a copy of a currently existing module pipeline and adjust all module-specific properties, e.g. triggers and module paths. The registration of the pipeline depends on the [DevOps platform](#devops-tool-specific-guidance) you're using.
 
 # Operate the dependencies pipeline
 
