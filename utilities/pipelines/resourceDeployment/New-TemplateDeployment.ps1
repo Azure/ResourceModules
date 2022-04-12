@@ -348,6 +348,11 @@ New-TemplateDeployment -templateFilePath 'C:/KeyVault/deploy.json' -parameterFil
 Deploy the deploy.json of the KeyVault module with the parameter file 'parameters.json' using the resource group 'aLegendaryRg' in location 'WestEurope'
 
 .EXAMPLE
+New-TemplateDeployment -templateFilePath 'C:/ResourceGroup/deploy.bicep' -location 'WestEurope'
+
+Deploy the deploy.json of the ResourceGroup module in location 'WestEurope'
+
+.EXAMPLE
 New-TemplateDeployment -templateFilePath 'C:/ResourceGroup/deploy.json' -parameterFilePath 'C:/ResourceGroup/.parameters/parameters.json' -location 'WestEurope'
 
 Deploy the deploy.json of the ResourceGroup module with the parameter file 'parameters.json' in location 'WestEurope'
