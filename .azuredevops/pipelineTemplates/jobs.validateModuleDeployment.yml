@@ -32,8 +32,8 @@
 ##   | checkoutRepositories            | ''                                   | An optional list of repositories to check out at the beginning of this job in addition to the source      | 'Components'                               |
 ##   | modulePath                      | '$(modulePath)'                      | The path to the module to deploy. E.g. [c:/KeyVault]                                                      | 'c:/KeyVault'                              |
 ##   | deploymentBlocks                |                                      | The parameter file(s) to deploy with. Must be provided                                                    | path: 'C:/parameters.json'                 |
-##   | location                        | '$(defaultLocation)'                 | The location to deploy with                                                                               | 'EastUs2'                                  |
-##   | resourceGroupName               | '$(defaultResourceGroupName)'        | The resourcegroup to deploy into. Required only for Resource-Group-Level deployments                      | 'validation-rg'                            |
+##   | location                        | '$(location)'                 | The location to deploy with                                                                               | 'EastUs2'                                  |
+##   | resourceGroupName               | '$(resourceGroupName)'        | The resourcegroup to deploy into. Required only for Resource-Group-Level deployments                      | 'validation-rg'                            |
 ##   | subscriptionId                  | '$(ARM_SUBSCRIPTION_ID)'             | The id of the subscription to deploy into when using a Management group service connection                | 'aed7c000-6387-412e-bed0-24dfddf4bbc6'     |
 ##   | managementGroupId               | '$(ARM_MGMTGROUP_ID)'                | The id of the management group to deploy into. Required only for Management-Group-Level deployments       | '6ycc9620-cb01-454f-9ebc-fc6b1df48d64'     |
 ##   | parametersRepository            | '$(Build.Repository.Name)'           | The respository with the parameter files. Defaults to the triggering repository                           | 'Solutions'                                |
@@ -56,8 +56,8 @@ parameters:
   removeDeployment: false
   modulePath: '$(modulePath)'
   deploymentBlocks: ''
-  location: '$(defaultLocation)'
-  resourceGroupName: '$(defaultResourceGroupName)'
+  location: '$(location)'
+  resourceGroupName: '$(resourceGroupName)'
   subscriptionId: '$(ARM_SUBSCRIPTION_ID)'
   managementGroupId: '$(ARM_MGMTGROUP_ID)'
   parametersRepository: '$(Build.Repository.Name)'
@@ -216,7 +216,7 @@ jobs:
               pwsh: true
               inline: |
                 # Load used functions
-                . (Join-Path '$(moduleRepoRoot)' '$(pipelineFunctionsPath)' 'resourceDeployment' 'Test-TemplateWithParameterFile.ps1')
+                . (Join-Path '$(moduleRepoRoot)' '$(pipelineFunctionsPath)' 'resourceDeployment' 'Test-TemplateDeployment.ps1')
 
                 if(-not [String]::IsNullOrEmpty('${{ deploymentBlock.templateFilePath }}')) {
                   $templateFilePath = Join-Path '$(moduleRepoRoot)' '${{ deploymentBlock.templateFilePath }}'
@@ -232,12 +232,15 @@ jobs:
                 # ----------- #
                 $functionInput = @{
                   templateFilePath     = $templateFilePath
-                  parameterFilePath    = Join-Path '$(ParametersRepoRoot)' '${{ deploymentBlock.path }}'
                   location             = '${{ parameters.location }}'
                   resourceGroupName    = '${{ parameters.resourceGroupName }}'
                   subscriptionId       = '${{ parameters.subscriptionId }}'
                   managementGroupId    = '${{ parameters.managementGroupId }}'
                   additionalParameters = @{}
+                }
+
+                if(-not [String]::IsNullOrEmpty('${{ deploymentBlock.path }}')) {
+                  $functionInput['parameterFilePath'] = Join-Path '$(ParametersRepoRoot)' '${{ deploymentBlock.path }}'
                 }
 
                 $projectSettings = Get-Content -Path 'settings.json' | ConvertFrom-Json
@@ -250,7 +253,7 @@ jobs:
                 Write-Verbose "Invoke task with" -Verbose
                 Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
-                Test-TemplateWithParameterFile @functionInput -Verbose
+                Test-TemplateDeployment @functionInput -Verbose
 
           # [Deployment] task(s)
           #---------------------
@@ -265,7 +268,7 @@ jobs:
               ScriptType: InlineScript
               inline: |
                 # Load used functions
-                . (Join-Path '$(moduleRepoRoot)' '$(pipelineFunctionsPath)' 'resourceDeployment' 'New-ModuleDeployment.ps1')
+                . (Join-Path '$(moduleRepoRoot)' '$(pipelineFunctionsPath)' 'resourceDeployment' 'New-TemplateDeployment.ps1')
 
                 if(-not [String]::IsNullOrEmpty('${{ deploymentBlock.templateFilePath }}')) {
                   $templateFilePath = Join-Path '$(moduleRepoRoot)' '${{ deploymentBlock.templateFilePath }}'
@@ -281,13 +284,16 @@ jobs:
                 # ----------------- #
                 $functionInput = @{
                   templateFilePath     = $templateFilePath
-                  parameterFilePath    = Join-Path '$(parametersRepoRoot)' '${{ deploymentBlock.path }}'
                   location             = '${{ parameters.location }}'
                   resourceGroupName    = '${{ parameters.resourceGroupName }}'
                   subscriptionId       = '${{ parameters.subscriptionId }}'
                   managementGroupId    = '${{ parameters.managementGroupId }}'
                   doNotThrow           = $true
                   additionalParameters = @{}
+                }
+
+                if(-not [String]::IsNullOrEmpty('${{ deploymentBlock.path }}')) {
+                  $functionInput['parameterFilePath'] = Join-Path '$(ParametersRepoRoot)' '${{ deploymentBlock.path }}'
                 }
 
                 $projectSettings = Get-Content -Path 'settings.json' | ConvertFrom-Json
@@ -301,7 +307,7 @@ jobs:
                 Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
                 # Invoke deployment
-                $res = New-ModuleDeployment @functionInput -Verbose
+                $res = New-TemplateDeployment @functionInput -Verbose
 
                 # Get deployment name
                 Write-Host ('##vso[task.setvariable variable=deploymentName]{0}' -f $res.deploymentName)

@@ -1,6 +1,6 @@
-# Analysis Services Server `[Microsoft.AnalysisServices/servers]`
+# Analysis Services Servers `[Microsoft.AnalysisServices/servers]`
 
-This module deploys an analysis service server.
+This module deploys an Analysis Services Server.
 
 ## Navigation
 

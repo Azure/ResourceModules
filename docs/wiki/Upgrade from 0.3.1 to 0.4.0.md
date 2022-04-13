@@ -56,7 +56,7 @@ General updates can be migrated by essentially copying/replacing any code outsid
 -	extended pipeline functionality (e.g., managementgroup-level removal),
 -	publishing of child modules and
 -	overall extended publishing using `version.json` files
--	additional deployments in the dependency pipeline
+-	additional deployments in the dependencies pipeline
 
 ## NamePrefix in settings.json
 A change that affects all modules is the introduction of the `namePrefix` property in the local `settings.json` file.
@@ -64,6 +64,6 @@ This prefix is used to simplify the introduction of a "personalized" resource na
 
 When migrating, this change should be introduced before or together with the update of the [individual modules](#parameter-file-name-prefix), as their parameter files make have use of this placeholder.
 
-> **Note:** Dependency pipeline parameter files are affected too.
+> **Note:** Dependencies pipeline parameter files are affected too.
 
 Also, make sure to change the value of the prefix to a custom value of your choice and not leave it with the default value. The token is used to give all module test deployments a unique flavor (which is especially important for modules that must be globally unique).
