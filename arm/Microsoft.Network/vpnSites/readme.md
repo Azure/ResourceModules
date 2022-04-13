@@ -1,4 +1,4 @@
-# VPN Site `[Microsoft.Network/vpnSites]`
+# VPN Sites `[Microsoft.Network/vpnSites]`
 
 This module deploys a VPN Site.
 ## Navigation
