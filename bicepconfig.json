@@ -1,0 +1,11 @@
+{
+    "analyzers": {
+        "core": {
+            "rules": {
+                "explicit-values-for-loc-params": {
+                    "level": "off" // Reason: Our modules default to e.g. the location of their parent resource group which is sufficient if deploying a self-contained solution
+                }
+            }
+        }
+    }
+}
