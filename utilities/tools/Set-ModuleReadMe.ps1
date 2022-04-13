@@ -405,6 +405,51 @@ function Set-TemplateReferencesSection {
     }
     return $updatedFileContent
 }
+function Set-UsageExamples {
+
+    [CmdletBinding(SupportsShouldProcess)]
+    param (
+        [Parameter(Mandatory)]
+        [string] $TemplateFilePath,
+
+        [Parameter(Mandatory)]
+        [object[]] $ReadMeFileContent,
+
+        [Parameter(Mandatory = $false)]
+        [string] $SectionStartIdentifier = '## Usage examples'
+    )
+
+    # Process content
+    $SectionContent = [System.Collections.ArrayList]@()
+
+    $moduleRoot = Split-Path $TemplateFilePath -Parent
+    $parameterFiles = Get-ChildItem (Join-Path $moduleRoot '.parameters') -Filter '*parameters.json' -Recurse
+
+    $index = 1
+    foreach ($parameterFilePath in $parameterFiles.FullName) {
+        $parameterFileContent = Get-Content -Path $parameterFilePath -Raw
+        $formattedContent = $parameterFileContent.Replace('"', "'")
+        $formattedContent = $formattedContent.Replace(',', '')
+
+        $SectionContent += @(
+            "### Usage example $index",
+            '',
+            '```json',
+            '```',
+            '',
+            '```bicep',
+            '```'
+        )
+
+        $index += 1
+    }
+
+    # Build result
+    if ($PSCmdlet.ShouldProcess('Original file with new template references content', 'Merge')) {
+        $updatedFileContent = Merge-FileWithNewContent -oldContent $ReadMeFileContent -newContent $SectionContent -SectionStartIdentifier $SectionStartIdentifier -contentType 'list'
+    }
+    return $updatedFileContent
+}
 
 <#
 .SYNOPSIS
@@ -524,14 +569,17 @@ function Set-ModuleReadMe {
             'Resource Types',
             'Parameters',
             'Outputs',
-            'Template references'
+            'Template references',
+            'Navigation',
+            'Usage examples'
         )]
         [string[]] $SectionsToRefresh = @(
             'Resource Types',
             'Parameters',
             'Outputs',
             'Template references',
-            'Navigation'
+            'Navigation',
+            'Usage examples'
         )
     )
 
@@ -645,6 +693,16 @@ function Set-ModuleReadMe {
             ReadMeFileContent = $readMeFileContent
         }
         $readMeFileContent = Set-TableOfContent @inputObject
+    }
+
+    if ($SectionsToRefresh -contains 'Usage examples') {
+        # Handle [TemplateReferences] section
+        # ===================================
+        $inputObject = @{
+            ReadMeFileContent = $readMeFileContent
+            TemplateFilePath  = $TemplateFilePath
+        }
+        $readMeFileContent = Set-UsageExamples @inputObject
     }
 
     Write-Verbose 'New content:'
