@@ -1,6 +1,7 @@
 # VPN Sites `[Microsoft.Network/vpnSites]`
 
 This module deploys a VPN Site.
+
 ## Navigation
 
 - [Resource Types](#Resource-Types)
@@ -105,7 +106,6 @@ An array of links. Should be used instead of the top-level `ipAddress` & `bgpPro
     ]
 }
 ```
-
 
 ### Parameter Usage: `tags`
 
