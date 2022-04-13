@@ -1,4 +1,4 @@
-name: "DomainServices - AzureADDomainServices"
+name: 'AAD - DomainServices'
 
 parameters:
   - name: removeDeployment
@@ -17,17 +17,17 @@ trigger:
       - main
   paths:
     include:
-      - "/.azuredevops/modulePipelines/ms.azuread.domainservices.yml"
-      - "/.azuredevops/pipelineTemplates/module.*.yml"
-      - "/arm/Microsoft.DomainServices/AzureADDomainServices/*"
+      - '/.azuredevops/modulePipelines/ms.aad.domainservices.yml'
+      - '/.azuredevops/pipelineTemplates/module.*.yml'
+      - '/arm/Microsoft.AAD/DomainServices/*'
     exclude:
-      - "/**/*.md"
+      - '/**/*.md'
 
 variables:
-  - template: "/.azuredevops/pipelineVariables/global.variables.yml"
-  - group: "PLATFORM_VARIABLES"
+  - template: '/.azuredevops/pipelineVariables/global.variables.yml'
+  - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: "/arm/Microsoft.DomainServices/AzureADDomainServices"
+    value: '/arm/Microsoft.AAD/DomainServices'
 
 stages:
   - stage: Validation
@@ -40,9 +40,9 @@ stages:
     jobs:
       - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
         parameters:
-          removeDeployment: "${{ parameters.removeDeployment }}"
+          removeDeployment: '${{ parameters.removeDeployment }}'
           deploymentBlocks:
-            - path: $(modulePath)/.parameters/aadds.parameters.json
+            - path: $(modulePath)/.parameters/parameters.json
 
   - stage: Publishing
     displayName: Publish module
