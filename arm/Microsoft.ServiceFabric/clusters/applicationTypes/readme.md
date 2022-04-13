@@ -1,6 +1,6 @@
-# ServiceFabric Cluster Application Type `[Microsoft.ServiceFabric/clusters/applicationTypes]`
+# Service Fabric Cluster Application Types `[Microsoft.ServiceFabric/clusters/applicationTypes]`
 
-This module deploys a ServiceFabric cluster application type.
+This module deploys a Service Fabric Cluster Application Type.
 
 ## Navigation
 
