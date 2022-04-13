@@ -31,7 +31,7 @@ Optional. Name of the management group to deploy into. Mandatory if deploying in
 Optional. Additional parameters you can provide with the deployment. E.g. @{ resourceGroupName = 'myResourceGroup' }
 
 .EXAMPLE
-Test-TemplateDeployment templateFilePath 'ARM/KeyVault/deploy.bicep' -parameterFilePath 'ARM/KeyVault/.parameters/parameters.json' -location 'WestEurope' -resourceGroupName 'aLegendaryRg'
+Test-TemplateDeployment -templateFilePath 'C:/KeyVault/deploy.bicep' -parameterFilePath 'C:/KeyVault/.parameters/parameters.json' -location 'WestEurope' -resourceGroupName 'aLegendaryRg'
 
 Test the deploy.bicep of the KeyVault module with the parameter file 'parameters.json' using the resource group 'aLegendaryRg' in location 'WestEurope'
 
