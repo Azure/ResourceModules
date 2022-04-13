@@ -24,7 +24,7 @@
             }
         },
         "virtualNetworkGatewayConnectionType": {
-            "value": "VNet2VNet"
+            "value": "Vnet2Vnet"
         },
         "enableBgp": {
             "value": false
