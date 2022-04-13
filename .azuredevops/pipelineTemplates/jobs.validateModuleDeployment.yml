@@ -216,7 +216,7 @@ jobs:
               pwsh: true
               inline: |
                 # Load used functions
-                . (Join-Path '$(moduleRepoRoot)' '$(pipelineFunctionsPath)' 'resourceDeployment' 'Test-TemplateWithParameterFile.ps1')
+                . (Join-Path '$(moduleRepoRoot)' '$(pipelineFunctionsPath)' 'resourceDeployment' 'Test-TemplateDeployment.ps1')
 
                 if(-not [String]::IsNullOrEmpty('${{ deploymentBlock.templateFilePath }}')) {
                   $templateFilePath = Join-Path '$(moduleRepoRoot)' '${{ deploymentBlock.templateFilePath }}'
@@ -232,12 +232,22 @@ jobs:
                 # ----------- #
                 $functionInput = @{
                   templateFilePath     = $templateFilePath
-                  parameterFilePath    = Join-Path '$(ParametersRepoRoot)' '${{ deploymentBlock.path }}'
                   location             = '${{ parameters.location }}'
                   resourceGroupName    = '${{ parameters.resourceGroupName }}'
                   subscriptionId       = '${{ parameters.subscriptionId }}'
                   managementGroupId    = '${{ parameters.managementGroupId }}'
                   additionalParameters = @{}
+                }
+
+                if(-not [String]::IsNullOrEmpty('${{ deploymentBlock.path }}')) {
+                  $functionInput['parameterFilePath'] = Join-Path '$(ParametersRepoRoot)' '${{ deploymentBlock.path }}'
+                }
+
+                # Enables us to pass the resource group name as a deployment parameter
+                if(-not [String]::IsNullOrEmpty('${{ parameters.resourceGroupName }}')) {
+                  $functionInput['additionalParameters'] = @{
+                    resourceGroupName = '${{ parameters.resourceGroupName }}'
+                  }
                 }
 
                 $projectSettings = Get-Content -Path 'settings.json' | ConvertFrom-Json
@@ -250,7 +260,7 @@ jobs:
                 Write-Verbose "Invoke task with" -Verbose
                 Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
-                Test-TemplateWithParameterFile @functionInput -Verbose
+                Test-TemplateDeployment @functionInput -Verbose
 
           # [Deployment] task(s)
           #---------------------
@@ -265,7 +275,7 @@ jobs:
               ScriptType: InlineScript
               inline: |
                 # Load used functions
-                . (Join-Path '$(moduleRepoRoot)' '$(pipelineFunctionsPath)' 'resourceDeployment' 'New-ModuleDeployment.ps1')
+                . (Join-Path '$(moduleRepoRoot)' '$(pipelineFunctionsPath)' 'resourceDeployment' 'New-TemplateDeployment.ps1')
 
                 if(-not [String]::IsNullOrEmpty('${{ deploymentBlock.templateFilePath }}')) {
                   $templateFilePath = Join-Path '$(moduleRepoRoot)' '${{ deploymentBlock.templateFilePath }}'
@@ -281,13 +291,23 @@ jobs:
                 # ----------------- #
                 $functionInput = @{
                   templateFilePath     = $templateFilePath
-                  parameterFilePath    = Join-Path '$(parametersRepoRoot)' '${{ deploymentBlock.path }}'
                   location             = '${{ parameters.location }}'
                   resourceGroupName    = '${{ parameters.resourceGroupName }}'
                   subscriptionId       = '${{ parameters.subscriptionId }}'
                   managementGroupId    = '${{ parameters.managementGroupId }}'
                   doNotThrow           = $true
                   additionalParameters = @{}
+                }
+
+                if(-not [String]::IsNullOrEmpty('${{ deploymentBlock.path }}')) {
+                  $functionInput['parameterFilePath'] = Join-Path '$(ParametersRepoRoot)' '${{ deploymentBlock.path }}'
+                }
+
+                # Enables us to pass the resource group name as a deployment parameter
+                if(-not [String]::IsNullOrEmpty('${{ parameters.resourceGroupName }}')) {
+                  $functionInput['additionalParameters'] = @{
+                    resourceGroupName = '${{ parameters.resourceGroupName }}'
+                  }
                 }
 
                 $projectSettings = Get-Content -Path 'settings.json' | ConvertFrom-Json
@@ -301,7 +321,7 @@ jobs:
                 Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
                 # Invoke deployment
-                $res = New-ModuleDeployment @functionInput -Verbose
+                $res = New-TemplateDeployment @functionInput -Verbose
 
                 # Get deployment name
                 Write-Host ('##vso[task.setvariable variable=deploymentName]{0}' -f $res.deploymentName)
