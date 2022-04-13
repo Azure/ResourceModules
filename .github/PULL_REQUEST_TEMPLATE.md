@@ -7,7 +7,7 @@
 > List any dependencies that are required for this change.
 
 ## Pipeline references
-> For module/pipeline changes
+> For module/pipeline changes, please create and attach the status badge of your successful run.
 
 | Pipeline |
 | - |
