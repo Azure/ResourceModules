@@ -24,7 +24,7 @@ trigger:
       - '/**/*.md'
 
 variables:
-  - template: '/.azuredevops/pipelineVariables/global.variables.yml'
+  - template: '../../global.variables.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
     value: '/arm/Microsoft.DesktopVirtualization/hostpools'

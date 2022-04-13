@@ -25,6 +25,7 @@ on:
       - '!utilities/pipelines/dependencies/**'
 
 env:
+  variablesPath: 'global.variables.yml'
   modulePath: 'arm/Microsoft.Authorization/policyExemptions'
   workflowPath: '.github/workflows/ms.authorization.policyexemptions.yml'
   AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
@@ -35,23 +36,29 @@ env:
 
 jobs:
   ############################
-  #   SET INPUT PARAMETERS   #
+  #   PREPARE PIPELINE   #
   ############################
-  job_set_workflow_param:
+  job_prepare_pipeline:
     runs-on: ubuntu-20.04
-    name: 'Set input parameters to output variables'
+    name: 'Prepare pipeline'
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - name: 'Set input parameters'
+      - name: 'Set input parameters to output variables'
         id: get-workflow-param
         uses: ./.github/actions/templates/getWorkflowInput
         with:
           workflowPath: '${{ env.workflowPath}}'
+      - name: 'Get parameter file paths'
+        id: get-parameter-file-paths
+        uses: ./.github/actions/templates/getParameterFiles
+        with:
+          modulePath: '${{ env.modulePath }}'
     outputs:
       removeDeployment: ${{ steps.get-workflow-param.outputs.removeDeployment }}
+      parameterFilePaths: ${{ steps.get-parameter-file-paths.outputs.parameterFilePaths }}
 
   ####################
   #   Pester Tests   #
@@ -76,30 +83,21 @@ jobs:
     runs-on: ubuntu-20.04
     name: 'Deployment tests'
     needs:
-      - job_set_workflow_param
+      - job_prepare_pipeline
       - job_module_pester_validation
     strategy:
       fail-fast: false
       matrix:
-        parameterFilePaths:
-          [
-            'mg.parameters.json',
-            'mg.min.parameters.json',
-            'sub.parameters.json',
-            'sub.min.parameters.json',
-            'rg.parameters.json',
-            'rg.min.parameters.json',
-          ]
+        parameterFilePaths: ${{ fromJSON(needs.job_prepare_pipeline.outputs.parameterFilePaths) }}
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
       - name: Set environment variables
-        uses: deep-mm/set-variables@v1.0
+        uses: ./.github/actions/templates/setEnvironmentVariables
         with:
-          # Name of variable file
-          variableFileName: 'global.variables' # Don't write .json here
+          variablesPath: ${{ env.variablesPath }}
       # ------------------- #
       ##  Deploy & Remove  ##
       # ------------------- #
@@ -107,12 +105,12 @@ jobs:
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
           templateFilePath: '${{ env.modulePath }}/deploy.bicep'
-          parameterFilePath: '${{ env.modulePath }}/.parameters/${{ matrix.parameterFilePaths }}'
-          location: '${{ env.defaultLocation }}'
+          parameterFilePath: '${{ env.modulePath }}/${{ matrix.parameterFilePaths }}'
+          location: '${{ env.location }}'
           resourceGroupName: '${{ env.resourceGroupName }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
-          removeDeployment: '${{ needs.job_set_workflow_param.outputs.removeDeployment }}'
+          removeDeployment: '${{ needs.job_prepare_pipeline.outputs.removeDeployment }}'
 
   ###############
   #   PUBLISH   #
@@ -122,7 +120,6 @@ jobs:
     if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master' || github.event.inputs.prerelease == 'true'
     runs-on: ubuntu-20.04
     needs:
-      - job_set_workflow_param
       - job_module_deploy_validation
     steps:
       - name: 'Checkout'
@@ -130,9 +127,9 @@ jobs:
         with:
           fetch-depth: 0
       - name: Set environment variables
-        uses: deep-mm/set-variables@v1.0
+        uses: ./.github/actions/templates/setEnvironmentVariables
         with:
-          variableFileName: 'global.variables'
+          variablesPath: ${{ env.variablesPath }}
       - name: 'Publish module'
         uses: ./.github/actions/templates/publishModule
         with:

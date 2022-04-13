@@ -24,7 +24,7 @@ trigger: none
 #       - 'utilities/pipelines/dependencies/**'
 
 variables:
-  - template: '/.azuredevops/pipelineVariables/global.variables.yml'
+  - template: '../../global.variables.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: dependencyPath
     value: 'utilities/pipelines/dependencies'
