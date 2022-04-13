@@ -36,7 +36,7 @@ Test-TemplateDeployment templateFilePath 'ARM/KeyVault/deploy.bicep' -parameterF
 Test the deploy.bicep of the KeyVault module with the parameter file 'parameters.json' using the resource group 'aLegendaryRg' in location 'WestEurope'
 
 .EXAMPLE
-Test-TemplateDeployment templateFilePath 'ARM/KeyVault/deploy.bicep' -location 'WestEurope' -resourceGroupName 'aLegendaryRg'
+Test-TemplateDeployment -templateFilePath 'C:/KeyVault/deploy.bicep' -location 'WestEurope' -resourceGroupName 'aLegendaryRg'
 
 Test the deploy.bicep of the KeyVault module using the resource group 'aLegendaryRg' in location 'WestEurope'
 
