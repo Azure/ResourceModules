@@ -35,10 +35,10 @@ param computeLocation string = resourceGroup().location
 param computeDescription string = ''
 
 @description('Optional. Opt-out of local authentication and ensure customers can use only MSI and AAD exclusively for authentication.')
-param computeDisableLocalAuth bool = false
+param disableLocalAuth bool = false
 
 @description('Optional. ARM resource id of the underlying compute.')
-param computeResourceId string = ''
+param resourceId string = ''
 
 @description('Required. Set the object type.')
 @allowed([
@@ -55,15 +55,15 @@ param computeResourceId string = ''
 ])
 param computeType string
 
-@description('Optional. The properties of the compute. Will be ignored in case "computeResourceId" is set.')
-param computeProperties object = {}
+@description('Optional. The properties of the compute. Will be ignored in case "resourceId" is set.')
+param properties object = {}
 
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
 
-// =========== //
-// Existing resources //
-// =========== //
+// ============================= //
+// Existing resources references //
+// ============================= //
 resource machineLearningWorkspace 'Microsoft.MachineLearningServices/workspaces@2021-04-01' existing = {
   name: machineLearningWorkspaceName
 }
@@ -96,12 +96,12 @@ resource machineLearningWorkspaceCompute 'Microsoft.MachineLearningServices/work
   properties: union({
     computeLocation: computeLocation
     description: computeDescription
-    disableLocalAuth: computeDisableLocalAuth
+    disableLocalAuth: disableLocalAuth
     computeType: computeType
-  }, (!empty(computeResourceId) ? {
-    resourceId: computeResourceId
+  }, (!empty(resourceId) ? {
+    resourceId: resourceId
   } : {
-    properties: computeProperties
+    properties: properties
   }))
 }
 

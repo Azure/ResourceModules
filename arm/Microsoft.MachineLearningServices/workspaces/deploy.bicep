@@ -171,11 +171,11 @@ module workspace_computes 'computes/deploy.bicep' = [for compute in computes: {
     tags: tags
     deployCompute: compute.deploy
     computeLocation: compute.location
-    computeDescription: compute.description
-    computeDisableLocalAuth: compute.disableLocalAuth
-    computeResourceId: contains(compute, 'resourceId') ? compute.resourceId : ''
+    computeDescription: contains(compute, 'description') ? compute.description : ''
+    disableLocalAuth: compute.disableLocalAuth
+    resourceId: contains(compute, 'resourceId') ? compute.resourceId : ''
     computeType: compute.type
-    computeProperties: contains(compute, 'properties') ? compute.properties : {}
+    properties: contains(compute, 'properties') ? compute.properties : {}
   }
 }]
 

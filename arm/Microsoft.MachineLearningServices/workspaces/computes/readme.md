@@ -31,10 +31,10 @@ Deploying a compute is not idempotent and will fail in case you try to redeploy 
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `computeDescription` | string | `''` | The description of the Machine Learning compute. |
-| `computeDisableLocalAuth` | bool | `False` | Opt-out of local authentication and ensure customers can use only MSI and AAD exclusively for authentication. |
+| `disableLocalAuth` | bool | `False` | Opt-out of local authentication and ensure customers can use only MSI and AAD exclusively for authentication. |
 | `computeLocation` | string | `[resourceGroup().location]` | Location for the underlying compute. |
-| `computeProperties` | object | `{object}` | The properties of the compute. Will be ignored in case "computeResourceId" is set. |
-| `computeResourceId` | string | `''` | ARM resource ID of the underlying compute. |
+| `properties` | object | `{object}` | The properties of the compute. Will be ignored in case "resourceId" is set. |
+| `resourceId` | string | `''` | ARM resource ID of the underlying compute. |
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `identity` | object | `{object}` | Identity for the resource. |
 | `location` | string | `[resourceGroup().location]` | Specifies the location of the resource. |
@@ -56,13 +56,13 @@ Identity object for the resource. Allows system as well as user assigned identit
 }
 ```
 
-### Parameter Usage: `computeProperties`
+### Parameter Usage: `properties`
 
 Properties for the compute resource to create.
 Will be ignored in case a resource ID is provided.
 
 ```json
-"computeProperties": {
+"properties": {
     "value": {
         // See https://docs.microsoft.com/en-us/azure/templates/microsoft.machinelearningservices/workspaces/computes?tabs=bicep#compute for the properties for the difference compute types
     }
