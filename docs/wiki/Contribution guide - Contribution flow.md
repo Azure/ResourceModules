@@ -31,13 +31,13 @@ How you proceed from here depends on the scenario:
 
 # Environment setup
 
-The preferred method of contribution requires you to create your own fork and create pull requests into the source repository from there. To set the fork up, please follow the process described in the ['Getting started - Setup environment'](./Getting%20started%20-%20Setup%20environment) section.
+The preferred method of contribution requires you to create your own fork and create pull requests into the source repository from there. To set the fork up, please follow the process described [here](./Getting%20started%20-%20Scenario%201%20Onboard%20module%20library%20and%20CI%20environment).
 
 How you proceed from here depends on the scenario:
 
 - In case you want to contribute to the documentation, you can limit the setup to forking the repository and cloning your fork locally.
 
-- In case your contribution involves changes to the library (the modules) and/or to the CI environment (the pipelines), you need to setup the full environment, such as GitHub secrets and token replacement, as detailed in the ['Getting started'](./Getting%20started) section and related sub-pages. This will allow you to test your changes against your environment before requesting to merge them to the main repo.
+- In case your contribution involves changes to the library (the modules) and/or to the CI environment (the pipelines), you need to setup the full environment, such as service principals and secrets. This will allow you to test your changes against your environment before requesting to merge them to the main repo.
 
 # Implement the contribution
 
