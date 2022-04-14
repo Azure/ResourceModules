@@ -228,7 +228,6 @@ module logAnalyticsWorkspace_dataSources 'dataSources/deploy.bicep' = [for (data
   }
 }]
 
-@batchSize(1) // Serial loop deployment
 module logAnalyticsWorkspace_solutions '.bicep/nested_solutions.bicep' = [for (gallerySolution, index) in gallerySolutions: if (!empty(gallerySolutions)) {
   name: '${uniqueString(deployment().name, location)}-LAW-Solution-${index}'
   params: {
