@@ -131,8 +131,8 @@ var uniqueEventHubNamespaceUntrim = uniqueString('EventHub Namespace${baseTime}'
 var uniqueEventHubNamespace = length(uniqueEventHubNamespaceUntrim) > maxNameLength ? substring(uniqueEventHubNamespaceUntrim, 0, maxNameLength) : uniqueEventHubNamespaceUntrim
 var name_var = empty(name) ? uniqueEventHubNamespace : name
 var maximumThroughputUnits_var = !isAutoInflateEnabled ? 0 : maximumThroughputUnits
-var virtualNetworkRules = [for index in range(0, (empty(networkAcls) ? 0 : length(networkAcls.virtualNetworkRules))): {
-  id: '${vNetId}/subnets/${networkAcls.virtualNetworkRules[index].subnet}'
+var virtualNetworkRules = [for virtualNetworkRule in networkAcls.virtualNetworkRules: {
+  id: virtualNetworkRule.subnetId
 }]
 var networkAcls_var = {
   bypass: !empty(networkAcls) ? networkAcls.bypass : null

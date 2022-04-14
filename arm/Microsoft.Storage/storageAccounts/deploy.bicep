@@ -154,8 +154,8 @@ var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
   }
 }]
 
-var virtualNetworkRules = [for index in range(0, (empty(networkAcls) ? 0 : length(networkAcls.virtualNetworkRules))): {
-  id: '${vNetId}/subnets/${networkAcls.virtualNetworkRules[index].subnet}'
+var virtualNetworkRules = [for virtualNetworkRule in networkAcls.virtualNetworkRules: {
+  id: virtualNetworkRule.subnetId
 }]
 
 var maxNameLength = 24

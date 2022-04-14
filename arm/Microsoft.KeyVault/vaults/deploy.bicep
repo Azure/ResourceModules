@@ -161,8 +161,8 @@ var maxNameLength = 24
 var uniquenameUntrim = uniqueString('Key Vault${baseTime}')
 var uniquename = (length(uniquenameUntrim) > maxNameLength ? substring(uniquenameUntrim, 0, maxNameLength) : uniquenameUntrim)
 var name_var = !empty(name) ? name : uniquename
-var virtualNetworkRules = [for networkrule in ((contains(networkAcls, 'virtualNetworkRules')) ? networkAcls.virtualNetworkRules : []): {
-  id: '${vNetId}/subnets/${networkrule.subnet}'
+var virtualNetworkRules = [for virtualNetworkRule in networkAcls.virtualNetworkRules: {
+  id: virtualNetworkRule.subnetId
 }]
 var networkAcls_var = {
   bypass: !empty(networkAcls) ? networkAcls.bypass : null
