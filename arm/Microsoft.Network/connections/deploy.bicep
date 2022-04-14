@@ -95,7 +95,7 @@ resource connection 'Microsoft.Network/connections@2021-05-01' = {
   properties: {
     connectionType: virtualNetworkGatewayConnectionType
     virtualNetworkGateway1: virtualNetworkGateway1
-    virtualNetworkGateway2: virtualNetworkGatewayConnectionType == 'VNet2VNet' ? virtualNetworkGateway2 : null
+    virtualNetworkGateway2: virtualNetworkGatewayConnectionType == 'Vnet2Vnet' ? virtualNetworkGateway2 : null
     localNetworkGateway2: virtualNetworkGatewayConnectionType == 'Ipsec' ? localNetworkGateway2 : null
     peer: virtualNetworkGatewayConnectionType == 'ExpressRoute' ? peer : null
     sharedKey: virtualNetworkGatewayConnectionType != 'ExpressRoute' ? vpnSharedKey : null
