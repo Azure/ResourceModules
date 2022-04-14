@@ -11,7 +11,3 @@ In case your contribution involves changes to the library (the modules) and/or t
 Also, we suggest to review the corresponding documentation, to ensure your contribution will comply with the CARML design principles. For the library please refer to [The library overview](./The%20context%20-%20CARML%20library) page and [The library](./The%20library) section. For the CI environment contributions please review [The CI environment overview](./The%20context%20-%20CARML%20CI%20environment) page and [The CI environment](./The%20CI%20environment) section.
 
 The step-by-step guideline to follow when contributing to any section of this repository is provided in the [Contribution guide](./Contribution%20guide) dedicated section.
-
-
-
-
