@@ -47,25 +47,25 @@ If you're unfamiliar with Infrastructure as Code, or wonder how you can use the 
 Following you can find an abstract overview of everything in- and out-of-scope of this repository.
 
 ## In Scope
-- **Modules:** Rich library of resource modules - the foundation for workload or entire environments deployments
-- **Platform:** Pipelines to validate modules & publish to those that pass to a location of your choice. Available with GitHub Workflows.
-- **Documentation:** A rich documentation of best practices on [module](./Modules) design, the [platforms](./Context) and its [context](./Context), [testing](./Testing) and [pipelines](./Pipelines)
+- **Module library:** A collection of comprehensive, reusable, Bicep-based building blocks to deploy Azure resources, that can be combined to create & orchestrate more complex Azure solutions.
+- **CI environment:** Pipelines to validate modules & publish the successfully validated ones to a target location, using semantic versioning. Available with both GitHub Workflows and Azure DevOps pipelines.
+- **Documentation:** Including design principles and usage of [The library](./The%20library) and [The CI environment](./The%20CI%20environment) as well as step-by-step guidelines on how to start leveraging those in the [Getting started](./Getting%20started).
 
 ## Out of Scope
 - **Orchestration:** Orchestrated solutions such as workloads or entire environments intended for production environments
 - **Real-time Updates:** Modules are updated on a best effort basis by a group of dedicated contributors
 - **Languages:** Other design languages like _Terraform_
 
-# Reporting Issues and Feedback
+# Reporting Issues
 
-## Issues and Bugs
+## Bugs
 
 If you find any bugs, please file an issue in the [GitHub Issues][GitHubIssues] page. Please fill out the provided template with the appropriate information.
 > Please search the existing issues before filing new issues to avoid duplicates.
 
 If you are taking the time to mention a problem, even a seemingly minor one, it is greatly appreciated, and a totally valid contribution to this project. **Thank you!**
 
-## Feedback
+## Feature requests
 
 If there is a feature you would like to see in here, please file an issue or feature request in the [GitHub Issues][GitHubIssues] page to provide direct feedback.
 
