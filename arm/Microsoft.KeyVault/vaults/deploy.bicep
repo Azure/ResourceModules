@@ -71,9 +71,6 @@ param networkAcls object = {}
 ])
 param publicNetworkAccess string = 'enabled'
 
-@description('Optional. Virtual Network resource identifier, if networkAcls is passed, this value must be passed as well')
-param vNetId string = ''
-
 @description('Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.')
 @minValue(0)
 @maxValue(365)

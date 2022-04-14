@@ -46,9 +46,6 @@ param privateEndpoints array = []
 @description('Optional. Service endpoint object information')
 param networkAcls object = {}
 
-@description('Optional. Virtual Network ID to lock down the Event Hub.')
-param vNetId string = ''
-
 @description('Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.')
 @minValue(0)
 @maxValue(365)
