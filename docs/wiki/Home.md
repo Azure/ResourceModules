@@ -48,6 +48,7 @@ If you're unfamiliar with Infrastructure as Code, or wonder how you can use the 
     - [The CI environment](./The%20context%20-%20CARML%20CI%20environment)
 - [Getting started](./Getting%20started)
   - [**Scenario 1:** Onboard module library and CI environment](./Getting%20started%20-%20Scenario%201%20Onboard%20module%20library%20and%20CI%20environment)
+    - [Check namePrefix availability](./Getting%20started%20-%20Check%20NamePrefix%20availability)
   - [**Scenario 2:** Consume module library only](./Getting%20started%20-%20Scenario%202%20Consume%20library)
   - [**Scenario 3:** Contribute](./Getting%20started%20-%20Scenario%203%20Contribute)
 - [The library](./The%20library)
