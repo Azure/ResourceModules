@@ -58,7 +58,7 @@ The secondary virtual network gateway used for VNET to VNET connections.
 
 ```json
 "virtualNetworkGateway2" : {
-    "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.Network/virtualNetworkGateways/myGateway02",
+    "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.Network/virtualNetworkGateways/myGateway02"ss
 }
 ```
 
@@ -68,7 +68,7 @@ The local virtual network gateway object.
 
 ```json
 "localNetworkGateway2" : {
-    "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.Network/localNetworkGateways/myGateway",
+    "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.Network/localNetworkGateways/myGateway"
 }
 ```
 
@@ -78,7 +78,7 @@ The remote peer object used for ExpressRoute connections
 
 ```json
 "peer" : {
-    "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.Network/expressRouteCircuits/expressRoute",
+    "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.Network/expressRouteCircuits/expressRoute"
 }
 ```
 
