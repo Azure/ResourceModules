@@ -374,6 +374,7 @@ on:
 env:
   AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
   removeDeployment: false
+  variablesPath: 'global.variables.yml'
 
 jobs:
   job_deploy_multi_repo_solution:
@@ -386,10 +387,10 @@ jobs:
           repository: 'Azure/ResourceModules'
           fetch-depth: 0
 
-      - name: 'Set environment variables'
-        uses: deep-mm/set-variables@v1.0
+     - name: Set environment variables
+        uses: ./.github/actions/templates/setEnvironmentVariables
         with:
-          variableFileName: 'global.variables'
+          variablesPath: ${{ env.variablesPath }}
 
       - name: 'Checkout MultiRepoTest repo in a nested MultiRepoTestParentFolder'
         uses: actions/checkout@v2
@@ -434,5 +435,5 @@ jobs:
 
 ### Notes
 
-> 1. 'Azure/ResourceModules' repo has been checked out at the root location intentionally because the `deep-mm/set-variables@v1.0` task expects the _global.variables.json_ file in the _.github/variables/_ location. The GitHub Actions also expect the underlying utility scripts at a specific location
+> 1. 'Azure/ResourceModules' repo has been checked out at the root location intentionally because GitHub Actions expect the underlying utility scripts and variables at a specific location
 > 1. 'contoso/MultiRepoTest' repo has been checked out in a nested folder called as "MultiRepoTestParentFolder" to distinguish it from the folders from the other repo in the agent but can be downloaded at the root location too if desired
