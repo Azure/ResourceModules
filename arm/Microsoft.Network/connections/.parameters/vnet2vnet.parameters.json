@@ -7,12 +7,12 @@
         },
         "virtualNetworkGateway1": {
             "value": {
-                "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/Microsoft.Network/virtualNetworkGateways/<<namePrefix>>-az-vnet-vpn-gw-p-001"
+                "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworkGateways/<<namePrefix>>-az-vnet-vpn-gw-p-001"
             }
         },
         "virtualNetworkGateway2": {
             "value": {
-                "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/Microsoft.Network/virtualNetworkGateways/<<namePrefix>>-az-vnet-vpn-gw-p-002"
+                "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworkGateways/<<namePrefix>>-az-vnet-vpn-gw-p-002"
             }
         },
         "vpnSharedKey": {
