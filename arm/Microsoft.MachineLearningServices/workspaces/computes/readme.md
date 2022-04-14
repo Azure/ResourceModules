@@ -34,11 +34,11 @@ Deploying a compute is not idempotent and will fail in case you try to redeploy 
 | `computeDisableLocalAuth` | bool | `False` | Opt-out of local authentication and ensure customers can use only MSI and AAD exclusively for authentication. |
 | `computeLocation` | string | `[resourceGroup().location]` | Location for the underlying compute. |
 | `computeProperties` | object | `{object}` | The properties of the compute. Will be ignored in case "computeResourceId" is set. |
-| `computeResourceId` | string | `''` | ARM resource id of the underlying compute. |
+| `computeResourceId` | string | `''` | ARM resource ID of the underlying compute. |
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `identity` | object | `{object}` | Identity for the resource. |
 | `location` | string | `[resourceGroup().location]` | Specifies the location of the resource. |
-| `tags` | object | `{object}` | Contains resource tags defined as key/value pairs. |
+| `tags` | object | `{object}` | Contains resource tags defined as key-value pairs. |
 
 
 ### Parameter Usage: `identity`
@@ -59,7 +59,7 @@ Identity object for the resource. Allows system as well as user assigned identit
 ### Parameter Usage: `computeProperties`
 
 Properties for the compute resource to create.
-Will be ignored in case a resource id is provided.
+Will be ignored in case a resource ID is provided.
 
 ```json
 "computeProperties": {
