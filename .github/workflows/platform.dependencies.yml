@@ -36,7 +36,7 @@ env:
 
 jobs:
   #####################
-  #   INIT PIPELINE   #
+  #   Init pipeline   #
   #####################
   job_init_pipeline:
     runs-on: ubuntu-20.04
@@ -55,17 +55,19 @@ jobs:
       parameterFilePaths: ${{ steps.get-parameter-file-paths.outputs.parameterFilePaths }}
 
   ###########################
-  #   RESOURCE DEPLOYMENT   #
+  #   Resource deployment   #
   ###########################
   job_deploy_rg:
     runs-on: ubuntu-20.04
     name: 'Deploy resource group'
     env:
       namespace: 'Microsoft.Resources\resourceGroups'
+    needs:
+      - job_init_pipeline
     strategy:
       fail-fast: false
       matrix:
-        parameterFilePaths: ['validation.parameters.json']
+        parameterFilePaths: ${{ fromJSON(needs.job_init_pipeline.outputs.parameterFilePaths) }}
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -88,6 +90,7 @@ jobs:
     env:
       namespace: 'Microsoft.Compute\proximityPlacementGroups'
     needs:
+      - job_init_pipeline
       - job_deploy_rg
     strategy:
       fail-fast: false
@@ -115,6 +118,7 @@ jobs:
     env:
       namespace: 'Microsoft.ManagedIdentity\userAssignedIdentities'
     needs:
+      - job_init_pipeline
       - job_deploy_rg
     outputs:
       msiPrincipalId: ${{ steps.print_msi_prinId.outputs.msiPrincipalId }}
@@ -155,6 +159,7 @@ jobs:
     env:
       namespace: 'Microsoft.Web/serverfarms'
     needs:
+      - job_init_pipeline
       - job_deploy_rg
     strategy:
       fail-fast: false
@@ -209,6 +214,7 @@ jobs:
     env:
       namespace: 'Microsoft.EventHub\namespaces'
     needs:
+      - job_init_pipeline
       - job_deploy_rg
     strategy:
       fail-fast: false
@@ -264,6 +270,7 @@ jobs:
     env:
       namespace: 'Microsoft.Storage\storageAccounts'
     needs:
+      - job_init_pipeline
       - job_deploy_rg
     strategy:
       fail-fast: false
@@ -369,6 +376,7 @@ jobs:
     env:
       namespace: 'Microsoft.Compute\galleries'
     needs:
+      - job_init_pipeline
       - job_deploy_rg
     strategy:
       fail-fast: false
@@ -397,6 +405,7 @@ jobs:
     env:
       namespace: 'Microsoft.VirtualMachineImages\imageTemplates'
     needs:
+      - job_init_pipeline
       - job_deploy_rolea
       - job_deploy_sig
     outputs:
@@ -559,6 +568,7 @@ jobs:
     env:
       namespace: 'Microsoft.Insights\actionGroups'
     needs:
+      - job_init_pipeline
       - job_deploy_rg
     strategy:
       fail-fast: false
@@ -586,6 +596,7 @@ jobs:
     env:
       namespace: 'Microsoft.Network\applicationSecurityGroups'
     needs:
+      - job_init_pipeline
       - job_deploy_rg
     strategy:
       fail-fast: false
@@ -613,6 +624,7 @@ jobs:
     env:
       namespace: 'Microsoft.Network\routeTables'
     needs:
+      - job_init_pipeline
       - job_deploy_rg
     strategy:
       fail-fast: false
@@ -769,6 +781,7 @@ jobs:
     env:
       namespace: 'Microsoft.Insights\components'
     needs:
+      - job_init_pipeline
       - job_deploy_sa
       - job_deploy_evh
       - job_deploy_law
@@ -798,6 +811,7 @@ jobs:
     env:
       namespace: 'Microsoft.Automation\automationAccounts'
     needs:
+      - job_init_pipeline
       - job_deploy_sa
       - job_deploy_evh
       - job_deploy_law
@@ -827,6 +841,7 @@ jobs:
     env:
       namespace: 'Microsoft.DesktopVirtualization\hostpools'
     needs:
+      - job_init_pipeline
       - job_deploy_sa
       - job_deploy_evh
       - job_deploy_law
@@ -856,6 +871,7 @@ jobs:
     env:
       namespace: 'Microsoft.RecoveryServices\vaults'
     needs:
+      - job_init_pipeline
       - job_deploy_sa
       - job_deploy_evh
       - job_deploy_law
@@ -1169,6 +1185,7 @@ jobs:
     env:
       namespace: 'Microsoft.DesktopVirtualization\applicationgroups'
     needs:
+      - job_init_pipeline
       - job_deploy_avdhp
     strategy:
       fail-fast: false
@@ -1196,6 +1213,7 @@ jobs:
     env:
       namespace: 'Microsoft.Authorization\roleAssignments'
     needs:
+      - job_init_pipeline
       - job_deploy_msi
     strategy:
       fail-fast: false
@@ -1289,6 +1307,7 @@ jobs:
     env:
       namespace: 'Microsoft.Network\privateDnsZones'
     needs:
+      - job_init_pipeline
       - job_deploy_vnet
     strategy:
       fail-fast: false
@@ -1316,6 +1335,7 @@ jobs:
     env:
       namespace: 'Microsoft.Compute\virtualMachines'
     needs:
+      - job_init_pipeline
       - job_deploy_kv_secrets
       - job_deploy_vnet
       - job_deploy_rsv
