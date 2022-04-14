@@ -64,7 +64,6 @@ This module deploys a key vault and its child resources.
 | :-- | :-- | :-- | :-- |
 | `baseTime` | string | `[utcNow('u')]` | Do not provide a value! This date value is used to generate a SAS token to access the modules. |
 
-
 ### Parameter Usage: `roleAssignments`
 
 Create a role assignment for the given resource. If you want to assign a service principal / managed identity that is created in the same deployment, make sure to also specify the `'principalType'` parameter and set it to `'ServicePrincipal'`. This will ensure the role assignment waits for the principal's propagation in Azure.
@@ -117,7 +116,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
         "defaultAction": "Deny",
         "virtualNetworkRules": [
             {
-                "subnet": "sharedsvcs"
+                "subnetId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001"
             }
         ],
         "ipRules": []
