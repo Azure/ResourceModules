@@ -28,6 +28,9 @@
         },
         "enableBgp": {
             "value": false
+        },
+        "location": {
+            "value": "eastus"
         }
     }
 }
