@@ -35,6 +35,28 @@ env:
   DEPLOYMENT_SP_ID: '${{ secrets.DEPLOYMENT_SP_ID }}'
 
 jobs:
+  #####################
+  #   INIT PIPELINE   #
+  #####################
+  job_init_pipeline:
+    runs-on: ubuntu-20.04
+    name: 'Initialize pipeline'
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: 'Get parameter file paths'
+        id: get-parameter-file-paths
+        uses: ./.github/actions/templates/getParameterFiles
+        with:
+          modulePath: '${{ env.modulePath }}'
+    outputs:
+      parameterFilePaths: ${{ steps.get-parameter-file-paths.outputs.parameterFilePaths }}
+
+  ###########################
+  #   RESOURCE DEPLOYMENT   #
+  ###########################
   job_deploy_rg:
     runs-on: ubuntu-20.04
     name: 'Deploy resource group'
@@ -70,7 +92,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        parameterFilePaths: ${{ fromJSON(needs.job_prepare_pipeline.outputs.parameterFilePaths) }}
+        parameterFilePaths: ${{ fromJSON(needs.job_init_pipeline.outputs.parameterFilePaths) }}
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -99,7 +121,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        parameterFilePaths: ${{ fromJSON(needs.job_prepare_pipeline.outputs.parameterFilePaths) }}
+        parameterFilePaths: ${{ fromJSON(needs.job_init_pipeline.outputs.parameterFilePaths) }}
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -137,7 +159,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        parameterFilePaths: ${{ fromJSON(needs.job_prepare_pipeline.outputs.parameterFilePaths) }}
+        parameterFilePaths: ${{ fromJSON(needs.job_init_pipeline.outputs.parameterFilePaths) }}
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -191,7 +213,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        parameterFilePaths: ${{ fromJSON(needs.job_prepare_pipeline.outputs.parameterFilePaths) }}
+        parameterFilePaths: ${{ fromJSON(needs.job_init_pipeline.outputs.parameterFilePaths) }}
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -351,7 +373,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        parameterFilePaths: ${{ fromJSON(needs.job_prepare_pipeline.outputs.parameterFilePaths) }}
+        parameterFilePaths: ${{ fromJSON(needs.job_init_pipeline.outputs.parameterFilePaths) }}
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -383,7 +405,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        parameterFilePaths: ${{ fromJSON(needs.job_prepare_pipeline.outputs.parameterFilePaths) }}
+        parameterFilePaths: ${{ fromJSON(needs.job_init_pipeline.outputs.parameterFilePaths) }}
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -541,7 +563,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        parameterFilePaths: ${{ fromJSON(needs.job_prepare_pipeline.outputs.parameterFilePaths) }}
+        parameterFilePaths: ${{ fromJSON(needs.job_init_pipeline.outputs.parameterFilePaths) }}
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -568,7 +590,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        parameterFilePaths: ${{ fromJSON(needs.job_prepare_pipeline.outputs.parameterFilePaths) }}
+        parameterFilePaths: ${{ fromJSON(needs.job_init_pipeline.outputs.parameterFilePaths) }}
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -595,7 +617,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        parameterFilePaths: ${{ fromJSON(needs.job_prepare_pipeline.outputs.parameterFilePaths) }}
+        parameterFilePaths: ${{ fromJSON(needs.job_init_pipeline.outputs.parameterFilePaths) }}
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -753,7 +775,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        parameterFilePaths: ${{ fromJSON(needs.job_prepare_pipeline.outputs.parameterFilePaths) }}
+        parameterFilePaths: ${{ fromJSON(needs.job_init_pipeline.outputs.parameterFilePaths) }}
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -782,7 +804,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        parameterFilePaths: ${{ fromJSON(needs.job_prepare_pipeline.outputs.parameterFilePaths) }}
+        parameterFilePaths: ${{ fromJSON(needs.job_init_pipeline.outputs.parameterFilePaths) }}
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -811,7 +833,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        parameterFilePaths: ${{ fromJSON(needs.job_prepare_pipeline.outputs.parameterFilePaths) }}
+        parameterFilePaths: ${{ fromJSON(needs.job_init_pipeline.outputs.parameterFilePaths) }}
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -841,7 +863,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        parameterFilePaths: ${{ fromJSON(needs.job_prepare_pipeline.outputs.parameterFilePaths) }}
+        parameterFilePaths: ${{ fromJSON(needs.job_init_pipeline.outputs.parameterFilePaths) }}
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -1151,7 +1173,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        parameterFilePaths: ${{ fromJSON(needs.job_prepare_pipeline.outputs.parameterFilePaths) }}
+        parameterFilePaths: ${{ fromJSON(needs.job_init_pipeline.outputs.parameterFilePaths) }}
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -1178,7 +1200,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        parameterFilePaths: ${{ fromJSON(needs.job_prepare_pipeline.outputs.parameterFilePaths) }}
+        parameterFilePaths: ${{ fromJSON(needs.job_init_pipeline.outputs.parameterFilePaths) }}
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -1271,7 +1293,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        parameterFilePaths: ${{ fromJSON(needs.job_prepare_pipeline.outputs.parameterFilePaths) }}
+        parameterFilePaths: ${{ fromJSON(needs.job_init_pipeline.outputs.parameterFilePaths) }}
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -1300,7 +1322,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        parameterFilePaths: ${{ fromJSON(needs.job_prepare_pipeline.outputs.parameterFilePaths) }}
+        parameterFilePaths: ${{ fromJSON(needs.job_init_pipeline.outputs.parameterFilePaths) }}
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
