@@ -19,8 +19,7 @@
         },
         "identity": {
             "value": {
-                "type": "SystemAssigned",
-                "userAssignedIdentities": {}
+                "type": "SystemAssigned"
             }
         },
         "computes": {
