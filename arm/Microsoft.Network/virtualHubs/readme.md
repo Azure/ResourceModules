@@ -1,6 +1,6 @@
-# Virtual Hub `[Microsoft.Network/virtualHubs]`
+# Virtual Hubs `[Microsoft.Network/virtualHubs]`
 
-This module deploys a virtual hub.
+This module deploys a Virtual Hub.
 
 ## Navigation
 
