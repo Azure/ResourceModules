@@ -15,7 +15,6 @@ This module deploys a Machine Learning Services Workspace.
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2017-04-01 |
 | `Microsoft.Authorization/roleAssignments` | 2021-04-01-preview |
-| `Microsoft.Resources/deployments` | 2021-04-01 |
 | `Microsoft.Insights/diagnosticSettings` | 2021-05-01-preview |
 | `Microsoft.MachineLearningServices/workspaces` | 2021-04-01 |
 | `Microsoft.MachineLearningServices/workspaces/computes` | 2022-01-01-preview |
@@ -38,7 +37,7 @@ This module deploys a Machine Learning Services Workspace.
 | :-- | :-- | :-- | :-- | :-- |
 | `allowPublicAccessWhenBehindVnet` | bool | `False` |  | The flag to indicate whether to allow public access when behind VNet. |
 | `associatedContainerRegistryResourceId` | string | `''` |  | The resource ID of the associated Container Registry. |
-| `computes` | array | `[]` |  | Computes to create respectively attach to the workspace. |
+| `computes` | _[computes](computes/readme.md)_ array | `[]` |  | Computes to create respectively attach to the workspace. |
 | `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
 | `diagnosticLogCategoriesToEnable` | array | `[AmlComputeClusterEvent, AmlComputeClusterNodeEvent, AmlComputeJobEvent, AmlComputeCpuGpuUtilization, AmlRunStatusChangedEvent]` | `[AmlComputeClusterEvent, AmlComputeClusterNodeEvent, AmlComputeJobEvent, AmlComputeCpuGpuUtilization, AmlRunStatusChangedEvent]` | The name of logs that will be streamed. |
@@ -55,7 +54,6 @@ This module deploys a Machine Learning Services Workspace.
 | `privateEndpoints` | array | `[]` |  | Configuration Details for private endpoints. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
 | `tags` | object | `{object}` |  | Resource tags. |
-
 
 
 ### Parameter Usage: `computes`
@@ -205,3 +203,4 @@ To use Private Endpoint the following dependencies must be deployed:
 - [Privateendpoints/Privatednszonegroups](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-02-01/privateEndpoints/privateDnsZoneGroups)
 - [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)
 - [Workspaces](https://docs.microsoft.com/en-us/azure/templates/Microsoft.MachineLearningServices/2021-04-01/workspaces)
+- [Workspaces/Computes](https://docs.microsoft.com/en-us/azure/templates/Microsoft.MachineLearningServices/2022-01-01-preview/workspaces/computes)

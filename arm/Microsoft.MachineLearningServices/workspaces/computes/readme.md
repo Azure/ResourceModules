@@ -21,24 +21,24 @@ Deploying a compute is not idempotent and will fail in case you try to redeploy 
 **Required parameters**
 | Parameter Name | Type | Allowed Values | Description |
 | :-- | :-- | :-- | :-- |
-| `computeType` | string |  | `[AKS,AmlCompute,ComputeInstance,Databricks,DataFactory,DataLakeAnalytics,HDInsight,Kubernetes,SynapseSpark,VirtualMachine]` | Set the object type. |
+| `computeType` | string | `[AKS, AmlCompute, ComputeInstance, Databricks, DataFactory, DataLakeAnalytics, HDInsight, Kubernetes, SynapseSpark, VirtualMachine]` | Set the object type. |
+| `deployCompute` | bool |  | Flag to specify whether to deploy the compute. Necessary as the compute resource is not idempontent, i.e. a second deployment will fail. Therefore, this flag needs to be set to "false" as long as the compute resource exists. |
 | `machineLearningWorkspaceName` | string |  | Name of the Machine Learning Workspace. |
 | `name` | string |  | Name of the compute. |
 | `sku` | string | `[Basic, Enterprise]` | Specifies the sku, also referred as "edition". |
 
 **Optional parameters**
-| Parameter Name | Type | Default Value | Allowed Values | Description |
-| :-- | :-- | :-- | :-- | :-- |
-| `computeDescription` | string | `''` |  | The description of the Machine Learning compute. |
-| `computeDisableLocalAuth` | bool | `false` |  | Opt-out of local authentication and ensure customers can use only MSI and AAD exclusively for authentication. |
-| `computeLocation` | string | `resourceGroup().location` |  | Location for the underlying compute. |
-| `computeProperties` | object | `{object}` |  | The properties of the compute. Will be ignored in case "computeResourceId" is set. |
-| `computeResourceId` | string | `''` |  | ARM resource id of the underlying compute. |
-| `deployCompute` | bool |  |  | Flag to specify whether to deploy the compute. Necessary as the compute resource is not idempontent, i.e. a second deployment will fail. Therefore, this flag needs to be set to "false" as long as the compute resource exists. |
-| `identity` | object | `{object}` |  | Identity for the resource. |
-| `enableDefaultTelemetry` | bool | `true` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `location` | string | `resourceGroup().location` |  | Specifies the location of the resource. |
-| `tags` | object | `{object}` |  | Contains resource tags defined as key/value pairs. |
+| Parameter Name | Type | Default Value | Description |
+| :-- | :-- | :-- | :-- |
+| `computeDescription` | string | `''` | The description of the Machine Learning compute. |
+| `computeDisableLocalAuth` | bool | `False` | Opt-out of local authentication and ensure customers can use only MSI and AAD exclusively for authentication. |
+| `computeLocation` | string | `[resourceGroup().location]` | Location for the underlying compute. |
+| `computeProperties` | object | `{object}` | The properties of the compute. Will be ignored in case "computeResourceId" is set. |
+| `computeResourceId` | string | `''` | ARM resource id of the underlying compute. |
+| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `identity` | object | `{object}` | Identity for the resource. |
+| `location` | string | `[resourceGroup().location]` | Specifies the location of the resource. |
+| `tags` | object | `{object}` | Contains resource tags defined as key/value pairs. |
 
 
 ### Parameter Usage: `identity`
@@ -91,10 +91,10 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The name of the compute. |
-| `resourceGroupName` | string | The resource ID of the compute. |
-| `resourceId` | string | The resource group the compute was deployed into. |
+| `resourceGroupName` | string | The resource group the compute was deployed into. |
+| `resourceId` | string | The resource ID of the compute. |
 
 
 ## Template references
 
-- ['computes' Documentation](https://docs.microsoft.com/en-us/azure/templates/microsoft.machinelearningservices/workspaces/computes)
+- [Workspaces/Computes](https://docs.microsoft.com/en-us/azure/templates/Microsoft.MachineLearningServices/2022-01-01-preview/workspaces/computes)
