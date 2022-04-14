@@ -27,7 +27,7 @@ When invoked, the script
 
 # How to use it
 
-> **Note:** You'll need to have an active Azure login. If not connected, you can do so via the `Connect-Azccount` cmdlet (from the `Az.Resources` PowerShell module).
+> **Note:** You'll need to have an active Azure login. If not connected, you can do so via the `Connect-AzAccount` cmdlet (from the `Az.Resources` PowerShell module).
 
 > **Note:** The script must be loaded before the function can be invoked
 
