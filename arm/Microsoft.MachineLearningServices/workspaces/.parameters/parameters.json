@@ -17,6 +17,37 @@
         "associatedApplicationInsightsResourceId": {
             "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Insights/components/adp-<<namePrefix>>-az-appi-x-001"
         },
+        "identity": {
+            "value": {
+                "type": "SystemAssigned",
+                "userAssignedIdentities": {}
+            }
+        },
+        "computes": {
+            "value": [
+                {
+                    "name": "DefaultCPU",
+                    "location": "westeurope",
+                    "description": "Default CPU Cluster",
+                    "disableLocalAuth": false,
+                    "deploy": true,
+                    "type": "AmlCompute",
+                    "properties": {
+                        "enableNodePublicIp": true,
+                        "isolatedNetwork": false,
+                        "osType": "Linux",
+                        "remoteLoginPortPublicAccess": "Disabled",
+                        "scaleSettings": {
+                            "maxNodeCount": 3,
+                            "minNodeCount": 0,
+                            "nodeIdleTimeBeforeScaleDown": "PT5M"
+                        },
+                        "vmPriority": "Dedicated",
+                        "vmSize": "STANDARD_DS11_V2"
+                    }
+                }
+            ]
+        },
         "roleAssignments": {
             "value": [
                 {
@@ -41,9 +72,6 @@
         },
         "diagnosticEventHubName": {
             "value": "adp-<<namePrefix>>-az-evh-x-001"
-        },
-        "systemAssignedIdentity": {
-            "value": true
         }
     }
 }

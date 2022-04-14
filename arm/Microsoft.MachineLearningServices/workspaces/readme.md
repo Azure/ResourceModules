@@ -15,8 +15,10 @@ This module deploys a Machine Learning Services Workspace.
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2017-04-01 |
 | `Microsoft.Authorization/roleAssignments` | 2021-04-01-preview |
+| `Microsoft.Resources/deployments` | 2021-04-01 |
 | `Microsoft.Insights/diagnosticSettings` | 2021-05-01-preview |
 | `Microsoft.MachineLearningServices/workspaces` | 2021-04-01 |
+| `Microsoft.MachineLearningServices/workspaces/computes` | 2022-01-01-preview |
 | `Microsoft.Network/privateEndpoints` | 2021-05-01 |
 | `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | 2021-02-01 |
 
@@ -36,6 +38,7 @@ This module deploys a Machine Learning Services Workspace.
 | :-- | :-- | :-- | :-- | :-- |
 | `allowPublicAccessWhenBehindVnet` | bool | `False` |  | The flag to indicate whether to allow public access when behind VNet. |
 | `associatedContainerRegistryResourceId` | string | `''` |  | The resource ID of the associated Container Registry. |
+| `computes` | array | `[]` |  | Computes to create respectively attach to the workspace. |
 | `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
 | `diagnosticLogCategoriesToEnable` | array | `[AmlComputeClusterEvent, AmlComputeClusterNodeEvent, AmlComputeJobEvent, AmlComputeCpuGpuUtilization, AmlRunStatusChangedEvent]` | `[AmlComputeClusterEvent, AmlComputeClusterNodeEvent, AmlComputeJobEvent, AmlComputeCpuGpuUtilization, AmlRunStatusChangedEvent]` | The name of logs that will be streamed. |
@@ -46,13 +49,65 @@ This module deploys a Machine Learning Services Workspace.
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `hbiWorkspace` | bool | `False` |  | The flag to signal HBI data in the workspace and reduce diagnostic data collected by the service. |
+| `identity` | object | `{object}` |  | Identity for the resource. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `'NotSpecified'` | `[CanNotDelete, NotSpecified, ReadOnly]` | Specify the type of lock. |
 | `privateEndpoints` | array | `[]` |  | Configuration Details for private endpoints. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
-| `systemAssignedIdentity` | bool | `False` |  | Enables system assigned managed identity on the resource. |
 | `tags` | object | `{object}` |  | Resource tags. |
 
+
+
+### Parameter Usage: `computes`
+
+Array to specify the compute resources to create respectively attach.
+In case you provide a resource id, it will attach the resource and ignore "properties".
+Deploying a compute is not idempotent and will fail in case you try to redeploy over an existing compute in AML. I.e. for the first run set "deploy" to true, and after successful deployment to false.
+For more information see https://docs.microsoft.com/en-us/azure/templates/microsoft.machinelearningservices/workspaces/computes?tabs=bicep
+
+```json
+"computes": {
+    "value": [
+        // Attach existing resources
+        {
+            "name": "DefaultAKS",
+            "location": "westeurope",
+            "description": "Default AKS Cluster",
+            "disableLocalAuth": false,
+            "resourceId": "someresourceid",
+            "type": "AKS",
+            "deploy": true
+        }
+        // Create new compute resource
+        {
+            "name": "DefaultAKS2",
+            "location": "westeurope",
+            "description": "Default AKS Cluster",
+            "disableLocalAuth": false,
+            "type": "AKS",
+            "deploy": true,
+            "properties": {
+                // See https://docs.microsoft.com/en-us/azure/templates/microsoft.machinelearningservices/workspaces/computes?tabs=bicep#compute for the properties for the difference compute types
+            }
+        }
+    ]
+}
+```
+
+### Parameter Usage: `identity`
+
+Identity object for the resource. Allows system as well as user assigned identities.
+
+```json
+"identity": {
+    "value": {
+        "type": "SystemAssigned,UserAssigned",
+        "userAssignedIdentities": {
+            "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resource-group-name/providers/Microsoft.ManagedIdentity/userAssignedIdentities/firstIdentity": {}
+        }
+    }
+}
+```
 
 ### Parameter Usage: `roleAssignments`
 
