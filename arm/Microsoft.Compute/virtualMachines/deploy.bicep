@@ -5,8 +5,8 @@ param name string = take(toLower(uniqueString(resourceGroup().name)), 10)
 @description('Optional. Specifies whether the computer names should be transformed. The transformation is performed on all computer names. Available transformations are \'none\' (Default), \'uppercase\' and \'lowercase\'.')
 param vmComputerNamesTransformation string = 'none'
 
-@description('Optional. Specifies the size for the VMs')
-param vmSize string = 'Standard_D2s_v3'
+@description('Required. Specifies the size for the VMs')
+param vmSize string
 
 @description('Optional. This property can be used by user in the request to enable or disable the Host Encryption for the virtual machine. This will enable the encryption for all the disks including Resource/Temp disk at host itself. For security reasons, it is recommended to set encryptionAtHost to True. Restrictions: Cannot be enabled if Azure Disk Encryption (guest-VM encryption using bitlocker/DM-Crypt) is enabled on your VMs.')
 param encryptionAtHost bool = true
@@ -206,6 +206,10 @@ param extensionCustomScriptConfig object = {
   fileData: []
 }
 
+@description('Optional. Any object that contains the extension specific protected settings')
+@secure()
+param extensionCustomScriptProtectedSetting object = {}
+
 // Shared parameters
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
@@ -369,7 +373,7 @@ resource virtualMachine 'Microsoft.Compute/virtualMachines@2021-07-01' = {
       vmSize: vmSize
     }
     securityProfile: {
-      encryptionAtHost: encryptionAtHost
+      encryptionAtHost: encryptionAtHost ? encryptionAtHost : null
       securityType: securityType
       uefiSettings: securityType == 'TrustedLaunch' ? {
         secureBootEnabled: secureBootEnabled
@@ -380,9 +384,10 @@ resource virtualMachine 'Microsoft.Compute/virtualMachines@2021-07-01' = {
       imageReference: imageReference
       osDisk: {
         name: '${name}-disk-os-01'
-        createOption: osDisk.createOption
+        createOption: contains(osDisk, 'createOption') ? osDisk.createOption : 'FromImage'
         deleteOption: contains(osDisk, 'deleteOption') ? osDisk.deleteOption : 'Delete'
         diskSizeGB: osDisk.diskSizeGB
+        caching: contains(osDisk, 'caching') ? osDisk.caching : 'ReadOnly'
         managedDisk: {
           storageAccountType: osDisk.managedDisk.storageAccountType
           diskEncryptionSet: contains(osDisk.managedDisk, 'diskEncryptionSet') ? osDisk.managedDisk.diskEncryptionSet : null
@@ -392,9 +397,9 @@ resource virtualMachine 'Microsoft.Compute/virtualMachines@2021-07-01' = {
         lun: index
         name: '${name}-disk-data-${padLeft((index + 1), 2, '0')}'
         diskSizeGB: dataDisk.diskSizeGB
-        createOption: dataDisk.createOption
+        createOption: contains(dataDisk, 'createOption') ? dataDisk.createOption : 'Empty'
         deleteOption: contains(dataDisk, 'deleteOption') ? dataDisk.deleteOption : 'Delete'
-        caching: dataDisk.caching
+        caching: contains(dataDisk, 'caching') ? dataDisk.caching : 'ReadOnly'
         managedDisk: {
           storageAccountType: dataDisk.managedDisk.storageAccountType
           diskEncryptionSet: {
@@ -561,7 +566,7 @@ module vm_customScriptExtension 'extensions/deploy.bicep' = if (extensionCustomS
     settings: {
       fileUris: [for fileData in extensionCustomScriptConfig.fileData: contains(fileData, 'storageAccountId') ? '${fileData.uri}?${listAccountSas(fileData.storageAccountId, '2019-04-01', accountSasProperties).accountSasToken}' : fileData.uri]
     }
-    protectedSettings: contains(extensionCustomScriptConfig, 'protectedSettings') ? extensionCustomScriptConfig.protectedSettings : {}
+    protectedSettings: extensionCustomScriptProtectedSetting
   }
   dependsOn: [
     vm_desiredStateConfigurationExtension

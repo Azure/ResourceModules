@@ -43,7 +43,6 @@
                     "skuName": "BC_Gen5",
                     "skuCapacity": 12,
                     "skuFamily": "Gen5",
-                    "skuSize": "",
                     "maxSizeBytes": 34359738368,
                     "licenseType": "LicenseIncluded",
                     "diagnosticLogsRetentionInDays": 7,

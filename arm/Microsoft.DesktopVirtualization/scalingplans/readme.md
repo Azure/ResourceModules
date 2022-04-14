@@ -1,6 +1,6 @@
-# AVD Scaling Plan `[Microsoft.DesktopVirtualization/scalingPlans]`
+# AVD Scaling Plans `[Microsoft.DesktopVirtualization/scalingPlans]`
 
-This module deploys AVD ScalingPlans.
+This module deploys an AVD Scaling Plan.
 
 ## Navigation
 

@@ -1,6 +1,6 @@
-# Network Firewall Policies `[Microsoft.Network/firewallPolicies]`
+# Firewall Policies `[Microsoft.Network/firewallPolicies]`
 
-This module deploys Network Firewall Policies.
+This module deploys Firewall Policies.
 
 ## Navigation
 
@@ -15,7 +15,6 @@ This module deploys Network Firewall Policies.
 | :-- | :-- |
 | `Microsoft.Network/firewallPolicies` | 2021-05-01 |
 | `Microsoft.Network/firewallPolicies/ruleCollectionGroups` | 2021-05-01 |
-| `Microsoft.Network/firewallPolicies/ruleGroups` | 2020-04-01 |
 
 ## Parameters
 
@@ -36,13 +35,12 @@ This module deploys Network Firewall Policies.
 | `fqdns` | array | `[]` |  | List of FQDNs for the ThreatIntel Allowlist. |
 | `insightsIsEnabled` | bool | `False` |  | A flag to indicate if the insights are enabled on the policy. |
 | `ipAddresses` | array | `[]` |  | List of IP addresses for the ThreatIntel Allowlist. |
-| `keyVaultSecretId` | string | `''` |  | Secret Id of (base-64 encoded unencrypted pfx) Secret or Certificate object stored in KeyVault.	 |
+| `keyVaultSecretId` | string | `''` |  | Secret ID of (base-64 encoded unencrypted pfx) Secret or Certificate object stored in KeyVault.	 |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `mode` | string | `'Off'` | `[Alert, Deny, Off]` | The configuring of intrusion detection. |
 | `privateRanges` | array | `[]` |  | List of private IP addresses/IP address ranges to not be SNAT. |
 | `retentionDays` | int | `365` |  | Number of days the insights should be enabled on the policy. |
 | `ruleCollectionGroups` | _[ruleCollectionGroups](ruleCollectionGroups/readme.md)_ array | `[]` |  | Rule collection groups. |
-| `ruleGroups` | _[ruleGroups](ruleGroups/readme.md)_ array | `[]` |  | Rule groups. |
 | `servers` | array | `[]` |  | List of Custom DNS Servers. |
 | `signatureOverrides` | array | `[]` |  | List of specific signatures states. |
 | `systemAssignedIdentity` | bool | `False` |  | Enables system assigned managed identity on the resource. |
@@ -93,6 +91,5 @@ You can specify multiple user assigned identities to a resource by providing add
 
 ## Template references
 
-- ['firewallPolicies/ruleGroups' Parent Documentation](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/firewallPolicies)
 - [Firewallpolicies](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/firewallPolicies)
 - [Firewallpolicies/Rulecollectiongroups](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/firewallPolicies/ruleCollectionGroups)

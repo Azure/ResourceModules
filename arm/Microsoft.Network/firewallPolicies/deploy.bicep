@@ -72,7 +72,7 @@ param fqdns array = []
 @description('Optional. List of IP addresses for the ThreatIntel Allowlist.')
 param ipAddresses array = []
 
-@description('Optional. Secret Id of (base-64 encoded unencrypted pfx) Secret or Certificate object stored in KeyVault.	')
+@description('Optional. Secret ID of (base-64 encoded unencrypted pfx) Secret or Certificate object stored in KeyVault.	')
 param keyVaultSecretId string = ''
 
 @description('Optional. Name of the CA certificate.')
@@ -83,9 +83,6 @@ param enableDefaultTelemetry bool = true
 
 @description('Optional. Rule collection groups.')
 param ruleCollectionGroups array = []
-
-@description('Optional. Rule groups.')
-param ruleGroups array = []
 
 var identityType = systemAssignedIdentity ? (!empty(userAssignedIdentities) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned') : (!empty(userAssignedIdentities) ? 'UserAssigned' : 'None')
 
@@ -164,17 +161,6 @@ module firewallPolicy_ruleCollectionGroups 'ruleCollectionGroups/deploy.bicep' =
     name: ruleCollectionGroup.name
     priority: ruleCollectionGroup.priority
     ruleCollections: ruleCollectionGroup.ruleCollections
-  }
-}]
-
-@batchSize(1)
-module firewallPolicy_ruleGroups 'ruleGroups/deploy.bicep' = [for (ruleGroup, index) in ruleGroups: {
-  name: '${uniqueString(deployment().name, location)}-firewallPolicy_ruleGroups-${index}'
-  params: {
-    firewallPolicyName: firewallPolicy.name
-    name: ruleGroup.name
-    priority: ruleGroup.priority
-    rules: ruleGroup.rules
   }
 }]
 

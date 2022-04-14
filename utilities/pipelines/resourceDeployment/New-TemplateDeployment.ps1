@@ -154,11 +154,13 @@ function New-DeploymentWithParameterFile {
     }
 
     process {
-        $moduleName = Split-Path -Path (Split-Path $templateFilePath -Parent) -LeafBase
-
+        $deploymentNamePrefix = Split-Path -Path (Split-Path $templateFilePath -Parent) -LeafBase
+        if ([String]::IsNullOrEmpty($deploymentNamePrefix)) {
+            $deploymentNamePrefix = 'templateDeployment-{0}' -f (Split-Path $templateFilePath -LeafBase)
+        }
         # Generate a valid deployment name. Must match ^[-\w\._\(\)]+$
         do {
-            $deploymentName = "$moduleName-$(-join (Get-Date -Format yyyyMMddTHHMMssffffZ)[0..63])"
+            $deploymentName = "$deploymentNamePrefix-$(-join (Get-Date -Format yyyyMMddTHHMMssffffZ)[0..63])"
         } while ($deploymentName -notmatch '^[-\w\._\(\)]+$')
 
         Write-Verbose "Deploying with deployment name [$deploymentName]" -Verbose
@@ -226,11 +228,9 @@ function New-DeploymentWithParameterFile {
                         break
                     }
                     'subscription' {
-                        if ($subscriptionId) {
-                            $Context = Get-AzContext -ListAvailable | Where-Object Subscription -Match $subscriptionId
-                            if ($Context) {
-                                $null = $Context | Set-AzContext
-                            }
+                        if ($subscriptionId -and ($Context = Get-AzContext -ListAvailable | Where-Object { $_.Subscription.Id -eq $subscriptionId })) {
+                            Write-Verbose ('Setting context to subscription [{0}]' -f $Context.Subscription.Name)
+                            $null = $Context | Set-AzContext
                         }
                         if ($PSCmdlet.ShouldProcess('Subscription level deployment', 'Create')) {
                             $res = New-AzSubscriptionDeployment @DeploymentInputs -Location $location
@@ -343,16 +343,21 @@ Optional. Maximum retry limit if the deployment fails. Default is 3.
 Optional. Do not throw an exception if it failed. Still returns the error message though
 
 .EXAMPLE
-New-ModuleDeployment -templateFilePath 'C:/KeyVault/deploy.json' -parameterFilePath 'C:/KeyVault/.parameters/parameters.json' -location 'WestEurope' -resourceGroupName 'aLegendaryRg'
+New-TemplateDeployment -templateFilePath 'C:/KeyVault/deploy.bicep' -parameterFilePath 'C:/KeyVault/.parameters/parameters.json' -location 'WestEurope' -resourceGroupName 'aLegendaryRg'
 
-Deploy the deploy.json of the KeyVault module with the parameter file 'parameters.json' using the resource group 'aLegendaryRg' in location 'WestEurope'
+Deploy the deploy.bicep of the KeyVault module with the parameter file 'parameters.json' using the resource group 'aLegendaryRg' in location 'WestEurope'
 
 .EXAMPLE
-New-ModuleDeployment -templateFilePath 'C:/ResourceGroup/deploy.json' -parameterFilePath 'C:/ResourceGroup/.parameters/parameters.json' -location 'WestEurope'
+New-TemplateDeployment -templateFilePath 'C:/ResourceGroup/deploy.bicep' -location 'WestEurope'
+
+Deploy the deploy.json of the ResourceGroup module in location 'WestEurope'
+
+.EXAMPLE
+New-TemplateDeployment -templateFilePath 'C:/ResourceGroup/deploy.json' -parameterFilePath 'C:/ResourceGroup/.parameters/parameters.json' -location 'WestEurope'
 
 Deploy the deploy.json of the ResourceGroup module with the parameter file 'parameters.json' in location 'WestEurope'
 #>
-function New-ModuleDeployment {
+function New-TemplateDeployment {
 
     [CmdletBinding(SupportsShouldProcess)]
     param (

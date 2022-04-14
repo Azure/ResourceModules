@@ -18,13 +18,14 @@
         },
         "osDisk": {
             "value": {
-                "createOption": "fromImage",
-                "deleteOption": "Delete",
                 "diskSizeGB": "128",
                 "managedDisk": {
                     "storageAccountType": "Premium_LRS"
                 }
             }
+        },
+        "vmSize": {
+            "value": "Standard_B2s"
         },
         "adminUsername": {
             "value": "localAdminUser"
