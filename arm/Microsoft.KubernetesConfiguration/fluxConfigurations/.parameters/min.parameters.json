@@ -16,6 +16,17 @@
         },
         "sourceKind": {
             "value": "GitRepository"
+        },
+        "gitRepository": {
+            "value": {
+                "url": "https://github.com/mspnp/aks-baseline",
+                "timeoutInSeconds": 180,
+                "syncIntervalInSeconds": 300,
+                "repositoryRef": {
+                    "branch": "main"
+                },
+                "sshKnownHosts": ""
+            }
         }
     }
 }
