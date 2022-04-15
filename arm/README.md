@@ -4,6 +4,7 @@ In this section you can find useful information regarding the Modules that are c
 
 | Name | Provider namespace | Resource Type |
 | - | - | - |
+| [Azure Active Directory Domain Services](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.AAD/DomainServices) | `MS.AAD` | [DomainServices](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.AAD/DomainServices) |
 | [Analysis Services Servers](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.AnalysisServices/servers) | `MS.AnalysisServices` | [servers](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.AnalysisServices/servers) |
 | [API Management Services](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.ApiManagement/service) | `MS.ApiManagement` | [service](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.ApiManagement/service) |
 | [Policy Assignments](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Authorization/policyAssignments) | `MS.Authorization` | [policyAssignments](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Authorization/policyAssignments) |
@@ -91,7 +92,6 @@ In this section you can find useful information regarding the Modules that are c
 | [Service Fabric Clusters](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.ServiceFabric/clusters) | `MS.ServiceFabric` | [clusters](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.ServiceFabric/clusters) |
 | [SQL Managed Instances](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Sql/managedInstances) | `MS.Sql` | [managedInstances](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Sql/managedInstances) |
 | [SQL Servers](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Sql/servers) |  | [servers](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Sql/servers) |
-| [Static Web Sites](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Web/staticSites) |  | [staticSites](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Web/staticSites) |
 | [Storage Accounts](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Storage/storageAccounts) | `MS.Storage` | [storageAccounts](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Storage/storageAccounts) |
 | [Azure Synapse Analytics](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Synapse/privateLinkHubs) | `MS.Synapse` | [privateLinkHubs](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Synapse/privateLinkHubs) |
 | [Image Templates](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.VirtualMachineImages/imageTemplates) | `MS.VirtualMachineImages` | [imageTemplates](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.VirtualMachineImages/imageTemplates) |
@@ -99,3 +99,4 @@ In this section you can find useful information regarding the Modules that are c
 | [App Service Environments](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Web/hostingEnvironments) |  | [hostingEnvironments](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Web/hostingEnvironments) |
 | [App Service Plans](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Web/serverfarms) |  | [serverfarms](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Web/serverfarms) |
 | [Web/Function Apps](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Web/sites) |  | [sites](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Web/sites) |
+| [Static Web Sites](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Web/staticSites) |  | [staticSites](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Web/staticSites) |
