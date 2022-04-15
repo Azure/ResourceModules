@@ -45,7 +45,6 @@ For Details see [Prerequisites](https://docs.microsoft.com/en-us/azure/azure-arc
 **Optional parameters**
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
-| `autoUpgradeMinorVersion` | bool | `True` | Flag to note if this extension participates in auto upgrade of minor version, or not. |
 | `configurationProtectedSettings` | object | `{object}` | Configuration settings that are sensitive, as name-value pairs for configuring this extension. |
 | `configurationSettings` | object | `{object}` | Configuration settings, as name-value pairs for configuring this extension. |
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
