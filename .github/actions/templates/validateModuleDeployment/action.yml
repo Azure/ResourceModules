@@ -196,8 +196,10 @@ runs:
         # ----------- #
         # INVOKE TEST #
         # ----------- #
+        templateFilePath = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.templateFilePath }}'
+
         $functionInput = @{
-          templateFilePath     = '${{ inputs.templateFilePath }}'
+          templateFilePath     = $templateFilePath
           location             = '${{ inputs.location }}'
           resourceGroupName    = '${{ inputs.resourceGroupName }}'
           subscriptionId       = '${{ inputs.subscriptionId }}'
@@ -255,8 +257,10 @@ runs:
         . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourceDeployment' 'New-TemplateDeployment.ps1')
         . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'sharedScripts' 'Get-ScopeOfTemplateFile.ps1')
 
+        templateFilePath = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.templateFilePath }}'
+
         $functionInput = @{
-          templateFilePath     = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.templateFilePath }}'
+          templateFilePath     = $templateFilePath
           location             = '${{ inputs.location }}'
           resourceGroupName    = '${{ inputs.resourceGroupName }}'
           subscriptionId       = '${{ inputs.subscriptionId }}'
