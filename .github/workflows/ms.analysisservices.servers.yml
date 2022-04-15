@@ -38,7 +38,7 @@ jobs:
   ###########################
   #   Initialize pipeline   #
   ###########################
-  job_prepare_pipeline:
+  job_initialize_pipeline:
     runs-on: ubuntu-20.04
     name: 'Initialize pipeline'
     steps:
@@ -60,9 +60,9 @@ jobs:
       removeDeployment: ${{ steps.get-workflow-param.outputs.removeDeployment }}
       parameterFilePaths: ${{ steps.get-parameter-file-paths.outputs.parameterFilePaths }}
 
-  ####################
+  #########################
   #   Static validation   #
-  ####################
+  #########################
   job_module_pester_validation:
     runs-on: ubuntu-20.04
     name: 'Static validation'
@@ -76,19 +76,19 @@ jobs:
         with:
           modulePath: '${{ env.modulePath }}'
 
-  ####################
-  # Deployment tests #
-  ####################
+  #############################
+  #   Deployment validation   #
+  #############################
   job_module_deploy_validation:
     runs-on: ubuntu-20.04
-    name: 'Deployment tests'
+    name: 'Deployment validation'
     needs:
-      - job_prepare_pipeline
+      - job_initialize_pipeline
       - job_module_pester_validation
     strategy:
       fail-fast: false
       matrix:
-        parameterFilePaths: ${{ fromJSON(needs.job_prepare_pipeline.outputs.parameterFilePaths) }}
+        parameterFilePaths: ${{ fromJSON(needs.job_initialize_pipeline.outputs.parameterFilePaths) }}
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -107,13 +107,13 @@ jobs:
           resourceGroupName: '${{ env.resourceGroupName }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
-          removeDeployment: '${{ needs.job_prepare_pipeline.outputs.removeDeployment }}'
+          removeDeployment: '${{ needs.job_initialize_pipeline.outputs.removeDeployment }}'
 
   ##################
   #   Publishing   #
   ##################
   job_publish_module:
-    name: 'Publish module'
+    name: 'Publishing'
     if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master' || github.event.inputs.prerelease == 'true'
     runs-on: ubuntu-20.04
     needs:
@@ -127,7 +127,7 @@ jobs:
         uses: ./.github/actions/templates/setEnvironmentVariables
         with:
           variablesPath: ${{ env.variablesPath }}
-      - name: 'Publish module'
+      - name: 'Publishing'
         uses: ./.github/actions/templates/publishModule
         with:
           templateFilePath: '${{ env.modulePath }}/deploy.bicep'

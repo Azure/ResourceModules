@@ -1,5 +1,5 @@
 #########################################################
-## 'Publish module' Composite Action                   ##
+## 'Publishing' Composite Action                   ##
 #########################################################
 ##
 ## This composite action contains the logic to publish a given template to a number of different locations such as:
@@ -27,8 +27,8 @@
 ##   |=======================================================================================================================================================================================================|
 ##
 ##---------------------------------------------##
-name: 'Publish module'
-description: 'Publish module'
+name: 'Publishing'
+description: 'Publishing'
 
 inputs:
   templateFilePath:
