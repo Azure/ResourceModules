@@ -19,14 +19,14 @@ This module deploys a web or function app.
 | `Microsoft.Network/privateEndpoints` | 2021-05-01 |
 | `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | 2021-05-01 |
 | `Microsoft.Web/sites` | 2020-12-01 |
-| `Microsoft.Web/sites/config` | 2021-02-01 |
+| `Microsoft.Web/sites/config` | 2020-12-01 |
 
 ## Parameters
 
 **Required parameters**
 | Parameter Name | Type | Allowed Values | Description |
 | :-- | :-- | :-- | :-- |
-| `kind` | string | `[functionapp, "functionapp,linux", app]` | Type of site to deploy. |
+| `kind` | string | `[functionapp, functionapp,linux, app]` | Type of site to deploy. |
 | `name` | string |  | Name of the site. |
 
 **Optional parameters**
@@ -46,18 +46,16 @@ This module deploys a web or function app.
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of log analytics workspace. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `functionsExtensionVersion` | string | `'~4'` |  | Version if the function extension. |
-| `functionsWorkerRuntime` | string | `'dotnet'` | `[dotnet, node, python, java, powershell, ]` | Runtime of the function worker. |
 | `httpsOnly` | bool | `True` |  | Configures a site to accept only HTTPS requests. Issues redirect for HTTP requests. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all Resources. |
 | `lock` | string | `'NotSpecified'` | `[CanNotDelete, NotSpecified, ReadOnly]` | Specify the type of lock. |
 | `privateEndpoints` | array | `[]` |  | Configuration details for private endpoints. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `serverFarmResourceId` | string | `''` |  | The resource ID of the app service plan to use for the site. |
-| `setAzureWebJobsDashboard` | bool | `contains(kind, 'functionapp') ? true : false` |  | For function apps. If true the app settings "AzureWebJobsDashboard" will be set. If false not. In case you use Application Insights it can make sense to not set it for performance reasons. |
-| `siteConfig` | object | `{object}` |  |  The site config object. |
-| `storageAccountId` | string | `''` |  | Required if functionapp kind. The resource ID of the storage account to manage triggers and logging function executions. |
-| `storageAccountRequired` | bool | `false` |  | Checks if Customer provided storage account is required. |
+| `setAzureWebJobsDashboard` | bool | `[if(contains(parameters('kind'), 'functionapp'), true(), false())]` |  | For function apps. If true the app settings "AzureWebJobsDashboard" will be set. If false not. In case you use Application Insights it can make sense to not set it for performance reasons. |
+| `siteConfig` | object | `{object}` |  | The site config object. |
+| `storageAccountId` | string | `''` |  | Required if app of kind functionapp. Resource ID of the storage account to manage triggers and logging function executions. |
+| `storageAccountRequired` | bool | `False` |  | Checks if Customer provided storage account is required. |
 | `systemAssignedIdentity` | bool | `False` |  | Enables system assigned managed identity on the resource. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
 | `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. |
@@ -67,7 +65,7 @@ This module deploys a web or function app.
 ### Parameter Usage: `appSettingsKeyValuePairs`
 
 AzureWebJobsStorage, AzureWebJobsDashboard, APPINSIGHTS_INSTRUMENTATIONKEY and APPLICATIONINSIGHTS_CONNECTION_STRING are set separately (check parameters storageAccountId, setAzureWebJobsDashboard, appInsightId).
-For all other app settings key value pairs use this object.
+For all other app settings key-value pairs use this object.
 
 ```json
 "appSettingsKeyValuePairs": {
@@ -212,7 +210,6 @@ You can specify multiple user assigned identities to a resource by providing add
 ## Template references
 
 - ['sites/config' Parent Documentation](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Web/sites)
-- [Components](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2020-02-02/components)
 - [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings)
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
 - [Privateendpoints](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/privateEndpoints)

@@ -1,4 +1,4 @@
-# Web Site Config `[Microsoft.Web/sites/config]`
+# Site Config `[Microsoft.Web/sites/config-appsettings]`
 
 This module deploys the app settings.
 
@@ -13,7 +13,7 @@ This module deploys the app settings.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Web/sites/config` | 2021-02-01 |
+| `Microsoft.Web/sites/config` | 2020-12-01 |
 
 ## Parameters
 
@@ -21,22 +21,22 @@ This module deploys the app settings.
 | Parameter Name | Type | Allowed Values | Description |
 | :-- | :-- | :-- | :-- |
 | `appName` | string |  | Name of the site parent resource. |
-| `kind` | string | `[functionapp, "functionapp,linux", app]` | Type of site to deploy. |
+| `kind` | string | `[functionapp, functionapp,linux, app]` | Type of site to deploy. |
 
 **Optional parameters**
-| Parameter Name | Type | Default Value | Allowed Values | Description |
-| :-- | :-- | :-- | :-- | :-- |
-| `appSettingsKeyValuePairs` | object | `{object}` |  | The app settings key value pairs except for AzureWebJobsStorage, AzureWebJobsDashboard, APPINSIGHTS_INSTRUMENTATIONKEY and APPLICATIONINSIGHTS_CONNECTION_STRING. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `appInsightId` | string | `''` |  | Resource ID of the app insight to leverage for this resource. |
-| `setAzureWebJobsDashboard` | bool | `contains(kind, 'functionapp') ? true : false` |  | For function apps. If true the app settings "AzureWebJobsDashboard" will be set. If false not. In case you use Application Insights it can make sense to not set it for performance reasons. |
-| `storageAccountId` | string | `''` |  | Required if app of kind functionapp. Resource ID of the storage account to manage triggers and logging function executions. |
+| Parameter Name | Type | Default Value | Description |
+| :-- | :-- | :-- | :-- |
+| `appInsightId` | string | `''` | Resource ID of the app insight to leverage for this resource. |
+| `appSettingsKeyValuePairs` | object | `{object}` | The app settings key value pairs except for AzureWebJobsStorage, AzureWebJobsDashboard, APPINSIGHTS_INSTRUMENTATIONKEY and APPLICATIONINSIGHTS_CONNECTION_STRING. |
+| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `setAzureWebJobsDashboard` | bool | `[if(contains(parameters('kind'), 'functionapp'), true(), false())]` | For function apps. If true the app settings "AzureWebJobsDashboard" will be set. If false not. In case you use Application Insights it can make sense to not set it for performance reasons. |
+| `storageAccountId` | string | `''` | Required if app of kind functionapp. Resource ID of the storage account to manage triggers and logging function executions. |
 
 
 ### Parameter Usage: `appSettingsKeyValuePairs`
 
 AzureWebJobsStorage, AzureWebJobsDashboard, APPINSIGHTS_INSTRUMENTATIONKEY and APPLICATIONINSIGHTS_CONNECTION_STRING are set separately (check parameters storageAccountId, setAzureWebJobsDashboard, appInsightId).
-For all other app settings key value pairs use this object.
+For all other app settings key-value pairs use this object.
 
 ```json
 "appSettingsKeyValuePairs": {
@@ -63,4 +63,5 @@ For all other app settings key value pairs use this object.
 
 ## Template references
 
+- ['sites/config' Parent Documentation](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Web/sites)
 - ['config-appsettings' Documentation](https://docs.microsoft.com/en-us/azure/templates/microsoft.web/sites/config-appsettings)

@@ -1,4 +1,4 @@
-# Web Site Config `[Microsoft.Web/sites/config]`
+# Site Config `[Microsoft.Web/sites/config-authsettingsv2]`
 
 This module deploys the auth settings v2.
 
@@ -13,7 +13,7 @@ This module deploys the auth settings v2.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Web/sites/config` | 2021-02-01 |
+| `Microsoft.Web/sites/config` | 2020-12-01 |
 
 ## Parameters
 
@@ -21,13 +21,13 @@ This module deploys the auth settings v2.
 | Parameter Name | Type | Allowed Values | Description |
 | :-- | :-- | :-- | :-- |
 | `appName` | string |  | Name of the site parent resource. |
-| `authSettingV2Configuration` | object |  |  | The auth settings V2 configuration. |
-| `kind` | string | `[functionapp, "functionapp,linux", app]` | Type of site to deploy. |
+| `authSettingV2Configuration` | object |  | The auth settings V2 configuration. |
+| `kind` | string | `[functionapp, functionapp,linux, app]` | Type of site to deploy. |
 
 **Optional parameters**
-| Parameter Name | Type | Default Value | Allowed Values | Description |
-| :-- | :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| Parameter Name | Type | Default Value | Description |
+| :-- | :-- | :-- | :-- |
+| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 
 
 ### Parameter Usage: `authSettingV2Configuration`
@@ -52,4 +52,5 @@ The auth settings V2 configuration.
 
 ## Template references
 
+- ['sites/config' Parent Documentation](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Web/sites)
 - ['config-authsettings v2' Documentation](https://docs.microsoft.com/en-us/azure/templates/microsoft.web/sites/config-authsettingsv2)
