@@ -19,9 +19,6 @@ param location string = resourceGroup().location
 ])
 param sku string
 
-@description('Optional. Identity for the resource.')
-param identity object = {}
-
 @description('Optional. Contains resource tags defined as key/value pairs.')
 param tags object = {}
 
@@ -37,7 +34,7 @@ param computeDescription string = ''
 @description('Optional. Opt-out of local authentication and ensure customers can use only MSI and AAD exclusively for authentication.')
 param disableLocalAuth bool = false
 
-@description('Optional. ARM resource id of the underlying compute.')
+@description('Optional. ARM resource ID of the underlying compute.')
 param resourceId string = ''
 
 @description('Required. Set the object type.')
@@ -60,6 +57,23 @@ param properties object = {}
 
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
+
+// Identity
+@description('Optional. Enables system assigned managed identity on the resource.')
+param systemAssignedIdentity bool = false
+
+@description('Optional. The ID(s) to assign to the resource.')
+param userAssignedIdentities object = {}
+
+// ================//
+// Variables       //
+// ================//
+var identityType = systemAssignedIdentity ? (!empty(userAssignedIdentities) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned') : (!empty(userAssignedIdentities) ? 'UserAssigned' : 'None')
+
+var identity = identityType != 'None' ? {
+  type: identityType
+  userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : any(null)
+} : any(null)
 
 // ============================= //
 // Existing resources references //

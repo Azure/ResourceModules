@@ -31,30 +31,15 @@ Deploying a compute is not idempotent and will fail in case you try to redeploy 
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `computeDescription` | string | `''` | The description of the Machine Learning compute. |
-| `disableLocalAuth` | bool | `False` | Opt-out of local authentication and ensure customers can use only MSI and AAD exclusively for authentication. |
 | `computeLocation` | string | `[resourceGroup().location]` | Location for the underlying compute. |
+| `disableLocalAuth` | bool | `False` | Opt-out of local authentication and ensure customers can use only MSI and AAD exclusively for authentication. |
+| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `location` | string | `[resourceGroup().location]` | Specifies the location of the resource. |
 | `properties` | object | `{object}` | The properties of the compute. Will be ignored in case "resourceId" is set. |
 | `resourceId` | string | `''` | ARM resource ID of the underlying compute. |
-| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `identity` | object | `{object}` | Identity for the resource. |
-| `location` | string | `[resourceGroup().location]` | Specifies the location of the resource. |
-| `tags` | object | `{object}` | Contains resource tags defined as key-value pairs. |
-
-
-### Parameter Usage: `identity`
-
-Identity object for the resource. Allows system as well as user assigned identities.
-
-```json
-"identity": {
-    "value": {
-        "type": "SystemAssigned,UserAssigned",
-        "userAssignedIdentities": {
-            "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resource-group-name/providers/Microsoft.ManagedIdentity/userAssignedIdentities/firstIdentity": {}
-        }
-    }
-}
-```
+| `systemAssignedIdentity` | bool | `False` | Enables system assigned managed identity on the resource. |
+| `tags` | object | `{object}` | Contains resource tags defined as key/value pairs. |
+| `userAssignedIdentities` | object | `{object}` | The ID(s) to assign to the resource. |
 
 ### Parameter Usage: `properties`
 
@@ -84,6 +69,19 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
         "Role": "DeploymentValidation"
     }
 }
+```
+
+### Parameter Usage: `userAssignedIdentities`
+
+You can specify multiple user assigned identities to a resource by providing additional resource IDs using the following format:
+
+```json
+"userAssignedIdentities": {
+    "value": {
+        "/subscriptions/12345678-1234-1234-1234-123456789012/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001": {},
+        "/subscriptions/12345678-1234-1234-1234-123456789012/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002": {}
+    }
+},
 ```
 
 ## Outputs

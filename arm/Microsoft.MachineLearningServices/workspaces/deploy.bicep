@@ -34,9 +34,6 @@ param associatedContainerRegistryResourceId string = ''
 @description('Optional. Specify the type of lock.')
 param lock string = 'NotSpecified'
 
-@description('Optional. Identity for the resource.')
-param identity object = {}
-
 @description('Optional. The flag to signal HBI data in the workspace and reduce diagnostic data collected by the service.')
 param hbiWorkspace bool = false
 
@@ -57,6 +54,13 @@ param tags object = {}
 
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
+
+// Identity
+@description('Optional. Enables system assigned managed identity on the resource.')
+param systemAssignedIdentity bool = false
+
+@description('Optional. The ID(s) to assign to the resource.')
+param userAssignedIdentities object = {}
 
 // Diagnostic Settings
 @description('Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.')
@@ -106,6 +110,13 @@ param diagnosticSettingsName string = '${name}-diagnosticSettings'
 // ================//
 // Variables       //
 // ================//
+var identityType = systemAssignedIdentity ? (!empty(userAssignedIdentities) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned') : (!empty(userAssignedIdentities) ? 'UserAssigned' : 'None')
+
+var identity = identityType != 'None' ? {
+  type: identityType
+  userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : any(null)
+} : any(null)
+
 var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
   category: category
   enabled: true
@@ -167,7 +178,8 @@ module workspace_computes 'computes/deploy.bicep' = [for compute in computes: {
     name: compute.name
     location: location
     sku: sku
-    identity: identity
+    systemAssignedIdentity: systemAssignedIdentity
+    userAssignedIdentities: userAssignedIdentities
     tags: tags
     deployCompute: compute.deploy
     computeLocation: compute.location

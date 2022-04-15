@@ -48,12 +48,13 @@ This module deploys a Machine Learning Services Workspace.
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `hbiWorkspace` | bool | `False` |  | The flag to signal HBI data in the workspace and reduce diagnostic data collected by the service. |
-| `identity` | object | `{object}` |  | Identity for the resource. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `'NotSpecified'` | `[CanNotDelete, NotSpecified, ReadOnly]` | Specify the type of lock. |
 | `privateEndpoints` | array | `[]` |  | Configuration Details for private endpoints. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
+| `systemAssignedIdentity` | bool | `False` |  | Enables system assigned managed identity on the resource. |
 | `tags` | object | `{object}` |  | Resource tags. |
+| `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. |
 
 
 ### Parameter Usage: `computes`
@@ -89,21 +90,6 @@ For more information see https://docs.microsoft.com/en-us/azure/templates/micros
             }
         }
     ]
-}
-```
-
-### Parameter Usage: `identity`
-
-Identity object for the resource. Allows system as well as user assigned identities.
-
-```json
-"identity": {
-    "value": {
-        "type": "SystemAssigned,UserAssigned",
-        "userAssignedIdentities": {
-            "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/resource-group-name/providers/Microsoft.ManagedIdentity/userAssignedIdentities/firstIdentity": {}
-        }
-    }
 }
 ```
 
@@ -184,6 +170,19 @@ To use Private Endpoint the following dependencies must be deployed:
         }
     ]
 }
+```
+
+### Parameter Usage: `userAssignedIdentities`
+
+You can specify multiple user assigned identities to a resource by providing additional resource IDs using the following format:
+
+```json
+"userAssignedIdentities": {
+    "value": {
+        "/subscriptions/12345678-1234-1234-1234-123456789012/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001": {},
+        "/subscriptions/12345678-1234-1234-1234-123456789012/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002": {}
+    }
+},
 ```
 
 ## Outputs
