@@ -43,7 +43,7 @@ param authorizationRules array = [
 @description('Optional. Configuration Details for private endpoints.For security reasons, it is recommended to use private endpoints whenever possible.')
 param privateEndpoints array = []
 
-@description('Optional. Service endpoint object information')
+@description('Optional. Networks ACLs, this value contains IPs to whitelist and/or Subnet information. For security reasons, it is recommended to set the DefaultAction Deny')
 param networkAcls object = {}
 
 @description('Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.')
@@ -128,12 +128,6 @@ var uniqueEventHubNamespaceUntrim = uniqueString('EventHub Namespace${baseTime}'
 var uniqueEventHubNamespace = length(uniqueEventHubNamespaceUntrim) > maxNameLength ? substring(uniqueEventHubNamespaceUntrim, 0, maxNameLength) : uniqueEventHubNamespaceUntrim
 var name_var = empty(name) ? uniqueEventHubNamespace : name
 var maximumThroughputUnits_var = !isAutoInflateEnabled ? 0 : maximumThroughputUnits
-var networkAcls_var = {
-  bypass: !empty(networkAcls) ? networkAcls.bypass : null
-  defaultAction: !empty(networkAcls) ? networkAcls.defaultAction : null
-  virtualNetworkRules: (!empty(networkAcls) && contains(networkAcls, 'virtualNetworkRules')) ? networkAcls.virtualNetworkRules : []
-  ipRules: (!empty(networkAcls) && contains(networkAcls, 'ipRules')) ? networkAcls.ipRules : []
-}
 
 @description('Optional. The name of the diagnostic setting, if deployed.')
 param diagnosticSettingsName string = '${name}-diagnosticSettings'
@@ -190,7 +184,12 @@ resource eventHubNamespace 'Microsoft.EventHub/namespaces@2021-06-01-preview' = 
     zoneRedundant: zoneRedundant
     isAutoInflateEnabled: isAutoInflateEnabled
     maximumThroughputUnits: maximumThroughputUnits_var
-    networkAcls: !empty(networkAcls) ? networkAcls_var : null
+    networkAcls: !empty(networkAcls) ? {
+      bypass: !empty(networkAcls) ? networkAcls.bypass : null
+      defaultAction: !empty(networkAcls) ? networkAcls.defaultAction : null
+      virtualNetworkRules: (!empty(networkAcls) && contains(networkAcls, 'virtualNetworkRules')) ? networkAcls.virtualNetworkRules : []
+      ipRules: (!empty(networkAcls) && contains(networkAcls, 'ipRules')) ? networkAcls.ipRules : []
+    } : null
   }
 }
 
