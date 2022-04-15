@@ -6,6 +6,7 @@ param (
         })
 )
 
+$script:RepoRoot = Split-Path (Split-Path $PSScriptRoot -Parent) -Parent
 $script:Settings = Get-Content -Path (Join-Path $PSScriptRoot '..\..\settings.json') | ConvertFrom-Json
 $script:RGdeployment = 'https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#'
 $script:Subscriptiondeployment = 'https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#'
@@ -14,6 +15,7 @@ $script:Tenantdeployment = 'https://schema.management.azure.com/schemas/2019-08-
 $script:moduleFolderPaths = $moduleFolderPaths
 $script:moduleFolderPathsFiltered = $moduleFolderPaths | Where-Object {
     (Split-Path $_ -Leaf) -notin @( 'AzureNetappFiles', 'TrafficManager', 'PrivateDnsZones', 'ManagementGroups') }
+$script:convertedTemplates = @{}
 
 # Import any helper function used in this test script
 Import-Module (Join-Path $PSScriptRoot 'shared\helper.psm1')
@@ -109,18 +111,27 @@ Describe 'Readme tests' -Tag Readme {
         $readmeFolderTestCases = [System.Collections.ArrayList] @()
         foreach ($moduleFolderPath in $moduleFolderPaths) {
 
-            if (Test-Path (Join-Path $moduleFolderPath 'deploy.bicep')) {
-                $templateContent = az bicep build --file (Join-Path $moduleFolderPath 'deploy.bicep') --stdout | ConvertFrom-Json -AsHashtable
-            } elseif (Test-Path (Join-Path $moduleFolderPath 'deploy.json')) {
-                $templateContent = Get-Content (Join-Path $moduleFolderPath 'deploy.json') -Raw | ConvertFrom-Json -AsHashtable
+            if (-not ($convertedTemplates.Keys -contains (Split-Path $moduleFolderPath -Leaf))) {
+                if (Test-Path (Join-Path $moduleFolderPath 'deploy.bicep')) {
+                    $templateFilePath = Join-Path $moduleFolderPath 'deploy.bicep'
+                    $templateContent = az bicep build --file $templateFilePath --stdout | ConvertFrom-Json -AsHashtable
+                } elseif (Test-Path (Join-Path $moduleFolderPath 'deploy.json')) {
+                    $templateFilePath = Join-Path $moduleFolderPath 'deploy.json'
+                    $templateContent = Get-Content $templateFilePath -Raw | ConvertFrom-Json -AsHashtable
+                } else {
+                    throw "No template file found in folder [$moduleFolderPath]"
+                }
+                $convertedTemplates[(Split-Path $moduleFolderPath -Leaf)] = $templateContent
             } else {
-                throw "No template file found in folder [$moduleFolderPath]"
+                $templateContent = $convertedTemplates[(Split-Path $moduleFolderPath -Leaf)]
             }
 
             $readmeFolderTestCases += @{
                 moduleFolderName = $moduleFolderPath.Replace('\', '/').Split('/arm/')[1]
                 moduleFolderPath = $moduleFolderPath
                 templateContent  = $templateContent
+                templateFilePath = $templateFilePath
+                readMeFilePath   = Join-Path -Path $moduleFolderPath 'readme.md'
                 readMeContent    = Get-Content (Join-Path -Path $moduleFolderPath 'readme.md')
             }
         }
@@ -405,6 +416,29 @@ Describe 'Readme tests' -Tag Readme {
             ($ReadmeHTML[$StartIndex].Contains('href')) | Should -Be $true
         }
 
+        It '[<moduleFolderName>] Set-ModuleReadMe script should not apply any updates' -TestCases $readmeFolderTestCases {
+            param(
+                [string] $moduleFolderName,
+                [string] $templateFilePath,
+                [hashtable] $templateContent,
+                [string] $readMeFilePath
+            )
+
+            # Get current hash
+            $fileHashBefore = (Get-FileHash $readMeFilePath).Hash
+
+            # Load function
+            . (Join-Path $repoRoot 'utilities' 'tools' 'Set-ModuleReadMe.ps1')
+
+            # Apply update with already compiled template content
+            Set-ModuleReadMe -TemplateFilePath $templateFilePath -TemplateFileContent $templateContent
+
+            # Get hash after 'update'
+            $fileHashAfter = (Get-FileHash $readMeFilePath).Hash
+
+            # Compare
+            $fileHashBefore -eq $fileHashAfter | Should -Be $true -Because 'The file hashes before and after applying the Set-ModuleReadMe function should be identical'
+        }
     }
 }
 
@@ -416,12 +450,19 @@ Describe 'Deployment template tests' -Tag Template {
         $deploymentFolderTestCasesException = [System.Collections.ArrayList] @()
         foreach ($moduleFolderPath in $moduleFolderPaths) {
 
-            if (Test-Path (Join-Path $moduleFolderPath 'deploy.bicep')) {
-                $templateContent = az bicep build --file (Join-Path $moduleFolderPath 'deploy.bicep') --stdout | ConvertFrom-Json -AsHashtable
-            } elseif (Test-Path (Join-Path $moduleFolderPath 'deploy.json')) {
-                $templateContent = Get-Content (Join-Path $moduleFolderPath 'deploy.json') -Raw | ConvertFrom-Json -AsHashtable
+            if (-not ($convertedTemplates.Keys -contains (Split-Path $moduleFolderPath -Leaf))) {
+                if (Test-Path (Join-Path $moduleFolderPath 'deploy.bicep')) {
+                    $templateFilePath = Join-Path $moduleFolderPath 'deploy.bicep'
+                    $templateContent = az bicep build --file $templateFilePath --stdout | ConvertFrom-Json -AsHashtable
+                } elseif (Test-Path (Join-Path $moduleFolderPath 'deploy.json')) {
+                    $templateFilePath = Join-Path $moduleFolderPath 'deploy.json'
+                    $templateContent = Get-Content $templateFilePath -Raw | ConvertFrom-Json -AsHashtable
+                } else {
+                    throw "No template file found in folder [$moduleFolderPath]"
+                }
+                $convertedTemplates[(Split-Path $moduleFolderPath -Leaf)] = $templateContent
             } else {
-                throw "No template file found in folder [$moduleFolderPath]"
+                $templateContent = $convertedTemplates[(Split-Path $moduleFolderPath -Leaf)]
             }
 
             # Parameter file test cases
@@ -794,12 +835,19 @@ Describe "API version tests [All apiVersions in the template should be 'recent']
 
         $moduleFolderName = $moduleFolderPath.Replace('\', '/').Split('/arm/')[1]
 
-        if (Test-Path (Join-Path $moduleFolderPath 'deploy.bicep')) {
-            $templateContent = az bicep build --file (Join-Path $moduleFolderPath 'deploy.bicep') --stdout | ConvertFrom-Json -AsHashtable
-        } elseif (Test-Path (Join-Path $moduleFolderPath 'deploy.json')) {
-            $templateContent = Get-Content (Join-Path $moduleFolderPath 'deploy.json') -Raw | ConvertFrom-Json -AsHashtable
+        if (-not ($convertedTemplates.Keys -contains (Split-Path $moduleFolderPath -Leaf))) {
+            if (Test-Path (Join-Path $moduleFolderPath 'deploy.bicep')) {
+                $templateFilePath = Join-Path $moduleFolderPath 'deploy.bicep'
+                $templateContent = az bicep build --file $templateFilePath --stdout | ConvertFrom-Json -AsHashtable
+            } elseif (Test-Path (Join-Path $moduleFolderPath 'deploy.json')) {
+                $templateFilePath = Join-Path $moduleFolderPath 'deploy.json'
+                $templateContent = Get-Content $templateFilePath -Raw | ConvertFrom-Json -AsHashtable
+            } else {
+                throw "No template file found in folder [$moduleFolderPath]"
+            }
+            $convertedTemplates[(Split-Path $moduleFolderPath -Leaf)] = $templateContent
         } else {
-            throw "No template file found in folder [$moduleFolderPath]"
+            $templateContent = $convertedTemplates[(Split-Path $moduleFolderPath -Leaf)]
         }
 
         $nestedResources = Get-NestedResourceList -TemplateContent $templateContent | Where-Object {
