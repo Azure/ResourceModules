@@ -11,6 +11,7 @@ This section provides an overview of the design and principles the CARML Continu
     - [Deployment validation](./The%20CI%20environment%20-%20Deployment%20validation)
     - [Publishing](./The%20CI%20environment%20-%20Publishing)
     - [Token replacement](./The%20CI%20environment%20-%20Token%20replacement)
+    - [GitHub ReadMe module table update](./The%20CI%20environment%20-%20GitHub%20ReadMe%20module%20table%20update)
 - [Pipeline usage](./The%20CI%20environment%20-%20Pipeline%20usage)
 - [Bicep configuration file](./The%20CI%20environment%20-%20Bicep%20configuration%20file.md)
 
