@@ -4,7 +4,7 @@ This section provides an overview of the principles the static validation is bui
 - [API version validation](#api-version-validation)
 - [Verify the static validation of your module locally](#verify-the-static-validation-of-your-module-locally)
 
-<img src=".\media\CIEnvironment\staticValidationStep.png" alt="Static Validation Step" height="300">
+<img src="./media/CIEnvironment/staticValidationStep.png" alt="Static Validation Step" height="300">
 
 ---
 
@@ -33,7 +33,7 @@ The following activities are run executing the `arm/.global/global.module.tests.
 
 ## Output example
 
-<img src=".\media\CIEnvironment\staticValidationOutput.png" alt="Static Validation Output" height="400">
+<img src="./media/CIEnvironment/staticValidationOutput.png" alt="Static Validation Output" height="400">
 
 ## Additional resources
 

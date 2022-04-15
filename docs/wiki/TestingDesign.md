@@ -106,7 +106,7 @@ Alternatively, you can leverage the token replacement utility we integrate by de
 
 Some of the resources integrated with the full dependency pipeline are disabled by default as they require more time to be deployed or because they may cause issues when running in parallel with some of our module validation pipelines. Those are the sqlmi dependencies and the resources needed to build and distribute a VHD in a storage account. We suggest to enable them explicitly in case you need to onboard the modules requiring them, i.e. respectively [SQL managed instance], [compute disks] and [compute images].
 
-  <img src="media/dependencyPipeline.png" alt="Dependency Pipeline" height="200">
+  <img src="./media/dependencyPipeline.png" alt="Dependency Pipeline" height="200">
 
 
 
