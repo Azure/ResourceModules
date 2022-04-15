@@ -31,7 +31,7 @@ variables:
 
 stages:
   - stage: Validation
-    displayName: Pester tests
+    displayName: Static validation
     jobs:
       - template: /.azuredevops/pipelineTemplates/jobs.validateModulePester.yml
         parameters:

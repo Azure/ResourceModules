@@ -35,9 +35,9 @@ env:
   DEPLOYMENT_SP_ID: '${{ secrets.DEPLOYMENT_SP_ID }}'
 
 jobs:
-  ############################
-  #   PREPARE PIPELINE   #
-  ############################
+  ###########################
+  #   Initialize pipeline   #
+  ###########################
   job_prepare_pipeline:
     runs-on: ubuntu-20.04
     name: 'Initialize pipeline'
@@ -61,11 +61,11 @@ jobs:
       parameterFilePaths: ${{ steps.get-parameter-file-paths.outputs.parameterFilePaths }}
 
   ####################
-  #   Pester Tests   #
+  #   Static validation   #
   ####################
   job_module_pester_validation:
     runs-on: ubuntu-20.04
-    name: 'Pester tests'
+    name: 'Static validation'
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
