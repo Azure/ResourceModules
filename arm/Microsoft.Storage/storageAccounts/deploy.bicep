@@ -151,10 +151,6 @@ var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
   }
 }]
 
-var virtualNetworkRules = [for virtualNetworkRule in networkAcls.virtualNetworkRules: {
-  id: virtualNetworkRule.subnetId
-}]
-
 var maxNameLength = 24
 var uniqueStorageNameUntrim = '${uniqueString('Storage Account${basetime}')}'
 var uniqueStorageName = length(uniqueStorageNameUntrim) > maxNameLength ? substring(uniqueStorageNameUntrim, 0, maxNameLength) : uniqueStorageNameUntrim
@@ -209,8 +205,8 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-08-01' = {
     networkAcls: !empty(networkAcls) ? {
       bypass: !empty(networkAcls) ? networkAcls.bypass : null
       defaultAction: !empty(networkAcls) ? networkAcls.defaultAction : null
-      virtualNetworkRules: !empty(networkAcls) ? virtualNetworkRules : null
-      ipRules: !empty(networkAcls) ? (length(networkAcls.ipRules) != 0 ? networkAcls.ipRules : null) : null
+      virtualNetworkRules: (!empty(networkAcls) && contains(networkAcls, 'virtualNetworkRules')) ? networkAcls.virtualNetworkRules : []
+      ipRules: (!empty(networkAcls) && contains(networkAcls, 'ipRules')) ? networkAcls.ipRules : []
     } : null
     allowBlobPublicAccess: allowBlobPublicAccess
     publicNetworkAccess: publicNetworkAccess

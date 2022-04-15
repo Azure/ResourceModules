@@ -128,14 +128,11 @@ var uniqueEventHubNamespaceUntrim = uniqueString('EventHub Namespace${baseTime}'
 var uniqueEventHubNamespace = length(uniqueEventHubNamespaceUntrim) > maxNameLength ? substring(uniqueEventHubNamespaceUntrim, 0, maxNameLength) : uniqueEventHubNamespaceUntrim
 var name_var = empty(name) ? uniqueEventHubNamespace : name
 var maximumThroughputUnits_var = !isAutoInflateEnabled ? 0 : maximumThroughputUnits
-var virtualNetworkRules = [for virtualNetworkRule in networkAcls.virtualNetworkRules: {
-  id: virtualNetworkRule.subnetId
-}]
 var networkAcls_var = {
   bypass: !empty(networkAcls) ? networkAcls.bypass : null
   defaultAction: !empty(networkAcls) ? networkAcls.defaultAction : null
-  virtualNetworkRules: !empty(networkAcls) ? virtualNetworkRules : null
-  ipRules: !empty(networkAcls) ? (length(networkAcls.ipRules) > 0 ? networkAcls.ipRules : null) : null
+  virtualNetworkRules: (!empty(networkAcls) && contains(networkAcls, 'virtualNetworkRules')) ? networkAcls.virtualNetworkRules : []
+  ipRules: (!empty(networkAcls) && contains(networkAcls, 'ipRules')) ? networkAcls.ipRules : []
 }
 
 @description('Optional. The name of the diagnostic setting, if deployed.')
