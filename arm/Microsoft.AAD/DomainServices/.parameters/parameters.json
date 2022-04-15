@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "domainName": {
-            "value": "carml.onmicrosoft.com"
+            "value": "<<namePrefix>>.onmicrosoft.com"
         },
         "sku": {
             "value": "standard"
@@ -33,7 +33,7 @@
             }
         },
         "additionalRecipients": {
-            "value": "CARML@noreply.github.com"
+            "value": "<<namePrefix>>@noreply.github.com"
         },
         "diagnosticWorkspaceId": {
             "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001"
