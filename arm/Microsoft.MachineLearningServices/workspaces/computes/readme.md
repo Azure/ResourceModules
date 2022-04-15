@@ -38,8 +38,9 @@ Deploying a compute is not idempotent and will fail in case you try to redeploy 
 | `properties` | object | `{object}` | The properties of the compute. Will be ignored in case "resourceId" is set. |
 | `resourceId` | string | `''` | ARM resource ID of the underlying compute. |
 | `systemAssignedIdentity` | bool | `False` | Enables system assigned managed identity on the resource. |
-| `tags` | object | `{object}` | Contains resource tags defined as key/value pairs. |
+| `tags` | object | `{object}` | Contains resource tags defined as key-value pairs. |
 | `userAssignedIdentities` | object | `{object}` | The ID(s) to assign to the resource. |
+
 
 ### Parameter Usage: `properties`
 

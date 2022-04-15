@@ -19,7 +19,7 @@ param location string = resourceGroup().location
 ])
 param sku string
 
-@description('Optional. Contains resource tags defined as key/value pairs.')
+@description('Optional. Contains resource tags defined as key-value pairs.')
 param tags object = {}
 
 @description('Required. Flag to specify whether to deploy the compute. Necessary as the compute resource is not idempontent, i.e. a second deployment will fail. Therefore, this flag needs to be set to "false" as long as the compute resource exists.')
