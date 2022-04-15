@@ -127,7 +127,7 @@ param diagnosticMetricsToEnable array = [
 ]
 
 var maxNameLength = 50
-var uniqueEventHubNamespaceUntrim = uniqueString('EventHub Namespace${baseTime}')
+var uniqueEventHubNamespaceUntrim = 'evhns-${uniqueString(resourceGroup().id)}'
 var uniqueEventHubNamespace = length(uniqueEventHubNamespaceUntrim) > maxNameLength ? substring(uniqueEventHubNamespaceUntrim, 0, maxNameLength) : uniqueEventHubNamespaceUntrim
 var name_var = empty(name) ? uniqueEventHubNamespace : name
 var maximumThroughputUnits_var = !isAutoInflateEnabled ? 0 : maximumThroughputUnits
