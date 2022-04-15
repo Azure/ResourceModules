@@ -191,6 +191,7 @@ runs:
 
         # Load used functions
         . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourceDeployment' 'Test-TemplateDeployment.ps1')
+        . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'sharedScripts' 'Get-ScopeOfTemplateFile.ps1')
 
         # ----------- #
         # INVOKE TEST #
@@ -252,6 +253,7 @@ runs:
 
         # Load used functions
         . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourceDeployment' 'New-TemplateDeployment.ps1')
+        . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'sharedScripts' 'Get-ScopeOfTemplateFile.ps1')
 
         $functionInput = @{
           templateFilePath     = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.templateFilePath }}'
