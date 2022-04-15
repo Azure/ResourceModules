@@ -8,7 +8,7 @@ param domainName string
 param sku string
 
 @description('Required. The location to deploy the Azure ADDS Services')
-param location string
+param location string = resourceGroup().location
 
 @description('Optional. Additional replica set for the managed domain')
 param replicaSets array = []
