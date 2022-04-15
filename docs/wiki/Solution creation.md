@@ -28,12 +28,12 @@ When it comes to environment deployment leveraging modules, we can differentiate
 
  - **_Template-orchestration_**: These types of deployments reference individual modules from a 'main/environment' Bicep or ARM/JSON template and use its capabilities to pass parameters & orchestrate the deployments. By default, deployments are run in parallel by the Azure Resource Manager while accounting for all dependencies defined. Furthermore, the deploying pipeline only needs one deployment job that triggers the template's deployment.
 
-   <img src="media/templateOrchestration.png" alt="Template orchestration" height="250">
+   <img src="./media/templateOrchestration.png" alt="Template orchestration" height="250">
 
  - **_Pipeline-orchestration_**: This approach uses the platform specific pipeline capabilities (for example pipeline jobs) to trigger the deployment of individual modules, where each job deploys one module. By defining dependencies in between jobs you can make sure your resources are deployed in order. Parallelization is achieved by using a pool of pipeline agents that execute the jobs, while accounting for all dependencies defined.
 Both the _template-orchestration_ as well as _pipeline-orchestration_ may run a validation and subsequent deployment on the bottom-right _Azure_ subscription. This subscription, in turn, should be the subscription where you want to host your environment. However, you can extend the concept and for example deploy the environment first to an integration and then a production subscription.
 
-   <img src="media/pipelineOrchestration.png" alt="Pipeline orchestration" height="400">
+   <img src="./media/pipelineOrchestration.png" alt="Pipeline orchestration" height="400">
 
 # Template-orchestration
 

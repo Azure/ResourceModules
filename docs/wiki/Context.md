@@ -44,7 +44,7 @@ Furthermore, each module comes with meaningful default values for it's optional 
 
 ### What is the intended the deployment model?
 
-<img src="media/deploymentModel.png" alt="Deployment model components" height="200">
+<img src="./media/deploymentModel.png" alt="Deployment model components" height="200">
 
 When working with IaC you use 3 different components:
 - The deployed **environments** that can be individual services, compositions such as workloads, or entire landing zones and the like
@@ -77,7 +77,7 @@ In this section we'll take a deeper look into the fundamental flow from source m
 
 First things first, we would work towards the deployment of our environments in 3 phases:
 
-<img src="media/deploymentFlow.png" alt="Deployment flow" height="150">
+<img src="./media/deploymentFlow.png" alt="Deployment flow" height="150">
 
 In the **Develop modules** phase you add/implement/update your modules and validate them using one or multiple test-parameter files, run static, validation & deployment tests on the templates and ultimately prove their correctness.
 
@@ -90,7 +90,7 @@ In the final phase we **Consume modules** and orchestrate them to deploy service
 
 The diagram provides a high level view on how the different phases are interconnected:
 
-<img src="media/completeFlow.png" alt="Complete deployment flow" height="500">
+<img src="./media/completeFlow.png" alt="Complete deployment flow" height="500">
 
 The top row represents your orchestration environment (for example GitHub), the bottom row the _Azure_ environment.
 
@@ -106,12 +106,12 @@ Finally, one the right you can see examples of the orchestration that deploys th
 No matter the platform we can differentiate two different deployment approaches:
  - **_Template-orchestration_**: These types of deployments reference individual modules from a 'main/environment' bicep/ARM template and use its capabilities to pass parameters & orchestrate the deployments. By default, deployments are deployed in parallel by the Azure Resource Manager while accounting for all dependencies defined. Furthermore, the deploying pipeline only needs one deployment job that triggers the template's deployment.
 
-   <img src="media/templateOrchestration.png" alt="Template orchestration" height="250">
+   <img src="./media/templateOrchestration.png" alt="Template orchestration" height="250">
 
  - **_Pipeline-orchestration_**: This approach uses the platform specific pipeline capabilities (for example pipeline jobs) to trigger the deployment of individual modules, where each job deploys one module. By defining dependencies in between jobs you can make sure your resources are deployed in order. Parallelization is achieved by using a pool of pipeline agents that execute the jobs, while accounting for all dependencies defined.
 Both the _template-orchestration_ as well as _pipeline-orchestration_ may run a validation and subsequent deployment on the bottom-right _Azure_ subscription. This subscription, in turn, should be the subscription where you want to host your environment. However, you can extend the concept and for example deploy the environment first to an integration and then a production subscription.
 
-   <img src="media/pipelineOrchestration.png" alt="Pipeline orchestration" height="400">
+   <img src="./media/pipelineOrchestration.png" alt="Pipeline orchestration" height="400">
 
 ### Why use versioned modules?
 Deploying resources by referencing their corresponding modules from source control has one major drawback: If your deployments rely on what you have in your source repository then they will 'by definition' use the **latest** code. Applying software development lifecycle concepts like 'publishing build artifacts and versioning' enables you to have a point in time version of an Azure Resource Module. By introducing versions to your modules, the consuming orchestration can and should specify a module version it wants to use and deploy the Azure environment using them. If we now have the case that a breaking change is introduced and an updated version is published, no deployments are affected because they still reference the previously published version. Instead, they must make the deliberate decision to upgrade the module to reference newer versions.
@@ -126,6 +126,6 @@ To ensure the modules are valid and can perform the intended deployments, the re
 
 As such, _CARML_ covers the `bottom box` of the [deployment model](#what-is-the-intended-the-deployment-model) section and `Phase #1` & `Phase #2` of the [deployment flow](#what-is-the-intended-deployment-flow) section.
 
-<img src="media/completeFlowTransp.png" alt="Complete deployment flow filtered" height="500">
+<img src="./media/completeFlowTransp.png" alt="Complete deployment flow filtered" height="500">
 
 As we want to enable any user of this repository's content to not only leverage its modules but actually also re-use the platform, the platform itself is set up so that you can plug it into your own environment with just a few basic steps described in the [Getting Started](./GettingStarted) section. You may choose to add or remove modules, define your own locations you want to publish to and as such create your own open- or inner-source library.

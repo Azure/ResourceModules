@@ -50,7 +50,7 @@ The following aims to illustrate the previously described module features applie
 
 Leveraging five different parameter files, the same storage account module is able to deploy five different storage account configurations.
 
-<img src="media\Context\Library_storage-variants.png" alt="Library: storage variants" height="350">
+<img src="./media/Context/Library_storage-variants.png" alt="Library: storage variants" height="350">
 
 > - **Variant 1**: A plain storage account, with no child or extension resources applied, with a defined storage account sku and kind.
 > - **Variant 2**: Another plain storage account with no child or extension resources, with a different sku and kind.
