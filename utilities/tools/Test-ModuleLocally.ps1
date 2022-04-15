@@ -150,25 +150,25 @@ function Test-ModuleLocally {
         if ($PesterTest) {
             Write-Verbose "Pester Testing Module: $ModuleName"
             try {
-                $tokensToAvoid = @{}
+                $enforcedTokenList = @{}
                 if ($AdditionalTokens.ContainsKey('subscriptionId')) {
-                    $tokensToAvoid['subscriptionId'] = $ValidateOrDeployParameters.SubscriptionId
+                    $enforcedTokenList['subscriptionId'] = $ValidateOrDeployParameters.SubscriptionId
                 }
                 if ($AdditionalTokens.ContainsKey('managementGroupId')) {
-                    $tokensToAvoid['managementGroupId'] = $ValidateOrDeployParameters.ManagementGroupId
+                    $enforcedTokenList['managementGroupId'] = $ValidateOrDeployParameters.ManagementGroupId
                 }
                 if ($AdditionalTokens.ContainsKey('deploymentSpId')) {
-                    $tokensToAvoid['deploymentSpId'] = $AdditionalTokens['deploymentSpId']
+                    $enforcedTokenList['deploymentSpId'] = $AdditionalTokens['deploymentSpId']
                 }
                 if ($AdditionalTokens.ContainsKey('tenantId')) {
-                    $tokensToAvoid['tenantId'] = $AdditionalTokens['tenantId']
+                    $enforcedTokenList['tenantId'] = $AdditionalTokens['tenantId']
                 }
 
                 Invoke-Pester -Configuration @{
                     Run    = @{
                         Container = New-PesterContainer -Path (Join-Path (Get-Item $PSScriptRoot).Parent.Parent 'arm/.global/global.module.tests.ps1') -Data @{
                             moduleFolderPaths = Split-Path $TemplateFilePath -Parent
-                            tokensToAvoid     = $tokensToAvoid
+                            enforcedTokenList     = $enforcedTokenList
                         }
                     }
                     Output = @{

@@ -83,7 +83,7 @@ runs:
           Run        = @{
             Container = New-PesterContainer -Path 'arm/.global/global.module.tests.ps1' -Data @{
               moduleFolderPaths = $moduleFolderPaths
-              tokensToAvoid = @{
+              enforcedTokenList = @{
                 subscriptionId    = '${{ env.ARM_SUBSCRIPTION_ID }}'
                 managementGroupId = '${{ env.ARM_MGMTGROUP_ID }}'
                 tenantId          = '${{ env.ARM_TENANT_ID }}'

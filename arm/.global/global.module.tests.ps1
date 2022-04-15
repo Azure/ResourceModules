@@ -7,7 +7,7 @@ param (
         }),
 
     [Parameter(Mandatory = $false)]
-    [hashtable] $tokensToAvoid = @{}
+    [hashtable] $enforcedTokenList = @{}
 )
 
 $script:Settings = Get-Content -Path (Join-Path $PSScriptRoot '..\..\settings.json') | ConvertFrom-Json -AsHashtable
@@ -18,7 +18,7 @@ $script:Tenantdeployment = 'https://schema.management.azure.com/schemas/2019-08-
 $script:moduleFolderPaths = $moduleFolderPaths
 $script:moduleFolderPathsFiltered = $moduleFolderPaths | Where-Object {
     (Split-Path $_ -Leaf) -notin @( 'AzureNetappFiles', 'TrafficManager', 'PrivateDnsZones', 'ManagementGroups') }
-$script:tokensToAvoid = $tokensToAvoid
+$script:enforcedTokenList = $enforcedTokenList
 
 # Import any helper function used in this test script
 Import-Module (Join-Path $PSScriptRoot 'shared\helper.psm1')
@@ -773,13 +773,13 @@ Describe 'Deployment template tests' -Tag Template {
             if (Test-Path (Join-Path $moduleFolderPath '.parameters')) {
                 $ParameterFilePaths = (Get-ChildItem (Join-Path -Path $moduleFolderPath -ChildPath '.parameters' -AdditionalChildPath '*parameters.json') -Recurse -Force).FullName
                 foreach ($ParameterFilePath in $ParameterFilePaths) {
-                    foreach ($token in $tokensToAvoid.Keys) {
+                    foreach ($token in $enforcedTokenList.Keys) {
                         $parameterFileTokenTestCases += @{
                             parameterFilePath = $ParameterFilePath
                             parameterFileName = Split-Path $ParameterFilePath -Leaf
                             tokenSettings     = $Settings.parameterFileTokens
                             tokenName         = $token
-                            tokenValue        = $tokensToAvoid[$token]
+                            tokenValue        = $enforcedTokenList[$token]
                             moduleFolderName  = $moduleFolderPath.Replace('\', '/').Split('/arm/')[1]
                         }
                     }
