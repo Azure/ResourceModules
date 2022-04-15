@@ -139,8 +139,8 @@ function Test-ModuleLocally {
         # Load Tokens Converter Scripts
         . (Join-Path $PSScriptRoot '../pipelines/tokensReplacement/Convert-TokensInFile.ps1')
         # Load Modules Validation / Deployment Scripts
-        . (Join-Path $PSScriptRoot '../pipelines/resourceDeployment/New-ModuleDeployment.ps1')
-        . (Join-Path $PSScriptRoot '../pipelines/resourceDeployment/Test-TemplateWithParameterFile.ps1')
+        . (Join-Path $PSScriptRoot '../pipelines/resourceDeployment/New-TemplateDeployment.ps1')
+        . (Join-Path $PSScriptRoot '../pipelines/resourceDeployment/Test-TemplateDeployment.ps1')
     }
     process {
 
@@ -248,7 +248,7 @@ function Test-ModuleLocally {
                     # Loop through test parameter files
                     foreach ($paramFilePath in $moduleParameterFiles) {
                         Write-Verbose ('Validating module [{0}] with parameter file [{1}]' -f $ModuleName, (Split-Path $paramFilePath -Leaf)) -Verbose
-                        Test-TemplateWithParameterFile @functionInput -ParameterFilePath $paramFilePath
+                        Test-TemplateDeployment @functionInput -ParameterFilePath $paramFilePath
                     }
                 }
 
@@ -261,7 +261,7 @@ function Test-ModuleLocally {
                     foreach ($paramFilePath in $moduleParameterFiles) {
                         Write-Verbose ('Deploy module [{0}] with parameter file [{1}]' -f $ModuleName, (Split-Path $paramFilePath -Leaf)) -Verbose
                         if ($PSCmdlet.ShouldProcess(('Module [{0}] with parameter file [{1}]' -f $ModuleName, (Split-Path $paramFilePath -Leaf)), 'Deploy')) {
-                            New-ModuleDeployment @functionInput -ParameterFilePath $paramFilePath
+                            New-TemplateDeployment @functionInput -ParameterFilePath $paramFilePath
                         }
                     }
                 }

@@ -1,4 +1,4 @@
-This section provides details on the Tokens Replacement Functionality that enables the use of tokens inside template Parameter Files instead of plain text strings.
+This section provides details on the tokens replacement functionality that enables the use of tokens inside template parameter files instead of plain text strings.
 
 ---
 
@@ -17,7 +17,7 @@ This section provides details on the Tokens Replacement Functionality that enabl
 
 Tokens allow you to test deploying modules in your own environment (i.e. using tokens for your naming conventions), or apply other customizations to your resources (i.e. injecting a subscription ID inside a Resource ID string).
 
-The Resource Modules Library Pipelines contains a Token replacement function that enables Parameter files to contain tokens (i.e. `<<subscriptionId>>`, `<<tenantId>>`) instead of using static values. This helps with the following:
+The [module pipelines](./The%20CI%20environment%20-%20Pipeline%20design#module-pipelines) leverage a token replacement function that enables parameter files to contain tokens (i.e. `<<subscriptionId>>`, `<<tenantId>>`) instead of using static values. This helps with the following:
 
 - Allows the repository to be portable without having static values from where it was cloned.
 - Enables dynamic updates of the tokens from single locations without having to modify all files.
@@ -67,12 +67,11 @@ Let us say you'd want to use this token inside a Key Vault parameter file, to de
 
 Once the Key Vault is deployed, you'll notice that the Key Vault name in Azure will be `tokenValue-keyVault`
 
-The token prefix `'<<'` and suffix `'>>'` in the above example are also configurable in the [Settings.json](https://github.com/Azure/ResourceModules/blob/main/settings.json) file. They are however the default used in the CARML main repository.
+The token prefix `'<<'` and suffix `'>>'` in the above example are also configurable in the [Settings.json](https://github.com/Azure/ResourceModules/blob/main/settings.json) file.
 
-> **Note**: The solution comes with one predefined local token `namePrefix` you must update to a custom value if you intent to leverage the [CI environment](./Getting%20started%20-%20Setup%20environment#31-update-default-nameprefix).
+The solution comes with one predefined local token `namePrefix`. When validating modules through the CI environment, you must update it to a custom value as described in the [Update default nameprefix](./Getting%20started%20-%20Scenario%201%20Onboard%20module%20library%20and%20CI%20environment#31-update-default-nameprefix) paragraph. This is done to avoid conflicts with resources requiring a globally unique name, such as storage accounts or key vaults.
 
 > **Note**: Do not store sensitive information in this location as they will be present in your Git History. Follow best [practices and guidelines](https://docs.microsoft.com/en-us/azure/azure-resource-manager/templates/best-practices#security-recommendations-for-parameters) on how to handle secrets in template deployments.
-
 
 # How it works
 
@@ -80,7 +79,7 @@ The below image compares the different token types that can be used for paramete
 
 <img src="./media/tokenTypes.png" alt="tokenTypes">
 
-## How Tokens are replaced in a Parameter File
+## How tokens are replaced in a parameter file
 
 The below diagram illustrates the Token Replacement Functionality via the [Validate](https://github.com/Azure/ResourceModules/blob/main/.github/actions/templates/validateModuleDeploy/action.yml) and [Deploy](https://github.com/Azure/ResourceModules/blob/main/.github/actions/templates/deployModule/action.yml) Actions/Templates.
 

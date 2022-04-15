@@ -99,6 +99,20 @@ param armPricingTier string = 'Free'
 ])
 param openSourceRelationalDatabasesTier string = 'Free'
 
+@description('Optional. The pricing tier value for containers. Azure Security Center is provided in two pricing tiers: free and standard, with the standard tier available with a trial period. The standard tier offers advanced security capabilities, while the free tier offers basic security features. - Free or Standard')
+@allowed([
+  'Free'
+  'Standard'
+])
+param containersTier string = 'Free'
+
+@description('Optional. The pricing tier value for CosmosDbs. Azure Security Center is provided in two pricing tiers: free and standard, with the standard tier available with a trial period. The standard tier offers advanced security capabilities, while the free tier offers basic security features. - Free or Standard')
+@allowed([
+  'Free'
+  'Standard'
+])
+param cosmosDbsTier string = 'Free'
+
 @description('Optional. Security contact data')
 param securityContactProperties object = {}
 
@@ -217,6 +231,20 @@ resource OpenSourceRelationalDatabasesPricingTier 'Microsoft.Security/pricings@2
   name: 'OpenSourceRelationalDatabases'
   properties: {
     pricingTier: openSourceRelationalDatabasesTier
+  }
+}
+
+resource ContainersPricingTier 'Microsoft.Security/pricings@2018-06-01' = {
+  name: 'Containers'
+  properties: {
+    pricingTier: containersTier
+  }
+}
+
+resource CosmosDbsPricingTier 'Microsoft.Security/pricings@2018-06-01' = {
+  name: 'CosmosDbs'
+  properties: {
+    pricingTier: cosmosDbsTier
   }
 }
 
