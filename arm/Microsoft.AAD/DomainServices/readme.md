@@ -23,14 +23,13 @@ This template deploys Azure Active Directory Domain Services (AADDS).
 ## Parameters
 
 **Required parameters**
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `additionalRecipients` | string |  | The email recipient value to receive alerts |
-| `domainName` | string |  | The domain name specific to the Azure ADDS service. |
-| `location` | string | `[resourceGroup().location]` | The location to deploy the Azure ADDS Services |
-| `pfxCertificate` | string |  | The value is the base64encoded representation of the certificate pfx file |
-| `pfxCertificatePassword` | secureString |  | The value is to decrypt the provided Secure LDAP certificate pfx file |
-| `sku` | string |  | The name of the sku specific to Azure ADDS Services - Standard is the default |
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `additionalRecipients` | string | The email recipient value to receive alerts |
+| `domainName` | string | The domain name specific to the Azure ADDS service. |
+| `pfxCertificate` | string | The value is the base64encoded representation of the certificate pfx file |
+| `pfxCertificatePassword` | secureString | The value is to decrypt the provided Secure LDAP certificate pfx file |
+| `sku` | string | The name of the sku specific to Azure ADDS Services - Standard is the default |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
@@ -45,6 +44,7 @@ This template deploys Azure Active Directory Domain Services (AADDS).
 | `kerberosArmoring` | string | `'Enabled'` |  | The value is to enable to provide a protected channel between the Kerberos client and the KDC - This is enabled by default |
 | `kerberosRc4Encryption` | string | `'Enabled'` |  | The value is to enable Kerberos requests that use RC4 encryption - This is enabled by default |
 | `ldapexternalaccess` | string | `'Enabled'` |  | The value is to enable the Secure LDAP for external services of Azure ADDS Services |
+| `location` | string | `[resourceGroup().location]` |  | The location to deploy the Azure ADDS Services |
 | `lock` | string | `'NotSpecified'` | `[CanNotDelete, NotSpecified, ReadOnly]` | Specify the type of lock. |
 | `logsToEnable` | array | `[SystemSecurity, AccountManagement, LogonLogoff, ObjectAccess, PolicyChange, PrivilegeUse, DetailTracking, DirectoryServiceAccess, AccountLogon]` | `[SystemSecurity, AccountManagement, LogonLogoff, ObjectAccess, PolicyChange, PrivilegeUse, DetailTracking, DirectoryServiceAccess, AccountLogon]` | The name of logs that will be streamed. |
 | `name` | string | `[parameters('domainName')]` |  | The name of the AADDS resource. Defaults to the domain name specific to the Azure ADDS service. |

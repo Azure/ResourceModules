@@ -1,13 +1,13 @@
 @description('Optional. The name of the AADDS resource. Defaults to the domain name specific to the Azure ADDS service.')
 param name string = domainName
 
-@sys.description('Required. The domain name specific to the Azure ADDS service.')
+@description('Required. The domain name specific to the Azure ADDS service.')
 param domainName string
 
 @description('Required. The name of the sku specific to Azure ADDS Services - Standard is the default')
 param sku string
 
-@description('Required. The location to deploy the Azure ADDS Services')
+@description('Optional. The location to deploy the Azure ADDS Services')
 param location string = resourceGroup().location
 
 @description('Optional. Additional replica set for the managed domain')
