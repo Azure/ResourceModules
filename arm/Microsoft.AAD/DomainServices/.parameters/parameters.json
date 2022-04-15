@@ -6,7 +6,7 @@
             "value": "<<namePrefix>>.onmicrosoft.com"
         },
         "sku": {
-            "value": "standard"
+            "value": "Standard"
         },
         "replicaSets": {
             "value": [
@@ -16,24 +16,26 @@
                 }
             ]
         },
-        "pfxCertificate": {
-            "reference": {
-                "keyVault": {
-                    "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/<<namePrefix>>-az-kv-x-001"
-                },
-                "secretName": "<<secret name>>"
-            }
-        },
-        "pfxCertificatePassword": {
-            "reference": {
-                "keyVault": {
-                    "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/<<namePrefix>>-az-kv-x-001"
-                },
-                "secretName": "<<secret name>>"
-            }
-        },
+        // "pfxCertificate": {
+        //     "reference": {
+        //         "keyVault": {
+        //             "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/<<namePrefix>>-az-kv-x-001"
+        //         },
+        //         "secretName": "<<secret name>>"
+        //     }
+        // },
+        // "pfxCertificatePassword": {
+        //     "reference": {
+        //         "keyVault": {
+        //             "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/<<namePrefix>>-az-kv-x-001"
+        //         },
+        //         "secretName": "<<secret name>>"
+        //     }
+        // },
         "additionalRecipients": {
-            "value": "<<namePrefix>>@noreply.github.com"
+            "value": [
+                "<<namePrefix>>@noreply.github.com"
+            ]
         },
         "diagnosticWorkspaceId": {
             "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001"

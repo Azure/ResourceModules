@@ -4,8 +4,13 @@ param name string = domainName
 @description('Required. The domain name specific to the Azure ADDS service.')
 param domainName string
 
-@description('Required. The name of the sku specific to Azure ADDS Services - Standard is the default')
-param sku string
+@description('Optional. The name of the sku specific to Azure ADDS Services.')
+@allowed([
+  'Standard'
+  'Enterprise'
+  'Premium'
+])
+param sku string = 'Standard'
 
 @description('Optional. The location to deploy the Azure ADDS Services')
 param location string = resourceGroup().location
@@ -13,15 +18,15 @@ param location string = resourceGroup().location
 @description('Optional. Additional replica set for the managed domain')
 param replicaSets array = []
 
-@description('Required. The value is the base64encoded representation of the certificate pfx file')
-param pfxCertificate string
+@description('Optional. The value is the base64encoded representation of the certificate pfx file')
+param pfxCertificate string = ''
 
-@description('Required. The value is to decrypt the provided Secure LDAP certificate pfx file')
+@description('Optional. The value is to decrypt the provided Secure LDAP certificate pfx file')
 @secure()
-param pfxCertificatePassword string
+param pfxCertificatePassword string = ''
 
-@description('Required. The email recipient value to receive alerts')
-param additionalRecipients string
+@description('Optional. The email recipient value to receive alerts')
+param additionalRecipients array = []
 
 @description('Optional. The value is to provide domain configuration type')
 param domainConfigurationType string = 'FullySynced'
@@ -57,7 +62,7 @@ param notifyGlobalAdmins string = 'Enabled'
 param ldapexternalaccess string = 'Enabled'
 
 @description('Optional. The value is to enable the Secure LDAP for Azure ADDS Services')
-param secureldap string = 'Enabled'
+param ldaps string = 'Enabled'
 
 @description('Optional. Resource ID of the diagnostic storage account.')
 param diagnosticStorageAccountId string = ''
@@ -132,17 +137,15 @@ resource domainService 'Microsoft.AAD/DomainServices@2021-05-01' = {
     domainConfigurationType: domainConfigurationType
     filteredSync: filteredSync
     notificationSettings: {
-      additionalRecipients: [
-        additionalRecipients
-      ]
+      additionalRecipients: additionalRecipients
       notifyDcAdmins: notifyDcAdmins
       notifyGlobalAdmins: notifyGlobalAdmins
     }
     ldapsSettings: {
       externalAccess: ldapexternalaccess
-      ldaps: secureldap
-      pfxCertificate: pfxCertificate
-      pfxCertificatePassword: pfxCertificatePassword
+      ldaps: ldaps
+      pfxCertificate: !empty(pfxCertificate) ? pfxCertificate : null
+      pfxCertificatePassword: !empty(pfxCertificatePassword) ? pfxCertificatePassword : null
     }
     replicaSets: replicaSets
     domainSecuritySettings: {
