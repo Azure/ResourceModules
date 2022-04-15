@@ -53,4 +53,3 @@ The auth settings V2 configuration.
 ## Template references
 
 - ['sites/config' Parent Documentation](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Web/sites)
-- ['config-authsettings v2' Documentation](https://docs.microsoft.com/en-us/azure/templates/microsoft.web/sites/config-authsettingsv2)

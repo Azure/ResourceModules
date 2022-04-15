@@ -34,7 +34,7 @@ This module deploys a web or function app.
 | :-- | :-- | :-- | :-- | :-- |
 | `appInsightId` | string | `''` |  | Resource ID of the app insight to leverage for this resource. |
 | `appServiceEnvironmentId` | string | `''` |  | The resource ID of the app service environment to use for this resource. |
-| `appSettingsKeyValuePairs` | object | `{object}` |  | The app settings key value pairs except for AzureWebJobsStorage, AzureWebJobsDashboard, APPINSIGHTS_INSTRUMENTATIONKEY and APPLICATIONINSIGHTS_CONNECTION_STRING. |
+| `appSettingsKeyValuePairs` | object | `{object}` |  | The app settings-value pairs except for AzureWebJobsStorage, AzureWebJobsDashboard, APPINSIGHTS_INSTRUMENTATIONKEY and APPLICATIONINSIGHTS_CONNECTION_STRING. |
 | `authSettingV2Configuration` | object | `{object}` |  | The auth settings V2 configuration. |
 | `clientAffinityEnabled` | bool | `True` |  | If client affinity is enabled. |
 | `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
