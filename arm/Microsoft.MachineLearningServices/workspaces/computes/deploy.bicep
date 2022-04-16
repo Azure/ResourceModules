@@ -1,43 +1,43 @@
 // ================ //
 // Parameters       //
 // ================ //
-@description('Required. Name of the Machine Learning Workspace.')
+@sys.description('Required. Name of the Machine Learning Workspace.')
 param machineLearningWorkspaceName string
 
-@description('Required. Name of the compute.')
+@sys.description('Required. Name of the compute.')
 @minLength(2)
 @maxLength(16)
 param name string
 
-@description('Optional. Specifies the location of the resource.')
+@sys.description('Optional. Specifies the location of the resource.')
 param location string = resourceGroup().location
 
-@description('Required. Specifies the sku, also referred as "edition".')
+@sys.description('Required. Specifies the sku, also referred as "edition".')
 @allowed([
   'Basic'
   'Enterprise'
 ])
 param sku string
 
-@description('Optional. Contains resource tags defined as key-value pairs.')
+@sys.description('Optional. Contains resource tags defined as key-value pairs.')
 param tags object = {}
 
-@description('Required. Flag to specify whether to deploy the compute. Necessary as the compute resource is not idempontent, i.e. a second deployment will fail. Therefore, this flag needs to be set to "false" as long as the compute resource exists.')
+@sys.description('Required. Flag to specify whether to deploy the compute. Necessary as the compute resource is not idempontent, i.e. a second deployment will fail. Therefore, this flag needs to be set to "false" as long as the compute resource exists.')
 param deployCompute bool
 
-@description('Optional. Location for the underlying compute.')
+@sys.description('Optional. Location for the underlying compute.')
 param computeLocation string = resourceGroup().location
 
-@description('Optional. The description of the Machine Learning compute.')
-param computeDescription string = ''
+@sys.description('Optional. The description of the Machine Learning compute.')
+param description string = ''
 
-@description('Optional. Opt-out of local authentication and ensure customers can use only MSI and AAD exclusively for authentication.')
+@sys.description('Optional. Opt-out of local authentication and ensure customers can use only MSI and AAD exclusively for authentication.')
 param disableLocalAuth bool = false
 
-@description('Optional. ARM resource ID of the underlying compute.')
+@sys.description('Optional. ARM resource ID of the underlying compute.')
 param resourceId string = ''
 
-@description('Required. Set the object type.')
+@sys.description('Required. Set the object type.')
 @allowed([
   'AKS'
   'AmlCompute'
@@ -52,17 +52,17 @@ param resourceId string = ''
 ])
 param computeType string
 
-@description('Optional. The properties of the compute. Will be ignored in case "resourceId" is set.')
+@sys.description('Optional. The properties of the compute. Will be ignored in case "resourceId" is set.')
 param properties object = {}
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@sys.description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
 
 // Identity
-@description('Optional. Enables system assigned managed identity on the resource.')
+@sys.description('Optional. Enables system assigned managed identity on the resource.')
 param systemAssignedIdentity bool = false
 
-@description('Optional. The ID(s) to assign to the resource.')
+@sys.description('Optional. The ID(s) to assign to the resource.')
 param userAssignedIdentities object = {}
 
 // ================//
@@ -109,7 +109,7 @@ resource machineLearningWorkspaceCompute 'Microsoft.MachineLearningServices/work
   identity: identity
   properties: union({
     computeLocation: computeLocation
-    description: computeDescription
+    description: description
     disableLocalAuth: disableLocalAuth
     computeType: computeType
   }, (!empty(resourceId) ? {
@@ -122,11 +122,11 @@ resource machineLearningWorkspaceCompute 'Microsoft.MachineLearningServices/work
 // =========== //
 // Outputs     //
 // =========== //
-@description('The name of the compute.')
+@sys.description('The name of the compute.')
 output name string = machineLearningWorkspaceCompute.name
 
-@description('The resource ID of the compute.')
+@sys.description('The resource ID of the compute.')
 output resourceId string = machineLearningWorkspaceCompute.id
 
-@description('The resource group the compute was deployed into.')
+@sys.description('The resource group the compute was deployed into.')
 output resourceGroupName string = resourceGroup().name

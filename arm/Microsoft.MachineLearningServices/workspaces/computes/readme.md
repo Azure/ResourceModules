@@ -30,7 +30,7 @@ Deploying a compute is not idempotent and will fail in case you try to redeploy 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
-| `computeDescription` | string | `''` | The description of the Machine Learning compute. |
+| `description` | string | `''` | The description of the Machine Learning compute. |
 | `computeLocation` | string | `[resourceGroup().location]` | Location for the underlying compute. |
 | `disableLocalAuth` | bool | `False` | Opt-out of local authentication and ensure customers can use only MSI and AAD exclusively for authentication. |
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
