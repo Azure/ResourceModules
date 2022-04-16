@@ -19,22 +19,22 @@
                 }
             ]
         },
-        // "pfxCertificate": {
-        //     "reference": {
-        //         "keyVault": {
-        //             "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/<<namePrefix>>-az-kv-x-001"
-        //         },
-        //         "secretName": "<<secret name>>"
-        //     }
-        // },
-        // "pfxCertificatePassword": {
-        //     "reference": {
-        //         "keyVault": {
-        //             "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/<<namePrefix>>-az-kv-x-001"
-        //         },
-        //         "secretName": "<<secret name>>"
-        //     }
-        // },
+        "pfxCertificate": {
+            "reference": {
+                "keyVault": {
+                    "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/<<namePrefix>>-az-kv-x-001"
+                },
+                "secretName": "<<secret name>>"
+            }
+        },
+        "pfxCertificatePassword": {
+            "reference": {
+                "keyVault": {
+                    "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/<<namePrefix>>-az-kv-x-001"
+                },
+                "secretName": "pfxCertificatePassword"
+            }
+        },
         "additionalRecipients": {
             "value": [
                 "<<namePrefix>>@noreply.github.com"
