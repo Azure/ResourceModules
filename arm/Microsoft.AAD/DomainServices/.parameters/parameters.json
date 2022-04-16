@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "domainName": {
-            "value": "<<namePrefix>>h.onmicrosoft.com"
+            "value": "<<namePrefix>>j.onmicrosoft.com"
         },
         "sku": {
             "value": "Standard"

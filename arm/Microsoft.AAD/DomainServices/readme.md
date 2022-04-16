@@ -117,7 +117,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 Follow the below PowerShell commands to generate the base64 encoded code from a PFX file:
 
 ```PowerShell
-$file = get-content "<<PFX certificate file path>>" -encoding byte
+$file = get-content "<<PFX certificate file path>>" -AsByteStream
 [System.Convert]::ToBase64String($file) | Out-File PFX-encoded-bytes.txt
 ```
 
