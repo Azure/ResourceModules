@@ -4,7 +4,7 @@ param name string = domainName
 @description('Required. The domain name specific to the Azure ADDS service.')
 param domainName string
 
-@description('Optional. The name of the sku specific to Azure ADDS Services.')
+@description('Optional. The name of the SKU specific to Azure ADDS Services.')
 @allowed([
   'Standard'
   'Enterprise'
@@ -18,10 +18,10 @@ param location string = resourceGroup().location
 @description('Optional. Additional replica set for the managed domain')
 param replicaSets array = []
 
-@description('Optional. The certificate required to configure Secure LDAP. The parameter passed here should be a base64encoded representation of the certificate pfx file')
+@description('Conditional. The certificate required to configure Secure LDAP. The parameter passed here should be a base64encoded representation of the certificate PFX file.  Required if secure LDAP is enabled.')
 param pfxCertificate string = ''
 
-@description('Optional. The password to decrypt the provided Secure LDAP certificate pfx file.')
+@description('Conditional. The password to decrypt the provided Secure LDAP certificate PFX file. Required if secure LDAP is enabled.')
 @secure()
 param pfxCertificatePassword string = ''
 
@@ -29,39 +29,83 @@ param pfxCertificatePassword string = ''
 param additionalRecipients array = []
 
 @description('Optional. The value is to provide domain configuration type')
+@allowed([
+  'FullySynced'
+  'ResourceTrusting'
+])
 param domainConfigurationType string = 'FullySynced'
 
-@description('Optional. The value is to synchronise scoped users and groups - This is enabled by default')
+@description('Optional. The value is to synchronise scoped users and groups.')
 param filteredSync string = 'Enabled'
 
-@description('Optional. The value is to enable clients making request using TLSv1 - This is enabled by default')
+@description('Optional. The value is to enable clients making request using TLSv1.')
+@allowed([
+  'Enabled'
+  'Disabled'
+])
 param tlsV1 string = 'Enabled'
 
-@description('Optional. The value is to enable clients making request using NTLM v1 - This is enabled by default')
+@description('Optional. The value is to enable clients making request using NTLM v1.')
+@allowed([
+  'Enabled'
+  'Disabled'
+])
 param ntlmV1 string = 'Enabled'
 
-@description('Optional. The value is to enable synchronised users to use NTLM authentication - This is enabled by default')
+@description('Optional. The value is to enable synchronized users to use NTLM authentication.')
+@allowed([
+  'Enabled'
+  'Disabled'
+])
 param syncNtlmPasswords string = 'Enabled'
 
-@description('Optional. The value is to enable on-premises users to authenticate against managed domain - This is enabled by default')
+@description('Optional. The value is to enable on-premises users to authenticate against managed domain.')
+@allowed([
+  'Enabled'
+  'Disabled'
+])
 param syncOnPremPasswords string = 'Enabled'
 
-@description('Optional. The value is to enable Kerberos requests that use RC4 encryption - This is enabled by default')
+@description('Optional. The value is to enable Kerberos requests that use RC4 encryption.')
+@allowed([
+  'Enabled'
+  'Disabled'
+])
 param kerberosRc4Encryption string = 'Enabled'
 
-@description('Optional. The value is to enable to provide a protected channel between the Kerberos client and the KDC - This is enabled by default')
+@description('Optional. The value is to enable to provide a protected channel between the Kerberos client and the KDC.')
+@allowed([
+  'Enabled'
+  'Disabled'
+])
 param kerberosArmoring string = 'Enabled'
 
-@description('Optional. The value is to notify the DC Admins - This is enabled by default ')
+@description('Optional. The value is to notify the DC Admins. ')
+@allowed([
+  'Enabled'
+  'Disabled'
+])
 param notifyDcAdmins string = 'Enabled'
 
-@description('Optional. The value is to notify the Global Admins - This is enabled by default')
+@description('Optional. The value is to notify the Global Admins.')
+@allowed([
+  'Enabled'
+  'Disabled'
+])
 param notifyGlobalAdmins string = 'Enabled'
 
 @description('Optional. The value is to enable the Secure LDAP for external services of Azure ADDS Services')
+@allowed([
+  'Enabled'
+  'Disabled'
+])
 param externalAccess string = 'Enabled'
 
 @description('Optional. A flag to determine whether or not Secure LDAP is enabled or disabled.')
+@allowed([
+  'Enabled'
+  'Disabled'
+])
 param ldaps string = 'Enabled'
 
 @description('Optional. Resource ID of the diagnostic storage account.')

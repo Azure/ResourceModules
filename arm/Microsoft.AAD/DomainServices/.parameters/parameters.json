@@ -3,10 +3,13 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "domainName": {
-            "value": "<<namePrefix>>.onmicrosoft.com"
+            "value": "<<namePrefix>>h.onmicrosoft.com"
         },
         "sku": {
             "value": "Standard"
+        },
+        "location": {
+            "value": "WestEurope"
         },
         "replicaSets": {
             "value": [
@@ -36,21 +39,21 @@
             "value": [
                 "<<namePrefix>>@noreply.github.com"
             ]
-        },
-        "diagnosticWorkspaceId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001"
-        },
-        "diagnosticStorageAccountId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
-        },
-        "diagnosticEventHubAuthorizationRuleId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
-        },
-        "diagnosticEventHubName": {
-            "value": "adp-<<namePrefix>>-az-evh-x-001"
-        },
-        "lock": {
-            "value": "NotSpecified"
-        }
+        } //,
+        // "diagnosticWorkspaceId": {
+        //     "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001"
+        // },
+        // "diagnosticStorageAccountId": {
+        //     "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
+        // },
+        // "diagnosticEventHubAuthorizationRuleId": {
+        //     "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
+        // },
+        // "diagnosticEventHubName": {
+        //     "value": "adp-<<namePrefix>>-az-evh-x-001"
+        // },
+        // "lock": {
+        //     "value": "NotSpecified"
+        // }
     }
 }
