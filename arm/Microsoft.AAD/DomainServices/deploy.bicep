@@ -18,7 +18,7 @@ param location string = resourceGroup().location
 @description('Optional. Additional replica set for the managed domain')
 param replicaSets array = []
 
-@description('Optional. The value is the base64encoded representation of the certificate pfx file')
+@description('Optional. The certificate required to configure Secure LDAP. The parameter passed here should be a base64encoded representation of the certificate pfx file')
 param pfxCertificate string = ''
 
 @description('Optional. The password to decrypt the provided Secure LDAP certificate pfx file.')
