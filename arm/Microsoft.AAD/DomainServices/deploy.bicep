@@ -21,7 +21,7 @@ param replicaSets array = []
 @description('Optional. The value is the base64encoded representation of the certificate pfx file')
 param pfxCertificate string = ''
 
-@description('Optional. The value is to decrypt the provided Secure LDAP certificate pfx file')
+@description('Optional. The password to decrypt the provided Secure LDAP certificate pfx file.')
 @secure()
 param pfxCertificatePassword string = ''
 
