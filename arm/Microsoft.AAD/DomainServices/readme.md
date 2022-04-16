@@ -109,13 +109,16 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 ## Considerations
 
-The network security group has to be created prior to running this module and assign to the Azure ADDS Subnet and associating a route table to the same subnet is not recommended.
+- The network security group has to be created prior to running this module and assign to the Azure ADDS Subnet and associating a route table to the same subnet is not recommended.
+- The network used for AADDS must have its DNS Servers [configured](https://docs.microsoft.com/en-us/azure/active-directory-domain-services/tutorial-configure-networking#configure-dns-servers-in-the-peered-virtual-network) (e.g. with IPs `10.0.2.4` & `10.0.2.5`)
+- Your Azure Active Directory must have the 'Domain Controller Services' service principal registered. If that's not  the case, you can register it by executing the command `New-AzADServicePrincipal -ApplicationId '2565bd9d-da50-47d4-8b85-4c97f669dc36'` with an eligible user.
 
-## Get base64encoded code from PFX
-Follow the below powershell commands to generate the base64 encoded code from a PFX file:
-```powershell
-  $file=get-content "<<PFX certificate file path>>" -encoding byte
-  [System.Convert]::ToBase64String($file) | Out-File PFX-encoded-bytes.txt
+### Get base64encoded code from PFX
+Follow the below PowerShell commands to generate the base64 encoded code from a PFX file:
+
+```PowerShell
+$file = get-content "<<PFX certificate file path>>" -encoding byte
+[System.Convert]::ToBase64String($file) | Out-File PFX-encoded-bytes.txt
 ```
 
 ## Outputs

@@ -22,15 +22,15 @@
         "pfxCertificate": {
             "reference": {
                 "keyVault": {
-                    "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/<<namePrefix>>-az-kv-x-001"
+                    "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/aaddstest"
                 },
-                "secretName": "<<secret name>>"
+                "secretName": "pfxBase64Certificate"
             }
         },
         "pfxCertificatePassword": {
             "reference": {
                 "keyVault": {
-                    "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/<<namePrefix>>-az-kv-x-001"
+                    "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/aaddstest"
                 },
                 "secretName": "pfxCertificatePassword"
             }
