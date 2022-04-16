@@ -21,7 +21,7 @@
 ##   |======================================================================================================================================================================================================================|
 ##   | Parameter                       | Default Value                        | Description                                                                                             | Example                           |
 ##   |---------------------------------|--------------------------------------|---------------------------------------------------------------------------------------------------------|-----------------------------------|
-##   | displayName                     | 'Publish module'                     | Name for the pipeline job                                                                               | 'Publish KeyVault'                |
+##   | displayName                     | 'Publishing'                     | Name for the pipeline job                                                                               | 'Publish KeyVault'                |
 ##   | serviceConnection               | '$(serviceConnection)'               | The service connection that connects to Azure                                                           | 'demo-internal'                   |
 ##   | poolName                        | '$(poolName)'                        | You can provide either a [poolname] or [vmImage] to run the job on                                      | 'Custom Deployment Pool'          |
 ##   | vmImage                         | '$(vmImage)'                         | You can provide either a [poolname] or [vmImage] to run the job on                                      | 'ubuntu20.04'                     |
@@ -46,7 +46,7 @@
 parameters:
   # Pipeline-related parameters
   checkoutRepositories: ''
-  displayName: 'Publish module'
+  displayName: 'Publishing'
   serviceConnection: '$(serviceConnection)'
   poolName: '$(poolName)'
   vmImage: '$(vmImage)'
