@@ -59,7 +59,7 @@ param notifyDcAdmins string = 'Enabled'
 param notifyGlobalAdmins string = 'Enabled'
 
 @description('Optional. The value is to enable the Secure LDAP for external services of Azure ADDS Services')
-param ldapexternalaccess string = 'Enabled'
+param externalAccess string = 'Enabled'
 
 @description('Optional. A flag to determine whether or not Secure LDAP is enabled or disabled.')
 param ldaps string = 'Enabled'
