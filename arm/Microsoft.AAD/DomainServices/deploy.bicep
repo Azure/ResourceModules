@@ -61,7 +61,7 @@ param notifyGlobalAdmins string = 'Enabled'
 @description('Optional. The value is to enable the Secure LDAP for external services of Azure ADDS Services')
 param ldapexternalaccess string = 'Enabled'
 
-@description('Optional. The value is to enable the Secure LDAP for Azure ADDS Services')
+@description('Optional. A flag to determine whether or not Secure LDAP is enabled or disabled.')
 param ldaps string = 'Enabled'
 
 @description('Optional. Resource ID of the diagnostic storage account.')
