@@ -130,3 +130,6 @@ output resourceId string = machineLearningWorkspaceCompute.id
 
 @sys.description('The resource group the compute was deployed into.')
 output resourceGroupName string = resourceGroup().name
+
+@sys.description('The principal ID of the system assigned identity.')
+output systemAssignedPrincipalId string = systemAssignedIdentity && contains(machineLearningWorkspaceCompute.identity, 'principalId') ? machineLearningWorkspaceCompute.identity.principalId : ''

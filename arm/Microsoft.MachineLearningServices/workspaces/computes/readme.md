@@ -30,8 +30,8 @@ Deploying a compute is not idempotent and will fail in case you try to redeploy 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
-| `description` | string | `''` | The description of the Machine Learning compute. |
 | `computeLocation` | string | `[resourceGroup().location]` | Location for the underlying compute. |
+| `description` | string | `''` | The description of the Machine Learning compute. |
 | `disableLocalAuth` | bool | `False` | Opt-out of local authentication and ensure customers can use only MSI and AAD exclusively for authentication. |
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `location` | string | `[resourceGroup().location]` | Specifies the location of the resource. |
@@ -92,6 +92,7 @@ You can specify multiple user assigned identities to a resource by providing add
 | `name` | string | The name of the compute. |
 | `resourceGroupName` | string | The resource group the compute was deployed into. |
 | `resourceId` | string | The resource ID of the compute. |
+| `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
 
 
 ## Template references
