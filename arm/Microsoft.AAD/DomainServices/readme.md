@@ -37,11 +37,11 @@ This template deploys Azure Active Directory Domain Services (AADDS).
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
 | `domainConfigurationType` | string | `'FullySynced'` |  | The value is to provide domain configuration type |
+| `externalAccess` | string | `'Enabled'` |  | The value is to enable the Secure LDAP for external services of Azure ADDS Services |
 | `filteredSync` | string | `'Enabled'` |  | The value is to synchronise scoped users and groups - This is enabled by default |
 | `kerberosArmoring` | string | `'Enabled'` |  | The value is to enable to provide a protected channel between the Kerberos client and the KDC - This is enabled by default |
 | `kerberosRc4Encryption` | string | `'Enabled'` |  | The value is to enable Kerberos requests that use RC4 encryption - This is enabled by default |
-| `ldapexternalaccess` | string | `'Enabled'` |  | The value is to enable the Secure LDAP for external services of Azure ADDS Services |
-| `ldaps` | string | `'Enabled'` |  | The value is to enable the Secure LDAP for Azure ADDS Services |
+| `ldaps` | string | `'Enabled'` |  | A flag to determine whether or not Secure LDAP is enabled or disabled. |
 | `location` | string | `[resourceGroup().location]` |  | The location to deploy the Azure ADDS Services |
 | `lock` | string | `'NotSpecified'` | `[CanNotDelete, NotSpecified, ReadOnly]` | Specify the type of lock. |
 | `logsToEnable` | array | `[SystemSecurity, AccountManagement, LogonLogoff, ObjectAccess, PolicyChange, PrivilegeUse, DetailTracking, DirectoryServiceAccess, AccountLogon]` | `[SystemSecurity, AccountManagement, LogonLogoff, ObjectAccess, PolicyChange, PrivilegeUse, DetailTracking, DirectoryServiceAccess, AccountLogon]` | The name of logs that will be streamed. |
@@ -49,8 +49,8 @@ This template deploys Azure Active Directory Domain Services (AADDS).
 | `notifyDcAdmins` | string | `'Enabled'` |  | The value is to notify the DC Admins - This is enabled by default  |
 | `notifyGlobalAdmins` | string | `'Enabled'` |  | The value is to notify the Global Admins - This is enabled by default |
 | `ntlmV1` | string | `'Enabled'` |  | The value is to enable clients making request using NTLM v1 - This is enabled by default |
-| `pfxCertificate` | string | `''` |  | The value is the base64encoded representation of the certificate pfx file |
-| `pfxCertificatePassword` | secureString | `''` |  | The value is to decrypt the provided Secure LDAP certificate pfx file |
+| `pfxCertificate` | string | `''` |  | The certificate required to configure Secure LDAP. The parameter passed here should be a base64encoded representation of the certificate pfx file |
+| `pfxCertificatePassword` | secureString | `''` |  | The password to decrypt the provided Secure LDAP certificate pfx file. |
 | `replicaSets` | array | `[]` |  | Additional replica set for the managed domain |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
 | `sku` | string | `'Standard'` | `[Standard, Enterprise, Premium]` | The name of the sku specific to Azure ADDS Services. |
