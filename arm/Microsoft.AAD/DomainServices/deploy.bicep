@@ -142,7 +142,7 @@ resource domainService 'Microsoft.AAD/DomainServices@2021-05-01' = {
       notifyGlobalAdmins: notifyGlobalAdmins
     }
     ldapsSettings: {
-      externalAccess: ldapexternalaccess
+      externalAccess: externalAccess
       ldaps: ldaps
       pfxCertificate: !empty(pfxCertificate) ? pfxCertificate : null
       pfxCertificatePassword: !empty(pfxCertificatePassword) ? pfxCertificatePassword : null
