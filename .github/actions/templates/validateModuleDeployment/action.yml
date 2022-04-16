@@ -215,6 +215,7 @@ runs:
         $deploymentScope = Get-ScopeOfTemplateFile -TemplateFilePath $templateFilePath
         if ($deploymentScope -ne 'resourceGroup' -and -not [String]::IsNullOrEmpty('${{ inputs.resourceGroupName }}')) {
           $templateContent = az bicep build --file $templateFilePath --stdout | ConvertFrom-Json -AsHashtable
+          $parameters = $templateContent.parameters.Keys
           if($parameters -contains 'resourceGroupName') {
             $functionInput['additionalParameters'] = @{
               resourceGroupName = '${{ inputs.resourceGroupName }}'
@@ -277,6 +278,7 @@ runs:
         $deploymentScope = Get-ScopeOfTemplateFile -TemplateFilePath $templateFilePath
         if ($deploymentScope -ne 'resourceGroup' -and -not [String]::IsNullOrEmpty('${{ inputs.resourceGroupName }}')) {
           $templateContent = az bicep build --file $templateFilePath --stdout | ConvertFrom-Json -AsHashtable
+          $parameters = $templateContent.parameters.Keys
           if($parameters -contains 'resourceGroupName') {
             $functionInput['additionalParameters'] = @{
               resourceGroupName = '${{ inputs.resourceGroupName }}'
