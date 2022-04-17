@@ -30,10 +30,16 @@
                 {
                     "name": "DefaultCPU",
                     "location": "westeurope",
+                    "computeLocation": "westeurope",
+                    "sku": "Basic",
+                    "systemAssignedIdentity": true,
+                    "userAssignedIdentities": {
+                        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001": {}
+                    },
                     "description": "Default CPU Cluster",
                     "disableLocalAuth": false,
-                    "deploy": true,
-                    "type": "AmlCompute",
+                    "deployCompute": true,
+                    "computeType": "AmlCompute",
                     "properties": {
                         "enableNodePublicIp": true,
                         "isolatedNetwork": false,
