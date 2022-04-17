@@ -109,8 +109,14 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 ## Considerations
 
-- The network security group has to be created prior to running this module and assign to the Azure ADDS Subnet and associating a route table to the same subnet is not recommended.
-- The network used for AADDS must have its DNS Servers [configured](https://docs.microsoft.com/en-us/azure/active-directory-domain-services/tutorial-configure-networking#configure-dns-servers-in-the-peered-virtual-network) (e.g. with IPs `10.0.2.4` & `10.0.2.5`)
+- A network security group has to be created and assigned to the designated AADDS subnet before deploying this module
+  - The following inbound rules should be allowed on the network security group
+    | Name | Protocol | Source Port Range | Source Address Prefix | Destination Port Range | Destination Address Prefix |
+    | - | - | - | - | - | - |
+    | AllowSyncWithAzureAD | TCP | `*` | `AzureActiveDirectoryDomainServices` | `443` | `*` |
+    | AllowPSRemoting | TCP | `*` | `AzureActiveDirectoryDomainServices` | `5986` | `*` |
+- Associating a route table to the AADDS subnet is not recommended
+- The network used for AADDS must have its DNS Servers [configured](https://docs.microsoft.com/en-us/azure/active-directory-domain-services/tutorial-configure-networking#configure-dns-servers-in-the-peered-virtual-network) (e.g. with IPs `10.0.1.4` & `10.0.1.5`)
 - Your Azure Active Directory must have the 'Domain Controller Services' service principal registered. If that's not  the case, you can register it by executing the command `New-AzADServicePrincipal -ApplicationId '2565bd9d-da50-47d4-8b85-4c97f669dc36'` with an eligible user.
 
 ### Create self-signed certificate for secure LDAP

@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "domainName": {
-            "value": "carml.onmicrosoft.com"
+            "value": "<<namePrefix>>.onmicrosoft.com"
         },
         "sku": {
             "value": "Standard"
@@ -15,14 +15,14 @@
             "value": [
                 {
                     "location": "WestEurope",
-                    "subnetId": "/subscriptions/b765c5e5-ae60-4724-9b59-36fbcf56795b/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-carml-az-vnet-x-001/subnets/carml-az-subnet-x-001"
+                    "subnetId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001"
                 }
             ]
         },
         "pfxCertificate": {
             "reference": {
                 "keyVault": {
-                    "id": "/subscriptions/b765c5e5-ae60-4724-9b59-36fbcf56795b/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/aaddstest"
+                    "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/aaddstest"
                 },
                 "secretName": "pfxBase64Certificate"
             }
@@ -30,27 +30,27 @@
         "pfxCertificatePassword": {
             "reference": {
                 "keyVault": {
-                    "id": "/subscriptions/b765c5e5-ae60-4724-9b59-36fbcf56795b/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/aaddstest"
+                    "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/aaddstest"
                 },
                 "secretName": "pfxCertificatePassword"
             }
         },
         "additionalRecipients": {
             "value": [
-                "carml@noreply.github.com"
+                "<<namePrefix>>@noreply.github.com"
             ]
         } //,
         // "diagnosticWorkspaceId": {
-        //     "value": "/subscriptions/b765c5e5-ae60-4724-9b59-36fbcf56795b/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-carml-az-law-x-001"
+        //     "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001"
         // },
         // "diagnosticStorageAccountId": {
-        //     "value": "/subscriptions/b765c5e5-ae60-4724-9b59-36fbcf56795b/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adpcarmlazsax001"
+        //     "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
         // },
         // "diagnosticEventHubAuthorizationRuleId": {
-        //     "value": "/subscriptions/b765c5e5-ae60-4724-9b59-36fbcf56795b/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-carml-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
+        //     "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
         // },
         // "diagnosticEventHubName": {
-        //     "value": "adp-carml-az-evh-x-001"
+        //     "value": "adp-<<namePrefix>>-az-evh-x-001"
         // },
         // "lock": {
         //     "value": "NotSpecified"
