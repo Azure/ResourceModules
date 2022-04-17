@@ -50,6 +50,12 @@
                 }
             ]
         },
+        "dnsServers": {
+            "value": [
+                "10.0.1.4",
+                "10.0.1.5"
+            ]
+        },
         "roleAssignments": {
             "value": [
                 {

@@ -493,6 +493,9 @@ stages:
             - path: $(dependencyPath)/$(resourceType)/parameters/bastion.parameters.json
               templateFilePath: $(templateFilePath)
               displayName: Bastion NSG
+            - path: $(dependencyPath)/$(resourceType)/parameters/aadds.parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: Bastion NSG
             - ${{ if eq( parameters.deploySqlMiDependencies, true) }}:
                 - path: $(dependencyPath)/$(resourceType)/parameters/sqlmi.parameters.json
                   templateFilePath: $(templateFilePath)
@@ -622,7 +625,7 @@ stages:
               templateFilePath: $(templateFilePath)
               displayName: Purge proteced key vault
               jobName: default_kv_nopr
-              customParameterFileTokens: '{"msiPrincipalId":"$(msiPrincipalId)"}'  
+              customParameterFileTokens: '{"msiPrincipalId":"$(msiPrincipalId)"}'
             - path: $(dependencyPath)/$(resourceType)/parameters/pe.parameters.json
               templateFilePath: $(templateFilePath)
               displayName: Private Endpoint Key Vault
@@ -907,6 +910,9 @@ stages:
             - path: $(dependencyPath)/$(resourceType)/parameters/7.virtualHubConnection.parameters.json
               templateFilePath: $(templateFilePath)
               displayName: Virtual Hub Connection Virtual Network
+            - path: $(dependencyPath)/$(resourceType)/parameters/8.aadds.parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: AADDS Virtual Network
             - ${{ if eq( parameters.deploySqlMiDependencies, true) }}:
                 - path: $(dependencyPath)/$(resourceType)/parameters/6.sqlmi.parameters.json
                   templateFilePath: $(templateFilePath)

@@ -657,6 +657,7 @@ jobs:
             'apgw.parameters.json',
             'ase.parameters.json',
             'bastion.parameters.json',
+            'aadds.parameters.json',
             'parameters.json',
           ]
     steps:
@@ -939,7 +940,7 @@ jobs:
                 TokenPrefix = $Settings.parameterFileTokens.tokenPrefix
                 TokenSuffix = $Settings.parameterFileTokens.tokenSuffix
             }
-             $NoprConvertTokensInputs = @{
+            $NoprConvertTokensInputs = @{
                 FilePath    = $noprParameterFilePath
                 Tokens      = @{}
                 TokenPrefix = $Settings.parameterFileTokens.tokenPrefix
@@ -1214,6 +1215,7 @@ jobs:
             '4.azfw.parameters.json',
             '5.aks.parameters.json',
             '7.virtualHubConnection.parameters.json',
+            '8.aadds.parameters.json',
             'parameters.json',
           ]
     steps:
