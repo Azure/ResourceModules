@@ -2,6 +2,13 @@
 
 This module deploys a Subscription Alias.
 
+## Navigation
+
+- [Resource Types](#Resource-Types)
+- [Parameters](#Parameters)
+- [Outputs](#Outputs)
+- [Template references](#Template-references)
+
 ## Resource Types
 
 | Resource Type | API Version |
@@ -11,18 +18,28 @@ This module deploys a Subscription Alias.
 
 ## Parameters
 
-| Parameter Name | Type | Default Value | Possible Values | Description |
+**Required parameters**
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `alias` | string | Alias to assign to the subscription |
+
+**Conditional parameters**
+| Parameter Name | Type | Default Value | Description |
+| :-- | :-- | :-- | :-- |
+| `billingAccount` | string | `''` | BillingAccount used for subscription billing. Required if no subscriptionId was provided. |
+| `displayName` | string | `''` | Display name for the subscription. Required if no subscriptionId was provided. |
+| `enrollmentAccount` | string | `''` | EnrollmentAccount used for subscription billing. Required if no subscriptionId was provided. |
+
+**Optional parameters**
+| Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `billingAccount` | string |  |  | Required. BillingAccount used for subscription billing |
-| `enrollmentAccount` | string |  |  | Required. EnrollmentAccount used for subscription billing |
-| `managementGroupId` | string |  |  | Optional. The ID of the management group to deploy into. If not provided the subscription is deployed into the root management group |
-| `subscriptionAlias` | string |  |  | Required. Alias to assign to the subscription |
-| `subscriptionDisplayName` | string |  |  | Required. Display name for the subscription |
-| `subscriptionId` | string |  |  | Optional. This parameter can be used to create alias for existing subscription Id |
-| `subscriptionOwnerId` | string |  |  | Optional. Owner Id of the subscription |
-| `subscriptionTenantId` | string |  |  | Optional. Tenant Id of the subscription |
-| `subscriptionWorkload` | string | `Production` | `[Production, DevTest]` | Optional. The workload type of the subscription. |
-| `tags` | object | `{object}` |  | Optional. Tags for the subscription |
+| `managementGroupId` | string | `''` |  | The ID of the management group to deploy into. If not provided the subscription is deployed into the root management group |
+| `ownerId` | string | `''` |  | Owner Id of the subscription |
+| `subscriptionId` | string | `''` |  | This parameter can be used to create alias for an existing subscription Id |
+| `tags` | object | `{object}` |  | Tags for the subscription |
+| `tenantId` | string | `''` |  | Tenant Id of the subscription |
+| `workload` | string | `'Production'` | `[Production, DevTest]` | The workload type of the subscription. |
+
 
 ### Parameter Usage: `tags`
 

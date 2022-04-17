@@ -1,16 +1,16 @@
 targetScope = 'managementGroup'
 
 @description('Conditional. EnrollmentAccount used for subscription billing. Required if no subscriptionId was provided.')
-param enrollmentAccount string
+param enrollmentAccount string = ''
 
 @description('Conditional. BillingAccount used for subscription billing. Required if no subscriptionId was provided.')
-param billingAccount string
+param billingAccount string = ''
 
 @description('Required. Alias to assign to the subscription')
 param alias string
 
 @description('Conditional. Display name for the subscription. Required if no subscriptionId was provided.')
-param displayName string
+param displayName string = ''
 
 @allowed([
   'Production'
