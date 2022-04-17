@@ -30,7 +30,7 @@ View
 #>
 
 $rawRoles = @'
-
+    <paste the table here>
 '@
 
 $resourceRoles = @()
