@@ -12,20 +12,21 @@ param name string
 @sys.description('Optional. Specifies the location of the resource.')
 param location string = resourceGroup().location
 
-@sys.description('Required. Specifies the sku, also referred as "edition".')
+@sys.description('Optional. Specifies the sku, also referred as "edition". Required for creating a compute resource.')
 @allowed([
   'Basic'
   'Enterprise'
+  ''
 ])
-param sku string
+param sku string = ''
 
-@sys.description('Optional. Contains resource tags defined as key-value pairs.')
+@sys.description('Optional. Contains resource tags defined as key-value pairs. Ignored when attaching a compute resource, i.e. when you provide a resource id.')
 param tags object = {}
 
-@sys.description('Required. Flag to specify whether to deploy the compute. Necessary as the compute resource is not idempontent, i.e. a second deployment will fail. Therefore, this flag needs to be set to "false" as long as the compute resource exists.')
-param deployCompute bool
+@sys.description('Optional. Flag to specify whether to deploy the compute. Required only for attach (i.e. providing a resource id), as in this case the operation is not idempontent, i.e. a second deployment will fail. Therefore, this flag needs to be set to "false" as long as the compute resource exists.')
+param deployCompute bool = true
 
-@sys.description('Optional. Location for the underlying compute.')
+@sys.description('Optional. Location for the underlying compute. Ignored when attaching a compute resource, i.e. when you provide a resource id.')
 param computeLocation string = resourceGroup().location
 
 @sys.description('Optional. The description of the Machine Learning compute.')
@@ -59,10 +60,10 @@ param properties object = {}
 param enableDefaultTelemetry bool = true
 
 // Identity
-@sys.description('Optional. Enables system assigned managed identity on the resource.')
+@sys.description('Optional. Enables system assigned managed identity on the resource. Ignored when attaching a compute resource, i.e. when you provide a resource id.')
 param systemAssignedIdentity bool = false
 
-@sys.description('Optional. The ID(s) to assign to the resource.')
+@sys.description('Optional. The ID(s) to assign to the resource. Ignored when attaching a compute resource, i.e. when you provide a resource id.')
 param userAssignedIdentities object = {}
 
 // ================//
@@ -100,21 +101,21 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
 resource machineLearningWorkspaceCompute 'Microsoft.MachineLearningServices/workspaces/computes@2022-01-01-preview' = if (deployCompute == true) {
   name: name
   location: location
-  tags: tags
-  sku: {
+  tags: empty(resourceId) ? tags : any(null)
+  sku: empty(resourceId) ? {
     name: sku
     tier: sku
-  }
+  } : any(null)
   parent: machineLearningWorkspace
-  identity: identity
+  identity: empty(resourceId) ? identity : any(null)
   properties: union({
-    computeLocation: computeLocation
     description: description
     disableLocalAuth: disableLocalAuth
     computeType: computeType
   }, (!empty(resourceId) ? {
     resourceId: resourceId
   } : {
+    computeLocation: computeLocation
     properties: properties
   }))
 }
@@ -131,5 +132,5 @@ output resourceId string = machineLearningWorkspaceCompute.id
 @sys.description('The resource group the compute was deployed into.')
 output resourceGroupName string = resourceGroup().name
 
-@sys.description('The principal ID of the system assigned identity.')
-output systemAssignedPrincipalId string = systemAssignedIdentity && contains(machineLearningWorkspaceCompute.identity, 'principalId') ? machineLearningWorkspaceCompute.identity.principalId : ''
+@sys.description('The principal ID of the system assigned identity. Is null in case of attaching a compute resource, i.e. when you provide a resource id.')
+output systemAssignedPrincipalId string = empty(resourceId) ? (systemAssignedIdentity && contains(machineLearningWorkspaceCompute.identity, 'principalId') ? machineLearningWorkspaceCompute.identity.principalId : '') : ''

@@ -177,12 +177,12 @@ module workspace_computes 'computes/deploy.bicep' = [for compute in computes: {
     machineLearningWorkspaceName: workspace.name
     name: compute.name
     location: compute.location
-    sku: compute.sku
+    sku: contains(compute, 'sku') ? compute.sku : ''
     systemAssignedIdentity: contains(compute, 'systemAssignedIdentity') ? compute.systemAssignedIdentity : false
     userAssignedIdentities: contains(compute, 'userAssignedIdentities') ? compute.userAssignedIdentities : {}
     tags: contains(compute, 'tags') ? compute.tags : {}
-    deployCompute: compute.deployCompute
-    computeLocation: compute.computeLocation
+    deployCompute: contains(compute, 'deployCompute') ? compute.deployCompute : true
+    computeLocation: contains(compute, 'computeLocation') ? compute.computeLocation : ''
     description: contains(compute, 'description') ? compute.description : ''
     disableLocalAuth: compute.disableLocalAuth
     resourceId: contains(compute, 'resourceId') ? compute.resourceId : ''
