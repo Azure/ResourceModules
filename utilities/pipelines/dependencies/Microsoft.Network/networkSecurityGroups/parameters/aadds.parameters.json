@@ -10,7 +10,7 @@
         {
           "name": "AllowSyncWithAzureAD",
           "properties": {
-            "protocol": "TCP",
+            "protocol": "Tcp",
             "sourcePortRange": "*",
             "destinationPortRange": "443",
             "sourceAddressPrefix": "AzureActiveDirectoryDomainServices",
@@ -23,7 +23,7 @@
         {
           "name": "AllowPSRemoting",
           "properties": {
-            "protocol": "TCP",
+            "protocol": "Tcp",
             "sourcePortRange": "*",
             "destinationPortRange": "5986",
             "sourceAddressPrefix": "AzureActiveDirectoryDomainServices",
