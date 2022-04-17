@@ -1,5 +1,7 @@
 name: '.Platform - Update ReadMe Module Tables'
 
+pr: none
+
 trigger:
   batch: true
   branches:

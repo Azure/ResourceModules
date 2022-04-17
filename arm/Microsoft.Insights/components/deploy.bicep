@@ -25,6 +25,25 @@ param publicNetworkAccessForIngestion string = 'Enabled'
 ])
 param publicNetworkAccessForQuery string = 'Enabled'
 
+@description('Optional. Retention period in days.')
+@allowed([
+  30
+  60
+  90
+  120
+  180
+  270
+  365
+  550
+  730
+])
+param retentionInDays int = 365
+
+@description('Optional. Percentage of the data produced by the application being monitored that is being sampled for Application Insights telemetry.')
+@minValue(0)
+@maxValue(100)
+param samplingPercentage int = 100
+
 @description('Optional. The kind of application that this component refers to, used to customize UI. This value is a freeform string, values should typically be one of the following: web, ios, other, store, java, phone.')
 param kind string = ''
 
@@ -37,12 +56,19 @@ param roleAssignments array = []
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
-param cuaId string = ''
+@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+param enableDefaultTelemetry bool = true
 
-module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
-  name: 'pid-${cuaId}'
-  params: {}
+resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
+  name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
+  properties: {
+    mode: 'Incremental'
+    template: {
+      '$schema': 'https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#'
+      contentVersion: '1.0.0.0'
+      resources: []
+    }
+  }
 }
 
 resource appInsights 'Microsoft.Insights/components@2020-02-02' = {
@@ -55,13 +81,17 @@ resource appInsights 'Microsoft.Insights/components@2020-02-02' = {
     WorkspaceResourceId: workspaceResourceId
     publicNetworkAccessForIngestion: publicNetworkAccessForIngestion
     publicNetworkAccessForQuery: publicNetworkAccessForQuery
+    RetentionInDays: retentionInDays
+    SamplingPercentage: samplingPercentage
   }
 }
 
 module appInsights_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-AppInsights-Rbac-${index}'
   params: {
+    description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
     principalIds: roleAssignment.principalIds
+    principalType: contains(roleAssignment, 'principalType') ? roleAssignment.principalType : ''
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
     resourceId: appInsights.id
   }

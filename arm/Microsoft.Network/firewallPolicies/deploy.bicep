@@ -72,20 +72,17 @@ param fqdns array = []
 @description('Optional. List of IP addresses for the ThreatIntel Allowlist.')
 param ipAddresses array = []
 
-@description('Optional. Secret Id of (base-64 encoded unencrypted pfx) Secret or Certificate object stored in KeyVault.	')
+@description('Optional. Secret ID of (base-64 encoded unencrypted pfx) Secret or Certificate object stored in KeyVault.	')
 param keyVaultSecretId string = ''
 
 @description('Optional. Name of the CA certificate.')
 param certificateName string = ''
 
-@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
-param cuaId string = ''
+@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+param enableDefaultTelemetry bool = true
 
 @description('Optional. Rule collection groups.')
 param ruleCollectionGroups array = []
-
-@description('Optional. Rule groups.')
-param ruleGroups array = []
 
 var identityType = systemAssignedIdentity ? (!empty(userAssignedIdentities) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned') : (!empty(userAssignedIdentities) ? 'UserAssigned' : 'None')
 
@@ -94,9 +91,16 @@ var identity = identityType != 'None' ? {
   userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
 } : null
 
-module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
-  name: 'pid-${cuaId}'
-  params: {}
+resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
+  name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
+  properties: {
+    mode: 'Incremental'
+    template: {
+      '$schema': 'https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#'
+      contentVersion: '1.0.0.0'
+      resources: []
+    }
+  }
 }
 
 resource firewallPolicy 'Microsoft.Network/firewallPolicies@2021-05-01' = {
@@ -149,7 +153,6 @@ resource firewallPolicy 'Microsoft.Network/firewallPolicies@2021-05-01' = {
   }
 }
 
-@batchSize(1)
 module firewallPolicy_ruleCollectionGroups 'ruleCollectionGroups/deploy.bicep' = [for (ruleCollectionGroup, index) in ruleCollectionGroups: {
   name: '${uniqueString(deployment().name, location)}-firewallPolicy_ruleCollectionGroups-${index}'
   params: {
@@ -157,17 +160,6 @@ module firewallPolicy_ruleCollectionGroups 'ruleCollectionGroups/deploy.bicep' =
     name: ruleCollectionGroup.name
     priority: ruleCollectionGroup.priority
     ruleCollections: ruleCollectionGroup.ruleCollections
-  }
-}]
-
-@batchSize(1)
-module firewallPolicy_ruleGroups 'ruleGroups/deploy.bicep' = [for (ruleGroup, index) in ruleGroups: {
-  name: '${uniqueString(deployment().name, location)}-firewallPolicy_ruleGroups-${index}'
-  params: {
-    firewallPolicyName: firewallPolicy.name
-    name: ruleGroup.name
-    priority: ruleGroup.priority
-    rules: ruleGroup.rules
   }
 }]
 

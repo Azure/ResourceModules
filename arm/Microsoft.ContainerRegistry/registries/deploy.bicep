@@ -18,31 +18,84 @@ param privateEndpoints array = []
 @description('Optional. Tier of your Azure container registry.')
 @allowed([
   'Basic'
-  'Standard'
   'Premium'
+  'Standard'
 ])
 param acrSku string = 'Basic'
 
-@description('Optional. The value that indicates whether the policy is enabled or not.')
-param quarantinePolicyStatus string = ''
+@allowed([
+  'disabled'
+  'enabled'
+])
+@description('Optional. The value that indicates whether the export policy is enabled or not.')
+param exportPolicyStatus string = 'disabled'
 
-@description('Optional. The value that indicates whether the policy is enabled or not.')
-param trustPolicyStatus string = ''
+@allowed([
+  'disabled'
+  'enabled'
+])
+@description('Optional. The value that indicates whether the quarantine policy is enabled or not.')
+param quarantinePolicyStatus string = 'disabled'
 
-@description('Optional. The value that indicates whether the policy is enabled or not.')
-param retentionPolicyStatus string = ''
+@allowed([
+  'disabled'
+  'enabled'
+])
+@description('Optional. The value that indicates whether the trust policy is enabled or not.')
+param trustPolicyStatus string = 'disabled'
+
+@allowed([
+  'disabled'
+  'enabled'
+])
+@description('Optional. The value that indicates whether the retention policy is enabled or not.')
+param retentionPolicyStatus string = 'enabled'
 
 @description('Optional. The number of days to retain an untagged manifest after which it gets purged.')
-param retentionPolicyDays string = ''
+param retentionPolicyDays int = 15
+
+@allowed([
+  'disabled'
+  'enabled'
+])
+@description('Optional. The value that indicates whether encryption is enabled or not.')
+param encryptionStatus string = 'disabled'
+
+@description('Optional. Identity which will be used to access key vault and Key vault uri to access the encryption key.')
+param keyVaultProperties object = {}
 
 @description('Optional. Enable a single data endpoint per region for serving data. Not relevant in case of disabled public access.')
 param dataEndpointEnabled bool = false
 
+@allowed([
+  'Disabled'
+  'Enabled'
+])
 @description('Optional. Whether or not public network access is allowed for the container registry. - Enabled or Disabled')
 param publicNetworkAccess string = 'Enabled'
 
 @description('Optional. Whether to allow trusted Azure services to access a network restricted registry. Not relevant in case of public access. - AzureServices or None')
 param networkRuleBypassOptions string = 'AzureServices'
+
+@allowed([
+  'Allow'
+  'Deny'
+])
+@description('Optional. The default action of allow or deny when no other rules match.')
+param networkRuleSetDefaultAction string = 'Deny'
+
+@description('Optional. The IP ACL rules.')
+param networkRuleSetIpRules array = []
+
+@allowed([
+  'Disabled'
+  'Enabled'
+])
+@description('Optional. Whether or not zone redundancy is enabled for this container registry')
+param zoneRedundancy string = 'Disabled'
+
+@description('Optional. All replications to create')
+param replications array = []
 
 @allowed([
   'CanNotDelete'
@@ -61,15 +114,15 @@ param userAssignedIdentities object = {}
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
-param cuaId string = ''
+@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+param enableDefaultTelemetry bool = true
 
 @description('Optional. The name of logs that will be streamed.')
 @allowed([
   'ContainerRegistryRepositoryEvents'
   'ContainerRegistryLoginEvents'
 ])
-param logsToEnable array = [
+param diagnosticLogCategoriesToEnable array = [
   'ContainerRegistryRepositoryEvents'
   'ContainerRegistryLoginEvents'
 ]
@@ -78,7 +131,7 @@ param logsToEnable array = [
 @allowed([
   'AllMetrics'
 ])
-param metricsToEnable array = [
+param diagnosticMetricsToEnable array = [
   'AllMetrics'
 ]
 
@@ -99,8 +152,11 @@ param diagnosticEventHubAuthorizationRuleId string = ''
 @description('Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.')
 param diagnosticEventHubName string = ''
 
-var diagnosticsLogs = [for log in logsToEnable: {
-  category: log
+@description('Optional. The name of the diagnostic setting, if deployed.')
+param diagnosticSettingsName string = '${name}-diagnosticSettings'
+
+var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
+  category: category
   enabled: true
   retentionPolicy: {
     enabled: true
@@ -108,7 +164,7 @@ var diagnosticsLogs = [for log in logsToEnable: {
   }
 }]
 
-var diagnosticsMetrics = [for metric in metricsToEnable: {
+var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
   category: metric
   timeGrain: null
   enabled: true
@@ -125,9 +181,16 @@ var identity = identityType != 'None' ? {
   userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
 } : null
 
-module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
-  name: 'pid-${cuaId}'
-  params: {}
+resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
+  name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
+  properties: {
+    mode: 'Incremental'
+    template: {
+      '$schema': 'https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#'
+      contentVersion: '1.0.0.0'
+      resources: []
+    }
+  }
 }
 
 resource registry 'Microsoft.ContainerRegistry/registries@2021-09-01' = {
@@ -140,24 +203,48 @@ resource registry 'Microsoft.ContainerRegistry/registries@2021-09-01' = {
   }
   properties: {
     adminUserEnabled: acrAdminUserEnabled
+    encryption: acrSku == 'Premium' ? {
+      keyVaultProperties: !empty(keyVaultProperties) ? keyVaultProperties : null
+      status: encryptionStatus
+    } : null
     policies: {
+      exportPolicy: acrSku == 'Premium' ? {
+        status: exportPolicyStatus
+      } : null
       quarantinePolicy: {
-        status: (empty(quarantinePolicyStatus) ? null : quarantinePolicyStatus)
+        status: quarantinePolicyStatus
       }
       trustPolicy: {
         type: 'Notary'
-        status: (empty(trustPolicyStatus) ? null : trustPolicyStatus)
+        status: trustPolicyStatus
       }
-      retentionPolicy: {
-        days: (empty(retentionPolicyDays) ? null : int(retentionPolicyDays))
-        status: (empty(retentionPolicyStatus) ? null : retentionPolicyStatus)
-      }
+      retentionPolicy: acrSku == 'Premium' ? {
+        days: retentionPolicyDays
+        status: retentionPolicyStatus
+      } : null
     }
     dataEndpointEnabled: dataEndpointEnabled
     publicNetworkAccess: publicNetworkAccess
     networkRuleBypassOptions: networkRuleBypassOptions
+    networkRuleSet: !empty(networkRuleSetIpRules) ? {
+      defaultAction: networkRuleSetDefaultAction
+      ipRules: networkRuleSetIpRules
+    } : null
+    zoneRedundancy: acrSku == 'Premium' ? zoneRedundancy : null
   }
 }
+
+module registry_replications 'replications/deploy.bicep' = [for (replication, index) in replications: {
+  name: '${uniqueString(deployment().name, location)}-Registry-Replication-${index}'
+  params: {
+    name: replication.name
+    registryName: registry.name
+    location: replication.location
+    regionEndpointEnabled: contains(replication, 'regionEndpointEnabled') ? replication.regionEndpointEnabled : true
+    zoneRedundancy: contains(replication, 'zoneRedundancy') ? replication.zoneRedundancy : 'Disabled'
+    tags: contains(replication, 'tags') ? replication.tags : {}
+  }
+}]
 
 resource registry_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
   name: '${registry.name}-${lock}-lock'
@@ -169,7 +256,7 @@ resource registry_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 
 }
 
 resource registry_diagnosticSettingName 'Microsoft.Insights/diagnosticsettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(diagnosticWorkspaceId)) || (!empty(diagnosticEventHubAuthorizationRuleId)) || (!empty(diagnosticEventHubName))) {
-  name: '${registry.name}-diagnosticSettings'
+  name: diagnosticSettingsName
   properties: {
     storageAccountId: !empty(diagnosticStorageAccountId) ? diagnosticStorageAccountId : null
     workspaceId: !empty(diagnosticWorkspaceId) ? diagnosticWorkspaceId : null
@@ -184,7 +271,9 @@ resource registry_diagnosticSettingName 'Microsoft.Insights/diagnosticsettings@2
 module registry_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-ContainerRegistry-Rbac-${index}'
   params: {
+    description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
     principalIds: roleAssignment.principalIds
+    principalType: contains(roleAssignment, 'principalType') ? roleAssignment.principalType : ''
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
     resourceId: registry.id
   }

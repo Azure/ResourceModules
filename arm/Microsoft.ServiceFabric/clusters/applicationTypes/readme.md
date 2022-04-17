@@ -1,6 +1,13 @@
-# ServiceFabric Cluster Application Type `[Microsoft.ServiceFabric/clusters/applicationTypes]`
+# Service Fabric Cluster Application Types `[Microsoft.ServiceFabric/clusters/applicationTypes]`
 
-This module deploys a ServiceFabric cluster application type.
+This module deploys a Service Fabric Cluster Application Type.
+
+## Navigation
+
+- [Resource Types](#Resource-Types)
+- [Parameters](#Parameters)
+- [Outputs](#Outputs)
+- [Template references](#Template-references)
 
 ## Resource Types
 
@@ -10,12 +17,18 @@ This module deploys a ServiceFabric cluster application type.
 
 ## Parameters
 
-| Parameter Name | Type | Default Value | Possible Values | Description |
-| :-- | :-- | :-- | :-- | :-- |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
-| `name` | string | `defaultApplicationType` |  | Optional. Application type name. |
-| `serviceFabricClusterName` | string |  |  | Required. Name of the Service Fabric cluster. |
-| `tags` | object | `{object}` |  | Optional. Tags of the resource. |
+**Required parameters**
+| Parameter Name | Type | Default Value | Description |
+| :-- | :-- | :-- | :-- |
+| `serviceFabricClusterName` | string | `''` | Name of the Service Fabric cluster. |
+
+**Optional parameters**
+| Parameter Name | Type | Default Value | Description |
+| :-- | :-- | :-- | :-- |
+| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `name` | string | `'defaultApplicationType'` | Application type name. |
+| `tags` | object | `{object}` | Tags of the resource. |
+
 
 ### Parameter Usage: `tags`
 

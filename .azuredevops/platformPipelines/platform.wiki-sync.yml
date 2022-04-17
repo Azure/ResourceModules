@@ -4,6 +4,8 @@
 
 name: '.Platform - Sync Docs/Wiki'
 
+pr: none
+
 trigger:
   branches:
     include:

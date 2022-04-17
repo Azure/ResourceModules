@@ -1,5 +1,34 @@
-name: 'Publish module'
-description: 'Publish module'
+#########################################################
+## 'Publishing' Composite Action                   ##
+#########################################################
+##
+## This composite action contains the logic to publish a given template to a number of different locations such as:
+## - Template Specs
+## - Private Bicep Registry
+##
+#########################################################
+##
+##-------------------------------------------##
+## ACTION PARAMETERS                         ##
+##-------------------------------------------##
+##
+##   |=======================================================================================================================================================================================================|
+##   | Parameter                | Required | Default | Description                                                                                      | Example                                            |
+##   |--------------------------|----------|---------|--------------------------------------------------------------------------------------------------|----------------------------------------------------|
+##   | templateFilePath         | true     | ''      | The path to the template file to publish                                                         | 'arm/Microsoft.ApiManagement/service/deploy.bicep' |
+##   | templateSpecsRgName      | false    | ''      | Required to publish to template spec. ResourceGroup of the template spec to publish to           | 'artifacts-rg'                                     |
+##   | templateSpecsRgLocation  | false    | ''      | Required to publish to template spec. Location of the template spec resource group               | 'WestEurope'                                       |
+##   | templateSpecsDescription | false    | ''      | Required to publish to template spec. Description of the template spec to publish to             | 'This is an API-Management service template'       |
+##   | templateSpecsDoPublish   | false    | 'false' | Flag to indicate whether or not to publish to template specs                                     | 'true'                                             |
+##   | bicepRegistryName        | false    | ''      | Required to publish to private bicep registry. Name of the container registry to publish to      | 'myacr'                                            |
+##   | bicepRegistryRgName      | false    | ''      | Required to publish to private bicep registry. Name of the container registry resource group     | 'artifacts-rg'                                     |
+##   | bicepRegistryRgLocation  | false    | ''      | Required to publish to private bicep registry. Location of the container registry resource group | 'WestEurope'                                       |
+##   | bicepRegistryDoPublish   | false    | 'false' | Flag to indicate whether or not to publish to the private bicep registry                         | 'true'                                             |
+##   |=======================================================================================================================================================================================================|
+##
+##---------------------------------------------##
+name: 'Publishing'
+description: 'Publishing'
 
 inputs:
   templateFilePath:
@@ -19,7 +48,7 @@ inputs:
     default: 'false'
     required: false
   bicepRegistryName:
-    description: 'Required to publish to private bicep registry. ResourceGroup of the container registry to publish to'
+    description: 'Required to publish to private bicep registry. Name of the container registry to publish to'
     required: false
   bicepRegistryRgName:
     description: 'Required to publish to private bicep registry. Name of the container registry resource group'

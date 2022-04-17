@@ -2,6 +2,15 @@
 
 With this module you can create policy set definitions across the management group or subscription scope.
 
+## Navigation
+
+- [Resource types](#Resource-types)
+- [Parameters](#Parameters)
+- [Module Usage Guidance](#Module-Usage-Guidance)
+- [Outputs](#Outputs)
+- [Considerations](#Considerations)
+- [Template references](#Template-references)
+
 ## Resource types
 
 | Resource Type | API Version |
@@ -10,18 +19,25 @@ With this module you can create policy set definitions across the management gro
 
 ## Parameters
 
-| Parameter Name | Type | Default Value | Possible Values | Description |
-| :-- | :-- | :-- | :-- | :-- |
-| `description` | string |  |  | Optional. The description name of the Set Definition (Initiative) |
-| `displayName` | string |  |  | Optional. The display name of the Set Definition (Initiative). Maximum length is 128 characters. |
-| `location` | string | `[deployment().location]` |  | Optional. Location for all resources. |
-| `managementGroupId` | string | `[managementGroup().name]` |  | Optional. The group ID of the Management Group (Scope). If not provided, will use the current scope for deployment. |
-| `metadata` | object | `{object}` |  | Optional. The Set Definition (Initiative) metadata. Metadata is an open ended object and is typically a collection of key-value pairs. |
-| `name` | string |  |  | Required. Specifies the name of the policy Set Definition (Initiative). Maximum length is 24 characters for management group scope and 64 characters for subscription scope. |
-| `parameters` | object | `{object}` |  | Optional. The Set Definition (Initiative) parameters that can be used in policy definition references. |
-| `policyDefinitionGroups` | array | `[]` |  | Optional. The metadata describing groups of policy definition references within the Policy Set Definition (Initiative). |
-| `policyDefinitions` | array |  |  | Required. The array of Policy definitions object to include for this policy set. Each object must include the Policy definition ID, and optionally other properties like parameters |
-| `subscriptionId` | string |  |  | Optional. The subscription ID of the subscription (Scope). Cannot be used with managementGroupId |
+**Required parameters**
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `name` | string | Specifies the name of the policy Set Definition (Initiative). Maximum length is 24 characters for management group scope and 64 characters for subscription scope. |
+| `policyDefinitions` | array | The array of Policy definitions object to include for this policy set. Each object must include the Policy definition ID, and optionally other properties like parameters |
+
+**Optional parameters**
+| Parameter Name | Type | Default Value | Description |
+| :-- | :-- | :-- | :-- |
+| `description` | string | `''` | The description name of the Set Definition (Initiative) |
+| `displayName` | string | `''` | The display name of the Set Definition (Initiative). Maximum length is 128 characters. |
+| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `location` | string | `[deployment().location]` | Location deployment metadata. |
+| `managementGroupId` | string | `[managementGroup().name]` | The group ID of the Management Group (Scope). If not provided, will use the current scope for deployment. |
+| `metadata` | object | `{object}` | The Set Definition (Initiative) metadata. Metadata is an open ended object and is typically a collection of key-value pairs. |
+| `parameters` | object | `{object}` | The Set Definition (Initiative) parameters that can be used in policy definition references. |
+| `policyDefinitionGroups` | array | `[]` | The metadata describing groups of policy definition references within the Policy Set Definition (Initiative). |
+| `subscriptionId` | string | `''` | The subscription ID of the subscription (Scope). Cannot be used with managementGroupId |
+
 
 ### Parameter Usage: `managementGroupId`
 
