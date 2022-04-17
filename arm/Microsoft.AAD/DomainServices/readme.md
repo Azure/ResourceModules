@@ -7,7 +7,6 @@ This template deploys Azure Active Directory Domain Services (AADDS).
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Considerations](#Considerations)
-- [Get base64encoded code from PFX](#Get-base64encoded-code-from-PFX)
 - [Outputs](#Outputs)
 - [Template references](#Template-references)
 
@@ -30,7 +29,7 @@ This template deploys Azure Active Directory Domain Services (AADDS).
 **Conditional parameters**
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
-| `pfxCertificate` | string | `''` | The certificate required to configure Secure LDAP. The parameter passed here should be a base64encoded representation of the certificate PFX file.  Required if secure LDAP is enabled. |
+| `pfxCertificate` | string | `''` | The certificate required to configure Secure LDAP. Should be a base64encoded representation of the certificate PFX file. Required if secure LDAP is enabled and must be valid more than 30 days. |
 | `pfxCertificatePassword` | secureString | `''` | The password to decrypt the provided Secure LDAP certificate PFX file. Required if secure LDAP is enabled. |
 
 **Optional parameters**
