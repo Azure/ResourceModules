@@ -1,31 +1,31 @@
 targetScope = 'managementGroup'
 
-@description('Required. EnrollmentAccount used for subscription billing')
+@description('Conditional. EnrollmentAccount used for subscription billing. Required if no subscriptionId was provided.')
 param enrollmentAccount string
 
-@description('Required. BillingAccount used for subscription billing')
+@description('Conditional. BillingAccount used for subscription billing. Required if no subscriptionId was provided.')
 param billingAccount string
 
 @description('Required. Alias to assign to the subscription')
-param subscriptionAlias string
+param alias string
 
-@description('Required. Display name for the subscription')
-param subscriptionDisplayName string
+@description('Conditional. Display name for the subscription. Required if no subscriptionId was provided.')
+param displayName string
 
 @allowed([
   'Production'
   'DevTest'
 ])
 @description('Optional. The workload type of the subscription.')
-param subscriptionWorkload string = 'Production'
+param workload string = 'Production'
 
 @description('Optional. Owner Id of the subscription')
-param subscriptionOwnerId string = ''
+param ownerId string = ''
 
 @description('Optional. Tenant Id of the subscription')
-param subscriptionTenantId string = ''
+param tenantId string = ''
 
-@description('Optional. This parameter can be used to create alias for existing subscription Id')
+@description('Optional. This parameter can be used to create alias for an existing subscription Id')
 param subscriptionId string = ''
 
 @description('Optional. Tags for the subscription')
@@ -34,17 +34,17 @@ param tags object = {}
 @description('Optional. The ID of the management group to deploy into. If not provided the subscription is deployed into the root management group')
 param managementGroupId string = ''
 
-resource alias 'Microsoft.Subscription/aliases@2021-10-01' = {
+resource aliases 'Microsoft.Subscription/aliases@2021-10-01' = {
   scope: tenant()
-  name: subscriptionAlias
+  name: alias
   properties: {
-    workload: subscriptionWorkload
-    displayName: empty(subscriptionId) ? subscriptionDisplayName : null
+    workload: workload
+    displayName: empty(subscriptionId) ? displayName : null
     billingScope: empty(subscriptionId) ? tenantResourceId('Microsoft.Billing/billingAccounts/enrollmentAccounts', billingAccount, enrollmentAccount) : null
     additionalProperties: {
       managementGroupId: !empty(managementGroupId) ? tenantResourceId('Microsoft.Management/managementGroups', managementGroupId) : null
-      subscriptionOwnerId: !empty(subscriptionOwnerId) ? subscriptionOwnerId : null
-      subscriptionTenantId: !empty(subscriptionTenantId) ? subscriptionTenantId : null
+      subscriptionOwnerId: !empty(ownerId) ? ownerId : null
+      subscriptionTenantId: !empty(tenantId) ? tenantId : null
       tags: tags
     }
     subscriptionId: !empty(subscriptionId) ? subscriptionId : null
@@ -56,15 +56,15 @@ module subscriptionPlacement '.bicep/mgmtGroup.bicep' = {
   name: '${uniqueString(deployment().name)}-placement'
   params: {
     managementGroupId: managementGroupId
-    subscriptionId: alias.properties.subscriptionId
+    subscriptionId: aliases.properties.subscriptionId
   }
 }
 
 @description('The name of the deployed subscription alias')
-output name string = alias.name
+output name string = aliases.name
 
 @description('The resource ID of the deployed subscription alias')
-output resourceId string = alias.id
+output resourceId string = aliases.id
 
 @description('The subscription ID attached to the deployed alias')
-output subscriptionId string = alias.properties.subscriptionId
+output subscriptionId string = aliases.properties.subscriptionId
