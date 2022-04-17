@@ -434,9 +434,9 @@ function New-TemplateDeployment {
             if ($PSCmdlet.ShouldProcess('Deployment without parameter file', 'Trigger')) {
                 return New-DeploymentWithParameterFile @deploymentInputObject
             }
-            Write-Debug ('{0} exited' -f $MyInvocation.MyCommand)
         }
     }
+
     end {
         Write-Debug ('{0} exited' -f $MyInvocation.MyCommand)
     }
