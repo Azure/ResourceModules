@@ -28,8 +28,8 @@ Attaching a compute is not idempotent and will fail in case you try to redeploy 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `computeLocation` | string | `[resourceGroup().location]` |  | Location for the underlying compute. Ignored when attaching a compute resource, i.e. when you provide a resource id. |
-| `deployCompute` | bool | `True` |  | Flag to specify whether to deploy the compute. Required only for attach (i.e. providing a resource id), as in this case the operation is not idempontent, i.e. a second deployment will fail. Therefore, this flag needs to be set to "false" as long as the compute resource exists. |
+| `computeLocation` | string | `[resourceGroup().location]` |  | Location for the underlying compute. Ignored when attaching a compute resource, i.e. when you provide a resource ID. |
+| `deployCompute` | bool | `True` |  | Flag to specify whether to deploy the compute. Required only for attach (i.e. providing a resource ID), as in this case the operation is not idempontent, i.e. a second deployment will fail. Therefore, this flag needs to be set to "false" as long as the compute resource exists. |
 | `description` | string | `''` |  | The description of the Machine Learning compute. |
 | `disableLocalAuth` | bool | `False` |  | Opt-out of local authentication and ensure customers can use only MSI and AAD exclusively for authentication. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
@@ -37,9 +37,9 @@ Attaching a compute is not idempotent and will fail in case you try to redeploy 
 | `properties` | object | `{object}` |  | The properties of the compute. Will be ignored in case "resourceId" is set. |
 | `resourceId` | string | `''` |  | ARM resource ID of the underlying compute. |
 | `sku` | string | `''` | `[Basic, Enterprise, ]` | Specifies the sku, also referred as "edition". Required for creating a compute resource. |
-| `systemAssignedIdentity` | bool | `False` |  | Enables system assigned managed identity on the resource. Ignored when attaching a compute resource, i.e. when you provide a resource id. |
-| `tags` | object | `{object}` |  | Contains resource tags defined as key-value pairs. Ignored when attaching a compute resource, i.e. when you provide a resource id. |
-| `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. Ignored when attaching a compute resource, i.e. when you provide a resource id. |
+| `systemAssignedIdentity` | bool | `False` |  | Enables system assigned managed identity on the resource. Ignored when attaching a compute resource, i.e. when you provide a resource ID. |
+| `tags` | object | `{object}` |  | Contains resource tags defined as key-value pairs. Ignored when attaching a compute resource, i.e. when you provide a resource ID. |
+| `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. Ignored when attaching a compute resource, i.e. when you provide a resource ID. |
 
 
 ### Parameter Usage: `properties`
@@ -92,7 +92,7 @@ You can specify multiple user assigned identities to a resource by providing add
 | `name` | string | The name of the compute. |
 | `resourceGroupName` | string | The resource group the compute was deployed into. |
 | `resourceId` | string | The resource ID of the compute. |
-| `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. Is null in case of attaching a compute resource, i.e. when you provide a resource id. |
+| `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. Is null in case of attaching a compute resource, i.e. when you provide a resource ID. |
 
 
 ## Template references

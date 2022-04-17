@@ -20,13 +20,13 @@ param location string = resourceGroup().location
 ])
 param sku string = ''
 
-@sys.description('Optional. Contains resource tags defined as key-value pairs. Ignored when attaching a compute resource, i.e. when you provide a resource id.')
+@sys.description('Optional. Contains resource tags defined as key-value pairs. Ignored when attaching a compute resource, i.e. when you provide a resource ID.')
 param tags object = {}
 
-@sys.description('Optional. Flag to specify whether to deploy the compute. Required only for attach (i.e. providing a resource id), as in this case the operation is not idempontent, i.e. a second deployment will fail. Therefore, this flag needs to be set to "false" as long as the compute resource exists.')
+@sys.description('Optional. Flag to specify whether to deploy the compute. Required only for attach (i.e. providing a resource ID), as in this case the operation is not idempontent, i.e. a second deployment will fail. Therefore, this flag needs to be set to "false" as long as the compute resource exists.')
 param deployCompute bool = true
 
-@sys.description('Optional. Location for the underlying compute. Ignored when attaching a compute resource, i.e. when you provide a resource id.')
+@sys.description('Optional. Location for the underlying compute. Ignored when attaching a compute resource, i.e. when you provide a resource ID.')
 param computeLocation string = resourceGroup().location
 
 @sys.description('Optional. The description of the Machine Learning compute.')
@@ -60,10 +60,10 @@ param properties object = {}
 param enableDefaultTelemetry bool = true
 
 // Identity
-@sys.description('Optional. Enables system assigned managed identity on the resource. Ignored when attaching a compute resource, i.e. when you provide a resource id.')
+@sys.description('Optional. Enables system assigned managed identity on the resource. Ignored when attaching a compute resource, i.e. when you provide a resource ID.')
 param systemAssignedIdentity bool = false
 
-@sys.description('Optional. The ID(s) to assign to the resource. Ignored when attaching a compute resource, i.e. when you provide a resource id.')
+@sys.description('Optional. The ID(s) to assign to the resource. Ignored when attaching a compute resource, i.e. when you provide a resource ID.')
 param userAssignedIdentities object = {}
 
 // ================//
@@ -132,5 +132,5 @@ output resourceId string = machineLearningWorkspaceCompute.id
 @sys.description('The resource group the compute was deployed into.')
 output resourceGroupName string = resourceGroup().name
 
-@sys.description('The principal ID of the system assigned identity. Is null in case of attaching a compute resource, i.e. when you provide a resource id.')
+@sys.description('The principal ID of the system assigned identity. Is null in case of attaching a compute resource, i.e. when you provide a resource ID.')
 output systemAssignedPrincipalId string = empty(resourceId) ? (systemAssignedIdentity && contains(machineLearningWorkspaceCompute.identity, 'principalId') ? machineLearningWorkspaceCompute.identity.principalId : '') : ''
