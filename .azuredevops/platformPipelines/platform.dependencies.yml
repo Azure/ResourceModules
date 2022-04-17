@@ -20,7 +20,7 @@ trigger: none
 #       - main
 #   paths:
 #     include:
-#       - '.azuredevops/pipelineTemplates/jobs.deployTemplate.yml'
+#       - '.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml'
 #       - '.azuredevops/platformPipelines/platform.dependencies.yml'
 #       - 'utilities/pipelines/dependencies/**'
 
