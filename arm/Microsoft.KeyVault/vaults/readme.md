@@ -57,12 +57,12 @@ This module deploys a key vault and its child resources.
 | `softDeleteRetentionInDays` | int | `90` |  | softDelete data retention days. It accepts >=7 and <=90. |
 | `tags` | object | `{object}` |  | Resource tags. |
 | `vaultSku` | string | `'premium'` | `[premium, standard]` | Specifies the SKU for the vault |
-| `vNetId` | string | `''` |  | Virtual Network resource identifier, if networkAcls is passed, this value must be passed as well |
 
 **Generated parameters**
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `baseTime` | string | `[utcNow('u')]` | Do not provide a value! This date value is used to generate a SAS token to access the modules. |
+
 
 ### Parameter Usage: `roleAssignments`
 
