@@ -6,7 +6,7 @@ This section provides an overview of the principles the publishing is built upon
     - [Output example](#output-example)
 
 
-<img src=".\media\CIEnvironment\publishingStep.png" alt="Publishing Step" height="500">
+<img src="./media/CIEnvironment/publishingStep.png" alt="Publishing Step" height="500">
 
 # Publishing overview
 The publishing phase concludes each module's pipeline. If all previous tests succeed (i.e. no phase failed) and the pipeline is executed in the `main` or `master` branch, a new module version is published to all configured target locations. Currently we support the following target locations:
@@ -76,4 +76,4 @@ C499 -> C500 ---> C501 ---> C502 ---> C503 (503)
 
 ## Output example
 
-<img src=".\media\CIEnvironment\publishingOutput.png" alt="Publishing Output" height="300">
+<img src="./media/CIEnvironment/publishingOutput.png" alt="Publishing Output" height="300">

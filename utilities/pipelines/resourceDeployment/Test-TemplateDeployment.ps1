@@ -31,12 +31,17 @@ Optional. Name of the management group to deploy into. Mandatory if deploying in
 Optional. Additional parameters you can provide with the deployment. E.g. @{ resourceGroupName = 'myResourceGroup' }
 
 .EXAMPLE
-Test-TemplateDeploymentWithParameterFile templateFilePath 'ARM/KeyVault/deploy.json' -parameterFilePath 'ARM/KeyVault/.parameters/parameters.json' -location 'WestEurope' -resourceGroupName 'aLegendaryRg'
+Test-TemplateDeployment -templateFilePath 'C:/KeyVault/deploy.bicep' -parameterFilePath 'C:/KeyVault/.parameters/parameters.json' -location 'WestEurope' -resourceGroupName 'aLegendaryRg'
 
-Test the deploy.json of the KeyVault module with the parameter file 'parameters.json' using the resource group 'aLegendaryRg' in location 'WestEurope'
+Test the deploy.bicep of the KeyVault module with the parameter file 'parameters.json' using the resource group 'aLegendaryRg' in location 'WestEurope'
 
 .EXAMPLE
-Test-TemplateDeploymentWithParameterFile templateFilePath 'ARM/ResourceGroup/deploy.json' -parameterFilePath 'ARM/ResourceGroup/.parameters/parameters.json' -location 'WestEurope'
+Test-TemplateDeployment -templateFilePath 'C:/KeyVault/deploy.bicep' -location 'WestEurope' -resourceGroupName 'aLegendaryRg'
+
+Test the deploy.bicep of the KeyVault module using the resource group 'aLegendaryRg' in location 'WestEurope'
+
+.EXAMPLE
+Test-TemplateDeployment -templateFilePath 'C:/ResourceGroup/deploy.json' -parameterFilePath 'C:/ResourceGroup/.parameters/parameters.json' -location 'WestEurope'
 
 Test the deploy.json of the ResourceGroup module with the parameter file 'parameters.json' in location 'WestEurope'
 #>
@@ -74,22 +79,10 @@ function Test-TemplateDeployment {
     }
 
     process {
-        $deploymentNamePrefix = Split-Path -Path (Split-Path $templateFilePath -Parent) -LeafBase
-        if ([String]::IsNullOrEmpty($deploymentNamePrefix)) {
-            $deploymentNamePrefix = 'templateDeployment-{0}' -f (Split-Path $templateFilePath -LeafBase)
-        }
-        # Generate a valid deployment name. Must match ^[-\w\._\(\)]+$
-        do {
-            $deploymentName = "$deploymentNamePrefix-$(-join (Get-Date -Format yyyyMMddTHHMMssffffZ)[0..63])"
-        } while ($deploymentName -notmatch '^[-\w\._\(\)]+$')
-
-        Write-Verbose "Testing with deployment name [$deploymentName]" -Verbose
-
         $DeploymentInputs = @{
-            DeploymentName = $deploymentName
-            TemplateFile   = $templateFilePath
-            Verbose        = $true
-            OutVariable    = 'ValidationErrors'
+            TemplateFile = $templateFilePath
+            Verbose      = $true
+            OutVariable  = 'ValidationErrors'
         }
         if (-not [String]::IsNullOrEmpty($parameterFilePath)) {
             $DeploymentInputs['TemplateParameterFile'] = $parameterFilePath
@@ -102,6 +95,20 @@ function Test-TemplateDeployment {
         }
 
         $deploymentScope = Get-ScopeOfTemplateFile -TemplateFilePath $templateFilePath
+
+        if ($deploymentScope -ne 'resourceGroup') {
+            $deploymentNamePrefix = Split-Path -Path (Split-Path $templateFilePath -Parent) -LeafBase
+            if ([String]::IsNullOrEmpty($deploymentNamePrefix)) {
+                $deploymentNamePrefix = 'templateDeployment-{0}' -f (Split-Path $templateFilePath -LeafBase)
+            }
+            # Generate a valid deployment name. Must match ^[-\w\._\(\)]+$
+            do {
+                $deploymentName = "$deploymentNamePrefix-$(-join (Get-Date -Format yyyyMMddTHHMMssffffZ)[0..63])"
+            } while ($deploymentName -notmatch '^[-\w\._\(\)]+$')
+
+            Write-Verbose "Testing with deployment name [$deploymentName]" -Verbose
+            $DeploymentInputs['DeploymentName'] = $deploymentName
+        }
 
         #######################
         ## INVOKE DEPLOYMENT ##
