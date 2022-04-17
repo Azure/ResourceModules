@@ -34,6 +34,28 @@ param tags object = {}
 @description('Optional. The ID of the management group to deploy into. If not provided the subscription is deployed into the root management group')
 param managementGroupId string = ''
 
+@description('Optional. Array of role assignment objects to define RBAC on this resource.')
+param roleAssignments array = []
+
+@description('Optional. Location deployment metadata.')
+param location string = deployment().location
+
+@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+param enableDefaultTelemetry bool = true
+
+resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
+  name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
+  location: location
+  properties: {
+    mode: 'Incremental'
+    template: {
+      '$schema': 'https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#'
+      contentVersion: '1.0.0.0'
+      resources: []
+    }
+  }
+}
+
 resource aliases 'Microsoft.Subscription/aliases@2021-10-01' = {
   scope: tenant()
   name: alias
@@ -59,6 +81,18 @@ module subscriptionPlacement '.bicep/mgmtGroup.bicep' = {
     subscriptionId: aliases.properties.subscriptionId
   }
 }
+
+module subscription_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+  name: '${uniqueString(deployment().name)}-Subscription-Rbac-${index}'
+  params: {
+    description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
+    principalIds: roleAssignment.principalIds
+    principalType: contains(roleAssignment, 'principalType') ? roleAssignment.principalType : ''
+    roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
+    subscriptionId: aliases.id
+  }
+  scope: subscription(aliases.id)
+}]
 
 @description('The name of the deployed subscription alias')
 output name string = aliases.name
