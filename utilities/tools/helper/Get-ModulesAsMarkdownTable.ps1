@@ -63,7 +63,7 @@ function Get-PipelineStatusUrl {
         'GitHub' {
             $pipelineFileUri = ".github/workflows/$pipelineFileName"
             $pipelineName = (Get-Content -Path $pipelineFileUri)[0].TrimStart('name:').Replace('"', '').Trim()
-            $pipelineNameInUri = $pipelineName.Replace(' ', '%20')
+            $pipelineNameInUri = $pipelineName.Replace(' ', '%20').Replace("'", '')
             $pipelineStatusUri = 'https://github.com/{0}/{1}/workflows/{2}' -f $Organization, $RepositoryName, $pipelineNameInUri
             $pipelineFileGitUri = 'https://github.com/{0}/{1}/actions/workflows/{2}' -f $Organization, $RepositoryName, $pipelineFileName
             # Note: Badge name is automatically the pipeline name
