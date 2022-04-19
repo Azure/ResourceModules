@@ -30,6 +30,14 @@ To this end, the module was successfully tested manually in a dedicated environm
 
 If you're interested what the general pre-requisites are, please refer to the [official docs](https://docs.microsoft.com/en-us/azure/active-directory-domain-services/tutorial-create-instance#prerequisites).
 
+## Microsoft.KubernetesConfiguration/extensions
+
+The module has a dependency on a pre-existing AKS cluster (managed cluster) which we don't have deployed using the dependency pipeline due to cost reasons.
+
+## Microsoft.KubernetesConfiguration/fluxConfigurations
+
+The module has a dependency on a pre-existing AKS cluster (managed cluster) which we don't have deployed using the dependency pipeline due to cost reasons.
+
 ## Microsoft.Network/vpnGateways
 
 The module has a dependency on a pre-existing Virtual Hub which we don't have deployed using the dependency pipeline due to cost reasons.
