@@ -41,7 +41,7 @@ The module has a dependency on
 - a pre-existing AKS cluster (managed cluster)
 - a pre-existing Kubernetes Configuration extension deployment
 
-which we don't have deployed using the dependency pipeline for cost reasons.
+which we don't have deployed using the dependencies pipeline for cost reasons.
 
 ## Microsoft.Network/vpnGateways
 
