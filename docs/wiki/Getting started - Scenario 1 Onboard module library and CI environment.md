@@ -322,7 +322,7 @@ To use the pipelines that come with the environment in Azure DevOps, you need to
 This section will explain what is required to publish the modules to [Azure Artifacts Universal Packages](https://docs.microsoft.com/en-us/azure/devops/artifacts/quickstarts/universal-packages?view=azure-devops). It will also assume you are publishing from Azure DevOps Pipelines.
 #### The dependent components are
 1. An Azure DevOps organization
-1. An Azure Artifacts feed titled `ResourceModules`
+1. An Azure DevOps artifacts feed
    > Note: The default feed name is `ResourceModules` as configured in the `./global.variables.yaml` file's variable `vstsFeedName`. Update the value here if you want to use a different name, but make sure it matches the name of the artifact feed created in Azure DevOps.
 1. An Azure DevOps project to host the artifact feed
 > Note: There are a couple options to consider when setting up an Azure Artifact feed. For example, organization-scoped feeds vs project-scoped feeds. Please see what option suits your needs by reviewing the [feeds](https://docs.microsoft.com/en-us/azure/devops/artifacts/concepts/feeds?view=azure-devops) document first.
