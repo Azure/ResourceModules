@@ -36,7 +36,12 @@ The module has a dependency on a pre-existing AKS cluster (managed cluster) whic
 
 ## Microsoft.KubernetesConfiguration/fluxConfigurations
 
-The module has a dependency on a pre-existing AKS cluster (managed cluster) which we don't have deployed using the dependency pipeline due to cost reasons.
+The module has a dependency on
+
+- a pre-existing AKS cluster (managed cluster)
+- a pre-existing Kubernetes Configuration extension deployment
+
+which we don't have deployed using the dependency pipeline due to cost reasons.
 
 ## Microsoft.Network/vpnGateways
 
