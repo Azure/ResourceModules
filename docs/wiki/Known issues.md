@@ -19,6 +19,31 @@ This section provides an overview of the most impactful limitations and known is
 
 This section outlines known issues that currently affect our modules.
 
+## Microsoft.AAD/DomainServices
+
+The Domain Services module pipeline is expected to fail in our environment for a few reasons:
+
+-  The leveraged service principal has not the required permissions to actually deploy the service in the used tenant
+-  The referenced `pfxCertificate` (and password) are not actually existing in the specified key vault - unless uploaded manually
+
+To this end, the module was successfully tested manually in a dedicated environment.
+
+## Microsoft.Network/vpnGateways
+
+The module has a dependency on a pre-existing Virtual Hub which we don't have deployed using the dependency pipeline due to cost reasons.
+
+## Microsoft.Network/virtualHubs
+
+The module has a dependency on a pre-existing Virtual WAN which we don't have deployed using the dependency pipeline due to cost reasons.
+
+## Microsoft.Network/vpnSites
+
+The module has a dependency on a pre-existing Virtual WAN which we don't have deployed using the dependency pipeline due to cost reasons.
+
+## Microsoft.Network/connections
+
+The module has a dependency on pre-existing Virtual Network Gateways which we don't have deployed using the dependency pipeline due to cost reasons.
+
 ---
 
 # CI environment specific
