@@ -57,7 +57,7 @@ The module has a dependency on a pre-existing Virtual WAN which we don't have de
 
 ## Microsoft.Network/connections
 
-The module has a dependency on pre-existing Virtual Network Gateways which we don't have deployed using the dependency pipeline for cost reasons.
+The module has a dependency on pre-existing Virtual Network Gateways which we don't have deployed using the dependencies pipeline for cost reasons.
 
 ---
 
