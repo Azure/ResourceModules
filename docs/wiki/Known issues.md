@@ -32,7 +32,7 @@ If you're interested what the general pre-requisites are, please refer to the [o
 
 ## Microsoft.KubernetesConfiguration/extensions
 
-The module has a dependency on a pre-existing AKS cluster (managed cluster) which we don't have deployed using the dependency pipeline for cost reasons.
+The module has a dependency on a pre-existing AKS cluster (managed cluster) which we don't have deployed using the dependencies pipeline for cost reasons.
 
 ## Microsoft.KubernetesConfiguration/fluxConfigurations
 
