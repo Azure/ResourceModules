@@ -1,4 +1,4 @@
-name: 'AAD - DomainServices'
+name: 'AAD: DomainServices'
 
 on:
   workflow_dispatch:
