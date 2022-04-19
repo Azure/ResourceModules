@@ -20,6 +20,7 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.desktopvirtualization.applicationgroups.yml'
       - 'arm/Microsoft.DesktopVirtualization/applicationgroups/**'
+      - 'arm/.global/**'
       - '!*/**/readme.md'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/dependencies/**'

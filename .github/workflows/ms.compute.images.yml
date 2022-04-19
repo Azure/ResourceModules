@@ -20,6 +20,7 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.compute.images.yml'
       - 'arm/Microsoft.Compute/images/**'
+      - 'arm/.global/**'
       - '!*/**/readme.md'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/dependencies/**'

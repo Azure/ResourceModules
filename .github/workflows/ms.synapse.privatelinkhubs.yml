@@ -20,6 +20,7 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.synapse.privatelinkhubs.yml'
       - 'arm/Microsoft.Synapse/privateLinkHubs/**'
+      - 'arm/.global/**'
       - '!*/**/readme.md'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/dependencies/**'

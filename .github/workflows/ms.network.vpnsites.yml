@@ -20,6 +20,7 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.network.vpnsites.yml'
       - 'arm/Microsoft.Network/vpnSites/**'
+      - 'arm/.global/**'
       - '!*/**/readme.md'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/dependencies/**'
