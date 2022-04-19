@@ -86,8 +86,11 @@ function Initialize-DeploymentRemoval {
                     break
                 }
                 'registries' {
-                    'Microsoft.Network/privateEndpoints/privateDnsZoneGroups',
-                    'Microsoft.Network/privateEndpoints'
+                    $removalSequence += @(
+                        'Microsoft.Network/privateEndpoints/privateDnsZoneGroups',
+                        'Microsoft.Network/privateEndpoints'
+                    )
+                    break
                 }
                 ### CODE LOCATION: Add custom removal sequence here
             }
