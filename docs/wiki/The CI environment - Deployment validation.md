@@ -9,7 +9,7 @@ This section provides an overview of the principles the deployment validation is
         - [Create a specialized removal procedure](#create-a-specialized-removal-procedure)
 - [Verify the deployment validation of your module locally](#verify-the-deployment-validation-of-your-module-locally)
 
-<img src=".\media\CIEnvironment\deploymentValidationStep.png" alt="Deployment Validation Step" height="500">
+<img src="./media/CIEnvironment/deploymentValidationStep.png" alt="Deployment Validation Step" height="500">
 
 # Deployment validation steps
 
@@ -37,7 +37,7 @@ The parameter files used in this stage should ideally cover as many configuratio
 
 ### Output example
 
-<img src=".\media\CIEnvironment\deploymentValidationOutput.png" alt="Deployment Validation Output" height="400">
+<img src="./media/CIEnvironment/deploymentValidationOutput.png" alt="Deployment Validation Output" height="400">
 
 ## Resource removal
 

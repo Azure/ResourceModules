@@ -1,13 +1,17 @@
 #Requires -Version 7
 
 param (
+    [Parameter(Mandatory = $false)]
     [array] $moduleFolderPaths = ((Get-ChildItem (Split-Path $PSScriptRoot -Parent) -Recurse -Directory -Force).FullName | Where-Object {
         (Get-ChildItem $_ -File -Depth 0 -Include @('deploy.json', 'deploy.bicep') -Force).Count -gt 0
-        })
+        }),
+
+    [Parameter(Mandatory = $false)]
+    [hashtable] $enforcedTokenList = @{}
 )
 
 $script:RepoRoot = Split-Path (Split-Path $PSScriptRoot -Parent) -Parent
-$script:Settings = Get-Content -Path (Join-Path $PSScriptRoot '..\..\settings.json') | ConvertFrom-Json
+$script:Settings = Get-Content -Path (Join-Path $PSScriptRoot '..\..\settings.json') | ConvertFrom-Json -AsHashtable
 $script:RGdeployment = 'https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#'
 $script:Subscriptiondeployment = 'https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#'
 $script:MGdeployment = 'https://schema.management.azure.com/schemas/2019-08-01/managementGroupDeploymentTemplate.json#'
@@ -15,6 +19,9 @@ $script:Tenantdeployment = 'https://schema.management.azure.com/schemas/2019-08-
 $script:moduleFolderPaths = $moduleFolderPaths
 $script:moduleFolderPathsFiltered = $moduleFolderPaths | Where-Object {
     (Split-Path $_ -Leaf) -notin @( 'AzureNetappFiles', 'TrafficManager', 'PrivateDnsZones', 'ManagementGroups') }
+$script:enforcedTokenList = $enforcedTokenList
+
+# For runtime purposes, we cache the compiled template in a hashtable that uses a formatted relative module path as a key
 $script:convertedTemplates = @{}
 
 # Import any helper function used in this test script
@@ -111,7 +118,9 @@ Describe 'Readme tests' -Tag Readme {
         $readmeFolderTestCases = [System.Collections.ArrayList] @()
         foreach ($moduleFolderPath in $moduleFolderPaths) {
 
-            if (-not ($convertedTemplates.Keys -contains (Split-Path $moduleFolderPath -Leaf))) {
+            # For runtime purposes, we cache the compiled template in a hashtable that uses a formatted relative module path as a key
+            $moduleFolderPathKey = $moduleFolderPath.Split('arm')[1].Replace('\', '/').Trim('/').Replace('/', '-')
+            if (-not ($convertedTemplates.Keys -contains $moduleFolderPathKey)) {
                 if (Test-Path (Join-Path $moduleFolderPath 'deploy.bicep')) {
                     $templateFilePath = Join-Path $moduleFolderPath 'deploy.bicep'
                     $templateContent = az bicep build --file $templateFilePath --stdout | ConvertFrom-Json -AsHashtable
@@ -121,9 +130,9 @@ Describe 'Readme tests' -Tag Readme {
                 } else {
                     throw "No template file found in folder [$moduleFolderPath]"
                 }
-                $convertedTemplates[(Split-Path $moduleFolderPath -Leaf)] = $templateContent
+                $convertedTemplates[$moduleFolderPathKey] = $templateContent
             } else {
-                $templateContent = $convertedTemplates[(Split-Path $moduleFolderPath -Leaf)]
+                $templateContent = $convertedTemplates[$moduleFolderPathKey]
             }
 
             $readmeFolderTestCases += @{
@@ -450,7 +459,9 @@ Describe 'Deployment template tests' -Tag Template {
         $deploymentFolderTestCasesException = [System.Collections.ArrayList] @()
         foreach ($moduleFolderPath in $moduleFolderPaths) {
 
-            if (-not ($convertedTemplates.Keys -contains (Split-Path $moduleFolderPath -Leaf))) {
+            # For runtime purposes, we cache the compiled template in a hashtable that uses a formatted relative module path as a key
+            $moduleFolderPathKey = $moduleFolderPath.Split('arm')[1].Replace('\', '/').Trim('/').Replace('/', '-')
+            if (-not ($convertedTemplates.Keys -contains $moduleFolderPathKey)) {
                 if (Test-Path (Join-Path $moduleFolderPath 'deploy.bicep')) {
                     $templateFilePath = Join-Path $moduleFolderPath 'deploy.bicep'
                     $templateContent = az bicep build --file $templateFilePath --stdout | ConvertFrom-Json -AsHashtable
@@ -460,9 +471,9 @@ Describe 'Deployment template tests' -Tag Template {
                 } else {
                     throw "No template file found in folder [$moduleFolderPath]"
                 }
-                $convertedTemplates[(Split-Path $moduleFolderPath -Leaf)] = $templateContent
+                $convertedTemplates[$moduleFolderPathKey] = $templateContent
             } else {
-                $templateContent = $convertedTemplates[(Split-Path $moduleFolderPath -Leaf)]
+                $templateContent = $convertedTemplates[$moduleFolderPathKey]
             }
 
             # Parameter file test cases
@@ -798,30 +809,46 @@ Describe 'Deployment template tests' -Tag Template {
                 $missingParameters.Count | Should -Be 0 -Because ('no required parameters in the template file should be missing in the parameter file. Found missing items: [{0}]' -f ($missingParameters -join ', '))
             }
         }
+    }
 
-        It '[<moduleFolderName>] [Tokens] Parameter files should not contain the default Subscription ID guid' -TestCases $deploymentFolderTestCases {
-            param (
-                [hashtable[]] $ParameterFileTestCases
-            )
-            foreach ($ParameterFileTestCase in $ParameterFileTestCases) {
-                $ParameterFileTokenName = -join ($ParameterFileTestCase.tokenSettings.tokenPrefix, 'subscriptionId', $ParameterFileTestCase.tokenSettings.tokenSuffix)
-                $ParameterFileContent = Get-Content -Path $ParameterFileTestCase.parameterFile_Path
-                $SubscriptionIdKeyCount = ($ParameterFileContent | Select-String -Pattern '"subscriptionId"', "'subscriptionId'", '/subscriptions/' -AllMatches).Matches.Count
-                $SubscriptionIdValueCount = ($ParameterFileContent | Select-String -Pattern "$ParameterFileTokenName" -AllMatches).Matches.Count
-                $SubscriptionIdKeyCount -eq $SubscriptionIdValueCount | Should -Be $true -Because ("Parameter file should not contain the Subscription ID guid, instead should reference a token value '$ParameterFileTokenName'")
+    Context 'Parameter file token tests' {
+
+        # Parameter file test cases
+        $parameterFileTokenTestCases = @()
+
+        foreach ($moduleFolderPath in $moduleFolderPaths) {
+            if (Test-Path (Join-Path $moduleFolderPath '.parameters')) {
+                $ParameterFilePaths = (Get-ChildItem (Join-Path -Path $moduleFolderPath -ChildPath '.parameters' -AdditionalChildPath '*parameters.json') -Recurse -Force).FullName
+                foreach ($ParameterFilePath in $ParameterFilePaths) {
+                    foreach ($token in $enforcedTokenList.Keys) {
+                        $parameterFileTokenTestCases += @{
+                            parameterFilePath = $ParameterFilePath
+                            parameterFileName = Split-Path $ParameterFilePath -Leaf
+                            tokenSettings     = $Settings.parameterFileTokens
+                            tokenName         = $token
+                            tokenValue        = $enforcedTokenList[$token]
+                            moduleFolderName  = $moduleFolderPath.Replace('\', '/').Split('/arm/')[1]
+                        }
+                    }
+                }
             }
         }
 
-        It '[<moduleFolderName>] [Tokens] Parameter files should not contain the default Tenant ID' -TestCases $deploymentFolderTestCases {
+        It '[<moduleFolderName>] [Tokens] Parameter file [<parameterFileName>] should not contain the plain value for token [<tokenName>] guid' -TestCases $parameterFileTokenTestCases {
             param (
-                [hashtable[]] $ParameterFileTestCases
+                [string] $parameterFilePath,
+                [string] $parameterFileName,
+                [hashtable] $tokenSettings,
+                [string] $tokenName,
+                [string] $tokenValue,
+                [string] $moduleFolderName
             )
-            foreach ($ParameterFileTestCase in $ParameterFileTestCases) {
-                $ParameterFileTokenName = -join ($ParameterFileTestCase.tokenSettings.tokenPrefix, 'tenantId', $ParameterFileTestCase.tokenSettings.tokenSuffix)
-                $ParameterFileContent = Get-Content -Path $ParameterFileTestCase.parameterFile_Path
-                $TenantIdKeyCount = ($ParameterFileContent | Select-String -Pattern '"tenantId"', "'tenantId'" -AllMatches).Matches.Count
-                $TenantIdValueCount = ($ParameterFileContent | Select-String -Pattern "$ParameterFileTokenName" -AllMatches).Matches.Count
-                $TenantIdKeyCount -eq $TenantIdValueCount | Should -Be $true -Because ("Parameter file should not contain the Tenant ID guid, instead should reference a token value '$ParameterFileTokenName'")
+            $ParameterFileTokenName = -join ($tokenSettings.tokenPrefix, $tokenName, $tokenSettings.tokenSuffix)
+            $ParameterFileContent = Get-Content -Path $parameterFilePath
+
+            $incorrectReferencesFound = $ParameterFileContent | Select-String -Pattern $tokenValue -AllMatches
+            if ($incorrectReferencesFound.Matches) {
+                $incorrectReferencesFound.Matches.Count | Should -Be 0 -Because ('Parameter file should not contain the [{0}] value, instead should reference the token value [{1}]. Please check the {2} lines: [{3}]' -f $tokenName, $ParameterFileTokenName, $incorrectReferencesFound.Matches.Count, ($incorrectReferencesFound.Line.Trim() -join ",`n"))
             }
         }
     }
@@ -835,7 +862,9 @@ Describe "API version tests [All apiVersions in the template should be 'recent']
 
         $moduleFolderName = $moduleFolderPath.Replace('\', '/').Split('/arm/')[1]
 
-        if (-not ($convertedTemplates.Keys -contains (Split-Path $moduleFolderPath -Leaf))) {
+        # For runtime purposes, we cache the compiled template in a hashtable that uses a formatted relative module path as a key
+        $moduleFolderPathKey = $moduleFolderPath.Split('arm')[1].Replace('\', '/').Trim('/').Replace('/', '-')
+        if (-not ($convertedTemplates.Keys -contains $moduleFolderPathKey)) {
             if (Test-Path (Join-Path $moduleFolderPath 'deploy.bicep')) {
                 $templateFilePath = Join-Path $moduleFolderPath 'deploy.bicep'
                 $templateContent = az bicep build --file $templateFilePath --stdout | ConvertFrom-Json -AsHashtable
@@ -845,9 +874,9 @@ Describe "API version tests [All apiVersions in the template should be 'recent']
             } else {
                 throw "No template file found in folder [$moduleFolderPath]"
             }
-            $convertedTemplates[(Split-Path $moduleFolderPath -Leaf)] = $templateContent
+            $convertedTemplates[$moduleFolderPathKey] = $templateContent
         } else {
-            $templateContent = $convertedTemplates[(Split-Path $moduleFolderPath -Leaf)]
+            $templateContent = $convertedTemplates[$moduleFolderPathKey]
         }
 
         $nestedResources = Get-NestedResourceList -TemplateContent $templateContent | Where-Object {
