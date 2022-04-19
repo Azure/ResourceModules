@@ -32,7 +32,7 @@ If you're interested what the general pre-requisites are, please refer to the [o
 
 ## Microsoft.KubernetesConfiguration/extensions
 
-The module has a dependency on a pre-existing AKS cluster (managed cluster) which we don't have deployed using the dependency pipeline due to cost reasons.
+The module has a dependency on a pre-existing AKS cluster (managed cluster) which we don't have deployed using the dependency pipeline for cost reasons.
 
 ## Microsoft.KubernetesConfiguration/fluxConfigurations
 
@@ -41,23 +41,23 @@ The module has a dependency on
 - a pre-existing AKS cluster (managed cluster)
 - a pre-existing Kubernetes Configuration extension deployment
 
-which we don't have deployed using the dependency pipeline due to cost reasons.
+which we don't have deployed using the dependency pipeline for cost reasons.
 
 ## Microsoft.Network/vpnGateways
 
-The module has a dependency on a pre-existing Virtual Hub which we don't have deployed using the dependency pipeline due to cost reasons.
+The module has a dependency on a pre-existing Virtual Hub which we don't have deployed using the dependency pipeline for cost reasons.
 
 ## Microsoft.Network/virtualHubs
 
-The module has a dependency on a pre-existing Virtual WAN which we don't have deployed using the dependency pipeline due to cost reasons.
+The module has a dependency on a pre-existing Virtual WAN which we don't have deployed using the dependency pipeline for cost reasons.
 
 ## Microsoft.Network/vpnSites
 
-The module has a dependency on a pre-existing Virtual WAN which we don't have deployed using the dependency pipeline due to cost reasons.
+The module has a dependency on a pre-existing Virtual WAN which we don't have deployed using the dependency pipeline for cost reasons.
 
 ## Microsoft.Network/connections
 
-The module has a dependency on pre-existing Virtual Network Gateways which we don't have deployed using the dependency pipeline due to cost reasons.
+The module has a dependency on pre-existing Virtual Network Gateways which we don't have deployed using the dependency pipeline for cost reasons.
 
 ---
 
