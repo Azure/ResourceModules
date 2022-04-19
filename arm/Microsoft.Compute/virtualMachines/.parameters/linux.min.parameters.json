@@ -25,7 +25,7 @@
             }
         },
         "vmSize": {
-            "value": "Standard_B2s"
+            "value": "Standard_B12ms"
         },
         "adminUsername": {
             "value": "localAdminUser"

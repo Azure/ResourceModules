@@ -108,6 +108,7 @@ This module deploys one Virtual Machine with one or multiple nics and optionally
 | :-- | :-- | :-- | :-- |
 | `baseTime` | string | `[utcNow('u')]` | Do not provide a value! This date value is used to generate a registration token. |
 
+
 ### Parameter Usage: `imageReference`
 
 #### Marketplace images

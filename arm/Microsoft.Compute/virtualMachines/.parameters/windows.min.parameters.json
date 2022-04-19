@@ -14,7 +14,7 @@
             "value": "Windows"
         },
         "vmSize": {
-            "value": "Standard_B2s"
+            "value": "Standard_B12ms"
         },
         "osDisk": {
             "value": {

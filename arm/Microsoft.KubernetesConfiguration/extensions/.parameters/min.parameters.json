@@ -10,6 +10,12 @@
         },
         "clusterName": {
             "value": "<<namePrefix>>-az-aks-kubenet-001"
+        },
+        "releaseTrain": {
+            "value": "Stable"
+        },
+        "releaseNamespace": {
+            "value": "flux-system"
         }
     }
 }
