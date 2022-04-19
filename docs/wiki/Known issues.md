@@ -28,6 +28,8 @@ The Domain Services module pipeline is expected to fail in our environment for a
 
 To this end, the module was successfully tested manually in a dedicated environment.
 
+If you're interested what the general pre-requisites are, please refer to the [official docs](https://docs.microsoft.com/en-us/azure/active-directory-domain-services/tutorial-create-instance#prerequisites).
+
 ## Microsoft.Network/vpnGateways
 
 The module has a dependency on a pre-existing Virtual Hub which we don't have deployed using the dependency pipeline due to cost reasons.
