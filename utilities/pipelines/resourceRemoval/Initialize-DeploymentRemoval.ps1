@@ -52,11 +52,11 @@ function Initialize-DeploymentRemoval {
         # The initial sequence is a general order-recommendation
         $removalSequence = @(
             'Microsoft.Insights/diagnosticSettings',
-            'Microsoft.Resources/resourceGroups',
             'Microsoft.Network/privateEndpoints/privateDnsZoneGroups',
             'Microsoft.Network/privateEndpoints',
             'Microsoft.OperationsManagement/solutions',
             'Microsoft.OperationalInsights/workspaces/linkedServices',
+            'Microsoft.Resources/resourceGroups',
             'Microsoft.Compute/virtualMachines'
         )
         Write-Verbose ('Template file path: [{0}]' -f $templateFilePath) -Verbose
@@ -73,30 +73,6 @@ function Initialize-DeploymentRemoval {
                     )
                     break
                 }
-                # 'automationAccounts' {
-                #     $removalSequence += @(
-                #         'Microsoft.OperationsManagement/solutions',
-                #         'Microsoft.OperationalInsights/workspaces/linkedServices'
-                #         # ,
-                #         # 'Microsoft.Network/privateEndpoints/privateDnsZoneGroups',
-                #         # 'Microsoft.Network/privateEndpoints'
-                #     )
-                #     break
-                # }
-                # 'workspaces' {
-                #     $removalSequence += @(
-                #         'Microsoft.OperationsManagement/solutions',
-                #         'Microsoft.OperationalInsights/workspaces/linkedServices'
-                #     )
-                #     break
-                # }
-                # 'registries' {
-                #     $removalSequence += @(
-                #         'Microsoft.Network/privateEndpoints/privateDnsZoneGroups',
-                #         'Microsoft.Network/privateEndpoints'
-                #     )
-                #     break
-                # }
                 ### CODE LOCATION: Add custom removal sequence here
             }
 
