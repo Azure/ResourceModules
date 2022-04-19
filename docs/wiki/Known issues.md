@@ -53,7 +53,7 @@ The module has a dependency on a pre-existing Virtual WAN which we don't have de
 
 ## Microsoft.Network/vpnSites
 
-The module has a dependency on a pre-existing Virtual WAN which we don't have deployed using the dependency pipeline for cost reasons.
+The module has a dependency on a pre-existing Virtual WAN which we don't have deployed using the dependencies pipeline for cost reasons.
 
 ## Microsoft.Network/connections
 
