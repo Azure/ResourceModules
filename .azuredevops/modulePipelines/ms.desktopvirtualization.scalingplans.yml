@@ -20,6 +20,7 @@ trigger:
       - '/.azuredevops/modulePipelines/ms.desktopvirtualization.scalingplans.yml'
       - '/.azuredevops/pipelineTemplates/module.*.yml'
       - '/arm/Microsoft.DesktopVirtualization/scalingplans/*'
+      - '/arm/.global/**'
     exclude:
       - '/**/*.md'
 

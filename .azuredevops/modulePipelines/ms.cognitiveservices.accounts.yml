@@ -22,6 +22,7 @@ trigger:
       - '/.azuredevops/modulePipelines/ms.cognitiveservices.accounts.yml'
       - '/.azuredevops/pipelineTemplates/module.*.yml'
       - '/arm/Microsoft.CognitiveServices/accounts/*'
+      - '/arm/.global/**'
     exclude:
       - '/**/*.md'
 

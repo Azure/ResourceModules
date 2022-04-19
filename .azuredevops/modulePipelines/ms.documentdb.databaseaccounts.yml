@@ -22,6 +22,7 @@ trigger:
       - '/.azuredevops/modulePipelines/ms.documentdb.databaseaccounts.yml'
       - '/.azuredevops/pipelineTemplates/module.*.yml'
       - '/arm/Microsoft.DocumentDB/databaseAccounts/*'
+      - '/arm/.global/**'
     exclude:
       - '/**/*.md'
 

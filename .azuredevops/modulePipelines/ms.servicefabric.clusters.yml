@@ -22,6 +22,7 @@ trigger:
       - '/.azuredevops/modulePipelines/ms.servicefabric.clusters.yml'
       - '/.azuredevops/pipelineTemplates/module.*.yml'
       - '/Microsoft.ServiceFabric/clusters/*'
+      - '/arm/.global/**'
     exclude:
       - '/**/*.md'
 

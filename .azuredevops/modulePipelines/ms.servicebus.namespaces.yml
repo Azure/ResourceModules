@@ -22,6 +22,7 @@ trigger:
       - '/.azuredevops/modulePipelines/ms.servicebus.namespaces.yml'
       - '/.azuredevops/pipelineTemplates/module.*.yml'
       - '/arm/Microsoft.ServiceBus/namespaces/*'
+      - '/arm/.global/**'
     exclude:
       - '/**/*.md'
 

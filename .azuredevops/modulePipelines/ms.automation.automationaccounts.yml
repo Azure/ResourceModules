@@ -22,6 +22,7 @@ trigger:
       - '/.azuredevops/modulePipelines/ms.automation.automationaccounts.yml'
       - '/.azuredevops/pipelineTemplates/module.*.yml'
       - '/arm/Microsoft.Automation/automationAccounts/*'
+      - '/arm/.global/**'
     exclude:
       - '/**/*.md'
 

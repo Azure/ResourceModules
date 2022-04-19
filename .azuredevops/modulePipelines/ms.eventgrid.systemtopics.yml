@@ -22,6 +22,7 @@ trigger:
       - '/.azuredevops/modulePipelines/ms.eventgrid.systemtopics.yml'
       - '/.azuredevops/pipelineTemplates/module.*.yml'
       - '/arm/Microsoft.EventGrid/systemTopics/*'
+      - '/arm/.global/**'
     exclude:
       - '/**/*.md'
 

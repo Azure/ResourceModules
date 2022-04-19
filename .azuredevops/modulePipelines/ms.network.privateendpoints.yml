@@ -22,6 +22,7 @@ trigger:
       - '/.azuredevops/modulePipelines/ms.network.privateendpoints.yml'
       - '/.azuredevops/pipelineTemplates/module.*.yml'
       - '/arm/Microsoft.Network/privateEndpoints/*'
+      - '/arm/.global/**'
     exclude:
       - '/**/*.md'
 

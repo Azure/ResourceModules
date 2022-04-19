@@ -22,6 +22,7 @@ trigger:
       - '/.azuredevops/modulePipelines/ms.databricks.workspaces.yml'
       - '/.azuredevops/pipelineTemplates/module.*.yml'
       - '/arm/Microsoft.Databricks/workspaces/*'
+      - '/arm/.global/**'
     exclude:
       - '/**/*.md'
 

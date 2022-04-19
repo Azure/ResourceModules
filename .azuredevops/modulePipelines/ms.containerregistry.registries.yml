@@ -22,6 +22,7 @@ trigger:
       - '/.azuredevops/modulePipelines/ms.containerregistry.registries.yml'
       - '/.azuredevops/pipelineTemplates/module.*.yml'
       - '/arm/Microsoft.ContainerRegistry/registries/*'
+      - '/arm/.global/**'
     exclude:
       - '/**/*.md'
 

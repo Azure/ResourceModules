@@ -22,6 +22,7 @@ trigger:
       - '/.azuredevops/modulePipelines/ms.eventhub.namespaces.yml'
       - '/.azuredevops/pipelineTemplates/module.*.yml'
       - '/arm/Microsoft.EventHub/namespaces/*'
+      - '/arm/.global/**'
     exclude:
       - '/**/*.md'
 

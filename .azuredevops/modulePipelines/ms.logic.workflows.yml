@@ -22,6 +22,7 @@ trigger:
       - '/.azuredevops/modulePipelines/ms.logic.workflows.yml'
       - '/.azuredevops/pipelineTemplates/module.*.yml'
       - '/arm/Microsoft.Logic/workflows/*'
+      - '/arm/.global/**'
     exclude:
       - '/**/*.md'
 

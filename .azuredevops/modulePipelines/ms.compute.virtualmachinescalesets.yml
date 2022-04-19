@@ -22,6 +22,7 @@ trigger:
       - '/.azuredevops/modulePipelines/ms.compute.virtualmachinescalesets.yml'
       - '/.azuredevops/pipelineTemplates/module.*.yml'
       - '/arm/Microsoft.Compute/virtualMachineScaleSets/*'
+      - '/arm/.global/**'
     exclude:
       - '/**/*.md'
 

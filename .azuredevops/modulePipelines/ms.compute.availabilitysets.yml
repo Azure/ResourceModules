@@ -22,6 +22,7 @@ trigger:
       - '/.azuredevops/modulePipelines/ms.compute.availabilitysets.yml'
       - '/.azuredevops/pipelineTemplates/module.*.yml'
       - '/arm/Microsoft.Compute/availabilitySets/*'
+      - '/arm/.global/**'
     exclude:
       - '/**/*.md'
 

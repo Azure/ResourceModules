@@ -22,6 +22,7 @@ trigger:
       - '/.azuredevops/modulePipelines/ms.web.hostingenvironments.yml'
       - '/.azuredevops/pipelineTemplates/module.*.yml'
       - '/arm/Microsoft.Web/hostingEnvironments/*'
+      - '/arm/.global/**'
     exclude:
       - '/**/*.md'
 

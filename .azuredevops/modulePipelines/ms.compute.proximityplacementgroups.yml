@@ -22,6 +22,7 @@ trigger:
       - '/.azuredevops/modulePipelines/ms.compute.proximityplacementgroups.yml'
       - '/.azuredevops/pipelineTemplates/module.*.yml'
       - '/arm/Microsoft.Compute/proximityPlacementGroups/*'
+      - '/arm/.global/**'
     exclude:
       - '/**/*.md'
 

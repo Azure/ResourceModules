@@ -22,6 +22,7 @@ trigger:
       - '/.azuredevops/modulePipelines/ms.insights.privatelinkscopes.yml'
       - '/.azuredevops/pipelineTemplates/module.*.yml'
       - '/arm/Microsoft.Insights/privateLinkScopes/*'
+      - '/arm/.global/**'
     exclude:
       - '/**/*.md'
 
