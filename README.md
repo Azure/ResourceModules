@@ -129,7 +129,7 @@ The CI environment supports both ARM and Bicep and can be leveraged using GitHub
 
 | Name | Status | Docs |
 | - | - | - |
-| [ConvertTo-ARMTemplate](https://github.com/Azure/ResourceModules/blob/main/utilities/tools/ConvertTo-ARMTemplate.ps1) | [![.Platform: Test - ConvertTo-ARMTemplate.ps1](https://github.com/Azure/ResourceModules/actions/workflows/platform.convertToArmTemplate.tests.yml/badge.svg?branch=main)](https://github.com/Azure/ResourceModules/actions/workflows/platform.convertToArmTemplate.tests.yml) | [link](https://github.com/Azure/ResourceModules/wiki/UtilitiesConvertToARMTemplate) |
+| [ConvertTo-ARMTemplate](https://github.com/Azure/ResourceModules/blob/main/utilities/tools/ConvertTo-ARMTemplate.ps1) | [![.Platform: Test - ConvertTo-ARMTemplate.ps1](https://github.com/Azure/ResourceModules/workflows/.Platform:%20Test%20-%20ConvertTo-ARMTemplate.ps1/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/platform.convertToArmTemplate.tests.yml) | [link](https://github.com/Azure/ResourceModules/wiki/Interoperability%20-%20Bicep%20to%20ARM%20conversion) |
 
 ## Contributing
 
@@ -139,6 +139,8 @@ When you submit a pull request, a CLA bot will automatically determine whether y
 
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/).
 For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
+
+For specific guidelines on how to contribute to this repository please refer to the [Contribution guide](./Contribution%20guide) Wiki section.
 
 ## Trademarks
 
