@@ -14,7 +14,7 @@
       "value": [
         {
           "name": "AADDSSubnet", //  AADDS
-          "addressPrefix": "10.0.0.0/24",
+          "addressPrefix": "10.8.0.0/24",
           "networkSecurityGroupId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/networkSecurityGroups/adp-<<namePrefix>>-az-nsg-aadds-001"
         }
       ]
