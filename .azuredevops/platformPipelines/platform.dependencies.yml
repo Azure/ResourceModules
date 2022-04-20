@@ -714,6 +714,21 @@ stages:
                 $vpnSharedKeyString = (New-Guid).Guid.SubString(0, 32)
                 $vpnSharedKey = ConvertTo-SecureString -String $vpnSharedKeyString -AsPlainText -Force
 
+                $namePrefixToken = $Settings.parameterFileTokens.localTokens | Where-Object { $_.name -eq 'namePrefix' }
+                $certInputObject = @{
+                    Subject           = 'CN=*.{0}' -f $namePrefixToken.value
+                    DnsName           = '*.{0}' -f $namePrefixToken.value
+                    CertStoreLocation = 'cert:\LocalMachine\My'
+                    KeyExportPolicy   = 'Exportable'
+                    Provider          = 'Microsoft Enhanced RSA and AES Cryptographic Provider'
+                    NotAfter          = (Get-Date).AddMonths(3)
+                    HashAlgorithm     = 'SHA256'
+                }
+                $rawCert = New-SelfSignedCertificate @certInputObject
+                Export-PfxCertificate -Cert ('Cert:\localmachine\my\' + $rawCert.Thumbprint) -FilePath "$home/aadds.pfx" -Password $password -Force
+                $rawCertByteStream = Get-Content "$home/aadds.pfx" -AsByteStream
+                $pfxCertificate = [System.Convert]::ToBase64String($rawCertByteStream)
+
                 # Set secrets
                 # -------
                 @(
@@ -724,6 +739,8 @@ stages:
                   @{ name = 'vpnSharedKey'; secretValue = $vpnSharedKey } # VirtualNetworkGateway
                   @{ name = 'apimClientId'; secretValue = $username } # API management
                   @{ name = 'apimClientSecret'; secretValue = $password } # API management
+                  @{ name = 'pfxCertificatePassword'; secretValue = $password } # AADDS
+                  @{ name = 'pfxBase64Certificate'; secretValue = $pfxCertificate } # AADDS
                 ) | ForEach-Object {
                   $null = Set-AzKeyVaultSecret -VaultName $keyVaultName -Name $_.name -SecretValue $_.secretValue
                   Write-Verbose ('Added secret [{0}] to key vault [{1}]' -f $_.name, $keyVaultName) -Verbose
