@@ -18,7 +18,7 @@ param initialWorkspaceAdminObjectID string = ''
 @description('Required. Name of the default ADLS Gen2 storage account.')
 param defaultDataLakeStorageAccountName string
 
-@description('Required. The default ADLS Gen2 file system.')
+@description('Required. The default ADLS Gen2 file system. ')
 param defaultDataLakeStorageFilesystem string
 
 @description('Optional. Create managed private endpoint to the default storage account or not. If Yes is selected, a managed private endpoint connection request is sent to the workspace\'s primary Data Lake Storage Gen2 account for Spark pools to access data. This must be approved by an owner of the storage account.')
