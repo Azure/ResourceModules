@@ -725,7 +725,7 @@ stages:
                 $rawCert = New-SelfSignedCertificate @certInputObject
                 Export-PfxCertificate -Cert ('Cert:\localmachine\my\' + $rawCert.Thumbprint) -FilePath "$home/aadds.pfx" -Password $password -Force
                 $rawCertByteStream = Get-Content "$home/aadds.pfx" -AsByteStream
-                $pfxCertificate = [System.Convert]::ToBase64String($rawCertByteStream)
+                $pfxCertificate = ConvertTo-SecureString -String ([System.Convert]::ToBase64String($rawCertByteStream)) -AsPlainText -Force
 
                 # Set secrets
                 # -------
