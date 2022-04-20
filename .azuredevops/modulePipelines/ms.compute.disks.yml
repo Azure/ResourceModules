@@ -22,6 +22,7 @@ trigger:
       - '/.azuredevops/modulePipelines/ms.compute.disks.yml'
       - '/.azuredevops/pipelineTemplates/module.*.yml'
       - '/arm/Microsoft.Compute/disks/*'
+      - '/arm/.global/global.module.tests.ps1'
     exclude:
       - '/**/*.md'
 

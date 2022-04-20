@@ -22,6 +22,7 @@ trigger:
       - '/.azuredevops/modulePipelines/ms.netapp.netappaccounts.yml'
       - '/.azuredevops/pipelineTemplates/module.*.yml'
       - '/arm/Microsoft.NetApp/netAppAccounts/*'
+      - '/arm/.global/global.module.tests.ps1'
     exclude:
       - '/**/*.md'
 

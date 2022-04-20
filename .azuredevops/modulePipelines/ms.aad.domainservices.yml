@@ -20,6 +20,7 @@ trigger:
       - '/.azuredevops/modulePipelines/ms.aad.domainservices.yml'
       - '/.azuredevops/pipelineTemplates/module.*.yml'
       - '/arm/Microsoft.AAD/DomainServices/*'
+      - '/arm/.global/global.module.tests.ps1'
     exclude:
       - '/**/*.md'
 
