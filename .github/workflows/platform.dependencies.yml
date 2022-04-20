@@ -893,6 +893,7 @@ jobs:
           customParameterFileTokens: '{"msiPrincipalId":"${{ needs.job_deploy_msi.outputs.msiPrincipalId }}"}'
 
   job_deploy_kv_secrets:
+    # Must run on windows as the used `New-SelfSignedCertificate` function is not available on linux
     runs-on: windows-2022
     name: 'Set key vault secrets keys and certificates'
     env:
