@@ -330,6 +330,40 @@ Run the dependencies pipeline by following instructions provided in the specific
 
 > **Note**: For details about the dependencies pipeline design please refer to the dedicated [Dependencies pipeline design](./The%20CI%20environment%20-%20Pipeline%20design.md#dependencies-pipeline) section.
 
+# 4.1 Manual dependency deployments
+
+In special cases, manual actions may be required to deploy certain resources that are not covered by our dependency pipeline. In the following you can find an overview of these resources, for which modules you'd need them, and what you'd need to do:
+
+1. _**Azure Active Directory Domain Services pfxCertificate & pfxCertificatePassword secrets**_
+
+   Those two secrets refer to a base64 encoded string of a self-signed certificate and the password for set certificate.
+
+   > Note: You only need to perform these actions if you want to test the secure LDAP feature of the AADDS module.
+
+   **Used by:**
+   - Microsoft.AAD/DomainServices/.parameters/parameters.json
+
+   **Required actions:**
+   1. Execute the following snippet with your own values for `'pfxCertificatePassword'` & `'YourDomainName'`
+      ```PowerShell
+        $pfxCertificatePassword = ConvertTo-SecureString '<<pfxCertificatePassword>>' -AsPlainText -Force
+        $certInputObject = @{
+            Subject           = 'CN=*.<<YourDomainName>>'
+            DnsName           = '*.<<YourDomainName>>'
+            CertStoreLocation = 'cert:\LocalMachine\My'
+            KeyExportPolicy   = 'Exportable'
+            Provider          = 'Microsoft Enhanced RSA and AES Cryptographic Provider'
+            NotAfter          = (Get-Date).AddMonths(3)
+            HashAlgorithm     = 'SHA256'
+        }
+        $rawCert = New-SelfSignedCertificate @certInputObject
+        Export-PfxCertificate -Cert ('Cert:\localmachine\my\' + $rawCert.Thumbprint) -FilePath "$home/aadds.pfx" -Password $pfxCertificatePassword -Force
+        $rawCertByteStream = Get-Content "$home/aadds.pfx" -AsByteStream
+        $pfxCertificate = [System.Convert]::ToBase64String($rawCertByteStream)
+      ```
+   1. Create a secret `'pfxCertificatePassword'` in key vault `'adp-<<namePrefix>>-az-kv-x-001'` (using the `namePrefix` of your `settings.json` file) with the value of `'pfxCertificatePassword'` specified in the snippet above
+   1. Create a secret `'pfxBase64Certificate'` with the value of the PowerShell variable `'pfxCertificate'` created by the snippet above
+
 # 5. Update module parameter files
 
 Once the required dependencies are deployed, there is one more step left to get as many module pipelines running as possible.
