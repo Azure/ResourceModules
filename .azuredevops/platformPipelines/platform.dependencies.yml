@@ -643,7 +643,7 @@ stages:
         #   - default_kv_nopr
         pool:
           # Must run on windows as the used `New-SelfSignedCertificate` function is not available on linux
-          name: windows-2022
+          name: windows-2019
         steps:
           - task: PowerShell@2
             displayName: 'Setup agent'
