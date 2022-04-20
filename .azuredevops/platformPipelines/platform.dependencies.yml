@@ -642,10 +642,7 @@ stages:
           - default_kv
           - default_kv_nopr
         pool:
-          ${{ if eq(variables['vmImage'], '') }}:
-            name: $(poolName)
-          ${{ if eq(variables['poolName'], '') }}:
-            vmImage: $(vmImage)
+          name: windows-2022
         steps:
           - task: PowerShell@2
             displayName: 'Setup agent'
@@ -716,8 +713,8 @@ stages:
 
                 $namePrefixToken = $Settings.parameterFileTokens.localTokens | Where-Object { $_.name -eq 'namePrefix' }
                 $certInputObject = @{
-                    Subject           = 'CN=*.{0}' -f $namePrefixToken.value
-                    DnsName           = '*.{0}' -f $namePrefixToken.value
+                    Subject           = 'CN=*.{0}.onmicrosoft.com' -f $namePrefixToken.value
+                    DnsName           = '*.{0}.onmicrosoft.com' -f $namePrefixToken.value
                     CertStoreLocation = 'cert:\LocalMachine\My'
                     KeyExportPolicy   = 'Exportable'
                     Provider          = 'Microsoft Enhanced RSA and AES Cryptographic Provider'
