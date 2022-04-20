@@ -893,7 +893,7 @@ jobs:
           customParameterFileTokens: '{"msiPrincipalId":"${{ needs.job_deploy_msi.outputs.msiPrincipalId }}"}'
 
   job_deploy_kv_secrets:
-    runs-on: ubuntu-20.04
+    runs-on: windows-2022
     name: 'Set key vault secrets keys and certificates'
     env:
       namespace: 'Microsoft.KeyVault\vaults'
@@ -975,8 +975,8 @@ jobs:
 
             $namePrefixToken = $Settings.parameterFileTokens.localTokens | Where-Object { $_.name -eq 'namePrefix' }
             $certInputObject = @{
-                Subject           = 'CN=*.{0}' -f $namePrefixToken.value
-                DnsName           = '*.{0}' -f $namePrefixToken.value
+                Subject           = 'CN=*.{0}.onmicrosoft.com' -f $namePrefixToken.value
+                DnsName           = '*.{0}.onmicrosoft.com' -f $namePrefixToken.value
                 CertStoreLocation = 'cert:\LocalMachine\My'
                 KeyExportPolicy   = 'Exportable'
                 Provider          = 'Microsoft Enhanced RSA and AES Cryptographic Provider'
