@@ -495,7 +495,7 @@ stages:
               displayName: Bastion NSG
             - path: $(dependencyPath)/$(resourceType)/parameters/aadds.parameters.json
               templateFilePath: $(templateFilePath)
-              displayName: Bastion NSG
+              displayName: AADDS NSG
             - ${{ if eq( parameters.deploySqlMiDependencies, true) }}:
                 - path: $(dependencyPath)/$(resourceType)/parameters/sqlmi.parameters.json
                   templateFilePath: $(templateFilePath)
