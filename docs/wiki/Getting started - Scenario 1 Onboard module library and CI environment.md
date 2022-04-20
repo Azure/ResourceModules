@@ -334,7 +334,7 @@ Run the dependencies pipeline by following instructions provided in the specific
 
 In special cases, manual actions may be required to deploy certain resources that are not covered by our dependency pipeline. In the following you can find an overview of these resources, for which modules you'd need them, and what you'd need to do:
 
-1. _**Azure Active Directory Domain Services pfxCertificate & pfxCertificatePassword secrets**_
+1. _**Azure Active Directory Domain Services 'pfxCertificate' & 'pfxCertificatePassword' secrets**_
 
    Those two secrets refer to a base64 encoded string of a self-signed certificate and the password for set certificate.
 
