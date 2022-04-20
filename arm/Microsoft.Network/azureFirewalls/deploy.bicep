@@ -15,6 +15,12 @@ param azureSkuName string = 'AZFW_VNet'
 ])
 param azureSkuTier string = 'Standard'
 
+@description('Optional. Specifies the resource ID of the existing public IP to be leveraged by Azure Bastion.')
+param publicIPAddressId string = ''
+
+@description('Optional. Specifies the properties of the public IP to create and be used by Azure Bastion. If it\'s not provided and publicIPAddressId is empty, a \'-pip\' suffix will be appended to the Bastion\'s name.')
+param publicIPAddressObject object = {}
+
 @description('Optional. Collection of application rule collections used by Azure Firewall.')
 param applicationRuleCollections array = []
 
@@ -145,6 +151,46 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
       contentVersion: '1.0.0.0'
       resources: []
     }
+  }
+}
+
+// use existing public ip address
+resource publicIPAddressExisting 'Microsoft.Network/publicIPAddresses@2021-05-01' existing = if (!empty(publicIPAddressId)) {
+  name: last(split(publicIPAddressId, '/'))
+  scope: resourceGroup(split(publicIPAddressId, '/')[2], split(publicIPAddressId, '/')[4])
+}
+// create a public ip address
+module publicIPAddress '.bicep/nested_publicIPAddress.bicep' = if (empty(publicIPAddressId)) {
+  name: '${uniqueString(deployment().name, location)}-Bastion-PIP'
+  params: {
+    name: contains(publicIPAddressObject, 'name') ? (!(empty(publicIPAddressObject.name)) ? publicIPAddressObject.name : '${name}-pip') : '${name}-pip'
+    publicIPPrefixResourceId: contains(publicIPAddressObject, 'publicIPPrefixResourceId') ? (!(empty(publicIPAddressObject.publicIPPrefixResourceId)) ? publicIPAddressObject.publicIPPrefixResourceId : '') : ''
+    publicIPAllocationMethod: contains(publicIPAddressObject, 'publicIPAllocationMethod') ? (!(empty(publicIPAddressObject.publicIPAllocationMethod)) ? publicIPAddressObject.publicIPAllocationMethod : 'Static') : 'Static'
+    skuName: contains(publicIPAddressObject, 'skuName') ? (!(empty(publicIPAddressObject.skuName)) ? publicIPAddressObject.skuName : 'Standard') : 'Standard'
+    skuTier: contains(publicIPAddressObject, 'skuTier') ? (!(empty(publicIPAddressObject.skuTier)) ? publicIPAddressObject.skuTier : 'Regional') : 'Regional'
+    roleAssignments: contains(publicIPAddressObject, 'roleAssignments') ? (!empty(publicIPAddressObject.roleAssignments) ? publicIPAddressObject.roleAssignments : []) : []
+    diagnosticMetricsToEnable: contains(publicIPAddressObject, 'diagnosticMetricsToEnable') ? (!(empty(publicIPAddressObject.diagnosticMetricsToEnable)) ? publicIPAddressObject.diagnosticMetricsToEnable : [
+      'AllMetrics'
+    ]) : [
+      'AllMetrics'
+    ]
+    diagnosticLogCategoriesToEnable: contains(publicIPAddressObject, 'diagnosticLogCategoriesToEnable') ? (!(empty(publicIPAddressObject.diagnosticLogCategoriesToEnable)) ? publicIPAddressObject.diagnosticLogCategoriesToEnable : [
+      'DDoSProtectionNotifications'
+      'DDoSMitigationFlowLogs'
+      'DDoSMitigationReports'
+    ]) : [
+      'DDoSProtectionNotifications'
+      'DDoSMitigationFlowLogs'
+      'DDoSMitigationReports'
+    ]
+    location: location
+    diagnosticStorageAccountId: diagnosticStorageAccountId
+    diagnosticLogsRetentionInDays: diagnosticLogsRetentionInDays
+    diagnosticWorkspaceId: diagnosticWorkspaceId
+    diagnosticEventHubAuthorizationRuleId: diagnosticEventHubAuthorizationRuleId
+    diagnosticEventHubName: diagnosticEventHubName
+    lock: lock
+    tags: tags
   }
 }
 
