@@ -3,9 +3,9 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "adp-sxx-az-nsg-x-bastion"
+            "value": "adp-<<namePrefix>>-az-nsg-x-bastion"
         },
-        "networkSecurityGroupSecurityRules": {
+        "securityRules": {
             "value": [
                 {
                     "name": "AllowHttpsInBound",

@@ -1,9 +1,30 @@
+#########################################################
+## 'Validate module with Pester' Composite Action      ##
+#########################################################
+##
+## This composite action contains the logic to validate a module using a set of Pester tests
+## The tests are implemented in file 'arm/.global/global.module.tests.ps1'
+##
+#########################################################
+##
+##-------------------------------------------##
+## ACTION PARAMETERS                         ##
+##-------------------------------------------##
+##
+##   |===========================================================================================================|
+##   | Parameter  | Required | Default | Description                     | Example                               |
+##   |------------|----------|---------|---------------------------------|---------------------------------------|
+##   | modulePath | true     | ''      | The path to the module's folder | 'arm/Microsoft.ApiManagement/service' |
+##   |===========================================================================================================|
+##
+##---------------------------------------------##
+
 name: 'Execute Pester module tests'
 description: 'Execute Pester module tests (if any)'
 
 inputs:
   modulePath:
-    description: 'The path to the module folder'
+    description: "The path to the module's folder"
     required: true
     default: ''
 
@@ -13,6 +34,9 @@ runs:
     - name: 'Setup agent'
       shell: pwsh
       run: |
+        # Grouping task logs
+        Write-Output "::group::Setup agent"
+
         # Load used functions
         . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
 
@@ -26,6 +50,8 @@ runs:
         # Set agent up
         Set-EnvironmentOnAgent -PSModules $Modules
 
+        Write-Output "::endgroup::"
+
     - name: Azure Login
       uses: Azure/login@v1
       with:
@@ -38,6 +64,9 @@ runs:
       id: pester_run_step
       shell: pwsh
       run: |
+        # Grouping task logs
+        Write-Output "::group::Run global tests via Pester"
+
         $moduleFolderPaths = @(Join-Path $env:GITHUB_WORKSPACE "${{ inputs.modulePath }}")
         $moduleFolderPaths += (Get-ChildItem $moduleFolderPaths -Recurse -Directory -Force).FullName | Where-Object {
           (Get-ChildItem $_ -File -Depth 0 -Include @('deploy.json', 'deploy.bicep') -Force).Count -gt 0
@@ -54,6 +83,12 @@ runs:
           Run        = @{
             Container = New-PesterContainer -Path 'arm/.global/global.module.tests.ps1' -Data @{
               moduleFolderPaths = $moduleFolderPaths
+              enforcedTokenList = @{
+                subscriptionId    = '${{ env.ARM_SUBSCRIPTION_ID }}'
+                managementGroupId = '${{ env.ARM_MGMTGROUP_ID }}'
+                tenantId          = '${{ env.ARM_TENANT_ID }}'
+                deploymentSpId    = '${{ env.DEPLOYMENT_SP_ID }}'
+              }
             }
           }
           Filter     = @{
@@ -70,6 +105,8 @@ runs:
           }
         }
 
+        Write-Output "::endgroup::"
+
     - name: Publish Test Results
       uses: EnricoMi/publish-unit-test-result-action@v1
       if: always() && !contains('cancelled,skipped', steps.pester_run_step.outcome)
@@ -83,6 +120,9 @@ runs:
       if: always()
       shell: pwsh
       run: |
+        # Grouping task logs
+        Write-Output "::group::Run API tests via Pester"
+
         $moduleFolderPaths = @(Join-Path $env:GITHUB_WORKSPACE "${{ inputs.modulePath }}")
         $moduleFolderPaths += (Get-ChildItem $moduleFolderPaths -Recurse -Directory -Force).FullName | Where-Object {
           (Get-ChildItem $_ -File -Depth 0 -Include @('deploy.json', 'deploy.bicep') -Force).Count -gt 0
@@ -114,6 +154,8 @@ runs:
             Verbosity = 'Detailed'
           }
         }
+
+        Write-Output "::endgroup::"
 
     - name: Publish Test Results
       uses: EnricoMi/publish-unit-test-result-action@v1

@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "adpsxxazsalaw001"
+            "value": "adp<<namePrefix>>azsalaw001"
         },
         "storageAccountKind": {
             "value": "StorageV2"
@@ -12,6 +12,9 @@
             "value": "Standard_LRS"
         },
         "allowBlobPublicAccess": {
+            "value": false
+        },
+        "requireInfrastructureEncryption": {
             "value": false
         }
     }

@@ -1,6 +1,25 @@
+@sys.description('Required. The IDs of the prinicpals to assign to role to')
 param principalIds array
+
+@sys.description('Required. The name of the role to assign. If it cannot be found you can specify the role definition ID instead')
 param roleDefinitionIdOrName string
+
+@sys.description('Required. The resource ID of the resource to apply the role assignment to')
 param resourceId string
+
+@sys.description('Optional. The principal type of the assigned principal ID.')
+@allowed([
+  'ServicePrincipal'
+  'Group'
+  'User'
+  'ForeignGroup'
+  'Device'
+  ''
+])
+param principalType string = ''
+
+@sys.description('Optional. Description of role assignment')
+param description string = ''
 
 var builtInRoleNames = {
   'Owner': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '8e3af657-a8ff-443c-a75c-2fe8c4bcb635')
@@ -27,15 +46,17 @@ var builtInRoleNames = {
   'User Access Administrator': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '18d7d88d-d35e-4fb5-a5c3-7773c20a72d9')
 }
 
-resource registry 'Microsoft.ContainerRegistry/registries@2020-11-01-preview' existing = {
+resource registry 'Microsoft.ContainerRegistry/registries@2021-09-01' existing = {
   name: last(split(resourceId, '/'))
 }
 
 resource roleAssignment 'Microsoft.Authorization/roleAssignments@2021-04-01-preview' = [for principalId in principalIds: {
   name: guid(registry.name, principalId, roleDefinitionIdOrName)
   properties: {
+    description: description
     roleDefinitionId: contains(builtInRoleNames, roleDefinitionIdOrName) ? builtInRoleNames[roleDefinitionIdOrName] : roleDefinitionIdOrName
     principalId: principalId
+    principalType: !empty(principalType) ? principalType : null
   }
   scope: registry
 }]

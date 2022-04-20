@@ -98,11 +98,26 @@ param aadProfileManaged bool = true
 @description('Optional. Specifies whether to enable Azure RBAC for Kubernetes authorization.')
 param aadProfileEnableAzureRBAC bool = true
 
+@description('Optional. If set to true, getting static credentials will be disabled for this cluster. This must only be used on Managed Clusters that are AAD enabled.')
+param disableLocalAccounts bool = false
+
 @description('Optional. Name of the resource group containing agent pool nodes.')
 param nodeResourceGroup string = '${resourceGroup().name}_aks_${name}_nodes'
 
+@description('Optional. IP ranges are specified in CIDR format, e.g. 137.117.106.88/29. This feature is not compatible with clusters that use Public IP Per Node, or clusters that are using a Basic Load Balancer.')
+param authorizedIPRanges array = []
+
+@description('Optional. Whether to disable run command for the cluster or not.')
+param disableRunCommand bool = false
+
 @description('Optional. Specifies whether to create the cluster as a private cluster or not.')
-param aksClusterEnablePrivateCluster bool = false
+param enablePrivateCluster bool = false
+
+@description('Optional. Whether to create additional public FQDN for private cluster or not.')
+param enablePrivateClusterPublicFQDN bool = false
+
+@description('Optional. If AKS will create a Private DNS Zone in the Node Resource Group.')
+param usePrivateDNSZone bool = false
 
 @description('Required. Properties of the primary agent pool.')
 param primaryAgentPoolProfile array
@@ -124,6 +139,16 @@ param azurePolicyVersion string = 'v2'
 
 @description('Optional. Specifies whether the kubeDashboard add-on is enabled or not.')
 param kubeDashboardEnabled bool = false
+
+@description('Optional. Specifies whether the KeyvaultSecretsProvider add-on is enabled or not.')
+param enableKeyvaultSecretsProvider bool = false
+
+@allowed([
+  'false'
+  'true'
+])
+@description('Optional. Specifies whether the KeyvaultSecretsProvider add-on uses secret rotation.')
+param enableSecretRotation string = 'false'
 
 @description('Optional. Specifies the scan interval of the auto-scaler of the AKS cluster.')
 param autoScalerProfileScanInterval string = '10s'
@@ -149,6 +174,72 @@ param autoScalerProfileUtilizationThreshold string = '0.5'
 @description('Optional. Specifies the max graceful termination time interval in seconds for the auto-scaler of the AKS cluster.')
 param autoScalerProfileMaxGracefulTerminationSec string = '600'
 
+@allowed([
+  'false'
+  'true'
+])
+@description('Optional. Specifies the balance of similar node groups for the auto-scaler of the AKS cluster.')
+param autoScalerProfileBalanceSimilarNodeGroups string = 'false'
+
+@allowed([
+  'least-waste'
+  'most-pods'
+  'priority'
+  'random'
+])
+@description('Optional. Specifies the expand strategy for the auto-scaler of the AKS cluster.')
+param autoScalerProfileExpander string = 'random'
+
+@description('Optional. Specifies the maximum empty bulk delete for the auto-scaler of the AKS cluster.')
+param autoScalerProfileMaxEmptyBulkDelete string = '10'
+
+@description('Optional. Specifies the maximum node provisioning time for the auto-scaler of the AKS cluster. Values must be an integer followed by an "m". No unit of time other than minutes (m) is supported.')
+param autoScalerProfileMaxNodeProvisionTime string = '15m'
+
+@description('Optional. Specifies the mximum total unready percentage for the auto-scaler of the AKS cluster. The maximum is 100 and the minimum is 0.')
+param autoScalerProfileMaxTotalUnreadyPercentage string = '45'
+
+@description('Optional. For scenarios like burst/batch scale where you do not want CA to act before the kubernetes scheduler could schedule all the pods, you can tell CA to ignore unscheduled pods before they are a certain age. Values must be an integer followed by a unit ("s" for seconds, "m" for minutes, "h" for hours, etc).')
+param autoScalerProfileNewPodScaleUpDelay string = '0s'
+
+@description('Optional. Specifies the ok total unready count for the auto-scaler of the AKS cluster.')
+param autoScalerProfileOkTotalUnreadyCount string = '3'
+
+@allowed([
+  'false'
+  'true'
+])
+@description('Optional. Specifies if nodes with local storage should be skipped for the auto-scaler of the AKS cluster.')
+param autoScalerProfileSkipNodesWithLocalStorage string = 'true'
+
+@allowed([
+  'false'
+  'true'
+])
+@description('Optional. Specifies if nodes with system pods should be skipped for the auto-scaler of the AKS cluster.')
+param autoScalerProfileSkipNodesWithSystemPods string = 'true'
+
+@description('Optional. Running in Kubenet is disabled by default due to the security related nature of AAD Pod Identity and the risks of IP spoofing.')
+param podIdentityProfileAllowNetworkPluginKubenet bool = false
+
+@description('Optional. Whether the pod identity addon is enabled.')
+param podIdentityProfileEnable bool = false
+
+@description('Optional. The pod identities to use in the cluster.')
+param podIdentityProfileUserAssignedIdentities array = []
+
+@description('Optional. The pod identity exceptions to allow.')
+param podIdentityProfileUserAssignedIdentityExceptions array = []
+
+@description('Optional. Whether the The OIDC issuer profile of the Managed Cluster is enabled.')
+param enableOidcIssuerProfile bool = false
+
+@description('Optional. Whether to enable Azure Defender.')
+param enableAzureDefender bool = false
+
+@description('Optional. Whether to enable Kubernetes pod security policy.')
+param enablePodSecurityPolicy bool = false
+
 @description('Optional. Resource ID of the diagnostic storage account.')
 param diagnosticStorageAccountId string = ''
 
@@ -172,8 +263,8 @@ param diagnosticEventHubName string = ''
 @maxValue(365)
 param diagnosticLogsRetentionInDays int = 365
 
-@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
-param cuaId string = ''
+@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+param enableDefaultTelemetry bool = true
 
 @description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'')
 param roleAssignments array = []
@@ -197,7 +288,7 @@ param tags object = {}
   'kube-scheduler'
   'cluster-autoscaler'
 ])
-param logsToEnable array = [
+param diagnosticLogCategoriesToEnable array = [
   'kube-apiserver'
   'kube-audit'
   'kube-controller-manager'
@@ -209,12 +300,15 @@ param logsToEnable array = [
 @allowed([
   'AllMetrics'
 ])
-param metricsToEnable array = [
+param diagnosticMetricsToEnable array = [
   'AllMetrics'
 ]
 
-var diagnosticsLogs = [for log in logsToEnable: {
-  category: log
+@description('Optional. The name of the diagnostic setting, if deployed.')
+param diagnosticSettingsName string = '${name}-diagnosticSettings'
+
+var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
+  category: category
   enabled: true
   retentionPolicy: {
     enabled: true
@@ -222,7 +316,7 @@ var diagnosticsLogs = [for log in logsToEnable: {
   }
 }]
 
-var diagnosticsMetrics = [for metric in metricsToEnable: {
+var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
   category: metric
   timeGrain: null
   enabled: true
@@ -257,24 +351,31 @@ var lbProfile = {
   effectiveOutboundIPs: []
 }
 
-module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
-  name: 'pid-${cuaId}'
-  params: {}
+resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
+  name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
+  properties: {
+    mode: 'Incremental'
+    template: {
+      '$schema': 'https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#'
+      contentVersion: '1.0.0.0'
+      resources: []
+    }
+  }
 }
 
-resource managedCluster 'Microsoft.ContainerService/managedClusters@2021-07-01' = {
+resource managedCluster 'Microsoft.ContainerService/managedClusters@2022-01-01' = {
   name: name
   location: location
   tags: (empty(tags) ? null : tags)
   identity: identity
+  sku: {
+    name: 'Basic'
+    tier: aksClusterSkuTier
+  }
   properties: {
     kubernetesVersion: (empty(aksClusterKubernetesVersion) ? null : aksClusterKubernetesVersion)
     dnsPrefix: aksClusterDnsPrefix
     agentPoolProfiles: primaryAgentPoolProfile
-    sku: {
-      name: 'Basic'
-      tier: aksClusterSkuTier
-    }
     linuxProfile: (empty(aksClusterSshPublicKey) ? null : aksClusterLinuxProfile)
     servicePrincipalProfile: (empty(aksServicePrincipalProfile) ? null : aksServicePrincipalProfile)
     addonProfiles: {
@@ -284,7 +385,7 @@ resource managedCluster 'Microsoft.ContainerService/managedClusters@2021-07-01' 
       omsagent: {
         enabled: omsAgentEnabled && !empty(monitoringWorkspaceId)
         config: {
-          logAnalyticsWorkspaceResourceID: !empty(monitoringWorkspaceId) ? monitoringWorkspaceId : null
+          logAnalyticsWorkspaceResourceID: !empty(monitoringWorkspaceId) ? any(monitoringWorkspaceId) : null
         }
       }
       aciConnectorLinux: {
@@ -299,19 +400,30 @@ resource managedCluster 'Microsoft.ContainerService/managedClusters@2021-07-01' 
       kubeDashboard: {
         enabled: kubeDashboardEnabled
       }
+      azureKeyvaultSecretsProvider: {
+        enabled: enableKeyvaultSecretsProvider
+        config: {
+          enableSecretRotation: enableSecretRotation
+        }
+      }
     }
+    oidcIssuerProfile: enableOidcIssuerProfile ? {
+      enabled: enableOidcIssuerProfile
+    } : null
     enableRBAC: aadProfileEnableAzureRBAC
+    disableLocalAccounts: disableLocalAccounts
     nodeResourceGroup: nodeResourceGroup
+    enablePodSecurityPolicy: enablePodSecurityPolicy
     networkProfile: {
-      networkPlugin: (empty(aksClusterNetworkPlugin) ? null : aksClusterNetworkPlugin)
-      networkPolicy: (empty(aksClusterNetworkPolicy) ? null : aksClusterNetworkPolicy)
-      podCidr: (empty(aksClusterPodCidr) ? null : aksClusterPodCidr)
-      serviceCidr: (empty(aksClusterServiceCidr) ? null : aksClusterServiceCidr)
-      dnsServiceIP: (empty(aksClusterDnsServiceIP) ? null : aksClusterDnsServiceIP)
-      dockerBridgeCidr: (empty(aksClusterDockerBridgeCidr) ? null : aksClusterDockerBridgeCidr)
+      networkPlugin: !empty(aksClusterNetworkPlugin) ? any(aksClusterNetworkPlugin) : null
+      networkPolicy: !empty(aksClusterNetworkPolicy) ? any(aksClusterNetworkPolicy) : null
+      podCidr: !empty(aksClusterPodCidr) ? aksClusterPodCidr : null
+      serviceCidr: !empty(aksClusterServiceCidr) ? aksClusterServiceCidr : null
+      dnsServiceIP: !empty(aksClusterDnsServiceIP) ? aksClusterDnsServiceIP : null
+      dockerBridgeCidr: !empty(aksClusterDockerBridgeCidr) ? aksClusterDockerBridgeCidr : null
       outboundType: aksClusterOutboundType
       loadBalancerSku: aksClusterLoadBalancerSku
-      loadBalancerProfile: ((managedOutboundIPCount == 0) ? null : lbProfile)
+      loadBalancerProfile: managedOutboundIPCount != 0 ? lbProfile : null
     }
     aadProfile: {
       clientAppID: aadProfileClientAppID
@@ -323,18 +435,43 @@ resource managedCluster 'Microsoft.ContainerService/managedClusters@2021-07-01' 
       tenantID: aadProfileTenantId
     }
     autoScalerProfile: {
-      'scan-interval': autoScalerProfileScanInterval
+      'balance-similar-node-groups': autoScalerProfileBalanceSimilarNodeGroups
+      'expander': autoScalerProfileExpander
+      'max-empty-bulk-delete': autoScalerProfileMaxEmptyBulkDelete
+      'max-graceful-termination-sec': autoScalerProfileMaxGracefulTerminationSec
+      'max-node-provision-time': autoScalerProfileMaxNodeProvisionTime
+      'max-total-unready-percentage': autoScalerProfileMaxTotalUnreadyPercentage
+      'new-pod-scale-up-delay': autoScalerProfileNewPodScaleUpDelay
+      'ok-total-unready-count': autoScalerProfileOkTotalUnreadyCount
       'scale-down-delay-after-add': autoScalerProfileScaleDownDelayAfterAdd
       'scale-down-delay-after-delete': autoScalerProfileScaleDownDelayAfterDelete
       'scale-down-delay-after-failure': autoScalerProfileScaleDownDelayAfterFailure
       'scale-down-unneeded-time': autoScalerProfileScaleDownUnneededTime
       'scale-down-unready-time': autoScalerProfileScaleDownUnreadyTime
       'scale-down-utilization-threshold': autoScalerProfileUtilizationThreshold
-      'max-graceful-termination-sec': autoScalerProfileMaxGracefulTerminationSec
+      'scan-interval': autoScalerProfileScanInterval
+      'skip-nodes-with-local-storage': autoScalerProfileSkipNodesWithLocalStorage
+      'skip-nodes-with-system-pods': autoScalerProfileSkipNodesWithSystemPods
     }
     apiServerAccessProfile: {
-      enablePrivateCluster: aksClusterEnablePrivateCluster
+      authorizedIPRanges: authorizedIPRanges
+      disableRunCommand: disableRunCommand
+      enablePrivateCluster: enablePrivateCluster
+      enablePrivateClusterPublicFQDN: enablePrivateClusterPublicFQDN
+      privateDNSZone: usePrivateDNSZone ? 'system' : ''
     }
+    podIdentityProfile: {
+      allowNetworkPluginKubenet: podIdentityProfileAllowNetworkPluginKubenet
+      enabled: podIdentityProfileEnable
+      userAssignedIdentities: podIdentityProfileUserAssignedIdentities
+      userAssignedIdentityExceptions: podIdentityProfileUserAssignedIdentityExceptions
+    }
+    securityProfile: enableAzureDefender ? {
+      azureDefender: {
+        enabled: enableAzureDefender
+        logAnalyticsWorkspaceResourceId: !empty(monitoringWorkspaceId) ? monitoringWorkspaceId : null
+      }
+    } : null
   }
 }
 
@@ -390,7 +527,7 @@ resource managedCluster_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lo
 }
 
 resource managedCluster_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(diagnosticWorkspaceId)) || (!empty(diagnosticEventHubAuthorizationRuleId)) || (!empty(diagnosticEventHubName))) {
-  name: '${managedCluster.name}-diagnosticSettings'
+  name: diagnosticSettingsName
   properties: {
     storageAccountId: !empty(diagnosticStorageAccountId) ? diagnosticStorageAccountId : null
     workspaceId: !empty(diagnosticWorkspaceId) ? diagnosticWorkspaceId : null
@@ -405,7 +542,9 @@ resource managedCluster_diagnosticSettings 'Microsoft.Insights/diagnosticsetting
 module managedCluster_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-ManagedCluster-Rbac-${index}'
   params: {
+    description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
     principalIds: roleAssignment.principalIds
+    principalType: contains(roleAssignment, 'principalType') ? roleAssignment.principalType : ''
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
     resourceId: managedCluster.id
   }
@@ -421,7 +560,13 @@ output resourceGroupName string = resourceGroup().name
 output name string = managedCluster.name
 
 @description('The control plane FQDN of the managed cluster')
-output controlPlaneFQDN string = (aksClusterEnablePrivateCluster ? managedCluster.properties.privateFQDN : managedCluster.properties.fqdn)
+output controlPlaneFQDN string = enablePrivateCluster ? managedCluster.properties.privateFQDN : managedCluster.properties.fqdn
 
 @description('The principal ID of the system assigned identity.')
 output systemAssignedPrincipalId string = systemAssignedIdentity && contains(managedCluster.identity, 'principalId') ? managedCluster.identity.principalId : ''
+
+@description('The Object ID of the AKS identity.')
+output kubeletidentityObjectId string = contains(managedCluster.properties, 'identityProfile') ? contains(managedCluster.properties.identityProfile, 'kubeletidentity') ? managedCluster.properties.identityProfile.kubeletidentity.objectId : '' : ''
+
+@description('The Object ID of the OMS agent identity.')
+output omsagentIdentityObjectId string = contains(managedCluster.properties, 'addonProfiles') ? contains(managedCluster.properties.addonProfiles, 'omsagent') ? contains(managedCluster.properties.addonProfiles.omsagent, 'identity') ? managedCluster.properties.addonProfiles.omsagent.identity.objectId : '' : '' : ''

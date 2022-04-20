@@ -3,10 +3,10 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "name": {
-      "value": "sxx-az-synws-managedvnet-001"
+      "value": "<<namePrefix>>-az-synws-managedvnet-001"
     },
     "defaultDataLakeStorageAccountName": {
-      "value": "adpsxxazsaweux005"
+      "value": "adp<<namePrefix>>azsaweux005"
     },
     "defaultDataLakeStorageFilesystem": {
       "value": "synapsews"
@@ -21,7 +21,7 @@
       "value": true
     },
     "allowedAadTenantIdsForLinking": {
-      "value": ["449fbe1d-9c99-4509-9014-4fd5cf25b014"]
+      "value": ["<<tenantId>>"]
     }
   }
 }

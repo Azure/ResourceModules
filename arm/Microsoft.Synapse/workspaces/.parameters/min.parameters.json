@@ -3,10 +3,10 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "name": {
-      "value": "sxx-az-synws-min-001"
+      "value": "<<namePrefix>>-az-synws-min-001"
     },
     "defaultDataLakeStorageAccountName": {
-      "value": "adpsxxazsaweux004"
+      "value": "adp<<namePrefix>>azsaweux004"
     },
     "defaultDataLakeStorageFilesystem": {
       "value": "synapsews"

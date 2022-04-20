@@ -7,7 +7,10 @@ param availabilitySetFaultDomain int = 2
 @description('Optional. The number of update domains to use.')
 param availabilitySetUpdateDomain int = 5
 
-@description('Optional. Sku of the availability set. Use \'Aligned\' for virtual machines with managed disks and \'Classic\' for virtual machines with unmanaged disks.')
+@description('''Optional. SKU of the availability set.
+- Use \'Aligned\' for virtual machines with managed disks
+- Use \'Classic\' for virtual machines with unmanaged disks.
+''')
 param availabilitySetSku string = 'Aligned'
 
 @description('Optional. Resource ID of a proximity placement group.')
@@ -30,22 +33,31 @@ param roleAssignments array = []
 @description('Optional. Tags of the availability set resource.')
 param tags object = {}
 
-@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
-param cuaId string = ''
+@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+param enableDefaultTelemetry bool = true
 
-module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
-  name: 'pid-${cuaId}'
-  params: {}
+resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
+  name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
+  properties: {
+    mode: 'Incremental'
+    template: {
+      '$schema': 'https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#'
+      contentVersion: '1.0.0.0'
+      resources: []
+    }
+  }
 }
 
-resource availabilitySet 'Microsoft.Compute/availabilitySets@2021-04-01' = {
+resource availabilitySet 'Microsoft.Compute/availabilitySets@2021-07-01' = {
   name: name
   location: location
   tags: tags
   properties: {
     platformFaultDomainCount: availabilitySetFaultDomain
     platformUpdateDomainCount: availabilitySetUpdateDomain
-    proximityPlacementGroup: !empty(proximityPlacementGroupId) ? proximityPlacementGroupId : null
+    proximityPlacementGroup: !empty(proximityPlacementGroupId) ? {
+      id: proximityPlacementGroupId
+    } : null
   }
   sku: {
     name: availabilitySetSku
@@ -64,17 +76,19 @@ resource availabilitySet_lock 'Microsoft.Authorization/locks@2017-04-01' = if (l
 module availabilitySet_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-AvSet-Rbac-${index}'
   params: {
+    description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
     principalIds: roleAssignment.principalIds
+    principalType: contains(roleAssignment, 'principalType') ? roleAssignment.principalType : ''
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
     resourceId: availabilitySet.id
   }
 }]
 
-@description('The resource group the availability set was deployed into')
+@description('The name of the availability set')
 output name string = availabilitySet.name
 
 @description('The resource ID of the availability set')
 output resourceId string = availabilitySet.id
 
-@description('The name of the availability set')
+@description('The resource group the availability set was deployed into')
 output resourceGroupName string = resourceGroup().name

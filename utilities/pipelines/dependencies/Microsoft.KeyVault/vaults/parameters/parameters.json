@@ -3,7 +3,7 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "name": {
-      "value": "adp-sxx-az-kv-x-001"
+      "value": "adp-<<namePrefix>>-az-kv-x-001"
     },
     "accessPolicies": {
       "value": [
@@ -28,7 +28,8 @@
           "tenantId": "<<tenantId>>",
           "objectId": "<<msiPrincipalID>>", // The object ID of the deployed MSI. Replaced by the pipeline
           "permissions": {
-            "keys": [],
+            "keys": [
+            ],
             "secrets": [
               "Get"
             ],

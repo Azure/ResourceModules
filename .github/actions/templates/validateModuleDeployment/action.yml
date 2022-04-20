@@ -1,3 +1,43 @@
+#########################################################
+## 'Deploy module' Composite Action                    ##
+#########################################################
+##
+## This composite action contains the logic to both test and execute a deployment of a given template and parameter file.
+## By default, tested deployments are also removed. Optionally, the removal step can be skipped.
+##
+#########################################################
+##
+##-------------------------------------------##
+## ACTION PARAMETERS                         ##
+##-------------------------------------------##
+##
+##   |============================================================================================================================================================================|
+##   | Parameter                 | Required | Default | Description                                           | Example                                                           |
+##   |---------------------------|----------|---------|-------------------------------------------------------|-------------------------------------------------------------------|
+##   | templateFilePath          | true     | ''      | The path to the template file to use for deployment              | 'arm/Microsoft.ApiManagement/service/deploy.bicep'                |
+##   | parameterFilePath         | true     | ''      | The path to the parameter file to use for deployment  | 'arm/Microsoft.ApiManagement/service/.parameters/parameters.json' |
+##   | location                  | true     | ''      | The location to use for deployment                    | 'WestEurope'                                                      |
+##   | resourceGroupName         | false    | ''      | The resource group to deploy to                       | 'validation-rg'                                                   |
+##   | subscriptionId            | false    | ''      | The subscriptionId to deploy to                       | '1a97b80a-4dda-4f50-ab53-349e29344654'                            |
+##   | managementGroupId         | false    | ''      | The managementGroupId to deploy to                    | '1a97b80a-4dda-4f50-ab53-349e29344654'                            |
+##   | customParameterFileTokens | false    | ''      | Additional parameter file token pairs in json format. | '{"tokenName":"tokenValue"}'                                      |
+##   | removeDeployment          | false    | 'true'  | Set "true" to set module up for removal               | 'true'                                                            |
+##   |============================================================================================================================================================================|
+##
+#########################################################
+##
+##----------------------------------------##
+## ACTION OUTPUTS                         ##
+##----------------------------------------##
+##
+##   |================================================================|
+##   | Output           | Description                                 |
+##   |------------------|---------------------------------------------|
+##   | deploymentOutput | The module deployment output in json format |
+##   |================================================================|
+##
+##---------------------------------------------##
+
 name: 'Deploy module'
 description: 'Deploy module'
 
@@ -21,7 +61,7 @@ inputs:
     description: 'The managementGroupId to deploy to'
     required: false
   customParameterFileTokens:
-    description: 'Additional parameter file token pairs in json format. e.g. [{"Name":"tokenName","Value":"tokenValue"}]'
+    description: 'Additional parameter file token pairs in json format. e.g. {"tokenName":"tokenValue"}'
     required: false
   removeDeployment:
     description: 'Set "true" to set module up for removal'
@@ -41,6 +81,9 @@ runs:
     - name: 'Setup agent'
       shell: pwsh
       run: |
+        # Grouping task logs
+        Write-Output "::group::Setup agent"
+
         # Load used functions
         . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
 
@@ -64,6 +107,9 @@ runs:
 
         # Set agent up
         Set-EnvironmentOnAgent -PSModules $Modules
+
+        Write-Output "::endgroup::"
+
     - name: Azure Login
       uses: Azure/login@v1
       with:
@@ -75,60 +121,94 @@ runs:
     - name: 'Replace Parameter File Tokens [${{ inputs.parameterFilePath }}] '
       shell: pwsh
       run: |
+        # Grouping task logs
+        Write-Output "::group::Replace Parameter File Tokens [${{ inputs.parameterFilePath }}]"
+
         # Load used functions
-        . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInParameterFile.ps1')
+        . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInFile.ps1')
 
         # Load Settings File
-        $Settings = Get-Content -Path "settings.json" | ConvertFrom-Json
-        # Initialize Default Parameter File Tokens
-        $DefaultParameterFileTokens = @(
-            @{ Name = 'resourceGroupName'; Value = '${{ inputs.resourceGroupName }}' }
-            @{ Name = 'subscriptionId'; Value = '${{ inputs.subscriptionId }}' }
-            @{ Name = 'managementGroupId'; Value = '${{ inputs.managementGroupId }}' }
-            @{ Name = "tenantId"; Value = '${{ env.ARM_TENANT_ID }}' }
-            @{ Name = "deploymentSpId"; Value = '${{ env.DEPLOYMENT_SP_ID }}' }
-        ) | ForEach-Object { [PSCustomObject]$PSItem }
-
-        # Get additional Custom Parameter File Tokens from input
-        Write-Verbose 'Additional Custom Parameter File Tokens: ${{ inputs.customParameterFileTokens }}' -Verbose
-        $OtherCustomParameterFileTokens = '${{  inputs.customParameterFileTokens }}' | ConvertFrom-Json
+        $Settings = Get-Content -Path "settings.json" | ConvertFrom-Json -AsHashTable
 
         # Construct Token Function Input
         $ConvertTokensInputs = @{
-            ParameterFilePath                 = '${{ inputs.parameterFilePath }}'
-            DefaultParameterFileTokens        = $DefaultParameterFileTokens
-            OtherCustomParameterFileTokens    = $OtherCustomParameterFileTokens
-            LocalCustomParameterFileTokens    = $Settings.parameterFileTokens.localTokens.tokens
-            TokenPrefix                       = $Settings.parameterFileTokens.tokenPrefix
-            TokenSuffix                       = $Settings.parameterFileTokens.tokenSuffix
+          Tokens       = @{}
+          FilePath     = '${{ inputs.parameterFilePath }}'
+          TokenPrefix  = $Settings.parameterFileTokens.tokenPrefix
+          TokenSuffix  = $Settings.parameterFileTokens.tokenSuffix
         }
+
+        # Local tokens
+        $ConvertTokensInputs.Tokens += @{
+          resourceGroupName = '${{ inputs.resourceGroupName }}'
+          subscriptionId    = '${{ inputs.subscriptionId }}'
+          managementGroupId = '${{ inputs.managementGroupId }}'
+          tenantId          = '${{ env.ARM_TENANT_ID }}'
+          deploymentSpId    = '${{ env.DEPLOYMENT_SP_ID }}'
+        }
+
+        # Add local tokens
+        if ($Settings.parameterFileTokens.localTokens) {
+          $tokenMap = @{}
+          foreach ($token in $Settings.parameterFileTokens.localTokens) {
+            $tokenMap += @{ $token.name = $token.value }
+          }
+          Write-Verbose ('Using local tokens [{0}]' -f ($tokenMap.Keys -join ', ')) -Verbose
+          $ConvertTokensInputs.Tokens += $tokenMap
+        }
+
+        # Add custom tokens (passed in via the pipeline)
+        if(-not [String]::IsNullOrEmpty('${{  inputs.customParameterFileTokens }}')) {
+          $customTokens = '${{ inputs.customParameterFileTokens }}' | ConvertFrom-Json -AsHashTable
+          Write-Verbose ('Using custom parameter file tokens [{0}]' -f ($customTokens.Keys -join ', ')) -Verbose
+          $ConvertTokensInputs.Tokens += $customTokens
+        }
+
         # Invoke Token Replacement Functionality
-        $null = Convert-TokensInParameterFile @ConvertTokensInputs -Verbose
+        $null = Convert-TokensInFile @ConvertTokensInputs
+
+        Write-Output "::endgroup::"
 
     # [Deployment validation] task(s)
     # -------------------------------
     - name: 'Validate [${{ inputs.templateFilePath }}]'
       shell: pwsh
       run: |
+        # Grouping task logs
+        Write-Output "::group::Validate [${{ inputs.templateFilePath }}]"
+
         # Load used functions
-        . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourceValidation' 'Test-TemplateWithParameterFile.ps1')
+        . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourceDeployment' 'Test-TemplateDeployment.ps1')
 
         # ----------- #
         # INVOKE TEST #
         # ----------- #
         $functionInput = @{
-          templateFilePath   = '${{ inputs.templateFilePath }}'
-          parameterFilePath  = '${{ inputs.parameterFilePath }}'
-          location           = '${{ inputs.location }}'
-          resourceGroupName  = '${{ inputs.resourceGroupName }}'
-          subscriptionId     = '${{ inputs.subscriptionId }}'
-          managementGroupId  = '${{ inputs.managementGroupId }}'
+          templateFilePath     = '${{ inputs.templateFilePath }}'
+          location             = '${{ inputs.location }}'
+          resourceGroupName    = '${{ inputs.resourceGroupName }}'
+          subscriptionId       = '${{ inputs.subscriptionId }}'
+          managementGroupId    = '${{ inputs.managementGroupId }}'
+          additionalParameters = @{}
+        }
+
+        if(-not [String]::IsNullOrEmpty('${{ inputs.parameterFilePath }}')) {
+          $functionInput['parameterFilePath'] = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.parameterFilePath }}'
+        }
+
+        $projectSettings = Get-Content -Path 'settings.json' | ConvertFrom-Json
+        if (-not [String]::IsNullOrEmpty($projectSettings.enableDefaultTelemetry) -and (Get-Content -Path $functionInput.templateFilePath -Raw) -like '*param enableDefaultTelemetry*') {
+            $functionInput['additionalParameters'] += @{
+                enableDefaultTelemetry = $projectSettings.enableDefaultTelemetry
+            }
         }
 
         Write-Verbose "Invoke task with" -Verbose
         Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
-        Test-TemplateWithParameterFile @functionInput -Verbose
+        Test-TemplateDeployment @functionInput -Verbose
+
+        Write-Output "::endgroup::"
 
     # [Deployment execution] task(s)
     # ------------------------------
@@ -136,24 +216,38 @@ runs:
       shell: pwsh
       id: deploy_step
       run: |
+        # Grouping task logs
+        Write-Output "::group::Deploy [${{ inputs.templateFilePath }}] with parameters [${{ inputs.parameterFilePath }}]"
+
         # Load used functions
-        . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourceDeployment' 'New-ModuleDeployment.ps1')
+        . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourceDeployment' 'New-TemplateDeployment.ps1')
 
         $functionInput = @{
-          templateFilePath   = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.templateFilePath }}'
-          parameterFilePath  = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.parameterFilePath }}'
-          location           = '${{ inputs.location }}'
-          resourceGroupName  = '${{ inputs.resourceGroupName }}'
-          subscriptionId     = '${{ inputs.subscriptionId }}'
-          managementGroupId  = '${{ inputs.managementGroupId }}'
-          doNotThrow         = $true
+          templateFilePath     = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.templateFilePath }}'
+          location             = '${{ inputs.location }}'
+          resourceGroupName    = '${{ inputs.resourceGroupName }}'
+          subscriptionId       = '${{ inputs.subscriptionId }}'
+          managementGroupId    = '${{ inputs.managementGroupId }}'
+          doNotThrow           = $true
+          additionalParameters = @{}
+        }
+
+        if(-not [String]::IsNullOrEmpty('${{ inputs.parameterFilePath }}')) {
+          $functionInput['parameterFilePath'] = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.parameterFilePath }}'
+        }
+
+        $projectSettings = Get-Content -Path 'settings.json' | ConvertFrom-Json
+        if (-not [String]::IsNullOrEmpty($projectSettings.enableDefaultTelemetry) -and (Get-Content -Path $functionInput.templateFilePath -Raw) -like '*param enableDefaultTelemetry*') {
+            $functionInput['additionalParameters'] += @{
+                enableDefaultTelemetry = $projectSettings.enableDefaultTelemetry
+            }
         }
 
         Write-Verbose "Invoke task with" -Verbose
         Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
         # Invoke deployment
-        $res = New-ModuleDeployment @functionInput -Verbose
+        $res = New-TemplateDeployment @functionInput -Verbose
 
         # Get deployment name
         Write-Output ('::set-output name={0}::{1}' -f 'deploymentName', $res.deploymentName)
@@ -175,12 +269,17 @@ runs:
           throw $res.exception
         }
 
+        Write-Output "::endgroup::"
+
     # [Deployment removal] task(s)
     # ----------------------------
     - name: 'Remove [${{ inputs.templateFilePath }}] from parameters [${{ inputs.parameterFilePath }}]'
       shell: pwsh
       if: ${{ always() && inputs.removeDeployment == 'true' && steps.deploy_step.outputs.deploymentName != '' }}
       run: |
+        # Grouping task logs
+        Write-Output "::group::Remove [${{ inputs.templateFilePath }}] from parameters [${{ inputs.parameterFilePath }}]"
+
         # Load used function
         . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourceRemoval' 'Initialize-DeploymentRemoval.ps1')
 
@@ -189,6 +288,7 @@ runs:
             DeploymentName    = '${{ steps.deploy_step.outputs.deploymentName }}'
             TemplateFilePath  = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.templateFilePath }}'
             ResourceGroupName = '${{ inputs.resourceGroupName }}'
+            ManagementGroupId = '${{ inputs.managementGroupId }}'
             Verbose           = $true
           }
 
@@ -197,3 +297,5 @@ runs:
 
           Initialize-DeploymentRemoval @functionInput
         }
+
+        Write-Output "::endgroup::"

@@ -3,7 +3,7 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "name": {
-      "value": "adp-sxx-az-vnet-x-azfw"
+      "value": "adp-<<namePrefix>>-az-vnet-x-azfw"
     },
     "addressPrefixes": {
       "value": [
@@ -14,10 +14,7 @@
       "value": [
         {
           "name": "AzureFirewallSubnet",
-          "addressPrefix": "10.4.4.0/24",
-          "routeTableName": "",
-          "serviceEndpoints": [],
-          "delegations": []
+          "addressPrefix": "10.4.4.0/24"
         }
       ]
     }

@@ -14,6 +14,9 @@ Mandatory. The path to the template used for the deployment. Used to determine t
 .PARAMETER ResourceGroupName
 Optional. The name of the resource group the deployment was happening in. Relevant for resource-group level deployments.
 
+.PARAMETER ManagementGroupId
+Optional. The ID of the management group to fetch deployments from. Relevant for management-group level deployments.
+
 .EXAMPLE
 Initialize-DeploymentRemoval -DeploymentName 'virtualWans-20211204T1812029146Z' -TemplateFilePath "$home/ResourceModules/arm/Microsoft.Network/virtualWans/deploy.bicep" -resourceGroupName 'test-virtualWan-parameters.json-rg'
 
@@ -31,7 +34,10 @@ function Initialize-DeploymentRemoval {
         [string] $TemplateFilePath,
 
         [Parameter(Mandatory = $false)]
-        [string] $ResourceGroupName = 'validation-rg'
+        [string] $ResourceGroupName,
+
+        [Parameter(Mandatory = $false)]
+        [string] $ManagementGroupId
     )
 
     begin {
@@ -43,9 +49,13 @@ function Initialize-DeploymentRemoval {
     process {
         $moduleName = Split-Path (Split-Path $templateFilePath -Parent) -LeafBase
 
-        # The intial sequence is a general order-recommendation
+        # The initial sequence is a general order-recommendation
         $removalSequence = @(
             'Microsoft.Insights/diagnosticSettings',
+            'Microsoft.Network/privateEndpoints/privateDnsZoneGroups',
+            'Microsoft.Network/privateEndpoints',
+            'Microsoft.OperationsManagement/solutions',
+            'Microsoft.OperationalInsights/workspaces/linkedServices',
             'Microsoft.Resources/resourceGroups',
             'Microsoft.Compute/virtualMachines'
         )
@@ -63,31 +73,20 @@ function Initialize-DeploymentRemoval {
                     )
                     break
                 }
-                'automationAccounts' {
-                    $removalSequence += @(
-                        'Microsoft.OperationsManagement/solutions',
-                        'Microsoft.OperationalInsights/workspaces/linkedServices',
-                        'Microsoft.Network/privateEndpoints/privateDnsZoneGroups',
-                        'Microsoft.Network/privateEndpoints'
-                    )
-                    break
-                }
-                'workspaces' {
-                    $removalSequence += @(
-                        'Microsoft.OperationsManagement/solutions',
-                        'Microsoft.OperationalInsights/workspaces/linkedServices'
-                    )
-                    break
-                }
                 ### CODE LOCATION: Add custom removal sequence here
             }
 
             # Invoke removal
             $inputObject = @{
-                DeploymentName    = $deploymentName
-                ResourceGroupName = $resourceGroupName
-                TemplateFilePath  = $templateFilePath
-                RemovalSequence   = $removalSequence
+                DeploymentName   = $deploymentName
+                TemplateFilePath = $templateFilePath
+                RemovalSequence  = $removalSequence
+            }
+            if (-not [String]::IsNullOrEmpty($resourceGroupName)) {
+                $inputObject['resourceGroupName'] = $resourceGroupName
+            }
+            if (-not [String]::IsNullOrEmpty($ManagementGroupId)) {
+                $inputObject['ManagementGroupId'] = $ManagementGroupId
             }
             Remove-Deployment @inputObject -Verbose
         }

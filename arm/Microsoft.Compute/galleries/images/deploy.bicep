@@ -1,8 +1,8 @@
 @description('Required. Name of the image definition.')
 param name string
 
-@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
-param cuaId string = ''
+@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+param enableDefaultTelemetry bool = true
 
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
@@ -94,9 +94,16 @@ param roleAssignments array = []
 @description('Optional. Tags for all resources.')
 param tags object = {}
 
-module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
-  name: 'pid-${cuaId}'
-  params: {}
+resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
+  name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
+  properties: {
+    mode: 'Incremental'
+    template: {
+      '$schema': 'https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#'
+      contentVersion: '1.0.0.0'
+      resources: []
+    }
+  }
 }
 
 resource gallery 'Microsoft.Compute/galleries@2020-09-30' existing = {
@@ -132,9 +139,9 @@ resource image 'Microsoft.Compute/galleries/images@2020-09-30' = {
     privacyStatementUri: privacyStatementUri
     releaseNoteUri: releaseNoteUri
     purchasePlan: {
-      product: productName
-      name: planName
-      publisher: planPublisherName
+      product: !empty(productName) ? productName : null
+      name: !empty(planName) ? planName : null
+      publisher: !empty(planPublisherName) ? planPublisherName : null
     }
     endOfLifeDate: endOfLife
     disallowed: {
@@ -146,7 +153,9 @@ resource image 'Microsoft.Compute/galleries/images@2020-09-30' = {
 module galleryImage_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${deployment().name}-Rbac-${index}'
   params: {
+    description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
     principalIds: roleAssignment.principalIds
+    principalType: contains(roleAssignment, 'principalType') ? roleAssignment.principalType : ''
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
     resourceId: image.id
   }

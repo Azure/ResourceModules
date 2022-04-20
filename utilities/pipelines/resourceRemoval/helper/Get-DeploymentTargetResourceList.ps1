@@ -12,6 +12,9 @@ Mandatory. The deployment name to search for
 .PARAMETER ResourceGroupName
 Optional. The name of the resource group for scope 'resourcegroup'
 
+.PARAMETER ManagementGroupId
+Optional. The ID of the management group to fetch deployments from. Relevant for management-group level deployments.
+
 .PARAMETER Scope
 Mandatory. The scope to search in
 
@@ -19,6 +22,11 @@ Mandatory. The scope to search in
 Get-DeploymentTargetResourceListInner -Name 'keyvault-12356' -Scope 'resourcegroup'
 
 Get all deployments that match name 'keyvault-12356' in scope 'resourcegroup'
+
+.EXAMPLE
+Get-ResourceIdsOfDeploymentInner -Name 'mgmtGroup-12356' -Scope 'managementGroup' -ManagementGroupId 'af760cf5-3c9e-4804-a59a-a51741daa350'
+
+Get all deployments that match name 'mgmtGroup-12356' in scope 'managementGroup'
 
 .NOTES
 Works after the principal:
@@ -35,6 +43,9 @@ function Get-DeploymentTargetResourceListInner {
 
         [Parameter(Mandatory = $false)]
         [string] $ResourceGroupName,
+
+        [Parameter(Mandatory = $false)]
+        [string] $ManagementGroupId,
 
         [Parameter(Mandatory)]
         [ValidateSet(
@@ -65,6 +76,7 @@ function Get-DeploymentTargetResourceListInner {
                 # In case we already have any such resources in the list, we should remove them
                 [array]$resultSet = $resultSet | Where-Object { $_ -notmatch "/resourceGroups/$resourceGroupName/" }
             }
+            break
         }
         'subscription' {
             [array]$deploymentTargets = (Get-AzDeploymentOperation -DeploymentName $name).TargetResource | Where-Object { $_ -ne $null }
@@ -84,23 +96,32 @@ function Get-DeploymentTargetResourceListInner {
                     [array]$resultSet += Get-DeploymentTargetResourceListInner -name (Split-Path $deployment -Leaf) -Scope 'subscription'
                 }
             }
+            break
         }
         'managementgroup' {
-            [array]$deploymentTargets = (Get-AzManagementGroupDeploymentOperation -DeploymentName $name).TargetResource | Where-Object { $_ -ne $null }
+            [array]$deploymentTargets = (Get-AzManagementGroupDeploymentOperation -DeploymentName $name -ManagementGroupId $ManagementGroupId).TargetResource | Where-Object { $_ -ne $null }
             foreach ($deployment in ($deploymentTargets | Where-Object { $_ -notmatch '/deployments/' } )) {
                 Write-Verbose ('Found deployed resource [{0}]' -f $deployment) -Verbose
                 [array]$resultSet += $deployment
             }
             foreach ($deployment in ($deploymentTargets | Where-Object { $_ -match '/deployments/' } )) {
                 [array]$resultSet = $resultSet | Where-Object { $_ -ne $deployment }
-                if ($deployment -match '/managementGroup/') {
+                if ($deployment -match '/subscriptions/') {
                     # Subscription Level Child Deployments
-                    [array]$resultSet += Get-DeploymentTargetResourceListInner -Name (Split-Path $deployment -Leaf) -Scope 'subscription'
+                    if ($deployment -match '/resourceGroups/') {
+                        # Resource Group Level Child Deployments (Used only if management group scope --> resource Group scope)
+                        $name = Split-Path $deployment -Leaf
+                        $resourceGroupName = $deployment.split('/resourceGroups/')[1].Split('/')[0]
+                        [array]$resultSet += Get-DeploymentTargetResourceListInner -Name $name -ResourceGroupName $ResourceGroupName -Scope 'resourcegroup'
+                    } else {
+                        [array]$resultSet += Get-DeploymentTargetResourceListInner -Name (Split-Path $deployment -Leaf) -Scope 'subscription'
+                    }
                 } else {
                     # Management Group Level Deployments
-                    [array]$resultSet += Get-DeploymentTargetResourceListInner -name (Split-Path $deployment -Leaf) -scope 'managementgroup'
+                    [array]$resultSet += Get-DeploymentTargetResourceListInner -name (Split-Path $deployment -Leaf) -scope 'managementgroup' -ManagementGroupId $ManagementGroupId
                 }
             }
+            break
         }
         'tenant' {
             [array]$deploymentTargets = (Get-AzTenantDeploymentOperation -DeploymentName $name).TargetResource | Where-Object { $_ -ne $null }
@@ -110,14 +131,15 @@ function Get-DeploymentTargetResourceListInner {
             }
             foreach ($deployment in ($deploymentTargets | Where-Object { $_ -match '/deployments/' } )) {
                 [array]$resultSet = $resultSet | Where-Object { $_ -ne $deployment }
-                if ($deployment -match '/tenant/') {
+                if ($deployment -match '/managementgroups/') {
                     # Management Group Level Child Deployments
-                    [array]$resultSet += Get-DeploymentTargetResourceListInner -Name (Split-Path $deployment -Leaf) -scope 'managementgroup'
+                    [array]$resultSet += Get-DeploymentTargetResourceListInner -Name (Split-Path $deployment -Leaf) -scope 'managementgroup' -ManagementGroupId $ManagementGroupId
                 } else {
                     # Tenant Level Deployments
                     [array]$resultSet += Get-DeploymentTargetResourceListInner -name (Split-Path $deployment -Leaf)
                 }
             }
+            break
         }
     }
     return $resultSet
@@ -132,7 +154,10 @@ Get all deployments that match a given deployment name in a given scope using a 
 Get all deployments that match a given deployment name in a given scope using a retry mechanic.
 
 .PARAMETER ResourceGroupName
-Mandatory. The resource group of the resource to remove
+Optional. The name of the resource group for scope 'resourcegroup'
+
+.PARAMETER ManagementGroupId
+Optional. The ID of the management group to fetch deployments from. Relevant for management-group level deployments.
 
 .PARAMETER Name
 Optional. The deployment name to use for the removal
@@ -150,6 +175,12 @@ Optional. The time to wait in between the search for resources via their remove 
 Get-DeploymentTargetResourceList -name 'KeyVault' -ResourceGroupName 'validation-rg' -scope 'resourcegroup'
 
 Get all deployments that match name 'KeyVault' in scope 'resourcegroup' of resource group 'validation-rg'
+
+.EXAMPLE
+Get-ResourceIdsOfDeployment -Name 'mgmtGroup-12356' -Scope 'managementGroup' -ManagementGroupId 'af760cf5-3c9e-4804-a59a-a51741daa350'
+
+Get all deployments that match name 'mgmtGroup-12356' in scope 'managementGroup'
+
 #>
 function Get-DeploymentTargetResourceList {
 
@@ -157,6 +188,9 @@ function Get-DeploymentTargetResourceList {
     param (
         [Parameter(Mandatory = $false)]
         [string] $ResourceGroupName,
+
+        [Parameter(Mandatory = $false)]
+        [string] $ManagementGroupId,
 
         [Parameter(Mandatory = $true)]
         [string] $Name,
@@ -179,7 +213,18 @@ function Get-DeploymentTargetResourceList {
 
     $searchRetryCount = 1
     do {
-        [array]$targetResources = Get-DeploymentTargetResourceListInner -Name $name -Scope $scope -ResourceGroupName $resourceGroupName -ErrorAction 'SilentlyContinue'
+        $innerInputObject = @{
+            Name        = $name
+            Scope       = $scope
+            ErrorAction = 'SilentlyContinue'
+        }
+        if (-not [String]::IsNullOrEmpty($resourceGroupName)) {
+            $innerInputObject['resourceGroupName'] = $resourceGroupName
+        }
+        if (-not [String]::IsNullOrEmpty($ManagementGroupId)) {
+            $innerInputObject['ManagementGroupId'] = $ManagementGroupId
+        }
+        [array]$targetResources = Get-DeploymentTargetResourceListInner @innerInputObject
         if ($targetResources) {
             break
         }

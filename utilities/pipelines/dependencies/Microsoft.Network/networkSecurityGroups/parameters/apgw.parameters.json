@@ -3,9 +3,9 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "name": {
-      "value": "adp-sxx-az-nsg-x-apgw"
+      "value": "adp-<<namePrefix>>-az-nsg-x-apgw"
     },
-    "networkSecurityGroupSecurityRules": {
+    "securityRules": {
       "value": [
         {
           "name": "AllowPortsForAppGateway",

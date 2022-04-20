@@ -2,7 +2,9 @@
 # This pipeline requires a secret 'PLATFORM_REPO_UPDATE_PAT' set up in a library named 'PLATFORM_VARIABLES'.
 # The secret's value should be a PAT token with the permissions to push to the repository's main branch.
 
-name: '.Platform: Sync Docs/Wiki'
+name: '.Platform - Sync Docs/Wiki'
+
+pr: none
 
 trigger:
   branches:

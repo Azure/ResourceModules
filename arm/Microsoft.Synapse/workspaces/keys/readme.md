@@ -2,6 +2,13 @@
 
 This module deploys a Synapse Workspaces Key.
 
+## Navigation
+
+- [Resource Types](#Resource-Types)
+- [Parameters](#Parameters)
+- [Outputs](#Outputs)
+- [Template references](#Template-references)
+
 ## Resource Types
 
 | Resource Type | API Version |
@@ -10,21 +17,27 @@ This module deploys a Synapse Workspaces Key.
 
 ## Parameters
 
-| Parameter Name | Type | Default Value | Possible Values | Description |
-| :-- | :-- | :-- | :-- | :-- |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
-| `isActiveCMK` | bool |  |  | Required. Used to activate the workspace after a customer managed key is provided. |
-| `keyVaultUrl` | string |  |  | Required. The Key Vault Url of the workspace key. |
-| `name` | string |  |  | Required. Encryption key name. |
-| `workspaceName` | string |  |  | Required. Synapse workspace name. |
+**Required parameters**
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `isActiveCMK` | bool | Used to activate the workspace after a customer managed key is provided. |
+| `keyVaultUrl` | string | The Key Vault Url of the workspace key. |
+| `name` | string | Encryption key name. |
+| `workspaceName` | string | Synapse workspace name. |
+
+**Optional parameters**
+| Parameter Name | Type | Default Value | Description |
+| :-- | :-- | :-- | :-- |
+| `cuaId` | string | `''` | Customer Usage Attribution ID (GUID). This GUID must be previously registered |
+
 
 ## Outputs
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `keyName` | string | The name of the deployed key |
-| `keyResourceGroup` | string | The resource group of the deployed key |
-| `keyResourceId` | string | The resource ID of the deployed key |
+| `name` | string | The name of the deployed key |
+| `resourceGroupName` | string | The resource group of the deployed key |
+| `resourceId` | string | The resource ID of the deployed key |
 
 ## Template references
 

@@ -2,10 +2,13 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
+        "name": {
+            "value": "<<namePrefix>>-az-sqlsrv-x-001"
+        },
         "administratorLogin": {
             "reference": {
                 "keyVault": {
-                    "id": "/subscriptions/<<subscriptionId>>/resourceGroups/<<resourceGroupName>>/providers/Microsoft.KeyVault/vaults/adp-sxx-az-kv-x-001"
+                    "id": "/subscriptions/<<subscriptionId>>/resourceGroups/<<resourceGroupName>>/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001"
                 },
                 "secretName": "administratorLogin"
             }
@@ -13,16 +16,13 @@
         "administratorLoginPassword": {
             "reference": {
                 "keyVault": {
-                    "id": "/subscriptions/<<subscriptionId>>/resourceGroups/<<resourceGroupName>>/providers/Microsoft.KeyVault/vaults/adp-sxx-az-kv-x-001"
+                    "id": "/subscriptions/<<subscriptionId>>/resourceGroups/<<resourceGroupName>>/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001"
                 },
                 "secretName": "administratorLoginPassword"
             }
         },
         "location": {
             "value": "westeurope"
-        },
-        "name": {
-            "value": "sxx-az-sqlsrv-x-001"
         },
         "roleAssignments": {
             "value": [
@@ -37,17 +37,19 @@
         "databases": {
             "value": [
                 {
-                    "name": "sxx-az-sqldb-x-001",
+                    "name": "<<namePrefix>>-az-sqldb-x-001",
                     "collation": "SQL_Latin1_General_CP1_CI_AS",
-                    "tier": "GeneralPurpose",
-                    "skuName": "GP_Gen5_2",
+                    "skuTier": "BusinessCritical",
+                    "skuName": "BC_Gen5",
+                    "skuCapacity": 12,
+                    "skuFamily": "Gen5",
                     "maxSizeBytes": 34359738368,
                     "licenseType": "LicenseIncluded",
                     "diagnosticLogsRetentionInDays": 7,
-                    "diagnosticStorageAccountId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adpsxxazsax001",
-                    "workspaceId": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-sxx-az-law-x-001",
-                    "eventHubAuthorizationRuleId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-sxx-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey",
-                    "eventHubName": "adp-sxx-az-evh-x-001"
+                    "diagnosticStorageAccountId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001",
+                    "diagnosticWorkspaceId": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001",
+                    "diagnosticEventHubAuthorizationRuleId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey",
+                    "diagnosticEventHubName": "adp-<<namePrefix>>-az-evh-x-001"
                 }
             ]
         },
@@ -74,7 +76,7 @@
         },
         "userAssignedIdentities": {
             "value": {
-                "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001": {}
+                "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001": {}
             }
         }
     }

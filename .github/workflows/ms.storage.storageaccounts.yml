@@ -7,20 +7,12 @@ on:
         type: boolean
         description: 'Remove deployed module'
         required: false
-        default: 'true'
-      versioningOption:
-        type: choice
-        description: 'The mode to handle the version increments [major|minor|patch]'
+        default: true
+      prerelease:
+        type: boolean
+        description: 'Publish prerelease module'
         required: false
-        default: 'patch'
-        options:
-          - major
-          - minor
-          - patch
-      customVersion:
-        description: 'Custom version to apply. Used only if higher than latest'
-        required: false
-        default: '0.0.1'
+        default: false
   push:
     branches:
       - main
@@ -33,6 +25,7 @@ on:
       - '!utilities/pipelines/dependencies/**'
 
 env:
+  variablesPath: 'global.variables.yml'
   modulePath: 'arm/Microsoft.Storage/storageAccounts'
   workflowPath: '.github/workflows/ms.storage.storageaccounts.yml'
   AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
@@ -42,33 +35,37 @@ env:
   DEPLOYMENT_SP_ID: '${{ secrets.DEPLOYMENT_SP_ID }}'
 
 jobs:
-  ############################
-  #   SET INPUT PARAMETERS   #
-  ############################
-  job_set_workflow_param:
+  ###########################
+  #   Initialize pipeline   #
+  ###########################
+  job_initialize_pipeline:
     runs-on: ubuntu-20.04
-    name: 'Set input parameters to output variables'
+    name: 'Initialize pipeline'
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - name: 'Set input parameters'
+      - name: 'Set input parameters to output variables'
         id: get-workflow-param
         uses: ./.github/actions/templates/getWorkflowInput
         with:
           workflowPath: '${{ env.workflowPath}}'
+      - name: 'Get parameter file paths'
+        id: get-parameter-file-paths
+        uses: ./.github/actions/templates/getParameterFiles
+        with:
+          modulePath: '${{ env.modulePath }}'
     outputs:
       removeDeployment: ${{ steps.get-workflow-param.outputs.removeDeployment }}
-      versioningOption: ${{ steps.get-workflow-param.outputs.versioningOption }}
-      customVersion: ${{ steps.get-workflow-param.outputs.customVersion }}
+      parameterFilePaths: ${{ steps.get-parameter-file-paths.outputs.parameterFilePaths }}
 
-  ####################
-  #   Pester Tests   #
-  ####################
+  #########################
+  #   Static validation   #
+  #########################
   job_module_pester_validation:
     runs-on: ubuntu-20.04
-    name: 'Pester tests'
+    name: 'Static validation'
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -79,49 +76,47 @@ jobs:
         with:
           modulePath: '${{ env.modulePath }}'
 
-  ####################
-  # Deployment tests #
-  ####################
+  #############################
+  #   Deployment validation   #
+  #############################
   job_module_deploy_validation:
     runs-on: ubuntu-20.04
-    name: 'Deployment tests'
+    name: 'Deployment validation'
     needs:
-      - job_set_workflow_param
+      - job_initialize_pipeline
       - job_module_pester_validation
     strategy:
       fail-fast: false
       matrix:
-        parameterFilePaths:
-          ['parameters.json', 'min.parameters.json', 'v1.parameters.json']
+        parameterFilePaths: ${{ fromJSON(needs.job_initialize_pipeline.outputs.parameterFilePaths) }}
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
       - name: Set environment variables
-        uses: deep-mm/set-variables@v1.0
+        uses: ./.github/actions/templates/setEnvironmentVariables
         with:
-          variableFileName: 'global.variables'
+          variablesPath: ${{ env.variablesPath }}
       - name: 'Using parameter file [${{ matrix.parameterFilePaths }}]'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
           templateFilePath: '${{ env.modulePath }}/deploy.bicep'
-          parameterFilePath: '${{ env.modulePath }}/.parameters/${{ matrix.parameterFilePaths }}'
-          location: '${{ env.defaultLocation }}'
+          parameterFilePath: '${{ env.modulePath }}/${{ matrix.parameterFilePaths }}'
+          location: '${{ env.location }}'
           resourceGroupName: '${{ env.resourceGroupName }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
-          removeDeployment: '${{ needs.job_set_workflow_param.outputs.removeDeployment }}'
+          removeDeployment: '${{ needs.job_initialize_pipeline.outputs.removeDeployment }}'
 
-  ###############
-  #   PUBLISH   #
-  ###############
+  ##################
+  #   Publishing   #
+  ##################
   job_publish_module:
-    name: 'Publish module'
-    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+    name: 'Publishing'
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master' || github.event.inputs.prerelease == 'true'
     runs-on: ubuntu-20.04
     needs:
-      - job_set_workflow_param
       - job_module_deploy_validation
     steps:
       - name: 'Checkout'
@@ -129,15 +124,13 @@ jobs:
         with:
           fetch-depth: 0
       - name: Set environment variables
-        uses: deep-mm/set-variables@v1.0
+        uses: ./.github/actions/templates/setEnvironmentVariables
         with:
-          variableFileName: 'global.variables'
-      - name: 'Publish module'
+          variablesPath: ${{ env.variablesPath }}
+      - name: 'Publishing'
         uses: ./.github/actions/templates/publishModule
         with:
           templateFilePath: '${{ env.modulePath }}/deploy.bicep'
-          versioningOption: '${{ needs.job_set_workflow_param.outputs.versioningOption }}'
-          customVersion: '${{ needs.job_set_workflow_param.outputs.customVersion }}'
           templateSpecsRGName: '${{ env.templateSpecsRGName }}'
           templateSpecsRGLocation: '${{ env.templateSpecsRGLocation }}'
           templateSpecsDescription: '${{ env.templateSpecsDescription }}'

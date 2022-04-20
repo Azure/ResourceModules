@@ -5,7 +5,12 @@ parameters:
     displayName: Enable SqlMi dependencies deployment
     type: boolean
     default: false
+  - name: deployVhdDependencies
+    displayName: Enable deployment of a vhd stored in a blob container
+    type: boolean
+    default: false
 
+pr: none
 trigger: none
 
 # trigger:
@@ -20,7 +25,7 @@ trigger: none
 #       - 'utilities/pipelines/dependencies/**'
 
 variables:
-  - template: '/.azuredevops/pipelineVariables/global.variables.yml'
+  - template: '../../global.variables.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: dependencyPath
     value: 'utilities/pipelines/dependencies'
@@ -42,6 +47,21 @@ stages:
             - path: $(dependencyPath)/$(resourceType)/parameters/validation.parameters.json
               templateFilePath: $(templateFilePath)
               displayName: Validation Resource Group
+
+  - stage: deploy_ppg
+    displayName: Deploy proximity placement group
+    dependsOn:
+      - deploy_rg
+    variables:
+      resourceType: 'Microsoft.Compute/proximityPlacementGroups'
+      templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
+    jobs:
+      - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
+        parameters:
+          deploymentBlocks:
+            - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: Proximity Placement Group
 
   - stage: deploy_msi
     displayName: Deploy user assigned identity
@@ -81,20 +101,38 @@ stages:
                 Write-Verbose "msiPrincipalId: $msiPrincipalId" -Verbose
                 Write-Output ('##vso[task.setvariable variable={0};isOutput=true]{1}' -f 'msiPrincipalId', $msiPrincipalId)
 
-  - stage: deploy_pa
-    displayName: Deploy policy assignment
+  - stage: deploy_sf
+    displayName: Deploy server farm
     dependsOn:
       - deploy_rg
     variables:
-      resourceType: 'Microsoft.Authorization/policyAssignments'
-      templateFilePath: $(modulesPath)/$(resourceType)/.bicep/nested_policyAssignments_sub.bicep
+      resourceType: 'Microsoft.Web/serverfarms'
+      templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
     jobs:
       - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
         parameters:
           deploymentBlocks:
             - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
               templateFilePath: $(templateFilePath)
-              displayName: Policy assignment
+              displayName: Server farm
+
+  - stage: deploy_pa
+    displayName: Deploy policy assignment
+    dependsOn:
+      - deploy_rg
+    variables:
+      resourceType: 'Microsoft.Authorization/policyAssignments'
+      templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
+    jobs:
+      - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
+        parameters:
+          deploymentBlocks:
+            - path: $(dependencyPath)/$(resourceType)/parameters/mg.parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: Policy assignment (mg)
+            - path: $(dependencyPath)/$(resourceType)/parameters/sub.parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: Policy assignment (sub)
 
   - stage: deploy_evh
     displayName: Deploy event hub
@@ -125,6 +163,9 @@ stages:
             - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
               templateFilePath: $(templateFilePath)
               displayName: Default LAW
+            - path: $(dependencyPath)/$(resourceType)/parameters/aut.parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: Automation account LAW
             - path: $(dependencyPath)/$(resourceType)/parameters/appi.parameters.json
               templateFilePath: $(templateFilePath)
               displayName: AppInsights LAW
@@ -188,11 +229,32 @@ stages:
               azureSubscription: $(serviceConnection)
               ScriptType: 'InlineScript'
               Inline: |
+                $parameterFilePath = Join-Path '$(Build.SourcesDirectory)' '$(dependencyPath)' '$(resourceType)' 'parameters' 'parameters.json'
                 # Load used functions
                 . (Join-Path '$(Build.SourcesDirectory)' 'utilities' 'pipelines' 'sharedScripts' 'Export-ContentToBlob.ps1')
+                . (Join-Path '$(Build.SourcesDirectory)' 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInFile.ps1')
+
+                # Replace tokens in parameter file
+                $Settings = Get-Content -Path (Join-Path '$(Build.SourcesDirectory)' 'settings.json') | ConvertFrom-Json -AsHashTable
+                $ConvertTokensInputs = @{
+                    FilePath     = $parameterFilePath
+                    TokenPrefix  = $Settings.parameterFileTokens.tokenPrefix
+                    TokenSuffix  = $Settings.parameterFileTokens.tokenSuffix
+                }
+
+                # Add local tokens
+                if ($Settings.parameterFileTokens.localTokens) {
+                    $tokenMap = @{}
+                    foreach ($token in $Settings.parameterFileTokens.localTokens) {
+                        $tokenMap += @{ $token.name = $token.value }
+                    }
+                    Write-Verbose ('Using local tokens [{0}]' -f ($tokenMap.Keys -join ', ')) -Verbose
+                    $ConvertTokensInputs.Tokens = $tokenMap
+                }
+
+                $null = Convert-TokensInFile @ConvertTokensInputs
 
                 # Get storage account name
-                $parameterFilePath = Join-Path '$(Build.SourcesDirectory)' '$(dependencyPath)' '$(resourceType)' 'parameters' 'parameters.json'
                 $storageAccountParameters = (ConvertFrom-Json (Get-Content -path $parameterFilePath -Raw)).parameters
 
                 # Upload files to storage account
@@ -224,6 +286,144 @@ stages:
             - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
               templateFilePath: $(templateFilePath)
               displayName: Default SIG and SID
+
+  - stage: deploy_imgt
+    displayName: Deploy image template
+    condition: and(succeeded(), eq('${{ parameters.deployVhdDependencies }}', true))
+    dependsOn:
+      - deploy_rolea
+      - deploy_sig
+      - deploy_sa
+    variables:
+      resourceType: 'Microsoft.VirtualMachineImages\imageTemplates'
+      saResourceType: 'Microsoft.Storage\storageAccounts'
+      templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
+    jobs:
+      - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
+        parameters:
+          deploymentBlocks:
+            - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: Image template
+              jobName: job_deploy_imgt
+      - job:
+        displayName: Trigger vhd build and store it to a storage account blob container
+        dependsOn:
+          - job_deploy_imgt
+        pool:
+          ${{ if eq(variables['vmImage'], '') }}:
+            name: $(poolName)
+          ${{ if eq(variables['poolName'], '') }}:
+            vmImage: $(vmImage)
+        variables:
+          deploymentOutput: $[ dependencies.job_deploy_imgt.outputs['DeployModule.deploymentOutput'] ]
+        steps:
+          - task: PowerShell@2
+            displayName: 'Setup agent'
+            inputs:
+              targetType: inline
+              pwsh: true
+              script: |
+                # Load used functions
+                . (Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
+
+                # Define PS modules to install on the runner
+                $Modules = @(
+                    @{ Name = 'Az.ImageBuilder' },
+                    @{ Name = 'Az.Storage' }
+                )
+
+                # Set agent up
+                Set-EnvironmentOnAgent -PSModules $Modules
+          - task: AzurePowerShell@5
+            displayName: Trigger building new image
+            inputs:
+              azureSubscription: $(serviceConnection)
+              ScriptType: 'InlineScript'
+              Inline: |
+                # Retrieving parameters from previous job outputs
+                Write-Verbose "Retrieving parameters from previous job outputs" -Verbose
+                $imageTemplateName = (ConvertFrom-Json '$(deploymentOutput)').name
+                $imageTemplateResourceGroup = (ConvertFrom-Json '$(deploymentOutput)').resourceGroupName
+
+                # Trigger new image creation
+                Write-Verbose "Trigger new image creation with imageTemplateName $imageTemplateName and imageTemplateResourceGroup $imageTemplateResourceGroup" -Verbose
+                Start-AzImageBuilderTemplate -ImageTemplateName $imageTemplateName -ResourceGroupName $imageTemplateResourceGroup
+              azurePowerShellVersion: 'LatestVersion'
+              pwsh: true
+          - task: AzurePowerShell@5
+            displayName: Copy baked vhd to a storage account
+            inputs:
+              azureSubscription: $(serviceConnection)
+              ScriptType: 'InlineScript'
+              Inline: |
+
+                # Load used functions
+                . (Join-Path '$(Build.SourcesDirectory)' 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInFile.ps1')
+
+                # Prepare replace tokens in parameter file
+                $Settings = Get-Content -Path (Join-Path '$(Build.SourcesDirectory)' 'settings.json') | ConvertFrom-Json -AsHashTable
+                $ConvertTokensInputs = @{
+                    TokenPrefix  = $Settings.parameterFileTokens.tokenPrefix
+                    TokenSuffix  = $Settings.parameterFileTokens.tokenSuffix
+                }
+                if ($Settings.parameterFileTokens.localTokens) {
+                    $tokenMap = @{}
+                    foreach ($token in $Settings.parameterFileTokens.localTokens) {
+                        $tokenMap += @{ $token.name = $token.value }
+                    }
+                    Write-Verbose ('Using local tokens [{0}]' -f ($tokenMap.Keys -join ', ')) -Verbose
+                    $ConvertTokensInputs.Tokens = $tokenMap
+                }
+
+                # Retrieving parameters from previous job outputs and parameter files
+                Write-Verbose "Retrieving parameters from previous job outputs" -Verbose
+                $imageTemplateName = (ConvertFrom-Json '$(deploymentOutput)').name
+                $imageTemplateResourceGroup = (ConvertFrom-Json '$(deploymentOutput)').resourceGroupName
+
+                Write-Verbose "Retrieving parameters from storage account parameter files" -Verbose
+                $parameterFilePath = Join-Path '$(Build.SourcesDirectory)' '$(dependencyPath)' '$(saResourceType)' 'parameters' 'parameters.json'
+                $null = Convert-TokensInFile @ConvertTokensInputs -FilePath $parameterFilePath -Verbose
+                $storageAccountParameters = (ConvertFrom-Json (Get-Content -path $parameterFilePath -Raw)).parameters
+
+                Write-Verbose "Retrieving parameters from image template parameter files" -Verbose
+                $parameterFilePath = Join-Path '$(Build.SourcesDirectory)' '$(dependencyPath)' '$(resourceType)' 'parameters' 'parameters.json'
+                $null = Convert-TokensInFile @ConvertTokensInputs -FilePath $parameterFilePath -Verbose
+                $imageTemplateParameters = (ConvertFrom-Json (Get-Content -path $parameterFilePath -Raw)).parameters
+
+                # Initializing parameters before the blob copy
+                Write-Verbose "Initializing source storage account parameters before the blob copy" -Verbose
+                $imgtRunOutput = Get-AzImageBuilderRunOutput -ImageTemplateName $imageTemplateName -ResourceGroupName $imageTemplateResourceGroup | Where-Object ArtifactUri -NE $null
+                $sourceUri = $imgtRunOutput.ArtifactUri
+                $sourceStorageAccountName = $sourceUri.Split('//')[1].Split('.')[0]
+                $sourceStorageAccount = Get-AzStorageAccount | Where-Object StorageAccountName -EQ $sourceStorageAccountName
+                $sourceStorageAccountContext = $sourceStorageAccount.Context
+                $sourceStorageAccountRGName = $sourceStorageAccount.ResourceGroupName
+                Write-Verbose "Retrieving artifact uri $sourceUri stored in resource group $sourceStorageAccountRGName" -Verbose
+
+                Write-Verbose "Initializing destination storage account parameters before the blob copy" -Verbose
+                $destinationStorageAccountName = $storageAccountParameters.name.value
+                $destinationStorageAccount = Get-AzStorageAccount | Where-Object StorageAccountName -EQ $destinationStorageAccountName
+                $destinationStorageAccountContext = $destinationStorageAccount.Context
+                $destinationContainerName = 'vhds'
+                $destinationBlobName = $imageTemplateParameters.name.value
+                $destinationBlobName = "$destinationBlobName.vhd"
+                Write-Verbose "Planning for destination blob name $destinationBlobName in container $destinationContainerName and storage account $destinationStorageAccountName" -Verbose
+
+                # Copying the vhd to a destination blob container
+                Write-Verbose "Copying the vhd to a destination blob container" -Verbose
+                $resourceActionInputObject = @{
+                    AbsoluteUri   = $sourceUri
+                    Context       = $sourceStorageAccountContext
+                    DestContext   = $destinationStorageAccountContext
+                    DestBlob      = $destinationBlobName
+                    DestContainer = $destinationContainerName
+                    Force         = $true
+                }
+                Start-AzStorageBlobCopy @resourceActionInputObject
+              azPSVersion: 'latest'
+              azurePowerShellVersion: 'LatestVersion'
+              pwsh: true
 
   - stage: deploy_ag
     displayName: Deploy action groups
@@ -326,6 +526,9 @@ stages:
             - path: $(dependencyPath)/$(resourceType)/parameters/lb.parameters.json
               templateFilePath: $(templateFilePath)
               displayName: Load balancer Public IP
+            - path: $(dependencyPath)/$(resourceType)/parameters/lb.min.parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: Min Load balancer Public IP
             - path: $(dependencyPath)/$(resourceType)/parameters/fw.parameters.json
               templateFilePath: $(templateFilePath)
               displayName: Firewall Public IP
@@ -399,7 +602,7 @@ stages:
             - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
               templateFilePath: $(templateFilePath)
               displayName: Default recovery services vault
-              customParameterFileTokens: '[{"Name":"msiPrincipalId","Value":"$(msiPrincipalId)"}]'
+              customParameterFileTokens: '{"msiPrincipalId":"$(msiPrincipalId)"}'
 
   - stage: deploy_kv
     displayName: Deploy key vaults
@@ -420,26 +623,27 @@ stages:
               templateFilePath: $(templateFilePath)
               displayName: Default Key Vault
               jobName: default_kv
-              customParameterFileTokens: '[{"Name":"msiPrincipalId","Value":"$(msiPrincipalId)"}]'
+              customParameterFileTokens: '{"msiPrincipalId":"$(msiPrincipalId)"}'
+            - path: $(dependencyPath)/$(resourceType)/parameters/nopr.parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: Purge proteced key vault
+              jobName: default_kv_nopr
+              customParameterFileTokens: '{"msiPrincipalId":"$(msiPrincipalId)"}'  
             - path: $(dependencyPath)/$(resourceType)/parameters/pe.parameters.json
               templateFilePath: $(templateFilePath)
               displayName: Private Endpoint Key Vault
-              customParameterFileTokens: '[{"Name":"msiPrincipalId","Value":"$(msiPrincipalId)"}]'
+              customParameterFileTokens: '{"msiPrincipalId":"$(msiPrincipalId)"}'
             - ${{ if eq( parameters.deploySqlMiDependencies, true) }}:
                 - path: $(dependencyPath)/$(resourceType)/parameters/sqlmi.parameters.json
                   templateFilePath: $(templateFilePath)
                   displayName: SQLMI key vault
                   jobName: sqlmi_kv
-                  customParameterFileTokens: '[{"Name":"msiPrincipalId","Value":"$(msiPrincipalId)"}]'
-            - path: $(dependencyPath)/$(resourceType)/parameters/cmk.parameters.json
-              templateFilePath: $(templateFilePath)
-              displayName: Synapse keyvault for customer managed encryption
-              jobName: cmk_kv
-              customParameterFileTokens: '[{"Name":"msiPrincipalId","Value":"$(msiPrincipalId)"}]'
+                  customParameterFileTokens: '{"msiPrincipalId":"$(msiPrincipalId)"}'
       - job:
         displayName: Set key vault secrets keys and certificates
         dependsOn:
           - default_kv
+          - default_kv_nopr
         pool:
           ${{ if eq(variables['vmImage'], '') }}:
             name: $(poolName)
@@ -468,10 +672,42 @@ stages:
               azureSubscription: $(serviceConnection)
               ScriptType: 'InlineScript'
               Inline: |
-                # Get key vault name
                 $parameterFilePath = Join-Path '$(Build.SourcesDirectory)' '$(dependencyPath)' '$(resourceType)' 'parameters' 'parameters.json'
+                $noprParameterFilePath = Join-Path '$(Build.SourcesDirectory)' '$(dependencyPath)' '$(resourceType)' 'parameters' 'nopr.parameters.json'
+
+                # Load used functions
+                . (Join-Path '$(Build.SourcesDirectory)' 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInFile.ps1')
+
+                # Replace tokens in parameter file
+                $Settings = Get-Content -Path (Join-Path '$(Build.SourcesDirectory)' 'settings.json') | ConvertFrom-Json -AsHashTable
+                $ConvertTokensInputs = @{
+                    FilePath    = $parameterFilePath
+                    TokenPrefix = $Settings.parameterFileTokens.tokenPrefix
+                    TokenSuffix = $Settings.parameterFileTokens.tokenSuffix
+                }
+                $NoprConvertTokensInputs = @{
+                    FilePath    = $noprParameterFilePath
+                    TokenPrefix = $Settings.parameterFileTokens.tokenPrefix
+                    TokenSuffix = $Settings.parameterFileTokens.tokenSuffix
+                }
+                if ($Settings.parameterFileTokens.localTokens) {
+                    $tokenMap = @{}
+                    foreach ($token in $Settings.parameterFileTokens.localTokens) {
+                        $tokenMap += @{ $token.name = $token.value }
+                    }
+                    Write-Verbose ('Using local tokens [{0}]' -f ($tokenMap.Keys -join ', ')) -Verbose
+                    $ConvertTokensInputs.Tokens = $tokenMap
+                    $NoprConvertTokensInputs.Tokens = $tokenMap
+                }
+                $null = Convert-TokensInFile @ConvertTokensInputs
+                $null = Convert-TokensInFile @NoprConvertTokensInputs
+
+                # Get key vault name
                 $keyVaultParameters = (ConvertFrom-Json (Get-Content -Path $parameterFilePath -Raw)).parameters
                 $keyVaultName = $keyVaultParameters.name.value
+                # No Purge Key Vault
+                $noprKeyVaultParameters = (ConvertFrom-Json (Get-Content -Path $noprParameterFilePath -Raw)).parameters
+                $noprKeyVaultName = $noprKeyVaultParameters.name.value
 
                 # Generate values
                 $usernameString = ( -join ((65..90) + (97..122) | Get-Random -Count 9 -SetSeed 1 | ForEach-Object { [char]$_ + "$_" })).substring(0, 19) # max length
@@ -514,6 +750,13 @@ stages:
                     $null = Add-AzKeyVaultKey -VaultName $keyVaultName -Name $_.name -Destination $_.Destination
                     Write-Verbose ('Added key [{0}] to key vault [{1}]' -f $_.name, $keyVaultName) -Verbose
                 }
+                # noprKeyVault Keys
+                @(
+                  @{ name = 'keyEncryptionKey'; Destination = 'Software' } # Automation Account
+                ) | ForEach-Object {
+                    $null = Add-AzKeyVaultKey -VaultName $noprKeyVaultName -Name $_.name -Destination $_.Destination
+                    Write-Verbose ('Added key [{0}] to key vault [{1}]' -f $_.name, $noprKeyVaultName) -Verbose
+                }
               azurePowerShellVersion: 'LatestVersion'
               pwsh: true
 
@@ -551,8 +794,29 @@ stages:
                   azureSubscription: $(serviceConnection)
                   ScriptType: 'InlineScript'
                   Inline: |
-                    # Get key vault name
+
                     $parameterFilePath = Join-Path '$(Build.SourcesDirectory)' '$(dependencyPath)' '$(resourceType)' 'parameters' 'sqlmi.parameters.json'
+                    # Load used functions
+                    . (Join-Path '$(Build.SourcesDirectory)' 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInFile.ps1')
+
+                    # Replace tokens in parameter file
+                    $Settings = Get-Content -Path (Join-Path '$(Build.SourcesDirectory)' 'settings.json') | ConvertFrom-Json -AsHashTable
+                    $ConvertTokensInputs = @{
+                        FilePath    = $parameterFilePath
+                        TokenPrefix = $Settings.parameterFileTokens.tokenPrefix
+                        TokenSuffix = $Settings.parameterFileTokens.tokenSuffix
+                    }
+                    if ($Settings.parameterFileTokens.localTokens) {
+                        $tokenMap = @{}
+                        foreach ($token in $Settings.parameterFileTokens.localTokens) {
+                            $tokenMap += @{ $token.name = $token.value }
+                        }
+                        Write-Verbose ('Using local tokens [{0}]' -f ($tokenMap.Keys -join ', ')) -Verbose
+                        $ConvertTokensInputs.Tokens = $tokenMap
+                    }
+                    $null = Convert-TokensInFile @ConvertTokensInputs
+
+                    # Get key vault name
                     $keyVaultParameters = (ConvertFrom-Json (Get-Content -Path $parameterFilePath -Raw)).parameters
                     $keyVaultName = $keyVaultParameters.name.value
 
@@ -604,7 +868,7 @@ stages:
       - deploy_msi
     variables:
       resourceType: 'Microsoft.Authorization/roleAssignments'
-      templateFilePath: $(modulesPath)/$(resourceType)/.bicep/nested_rbac_sub.bicep
+      templateFilePath: $(modulesPath)/$(resourceType)/subscription/deploy.bicep
       msiPrincipalId: $[ stageDependencies.deploy_msi.job_set_msi_id.outputs['print_msi_prinId.msiPrincipalId'] ]
     jobs:
       - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
@@ -613,7 +877,7 @@ stages:
             - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
               templateFilePath: $(templateFilePath)
               displayName: MSI Role Assignment
-              customParameterFileTokens: '[{"Name":"msiPrincipalId","Value":"$(msiPrincipalId)"}]'
+              customParameterFileTokens: '{"msiPrincipalId":"$(msiPrincipalId)"}'
 
   - stage: deploy_vnet
     displayName: Deploy virtual networks
@@ -646,6 +910,9 @@ stages:
             - path: $(dependencyPath)/$(resourceType)/parameters/5.aks.parameters.json
               templateFilePath: $(templateFilePath)
               displayName: AKS Virtual Network
+            - path: $(dependencyPath)/$(resourceType)/parameters/7.virtualHubConnection.parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: Virtual Hub Connection Virtual Network
             - ${{ if eq( parameters.deploySqlMiDependencies, true) }}:
                 - path: $(dependencyPath)/$(resourceType)/parameters/6.sqlmi.parameters.json
                   templateFilePath: $(templateFilePath)
@@ -682,3 +949,18 @@ stages:
             - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
               templateFilePath: $(templateFilePath)
               displayName: Default Virtual Machine
+
+  - stage: deploy_lb
+    displayName: Deploy load balancers
+    dependsOn:
+      - deploy_vnet
+    variables:
+      resourceType: 'Microsoft.Network/loadBalancers'
+      templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
+    jobs:
+      - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
+        parameters:
+          deploymentBlocks:
+            - path: $(dependencyPath)/$(resourceType)/parameters/internal.parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: Deploy module

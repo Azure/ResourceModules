@@ -2,32 +2,85 @@
 
 This template deploys a virtual network gateway connection.
 
+## Navigation
+
+- [Resource types](#Resource-types)
+- [Parameters](#Parameters)
+- [Outputs](#Outputs)
+- [Template references](#Template-references)
+
 ## Resource types
 
 | Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2017-04-01 |
-| `Microsoft.Network/connections` | 2021-02-01 |
+| `Microsoft.Network/connections` | 2021-05-01 |
 
 ## Parameters
 
-| Parameter Name | Type | Default Value | Possible Values | Description |
+**Required parameters**
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `name` | string | Remote connection name |
+| `virtualNetworkGateway1` | object | The primary Virtual Network Gateway. |
+
+**Optional parameters**
+| Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
-| `customIPSecPolicy` | object | `{object}` |  | Optional. The IPSec Policies to be considered by this connection |
-| `enableBgp` | bool |  |  | Optional. Value to specify if BGP is enabled or not |
-| `localVirtualNetworkGatewayName` | string |  |  | Required. Specifies the local Virtual Network Gateway name |
-| `location` | string | `[resourceGroup().location]` |  | Optional. Location for all resources. |
-| `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
-| `name` | string |  |  | Required. Remote connection name |
-| `remoteEntityName` | string |  |  | Required. Specifies the remote Virtual Network Gateway/ExpressRoute |
-| `remoteEntityResourceGroup` | string |  |  | Optional. Remote Virtual Network Gateway/ExpressRoute resource group name |
-| `remoteEntitySubscriptionId` | string |  |  | Optional. Remote Virtual Network Gateway/ExpressRoute Subscription ID |
-| `routingWeight` | string |  |  | Optional. The weight added to routes learned from this BGP speaker. |
-| `tags` | object | `{object}` |  | Optional. Tags of the resource. |
-| `usePolicyBasedTrafficSelectors` | bool |  |  | Optional. Enable policy-based traffic selectors |
-| `virtualNetworkGatewayConnectionType` | string | `Ipsec` | `[Ipsec, VNet2VNet, ExpressRoute, VPNClient]` | Optional. Gateway connection type. |
-| `vpnSharedKey` | string |  |  | Optional. Specifies a VPN shared key. The same value has to be specified on both Virtual Network Gateways |
+| `customIPSecPolicy` | object | `{object}` |  | The IPSec Policies to be considered by this connection |
+| `enableBgp` | bool | `False` |  | Value to specify if BGP is enabled or not |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `localNetworkGateway2` | object | `{object}` |  | The local network gateway. Used for connection type [IPsec] |
+| `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
+| `lock` | string | `'NotSpecified'` | `[CanNotDelete, NotSpecified, ReadOnly]` | Specify the type of lock. |
+| `peer` | object | `{object}` |  | The remote peer. Used for connection type [ExpressRoute] |
+| `routingWeight` | int | `-1` |  | The weight added to routes learned from this BGP speaker. |
+| `tags` | object | `{object}` |  | Tags of the resource. |
+| `usePolicyBasedTrafficSelectors` | bool | `False` |  | Enable policy-based traffic selectors |
+| `virtualNetworkGateway2` | object | `{object}` |  | The remote Virtual Network Gateway. Used for connection type [Vnet2Vnet] |
+| `virtualNetworkGatewayConnectionType` | string | `'IPsec'` | `[IPsec, Vnet2Vnet, ExpressRoute, VPNClient]` | Gateway connection type. |
+| `vpnSharedKey` | string | `''` |  | Specifies a VPN shared key. The same value has to be specified on both Virtual Network Gateways |
+
+
+### Parameter Usage: `virtualNetworkGateway1`
+
+The primary virtual network gateway object.
+
+```json
+"virtualNetworkGateway1" : {
+    "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.Network/virtualNetworkGateways/myGateway01",
+}
+```
+
+### Parameter Usage: `virtualNetworkGateway2`
+
+The secondary virtual network gateway used for VNET to VNET connections.
+
+```json
+"virtualNetworkGateway2" : {
+    "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.Network/virtualNetworkGateways/myGateway02"ss
+}
+```
+
+### Parameter Usage: `localNetworkGateway2`
+
+The local virtual network gateway object.
+
+```json
+"localNetworkGateway2" : {
+    "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.Network/localNetworkGateways/myGateway"
+}
+```
+
+### Parameter Usage: `peer`
+
+The remote peer object used for ExpressRoute connections
+
+```json
+"peer" : {
+    "id": "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/myRG/providers/Microsoft.Network/expressRouteCircuits/expressRoute"
+}
+```
 
 ### Parameter Usage: `customIPSecPolicy`
 
@@ -92,5 +145,5 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 ## Template references
 
-- [Connections](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-02-01/connections)
+- [Connections](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/connections)
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)

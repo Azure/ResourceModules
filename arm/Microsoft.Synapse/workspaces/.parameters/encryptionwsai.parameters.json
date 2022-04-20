@@ -3,10 +3,10 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "name": {
-      "value": "sxx-az-synws-encryptwsai-001"
+      "value": "<<namePrefix>>-az-synws-encryptwsai-001"
     },
     "defaultDataLakeStorageAccountName": {
-      "value": "adpsxxazsaweux004"
+      "value": "adp<<namePrefix>>azsaweux004"
     },
     "defaultDataLakeStorageFilesystem": {
       "value": "synapsews"
@@ -18,13 +18,13 @@
       "value": true
     },
     "encryptionKeyVaultName": {
-      "value": "adp-sxx-az-kv-cmk-001"
+      "value": "adp-<<namePrefix>>-az-kv-nopr-002"
     },
     "encryptionKeyVaultResourceGroupName": {
       "value": "validation-rg"
     },
     "encryptionKeyName": {
-      "value": "synapseEncryptionKey"
+      "value": "keyEncryptionKey"
     },
     "encryptionUseSystemAssignedIdentity": {
       "value": true
