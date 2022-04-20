@@ -20,7 +20,7 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.web.staticsites.yml'
       - 'arm/Microsoft.Web/staticSites/**'
-      - 'arm/.global/**'
+      - 'arm/.global/global.module.tests.ps1'
       - '!*/**/readme.md'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/dependencies/**'

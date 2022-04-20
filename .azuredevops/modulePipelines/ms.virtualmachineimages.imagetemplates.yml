@@ -22,7 +22,7 @@ trigger:
       - '/.azuredevops/modulePipelines/ms.virtualmachineimages.imagetemplates.yml'
       - '/.azuredevops/pipelineTemplates/module.*.yml'
       - '/arm/Microsoft.VirtualMachineImages/imageTemplates/*'
-      - '/arm/.global/**'
+      - '/arm/.global/global.module.tests.ps1'
     exclude:
       - '/**/*.md'
 

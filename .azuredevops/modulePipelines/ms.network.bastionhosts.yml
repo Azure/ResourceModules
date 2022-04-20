@@ -22,7 +22,7 @@ trigger:
       - '/.azuredevops/modulePipelines/ms.network.bastionhosts.yml'
       - '/.azuredevops/pipelineTemplates/module.*.yml'
       - '/arm/Microsoft.Network/bastionHosts/*'
-      - '/arm/.global/**'
+      - '/arm/.global/global.module.tests.ps1'
     exclude:
       - '/**/*.md'
 

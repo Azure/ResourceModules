@@ -20,7 +20,7 @@ trigger:
       - '/.azuredevops/modulePipelines/ms.kubernetesconfiguration.fluxconfigurations.yml'
       - '/.azuredevops/pipelineTemplates/module.*.yml'
       - '/arm/Microsoft.KubernetesConfiguration/fluxConfigurations/*'
-      - '/arm/.global/**'
+      - '/arm/.global/global.module.tests.ps1'
     exclude:
       - '/**/*.md'
 

@@ -20,7 +20,7 @@ trigger:
       - '/.azuredevops/modulePipelines/ms.network.frontdoors.yml'
       - '/.azuredevops/pipelineTemplates/module.*.yml'
       - '/arm/Microsoft.Network/frontDoors/*'
-      - '/arm/.global/**'
+      - '/arm/.global/global.module.tests.ps1'
     exclude:
       - '/**/*.md'
 

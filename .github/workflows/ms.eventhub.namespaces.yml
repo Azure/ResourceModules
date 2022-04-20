@@ -20,7 +20,7 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.eventhub.namespaces.yml'
       - 'arm/Microsoft.EventHub/namespaces/**'
-      - 'arm/.global/**'
+      - 'arm/.global/global.module.tests.ps1'
       - '!*/**/readme.md'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/dependencies/**'

@@ -20,7 +20,7 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.eventgrid.systemtopics.yml'
       - 'arm/Microsoft.EventGrid/systemTopics/**'
-      - 'arm/.global/**'
+      - 'arm/.global/global.module.tests.ps1'
       - '!*/**/readme.md'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/dependencies/**'

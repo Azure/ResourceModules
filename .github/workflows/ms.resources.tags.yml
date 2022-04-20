@@ -20,7 +20,7 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.resources.tags.yml'
       - 'arm/Microsoft.Resources/tags/**'
-      - 'arm/.global/**'
+      - 'arm/.global/global.module.tests.ps1'
       - '!*/**/readme.md'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/dependencies/**'

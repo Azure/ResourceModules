@@ -22,7 +22,7 @@ trigger:
       - '/.azuredevops/modulePipelines/ms.operationalinsights.workspaces.yml'
       - '/.azuredevops/pipelineTemplates/module.*.yml'
       - '/arm/Microsoft.OperationalInsights/workspaces/*'
-      - '/arm/.global/**'
+      - '/arm/.global/global.module.tests.ps1'
     exclude:
       - '/**/*.md'
 

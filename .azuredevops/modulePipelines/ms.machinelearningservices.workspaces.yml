@@ -22,7 +22,7 @@ trigger:
       - '/.azuredevops/modulePipelines/ms.machinelearningservices.workspaces.yml'
       - '/.azuredevops/pipelineTemplates/module.*.yml'
       - '/arm/Microsoft.MachineLearningServices/workspaces/*'
-      - '/arm/.global/**'
+      - '/arm/.global/global.module.tests.ps1'
     exclude:
       - '/**/*.md'
 

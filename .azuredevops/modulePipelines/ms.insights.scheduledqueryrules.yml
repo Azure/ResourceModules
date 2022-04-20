@@ -22,7 +22,7 @@ trigger:
       - '/.azuredevops/modulePipelines/ms.insights.scheduledqueryrules.yml'
       - '/.azuredevops/pipelineTemplates/module.*.yml'
       - '/arm/Microsoft.Insights/scheduledQueryRules/*'
-      - '/arm/.global/**'
+      - '/arm/.global/global.module.tests.ps1'
     exclude:
       - '/**/*.md'
 

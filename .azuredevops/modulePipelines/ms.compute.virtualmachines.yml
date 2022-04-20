@@ -22,7 +22,7 @@ trigger:
       - '/.azuredevops/modulePipelines/ms.compute.virtualmachines.yml'
       - '/.azuredevops/pipelineTemplates/module.*.yml'
       - '/arm/Microsoft.Compute/virtualMachines/*'
-      - '/arm/.global/**'
+      - '/arm/.global/global.module.tests.ps1'
     exclude:
       - '/**/*.md'
 

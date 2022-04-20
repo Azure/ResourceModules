@@ -22,7 +22,7 @@ trigger:
       - '/.azuredevops/modulePipelines/ms.authorization.policyassignments.yml'
       - '/.azuredevops/pipelineTemplates/module.*.yml'
       - '/arm/Microsoft.Authorization/policyAssignments/*'
-      - '/arm/.global/**'
+      - '/arm/.global/global.module.tests.ps1'
     exclude:
       - '/**/*.md'
 
