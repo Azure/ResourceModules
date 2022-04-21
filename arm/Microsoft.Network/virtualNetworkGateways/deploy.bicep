@@ -190,7 +190,7 @@ var activeActive_var = virtualNetworkGatewayType == 'ExpressRoute' ? false : act
 
 // Public IP variables
 var gatewayPipName1 = length(gatewayPipName) == 0 ? '${name}-pip1' : gatewayPipName[0]
-var gatewayPipName2 = activeActive_var ? (length(gatewayPipName) == 1 ? '${name}-pip2' : gatewayPipName[1]) : ''
+var gatewayPipName2 = activeActive_var ? (length(gatewayPipName) <= 1 ? '${name}-pip2' : gatewayPipName[1]) : ''
 
 var gatewayMultiPipArray = [
   gatewayPipName1
