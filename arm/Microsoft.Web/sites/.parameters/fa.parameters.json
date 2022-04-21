@@ -6,7 +6,7 @@
             "value": "<<namePrefix>>-az-fa-x-001"
         },
         "kind": {
-            "value": "functionapp,linux"
+            "value": "functionapp"
         },
         "serverFarmResourceId": {
             "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Web/serverFarms/adp-<<namePrefix>>-az-asp-x-001"
@@ -14,8 +14,7 @@
         "siteConfig": {
             "value": {
                 "alwaysOn": true,
-                "use32BitWorkerProcess": false,
-                "linuxFxVersion": "DOTNET|6.0"
+                "use32BitWorkerProcess": false
             }
         },
         "appInsightId": {
