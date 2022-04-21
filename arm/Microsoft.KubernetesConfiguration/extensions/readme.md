@@ -45,15 +45,14 @@ For Details see [Prerequisites](https://docs.microsoft.com/en-us/azure/azure-arc
 **Optional parameters**
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
-| `autoUpgradeMinorVersion` | bool | `True` | Flag to note if this extension participates in auto upgrade of minor version, or not. |
 | `configurationProtectedSettings` | object | `{object}` | Configuration settings that are sensitive, as name-value pairs for configuring this extension. |
 | `configurationSettings` | object | `{object}` | Configuration settings, as name-value pairs for configuring this extension. |
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `location` | string | `[resourceGroup().location]` | Location for all resources. |
 | `releaseNamespace` | string | `''` | Namespace where the extension Release must be placed, for a Cluster scoped extension. If this namespace does not exist, it will be created |
-| `releaseTrain` | string | `'Stable'` | ReleaseTrain this extension participates in for auto-upgrade (e.g. Stable, Preview, etc.) - only if autoUpgradeMinorVersion is "true". |
+| `releaseTrain` | string | `'Stable'` | ReleaseTrain this extension participates in for auto-upgrade (e.g. Stable, Preview, etc.) - no version must be supplied in that case. |
 | `targetNamespace` | string | `''` | Namespace where the extension will be created for an Namespace scoped extension. If this namespace does not exist, it will be created |
-| `version` | string | `''` | Version of the extension for this extension, if it is "pinned" to a specific version. autoUpgradeMinorVersion must be "false". |
+| `version` | string | `''` | Version of the extension for this extension, if it is "pinned" to a specific version. autoUpgradeMinorVersion will be set to "false". |
 
 
 ## Outputs

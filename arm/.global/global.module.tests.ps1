@@ -20,6 +20,8 @@ $script:moduleFolderPaths = $moduleFolderPaths
 $script:moduleFolderPathsFiltered = $moduleFolderPaths | Where-Object {
     (Split-Path $_ -Leaf) -notin @( 'AzureNetappFiles', 'TrafficManager', 'PrivateDnsZones', 'ManagementGroups') }
 $script:enforcedTokenList = $enforcedTokenList
+
+# For runtime purposes, we cache the compiled template in a hashtable that uses a formatted relative module path as a key
 $script:convertedTemplates = @{}
 
 # Import any helper function used in this test script
@@ -116,7 +118,9 @@ Describe 'Readme tests' -Tag Readme {
         $readmeFolderTestCases = [System.Collections.ArrayList] @()
         foreach ($moduleFolderPath in $moduleFolderPaths) {
 
-            if (-not ($convertedTemplates.Keys -contains (Split-Path $moduleFolderPath -Leaf))) {
+            # For runtime purposes, we cache the compiled template in a hashtable that uses a formatted relative module path as a key
+            $moduleFolderPathKey = $moduleFolderPath.Split('arm')[1].Replace('\', '/').Trim('/').Replace('/', '-')
+            if (-not ($convertedTemplates.Keys -contains $moduleFolderPathKey)) {
                 if (Test-Path (Join-Path $moduleFolderPath 'deploy.bicep')) {
                     $templateFilePath = Join-Path $moduleFolderPath 'deploy.bicep'
                     $templateContent = az bicep build --file $templateFilePath --stdout | ConvertFrom-Json -AsHashtable
@@ -126,9 +130,9 @@ Describe 'Readme tests' -Tag Readme {
                 } else {
                     throw "No template file found in folder [$moduleFolderPath]"
                 }
-                $convertedTemplates[(Split-Path $moduleFolderPath -Leaf)] = $templateContent
+                $convertedTemplates[$moduleFolderPathKey] = $templateContent
             } else {
-                $templateContent = $convertedTemplates[(Split-Path $moduleFolderPath -Leaf)]
+                $templateContent = $convertedTemplates[$moduleFolderPathKey]
             }
 
             $readmeFolderTestCases += @{
@@ -455,7 +459,9 @@ Describe 'Deployment template tests' -Tag Template {
         $deploymentFolderTestCasesException = [System.Collections.ArrayList] @()
         foreach ($moduleFolderPath in $moduleFolderPaths) {
 
-            if (-not ($convertedTemplates.Keys -contains (Split-Path $moduleFolderPath -Leaf))) {
+            # For runtime purposes, we cache the compiled template in a hashtable that uses a formatted relative module path as a key
+            $moduleFolderPathKey = $moduleFolderPath.Split('arm')[1].Replace('\', '/').Trim('/').Replace('/', '-')
+            if (-not ($convertedTemplates.Keys -contains $moduleFolderPathKey)) {
                 if (Test-Path (Join-Path $moduleFolderPath 'deploy.bicep')) {
                     $templateFilePath = Join-Path $moduleFolderPath 'deploy.bicep'
                     $templateContent = az bicep build --file $templateFilePath --stdout | ConvertFrom-Json -AsHashtable
@@ -465,9 +471,9 @@ Describe 'Deployment template tests' -Tag Template {
                 } else {
                     throw "No template file found in folder [$moduleFolderPath]"
                 }
-                $convertedTemplates[(Split-Path $moduleFolderPath -Leaf)] = $templateContent
+                $convertedTemplates[$moduleFolderPathKey] = $templateContent
             } else {
-                $templateContent = $convertedTemplates[(Split-Path $moduleFolderPath -Leaf)]
+                $templateContent = $convertedTemplates[$moduleFolderPathKey]
             }
 
             # Parameter file test cases
@@ -856,7 +862,9 @@ Describe "API version tests [All apiVersions in the template should be 'recent']
 
         $moduleFolderName = $moduleFolderPath.Replace('\', '/').Split('/arm/')[1]
 
-        if (-not ($convertedTemplates.Keys -contains (Split-Path $moduleFolderPath -Leaf))) {
+        # For runtime purposes, we cache the compiled template in a hashtable that uses a formatted relative module path as a key
+        $moduleFolderPathKey = $moduleFolderPath.Split('arm')[1].Replace('\', '/').Trim('/').Replace('/', '-')
+        if (-not ($convertedTemplates.Keys -contains $moduleFolderPathKey)) {
             if (Test-Path (Join-Path $moduleFolderPath 'deploy.bicep')) {
                 $templateFilePath = Join-Path $moduleFolderPath 'deploy.bicep'
                 $templateContent = az bicep build --file $templateFilePath --stdout | ConvertFrom-Json -AsHashtable
@@ -866,9 +874,9 @@ Describe "API version tests [All apiVersions in the template should be 'recent']
             } else {
                 throw "No template file found in folder [$moduleFolderPath]"
             }
-            $convertedTemplates[(Split-Path $moduleFolderPath -Leaf)] = $templateContent
+            $convertedTemplates[$moduleFolderPathKey] = $templateContent
         } else {
-            $templateContent = $convertedTemplates[(Split-Path $moduleFolderPath -Leaf)]
+            $templateContent = $convertedTemplates[$moduleFolderPathKey]
         }
 
         $nestedResources = Get-NestedResourceList -TemplateContent $templateContent | Where-Object {
