@@ -68,6 +68,7 @@ module policyDefinition_mg 'managementGroup/deploy.bicep' = if (empty(subscripti
     parameters: !empty(parameters) ? parameters : {}
     policyRule: policyRule
     location: location
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }
 
@@ -84,6 +85,7 @@ module policyDefinition_sub 'subscription/deploy.bicep' = if (!empty(subscriptio
     parameters: !empty(parameters) ? parameters : {}
     policyRule: policyRule
     location: location
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }
 

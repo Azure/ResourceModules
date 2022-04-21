@@ -199,6 +199,7 @@ module app_appsettings 'config/deploy.bicep' = {
     appInsightId: !empty(appInsightId) ? appInsightId : !empty(appInsightObject) ? appInsight.outputs.resourceId : ''
     functionsWorkerRuntime: !empty(functionsWorkerRuntime) ? functionsWorkerRuntime : ''
     functionsExtensionVersion: !empty(functionsExtensionVersion) ? functionsExtensionVersion : '~3'
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }
 

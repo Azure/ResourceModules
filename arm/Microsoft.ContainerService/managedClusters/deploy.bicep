@@ -514,6 +514,7 @@ module managedCluster_agentPools 'agentPools/deploy.bicep' = [for (agentPool, in
     vmSize: contains(agentPool, 'vmSize') ? agentPool.vmSize : 'Standard_D2s_v3'
     vnetSubnetId: contains(agentPool, 'vnetSubnetId') ? agentPool.vnetSubnetId : ''
     workloadRuntime: contains(agentPool, 'workloadRuntime') ? agentPool.workloadRuntime : ''
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }]
 

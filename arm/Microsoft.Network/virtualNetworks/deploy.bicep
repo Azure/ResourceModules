@@ -172,6 +172,7 @@ module virtualNetwork_subnets 'subnets/deploy.bicep' = [for (subnet, index) in s
     routeTableId: contains(subnet, 'routeTableId') ? subnet.routeTableId : ''
     serviceEndpointPolicies: contains(subnet, 'serviceEndpointPolicies') ? subnet.serviceEndpointPolicies : []
     serviceEndpoints: contains(subnet, 'serviceEndpoints') ? subnet.serviceEndpoints : []
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }]
 
@@ -186,7 +187,7 @@ module virtualNetwork_peering_local 'virtualNetworkPeerings/deploy.bicep' = [for
     allowGatewayTransit: contains(peering, 'allowGatewayTransit') ? peering.allowGatewayTransit : false
     allowVirtualNetworkAccess: contains(peering, 'allowVirtualNetworkAccess') ? peering.allowVirtualNetworkAccess : true
     doNotVerifyRemoteGateways: contains(peering, 'doNotVerifyRemoteGateways') ? peering.doNotVerifyRemoteGateways : true
-    useRemoteGateways: contains(peering, 'useRemoteGateways') ? peering.useRemoteGateways : false
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }]
 
@@ -203,6 +204,7 @@ module virtualNetwork_peering_remote 'virtualNetworkPeerings/deploy.bicep' = [fo
     allowVirtualNetworkAccess: contains(peering, 'remotePeeringAllowVirtualNetworkAccess') ? peering.remotePeeringAllowVirtualNetworkAccess : true
     doNotVerifyRemoteGateways: contains(peering, 'remotePeeringDoNotVerifyRemoteGateways') ? peering.remotePeeringDoNotVerifyRemoteGateways : true
     useRemoteGateways: contains(peering, 'remotePeeringUseRemoteGateways') ? peering.remotePeeringUseRemoteGateways : false
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }]
 

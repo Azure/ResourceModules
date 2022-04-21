@@ -121,6 +121,7 @@ module topic_authorizationRules 'authorizationRules/deploy.bicep' = [for (author
     topicName: topic.name
     name: authorizationRule.name
     rights: contains(authorizationRule, 'rights') ? authorizationRule.rights : []
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }]
 

@@ -495,6 +495,7 @@ module vmss_domainJoinExtension 'extensions/deploy.bicep' = if (extensionDomainJ
     protectedSettings: {
       Password: extensionDomainJoinPassword
     }
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }
 
@@ -509,6 +510,7 @@ module vmss_microsoftAntiMalwareExtension 'extensions/deploy.bicep' = if (extens
     autoUpgradeMinorVersion: contains(extensionAntiMalwareConfig, 'autoUpgradeMinorVersion') ? extensionAntiMalwareConfig.autoUpgradeMinorVersion : true
     enableAutomaticUpgrade: contains(extensionAntiMalwareConfig, 'enableAutomaticUpgrade') ? extensionAntiMalwareConfig.enableAutomaticUpgrade : false
     settings: extensionAntiMalwareConfig.settings
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }
 
@@ -533,6 +535,7 @@ module vmss_microsoftMonitoringAgentExtension 'extensions/deploy.bicep' = if (ex
     protectedSettings: {
       workspaceKey: !empty(monitoringWorkspaceId) ? vmss_logAnalyticsWorkspace.listKeys().primarySharedKey : ''
     }
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }
 
@@ -546,6 +549,7 @@ module vmss_dependencyAgentExtension 'extensions/deploy.bicep' = if (extensionDe
     typeHandlerVersion: contains(extensionDependencyAgentConfig, 'typeHandlerVersion') ? extensionDependencyAgentConfig.typeHandlerVersion : '9.5'
     autoUpgradeMinorVersion: contains(extensionDependencyAgentConfig, 'autoUpgradeMinorVersion') ? extensionDependencyAgentConfig.autoUpgradeMinorVersion : true
     enableAutomaticUpgrade: contains(extensionDependencyAgentConfig, 'enableAutomaticUpgrade') ? extensionDependencyAgentConfig.enableAutomaticUpgrade : true
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }
 
@@ -559,6 +563,7 @@ module vmss_networkWatcherAgentExtension 'extensions/deploy.bicep' = if (extensi
     typeHandlerVersion: contains(extensionNetworkWatcherAgentConfig, 'typeHandlerVersion') ? extensionNetworkWatcherAgentConfig.typeHandlerVersion : '1.4'
     autoUpgradeMinorVersion: contains(extensionNetworkWatcherAgentConfig, 'autoUpgradeMinorVersion') ? extensionNetworkWatcherAgentConfig.autoUpgradeMinorVersion : true
     enableAutomaticUpgrade: contains(extensionNetworkWatcherAgentConfig, 'enableAutomaticUpgrade') ? extensionNetworkWatcherAgentConfig.enableAutomaticUpgrade : false
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }
 
@@ -574,6 +579,7 @@ module vmss_desiredStateConfigurationExtension 'extensions/deploy.bicep' = if (e
     enableAutomaticUpgrade: contains(extensionDSCConfig, 'enableAutomaticUpgrade') ? extensionDSCConfig.enableAutomaticUpgrade : false
     settings: contains(extensionDSCConfig, 'settings') ? extensionDSCConfig.settings : {}
     protectedSettings: contains(extensionDSCConfig, 'protectedSettings') ? extensionDSCConfig.protectedSettings : {}
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }
 
@@ -591,6 +597,7 @@ module vmss_customScriptExtension 'extensions/deploy.bicep' = if (extensionCusto
       fileUris: [for fileData in extensionCustomScriptConfig.fileData: contains(fileData, 'storageAccountId') ? '${fileData.uri}?${listAccountSas(fileData.storageAccountId, '2019-04-01', accountSasProperties).accountSasToken}' : fileData.uri]
     }
     protectedSettings: contains(extensionCustomScriptConfig, 'protectedSettings') ? extensionCustomScriptConfig.protectedSettings : {}
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
   dependsOn: [
     vmss_desiredStateConfigurationExtension
@@ -609,6 +616,7 @@ module vmss_diskEncryptionExtension 'extensions/deploy.bicep' = if (extensionDis
     enableAutomaticUpgrade: contains(extensionDiskEncryptionConfig, 'enableAutomaticUpgrade') ? extensionDiskEncryptionConfig.enableAutomaticUpgrade : false
     forceUpdateTag: contains(extensionDiskEncryptionConfig, 'forceUpdateTag') ? extensionDiskEncryptionConfig.forceUpdateTag : '1.0'
     settings: extensionDiskEncryptionConfig.settings
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
   dependsOn: [
     vmss_customScriptExtension

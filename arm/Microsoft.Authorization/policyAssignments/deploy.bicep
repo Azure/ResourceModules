@@ -87,6 +87,7 @@ module policyAssignment_mg 'managementGroup/deploy.bicep' = if (empty(subscripti
     notScopes: !empty(notScopes) ? notScopes : []
     managementGroupId: managementGroupId
     location: location
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }
 
@@ -107,6 +108,7 @@ module policyAssignment_sub 'subscription/deploy.bicep' = if (!empty(subscriptio
     notScopes: !empty(notScopes) ? notScopes : []
     subscriptionId: subscriptionId
     location: location
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }
 
@@ -127,6 +129,7 @@ module policyAssignment_rg 'resourceGroup/deploy.bicep' = if (!empty(resourceGro
     notScopes: !empty(notScopes) ? notScopes : []
     subscriptionId: subscriptionId
     location: location
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }
 
