@@ -189,8 +189,8 @@ var gatewaySubnetId = '${vNetResourceId}/subnets/GatewaySubnet'
 var activeActive_var = virtualNetworkGatewayType == 'ExpressRoute' ? false : activeActive
 
 // Public IP variables
-var gatewayPipName1 = length(gatewayPipName) == 0 ? '${name}-pip1' : gatewayPipName[0]
-var gatewayPipName2 = activeActive_var ? (length(gatewayPipName) == 0 ? '${name}-pip2' : gatewayPipName[1]) : ''
+var gatewayPipName1 = empty(gatewayPipName) ? '${name}-pip1' : gatewayPipName[0]
+var gatewayPipName2 = activeActive_var ? (length(gatewayPipName) <= 1 ? '${name}-pip2' : gatewayPipName[1]) : ''
 
 var gatewayMultiPipArray = [
   gatewayPipName1
@@ -321,7 +321,7 @@ resource virtualGatewayPublicIP_lock 'Microsoft.Authorization/locks@2017-04-01' 
 
 @batchSize(1)
 resource virtualNetworkGatewayPublicIp_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2021-05-01-preview' = [for (virtualGatewayPublicIpName, index) in virtualGatewayPipName_var: if ((!empty(diagnosticStorageAccountId)) || (!empty(diagnosticWorkspaceId)) || (!empty(diagnosticEventHubAuthorizationRuleId)) || (!empty(diagnosticEventHubName))) {
-  name: publicIpDiagnosticSettingsName
+  name: '${publicIpDiagnosticSettingsName}-${index}'
   properties: {
     storageAccountId: !empty(diagnosticStorageAccountId) ? diagnosticStorageAccountId : null
     workspaceId: !empty(diagnosticWorkspaceId) ? diagnosticWorkspaceId : null
