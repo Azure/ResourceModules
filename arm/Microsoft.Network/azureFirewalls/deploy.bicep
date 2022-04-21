@@ -15,10 +15,10 @@ param azureSkuName string = 'AZFW_VNet'
 ])
 param azureSkuTier string = 'Standard'
 
-@description('Optional. Specifies the resource ID of the existing public IP to be leveraged by Azure Bastion.')
+@description('Optional. Specifies the resource ID of the existing public IP to be leveraged by Azure Firewall.')
 param publicIPAddressId string = ''
 
-@description('Optional. Specifies the properties of the public IP to create and be used by Azure Bastion. If it\'s not provided and publicIPAddressId is empty, a \'-pip\' suffix will be appended to the Bastion\'s name.')
+@description('Optional. Specifies the properties of the public IP to create and be used by Azure Firewall. If it\'s not provided and publicIPAddressId is empty, a \'-pip\' suffix will be appended to the Firewall\'s name.')
 param publicIPAddressObject object = {}
 
 @description('Optional. Collection of application rule collections used by Azure Firewall.')
@@ -161,7 +161,7 @@ resource publicIPAddressExisting 'Microsoft.Network/publicIPAddresses@2021-05-01
 }
 // create a public ip address
 module publicIPAddress '.bicep/nested_publicIPAddress.bicep' = if (empty(publicIPAddressId)) {
-  name: '${uniqueString(deployment().name, location)}-Bastion-PIP'
+  name: '${uniqueString(deployment().name, location)}-Firewall-PIP'
   params: {
     name: contains(publicIPAddressObject, 'name') ? (!(empty(publicIPAddressObject.name)) ? publicIPAddressObject.name : '${name}-pip') : '${name}-pip'
     publicIPPrefixResourceId: contains(publicIPAddressObject, 'publicIPPrefixResourceId') ? (!(empty(publicIPAddressObject.publicIPPrefixResourceId)) ? publicIPAddressObject.publicIPPrefixResourceId : '') : ''
