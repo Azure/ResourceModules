@@ -60,6 +60,7 @@ module roleDefinition_mg 'managementGroup/deploy.bicep' = if (empty(subscription
     assignableScopes: !empty(assignableScopes) ? assignableScopes : []
     managementGroupId: managementGroupId
     location: location
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }
 
@@ -76,6 +77,7 @@ module roleDefinition_sub 'subscription/deploy.bicep' = if (!empty(subscriptionI
     assignableScopes: !empty(assignableScopes) ? assignableScopes : []
     subscriptionId: subscriptionId
     location: location
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }
 
@@ -92,6 +94,7 @@ module roleDefinition_rg 'resourceGroup/deploy.bicep' = if (!empty(resourceGroup
     assignableScopes: !empty(assignableScopes) ? assignableScopes : []
     subscriptionId: subscriptionId
     resourceGroupName: resourceGroupName
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }
 

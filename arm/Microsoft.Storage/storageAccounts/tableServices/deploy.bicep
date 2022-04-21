@@ -111,6 +111,7 @@ module tableServices_tables 'tables/deploy.bicep' = [for (tableName, index) in t
     storageAccountName: storageAccount.name
     tableServicesName: tableServices.name
     name: tableName
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }]
 

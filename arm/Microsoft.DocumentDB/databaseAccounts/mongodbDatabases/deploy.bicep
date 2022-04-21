@@ -54,6 +54,7 @@ module mongodbDatabase_collections 'collections/deploy.bicep' = [for collection 
     name: collection.name
     indexes: collection.indexes
     shardKey: collection.shardKey
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }]
 

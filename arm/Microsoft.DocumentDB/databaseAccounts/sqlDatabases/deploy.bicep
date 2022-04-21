@@ -54,6 +54,7 @@ module container 'containers/deploy.bicep' = [for container in containers: {
     name: container.name
     paths: container.paths
     kind: container.kind
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }]
 

@@ -37,6 +37,7 @@ module tags_sub 'subscriptions/deploy.bicep' = if (!empty(subscriptionId) && emp
     onlyUpdate: onlyUpdate
     tags: tags
     location: location
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }
 
@@ -46,6 +47,7 @@ module tags_rg 'resourceGroups/deploy.bicep' = if (!empty(resourceGroupName) && 
   params: {
     onlyUpdate: onlyUpdate
     tags: tags
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }
 
