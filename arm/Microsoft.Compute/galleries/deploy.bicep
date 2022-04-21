@@ -97,6 +97,7 @@ module galleries_images 'images/deploy.bicep' = [for (image, index) in images: {
     excludedDiskTypes: contains(image, 'excludedDiskTypes') ? image.excludedDiskTypes : []
     roleAssignments: contains(image, 'roleAssignments') ? image.roleAssignments : []
     tags: contains(image, 'tags') ? image.tags : {}
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }]
 

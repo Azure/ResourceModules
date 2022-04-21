@@ -73,6 +73,7 @@ module roleAssignment_mg 'managementGroup/deploy.bicep' = if (empty(subscription
     conditionVersion: conditionVersion
     condition: !empty(condition) ? condition : ''
     location: location
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }
 
@@ -89,6 +90,7 @@ module roleAssignment_sub 'subscription/deploy.bicep' = if (!empty(subscriptionI
     conditionVersion: conditionVersion
     condition: !empty(condition) ? condition : ''
     location: location
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }
 
@@ -105,6 +107,7 @@ module roleAssignment_rg 'resourceGroup/deploy.bicep' = if (!empty(resourceGroup
     delegatedManagedIdentityResourceId: !empty(delegatedManagedIdentityResourceId) ? delegatedManagedIdentityResourceId : ''
     conditionVersion: conditionVersion
     condition: !empty(condition) ? condition : ''
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }
 

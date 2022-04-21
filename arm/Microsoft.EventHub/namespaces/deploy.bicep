@@ -252,6 +252,7 @@ module eventHubNamespace_eventHubs 'eventhubs/deploy.bicep' = [for (eventHub, in
     partitionCount: contains(eventHub, 'partitionCount') ? eventHub.partitionCount : 2
     roleAssignments: contains(eventHub, 'roleAssignments') ? eventHub.roleAssignments : []
     status: contains(eventHub, 'status') ? eventHub.status : 'Active'
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }]
 
@@ -261,6 +262,7 @@ module eventHubNamespace_diasterRecoveryConfig 'disasterRecoveryConfigs/deploy.b
     namespaceName: eventHubNamespace.name
     name: disasterRecoveryConfig.name
     partnerNamespaceId: contains(disasterRecoveryConfig, 'partnerNamespaceId') ? disasterRecoveryConfig.partnerNamespaceId : ''
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }
 
@@ -270,6 +272,7 @@ module eventHubNamespace_authorizationRules 'authorizationRules/deploy.bicep' = 
     namespaceName: eventHubNamespace.name
     name: authorizationRule.name
     rights: contains(authorizationRule, 'rights') ? authorizationRule.rights : []
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }]
 

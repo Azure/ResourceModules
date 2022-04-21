@@ -170,6 +170,7 @@ module database_backupShortTermRetentionPolicy 'backupShortTermRetentionPolicies
     databaseName: last(split(database.name, '/'))
     name: backupShortTermRetentionPoliciesObj.name
     retentionDays: contains(backupShortTermRetentionPoliciesObj, 'retentionDays') ? backupShortTermRetentionPoliciesObj.retentionDays : 35
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }
 
@@ -183,6 +184,7 @@ module database_backupLongTermRetentionPolicy 'backupLongTermRetentionPolicies/d
     weeklyRetention: contains(backupLongTermRetentionPoliciesObj, 'weeklyRetention') ? backupLongTermRetentionPoliciesObj.weeklyRetention : 'P1M'
     monthlyRetention: contains(backupLongTermRetentionPoliciesObj, 'monthlyRetention') ? backupLongTermRetentionPoliciesObj.monthlyRetention : 'P1Y'
     yearlyRetention: contains(backupLongTermRetentionPoliciesObj, 'yearlyRetention') ? backupLongTermRetentionPoliciesObj.yearlyRetention : 'P5Y'
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }
 

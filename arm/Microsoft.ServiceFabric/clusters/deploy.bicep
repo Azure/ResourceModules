@@ -306,6 +306,7 @@ module serviceFabricCluster_applicationTypes 'applicationTypes/deploy.bicep' = [
     name: applicationType.name
     serviceFabricClusterName: serviceFabricCluster.name
     tags: contains(applicationType, 'tags') ? applicationType.tags : {}
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }]
 

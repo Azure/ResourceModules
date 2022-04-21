@@ -160,6 +160,7 @@ module firewallPolicy_ruleCollectionGroups 'ruleCollectionGroups/deploy.bicep' =
     name: ruleCollectionGroup.name
     priority: ruleCollectionGroup.priority
     ruleCollections: ruleCollectionGroup.ruleCollections
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }]
 
