@@ -32,73 +32,73 @@
                 "FUNCTIONS_EXTENSION_VERSION": "~4",
                 "FUNCTIONS_WORKER_RUNTIME": "dotnet",
                 "AzureFunctionsJobHost__logging__logLevel__default": "Trace",
-                "EASYAUTH_SECRET": "testsecret"
+                "EASYAUTH_SECRET": "https://adp-carml-az-kv-x-001.vault.azure.net/secrets/CARML-Test-SP-Password"
             }
         },
-        // "authSettingV2Configuration": {
-        //     "value": {
-        //         "globalValidation": {
-        //             "requireAuthentication": true,
-        //             "unauthenticatedClientAction": "Return401"
-        //         },
-        //         "httpSettings": {
-        //             "forwardProxy": {
-        //                 "convention": "NoProxy"
-        //             },
-        //             "requireHttps": true,
-        //             "routes": {
-        //                 "apiPrefix": "/.auth"
-        //             }
-        //         },
-        //         "identityProviders": {
-        //             "azureActiveDirectory": {
-        //                 "enabled": true,
-        //                 "login": {
-        //                     "disableWWWAuthenticate": false
-        //                 },
-        //                 "registration": {
-        //                     "openIdIssuer": "https://sts.windows.net/<<tenantId>>/v2.0/",
-        //                     "clientId": "testappid",
-        //                     "clientSecretSettingName": "EASYAUTH_SECRET"
-        //                 },
-        //                 "validation": {
-        //                     "allowedAudiences": [
-        //                         "api://testappid"
-        //                     ],
-        //                     "defaultAuthorizationPolicy": {
-        //                         "allowedPrincipals": {}
-        //                     },
-        //                     "jwtClaimChecks": {}
-        //                 }
-        //             }
-        //         },
-        //         "login": {
-        //             "allowedExternalRedirectUrls": [
-        //                 "string"
-        //             ],
-        //             "cookieExpiration": {
-        //                 "convention": "FixedTime",
-        //                 "timeToExpiration": "08:00:00"
-        //             },
-        //             "nonce": {
-        //                 "nonceExpirationInterval": "00:05:00",
-        //                 "validateNonce": true
-        //             },
-        //             "preserveUrlFragmentsForLogins": false,
-        //             "routes": {},
-        //             "tokenStore": {
-        //                 "azureBlobStorage": {},
-        //                 "enabled": true,
-        //                 "fileSystem": {},
-        //                 "tokenRefreshExtensionHours": 72
-        //             }
-        //         },
-        //         "platform": {
-        //             "enabled": true,
-        //             "runtimeVersion": "~1"
-        //         }
-        //     }
-        // },
+        "authSettingV2Configuration": {
+            "value": {
+                "globalValidation": {
+                    "requireAuthentication": true,
+                    "unauthenticatedClientAction": "Return401"
+                },
+                "httpSettings": {
+                    "forwardProxy": {
+                        "convention": "NoProxy"
+                    },
+                    "requireHttps": true,
+                    "routes": {
+                        "apiPrefix": "/.auth"
+                    }
+                },
+                "identityProviders": {
+                    "azureActiveDirectory": {
+                        "enabled": true,
+                        "login": {
+                            "disableWWWAuthenticate": false
+                        },
+                        "registration": {
+                            "openIdIssuer": "https://sts.windows.net/<<tenantId>>/v2.0/",
+                            "clientId": "d874dd2f-2032-4db1-a053-f0ec243685aa",
+                            "clientSecretSettingName": "EASYAUTH_SECRET"
+                        },
+                        "validation": {
+                            "allowedAudiences": [
+                                "api://d874dd2f-2032-4db1-a053-f0ec243685aa"
+                            ],
+                            "defaultAuthorizationPolicy": {
+                                "allowedPrincipals": {}
+                            },
+                            "jwtClaimChecks": {}
+                        }
+                    }
+                },
+                "login": {
+                    "allowedExternalRedirectUrls": [
+                        "string"
+                    ],
+                    "cookieExpiration": {
+                        "convention": "FixedTime",
+                        "timeToExpiration": "08:00:00"
+                    },
+                    "nonce": {
+                        "nonceExpirationInterval": "00:05:00",
+                        "validateNonce": true
+                    },
+                    "preserveUrlFragmentsForLogins": false,
+                    "routes": {},
+                    "tokenStore": {
+                        "azureBlobStorage": {},
+                        "enabled": true,
+                        "fileSystem": {},
+                        "tokenRefreshExtensionHours": 72
+                    }
+                },
+                "platform": {
+                    "enabled": true,
+                    "runtimeVersion": "~1"
+                }
+            }
+        },
         "systemAssignedIdentity": {
             "value": true
         },
