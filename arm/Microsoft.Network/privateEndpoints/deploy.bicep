@@ -72,6 +72,7 @@ module privateEndpoint_privateDnsZoneGroups 'privateDnsZoneGroups/deploy.bicep' 
   params: {
     privateDNSResourceIds: privateDnsZoneGroup.privateDNSResourceIds
     privateEndpointName: privateEndpoint.name
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }]
 

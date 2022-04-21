@@ -76,6 +76,7 @@ module networkWatcher_connectionMonitors 'connectionMonitors/deploy.bicep' = [fo
     testConfigurations: contains(connectionMonitor, 'testConfigurations') ? connectionMonitor.testConfigurations : []
     testGroups: contains(connectionMonitor, 'testGroups') ? connectionMonitor.testGroups : []
     workspaceResourceId: contains(connectionMonitor, 'workspaceResourceId') ? connectionMonitor.workspaceResourceId : ''
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }]
 
@@ -92,6 +93,7 @@ module networkWatcher_flowLogs 'flowLogs/deploy.bicep' = [for (flowLog, index) i
     targetResourceId: flowLog.targetResourceId
     trafficAnalyticsInterval: contains(flowLog, 'trafficAnalyticsInterval') ? flowLog.trafficAnalyticsInterval : 60
     workspaceResourceId: contains(flowLog, 'workspaceResourceId') ? flowLog.workspaceResourceId : ''
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }]
 

@@ -123,6 +123,7 @@ module networkSecurityGroup_securityRules 'securityRules/deploy.bicep' = [for (s
     destinationAddressPrefixes: contains(securityRule.properties, 'destinationAddressPrefixes') ? securityRule.properties.destinationAddressPrefixes : []
     sourceApplicationSecurityGroups: contains(securityRule.properties, 'sourceApplicationSecurityGroups') ? securityRule.properties.sourceApplicationSecurityGroups : []
     destinationApplicationSecurityGroups: contains(securityRule.properties, 'destinationApplicationSecurityGroups') ? securityRule.properties.destinationApplicationSecurityGroups : []
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }]
 

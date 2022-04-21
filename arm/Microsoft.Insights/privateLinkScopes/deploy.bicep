@@ -53,6 +53,7 @@ module privateLinkScope_scopedResource 'scopedResources/deploy.bicep' = [for (sc
     name: scopedResource.name
     privateLinkScopeName: privateLinkScope.name
     linkedResourceId: scopedResource.linkedResourceId
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }]
 

@@ -67,6 +67,7 @@ module product_apis 'apis/deploy.bicep' = [for (api, index) in apis: {
     apiManagementServiceName: apiManagementServiceName
     name: api.name
     productName: name
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }]
 
@@ -76,6 +77,7 @@ module product_groups 'groups/deploy.bicep' = [for (group, index) in groups: {
     apiManagementServiceName: apiManagementServiceName
     name: group.name
     productName: name
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }]
 

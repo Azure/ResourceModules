@@ -136,6 +136,7 @@ module server_databases 'databases/deploy.bicep' = [for (database, index) in dat
     tags: contains(database, 'tags') ? database.tags : {}
     diagnosticWorkspaceId: contains(database, 'diagnosticWorkspaceId') ? database.diagnosticWorkspaceId : ''
     zoneRedundant: contains(database, 'zoneRedundant') ? database.zoneRedundant : false
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }]
 
@@ -146,6 +147,7 @@ module server_firewallRules 'firewallRules/deploy.bicep' = [for (firewallRule, i
     serverName: server.name
     endIpAddress: contains(firewallRule, 'endIpAddress') ? firewallRule.endIpAddress : '0.0.0.0'
     startIpAddress: contains(firewallRule, 'startIpAddress') ? firewallRule.startIpAddress : '0.0.0.0'
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }]
 
@@ -161,6 +163,7 @@ module server_securityAlertPolicies 'securityAlertPolicies/deploy.bicep' = [for 
     state: contains(securityAlertPolicy, 'state') ? securityAlertPolicy.state : 'Disabled'
     storageAccountAccessKey: contains(securityAlertPolicy, 'storageAccountAccessKey') ? securityAlertPolicy.storageAccountAccessKey : ''
     storageEndpoint: contains(securityAlertPolicy, 'storageEndpoint') ? securityAlertPolicy.storageEndpoint : ''
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }]
 
