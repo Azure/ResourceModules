@@ -22,6 +22,7 @@ trigger:
       - '/.azuredevops/modulePipelines/ms.keyvault.vaults.yml'
       - '/.azuredevops/pipelineTemplates/module.*.yml'
       - '/arm/Microsoft.KeyVault/vaults/*'
+      - '/arm/.global/global.module.tests.ps1'
     exclude:
       - '/**/*.md'
 

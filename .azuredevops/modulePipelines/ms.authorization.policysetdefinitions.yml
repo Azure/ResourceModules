@@ -22,6 +22,7 @@ trigger:
       - '/.azuredevops/modulePipelines/ms.authorization.policysetdefinitions.yml'
       - '/.azuredevops/pipelineTemplates/module.*.yml'
       - '/arm/Microsoft.Authorization/policySetDefinitions/*'
+      - '/arm/.global/global.module.tests.ps1'
     exclude:
       - '/**/*.md'
 

@@ -22,6 +22,7 @@ trigger:
       - '/.azuredevops/modulePipelines/ms.management.managementgroups.yml'
       - '/.azuredevops/pipelineTemplates/module.*.yml'
       - '/arm/Microsoft.Management/managementGroups/*'
+      - '/arm/.global/global.module.tests.ps1'
     exclude:
       - '/**/*.md'
 

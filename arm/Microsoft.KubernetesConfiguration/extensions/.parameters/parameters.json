@@ -11,9 +11,6 @@
         "clusterName": {
             "value": "<<namePrefix>>-az-aks-kubenet-001"
         },
-        "autoUpgradeMinorVersion": {
-            "value": true
-        },
         "releaseTrain": {
             "value": "Stable"
         },
