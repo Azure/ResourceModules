@@ -164,11 +164,13 @@ module virtualNetwork_subnets 'subnets/deploy.bicep' = [for (subnet, index) in s
     addressPrefixes: contains(subnet, 'addressPrefixes') ? subnet.addressPrefixes : []
     applicationGatewayIpConfigurations: contains(subnet, 'applicationGatewayIpConfigurations') ? subnet.applicationGatewayIpConfigurations : []
     delegations: contains(subnet, 'delegations') ? subnet.delegations : []
+    enableDefaultTelemetry: enableDefaultTelemetry
     ipAllocations: contains(subnet, 'ipAllocations') ? subnet.ipAllocations : []
     natGatewayId: contains(subnet, 'natGatewayId') ? subnet.natGatewayId : ''
     networkSecurityGroupId: contains(subnet, 'networkSecurityGroupId') ? subnet.networkSecurityGroupId : ''
     privateEndpointNetworkPolicies: contains(subnet, 'privateEndpointNetworkPolicies') ? subnet.privateEndpointNetworkPolicies : ''
     privateLinkServiceNetworkPolicies: contains(subnet, 'privateLinkServiceNetworkPolicies') ? subnet.privateLinkServiceNetworkPolicies : ''
+    roleAssignments: contains(subnet, 'roleAssignments') ? subnet.roleAssignments : []
     routeTableId: contains(subnet, 'routeTableId') ? subnet.routeTableId : ''
     serviceEndpointPolicies: contains(subnet, 'serviceEndpointPolicies') ? subnet.serviceEndpointPolicies : []
     serviceEndpoints: contains(subnet, 'serviceEndpoints') ? subnet.serviceEndpoints : []
