@@ -18,7 +18,7 @@ This module deploys a web or function app.
 | `Microsoft.Insights/diagnosticSettings` | 2021-05-01-preview |
 | `Microsoft.Network/privateEndpoints` | 2021-05-01 |
 | `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | 2021-05-01 |
-| `Microsoft.Web/sites` | 2020-12-01 |
+| `Microsoft.Web/sites` | 2021-03-01 |
 | `Microsoft.Web/sites/config` | 2020-12-01 |
 
 ## Parameters
@@ -215,4 +215,4 @@ You can specify multiple user assigned identities to a resource by providing add
 - [Privateendpoints](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/privateEndpoints)
 - [Privateendpoints/Privatednszonegroups](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/privateEndpoints/privateDnsZoneGroups)
 - [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)
-- [Sites](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Web/2020-12-01/sites)
+- [Sites](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Web/2021-03-01/sites)
