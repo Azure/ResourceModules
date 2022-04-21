@@ -5,7 +5,10 @@ param name string
 param location string = resourceGroup().location
 
 @description('Optional. Specifies the name of the Public IP used by the Virtual Network Gateway. If it\'s not provided, a \'-pip\' suffix will be appended to the gateway\'s name.')
-param gatewayPipName array = []
+param gatewayPipName string = ''
+
+@description('Optional. Specifies the name of the Public IP used by the Virtual Network Gateway when active-active configuration is required. If it\'s not provided, a \'-pip\' suffix will be appended to the gateway\'s name.')
+param activeGatewayPipName string = ''
 
 @description('Optional. Resource ID of the Public IP Prefix object. This is only needed if you want your Public IPs created in a PIP Prefix.')
 param publicIPPrefixResourceId string = ''
@@ -143,7 +146,7 @@ param diagnosticMetricsToEnable array = [
 param virtualNetworkGatewayDiagnosticSettingsName string = '${name}-diagnosticSettings'
 
 @description('Optional. The name of the diagnostic setting, if deployed.')
-param publicIpDiagnosticSettingsName string = '${name}-diagnosticSettings'
+param publicIpDiagnosticSettingsName string = 'diagnosticSettings'
 
 var virtualNetworkGatewayDiagnosticsLogs = [for category in virtualNetworkGatewaydiagnosticLogCategoriesToEnable: {
   category: category
@@ -189,8 +192,8 @@ var gatewaySubnetId = '${vNetResourceId}/subnets/GatewaySubnet'
 var activeActive_var = virtualNetworkGatewayType == 'ExpressRoute' ? false : activeActive
 
 // Public IP variables
-var gatewayPipName1 = empty(gatewayPipName) ? '${name}-pip1' : gatewayPipName[0]
-var gatewayPipName2 = activeActive_var ? (length(gatewayPipName) <= 1 ? '${name}-pip2' : gatewayPipName[1]) : ''
+var gatewayPipName1 = empty(gatewayPipName) ? '${name}-pip1' : gatewayPipName
+var gatewayPipName2 = activeActive_var ? (empty(activeGatewayPipName) ? '${name}-pip2' : activeGatewayPipName) : ''
 
 var gatewayMultiPipArray = [
   gatewayPipName1
@@ -321,7 +324,7 @@ resource virtualGatewayPublicIP_lock 'Microsoft.Authorization/locks@2017-04-01' 
 
 @batchSize(1)
 resource virtualNetworkGatewayPublicIp_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2021-05-01-preview' = [for (virtualGatewayPublicIpName, index) in virtualGatewayPipName_var: if ((!empty(diagnosticStorageAccountId)) || (!empty(diagnosticWorkspaceId)) || (!empty(diagnosticEventHubAuthorizationRuleId)) || (!empty(diagnosticEventHubName))) {
-  name: '${publicIpDiagnosticSettingsName}-${index}'
+  name: '${virtualGatewayPublicIP[index].name}-${publicIpDiagnosticSettingsName}'
   properties: {
     storageAccountId: !empty(diagnosticStorageAccountId) ? diagnosticStorageAccountId : null
     workspaceId: !empty(diagnosticWorkspaceId) ? diagnosticWorkspaceId : null
