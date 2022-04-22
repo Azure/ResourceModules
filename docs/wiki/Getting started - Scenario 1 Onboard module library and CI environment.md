@@ -336,7 +336,7 @@ In special cases, manual actions may be required to provision certain resources 
 
 ### Microsoft.Web/sites
 
-To successfully deploy the function app using the parameter file `fa.parameters.json` you need to create an Azure Active Directory App with API endpoint enabled (e.g. `api://<app id>`) and a secret added. The secret value needs then to be stored in a Key Vault secret.
+To successfully deploy the sites module using the parameter file `fa.parameters.json` you need to create an Azure Active Directory App with its API endpoint enabled (e.g. `api://<app id>`) and add a secret. The secret value needs then to be stored in a Key Vault secret.
 
 
 # 5. Update module parameter files
