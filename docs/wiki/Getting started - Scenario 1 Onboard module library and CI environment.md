@@ -346,6 +346,15 @@ Run the dependencies pipeline by following instructions provided in the specific
 
 > **Note**: For details about the dependencies pipeline design please refer to the dedicated [Dependencies pipeline design](./The%20CI%20environment%20-%20Pipeline%20design.md#dependencies-pipeline) section.
 
+## 4.1 Manual Dependencies
+
+In special cases, manual actions may be required to provision certain resources that are not covered by our dependency pipeline. In the following you can find an overview of these resources, for which modules you'd need them and what you'd need to do:
+
+### Microsoft.Web/sites
+
+To successfully deploy the sites module using the parameter file `fa.parameters.json` you need to create an Azure Active Directory App with its API endpoint enabled (e.g. `api://<app id>`) and add a secret. The secret value needs then to be stored in a Key Vault secret.
+
+
 # 5. Update module parameter files
 
 Once the required dependencies are deployed, there is one more step left to get as many module pipelines running as possible.
@@ -354,15 +363,18 @@ Several module parameters reference resources with unique values. For example, i
 
 For this reason, make sure to update the references in the following modules once the dependencies pipeline concluded:
 
-| File | Parameter |
-| - | - |
-| `arm\Microsoft.Compute\diskEncryptionSets\.parameters\parameters.json` |`keyUrl.value` |
-| `arm\Microsoft.Compute\virtualMachines\.parameters\linux.parameters.json` | `extensionDiskEncryptionConfig.value.settings.KeyEncryptionKeyURL` |
-| `arm\Microsoft.Compute\virtualMachines\.parameters\windows.parameters.json` | `extensionDiskEncryptionConfig.value.settings.KeyEncryptionKeyURL` |
-| `arm\Microsoft.Compute\virtualMachineScaleSets\.parameters\linux.parameters.json` | `extensionDiskEncryptionConfig.value.settings.KeyEncryptionKeyURL` |
-| `arm\Microsoft.Compute\virtualMachineScaleSets\.parameters\windows.parameters.json` | `extensionDiskEncryptionConfig.value.settings.KeyEncryptionKeyURL` |
-| `arm\Microsoft.Sql\managedInstances\.parameters\parameters.json` | `keys.value.uri` |
-| `arm\Microsoft.Network\applicationGateways\.parameters\parameters.json` | `sslCertificates.value.properties.keyVaultSecretId` |
+| File | Parameter | Notes |
+| - | - | - |
+| `arm\Microsoft.Compute\diskEncryptionSets\.parameters\parameters.json` |`keyUrl.value` | |
+| `arm\Microsoft.Compute\virtualMachines\.parameters\linux.parameters.json` | `extensionDiskEncryptionConfig.value.settings.KeyEncryptionKeyURL` | |
+| `arm\Microsoft.Compute\virtualMachines\.parameters\windows.parameters.json` | `extensionDiskEncryptionConfig.value.settings.KeyEncryptionKeyURL` | |
+| `arm\Microsoft.Compute\virtualMachineScaleSets\.parameters\linux.parameters.json` | `extensionDiskEncryptionConfig.value.settings.KeyEncryptionKeyURL` | |
+| `arm\Microsoft.Compute\virtualMachineScaleSets\.parameters\windows.parameters.json` | `extensionDiskEncryptionConfig.value.settings.KeyEncryptionKeyURL` | |
+| `arm\Microsoft.Sql\managedInstances\.parameters\parameters.json` | `keys.value.uri` | |
+| `arm\Microsoft.Network\applicationGateways\.parameters\parameters.json` | `sslCertificates.value.properties.keyVaultSecretId` | |
+| `arm\Microsoft.Web\sites\.parameters\fa.parameters.json` | `appSettingsKeyValuePairs.value.EASYAUTH_SECRET` | Key Vault secret URI without version |
+| `arm\Microsoft.Web\sites\.parameters\fa.parameters.json` | `authSettingV2Configuration.value.identityProviders.azureActiveDirectory.registration.clientId` | App ID from the Azure Active Directory App |
+| `arm\Microsoft.Web\sites\.parameters\fa.parameters.json` | `authSettingV2Configuration.value.identityProviders.azureActiveDirectory.validation.allowedAudiences` | API endpoint from the Azure Active Directory app |
 
 </details>
 
