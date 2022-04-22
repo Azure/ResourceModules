@@ -213,7 +213,7 @@ function New-DeploymentWithParameterFile {
                     'resourcegroup' {
                         if (-not [String]::IsNullOrEmpty($subscriptionId)) {
                             Write-Verbose ('Setting context to subscription [{0}]' -f $subscriptionId)
-                            Set-AzContext -Subscription $subscriptionId
+                            $null = Set-AzContext -Subscription $subscriptionId
                         }
                         if (-not (Get-AzResourceGroup -Name $resourceGroupName -ErrorAction 'SilentlyContinue')) {
                             if ($PSCmdlet.ShouldProcess("Resource group [$resourceGroupName] in location [$location]", 'Create')) {
@@ -228,7 +228,7 @@ function New-DeploymentWithParameterFile {
                     'subscription' {
                         if (-not [String]::IsNullOrEmpty($subscriptionId)) {
                             Write-Verbose ('Setting context to subscription [{0}]' -f $subscriptionId)
-                            Set-AzContext -Subscription $subscriptionId
+                            $null = Set-AzContext -Subscription $subscriptionId
                         }
                         if ($PSCmdlet.ShouldProcess('Subscription level deployment', 'Create')) {
                             $res = New-AzSubscriptionDeployment @DeploymentInputs -Location $location
