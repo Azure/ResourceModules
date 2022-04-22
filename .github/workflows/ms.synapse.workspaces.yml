@@ -16,6 +16,7 @@ on:
   push:
     branches:
       - main
+      - users/repajta/852_synapse_workspace_module
     paths:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.synapse.workspaces.yml'

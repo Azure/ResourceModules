@@ -10,14 +10,6 @@ param isActiveCMK bool
 @description('Required. The Key Vault Url of the workspace key.')
 param keyVaultUrl string
 
-@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
-param cuaId string = ''
-
-module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
-  name: 'pid-${cuaId}'
-  params: {}
-}
-
 resource workspace 'Microsoft.Synapse/workspaces@2021-06-01' existing = {
   name: workspaceName
 }
