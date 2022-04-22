@@ -217,7 +217,7 @@ function New-DeploymentWithParameterFile {
                         }
                         if (-not (Get-AzResourceGroup -Name $resourceGroupName -ErrorAction 'SilentlyContinue')) {
                             if ($PSCmdlet.ShouldProcess("Resource group [$resourceGroupName] in location [$location]", 'Create')) {
-                                New-AzResourceGroup -Name $resourceGroupName -Location $location
+                                $null = New-AzResourceGroup -Name $resourceGroupName -Location $location
                             }
                         }
                         if ($PSCmdlet.ShouldProcess('Resource group level deployment', 'Create')) {
