@@ -53,15 +53,6 @@
                         "vmSize": "STANDARD_DS11_V2"
                     }
                 }
-                // {
-                //     "name": "DefaultAKS",
-                //     "location": "westeurope",
-                //     "description": "Default AKS Cluster",
-                //     "disableLocalAuth": false,
-                //     "deployCompute": true,
-                //     "computeType": "AKS",
-                //     "resourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.ContainerService/managedClusters/xxx"
-                // }
             ]
         },
         "roleAssignments": {
