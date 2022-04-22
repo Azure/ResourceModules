@@ -45,6 +45,9 @@ param encryptionUserAssignedIdentity string = ''
 @description('Optional. Activate workspace by adding the system managed identity in the KeyVault containing the customer managed key and activating the workspace.')
 param encryptionActivateWorkspace bool = false
 
+@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+param enableDefaultTelemetry bool = true
+
 @maxLength(90)
 @description('Optional. Workspace managed resource group. The resource group name uniquely identifies the resource group within the user subscriptionId. The resource group name must be no longer than 90 characters long, and must be alphanumeric characters (Char.IsLetterOrDigit()) and \'-\', \'_\', \'(\', \')\' and\'.\'. Note that the name cannot end with \'.\'')
 param managedResourceGroupName string = ''
@@ -151,6 +154,18 @@ var diagnosticsLogs = [for log in logsToEnable: {
     days: diagnosticLogsRetentionInDays
   }
 }]
+
+resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
+  name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
+  properties: {
+    mode: 'Incremental'
+    template: {
+      '$schema': 'https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#'
+      contentVersion: '1.0.0.0'
+      resources: []
+    }
+  }
+}
 
 resource workspace 'Microsoft.Synapse/workspaces@2021-06-01' = {
   name: name
@@ -260,5 +275,5 @@ output name string = workspace.name
 @description('The resource group of the deployed Synapse Workspace.')
 output resourceGroupName string = resourceGroup().name
 
-@description('Connectivity endpoints.')
+@description('The workspace connectivity endpoints.')
 output connectivityEndpoints object = workspace.properties.connectivityEndpoints
