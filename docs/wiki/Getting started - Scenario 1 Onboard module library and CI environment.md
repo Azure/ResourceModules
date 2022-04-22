@@ -334,7 +334,6 @@ Run the dependencies pipeline by following instructions provided in the specific
 
 In special cases, manual actions may be required to provision certain resources that are not covered by our dependency pipeline. In the following you can find an overview of these resources, for which modules you'd need them and what you'd need to do:
 
-
 ### Microsoft.Web/sites
 
 To successfully deploy the function app using the parameter file `fa.parameters.json` you need to create an Azure Active Directory App with API endpoint enabled (e.g. `api://<app id>`) and a secret added. The secret value needs then to be stored in a Key Vault secret.
