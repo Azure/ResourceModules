@@ -228,7 +228,7 @@ For _Azure DevOps_, you have to perform the following environment-specific steps
 - [3.2.2 Setup secrets in variable group](#322-setup-secrets-in-variable-group)
 - [3.2.3 Setup variables file](#323-setup-variables-file)
 - [3.2.4 Register pipelines](#324-register-pipelines)
-
+- [3.2.5 Azure Artifacts Universal Packages](#325-azure-artifacts-universal-packages)
 ### 3.2.1 Setup service connection
 
 The service connection must be set up in the project's settings under _Pipelines: Service connections_ (a step by step guide can be found [here](https://docs.microsoft.com/en-us/azure/devops/pipelines/library/service-endpoints?view=azure-devops&tabs=yaml)).
@@ -315,6 +315,22 @@ The primary pipeline variable file `global.variables.yml` hosts the fundamental 
 ### 3.2.4 Register pipelines
 
 To use the pipelines that come with the environment in Azure DevOps, you need to register them first. You can either do this manually, or, execute the utility `Register-AzureDevOpsPipeline` we provide in path `utilities/tools/AzureDevOps`. For further information, please refer to the corresponding [documentation](./Interoperability%20-%20Register%20Azure%20DevOps%20Pipelines).
+
+
+### 3.2.5 Azure Artifacts Universal Packages
+
+This section will explain what is required to publish the modules to [Azure Artifacts Universal Packages](https://docs.microsoft.com/en-us/azure/devops/artifacts/quickstarts/universal-packages?view=azure-devops). It will also assume you are publishing from Azure DevOps Pipelines.
+#### The dependent components are
+1. An Azure DevOps organization
+1. An Azure DevOps artifacts feed
+   > Note: The default feed name is `ResourceModules` as configured in the `./global.variables.yaml` file's variable `vstsFeedName`. Update the value here if you want to use a different name, but make sure it matches the name of the artifact feed created in Azure DevOps.
+1. An Azure DevOps project to host the artifact feed
+   > Note: There are a couple options to consider when setting up an Azure Artifact feed. For example, organization-scoped feeds vs project-scoped feeds. Please see what option suits your needs by reviewing the [feeds](https://docs.microsoft.com/en-us/azure/devops/artifacts/concepts/feeds?view=azure-devops) document first.
+1. If you chose the feed to be project-scoped, you will need the Project Build Service account to have `Contributor` access to publish to the Azure Artifacts feed. To set this, follow the [Pipeline permission](https://docs.microsoft.com/en-us/azure/devops/artifacts/feeds/feed-permissions?view=azure-devops#pipelines-permissions) steps.
+
+#### Implementation Guidance
+Each `./azuredevops/modulePipelines` yaml pipeline already calls `/.azuredevops/pipelineTemplates/jobs.publishModule.yml`. This yaml template contains a method to `Publish module to artifacts feed` via `utilities\pipelines\resourcePublish\Publish-ModuleToUniversalArtifactFeed.ps1`.
+
 
 </details>
 
