@@ -5,10 +5,10 @@ param name string
 param location string = resourceGroup().location
 
 @description('Optional. Specifies the name of the Public IP used by the Virtual Network Gateway. If it\'s not provided, a \'-pip\' suffix will be appended to the gateway\'s name.')
-param gatewayPipName string = ''
+param gatewayPipName string = '${name}-pip1'
 
 @description('Optional. Specifies the name of the Public IP used by the Virtual Network Gateway when active-active configuration is required. If it\'s not provided, a \'-pip\' suffix will be appended to the gateway\'s name.')
-param activeGatewayPipName string = ''
+param activeGatewayPipName string = '${name}-pip1'
 
 @description('Optional. Resource ID of the Public IP Prefix object. This is only needed if you want your Public IPs created in a PIP Prefix.')
 param publicIPPrefixResourceId string = ''
@@ -191,20 +191,19 @@ var gatewayPipAllocationMethod = contains(zoneRedundantSkus, virtualNetworkGatew
 var gatewaySubnetId = '${vNetResourceId}/subnets/GatewaySubnet'
 var activeActive_var = virtualNetworkGatewayType == 'ExpressRoute' ? false : activeActive
 
-// Public IP variables
-var gatewayPipName1 = empty(gatewayPipName) ? '${name}-pip1' : gatewayPipName
-var gatewayPipName2 = activeActive_var ? (empty(activeGatewayPipName) ? '${name}-pip2' : activeGatewayPipName) : ''
+// Public IP variable
+var gatewayPipName2 = activeActive_var ? activeGatewayPipName : ''
 
 var gatewayMultiPipArray = [
-  gatewayPipName1
+  gatewayPipName
   gatewayPipName2
 ]
 var gatewaySinglePipArray = [
-  gatewayPipName1
+  gatewayPipName
 ]
 var virtualGatewayPipName_var = !empty(gatewayPipName2) ? gatewayMultiPipArray : gatewaySinglePipArray
-var gatewayPipId1 = az.resourceId('Microsoft.Network/publicIPAddresses', gatewayPipName1)
-var gatewayPipId2 = activeActive_var ? az.resourceId('Microsoft.Network/publicIPAddresses', gatewayPipName2) : az.resourceId('Microsoft.Network/publicIPAddresses', gatewayPipName1)
+var gatewayPipId1 = az.resourceId('Microsoft.Network/publicIPAddresses', gatewayPipName)
+var gatewayPipId2 = activeActive_var ? az.resourceId('Microsoft.Network/publicIPAddresses', gatewayPipName2) : az.resourceId('Microsoft.Network/publicIPAddresses', gatewayPipName)
 
 var enableBgp_var = virtualNetworkGatewayType == 'ExpressRoute' ? false : enableBgp
 var vpnType_var = virtualNetworkGatewayType == 'ExpressRoute' ? 'PolicyBased' : vpnType
