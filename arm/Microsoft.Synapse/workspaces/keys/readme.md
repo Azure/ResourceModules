@@ -25,11 +25,6 @@ This module deploys a Synapse Workspaces Key.
 | `name` | string | Encryption key name. |
 | `workspaceName` | string | Synapse workspace name. |
 
-**Optional parameters**
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `cuaId` | string | `''` | Customer Usage Attribution ID (GUID). This GUID must be previously registered |
-
 
 ## Outputs
 
