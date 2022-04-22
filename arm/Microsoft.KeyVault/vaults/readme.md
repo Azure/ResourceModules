@@ -57,7 +57,6 @@ This module deploys a key vault and its child resources.
 | `softDeleteRetentionInDays` | int | `90` |  | softDelete data retention days. It accepts >=7 and <=90. |
 | `tags` | object | `{object}` |  | Resource tags. |
 | `vaultSku` | string | `'premium'` | `[premium, standard]` | Specifies the SKU for the vault |
-| `vNetId` | string | `''` |  | Virtual Network resource identifier, if networkAcls is passed, this value must be passed as well |
 
 **Generated parameters**
 | Parameter Name | Type | Default Value | Description |
@@ -117,7 +116,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
         "defaultAction": "Deny",
         "virtualNetworkRules": [
             {
-                "subnet": "sharedsvcs"
+                "subnetId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001"
             }
         ],
         "ipRules": []
