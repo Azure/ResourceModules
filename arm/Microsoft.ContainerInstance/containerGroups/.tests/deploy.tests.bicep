@@ -1,0 +1,11 @@
+// Module tests
+
+// Test with only required parameters
+module test_required_params '../deploy.bicep' = {
+  name: 'test_required_params'
+  params: {
+    name: 'citest001'
+    image: 'mcr.microsoft.com/azuredocs/aci-helloworld'
+    containername: 'container001'
+  }
+}

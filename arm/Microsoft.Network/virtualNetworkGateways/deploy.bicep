@@ -5,6 +5,7 @@ param name string
 param location string = resourceGroup().location
 
 @description('Optional. Specifies the name of the Public IP used by the Virtual Network Gateway. If it\'s not provided, a \'-pip\' suffix will be appended to the gateway\'s name.')
+@maxLength(2)
 param gatewayPipName array = []
 
 @description('Optional. Resource ID of the Public IP Prefix object. This is only needed if you want your Public IPs created in a PIP Prefix.')
