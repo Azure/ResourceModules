@@ -10,7 +10,7 @@ param isActiveCMK bool
 @description('Required. The Key Vault Url of the workspace key.')
 param keyVaultUrl string
 
-@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
+@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
 
 module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
