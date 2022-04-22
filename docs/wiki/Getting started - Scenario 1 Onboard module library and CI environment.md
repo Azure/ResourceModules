@@ -332,6 +332,8 @@ Run the dependencies pipeline by following instructions provided in the specific
 
 ## 4.1 Manual Dependencies
 
+In special cases, manual actions may be required to provision certain resources that are not covered by our dependency pipeline. In the following you can find an overview of these resources, for which modules you'd need them and what you'd need to do:
+
 
 ### Microsoft.Web/sites
 
