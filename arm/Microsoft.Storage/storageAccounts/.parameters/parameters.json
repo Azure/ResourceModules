@@ -47,7 +47,12 @@
                         "action": "Allow"
                     }
                 ],
-                "ipRules": []
+                "ipRules": [
+                    {
+                        "action": "Allow",
+                        "value": "1.1.1.1"
+                    }
+                ]
             }
         },
         "blobServices": {

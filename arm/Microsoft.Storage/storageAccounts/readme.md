@@ -113,7 +113,12 @@ Create a role assignment for the given resource. If you want to assign a service
                 "subnetId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001"
             }
         ],
-        "ipRules": []
+        "ipRules": [
+            {
+                "action": "Allow",
+                "value": "1.1.1.1"
+            }
+        ]
     }
 }
 ```
