@@ -68,7 +68,6 @@ This module is used to deploy a storage account, with the ability to deploy 1 or
 | `tableServices` | _[tableServices](tableServices/readme.md)_ object | `{object}` |  | Table service and tables to create. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
 | `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. |
-| `vNetId` | string | `''` |  | Virtual Network Identifier used to create a service endpoint. |
 
 **Generated parameters**
 | Parameter Name | Type | Default Value | Description |
@@ -111,7 +110,7 @@ Create a role assignment for the given resource. If you want to assign a service
         "defaultAction": "Deny",
         "virtualNetworkRules": [
             {
-                "subnet": "sharedsvcs"
+                "subnetId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001"
             }
         ],
         "ipRules": []

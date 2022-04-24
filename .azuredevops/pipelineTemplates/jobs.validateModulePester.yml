@@ -145,10 +145,28 @@ jobs:
               Write-Verbose "- [($moduleFolderPath]" -Verbose
             }
 
+            $enforcedTokenList = @{}
+            if (-not [String]::IsNullOrEmpty('${{ parameters.subscriptionId }}')) {
+                $enforcedTokenList['subscriptionId'] = '${{ parameters.subscriptionId }}'
+            }
+            if (-not [String]::IsNullOrEmpty('${{ parameters.managementGroupId }}')) {
+                $enforcedTokenList['managementGroupId'] = '${{ parameters.managementGroupId }}'
+            }
+            if (-not [String]::IsNullOrEmpty('$(ARM_TENANT_ID)')) {
+                $enforcedTokenList['deploymentSpId'] = '$(ARM_TENANT_ID)'
+            }
+            if (-not [String]::IsNullOrEmpty('$(DEPLOYMENT_SP_ID)')) {
+                $enforcedTokenList['tenantId'] = '$(DEPLOYMENT_SP_ID)'
+            }
+
+            # --------------------- #
+            # Invoke Pester test(s) #
+            # --------------------- #
             Invoke-Pester -Configuration @{
               Run        = @{
                 Container = New-PesterContainer -Path (Join-Path '$(moduleRepoRoot)' 'arm' '.global' 'global.module.tests.ps1') -Data @{
                   moduleFolderPaths = $moduleFolderPaths
+                  enforcedTokenList = $enforcedTokenList
                 }
               }
               Filter     = @{
@@ -250,6 +268,9 @@ jobs:
               Write-Verbose "- [($moduleFolderPath]" -Verbose
             }
 
+            # --------------------- #
+            # Invoke Pester test(s) #
+            # --------------------- #
             Invoke-Pester -Configuration @{
               Run        = @{
                 Container = New-PesterContainer -Path (Join-Path '$(moduleRepoRoot)' 'arm' '.global' 'global.module.tests.ps1') -Data @{

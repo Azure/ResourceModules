@@ -47,9 +47,6 @@ param storageAccountAccessTier string = 'Hot'
 @description('Optional. Provides the identity based authentication settings for Azure Files.')
 param azureFilesIdentityBasedAuthentication object = {}
 
-@description('Optional. Virtual Network Identifier used to create a service endpoint.')
-param vNetId string = ''
-
 @description('Optional. Configuration Details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible')
 param privateEndpoints array = []
 
@@ -154,10 +151,6 @@ var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
   }
 }]
 
-var virtualNetworkRules = [for index in range(0, (empty(networkAcls) ? 0 : length(networkAcls.virtualNetworkRules))): {
-  id: '${vNetId}/subnets/${networkAcls.virtualNetworkRules[index].subnet}'
-}]
-
 var maxNameLength = 24
 var uniqueStorageNameUntrim = '${uniqueString('Storage Account${basetime}')}'
 var uniqueStorageName = length(uniqueStorageNameUntrim) > maxNameLength ? substring(uniqueStorageNameUntrim, 0, maxNameLength) : uniqueStorageNameUntrim
@@ -212,8 +205,8 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-08-01' = {
     networkAcls: !empty(networkAcls) ? {
       bypass: !empty(networkAcls) ? networkAcls.bypass : null
       defaultAction: !empty(networkAcls) ? networkAcls.defaultAction : null
-      virtualNetworkRules: !empty(networkAcls) ? virtualNetworkRules : null
-      ipRules: !empty(networkAcls) ? (length(networkAcls.ipRules) != 0 ? networkAcls.ipRules : null) : null
+      virtualNetworkRules: (!empty(networkAcls) && contains(networkAcls, 'virtualNetworkRules')) ? networkAcls.virtualNetworkRules : []
+      ipRules: (!empty(networkAcls) && contains(networkAcls, 'ipRules')) ? networkAcls.ipRules : []
     } : null
     allowBlobPublicAccess: allowBlobPublicAccess
     publicNetworkAccess: publicNetworkAccess
@@ -269,6 +262,7 @@ module storageAccount_managementPolicies 'managementPolicies/deploy.bicep' = if 
   params: {
     storageAccountName: storageAccount.name
     rules: managementPolicyRules
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }
 
@@ -288,6 +282,7 @@ module storageAccount_blobServices 'blobServices/deploy.bicep' = if (!empty(blob
     diagnosticLogCategoriesToEnable: contains(blobServices, 'diagnosticLogCategoriesToEnable') ? blobServices.diagnosticLogCategoriesToEnable : []
     diagnosticMetricsToEnable: contains(blobServices, 'diagnosticMetricsToEnable') ? blobServices.diagnosticMetricsToEnable : []
     diagnosticWorkspaceId: contains(blobServices, 'diagnosticWorkspaceId') ? blobServices.diagnosticWorkspaceId : ''
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }
 
@@ -309,6 +304,7 @@ module storageAccount_fileServices 'fileServices/deploy.bicep' = if (!empty(file
     }
     shares: contains(fileServices, 'shares') ? fileServices.shares : []
     diagnosticWorkspaceId: contains(fileServices, 'diagnosticWorkspaceId') ? fileServices.diagnosticWorkspaceId : ''
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }
 
@@ -325,6 +321,7 @@ module storageAccount_queueServices 'queueServices/deploy.bicep' = if (!empty(qu
     diagnosticMetricsToEnable: contains(queueServices, 'diagnosticMetricsToEnable') ? queueServices.diagnosticMetricsToEnable : []
     queues: contains(queueServices, 'queues') ? queueServices.queues : []
     diagnosticWorkspaceId: contains(queueServices, 'diagnosticWorkspaceId') ? queueServices.diagnosticWorkspaceId : ''
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }
 
@@ -341,6 +338,7 @@ module storageAccount_tableServices 'tableServices/deploy.bicep' = if (!empty(ta
     diagnosticMetricsToEnable: contains(tableServices, 'diagnosticMetricsToEnable') ? tableServices.diagnosticMetricsToEnable : []
     tables: contains(tableServices, 'tables') ? tableServices.tables : []
     diagnosticWorkspaceId: contains(tableServices, 'diagnosticWorkspaceId') ? tableServices.diagnosticWorkspaceId : ''
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }
 

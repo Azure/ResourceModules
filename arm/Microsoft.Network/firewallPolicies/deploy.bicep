@@ -153,6 +153,10 @@ resource firewallPolicy 'Microsoft.Network/firewallPolicies@2021-05-01' = {
   }
 }
 
+// When a FW policy uses a base policy and have more rule collection groups,
+// they need to be deployed sequentially, otherwise the deployment would fail
+// because of concurrent access to the base policy.
+// The next line forces ARM to deploy them one after the other, so no race concition on the base policy will happen.
 @batchSize(1)
 module firewallPolicy_ruleCollectionGroups 'ruleCollectionGroups/deploy.bicep' = [for (ruleCollectionGroup, index) in ruleCollectionGroups: {
   name: '${uniqueString(deployment().name, location)}-firewallPolicy_ruleCollectionGroups-${index}'
@@ -161,6 +165,7 @@ module firewallPolicy_ruleCollectionGroups 'ruleCollectionGroups/deploy.bicep' =
     name: ruleCollectionGroup.name
     priority: ruleCollectionGroup.priority
     ruleCollections: ruleCollectionGroup.ruleCollections
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }]
 

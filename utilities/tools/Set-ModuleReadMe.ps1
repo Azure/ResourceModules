@@ -521,6 +521,10 @@ Supports both ARM & bicep templates.
 .PARAMETER TemplateFilePath
 Mandatory. The path to the template to update
 
+.PARAMETER TemplateFileContent
+Optional. The template file content to process. If not provided, the template file content will be read from the TemplateFilePath file.
+Using this property is useful if you already compiled the bicep template before invoking this function and want to avoid re-compiling it.
+
 .PARAMETER ReadMeFilePath
 Optional. The path to the readme to update. If not provided assumes a 'readme.md' file in the same folder as the template
 
@@ -537,6 +541,11 @@ Update the readme in path 'C:\readme.md' based on the bicep template in path 'C:
 Set-ModuleReadMe -TemplateFilePath 'C:/Microsoft.Network/loadBalancers/deploy.bicep' -SectionsToRefresh @('Parameters', 'Outputs')
 
 Generate the Module ReadMe only for specific sections. Updates only the sections `Parameters` & `Outputs`. Other sections remain untouched.
+
+.EXAMPLE
+Set-ModuleReadMe -TemplateFilePath 'C:/Microsoft.Network/loadBalancers/deploy.bicep' -TemplateFileContent @{...}
+
+(Re)Generate the readme file for template 'loadBalancer' based on the content provided in the TemplateFileContent parameter
 
 .EXAMPLE
 Set-ModuleReadMe -TemplateFilePath 'C:/Microsoft.Network/loadBalancers/deploy.bicep' -ReadMeFilePath 'C:/differentFolder'
@@ -560,6 +569,9 @@ function Set-ModuleReadMe {
     param (
         [Parameter(Mandatory)]
         [string] $TemplateFilePath,
+
+        [Parameter(Mandatory = $false)]
+        [Hashtable] $TemplateFileContent,
 
         [Parameter(Mandatory = $false)]
         [string] $ReadMeFilePath = (Join-Path (Split-Path $TemplateFilePath -Parent) 'readme.md'),
@@ -589,10 +601,12 @@ function Set-ModuleReadMe {
     # Check template
     $null = Test-Path $TemplateFilePath -ErrorAction Stop
 
-    if ((Split-Path -Path $TemplateFilePath -Extension) -eq '.bicep') {
-        $templateFileContent = az bicep build --file $TemplateFilePath --stdout | ConvertFrom-Json -AsHashtable
-    } else {
-        $templateFileContent = ConvertFrom-Json (Get-Content $TemplateFilePath -Encoding 'utf8' -Raw) -ErrorAction Stop -AsHashtable
+    if (-not $TemplateFileContent) {
+        if ((Split-Path -Path $TemplateFilePath -Extension) -eq '.bicep') {
+            $templateFileContent = az bicep build --file $TemplateFilePath --stdout | ConvertFrom-Json -AsHashtable
+        } else {
+            $templateFileContent = ConvertFrom-Json (Get-Content $TemplateFilePath -Encoding 'utf8' -Raw) -ErrorAction Stop -AsHashtable
+        }
     }
 
     $fullResourcePath = (Split-Path $TemplateFilePath -Parent).Replace('\', '/').split('/arm/')[1]

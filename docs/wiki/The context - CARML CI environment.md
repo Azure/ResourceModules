@@ -14,7 +14,7 @@ This page provides an overview of the CARML CI environment. For further details 
 
 This paragraph provides an overview of the usual deployment flow that goes from source modules to target solutions.
 
-<img src="media\Context\Deployment_flow.png" alt="Deployment flow" height="300">
+<img src="./media/Context/Deployment_flow.png" alt="Deployment flow" height="300">
 
 When it comes to Infrastructure as Code (IaC) deployments, the flow generally covers 3 phases:
 
@@ -41,11 +41,11 @@ If the validation is successful, the CI environment is also publishing versioned
 
 As such, the CARML CI environment covers `Phase #1`, i.e. the validation, & `Phase #2`, i.e. the publishing of the [deployment flow](#deployment-flow) section. On the other hand, a CARML consumer is usually interested in `Phase #2` and `Phase #3`, i.e. the consumption of the same deployment flow, where already tested and versioned modules can be referenced and combined to build more complex architectures.
 
-<img src="media\Context\Deployment_flow_users.png" alt="Deployment flow" height="400">
+<img src="./media/Context/Deployment_flow_users.png" alt="Deployment flow" height="400">
 
 The below diagram provides a drill down of how the different phases are interconnected:
 
-<img src="media\Context\Deployment_flow_detail_white.png" alt="Complete deployment flow" height="500">
+<img src="./media/Context/Deployment_flow_detail_white.png" alt="Complete deployment flow" height="500">
 
 The top row represents your orchestration environment, for example _GitHub_ or _Azure DevOps_. The bottom row represents the _Azure_ environment.
 

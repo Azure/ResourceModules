@@ -144,6 +144,7 @@ module policy 'policies/deploy.bicep' = [for (policy, index) in policies: {
     apiName: api.name
     format: contains(policy, 'format') ? policy.format : 'xml'
     value: policy.value
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }]
 

@@ -1,6 +1,6 @@
-# Network FrontDoors `[Microsoft.Network/frontDoors]`
+# Front Doors `[Microsoft.Network/frontDoors]`
 
-This module deploys Network FrontDoors.
+This module deploys Front Doors.
 
 
 ## Navigation

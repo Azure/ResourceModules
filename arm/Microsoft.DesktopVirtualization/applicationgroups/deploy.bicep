@@ -144,6 +144,7 @@ module appGroup_applications 'applications/deploy.bicep' = [for (application, in
     showInPortal: contains(application, 'showInPortal') ? application.showInPortal : false
     iconPath: contains(application, 'iconPath') ? application.iconPath : application.filePath
     iconIndex: contains(application, 'iconIndex') ? application.iconIndex : 0
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }]
 

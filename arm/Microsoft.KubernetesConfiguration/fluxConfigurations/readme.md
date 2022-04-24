@@ -1,6 +1,6 @@
-# KubernetesConfiguration FluxConfigurations `[Microsoft.KubernetesConfiguration/fluxConfigurations]`
+# Kubernetes Configuration Flux Configurations `[Microsoft.KubernetesConfiguration/fluxConfigurations]`
 
-This module deploys KubernetesConfiguration FluxConfigurations.
+This module deploys Kubernetes Configuration Flux Configurations.
 
 ## Navigation
 

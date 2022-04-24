@@ -1,6 +1,6 @@
-# ServiceFabric Cluster `[Microsoft.ServiceFabric/clusters]`
+# Service Fabric Clusters `[Microsoft.ServiceFabric/clusters]`
 
-This module deploys a service fabric cluster.
+This module deploys a Service Fabric Cluster.
 
 ## Navigation
 
