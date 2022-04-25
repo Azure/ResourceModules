@@ -15,6 +15,9 @@ param azureSkuName string = 'AZFW_VNet'
 ])
 param azureSkuTier string = 'Standard'
 
+@description('Required. Shared services Virtual Network resource identifier')
+param vNetId string
+
 @description('Optional. Specifies the resource ID of the existing public IP to be leveraged by Azure Firewall.')
 param publicIPAddressId string = ''
 
@@ -29,9 +32,6 @@ param networkRuleCollections array = []
 
 @description('Optional. Collection of NAT rule collections used by Azure Firewall.')
 param natRuleCollections array = []
-
-@description('Required. List of IP Configurations.')
-param ipConfigurations array
 
 @description('Optional. Resource ID of the Firewall Policy that should be attached.')
 param firewallPolicyId string = ''
@@ -107,18 +107,6 @@ param diagnosticLogCategoriesToEnable array = [
 param diagnosticMetricsToEnable array = [
   'AllMetrics'
 ]
-
-var ipConfigurations_var = [for ipConfiguration in ipConfigurations: {
-  name: ipConfiguration.name
-  properties: {
-    publicIPAddress: contains(ipConfiguration, 'publicIPAddressResourceId') ? {
-      id: ipConfiguration.publicIPAddressResourceId
-    } : null
-    subnet: contains(ipConfiguration, 'subnetResourceId') ? {
-      id: ipConfiguration.subnetResourceId
-    } : null
-  }
-}]
 
 @description('Optional. The name of the diagnostic setting, if deployed.')
 param diagnosticSettingsName string = '${name}-diagnosticSettings'
@@ -204,7 +192,19 @@ resource azureFirewall 'Microsoft.Network/azureFirewalls@2021-05-01' = {
     firewallPolicy: empty(firewallPolicyId) ? null : {
       id: firewallPolicyId
     }
-    ipConfigurations: ipConfigurations_var
+    ipConfigurations: [
+      {
+        name: 'IpConf'
+        properties: {
+          subnet: {
+            id: '${vNetId}/subnets/AzureFirewallSubnet' // The subnet name must be AzureFirewallSubnet
+          }
+          publicIPAddress: {
+            id: !(empty(publicIPAddressId)) ? publicIPAddressId : publicIPAddress.outputs.resourceId //Use existing or new public ip
+          }
+        }
+      }
+    ]
     sku: {
       name: azureSkuName
       tier: azureSkuTier

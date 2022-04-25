@@ -25,8 +25,8 @@ This module deploys a firewall.
 **Required parameters**
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `ipConfigurations` | array | List of IP Configurations. |
 | `name` | string | Name of the Azure Firewall. |
+| `vNetId` | string | Shared services Virtual Network resource identifier |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
