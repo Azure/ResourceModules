@@ -57,11 +57,6 @@ This module deploys an event hub namespace.
 | `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. |
 | `zoneRedundant` | bool | `False` |  | Switch to make the Event Hub Namespace zone redundant. |
 
-**Generated parameters**
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `baseTime` | string | `[utcNow('u')]` | Do not provide a value! This date value is used to generate a SAS token to access the modules. |
-
 
 ### Parameter Usage: `privateEndpoints`
 
