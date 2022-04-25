@@ -34,7 +34,7 @@ This module deploys a virtual network gateway.
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `activeActive` | bool | `True` |  | Value to specify if the Gateway should be deployed in active-active or active-passive configuration |
-| `activeGatewayPipName` | string | `''` |  | Specifies the name of the Public IP used by the Virtual Network Gateway when active-active configuration is required. If it's not provided, a '-pip' suffix will be appended to the gateway's name. |
+| `activeGatewayPipName` | string | `[format('{0}-pip2', parameters('name'))]` |  | Specifies the name of the Public IP used by the Virtual Network Gateway when active-active configuration is required. If it's not provided, a '-pip' suffix will be appended to the gateway's name. |
 | `asn` | int | `65815` |  | ASN value |
 | `clientRevokedCertThumbprint` | string | `''` |  | Thumbprint of the revoked certificate. This would revoke VPN client certificates matching this thumbprint from connecting to the VNet. |
 | `clientRootCertData` | string | `''` |  | Client root certificate data used to authenticate VPN clients. |
@@ -47,7 +47,7 @@ This module deploys a virtual network gateway.
 | `domainNameLabel` | array | `[]` |  | DNS name(s) of the Public IP resource(s). If you enabled active-active configuration, you need to provide 2 DNS names, if you want to use this feature. A region specific suffix will be appended to it, e.g.: your-DNS-name.westeurope.cloudapp.azure.com |
 | `enableBgp` | bool | `True` |  | Value to specify if BGP is enabled or not |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `gatewayPipName` | string | `''` |  | Specifies the name of the Public IP used by the Virtual Network Gateway. If it's not provided, a '-pip' suffix will be appended to the gateway's name. |
+| `gatewayPipName` | string | `[format('{0}-pip1', parameters('name'))]` |  | Specifies the name of the Public IP used by the Virtual Network Gateway. If it's not provided, a '-pip' suffix will be appended to the gateway's name. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `'NotSpecified'` | `[CanNotDelete, NotSpecified, ReadOnly]` | Specify the type of lock. |
 | `publicIpdiagnosticLogCategoriesToEnable` | array | `[DDoSProtectionNotifications, DDoSMitigationFlowLogs, DDoSMitigationReports]` | `[DDoSProtectionNotifications, DDoSMitigationFlowLogs, DDoSMitigationReports]` | The name of logs that will be streamed. |
