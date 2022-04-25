@@ -6,6 +6,7 @@ param (
         (Get-ChildItem $_ -File -Depth 0 -Include @('deploy.json', 'deploy.bicep') -Force).Count -gt 0
         }),
 
+    # Tokens to test for (i.e. their value should not be used in the parameter files, but their placeholder)
     [Parameter(Mandatory = $false)]
     [hashtable] $enforcedTokenList = @{}
 )
