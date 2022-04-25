@@ -6,9 +6,7 @@
             "value": "<<namePrefix>>-az-gw-er-001"
         },
         "gatewayPipName": {
-            "value": [
-                "<<namePrefix>>-az-gw-er-001-pip"
-            ]
+            "value": "<<namePrefix>>-az-gw-er-001-pip"
         },
         "domainNameLabel": {
             "value": [
