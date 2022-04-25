@@ -72,6 +72,8 @@ This module deploys Azure Kubernetes Cluster (AKS).
 | `enablePrivateClusterPublicFQDN` | bool | `False` |  | Optional. Whether to create additional public FQDN for private cluster or not. |
 | `enableSecretRotation` | string | `false` | `[false, true]` | Optional. Specifies whether the KeyvaultSecretsProvider add-on uses secret rotation. |
 | `httpApplicationRoutingEnabled` | bool | `False` |  | Optional. Specifies whether the httpApplicationRouting add-on is enabled or not. |
+| `ingressApplicationGatewayEnabled` | bool | `False` |  | Optional. Specifies whether the ingressApplicationGateway (AGIC) add-on is enabled or not. |
+| `appGatewayResourceId` | string |  |  | Optional. Specifies the resource id of conected application gateway. |
 | `kubeDashboardEnabled` | bool | `False` |  | Optional. Specifies whether the kubeDashboard add-on is enabled or not. |
 | `location` | string | `[resourceGroup().location]` |  | Optional. Specifies the location of AKS cluster. It picks up Resource Group's location by default. |
 | `lock` | string | `NotSpecified` | `[CanNotDelete, NotSpecified, ReadOnly]` | Optional. Specify the type of lock. |
