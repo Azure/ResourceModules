@@ -350,7 +350,7 @@ module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
   params: {}
 }
 
-resource managedCluster 'Microsoft.ContainerService/managedClusters@2021-10-01' = {
+resource managedCluster 'Microsoft.ContainerService/managedClusters@2022-02-01' = {
   name: name
   location: location
   tags: (empty(tags) ? null : tags)
