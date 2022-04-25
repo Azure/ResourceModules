@@ -5,7 +5,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.4.1318.3566",
-      "templateHash": "2380309122090740941"
+      "templateHash": "8023871895260204568"
     }
   },
   "parameters": {
@@ -188,13 +188,6 @@
         "description": "Optional. Enable telemetry via the Customer Usage Attribution ID (GUID)."
       }
     },
-    "baseTime": {
-      "type": "string",
-      "defaultValue": "[utcNow('u')]",
-      "metadata": {
-        "description": "Generated. Do not provide a value! This date value is used to generate a SAS token to access the modules."
-      }
-    },
     "eventHubs": {
       "type": "array",
       "defaultValue": [],
@@ -288,9 +281,7 @@
         }
       }
     ],
-    "maxNameLength": 50,
-    "uniqueEventHubNamespaceUntrim": "[format('evhns-{0}', uniqueString(resourceGroup().id))]",
-    "uniqueEventHubNamespace": "[if(greater(length(variables('uniqueEventHubNamespaceUntrim')), variables('maxNameLength')), substring(variables('uniqueEventHubNamespaceUntrim'), 0, variables('maxNameLength')), variables('uniqueEventHubNamespaceUntrim'))]",
+    "uniqueEventHubNamespace": "[format('evhns-{0}', uniqueString(resourceGroup().id))]",
     "name_var": "[if(empty(parameters('name')), variables('uniqueEventHubNamespace'), parameters('name'))]",
     "maximumThroughputUnits_var": "[if(not(parameters('isAutoInflateEnabled')), 0, parameters('maximumThroughputUnits'))]",
     "networkAcls_var": {

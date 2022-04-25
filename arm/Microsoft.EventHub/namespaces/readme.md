@@ -58,11 +58,6 @@ This module deploys an event hub namespace.
 | `vNetId` | string | `''` |  | Virtual Network ID to lock down the Event Hub. |
 | `zoneRedundant` | bool | `False` |  | Switch to make the Event Hub Namespace zone redundant. |
 
-**Generated parameters**
-| Parameter Name | Type | Default Value | Description |
-| :-- | :-- | :-- | :-- |
-| `baseTime` | string | `[utcNow('u')]` | Do not provide a value! This date value is used to generate a SAS token to access the modules. |
-
 
 ### Parameter Usage: `privateEndpoints`
 
