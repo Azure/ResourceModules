@@ -392,6 +392,9 @@ module virtualNetworkGateway_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignm
   }
 }]
 
+// ================//
+// Outputs         //
+// ================//
 @description('The resource group the virtual network gateway was deployed')
 output resourceGroupName string = resourceGroup().name
 
