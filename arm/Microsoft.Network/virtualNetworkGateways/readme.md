@@ -34,7 +34,7 @@ This module deploys a virtual network gateway.
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `activeActive` | bool | `True` |  | Value to specify if the Gateway should be deployed in active-active or active-passive configuration |
-| `activeGatewayPipName` | string | `[format('{0}-pip1', parameters('name'))]` |  | Specifies the name of the Public IP used by the Virtual Network Gateway when active-active configuration is required. If it's not provided, a '-pip' suffix will be appended to the gateway's name. |
+| `activeGatewayPipName` | string | `[format('{0}-pip2', parameters('name'))]` |  | Specifies the name of the Public IP used by the Virtual Network Gateway when active-active configuration is required. If it's not provided, a '-pip' suffix will be appended to the gateway's name. |
 | `asn` | int | `65815` |  | ASN value |
 | `clientRevokedCertThumbprint` | string | `''` |  | Thumbprint of the revoked certificate. This would revoke VPN client certificates matching this thumbprint from connecting to the VNet. |
 | `clientRootCertData` | string | `''` |  | Client root certificate data used to authenticate VPN clients. |
