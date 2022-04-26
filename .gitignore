@@ -372,7 +372,7 @@ FodyWeavers.xsd
 !.vscode/extensions.json
 *.code-workspace
 
-# The deploy.json generated when build the bicep file locally
+# The deploy.json generated when you build the bicep file locally with `az bicep build --file .\deploy.bicep`
 deploy.json
 
 # Local History for Visual Studio Code
