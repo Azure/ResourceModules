@@ -4,10 +4,10 @@ param name string
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
 
-@description('Required. Shared services Virtual Network resource identifier')
+@description('Required. Shared services Virtual Network Resource ID')
 param vNetId string
 
-@description('Optional. Specifies the resource ID of the existing public IP to be leveraged by Azure Bastion.')
+@description('Optional. Specifies the resource ID of the existing public IP to be leveraged by Azure Bastion. If not provided, an Azure Public IP will be created')
 param publicIPAddressId string = ''
 
 @description('Optional. Specifies the properties of the public IP to create and be used by Azure Bastion. If it\'s not provided and publicIPAddressId is empty, a \'-pip\' suffix will be appended to the Bastion\'s name.')
@@ -89,11 +89,6 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
       resources: []
     }
   }
-}
-
-resource publicIPAddressExisting 'Microsoft.Network/publicIPAddresses@2021-05-01' existing = if (!empty(publicIPAddressId)) {
-  name: last(split(publicIPAddressId, '/'))
-  scope: resourceGroup(split(publicIPAddressId, '/')[2], split(publicIPAddressId, '/')[4])
 }
 
 module publicIPAddress '.bicep/nested_publicIPAddress.bicep' = if (empty(publicIPAddressId)) {

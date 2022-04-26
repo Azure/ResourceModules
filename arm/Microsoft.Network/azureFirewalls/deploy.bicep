@@ -142,11 +142,6 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-// use existing public ip address
-resource publicIPAddressExisting 'Microsoft.Network/publicIPAddresses@2021-05-01' existing = if (!empty(publicIPAddressId)) {
-  name: last(split(publicIPAddressId, '/'))
-  scope: resourceGroup(split(publicIPAddressId, '/')[2], split(publicIPAddressId, '/')[4])
-}
 // create a public ip address
 module publicIPAddress '.bicep/nested_publicIPAddress.bicep' = if (empty(publicIPAddressId)) {
   name: '${uniqueString(deployment().name, location)}-Firewall-PIP'

@@ -25,7 +25,7 @@ This module deploys a bastion host.
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | Name of the Azure Bastion resource |
-| `vNetId` | string | Shared services Virtual Network resource identifier |
+| `vNetId` | string | Shared services Virtual Network Resource ID |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
@@ -40,7 +40,7 @@ This module deploys a bastion host.
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `'NotSpecified'` | `[CanNotDelete, NotSpecified, ReadOnly]` | Specify the type of lock. |
-| `publicIPAddressId` | string | `''` |  | Specifies the resource ID of the existing public IP to be leveraged by Azure Bastion. |
+| `publicIPAddressId` | string | `''` |  | Specifies the resource ID of the existing public IP to be leveraged by Azure Bastion. If not provided, an Azure Public IP will be created |
 | `publicIPAddressObject` | object | `{object}` |  | Specifies the properties of the public IP to create and be used by Azure Bastion. If it's not provided and publicIPAddressId is empty, a '-pip' suffix will be appended to the Bastion's name. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
 | `scaleUnits` | int | `2` |  | The scale units for the Bastion Host resource. |
