@@ -253,6 +253,8 @@ jobs:
               Write-Host "##[endgroup]"
             }
 
+      # [private bicep registry publish] task(s)
+      #-------------------------------------------
       - task: AzureCLI@2
         displayName: 'Publish module to private bicep registry'
         condition: and(
