@@ -7,6 +7,13 @@ param publicIPPrefixResourceId string = ''
 @description('Optional. The public IP address allocation method. - Static or Dynamic.')
 param publicIPAllocationMethod string = 'Dynamic'
 
+@description('Optional. Zone numbers e.g. 1,2,3.')
+param zones array = [
+  '1'
+  '2'
+  '3'
+]
+
 @description('Optional. Public IP Address sku Name')
 param skuName string = 'Basic'
 
@@ -108,6 +115,7 @@ resource publicIpAddress 'Microsoft.Network/publicIPAddresses@2021-05-01' = {
     idleTimeoutInMinutes: 4
     ipTags: []
   }
+  zones: length(zones) == 0 ? null : zones
 }
 
 resource publicIpAddress_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {

@@ -48,7 +48,7 @@ This module deploys a firewall.
 | `lock` | string | `'NotSpecified'` | `[CanNotDelete, NotSpecified, ReadOnly]` | Specify the type of lock. |
 | `natRuleCollections` | array | `[]` |  | Collection of NAT rule collections used by Azure Firewall. |
 | `networkRuleCollections` | array | `[]` |  | Collection of network rule collections used by Azure Firewall. |
-| `publicIPAddressId` | string | `''` |  | Specifies the resource ID of the existing public IP to be leveraged by Azure Firewall. |
+| `publicIPAddressId` | string | `''` |  | Specifies the resource ID of the existing public IP to be leveraged by Azure Firewall. If not provided, an Azure Public IP will be created |
 | `publicIPAddressObject` | object | `{object}` |  | Specifies the properties of the public IP to create and be used by Azure Firewall. If it's not provided and publicIPAddressId is empty, a '-pip' suffix will be appended to the Firewall's name. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
 | `tags` | object | `{object}` |  | Tags of the Azure Firewall resource. |

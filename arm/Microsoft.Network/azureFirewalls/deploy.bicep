@@ -18,7 +18,7 @@ param azureSkuTier string = 'Standard'
 @description('Required. Shared services Virtual Network resource identifier')
 param vNetId string
 
-@description('Optional. Specifies the resource ID of the existing public IP to be leveraged by Azure Firewall.')
+@description('Optional. Specifies the resource ID of the existing public IP to be leveraged by Azure Firewall. If not provided, an Azure Public IP will be created')
 param publicIPAddressId string = ''
 
 @description('Optional. Specifies the properties of the public IP to create and be used by Azure Firewall. If it\'s not provided and publicIPAddressId is empty, a \'-pip\' suffix will be appended to the Firewall\'s name.')
@@ -174,6 +174,7 @@ module publicIPAddress '.bicep/nested_publicIPAddress.bicep' = if (empty(publicI
     diagnosticEventHubName: diagnosticEventHubName
     lock: lock
     tags: tags
+    zones: zones
   }
 }
 
