@@ -15,7 +15,7 @@ param azureSkuName string = 'AZFW_VNet'
 ])
 param azureSkuTier string = 'Standard'
 
-@description('Required. Shared services Virtual Network resource identifier')
+@description('Required. Shared services Virtual Network resource ID')
 param vNetId string
 
 @description('Optional. Specifies the resource ID of the existing public IP to be leveraged by Azure Firewall. If not provided, an Azure Public IP will be created')
