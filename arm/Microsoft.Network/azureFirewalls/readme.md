@@ -26,7 +26,7 @@ This module deploys a firewall.
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | Name of the Azure Firewall. |
-| `vNetId` | string | Shared services Virtual Network resource identifier |
+| `vNetId` | string | Shared services Virtual Network resource ID |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
