@@ -72,13 +72,14 @@ parameters:
 ##---------------------------------------------##
 
 jobs:
-  - ${{ each deploymentBlock in parameters.deploymentBlocks }}:
-      - job: ${{ deploymentBlock.jobName }}
+  # - ${{ each deploymentBlock in parameters.deploymentBlocks }}:
+      - job: one
+      # - job: ${{ deploymentBlock.jobName }}
 
-        ${{ if ne( deploymentBlock.displayName, '') }}:
-          displayName: ${{ deploymentBlock.displayName }}
-        ${{ if eq( deploymentBlock.displayName, '') }}:
-          displayName: Deploy with [${{ replace( deploymentBlock.path, '$(modulePath)', '') }}]
+        # ${{ if ne( deploymentBlock.displayName, '') }}:
+        #   displayName: ${{ deploymentBlock.displayName }}
+        # ${{ if eq( deploymentBlock.displayName, '') }}:
+        #   displayName: Deploy with [${{ replace( deploymentBlock.path, '$(modulePath)', '') }}]
         timeoutInMinutes: ${{ parameters.defaultJobTimeoutInMinutes }}
         ${{ if ne( parameters.dependsOn, '') }}:
           dependsOn: ${{ parameters.dependsOn }}
