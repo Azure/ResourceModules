@@ -32,7 +32,7 @@ variables:
   - name: modulePath
     value: '/arm/Microsoft.AnalysisServices/servers'
   - name: moduleResourceGroupName
-    value: 'test-ms.analysisservices-servers-rg'
+    value: 'testrke-ms.analysisservices-servers-rg'
 
 stages:
   - template: /.azuredevops/pipelineTemplates/stages.module.yml

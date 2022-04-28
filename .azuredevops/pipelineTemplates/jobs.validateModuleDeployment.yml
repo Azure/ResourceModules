@@ -79,7 +79,7 @@ parameters:
 
 jobs:
   # - ${{ each deploymentBlock in parameters.deploymentBlocks }}:
-  - job: one
+  - job: deploy
   # - job: ${{ deploymentBlock.jobName }}
 
     # ${{ if ne( deploymentBlock.displayName, '') }}:
