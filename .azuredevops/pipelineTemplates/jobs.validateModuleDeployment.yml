@@ -54,6 +54,7 @@ parameters:
   dependsOn: []
   # Logic-related parameters
   removeDeployment: false
+  enableDeployment: true
   modulePath: '$(modulePath)'
   deploymentBlocks: ''
   location: '$(location)'
