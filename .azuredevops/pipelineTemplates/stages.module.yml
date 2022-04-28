@@ -20,7 +20,7 @@ stages:
     displayName: Dependency deployment
     dependsOn:
       - validation
-      - getParameterFilePaths
+      - init
     jobs:
       - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
         parameters:
