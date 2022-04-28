@@ -37,7 +37,6 @@ stages:
           parameterFilePath: '$(modulePath)/$(parameterFilePath)'
           resourceGroupName: '${{ parameters.moduleResourceGroupName }}'
 
-
   - ${{ if eq(parameters.removeDeployment, 'true') }}:
     - stage: dependencyRemoval
       displayName: Dependency Removal
@@ -47,8 +46,6 @@ stages:
       condition: and(succeededOrFailed(), ne(dependencies.dependencyDeployment.outputs['deploy.deployModule.deploymentName'],''))
       jobs:
         - template: /.azuredevops/pipelineTemplates/jobs.validateModulePester.yml
-        # strategy:
-          #   matrix: $[ dependencies.getParameterFilePaths.outputs['getParameterFilePathsTask.parameterTests'] ]
           variables:
               deploymentName: $[ stageDependencies.dependencyDeployment.deploy.outputs['deployModule.deploymentName'] ]
           parameters:
