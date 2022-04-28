@@ -208,7 +208,7 @@ jobs:
             # ----------- #
             # INVOKE TEST #
             # ----------- #
-            templateFilePath     = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.templateFilePath }}'
+            $templateFilePath     = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.templateFilePath }}'
             $functionInput = @{
               templateFilePath     = $templateFilePath
               location             = '${{ parameters.location }}'
@@ -275,7 +275,7 @@ jobs:
             # ----------------- #
             # INVOKE DEPLOYMENT #
             # ----------------- #
-            templateFilePath     = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.templateFilePath }}'
+            $templateFilePath     = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.templateFilePath }}'
             $functionInput = @{
               templateFilePath     = $templateFilePath
               location             = '${{ parameters.location }}'
