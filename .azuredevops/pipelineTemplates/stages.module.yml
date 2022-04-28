@@ -16,13 +16,15 @@ stages:
     jobs:
       - template: /.azuredevops/pipelineTemplates/jobs.validateModulePester.yml
 
-  # - stage: dependencyDeployment
-  #   displayName: Dependency deployment
-  #   jobs:
-  #     - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
-  #       parameters:
-  #         templateFilePath: '$(modulePath)/.dependencies/dependencies.bicep'
-  #         resourceGroupName: '${{ parameters.moduleResourceGroupName }}'
+  - stage: dependencyDeployment
+    displayName: Dependency deployment
+    jobs:
+      - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
+        parameters:
+          # deploymentBlocks:
+          #   - path: $(modulePath)/.parameters/min.parameters.json
+          templateFilePath: '$(modulePath)/.dependencies/dependencies.bicep'
+          resourceGroupName: '${{ parameters.moduleResourceGroupName }}'
 
   # - stage: deployment
   #   displayName: Deployment validation
