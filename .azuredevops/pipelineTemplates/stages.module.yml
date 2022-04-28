@@ -1,0 +1,65 @@
+parameters:
+  removeDeployment: true
+  prerelease: false
+  templateFilePath: ''
+  moduleResourceGroupName: ''
+
+stages:
+  - stage: init
+    displayName: Initialize pipeline
+    jobs:
+      - template: /.azuredevops/pipelineTemplates/jobs.getParameterFiles.yml
+
+  - stage: validation
+    displayName: Static validation
+    jobs:
+      - template: /.azuredevops/pipelineTemplates/jobs.validateModulePester.yml
+
+  - stage: dependencyDeployment
+    displayName: Dependency deployment
+    jobs:
+      - template: /.azuredevops/pipelineTemplates/jobs.validateModulePester.yml
+        # parameters:
+        #   templateFilePath: '$(modulePath)/.dependencies/dependencies.bicep'
+        #   resourceGroupName: '${{ parameters.moduleResourceGroupName }}'
+
+  - stage: deployment
+    displayName: Deployment validation
+    dependsOn:
+      - dependencyDeployment
+      - getParameterFilePaths
+    jobs:
+      - template: /.azuredevops/pipelineTemplates/jobs.validateModulePester.yml
+        # strategy:
+          #   matrix: $[ dependencies.getParameterFilePaths.outputs['getParameterFilePathsTask.parameterTests'] ]
+        parameters:
+          templateFilePath: '$(modulePath)/deploy.bicep'
+          parameterFilePath: '$(modulePath)/$(parameterFilePath)'
+          resourceGroupName: '${{ parameters.moduleResourceGroupName }}'
+
+
+  - ${{ if eq(parameters.removeDeployment, 'true') }}:
+    - stage: dependencyRemoval
+      displayName: Dependency Removal
+      dependsOn:
+        - dependencyDeployment
+        - deployment
+      condition: and(succeededOrFailed(), ne(dependencies.dependencyDeployment.outputs['deploy.deployModule.deploymentName'],''))
+      jobs:
+        - template: /.azuredevops/pipelineTemplates/jobs.validateModulePester.yml
+        # strategy:
+          #   matrix: $[ dependencies.getParameterFilePaths.outputs['getParameterFilePathsTask.parameterTests'] ]
+          variables:
+              deploymentName: $[ stageDependencies.dependencyDeployment.deploy.outputs['deployModule.deploymentName'] ]
+          parameters:
+            templateFilePath: '$(modulePath)/deploy.bicep'
+            resourceGroupName: '${{ parameters.moduleResourceGroupName }}'
+            deploymentName: '$(deploymentName)'
+
+  - stage: Publishing
+    dependsOn:
+      - deployment
+    displayName: Publish module
+    condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/main'), eq(variables['Build.SourceBranch'], 'refs/heads/master'), eq('${{ parameters.prerelease }}', 'true')))
+    jobs:
+      - template: /.azuredevops/pipelineTemplates/jobs.publishModule.yml
