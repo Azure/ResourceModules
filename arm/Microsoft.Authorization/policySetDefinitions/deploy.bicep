@@ -61,6 +61,7 @@ module policySetDefinition_mg 'managementGroup/deploy.bicep' = if (empty(subscri
     policyDefinitionGroups: !empty(policyDefinitionGroups) ? policyDefinitionGroups : []
     managementGroupId: managementGroupId
     location: location
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }
 
@@ -77,6 +78,7 @@ module policySetDefinition_sub 'subscription/deploy.bicep' = if (!empty(subscrip
     policyDefinitionGroups: !empty(policyDefinitionGroups) ? policyDefinitionGroups : []
     subscriptionId: subscriptionId
     location: location
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }
 

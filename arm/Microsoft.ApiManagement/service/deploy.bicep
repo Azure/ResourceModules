@@ -246,6 +246,7 @@ module apis_resource 'apis/deploy.bicep' = [for (api, index) in apis: {
     type: contains(api, 'type') ? api.type : 'http'
     value: contains(api, 'value') ? api.value : ''
     wsdlSelector: contains(api, 'wsdlSelector') ? api.wsdlSelector : {}
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
   dependsOn: [
     apiVersionSet_resource
@@ -258,6 +259,7 @@ module apiVersionSet_resource 'apiVersionSets/deploy.bicep' = [for (apiVersionSe
     apiManagementServiceName: apiManagementService.name
     name: apiVersionSet.name
     properties: contains(apiVersionSet, 'properties') ? apiVersionSet.properties : {}
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }]
 
@@ -288,6 +290,7 @@ module authorizationServers_resource '.bicep/nested_authorizationServers.bicep' 
     supportState: contains(authorizationServer, 'supportState') ? authorizationServer.supportState : false
     tokenBodyParameters: contains(authorizationServer, 'tokenBodyParameters') ? authorizationServer.tokenBodyParameters : []
     tokenEndpoint: contains(authorizationServer, 'tokenEndpoint') ? authorizationServer.tokenEndpoint : ''
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }]
 
@@ -308,6 +311,7 @@ module backends_resource 'backends/deploy.bicep' = [for (backend, index) in back
       validateCertificateChain: false
       validateCertificateName: false
     }
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }]
 
@@ -320,6 +324,7 @@ module caches_resource 'caches/deploy.bicep' = [for (cache, index) in caches: {
     name: cache.name
     resourceId: contains(cache, 'resourceId') ? cache.resourceId : ''
     useFromLocation: cache.useFromLocation
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }]
 
@@ -339,6 +344,7 @@ module identityProvider_resource 'identityProviders/deploy.bicep' = [for (identi
     identityProviderSignInTenant: contains(identityProvider, 'identityProviderSignInTenant') ? identityProvider.identityProviderSignInTenant : ''
     identityProviderSignUpPolicyName: contains(identityProvider, 'identityProviderSignUpPolicyName') ? identityProvider.identityProviderSignUpPolicyName : ''
     identityProviderType: contains(identityProvider, 'identityProviderType') ? identityProvider.identityProviderType : 'aad'
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }]
 
@@ -352,6 +358,7 @@ module namedValues_resource 'namedValues/deploy.bicep' = [for (namedValue, index
     namedValueTags: contains(namedValue, 'namedValueTags') ? namedValue.namedValueTags : []
     secret: contains(namedValue, 'secret') ? namedValue.secret : false
     value: contains(namedValue, 'value') ? namedValue.value : newGuidValue
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }]
 
@@ -361,6 +368,7 @@ module portalSettings_resource 'portalsettings/deploy.bicep' = [for (portalSetti
     apiManagementServiceName: apiManagementService.name
     name: portalSetting.name
     properties: contains(portalSetting, 'properties') ? portalSetting.properties : {}
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }]
 
@@ -370,6 +378,7 @@ module policy_resource 'policies/deploy.bicep' = [for (policy, index) in policie
     apiManagementServiceName: apiManagementService.name
     value: policy.value
     format: contains(policy, 'format') ? policy.format : 'xml'
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }]
 
@@ -386,6 +395,7 @@ module products_resource 'products/deploy.bicep' = [for (product, index) in prod
     subscriptionRequired: contains(product, 'subscriptionRequired') ? product.subscriptionRequired : false
     subscriptionsLimit: contains(product, 'subscriptionsLimit') ? product.subscriptionsLimit : 1
     terms: contains(product, 'terms') ? product.terms : ''
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
   dependsOn: [
     apis_resource
@@ -403,6 +413,7 @@ module subscriptions_resource 'subscriptions/deploy.bicep' = [for (subscription,
     scope: contains(subscription, 'scope') ? subscription.scope : '/apis'
     secondaryKey: contains(subscription, 'secondaryKey') ? subscription.secondaryKey : ''
     state: contains(subscription, 'state') ? subscription.state : ''
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }]
 

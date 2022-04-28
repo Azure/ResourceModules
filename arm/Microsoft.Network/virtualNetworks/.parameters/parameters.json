@@ -28,6 +28,14 @@
                             "service": "Microsoft.Sql"
                         }
                     ],
+                    "roleAssignments": [
+                        {
+                            "roleDefinitionIdOrName": "Reader",
+                            "principalIds": [
+                                "<<deploymentSpId>>"
+                            ]
+                        }
+                    ],
                     "routeTableId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/routeTables/adp-<<namePrefix>>-az-udr-x-001"
                 },
                 {
@@ -48,6 +56,12 @@
                     "privateEndpointNetworkPolicies": "Disabled",
                     "privateLinkServiceNetworkPolicies": "Enabled"
                 }
+            ]
+        },
+        "dnsServers": {
+            "value": [
+                "10.0.1.4",
+                "10.0.1.5"
             ]
         },
         "roleAssignments": {

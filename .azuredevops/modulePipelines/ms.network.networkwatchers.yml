@@ -4,11 +4,13 @@ parameters:
   - name: removeDeployment
     displayName: Remove deployed module
     type: boolean
-    default: false # Required as a dependency + Only one Network Watcher can exist in the same location. If removed, a default would be created in a dedicated RG
+    default: false # Only one Network Watcher can exist in the same location. If removed, a default would be created in a dedicated RG
   - name: prerelease
     displayName: Publish prerelease module
     type: boolean
     default: false
+
+pr: none
 
 trigger:
   batch: true
@@ -20,6 +22,7 @@ trigger:
       - '/.azuredevops/modulePipelines/ms.network.networkwatchers.yml'
       - '/.azuredevops/pipelineTemplates/module.*.yml'
       - '/arm/Microsoft.Network/networkWatchers/*'
+      - '/arm/.global/global.module.tests.ps1'
     exclude:
       - '/**/*.md'
 

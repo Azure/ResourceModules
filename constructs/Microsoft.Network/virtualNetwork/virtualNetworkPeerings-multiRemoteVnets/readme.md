@@ -2,6 +2,13 @@
 
 This template deploys Virtual Network Peering.
 
+## Navigation
+
+- [Resource types](#Resource-types)
+- [Parameters](#Parameters)
+- [Outputs](#Outputs)
+- [Template references](#Template-references)
+
 ## Resource types
 
 | Resource Type | API Version |
@@ -10,11 +17,17 @@ This template deploys Virtual Network Peering.
 
 ## Parameters
 
-| Parameter Name | Type | Default Value | Possible Values | Description |
-| :-- | :-- | :-- | :-- | :-- |
-| `enableDefaultTelemetry` | bool | `True` |  | Optional. Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `localVnetName` | string |  |  | Required. The Name of the Virtual Network to add the peering to. |
-| `peeringConfigurations` | array | `[]` |  | Optional. Optional. The list of remote networks to peering peer with, including the configuration. |
+**Required parameters**
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `localVnetName` | string | The Name of the Virtual Network to add the peering to. |
+
+**Optional parameters**
+| Parameter Name | Type | Default Value | Description |
+| :-- | :-- | :-- | :-- |
+| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `peeringConfigurations` | array | `[]` | Optional. The list of remote networks to peering peer with, including the configuration. |
+
 
 ### Parameter Usage: `peeringConfigurations`
 

@@ -15,27 +15,27 @@ This module deploys a web or function app.
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | 2017-04-01 |
 | `Microsoft.Authorization/roleAssignments` | 2021-04-01-preview |
-| `Microsoft.Insights/components` | 2020-02-02 |
 | `Microsoft.Insights/diagnosticSettings` | 2021-05-01-preview |
 | `Microsoft.Network/privateEndpoints` | 2021-05-01 |
 | `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | 2021-05-01 |
-| `Microsoft.Web/sites` | 2020-12-01 |
-| `Microsoft.Web/sites/config` | 2021-02-01 |
+| `Microsoft.Web/sites` | 2021-03-01 |
+| `Microsoft.Web/sites/config` | 2020-12-01 |
 
 ## Parameters
 
 **Required parameters**
 | Parameter Name | Type | Allowed Values | Description |
 | :-- | :-- | :-- | :-- |
-| `kind` | string | `[functionapp, app]` | Type of site to deploy. |
+| `kind` | string | `[functionapp, functionapp,linux, app]` | Type of site to deploy. |
 | `name` | string |  | Name of the site. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `appInsightId` | string | `''` |  | The resource ID of the existing app insight to leverage for the app. If the resource ID is not provided, the appInsightObject can be used to create a new app insight. |
-| `appInsightObject` | object | `{object}` |  | Used to deploy a new app insight if no appInsightId is provided. |
+| `appInsightId` | string | `''` |  | Resource ID of the app insight to leverage for this resource. |
 | `appServiceEnvironmentId` | string | `''` |  | The resource ID of the app service environment to use for this resource. |
+| `appSettingsKeyValuePairs` | object | `{object}` |  | The app settings-value pairs except for AzureWebJobsStorage, AzureWebJobsDashboard, APPINSIGHTS_INSTRUMENTATIONKEY and APPLICATIONINSIGHTS_CONNECTION_STRING. |
+| `authSettingV2Configuration` | object | `{object}` |  | The auth settings V2 configuration. |
 | `clientAffinityEnabled` | bool | `True` |  | If client affinity is enabled. |
 | `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
@@ -46,20 +46,65 @@ This module deploys a web or function app.
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of log analytics workspace. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `functionsExtensionVersion` | string | `'~3'` |  | Version if the function extension. |
-| `functionsWorkerRuntime` | string | `''` | `[dotnet, node, python, java, powershell, ]` | Runtime of the function worker. |
 | `httpsOnly` | bool | `True` |  | Configures a site to accept only HTTPS requests. Issues redirect for HTTP requests. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all Resources. |
 | `lock` | string | `'NotSpecified'` | `[CanNotDelete, NotSpecified, ReadOnly]` | Specify the type of lock. |
 | `privateEndpoints` | array | `[]` |  | Configuration details for private endpoints. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `serverFarmResourceId` | string | `''` |  | The resource ID of the app service plan to use for the site. |
-| `siteConfig` | object | `{object}` |  | Configuration of the app. |
-| `storageAccountId` | string | `''` |  | Required if functionapp kind. The resource ID of the storage account to manage triggers and logging function executions. |
+| `setAzureWebJobsDashboard` | bool | `[if(contains(parameters('kind'), 'functionapp'), true(), false())]` |  | For function apps. If true the app settings "AzureWebJobsDashboard" will be set. If false not. In case you use Application Insights it can make sense to not set it for performance reasons. |
+| `siteConfig` | object | `{object}` |  | The site config object. |
+| `storageAccountId` | string | `''` |  | Required if app of kind functionapp. Resource ID of the storage account to manage triggers and logging function executions. |
+| `storageAccountRequired` | bool | `False` |  | Checks if Customer provided storage account is required. |
 | `systemAssignedIdentity` | bool | `False` |  | Enables system assigned managed identity on the resource. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
 | `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. |
+| `virtualNetworkSubnetId` | string | `''` |  | Azure Resource Manager ID of the Virtual network and subnet to be joined by Regional VNET Integration. This must be of the form /subscriptions/{subscriptionName}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{vnetName}/subnets/{subnetName}. |
 
+
+### Parameter Usage: `appSettingsKeyValuePairs`
+
+AzureWebJobsStorage, AzureWebJobsDashboard, APPINSIGHTS_INSTRUMENTATIONKEY and APPLICATIONINSIGHTS_CONNECTION_STRING are set separately (check parameters storageAccountId, setAzureWebJobsDashboard, appInsightId).
+For all other app settings key-value pairs use this object.
+
+```json
+"appSettingsKeyValuePairs": {
+    "value": [
+        {
+            "name": "key1",
+            "value": "val1"
+        },
+        {
+            "name": "key2",
+            "value": "val2"
+        }
+    ]
+}
+```
+
+### Parameter Usage: `authSettingV2Configuration`
+
+The auth settings V2 configuration.
+
+```json
+"siteConfig": {
+    "value": [
+        // Check out https://docs.microsoft.com/en-us/azure/templates/microsoft.web/sites/config-authsettingsv2?tabs=bicep#siteauthsettingsv2properties for possible properties
+    ]
+}
+```
+
+### Parameter Usage: `siteConfig`
+
+The site config.
+
+```json
+"siteConfig": {
+    "value": [
+        // Check out https://docs.microsoft.com/en-us/azure/templates/Microsoft.Web/sites?tabs=bicep#siteconfig for possible properties
+    ]
+}
+```
 
 ### Parameter Usage: `privateEndpoints`
 
@@ -165,10 +210,9 @@ You can specify multiple user assigned identities to a resource by providing add
 ## Template references
 
 - ['sites/config' Parent Documentation](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Web/sites)
-- [Components](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2020-02-02/components)
 - [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings)
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
 - [Privateendpoints](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/privateEndpoints)
 - [Privateendpoints/Privatednszonegroups](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/privateEndpoints/privateDnsZoneGroups)
 - [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)
-- [Sites](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Web/2020-12-01/sites)
+- [Sites](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Web/2021-03-01/sites)

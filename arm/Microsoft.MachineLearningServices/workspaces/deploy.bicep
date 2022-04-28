@@ -1,3 +1,6 @@
+// ================ //
+// Parameters       //
+// ================ //
 @description('Required. The name of the machine learning workspace.')
 param name string
 
@@ -31,9 +34,6 @@ param associatedContainerRegistryResourceId string = ''
 @description('Optional. Specify the type of lock.')
 param lock string = 'NotSpecified'
 
-@description('Optional. Enables system assigned managed identity on the resource.')
-param systemAssignedIdentity bool = false
-
 @description('Optional. The flag to signal HBI data in the workspace and reduce diagnostic data collected by the service.')
 param hbiWorkspace bool = false
 
@@ -46,12 +46,23 @@ param roleAssignments array = []
 @description('Optional. Configuration Details for private endpoints.')
 param privateEndpoints array = []
 
+@description('Optional. Computes to create respectively attach to the workspace.')
+param computes array = []
+
 @description('Optional. Resource tags.')
 param tags object = {}
 
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
 
+// Identity
+@description('Optional. Enables system assigned managed identity on the resource.')
+param systemAssignedIdentity bool = false
+
+@description('Optional. The ID(s) to assign to the resource.')
+param userAssignedIdentities object = {}
+
+// Diagnostic Settings
 @description('Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.')
 @minValue(0)
 @maxValue(365)
@@ -96,6 +107,16 @@ param diagnosticMetricsToEnable array = [
 @description('Optional. The name of the diagnostic setting, if deployed.')
 param diagnosticSettingsName string = '${name}-diagnosticSettings'
 
+// ================//
+// Variables       //
+// ================//
+var identityType = systemAssignedIdentity ? (!empty(userAssignedIdentities) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned') : (!empty(userAssignedIdentities) ? 'UserAssigned' : 'None')
+
+var identity = identityType != 'None' ? {
+  type: identityType
+  userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : any(null)
+} : any(null)
+
 var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
   category: category
   enabled: true
@@ -115,12 +136,9 @@ var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
   }
 }]
 
-var identityType = systemAssignedIdentity ? 'SystemAssigned' : 'None'
-
-var identity = identityType != 'None' ? {
-  type: identityType
-} : null
-
+// ================//
+// Deployments     //
+// ================//
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
   properties: {
@@ -152,6 +170,26 @@ resource workspace 'Microsoft.MachineLearningServices/workspaces@2021-04-01' = {
     allowPublicAccessWhenBehindVnet: allowPublicAccessWhenBehindVnet
   }
 }
+
+module workspace_computes 'computes/deploy.bicep' = [for compute in computes: {
+  name: '${workspace.name}-${compute.name}-compute'
+  params: {
+    machineLearningWorkspaceName: workspace.name
+    name: compute.name
+    location: compute.location
+    sku: contains(compute, 'sku') ? compute.sku : ''
+    systemAssignedIdentity: contains(compute, 'systemAssignedIdentity') ? compute.systemAssignedIdentity : false
+    userAssignedIdentities: contains(compute, 'userAssignedIdentities') ? compute.userAssignedIdentities : {}
+    tags: contains(compute, 'tags') ? compute.tags : {}
+    deployCompute: contains(compute, 'deployCompute') ? compute.deployCompute : true
+    computeLocation: contains(compute, 'computeLocation') ? compute.computeLocation : ''
+    description: contains(compute, 'description') ? compute.description : ''
+    disableLocalAuth: compute.disableLocalAuth
+    resourceId: contains(compute, 'resourceId') ? compute.resourceId : ''
+    computeType: compute.computeType
+    properties: contains(compute, 'properties') ? compute.properties : {}
+  }
+}]
 
 resource workspace_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
   name: '${workspace.name}-${lock}-lock'
@@ -196,6 +234,9 @@ module workspace_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) 
   }
 }]
 
+// ================//
+// Outputs         //
+// ================//
 @description('The resource ID of the machine learning service')
 output resourceId string = workspace.id
 
@@ -206,4 +247,4 @@ output resourceGroupName string = resourceGroup().name
 output name string = workspace.name
 
 @description('The principal ID of the system assigned identity.')
-output principalId string = systemAssignedIdentity ? workspace.identity.principalId : ''
+output principalId string = (!empty(identity) && contains(identity.type, 'SystemAssigned')) ? workspace.identity.principalId : ''

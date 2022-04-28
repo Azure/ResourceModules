@@ -10,6 +10,8 @@ parameters:
     type: boolean
     default: false
 
+pr: none
+
 trigger:
   batch: true
   branches:
@@ -20,6 +22,7 @@ trigger:
       - '/.azuredevops/modulePipelines/ms.virtualmachineimages.imagetemplates.yml'
       - '/.azuredevops/pipelineTemplates/module.*.yml'
       - '/arm/Microsoft.VirtualMachineImages/imageTemplates/*'
+      - '/arm/.global/global.module.tests.ps1'
     exclude:
       - '/**/*.md'
 

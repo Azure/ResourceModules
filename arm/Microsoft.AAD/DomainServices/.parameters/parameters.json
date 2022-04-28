@@ -3,40 +3,39 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "domainName": {
-            "value": "carml.onmicrosoft.com"
+            "value": "<<namePrefix>>.onmicrosoft.com"
         },
         "sku": {
-            "value": "standard"
+            "value": "Standard"
         },
         "replicaSets": {
             "value": [
                 {
                     "location": "WestEurope",
-                    "subnetId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001"
+                    "subnetId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-aadds-001/subnets/AADDSSubnet"
                 }
             ]
-        },
-        "subnetId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001"
         },
         "pfxCertificate": {
             "reference": {
                 "keyVault": {
-                    "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/<<namePrefix>>-az-kv-x-001"
+                    "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001"
                 },
-                "secretName": "<<secret name>>"
+                "secretName": "pfxBase64Certificate"
             }
         },
         "pfxCertificatePassword": {
             "reference": {
                 "keyVault": {
-                    "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/<<namePrefix>>-az-kv-x-001"
+                    "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001"
                 },
-                "secretName": "<<secret name>>"
+                "secretName": "pfxCertificatePassword"
             }
         },
         "additionalRecipients": {
-            "value": "CARML@noreply.github.com"
+            "value": [
+                "<<namePrefix>>@noreply.github.com"
+            ]
         },
         "diagnosticWorkspaceId": {
             "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001"
