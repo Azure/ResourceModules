@@ -10,38 +10,38 @@ stages:
     jobs:
       - template: /.azuredevops/pipelineTemplates/jobs.getParameterFiles.yml
 
-  - stage: validation
-    dependsOn: []
-    displayName: Static validation
-    jobs:
-      - template: /.azuredevops/pipelineTemplates/jobs.validateModulePester.yml
+  # - stage: validation
+  #   dependsOn: []
+  #   displayName: Static validation
+  #   jobs:
+  #     - template: /.azuredevops/pipelineTemplates/jobs.validateModulePester.yml
 
   - stage: dependencyDeployment
     displayName: Dependency deployment
     dependsOn:
-      - validation
+      # - validation
       - init
     jobs:
       - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
         parameters:
-          # deploymentBlocks:
-          #   - path: $(modulePath)/.parameters/min.parameters.json
           templateFilePath: '$(modulePath)/.dependencies/dependencies.bicep'
           resourceGroupName: '${{ parameters.moduleResourceGroupName }}'
 
-  # - stage: deployment
-  #   displayName: Deployment validation
-  #   dependsOn:
-  #     - dependencyDeployment
-  #     - getParameterFilePaths
-  #   jobs:
-  #     - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
-  #       # strategy:
-  #         #   matrix: $[ dependencies.getParameterFilePaths.outputs['getParameterFilePathsTask.parameterTests'] ]
-  #       parameters:
-  #         templateFilePath: '$(modulePath)/deploy.bicep'
-  #         parameterFilePath: '$(modulePath)/$(parameterFilePath)'
-  #         resourceGroupName: '${{ parameters.moduleResourceGroupName }}'
+  - stage: deployment
+    displayName: Deployment validation
+    dependsOn:
+      - dependencyDeployment
+      - init
+    jobs:
+      - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
+        variables:
+            $parameterTests: $[ stageDependencies.init.getParameterFilePaths.outputs['getParameterFilePathsTask.parameterTests'] ]
+        strategy:
+            matrix: $parameterTests
+        parameters:
+          templateFilePath: '$(modulePath)/deploy.bicep'
+          parameterFilePath: '$(modulePath)/$(parameterTests)'
+          resourceGroupName: '${{ parameters.moduleResourceGroupName }}'
 
   # - ${{ if eq(parameters.removeDeployment, 'true') }}:
   #   - stage: dependencyRemoval
