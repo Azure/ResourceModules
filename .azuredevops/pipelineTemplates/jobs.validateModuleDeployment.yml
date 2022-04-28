@@ -51,7 +51,7 @@ parameters:
   vmImage: '$(vmImage)'
   defaultJobTimeoutInMinutes: 120
   checkoutRepositories: ''
-  dependsOn: []
+  # dependsOn: []
   # Logic-related parameters
 
   templateFilePath: ''
@@ -87,8 +87,8 @@ jobs:
     # ${{ if eq( deploymentBlock.displayName, '') }}:
     #   displayName: Deploy with [${{ replace( deploymentBlock.path, '$(modulePath)', '') }}]
     timeoutInMinutes: ${{ parameters.defaultJobTimeoutInMinutes }}
-    ${{ if ne( parameters.dependsOn, '') }}:
-      dependsOn: ${{ parameters.dependsOn }}
+    # ${{ if ne( parameters.dependsOn, '') }}:
+    #   dependsOn: ${{ parameters.dependsOn }}
     pool:
       ${{ if ne(parameters.vmImage, '') }}:
         vmImage: ${{ parameters.vmImage }}
