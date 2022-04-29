@@ -77,7 +77,7 @@ param allowedAuthenticationModes array = []
   'Microsoft.Batch'
   'Microsoft.KeyVault'
 ])
-@description('Otional. Type of the key source.')
+@description('Optional. Type of the key source.')
 param encryptionKeySource string = 'Microsoft.Batch'
 
 @description('Conditional. Full path to the versioned secret. Must be set if `encryptionKeySource` is set to `Microsoft.KeyVault` or `poolAllocationMode` is set to `UserSubscription`.')
