@@ -86,9 +86,6 @@ param tags object = {}
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
 
-@description('Generated. Do not provide a value! This date value is used to generate a SAS token to access the modules.')
-param baseTime string = utcNow('u')
-
 @description('Optional. The event hubs to deploy into this namespace')
 param eventHubs array = []
 
@@ -123,9 +120,7 @@ param diagnosticMetricsToEnable array = [
   'AllMetrics'
 ]
 
-var maxNameLength = 50
-var uniqueEventHubNamespaceUntrim = uniqueString('EventHub Namespace${baseTime}')
-var uniqueEventHubNamespace = length(uniqueEventHubNamespaceUntrim) > maxNameLength ? substring(uniqueEventHubNamespaceUntrim, 0, maxNameLength) : uniqueEventHubNamespaceUntrim
+var uniqueEventHubNamespace = 'evhns-${uniqueString(resourceGroup().id)}'
 var name_var = empty(name) ? uniqueEventHubNamespace : name
 var maximumThroughputUnits_var = !isAutoInflateEnabled ? 0 : maximumThroughputUnits
 
