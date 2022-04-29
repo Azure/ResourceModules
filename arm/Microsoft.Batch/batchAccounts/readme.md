@@ -18,18 +18,17 @@
 ## Parameters
 
 **Required parameters**
-| Parameter Name | Type | Allowed Values | Description |
-| :-- | :-- | :-- | :-- |
-| `name` | string |  | Name of the Azure Batch |
-| `poolAllocationMode` | string | `[BatchService, UserSubscription]` | The allocation mode for creating pools in the Batch account. Determines which quota will be used. |
-| `storageAccountId` | string |  | The resource ID of the storage account to be used for auto-storage account. |
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `name` | string | Name of the Azure Batch |
+| `storageAccountId` | string | The resource ID of the storage account to be used for auto-storage account. |
 
 **Conditional parameters**
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
-| `encryptionKeyIdentifier` | string | `''` | Full path to the versioned secret. Must be set if `encryptionKeySource` is set to `Microsoft.KeyVault`. |
-| `keyVaultResourceId` | string | `''` | The resource ID of the Azure key vault associated with the Batch account. Must be set if `encryptionKeySource` is set to `Microsoft.KeyVault`. |
-| `keyVaultUri` | string | `''` | The URL of the Azure key vault associated with the Batch account. Must be set if `encryptionKeySource` is set to `Microsoft.KeyVault`. |
+| `encryptionKeyIdentifier` | string | `''` | Full path to the versioned secret. Must be set if `encryptionKeySource` is set to `Microsoft.KeyVault` or `poolAllocationMode` is set to `UserSubscription`. |
+| `keyVaultResourceId` | string | `''` | The resource ID of the Azure key vault associated with the Batch account. Must be set if `encryptionKeySource` is set to `Microsoft.KeyVault` or `poolAllocationMode` is set to `UserSubscription`. |
+| `keyVaultUri` | string | `''` | The URL of the Azure key vault associated with the Batch account. Must be set if `encryptionKeySource` is set to `Microsoft.KeyVault` or `poolAllocationMode` is set to `UserSubscription`. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
@@ -46,6 +45,7 @@
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `location` | string | `[resourceGroup().location]` |  | Location for all Resources. |
 | `lock` | string | `'NotSpecified'` | `[CanNotDelete, NotSpecified, ReadOnly]` | Specify the type of lock. |
+| `poolAllocationMode` | string | `'BatchService'` | `[BatchService, UserSubscription]` | The allocation mode for creating pools in the Batch account. Determines which quota will be used. |
 | `publicNetworkAccess` | string | `'Enabled'` | `[Disabled, Enabled]` | The network access type for operating on the resources in the Batch account. |
 | `storageAccessIdentity` | string | `''` |  | The reference to a user assigned identity associated with the Batch pool which a compute node will use. |
 | `storageAuthenticationMode` | string | `'StorageKeys'` | `[BatchAccountManagedIdentity, StorageKeys]` | The authentication mode which the Batch service will use to manage the auto-storage account. |

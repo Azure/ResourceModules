@@ -27,8 +27,8 @@ param storageAccessIdentity string = ''
   'BatchService'
   'UserSubscription'
 ])
-@description('Required. The allocation mode for creating pools in the Batch account. Determines which quota will be used.')
-param poolAllocationMode string
+@description('Optional. The allocation mode for creating pools in the Batch account. Determines which quota will be used.')
+param poolAllocationMode string = 'BatchService'
 
 @allowed([
   'Disabled'
@@ -80,13 +80,13 @@ param allowedAuthenticationModes array = []
 @description('Otional. Type of the key source.')
 param encryptionKeySource string = 'Microsoft.Batch'
 
-@description('Conditional. Full path to the versioned secret. Must be set if `encryptionKeySource` is set to `Microsoft.KeyVault`.')
+@description('Conditional. Full path to the versioned secret. Must be set if `encryptionKeySource` is set to `Microsoft.KeyVault` or `poolAllocationMode` is set to `UserSubscription`.')
 param encryptionKeyIdentifier string = ''
 
-@description('Conditional. The resource ID of the Azure key vault associated with the Batch account. Must be set if `encryptionKeySource` is set to `Microsoft.KeyVault`.')
+@description('Conditional. The resource ID of the Azure key vault associated with the Batch account. Must be set if `encryptionKeySource` is set to `Microsoft.KeyVault` or `poolAllocationMode` is set to `UserSubscription`.')
 param keyVaultResourceId string = ''
 
-@description('Conditional. The URL of the Azure key vault associated with the Batch account. Must be set if `encryptionKeySource` is set to `Microsoft.KeyVault`.')
+@description('Conditional. The URL of the Azure key vault associated with the Batch account. Must be set if `encryptionKeySource` is set to `Microsoft.KeyVault` or `poolAllocationMode` is set to `UserSubscription`.')
 param keyVaultUri string = ''
 
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
@@ -169,11 +169,11 @@ resource batchAccount 'Microsoft.Batch/batchAccounts@2022-01-01' = {
     autoStorage: autoStorageConfig
     encryption: {
       keySource: encryptionKeySource
-      keyVaultProperties: encryptionKeySource == 'Microsoft.KeyVault' && systemAssignedIdentity == true ? {
+      keyVaultProperties: encryptionKeySource == 'Microsoft.KeyVault' && systemAssignedIdentity == true || poolAllocationMode == 'UserSubscription' ? {
         keyIdentifier: encryptionKeyIdentifier
       } : null
     }
-    keyVaultReference: encryptionKeySource == 'Microsoft.KeyVault' && systemAssignedIdentity == true ? {
+    keyVaultReference: encryptionKeySource == 'Microsoft.KeyVault' && systemAssignedIdentity == true || poolAllocationMode == 'UserSubscription' ? {
       id: keyVaultResourceId
       url: keyVaultUri
     } : null

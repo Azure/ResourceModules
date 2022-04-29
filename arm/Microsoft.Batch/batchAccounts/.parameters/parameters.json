@@ -21,7 +21,7 @@
             "value": "adp-<<namePrefix>>-az-evh-x-001"
         },
         "poolAllocationMode": {
-            "value": "UserSubscription"
+            "value": "BatchService"
         },
         "storageAccountId": {
             "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"

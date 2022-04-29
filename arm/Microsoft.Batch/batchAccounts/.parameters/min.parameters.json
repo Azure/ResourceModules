@@ -5,9 +5,6 @@
         "name": {
             "value": "<<namePrefix>>azbaweux001"
         },
-        "poolAllocationMode": {
-            "value": "BatchService"
-        },
         "storageAccountId": {
             "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
         }
