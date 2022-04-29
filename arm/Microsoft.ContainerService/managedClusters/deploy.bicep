@@ -370,10 +370,10 @@ resource managedCluster 'Microsoft.ContainerService/managedClusters@2022-02-01' 
         enabled: httpApplicationRoutingEnabled
       }
       ingressApplicationGateway: {
-        enabled: ingressApplicationGatewayEnabled
+        enabled: ingressApplicationGatewayEnabled && !empty(appGatewayResourceId)
         config: {
-          applicationGatewayId: appGatewayResourceId
-          effectiveApplicationGatewayId: appGatewayResourceId
+          applicationGatewayId: !empty(appGatewayResourceId) ? any(appGatewayResourceId) : null
+          effectiveApplicationGatewayId: !empty(appGatewayResourceId) ? any(appGatewayResourceId) : null
         }
       }
       omsagent: {
