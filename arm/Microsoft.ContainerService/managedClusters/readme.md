@@ -66,7 +66,7 @@ This module deploys Azure Kubernetes Cluster (AKS).
 | `autoScalerProfileMaxNodeProvisionTime` | string | `'15m'` |  | Specifies the maximum node provisioning time for the auto-scaler of the AKS cluster. Values must be an integer followed by an "m". No unit of time other than minutes (m) is supported. |
 | `autoScalerProfileMaxTotalUnreadyPercentage` | string | `'45'` |  | Specifies the mximum total unready percentage for the auto-scaler of the AKS cluster. The maximum is 100 and the minimum is 0. |
 | `autoScalerProfileNewPodScaleUpDelay` | string | `'0s'` |  | For scenarios like burst/batch scale where you do not want CA to act before the kubernetes scheduler could schedule all the pods, you can tell CA to ignore unscheduled pods before they are a certain age. Values must be an integer followed by a unit ("s" for seconds, "m" for minutes, "h" for hours, etc). |
-| `autoScalerProfileOkTotalUnreadyCount` | string | `'3'` |  | Specifies the ok total unready count for the auto-scaler of the AKS cluster. |
+| `autoScalerProfileOkTotalUnreadyCount` | string | `'3'` |  | Specifies the OK total unready count for the auto-scaler of the AKS cluster. |
 | `autoScalerProfileScaleDownDelayAfterAdd` | string | `'10m'` |  | Specifies the scale down delay after add of the auto-scaler of the AKS cluster. |
 | `autoScalerProfileScaleDownDelayAfterDelete` | string | `'20s'` |  | Specifies the scale down delay after delete of the auto-scaler of the AKS cluster. |
 | `autoScalerProfileScaleDownDelayAfterFailure` | string | `'3m'` |  | Specifies scale down delay after failure of the auto-scaler of the AKS cluster. |

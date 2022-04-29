@@ -208,7 +208,7 @@ param autoScalerProfileMaxTotalUnreadyPercentage string = '45'
 @description('Optional. For scenarios like burst/batch scale where you do not want CA to act before the kubernetes scheduler could schedule all the pods, you can tell CA to ignore unscheduled pods before they are a certain age. Values must be an integer followed by a unit ("s" for seconds, "m" for minutes, "h" for hours, etc).')
 param autoScalerProfileNewPodScaleUpDelay string = '0s'
 
-@description('Optional. Specifies the ok total unready count for the auto-scaler of the AKS cluster.')
+@description('Optional. Specifies the OK total unready count for the auto-scaler of the AKS cluster.')
 param autoScalerProfileOkTotalUnreadyCount string = '3'
 
 @allowed([
