@@ -4,6 +4,39 @@ param name string
 @description('Optional. Location for all Resources.')
 param location string = resourceGroup().location
 
+@description('Optional. Enables system assigned managed identity on the resource.')
+param systemAssignedIdentity bool = false
+
+@description('Optional. The ID(s) to assign to the resource.')
+param userAssignedIdentities object = {}
+
+@description('Optional. The resource ID of the storage account to be used for auto-storage account.')
+param storageAccountId string = ''
+
+@allowed([
+  'BatchAccountManagedIdentity'
+  'StorageKeys'
+])
+@description('Optional. The authentication mode which the Batch service will use to manage the auto-storage account.')
+param storageAuthenticationMode string = 'StorageKeys'
+
+@description('Optional. The reference to a user assigned identity associated with the Batch pool which a compute node will use.')
+param storageAccessIdentity string = ''
+
+@allowed([
+  'BatchService'
+  'UserSubscription'
+])
+@description('Required. The allocation mode for creating pools in the Batch account. Determines which quota will be used.')
+param poolAllocationMode string
+
+@allowed([
+  'Disabled'
+  'Enabled'
+])
+@description('Optional. The network access type for operating on the resources in the Batch account.')
+param publicNetworkAccess string = 'Enabled'
+
 @description('Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.')
 @minValue(0)
 @maxValue(365)
@@ -31,6 +64,30 @@ param lock string = 'NotSpecified'
 
 @description('Optional. Tags of the resource.')
 param tags object = {}
+
+@allowed([
+  'AAD'
+  'SharedKey'
+  'TaskAuthenticationToken'
+])
+@description('Optional. List of allowed authentication modes for the Batch account that can be used to authenticate with the data plane.')
+param allowedAuthenticationModes array = []
+
+@allowed([
+  'Microsoft.Batch'
+  'Microsoft.KeyVault'
+])
+@description('Otional. Type of the key source.')
+param encryptionKeySource string = 'Microsoft.Batch'
+
+@description('Optional. Full path to the versioned secret.')
+param encryptionKeyIdentifier string = ''
+
+@description('Optional. The resource ID of the Azure key vault associated with the Batch account.')
+param keyVaultResourceId string = ''
+
+@description('Optional. The URL of the Azure key vault associated with the Batch account.')
+param keyVaultUri string = ''
 
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
@@ -73,6 +130,21 @@ var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
   }
 }]
 
+var identityType = systemAssignedIdentity ? (!empty(userAssignedIdentities) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned') : (!empty(userAssignedIdentities) ? 'UserAssigned' : 'None')
+
+var identity = {
+  type: identityType
+  userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
+}
+
+var autoStorageConfig = !empty(storageAccountId) ? {
+  authenticationMode: storageAuthenticationMode
+  nodeIdentityReference: {
+    resourceId: !empty(storageAccessIdentity) ? storageAccessIdentity : null
+  }
+  storageAccountId: storageAccountId
+} : null
+
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
   properties: {
@@ -85,11 +157,27 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource batchAccount 'Microsoft.Batch/batchAccounts@2020-09-01' = {
+resource batchAccount 'Microsoft.Batch/batchAccounts@2022-01-01' = {
   name: name
   location: location
   tags: tags
-  properties: {}
+  identity: identity
+  properties: {
+    allowedAuthenticationModes: allowedAuthenticationModes
+    autoStorage: autoStorageConfig
+    encryption: {
+      keySource: encryptionKeySource
+      keyVaultProperties: encryptionKeySource == 'Microsoft.KeyVault' && systemAssignedIdentity == true ? {
+        keyIdentifier: encryptionKeyIdentifier
+      } : null
+    }
+    keyVaultReference: encryptionKeySource == 'Microsoft.KeyVault' && systemAssignedIdentity == true ? {
+      id: keyVaultResourceId
+      url: keyVaultUri
+    } : null
+    poolAllocationMode: poolAllocationMode
+    publicNetworkAccess: publicNetworkAccess
+  }
 }
 
 resource batchAccount_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
@@ -100,7 +188,6 @@ resource batchAccount_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock
   }
   scope: batchAccount
 }
-
 
 resource batchAccount_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(diagnosticWorkspaceId)) || (!empty(diagnosticEventHubAuthorizationRuleId)) || (!empty(diagnosticEventHubName))) {
   name: diagnosticSettingsName

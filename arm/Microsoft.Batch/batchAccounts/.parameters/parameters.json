@@ -19,6 +19,9 @@
         },
         "diagnosticEventHubName": {
             "value": "adp-<<namePrefix>>-az-evh-x-001"
+        },
+        "poolAllocationMode": {
+            "value": "BatchService"
         }
     }
 }
