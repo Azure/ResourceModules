@@ -23,6 +23,13 @@
 | `name` | string |  | Name of the Azure Batch |
 | `poolAllocationMode` | string | `[BatchService, UserSubscription]` | The allocation mode for creating pools in the Batch account. Determines which quota will be used. |
 
+**Conditional parameters**
+| Parameter Name | Type | Default Value | Description |
+| :-- | :-- | :-- | :-- |
+| `encryptionKeyIdentifier` | string | `''` | Full path to the versioned secret. Must be set if �encryptionKeySource� is set to �Microsoft.KeyVault�. |
+| `keyVaultResourceId` | string | `''` | The resource ID of the Azure key vault associated with the Batch account. Must be set if �encryptionKeySource� is set to �Microsoft.KeyVault�. |
+| `keyVaultUri` | string | `''` | The URL of the Azure key vault associated with the Batch account. Must be set if �encryptionKeySource� is set to �Microsoft.KeyVault�. |
+
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
@@ -36,9 +43,6 @@
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `encryptionKeyIdentifier` | string | `''` |  | Full path to the versioned secret. |
-| `keyVaultResourceId` | string | `''` |  | The resource ID of the Azure key vault associated with the Batch account. |
-| `keyVaultUri` | string | `''` |  | The URL of the Azure key vault associated with the Batch account. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all Resources. |
 | `lock` | string | `'NotSpecified'` | `[CanNotDelete, NotSpecified, ReadOnly]` | Specify the type of lock. |
 | `publicNetworkAccess` | string | `'Enabled'` | `[Disabled, Enabled]` | The network access type for operating on the resources in the Batch account. |
