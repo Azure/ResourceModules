@@ -40,7 +40,7 @@
                     ],
                     "roleAssignments": [
                         {
-                            "roleDefinitionIdOrName": "Contributor",
+                            "roleDefinitionIdOrName": "Reader",
                             "principalIds": [
                                 "<<deploymentSpId>>"
                             ]
