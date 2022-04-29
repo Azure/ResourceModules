@@ -451,7 +451,7 @@ function Set-UsageExamples {
 
         $extendedKeyVaultReferences = @()
         $counter = 0
-        foreach ($reference in ($keyVaultReferenceData | Sort-Object -Property 'vaultName' -Unique)) {
+        foreach ($reference in ($keyVaultReferenceData | Select-Object -Property 'vaultName' -Unique)) {
             $counter++
             $extendedKeyVaultReferences += @(
                 "resource kv$counter 'Microsoft.KeyVault/vaults@2019-09-01' existing = {",
