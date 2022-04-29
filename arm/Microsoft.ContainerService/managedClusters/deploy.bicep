@@ -131,7 +131,7 @@ param httpApplicationRoutingEnabled bool = false
 @description('Optional. Specifies whether the ingressApplicationGateway (AGIC) add-on is enabled or not.')
 param ingressApplicationGatewayEnabled bool = false
 
-@description('Conditional. Specifies the resource id of conected application gateway. Must be set if `ingressApplicationGatewayEnabled` is set to `true`.')
+@description('Conditional. Specifies the resource ID of conected application gateway. Must be set if `ingressApplicationGatewayEnabled` is set to `true`.')
 param appGatewayResourceId string = ''
 
 @description('Optional. Specifies whether the aciConnectorLinux add-on is enabled or not.')
