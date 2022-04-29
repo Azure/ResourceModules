@@ -164,7 +164,7 @@ resource batchAccount 'Microsoft.Batch/batchAccounts@2022-01-01' = {
   identity: identity
   properties: {
     allowedAuthenticationModes: allowedAuthenticationModes
-    autoStorage: autoStorageConfig
+    // autoStorage: autoStorageConfig
     encryption: {
       keySource: encryptionKeySource
       keyVaultProperties: encryptionKeySource == 'Microsoft.KeyVault' && systemAssignedIdentity == true ? {
