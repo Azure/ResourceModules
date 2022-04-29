@@ -80,13 +80,13 @@ param allowedAuthenticationModes array = []
 @description('Otional. Type of the key source.')
 param encryptionKeySource string = 'Microsoft.Batch'
 
-@description('Optional. Full path to the versioned secret.')
+@description('Conditional. Full path to the versioned secret. Must be set if ´encryptionKeySource´ is set to ´Microsoft.KeyVault´.')
 param encryptionKeyIdentifier string = ''
 
-@description('Optional. The resource ID of the Azure key vault associated with the Batch account.')
+@description('Conditional. The resource ID of the Azure key vault associated with the Batch account. Must be set if ´encryptionKeySource´ is set to ´Microsoft.KeyVault´.')
 param keyVaultResourceId string = ''
 
-@description('Optional. The URL of the Azure key vault associated with the Batch account.')
+@description('Conditional. The URL of the Azure key vault associated with the Batch account. Must be set if ´encryptionKeySource´ is set to ´Microsoft.KeyVault´.')
 param keyVaultUri string = ''
 
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
@@ -130,7 +130,7 @@ var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
   }
 }]
 
-var identityType = systemAssignedIdentity ? (!empty(userAssignedIdentities) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned') : (!empty(userAssignedIdentities) ? 'UserAssigned' : 'None')
+var identityType = systemAssignedIdentity ? 'SystemAssigned' : !empty(userAssignedIdentities) ? 'UserAssigned' : 'None'
 
 var identity = {
   type: identityType
@@ -142,7 +142,7 @@ var autoStorageConfig = !empty(storageAccountId) ? {
   nodeIdentityReference: {
     resourceId: !empty(storageAccessIdentity) ? storageAccessIdentity : null
   }
-  storageAccountId: storageAccountId
+  storageAccountId: null
 } : null
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
@@ -164,7 +164,7 @@ resource batchAccount 'Microsoft.Batch/batchAccounts@2022-01-01' = {
   identity: identity
   properties: {
     allowedAuthenticationModes: allowedAuthenticationModes
-    // autoStorage: autoStorageConfig
+    autoStorage: autoStorageConfig
     encryption: {
       keySource: encryptionKeySource
       keyVaultProperties: encryptionKeySource == 'Microsoft.KeyVault' && systemAssignedIdentity == true ? {
