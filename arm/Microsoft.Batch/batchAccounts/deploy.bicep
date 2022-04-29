@@ -10,8 +10,8 @@ param systemAssignedIdentity bool = false
 @description('Optional. The ID(s) to assign to the resource.')
 param userAssignedIdentities object = {}
 
-@description('Optional. The resource ID of the storage account to be used for auto-storage account.')
-param storageAccountId string = ''
+@description('Required. The resource ID of the storage account to be used for auto-storage account.')
+param storageAccountId string
 
 @allowed([
   'BatchAccountManagedIdentity'
@@ -137,11 +137,13 @@ var identity = {
   userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
 }
 
+var nodeIdentityReference = !empty(storageAccessIdentity) ? {
+  resourceId: !empty(storageAccessIdentity) ? storageAccessIdentity : null
+} : null
+
 var autoStorageConfig = {
   authenticationMode: storageAuthenticationMode
-  nodeIdentityReference: {
-    resourceId: !empty(storageAccessIdentity) ? storageAccessIdentity : null
-  }
+  nodeIdentityReference: nodeIdentityReference
   storageAccountId: storageAccountId
 }
 

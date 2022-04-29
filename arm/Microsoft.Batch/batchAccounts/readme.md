@@ -22,6 +22,7 @@
 | :-- | :-- | :-- | :-- |
 | `name` | string |  | Name of the Azure Batch |
 | `poolAllocationMode` | string | `[BatchService, UserSubscription]` | The allocation mode for creating pools in the Batch account. Determines which quota will be used. |
+| `storageAccountId` | string |  | The resource ID of the storage account to be used for auto-storage account. |
 
 **Conditional parameters**
 | Parameter Name | Type | Default Value | Description |
@@ -47,7 +48,6 @@
 | `lock` | string | `'NotSpecified'` | `[CanNotDelete, NotSpecified, ReadOnly]` | Specify the type of lock. |
 | `publicNetworkAccess` | string | `'Enabled'` | `[Disabled, Enabled]` | The network access type for operating on the resources in the Batch account. |
 | `storageAccessIdentity` | string | `''` |  | The reference to a user assigned identity associated with the Batch pool which a compute node will use. |
-| `storageAccountId` | string | `''` |  | The resource ID of the storage account to be used for auto-storage account. |
 | `storageAuthenticationMode` | string | `'StorageKeys'` | `[BatchAccountManagedIdentity, StorageKeys]` | The authentication mode which the Batch service will use to manage the auto-storage account. |
 | `systemAssignedIdentity` | bool | `False` |  | Enables system assigned managed identity on the resource. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
