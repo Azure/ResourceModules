@@ -80,13 +80,13 @@ param allowedAuthenticationModes array = []
 @description('Otional. Type of the key source.')
 param encryptionKeySource string = 'Microsoft.Batch'
 
-@description('Conditional. Full path to the versioned secret. Must be set if ´encryptionKeySource´ is set to ´Microsoft.KeyVault´.')
+@description('Conditional. Full path to the versioned secret. Must be set if `encryptionKeySource` is set to `Microsoft.KeyVault`.')
 param encryptionKeyIdentifier string = ''
 
-@description('Conditional. The resource ID of the Azure key vault associated with the Batch account. Must be set if ´encryptionKeySource´ is set to ´Microsoft.KeyVault´.')
+@description('Conditional. The resource ID of the Azure key vault associated with the Batch account. Must be set if `encryptionKeySource` is set to `Microsoft.KeyVault`.')
 param keyVaultResourceId string = ''
 
-@description('Conditional. The URL of the Azure key vault associated with the Batch account. Must be set if ´encryptionKeySource´ is set to ´Microsoft.KeyVault´.')
+@description('Conditional. The URL of the Azure key vault associated with the Batch account. Must be set if `encryptionKeySource` is set to `Microsoft.KeyVault`.')
 param keyVaultUri string = ''
 
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')

@@ -26,9 +26,9 @@
 **Conditional parameters**
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
-| `encryptionKeyIdentifier` | string | `''` | Full path to the versioned secret. Must be set if �encryptionKeySource� is set to �Microsoft.KeyVault�. |
-| `keyVaultResourceId` | string | `''` | The resource ID of the Azure key vault associated with the Batch account. Must be set if �encryptionKeySource� is set to �Microsoft.KeyVault�. |
-| `keyVaultUri` | string | `''` | The URL of the Azure key vault associated with the Batch account. Must be set if �encryptionKeySource� is set to �Microsoft.KeyVault�. |
+| `encryptionKeyIdentifier` | string | `''` | Full path to the versioned secret. Must be set if `encryptionKeySource` is set to `Microsoft.KeyVault`. |
+| `keyVaultResourceId` | string | `''` | The resource ID of the Azure key vault associated with the Batch account. Must be set if `encryptionKeySource` is set to `Microsoft.KeyVault`. |
+| `keyVaultUri` | string | `''` | The URL of the Azure key vault associated with the Batch account. Must be set if `encryptionKeySource` is set to `Microsoft.KeyVault`. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
