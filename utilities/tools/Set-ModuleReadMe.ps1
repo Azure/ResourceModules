@@ -405,6 +405,7 @@ function Set-TemplateReferencesSection {
     }
     return $updatedFileContent
 }
+
 function Set-UsageExamples {
 
     [CmdletBinding(SupportsShouldProcess)]
@@ -427,18 +428,81 @@ function Set-UsageExamples {
 
     $index = 1
     foreach ($parameterFilePath in $parameterFiles.FullName) {
-        $parameterFileContent = Get-Content -Path $parameterFilePath -Raw
-        $formattedContent = $parameterFileContent.Replace('"', "'")
-        $formattedContent = $formattedContent.Replace(',', '')
+        $contentInJSONFormat = Get-Content -Path $parameterFilePath -Raw
+
+        $JSONParameters = (ConvertFrom-Json $contentInJSONFormat -AsHashtable -Depth 99).parameters
+
+        ## Handle KeyVaut references
+        $keyVaultReferences = $JSONParameters.Keys | Where-Object { $JSONParameters[$_].Keys -contains 'reference' }
+
+        if ($keyVaultReferences.Count -gt 0) {
+            $keyVaultReferenceData = @()
+            foreach ($reference in $keyVaultReferences) {
+                $resourceIdElem = $content[$reference].reference.keyVault.id -split '/'
+                $keyVaultReferenceData += @{
+                    subscriptionId    = $resourceIdElem[2]
+                    resourceGroupName = $resourceIdElem[4]
+                    vaultName         = $resourceIdElem[-1]
+                    secretName        = $content[$reference].reference.secretName
+                    parameterName     = $reference
+                }
+            }
+        }
+
+        $extendedKeyVaultReferences = @()
+        $counter = 0
+        foreach ($reference in ($keyVaultReferenceData | Sort-Object -Property 'vaultName' -Unique)) {
+            $counter++
+            $extendedKeyVaultReferences += @(
+                "resource kv$counter 'Microsoft.KeyVault/vaults@2019-09-01' existing = {",
+                ("    name: '{0}'" -f $reference.vaultName),
+                ("    scope: resourceGroup('{0}','{1}')" -f $reference.subscriptionId, $reference.resourceGroupName),
+                '}',
+                ''
+            )
+
+            # Add attribute for later correct reference
+            $keyVaultReferenceData | Where-Object { $_.vaultName -eq $reference.vaultName } | ForEach-Object {
+                $_['vaultResourceReference'] = "kv$counter"
+            }
+        }
+
+        # replace key vault references
+        foreach ($keyVaultReference in $keyVaultReferences) {
+            $matchingTuple = $keyVaultReferenceData | Where-Object { $_.parameterName -eq $keyVaultReference }
+            # kv.getSecret('vmAdminPassword')
+            $JSONParameters[$keyVaultReference] = "{0}.getSecret('{1}')" -f $matchingTuple.vaultResourceReference, $matchingTuple.secretName
+        }
+
+        # Handle VALUE references
+        $JSONParametersWithoutValue = @{}
+        foreach ($key in $JSONParameters.Keys) {
+            if ($JSONParameters[$key].Keys -contains 'value') {
+                $JSONParametersWithoutValue[$key] = $JSONParameters[$key].value
+            } else {
+                $JSONParametersWithoutValue[$key] = $JSONParameters[$key]
+            }
+        }
+
+        $templateParameterObject = $JSONParametersWithoutValue | ConvertTo-Json -Depth 99
+
+        $contentInBicepFormat = $templateParameterObject -replace '"', "'" # Update any [xyz: "xyz"] to [xyz: 'xyz']
+        $contentInBicepFormat = $contentInBicepFormat -replace ',', '' # Update any [xyz: xyz,] to [xyz: xyz]
+        $contentInBicepFormat = $contentInBicepFormat -replace "'(\w+)':", '$1:' # Update any  ['xyz': xyz] to [xyz: xyz]
+        $contentInBicepFormat = $contentInBicepFormat -replace "'(.+.getSecret\('.+'\))'", '$1' # Update any  [xyz: 'xyz.GetSecret()'] to [xyz: xyz.GetSecret()]
 
         $SectionContent += @(
             "### Usage example $index",
             '',
             '```json',
+            $contentInJSONFormat,
             '```',
             '',
             '```bicep',
+            $extendedKeyVaultReferences,
+            $contentInBicepFormat
             '```'
+            ''
         )
 
         $index += 1
