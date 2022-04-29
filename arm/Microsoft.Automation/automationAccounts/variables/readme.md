@@ -2,6 +2,13 @@
 
 This module deploys a variable to an Azure Automation Account.
 
+## Navigation
+
+- [Resource Types](#Resource-Types)
+- [Parameters](#Parameters)
+- [Outputs](#Outputs)
+- [Template references](#Template-references)
+
 ## Resource Types
 
 | Resource Type | API Version |
@@ -10,14 +17,20 @@ This module deploys a variable to an Azure Automation Account.
 
 ## Parameters
 
-| Parameter Name | Type | Default Value | Possible Values | Description |
-| :-- | :-- | :-- | :-- | :-- |
-| `automationAccountName` | string |  |  | Required. Name of the parent Automation Account |
-| `cuaId` | string |  |  | Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered |
-| `description` | string |  |  | Optional. The description of the variable. |
-| `isEncrypted` | bool |  |  | Optional. If the variable should be encrypted. |
-| `name` | string |  |  | Required. The name of the variable. |
-| `value` | string |  |  | Required. The value of the variable. |
+**Required parameters**
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `automationAccountName` | string | Name of the parent Automation Account |
+| `name` | string | The name of the variable. |
+| `value` | string | The value of the variable. |
+
+**Optional parameters**
+| Parameter Name | Type | Default Value | Description |
+| :-- | :-- | :-- | :-- |
+| `description` | string | `''` | The description of the variable. |
+| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `isEncrypted` | bool | `True` | If the variable should be encrypted. For security reasons encryption of variables should be enabled |
+
 
 ### Parameter Usage: `value`
 

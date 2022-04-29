@@ -40,8 +40,8 @@ param lock string = 'NotSpecified'
 @description('Optional. Tags for all resources.')
 param tags object = {}
 
-@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
-param cuaId string = ''
+@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+param enableDefaultTelemetry bool = true
 
 var activeDirectoryConnectionProperties = [
   {
@@ -54,9 +54,16 @@ var activeDirectoryConnectionProperties = [
   }
 ]
 
-module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
-  name: 'pid-${cuaId}'
-  params: {}
+resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
+  name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name)}'
+  properties: {
+    mode: 'Incremental'
+    template: {
+      '$schema': 'https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#'
+      contentVersion: '1.0.0.0'
+      resources: []
+    }
+  }
 }
 
 resource netAppAccount 'Microsoft.NetApp/netAppAccounts@2021-04-01' = {
@@ -80,13 +87,14 @@ resource netAppAccount_lock 'Microsoft.Authorization/locks@2017-04-01' = if (loc
 module netAppAccount_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-ANFAccount-Rbac-${index}'
   params: {
+    description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
     principalIds: roleAssignment.principalIds
+    principalType: contains(roleAssignment, 'principalType') ? roleAssignment.principalType : ''
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
     resourceId: netAppAccount.id
   }
 }]
 
-@batchSize(1)
 module netAppAccount_capacityPools 'capacityPools/deploy.bicep' = [for (capacityPool, index) in capacityPools: {
   name: '${uniqueString(deployment().name, location)}-ANFAccount-CapPool-${index}'
   params: {
@@ -99,6 +107,7 @@ module netAppAccount_capacityPools 'capacityPools/deploy.bicep' = [for (capacity
     volumes: contains(capacityPool, 'volumes') ? capacityPool.volumes : []
     coolAccess: contains(capacityPool, 'coolAccess') ? capacityPool.coolAccess : false
     roleAssignments: contains(capacityPool, 'roleAssignments') ? capacityPool.roleAssignments : []
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }]
 

@@ -29,12 +29,12 @@ function Get-ScopeOfTemplateFile {
 
     if ((Split-Path $templateFilePath -Extension) -eq '.bicep') {
         # Bicep
-        $bicepContent = Get-Content $templateFilePath
-        $bicepScope = $bicepContent | Where-Object { $_ -like '*targetscope =*' }
-        if (-not $bicepScope) {
+        $bicepContent = Get-Content $templateFilePath -Raw
+        $bicepScopeMatch = [regex]::Match($bicepContent, '(?m)^\s*targetScope\s*=\s*''(\S+)''')
+        if (-not $bicepScopeMatch.Success) {
             $deploymentScope = 'resourcegroup'
         } else {
-            $deploymentScope = $bicepScope.ToLower().Split('=')[-1].Replace("'", '').Trim()
+            $deploymentScope = $bicepScopeMatch.Captures.Groups[1].Value
         }
     } else {
         # ARM

@@ -1,9 +1,30 @@
+#########################################################
+## 'Validate module with Pester' Composite Action      ##
+#########################################################
+##
+## This composite action contains the logic to validate a module using a set of Pester tests
+## The tests are implemented in file 'arm/.global/global.module.tests.ps1'
+##
+#########################################################
+##
+##-------------------------------------------##
+## ACTION PARAMETERS                         ##
+##-------------------------------------------##
+##
+##   |===========================================================================================================|
+##   | Parameter  | Required | Default | Description                     | Example                               |
+##   |------------|----------|---------|---------------------------------|---------------------------------------|
+##   | modulePath | true     | ''      | The path to the module's folder | 'arm/Microsoft.ApiManagement/service' |
+##   |===========================================================================================================|
+##
+##---------------------------------------------##
+
 name: 'Execute Pester module tests'
 description: 'Execute Pester module tests (if any)'
 
 inputs:
   modulePath:
-    description: 'The path to the module folder'
+    description: "The path to the module's folder"
     required: true
     default: ''
 
@@ -55,6 +76,20 @@ runs:
           Write-Verbose "- [($moduleFolderPath]" -Verbose
         }
 
+        $enforcedTokenList = @{}
+        if (-not [String]::IsNullOrEmpty('${{ env.ARM_SUBSCRIPTION_ID }}')) {
+            $enforcedTokenList['subscriptionId'] = '${{ env.ARM_SUBSCRIPTION_ID }}'
+        }
+        if (-not [String]::IsNullOrEmpty('${{ env.ARM_MGMTGROUP_ID }}')) {
+            $enforcedTokenList['managementGroupId'] = '${{ env.ARM_MGMTGROUP_ID }}'
+        }
+        if (-not [String]::IsNullOrEmpty('${{ env.ARM_TENANT_ID }}')) {
+            $enforcedTokenList['deploymentSpId'] = '${{ env.ARM_TENANT_ID }}'
+        }
+        if (-not [String]::IsNullOrEmpty('${{ env.DEPLOYMENT_SP_ID }}')) {
+            $enforcedTokenList['tenantId'] = '${{ env.DEPLOYMENT_SP_ID }}'
+        }
+
         # --------------------- #
         # Invoke Pester test(s) #
         # --------------------- #
@@ -62,6 +97,7 @@ runs:
           Run        = @{
             Container = New-PesterContainer -Path 'arm/.global/global.module.tests.ps1' -Data @{
               moduleFolderPaths = $moduleFolderPaths
+              enforcedTokenList = $enforcedTokenList
             }
           }
           Filter     = @{

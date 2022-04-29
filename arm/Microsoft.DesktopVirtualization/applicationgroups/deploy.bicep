@@ -52,8 +52,8 @@ param lock string = 'NotSpecified'
 @sys.description('Optional. Tags of the resource.')
 param tags object = {}
 
-@sys.description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
-param cuaId string = ''
+@sys.description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+param enableDefaultTelemetry bool = true
 
 @sys.description('Optional. The name of logs that will be streamed.')
 @allowed([
@@ -61,7 +61,7 @@ param cuaId string = ''
   'Error'
   'Management'
 ])
-param logsToEnable array = [
+param diagnosticLogCategoriesToEnable array = [
   'Checkpoint'
   'Error'
   'Management'
@@ -70,8 +70,11 @@ param logsToEnable array = [
 @sys.description('Optional. List of applications to be created in the Application Group.')
 param applications array = []
 
-var diagnosticsLogs = [for log in logsToEnable: {
-  category: log
+@sys.description('Optional. The name of the diagnostic setting, if deployed.')
+param diagnosticSettingsName string = '${name}-diagnosticSettings'
+
+var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
+  category: category
   enabled: true
   retentionPolicy: {
     enabled: true
@@ -79,9 +82,16 @@ var diagnosticsLogs = [for log in logsToEnable: {
   }
 }]
 
-module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
-  name: 'pid-${cuaId}'
-  params: {}
+resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
+  name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
+  properties: {
+    mode: 'Incremental'
+    template: {
+      '$schema': 'https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#'
+      contentVersion: '1.0.0.0'
+      resources: []
+    }
+  }
 }
 
 resource appGroup_hostpool 'Microsoft.DesktopVirtualization/hostpools@2021-07-12' existing = {
@@ -110,7 +120,7 @@ resource appGroup_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 
 }
 
 resource appGroup_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(diagnosticWorkspaceId)) || (!empty(diagnosticEventHubAuthorizationRuleId)) || (!empty(diagnosticEventHubName))) {
-  name: '${appGroup.name}-diagnosticSettings'
+  name: diagnosticSettingsName
   properties: {
     storageAccountId: !empty(diagnosticStorageAccountId) ? diagnosticStorageAccountId : null
     workspaceId: !empty(diagnosticWorkspaceId) ? diagnosticWorkspaceId : null
@@ -134,13 +144,16 @@ module appGroup_applications 'applications/deploy.bicep' = [for (application, in
     showInPortal: contains(application, 'showInPortal') ? application.showInPortal : false
     iconPath: contains(application, 'iconPath') ? application.iconPath : application.filePath
     iconIndex: contains(application, 'iconIndex') ? application.iconIndex : 0
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }]
 
 module appGroup_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-AppGroup-Rbac-${index}'
   params: {
+    description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
     principalIds: roleAssignment.principalIds
+    principalType: contains(roleAssignment, 'principalType') ? roleAssignment.principalType : ''
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
     resourceId: appGroup.id
   }

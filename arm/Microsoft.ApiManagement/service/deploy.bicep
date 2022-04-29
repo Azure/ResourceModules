@@ -8,8 +8,8 @@ param name string
 @maxLength(10)
 param certificates array = []
 
-@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
-param cuaId string = ''
+@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+param enableDefaultTelemetry bool = true
 
 @description('Optional. Custom properties of the API Management service.')
 param customProperties object = {}
@@ -113,7 +113,7 @@ param zones array = []
 @allowed([
   'GatewayLogs'
 ])
-param logsToEnable array = [
+param diagnosticLogCategoriesToEnable array = [
   'GatewayLogs'
 ]
 
@@ -121,7 +121,7 @@ param logsToEnable array = [
 @allowed([
   'AllMetrics'
 ])
-param metricsToEnable array = [
+param diagnosticMetricsToEnable array = [
   'AllMetrics'
 ]
 @description('Optional. Necessary to create a new GUID.')
@@ -150,8 +150,11 @@ param products array = []
 @description('Optional. Subscriptions.')
 param subscriptions array = []
 
-var diagnosticsLogs = [for log in logsToEnable: {
-  category: log
+@description('Optional. The name of the diagnostic setting, if deployed.')
+param diagnosticSettingsName string = '${name}-diagnosticSettings'
+
+var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
+  category: category
   enabled: true
   retentionPolicy: {
     enabled: true
@@ -159,7 +162,7 @@ var diagnosticsLogs = [for log in logsToEnable: {
   }
 }]
 
-var diagnosticsMetrics = [for metric in metricsToEnable: {
+var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
   category: metric
   timeGrain: null
   enabled: true
@@ -176,9 +179,16 @@ var identity = identityType != 'None' ? {
   userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
 } : null
 
-module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
-  name: 'pid-${cuaId}'
-  params: {}
+resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
+  name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name)}'
+  properties: {
+    mode: 'Incremental'
+    template: {
+      '$schema': 'https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#'
+      contentVersion: '1.0.0.0'
+      resources: []
+    }
+  }
 }
 
 resource apiManagementService 'Microsoft.ApiManagement/service@2021-08-01' = {
@@ -236,6 +246,7 @@ module apis_resource 'apis/deploy.bicep' = [for (api, index) in apis: {
     type: contains(api, 'type') ? api.type : 'http'
     value: contains(api, 'value') ? api.value : ''
     wsdlSelector: contains(api, 'wsdlSelector') ? api.wsdlSelector : {}
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
   dependsOn: [
     apiVersionSet_resource
@@ -248,6 +259,7 @@ module apiVersionSet_resource 'apiVersionSets/deploy.bicep' = [for (apiVersionSe
     apiManagementServiceName: apiManagementService.name
     name: apiVersionSet.name
     properties: contains(apiVersionSet, 'properties') ? apiVersionSet.properties : {}
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }]
 
@@ -278,6 +290,7 @@ module authorizationServers_resource '.bicep/nested_authorizationServers.bicep' 
     supportState: contains(authorizationServer, 'supportState') ? authorizationServer.supportState : false
     tokenBodyParameters: contains(authorizationServer, 'tokenBodyParameters') ? authorizationServer.tokenBodyParameters : []
     tokenEndpoint: contains(authorizationServer, 'tokenEndpoint') ? authorizationServer.tokenEndpoint : ''
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }]
 
@@ -298,6 +311,7 @@ module backends_resource 'backends/deploy.bicep' = [for (backend, index) in back
       validateCertificateChain: false
       validateCertificateName: false
     }
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }]
 
@@ -310,6 +324,7 @@ module caches_resource 'caches/deploy.bicep' = [for (cache, index) in caches: {
     name: cache.name
     resourceId: contains(cache, 'resourceId') ? cache.resourceId : ''
     useFromLocation: cache.useFromLocation
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }]
 
@@ -329,6 +344,7 @@ module identityProvider_resource 'identityProviders/deploy.bicep' = [for (identi
     identityProviderSignInTenant: contains(identityProvider, 'identityProviderSignInTenant') ? identityProvider.identityProviderSignInTenant : ''
     identityProviderSignUpPolicyName: contains(identityProvider, 'identityProviderSignUpPolicyName') ? identityProvider.identityProviderSignUpPolicyName : ''
     identityProviderType: contains(identityProvider, 'identityProviderType') ? identityProvider.identityProviderType : 'aad'
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }]
 
@@ -342,6 +358,7 @@ module namedValues_resource 'namedValues/deploy.bicep' = [for (namedValue, index
     namedValueTags: contains(namedValue, 'namedValueTags') ? namedValue.namedValueTags : []
     secret: contains(namedValue, 'secret') ? namedValue.secret : false
     value: contains(namedValue, 'value') ? namedValue.value : newGuidValue
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }]
 
@@ -351,6 +368,7 @@ module portalSettings_resource 'portalsettings/deploy.bicep' = [for (portalSetti
     apiManagementServiceName: apiManagementService.name
     name: portalSetting.name
     properties: contains(portalSetting, 'properties') ? portalSetting.properties : {}
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }]
 
@@ -360,6 +378,7 @@ module policy_resource 'policies/deploy.bicep' = [for (policy, index) in policie
     apiManagementServiceName: apiManagementService.name
     value: policy.value
     format: contains(policy, 'format') ? policy.format : 'xml'
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }]
 
@@ -376,6 +395,7 @@ module products_resource 'products/deploy.bicep' = [for (product, index) in prod
     subscriptionRequired: contains(product, 'subscriptionRequired') ? product.subscriptionRequired : false
     subscriptionsLimit: contains(product, 'subscriptionsLimit') ? product.subscriptionsLimit : 1
     terms: contains(product, 'terms') ? product.terms : ''
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
   dependsOn: [
     apis_resource
@@ -393,6 +413,7 @@ module subscriptions_resource 'subscriptions/deploy.bicep' = [for (subscription,
     scope: contains(subscription, 'scope') ? subscription.scope : '/apis'
     secondaryKey: contains(subscription, 'secondaryKey') ? subscription.secondaryKey : ''
     state: contains(subscription, 'state') ? subscription.state : ''
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }]
 
@@ -406,7 +427,7 @@ resource apiManagementService_lock 'Microsoft.Authorization/locks@2017-04-01' = 
 }
 
 resource apiManagementService_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = if (!empty(diagnosticStorageAccountId) || !empty(diagnosticWorkspaceId) || !empty(diagnosticEventHubAuthorizationRuleId) || !empty(diagnosticEventHubName)) {
-  name: '${apiManagementService.name}-diagnosticSettings'
+  name: diagnosticSettingsName
   properties: {
     storageAccountId: !empty(diagnosticStorageAccountId) ? diagnosticStorageAccountId : null
     workspaceId: !empty(diagnosticWorkspaceId) ? diagnosticWorkspaceId : null
@@ -421,7 +442,9 @@ resource apiManagementService_diagnosticSettings 'Microsoft.Insights/diagnosticS
 module apiManagementService_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-Apim-Rbac-${index}'
   params: {
+    description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
     principalIds: roleAssignment.principalIds
+    principalType: contains(roleAssignment, 'principalType') ? roleAssignment.principalType : ''
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
     resourceId: apiManagementService.id
   }

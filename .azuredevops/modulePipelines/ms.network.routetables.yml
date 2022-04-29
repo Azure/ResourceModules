@@ -10,6 +10,8 @@ parameters:
     type: boolean
     default: false
 
+pr: none
+
 trigger:
   batch: true
   branches:
@@ -20,23 +22,24 @@ trigger:
       - '/.azuredevops/modulePipelines/ms.network.routetables.yml'
       - '/.azuredevops/pipelineTemplates/module.*.yml'
       - '/arm/Microsoft.Network/routeTables/*'
+      - '/arm/.global/global.module.tests.ps1'
     exclude:
       - '/**/*.md'
 
 variables:
-  - template: '/.azuredevops/pipelineVariables/global.variables.yml'
+  - template: '../../global.variables.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
     value: '/arm/Microsoft.Network/routeTables'
 
 stages:
   - stage: Validation
-    displayName: Pester tests
+    displayName: Static validation
     jobs:
       - template: /.azuredevops/pipelineTemplates/jobs.validateModulePester.yml
 
   - stage: Deployment
-    displayName: Deployment tests
+    displayName: Deployment validation
     jobs:
       - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
         parameters:
@@ -45,7 +48,7 @@ stages:
             - path: $(modulePath)/.parameters/parameters.json
 
   - stage: Publishing
-    displayName: Publish module
+    displayName: Publishing
     condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/main'), eq(variables['Build.SourceBranch'], 'refs/heads/master'), eq('${{ parameters.prerelease }}', 'true')))
     jobs:
       - template: /.azuredevops/pipelineTemplates/jobs.publishModule.yml

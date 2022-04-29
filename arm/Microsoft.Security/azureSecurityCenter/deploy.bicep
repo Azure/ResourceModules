@@ -6,6 +6,9 @@ param workspaceId string
 @description('Required. All the VMs in this scope will send their security data to the mentioned workspace unless overridden by a setting with more specific scope.')
 param scope string
 
+@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+param enableDefaultTelemetry bool = true
+
 @description('Optional. Describes what kind of security agent provisioning action to take. - On or Off')
 @allowed([
   'On'
@@ -96,8 +99,38 @@ param armPricingTier string = 'Free'
 ])
 param openSourceRelationalDatabasesTier string = 'Free'
 
+@description('Optional. The pricing tier value for containers. Azure Security Center is provided in two pricing tiers: free and standard, with the standard tier available with a trial period. The standard tier offers advanced security capabilities, while the free tier offers basic security features. - Free or Standard')
+@allowed([
+  'Free'
+  'Standard'
+])
+param containersTier string = 'Free'
+
+@description('Optional. The pricing tier value for CosmosDbs. Azure Security Center is provided in two pricing tiers: free and standard, with the standard tier available with a trial period. The standard tier offers advanced security capabilities, while the free tier offers basic security features. - Free or Standard')
+@allowed([
+  'Free'
+  'Standard'
+])
+param cosmosDbsTier string = 'Free'
+
 @description('Optional. Security contact data')
 param securityContactProperties object = {}
+
+@description('Optional. Location deployment metadata.')
+param location string = deployment().location
+
+resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
+  name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
+  location: location
+  properties: {
+    mode: 'Incremental'
+    template: {
+      '$schema': 'https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#'
+      contentVersion: '1.0.0.0'
+      resources: []
+    }
+  }
+}
 
 resource autoProvisioningSettings 'Microsoft.Security/autoProvisioningSettings@2017-08-01-preview' = {
   name: 'default'
@@ -198,6 +231,20 @@ resource OpenSourceRelationalDatabasesPricingTier 'Microsoft.Security/pricings@2
   name: 'OpenSourceRelationalDatabases'
   properties: {
     pricingTier: openSourceRelationalDatabasesTier
+  }
+}
+
+resource ContainersPricingTier 'Microsoft.Security/pricings@2018-06-01' = {
+  name: 'Containers'
+  properties: {
+    pricingTier: containersTier
+  }
+}
+
+resource CosmosDbsPricingTier 'Microsoft.Security/pricings@2018-06-01' = {
+  name: 'CosmosDbs'
+  properties: {
+    pricingTier: cosmosDbsTier
   }
 }
 

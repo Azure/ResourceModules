@@ -36,12 +36,19 @@ param tags object = {}
 @description('Optional. Specify the type of lock.')
 param lock string = 'NotSpecified'
 
-@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
-param cuaId string = ''
+@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+param enableDefaultTelemetry bool = true
 
-module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
-  name: 'pid-${cuaId}'
-  params: {}
+resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
+  name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
+  properties: {
+    mode: 'Incremental'
+    template: {
+      '$schema': 'https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#'
+      contentVersion: '1.0.0.0'
+      resources: []
+    }
+  }
 }
 
 resource vpnGateway 'Microsoft.Network/vpnGateways@2021-05-01' = {
@@ -78,6 +85,7 @@ module vpnGateway_natRules 'natRules/deploy.bicep' = [for (natRule, index) in na
     ipConfigurationId: contains(natRule, 'ipConfigurationId') ? natRule.ipConfigurationId : ''
     mode: contains(natRule, 'mode') ? natRule.mode : ''
     type: contains(natRule, 'type') ? natRule.type : ''
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }]
 
@@ -97,6 +105,7 @@ module vpnGateway_connections 'connections/deploy.bicep' = [for (connection, ind
     useLocalAzureIpAddress: contains(connection, 'useLocalAzureIpAddress') ? connection.useLocalAzureIpAddress : false
     usePolicyBasedTrafficSelectors: contains(connection, 'usePolicyBasedTrafficSelectors') ? connection.usePolicyBasedTrafficSelectors : false
     vpnConnectionProtocolType: contains(connection, 'vpnConnectionProtocolType') ? connection.vpnConnectionProtocolType : 'IKEv2'
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }]
 

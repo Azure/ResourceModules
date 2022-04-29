@@ -4,12 +4,31 @@ param name string
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
 
+@description('Optional. SKU name of the account.')
 @allowed([
   'Free'
   'Basic'
 ])
-@description('Optional. SKU name of the account.')
 param skuName string = 'Basic'
+
+@description('Optional. User identity used for CMK. If you set encryptionKeySource as Microsoft.Keyvault encryptionUserAssignedIdentity is required.')
+param encryptionUserAssignedIdentity string = ''
+
+@description('Optional. Encryption Key Source. For security reasons it is recommended to use Microsoft.Keyvault if custom keys are available.')
+@allowed([
+  'Microsoft.Automation'
+  'Microsoft.Keyvault'
+])
+param encryptionKeySource string = 'Microsoft.Automation'
+
+@description('Optional. The name of key used to encrypt data. This parameter is needed only if you enable Microsoft.Keyvault as encryptionKeySource.')
+param keyName string = ''
+
+@description('Optional. The URI of the key vault key used to encrypt data. This parameter is needed only if you enable Microsoft.Keyvault as encryptionKeySource.')
+param keyvaultUri string = ''
+
+@description('Optional. The key version of the key used to encrypt data. This parameter is needed only if you enable Microsoft.Keyvault as encryptionKeySource.')
+param keyVersion string = ''
 
 @description('Optional. List of modules to be created in the automation account.')
 param modules array = []
@@ -75,8 +94,8 @@ param roleAssignments array = []
 @description('Optional. Tags of the Automation Account resource.')
 param tags object = {}
 
-@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered.')
-param cuaId string = ''
+@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+param enableDefaultTelemetry bool = true
 
 @description('Optional. The name of logs that will be streamed.')
 @allowed([
@@ -84,7 +103,7 @@ param cuaId string = ''
   'JobStreams'
   'DscNodeStatus'
 ])
-param logsToEnable array = [
+param diagnosticLogCategoriesToEnable array = [
   'JobLogs'
   'JobStreams'
   'DscNodeStatus'
@@ -94,12 +113,15 @@ param logsToEnable array = [
 @allowed([
   'AllMetrics'
 ])
-param metricsToEnable array = [
+param diagnosticMetricsToEnable array = [
   'AllMetrics'
 ]
 
-var diagnosticsLogs = [for log in logsToEnable: {
-  category: log
+@description('Optional. The name of the diagnostic setting, if deployed.')
+param diagnosticSettingsName string = '${name}-diagnosticSettings'
+
+var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
+  category: category
   enabled: true
   retentionPolicy: {
     enabled: true
@@ -107,7 +129,7 @@ var diagnosticsLogs = [for log in logsToEnable: {
   }
 }]
 
-var diagnosticsMetrics = [for metric in metricsToEnable: {
+var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
   category: metric
   timeGrain: null
   enabled: true
@@ -124,21 +146,39 @@ var identity = identityType != 'None' ? {
   userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
 } : null
 
-module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
-  name: 'pid-${cuaId}'
-  params: {}
+resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
+  name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
+  properties: {
+    mode: 'Incremental'
+    template: {
+      '$schema': 'https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#'
+      contentVersion: '1.0.0.0'
+      resources: []
+    }
+  }
 }
 
 resource automationAccount 'Microsoft.Automation/automationAccounts@2020-01-13-preview' = {
   name: name
   location: location
   tags: tags
+  identity: identity
   properties: {
     sku: {
       name: skuName
     }
+    encryption: {
+      identity: encryptionKeySource == 'Microsoft.Keyvault' ? {
+        userAssignedIdentity: any(encryptionUserAssignedIdentity)
+      } : null
+      keySource: encryptionKeySource
+      keyVaultProperties: encryptionKeySource == 'Microsoft.Keyvault' ? {
+        keyName: keyName
+        keyvaultUri: keyvaultUri
+        keyVersion: keyVersion
+      } : null
+    }
   }
-  identity: identity
 }
 
 module automationAccount_modules 'modules/deploy.bicep' = [for (module, index) in modules: {
@@ -150,6 +190,7 @@ module automationAccount_modules 'modules/deploy.bicep' = [for (module, index) i
     uri: module.uri
     location: location
     tags: tags
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }]
 
@@ -165,6 +206,7 @@ module automationAccount_schedules 'schedules/deploy.bicep' = [for (schedule, in
     interval: contains(schedule, 'interval') ? schedule.interval : 0
     startTime: contains(schedule, 'startTime') ? schedule.startTime : ''
     timeZone: contains(schedule, 'timeZone') ? schedule.timeZone : ''
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }]
 
@@ -179,6 +221,7 @@ module automationAccount_runbooks 'runbooks/deploy.bicep' = [for (runbook, index
     version: contains(runbook, 'version') ? runbook.version : ''
     location: location
     tags: tags
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }]
 
@@ -190,6 +233,7 @@ module automationAccount_jobSchedules 'jobSchedules/deploy.bicep' = [for (jobSch
     scheduleName: jobSchedule.scheduleName
     parameters: contains(jobSchedule, 'parameters') ? jobSchedule.parameters : {}
     runOn: contains(jobSchedule, 'runOn') ? jobSchedule.runOn : ''
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
   dependsOn: [
     automationAccount_schedules
@@ -204,7 +248,8 @@ module automationAccount_variables 'variables/deploy.bicep' = [for (variable, in
     name: variable.name
     description: contains(variable, 'description') ? variable.description : ''
     value: variable.value
-    isEncrypted: contains(variable, 'isEncrypted') ? variable.isEncrypted : false
+    isEncrypted: contains(variable, 'isEncrypted') ? variable.isEncrypted : true
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }]
 
@@ -276,6 +321,7 @@ module automationAccount_softwareUpdateConfigurations 'softwareUpdateConfigurati
       'Security'
     ]
     weekDays: contains(softwareUpdateConfiguration, 'weekDays') ? softwareUpdateConfiguration.weekDays : []
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
   dependsOn: [
     automationAccount_solutions
@@ -317,7 +363,9 @@ module automationAccount_privateEndpoints '.bicep/nested_privateEndpoint.bicep' 
 module automationAccount_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-AutoAccount-Rbac-${index}'
   params: {
+    description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
     principalIds: roleAssignment.principalIds
+    principalType: contains(roleAssignment, 'principalType') ? roleAssignment.principalType : ''
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
     resourceId: automationAccount.id
   }

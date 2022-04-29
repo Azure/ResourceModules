@@ -19,14 +19,24 @@
                 {
                     "name": "<<namePrefix>>-az-subnet-x-001",
                     "addressPrefix": "10.0.0.0/24",
-                    "networkSecurityGroupName": "adp-<<namePrefix>>-az-nsg-x-001",
+                    "networkSecurityGroupId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/networkSecurityGroups/adp-<<namePrefix>>-az-nsg-x-001",
                     "serviceEndpoints": [
-                        "Microsoft.EventHub",
-                        "Microsoft.Sql",
-                        "Microsoft.Storage",
-                        "Microsoft.KeyVault"
+                        {
+                            "service": "Microsoft.Storage"
+                        },
+                        {
+                            "service": "Microsoft.Sql"
+                        }
                     ],
-                    "routeTableName": "adp-<<namePrefix>>-az-udr-x-001"
+                    "roleAssignments": [
+                        {
+                            "roleDefinitionIdOrName": "Reader",
+                            "principalIds": [
+                                "<<deploymentSpId>>"
+                            ]
+                        }
+                    ],
+                    "routeTableId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/routeTables/adp-<<namePrefix>>-az-udr-x-001"
                 },
                 {
                     "name": "<<namePrefix>>-az-subnet-x-002",
@@ -46,6 +56,12 @@
                     "privateEndpointNetworkPolicies": "Disabled",
                     "privateLinkServiceNetworkPolicies": "Enabled"
                 }
+            ]
+        },
+        "dnsServers": {
+            "value": [
+                "10.0.1.4",
+                "10.0.1.5"
             ]
         },
         "roleAssignments": {

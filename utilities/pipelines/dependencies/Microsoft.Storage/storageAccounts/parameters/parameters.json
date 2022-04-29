@@ -17,6 +17,9 @@
     "allowBlobPublicAccess": {
       "value": false
     },
+    "requireInfrastructureEncryption": {
+      "value": false
+    },
     "blobServices": {
       "value": {
         "containers": [

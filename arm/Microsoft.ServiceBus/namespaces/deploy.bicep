@@ -80,8 +80,8 @@ param privateEndpoints array = []
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
-param cuaId string = ''
+@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+param enableDefaultTelemetry bool = true
 
 @description('Generated. Do not provide a value! This date value is used to generate a SAS token to access the modules.')
 param baseTime string = utcNow('u')
@@ -96,7 +96,7 @@ param topics array = []
 @allowed([
   'OperationalLogs'
 ])
-param logsToEnable array = [
+param diagnosticLogCategoriesToEnable array = [
   'OperationalLogs'
 ]
 
@@ -104,12 +104,15 @@ param logsToEnable array = [
 @allowed([
   'AllMetrics'
 ])
-param metricsToEnable array = [
+param diagnosticMetricsToEnable array = [
   'AllMetrics'
 ]
 
-var diagnosticsLogs = [for log in logsToEnable: {
-  category: log
+@description('Optional. The name of the diagnostic setting, if deployed.')
+param diagnosticSettingsName string = '${name}-diagnosticSettings'
+
+var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
+  category: category
   enabled: true
   retentionPolicy: {
     enabled: true
@@ -117,7 +120,7 @@ var diagnosticsLogs = [for log in logsToEnable: {
   }
 }]
 
-var diagnosticsMetrics = [for metric in metricsToEnable: {
+var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
   category: metric
   timeGrain: null
   enabled: true
@@ -138,9 +141,16 @@ var identity = identityType != 'None' ? {
   userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
 } : null
 
-module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
-  name: 'pid-${cuaId}'
-  params: {}
+resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
+  name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
+  properties: {
+    mode: 'Incremental'
+    template: {
+      '$schema': 'https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#'
+      contentVersion: '1.0.0.0'
+      resources: []
+    }
+  }
 }
 
 resource serviceBusNamespace 'Microsoft.ServiceBus/namespaces@2021-06-01-preview' = {
@@ -163,6 +173,7 @@ module serviceBusNamespace_disasterRecoveryConfig 'disasterRecoveryConfigs/deplo
     name: contains(disasterRecoveryConfigs, 'name') ? disasterRecoveryConfigs.name : 'default'
     alternateName: contains(disasterRecoveryConfigs, 'alternateName') ? disasterRecoveryConfigs.alternateName : ''
     partnerNamespaceResourceID: contains(disasterRecoveryConfigs, 'partnerNamespace') ? disasterRecoveryConfigs.partnerNamespace : ''
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }
 
@@ -173,6 +184,7 @@ module serviceBusNamespace_migrationConfigurations 'migrationConfigurations/depl
     name: contains(migrationConfigurations, 'name') ? migrationConfigurations.name : '$default'
     postMigrationName: migrationConfigurations.postMigrationName
     targetNamespaceResourceId: migrationConfigurations.targetNamespace
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }
 
@@ -182,6 +194,7 @@ module serviceBusNamespace_virtualNetworkRules 'virtualNetworkRules/deploy.bicep
     namespaceName: serviceBusNamespace.name
     name: last(split(virtualNetworkRule, '/'))
     virtualNetworkSubnetId: virtualNetworkRule
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }]
 
@@ -191,6 +204,7 @@ module serviceBusNamespace_authorizationRules 'authorizationRules/deploy.bicep' 
     namespaceName: serviceBusNamespace.name
     name: authorizationRule.name
     rights: contains(authorizationRule, 'rights') ? authorizationRule.rights : []
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }]
 
@@ -202,6 +216,7 @@ module serviceBusNamespace_ipFilterRules 'ipFilterRules/deploy.bicep' = [for (ip
     action: ipFilterRule.action
     filterName: ipFilterRule.filterName
     ipMask: ipFilterRule.ipMask
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }]
 
@@ -234,6 +249,7 @@ module serviceBusNamespace_queues 'queues/deploy.bicep' = [for (queue, index) in
     requiresSession: contains(queue, 'requiresSession') ? queue.requiresSession : false
     roleAssignments: contains(queue, 'roleAssignments') ? queue.roleAssignments : []
     status: contains(queue, 'status') ? queue.status : 'Active'
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }]
 
@@ -265,6 +281,7 @@ module serviceBusNamespace_topics 'topics/deploy.bicep' = [for (topic, index) in
     roleAssignments: contains(topic, 'roleAssignments') ? topic.roleAssignments : []
     status: contains(topic, 'status') ? topic.status : 'Active'
     supportOrdering: contains(topic, 'supportOrdering') ? topic.supportOrdering : false
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }]
 
@@ -278,7 +295,7 @@ resource serviceBusNamespace_lock 'Microsoft.Authorization/locks@2017-04-01' = i
 }
 
 resource serviceBusNamespace_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = if (!empty(diagnosticStorageAccountId) || !empty(diagnosticWorkspaceId) || !empty(diagnosticEventHubAuthorizationRuleId) || !empty(diagnosticEventHubName)) {
-  name: '${serviceBusNamespace.name}-diagnosticSettings'
+  name: diagnosticSettingsName
   properties: {
     storageAccountId: !empty(diagnosticStorageAccountId) ? diagnosticStorageAccountId : null
     workspaceId: !empty(diagnosticWorkspaceId) ? diagnosticWorkspaceId : null
@@ -303,7 +320,9 @@ module serviceBusNamespace_privateEndpoints '.bicep/nested_privateEndpoints.bice
 module serviceBusNamespace_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${deployment().name}-rbac-${index}'
   params: {
+    description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
     principalIds: roleAssignment.principalIds
+    principalType: contains(roleAssignment, 'principalType') ? roleAssignment.principalType : ''
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
     resourceId: serviceBusNamespace.id
   }

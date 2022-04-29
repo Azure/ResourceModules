@@ -4,8 +4,8 @@ param name string
 @description('Optional. The storage configuration for the Azure Recovery Service Vault')
 param backupStorageConfig object = {}
 
-@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
-param cuaId string = ''
+@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+param enableDefaultTelemetry bool = true
 
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
@@ -19,6 +19,14 @@ param backupConfig object = {}
 @description('Optional. List of all protection containers.')
 @minLength(0)
 param protectionContainers array = []
+
+@description('Optional. List of all replication fabrics.')
+@minLength(0)
+param replicationFabrics array = []
+
+@description('Optional. List of all replication policies.')
+@minLength(0)
+param replicationPolicies array = []
 
 @description('Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.')
 @minValue(0)
@@ -74,7 +82,7 @@ param tags object = {}
   'AzureSiteRecoveryReplicationDataUploadRate'
   'AzureSiteRecoveryProtectedDiskDataChurn'
 ])
-param logsToEnable array = [
+param diagnosticLogCategoriesToEnable array = [
   'AzureBackupReport'
   'CoreAzureBackup'
   'AddonAzureBackupJobs'
@@ -95,12 +103,15 @@ param logsToEnable array = [
 @allowed([
   'Health'
 ])
-param metricsToEnable array = [
+param diagnosticMetricsToEnable array = [
   'Health'
 ]
 
-var diagnosticsLogs = [for log in logsToEnable: {
-  category: log
+@description('Optional. The name of the diagnostic setting, if deployed.')
+param diagnosticSettingsName string = '${name}-diagnosticSettings'
+
+var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
+  category: category
   enabled: true
   retentionPolicy: {
     enabled: true
@@ -108,7 +119,7 @@ var diagnosticsLogs = [for log in logsToEnable: {
   }
 }]
 
-var diagnosticsMetrics = [for metric in metricsToEnable: {
+var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
   category: metric
   timeGrain: null
   enabled: true
@@ -125,12 +136,19 @@ var identity = identityType != 'None' ? {
   userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
 } : null
 
-module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
-  name: 'pid-${cuaId}'
-  params: {}
+resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
+  name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
+  properties: {
+    mode: 'Incremental'
+    template: {
+      '$schema': 'https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#'
+      contentVersion: '1.0.0.0'
+      resources: []
+    }
+  }
 }
 
-resource rsv 'Microsoft.RecoveryServices/vaults@2021-12-01' = {
+resource rsv 'Microsoft.RecoveryServices/vaults@2021-11-01-preview' = {
   name: name
   location: location
   tags: tags
@@ -142,12 +160,40 @@ resource rsv 'Microsoft.RecoveryServices/vaults@2021-12-01' = {
   properties: {}
 }
 
+module rsv_replicationFabrics 'replicationFabrics/deploy.bicep' = [for (replicationFabric, index) in replicationFabrics: {
+  name: '${uniqueString(deployment().name, location)}-RSV-Fabric-${index}'
+  params: {
+    recoveryVaultName: rsv.name
+    name: contains(replicationFabric, 'name') ? replicationFabric.name : replicationFabric.location
+    location: replicationFabric.location
+    replicationContainers: contains(replicationFabric, 'replicationContainers') ? replicationFabric.replicationContainers : []
+    enableDefaultTelemetry: enableDefaultTelemetry
+  }
+  dependsOn: [
+    rsv_replicationPolicies
+  ]
+}]
+
+module rsv_replicationPolicies 'replicationPolicies/deploy.bicep' = [for (replicationPolicy, index) in replicationPolicies: {
+  name: '${uniqueString(deployment().name, location)}-RSV-Policy-${index}'
+  params: {
+    name: replicationPolicy.name
+    recoveryVaultName: rsv.name
+    appConsistentFrequencyInMinutes: contains(replicationPolicy, 'appConsistentFrequencyInMinutes') ? replicationPolicy.appConsistentFrequencyInMinutes : 60
+    crashConsistentFrequencyInMinutes: contains(replicationPolicy, 'crashConsistentFrequencyInMinutes') ? replicationPolicy.crashConsistentFrequencyInMinutes : 5
+    multiVmSyncStatus: contains(replicationPolicy, 'multiVmSyncStatus') ? replicationPolicy.multiVmSyncStatus : 'Enable'
+    recoveryPointHistory: contains(replicationPolicy, 'recoveryPointHistory') ? replicationPolicy.recoveryPointHistory : 1440
+    enableDefaultTelemetry: enableDefaultTelemetry
+  }
+}]
+
 module rsv_backupStorageConfiguration 'backupStorageConfig/deploy.bicep' = if (!empty(backupStorageConfig)) {
   name: '${uniqueString(deployment().name, location)}-RSV-BackupStorageConfig'
   params: {
     recoveryVaultName: rsv.name
     storageModelType: backupStorageConfig.storageModelType
     crossRegionRestoreFlag: backupStorageConfig.crossRegionRestoreFlag
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }
 
@@ -160,6 +206,7 @@ module rsv_protectionContainers 'protectionContainers/deploy.bicep' = [for (prot
     friendlyName: protectionContainer.friendlyName
     backupManagementType: protectionContainer.backupManagementType
     containerType: protectionContainer.containerType
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }]
 
@@ -169,6 +216,7 @@ module rsv_backupPolicies 'backupPolicies/deploy.bicep' = [for (backupPolicy, in
     recoveryVaultName: rsv.name
     name: backupPolicy.name
     backupPolicyProperties: backupPolicy.properties
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }]
 
@@ -183,6 +231,7 @@ module rsv_backupConfig 'backupConfig/deploy.bicep' = if (!empty(backupConfig)) 
     storageModelType: contains(backupConfig, 'storageModelType') ? backupConfig.storageModelType : 'GeoRedundant'
     storageType: contains(backupConfig, 'storageType') ? backupConfig.storageType : 'GeoRedundant'
     storageTypeState: contains(backupConfig, 'storageTypeState') ? backupConfig.storageTypeState : 'Locked'
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }
 
@@ -196,7 +245,7 @@ resource rsv_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotS
 }
 
 resource rsv_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(diagnosticWorkspaceId)) || (!empty(diagnosticEventHubAuthorizationRuleId)) || (!empty(diagnosticEventHubName))) {
-  name: '${rsv.name}-diagnosticSettings'
+  name: diagnosticSettingsName
   properties: {
     storageAccountId: !empty(diagnosticStorageAccountId) ? diagnosticStorageAccountId : null
     workspaceId: !empty(diagnosticWorkspaceId) ? diagnosticWorkspaceId : null
@@ -211,7 +260,9 @@ resource rsv_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-0
 module rsv_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-RSV-Rbac-${index}'
   params: {
+    description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
     principalIds: roleAssignment.principalIds
+    principalType: contains(roleAssignment, 'principalType') ? roleAssignment.principalType : ''
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
     resourceId: rsv.id
   }

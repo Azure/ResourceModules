@@ -43,11 +43,8 @@ param authorizationRules array = [
 @description('Optional. Configuration Details for private endpoints.For security reasons, it is recommended to use private endpoints whenever possible.')
 param privateEndpoints array = []
 
-@description('Optional. Service endpoint object information')
+@description('Optional. Networks ACLs, this value contains IPs to whitelist and/or Subnet information. For security reasons, it is recommended to set the DefaultAction Deny')
 param networkAcls object = {}
-
-@description('Optional. Virtual Network ID to lock down the Event Hub.')
-param vNetId string = ''
 
 @description('Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.')
 @minValue(0)
@@ -86,11 +83,8 @@ param roleAssignments array = []
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
-param cuaId string = ''
-
-@description('Generated. Do not provide a value! This date value is used to generate a SAS token to access the modules.')
-param baseTime string = utcNow('u')
+@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+param enableDefaultTelemetry bool = true
 
 @description('Optional. The event hubs to deploy into this namespace')
 param eventHubs array = []
@@ -108,7 +102,7 @@ param disasterRecoveryConfig object = {}
   'CustomerManagedKeyUserLogs'
   'AutoScaleLogs'
 ])
-param logsToEnable array = [
+param diagnosticLogCategoriesToEnable array = [
   'ArchiveLogs'
   'OperationalLogs'
   'KafkaCoordinatorLogs'
@@ -122,27 +116,19 @@ param logsToEnable array = [
 @allowed([
   'AllMetrics'
 ])
-param metricsToEnable array = [
+param diagnosticMetricsToEnable array = [
   'AllMetrics'
 ]
 
-var maxNameLength = 50
-var uniqueEventHubNamespaceUntrim = uniqueString('EventHub Namespace${baseTime}')
-var uniqueEventHubNamespace = length(uniqueEventHubNamespaceUntrim) > maxNameLength ? substring(uniqueEventHubNamespaceUntrim, 0, maxNameLength) : uniqueEventHubNamespaceUntrim
+var uniqueEventHubNamespace = 'evhns-${uniqueString(resourceGroup().id)}'
 var name_var = empty(name) ? uniqueEventHubNamespace : name
 var maximumThroughputUnits_var = !isAutoInflateEnabled ? 0 : maximumThroughputUnits
-var virtualNetworkRules = [for index in range(0, (empty(networkAcls) ? 0 : length(networkAcls.virtualNetworkRules))): {
-  id: '${vNetId}/subnets/${networkAcls.virtualNetworkRules[index].subnet}'
-}]
-var networkAcls_var = {
-  bypass: !empty(networkAcls) ? networkAcls.bypass : null
-  defaultAction: !empty(networkAcls) ? networkAcls.defaultAction : null
-  virtualNetworkRules: !empty(networkAcls) ? virtualNetworkRules : null
-  ipRules: !empty(networkAcls) ? (length(networkAcls.ipRules) > 0 ? networkAcls.ipRules : null) : null
-}
 
-var diagnosticsLogs = [for log in logsToEnable: {
-  category: log
+@description('Optional. The name of the diagnostic setting, if deployed.')
+param diagnosticSettingsName string = '${name}-diagnosticSettings'
+
+var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
+  category: category
   enabled: true
   retentionPolicy: {
     enabled: true
@@ -150,7 +136,7 @@ var diagnosticsLogs = [for log in logsToEnable: {
   }
 }]
 
-var diagnosticsMetrics = [for metric in metricsToEnable: {
+var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
   category: metric
   timeGrain: null
   enabled: true
@@ -167,9 +153,16 @@ var identity = identityType != 'None' ? {
   userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
 } : null
 
-module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
-  name: 'pid-${cuaId}'
-  params: {}
+resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
+  name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
+  properties: {
+    mode: 'Incremental'
+    template: {
+      '$schema': 'https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#'
+      contentVersion: '1.0.0.0'
+      resources: []
+    }
+  }
 }
 
 resource eventHubNamespace 'Microsoft.EventHub/namespaces@2021-06-01-preview' = {
@@ -186,7 +179,12 @@ resource eventHubNamespace 'Microsoft.EventHub/namespaces@2021-06-01-preview' = 
     zoneRedundant: zoneRedundant
     isAutoInflateEnabled: isAutoInflateEnabled
     maximumThroughputUnits: maximumThroughputUnits_var
-    networkAcls: !empty(networkAcls) ? networkAcls_var : null
+    networkAcls: !empty(networkAcls) ? {
+      bypass: !empty(networkAcls) ? networkAcls.bypass : null
+      defaultAction: !empty(networkAcls) ? networkAcls.defaultAction : null
+      virtualNetworkRules: (!empty(networkAcls) && contains(networkAcls, 'virtualNetworkRules')) ? networkAcls.virtualNetworkRules : []
+      ipRules: (!empty(networkAcls) && contains(networkAcls, 'ipRules')) ? networkAcls.ipRules : []
+    } : null
   }
 }
 
@@ -200,7 +198,7 @@ resource eventHubNamespace_lock 'Microsoft.Authorization/locks@2017-04-01' = if 
 }
 
 resource eventHubNamespace_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(diagnosticWorkspaceId)) || (!empty(diagnosticEventHubAuthorizationRuleId)) || (!empty(diagnosticEventHubName))) {
-  name: '${eventHubNamespace.name}-diagnosticSettings'
+  name: diagnosticSettingsName
   properties: {
     storageAccountId: !empty(diagnosticStorageAccountId) ? diagnosticStorageAccountId : null
     workspaceId: !empty(diagnosticWorkspaceId) ? diagnosticWorkspaceId : null
@@ -220,13 +218,11 @@ module eventHubNamespace_eventHubs 'eventhubs/deploy.bicep' = [for (eventHub, in
     authorizationRules: contains(eventHub, 'authorizationRules') ? eventHub.authorizationRules : [
       {
         name: 'RootManageSharedAccessKey'
-        properties: {
-          rights: [
-            'Listen'
-            'Manage'
-            'Send'
-          ]
-        }
+        rights: [
+          'Listen'
+          'Manage'
+          'Send'
+        ]
       }
     ]
     captureDescriptionDestinationArchiveNameFormat: contains(eventHub, 'captureDescriptionDestinationArchiveNameFormat') ? eventHub.captureDescriptionDestinationArchiveNameFormat : '{Namespace}/{EventHub}/{PartitionId}/{Year}/{Month}/{Day}/{Hour}/{Minute}/{Second}'
@@ -244,6 +240,7 @@ module eventHubNamespace_eventHubs 'eventhubs/deploy.bicep' = [for (eventHub, in
     partitionCount: contains(eventHub, 'partitionCount') ? eventHub.partitionCount : 2
     roleAssignments: contains(eventHub, 'roleAssignments') ? eventHub.roleAssignments : []
     status: contains(eventHub, 'status') ? eventHub.status : 'Active'
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }]
 
@@ -253,6 +250,7 @@ module eventHubNamespace_diasterRecoveryConfig 'disasterRecoveryConfigs/deploy.b
     namespaceName: eventHubNamespace.name
     name: disasterRecoveryConfig.name
     partnerNamespaceId: contains(disasterRecoveryConfig, 'partnerNamespaceId') ? disasterRecoveryConfig.partnerNamespaceId : ''
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }
 
@@ -262,6 +260,7 @@ module eventHubNamespace_authorizationRules 'authorizationRules/deploy.bicep' = 
     namespaceName: eventHubNamespace.name
     name: authorizationRule.name
     rights: contains(authorizationRule, 'rights') ? authorizationRule.rights : []
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }]
 
@@ -278,7 +277,9 @@ module eventHubNamespace_privateEndpoints '.bicep/nested_privateEndpoint.bicep' 
 module eventHubNamespace_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-EvhbNamespace-Rbac-${index}'
   params: {
+    description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
     principalIds: roleAssignment.principalIds
+    principalType: contains(roleAssignment, 'principalType') ? roleAssignment.principalType : ''
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
     resourceId: eventHubNamespace.id
   }

@@ -260,8 +260,8 @@ param availabilityZones array = []
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
-param cuaId string = ''
+@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+param enableDefaultTelemetry bool = true
 
 @description('Required. The chosen OS type')
 @allowed([
@@ -286,11 +286,14 @@ param userAssignedIdentities object = {}
 @allowed([
   'AllMetrics'
 ])
-param metricsToEnable array = [
+param diagnosticMetricsToEnable array = [
   'AllMetrics'
 ]
 
-var diagnosticsMetrics = [for metric in metricsToEnable: {
+@description('Optional. The name of the diagnostic setting, if deployed.')
+param publicIpDiagnosticSettingsName string = '${name}-diagnosticSettings'
+
+var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
   category: metric
   timeGrain: null
   enabled: true
@@ -338,9 +341,16 @@ var identity = identityType != 'None' ? {
   userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
 } : null
 
-module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
-  name: 'pid-${cuaId}'
-  params: {}
+resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
+  name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
+  properties: {
+    mode: 'Incremental'
+    template: {
+      '$schema': 'https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#'
+      contentVersion: '1.0.0.0'
+      resources: []
+    }
+  }
 }
 
 resource proximityPlacementGroup 'Microsoft.Compute/proximityPlacementGroups@2021-04-01' = if (!empty(proximityPlacementGroupName)) {
@@ -396,7 +406,6 @@ resource vmss 'Microsoft.Compute/virtualMachineScaleSets@2021-04-01' = {
           secureBootEnabled: secureBootEnabled
           vTpmEnabled: vTpmEnabled
         } : null
-      
       }
       storageProfile: {
         imageReference: imageReference
@@ -486,6 +495,7 @@ module vmss_domainJoinExtension 'extensions/deploy.bicep' = if (extensionDomainJ
     protectedSettings: {
       Password: extensionDomainJoinPassword
     }
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }
 
@@ -500,6 +510,7 @@ module vmss_microsoftAntiMalwareExtension 'extensions/deploy.bicep' = if (extens
     autoUpgradeMinorVersion: contains(extensionAntiMalwareConfig, 'autoUpgradeMinorVersion') ? extensionAntiMalwareConfig.autoUpgradeMinorVersion : true
     enableAutomaticUpgrade: contains(extensionAntiMalwareConfig, 'enableAutomaticUpgrade') ? extensionAntiMalwareConfig.enableAutomaticUpgrade : false
     settings: extensionAntiMalwareConfig.settings
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }
 
@@ -524,6 +535,7 @@ module vmss_microsoftMonitoringAgentExtension 'extensions/deploy.bicep' = if (ex
     protectedSettings: {
       workspaceKey: !empty(monitoringWorkspaceId) ? vmss_logAnalyticsWorkspace.listKeys().primarySharedKey : ''
     }
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }
 
@@ -537,6 +549,7 @@ module vmss_dependencyAgentExtension 'extensions/deploy.bicep' = if (extensionDe
     typeHandlerVersion: contains(extensionDependencyAgentConfig, 'typeHandlerVersion') ? extensionDependencyAgentConfig.typeHandlerVersion : '9.5'
     autoUpgradeMinorVersion: contains(extensionDependencyAgentConfig, 'autoUpgradeMinorVersion') ? extensionDependencyAgentConfig.autoUpgradeMinorVersion : true
     enableAutomaticUpgrade: contains(extensionDependencyAgentConfig, 'enableAutomaticUpgrade') ? extensionDependencyAgentConfig.enableAutomaticUpgrade : true
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }
 
@@ -550,6 +563,7 @@ module vmss_networkWatcherAgentExtension 'extensions/deploy.bicep' = if (extensi
     typeHandlerVersion: contains(extensionNetworkWatcherAgentConfig, 'typeHandlerVersion') ? extensionNetworkWatcherAgentConfig.typeHandlerVersion : '1.4'
     autoUpgradeMinorVersion: contains(extensionNetworkWatcherAgentConfig, 'autoUpgradeMinorVersion') ? extensionNetworkWatcherAgentConfig.autoUpgradeMinorVersion : true
     enableAutomaticUpgrade: contains(extensionNetworkWatcherAgentConfig, 'enableAutomaticUpgrade') ? extensionNetworkWatcherAgentConfig.enableAutomaticUpgrade : false
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }
 
@@ -565,6 +579,7 @@ module vmss_desiredStateConfigurationExtension 'extensions/deploy.bicep' = if (e
     enableAutomaticUpgrade: contains(extensionDSCConfig, 'enableAutomaticUpgrade') ? extensionDSCConfig.enableAutomaticUpgrade : false
     settings: contains(extensionDSCConfig, 'settings') ? extensionDSCConfig.settings : {}
     protectedSettings: contains(extensionDSCConfig, 'protectedSettings') ? extensionDSCConfig.protectedSettings : {}
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }
 
@@ -582,6 +597,7 @@ module vmss_customScriptExtension 'extensions/deploy.bicep' = if (extensionCusto
       fileUris: [for fileData in extensionCustomScriptConfig.fileData: contains(fileData, 'storageAccountId') ? '${fileData.uri}?${listAccountSas(fileData.storageAccountId, '2019-04-01', accountSasProperties).accountSasToken}' : fileData.uri]
     }
     protectedSettings: contains(extensionCustomScriptConfig, 'protectedSettings') ? extensionCustomScriptConfig.protectedSettings : {}
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
   dependsOn: [
     vmss_desiredStateConfigurationExtension
@@ -600,6 +616,7 @@ module vmss_diskEncryptionExtension 'extensions/deploy.bicep' = if (extensionDis
     enableAutomaticUpgrade: contains(extensionDiskEncryptionConfig, 'enableAutomaticUpgrade') ? extensionDiskEncryptionConfig.enableAutomaticUpgrade : false
     forceUpdateTag: contains(extensionDiskEncryptionConfig, 'forceUpdateTag') ? extensionDiskEncryptionConfig.forceUpdateTag : '1.0'
     settings: extensionDiskEncryptionConfig.settings
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
   dependsOn: [
     vmss_customScriptExtension
@@ -617,7 +634,7 @@ resource vmss_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'Not
 }
 
 resource vmss_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(diagnosticWorkspaceId)) || (!empty(diagnosticEventHubAuthorizationRuleId)) || (!empty(diagnosticEventHubName))) {
-  name: '${vmss.name}-diagnosticSettings'
+  name: publicIpDiagnosticSettingsName
   properties: {
     storageAccountId: !empty(diagnosticStorageAccountId) ? diagnosticStorageAccountId : null
     workspaceId: !empty(diagnosticWorkspaceId) ? diagnosticWorkspaceId : null
@@ -631,7 +648,9 @@ resource vmss_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-
 module vmss_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-VMSS-Rbac-${index}'
   params: {
+    description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
     principalIds: roleAssignment.principalIds
+    principalType: contains(roleAssignment, 'principalType') ? roleAssignment.principalType : ''
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
     resourceId: vmss.id
   }

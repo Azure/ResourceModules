@@ -1,3 +1,6 @@
+// ================ //
+// Parameters       //
+// ================ //
 @description('Optional. Name of the Key Vault. If no name is provided, then unique name will be created.')
 @maxLength(24)
 param name string = ''
@@ -61,8 +64,12 @@ param vaultSku string = 'premium'
 @description('Optional. Service endpoint object information. For security reasons, it is recommended to set the DefaultAction Deny')
 param networkAcls object = {}
 
-@description('Optional. Virtual Network resource identifier, if networkAcls is passed, this value must be passed as well')
-param vNetId string = ''
+@description('Optional. Property to specify whether the vault will accept traffic from public internet. If set to "disabled" all traffic except private endpoint traffic and that that originates from trusted services will be blocked. This will override the set firewall rules, meaning that even if the firewall rules are present we will not honor the rules.')
+@allowed([
+  'enabled'
+  'disabled'
+])
+param publicNetworkAccess string = 'enabled'
 
 @description('Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.')
 @minValue(0)
@@ -98,8 +105,8 @@ param privateEndpoints array = []
 @description('Optional. Resource tags.')
 param tags object = {}
 
-@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
-param cuaId string = ''
+@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+param enableDefaultTelemetry bool = true
 
 @description('Generated. Do not provide a value! This date value is used to generate a SAS token to access the modules.')
 param baseTime string = utcNow('u')
@@ -107,21 +114,29 @@ param baseTime string = utcNow('u')
 @description('Optional. The name of logs that will be streamed.')
 @allowed([
   'AuditEvent'
+  'AzurePolicyEvaluationDetails'
 ])
-param logsToEnable array = [
+param diagnosticLogCategoriesToEnable array = [
   'AuditEvent'
+  'AzurePolicyEvaluationDetails'
 ]
 
 @description('Optional. The name of metrics that will be streamed.')
 @allowed([
   'AllMetrics'
 ])
-param metricsToEnable array = [
+param diagnosticMetricsToEnable array = [
   'AllMetrics'
 ]
 
-var diagnosticsLogs = [for log in logsToEnable: {
-  category: log
+@description('Optional. The name of the diagnostic setting, if deployed.')
+param diagnosticSettingsName string = '${name}-diagnosticSettings'
+
+// =========== //
+// Variables   //
+// =========== //
+var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
+  category: category
   enabled: true
   retentionPolicy: {
     enabled: true
@@ -129,7 +144,7 @@ var diagnosticsLogs = [for log in logsToEnable: {
   }
 }]
 
-var diagnosticsMetrics = [for metric in metricsToEnable: {
+var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
   category: metric
   timeGrain: null
   enabled: true
@@ -143,14 +158,12 @@ var maxNameLength = 24
 var uniquenameUntrim = uniqueString('Key Vault${baseTime}')
 var uniquename = (length(uniquenameUntrim) > maxNameLength ? substring(uniquenameUntrim, 0, maxNameLength) : uniquenameUntrim)
 var name_var = !empty(name) ? name : uniquename
-var virtualNetworkRules = [for networkrule in ((contains(networkAcls, 'virtualNetworkRules')) ? networkAcls.virtualNetworkRules : []): {
-  id: '${vNetId}/subnets/${networkrule.subnet}'
-}]
+
 var networkAcls_var = {
   bypass: !empty(networkAcls) ? networkAcls.bypass : null
   defaultAction: !empty(networkAcls) ? networkAcls.defaultAction : null
-  virtualNetworkRules: !empty(networkAcls) ? virtualNetworkRules : null
-  ipRules: (!empty(networkAcls) && length(networkAcls.ipRules) != 0) ? networkAcls.ipRules : null
+  virtualNetworkRules: (!empty(networkAcls) && contains(networkAcls, 'virtualNetworkRules')) ? networkAcls.virtualNetworkRules : []
+  ipRules: (!empty(networkAcls) && contains(networkAcls, 'ipRules')) ? networkAcls.ipRules : []
 }
 
 var formattedAccessPolicies = [for accessPolicy in accessPolicies: {
@@ -162,12 +175,22 @@ var formattedAccessPolicies = [for accessPolicy in accessPolicies: {
 
 var secretList = !empty(secrets) ? secrets.secureList : []
 
-module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
-  name: 'pid-${cuaId}'
-  params: {}
+// =========== //
+// Deployments //
+// =========== //
+resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
+  name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
+  properties: {
+    mode: 'Incremental'
+    template: {
+      '$schema': 'https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#'
+      contentVersion: '1.0.0.0'
+      resources: []
+    }
+  }
 }
 
-resource keyVault 'Microsoft.KeyVault/vaults@2019-09-01' = {
+resource keyVault 'Microsoft.KeyVault/vaults@2021-11-01-preview' = {
   name: name_var
   location: location
   tags: tags
@@ -187,6 +210,7 @@ resource keyVault 'Microsoft.KeyVault/vaults@2019-09-01' = {
       family: 'A'
     }
     networkAcls: !empty(networkAcls) ? networkAcls_var : null
+    publicNetworkAccess: publicNetworkAccess
   }
 }
 
@@ -200,7 +224,7 @@ resource keyVault_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 
 }
 
 resource keyVault_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(diagnosticWorkspaceId)) || (!empty(diagnosticEventHubAuthorizationRuleId)) || (!empty(diagnosticEventHubName))) {
-  name: '${name_var}-diagnosticSettingName'
+  name: diagnosticSettingsName
   properties: {
     storageAccountId: !empty(diagnosticStorageAccountId) ? diagnosticStorageAccountId : null
     workspaceId: !empty(diagnosticWorkspaceId) ? diagnosticWorkspaceId : null
@@ -217,6 +241,7 @@ module keyVault_accessPolicies 'accessPolicies/deploy.bicep' = if (!empty(access
   params: {
     keyVaultName: keyVault.name
     accessPolicies: formattedAccessPolicies
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }
 
@@ -232,6 +257,7 @@ module keyVault_secrets 'secrets/deploy.bicep' = [for (secret, index) in secretL
     contentType: contains(secret, 'contentType') ? secret.contentType : ''
     tags: contains(secret, 'tags') ? secret.tags : {}
     roleAssignments: contains(secret, 'roleAssignments') ? secret.roleAssignments : []
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }]
 
@@ -249,6 +275,7 @@ module keyVault_keys 'keys/deploy.bicep' = [for (key, index) in keys: {
     kty: contains(key, 'kty') ? key.kty : 'EC'
     tags: contains(key, 'tags') ? key.tags : {}
     roleAssignments: contains(key, 'roleAssignments') ? key.roleAssignments : []
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }]
 
@@ -265,12 +292,17 @@ module keyVault_privateEndpoints '.bicep/nested_privateEndpoint.bicep' = [for (p
 module keyVault_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-KeyVault-Rbac-${index}'
   params: {
+    description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
     principalIds: roleAssignment.principalIds
+    principalType: contains(roleAssignment, 'principalType') ? roleAssignment.principalType : ''
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
     resourceId: keyVault.id
   }
 }]
 
+// =========== //
+// Outputs     //
+// =========== //
 @description('The resource ID of the key vault.')
 output resourceId string = keyVault.id
 

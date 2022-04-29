@@ -13,10 +13,11 @@
         "osType": {
             "value": "Windows"
         },
+        "vmSize": {
+            "value": "Standard_B12ms"
+        },
         "osDisk": {
             "value": {
-                "createOption": "fromImage",
-                "deleteOption": "Delete",
                 "diskSizeGB": "128",
                 "managedDisk": {
                     "storageAccountType": "Premium_LRS"

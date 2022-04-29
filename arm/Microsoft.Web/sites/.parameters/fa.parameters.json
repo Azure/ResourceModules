@@ -8,30 +8,95 @@
         "kind": {
             "value": "functionapp"
         },
-        "appServicePlanObject": {
+        "serverFarmResourceId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Web/serverFarms/adp-<<namePrefix>>-az-asp-x-001"
+        },
+        "siteConfig": {
             "value": {
-                "name": "<<namePrefix>>-az-fa-x-001-asp",
-                "serverOS": "Linux",
-                "skuName": "P1v2",
-                "skuCapacity": 2,
-                "skuTier": "PremiumV2",
-                "skuSize": "P1v2",
-                "skuFamily": "Pv2"
+                "alwaysOn": true,
+                "use32BitWorkerProcess": false
             }
         },
         "appInsightId": {
             "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Insights/components/adp-<<namePrefix>>-az-appi-x-001"
         },
-        "siteConfig": {
+        "storageAccountId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
+        },
+        "setAzureWebJobsDashboard": {
+            "value": true
+        },
+        "appSettingsKeyValuePairs": {
             "value": {
-                "alwaysOn": true
+                "FUNCTIONS_EXTENSION_VERSION": "~4",
+                "FUNCTIONS_WORKER_RUNTIME": "dotnet",
+                "AzureFunctionsJobHost__logging__logLevel__default": "Trace",
+                "EASYAUTH_SECRET": "https://adp-<<namePrefix>>-az-kv-x-001.vault.azure.net/secrets/Modules-Test-SP-Password"
             }
         },
-        "storageAccountId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsafa001"
-        },
-        "functionsWorkerRuntime": {
-            "value": "powershell"
+        "authSettingV2Configuration": {
+            "value": {
+                "globalValidation": {
+                    "requireAuthentication": true,
+                    "unauthenticatedClientAction": "Return401"
+                },
+                "httpSettings": {
+                    "forwardProxy": {
+                        "convention": "NoProxy"
+                    },
+                    "requireHttps": true,
+                    "routes": {
+                        "apiPrefix": "/.auth"
+                    }
+                },
+                "identityProviders": {
+                    "azureActiveDirectory": {
+                        "enabled": true,
+                        "login": {
+                            "disableWWWAuthenticate": false
+                        },
+                        "registration": {
+                            "openIdIssuer": "https://sts.windows.net/<<tenantId>>/v2.0/",
+                            "clientId": "d874dd2f-2032-4db1-a053-f0ec243685aa",
+                            "clientSecretSettingName": "EASYAUTH_SECRET"
+                        },
+                        "validation": {
+                            "allowedAudiences": [
+                                "api://d874dd2f-2032-4db1-a053-f0ec243685aa"
+                            ],
+                            "defaultAuthorizationPolicy": {
+                                "allowedPrincipals": {}
+                            },
+                            "jwtClaimChecks": {}
+                        }
+                    }
+                },
+                "login": {
+                    "allowedExternalRedirectUrls": [
+                        "string"
+                    ],
+                    "cookieExpiration": {
+                        "convention": "FixedTime",
+                        "timeToExpiration": "08:00:00"
+                    },
+                    "nonce": {
+                        "nonceExpirationInterval": "00:05:00",
+                        "validateNonce": true
+                    },
+                    "preserveUrlFragmentsForLogins": false,
+                    "routes": {},
+                    "tokenStore": {
+                        "azureBlobStorage": {},
+                        "enabled": true,
+                        "fileSystem": {},
+                        "tokenRefreshExtensionHours": 72
+                    }
+                },
+                "platform": {
+                    "enabled": true,
+                    "runtimeVersion": "~1"
+                }
+            }
         },
         "systemAssignedIdentity": {
             "value": true

@@ -50,14 +50,14 @@ param roleAssignments array = []
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
-param cuaId string = ''
+@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+param enableDefaultTelemetry bool = true
 
 @description('Optional. The name of logs that will be streamed.')
 @allowed([
   'VMProtectionAlerts'
 ])
-param logsToEnable array = [
+param diagnosticLogCategoriesToEnable array = [
   'VMProtectionAlerts'
 ]
 
@@ -65,12 +65,15 @@ param logsToEnable array = [
 @allowed([
   'AllMetrics'
 ])
-param metricsToEnable array = [
+param diagnosticMetricsToEnable array = [
   'AllMetrics'
 ]
 
-var diagnosticsLogs = [for log in logsToEnable: {
-  category: log
+@description('Optional. The name of the diagnostic setting, if deployed.')
+param diagnosticSettingsName string = '${name}-diagnosticSettings'
+
+var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
+  category: category
   enabled: true
   retentionPolicy: {
     enabled: true
@@ -78,7 +81,7 @@ var diagnosticsLogs = [for log in logsToEnable: {
   }
 }]
 
-var diagnosticsMetrics = [for metric in metricsToEnable: {
+var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
   category: metric
   timeGrain: null
   enabled: true
@@ -95,9 +98,16 @@ var ddosProtectionPlan = {
   id: ddosProtectionPlanId
 }
 
-module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
-  name: 'pid-${cuaId}'
-  params: {}
+resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
+  name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
+  properties: {
+    mode: 'Incremental'
+    template: {
+      '$schema': 'https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#'
+      contentVersion: '1.0.0.0'
+      resources: []
+    }
+  }
 }
 
 resource virtualNetwork 'Microsoft.Network/virtualNetworks@2021-05-01' = {
@@ -111,10 +121,40 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2021-05-01' = {
     ddosProtectionPlan: !empty(ddosProtectionPlanId) ? ddosProtectionPlan : null
     dhcpOptions: !empty(dnsServers) ? dnsServers_var : null
     enableDdosProtection: !empty(ddosProtectionPlanId)
+    subnets: [for subnet in subnets: {
+      name: subnet.name
+      properties: {
+        addressPrefix: subnet.addressPrefix
+        addressPrefixes: contains(subnet, 'addressPrefixes') ? subnet.addressPrefixes : []
+        applicationGatewayIpConfigurations: contains(subnet, 'applicationGatewayIpConfigurations') ? subnet.applicationGatewayIpConfigurations : []
+        delegations: contains(subnet, 'delegations') ? subnet.delegations : []
+        ipAllocations: contains(subnet, 'ipAllocations') ? subnet.ipAllocations : []
+        natGateway: contains(subnet, 'natGatewayId') ? {
+          'id': subnet.natGatewayId
+        } : json('null')
+        networkSecurityGroup: contains(subnet, 'networkSecurityGroupId') ? {
+          'id': subnet.networkSecurityGroupId
+        } : json('null')
+        privateEndpointNetworkPolicies: contains(subnet, 'privateEndpointNetworkPolicies') ? subnet.privateEndpointNetworkPolicies : null
+        privateLinkServiceNetworkPolicies: contains(subnet, 'privateLinkServiceNetworkPolicies') ? subnet.privateLinkServiceNetworkPolicies : null
+        routeTable: contains(subnet, 'routeTableId') ? {
+          'id': subnet.routeTableId
+        } : json('null')
+        serviceEndpoints: contains(subnet, 'serviceEndpoints') ? subnet.serviceEndpoints : []
+        serviceEndpointPolicies: contains(subnet, 'serviceEndpointPolicies') ? subnet.serviceEndpointPolicies : []
+      }
+    }]
   }
 }
 
-@batchSize(1)
+//NOTE Start: ------------------------------------
+// The below module (virtualNetwork_subnets) is a duplicate of the child resource (subnets) defined in the parent module (virtualNetwork).
+// The reason it exists so that deployment validation tests can be performed on the child module (subnets), in case that module needed to be deployed alone outside of this template.
+// The reason for duplication is due to the current design for the (virtualNetworks) resource from Azure, where if the child module (subnets) does not exist within it, causes
+//    an issue, where the child resource (subnets) gets all of its properties removed, hence not as 'idempotent' as it should be. See https://github.com/Azure/azure-quickstart-templates/issues/2786 for more details.
+// You can safely remove the below child module (virtualNetwork_subnets) in your consumption of the module (virtualNetworks) to reduce the template size and duplication.
+//NOTE End  : ------------------------------------
+
 module virtualNetwork_subnets 'subnets/deploy.bicep' = [for (subnet, index) in subnets: {
   name: '${uniqueString(deployment().name, location)}-subnet-${index}'
   params: {
@@ -125,14 +165,15 @@ module virtualNetwork_subnets 'subnets/deploy.bicep' = [for (subnet, index) in s
     applicationGatewayIpConfigurations: contains(subnet, 'applicationGatewayIpConfigurations') ? subnet.applicationGatewayIpConfigurations : []
     delegations: contains(subnet, 'delegations') ? subnet.delegations : []
     ipAllocations: contains(subnet, 'ipAllocations') ? subnet.ipAllocations : []
-    natGatewayName: contains(subnet, 'natGatewayName') ? subnet.natGatewayName : ''
-    networkSecurityGroupName: contains(subnet, 'networkSecurityGroupName') ? subnet.networkSecurityGroupName : ''
-    networkSecurityGroupNameResourceGroupName: contains(subnet, 'networkSecurityGroupNameResourceGroupName') ? subnet.networkSecurityGroupNameResourceGroupName : resourceGroup().name
+    natGatewayId: contains(subnet, 'natGatewayId') ? subnet.natGatewayId : ''
+    networkSecurityGroupId: contains(subnet, 'networkSecurityGroupId') ? subnet.networkSecurityGroupId : ''
     privateEndpointNetworkPolicies: contains(subnet, 'privateEndpointNetworkPolicies') ? subnet.privateEndpointNetworkPolicies : ''
     privateLinkServiceNetworkPolicies: contains(subnet, 'privateLinkServiceNetworkPolicies') ? subnet.privateLinkServiceNetworkPolicies : ''
-    routeTableName: contains(subnet, 'routeTableName') ? subnet.routeTableName : ''
+    roleAssignments: contains(subnet, 'roleAssignments') ? subnet.roleAssignments : []
+    routeTableId: contains(subnet, 'routeTableId') ? subnet.routeTableId : ''
     serviceEndpointPolicies: contains(subnet, 'serviceEndpointPolicies') ? subnet.serviceEndpointPolicies : []
     serviceEndpoints: contains(subnet, 'serviceEndpoints') ? subnet.serviceEndpoints : []
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }]
 
@@ -140,7 +181,7 @@ module virtualNetwork_subnets 'subnets/deploy.bicep' = [for (subnet, index) in s
 module virtualNetwork_peering_local 'virtualNetworkPeerings/deploy.bicep' = [for (peering, index) in virtualNetworkPeerings: {
   name: '${uniqueString(deployment().name, location)}-virtualNetworkPeering-local-${index}'
   params: {
-    localVnetName: name
+    localVnetName: virtualNetwork.name
     remoteVirtualNetworkId: peering.remoteVirtualNetworkId
     name: contains(peering, 'name') ? peering.name : '${name}-${last(split(peering.remoteVirtualNetworkId, '/'))}'
     allowForwardedTraffic: contains(peering, 'allowForwardedTraffic') ? peering.allowForwardedTraffic : true
@@ -148,10 +189,8 @@ module virtualNetwork_peering_local 'virtualNetworkPeerings/deploy.bicep' = [for
     allowVirtualNetworkAccess: contains(peering, 'allowVirtualNetworkAccess') ? peering.allowVirtualNetworkAccess : true
     doNotVerifyRemoteGateways: contains(peering, 'doNotVerifyRemoteGateways') ? peering.doNotVerifyRemoteGateways : true
     useRemoteGateways: contains(peering, 'useRemoteGateways') ? peering.useRemoteGateways : false
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
-  dependsOn: [
-    virtualNetwork_subnets
-  ]
 }]
 
 // Remote to local peering (reverse)
@@ -167,10 +206,8 @@ module virtualNetwork_peering_remote 'virtualNetworkPeerings/deploy.bicep' = [fo
     allowVirtualNetworkAccess: contains(peering, 'remotePeeringAllowVirtualNetworkAccess') ? peering.remotePeeringAllowVirtualNetworkAccess : true
     doNotVerifyRemoteGateways: contains(peering, 'remotePeeringDoNotVerifyRemoteGateways') ? peering.remotePeeringDoNotVerifyRemoteGateways : true
     useRemoteGateways: contains(peering, 'remotePeeringUseRemoteGateways') ? peering.remotePeeringUseRemoteGateways : false
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
-  dependsOn: [
-    virtualNetwork_subnets
-  ]
 }]
 
 resource virtualNetwork_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
@@ -182,8 +219,8 @@ resource virtualNetwork_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lo
   scope: virtualNetwork
 }
 
-resource appServiceEnvironment_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = if (!empty(diagnosticStorageAccountId) || !empty(diagnosticWorkspaceId) || !empty(diagnosticEventHubAuthorizationRuleId) || !empty(diagnosticEventHubName)) {
-  name: '${virtualNetwork.name}-diagnosticSettings'
+resource virtualNetwork_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = if (!empty(diagnosticStorageAccountId) || !empty(diagnosticWorkspaceId) || !empty(diagnosticEventHubAuthorizationRuleId) || !empty(diagnosticEventHubName)) {
+  name: diagnosticSettingsName
   properties: {
     storageAccountId: !empty(diagnosticStorageAccountId) ? diagnosticStorageAccountId : null
     workspaceId: !empty(diagnosticWorkspaceId) ? diagnosticWorkspaceId : null
@@ -198,7 +235,9 @@ resource appServiceEnvironment_diagnosticSettings 'Microsoft.Insights/diagnostic
 module virtualNetwork_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-VNet-Rbac-${index}'
   params: {
+    description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
     principalIds: roleAssignment.principalIds
+    principalType: contains(roleAssignment, 'principalType') ? roleAssignment.principalType : ''
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
     resourceId: virtualNetwork.id
   }

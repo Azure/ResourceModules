@@ -5,7 +5,10 @@ param name string
 param location string = resourceGroup().location
 
 @description('Optional. Specifies the name of the Public IP used by the Virtual Network Gateway. If it\'s not provided, a \'-pip\' suffix will be appended to the gateway\'s name.')
-param gatewayPipName array = []
+param gatewayPipName string = '${name}-pip1'
+
+@description('Optional. Specifies the name of the Public IP used by the Virtual Network Gateway when active-active configuration is required. If it\'s not provided, a \'-pip\' suffix will be appended to the gateway\'s name.')
+param activeGatewayPipName string = '${name}-pip2'
 
 @description('Optional. Resource ID of the Public IP Prefix object. This is only needed if you want your Public IPs created in a PIP Prefix.')
 param publicIPPrefixResourceId string = ''
@@ -100,8 +103,8 @@ param lock string = 'NotSpecified'
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
-param cuaId string = ''
+@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+param enableDefaultTelemetry bool = true
 
 @description('Optional. The name of logs that will be streamed.')
 @allowed([
@@ -109,7 +112,7 @@ param cuaId string = ''
   'DDoSMitigationFlowLogs'
   'DDoSMitigationReports'
 ])
-param publicIpLogsToEnable array = [
+param publicIpdiagnosticLogCategoriesToEnable array = [
   'DDoSProtectionNotifications'
   'DDoSMitigationFlowLogs'
   'DDoSMitigationReports'
@@ -123,7 +126,7 @@ param publicIpLogsToEnable array = [
   'IKEDiagnosticLog'
   'P2SDiagnosticLog'
 ])
-param virtualNetworkGatewayLogsToEnable array = [
+param virtualNetworkGatewaydiagnosticLogCategoriesToEnable array = [
   'GatewayDiagnosticLog'
   'TunnelDiagnosticLog'
   'RouteDiagnosticLog'
@@ -135,20 +138,23 @@ param virtualNetworkGatewayLogsToEnable array = [
 @allowed([
   'AllMetrics'
 ])
-param metricsToEnable array = [
+param diagnosticMetricsToEnable array = [
   'AllMetrics'
 ]
 
-var virtualNetworkGatewayDiagnosticsLogs = [for log in virtualNetworkGatewayLogsToEnable: {
-  category: log
-  enabled: true
-  retentionPolicy: {
-    enabled: true
-    days: diagnosticLogsRetentionInDays
-  }
-}]
-var publicIpDiagnosticsLogs = [for log in publicIpLogsToEnable: {
-  category: log
+@description('Optional. The name of the diagnostic setting, if deployed.')
+param virtualNetworkGatewayDiagnosticSettingsName string = '${name}-diagnosticSettings'
+
+@description('Optional. The name of the diagnostic setting, if deployed.')
+param publicIpDiagnosticSettingsName string = 'diagnosticSettings'
+
+// ================//
+// Variables       //
+// ================//
+
+// Diagnostic Variables
+var virtualNetworkGatewayDiagnosticsLogs = [for category in virtualNetworkGatewaydiagnosticLogCategoriesToEnable: {
+  category: category
   enabled: true
   retentionPolicy: {
     enabled: true
@@ -156,7 +162,16 @@ var publicIpDiagnosticsLogs = [for log in publicIpLogsToEnable: {
   }
 }]
 
-var diagnosticsMetrics = [for metric in metricsToEnable: {
+var publicIpDiagnosticsLogs = [for category in publicIpdiagnosticLogCategoriesToEnable: {
+  category: category
+  enabled: true
+  retentionPolicy: {
+    enabled: true
+    days: diagnosticLogsRetentionInDays
+  }
+}]
+
+var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
   category: metric
   timeGrain: null
   enabled: true
@@ -166,6 +181,7 @@ var diagnosticsMetrics = [for metric in metricsToEnable: {
   }
 }]
 
+// Other Variables
 var zoneRedundantSkus = [
   'VpnGw1AZ'
   'VpnGw2AZ'
@@ -178,55 +194,32 @@ var zoneRedundantSkus = [
 ]
 var gatewayPipSku = contains(zoneRedundantSkus, virtualNetworkGatewaySku) ? 'Standard' : 'Basic'
 var gatewayPipAllocationMethod = contains(zoneRedundantSkus, virtualNetworkGatewaySku) ? 'Static' : 'Dynamic'
-var gatewaySubnetId = '${vNetResourceId}/subnets/GatewaySubnet'
-var activeActive_var = virtualNetworkGatewayType == 'ExpressRoute' ? false : activeActive
 
-// Public IP variables
-var gatewayPipName1 = length(gatewayPipName) == 0 ? '${name}-pip1' : gatewayPipName[0]
-var gatewayPipName2 = activeActive_var ? (length(gatewayPipName) == 1 ? '${name}-pip2' : gatewayPipName[1]) : ''
-
-var gatewayMultiPipArray = [
-  gatewayPipName1
-  gatewayPipName2
+var isActiveActiveValid = virtualNetworkGatewayType != 'ExpressRoute' ? activeActive : false
+var virtualGatewayPipName_var = isActiveActiveValid ? [
+  gatewayPipName
+  activeGatewayPipName
+] : [
+  gatewayPipName
 ]
-var gatewaySinglePipArray = [
-  gatewayPipName1
-]
-var virtualGatewayPipName_var = !empty(gatewayPipName2) ? gatewayMultiPipArray : gatewaySinglePipArray
-var gatewayPipId1 = az.resourceId('Microsoft.Network/publicIPAddresses', gatewayPipName1)
-var gatewayPipId2 = activeActive_var ? az.resourceId('Microsoft.Network/publicIPAddresses', gatewayPipName2) : az.resourceId('Microsoft.Network/publicIPAddresses', gatewayPipName1)
 
-var enableBgp_var = virtualNetworkGatewayType == 'ExpressRoute' ? false : enableBgp
-var vpnType_var = virtualNetworkGatewayType == 'ExpressRoute' ? 'PolicyBased' : vpnType
+var vpnType_var = virtualNetworkGatewayType != 'ExpressRoute' ? vpnType : 'PolicyBased'
+
+var isBgpValid = virtualNetworkGatewayType != 'ExpressRoute' ? enableBgp : false
 var bgpSettings = {
   asn: asn
 }
-var publicIPPrefix = {
-  id: publicIPPrefixResourceId
-}
-var activePassiveIpConfiguration = [
+
+// Potential configurations (active-active vs active-passive)
+var ipConfiguration = isActiveActiveValid ? [
   {
     properties: {
       privateIPAllocationMethod: 'Dynamic'
       subnet: {
-        id: gatewaySubnetId
+        id: '${vNetResourceId}/subnets/GatewaySubnet'
       }
       publicIPAddress: {
-        id: gatewayPipId1
-      }
-    }
-    name: 'vNetGatewayConfig1'
-  }
-]
-var activeActiveIpConfiguration = [
-  {
-    properties: {
-      privateIPAllocationMethod: 'Dynamic'
-      subnet: {
-        id: gatewaySubnetId
-      }
-      publicIPAddress: {
-        id: gatewayPipId1
+        id: az.resourceId('Microsoft.Network/publicIPAddresses', gatewayPipName)
       }
     }
     name: 'vNetGatewayConfig1'
@@ -235,48 +228,69 @@ var activeActiveIpConfiguration = [
     properties: {
       privateIPAllocationMethod: 'Dynamic'
       subnet: {
-        id: gatewaySubnetId
+        id: '${vNetResourceId}/subnets/GatewaySubnet'
       }
       publicIPAddress: {
-        id: gatewayPipId2
+        id: isActiveActiveValid ? az.resourceId('Microsoft.Network/publicIPAddresses', activeGatewayPipName) : az.resourceId('Microsoft.Network/publicIPAddresses', gatewayPipName)
       }
     }
     name: 'vNetGatewayConfig2'
   }
-]
-var vpnClientRootCertificates = [
+] : [
   {
-    name: 'RootCert1'
     properties: {
-      PublicCertData: clientRootCertData
+      privateIPAllocationMethod: 'Dynamic'
+      subnet: {
+        id: '${vNetResourceId}/subnets/GatewaySubnet'
+      }
+      publicIPAddress: {
+        id: az.resourceId('Microsoft.Network/publicIPAddresses', gatewayPipName)
+      }
     }
+    name: 'vNetGatewayConfig1'
   }
 ]
-var vpmClientRevokedCertificates = [
-  {
-    name: 'RevokedCert1'
-    properties: {
-      Thumbprint: clientRevokedCertThumbprint
-    }
-  }
-]
+
 var vpnClientConfiguration = {
   vpnClientAddressPool: {
     addressPrefixes: [
       vpnClientAddressPoolPrefix
     ]
   }
-  vpnClientRootCertificates: !empty(clientRootCertData) ? vpnClientRootCertificates : null
-  vpnClientRevokedCertificates: !empty(clientRevokedCertThumbprint) ? vpmClientRevokedCertificates : null
+  vpnClientRootCertificates: !empty(clientRootCertData) ? [
+    {
+      name: 'RootCert1'
+      properties: {
+        PublicCertData: clientRootCertData
+      }
+    }
+  ] : null
+  vpnClientRevokedCertificates: !empty(clientRevokedCertThumbprint) ? [
+    {
+      name: 'RevokedCert1'
+      properties: {
+        Thumbprint: clientRevokedCertThumbprint
+      }
+    }
+  ] : null
 }
 
-module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
-  name: 'pid-${cuaId}'
-  params: {}
+// ================//
+// Deployments     //
+// ================//
+resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
+  name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
+  properties: {
+    mode: 'Incremental'
+    template: {
+      '$schema': 'https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#'
+      contentVersion: '1.0.0.0'
+      resources: []
+    }
+  }
 }
 
 // Public IPs
-// ==========
 @batchSize(1)
 resource virtualGatewayPublicIP 'Microsoft.Network/publicIPAddresses@2021-05-01' = [for (virtualGatewayPublicIpName, index) in virtualGatewayPipName_var: {
   name: virtualGatewayPublicIpName
@@ -287,7 +301,9 @@ resource virtualGatewayPublicIP 'Microsoft.Network/publicIPAddresses@2021-05-01'
   }
   properties: {
     publicIPAllocationMethod: gatewayPipAllocationMethod
-    publicIPPrefix: !empty(publicIPPrefixResourceId) ? publicIPPrefix : null
+    publicIPPrefix: !empty(publicIPPrefixResourceId) ? {
+      id: publicIPPrefixResourceId
+    } : null
     dnsSettings: length(virtualGatewayPipName_var) == length(domainNameLabel) ? {
       domainNameLabel: domainNameLabel[index]
     } : null
@@ -307,7 +323,7 @@ resource virtualGatewayPublicIP_lock 'Microsoft.Authorization/locks@2017-04-01' 
 
 @batchSize(1)
 resource virtualNetworkGatewayPublicIp_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2021-05-01-preview' = [for (virtualGatewayPublicIpName, index) in virtualGatewayPipName_var: if ((!empty(diagnosticStorageAccountId)) || (!empty(diagnosticWorkspaceId)) || (!empty(diagnosticEventHubAuthorizationRuleId)) || (!empty(diagnosticEventHubName))) {
-  name: '${virtualGatewayPublicIpName}-diagnosticSettings'
+  name: '${virtualGatewayPublicIP[index].name}-${publicIpDiagnosticSettingsName}'
   properties: {
     storageAccountId: !empty(diagnosticStorageAccountId) ? diagnosticStorageAccountId : null
     workspaceId: !empty(diagnosticWorkspaceId) ? diagnosticWorkspaceId : null
@@ -326,10 +342,10 @@ resource virtualNetworkGateway 'Microsoft.Network/virtualNetworkGateways@2021-05
   location: location
   tags: tags
   properties: {
-    ipConfigurations: activeActive_var ? activeActiveIpConfiguration : activePassiveIpConfiguration
-    activeActive: activeActive_var
-    enableBgp: enableBgp_var
-    bgpSettings: virtualNetworkGatewayType == 'ExpressRoute' ? null : bgpSettings
+    ipConfigurations: ipConfiguration
+    activeActive: isActiveActiveValid
+    enableBgp: isBgpValid
+    bgpSettings: isBgpValid ? bgpSettings : null
     sku: {
       name: virtualNetworkGatewaySku
       tier: virtualNetworkGatewaySku
@@ -353,7 +369,7 @@ resource virtualNetworkGateway_lock 'Microsoft.Authorization/locks@2017-04-01' =
 }
 
 resource virtualNetworkGateway_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = if (!empty(diagnosticStorageAccountId) || !empty(diagnosticWorkspaceId) || !empty(diagnosticEventHubAuthorizationRuleId) || !empty(diagnosticEventHubName)) {
-  name: '${virtualNetworkGateway.name}-diagnosticSettings'
+  name: virtualNetworkGatewayDiagnosticSettingsName
   properties: {
     storageAccountId: !empty(diagnosticStorageAccountId) ? diagnosticStorageAccountId : null
     workspaceId: !empty(diagnosticWorkspaceId) ? diagnosticWorkspaceId : null
@@ -368,12 +384,17 @@ resource virtualNetworkGateway_diagnosticSettings 'Microsoft.Insights/diagnostic
 module virtualNetworkGateway_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-VNetGateway-Rbac-${index}'
   params: {
+    description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
     principalIds: roleAssignment.principalIds
+    principalType: contains(roleAssignment, 'principalType') ? roleAssignment.principalType : ''
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
     resourceId: virtualNetworkGateway.id
   }
 }]
 
+// ================//
+// Outputs         //
+// ================//
 @description('The resource group the virtual network gateway was deployed')
 output resourceGroupName string = resourceGroup().name
 

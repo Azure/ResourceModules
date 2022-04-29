@@ -4,8 +4,8 @@ param apiManagementServiceName string
 @description('Optional. Whether subscription approval is required. If false, new subscriptions will be approved automatically enabling developers to call the products APIs immediately after subscribing. If true, administrators must manually approve the subscription before the developer can any of the products APIs. Can be present only if subscriptionRequired property is present and has a value of false.')
 param approvalRequired bool = false
 
-@description('Optional. Customer Usage Attribution ID (GUID). This GUID must be previously registered')
-param cuaId string = ''
+@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+param enableDefaultTelemetry bool = true
 
 @description('Optional. Product description. May include HTML formatting tags.')
 param productDescription string = ''
@@ -31,9 +31,16 @@ param subscriptionsLimit int = 1
 @description('Optional. Product terms of use. Developers trying to subscribe to the product will be presented and required to accept these terms before they can complete the subscription process.')
 param terms string = ''
 
-module pid_cuaId '.bicep/nested_cuaId.bicep' = if (!empty(cuaId)) {
-  name: 'pid-${cuaId}'
-  params: {}
+resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
+  name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name)}'
+  properties: {
+    mode: 'Incremental'
+    template: {
+      '$schema': 'https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#'
+      contentVersion: '1.0.0.0'
+      resources: []
+    }
+  }
 }
 
 resource service 'Microsoft.ApiManagement/service@2021-08-01' existing = {
@@ -60,6 +67,7 @@ module product_apis 'apis/deploy.bicep' = [for (api, index) in apis: {
     apiManagementServiceName: apiManagementServiceName
     name: api.name
     productName: name
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }]
 
@@ -69,6 +77,7 @@ module product_groups 'groups/deploy.bicep' = [for (group, index) in groups: {
     apiManagementServiceName: apiManagementServiceName
     name: group.name
     productName: name
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }]
 
