@@ -87,3 +87,44 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
 - [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)
 - [Userassignedidentities](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ManagedIdentity/2018-11-30/userAssignedIdentities)
+
+## Usage examples
+
+### Usage example 1
+
+```json
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": "<<namePrefix>>-az-msi-x-001"
+        },
+        "roleAssignments": {
+            "value": [
+                {
+                    "roleDefinitionIdOrName": "Reader",
+                    "principalIds": [
+                        "<<deploymentSpId>>"
+                    ]
+                }
+            ]
+        }
+    }
+}
+
+```
+
+```bicep
+{
+  name: '<<namePrefix>>-az-msi-x-001'
+  roleAssignments: [
+    {
+      principalIds: [
+        '<<deploymentSpId>>'
+      ]
+      roleDefinitionIdOrName: 'Reader'
+    }
+  ]
+}
+```
