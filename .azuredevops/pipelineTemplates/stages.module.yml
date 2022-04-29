@@ -27,21 +27,21 @@ stages:
           templateFilePath: '$(modulePath)/.dependencies/dependencies.bicep'
           resourceGroupName: '${{ parameters.moduleResourceGroupName }}'
 
-  # - stage: deployment
-  #   displayName: Deployment validation
-  #   dependsOn:
-  #     - dependencyDeployment
-  #     - init
-  #   jobs:
-  #     - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
-  #       variables:
-  #           $parameterTests: $[ stageDependencies.init.getParameterFilePaths.outputs['getParameterFilePathsTask.parameterTests'] ]
-  #       strategy:
-  #           matrix: $parameterTests
-  #       parameters:
-  #         templateFilePath: '$(modulePath)/deploy.bicep'
-  #         parameterFilePath: '$(modulePath)/$(parameterTests)'
-  #         resourceGroupName: '${{ parameters.moduleResourceGroupName }}'
+  - stage: deployment
+    displayName: Deployment validation
+    dependsOn:
+      - dependencyDeployment
+      - init
+    variables:
+      $parameterTests: $[ stageDependencies.init.getParameterFilePaths.outputs['getParameterFilePathsTask.parameterTests'] ]
+    strategy:
+      matrix: $parameterTests
+    jobs:
+      - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
+        parameters:
+          templateFilePath: '$(modulePath)/deploy.bicep'
+          parameterFilePath: '$(modulePath)/$(parameterTests)'
+          resourceGroupName: '${{ parameters.moduleResourceGroupName }}'
 
   # - ${{ if eq(parameters.removeDeployment, 'true') }}:
   #   - stage: dependencyRemoval
