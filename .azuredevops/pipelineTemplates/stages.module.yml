@@ -34,8 +34,8 @@ stages:
       - init
     variables:
       $parameterTests: $[ stageDependencies.init.getParameterFilePaths.outputs['getParameterFilePathsTask.parameterTests'] ]
-    strategy:
-      matrix: $parameterTests
+    # strategy:
+    #   matrix: $parameterTests
     jobs:
       - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
         parameters:
