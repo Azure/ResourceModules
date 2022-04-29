@@ -101,6 +101,7 @@ resource batchAccount_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock
   scope: batchAccount
 }
 
+
 resource batchAccount_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(diagnosticWorkspaceId)) || (!empty(diagnosticEventHubAuthorizationRuleId)) || (!empty(diagnosticEventHubName))) {
   name: diagnosticSettingsName
   properties: {
