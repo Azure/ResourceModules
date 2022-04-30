@@ -410,14 +410,20 @@ function Set-UsageExamples {
 
     [CmdletBinding(SupportsShouldProcess)]
     param (
-        [Parameter(Mandatory)]
+        [Parameter(Mandatory = $true)]
         [string] $TemplateFilePath,
 
-        [Parameter(Mandatory)]
+        [Parameter(Mandatory = $true)]
         [object[]] $ReadMeFileContent,
 
         [Parameter(Mandatory = $false)]
-        [string] $SectionStartIdentifier = '## Usage examples'
+        [bool] $addJson = $true,
+
+        [Parameter(Mandatory = $false)]
+        [bool] $addBicep = $true,
+
+        [Parameter(Mandatory = $false)]
+        [string] $SectionStartIdentifier = '## Deployment examples'
     )
 
     # Process content
@@ -430,87 +436,113 @@ function Set-UsageExamples {
     foreach ($parameterFilePath in $parameterFiles.FullName) {
         $contentInJSONFormat = Get-Content -Path $parameterFilePath -Raw
 
-        $JSONParameters = (ConvertFrom-Json $contentInJSONFormat -AsHashtable -Depth 99).parameters
+        $SectionContent += @(
+            "<h3>Example $index</h3>"
+        )
 
-        ## Handle KeyVaut references
-        $keyVaultReferences = $JSONParameters.Keys | Where-Object { $JSONParameters[$_].Keys -contains 'reference' }
+        if ($addJson) {
+            $SectionContent += @(
+                '',
+                '<details>'
+                ''
+                '<summary>via JSON Parameter file</summary>'
+                ''
+                '```json',
+                $contentInJSONFormat,
+                '```'
+                ''
+                '</details>'
+            )
+        }
 
-        if ($keyVaultReferences.Count -gt 0) {
-            $keyVaultReferenceData = @()
-            foreach ($reference in $keyVaultReferences) {
-                $resourceIdElem = $content[$reference].reference.keyVault.id -split '/'
-                $keyVaultReferenceData += @{
-                    subscriptionId    = $resourceIdElem[2]
-                    resourceGroupName = $resourceIdElem[4]
-                    vaultName         = $resourceIdElem[-1]
-                    secretName        = $content[$reference].reference.secretName
-                    parameterName     = $reference
+        if ($addBicep) {
+            $JSONParameters = (ConvertFrom-Json $contentInJSONFormat -AsHashtable -Depth 99).parameters
+
+            ## Handle KeyVaut references
+            $keyVaultReferences = $JSONParameters.Keys | Where-Object { $JSONParameters[$_].Keys -contains 'reference' }
+
+            if ($keyVaultReferences.Count -gt 0) {
+                $keyVaultReferenceData = @()
+                foreach ($reference in $keyVaultReferences) {
+                    $resourceIdElem = $content[$reference].reference.keyVault.id -split '/'
+                    $keyVaultReferenceData += @{
+                        subscriptionId    = $resourceIdElem[2]
+                        resourceGroupName = $resourceIdElem[4]
+                        vaultName         = $resourceIdElem[-1]
+                        secretName        = $content[$reference].reference.secretName
+                        parameterName     = $reference
+                    }
                 }
             }
-        }
 
-        $extendedKeyVaultReferences = @()
-        $counter = 0
-        foreach ($reference in ($keyVaultReferenceData | Select-Object -Property 'vaultName' -Unique)) {
-            $counter++
-            $extendedKeyVaultReferences += @(
-                "resource kv$counter 'Microsoft.KeyVault/vaults@2019-09-01' existing = {",
-                ("    name: '{0}'" -f $reference.vaultName),
-                ("    scope: resourceGroup('{0}','{1}')" -f $reference.subscriptionId, $reference.resourceGroupName),
-                '}',
+            $extendedKeyVaultReferences = @()
+            $counter = 0
+            foreach ($reference in ($keyVaultReferenceData | Select-Object -Property 'vaultName' -Unique)) {
+                $counter++
+                $extendedKeyVaultReferences += @(
+                    "resource kv$counter 'Microsoft.KeyVault/vaults@2019-09-01' existing = {",
+                    ("    name: '{0}'" -f $reference.vaultName),
+                    ("    scope: resourceGroup('{0}','{1}')" -f $reference.subscriptionId, $reference.resourceGroupName),
+                    '}',
+                    ''
+                )
+
+                # Add attribute for later correct reference
+                $keyVaultReferenceData | Where-Object { $_.vaultName -eq $reference.vaultName } | ForEach-Object {
+                    $_['vaultResourceReference'] = "kv$counter"
+                }
+            }
+
+            # replace key vault references
+            foreach ($keyVaultReference in $keyVaultReferences) {
+                $matchingTuple = $keyVaultReferenceData | Where-Object { $_.parameterName -eq $keyVaultReference }
+                # kv.getSecret('vmAdminPassword')
+                $JSONParameters[$keyVaultReference] = "{0}.getSecret('{1}')" -f $matchingTuple.vaultResourceReference, $matchingTuple.secretName
+            }
+
+            # Handle VALUE references
+            $JSONParametersWithoutValue = @{}
+            foreach ($key in $JSONParameters.Keys) {
+                if ($JSONParameters[$key].Keys -contains 'value') {
+                    $JSONParametersWithoutValue[$key] = $JSONParameters[$key].value
+                } else {
+                    $JSONParametersWithoutValue[$key] = $JSONParameters[$key]
+                }
+            }
+
+            $templateParameterObject = $JSONParametersWithoutValue | ConvertTo-Json -Depth 99
+
+            $contentInBicepFormat = $templateParameterObject -replace '"', "'" # Update any [xyz: "xyz"] to [xyz: 'xyz']
+            $contentInBicepFormat = $contentInBicepFormat -replace ',', '' # Update any [xyz: xyz,] to [xyz: xyz]
+            $contentInBicepFormat = $contentInBicepFormat -replace "'(\w+)':", '$1:' # Update any  ['xyz': xyz] to [xyz: xyz]
+            $contentInBicepFormat = $contentInBicepFormat -replace "'(.+.getSecret\('.+'\))'", '$1' # Update any  [xyz: 'xyz.GetSecret()'] to [xyz: xyz.GetSecret()]
+
+
+            $SectionContent += @(
+                '',
+                '<details>'
                 ''
+                '<summary>via Bicep module</summary>'
+                ''
+                '```bicep',
+                $extendedKeyVaultReferences,
+                $contentInBicepFormat
+                '```'
+                ''
+                '</details>'
             )
-
-            # Add attribute for later correct reference
-            $keyVaultReferenceData | Where-Object { $_.vaultName -eq $reference.vaultName } | ForEach-Object {
-                $_['vaultResourceReference'] = "kv$counter"
-            }
         }
-
-        # replace key vault references
-        foreach ($keyVaultReference in $keyVaultReferences) {
-            $matchingTuple = $keyVaultReferenceData | Where-Object { $_.parameterName -eq $keyVaultReference }
-            # kv.getSecret('vmAdminPassword')
-            $JSONParameters[$keyVaultReference] = "{0}.getSecret('{1}')" -f $matchingTuple.vaultResourceReference, $matchingTuple.secretName
-        }
-
-        # Handle VALUE references
-        $JSONParametersWithoutValue = @{}
-        foreach ($key in $JSONParameters.Keys) {
-            if ($JSONParameters[$key].Keys -contains 'value') {
-                $JSONParametersWithoutValue[$key] = $JSONParameters[$key].value
-            } else {
-                $JSONParametersWithoutValue[$key] = $JSONParameters[$key]
-            }
-        }
-
-        $templateParameterObject = $JSONParametersWithoutValue | ConvertTo-Json -Depth 99
-
-        $contentInBicepFormat = $templateParameterObject -replace '"', "'" # Update any [xyz: "xyz"] to [xyz: 'xyz']
-        $contentInBicepFormat = $contentInBicepFormat -replace ',', '' # Update any [xyz: xyz,] to [xyz: xyz]
-        $contentInBicepFormat = $contentInBicepFormat -replace "'(\w+)':", '$1:' # Update any  ['xyz': xyz] to [xyz: xyz]
-        $contentInBicepFormat = $contentInBicepFormat -replace "'(.+.getSecret\('.+'\))'", '$1' # Update any  [xyz: 'xyz.GetSecret()'] to [xyz: xyz.GetSecret()]
 
         $SectionContent += @(
-            "### Usage example $index",
-            '',
-            '```json',
-            $contentInJSONFormat,
-            '```',
-            '',
-            '```bicep',
-            $extendedKeyVaultReferences,
-            $contentInBicepFormat
-            '```'
             ''
         )
 
-        $index += 1
+        $index++
     }
 
     # Build result
     if ($PSCmdlet.ShouldProcess('Original file with new template references content', 'Merge')) {
-        $updatedFileContent = Merge-FileWithNewContent -oldContent $ReadMeFileContent -newContent $SectionContent -SectionStartIdentifier $SectionStartIdentifier -contentType 'list'
+        $updatedFileContent = Merge-FileWithNewContent -oldContent $ReadMeFileContent -newContent $SectionContent -SectionStartIdentifier $SectionStartIdentifier
     }
     return $updatedFileContent
 }
@@ -764,15 +796,6 @@ function Set-ModuleReadMe {
         $readMeFileContent = Set-TemplateReferencesSection @inputObject
     }
 
-    if ($SectionsToRefresh -contains 'Navigation') {
-        # Handle [Navigation] section
-        # ===================================
-        $inputObject = @{
-            ReadMeFileContent = $readMeFileContent
-        }
-        $readMeFileContent = Set-TableOfContent @inputObject
-    }
-
     if ($SectionsToRefresh -contains 'Usage examples') {
         # Handle [TemplateReferences] section
         # ===================================
@@ -781,6 +804,15 @@ function Set-ModuleReadMe {
             TemplateFilePath  = $TemplateFilePath
         }
         $readMeFileContent = Set-UsageExamples @inputObject
+    }
+
+    if ($SectionsToRefresh -contains 'Navigation') {
+        # Handle [Navigation] section
+        # ===================================
+        $inputObject = @{
+            ReadMeFileContent = $readMeFileContent
+        }
+        $readMeFileContent = Set-TableOfContent @inputObject
     }
 
     Write-Verbose 'New content:'

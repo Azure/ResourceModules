@@ -8,6 +8,7 @@ This module deploys a user assigned identity.
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Template references](#Template-references)
+- [Deployment examples](#Deployment-examples)
 
 ## Resource types
 
@@ -88,9 +89,13 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 - [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)
 - [Userassignedidentities](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ManagedIdentity/2018-11-30/userAssignedIdentities)
 
-## Usage examples
+## Deployment examples
 
-### Usage example 1
+<h3>Example 1</h3>
+
+<details>
+
+<summary>JSON Parameter file</summary>
 
 ```json
 {
@@ -115,6 +120,12 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 ```
 
+</details>
+
+<details>
+
+<summary>Bicep module</summary>
+
 ```bicep
 {
   name: '<<namePrefix>>-az-msi-x-001'
@@ -128,3 +139,5 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
   ]
 }
 ```
+
+</details>

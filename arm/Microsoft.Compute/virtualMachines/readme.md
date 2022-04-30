@@ -8,6 +8,7 @@ This module deploys one Virtual Machine with one or multiple nics and optionally
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Template references](#Template-references)
+- [Deployment examples](#Deployment-examples)
 
 ## Resource Types
 
@@ -561,9 +562,13 @@ You can specify multiple user assigned identities to a resource by providing add
 - [Virtualmachines](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Compute/2021-07-01/virtualMachines)
 - [Virtualmachines/Extensions](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Compute/2021-07-01/virtualMachines/extensions)
 
-## Usage examples
+## Deployment examples
 
-### Usage example 1
+<h3>Example 1</h3>
+
+<details>
+
+<summary>JSON Parameter file</summary>
 
 ```json
 {
@@ -630,6 +635,12 @@ You can specify multiple user assigned identities to a resource by providing add
 
 ```
 
+</details>
+
+<details>
+
+<summary>Bicep module</summary>
+
 ```bicep
 {
   vmSize: 'Standard_B12ms'
@@ -672,7 +683,13 @@ You can specify multiple user assigned identities to a resource by providing add
 }
 ```
 
-### Usage example 2
+</details>
+
+<h3>Example 2</h3>
+
+<details>
+
+<summary>JSON Parameter file</summary>
 
 ```json
 {
@@ -898,6 +915,12 @@ You can specify multiple user assigned identities to a resource by providing add
 
 ```
 
+</details>
+
+<details>
+
+<summary>Bicep module</summary>
+
 ```bicep
 {
   extensionCustomScriptConfig: {
@@ -1053,7 +1076,13 @@ You can specify multiple user assigned identities to a resource by providing add
 }
 ```
 
-### Usage example 3
+</details>
+
+<h3>Example 3</h3>
+
+<details>
+
+<summary>JSON Parameter file</summary>
 
 ```json
 {
@@ -1111,6 +1140,12 @@ You can specify multiple user assigned identities to a resource by providing add
 
 ```
 
+</details>
+
+<details>
+
+<summary>Bicep module</summary>
+
 ```bicep
 resource kv1 'Microsoft.KeyVault/vaults@2019-09-01' existing = {
     name: 'adp-<<namePrefix>>-az-kv-x-001'
@@ -1148,7 +1183,13 @@ resource kv1 'Microsoft.KeyVault/vaults@2019-09-01' existing = {
 }
 ```
 
-### Usage example 4
+</details>
+
+<h3>Example 4</h3>
+
+<details>
+
+<summary>JSON Parameter file</summary>
 
 ```json
 {
@@ -1391,6 +1432,12 @@ resource kv1 'Microsoft.KeyVault/vaults@2019-09-01' existing = {
 
 ```
 
+</details>
+
+<details>
+
+<summary>Bicep module</summary>
+
 ```bicep
 resource kv1 'Microsoft.KeyVault/vaults@2019-09-01' existing = {
     name: 'adp-<<namePrefix>>-az-kv-x-001'
@@ -1562,3 +1609,5 @@ resource kv1 'Microsoft.KeyVault/vaults@2019-09-01' existing = {
   diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
 }
 ```
+
+</details>
