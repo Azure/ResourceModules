@@ -26,6 +26,7 @@ module resourceGroup '../../../Microsoft.Resources/resourceGroups/deploy.bicep' 
   params: {
     name: resourceGroupName
     location: location
+    enableDefaultTelemetry: false
   }
 }
 
