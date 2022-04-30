@@ -45,7 +45,7 @@ resource frontDoor 'Microsoft.Network/frontDoors@2020-05-01' existing = {
 }
 
 resource roleAssignment 'Microsoft.Authorization/roleAssignments@2021-04-01-preview' = [for principalId in principalIds: {
-  name: guid(frontDoor.name, principalId, roleDefinitionIdOrName)
+  name: guid(frontDoor.id, principalId, roleDefinitionIdOrName)
   properties: {
     description: description
     roleDefinitionId: contains(builtInRoleNames, roleDefinitionIdOrName) ? builtInRoleNames[roleDefinitionIdOrName] : roleDefinitionIdOrName

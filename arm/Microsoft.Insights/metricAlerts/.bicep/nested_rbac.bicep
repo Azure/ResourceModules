@@ -46,7 +46,7 @@ resource metricAlert 'Microsoft.Insights/metricAlerts@2018-03-01' existing = {
 }
 
 resource roleAssignment 'Microsoft.Authorization/roleAssignments@2021-04-01-preview' = [for principalId in principalIds: {
-  name: guid(metricAlert.name, principalId, roleDefinitionIdOrName)
+  name: guid(metricAlert.id, principalId, roleDefinitionIdOrName)
   properties: {
     description: description
     roleDefinitionId: contains(builtInRoleNames, roleDefinitionIdOrName) ? builtInRoleNames[roleDefinitionIdOrName] : roleDefinitionIdOrName
