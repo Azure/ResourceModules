@@ -430,6 +430,7 @@ function Set-UsageExamples {
     $SectionContent = [System.Collections.ArrayList]@()
 
     $moduleRoot = Split-Path $TemplateFilePath -Parent
+    $resourceTypeIdentifier = $moduleRoot.Split('arm')[1].Replace('\', '/')
     $parameterFiles = Get-ChildItem (Join-Path $moduleRoot '.parameters') -Filter '*parameters.json' -Recurse
 
     $index = 1
@@ -443,14 +444,14 @@ function Set-UsageExamples {
         if ($addJson) {
             $SectionContent += @(
                 '',
-                '<details>'
-                ''
-                '<summary>via JSON Parameter file</summary>'
-                ''
+                '<details>',
+                '',
+                '<summary>via JSON Parameter file</summary>',
+                '',
                 '```json',
                 $contentInJSONFormat,
-                '```'
-                ''
+                '```',
+                '',
                 '</details>'
             )
         }
@@ -500,7 +501,7 @@ function Set-UsageExamples {
                 $JSONParameters[$keyVaultReference] = "{0}.getSecret('{1}')" -f $matchingTuple.vaultResourceReference, $matchingTuple.secretName
             }
 
-            # Handle VALUE references
+            # Handle VALUE references (i.e. remove them)
             $JSONParametersWithoutValue = @{}
             foreach ($key in $JSONParameters.Keys) {
                 if ($JSONParameters[$key].Keys -contains 'value') {
@@ -517,6 +518,9 @@ function Set-UsageExamples {
             $contentInBicepFormat = $contentInBicepFormat -replace "'(\w+)':", '$1:' # Update any  ['xyz': xyz] to [xyz: xyz]
             $contentInBicepFormat = $contentInBicepFormat -replace "'(.+.getSecret\('.+'\))'", '$1' # Update any  [xyz: 'xyz.GetSecret()'] to [xyz: xyz.GetSecret()]
 
+            $bicepParamsArray = $contentInBicepFormat -split ('\n')
+            $bicepParamsArray = $bicepParamsArray[1..($bicepParamsArray.count - 2)]
+            #$bicepParamsArray = $bicepParamsArray | ForEach-Object { "    $_" }
 
             $SectionContent += @(
                 '',
@@ -526,9 +530,13 @@ function Set-UsageExamples {
                 ''
                 '```bicep',
                 $extendedKeyVaultReferences,
-                $contentInBicepFormat
-                '```'
-                ''
+                "module example$index './$resourceTypeIdentifier/deploy.bicep' = {"
+                "  name: '`${uniqueString(deployment().name)}-example$index'"
+                '  params: {'
+                ($bicepParamsArray | ForEach-Object { "    $_" }),
+                '  }'
+                '```',
+                '',
                 '</details>'
             )
         }

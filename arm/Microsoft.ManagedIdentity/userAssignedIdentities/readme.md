@@ -95,7 +95,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 <details>
 
-<summary>JSON Parameter file</summary>
+<summary>via JSON Parameter file</summary>
 
 ```json
 {
@@ -124,20 +124,22 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 <details>
 
-<summary>Bicep module</summary>
+<summary>via Bicep module</summary>
 
 ```bicep
-{
-  name: '<<namePrefix>>-az-msi-x-001'
-  roleAssignments: [
-    {
-      principalIds: [
-        '<<deploymentSpId>>'
+module example1 './/Microsoft.ManagedIdentity/userAssignedIdentities/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-example1'
+  params: {
+      name: '<<namePrefix>>-az-msi-x-001'
+      roleAssignments: [
+        {
+          principalIds: [
+            '<<deploymentSpId>>'
+          ]
+          roleDefinitionIdOrName: 'Reader'
+        }
       ]
-      roleDefinitionIdOrName: 'Reader'
-    }
-  ]
-}
+  }
 ```
 
 </details>
