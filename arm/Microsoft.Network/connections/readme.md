@@ -8,6 +8,7 @@ This template deploys a virtual network gateway connection.
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Template references](#Template-references)
+- [Deployment examples](#Deployment-examples)
 
 ## Resource types
 
@@ -147,3 +148,82 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 - [Connections](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/connections)
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
+
+## Deployment examples
+
+<h3>Example 1</h3>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": "<<namePrefix>>-az-vnetgwc-x-001"
+        },
+        "virtualNetworkGateway1": {
+            "value": {
+                "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworkGateways/<<namePrefix>>-az-vnet-vpn-gw-p-001"
+            }
+        },
+        "virtualNetworkGateway2": {
+            "value": {
+                "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworkGateways/<<namePrefix>>-az-vnet-vpn-gw-p-002"
+            }
+        },
+        "vpnSharedKey": {
+            "reference": {
+                "keyVault": {
+                    "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001"
+                },
+                "secretName": "vpnSharedKey"
+            }
+        },
+        "virtualNetworkGatewayConnectionType": {
+            "value": "Vnet2Vnet"
+        },
+        "enableBgp": {
+            "value": false
+        },
+        "location": {
+            "value": "eastus"
+        }
+    }
+}
+
+```
+
+</details>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+resource kv1 'Microsoft.KeyVault/vaults@2019-09-01' existing = {
+    name: 'adp-<<namePrefix>>-az-kv-x-001'
+    scope: resourceGroup('<<subscriptionId>>','validation-rg')
+}
+
+module connections './Microsoft.Network/connections/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-connections'
+  params: {
+      enableBgp: false
+      vpnSharedKey: kv1.getSecret('vpnSharedKey')
+      location: 'eastus'
+      name: '<<namePrefix>>-az-vnetgwc-x-001'
+      virtualNetworkGateway1: {
+        id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworkGateways/<<namePrefix>>-az-vnet-vpn-gw-p-001'
+      }
+      virtualNetworkGateway2: {
+        id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworkGateways/<<namePrefix>>-az-vnet-vpn-gw-p-002'
+      }
+      virtualNetworkGatewayConnectionType: 'Vnet2Vnet'
+  }
+```
+
+</details>

@@ -465,12 +465,12 @@ function Set-UsageExamples {
             if ($keyVaultReferences.Count -gt 0) {
                 $keyVaultReferenceData = @()
                 foreach ($reference in $keyVaultReferences) {
-                    $resourceIdElem = $content[$reference].reference.keyVault.id -split '/'
+                    $resourceIdElem = $JSONParameters[$reference].reference.keyVault.id -split '/'
                     $keyVaultReferenceData += @{
                         subscriptionId    = $resourceIdElem[2]
                         resourceGroupName = $resourceIdElem[4]
                         vaultName         = $resourceIdElem[-1]
-                        secretName        = $content[$reference].reference.secretName
+                        secretName        = $JSONParameters[$reference].reference.secretName
                         parameterName     = $reference
                     }
                 }

@@ -14,6 +14,7 @@ This module has some known **limitations**:
 - [Outputs](#Outputs)
 - [Considerations](#Considerations)
 - [Template references](#Template-references)
+- [Deployment examples](#Deployment-examples)
 
 ## Resource types
 
@@ -94,3 +95,66 @@ New-AzRoleAssignment -ObjectId $PrincipalID -Scope "/providers/Microsoft.Managem
 
 - [Managementgroups](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Management/2021-04-01/managementGroups)
 - [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)
+
+## Deployment examples
+
+<h3>Example 1</h3>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": "testMG"
+        },
+        "displayName": {
+            "value": "Test MG"
+        },
+        "parentId": {
+            "value": "<<managementGroupId>>"
+        },
+        "roleAssignments": {
+            "value": [
+                {
+                    "roleDefinitionIdOrName": "Reader",
+                    "principalIds": [
+                        "<<deploymentSpId>>"
+                    ]
+                }
+            ]
+        }
+    }
+}
+
+```
+
+</details>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module managementGroups './Microsoft.Management/managementGroups/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-managementGroups'
+  params: {
+      displayName: 'Test MG'
+      parentId: '<<managementGroupId>>'
+      roleAssignments: [
+        {
+          principalIds: [
+            '<<deploymentSpId>>'
+          ]
+          roleDefinitionIdOrName: 'Reader'
+        }
+      ]
+      name: 'testMG'
+  }
+```
+
+</details>

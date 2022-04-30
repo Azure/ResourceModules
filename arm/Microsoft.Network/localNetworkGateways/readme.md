@@ -8,6 +8,7 @@ This module deploys a local network gateway.
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Template references](#Template-references)
+- [Deployment examples](#Deployment-examples)
 
 ## Resource types
 
@@ -96,3 +97,78 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 - [Localnetworkgateways](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/localNetworkGateways)
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
 - [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)
+
+## Deployment examples
+
+<h3>Example 1</h3>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": "<<namePrefix>>-az-lng-x-001"
+        },
+        "localAddressPrefixes": {
+            "value": [
+                "192.168.1.0/24"
+            ]
+        },
+        "localGatewayPublicIpAddress": {
+            "value": "8.8.8.8"
+        },
+        "localAsn": {
+            "value": "65123"
+        },
+        "localBgpPeeringAddress": {
+            "value": "192.168.1.5"
+        },
+        "roleAssignments": {
+            "value": [
+                {
+                    "roleDefinitionIdOrName": "Reader",
+                    "principalIds": [
+                        "<<deploymentSpId>>"
+                    ]
+                }
+            ]
+        }
+    }
+}
+
+```
+
+</details>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module localNetworkGateways './Microsoft.Network/localNetworkGateways/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-localNetworkGateways'
+  params: {
+      localGatewayPublicIpAddress: '8.8.8.8'
+      localBgpPeeringAddress: '192.168.1.5'
+      localAsn: '65123'
+      name: '<<namePrefix>>-az-lng-x-001'
+      roleAssignments: [
+        {
+          principalIds: [
+            '<<deploymentSpId>>'
+          ]
+          roleDefinitionIdOrName: 'Reader'
+        }
+      ]
+      localAddressPrefixes: [
+        '192.168.1.0/24'
+      ]
+  }
+```
+
+</details>

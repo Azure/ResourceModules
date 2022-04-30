@@ -8,6 +8,7 @@ This module deploys an Azure compute gallery (formerly known as shared image gal
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Template references](#Template-references)
+- [Deployment examples](#Deployment-examples)
 
 ## Resource Types
 
@@ -94,3 +95,173 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 - [Galleries/Images](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Compute/2020-09-30/galleries/images)
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
 - [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)
+
+## Deployment examples
+
+<h3>Example 1</h3>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": "<<namePrefix>>azsigweuimages001"
+        },
+        "images": {
+            "value": [
+                {
+                    "name": "<<namePrefix>>-az-imgd-x-003"
+                },
+                {
+                    "name": "<<namePrefix>>-az-imgd-x-001",
+                    "osType": "Windows",
+                    "osState": "Generalized",
+                    "publisher": "MicrosoftWindowsServer",
+                    "offer": "WindowsServer",
+                    "sku": "2022-datacenter-azure-edition",
+                    "minRecommendedvCPUs": 2,
+                    "maxRecommendedvCPUs": 8,
+                    "minRecommendedMemory": 4,
+                    "maxRecommendedMemory": 16,
+                    "hyperVGeneration": "V1",
+                    "roleAssignments": [
+                        {
+                            "roleDefinitionIdOrName": "Reader",
+                            "principalIds": [
+                                "<<deploymentSpId>>"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "name": "<<namePrefix>>-az-imgd-x-002",
+                    "osType": "Linux",
+                    "osState": "Generalized",
+                    "publisher": "canonical",
+                    "offer": "0001-com-ubuntu-server-focal",
+                    "sku": "20_04-lts-gen2",
+                    "minRecommendedvCPUs": 1,
+                    "maxRecommendedvCPUs": 4,
+                    "minRecommendedMemory": 4,
+                    "maxRecommendedMemory": 32,
+                    "hyperVGeneration": "V2"
+                }
+            ]
+        }
+    }
+}
+
+```
+
+</details>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module galleries './Microsoft.Compute/galleries/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-galleries'
+  params: {
+      name: '<<namePrefix>>azsigweuimages001'
+      images: [
+        {
+          name: '<<namePrefix>>-az-imgd-x-003'
+        }
+        {
+          minRecommendedvCPUs: 2
+          offer: 'WindowsServer'
+          osState: 'Generalized'
+          maxRecommendedMemory: 16
+          maxRecommendedvCPUs: 8
+          name: '<<namePrefix>>-az-imgd-x-001'
+          hyperVGeneration: 'V1'
+          publisher: 'MicrosoftWindowsServer'
+          osType: 'Windows'
+          sku: '2022-datacenter-azure-edition'
+          roleAssignments: [
+            {
+              principalIds: [
+                '<<deploymentSpId>>'
+              ]
+              roleDefinitionIdOrName: 'Reader'
+            }
+          ]
+          minRecommendedMemory: 4
+        }
+        {
+          minRecommendedvCPUs: 1
+          offer: '0001-com-ubuntu-server-focal'
+          osState: 'Generalized'
+          maxRecommendedMemory: 32
+          maxRecommendedvCPUs: 4
+          name: '<<namePrefix>>-az-imgd-x-002'
+          hyperVGeneration: 'V2'
+          publisher: 'canonical'
+          osType: 'Linux'
+          sku: '20_04-lts-gen2'
+          minRecommendedMemory: 4
+        }
+      ]
+  }
+```
+
+</details>
+
+<h3>Example 2</h3>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": "<<namePrefix>>azsigweux001"
+        },
+        "roleAssignments": {
+            "value": [
+                {
+                    "roleDefinitionIdOrName": "Reader",
+                    "principalIds": [
+                        "<<deploymentSpId>>"
+                    ]
+                }
+            ]
+        }
+    }
+}
+
+```
+
+</details>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module galleries './Microsoft.Compute/galleries/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-galleries'
+  params: {
+      name: '<<namePrefix>>azsigweux001'
+      roleAssignments: [
+        {
+          principalIds: [
+            '<<deploymentSpId>>'
+          ]
+          roleDefinitionIdOrName: 'Reader'
+        }
+      ]
+  }
+```
+
+</details>

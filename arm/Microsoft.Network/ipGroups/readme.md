@@ -8,6 +8,7 @@ This module deploys an IP group.
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Template references](#Template-references)
+- [Deployment examples](#Deployment-examples)
 
 ## Resource types
 
@@ -91,3 +92,68 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 - [Ipgroups](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/ipGroups)
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
 - [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)
+
+## Deployment examples
+
+<h3>Example 1</h3>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": "iacsGroup-servers"
+        },
+        "ipAddresses": {
+            "value": [
+                "10.0.0.1",
+                "10.0.0.2"
+            ]
+        },
+        "roleAssignments": {
+            "value": [
+                {
+                    "roleDefinitionIdOrName": "Reader",
+                    "principalIds": [
+                        "<<deploymentSpId>>"
+                    ]
+                }
+            ]
+        }
+    }
+}
+
+```
+
+</details>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module ipGroups './Microsoft.Network/ipGroups/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-ipGroups'
+  params: {
+      ipAddresses: [
+        '10.0.0.1'
+        '10.0.0.2'
+      ]
+      roleAssignments: [
+        {
+          principalIds: [
+            '<<deploymentSpId>>'
+          ]
+          roleDefinitionIdOrName: 'Reader'
+        }
+      ]
+      name: 'iacsGroup-servers'
+  }
+```
+
+</details>

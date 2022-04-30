@@ -8,6 +8,7 @@ This module deploys an image template that can be consumed by the Azure Image Bu
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Template references](#Template-references)
+- [Deployment examples](#Deployment-examples)
 
 ## Resource types
 
@@ -142,3 +143,128 @@ Create a role assignment for the given resource. If you want to assign a service
 - [Imagetemplates](https://docs.microsoft.com/en-us/azure/templates/Microsoft.VirtualMachineImages/2020-02-14/imageTemplates)
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
 - [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)
+
+## Deployment examples
+
+<h3>Example 1</h3>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": "<<namePrefix>>-az-imgt-x-001"
+        },
+        "userMsiName": {
+            "value": "adp-<<namePrefix>>-az-msi-x-001"
+        },
+        "userMsiResourceGroup": {
+            "value": "validation-rg"
+        },
+        "buildTimeoutInMinutes": {
+            "value": 0
+        },
+        "vmSize": {
+            "value": "Standard_D2s_v3"
+        },
+        "osDiskSizeGB": {
+            "value": 127
+        },
+        "subnetId": {
+            "value": ""
+        },
+        "imageSource": {
+            "value": {
+                "type": "PlatformImage",
+                "publisher": "MicrosoftWindowsDesktop",
+                "offer": "Windows-10",
+                "sku": "19h2-evd",
+                "version": "latest"
+            }
+        },
+        "customizationSteps": {
+            "value": [
+                {
+                    "type": "WindowsRestart",
+                    "restartTimeout": "30m"
+                }
+            ]
+        },
+        "managedImageName": {
+            "value": "<<namePrefix>>-az-mi-x-001"
+        },
+        "unManagedImageName": {
+            "value": "<<namePrefix>>-az-umi-x-001"
+        },
+        "sigImageDefinitionId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Compute/galleries/adp<<namePrefix>>azsigweux001/images/adp-<<namePrefix>>-az-imgd-x-001"
+        },
+        "imageReplicationRegions": {
+            "value": []
+        },
+        "roleAssignments": {
+            "value": [
+                {
+                    "roleDefinitionIdOrName": "Reader",
+                    "principalIds": [
+                        "<<deploymentSpId>>"
+                    ]
+                }
+            ]
+        }
+    }
+}
+
+```
+
+</details>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module imageTemplates './Microsoft.VirtualMachineImages/imageTemplates/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-imageTemplates'
+  params: {
+      osDiskSizeGB: 127
+      name: '<<namePrefix>>-az-imgt-x-001'
+      subnetId: ''
+      unManagedImageName: '<<namePrefix>>-az-umi-x-001'
+      imageSource: {
+        sku: '19h2-evd'
+        publisher: 'MicrosoftWindowsDesktop'
+        offer: 'Windows-10'
+        type: 'PlatformImage'
+        version: 'latest'
+      }
+      managedImageName: '<<namePrefix>>-az-mi-x-001'
+      sigImageDefinitionId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Compute/galleries/adp<<namePrefix>>azsigweux001/images/adp-<<namePrefix>>-az-imgd-x-001'
+      userMsiResourceGroup: 'validation-rg'
+      roleAssignments: [
+        {
+          principalIds: [
+            '<<deploymentSpId>>'
+          ]
+          roleDefinitionIdOrName: 'Reader'
+        }
+      ]
+      vmSize: 'Standard_D2s_v3'
+      customizationSteps: [
+        {
+          type: 'WindowsRestart'
+          restartTimeout: '30m'
+        }
+      ]
+      imageReplicationRegions: []
+      userMsiName: 'adp-<<namePrefix>>-az-msi-x-001'
+      buildTimeoutInMinutes: 0
+  }
+```
+
+</details>

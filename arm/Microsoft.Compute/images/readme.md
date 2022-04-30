@@ -8,6 +8,7 @@ This module deploys a compute image.
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Template references](#Template-references)
+- [Deployment examples](#Deployment-examples)
 
 ## Resource types
 
@@ -93,3 +94,82 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 - [Images](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Compute/2021-04-01/images)
 - [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)
+
+## Deployment examples
+
+<h3>Example 1</h3>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": "<<namePrefix>>-az-img-x-001"
+        },
+        "osAccountType": {
+            "value": "Premium_LRS"
+        },
+        "osType": {
+            "value": "Windows"
+        },
+        "osDiskBlobUri": {
+            "value": "https://adp<<namePrefix>>azsax001.blob.core.windows.net/vhds/adp-<<namePrefix>>-az-imgt-x-001.vhd"
+        },
+        "osDiskCaching": {
+            "value": "ReadWrite"
+        },
+        "zoneResilient": {
+            "value": true
+        },
+        "hyperVGeneration": {
+            "value": "V1"
+        },
+        "roleAssignments": {
+            "value": [
+                {
+                    "roleDefinitionIdOrName": "Reader",
+                    "principalIds": [
+                        "<<deploymentSpId>>"
+                    ]
+                }
+            ]
+        }
+    }
+}
+
+```
+
+</details>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module images './Microsoft.Compute/images/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-images'
+  params: {
+      hyperVGeneration: 'V1'
+      osDiskBlobUri: 'https://adp<<namePrefix>>azsax001.blob.core.windows.net/vhds/adp-<<namePrefix>>-az-imgt-x-001.vhd'
+      roleAssignments: [
+        {
+          principalIds: [
+            '<<deploymentSpId>>'
+          ]
+          roleDefinitionIdOrName: 'Reader'
+        }
+      ]
+      zoneResilient: true
+      name: '<<namePrefix>>-az-img-x-001'
+      osDiskCaching: 'ReadWrite'
+      osType: 'Windows'
+      osAccountType: 'Premium_LRS'
+  }
+```
+
+</details>

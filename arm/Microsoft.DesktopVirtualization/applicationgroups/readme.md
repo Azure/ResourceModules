@@ -8,6 +8,7 @@ This module deploys an Azure virtual desktop application group.
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Template references](#Template-references)
+- [Deployment examples](#Deployment-examples)
 
 ## Resource types
 
@@ -106,3 +107,179 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 - [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings)
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
 - [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)
+
+## Deployment examples
+
+<h3>Example 1</h3>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": "<<namePrefix>>-az-avdag-min-001"
+        },
+        "applicationGroupType": {
+            "value": "RemoteApp"
+        },
+        "hostpoolName": {
+            "value": "adp-<<namePrefix>>-az-avdhp-x-001"
+        }
+    }
+}
+
+```
+
+</details>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module applicationgroups './Microsoft.DesktopVirtualization/applicationgroups/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-applicationgroups'
+  params: {
+      applicationGroupType: 'RemoteApp'
+      hostpoolName: 'adp-<<namePrefix>>-az-avdhp-x-001'
+      name: '<<namePrefix>>-az-avdag-min-001'
+  }
+```
+
+</details>
+
+<h3>Example 2</h3>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": "<<namePrefix>>-az-avdag-x-001"
+        },
+        "location": {
+            "value": "westeurope"
+        },
+        "applicationGroupType": {
+            "value": "RemoteApp"
+        },
+        "hostpoolName": {
+            "value": "adp-<<namePrefix>>-az-avdhp-x-001"
+        },
+        "friendlyName": {
+            "value": "Remote Applications 1"
+        },
+        "description": {
+            "value": "This is my first Remote Applications bundle"
+        },
+        "applications": {
+            "value": [
+                {
+                    "name": "notepad",
+                    "description": "Notepad by ARM template",
+                    "friendlyName": "Notepad",
+                    "filePath": "C:\\Windows\\System32\\notepad.exe",
+                    "commandLineSetting": "DoNotAllow",
+                    "commandLineArguments": "",
+                    "showInPortal": true,
+                    "iconPath": "C:\\Windows\\System32\\notepad.exe",
+                    "iconIndex": 0
+                },
+                {
+                    "name": "wordpad",
+                    "filePath": "C:\\Program Files\\Windows NT\\Accessories\\wordpad.exe",
+                    "friendlyName": "Wordpad"
+                }
+            ]
+        },
+        "roleAssignments": {
+            "value": [
+                {
+                    "roleDefinitionIdOrName": "Reader",
+                    "principalIds": [
+                        "<<deploymentSpId>>"
+                    ]
+                }
+            ]
+        },
+        "diagnosticLogsRetentionInDays": {
+            "value": 7
+        },
+        "diagnosticStorageAccountId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
+        },
+        "diagnosticWorkspaceId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001"
+        },
+        "diagnosticEventHubAuthorizationRuleId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
+        },
+        "diagnosticEventHubName": {
+            "value": "adp-<<namePrefix>>-az-evh-x-001"
+        }
+    }
+}
+
+```
+
+</details>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module applicationgroups './Microsoft.DesktopVirtualization/applicationgroups/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-applicationgroups'
+  params: {
+      location: 'westeurope'
+      name: '<<namePrefix>>-az-avdag-x-001'
+      description: 'This is my first Remote Applications bundle'
+      applications: [
+        {
+          iconIndex: 0
+          showInPortal: true
+          friendlyName: 'Notepad'
+          commandLineSetting: 'DoNotAllow'
+          name: 'notepad'
+          commandLineArguments: ''
+          description: 'Notepad by ARM template'
+          iconPath: 'C:\\Windows\\System32\\notepad.exe'
+          filePath: 'C:\\Windows\\System32\\notepad.exe'
+        }
+        {
+          filePath: 'C:\\Program Files\\Windows NT\\Accessories\\wordpad.exe'
+          name: 'wordpad'
+          friendlyName: 'Wordpad'
+        }
+      ]
+      diagnosticLogsRetentionInDays: 7
+      friendlyName: 'Remote Applications 1'
+      diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
+      roleAssignments: [
+        {
+          principalIds: [
+            '<<deploymentSpId>>'
+          ]
+          roleDefinitionIdOrName: 'Reader'
+        }
+      ]
+      applicationGroupType: 'RemoteApp'
+      diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
+      hostpoolName: 'adp-<<namePrefix>>-az-avdhp-x-001'
+      diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
+      diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
+  }
+```
+
+</details>

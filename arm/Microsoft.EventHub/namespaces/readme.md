@@ -8,6 +8,7 @@ This module deploys an event hub namespace.
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Template references](#Template-references)
+- [Deployment examples](#Deployment-examples)
 
 ## Resource Types
 
@@ -172,3 +173,286 @@ You can specify multiple user assigned identities to a resource by providing add
 - [Privateendpoints](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/privateEndpoints)
 - [Privateendpoints/Privatednszonegroups](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/privateEndpoints/privateDnsZoneGroups)
 - [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)
+
+## Deployment examples
+
+<h3>Example 1</h3>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {}
+}
+
+```
+
+</details>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module namespaces './Microsoft.EventHub/namespaces/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-namespaces'
+  params: {
+    {}
+    {}
+  }
+```
+
+</details>
+
+<h3>Example 2</h3>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": "<<namePrefix>>-az-evnsp-x-001"
+        },
+        "authorizationRules": {
+            "value": [
+                {
+                    "name": "RootManageSharedAccessKey",
+                    "rights": [
+                        "Listen",
+                        "Manage",
+                        "Send"
+                    ]
+                },
+                {
+                    "name": "SendListenAccess",
+                    "rights": [
+                        "Listen",
+                        "Send"
+                    ]
+                }
+            ]
+        },
+        "roleAssignments": {
+            "value": [
+                {
+                    "roleDefinitionIdOrName": "Reader",
+                    "principalIds": [
+                        "<<deploymentSpId>>"
+                    ]
+                }
+            ]
+        },
+        "eventHubs": {
+            "value": [
+                {
+                    "name": "<<namePrefix>>-az-evh-x-001"
+                },
+                {
+                    "name": "<<namePrefix>>-az-evh-x-002",
+                    "authorizationRules": [
+                        {
+                            "name": "RootManageSharedAccessKey",
+                            "rights": [
+                                "Listen",
+                                "Manage",
+                                "Send"
+                            ]
+                        },
+                        {
+                            "name": "SendListenAccess",
+                            "rights": [
+                                "Listen",
+                                "Send"
+                            ]
+                        }
+                    ],
+                    "roleAssignments": [
+                        {
+                            "roleDefinitionIdOrName": "Reader",
+                            "principalIds": [
+                                "<<deploymentSpId>>"
+                            ]
+                        }
+                    ],
+                    "messageRetentionInDays": 1,
+                    "partitionCount": 2,
+                    "status": "Active",
+                    "captureDescriptionEnabled": true,
+                    "captureDescriptionEncoding": "Avro",
+                    "captureDescriptionIntervalInSeconds": 300,
+                    "captureDescriptionSizeLimitInBytes": 314572800,
+                    "captureDescriptionDestinationName": "EventHubArchive.AzureBlockBlob",
+                    "captureDescriptionDestinationStorageAccountResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001",
+                    "captureDescriptionDestinationBlobContainer": "eventhub",
+                    "captureDescriptionDestinationArchiveNameFormat": "{Namespace}/{EventHub}/{PartitionId}/{Year}/{Month}/{Day}/{Hour}/{Minute}/{Second}",
+                    "captureDescriptionSkipEmptyArchives": true,
+                    "consumerGroups": [
+                        {
+                            "name": "custom",
+                            "userMetadata": "customMetadata"
+                        }
+                    ]
+                }
+            ]
+        },
+        "diagnosticLogsRetentionInDays": {
+            "value": 7
+        },
+        "diagnosticStorageAccountId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
+        },
+        "diagnosticWorkspaceId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001"
+        },
+        "diagnosticEventHubAuthorizationRuleId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
+        },
+        "diagnosticEventHubName": {
+            "value": "adp-<<namePrefix>>-az-evh-x-001"
+        },
+        "systemAssignedIdentity": {
+            "value": true
+        },
+        "networkAcls": {
+            "value": {
+                "bypass": "AzureServices",
+                "defaultAction": "Deny",
+                "virtualNetworkRules": [
+                    {
+                        "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001",
+                        "action": "Allow"
+                    }
+                ],
+                "ipRules": []
+            }
+        },
+        "userAssignedIdentities": {
+            "value": {
+                "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001": {}
+            }
+        }
+    }
+}
+
+```
+
+</details>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module namespaces './Microsoft.EventHub/namespaces/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-namespaces'
+  params: {
+      diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
+      systemAssignedIdentity: true
+      diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
+      diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
+      diagnosticLogsRetentionInDays: 7
+      diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
+      eventHubs: [
+        {
+          name: '<<namePrefix>>-az-evh-x-001'
+        }
+        {
+          captureDescriptionEncoding: 'Avro'
+          authorizationRules: [
+            {
+              rights: [
+                'Listen'
+                'Manage'
+                'Send'
+              ]
+              name: 'RootManageSharedAccessKey'
+            }
+            {
+              rights: [
+                'Listen'
+                'Send'
+              ]
+              name: 'SendListenAccess'
+            }
+          ]
+          captureDescriptionDestinationStorageAccountResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
+          captureDescriptionDestinationArchiveNameFormat: '{Namespace}/{EventHub}/{PartitionId}/{Year}/{Month}/{Day}/{Hour}/{Minute}/{Second}'
+          status: 'Active'
+          roleAssignments: [
+            {
+              principalIds: [
+                '<<deploymentSpId>>'
+              ]
+              roleDefinitionIdOrName: 'Reader'
+            }
+          ]
+          messageRetentionInDays: 1
+          captureDescriptionDestinationName: 'EventHubArchive.AzureBlockBlob'
+          captureDescriptionDestinationBlobContainer: 'eventhub'
+          name: '<<namePrefix>>-az-evh-x-002'
+          captureDescriptionSkipEmptyArchives: true
+          captureDescriptionSizeLimitInBytes: 314572800
+          consumerGroups: [
+            {
+              userMetadata: 'customMetadata'
+              name: 'custom'
+            }
+          ]
+          captureDescriptionIntervalInSeconds: 300
+          partitionCount: 2
+          captureDescriptionEnabled: true
+        }
+      ]
+      name: '<<namePrefix>>-az-evnsp-x-001'
+      roleAssignments: [
+        {
+          principalIds: [
+            '<<deploymentSpId>>'
+          ]
+          roleDefinitionIdOrName: 'Reader'
+        }
+      ]
+      userAssignedIdentities: {
+        '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
+      }
+      networkAcls: {
+        virtualNetworkRules: [
+          {
+            id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001'
+            action: 'Allow'
+          }
+        ]
+        ipRules: []
+        bypass: 'AzureServices'
+        defaultAction: 'Deny'
+      }
+      authorizationRules: [
+        {
+          rights: [
+            'Listen'
+            'Manage'
+            'Send'
+          ]
+          name: 'RootManageSharedAccessKey'
+        }
+        {
+          rights: [
+            'Listen'
+            'Send'
+          ]
+          name: 'SendListenAccess'
+        }
+      ]
+  }
+```
+
+</details>

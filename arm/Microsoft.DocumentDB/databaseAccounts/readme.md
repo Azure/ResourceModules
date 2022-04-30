@@ -8,6 +8,7 @@ This module deploys a DocumentDB database account and its child resources.
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Template references](#Template-references)
+- [Deployment examples](#Deployment-examples)
 
 ## Resource Types
 
@@ -239,3 +240,730 @@ You can specify multiple user assigned identities to a resource by providing add
 - [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings)
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
 - [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)
+
+## Deployment examples
+
+<h3>Example 1</h3>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": "<<namePrefix>>-az-cdb-mongodb-001"
+        },
+        "location": {
+            "value": "West Europe"
+        },
+        "locations": {
+            "value": [
+                {
+                    "locationName": "West Europe",
+                    "failoverPriority": 0,
+                    "isZoneRedundant": false
+                },
+                {
+                    "locationName": "North Europe",
+                    "failoverPriority": 1,
+                    "isZoneRedundant": false
+                }
+            ]
+        },
+        "roleAssignments": {
+            "value": [
+                {
+                    "roleDefinitionIdOrName": "Reader",
+                    "principalIds": [
+                        "<<deploymentSpId>>"
+                    ]
+                }
+            ]
+        },
+        "mongodbDatabases": {
+            "value": [
+                {
+                    "name": "<<namePrefix>>-az-mdb-x-001",
+                    "collections": [
+                        {
+                            "name": "car_collection",
+                            "indexes": [
+                                {
+                                    "key": {
+                                        "keys": [
+                                            "_id"
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": {
+                                        "keys": [
+                                            "$**"
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": {
+                                        "keys": [
+                                            "car_id",
+                                            "car_model"
+                                        ]
+                                    },
+                                    "options": {
+                                        "unique": true
+                                    }
+                                },
+                                {
+                                    "key": {
+                                        "keys": [
+                                            "_ts"
+                                        ]
+                                    },
+                                    "options": {
+                                        "expireAfterSeconds": 2629746
+                                    }
+                                }
+                            ],
+                            "shardKey": {
+                                "car_id": "Hash"
+                            }
+                        },
+                        {
+                            "name": "truck_collection",
+                            "indexes": [
+                                {
+                                    "key": {
+                                        "keys": [
+                                            "_id"
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": {
+                                        "keys": [
+                                            "$**"
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": {
+                                        "keys": [
+                                            "truck_id",
+                                            "truck_model"
+                                        ]
+                                    },
+                                    "options": {
+                                        "unique": true
+                                    }
+                                },
+                                {
+                                    "key": {
+                                        "keys": [
+                                            "_ts"
+                                        ]
+                                    },
+                                    "options": {
+                                        "expireAfterSeconds": 2629746
+                                    }
+                                }
+                            ],
+                            "shardKey": {
+                                "truck_id": "Hash"
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "<<namePrefix>>-az-mdb-x-002",
+                    "collections": [
+                        {
+                            "name": "bike_collection",
+                            "indexes": [
+                                {
+                                    "key": {
+                                        "keys": [
+                                            "_id"
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": {
+                                        "keys": [
+                                            "$**"
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": {
+                                        "keys": [
+                                            "bike_id",
+                                            "bike_model"
+                                        ]
+                                    },
+                                    "options": {
+                                        "unique": true
+                                    }
+                                },
+                                {
+                                    "key": {
+                                        "keys": [
+                                            "_ts"
+                                        ]
+                                    },
+                                    "options": {
+                                        "expireAfterSeconds": 2629746
+                                    }
+                                }
+                            ],
+                            "shardKey": {
+                                "bike_id": "Hash"
+                            }
+                        },
+                        {
+                            "name": "bicycle_collection",
+                            "indexes": [
+                                {
+                                    "key": {
+                                        "keys": [
+                                            "_id"
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": {
+                                        "keys": [
+                                            "$**"
+                                        ]
+                                    }
+                                },
+                                {
+                                    "key": {
+                                        "keys": [
+                                            "bicycle_id",
+                                            "bicycle_model"
+                                        ]
+                                    },
+                                    "options": {
+                                        "unique": true
+                                    }
+                                },
+                                {
+                                    "key": {
+                                        "keys": [
+                                            "_ts"
+                                        ]
+                                    },
+                                    "options": {
+                                        "expireAfterSeconds": 2629746
+                                    }
+                                }
+                            ],
+                            "shardKey": {
+                                "bicycle_id": "Hash"
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        "diagnosticLogsRetentionInDays": {
+            "value": 7
+        },
+        "diagnosticStorageAccountId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
+        },
+        "diagnosticWorkspaceId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001"
+        },
+        "diagnosticEventHubAuthorizationRuleId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
+        },
+        "diagnosticEventHubName": {
+            "value": "adp-<<namePrefix>>-az-evh-x-001"
+        },
+        "systemAssignedIdentity": {
+            "value": true
+        }
+    }
+}
+
+```
+
+</details>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-databaseAccounts'
+  params: {
+      systemAssignedIdentity: true
+      mongodbDatabases: [
+        {
+          collections: [
+            {
+              indexes: [
+                {
+                  key: {
+                    keys: [
+                      '_id'
+                    ]
+                  }
+                }
+                {
+                  key: {
+                    keys: [
+                      '$**'
+                    ]
+                  }
+                }
+                {
+                  key: {
+                    keys: [
+                      'car_id'
+                      'car_model'
+                    ]
+                  }
+                  options: {
+                    unique: true
+                  }
+                }
+                {
+                  key: {
+                    keys: [
+                      '_ts'
+                    ]
+                  }
+                  options: {
+                    expireAfterSeconds: 2629746
+                  }
+                }
+              ]
+              name: 'car_collection'
+              shardKey: {
+                car_id: 'Hash'
+              }
+            }
+            {
+              indexes: [
+                {
+                  key: {
+                    keys: [
+                      '_id'
+                    ]
+                  }
+                }
+                {
+                  key: {
+                    keys: [
+                      '$**'
+                    ]
+                  }
+                }
+                {
+                  key: {
+                    keys: [
+                      'truck_id'
+                      'truck_model'
+                    ]
+                  }
+                  options: {
+                    unique: true
+                  }
+                }
+                {
+                  key: {
+                    keys: [
+                      '_ts'
+                    ]
+                  }
+                  options: {
+                    expireAfterSeconds: 2629746
+                  }
+                }
+              ]
+              name: 'truck_collection'
+              shardKey: {
+                truck_id: 'Hash'
+              }
+            }
+          ]
+          name: '<<namePrefix>>-az-mdb-x-001'
+        }
+        {
+          collections: [
+            {
+              indexes: [
+                {
+                  key: {
+                    keys: [
+                      '_id'
+                    ]
+                  }
+                }
+                {
+                  key: {
+                    keys: [
+                      '$**'
+                    ]
+                  }
+                }
+                {
+                  key: {
+                    keys: [
+                      'bike_id'
+                      'bike_model'
+                    ]
+                  }
+                  options: {
+                    unique: true
+                  }
+                }
+                {
+                  key: {
+                    keys: [
+                      '_ts'
+                    ]
+                  }
+                  options: {
+                    expireAfterSeconds: 2629746
+                  }
+                }
+              ]
+              name: 'bike_collection'
+              shardKey: {
+                bike_id: 'Hash'
+              }
+            }
+            {
+              indexes: [
+                {
+                  key: {
+                    keys: [
+                      '_id'
+                    ]
+                  }
+                }
+                {
+                  key: {
+                    keys: [
+                      '$**'
+                    ]
+                  }
+                }
+                {
+                  key: {
+                    keys: [
+                      'bicycle_id'
+                      'bicycle_model'
+                    ]
+                  }
+                  options: {
+                    unique: true
+                  }
+                }
+                {
+                  key: {
+                    keys: [
+                      '_ts'
+                    ]
+                  }
+                  options: {
+                    expireAfterSeconds: 2629746
+                  }
+                }
+              ]
+              name: 'bicycle_collection'
+              shardKey: {
+                bicycle_id: 'Hash'
+              }
+            }
+          ]
+          name: '<<namePrefix>>-az-mdb-x-002'
+        }
+      ]
+      location: 'West Europe'
+      locations: [
+        {
+          isZoneRedundant: false
+          locationName: 'West Europe'
+          failoverPriority: 0
+        }
+        {
+          isZoneRedundant: false
+          locationName: 'North Europe'
+          failoverPriority: 1
+        }
+      ]
+      diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
+      diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
+      diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
+      roleAssignments: [
+        {
+          principalIds: [
+            '<<deploymentSpId>>'
+          ]
+          roleDefinitionIdOrName: 'Reader'
+        }
+      ]
+      name: '<<namePrefix>>-az-cdb-mongodb-001'
+      diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
+      diagnosticLogsRetentionInDays: 7
+  }
+```
+
+</details>
+
+<h3>Example 2</h3>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": "<<namePrefix>>-az-cdb-plain-001"
+        },
+        "locations": {
+            "value": [
+                {
+                    "locationName": "West Europe",
+                    "failoverPriority": 0,
+                    "isZoneRedundant": false
+                },
+                {
+                    "locationName": "North Europe",
+                    "failoverPriority": 1,
+                    "isZoneRedundant": false
+                }
+            ]
+        },
+        "roleAssignments": {
+            "value": [
+                {
+                    "roleDefinitionIdOrName": "Reader",
+                    "principalIds": [
+                        "<<deploymentSpId>>"
+                    ]
+                }
+            ]
+        },
+        "diagnosticLogsRetentionInDays": {
+            "value": 7
+        },
+        "diagnosticStorageAccountId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
+        },
+        "diagnosticWorkspaceId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001"
+        },
+        "diagnosticEventHubAuthorizationRuleId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
+        },
+        "diagnosticEventHubName": {
+            "value": "adp-<<namePrefix>>-az-evh-x-001"
+        }
+    }
+}
+
+```
+
+</details>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-databaseAccounts'
+  params: {
+      diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
+      diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
+      diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
+      name: '<<namePrefix>>-az-cdb-plain-001'
+      roleAssignments: [
+        {
+          principalIds: [
+            '<<deploymentSpId>>'
+          ]
+          roleDefinitionIdOrName: 'Reader'
+        }
+      ]
+      locations: [
+        {
+          isZoneRedundant: false
+          locationName: 'West Europe'
+          failoverPriority: 0
+        }
+        {
+          isZoneRedundant: false
+          locationName: 'North Europe'
+          failoverPriority: 1
+        }
+      ]
+      diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
+      diagnosticLogsRetentionInDays: 7
+  }
+```
+
+</details>
+
+<h3>Example 3</h3>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": "<<namePrefix>>-az-cdb-sqldb-001"
+        },
+        "location": {
+            "value": "West Europe"
+        },
+        "locations": {
+            "value": [
+                {
+                    "locationName": "West Europe",
+                    "failoverPriority": 0,
+                    "isZoneRedundant": false
+                },
+                {
+                    "locationName": "North Europe",
+                    "failoverPriority": 1,
+                    "isZoneRedundant": false
+                }
+            ]
+        },
+        "roleAssignments": {
+            "value": [
+                {
+                    "roleDefinitionIdOrName": "Reader",
+                    "principalIds": [
+                        "<<deploymentSpId>>"
+                    ]
+                }
+            ]
+        },
+        "sqlDatabases": {
+            "value": [
+                {
+                    "name": "<<namePrefix>>-az-sql-x-001",
+                    "containers": [
+                        {
+                            "name": "container-001",
+                            "paths": [
+                                "/myPartitionKey"
+                            ],
+                            "kind": "Hash"
+                        }
+                    ]
+                },
+                {
+                    "name": "<<namePrefix>>-az-sql-x-002",
+                    "containers": []
+                }
+            ]
+        },
+        "diagnosticLogsRetentionInDays": {
+            "value": 7
+        },
+        "diagnosticStorageAccountId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
+        },
+        "diagnosticWorkspaceId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001"
+        },
+        "diagnosticEventHubAuthorizationRuleId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
+        },
+        "diagnosticEventHubName": {
+            "value": "adp-<<namePrefix>>-az-evh-x-001"
+        },
+        "userAssignedIdentities": {
+            "value": {
+                "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001": {}
+            }
+        }
+    }
+}
+
+```
+
+</details>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-databaseAccounts'
+  params: {
+      diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
+      sqlDatabases: [
+        {
+          containers: [
+            {
+              name: 'container-001'
+              kind: 'Hash'
+              paths: [
+                '/myPartitionKey'
+              ]
+            }
+          ]
+          name: '<<namePrefix>>-az-sql-x-001'
+        }
+        {
+          containers: []
+          name: '<<namePrefix>>-az-sql-x-002'
+        }
+      ]
+      location: 'West Europe'
+      locations: [
+        {
+          isZoneRedundant: false
+          locationName: 'West Europe'
+          failoverPriority: 0
+        }
+        {
+          isZoneRedundant: false
+          locationName: 'North Europe'
+          failoverPriority: 1
+        }
+      ]
+      diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
+      diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
+      name: '<<namePrefix>>-az-cdb-sqldb-001'
+      roleAssignments: [
+        {
+          principalIds: [
+            '<<deploymentSpId>>'
+          ]
+          roleDefinitionIdOrName: 'Reader'
+        }
+      ]
+      userAssignedIdentities: {
+        '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
+      }
+      diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
+      diagnosticLogsRetentionInDays: 7
+  }
+```
+
+</details>

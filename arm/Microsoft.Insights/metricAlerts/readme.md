@@ -8,6 +8,7 @@ This module deploys an alert based on metrics.
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Template references](#Template-references)
+- [Deployment examples](#Deployment-examples)
 
 ## Resource types
 
@@ -187,3 +188,106 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 - [Metricalerts](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2018-03-01/metricAlerts)
 - [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)
+
+## Deployment examples
+
+<h3>Example 1</h3>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": "<<namePrefix>>-az-ma-x-001"
+        },
+        "windowSize": {
+            "value": "PT15M"
+        },
+        "actions": {
+            "value": [
+                "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/microsoft.insights/actiongroups/adp-<<namePrefix>>-az-ag-x-001"
+            ]
+        },
+        "targetResourceType": {
+            "value": "microsoft.compute/virtualmachines"
+        },
+        "targetResourceRegion": {
+            "value": "westeurope"
+        },
+        "criterias": {
+            "value": [
+                {
+                    "criterionType": "StaticThresholdCriterion",
+                    "metricName": "Percentage CPU",
+                    "metricNamespace": "microsoft.compute/virtualmachines",
+                    "name": "HighCPU",
+                    "operator": "GreaterThan",
+                    "threshold": "90",
+                    "timeAggregation": "Average"
+                }
+            ]
+        },
+        "alertCriteriaType": {
+            "value": "Microsoft.Azure.Monitor.MultipleResourceMultipleMetricCriteria"
+        },
+        "roleAssignments": {
+            "value": [
+                {
+                    "roleDefinitionIdOrName": "Reader",
+                    "principalIds": [
+                        "<<deploymentSpId>>"
+                    ]
+                }
+            ]
+        }
+    }
+}
+
+```
+
+</details>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module metricAlerts './Microsoft.Insights/metricAlerts/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-metricAlerts'
+  params: {
+      targetResourceType: 'microsoft.compute/virtualmachines'
+      targetResourceRegion: 'westeurope'
+      criterias: [
+        {
+          metricName: 'Percentage CPU'
+          timeAggregation: 'Average'
+          name: 'HighCPU'
+          metricNamespace: 'microsoft.compute/virtualmachines'
+          criterionType: 'StaticThresholdCriterion'
+          threshold: '90'
+          operator: 'GreaterThan'
+        }
+      ]
+      windowSize: 'PT15M'
+      name: '<<namePrefix>>-az-ma-x-001'
+      roleAssignments: [
+        {
+          principalIds: [
+            '<<deploymentSpId>>'
+          ]
+          roleDefinitionIdOrName: 'Reader'
+        }
+      ]
+      actions: [
+        '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/microsoft.insights/actiongroups/adp-<<namePrefix>>-az-ag-x-001'
+      ]
+      alertCriteriaType: 'Microsoft.Azure.Monitor.MultipleResourceMultipleMetricCriteria'
+  }
+```
+
+</details>

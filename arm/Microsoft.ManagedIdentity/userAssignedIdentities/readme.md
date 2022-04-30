@@ -127,8 +127,8 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 <summary>via Bicep module</summary>
 
 ```bicep
-module example1 './/Microsoft.ManagedIdentity/userAssignedIdentities/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-example1'
+module userAssignedIdentities './Microsoft.ManagedIdentity/userAssignedIdentities/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-userAssignedIdentities'
   params: {
       name: '<<namePrefix>>-az-msi-x-001'
       roleAssignments: [

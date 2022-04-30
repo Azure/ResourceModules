@@ -8,6 +8,7 @@ This module deploys Firewall Policies.
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Template references](#Template-references)
+- [Deployment examples](#Deployment-examples)
 
 ## Resource Types
 
@@ -93,3 +94,153 @@ You can specify multiple user assigned identities to a resource by providing add
 
 - [Firewallpolicies](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/firewallPolicies)
 - [Firewallpolicies/Rulecollectiongroups](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/firewallPolicies/ruleCollectionGroups)
+
+## Deployment examples
+
+<h3>Example 1</h3>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": "<<namePrefix>>-az-fwpol-min-001"
+        }
+    }
+}
+
+```
+
+</details>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module firewallPolicies './Microsoft.Network/firewallPolicies/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-firewallPolicies'
+  params: {
+      name: '<<namePrefix>>-az-fwpol-min-001'
+  }
+```
+
+</details>
+
+<h3>Example 2</h3>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": "<<namePrefix>>-az-fwpol-x-002"
+        },
+        "ruleCollectionGroups": {
+            "value": [
+                {
+                    "name": "<<namePrefix>>-rule-001",
+                    "priority": 5000,
+                    "ruleCollections": [
+                        {
+                            "name": "collection002",
+                            "priority": 5555,
+                            "action": {
+                                "type": "Allow"
+                            },
+                            "rules": [
+                                {
+                                    "name": "rule002",
+                                    "ipProtocols": [
+                                        "TCP",
+                                        "UDP"
+                                    ],
+                                    "destinationPorts": [
+                                        "80"
+                                    ],
+                                    "sourceAddresses": [
+                                        "*"
+                                    ],
+                                    "sourceIpGroups": [],
+                                    "ruleType": "NetworkRule",
+                                    "destinationIpGroups": [],
+                                    "destinationAddresses": [
+                                        "*"
+                                    ],
+                                    "destinationFqdns": []
+                                }
+                            ],
+                            "ruleCollectionType": "FirewallPolicyFilterRuleCollection"
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+}
+
+```
+
+</details>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module firewallPolicies './Microsoft.Network/firewallPolicies/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-firewallPolicies'
+  params: {
+      name: '<<namePrefix>>-az-fwpol-x-002'
+      ruleCollectionGroups: [
+        {
+          priority: 5000
+          name: '<<namePrefix>>-rule-001'
+          ruleCollections: [
+            {
+              action: {
+                type: 'Allow'
+              }
+              priority: 5555
+              name: 'collection002'
+              rules: [
+                {
+                  ipProtocols: [
+                    'TCP'
+                    'UDP'
+                  ]
+                  destinationFqdns: []
+                  ruleType: 'NetworkRule'
+                  name: 'rule002'
+                  destinationIpGroups: []
+                  destinationPorts: [
+                    '80'
+                  ]
+                  sourceAddresses: [
+                    '*'
+                  ]
+                  destinationAddresses: [
+                    '*'
+                  ]
+                  sourceIpGroups: []
+                }
+              ]
+              ruleCollectionType: 'FirewallPolicyFilterRuleCollection'
+            }
+          ]
+        }
+      ]
+  }
+```
+
+</details>

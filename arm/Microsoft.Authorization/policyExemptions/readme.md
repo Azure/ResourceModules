@@ -10,6 +10,7 @@ With this module you can create policy exemptions across the management group, s
 - [Outputs](#Outputs)
 - [Considerations](#Considerations)
 - [Template references](#Template-references)
+- [Deployment examples](#Deployment-examples)
 
 ## Resource types
 
@@ -114,3 +115,327 @@ module policyexemption 'yourpath/arm/Microsoft.Authorization.policyExemptions/su
 ## Template references
 
 - [Policyexemptions](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-07-01-preview/policyExemptions)
+
+## Deployment examples
+
+<h3>Example 1</h3>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": "<<namePrefix>>-min-mg-polexem"
+        },
+        "policyAssignmentId": {
+            "value": "/providers/Microsoft.Management/managementGroups/<<managementGroupId>>/providers/Microsoft.Authorization/policyAssignments/adp-<<namePrefix>>-mg-pass-loc-rg"
+        }
+    }
+}
+
+```
+
+</details>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-policyExemptions'
+  params: {
+      name: '<<namePrefix>>-min-mg-polexem'
+      policyAssignmentId: '/providers/Microsoft.Management/managementGroups/<<managementGroupId>>/providers/Microsoft.Authorization/policyAssignments/adp-<<namePrefix>>-mg-pass-loc-rg'
+  }
+```
+
+</details>
+
+<h3>Example 2</h3>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": "<<namePrefix>>-mg-polexem"
+        },
+        "displayName": {
+            "value": "[Display Name] policy exempt (management group scope)"
+        },
+        "policyAssignmentId": {
+            "value": "/providers/Microsoft.Management/managementGroups/<<managementGroupId>>/providers/Microsoft.Authorization/policyAssignments/adp-<<namePrefix>>-mg-pass-loc-rg"
+        },
+        "exemptionCategory": {
+            "value": "Waiver"
+        },
+        "metadata": {
+            "value": {
+                "category": "Security"
+            }
+        },
+        "expiresOn": {
+            "value": "2025-10-02T03:57:00.000Z"
+        },
+        "managementGroupId": {
+            "value": "<<managementGroupId>>"
+        }
+    }
+}
+
+```
+
+</details>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-policyExemptions'
+  params: {
+      metadata: {
+        category: 'Security'
+      }
+      exemptionCategory: 'Waiver'
+      name: '<<namePrefix>>-mg-polexem'
+      displayName: '[Display Name] policy exempt (management group scope)'
+      managementGroupId: '<<managementGroupId>>'
+      policyAssignmentId: '/providers/Microsoft.Management/managementGroups/<<managementGroupId>>/providers/Microsoft.Authorization/policyAssignments/adp-<<namePrefix>>-mg-pass-loc-rg'
+      expiresOn: '2025-10-02T03:57:00Z'
+  }
+```
+
+</details>
+
+<h3>Example 3</h3>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": "<<namePrefix>>-min-rg-polexem"
+        },
+        "policyAssignmentId": {
+            "value": "/subscriptions/<<subscriptionId>>/providers/Microsoft.Authorization/policyAssignments/adp-<<namePrefix>>-sb-pass-loc-rg"
+        },
+        "subscriptionId": {
+            "value": "<<subscriptionId>>"
+        },
+        "resourceGroupName": {
+            "value": "<<resourceGroupName>>"
+        }
+    }
+}
+
+```
+
+</details>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-policyExemptions'
+  params: {
+      policyAssignmentId: '/subscriptions/<<subscriptionId>>/providers/Microsoft.Authorization/policyAssignments/adp-<<namePrefix>>-sb-pass-loc-rg'
+      resourceGroupName: '<<resourceGroupName>>'
+      name: '<<namePrefix>>-min-rg-polexem'
+      subscriptionId: '<<subscriptionId>>'
+  }
+```
+
+</details>
+
+<h3>Example 4</h3>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": "<<namePrefix>>-rg-polexem"
+        },
+        "displayName": {
+            "value": "[Display Name] policy exempt (resource group scope)"
+        },
+        "policyAssignmentId": {
+            "value": "/subscriptions/<<subscriptionId>>/providers/Microsoft.Authorization/policyAssignments/adp-<<namePrefix>>-sb-pass-loc-rg"
+        },
+        "exemptionCategory": {
+            "value": "Waiver"
+        },
+        "metadata": {
+            "value": {
+                "category": "Security"
+            }
+        },
+        "expiresOn": {
+            "value": "2025-10-02T03:57:00.000Z"
+        },
+        "subscriptionId": {
+            "value": "<<subscriptionId>>"
+        },
+        "resourceGroupName": {
+            "value": "<<resourceGroupName>>"
+        }
+    }
+}
+
+```
+
+</details>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-policyExemptions'
+  params: {
+      resourceGroupName: '<<resourceGroupName>>'
+      exemptionCategory: 'Waiver'
+      metadata: {
+        category: 'Security'
+      }
+      expiresOn: '2025-10-02T03:57:00Z'
+      name: '<<namePrefix>>-rg-polexem'
+      subscriptionId: '<<subscriptionId>>'
+      policyAssignmentId: '/subscriptions/<<subscriptionId>>/providers/Microsoft.Authorization/policyAssignments/adp-<<namePrefix>>-sb-pass-loc-rg'
+      displayName: '[Display Name] policy exempt (resource group scope)'
+  }
+```
+
+</details>
+
+<h3>Example 5</h3>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": "<<namePrefix>>-min-sub-polexem"
+        },
+        "policyAssignmentId": {
+            "value": "/subscriptions/<<subscriptionId>>/providers/Microsoft.Authorization/policyAssignments/adp-<<namePrefix>>-sb-pass-loc-rg"
+        },
+        "subscriptionId": {
+            "value": "<<subscriptionId>>"
+        }
+    }
+}
+
+```
+
+</details>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-policyExemptions'
+  params: {
+      policyAssignmentId: '/subscriptions/<<subscriptionId>>/providers/Microsoft.Authorization/policyAssignments/adp-<<namePrefix>>-sb-pass-loc-rg'
+      name: '<<namePrefix>>-min-sub-polexem'
+      subscriptionId: '<<subscriptionId>>'
+  }
+```
+
+</details>
+
+<h3>Example 6</h3>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": "<<namePrefix>>-sub-polexem"
+        },
+        "displayName": {
+            "value": "[Display Name] policy exempt (subscription scope)"
+        },
+        "policyAssignmentId": {
+            "value": "/subscriptions/<<subscriptionId>>/providers/Microsoft.Authorization/policyAssignments/adp-<<namePrefix>>-sb-pass-loc-rg"
+        },
+        "exemptionCategory": {
+            "value": "Waiver"
+        },
+        "metadata": {
+            "value": {
+                "category": "Security"
+            }
+        },
+        "expiresOn": {
+            "value": "2025-10-02T03:57:00.000Z"
+        },
+        "subscriptionId": {
+            "value": "<<subscriptionId>>"
+        }
+    }
+}
+
+```
+
+</details>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-policyExemptions'
+  params: {
+      metadata: {
+        category: 'Security'
+      }
+      exemptionCategory: 'Waiver'
+      subscriptionId: '<<subscriptionId>>'
+      name: '<<namePrefix>>-sub-polexem'
+      displayName: '[Display Name] policy exempt (subscription scope)'
+      policyAssignmentId: '/subscriptions/<<subscriptionId>>/providers/Microsoft.Authorization/policyAssignments/adp-<<namePrefix>>-sb-pass-loc-rg'
+      expiresOn: '2025-10-02T03:57:00Z'
+  }
+```
+
+</details>

@@ -8,6 +8,7 @@ This template deploys a network watcher.
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Template references](#Template-references)
+- [Deployment examples](#Deployment-examples)
 
 ## Resource types
 
@@ -96,3 +97,235 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 - [Networkwatchers/Connectionmonitors](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/networkWatchers/connectionMonitors)
 - [Networkwatchers/Flowlogs](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/networkWatchers/flowLogs)
 - [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)
+
+## Deployment examples
+
+<h3>Example 1</h3>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "location": {
+            "value": "northeurope"
+        }
+    }
+}
+
+```
+
+</details>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module networkWatchers './Microsoft.Network/networkWatchers/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-networkWatchers'
+  params: {
+      location: 'northeurope'
+  }
+```
+
+</details>
+
+<h3>Example 2</h3>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": "adp-<<namePrefix>>-az-nw-x-001"
+        },
+        "flowLogs": {
+            "value": [
+                {
+                    "targetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/networkSecurityGroups/adp-<<namePrefix>>-az-nsg-x-001",
+                    "storageId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001",
+                    "enabled": false
+                },
+                {
+                    "name": "adp-<<namePrefix>>-az-nsg-x-apgw-flowlog",
+                    "targetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/networkSecurityGroups/adp-<<namePrefix>>-az-nsg-x-apgw",
+                    "storageId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001",
+                    "workspaceResourceId": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001",
+                    "formatVersion": 1,
+                    "trafficAnalyticsInterval": 10,
+                    "retentionInDays": 8
+                }
+            ]
+        },
+        "connectionMonitors": {
+            "value": [
+                {
+                    "name": "adp-<<namePrefix>>-az-conn-mon-x-001",
+                    "endpoints": [
+                        {
+                            "name": "<<namePrefix>>-az-subnet-x-001(validation-rg)",
+                            "type": "AzureVM",
+                            "resourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Compute/virtualMachines/adp-<<namePrefix>>-vm-01"
+                        },
+                        {
+                            "name": "Office Portal",
+                            "type": "ExternalAddress",
+                            "address": "www.office.com"
+                        }
+                    ],
+                    "testConfigurations": [
+                        {
+                            "name": "HTTP Test",
+                            "testFrequencySec": 30,
+                            "protocol": "Http",
+                            "httpConfiguration": {
+                                "port": 80,
+                                "method": "Get",
+                                "requestHeaders": [],
+                                "validStatusCodeRanges": [
+                                    "200"
+                                ],
+                                "preferHTTPS": false
+                            },
+                            "successThreshold": {
+                                "checksFailedPercent": 5,
+                                "roundTripTimeMs": 100
+                            }
+                        }
+                    ],
+                    "testGroups": [
+                        {
+                            "name": "TestHTTPBing",
+                            "disable": false,
+                            "testConfigurations": [
+                                "HTTP Test"
+                            ],
+                            "sources": [
+                                "<<namePrefix>>-az-subnet-x-001(validation-rg)"
+                            ],
+                            "destinations": [
+                                "Office Portal"
+                            ]
+                        }
+                    ],
+                    "workspaceResourceId": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001"
+                }
+            ]
+        },
+        "roleAssignments": {
+            "value": [
+                {
+                    "roleDefinitionIdOrName": "Reader",
+                    "principalIds": [
+                        "<<deploymentSpId>>"
+                    ]
+                }
+            ]
+        }
+    }
+}
+
+```
+
+</details>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module networkWatchers './Microsoft.Network/networkWatchers/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-networkWatchers'
+  params: {
+      connectionMonitors: [
+        {
+          testGroups: [
+            {
+              disable: false
+              name: 'TestHTTPBing'
+              sources: [
+                '<<namePrefix>>-az-subnet-x-001(validation-rg)'
+              ]
+              testConfigurations: [
+                'HTTP Test'
+              ]
+              destinations: [
+                'Office Portal'
+              ]
+            }
+          ]
+          name: 'adp-<<namePrefix>>-az-conn-mon-x-001'
+          testConfigurations: [
+            {
+              successThreshold: {
+                roundTripTimeMs: 100
+                checksFailedPercent: 5
+              }
+              name: 'HTTP Test'
+              httpConfiguration: {
+                method: 'Get'
+                preferHTTPS: false
+                validStatusCodeRanges: [
+                  '200'
+                ]
+                requestHeaders: []
+                port: 80
+              }
+              protocol: 'Http'
+              testFrequencySec: 30
+            }
+          ]
+          endpoints: [
+            {
+              resourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Compute/virtualMachines/adp-<<namePrefix>>-vm-01'
+              name: '<<namePrefix>>-az-subnet-x-001(validation-rg)'
+              type: 'AzureVM'
+            }
+            {
+              name: 'Office Portal'
+              type: 'ExternalAddress'
+              address: 'www.office.com'
+            }
+          ]
+          workspaceResourceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
+        }
+      ]
+      roleAssignments: [
+        {
+          principalIds: [
+            '<<deploymentSpId>>'
+          ]
+          roleDefinitionIdOrName: 'Reader'
+        }
+      ]
+      name: 'adp-<<namePrefix>>-az-nw-x-001'
+      flowLogs: [
+        {
+          targetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/networkSecurityGroups/adp-<<namePrefix>>-az-nsg-x-001'
+          enabled: false
+          storageId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
+        }
+        {
+          storageId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
+          workspaceResourceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
+          name: 'adp-<<namePrefix>>-az-nsg-x-apgw-flowlog'
+          retentionInDays: 8
+          targetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/networkSecurityGroups/adp-<<namePrefix>>-az-nsg-x-apgw'
+          formatVersion: 1
+          trafficAnalyticsInterval: 10
+        }
+      ]
+  }
+```
+
+</details>

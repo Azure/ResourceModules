@@ -6,6 +6,7 @@
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Template references](#Template-references)
+- [Deployment examples](#Deployment-examples)
 
 ### Container groups in Azure Container Instances
 
@@ -105,3 +106,82 @@ You can specify multiple user assigned identities to a resource by providing add
 
 - [Containergroups](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ContainerInstance/2021-03-01/containerGroups)
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
+
+## Deployment examples
+
+<h3>Example 1</h3>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": "<<namePrefix>>-az-acg-x-001"
+        },
+        "containerName": {
+            "value": "<<namePrefix>>-az-aci-x-001"
+        },
+        "image": {
+            "value": "mcr.microsoft.com/azuredocs/aci-helloworld"
+        },
+        "ports": {
+            "value": [
+                {
+                    "protocol": "Tcp",
+                    "port": "80"
+                },
+                {
+                    "protocol": "Tcp",
+                    "port": "443"
+                }
+            ]
+        },
+        "systemAssignedIdentity": {
+            "value": true
+        },
+        "userAssignedIdentities": {
+            "value": {
+                "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001": {}
+            }
+        }
+    }
+}
+
+```
+
+</details>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module containerGroups './Microsoft.ContainerInstance/containerGroups/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-containerGroups'
+  params: {
+      systemAssignedIdentity: true
+      containerName: '<<namePrefix>>-az-aci-x-001'
+      name: '<<namePrefix>>-az-acg-x-001'
+      ports: [
+        {
+          protocol: 'Tcp'
+          port: '80'
+        }
+        {
+          protocol: 'Tcp'
+          port: '443'
+        }
+      ]
+      userAssignedIdentities: {
+        '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
+      }
+      image: 'mcr.microsoft.com/azuredocs/aci-helloworld'
+  }
+```
+
+</details>

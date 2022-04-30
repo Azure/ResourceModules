@@ -8,6 +8,7 @@ This module deploys an Action Group.
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Template references](#Template-references)
+- [Deployment examples](#Deployment-examples)
 
 ## Resource Types
 
@@ -141,5 +142,106 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 ## Template references
 
-- [Actiongroups](https://docs.microsoft.com/en-us/azure/templates/microsoft.insights/2019-06-01/actionGroups)
+- [Actiongroups](https://docs.microsoft.com/en-us/azure/templates/microsoft.insights/actionGroups)
 - [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)
+
+## Deployment examples
+
+<h3>Example 1</h3>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": "<<namePrefix>>-az-ag-x-001"
+        },
+        "groupShortName": {
+            "value": "azagweux001"
+        },
+        "roleAssignments": {
+            "value": [
+                {
+                    "roleDefinitionIdOrName": "Reader",
+                    "principalIds": [
+                        "<<deploymentSpId>>"
+                    ]
+                }
+            ]
+        },
+        "emailReceivers": {
+            "value": [
+                {
+                    "name": "TestUser_-EmailAction-",
+                    "emailAddress": "test.user@testcompany.com",
+                    "useCommonAlertSchema": true
+                },
+                {
+                    "name": "TestUser2",
+                    "emailAddress": "test.user2@testcompany.com",
+                    "useCommonAlertSchema": true
+                }
+            ]
+        },
+        "smsReceivers": {
+            "value": [
+                {
+                    "name": "TestUser_-SMSAction-",
+                    "countryCode": "1",
+                    "phoneNumber": "2345678901"
+                }
+            ]
+        }
+    }
+}
+
+```
+
+</details>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module actionGroups './Microsoft.Insights/actionGroups/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-actionGroups'
+  params: {
+      smsReceivers: [
+        {
+          phoneNumber: '2345678901'
+          name: 'TestUser_-SMSAction-'
+          countryCode: '1'
+        }
+      ]
+      groupShortName: 'azagweux001'
+      emailReceivers: [
+        {
+          emailAddress: 'test.user@testcompany.com'
+          name: 'TestUser_-EmailAction-'
+          useCommonAlertSchema: true
+        }
+        {
+          emailAddress: 'test.user2@testcompany.com'
+          name: 'TestUser2'
+          useCommonAlertSchema: true
+        }
+      ]
+      name: '<<namePrefix>>-az-ag-x-001'
+      roleAssignments: [
+        {
+          principalIds: [
+            '<<deploymentSpId>>'
+          ]
+          roleDefinitionIdOrName: 'Reader'
+        }
+      ]
+  }
+```
+
+</details>

@@ -8,6 +8,7 @@ This module deploys VPN Gateways.
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Template references](#Template-references)
+- [Deployment examples](#Deployment-examples)
 
 ## Resource Types
 
@@ -107,3 +108,183 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 - [Vpngateways](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/vpnGateways)
 - [Vpngateways/Natrules](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/vpnGateways/natRules)
 - [Vpngateways/Vpnconnections](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/vpnGateways/vpnConnections)
+
+## Deployment examples
+
+<h3>Example 1</h3>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": "<<namePrefix>>-az-vpngw-min-001"
+        },
+        "virtualHubResourceId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualHubs/<<namePrefix>>-az-vhub-min-001"
+        }
+    }
+}
+
+```
+
+</details>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module vpnGateways './Microsoft.Network/vpnGateways/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-vpnGateways'
+  params: {
+      virtualHubResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualHubs/<<namePrefix>>-az-vhub-min-001'
+      name: '<<namePrefix>>-az-vpngw-min-001'
+  }
+```
+
+</details>
+
+<h3>Example 2</h3>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": "<<namePrefix>>-az-vpngw-x-001"
+        },
+        "virtualHubResourceId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualHubs/<<namePrefix>>-az-vhub-x-001"
+        },
+        "bgpSettings": {
+            "value": {
+                "asn": 65515,
+                "peerWeight": 0
+            }
+        },
+        "connections": {
+            "value": [
+                {
+                    "name": "Connection-<<namePrefix>>-az-vsite-x-001",
+                    "connectionBandwidth": 10,
+                    "enableBgp": true,
+                    "routingConfiguration": {
+                        "associatedRouteTable": {
+                            "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualHubs/<<namePrefix>>-az-vhub-x-001/hubRouteTables/defaultRouteTable"
+                        },
+                        "propagatedRouteTables": {
+                            "labels": [
+                                "default"
+                            ],
+                            "ids": [
+                                {
+                                    "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualHubs/<<namePrefix>>-az-vhub-x-001/hubRouteTables/defaultRouteTable"
+                                }
+                            ]
+                        },
+                        "vnetRoutes": {
+                            "staticRoutes": []
+                        }
+                    },
+                    "remoteVpnSiteResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/vpnSites/<<namePrefix>>-az-vsite-x-001"
+                }
+            ]
+        },
+        "natRules": {
+            "value": [
+                {
+                    "name": "natRule1",
+                    "internalMappings": [
+                        {
+                            "addressSpace": "10.4.0.0/24"
+                        }
+                    ],
+                    "externalMappings": [
+                        {
+                            "addressSpace": "192.168.21.0/24"
+                        }
+                    ],
+                    "type": "Static",
+                    "mode": "EgressSnat"
+                }
+            ]
+        }
+    }
+}
+
+```
+
+</details>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module vpnGateways './Microsoft.Network/vpnGateways/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-vpnGateways'
+  params: {
+      natRules: [
+        {
+          internalMappings: [
+            {
+              addressSpace: '10.4.0.0/24'
+            }
+          ]
+          name: 'natRule1'
+          mode: 'EgressSnat'
+          type: 'Static'
+          externalMappings: [
+            {
+              addressSpace: '192.168.21.0/24'
+            }
+          ]
+        }
+      ]
+      virtualHubResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualHubs/<<namePrefix>>-az-vhub-x-001'
+      bgpSettings: {
+        peerWeight: 0
+        asn: 65515
+      }
+      name: '<<namePrefix>>-az-vpngw-x-001'
+      connections: [
+        {
+          connectionBandwidth: 10
+          name: 'Connection-<<namePrefix>>-az-vsite-x-001'
+          routingConfiguration: {
+            propagatedRouteTables: {
+              labels: [
+                'default'
+              ]
+              ids: [
+                {
+                  id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualHubs/<<namePrefix>>-az-vhub-x-001/hubRouteTables/defaultRouteTable'
+                }
+              ]
+            }
+            associatedRouteTable: {
+              id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualHubs/<<namePrefix>>-az-vhub-x-001/hubRouteTables/defaultRouteTable'
+            }
+            vnetRoutes: {
+              staticRoutes: []
+            }
+          }
+          remoteVpnSiteResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/vpnSites/<<namePrefix>>-az-vsite-x-001'
+          enableBgp: true
+        }
+      ]
+  }
+```
+
+</details>

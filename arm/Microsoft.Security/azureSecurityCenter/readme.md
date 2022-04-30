@@ -8,6 +8,7 @@ This template enables Azure security center - Standard tier by default, could be
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Template references](#Template-references)
+- [Deployment examples](#Deployment-examples)
 
 ## Resource types
 
@@ -157,3 +158,58 @@ This template enables Azure security center - Standard tier by default, could be
 - [Pricings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Security/2018-06-01/pricings)
 - [Securitycontacts](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Security/2017-08-01-preview/securityContacts)
 - [Workspacesettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Security/2017-08-01-preview/workspaceSettings)
+
+## Deployment examples
+
+<h3>Example 1</h3>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "scope": {
+            "value": "/subscriptions/<<subscriptionId>>"
+        },
+        "securityContactProperties": {
+            "value": {
+                "email": "foo@contoso.com",
+                "phone": "+12345678",
+                "alertNotifications": "Off",
+                "alertsToAdmins": "Off"
+            }
+        },
+        "workspaceId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001"
+        }
+    }
+}
+
+```
+
+</details>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module azureSecurityCenter './Microsoft.Security/azureSecurityCenter/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-azureSecurityCenter'
+  params: {
+      scope: '/subscriptions/<<subscriptionId>>'
+      securityContactProperties: {
+        alertNotifications: 'Off'
+        alertsToAdmins: 'Off'
+        email: 'foo@contoso.com'
+        phone: '+12345678'
+      }
+      workspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
+  }
+```
+
+</details>

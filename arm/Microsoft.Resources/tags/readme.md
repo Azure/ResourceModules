@@ -8,6 +8,7 @@ This module deploys Resources Tags on a subscription or resource group scope.
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Template references](#Template-references)
+- [Deployment examples](#Deployment-examples)
 
 ## Resource Types
 
@@ -55,3 +56,131 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 ## Template references
 
 - [Tags](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Resources/2019-10-01/tags)
+
+## Deployment examples
+
+<h3>Example 1</h3>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {}
+}
+
+```
+
+</details>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module tags './Microsoft.Resources/tags/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-tags'
+  params: {
+    {}
+    {}
+  }
+```
+
+</details>
+
+<h3>Example 2</h3>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "onlyUpdate": {
+            "value": false
+        },
+        "tags": {
+            "value": {
+                "Test": "Yes",
+                "TestToo": "No"
+            }
+        },
+        "resourceGroupName": {
+            "value": "validation-rg"
+        }
+    }
+}
+
+```
+
+</details>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module tags './Microsoft.Resources/tags/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-tags'
+  params: {
+      onlyUpdate: false
+      tags: {
+        Test: 'Yes'
+        TestToo: 'No'
+      }
+      resourceGroupName: 'validation-rg'
+  }
+```
+
+</details>
+
+<h3>Example 3</h3>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "onlyUpdate": {
+            "value": true
+        },
+        "tags": {
+            "value": {
+                "Test": "Yes",
+                "TestToo": "No"
+            }
+        }
+    }
+}
+
+```
+
+</details>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module tags './Microsoft.Resources/tags/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-tags'
+  params: {
+      onlyUpdate: true
+      tags: {
+        Test: 'Yes'
+        TestToo: 'No'
+      }
+  }
+```
+
+</details>

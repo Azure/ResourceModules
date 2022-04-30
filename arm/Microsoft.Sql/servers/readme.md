@@ -8,6 +8,7 @@ This module deploys a SQL server.
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Template references](#Template-references)
+- [Deployment examples](#Deployment-examples)
 
 ## Resource Types
 
@@ -137,3 +138,216 @@ https://docs.microsoft.com/en-us/azure/templates/microsoft.sql/servers/administr
 - [Servers/Databases](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Sql/2021-02-01-preview/servers/databases)
 - [Servers/Firewallrules](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Sql/2021-05-01-preview/servers/firewallRules)
 - [Servers/Securityalertpolicies](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Sql/2021-05-01-preview/servers/securityAlertPolicies)
+
+## Deployment examples
+
+<h3>Example 1</h3>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": "<<namePrefix>>-az-sqlsrv-admin-001"
+        },
+        "administrators": {
+            "value": {
+                "azureADOnlyAuthentication": true,
+                "login": "myspn",
+                "sid": "<<deploymentSpId>>",
+                "principalType": "Application",
+                "tenantId": "<<tenantId>>"
+            }
+        }
+    }
+}
+
+```
+
+</details>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module servers './Microsoft.Sql/servers/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-servers'
+  params: {
+      administrators: {
+        login: 'myspn'
+        principalType: 'Application'
+        sid: '<<deploymentSpId>>'
+        azureADOnlyAuthentication: true
+        tenantId: '<<tenantId>>'
+      }
+      name: '<<namePrefix>>-az-sqlsrv-admin-001'
+  }
+```
+
+</details>
+
+<h3>Example 2</h3>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": "<<namePrefix>>-az-sqlsrv-x-001"
+        },
+        "administratorLogin": {
+            "reference": {
+                "keyVault": {
+                    "id": "/subscriptions/<<subscriptionId>>/resourceGroups/<<resourceGroupName>>/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001"
+                },
+                "secretName": "administratorLogin"
+            }
+        },
+        "administratorLoginPassword": {
+            "reference": {
+                "keyVault": {
+                    "id": "/subscriptions/<<subscriptionId>>/resourceGroups/<<resourceGroupName>>/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001"
+                },
+                "secretName": "administratorLoginPassword"
+            }
+        },
+        "location": {
+            "value": "westeurope"
+        },
+        "roleAssignments": {
+            "value": [
+                {
+                    "roleDefinitionIdOrName": "Reader",
+                    "principalIds": [
+                        "<<deploymentSpId>>"
+                    ]
+                }
+            ]
+        },
+        "databases": {
+            "value": [
+                {
+                    "name": "<<namePrefix>>-az-sqldb-x-001",
+                    "collation": "SQL_Latin1_General_CP1_CI_AS",
+                    "skuTier": "BusinessCritical",
+                    "skuName": "BC_Gen5",
+                    "skuCapacity": 12,
+                    "skuFamily": "Gen5",
+                    "maxSizeBytes": 34359738368,
+                    "licenseType": "LicenseIncluded",
+                    "diagnosticLogsRetentionInDays": 7,
+                    "diagnosticStorageAccountId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001",
+                    "diagnosticWorkspaceId": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001",
+                    "diagnosticEventHubAuthorizationRuleId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey",
+                    "diagnosticEventHubName": "adp-<<namePrefix>>-az-evh-x-001"
+                }
+            ]
+        },
+        "firewallRules": {
+            "value": [
+                {
+                    "name": "AllowAllWindowsAzureIps",
+                    "endIpAddress": "0.0.0.0",
+                    "startIpAddress": "0.0.0.0"
+                }
+            ]
+        },
+        "securityAlertPolicies": {
+            "value": [
+                {
+                    "name": "Default",
+                    "state": "Enabled",
+                    "emailAccountAdmins": true
+                }
+            ]
+        },
+        "systemAssignedIdentity": {
+            "value": true
+        },
+        "userAssignedIdentities": {
+            "value": {
+                "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001": {}
+            }
+        }
+    }
+}
+
+```
+
+</details>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+resource kv1 'Microsoft.KeyVault/vaults@2019-09-01' existing = {
+    name: 'adp-<<namePrefix>>-az-kv-x-001'
+    scope: resourceGroup('<<subscriptionId>>','<<resourceGroupName>>')
+}
+
+module servers './Microsoft.Sql/servers/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-servers'
+  params: {
+      systemAssignedIdentity: true
+      securityAlertPolicies: [
+        {
+          emailAccountAdmins: true
+          state: 'Enabled'
+          name: 'Default'
+        }
+      ]
+      location: 'westeurope'
+      databases: [
+        {
+          licenseType: 'LicenseIncluded'
+          collation: 'SQL_Latin1_General_CP1_CI_AS'
+          diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
+          diagnosticLogsRetentionInDays: 7
+          skuTier: 'BusinessCritical'
+          name: '<<namePrefix>>-az-sqldb-x-001'
+          maxSizeBytes: 34359738368
+          diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
+          diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
+          skuName: 'BC_Gen5'
+          diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
+          skuCapacity: 12
+          skuFamily: 'Gen5'
+        }
+      ]
+      name: '<<namePrefix>>-az-sqlsrv-x-001'
+      roleAssignments: [
+        {
+          principalIds: [
+            '<<deploymentSpId>>'
+          ]
+          roleDefinitionIdOrName: 'Reader'
+        }
+      ]
+      userAssignedIdentities: {
+        '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
+      }
+      administratorLogin: kv1.getSecret('administratorLogin')
+      administratorLoginPassword: kv1.getSecret('administratorLoginPassword')
+      firewallRules: [
+        {
+          name: 'AllowAllWindowsAzureIps'
+          endIpAddress: '0.0.0.0'
+          startIpAddress: '0.0.0.0'
+        }
+      ]
+  }
+```
+
+</details>

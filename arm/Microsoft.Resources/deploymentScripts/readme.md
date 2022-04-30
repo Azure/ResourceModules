@@ -9,6 +9,7 @@ This module deploys a deployment script.
 - [Outputs](#Outputs)
 - [Considerations](#Considerations)
 - [Template references](#Template-references)
+- [Deployment examples](#Deployment-examples)
 
 ## Resource types
 
@@ -98,3 +99,147 @@ This module requires a User Assigned Identity (MSI, managed service identity) to
 
 - [Deploymentscripts](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Resources/2020-10-01/deploymentScripts)
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
+
+## Deployment examples
+
+<h3>Example 1</h3>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": "<<namePrefix>>-az-ds-cli-001"
+        },
+        "userAssignedIdentities": {
+            "value": {
+                "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001": {}
+            }
+        },
+        "kind": {
+            "value": "AzureCLI"
+        },
+        "azCliVersion": {
+            "value": "2.15.0"
+        },
+        "scriptContent": {
+            "value": "echo \"Hello from inside the script\""
+        },
+        "retentionInterval": {
+            "value": "P1D"
+        },
+        "runOnce": {
+            "value": false
+        },
+        "cleanupPreference": {
+            "value": "Always"
+        },
+        "timeout": {
+            "value": "PT30M"
+        }
+    }
+}
+
+```
+
+</details>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module deploymentScripts './Microsoft.Resources/deploymentScripts/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-deploymentScripts'
+  params: {
+      timeout: 'PT30M'
+      retentionInterval: 'P1D'
+      scriptContent: 'echo \'Hello from inside the script\''
+      name: '<<namePrefix>>-az-ds-cli-001'
+      cleanupPreference: 'Always'
+      userAssignedIdentities: {
+        '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
+      }
+      kind: 'AzureCLI'
+      runOnce: false
+      azCliVersion: '2.15.0'
+  }
+```
+
+</details>
+
+<h3>Example 2</h3>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": "<<namePrefix>>-az-ds-ps-001"
+        },
+        "userAssignedIdentities": {
+            "value": {
+                "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001": {}
+            }
+        },
+        "kind": {
+            "value": "AzurePowerShell"
+        },
+        "azPowerShellVersion": {
+            "value": "3.0"
+        },
+        "scriptContent": {
+            "value": "Write-Host 'Running PowerShell from template'"
+        },
+        "retentionInterval": {
+            "value": "P1D"
+        },
+        "runOnce": {
+            "value": false
+        },
+        "cleanupPreference": {
+            "value": "Always"
+        },
+        "timeout": {
+            "value": "PT30M"
+        }
+    }
+}
+
+```
+
+</details>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module deploymentScripts './Microsoft.Resources/deploymentScripts/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-deploymentScripts'
+  params: {
+      timeout: 'PT30M'
+      azPowerShellVersion: '3.0'
+      retentionInterval: 'P1D'
+      name: '<<namePrefix>>-az-ds-ps-001'
+      cleanupPreference: 'Always'
+      userAssignedIdentities: {
+        '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
+      }
+      kind: 'AzurePowerShell'
+      runOnce: false
+      scriptContent: 'Write-Host 'Running PowerShell from template''
+  }
+```
+
+</details>

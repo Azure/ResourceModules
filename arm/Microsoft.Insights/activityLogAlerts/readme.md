@@ -8,6 +8,7 @@ This module deploys an Alert based on Activity Log.
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Template references](#Template-references)
+- [Deployment examples](#Deployment-examples)
 
 ## Resource Types
 
@@ -197,3 +198,108 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 - [Activitylogalerts](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2020-10-01/activityLogAlerts)
 - [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)
+
+## Deployment examples
+
+<h3>Example 1</h3>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": "<<namePrefix>>-az-ala-x-001"
+        },
+        "scopes": {
+            "value": [
+                "/subscriptions/<<subscriptionId>>"
+            ]
+        },
+        "conditions": {
+            "value": [
+                {
+                    "field": "category",
+                    "equals": "Administrative"
+                },
+                {
+                    "field": "resourceType",
+                    "equals": "microsoft.compute/virtualmachines"
+                },
+                {
+                    "field": "operationName",
+                    "equals": "Microsoft.Compute/virtualMachines/performMaintenance/action"
+                }
+            ]
+        },
+        "actions": {
+            "value": [
+                {
+                    "actionGroupId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/microsoft.insights/actiongroups/adp-<<namePrefix>>-az-ag-x-001"
+                }
+            ]
+        },
+        "roleAssignments": {
+            "value": [
+                {
+                    "roleDefinitionIdOrName": "Reader",
+                    "principalIds": [
+                        "<<deploymentSpId>>"
+                    ]
+                }
+            ]
+        }
+    }
+}
+
+```
+
+</details>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module activityLogAlerts './Microsoft.Insights/activityLogAlerts/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-activityLogAlerts'
+  params: {
+      conditions: [
+        {
+          equals: 'Administrative'
+          field: 'category'
+        }
+        {
+          equals: 'microsoft.compute/virtualmachines'
+          field: 'resourceType'
+        }
+        {
+          equals: 'Microsoft.Compute/virtualMachines/performMaintenance/action'
+          field: 'operationName'
+        }
+      ]
+      actions: [
+        {
+          actionGroupId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/microsoft.insights/actiongroups/adp-<<namePrefix>>-az-ag-x-001'
+        }
+      ]
+      scopes: [
+        '/subscriptions/<<subscriptionId>>'
+      ]
+      roleAssignments: [
+        {
+          principalIds: [
+            '<<deploymentSpId>>'
+          ]
+          roleDefinitionIdOrName: 'Reader'
+        }
+      ]
+      name: '<<namePrefix>>-az-ala-x-001'
+  }
+```
+
+</details>

@@ -8,6 +8,7 @@ This template deploys a private DNS zone.
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Template references](#Template-references)
+- [Deployment examples](#Deployment-examples)
 
 ## Resource types
 
@@ -117,3 +118,315 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 - [Privatednszones/TXT](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-06-01/privateDnsZones/TXT)
 - [Privatednszones/Virtualnetworklinks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-06-01/privateDnsZones/virtualNetworkLinks)
 - [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)
+
+## Deployment examples
+
+<h3>Example 1</h3>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": "<<namePrefix>>-az-privdns-x-001.com"
+        }
+    }
+}
+
+```
+
+</details>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module privateDnsZones './Microsoft.Network/privateDnsZones/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-privateDnsZones'
+  params: {
+      name: '<<namePrefix>>-az-privdns-x-001.com'
+  }
+```
+
+</details>
+
+<h3>Example 2</h3>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": "<<namePrefix>>-az-privdns-x-002.com"
+        },
+        "roleAssignments": {
+            "value": [
+                {
+                    "roleDefinitionIdOrName": "Reader",
+                    "principalIds": [
+                        "<<deploymentSpId>>"
+                    ]
+                }
+            ]
+        },
+        "AAAA": {
+            "value": [
+                {
+                    "name": "AAAA_2001_0db8_85a3_0000_0000_8a2e_0370_7334",
+                    "ttl": 3600,
+                    "aaaaRecords": [
+                        {
+                            "ipv6Address": "2001:0db8:85a3:0000:0000:8a2e:0370:7334"
+                        }
+                    ]
+                }
+            ]
+        },
+        "A": {
+            "value": [
+                {
+                    "name": "A_10.240.4.4",
+                    "ttl": 3600,
+                    "aRecords": [
+                        {
+                            "ipv4Address": "10.240.4.4"
+                        }
+                    ]
+                }
+            ]
+        },
+        "CNAME": {
+            "value": [
+                {
+                    "name": "CNAME_test",
+                    "ttl": 3600,
+                    "cnameRecord": {
+                        "cname": "test"
+                    }
+                }
+            ]
+        },
+        "MX": {
+            "value": [
+                {
+                    "name": "MX_contoso",
+                    "ttl": 3600,
+                    "mxRecords": [
+                        {
+                            "exchange": "contoso.com",
+                            "preference": 100
+                        }
+                    ]
+                }
+            ]
+        },
+        "PTR": {
+            "value": [
+                {
+                    "name": "PTR_contoso",
+                    "ttl": 3600,
+                    "ptrRecords": [
+                        {
+                            "ptrdname": "contoso.com"
+                        }
+                    ]
+                }
+            ]
+        },
+        "SOA": {
+            "value": [
+                {
+                    "name": "@",
+                    "ttl": 3600,
+                    "soaRecord": {
+                        "email": "azureprivatedns-host.microsoft.com",
+                        "expireTime": 2419200,
+                        "host": "azureprivatedns.net",
+                        "minimumTtl": 10,
+                        "refreshTime": 3600,
+                        "retryTime": 300,
+                        "serialNumber": "1"
+                    }
+                }
+            ]
+        },
+        "SRV": {
+            "value": [
+                {
+                    "name": "SRV_contoso",
+                    "ttl": 3600,
+                    "srvRecords": [
+                        {
+                            "port": 9332,
+                            "priority": 0,
+                            "target": "test.contoso.com",
+                            "weight": 0
+                        }
+                    ]
+                }
+            ]
+        },
+        "TXT": {
+            "value": [
+                {
+                    "name": "TXT_test",
+                    "ttl": 3600,
+                    "txtRecords": [
+                        {
+                            "value": [
+                                "test"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        "virtualNetworkLinks": {
+            "value": [
+                {
+                    "virtualNetworkResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001",
+                    "registrationEnabled": true
+                }
+            ]
+        }
+    }
+}
+
+```
+
+</details>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module privateDnsZones './Microsoft.Network/privateDnsZones/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-privateDnsZones'
+  params: {
+      SOA: [
+        {
+          soaRecord: {
+            minimumTtl: 10
+            retryTime: 300
+            serialNumber: '1'
+            email: 'azureprivatedns-host.microsoft.com'
+            expireTime: 2419200
+            host: 'azureprivatedns.net'
+            refreshTime: 3600
+          }
+          name: '@'
+          ttl: 3600
+        }
+      ]
+      AAAA: [
+        {
+          name: 'AAAA_2001_0db8_85a3_0000_0000_8a2e_0370_7334'
+          aaaaRecords: [
+            {
+              ipv6Address: '2001:0db8:85a3:0000:0000:8a2e:0370:7334'
+            }
+          ]
+          ttl: 3600
+        }
+      ]
+      A: [
+        {
+          name: 'A_10.240.4.4'
+          ttl: 3600
+          aRecords: [
+            {
+              ipv4Address: '10.240.4.4'
+            }
+          ]
+        }
+      ]
+      MX: [
+        {
+          name: 'MX_contoso'
+          ttl: 3600
+          mxRecords: [
+            {
+              preference: 100
+              exchange: 'contoso.com'
+            }
+          ]
+        }
+      ]
+      virtualNetworkLinks: [
+        {
+          virtualNetworkResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001'
+          registrationEnabled: true
+        }
+      ]
+      CNAME: [
+        {
+          name: 'CNAME_test'
+          ttl: 3600
+          cnameRecord: {
+            cname: 'test'
+          }
+        }
+      ]
+      name: '<<namePrefix>>-az-privdns-x-002.com'
+      roleAssignments: [
+        {
+          principalIds: [
+            '<<deploymentSpId>>'
+          ]
+          roleDefinitionIdOrName: 'Reader'
+        }
+      ]
+      TXT: [
+        {
+          txtRecords: [
+            {
+              value: [
+                'test'
+              ]
+            }
+          ]
+          name: 'TXT_test'
+          ttl: 3600
+        }
+      ]
+      SRV: [
+        {
+          name: 'SRV_contoso'
+          ttl: 3600
+          srvRecords: [
+            {
+              priority: 0
+              weight: 0
+              target: 'test.contoso.com'
+              port: 9332
+            }
+          ]
+        }
+      ]
+      PTR: [
+        {
+          name: 'PTR_contoso'
+          ttl: 3600
+          ptrRecords: [
+            {
+              ptrdname: 'contoso.com'
+            }
+          ]
+        }
+      ]
+  }
+```
+
+</details>

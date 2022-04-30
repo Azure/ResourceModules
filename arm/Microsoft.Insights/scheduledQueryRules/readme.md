@@ -8,6 +8,7 @@ This module deploys a scheduled query rule.
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Template references](#Template-references)
+- [Deployment examples](#Deployment-examples)
 
 ## Resource types
 
@@ -101,3 +102,146 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 - [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)
 - [Scheduledqueryrules](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-02-01-preview/scheduledQueryRules)
+
+## Deployment examples
+
+<h3>Example 1</h3>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": "myAlert01"
+        },
+        "alertDescription": {
+            "value": "My sample Alert"
+        },
+        "scopes": {
+            "value": [
+                "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001"
+            ]
+        },
+        "evaluationFrequency": {
+            "value": "PT5M"
+        },
+        "windowSize": {
+            "value": "PT5M"
+        },
+        "suppressForMinutes": {
+            "value": "PT5M"
+        },
+        "queryTimeRange": {
+            "value": "PT5M"
+        },
+        "autoMitigate": {
+            "value": false
+        },
+        "criterias": {
+            "value": {
+                "allOf": [
+                    {
+                        "query": "Perf | where ObjectName == \"LogicalDisk\" | where CounterName == \"% Free Space\" | where InstanceName <> \"HarddiskVolume1\" and InstanceName <> \"_Total\" | summarize AggregatedValue = min(CounterValue) by Computer, InstanceName, bin(TimeGenerated,5m)",
+                        "timeAggregation": "Average",
+                        "metricMeasureColumn": "AggregatedValue",
+                        "dimensions": [
+                            {
+                                "name": "Computer",
+                                "operator": "Include",
+                                "values": [
+                                    "*"
+                                ]
+                            },
+                            {
+                                "name": "InstanceName",
+                                "operator": "Include",
+                                "values": [
+                                    "*"
+                                ]
+                            }
+                        ],
+                        "operator": "GreaterThan",
+                        "threshold": 0
+                    }
+                ]
+            }
+        },
+        "roleAssignments": {
+            "value": [
+                {
+                    "roleDefinitionIdOrName": "Reader",
+                    "principalIds": [
+                        "<<deploymentSpId>>"
+                    ]
+                }
+            ]
+        }
+    }
+}
+
+```
+
+</details>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module scheduledQueryRules './Microsoft.Insights/scheduledQueryRules/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-scheduledQueryRules'
+  params: {
+      queryTimeRange: 'PT5M'
+      scopes: [
+        '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
+      ]
+      evaluationFrequency: 'PT5M'
+      criterias: {
+        allOf: [
+          {
+            timeAggregation: 'Average'
+            query: 'Perf | where ObjectName == \'LogicalDisk\' | where CounterName == \'% Free Space\' | where InstanceName <> \'HarddiskVolume1\' and InstanceName <> \'_Total\' | summarize AggregatedValue = min(CounterValue) by Computer InstanceName bin(TimeGenerated5m)'
+            dimensions: [
+              {
+                name: 'Computer'
+                operator: 'Include'
+                values: [
+                  '*'
+                ]
+              }
+              {
+                name: 'InstanceName'
+                operator: 'Include'
+                values: [
+                  '*'
+                ]
+              }
+            ]
+            threshold: 0
+            operator: 'GreaterThan'
+            metricMeasureColumn: 'AggregatedValue'
+          }
+        ]
+      }
+      windowSize: 'PT5M'
+      alertDescription: 'My sample Alert'
+      name: 'myAlert01'
+      roleAssignments: [
+        {
+          principalIds: [
+            '<<deploymentSpId>>'
+          ]
+          roleDefinitionIdOrName: 'Reader'
+        }
+      ]
+      suppressForMinutes: 'PT5M'
+      autoMitigate: false
+  }
+```
+
+</details>

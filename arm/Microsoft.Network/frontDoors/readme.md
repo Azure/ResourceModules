@@ -9,6 +9,7 @@ This module deploys Front Doors.
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Template references](#Template-references)
+- [Deployment examples](#Deployment-examples)
 
 ## Resource Types
 
@@ -109,3 +110,232 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 - [Frontdoors](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-05-01/frontDoors)
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
 - [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)
+
+## Deployment examples
+
+<h3>Example 1</h3>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": "<<namePrefix>>-az-fd-x-001"
+        },
+        "backendPools": {
+            "value": [
+                {
+                    "name": "backendPool",
+                    "properties": {
+                        "backends": [
+                            {
+                                "address": "biceptest.local",
+                                "backendHostHeader": "backendAddress",
+                                "httpPort": 80,
+                                "httpsPort": 443,
+                                "weight": 50,
+                                "priority": 1,
+                                "enabledState": "Enabled",
+                                "privateLinkAlias": "",
+                                "privateLinkApprovalMessage": "",
+                                "privateLinkLocation": "",
+                                "privateLinkResourceId": ""
+                            }
+                        ],
+                        "LoadBalancingSettings": {
+                            "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/frontDoors/<<namePrefix>>-az-fd-x-001/LoadBalancingSettings/loadBalancer"
+                        },
+                        "HealthProbeSettings": {
+                            "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/frontDoors/<<namePrefix>>-az-fd-x-001/HealthProbeSettings/heathProbe"
+                        }
+                    }
+                }
+            ]
+        },
+        "enforceCertificateNameCheck": {
+            "value": "Disabled"
+        },
+        "sendRecvTimeoutSeconds": {
+            "value": 10
+        },
+        "frontendEndpoints": {
+            "value": [
+                {
+                    "name": "frontEnd",
+                    "properties": {
+                        "hostName": "<<namePrefix>>-az-fd-x-001.azurefd.net",
+                        "sessionAffinityEnabledState": "Disabled",
+                        "sessionAffinityTtlSeconds": 60
+                    }
+                }
+            ]
+        },
+        "healthProbeSettings": {
+            "value": [
+                {
+                    "name": "heathProbe",
+                    "properties": {
+                        "enabledState": "",
+                        "healthProbeMethod": "",
+                        "intervalInSeconds": 60,
+                        "path": "/",
+                        "protocol": "Https"
+                    }
+                }
+            ]
+        },
+        "loadBalancingSettings": {
+            "value": [
+                {
+                    "name": "loadBalancer",
+                    "properties": {
+                        "additionalLatencyMilliseconds": 0,
+                        "sampleSize": 50,
+                        "successfulSamplesRequired": 1
+                    }
+                }
+            ]
+        },
+        "routingRules": {
+            "value": [
+                {
+                    "name": "routingRule",
+                    "properties": {
+                        "acceptedProtocols": [
+                            "Http",
+                            "Https"
+                        ],
+                        "enabledState": "Enabled",
+                        "frontendEndpoints": [
+                            {
+                                "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/frontDoors/<<namePrefix>>-az-fd-x-001/FrontendEndpoints/frontEnd"
+                            }
+                        ],
+                        "patternsToMatch": [
+                            "/*"
+                        ],
+                        "routeConfiguration": {
+                            "@odata.type": "#Microsoft.Azure.FrontDoor.Models.FrontdoorForwardingConfiguration",
+                            "forwardingProtocol": "MatchRequest",
+                            "backendPool": {
+                                "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/frontDoors/<<namePrefix>>-az-fd-x-001/BackendPools/backendPool"
+                            }
+                        }
+                    }
+                }
+            ]
+        }
+    }
+}
+
+```
+
+</details>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module frontDoors './Microsoft.Network/frontDoors/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-frontDoors'
+  params: {
+      frontendEndpoints: [
+        {
+          properties: {
+            sessionAffinityEnabledState: 'Disabled'
+            sessionAffinityTtlSeconds: 60
+            hostName: '<<namePrefix>>-az-fd-x-001.azurefd.net'
+          }
+          name: 'frontEnd'
+        }
+      ]
+      backendPools: [
+        {
+          properties: {
+            LoadBalancingSettings: {
+              id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/frontDoors/<<namePrefix>>-az-fd-x-001/LoadBalancingSettings/loadBalancer'
+            }
+            backends: [
+              {
+                weight: 50
+                priority: 1
+                privateLinkResourceId: ''
+                backendHostHeader: 'backendAddress'
+                privateLinkAlias: ''
+                privateLinkApprovalMessage: ''
+                httpsPort: 443
+                address: 'biceptest.local'
+                enabledState: 'Enabled'
+                privateLinkLocation: ''
+                httpPort: 80
+              }
+            ]
+            HealthProbeSettings: {
+              id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/frontDoors/<<namePrefix>>-az-fd-x-001/HealthProbeSettings/heathProbe'
+            }
+          }
+          name: 'backendPool'
+        }
+      ]
+      sendRecvTimeoutSeconds: 10
+      enforceCertificateNameCheck: 'Disabled'
+      name: '<<namePrefix>>-az-fd-x-001'
+      loadBalancingSettings: [
+        {
+          properties: {
+            additionalLatencyMilliseconds: 0
+            sampleSize: 50
+            successfulSamplesRequired: 1
+          }
+          name: 'loadBalancer'
+        }
+      ]
+      healthProbeSettings: [
+        {
+          properties: {
+            protocol: 'Https'
+            intervalInSeconds: 60
+            enabledState: ''
+            path: '/'
+            healthProbeMethod: ''
+          }
+          name: 'heathProbe'
+        }
+      ]
+      routingRules: [
+        {
+          properties: {
+            patternsToMatch: [
+              '/*'
+            ]
+            acceptedProtocols: [
+              'Http'
+              'Https'
+            ]
+            frontendEndpoints: [
+              {
+                id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/frontDoors/<<namePrefix>>-az-fd-x-001/FrontendEndpoints/frontEnd'
+              }
+            ]
+            enabledState: 'Enabled'
+            routeConfiguration: {
+              forwardingProtocol: 'MatchRequest'
+              '@odata.type': '#Microsoft.Azure.FrontDoor.Models.FrontdoorForwardingConfiguration'
+              backendPool: {
+                id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/frontDoors/<<namePrefix>>-az-fd-x-001/BackendPools/backendPool'
+              }
+            }
+          }
+          name: 'routingRule'
+        }
+      ]
+  }
+```
+
+</details>

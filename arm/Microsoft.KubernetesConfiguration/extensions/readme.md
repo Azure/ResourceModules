@@ -9,6 +9,7 @@ This module deploys Kubernetes Configuration Extensions.
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Template references](#Template-references)
+- [Deployment examples](#Deployment-examples)
 
 ## Prerequisites
 
@@ -50,9 +51,9 @@ For Details see [Prerequisites](https://docs.microsoft.com/en-us/azure/azure-arc
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `location` | string | `[resourceGroup().location]` | Location for all resources. |
 | `releaseNamespace` | string | `''` | Namespace where the extension Release must be placed, for a Cluster scoped extension. If this namespace does not exist, it will be created |
-| `releaseTrain` | string | `'Stable'` | ReleaseTrain this extension participates in for auto-upgrade (e.g. Stable, Preview, etc.) - no version must be supplied in that case. |
+| `releaseTrain` | string | `'Stable'` | ReleaseTrain this extension participates in for auto-upgrade (e.g. Stable, Preview, etc.) - only if autoUpgradeMinorVersion is "true". |
 | `targetNamespace` | string | `''` | Namespace where the extension will be created for an Namespace scoped extension. If this namespace does not exist, it will be created |
-| `version` | string | `''` | Version of the extension for this extension, if it is "pinned" to a specific version. autoUpgradeMinorVersion will be set to "false". |
+| `version` | string | `''` | Version of the extension for this extension, if it is "pinned" to a specific version. |
 
 
 ## Outputs
@@ -66,3 +67,128 @@ For Details see [Prerequisites](https://docs.microsoft.com/en-us/azure/azure-arc
 ## Template references
 
 - [Extensions](https://docs.microsoft.com/en-us/azure/templates/Microsoft.KubernetesConfiguration/2022-03-01/extensions)
+
+## Deployment examples
+
+<h3>Example 1</h3>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": "flux"
+        },
+        "extensionType": {
+            "value": "microsoft.flux"
+        },
+        "clusterName": {
+            "value": "<<namePrefix>>-az-aks-kubenet-001"
+        },
+        "releaseTrain": {
+            "value": "Stable"
+        },
+        "releaseNamespace": {
+            "value": "flux-system"
+        }
+    }
+}
+
+```
+
+</details>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module extensions './Microsoft.KubernetesConfiguration/extensions/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-extensions'
+  params: {
+      releaseNamespace: 'flux-system'
+      releaseTrain: 'Stable'
+      clusterName: '<<namePrefix>>-az-aks-kubenet-001'
+      extensionType: 'microsoft.flux'
+      name: 'flux'
+  }
+```
+
+</details>
+
+<h3>Example 2</h3>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": "flux"
+        },
+        "extensionType": {
+            "value": "microsoft.flux"
+        },
+        "clusterName": {
+            "value": "<<namePrefix>>-az-aks-kubenet-001"
+        },
+        "releaseTrain": {
+            "value": "Stable"
+        },
+        "releaseNamespace": {
+            "value": "flux-system"
+        },
+        "version": {
+            "value": "0.5.2"
+        },
+        "configurationSettings": {
+            "value": {
+                // "helm-controller.enabled": "false",
+                "source-controller.enabled": "true",
+                "kustomize-controller.enabled": "true",
+                "notification-controller.enabled": "false",
+                "image-automation-controller.enabled": "false",
+                "image-reflector-controller.enabled": "false"
+            }
+        }
+    }
+}
+
+```
+
+</details>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module extensions './Microsoft.KubernetesConfiguration/extensions/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-extensions'
+  params: {
+      extensionType: 'microsoft.flux'
+      releaseNamespace: 'flux-system'
+      clusterName: '<<namePrefix>>-az-aks-kubenet-001'
+      releaseTrain: 'Stable'
+      version: '0.5.2'
+      name: 'flux'
+      configurationSettings: {
+        'image-automation-controller.enabled': 'false'
+        'source-controller.enabled': 'true'
+        'image-reflector-controller.enabled': 'false'
+        'kustomize-controller.enabled': 'true'
+        'notification-controller.enabled': 'false'
+      }
+  }
+```
+
+</details>

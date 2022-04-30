@@ -8,6 +8,7 @@ This module deploys a Logic App resource.
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Template references](#Template-references)
+- [Deployment examples](#Deployment-examples)
 
 ## Resource types
 
@@ -184,3 +185,152 @@ You can specify multiple user assigned identities to a resource by providing add
 - [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
 - [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)
 - [Workflows](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Logic/2019-05-01/workflows)
+
+## Deployment examples
+
+<h3>Example 1</h3>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": "<<namePrefix>>-az-lga-x-001"
+        },
+        "tags": {
+            "value": {}
+        },
+        "workflowActions": {
+            "value": {
+                "HTTP": {
+                    "type": "Http",
+                    "inputs": {
+                        "method": "POST",
+                        "uri": "https://testStringForValidation.com",
+                        "body": {
+                            "HostPoolName": "[HostPoolName]",
+                            "LAWorkspaceName": "[LAWorkspaceName]",
+                            "LimitSecondsToForceLogOffUser": "[LimitSecondsToForceLogOffUser]",
+                            "EndPeakTime": "[EndPeakTime]",
+                            "BeginPeakTime": "[BeginPeakTime]",
+                            "UtcOffset": "[UtcOffset]",
+                            "LogOffMessageBody": "[LogOffMessageBody]",
+                            "LogOffMessageTitle": "[LogOffMessageTitle]",
+                            "MinimumNumberOfRDSH": 1,
+                            "SessionThresholdPerCPU": 1,
+                            "ResourceGroupName": "[ResourceGroupName]"
+                        }
+                    }
+                }
+            }
+        },
+        "workflowTriggers": {
+            "value": {
+                "Recurrence": {
+                    "recurrence": {
+                        "frequency": "Minute",
+                        "interval": 15
+                    },
+                    "type": "Recurrence"
+                }
+            }
+        },
+        "roleAssignments": {
+            "value": [
+                {
+                    "roleDefinitionIdOrName": "Reader",
+                    "principalIds": [
+                        "<<deploymentSpId>>"
+                    ]
+                }
+            ]
+        },
+        "diagnosticLogsRetentionInDays": {
+            "value": 7
+        },
+        "diagnosticStorageAccountId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
+        },
+        "diagnosticWorkspaceId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001"
+        },
+        "diagnosticEventHubAuthorizationRuleId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
+        },
+        "diagnosticEventHubName": {
+            "value": "adp-<<namePrefix>>-az-evh-x-001"
+        },
+        "systemAssignedIdentity": {
+            "value": true
+        }
+    }
+}
+
+```
+
+</details>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module workflows './Microsoft.Logic/workflows/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-workflows'
+  params: {
+      systemAssignedIdentity: true
+      workflowTriggers: {
+        Recurrence: {
+          recurrence: {
+            interval: 15
+            frequency: 'Minute'
+          }
+          type: 'Recurrence'
+        }
+      }
+      tags: {}
+      diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
+      diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
+      diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
+      roleAssignments: [
+        {
+          principalIds: [
+            '<<deploymentSpId>>'
+          ]
+          roleDefinitionIdOrName: 'Reader'
+        }
+      ]
+      name: '<<namePrefix>>-az-lga-x-001'
+      diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
+      diagnosticLogsRetentionInDays: 7
+      workflowActions: {
+        HTTP: {
+          type: 'Http'
+          inputs: {
+            method: 'POST'
+            body: {
+              LogOffMessageBody: '[LogOffMessageBody]'
+              ResourceGroupName: '[ResourceGroupName]'
+              UtcOffset: '[UtcOffset]'
+              LogOffMessageTitle: '[LogOffMessageTitle]'
+              EndPeakTime: '[EndPeakTime]'
+              LimitSecondsToForceLogOffUser: '[LimitSecondsToForceLogOffUser]'
+              MinimumNumberOfRDSH: 1
+              BeginPeakTime: '[BeginPeakTime]'
+              HostPoolName: '[HostPoolName]'
+              SessionThresholdPerCPU: 1
+              LAWorkspaceName: '[LAWorkspaceName]'
+            }
+            uri: 'https://testStringForValidation.com'
+          }
+        }
+      }
+  }
+```
+
+</details>
