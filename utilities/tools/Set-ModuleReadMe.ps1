@@ -430,7 +430,7 @@ function Set-UsageExamples {
     $SectionContent = [System.Collections.ArrayList]@()
 
     $moduleRoot = Split-Path $TemplateFilePath -Parent
-    $resourceTypeIdentifier = $moduleRoot.Split('arm')[1].Replace('\', '/')
+    $resourceTypeIdentifier = $moduleRoot.Split('arm')[1].Replace('\', '/').TrimStart('/')
     $parameterFiles = Get-ChildItem (Join-Path $moduleRoot '.parameters') -Filter '*parameters.json' -Recurse
 
     $index = 1
@@ -478,7 +478,7 @@ function Set-UsageExamples {
 
             $extendedKeyVaultReferences = @()
             $counter = 0
-            foreach ($reference in ($keyVaultReferenceData | Select-Object -Property 'vaultName' -Unique)) {
+            foreach ($reference in ($keyVaultReferenceData | Sort-Object -Property 'vaultName' -Unique)) {
                 $counter++
                 $extendedKeyVaultReferences += @(
                     "resource kv$counter 'Microsoft.KeyVault/vaults@2019-09-01' existing = {",
@@ -520,6 +520,7 @@ function Set-UsageExamples {
 
             $bicepParamsArray = $contentInBicepFormat -split ('\n')
             $bicepParamsArray = $bicepParamsArray[1..($bicepParamsArray.count - 2)]
+            $resourceType = $resourceTypeIdentifier.Split('/')[1]
             #$bicepParamsArray = $bicepParamsArray | ForEach-Object { "    $_" }
 
             $SectionContent += @(
@@ -530,8 +531,8 @@ function Set-UsageExamples {
                 ''
                 '```bicep',
                 $extendedKeyVaultReferences,
-                "module example$index './$resourceTypeIdentifier/deploy.bicep' = {"
-                "  name: '`${uniqueString(deployment().name)}-example$index'"
+                "module $resourceType './$resourceTypeIdentifier/deploy.bicep' = {"
+                "  name: '`${uniqueString(deployment().name)}-$resourceType'"
                 '  params: {'
                 ($bicepParamsArray | ForEach-Object { "    $_" }),
                 '  }'

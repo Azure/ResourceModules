@@ -642,8 +642,8 @@ You can specify multiple user assigned identities to a resource by providing add
 <summary>via Bicep module</summary>
 
 ```bicep
-module example1 './/Microsoft.Compute/virtualMachines/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-example1'
+module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-virtualMachines'
   params: {
       vmSize: 'Standard_B12ms'
       nicConfigurations: [
@@ -924,8 +924,8 @@ module example1 './/Microsoft.Compute/virtualMachines/deploy.bicep' = {
 <summary>via Bicep module</summary>
 
 ```bicep
-module example2 './/Microsoft.Compute/virtualMachines/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-example2'
+module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-virtualMachines'
   params: {
       extensionCustomScriptConfig: {
         enabled: true
@@ -1153,11 +1153,11 @@ module example2 './/Microsoft.Compute/virtualMachines/deploy.bicep' = {
 ```bicep
 resource kv1 'Microsoft.KeyVault/vaults@2019-09-01' existing = {
     name: 'adp-<<namePrefix>>-az-kv-x-001'
-    scope: resourceGroup('','')
+    scope: resourceGroup('<<subscriptionId>>','validation-rg')
 }
 
-module example3 './/Microsoft.Compute/virtualMachines/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-example3'
+module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-virtualMachines'
   params: {
       osDisk: {
         diskSizeGB: '128'
@@ -1447,11 +1447,11 @@ module example3 './/Microsoft.Compute/virtualMachines/deploy.bicep' = {
 ```bicep
 resource kv1 'Microsoft.KeyVault/vaults@2019-09-01' existing = {
     name: 'adp-<<namePrefix>>-az-kv-x-001'
-    scope: resourceGroup('','')
+    scope: resourceGroup('<<subscriptionId>>','validation-rg')
 }
 
-module example4 './/Microsoft.Compute/virtualMachines/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-example4'
+module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-virtualMachines'
   params: {
       extensionCustomScriptConfig: {
         enabled: true
