@@ -521,7 +521,6 @@ function Set-UsageExamples {
             $bicepParamsArray = $contentInBicepFormat -split ('\n')
             $bicepParamsArray = $bicepParamsArray[1..($bicepParamsArray.count - 2)]
             $resourceType = $resourceTypeIdentifier.Split('/')[1]
-            #$bicepParamsArray = $bicepParamsArray | ForEach-Object { "    $_" }
 
             $SectionContent += @(
                 '',
@@ -550,10 +549,13 @@ function Set-UsageExamples {
     }
 
     # Build result
-    if ($PSCmdlet.ShouldProcess('Original file with new template references content', 'Merge')) {
-        $updatedFileContent = Merge-FileWithNewContent -oldContent $ReadMeFileContent -newContent $SectionContent -SectionStartIdentifier $SectionStartIdentifier
+    if ($SectionContent) {
+        if ($PSCmdlet.ShouldProcess('Original file with new template references content', 'Merge')) {
+            return Merge-FileWithNewContent -oldContent $ReadMeFileContent -newContent $SectionContent -SectionStartIdentifier $SectionStartIdentifier
+        }
+    } else {
+        return $ReadMeFileContent
     }
-    return $updatedFileContent
 }
 
 <#
