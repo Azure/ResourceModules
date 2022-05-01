@@ -103,13 +103,13 @@ param privateEndpoints array = []
 param diagnosticLogsRetentionInDays int = 365
 
 @description('Optional. Resource ID of the diagnostic storage account.')
-param diagnosticStorageAccountID string = ''
+param diagnosticStorageAccountId string = ''
 
-@description('Optional. Resource ID of log analytics.')
-param workspaceID string = ''
+@description('Optional. Resource ID of the diagnostic log analytics workspace.')
+param diagnosticWorkspaceId string = ''
 
-@description('Optional. Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.')
-param eventHubAuthorizationRuleID string = ''
+@description('Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.')
+param diagnosticEventHubAuthorizationRuleId string = ''
 
 @description('Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.')
 param diagnosticEventHubName string = ''
@@ -254,7 +254,7 @@ module workspace_privateEndpoints '.bicep/nested_privateEndpoint.bicep' = [for (
 }]
 
 // Diagnostics Settings
-resource workspace_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2021-05-01-preview' = if (!empty(diagnosticStorageAccountID) || !empty(workspaceID) || !empty(eventHubAuthorizationRuleID) || !empty(eventHubName)) {
+resource workspace_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2021-05-01-preview' = if (!empty(diagnosticStorageAccountId) || !empty(diagnosticWorkspaceId) || !empty(diagnosticEventHubAuthorizationRuleId) || !empty(diagnosticEventHubName)) {
   name: '${workspace.name}-diagnosticSettings'
   properties: {
     storageAccountId: !empty(diagnosticStorageAccountId) ? diagnosticStorageAccountId : null

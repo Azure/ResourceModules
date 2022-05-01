@@ -39,8 +39,12 @@ This module deploys a Synapse Workspace.
 | `allowedAadTenantIdsForLinking` | array | `[]` |  | Allowed Aad Tenant Ids For Linking. |
 | `azureADOnlyAuthentication` | bool | `False` |  | Enable or Disable AzureADOnlyAuthentication on All Workspace subresource |
 | `defaultDataLakeStorageCreateManagedPrivateEndpoint` | bool | `False` |  | Create managed private endpoint to the default storage account or not. If Yes is selected, a managed private endpoint connection request is sent to the workspace's primary Data Lake Storage Gen2 account for Spark pools to access data. This must be approved by an owner of the storage account. |
+| `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
+| `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
+| `diagnosticLogCategoriesToEnable` | array | `[SynapseRbacOperations, GatewayApiRequests, BuiltinSqlReqsEnded, IntegrationPipelineRuns, IntegrationActivityRuns, IntegrationTriggerRuns]` | `[SynapseRbacOperations, GatewayApiRequests, BuiltinSqlReqsEnded, IntegrationPipelineRuns, IntegrationActivityRuns, IntegrationTriggerRuns]` | The name of logs that will be streamed. |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
-| `diagnosticStorageAccountID` | string | `''` |  | Resource ID of the diagnostic storage account. |
+| `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
+| `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `encryption` | bool | `False` |  | Double encryption using a customer-managed key. |
 | `encryptionActivateWorkspace` | bool | `False` |  | Activate workspace by adding the system managed identity in the KeyVault containing the customer managed key and activating the workspace. |
@@ -49,13 +53,10 @@ This module deploys a Synapse Workspace.
 | `encryptionKeyVaultResourceGroupName` | string | `''` |  | Keyvault resource group name. |
 | `encryptionUserAssignedIdentity` | string | `''` |  | The ID of User Assigned Managed identity that will be used to access your customer-managed key stored in key vault. |
 | `encryptionUseSystemAssignedIdentity` | bool | `False` |  | Use System Assigned Managed identity that will be used to access your customer-managed key stored in key vault. |
-| `eventHubAuthorizationRuleID` | string | `''` |  | Resource ID of the event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
-| `eventHubName` | string | `''` |  | Name of the event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
 | `initialWorkspaceAdminObjectID` | string | `''` |  | AAD object ID of initial workspace admin. |
 | `linkedAccessCheckOnTargetResource` | bool | `False` |  | Linked Access Check On Target Resource. |
 | `location` | string | `[resourceGroup().location]` |  | The geo-location where the resource lives. |
 | `lock` | string | `'NotSpecified'` | `[CanNotDelete, NotSpecified, ReadOnly]` | Specify the type of lock. |
-| `logsToEnable` | array | `[SynapseRbacOperations, GatewayApiRequests, BuiltinSqlReqsEnded, IntegrationPipelineRuns, IntegrationActivityRuns, IntegrationTriggerRuns]` | `[SynapseRbacOperations, GatewayApiRequests, BuiltinSqlReqsEnded, IntegrationPipelineRuns, IntegrationActivityRuns, IntegrationTriggerRuns]` | The name of logs that will be streamed. |
 | `managedResourceGroupName` | string | `''` |  | Workspace managed resource group. The resource group name uniquely identifies the resource group within the user subscriptionId. The resource group name must be no longer than 90 characters long, and must be alphanumeric characters (Char.IsLetterOrDigit()) and '-', '_', '(', ')' and'.'. Note that the name cannot end with '.' |
 | `managedVirtualNetwork` | bool | `False` |  | Enable this to ensure that connection from your workspace to your data sources use Azure Private Links. You can create managed private endpoints to your data sources. |
 | `preventDataExfiltration` | bool | `False` |  | Prevent Data Exfiltration. |
@@ -66,7 +67,6 @@ This module deploys a Synapse Workspace.
 | `sqlAdministratorLoginPassword` | string | `''` |  | Password for administrator access to the workspace's SQL pools. If you don't provide a password, one will be automatically generated. You can change the password later. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
 | `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. |
-| `workspaceID` | string | `''` |  | Resource ID of log analytics. |
 
 
 ### Parameter Usage: `privateEndpoints`
