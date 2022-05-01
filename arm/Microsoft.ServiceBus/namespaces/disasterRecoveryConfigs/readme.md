@@ -20,7 +20,7 @@ This module deploys a disaster recovery config for a service bus Namespace
 **Conditional parameters**
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `namespaceName` | string | Name of the parent Service Bus Namespace for the Service Bus Queue. Required if the template is used in an standalone deployment. |
+| `namespaceName` | string | Name of the parent Service Bus Namespace for the Service Bus Queue. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Description |

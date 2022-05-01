@@ -20,9 +20,9 @@ This module deploys an Immutability Policy for a blob container
 **Conditional parameters**
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
-| `blobServicesName` | string | `'default'` | Name of the blob service. Required if the template is used in an standalone deployment. |
-| `containerName` | string |  | Name of the container to apply the policy to. Required if the template is used in an standalone deployment. |
-| `storageAccountName` | string |  | Name of the Storage Account. Required if the template is used in an standalone deployment. |
+| `blobServicesName` | string | `'default'` | Name of the blob service. Required if the template is used in a standalone deployment. |
+| `containerName` | string |  | Name of the container to apply the policy to. Required if the template is used in a standalone deployment. |
+| `storageAccountName` | string |  | Name of the Storage Account. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Description |

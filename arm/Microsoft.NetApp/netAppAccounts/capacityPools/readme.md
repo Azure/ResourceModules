@@ -28,7 +28,7 @@ This template deploys capacity pools in an Azure NetApp Files.
 **Conditional parameters**
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `netAppAccountName` | string | The name of the NetApp account. Required if the template is used in an standalone deployment. |
+| `netAppAccountName` | string | The name of the NetApp account. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |

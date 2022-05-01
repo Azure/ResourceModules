@@ -28,7 +28,7 @@ This template deploys a saved search for a Log Analytics workspace.
 **Conditional parameters**
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `logAnalyticsWorkspaceName` | string | Name of the Log Analytics workspace. Required if the template is used in an standalone deployment. |
+| `logAnalyticsWorkspaceName` | string | Name of the Log Analytics workspace. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Description |

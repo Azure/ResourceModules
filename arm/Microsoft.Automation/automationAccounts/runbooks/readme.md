@@ -26,7 +26,7 @@ This module deploys an Azure Automation Account Runbook.
 **Conditional parameters**
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `automationAccountName` | string | Name of the parent Automation Account. Required if the template is used in an standalone deployment. |
+| `automationAccountName` | string | Name of the parent Automation Account. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Description |

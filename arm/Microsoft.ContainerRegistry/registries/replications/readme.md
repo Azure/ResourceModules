@@ -25,7 +25,7 @@ This module deploys ContainerRegistry Registries Replications.
 **Conditional parameters**
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `registryName` | string | The name of the registry. Required if the template is used in an standalone deployment. |
+| `registryName` | string | The name of the registry. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |

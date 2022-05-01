@@ -26,7 +26,7 @@ This module deploys Network Firewall Policies Rule Collection Groups.
 **Conditional parameters**
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `firewallPolicyName` | string | Name of the Firewall Policy. Required if the template is used in an standalone deployment. |
+| `firewallPolicyName` | string | Name of the Firewall Policy. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Description |

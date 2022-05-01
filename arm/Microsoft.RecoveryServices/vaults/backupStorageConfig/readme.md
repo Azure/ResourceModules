@@ -19,7 +19,7 @@ This module deploys the Backup Storage Configuration for the Recovery Service Va
 **Conditional parameters**
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `recoveryVaultName` | string | Name of the Azure Recovery Service Vault. Required if the template is used in an standalone deployment. |
+| `recoveryVaultName` | string | Name of the Azure Recovery Service Vault. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |

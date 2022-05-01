@@ -27,7 +27,7 @@ This module deploys a Replication Policy for Disaster Recovery scenario.
 **Conditional parameters**
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `recoveryVaultName` | string | Name of the Azure Recovery Service Vault. Required if the template is used in an standalone deployment. |
+| `recoveryVaultName` | string | Name of the Azure Recovery Service Vault. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |

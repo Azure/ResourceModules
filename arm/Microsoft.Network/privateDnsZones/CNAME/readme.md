@@ -25,7 +25,7 @@ This module deploys a Private DNS Zone CNAME record.
 **Conditional parameters**
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `privateDnsZoneName` | string | Private DNS zone name. Required if the template is used in an standalone deployment. |
+| `privateDnsZoneName` | string | Private DNS zone name. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Description |

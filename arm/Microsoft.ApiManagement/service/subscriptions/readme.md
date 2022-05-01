@@ -31,7 +31,7 @@ The following resources are required to be able to deploy this resource.
 **Conditional parameters**
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `apiManagementServiceName` | string | The name of the of the API Management service. Required if the template is used in an standalone deployment. |
+| `apiManagementServiceName` | string | The name of the of the API Management service. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Description |

@@ -27,7 +27,7 @@ This module deploys a key vault secret.
 **Conditional parameters**
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `keyVaultName` | string | The name of the key vault. Required if the template is used in an standalone deployment. |
+| `keyVaultName` | string | The name of the key vault. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Description |

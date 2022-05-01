@@ -25,7 +25,7 @@ This module deploys an EventHub Namespace Disaster Recovery Config
 **Conditional parameters**
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `namespaceName` | string | The name of the event hub namespace. Required if the template is used in an standalone deployment. |
+| `namespaceName` | string | The name of the event hub namespace. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Description |

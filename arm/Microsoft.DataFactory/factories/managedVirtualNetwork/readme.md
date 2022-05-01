@@ -25,7 +25,7 @@ This module deploys a Managed Virtual Network for an Azure Data Factory
 **Conditional parameters**
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `dataFactoryName` | string | The name of the Azure Data Factory. Required if the template is used in an standalone deployment. |
+| `dataFactoryName` | string | The name of the Azure Data Factory. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Description |

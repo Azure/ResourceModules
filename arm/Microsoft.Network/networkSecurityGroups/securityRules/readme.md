@@ -28,7 +28,7 @@ This module deploys Network Security Group Security Rules.
 **Conditional parameters**
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `networkSecurityGroupName` | string | The name of the network security group to deploy the security rule into. Required if the template is used in an standalone deployment. |
+| `networkSecurityGroupName` | string | The name of the network security group to deploy the security rule into. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |

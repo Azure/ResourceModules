@@ -27,7 +27,7 @@ This module deploys AVD Applications.
 **Conditional parameters**
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `appGroupName` | string | Name of the Application Group to create the application(s) in. Required if the template is used in an standalone deployment. |
+| `appGroupName` | string | Name of the Application Group to create the application(s) in. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |

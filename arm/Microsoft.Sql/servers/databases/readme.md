@@ -26,7 +26,7 @@ This module deploys an Azure SQL Server.
 **Conditional parameters**
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `serverName` | string | The Name of SQL Server. Required if the template is used in an standalone deployment. |
+| `serverName` | string | The Name of SQL Server. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |

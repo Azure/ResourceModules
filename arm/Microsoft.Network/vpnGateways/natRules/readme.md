@@ -25,7 +25,7 @@ This module deploys VPN Gateways NATRules
 **Conditional parameters**
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `vpnGatewayName` | string | The name of the VPN gateway this NAT rule is associated with. Required if the template is used in an standalone deployment. |
+| `vpnGatewayName` | string | The name of the VPN gateway this NAT rule is associated with. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |

@@ -26,7 +26,7 @@ This module deploys an Image Definition in a Shared Image Gallery.
 **Conditional parameters**
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `galleryName` | string | Name of the Azure Shared Image Gallery. Required if the template is used in an standalone deployment. |
+| `galleryName` | string | Name of the Azure Shared Image Gallery. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |

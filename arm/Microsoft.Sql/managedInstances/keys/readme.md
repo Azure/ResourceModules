@@ -20,7 +20,7 @@ This module deploys a key for a SQL managed instance.
 **Conditional parameters**
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `managedInstanceName` | string | Name of the SQL managed instance. Required if the template is used in an standalone deployment. |
+| `managedInstanceName` | string | Name of the SQL managed instance. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |

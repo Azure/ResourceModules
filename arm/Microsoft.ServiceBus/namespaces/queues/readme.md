@@ -28,7 +28,7 @@ This module deploys a queue for a service bus namespace.
 **Conditional parameters**
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `namespaceName` | string | Name of the parent Service Bus Namespace for the Service Bus Queue. Required if the template is used in an standalone deployment. |
+| `namespaceName` | string | Name of the parent Service Bus Namespace for the Service Bus Queue. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
