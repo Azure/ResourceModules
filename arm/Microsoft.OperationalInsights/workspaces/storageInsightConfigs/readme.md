@@ -7,13 +7,12 @@ This template deploys a storage insights configuration for a Log Analytics works
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Template references](#Template-references)
 
 ## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.OperationalInsights/workspaces/storageInsightConfigs` | 2020-08-01 |
+| `Microsoft.OperationalInsights/workspaces/storageInsightConfigs` | [2020-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.OperationalInsights/2020-08-01/workspaces/storageInsightConfigs) |
 
 ## Parameters
 
@@ -57,7 +56,3 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | `name` | string | The name of the storage insights configuration |
 | `resourceGroupName` | string | The resource group where the storage insight configuration is deployed |
 | `resourceId` | string | The resource ID of the deployed storage insights configuration |
-
-## Template references
-
-- [Workspaces/Storageinsightconfigs](https://docs.microsoft.com/en-us/azure/templates/Microsoft.OperationalInsights/2020-08-01/workspaces/storageInsightConfigs)

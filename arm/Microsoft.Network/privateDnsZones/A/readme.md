@@ -7,13 +7,12 @@ This module deploys a Private DNS Zone A record.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Template references](#Template-references)
 
 ## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Network/privateDnsZones/A` | 2020-06-01 |
+| `Microsoft.Network/privateDnsZones/A` | [2020-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-06-01/privateDnsZones/A) |
 
 ## Parameters
 
@@ -51,7 +50,3 @@ This module deploys a Private DNS Zone A record.
 | `name` | string | The name of the deployed A record |
 | `resourceGroupName` | string | The resource group of the deployed A record |
 | `resourceId` | string | The resource ID of the deployed A record |
-
-## Template references
-
-- [Privatednszones/A](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-06-01/privateDnsZones/A)

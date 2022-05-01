@@ -8,14 +8,13 @@ With this module you can perform policy assignments across the management group,
 - [Parameters](#Parameters)
 - [Module Usage Guidance](#Module-Usage-Guidance)
 - [Outputs](#Outputs)
-- [Template references](#Template-references)
 
 ## Resource types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/policyAssignments` | 2021-06-01 |
-| `Microsoft.Authorization/roleAssignments` | 2021-04-01-preview |
+| `Microsoft.Authorization/policyAssignments` | [2021-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2021-06-01/policyAssignments) |
+| `Microsoft.Authorization/roleAssignments` | [2021-04-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments) |
 
 ## Parameters
 
@@ -109,8 +108,3 @@ module policyassignment 'yourpath/arm/Microsoft.Authorization.policyAssignments/
 | `name` | string | Policy Assignment Name |
 | `principalId` | string | Policy Assignment principal ID |
 | `resourceId` | string | Policy Assignment resource ID |
-
-## Template references
-
-- [Policyassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2021-06-01/policyAssignments)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)

@@ -7,13 +7,12 @@ This module deploys a Private DNS Zone TXT record.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Template references](#Template-references)
 
 ## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Network/privateDnsZones/SRV` | 2020-06-01 |
+| `Microsoft.Network/privateDnsZones/SRV` | [2020-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-06-01/privateDnsZones/SRV) |
 
 ## Parameters
 
@@ -54,7 +53,3 @@ This module deploys a Private DNS Zone TXT record.
 | `name` | string | The name of the deployed SRV record |
 | `resourceGroupName` | string | The resource group of the deployed SRV record |
 | `resourceId` | string | The resource ID of the deployed SRV record |
-
-## Template references
-
-- [Privatednszones/SRV](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-06-01/privateDnsZones/SRV)

@@ -7,13 +7,12 @@ This module deploys a Private DNS Zone AAAA record.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Template references](#Template-references)
 
 ## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Network/privateDnsZones/AAAA` | 2020-06-01 |
+| `Microsoft.Network/privateDnsZones/AAAA` | [2020-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-06-01/privateDnsZones/AAAA) |
 
 ## Parameters
 
@@ -51,7 +50,3 @@ This module deploys a Private DNS Zone AAAA record.
 | `name` | string | The name of the deployed AAAA record |
 | `resourceGroupName` | string | The resource group of the deployed AAAA record |
 | `resourceId` | string | The resource ID of the deployed AAAA record |
-
-## Template references
-
-- [Privatednszones/AAAA](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-06-01/privateDnsZones/AAAA)
