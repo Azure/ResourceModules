@@ -19,7 +19,7 @@ module workspace_cmk_rbac 'nested_cmkRbac.bicep' = {
     keyvaultName: encryptionKeyVaultName
     usesRbacAuthorization: keyVault.properties.enableRbacAuthorization
   }
-  scope: az.resourceGroup(encryptionKeyVaultResourceGroupName)
+  scope: resourceGroup(encryptionKeyVaultResourceGroupName)
 }
 
 // Workspace encryption - Activate Workspace
