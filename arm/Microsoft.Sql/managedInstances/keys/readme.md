@@ -17,17 +17,17 @@ This module deploys a key for a SQL managed instance.
 
 ## Parameters
 
-**Required parameters**
+**Conditional parameters**
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `managedInstanceName` | string | Name of the SQL managed instance. |
+| `managedInstanceName` | string | Name of the SQL managed instance. Required if the template is used in an standalone deployment. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `name` | string | `''` |  | The name of the key. Must follow the [<keyVaultName>_<keyName>_<keyVersion>] pattern |
-| `serverKeyType` | string | `'ServiceManaged'` | `[AzureKeyVault, ServiceManaged]` | The encryption protector type like "ServiceManaged", "AzureKeyVault" |
+| `name` | string | `''` |  | The name of the key. Must follow the [<keyVaultName>_<keyName>_<keyVersion>] pattern. |
+| `serverKeyType` | string | `'ServiceManaged'` | `[AzureKeyVault, ServiceManaged]` | The encryption protector type like "ServiceManaged", "AzureKeyVault". |
 | `uri` | string | `''` |  | The URI of the key. If the ServerKeyType is AzureKeyVault, then either the URI or the keyVaultName/keyName combination is required. |
 
 
@@ -35,9 +35,9 @@ This module deploys a key for a SQL managed instance.
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the deployed managed instance |
-| `resourceGroupName` | string | The resource group of the deployed managed instance |
-| `resourceId` | string | The resource ID of the deployed managed instance |
+| `name` | string | The name of the deployed managed instance. |
+| `resourceGroupName` | string | The resource group of the deployed managed instance. |
+| `resourceId` | string | The resource ID of the deployed managed instance. |
 
 ## Template references
 

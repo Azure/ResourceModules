@@ -22,9 +22,13 @@ This template deploys a saved search for a Log Analytics workspace.
 | :-- | :-- | :-- |
 | `category` | string | Query category. |
 | `displayName` | string | Display name for the search. |
-| `logAnalyticsWorkspaceName` | string | Name of the Log Analytics workspace |
-| `name` | string | Name of the saved search |
+| `name` | string | Name of the saved search. |
 | `query` | string | Kusto Query to be stored. |
+
+**Conditional parameters**
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `logAnalyticsWorkspaceName` | string | Name of the Log Analytics workspace. Required if the template is used in an standalone deployment. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Description |
@@ -57,9 +61,9 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the deployed saved search |
-| `resourceGroupName` | string | The resource group where the saved search is deployed |
-| `resourceId` | string | The resource ID of the deployed saved search |
+| `name` | string | The name of the deployed saved search. |
+| `resourceGroupName` | string | The resource group where the saved search is deployed. |
+| `resourceId` | string | The resource ID of the deployed saved search. |
 
 ## Template references
 

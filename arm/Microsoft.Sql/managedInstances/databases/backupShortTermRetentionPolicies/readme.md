@@ -21,9 +21,13 @@ This module deploys a backup short-term retention policies for SQL Managed Insta
 **Required parameters**
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `databaseName` | string | The name of the SQL managed instance database |
-| `managedInstanceName` | string | Name of the SQL managed instance. |
 | `name` | string | The name of the Short Term Retention backup policy. For example "default". |
+
+**Conditional parameters**
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `databaseName` | string | The name of the SQL managed instance database. Required if the template is used in an standalone deployment. |
+| `managedInstanceName` | string | Name of the SQL managed instance. Required if the template is used in an standalone deployment. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Description |
@@ -36,9 +40,9 @@ This module deploys a backup short-term retention policies for SQL Managed Insta
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the deployed database backup short-term retention policy |
-| `resourceGroupName` | string | The resource group of the deployed database backup short-term retention policy |
-| `resourceId` | string | The resource ID of the deployed database backup short-term retention policy |
+| `name` | string | The name of the deployed database backup short-term retention policy. |
+| `resourceGroupName` | string | The resource group of the deployed database backup short-term retention policy. |
+| `resourceId` | string | The resource ID of the deployed database backup short-term retention policy. |
 
 ## Template references
 

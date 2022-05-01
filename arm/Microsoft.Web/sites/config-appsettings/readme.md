@@ -20,8 +20,12 @@ This module deploys the app settings.
 **Required parameters**
 | Parameter Name | Type | Allowed Values | Description |
 | :-- | :-- | :-- | :-- |
-| `appName` | string |  | Name of the site parent resource. |
 | `kind` | string | `[functionapp, functionapp,linux, app]` | Type of site to deploy. |
+
+**Conditional parameters**
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `appName` | string | Name of the site parent resource. Required if the template is used in an standalone deployment. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Description |

@@ -51,5 +51,5 @@ With this module you can perform policy assignments on a subscription level.
 
 ## Template references
 
-- [Policyassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2021-06-01/policyAssignments)
+- [Policyassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/policyAssignments)
 - [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)

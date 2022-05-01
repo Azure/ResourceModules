@@ -20,17 +20,21 @@ This module deploys a collection within a MongoDB.
 **Required parameters**
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `databaseAccountName` | string | Name of the Cosmos DB database account. |
-| `indexes` | array | Indexes for the collection |
-| `mongodbDatabaseName` | string | Name of the mongodb database |
-| `name` | string | Name of the collection |
-| `shardKey` | object | ShardKey for the collection |
+| `indexes` | array | Indexes for the collection. |
+| `name` | string | Name of the collection. |
+| `shardKey` | object | ShardKey for the collection. |
+
+**Conditional parameters**
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `databaseAccountName` | string | Name of the Cosmos DB database account. Required if the template is used in an standalone deployment. |
+| `mongodbDatabaseName` | string | Name of the mongodb database. Required if the template is used in an standalone deployment. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `throughput` | int | `400` | Name of the mongodb database |
+| `throughput` | int | `400` | Name of the mongodb database. |
 
 
 ### Parameter Usage: `indexes`

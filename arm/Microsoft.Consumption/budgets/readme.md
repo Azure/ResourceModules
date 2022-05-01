@@ -42,9 +42,9 @@ This module deploys budgets for subscriptions.
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the budget |
-| `resourceId` | string | The resource ID of the budget |
-| `subscriptionName` | string | The subscription the budget was deployed into |
+| `name` | string | The name of the budget. |
+| `resourceId` | string | The resource ID of the budget. |
+| `subscriptionName` | string | The subscription the budget was deployed into. |
 
 ## Template references
 

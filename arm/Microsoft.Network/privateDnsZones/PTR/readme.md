@@ -21,7 +21,11 @@ This module deploys a Private DNS Zone PTR record.
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The name of the PTR record. |
-| `privateDnsZoneName` | string | Private DNS zone name. |
+
+**Conditional parameters**
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `privateDnsZoneName` | string | Private DNS zone name. Required if the template is used in an standalone deployment. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Description |
@@ -48,9 +52,9 @@ This module deploys a Private DNS Zone PTR record.
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the deployed PTR record |
-| `resourceGroupName` | string | The resource group of the deployed PTR record |
-| `resourceId` | string | The resource ID of the deployed PTR record |
+| `name` | string | The name of the deployed PTR record. |
+| `resourceGroupName` | string | The resource group of the deployed PTR record. |
+| `resourceId` | string | The resource ID of the deployed PTR record. |
 
 ## Template references
 

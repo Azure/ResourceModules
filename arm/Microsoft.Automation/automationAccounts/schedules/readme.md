@@ -20,8 +20,12 @@ This module deploys an Azure Automation Account Schedule.
 **Required parameters**
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `automationAccountName` | string | Name of the parent Automation Account. |
 | `name` | string | Name of the Automation Account schedule. |
+
+**Conditional parameters**
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `automationAccountName` | string | Name of the parent Automation Account. Required if the template is used in an standalone deployment. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
@@ -30,7 +34,7 @@ This module deploys an Azure Automation Account Schedule.
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `expiryTime` | string | `''` |  | The end time of the schedule. |
 | `frequency` | string | `'OneTime'` | `[Day, Hour, Minute, Month, OneTime, Week]` | The frequency of the schedule. |
-| `interval` | int | `0` |  | Anything |
+| `interval` | int | `0` |  | Anything. |
 | `scheduleDescription` | string | `''` |  | The description of the schedule. |
 | `startTime` | string | `''` |  | The start time of the schedule. |
 | `timeZone` | string | `''` |  | The time zone of the schedule. |
@@ -45,9 +49,9 @@ This module deploys an Azure Automation Account Schedule.
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the deployed schedule |
-| `resourceGroupName` | string | The resource group of the deployed schedule |
-| `resourceId` | string | The resource ID of the deployed schedule |
+| `name` | string | The name of the deployed schedule. |
+| `resourceGroupName` | string | The resource group of the deployed schedule. |
+| `resourceId` | string | The resource ID of the deployed schedule. |
 
 ## Template references
 

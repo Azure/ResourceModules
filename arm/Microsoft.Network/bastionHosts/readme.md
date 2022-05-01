@@ -24,8 +24,8 @@ This module deploys a bastion host.
 **Required parameters**
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | Name of the Azure Bastion resource |
-| `vNetId` | string | Shared services Virtual Network resource identifier |
+| `name` | string | Name of the Azure Bastion resource. |
+| `vNetId` | string | Shared services Virtual Network resource identifier. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
@@ -42,7 +42,7 @@ This module deploys a bastion host.
 | `lock` | string | `'NotSpecified'` | `[CanNotDelete, NotSpecified, ReadOnly]` | Specify the type of lock. |
 | `publicIPAddressId` | string | `''` |  | Specifies the resource ID of the existing public IP to be leveraged by Azure Bastion. |
 | `publicIPAddressObject` | object | `{object}` |  | Specifies the properties of the public IP to create and be used by Azure Bastion. If it's not provided and publicIPAddressId is empty, a '-pip' suffix will be appended to the Bastion's name. |
-| `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
+| `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `scaleUnits` | int | `2` |  | The scale units for the Bastion Host resource. |
 | `skuType` | string | `'Basic'` | `[Basic, Standard]` | The SKU of this Bastion Host. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
@@ -95,9 +95,9 @@ Create a role assignment for the given resource. If you want to assign a service
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name the Azure Bastion |
-| `resourceGroupName` | string | The resource group the Azure Bastion was deployed into |
-| `resourceId` | string | The resource ID the Azure Bastion |
+| `name` | string | The name the Azure Bastion. |
+| `resourceGroupName` | string | The resource group the Azure Bastion was deployed into. |
+| `resourceId` | string | The resource ID the Azure Bastion. |
 
 ## Template references
 

@@ -20,17 +20,21 @@ This module deploys a Protection Container for a Recovery Services Vault
 **Required parameters**
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | Name of the Azure Recovery Service Vault Protection Container |
-| `recoveryVaultName` | string | Name of the Azure Recovery Service Vault |
+| `name` | string | Name of the Azure Recovery Service Vault Protection Container. |
+
+**Conditional parameters**
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `recoveryVaultName` | string | Name of the Azure Recovery Service Vault. Required if the template is used in an standalone deployment. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `backupManagementType` | string | `''` | `[AzureBackupServer, AzureIaasVM, AzureSql, AzureStorage, AzureWorkload, DPM, DefaultBackup, Invalid, MAB, ]` | Backup management type to execute the current Protection Container job. |
-| `containerType` | string | `''` | `[AzureBackupServerContainer, AzureSqlContainer, GenericContainer, Microsoft.ClassicCompute/virtualMachines, Microsoft.Compute/virtualMachines, SQLAGWorkLoadContainer, StorageContainer, VMAppContainer, Windows, ]` | Type of the container |
+| `containerType` | string | `''` | `[AzureBackupServerContainer, AzureSqlContainer, GenericContainer, Microsoft.ClassicCompute/virtualMachines, Microsoft.Compute/virtualMachines, SQLAGWorkLoadContainer, StorageContainer, VMAppContainer, Windows, ]` | Type of the container. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `friendlyName` | string | `''` |  | Friendly name of the Protection Container |
-| `sourceResourceId` | string | `''` |  | Resource ID of the target resource for the Protection Container  |
+| `friendlyName` | string | `''` |  | Friendly name of the Protection Container. |
+| `sourceResourceId` | string | `''` |  | Resource ID of the target resource for the Protection Container. |
 
 
 ## Outputs

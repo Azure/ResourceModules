@@ -23,8 +23,8 @@ This module deploys Resources Tags on a subscription scope.
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `location` | string | `[deployment().location]` | Location deployment metadata. |
 | `name` | string | `'default'` | The name of the tags resource. |
-| `onlyUpdate` | bool | `False` | Instead of overwriting the existing tags, combine them with the new tags |
-| `tags` | object | `{object}` | Tags for the resource group. If not provided, removes existing tags |
+| `onlyUpdate` | bool | `False` | Instead of overwriting the existing tags, combine them with the new tags. |
+| `tags` | object | `{object}` | Tags for the resource group. If not provided, removes existing tags. |
 
 
 ### Parameter Usage: `tags`
@@ -48,8 +48,8 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the tags resource |
-| `tags` | object | The applied tags |
+| `name` | string | The name of the tags resource. |
+| `tags` | object | The applied tags. |
 
 ## Template references
 

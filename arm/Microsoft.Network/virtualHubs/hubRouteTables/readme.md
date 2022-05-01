@@ -21,7 +21,11 @@ This module deploys virtual hub route tables.
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The route table name. |
-| `virtualHubName` | string | The virtual hub name. |
+
+**Conditional parameters**
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `virtualHubName` | string | The virtual hub name. Required if the template is used in an standalone deployment. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Description |
@@ -35,9 +39,9 @@ This module deploys virtual hub route tables.
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the deployed virtual hub route table |
-| `resourceGroupName` | string | The resource group the virtual hub route table was deployed into |
-| `resourceId` | string | The resource ID of the deployed virtual hub route table |
+| `name` | string | The name of the deployed virtual hub route table. |
+| `resourceGroupName` | string | The resource group the virtual hub route table was deployed into. |
+| `resourceId` | string | The resource ID of the deployed virtual hub route table. |
 
 ## Template references
 

@@ -21,7 +21,11 @@ This module deploys a Private DNS Zone SOA record.
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The name of the SOA record. |
-| `privateDnsZoneName` | string | Private DNS zone name. |
+
+**Conditional parameters**
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `privateDnsZoneName` | string | Private DNS zone name. Required if the template is used in an standalone deployment. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Description |
@@ -52,9 +56,9 @@ This module deploys a Private DNS Zone SOA record.
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the deployed SOA record |
-| `resourceGroupName` | string | The resource group of the deployed SOA record |
-| `resourceId` | string | The resource ID of the deployed SOA record |
+| `name` | string | The name of the deployed SOA record. |
+| `resourceGroupName` | string | The resource group of the deployed SOA record. |
+| `resourceId` | string | The resource ID of the deployed SOA record. |
 
 ## Template references
 

@@ -21,7 +21,11 @@ This module deploys a Private DNS Zone MX record.
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The name of the MX record. |
-| `privateDnsZoneName` | string | Private DNS zone name. |
+
+**Conditional parameters**
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `privateDnsZoneName` | string | Private DNS zone name. Required if the template is used in an standalone deployment. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Description |
@@ -49,9 +53,9 @@ This module deploys a Private DNS Zone MX record.
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the deployed MX record |
-| `resourceGroupName` | string | The resource group of the deployed MX record |
-| `resourceId` | string | The resource ID of the deployed MX record |
+| `name` | string | The name of the deployed MX record. |
+| `resourceGroupName` | string | The resource group of the deployed MX record. |
+| `resourceId` | string | The resource ID of the deployed MX record. |
 
 ## Template references
 

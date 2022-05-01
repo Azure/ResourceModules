@@ -26,15 +26,19 @@ The following resources are required to be able to deploy this resource.
 **Required parameters**
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `apiManagementServiceName` | string | The name of the of the API Management service. |
-| `connectionString` | string | Runtime connection string to cache. Can be referenced by a named value like so, {{<named-value>}} |
+| `connectionString` | string | Runtime connection string to cache. Can be referenced by a named value like so, {{<named-value>}}. |
 | `name` | string | Identifier of the Cache entity. Cache identifier (should be either 'default' or valid Azure region identifier). |
-| `useFromLocation` | string | Location identifier to use cache from (should be either 'default' or valid Azure region identifier) |
+| `useFromLocation` | string | Location identifier to use cache from (should be either 'default' or valid Azure region identifier). |
+
+**Conditional parameters**
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `apiManagementServiceName` | string | The name of the of the API Management service. Required if the template is used in an standalone deployment. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
-| `cacheDescription` | string | `''` | Cache description |
+| `cacheDescription` | string | `''` | Cache description. |
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `resourceId` | string | `''` | Original uri of entity in external system cache points to. |
 
@@ -43,9 +47,9 @@ The following resources are required to be able to deploy this resource.
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the API management service cache |
-| `resourceGroupName` | string | The resource group the API management service cache was deployed into |
-| `resourceId` | string | The resource ID of the API management service cache |
+| `name` | string | The name of the API management service cache. |
+| `resourceGroupName` | string | The resource group the API management service cache was deployed into. |
+| `resourceId` | string | The resource ID of the API management service cache. |
 
 ## Template references
 

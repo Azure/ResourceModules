@@ -21,7 +21,11 @@ This module deploys an SQL Server Security Alert Policy.
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The name of the Security Alert Policy. |
-| `serverName` | string | The Name of SQL Server |
+
+**Conditional parameters**
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `serverName` | string | The Name of SQL Server. Required if the template is used in an standalone deployment. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
@@ -40,9 +44,9 @@ This module deploys an SQL Server Security Alert Policy.
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the deployed security alert policy |
-| `resourceGroupName` | string | The resourceGroup of the deployed security alert policy |
-| `resourceId` | string | The resource ID of the deployed security alert policy |
+| `name` | string | The name of the deployed security alert policy. |
+| `resourceGroupName` | string | The resourceGroup of the deployed security alert policy. |
+| `resourceId` | string | The resource ID of the deployed security alert policy. |
 
 ## Template references
 

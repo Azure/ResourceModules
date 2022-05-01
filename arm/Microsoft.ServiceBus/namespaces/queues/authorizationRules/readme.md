@@ -20,9 +20,13 @@ This module deploys an authorization rule for a service bus namespace queue.
 **Required parameters**
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the service bus namepace queue |
-| `namespaceName` | string | The name of the parent service bus namespace |
-| `queueName` | string | The name of the parent service bus namespace queue |
+| `name` | string | The name of the service bus namepace queue. |
+
+**Conditional parameters**
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `namespaceName` | string | The name of the parent service bus namespace. Required if the template is used in an standalone deployment. |
+| `queueName` | string | The name of the parent service bus namespace queue. Required if the template is used in an standalone deployment. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |

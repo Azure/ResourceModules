@@ -20,7 +20,7 @@
 **Required parameters**
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | Name of the Azure Batch |
+| `name` | string | Name of the Azure Batch. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
@@ -60,9 +60,9 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the batch account |
-| `resourceGroupName` | string | The resource group the batch account was deployed into |
-| `resourceId` | string | The resource ID of the batch account |
+| `name` | string | The name of the batch account. |
+| `resourceGroupName` | string | The resource group the batch account was deployed into. |
+| `resourceId` | string | The resource ID of the batch account. |
 
 ## Template references
 

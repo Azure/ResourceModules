@@ -20,8 +20,12 @@ This module deploys API Management Service Portal Setting.
 **Required parameters**
 | Parameter Name | Type | Allowed Values | Description |
 | :-- | :-- | :-- | :-- |
-| `apiManagementServiceName` | string |  | The name of the of the API Management service. |
-| `name` | string | `[delegation, signin, signup]` | Portal setting name |
+| `name` | string | `[delegation, signin, signup]` | Portal setting name. |
+
+**Conditional parameters**
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `apiManagementServiceName` | string | The name of the of the API Management service. Required if the template is used in an standalone deployment. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Description |
@@ -34,9 +38,9 @@ This module deploys API Management Service Portal Setting.
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the API management service portal setting |
-| `resourceGroupName` | string | The resource group the API management service portal setting was deployed into |
-| `resourceId` | string | The resource ID of the API management service portal setting |
+| `name` | string | The name of the API management service portal setting. |
+| `resourceGroupName` | string | The resource group the API management service portal setting was deployed into. |
+| `resourceId` | string | The resource ID of the API management service portal setting. |
 
 ## Template references
 
