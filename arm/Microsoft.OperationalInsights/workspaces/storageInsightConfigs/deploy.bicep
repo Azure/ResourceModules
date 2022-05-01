@@ -1,4 +1,4 @@
-@description('Required. Name of the Log Analytics workspace.')
+@description('Conditional. Name of the Log Analytics workspace. Required if the template is used in an standalone deployment.')
 param logAnalyticsWorkspaceName string
 
 @description('Optional. The name of the storage insights config')

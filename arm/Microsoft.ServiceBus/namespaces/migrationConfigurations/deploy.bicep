@@ -1,15 +1,15 @@
-@description('Required. Name of the parent Service Bus Namespace for the Service Bus Queue.')
+@description('Conditional. Name of the parent Service Bus Namespace for the Service Bus Queue. Required if the template is used in an standalone deployment.')
 @minLength(6)
 @maxLength(50)
 param namespaceName string
 
-@description('Optional. The name of the migration configuration')
+@description('Optional. The name of the migration configuration.')
 param name string = '$default'
 
-@description('Required. Name to access Standard Namespace after migration')
+@description('Required. Name to access Standard Namespace after migration.')
 param postMigrationName string
 
-@description('Required. Existing premium Namespace resource ID which has no entities, will be used for migration')
+@description('Required. Existing premium Namespace resource ID which has no entities, will be used for migration.')
 param targetNamespaceResourceId string
 
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')

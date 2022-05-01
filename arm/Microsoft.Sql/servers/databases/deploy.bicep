@@ -1,7 +1,7 @@
 @description('Required. The name of the database.')
 param name string
 
-@description('Required. The Name of SQL Server')
+@description('Conditional. The Name of SQL Server. Required if the template is used in an standalone deployment.')
 param serverName string
 
 @description('Optional. The collation of the database.')

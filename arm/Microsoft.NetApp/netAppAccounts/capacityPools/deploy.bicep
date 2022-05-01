@@ -1,4 +1,4 @@
-@description('Required. The name of the NetApp account.')
+@description('Conditional. The name of the NetApp account. Required if the template is used in an standalone deployment.')
 param netAppAccountName string
 
 @description('Required. The name of the capacity pool.')

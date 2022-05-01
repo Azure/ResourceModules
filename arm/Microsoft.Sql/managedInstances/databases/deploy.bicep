@@ -1,7 +1,7 @@
 @description('Required. The name of the SQL managed instance database.')
 param name string
 
-@description('Required. The name of the SQL managed instance.')
+@description('Conditional. The name of the SQL managed instance. Required if the template is used in an standalone deployment.')
 param managedInstanceName string
 
 @description('Optional. Location for all resources.')

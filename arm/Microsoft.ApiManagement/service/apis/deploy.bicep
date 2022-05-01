@@ -4,7 +4,7 @@ param name string
 @description('Optional. Array of Policies to apply to the Service API.')
 param policies array = []
 
-@description('Required. The name of the of the API Management service.')
+@description('Conditional. The name of the of the API Management service. Required if the template is used in an standalone deployment.')
 param apiManagementServiceName string
 
 @description('Optional. Describes the Revision of the API. If no value is provided, default revision 1 is created')

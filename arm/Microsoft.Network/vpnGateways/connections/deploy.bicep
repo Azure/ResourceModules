@@ -1,7 +1,7 @@
 @description('Required. The name of the VPN connection.')
 param name string
 
-@description('Required. The name of the VPN gateway this VPN connection is associated with.')
+@description('Conditional. The name of the VPN gateway this VPN connection is associated with. Required if the template is used in an standalone deployment.')
 param vpnGatewayName string
 
 @description('Optional. The IPSec policies to be considered by this connection.')

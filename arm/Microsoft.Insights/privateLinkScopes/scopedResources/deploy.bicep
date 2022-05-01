@@ -2,7 +2,7 @@
 @minLength(1)
 param name string
 
-@description('Required. Name of the parent private link scope.')
+@description('Conditional. Name of the parent private link scope. Required if the template is used in an standalone deployment.')
 @minLength(1)
 param privateLinkScopeName string
 

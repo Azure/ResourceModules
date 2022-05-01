@@ -1,8 +1,8 @@
 @maxLength(24)
-@description('Required. Name of the Storage Account.')
+@description('Conditional. Name of the Storage Account. Required if the template is used in an standalone deployment.')
 param storageAccountName string
 
-@description('Optional. The name of the table service')
+@description('Conditional. The name of the table service. Required if the template is used in an standalone deployment.')
 param tableServicesName string = 'default'
 
 @description('Required. Name of the table.')

@@ -1,10 +1,10 @@
-@description('Required. Name of the Azure Recovery Service Vault')
+@description('Conditional. Name of the Azure Recovery Service Vault. Required if the template is used in an standalone deployment.')
 param recoveryVaultName string
 
-@description('Required. Name of the Azure Recovery Service Vault Backup Policy')
+@description('Required. Name of the Azure Recovery Service Vault Backup Policy.')
 param name string
 
-@description('Required. Configuration of the Azure Recovery Service Vault Backup Policy')
+@description('Required. Configuration of the Azure Recovery Service Vault Backup Policy.')
 param backupPolicyProperties object
 
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')

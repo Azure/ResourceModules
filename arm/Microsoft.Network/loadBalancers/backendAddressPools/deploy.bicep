@@ -1,7 +1,7 @@
-@description('Required. The name of the parent load balancer')
+@description('Conditional. The name of the parent load balancer. Required if the template is used in an standalone deployment.')
 param loadBalancerName string
 
-@description('Required. The name of the backend address pool')
+@description('Required. The name of the backend address pool.')
 param name string
 
 @description('Optional. An array of backend addresses.')

@@ -1,7 +1,7 @@
-@description('Required. Name of the Cosmos DB database account.')
+@description('Conditional. Name of the Cosmos DB database account. Required if the template is used in an standalone deployment.')
 param databaseAccountName string
 
-@description('Required. Name of the mongodb database')
+@description('Conditional. Name of the mongodb database. Required if the template is used in an standalone deployment.')
 param mongodbDatabaseName string
 
 @description('Required. Name of the collection')

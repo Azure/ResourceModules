@@ -1,4 +1,4 @@
-@description('Required. Name of the managed cluster')
+@description('Conditional. Name of the managed cluster. Required if the template is used in an standalone deployment.')
 @minLength(1)
 param managedClusterName string
 

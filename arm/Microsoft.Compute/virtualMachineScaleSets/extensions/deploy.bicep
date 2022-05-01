@@ -1,4 +1,4 @@
-@description('Required. The name of the virtual machine scale set that extension is provisioned for')
+@description('Conditional. The name of the virtual machine scale set that extension is provisioned for. Required if the template is used in an standalone deployment.')
 param virtualMachineScaleSetName string
 
 @description('Required. The name of the virtual machine scale set extension')

@@ -1,7 +1,7 @@
-@description('Required. The name of the security alert policy')
+@description('Required. The name of the security alert policy.')
 param name string
 
-@description('Required. Name of the SQL managed instance.')
+@description('Conditional. Name of the SQL managed instance. Required if the template is used in an standalone deployment.')
 param managedInstanceName string
 
 @description('Optional. Enables advanced data security features, like recuring vulnerability assesment scans and ATP. If enabled, storage account must be provided.')

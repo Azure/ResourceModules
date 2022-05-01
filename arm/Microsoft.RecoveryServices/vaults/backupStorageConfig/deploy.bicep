@@ -1,10 +1,10 @@
-@description('Required. Name of the Azure Recovery Service Vault')
+@description('Conditional. Name of the Azure Recovery Service Vault. Required if the template is used in an standalone deployment.')
 param recoveryVaultName string
 
-@description('Optional. The name of the backup storage config')
+@description('Optional. The name of the backup storage config.')
 param name string = 'vaultstorageconfig'
 
-@description('Optional. Change Vault Storage Type (Works if vault has not registered any backup instance)')
+@description('Optional. Change Vault Storage Type (Works if vault has not registered any backup instance).')
 @allowed([
   'GeoRedundant'
   'LocallyRedundant'
@@ -13,7 +13,7 @@ param name string = 'vaultstorageconfig'
 ])
 param storageModelType string = 'GeoRedundant'
 
-@description('Optional. Opt in details of Cross Region Restore feature')
+@description('Optional. Opt in details of Cross Region Restore feature.')
 param crossRegionRestoreFlag bool = true
 
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')

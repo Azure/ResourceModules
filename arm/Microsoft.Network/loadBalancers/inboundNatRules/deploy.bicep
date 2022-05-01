@@ -1,7 +1,7 @@
-@description('Required. The name of the parent load balancer')
+@description('Conditional. The name of the parent load balancer. Required if the template is used in an standalone deployment.')
 param loadBalancerName string
 
-@description('Required. The name of the inbound NAT rule')
+@description('Required. The name of the inbound NAT rule.')
 param name string
 
 @description('Required. The port for the external endpoint. Port numbers for each rule must be unique within the Load Balancer. ')
@@ -14,7 +14,7 @@ param frontendPort int
 @maxValue(65535)
 param backendPort int = frontendPort
 
-@description('Optional. Name of the backend address pool')
+@description('Optional. Name of the backend address pool.')
 param backendAddressPoolName string = ''
 
 @description('Optional. Configures a virtual machine\'s endpoint for the floating IP capability required to configure a SQL AlwaysOn Availability Group. This setting is required when using the SQL AlwaysOn Availability Groups in SQL server. This setting can\'t be changed after you create the endpoint.')
@@ -23,7 +23,7 @@ param enableFloatingIP bool = false
 @description('Optional. Receive bidirectional TCP Reset on TCP flow idle timeout or unexpected connection termination. This element is only used when the protocol is set to TCP.')
 param enableTcpReset bool = false
 
-@description('Required. The name of the frontend IP address to set for the inbound NAT rule')
+@description('Required. The name of the frontend IP address to set for the inbound NAT rule.')
 param frontendIPConfigurationName string
 
 @description('Optional. The port range end for the external endpoint. This property is used together with BackendAddressPool and FrontendPortRangeStart. Individual inbound NAT rule port mappings will be created for each backend address from BackendAddressPool.')

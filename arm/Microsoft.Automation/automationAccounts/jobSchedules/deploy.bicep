@@ -1,7 +1,7 @@
 @description('Optional. Name of the Automation Account job schedule. Must be a GUID. If not provided, a new GUID is generated.')
 param name string = newGuid()
 
-@description('Required. Name of the parent Automation Account.')
+@description('Conditional. Name of the parent Automation Account. Required if the template is used in an standalone deployment.')
 param automationAccountName string
 
 @description('Required. The runbook property associated with the entity.')

@@ -1,4 +1,4 @@
-@description('Required. Name of the SQL managed instance.')
+@description('Conditional. Name of the SQL managed instance. Required if the template is used in an standalone deployment.')
 param managedInstanceName string
 
 @description('Required. Login name of the managed instance administrator.')
@@ -7,7 +7,7 @@ param login string
 @description('Required. SID (object ID) of the managed instance administrator.')
 param sid string
 
-@description('Optional. The name of the managed instance administrator')
+@description('Optional. The name of the managed instance administrator.')
 param name string = 'ActiveDirectory'
 
 @description('Optional. Tenant ID of the managed instance administrator.')

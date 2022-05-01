@@ -4,7 +4,7 @@ param name string
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
 
-@description('Required. The name of the AKS cluster that should be configured.')
+@description('Conditional. The name of the AKS cluster that should be configured. Required if the template is used in an standalone deployment.')
 param clusterName string
 
 @description('Optional. Location for all resources.')

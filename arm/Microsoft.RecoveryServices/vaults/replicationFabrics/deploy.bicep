@@ -1,4 +1,4 @@
-@description('Required. Name of the Azure Recovery Service Vault')
+@description('Conditional. Name of the Azure Recovery Service Vault. Required if the template is used in an standalone deployment.')
 param recoveryVaultName string
 
 @description('Required. The recovery location the fabric represents')

@@ -1,7 +1,7 @@
-@description('Required. Name of the Azure Recovery Service Vault')
+@description('Conditional. Name of the Azure Recovery Service Vault. Required if the template is used in an standalone deployment.')
 param recoveryVaultName string
 
-@description('Optional. Name of the Azure Recovery Service Vault Backup Policy')
+@description('Optional. Name of the Azure Recovery Service Vault Backup Policy.')
 param name string = 'vaultconfig'
 
 @description('Optional. Enable this setting to protect hybrid backups against accidental deletes and add additional layer of authentication for critical operations.')
@@ -11,10 +11,10 @@ param name string = 'vaultconfig'
 ])
 param enhancedSecurityState string = 'Enabled'
 
-@description('Optional. ResourceGuard Operation Requests')
+@description('Optional. ResourceGuard Operation Requests.')
 param resourceGuardOperationRequests array = []
 
-@description('Optional. Enable this setting to protect backup data for Azure VM, SQL Server in Azure VM and SAP HANA in Azure VM from accidental deletes')
+@description('Optional. Enable this setting to protect backup data for Azure VM, SQL Server in Azure VM and SAP HANA in Azure VM from accidental deletes.')
 @allowed([
   'Disabled'
   'Enabled'

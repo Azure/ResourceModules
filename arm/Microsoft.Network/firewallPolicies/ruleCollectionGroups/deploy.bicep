@@ -1,7 +1,7 @@
-@description('Required. Name of the Firewall Policy.')
+@description('Conditional. Name of the Firewall Policy. Required if the template is used in an standalone deployment.')
 param firewallPolicyName string
 
-@description('Required. The name of the rule collection group to deploy')
+@description('Required. The name of the rule collection group to deploy.')
 param name string
 
 @description('Required. Priority of the Firewall Policy Rule Collection Group resource.')

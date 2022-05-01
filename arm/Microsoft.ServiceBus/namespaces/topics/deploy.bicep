@@ -1,4 +1,4 @@
-@description('Required. Name of the parent Service Bus Namespace for the Service Bus Topic.')
+@description('Conditional. Name of the parent Service Bus Namespace for the Service Bus Topic. Required if the template is used in an standalone deployment.')
 @minLength(6)
 @maxLength(50)
 param namespaceName string

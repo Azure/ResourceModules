@@ -1,10 +1,10 @@
-@description('Required. The name of the event hub namespace')
+@description('Conditional. The name of the event hub namespace. Required if the template is used in an standalone deployment.')
 param namespaceName string
 
-@description('Required. The name of the event hub')
+@description('Required. The name of the event hub.')
 param name string
 
-@description('Optional. Authorization Rules for the event hub')
+@description('Optional. Authorization Rules for the event hub.')
 param authorizationRules array = [
   {
     name: 'RootManageSharedAccessKey'
@@ -16,7 +16,7 @@ param authorizationRules array = [
   }
 ]
 
-@description('Optional. Number of days to retain the events for this Event Hub, value should be 1 to 7 days')
+@description('Optional. Number of days to retain the events for this Event Hub, value should be 1 to 7 days.')
 @minValue(1)
 @maxValue(7)
 param messageRetentionInDays int = 1

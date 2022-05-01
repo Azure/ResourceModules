@@ -1,7 +1,7 @@
 @description('Required. Name of the Automation Account runbook.')
 param name string
 
-@description('Required. Name of the parent Automation Account.')
+@description('Conditional. Name of the parent Automation Account. Required if the template is used in an standalone deployment.')
 param automationAccountName string
 
 @allowed([

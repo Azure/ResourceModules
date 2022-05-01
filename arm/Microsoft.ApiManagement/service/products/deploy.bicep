@@ -1,4 +1,4 @@
-@description('Required. The name of the of the API Management service.')
+@description('Conditional. The name of the of the API Management service. Required if the template is used in an standalone deployment.')
 param apiManagementServiceName string
 
 @description('Optional. Whether subscription approval is required. If false, new subscriptions will be approved automatically enabling developers to call the products APIs immediately after subscribing. If true, administrators must manually approve the subscription before the developer can any of the products APIs. Can be present only if subscriptionRequired property is present and has a value of false.')

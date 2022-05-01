@@ -1,7 +1,7 @@
 @description('Required. The route table name.')
 param name string
 
-@description('Required. The virtual hub name.')
+@description('Conditional. The virtual hub name. Required if the template is used in an standalone deployment.')
 param virtualHubName string
 
 @description('Optional. List of labels associated with this route table.')

@@ -1,4 +1,4 @@
-@description('Required. Private DNS zone name.')
+@description('Conditional. Private DNS zone name. Required if the template is used in an standalone deployment.')
 param privateDnsZoneName string
 
 @description('Required. The name of the CNAME record.')

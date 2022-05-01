@@ -1,7 +1,7 @@
-@description('Required. Name of the Log Analytics workspace')
+@description('Conditional. Name of the Log Analytics workspace. Required if the template is used in an standalone deployment.')
 param logAnalyticsWorkspaceName string
 
-@description('Required. Name of the solution')
+@description('Required. Name of the solution.')
 param name string
 
 @description('Required. The kind of the DataSource.')

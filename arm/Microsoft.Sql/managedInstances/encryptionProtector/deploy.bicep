@@ -1,7 +1,7 @@
-@description('Required. The name of the encryptionProtector')
+@description('Required. The name of the encryptionProtector.')
 param name string = 'current'
 
-@description('Required. Name of the SQL managed instance.')
+@description('Conditional. Name of the SQL managed instance. Required if the template is used in an standalone deployment.')
 param managedInstanceName string
 
 @description('Required. The name of the SQL managed instance key.')

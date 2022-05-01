@@ -1,10 +1,10 @@
-@description('Optional. The name of the key. Must follow the [<keyVaultName>_<keyName>_<keyVersion>] pattern')
+@description('Optional. The name of the key. Must follow the [<keyVaultName>_<keyName>_<keyVersion>] pattern.')
 param name string = ''
 
-@description('Required. Name of the SQL managed instance.')
+@description('Conditional. Name of the SQL managed instance. Required if the template is used in an standalone deployment.')
 param managedInstanceName string
 
-@description('Optional. The encryption protector type like "ServiceManaged", "AzureKeyVault"')
+@description('Optional. The encryption protector type like "ServiceManaged", "AzureKeyVault".')
 @allowed([
   'AzureKeyVault'
   'ServiceManaged'

@@ -1,11 +1,11 @@
 @maxLength(24)
-@description('Required. Name of the Storage Account.')
+@description('Conditional. Name of the Storage Account. Required if the template is used in an standalone deployment.')
 param storageAccountName string
 
-@description('Optional. The name of the file service')
+@description('Conditional. The name of the file service. Required if the template is used in an standalone deployment.')
 param fileServicesName string = 'default'
 
-@description('Required. The name of the file share to create')
+@description('Required. The name of the file share to create.')
 param name string
 
 @description('Optional. The maximum size of the share, in gigabytes. Must be greater than 0, and less than or equal to 5TB (5120). For Large File Shares, the maximum size is 102400.')

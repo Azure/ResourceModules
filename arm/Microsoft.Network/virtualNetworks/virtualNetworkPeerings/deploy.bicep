@@ -1,7 +1,7 @@
 @description('Optional. The Name of Vnet Peering resource. If not provided, default value will be localVnetName-remoteVnetName')
 param name string = '${localVnetName}-${last(split(remoteVirtualNetworkId, '/'))}'
 
-@description('Required. The Name of the Virtual Network to add the peering to.')
+@description('Conditional. The Name of the Virtual Network to add the peering to. Required if the template is used in an standalone deployment.')
 param localVnetName string
 
 @description('Required. The Resource ID of the VNet that is this Local VNet is being peered to. Should be in the format of a Resource ID')

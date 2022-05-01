@@ -1,7 +1,7 @@
 @description('Optional. The Name of the subnet resource.')
 param name string
 
-@description('Required. The name of the parent virtual network')
+@description('Conditional. The name of the parent virtual network. Required if the template is used in an standalone deployment.')
 param virtualNetworkName string
 
 @description('Required. The address prefix for the subnet.')
