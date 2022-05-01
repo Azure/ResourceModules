@@ -1,7 +1,7 @@
-@description('Conditional. The name of the of the API Management service. Required if the template is used in an standalone deployment.')
+@description('Conditional. The name of the of the API Management service. Required if the template is used in a standalone deployment.')
 param apiManagementServiceName string
 
-@description('Conditional. The name of the of the Product. Required if the template is used in an standalone deployment.')
+@description('Conditional. The name of the of the Product. Required if the template is used in a standalone deployment.')
 param productName string
 
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')

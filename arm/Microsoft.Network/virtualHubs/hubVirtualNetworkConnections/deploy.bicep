@@ -1,7 +1,7 @@
 @description('Required. The connection name.')
 param name string
 
-@description('Conditional. The virtual hub name. Required if the template is used in an standalone deployment.')
+@description('Conditional. The virtual hub name. Required if the template is used in a standalone deployment.')
 param virtualHubName string
 
 @description('Optional. Enable internet security.')

@@ -1,4 +1,4 @@
-@description('Conditional. Name of the Log Analytics workspace. Required if the template is used in an standalone deployment.')
+@description('Conditional. Name of the Log Analytics workspace. Required if the template is used in a standalone deployment.')
 param logAnalyticsWorkspaceName string
 
 @description('Required. Name of the saved search.')

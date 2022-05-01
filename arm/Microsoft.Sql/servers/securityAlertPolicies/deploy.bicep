@@ -27,7 +27,7 @@ param storageAccountAccessKey string = ''
 @description('Optional. Specifies the blob storage endpoint (e.g. https://mystorageaccount.blob.core.windows.net). This blob storage will hold all Threat Detection audit logs.')
 param storageEndpoint string = ''
 
-@description('Conditional. The Name of SQL Server. Required if the template is used in an standalone deployment.')
+@description('Conditional. The Name of SQL Server. Required if the template is used in a standalone deployment.')
 param serverName string
 
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')

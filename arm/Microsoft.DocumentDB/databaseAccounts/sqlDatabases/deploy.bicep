@@ -1,4 +1,4 @@
-@description('Conditional. ID of the Cosmos DB database account. Required if the template is used in an standalone deployment.')
+@description('Conditional. ID of the Cosmos DB database account. Required if the template is used in a standalone deployment.')
 param databaseAccountName string
 
 @description('Required. Name of the SQL database .')

@@ -1,7 +1,7 @@
 @sys.description('Required. The name of the security rule')
 param name string
 
-@sys.description('Conditional. The name of the network security group to deploy the security rule into. Required if the template is used in an standalone deployment.')
+@sys.description('Conditional. The name of the network security group to deploy the security rule into. Required if the template is used in a standalone deployment.')
 param networkSecurityGroupName string
 
 @sys.description('Optional. Whether network traffic is allowed or denied.')

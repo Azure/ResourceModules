@@ -1,4 +1,4 @@
-@description('Conditional. The name of the event hub namespace. Required if the template is used in an standalone deployment.')
+@description('Conditional. The name of the event hub namespace. Required if the template is used in a standalone deployment.')
 param namespaceName string
 
 @description('Required. The name of the authorization rule.')

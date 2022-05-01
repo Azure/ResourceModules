@@ -1,5 +1,5 @@
 @maxLength(24)
-@description('Conditional. Name of the Storage Account. Required if the template is used in an standalone deployment.')
+@description('Conditional. Name of the Storage Account. Required if the template is used in a standalone deployment.')
 param storageAccountName string
 
 @description('Optional. Name of the blob service.')

@@ -1,7 +1,7 @@
-@description('Conditional. The name of the event hub namespace. Required if the template is used in an standalone deployment.s.')
+@description('Conditional. The name of the event hub namespace. Required if the template is used in a standalone deployment.s.')
 param namespaceName string
 
-@description('Conditional. The name of the event hub namespace event hub. Required if the template is used in an standalone deployment.')
+@description('Conditional. The name of the event hub namespace event hub. Required if the template is used in a standalone deployment.')
 param eventHubName string
 
 @description('Required. The name of the consumer group.')

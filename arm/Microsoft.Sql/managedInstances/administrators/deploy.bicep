@@ -1,4 +1,4 @@
-@description('Conditional. Name of the SQL managed instance. Required if the template is used in an standalone deployment.')
+@description('Conditional. Name of the SQL managed instance. Required if the template is used in a standalone deployment.')
 param managedInstanceName string
 
 @description('Required. Login name of the managed instance administrator.')

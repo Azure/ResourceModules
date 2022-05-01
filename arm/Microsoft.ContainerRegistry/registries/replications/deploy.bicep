@@ -1,4 +1,4 @@
-@description('Conditional. The name of the registry. Required if the template is used in an standalone deployment.')
+@description('Conditional. The name of the registry. Required if the template is used in a standalone deployment.')
 param registryName string
 
 @description('Required. The name of the replication.')

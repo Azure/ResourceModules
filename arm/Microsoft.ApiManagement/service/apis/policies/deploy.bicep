@@ -1,7 +1,7 @@
-@description('Conditional. The name of the of the API Management service. Required if the template is used in an standalone deployment.')
+@description('Conditional. The name of the of the API Management service. Required if the template is used in a standalone deployment.')
 param apiManagementServiceName string
 
-@description('Conditional. The name of the of the API. Required if the template is used in an standalone deployment.')
+@description('Conditional. The name of the of the API. Required if the template is used in a standalone deployment.')
 param apiName string
 
 @description('Optional. The name of the policy.')

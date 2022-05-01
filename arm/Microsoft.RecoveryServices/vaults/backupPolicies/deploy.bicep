@@ -1,4 +1,4 @@
-@description('Conditional. Name of the Azure Recovery Service Vault. Required if the template is used in an standalone deployment.')
+@description('Conditional. Name of the Azure Recovery Service Vault. Required if the template is used in a standalone deployment.')
 param recoveryVaultName string
 
 @description('Required. Name of the Azure Recovery Service Vault Backup Policy.')

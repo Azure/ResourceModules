@@ -1,4 +1,4 @@
-@description('Conditional. The name of the Azure Data Factory. Required if the template is used in an standalone deployment.')
+@description('Conditional. The name of the Azure Data Factory. Required if the template is used in a standalone deployment.')
 param dataFactoryName string
 
 @description('Required. The name of the Integration Runtime.')

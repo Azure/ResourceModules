@@ -1,7 +1,7 @@
 @description('Required. Name of the Automation Account schedule.')
 param name string
 
-@description('Conditional. Name of the parent Automation Account. Required if the template is used in an standalone deployment.')
+@description('Conditional. Name of the parent Automation Account. Required if the template is used in a standalone deployment.')
 param automationAccountName string
 
 @description('Optional. The properties of the create Advanced Schedule.')

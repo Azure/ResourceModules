@@ -1,4 +1,4 @@
-@description('Conditional. The name of the private endpoint. Required if the template is used in an standalone deployment.')
+@description('Conditional. The name of the private endpoint. Required if the template is used in a standalone deployment.')
 param privateEndpointName string
 
 @description('Required. List of private DNS resource IDs.')
