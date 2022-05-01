@@ -8,7 +8,7 @@ var keyVaultUrl = 'https://${encryptionKeyVaultName}${environment().suffixes.key
 
 resource keyVault 'Microsoft.KeyVault/vaults@2019-09-01' existing = {
   name: encryptionKeyVaultName
-  scope: az.resourceGroup(encryptionKeyVaultResourceGroupName)
+  scope: resourceGroup(encryptionKeyVaultResourceGroupName)
 }
 
 // Workspace encryption - Assign Synapse Workspace MSI access to encryption key
