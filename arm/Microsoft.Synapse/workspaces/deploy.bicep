@@ -123,7 +123,7 @@ param diagnosticEventHubName string = ''
   'IntegrationActivityRuns'
   'IntegrationTriggerRuns'
 ])
-param logsToEnable array = [
+param diagnosticLogCategoriesToEnable array = [
   'SynapseRbacOperations'
   'GatewayApiRequests'
   'BuiltinSqlReqsEnded'
