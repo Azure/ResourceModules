@@ -257,10 +257,10 @@ module workspace_privateEndpoints '.bicep/nested_privateEndpoint.bicep' = [for (
 resource workspace_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2021-05-01-preview' = if (!empty(diagnosticStorageAccountID) || !empty(workspaceID) || !empty(eventHubAuthorizationRuleID) || !empty(eventHubName)) {
   name: '${workspace.name}-diagnosticSettings'
   properties: {
-    storageAccountId: !empty(diagnosticStorageAccountID) ? diagnosticStorageAccountID : null
-    workspaceId: !empty(workspaceID) ? workspaceID : null
-    eventHubAuthorizationRuleId: !empty(eventHubAuthorizationRuleID) ? eventHubAuthorizationRuleID : null
-    eventHubName: !empty(eventHubName) ? eventHubName : null
+    storageAccountId: !empty(diagnosticStorageAccountId) ? diagnosticStorageAccountId : null
+    workspaceId: !empty(diagnosticWorkspaceId) ? diagnosticWorkspaceId : null
+    eventHubAuthorizationRuleId: !empty(diagnosticEventHubAuthorizationRuleId) ? diagnosticEventHubAuthorizationRuleId : null
+    eventHubName: !empty(diagnosticEventHubName) ? diagnosticEventHubName : null
     logs: diagnosticsLogs
   }
   scope: workspace
