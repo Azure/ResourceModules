@@ -40,7 +40,7 @@ param hbiWorkspace bool = false
 @description('Optional. The flag to indicate whether to allow public access when behind VNet.')
 param allowPublicAccessWhenBehindVnet bool = false
 
-@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'')
+@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
 param roleAssignments array = []
 
 @description('Optional. Configuration Details for private endpoints.')
@@ -237,13 +237,13 @@ module workspace_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) 
 // ================//
 // Outputs         //
 // ================//
-@description('The resource ID of the machine learning service')
+@description('The resource ID of the machine learning service.')
 output resourceId string = workspace.id
 
-@description('The resource group the machine learning service was deployed into')
+@description('The resource group the machine learning service was deployed into.')
 output resourceGroupName string = resourceGroup().name
 
-@description('The name of the machine learning service')
+@description('The name of the machine learning service.')
 output name string = workspace.name
 
 @description('The principal ID of the system assigned identity.')

@@ -2,7 +2,7 @@
 @description('Conditional. Name of the Storage Account. Required if the template is used in an standalone deployment.')
 param storageAccountName string
 
-@description('Optional. The name of the queue service')
+@description('Optional. The name of the queue service.')
 param name string = 'default'
 
 @description('Optional. Queues to create.')
@@ -117,11 +117,11 @@ module queueServices_queues 'queues/deploy.bicep' = [for (queue, index) in queue
   }
 }]
 
-@description('The name of the deployed file share service')
+@description('The name of the deployed file share service.')
 output name string = queueServices.name
 
-@description('The resource ID of the deployed file share service')
+@description('The resource ID of the deployed file share service.')
 output resourceId string = queueServices.id
 
-@description('The resource group of the deployed file share service')
+@description('The resource group of the deployed file share service.')
 output resourceGroupName string = resourceGroup().name

@@ -42,11 +42,11 @@ resource MX 'Microsoft.Network/privateDnsZones/MX@2020-06-01' = {
   }
 }
 
-@description('The name of the deployed MX record')
+@description('The name of the deployed MX record.')
 output name string = MX.name
 
-@description('The resource ID of the deployed MX record')
+@description('The resource ID of the deployed MX record.')
 output resourceId string = MX.id
 
-@description('The resource group of the deployed MX record')
+@description('The resource group of the deployed MX record.')
 output resourceGroupName string = resourceGroup().name

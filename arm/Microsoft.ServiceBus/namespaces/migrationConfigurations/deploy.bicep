@@ -43,7 +43,7 @@ resource migrationConfiguration 'Microsoft.ServiceBus/namespaces/migrationConfig
 @description('The name of the migration configuration.')
 output name string = migrationConfiguration.name
 
-@description('The Resource ID of the migration configuration')
+@description('The Resource ID of the migration configuration.')
 output resourceId string = migrationConfiguration.id
 
 @description('The name of the Resource Group the migration configuration was created in.')

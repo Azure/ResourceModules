@@ -44,10 +44,10 @@ resource backupStorageConfig 'Microsoft.RecoveryServices/vaults/backupstoragecon
   }
 }
 
-@description('The name of the backup storage config')
+@description('The name of the backup storage config.')
 output name string = backupStorageConfig.name
 
-@description('The resource ID of the backup storage config')
+@description('The resource ID of the backup storage config.')
 output resourceId string = backupStorageConfig.id
 
 @description('The name of the Resource Group the backup storage configuration was created in.')

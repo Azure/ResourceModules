@@ -60,11 +60,11 @@ resource natRule 'Microsoft.Network/vpnGateways/natRules@2021-05-01' = {
   }
 }
 
-@description('The name of the NAT rule')
+@description('The name of the NAT rule.')
 output name string = natRule.name
 
-@description('The resource ID of the NAT rule')
+@description('The resource ID of the NAT rule.')
 output resourceId string = natRule.id
 
-@description('The name of the resource group the NAT rule was deployed into')
+@description('The name of the resource group the NAT rule was deployed into.')
 output resourceGroupName string = resourceGroup().name

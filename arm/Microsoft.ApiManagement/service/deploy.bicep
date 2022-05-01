@@ -69,7 +69,7 @@ param publisherName string
 @description('Optional. Undelete API Management Service if it was previously soft-deleted. If this flag is specified and set to True all other properties will be ignored.')
 param restore bool = false
 
-@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'')
+@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
 param roleAssignments array = []
 
 @description('Optional. The pricing tier of this API Management service.')
@@ -450,13 +450,13 @@ module apiManagementService_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignme
   }
 }]
 
-@description('The name of the API management service')
+@description('The name of the API management service.')
 output name string = apiManagementService.name
 
-@description('The resource ID of the API management service')
+@description('The resource ID of the API management service.')
 output resourceId string = apiManagementService.id
 
-@description('The resource group the API management service was deployed into')
+@description('The resource group the API management service was deployed into.')
 output resourceGroupName string = resourceGroup().name
 
 @description('The principal ID of the system assigned identity.')

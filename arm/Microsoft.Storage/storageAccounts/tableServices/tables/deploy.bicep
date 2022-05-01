@@ -36,11 +36,11 @@ resource table 'Microsoft.Storage/storageAccounts/tableServices/tables@2021-06-0
   parent: storageAccount::tableServices
 }
 
-@description('The name of the deployed file share service')
+@description('The name of the deployed file share service.')
 output name string = table.name
 
-@description('The resource ID of the deployed file share service')
+@description('The resource ID of the deployed file share service.')
 output resourceId string = table.id
 
-@description('The resource group of the deployed file share service')
+@description('The resource group of the deployed file share service.')
 output resourceGroupName string = resourceGroup().name

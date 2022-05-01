@@ -42,11 +42,11 @@ resource SOA 'Microsoft.Network/privateDnsZones/SOA@2020-06-01' = {
   }
 }
 
-@description('The name of the deployed SOA record')
+@description('The name of the deployed SOA record.')
 output name string = SOA.name
 
-@description('The resource ID of the deployed SOA record')
+@description('The resource ID of the deployed SOA record.')
 output resourceId string = SOA.id
 
-@description('The resource group of the deployed SOA record')
+@description('The resource group of the deployed SOA record.')
 output resourceGroupName string = resourceGroup().name

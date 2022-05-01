@@ -42,11 +42,11 @@ resource SRV 'Microsoft.Network/privateDnsZones/SRV@2020-06-01' = {
   }
 }
 
-@description('The name of the deployed SRV record')
+@description('The name of the deployed SRV record.')
 output name string = SRV.name
 
-@description('The resource ID of the deployed SRV record')
+@description('The resource ID of the deployed SRV record.')
 output resourceId string = SRV.id
 
-@description('The resource group of the deployed SRV record')
+@description('The resource group of the deployed SRV record.')
 output resourceGroupName string = resourceGroup().name

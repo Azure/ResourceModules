@@ -4,16 +4,16 @@ param databaseAccountName string
 @description('Conditional. Name of the mongodb database. Required if the template is used in an standalone deployment.')
 param mongodbDatabaseName string
 
-@description('Required. Name of the collection')
+@description('Required. Name of the collection.')
 param name string
 
-@description('Optional. Name of the mongodb database')
+@description('Optional. Name of the mongodb database.')
 param throughput int = 400
 
-@description('Required. Indexes for the collection')
+@description('Required. Indexes for the collection.')
 param indexes array
 
-@description('Required. ShardKey for the collection')
+@description('Required. ShardKey for the collection.')
 param shardKey object
 
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')

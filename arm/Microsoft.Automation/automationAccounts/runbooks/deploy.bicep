@@ -87,11 +87,11 @@ resource runbook 'Microsoft.Automation/automationAccounts/runbooks@2019-06-01' =
   }
 }
 
-@description('The name of the deployed runbook')
+@description('The name of the deployed runbook.')
 output name string = runbook.name
 
-@description('The resource ID of the deployed runbook')
+@description('The resource ID of the deployed runbook.')
 output resourceId string = runbook.id
 
-@description('The resource group of the deployed runbook')
+@description('The resource group of the deployed runbook.')
 output resourceGroupName string = resourceGroup().name

@@ -35,11 +35,11 @@ resource api 'Microsoft.ApiManagement/service/products/apis@2021-08-01' = {
   parent: service::product
 }
 
-@description('The resource ID of the product API')
+@description('The resource ID of the product API.')
 output resourceId string = api.id
 
-@description('The name of the product API')
+@description('The name of the product API.')
 output name string = api.name
 
-@description('The resource group the product API was deployed into')
+@description('The resource group the product API was deployed into.')
 output resourceGroupName string = resourceGroup().name

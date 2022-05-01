@@ -1,7 +1,7 @@
 @description('Conditional. Name of the Log Analytics workspace. Required if the template is used in an standalone deployment.')
 param logAnalyticsWorkspaceName string
 
-@description('Required. Name of the saved search')
+@description('Required. Name of the saved search.')
 param name string
 
 @description('Required. Display name for the search.')
@@ -58,11 +58,11 @@ resource savedSearch 'Microsoft.OperationalInsights/workspaces/savedSearches@202
   }
 }
 
-@description('The resource ID of the deployed saved search')
+@description('The resource ID of the deployed saved search.')
 output resourceId string = savedSearch.id
 
-@description('The resource group where the saved search is deployed')
+@description('The resource group where the saved search is deployed.')
 output resourceGroupName string = resourceGroup().name
 
-@description('The name of the deployed saved search')
+@description('The name of the deployed saved search.')
 output name string = savedSearch.name

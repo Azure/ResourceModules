@@ -7,7 +7,7 @@ param virtualHubName string
 @description('Optional. Enable internet security.')
 param enableInternetSecurity bool = true
 
-@description('Required. Resource ID of the virtual network to link to')
+@description('Required. Resource ID of the virtual network to link to.')
 param remoteVirtualNetworkId string
 
 @description('Optional. Routing Configuration indicating the associated and propagated route tables for this connection.')
@@ -44,11 +44,11 @@ resource hubVirtualNetworkConnection 'Microsoft.Network/virtualHubs/hubVirtualNe
   }
 }
 
-@description('The resource group the virtual hub connection was deployed into')
+@description('The resource group the virtual hub connection was deployed into.')
 output resourceGroupName string = resourceGroup().name
 
-@description('The resource ID of the virtual hub connection')
+@description('The resource ID of the virtual hub connection.')
 output resourceId string = hubVirtualNetworkConnection.id
 
-@description('The name of the virtual hub connection')
+@description('The name of the virtual hub connection.')
 output name string = hubVirtualNetworkConnection.name

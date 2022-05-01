@@ -21,7 +21,7 @@ param userAssignedIdentities object = {}
 ])
 param aksClusterNetworkPlugin string = ''
 
-@description('Optional. Specifies the network policy used for building Kubernetes network. - calico or azure')
+@description('Optional. Specifies the network policy used for building Kubernetes network. - calico or azure.')
 @allowed([
   ''
   'azure'
@@ -58,7 +58,7 @@ param managedOutboundIPCount int = 0
 ])
 param aksClusterOutboundType string = 'loadBalancer'
 
-@description('Optional. Tier of a managed cluster SKU. - Free or Paid')
+@description('Optional. Tier of a managed cluster SKU. - Free or Paid.')
 @allowed([
   'Free'
   'Paid'
@@ -122,7 +122,7 @@ param usePrivateDNSZone bool = false
 @description('Required. Properties of the primary agent pool.')
 param primaryAgentPoolProfile array
 
-@description('Optional. Define one or more secondary/additional agent pools')
+@description('Optional. Define one or more secondary/additional agent pools.')
 param agentPools array = []
 
 @description('Optional. Specifies whether the httpApplicationRouting add-on is enabled or not.')
@@ -266,7 +266,7 @@ param diagnosticLogsRetentionInDays int = 365
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
 
-@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'')
+@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
 param roleAssignments array = []
 
 @allowed([
@@ -551,16 +551,16 @@ module managedCluster_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, in
   }
 }]
 
-@description('The resource ID of the managed cluster')
+@description('The resource ID of the managed cluster.')
 output resourceId string = managedCluster.id
 
-@description('The resource group the managed cluster was deployed into')
+@description('The resource group the managed cluster was deployed into.')
 output resourceGroupName string = resourceGroup().name
 
-@description('The name of the managed cluster')
+@description('The name of the managed cluster.')
 output name string = managedCluster.name
 
-@description('The control plane FQDN of the managed cluster')
+@description('The control plane FQDN of the managed cluster.')
 output controlPlaneFQDN string = enablePrivateCluster ? managedCluster.properties.privateFQDN : managedCluster.properties.fqdn
 
 @description('The principal ID of the system assigned identity.')

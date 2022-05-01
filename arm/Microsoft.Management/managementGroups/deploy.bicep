@@ -1,6 +1,6 @@
 targetScope = 'managementGroup'
 
-@description('Required. The group ID of the Management group')
+@description('Required. The group ID of the Management group.')
 param name string
 
 @description('Optional. The friendly name of the management group. If no value is passed then this field will be set to the group ID.')
@@ -56,8 +56,8 @@ module managementGroup_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, i
   scope: managementGroup
 }]
 
-@description('The name of the management group')
+@description('The name of the management group.')
 output name string = managementGroup.name
 
-@description('The resource ID of the management group')
+@description('The resource ID of the management group.')
 output resourceId string = managementGroup.id

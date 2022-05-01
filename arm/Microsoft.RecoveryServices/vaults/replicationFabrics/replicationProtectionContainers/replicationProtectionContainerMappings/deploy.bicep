@@ -7,19 +7,19 @@ param replicationFabricName string
 @description('Conditional. Name of the source Replication container. Required if the template is used in an standalone deployment.')
 param sourceProtectionContainerName string
 
-@description('Optional. Resource ID of the target Replication container. Must be specified if targetContainerName is not. If specified, targetContainerFabricName and targetContainerName will be ignored')
+@description('Optional. Resource ID of the target Replication container. Must be specified if targetContainerName is not. If specified, targetContainerFabricName and targetContainerName will be ignored.')
 param targetProtectionContainerId string = ''
 
-@description('Optional. Name of the fabric containing the target container. If targetProtectionContainerId is specified, this parameter will be ignored')
+@description('Optional. Name of the fabric containing the target container. If targetProtectionContainerId is specified, this parameter will be ignored.')
 param targetContainerFabricName string = replicationFabricName
 
-@description('Optional. Name of the target container. Must be specified if targetProtectionContainerId is not. If targetProtectionContainerId is specified, this parameter will be ignored')
+@description('Optional. Name of the target container. Must be specified if targetProtectionContainerId is not. If targetProtectionContainerId is specified, this parameter will be ignored.')
 param targetContainerName string = ''
 
-@description('Optional. Resource ID of the replication policy. If defined, policyName will be ignored')
+@description('Optional. Resource ID of the replication policy. If defined, policyName will be ignored.')
 param policyId string = ''
 
-@description('Optional. Name of the replication policy. Will be ignored if policyId is also specified')
+@description('Optional. Name of the replication policy. Will be ignored if policyId is also specified.')
 param policyName string = ''
 
 @description('Optional. The name of the replication container mapping. If not provided, it will be automatically generated as `<source_container_name>-<target_container_name>`.')

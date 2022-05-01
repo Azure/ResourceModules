@@ -1,13 +1,13 @@
 @description('Conditional. Name of the Cosmos DB database account. Required if the template is used in an standalone deployment.')
 param databaseAccountName string
 
-@description('Required. Name of the mongodb database')
+@description('Required. Name of the mongodb database.')
 param name string
 
-@description('Optional. Name of the mongodb database')
+@description('Optional. Name of the mongodb database.')
 param throughput int = 400
 
-@description('Optional. Collections in the mongodb database')
+@description('Optional. Collections in the mongodb database.')
 param collections array = []
 
 @description('Optional. Tags of the resource.')

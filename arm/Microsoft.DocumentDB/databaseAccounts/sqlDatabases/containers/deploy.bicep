@@ -7,16 +7,16 @@ param sqlDatabaseName string
 @description('Required. Name of the container.')
 param name string
 
-@description('Optional. Request Units per second')
+@description('Optional. Request Units per second.')
 param throughput int = 400
 
 @description('Optional. Tags of the SQL Database resource.')
 param tags object = {}
 
-@description('Optional. List of paths using which data within the container can be partitioned')
+@description('Optional. List of paths using which data within the container can be partitioned.')
 param paths array = []
 
-@description('Optional. Indicates the kind of algorithm used for partitioning')
+@description('Optional. Indicates the kind of algorithm used for partitioning.')
 @allowed([
   'Hash'
   'MultiHash'

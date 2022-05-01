@@ -217,11 +217,11 @@ resource database_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021
   scope: database
 }
 
-@description('The name of the deployed database')
+@description('The name of the deployed database.')
 output name string = database.name
 
-@description('The resource ID of the deployed database')
+@description('The resource ID of the deployed database.')
 output resourceId string = database.id
 
-@description('The resourceGroup of the deployed database')
+@description('The resourceGroup of the deployed database.')
 output resourceGroupName string = resourceGroup().name

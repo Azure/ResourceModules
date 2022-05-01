@@ -14,7 +14,7 @@ param serverKeyName string
 ])
 param serverKeyType string = 'ServiceManaged'
 
-@description('Optional. Key auto rotation opt-in flag')
+@description('Optional. Key auto rotation opt-in flag.')
 param autoRotationEnabled bool = false
 
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
@@ -46,11 +46,11 @@ resource encryptionProtector 'Microsoft.Sql/managedInstances/encryptionProtector
   }
 }
 
-@description('The name of the deployed managed instance')
+@description('The name of the deployed managed instance.')
 output name string = encryptionProtector.name
 
-@description('The resource ID of the deployed managed instance')
+@description('The resource ID of the deployed managed instance.')
 output resourceId string = encryptionProtector.id
 
-@description('The resource group of the deployed managed instance')
+@description('The resource group of the deployed managed instance.')
 output resourceGroupName string = resourceGroup().name

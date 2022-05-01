@@ -43,11 +43,11 @@ resource administrator 'Microsoft.Sql/managedInstances/administrators@2021-02-01
   }
 }
 
-@description('The name of the deployed managed instance')
+@description('The name of the deployed managed instance.')
 output name string = administrator.name
 
-@description('The resource ID of the deployed managed instance')
+@description('The resource ID of the deployed managed instance.')
 output resourceId string = administrator.id
 
-@description('The resource group of the deployed managed instance')
+@description('The resource group of the deployed managed instance.')
 output resourceGroupName string = resourceGroup().name

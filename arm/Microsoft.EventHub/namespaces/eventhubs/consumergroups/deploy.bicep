@@ -1,10 +1,10 @@
-@description('Conditional. The name of the event hub namespace. Required if the template is used in an standalone deployment.s')
+@description('Conditional. The name of the event hub namespace. Required if the template is used in an standalone deployment.s.')
 param namespaceName string
 
 @description('Conditional. The name of the event hub namespace event hub. Required if the template is used in an standalone deployment.')
 param eventHubName string
 
-@description('Required. The name of the consumer group')
+@description('Required. The name of the consumer group.')
 param name string
 
 @description('Optional. User Metadata is a placeholder to store user-defined string data with maximum length 1024. e.g. it can be used to store descriptive data, such as list of teams and their contact information also user-defined configuration settings can be stored.')

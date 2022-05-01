@@ -17,7 +17,7 @@ param regionEndpointEnabled bool = true
   'Disabled'
   'Enabled'
 ])
-@description('Optional. Whether or not zone redundancy is enabled for this container registry')
+@description('Optional. Whether or not zone redundancy is enabled for this container registry.')
 param zoneRedundancy string = 'Disabled'
 
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')

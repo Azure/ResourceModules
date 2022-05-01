@@ -50,11 +50,11 @@ resource jobSchedule 'Microsoft.Automation/automationAccounts/jobSchedules@2020-
   }
 }
 
-@description('The name of the deployed job schedule')
+@description('The name of the deployed job schedule.')
 output name string = jobSchedule.name
 
-@description('The resource ID of the deployed job schedule')
+@description('The resource ID of the deployed job schedule.')
 output resourceId string = jobSchedule.id
 
-@description('The resource group of the deployed job schedule')
+@description('The resource group of the deployed job schedule.')
 output resourceGroupName string = resourceGroup().name

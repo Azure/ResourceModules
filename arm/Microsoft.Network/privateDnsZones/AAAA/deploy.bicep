@@ -42,11 +42,11 @@ resource AAAA 'Microsoft.Network/privateDnsZones/AAAA@2020-06-01' = {
   }
 }
 
-@description('The name of the deployed AAAA record')
+@description('The name of the deployed AAAA record.')
 output name string = AAAA.name
 
-@description('The resource ID of the deployed AAAA record')
+@description('The resource ID of the deployed AAAA record.')
 output resourceId string = AAAA.id
 
-@description('The resource group of the deployed AAAA record')
+@description('The resource group of the deployed AAAA record.')
 output resourceGroupName string = resourceGroup().name

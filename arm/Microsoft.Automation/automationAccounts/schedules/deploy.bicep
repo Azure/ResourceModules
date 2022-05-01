@@ -29,7 +29,7 @@ param expiryTime string = ''
 @description('Optional. The frequency of the schedule.')
 param frequency string = 'OneTime'
 
-@description('Optional. Anything')
+@description('Optional. Anything.')
 param interval int = 0
 
 @description('Optional. The start time of the schedule.')
@@ -74,11 +74,11 @@ resource schedule 'Microsoft.Automation/automationAccounts/schedules@2020-01-13-
   }
 }
 
-@description('The name of the deployed schedule')
+@description('The name of the deployed schedule.')
 output name string = schedule.name
 
-@description('The resource ID of the deployed schedule')
+@description('The resource ID of the deployed schedule.')
 output resourceId string = schedule.id
 
-@description('The resource group of the deployed schedule')
+@description('The resource group of the deployed schedule.')
 output resourceGroupName string = resourceGroup().name

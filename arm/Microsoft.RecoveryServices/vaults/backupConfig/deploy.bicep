@@ -21,7 +21,7 @@ param resourceGuardOperationRequests array = []
 ])
 param softDeleteFeatureState string = 'Enabled'
 
-@description('Optional. Storage type')
+@description('Optional. Storage type.')
 @allowed([
   'GeoRedundant'
   'LocallyRedundant'
@@ -30,7 +30,7 @@ param softDeleteFeatureState string = 'Enabled'
 ])
 param storageModelType string = 'GeoRedundant'
 
-@description('Optional. Storage type')
+@description('Optional. Storage type.')
 @allowed([
   'GeoRedundant'
   'LocallyRedundant'
@@ -78,10 +78,10 @@ resource backupConfig 'Microsoft.RecoveryServices/vaults/backupconfig@2021-10-01
   }
 }
 
-@description('The name of the backup config')
+@description('The name of the backup config.')
 output name string = backupConfig.name
 
-@description('The resource ID of the backup config')
+@description('The resource ID of the backup config.')
 output resourceId string = backupConfig.id
 
 @description('The name of the resource group the backup config was created in.')

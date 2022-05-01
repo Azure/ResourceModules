@@ -53,11 +53,11 @@ resource backupLongTermRetentionPolicy 'Microsoft.Sql/managedInstances/databases
   }
 }
 
-@description('The name of the deployed database backup long-term retention policy')
+@description('The name of the deployed database backup long-term retention policy.')
 output name string = backupLongTermRetentionPolicy.name
 
-@description('The resource ID of the deployed database backup long-term retention policy')
+@description('The resource ID of the deployed database backup long-term retention policy.')
 output resourceId string = backupLongTermRetentionPolicy.id
 
-@description('The resource group of the deployed database backup long-term retention policy')
+@description('The resource group of the deployed database backup long-term retention policy.')
 output resourceGroupName string = resourceGroup().name

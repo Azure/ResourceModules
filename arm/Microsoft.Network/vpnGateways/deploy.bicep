@@ -1,10 +1,10 @@
-@description('Required. Name of the VPN gateway')
+@description('Required. Name of the VPN gateway.')
 param name string
 
 @description('Optional. Location where all resources will be created.')
 param location string = resourceGroup().location
 
-@description('Optional. The connections to create in the VPN gateway')
+@description('Optional. The connections to create in the VPN gateway.')
 param connections array = []
 
 @description('Optional. List of all the NAT Rules to associate with the gateway.')
@@ -109,11 +109,11 @@ module vpnGateway_connections 'connections/deploy.bicep' = [for (connection, ind
   }
 }]
 
-@description('The name of the VPN gateway')
+@description('The name of the VPN gateway.')
 output name string = vpnGateway.name
 
-@description('The resource ID of the VPN gateway')
+@description('The resource ID of the VPN gateway.')
 output resourceId string = vpnGateway.id
 
-@description('The name of the resource group the VPN gateway was deployed into')
+@description('The name of the resource group the VPN gateway was deployed into.')
 output resourceGroupName string = resourceGroup().name

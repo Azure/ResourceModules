@@ -10,7 +10,7 @@ param location string = 'global'
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. Is auto-registration of virtual machine records in the virtual network in the Private DNS zone enabled?')
+@description('Optional. Is auto-registration of virtual machine records in the virtual network in the Private DNS zone enabled?.')
 param registrationEnabled bool = false
 
 @description('Required. Link to another virtual network resource ID.')
@@ -48,11 +48,11 @@ resource virtualNetworkLink 'Microsoft.Network/privateDnsZones/virtualNetworkLin
   }
 }
 
-@description('The name of the deployed virtual network link')
+@description('The name of the deployed virtual network link.')
 output name string = virtualNetworkLink.name
 
-@description('The resource ID of the deployed virtual network link')
+@description('The resource ID of the deployed virtual network link.')
 output resourceId string = virtualNetworkLink.id
 
-@description('The resource group of the deployed virtual network link')
+@description('The resource group of the deployed virtual network link.')
 output resourceGroupName string = resourceGroup().name

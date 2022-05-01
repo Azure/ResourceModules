@@ -41,11 +41,11 @@ resource backupShortTermRetentionPolicy 'Microsoft.Sql/managedInstances/database
   }
 }
 
-@description('The name of the deployed database backup short-term retention policy')
+@description('The name of the deployed database backup short-term retention policy.')
 output name string = backupShortTermRetentionPolicy.name
 
-@description('The resource ID of the deployed database backup short-term retention policy')
+@description('The resource ID of the deployed database backup short-term retention policy.')
 output resourceId string = backupShortTermRetentionPolicy.id
 
-@description('The resource group of the deployed database backup short-term retention policy')
+@description('The resource group of the deployed database backup short-term retention policy.')
 output resourceGroupName string = resourceGroup().name

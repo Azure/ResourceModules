@@ -63,11 +63,11 @@ resource securityAlertPolicy 'Microsoft.Sql/servers/securityAlertPolicies@2021-0
   }
 }
 
-@description('The name of the deployed security alert policy')
+@description('The name of the deployed security alert policy.')
 output name string = securityAlertPolicy.name
 
-@description('The resource ID of the deployed security alert policy')
+@description('The resource ID of the deployed security alert policy.')
 output resourceId string = securityAlertPolicy.id
 
-@description('The resourceGroup of the deployed security alert policy')
+@description('The resourceGroup of the deployed security alert policy.')
 output resourceGroupName string = resourceGroup().name

@@ -19,7 +19,7 @@ param groups array = []
 @description('Required. Product Name.')
 param name string
 
-@description('Optional. whether product is published or not. Published products are discoverable by users of developer portal. Non published products are visible only to administrators. Default state of Product is notPublished. - notPublished or published')
+@description('Optional. whether product is published or not. Published products are discoverable by users of developer portal. Non published products are visible only to administrators. Default state of Product is notPublished. - notPublished or published.')
 param state string = 'published'
 
 @description('Optional. Whether a product subscription is required for accessing APIs included in this product. If true, the product is referred to as "protected" and a valid subscription key is required for a request to an API included in the product to succeed. If false, the product is referred to as "open" and requests to an API included in the product can be made without a subscription key. If property is omitted when creating a new product it\'s value is assumed to be true.')
@@ -81,17 +81,17 @@ module product_groups 'groups/deploy.bicep' = [for (group, index) in groups: {
   }
 }]
 
-@description('The resource ID of the API management service product')
+@description('The resource ID of the API management service product.')
 output resourceId string = product.id
 
-@description('The name of the API management service product')
+@description('The name of the API management service product.')
 output name string = product.name
 
-@description('The resource group the API management service product was deployed into')
+@description('The resource group the API management service product was deployed into.')
 output resourceGroupName string = resourceGroup().name
 
-@description('The Resources IDs of the API management service product APIs')
+@description('The Resources IDs of the API management service product APIs.')
 output apiResourceIds array = [for index in range(0, length(apis)): product_apis[index].outputs.resourceId]
 
-@description('The Resources IDs of the API management service product groups')
+@description('The Resources IDs of the API management service product groups.')
 output groupResourceIds array = [for index in range(0, length(groups)): product_groups[index].outputs.resourceId]

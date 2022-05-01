@@ -4,7 +4,7 @@ param loadBalancerName string
 @description('Required. The name of the inbound NAT rule.')
 param name string
 
-@description('Required. The port for the external endpoint. Port numbers for each rule must be unique within the Load Balancer. ')
+@description('Required. The port for the external endpoint. Port numbers for each rule must be unique within the Load Balancer.')
 @minValue(1)
 @maxValue(65534)
 param frontendPort int
@@ -87,11 +87,11 @@ resource inboundNatRule 'Microsoft.Network/loadBalancers/inboundNatRules@2021-05
   parent: loadBalancer
 }
 
-@description('The name of the inbound NAT rule')
+@description('The name of the inbound NAT rule.')
 output name string = inboundNatRule.name
 
-@description('The resource ID of the inbound NAT rule')
+@description('The resource ID of the inbound NAT rule.')
 output resourceId string = inboundNatRule.id
 
-@description('The resource group the inbound NAT rule was deployed into')
+@description('The resource group the inbound NAT rule was deployed into.')
 output resourceGroupName string = resourceGroup().name

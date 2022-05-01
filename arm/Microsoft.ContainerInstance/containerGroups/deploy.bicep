@@ -24,10 +24,10 @@ param memoryInGB int = 2
 @description('Optional. The operating system type required by the containers in the container group. - Windows or Linux.')
 param osType string = 'Linux'
 
-@description('Optional. Restart policy for all containers within the container group. - Always: Always restart. OnFailure: Restart on failure. Never: Never restart. - Always, OnFailure, Never')
+@description('Optional. Restart policy for all containers within the container group. - Always: Always restart. OnFailure: Restart on failure. Never: Never restart. - Always, OnFailure, Never.')
 param restartPolicy string = 'Always'
 
-@description('Optional. Specifies if the IP is exposed to the public internet or private VNET. - Public or Private')
+@description('Optional. Specifies if the IP is exposed to the public internet or private VNET. - Public or Private.')
 param ipAddressType string = 'Public'
 
 @description('Optional. The image registry credentials by which the container group is created from.')
@@ -120,16 +120,16 @@ resource containergroup_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lo
   scope: containergroup
 }
 
-@description('The name of the container group')
+@description('The name of the container group.')
 output name string = containergroup.name
 
-@description('The resource ID of the container group')
+@description('The resource ID of the container group.')
 output resourceId string = containergroup.id
 
-@description('The resource group the container group was deployed into')
+@description('The resource group the container group was deployed into.')
 output resourceGroupName string = resourceGroup().name
 
-@description('The IPv4 address of the container group')
+@description('The IPv4 address of the container group.')
 output iPv4Address string = containergroup.properties.ipAddress.ip
 
 @description('The principal ID of the system assigned identity.')

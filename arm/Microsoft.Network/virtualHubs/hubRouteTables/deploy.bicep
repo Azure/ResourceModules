@@ -38,11 +38,11 @@ resource hubRouteTable 'Microsoft.Network/virtualHubs/hubRouteTables@2021-05-01'
   }
 }
 
-@description('The name of the deployed virtual hub route table')
+@description('The name of the deployed virtual hub route table.')
 output name string = hubRouteTable.name
 
-@description('The resource ID of the deployed virtual hub route table')
+@description('The resource ID of the deployed virtual hub route table.')
 output resourceId string = hubRouteTable.id
 
-@description('The resource group the virtual hub route table was deployed into')
+@description('The resource group the virtual hub route table was deployed into.')
 output resourceGroupName string = resourceGroup().name

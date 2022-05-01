@@ -35,11 +35,11 @@ resource group 'Microsoft.ApiManagement/service/products/groups@2021-08-01' = {
   parent: service::product
 }
 
-@description('The resource ID of the product group')
+@description('The resource ID of the product group.')
 output resourceId string = group.id
 
-@description('The name of the product group')
+@description('The name of the product group.')
 output name string = group.name
 
-@description('The resource group the product group was deployed into')
+@description('The resource group the product group was deployed into.')
 output resourceGroupName string = resourceGroup().name
