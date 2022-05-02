@@ -7,7 +7,6 @@ This module deploys a Private DNS Zone CNAME record.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Template references](#Template-references)
 
 ## Resource Types
 
@@ -15,13 +14,6 @@ This module deploys a Private DNS Zone CNAME record.
 | :-- | :-- |
 | `Microsoft.Authorization/roleAssignments` | [2021-04-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments) |
 | `Microsoft.Network/privateDnsZones/CNAME` | [2020-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-06-01/privateDnsZones/CNAME) |
-
-<<<<<<< HEAD
-| `Microsoft.Authorization/roleAssignments` | 2021-04-01-preview |
-| `Microsoft.Network/privateDnsZones/CNAME` | 2020-06-01 |
-=======
-| `Microsoft.Network/privateDnsZones/CNAME` | [2020-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-06-01/privateDnsZones/CNAME) |
->>>>>>> main
 
 ## Parameters
 
@@ -74,12 +66,3 @@ Create a role assignment for the given resource. If you want to assign a service
 | `name` | string | The name of the deployed CNAME record |
 | `resourceGroupName` | string | The resource group of the deployed CNAME record |
 | `resourceId` | string | The resource ID of the deployed CNAME record |
-
-<<<<<<< HEAD
-
-## Template references
-
-- [Privatednszones/CNAME](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-06-01/privateDnsZones/CNAME)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)
-=======
->>>>>>> main

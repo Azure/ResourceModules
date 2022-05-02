@@ -7,7 +7,6 @@ This module deploys a Private DNS Zone SOA record.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Template references](#Template-references)
 
 ## Resource Types
 
@@ -15,13 +14,6 @@ This module deploys a Private DNS Zone SOA record.
 | :-- | :-- |
 | `Microsoft.Authorization/roleAssignments` | [2021-04-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments) |
 | `Microsoft.Network/privateDnsZones/SOA` | [2020-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-06-01/privateDnsZones/SOA) |
-
-<<<<<<< HEAD
-| `Microsoft.Authorization/roleAssignments` | 2021-04-01-preview |
-| `Microsoft.Network/privateDnsZones/SOA` | 2020-06-01 |
-=======
-| `Microsoft.Network/privateDnsZones/SOA` | [2020-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-06-01/privateDnsZones/SOA) |
->>>>>>> main
 
 ## Parameters
 
@@ -90,12 +82,3 @@ Create a role assignment for the given resource. If you want to assign a service
 | `name` | string | The name of the deployed SOA record |
 | `resourceGroupName` | string | The resource group of the deployed SOA record |
 | `resourceId` | string | The resource ID of the deployed SOA record |
-
-<<<<<<< HEAD
-
-## Template references
-
-- [Privatednszones/SOA](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-06-01/privateDnsZones/SOA)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)
-=======
->>>>>>> main
