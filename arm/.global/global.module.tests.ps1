@@ -401,31 +401,6 @@ Describe 'Readme tests' -Tag Readme {
             $differentiatingItems.Count | Should -Be 0 -Because ('list of excess template outputs defined in the ReadMe file [{0}] should be empty' -f ($differentiatingItems -join ','))
         }
 
-        It '[<moduleFolderName>] Template References section should contain at least one bullet point with a reference' -TestCases $readmeFolderTestCases {
-            param(
-                $moduleFolderName,
-                $readMeContent
-            )
-
-            $ReadmeHTML = ($readMeContent | ConvertFrom-Markdown -ErrorAction SilentlyContinue).Html
-            $Headings = @(@())
-            foreach ($H in $ReadmeHTML) {
-                if ($H.Contains('<h')) {
-                    $StartingIndex = $H.IndexOf('>') + 1
-                    $EndIndex = $H.LastIndexof('<')
-                    $Headings += , (@($H.Substring($StartingIndex, $EndIndex - $StartingIndex), $ReadmeHTML.IndexOf($H)))
-                }
-            }
-            $HeadingIndex = $Headings | Where-Object { $_ -eq 'Template References' }
-            if ($HeadingIndex -eq $null) {
-                Write-Verbose "[Template References should contain at least one bullet point with a reference] Error At ($moduleFolderName)" -Verbose
-                $true | Should -Be $false
-            }
-            $StartIndex = $HeadingIndex[1] + 2
-            ($ReadmeHTML[$StartIndex].Contains('<li>')) | Should -Be $true
-            ($ReadmeHTML[$StartIndex].Contains('href')) | Should -Be $true
-        }
-
         It '[<moduleFolderName>] Set-ModuleReadMe script should not apply any updates' -TestCases $readmeFolderTestCases {
             param(
                 [string] $moduleFolderName,
