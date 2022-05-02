@@ -36,7 +36,7 @@ This module deploys a Machine Learning Services Workspace.
 | :-- | :-- | :-- | :-- |
 | `encryptionKeyIdentifier` | string | `''` | Key vault URI to access the encryption key. Required if an 'encryptionIdentity' was provided. |
 | `encryptionKeyVaultResourceId` | string | `''` | The ResourceID of the keyVault where the customer owned encryption key is present. Required if an 'encryptionIdentity' was provided. |
-| `primaryUserAssignedIdentity` | string | `''` | The user assigned identity resource id that represents the workspace identity. Required if 'userAssignedIdentities' is not empty. |
+| `primaryUserAssignedIdentity` | string | `''` | The user assigned identity resource id that represents the workspace identity. Required if 'userAssignedIdentities' is not empty and may not be used if 'systemAssignedIdentity' is enabled. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |

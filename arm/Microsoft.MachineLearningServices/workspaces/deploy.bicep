@@ -125,7 +125,7 @@ param encryptionKeyVaultResourceId string = ''
 @sys.description('Optional. The compute name for image build.')
 param imageBuildCompute string = ''
 
-@sys.description('Conditional. The user assigned identity resource id that represents the workspace identity. Required if \'userAssignedIdentities\' is not empty.')
+@sys.description('Conditional. The user assigned identity resource id that represents the workspace identity. Required if \'userAssignedIdentities\' is not empty and may not be used if \'systemAssignedIdentity\' is enabled.')
 param primaryUserAssignedIdentity string = ''
 
 @sys.description('Optional. Whether requests from Public Network are allowed.')
