@@ -22,6 +22,7 @@ trigger:
       - '/.azuredevops/modulePipelines/ms.insights.actiongroups.yml'
       - '/.azuredevops/pipelineTemplates/module.*.yml'
       - '/arm/Microsoft.Insights/actionGroups/*'
+      - '/arm/.global/global.module.tests.ps1'
     exclude:
       - '/**/*.md'
 

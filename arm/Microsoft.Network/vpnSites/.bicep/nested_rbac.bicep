@@ -27,7 +27,7 @@ resource vpnSite 'Microsoft.Network/vpnSites@2021-05-01' existing = {
 }
 
 resource roleAssignment 'Microsoft.Authorization/roleAssignments@2021-04-01-preview' = [for principalId in principalIds: {
-  name: guid(vpnSite.name, principalId, roleDefinitionIdOrName)
+  name: guid(vpnSite.id, principalId, roleDefinitionIdOrName)
   properties: {
     roleDefinitionId: contains(builtInRoleNames, roleDefinitionIdOrName) ? builtInRoleNames[roleDefinitionIdOrName] : roleDefinitionIdOrName
     principalId: principalId

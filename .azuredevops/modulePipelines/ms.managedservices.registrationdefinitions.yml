@@ -22,6 +22,7 @@ trigger:
       - '/.azuredevops/modulePipelines/ms.managedservices.registrationdefinitions.yml'
       - '/.azuredevops/pipelineTemplates/module.*.yml'
       - '/arm/Microsoft.ManagedServices/registrationDefinitions/*'
+      - '/arm/.global/global.module.tests.ps1'
     exclude:
       - '/**/*.md'
 

@@ -85,6 +85,7 @@ module capacityPool_volumes 'volumes/deploy.bicep' = [for (volume, index) in vol
     subnetResourceId: volume.subnetResourceId
     exportPolicyRules: contains(volume, 'exportPolicyRules') ? volume.exportPolicyRules : []
     roleAssignments: contains(volume, 'roleAssignments') ? volume.roleAssignments : []
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }]
 

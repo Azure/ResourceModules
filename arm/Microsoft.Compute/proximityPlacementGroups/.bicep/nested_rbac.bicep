@@ -48,7 +48,7 @@ resource proximityPlacementGroup 'Microsoft.Compute/proximityPlacementGroups@202
 }
 
 resource roleAssignment 'Microsoft.Authorization/roleAssignments@2021-04-01-preview' = [for principalId in principalIds: {
-  name: guid(proximityPlacementGroup.name, principalId, roleDefinitionIdOrName)
+  name: guid(proximityPlacementGroup.id, principalId, roleDefinitionIdOrName)
   properties: {
     description: description
     roleDefinitionId: contains(builtInRoleNames, roleDefinitionIdOrName) ? builtInRoleNames[roleDefinitionIdOrName] : roleDefinitionIdOrName

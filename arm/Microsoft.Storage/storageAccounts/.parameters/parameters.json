@@ -41,8 +41,18 @@
             "value": {
                 "bypass": "AzureServices",
                 "defaultAction": "Deny",
-                "virtualNetworkRules": [],
-                "ipRules": []
+                "virtualNetworkRules": [
+                    {
+                        "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001",
+                        "action": "Allow"
+                    }
+                ],
+                "ipRules": [
+                    {
+                        "action": "Allow",
+                        "value": "1.1.1.1"
+                    }
+                ]
             }
         },
         "blobServices": {

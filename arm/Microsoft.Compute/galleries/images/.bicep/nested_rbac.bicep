@@ -46,7 +46,7 @@ resource galleryImage 'Microsoft.Compute/galleries/images@2020-09-30' existing =
 }
 
 resource roleAssignment 'Microsoft.Authorization/roleAssignments@2021-04-01-preview' = [for principalId in principalIds: {
-  name: guid(galleryImage.name, principalId, roleDefinitionIdOrName)
+  name: guid(galleryImage.id, principalId, roleDefinitionIdOrName)
   properties: {
     description: description
     roleDefinitionId: contains(builtInRoleNames, roleDefinitionIdOrName) ? builtInRoleNames[roleDefinitionIdOrName] : roleDefinitionIdOrName

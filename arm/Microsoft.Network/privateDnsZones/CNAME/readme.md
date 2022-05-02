@@ -7,13 +7,12 @@ This module deploys a Private DNS Zone CNAME record.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Template references](#Template-references)
 
 ## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Network/privateDnsZones/CNAME` | 2020-06-01 |
+| `Microsoft.Network/privateDnsZones/CNAME` | [2020-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-06-01/privateDnsZones/CNAME) |
 
 ## Parameters
 
@@ -39,7 +38,3 @@ This module deploys a Private DNS Zone CNAME record.
 | `name` | string | The name of the deployed CNAME record |
 | `resourceGroupName` | string | The resource group of the deployed CNAME record |
 | `resourceId` | string | The resource ID of the deployed CNAME record |
-
-## Template references
-
-- [Privatednszones/CNAME](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-06-01/privateDnsZones/CNAME)

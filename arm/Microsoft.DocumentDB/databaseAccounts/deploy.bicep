@@ -255,6 +255,7 @@ module sqlDatabases_resource 'sqlDatabases/deploy.bicep' = [for sqlDatabase in s
     databaseAccountName: databaseAccount.name
     name: sqlDatabase.name
     containers: contains(sqlDatabase, 'containers') ? sqlDatabase.containers : []
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }]
 
@@ -264,6 +265,7 @@ module mongodbDatabases_resource 'mongodbDatabases/deploy.bicep' = [for mongodbD
     databaseAccountName: databaseAccount.name
     name: mongodbDatabase.name
     collections: contains(mongodbDatabase, 'collections') ? mongodbDatabase.collections : []
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }]
 

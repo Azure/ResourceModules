@@ -42,7 +42,7 @@ resource serviceFabricCluster 'Microsoft.ServiceFabric/clusters@2021-06-01' exis
 }
 
 resource roleAssignment 'Microsoft.Authorization/roleAssignments@2020-04-01-preview' = [for principalId in principalIds: {
-  name: guid(serviceFabricCluster.name, principalId, roleDefinitionIdOrName)
+  name: guid(serviceFabricCluster.id, principalId, roleDefinitionIdOrName)
   properties: {
     description: description
     roleDefinitionId: contains(builtInRoleNames, roleDefinitionIdOrName) ? builtInRoleNames[roleDefinitionIdOrName] : roleDefinitionIdOrName

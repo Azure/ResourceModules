@@ -49,7 +49,7 @@ resource disk 'Microsoft.Compute/disks@2021-08-01' existing = {
 }
 
 resource roleAssignment 'Microsoft.Authorization/roleAssignments@2021-04-01-preview' = [for principalId in principalIds: {
-  name: guid(disk.name, principalId, roleDefinitionIdOrName)
+  name: guid(disk.id, principalId, roleDefinitionIdOrName)
   properties: {
     description: description
     roleDefinitionId: contains(builtInRoleNames, roleDefinitionIdOrName) ? builtInRoleNames[roleDefinitionIdOrName] : roleDefinitionIdOrName

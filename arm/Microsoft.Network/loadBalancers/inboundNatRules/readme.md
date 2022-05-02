@@ -7,13 +7,12 @@ This module deploys load balancers inbound NAT rules.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Template references](#Template-references)
 
 ## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Network/loadBalancers/inboundNatRules` | 2021-05-01 |
+| `Microsoft.Network/loadBalancers/inboundNatRules` | [2021-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/loadBalancers/inboundNatRules) |
 
 ## Parameters
 
@@ -46,7 +45,3 @@ This module deploys load balancers inbound NAT rules.
 | `name` | string | The name of the inbound NAT rule |
 | `resourceGroupName` | string | The resource group the inbound NAT rule was deployed into |
 | `resourceId` | string | The resource ID of the inbound NAT rule |
-
-## Template references
-
-- [Loadbalancers/Inboundnatrules](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/loadBalancers/inboundNatRules)

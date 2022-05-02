@@ -69,7 +69,7 @@ resource fileShare 'Microsoft.Storage/storageAccounts/fileServices/shares@2019-0
 }
 
 resource roleAssignment 'Microsoft.Authorization/roleAssignments@2021-04-01-preview' = [for principalId in principalIds: {
-  name: guid(fileShare.name, principalId, roleDefinitionIdOrName)
+  name: guid(fileShare.id, principalId, roleDefinitionIdOrName)
   properties: {
     description: description
     roleDefinitionId: contains(builtInRoleNames, roleDefinitionIdOrName) ? builtInRoleNames[roleDefinitionIdOrName] : roleDefinitionIdOrName

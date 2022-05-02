@@ -125,6 +125,7 @@ module queue_authorizationRules 'authorizationRules/deploy.bicep' = [for (author
     queueName: queue.name
     name: authorizationRule.name
     rights: contains(authorizationRule, 'rights') ? authorizationRule.rights : []
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }]
 

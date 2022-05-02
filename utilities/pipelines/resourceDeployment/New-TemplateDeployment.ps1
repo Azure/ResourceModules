@@ -211,15 +211,13 @@ function New-DeploymentWithParameterFile {
             try {
                 switch ($deploymentScope) {
                     'resourcegroup' {
-                        if ($subscriptionId) {
-                            $Context = Get-AzContext -ListAvailable | Where-Object Subscription -Match $subscriptionId
-                            if ($Context) {
-                                $null = $Context | Set-AzContext
-                            }
+                        if (-not [String]::IsNullOrEmpty($subscriptionId)) {
+                            Write-Verbose ('Setting context to subscription [{0}]' -f $subscriptionId)
+                            $null = Set-AzContext -Subscription $subscriptionId
                         }
                         if (-not (Get-AzResourceGroup -Name $resourceGroupName -ErrorAction 'SilentlyContinue')) {
                             if ($PSCmdlet.ShouldProcess("Resource group [$resourceGroupName] in location [$location]", 'Create')) {
-                                New-AzResourceGroup -Name $resourceGroupName -Location $location
+                                $null = New-AzResourceGroup -Name $resourceGroupName -Location $location
                             }
                         }
                         if ($PSCmdlet.ShouldProcess('Resource group level deployment', 'Create')) {
@@ -228,9 +226,9 @@ function New-DeploymentWithParameterFile {
                         break
                     }
                     'subscription' {
-                        if ($subscriptionId -and ($Context = Get-AzContext -ListAvailable | Where-Object { $_.Subscription.Id -eq $subscriptionId })) {
-                            Write-Verbose ('Setting context to subscription [{0}]' -f $Context.Subscription.Name)
-                            $null = $Context | Set-AzContext
+                        if (-not [String]::IsNullOrEmpty($subscriptionId)) {
+                            Write-Verbose ('Setting context to subscription [{0}]' -f $subscriptionId)
+                            $null = Set-AzContext -Subscription $subscriptionId
                         }
                         if ($PSCmdlet.ShouldProcess('Subscription level deployment', 'Create')) {
                             $res = New-AzSubscriptionDeployment @DeploymentInputs -Location $location

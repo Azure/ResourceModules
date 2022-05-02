@@ -85,6 +85,7 @@ module vpnGateway_natRules 'natRules/deploy.bicep' = [for (natRule, index) in na
     ipConfigurationId: contains(natRule, 'ipConfigurationId') ? natRule.ipConfigurationId : ''
     mode: contains(natRule, 'mode') ? natRule.mode : ''
     type: contains(natRule, 'type') ? natRule.type : ''
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }]
 
@@ -104,6 +105,7 @@ module vpnGateway_connections 'connections/deploy.bicep' = [for (connection, ind
     useLocalAzureIpAddress: contains(connection, 'useLocalAzureIpAddress') ? connection.useLocalAzureIpAddress : false
     usePolicyBasedTrafficSelectors: contains(connection, 'usePolicyBasedTrafficSelectors') ? connection.usePolicyBasedTrafficSelectors : false
     vpnConnectionProtocolType: contains(connection, 'vpnConnectionProtocolType') ? connection.vpnConnectionProtocolType : 'IKEv2'
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }]
 
