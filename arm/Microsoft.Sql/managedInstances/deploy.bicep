@@ -122,7 +122,7 @@ param systemAssignedIdentity bool = false
 @description('Optional. The ID(s) to assign to the resource.')
 param userAssignedIdentities object = {}
 
-@description('Optional. Mandatory if "managedServiceIdentity" contains UserAssigned. The resource ID of a user assigned identity to be used by default.')
+@description('Conditional. Requried if "userAssignedIdentities" is not empty. The resource ID of a user assigned identity to be used by default.')
 param primaryUserAssignedIdentityId string = ''
 
 @description('Optional. Databases to create in this server.')
