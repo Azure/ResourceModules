@@ -114,13 +114,13 @@ param description string = ''
 param discoveryUrl string = ''
 
 @sys.description('Optional. The Resource ID of the user assigned identity that will be used to access the customer managed key vault.')
-param encryptionIdentity string
+param encryptionIdentity string = ''
 
-@sys.description('Conditional. Key vault uri to access the encryption key. Required if an \'encryptionIdentity\' was provided.')
-param encryptionKeyIdentifier string
+@sys.description('Conditional. Key vault URI to access the encryption key. Required if an \'encryptionIdentity\' was provided.')
+param encryptionKeyIdentifier string = ''
 
 @sys.description('Conditional. The ResourceID of the keyVault where the customer owned encryption key is present. Required if an \'encryptionIdentity\' was provided.')
-param encryptionKeyVaultResourceId string
+param encryptionKeyVaultResourceId string = ''
 
 @sys.description('Optional. The compute name for image build.')
 param imageBuildCompute string = ''

@@ -34,8 +34,8 @@ This module deploys a Machine Learning Services Workspace.
 **Conditional parameters**
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
-| `encryptionKeyIdentifier` | string |  | Key vault uri to access the encryption key. Required if an 'encryptionIdentity' was provided. |
-| `encryptionKeyVaultResourceId` | string |  | The ResourceID of the keyVault where the customer owned encryption key is present. Required if an 'encryptionIdentity' was provided. |
+| `encryptionKeyIdentifier` | string | `''` | Key vault URI to access the encryption key. Required if an 'encryptionIdentity' was provided. |
+| `encryptionKeyVaultResourceId` | string | `''` | The ResourceID of the keyVault where the customer owned encryption key is present. Required if an 'encryptionIdentity' was provided. |
 | `primaryUserAssignedIdentity` | string | `''` | The user assigned identity resource id that represents the workspace identity. Required if 'userAssignedIdentities' is not empty. |
 
 **Optional parameters**
@@ -55,7 +55,7 @@ This module deploys a Machine Learning Services Workspace.
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
 | `discoveryUrl` | string | `''` |  | URL for the discovery service to identify regional endpoints for machine learning experimentation services. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `encryptionIdentity` | string |  |  | The Resource ID of the user assigned identity that will be used to access the customer managed key vault. |
+| `encryptionIdentity` | string | `''` |  | The Resource ID of the user assigned identity that will be used to access the customer managed key vault. |
 | `hbiWorkspace` | bool | `False` |  | The flag to signal HBI data in the workspace and reduce diagnostic data collected by the service. |
 | `imageBuildCompute` | string | `''` |  | The compute name for image build. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
