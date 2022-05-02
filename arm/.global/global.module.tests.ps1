@@ -154,7 +154,7 @@ Describe 'Readme tests' -Tag Readme {
             $readMeContent | Should -Not -Be $null
         }
 
-        It '[<moduleFolderName>] Readme.md file should contain the these titles in order: Resource Types, Parameters, Outputs, Template references' -TestCases $readmeFolderTestCases {
+        It '[<moduleFolderName>] Readme.md file should contain the these titles in order: Resource Types, Parameters, Outputs' -TestCases $readmeFolderTestCases {
             param(
                 $moduleFolderName,
                 $readMeContent
@@ -162,7 +162,7 @@ Describe 'Readme tests' -Tag Readme {
 
             $ReadmeHTML = ($readMeContent | ConvertFrom-Markdown -ErrorAction SilentlyContinue).Html
 
-            $Heading2Order = @('Resource Types', 'parameters', 'Outputs', 'Template references')
+            $Heading2Order = @('Resource Types', 'parameters', 'Outputs')
             $Headings2List = @()
             foreach ($H in $ReadmeHTML) {
                 if ($H.Contains('<h2')) {
