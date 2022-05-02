@@ -7,14 +7,13 @@ This module deploys an Action Group.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Template references](#Template-references)
 
 ## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/roleAssignments` | 2021-04-01-preview |
-| `microsoft.insights/actionGroups` | 2019-06-01 |
+| `Microsoft.Authorization/roleAssignments` | [2021-04-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments) |
+| `microsoft.insights/actionGroups` | [2019-06-01](https://docs.microsoft.com/en-us/azure/templates/microsoft.insights/2019-06-01/actionGroups) |
 
 ## Parameters
 
@@ -138,8 +137,3 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | `name` | string | The name of the action group  |
 | `resourceGroupName` | string | The resource group the action group was deployed into |
 | `resourceId` | string | The resource ID of the action group  |
-
-## Template references
-
-- [Actiongroups](https://docs.microsoft.com/en-us/azure/templates/microsoft.insights/2019-06-01/actionGroups)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)

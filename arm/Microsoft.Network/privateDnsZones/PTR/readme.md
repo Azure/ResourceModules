@@ -7,13 +7,12 @@ This module deploys a Private DNS Zone PTR record.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Template references](#Template-references)
 
 ## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Network/privateDnsZones/PTR` | 2020-06-01 |
+| `Microsoft.Network/privateDnsZones/PTR` | [2020-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-06-01/privateDnsZones/PTR) |
 
 ## Parameters
 
@@ -51,7 +50,3 @@ This module deploys a Private DNS Zone PTR record.
 | `name` | string | The name of the deployed PTR record |
 | `resourceGroupName` | string | The resource group of the deployed PTR record |
 | `resourceId` | string | The resource ID of the deployed PTR record |
-
-## Template references
-
-- [Privatednszones/PTR](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-06-01/privateDnsZones/PTR)

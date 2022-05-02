@@ -5,15 +5,14 @@
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Template references](#Template-references)
 
 ## Resource types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/locks` | 2017-04-01 |
-| `Microsoft.Batch/batchAccounts` | 2020-09-01 |
-| `Microsoft.Insights/diagnosticSettings` | 2021-05-01-preview |
+| `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
+| `Microsoft.Batch/batchAccounts` | [2020-09-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Batch/2020-09-01/batchAccounts) |
+| `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
 
 ## Parameters
 
@@ -63,9 +62,3 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | `name` | string | The name of the batch account |
 | `resourceGroupName` | string | The resource group the batch account was deployed into |
 | `resourceId` | string | The resource ID of the batch account |
-
-## Template references
-
-- [Batchaccounts](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Batch/2020-09-01/batchAccounts)
-- [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings)
-- [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)

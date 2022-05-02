@@ -50,7 +50,7 @@ resource applicationGateway 'Microsoft.Network/applicationGateways@2021-05-01' e
 }
 
 resource roleAssignment 'Microsoft.Authorization/roleAssignments@2021-04-01-preview' = [for principalId in principalIds: {
-  name: guid(applicationGateway.name, principalId, roleDefinitionIdOrName)
+  name: guid(applicationGateway.id, principalId, roleDefinitionIdOrName)
   properties: {
     description: description
     roleDefinitionId: contains(builtInRoleNames, roleDefinitionIdOrName) ? builtInRoleNames[roleDefinitionIdOrName] : roleDefinitionIdOrName

@@ -51,7 +51,7 @@ resource hostPool 'Microsoft.DesktopVirtualization/hostpools@2021-07-12' existin
 }
 
 resource roleAssignment 'Microsoft.Authorization/roleAssignments@2021-04-01-preview' = [for principalId in principalIds: {
-  name: guid(hostPool.name, principalId, roleDefinitionIdOrName)
+  name: guid(hostPool.id, principalId, roleDefinitionIdOrName)
   properties: {
     description: description
     roleDefinitionId: contains(builtInRoleNames, roleDefinitionIdOrName) ? builtInRoleNames[roleDefinitionIdOrName] : roleDefinitionIdOrName

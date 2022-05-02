@@ -7,13 +7,12 @@ This module deploys API Management Service Named Values.
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Template references](#Template-references)
 
 ## Resource types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.ApiManagement/service/namedValues` | 2021-08-01 |
+| `Microsoft.ApiManagement/service/namedValues` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2021-08-01/service/namedValues) |
 
 ### Resource dependency
 
@@ -58,7 +57,3 @@ The following resources are required to be able to deploy this resource.
 | `name` | string | The name of the named value |
 | `resourceGroupName` | string | The resource group the named value was deployed into |
 | `resourceId` | string | The resource ID of the named value |
-
-## Template references
-
-- [Service/Namedvalues](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2021-08-01/service/namedValues)
