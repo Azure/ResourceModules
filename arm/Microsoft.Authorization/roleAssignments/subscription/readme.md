@@ -7,13 +7,12 @@ With this module you can perform role assignments on a subscription level
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Template references](#Template-references)
 
 ## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/roleAssignments` | 2021-04-01-preview |
+| `Microsoft.Authorization/roleAssignments` | [2021-04-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments) |
 
 ## Parameters
 
@@ -43,7 +42,3 @@ With this module you can perform role assignments on a subscription level
 | `name` | string | The GUID of the Role Assignment |
 | `resourceId` | string | The scope this Role Assignment applies to |
 | `scope` | string | The resource ID of the Role Assignment |
-
-## Template references
-
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)

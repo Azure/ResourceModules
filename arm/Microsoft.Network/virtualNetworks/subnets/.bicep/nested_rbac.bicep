@@ -59,7 +59,7 @@ resource subnet 'Microsoft.Network/virtualNetworks/subnets@2021-03-01' existing 
 }
 
 resource roleAssignment 'Microsoft.Authorization/roleAssignments@2021-04-01-preview' = [for principalId in principalIds: {
-  name: guid(subnet.name, principalId, roleDefinitionIdOrName)
+  name: guid(subnet.id, principalId, roleDefinitionIdOrName)
   properties: {
     description: description
     roleDefinitionId: contains(builtInRoleNames, roleDefinitionIdOrName) ? builtInRoleNames[roleDefinitionIdOrName] : roleDefinitionIdOrName

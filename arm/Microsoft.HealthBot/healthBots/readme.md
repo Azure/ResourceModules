@@ -7,15 +7,14 @@ This module deploys an Azure Health Bot.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Template references](#Template-references)
 
 ## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/locks` | 2017-04-01 |
-| `Microsoft.Authorization/roleAssignments` | 2021-04-01-preview |
-| `Microsoft.HealthBot/healthBots` | 2020-12-08 |
+| `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
+| `Microsoft.Authorization/roleAssignments` | [2021-04-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments) |
+| `Microsoft.HealthBot/healthBots` | [2020-12-08](https://docs.microsoft.com/en-us/azure/templates/Microsoft.HealthBot/2020-12-08/healthBots) |
 
 ## Parameters
 
@@ -85,9 +84,3 @@ Create a role assignment for the given resource. If you want to assign a service
 | `name` | string | The name of the health bot |
 | `resourceGroupName` | string | The resource group the health bot was deployed into |
 | `resourceId` | string | The resource ID of the health bot |
-
-## Template references
-
-- [Healthbots](https://docs.microsoft.com/en-us/azure/templates/Microsoft.HealthBot/2020-12-08/healthBots)
-- [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)

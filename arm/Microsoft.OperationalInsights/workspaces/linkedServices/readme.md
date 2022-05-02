@@ -7,13 +7,12 @@ This template deploys a linked service for a Log Analytics workspace.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Template references](#Template-references)
 
 ## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.OperationalInsights/workspaces/linkedServices` | 2020-08-01 |
+| `Microsoft.OperationalInsights/workspaces/linkedServices` | [2020-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.OperationalInsights/2020-08-01/workspaces/linkedServices) |
 
 ## Parameters
 
@@ -56,7 +55,3 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | `name` | string | The name of the deployed linked service |
 | `resourceGroupName` | string | The resource group where the linked service is deployed |
 | `resourceId` | string | The resource ID of the deployed linked service |
-
-## Template references
-
-- [Workspaces/Linkedservices](https://docs.microsoft.com/en-us/azure/templates/Microsoft.OperationalInsights/2020-08-01/workspaces/linkedServices)

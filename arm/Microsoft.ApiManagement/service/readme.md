@@ -7,31 +7,29 @@ This module deploys an API management service.
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Considerations](#Considerations)
-- [Template references](#Template-references)
 
 ## Resource types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.ApiManagement/service` | 2021-08-01 |
-| `Microsoft.ApiManagement/service/apis` | 2021-08-01 |
-| `Microsoft.ApiManagement/service/apis/policies` | 2021-08-01 |
-| `Microsoft.ApiManagement/service/apiVersionSets` | 2021-08-01 |
-| `Microsoft.ApiManagement/service/authorizationServers` | 2021-08-01 |
-| `Microsoft.ApiManagement/service/backends` | 2021-08-01 |
-| `Microsoft.ApiManagement/service/caches` | 2021-08-01 |
-| `Microsoft.ApiManagement/service/identityProviders` | 2021-08-01 |
-| `Microsoft.ApiManagement/service/namedValues` | 2021-08-01 |
-| `Microsoft.ApiManagement/service/policies` | 2021-08-01 |
-| `Microsoft.ApiManagement/service/portalsettings` | 2021-08-01 |
-| `Microsoft.ApiManagement/service/products` | 2021-08-01 |
-| `Microsoft.ApiManagement/service/products/apis` | 2021-08-01 |
-| `Microsoft.ApiManagement/service/products/groups` | 2021-08-01 |
-| `Microsoft.ApiManagement/service/subscriptions` | 2021-08-01 |
-| `Microsoft.Authorization/locks` | 2017-04-01 |
-| `Microsoft.Authorization/roleAssignments` | 2021-04-01-preview |
-| `Microsoft.Insights/diagnosticSettings` | 2021-05-01-preview |
+| `Microsoft.ApiManagement/service` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2021-08-01/service) |
+| `Microsoft.ApiManagement/service/apis` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2021-08-01/service/apis) |
+| `Microsoft.ApiManagement/service/apis/policies` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2021-08-01/service/apis/policies) |
+| `Microsoft.ApiManagement/service/apiVersionSets` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2021-08-01/service/apiVersionSets) |
+| `Microsoft.ApiManagement/service/authorizationServers` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2021-08-01/service/authorizationServers) |
+| `Microsoft.ApiManagement/service/backends` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2021-08-01/service/backends) |
+| `Microsoft.ApiManagement/service/caches` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2021-08-01/service/caches) |
+| `Microsoft.ApiManagement/service/identityProviders` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2021-08-01/service/identityProviders) |
+| `Microsoft.ApiManagement/service/namedValues` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2021-08-01/service/namedValues) |
+| `Microsoft.ApiManagement/service/policies` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2021-08-01/service/policies) |
+| `Microsoft.ApiManagement/service/portalsettings` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/service) |
+| `Microsoft.ApiManagement/service/products` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2021-08-01/service/products) |
+| `Microsoft.ApiManagement/service/products/apis` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2021-08-01/service/products/apis) |
+| `Microsoft.ApiManagement/service/products/groups` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2021-08-01/service/products/groups) |
+| `Microsoft.ApiManagement/service/subscriptions` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2021-08-01/service/subscriptions) |
+| `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
+| `Microsoft.Authorization/roleAssignments` | [2021-04-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments) |
+| `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
 
 ## Parameters
 
@@ -163,28 +161,3 @@ You can specify multiple user assigned identities to a resource by providing add
 | `resourceGroupName` | string | The resource group the API management service was deployed into |
 | `resourceId` | string | The resource ID of the API management service |
 | `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
-
-## Considerations
-
-- *None*
-
-## Template references
-
-- ['service/portalsettings' Parent Documentation](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/service)
-- [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings)
-- [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)
-- [Service](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2021-08-01/service)
-- [Service/Apis](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2021-08-01/service/apis)
-- [Service/Apis/Policies](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2021-08-01/service/apis/policies)
-- [Service/Apiversionsets](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2021-08-01/service/apiVersionSets)
-- [Service/Authorizationservers](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2021-08-01/service/authorizationServers)
-- [Service/Backends](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2021-08-01/service/backends)
-- [Service/Caches](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2021-08-01/service/caches)
-- [Service/Identityproviders](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2021-08-01/service/identityProviders)
-- [Service/Namedvalues](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2021-08-01/service/namedValues)
-- [Service/Policies](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2021-08-01/service/policies)
-- [Service/Products](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2021-08-01/service/products)
-- [Service/Products/Apis](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2021-08-01/service/products/apis)
-- [Service/Products/Groups](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2021-08-01/service/products/groups)
-- [Service/Subscriptions](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2021-08-01/service/subscriptions)

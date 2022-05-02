@@ -44,7 +44,7 @@ resource userMsi 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-11-30' e
 }
 
 resource roleAssignment 'Microsoft.Authorization/roleAssignments@2021-04-01-preview' = [for principalId in principalIds: {
-  name: guid(userMsi.name, principalId, roleDefinitionIdOrName)
+  name: guid(userMsi.id, principalId, roleDefinitionIdOrName)
   properties: {
     description: description
     roleDefinitionId: contains(builtInRoleNames, roleDefinitionIdOrName) ? builtInRoleNames[roleDefinitionIdOrName] : roleDefinitionIdOrName

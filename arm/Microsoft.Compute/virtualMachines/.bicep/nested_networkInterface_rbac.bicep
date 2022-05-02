@@ -50,7 +50,7 @@ resource networkInterface 'Microsoft.Network/networkInterfaces@2021-03-01' exist
 }
 
 resource roleAssignment 'Microsoft.Authorization/roleAssignments@2021-04-01-preview' = [for principalId in principalIds: {
-  name: guid(networkInterface.name, principalId, roleDefinitionIdOrName)
+  name: guid(networkInterface.id, principalId, roleDefinitionIdOrName)
   properties: {
     description: description
     roleDefinitionId: contains(builtInRoleNames, roleDefinitionIdOrName) ? builtInRoleNames[roleDefinitionIdOrName] : roleDefinitionIdOrName

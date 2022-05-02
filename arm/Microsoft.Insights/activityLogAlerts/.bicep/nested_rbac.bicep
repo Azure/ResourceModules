@@ -43,7 +43,7 @@ resource activityLogAlert 'Microsoft.Insights/activityLogAlerts@2020-10-01' exis
 }
 
 resource roleAssignment 'Microsoft.Authorization/roleAssignments@2021-04-01-preview' = [for principalId in principalIds: {
-  name: guid(activityLogAlert.name, principalId, roleDefinitionIdOrName)
+  name: guid(activityLogAlert.id, principalId, roleDefinitionIdOrName)
   properties: {
     description: description
     roleDefinitionId: contains(builtInRoleNames, roleDefinitionIdOrName) ? builtInRoleNames[roleDefinitionIdOrName] : roleDefinitionIdOrName

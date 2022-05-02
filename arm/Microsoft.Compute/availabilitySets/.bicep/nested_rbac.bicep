@@ -50,7 +50,7 @@ resource availabilitySet 'Microsoft.Compute/availabilitySets@2021-04-01' existin
 }
 
 resource roleAssignment 'Microsoft.Authorization/roleAssignments@2021-04-01-preview' = [for principalId in principalIds: {
-  name: guid(availabilitySet.name, principalId, roleDefinitionIdOrName)
+  name: guid(availabilitySet.id, principalId, roleDefinitionIdOrName)
   properties: {
     description: description
     roleDefinitionId: contains(builtInRoleNames, roleDefinitionIdOrName) ? builtInRoleNames[roleDefinitionIdOrName] : roleDefinitionIdOrName
