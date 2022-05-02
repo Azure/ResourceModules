@@ -44,7 +44,7 @@
             "value": "testcompute"
         },
         "publicNetworkAccess": {
-            "value": true
+            "value": "Enabled"
         },
         "sharedPrivateLinkResources": {
             "value": []
