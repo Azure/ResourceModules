@@ -8,13 +8,12 @@ This module deploys Role Assignments.
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Considerations](#Considerations)
-- [Template references](#Template-references)
 
 ## Resource types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/roleAssignments` | 2021-04-01-preview |
+| `Microsoft.Authorization/roleAssignments` | [2021-04-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments) |
 
 ## Parameters
 
@@ -106,7 +105,3 @@ This module can be deployed both at management group, subscription or resource g
 - To deploy the module at resource group level, provide a valid name of an existing Resource Group in the `resourceGroupName` parameter, along side the `subscriptionId` parameter.
 - To deploy the module at the subscription level, only provide the `subscriptionId` parameter.
 - To deploy the module at the management group level, only provide the `managementGroupId` parameter.
-
-## Template references
-
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)

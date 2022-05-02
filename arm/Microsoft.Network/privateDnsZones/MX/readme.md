@@ -13,8 +13,15 @@ This module deploys a Private DNS Zone MX record.
 
 | Resource Type | API Version |
 | :-- | :-- |
+| `Microsoft.Authorization/roleAssignments` | [2021-04-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments) |
+| `Microsoft.Network/privateDnsZones/MX` | [2020-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-06-01/privateDnsZones/MX) |
+
+<<<<<<< HEAD
 | `Microsoft.Authorization/roleAssignments` | 2021-04-01-preview |
 | `Microsoft.Network/privateDnsZones/MX` | 2020-06-01 |
+=======
+| `Microsoft.Network/privateDnsZones/MX` | [2020-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-06-01/privateDnsZones/MX) |
+>>>>>>> main
 
 ## Parameters
 
@@ -81,7 +88,11 @@ Create a role assignment for the given resource. If you want to assign a service
 | `resourceGroupName` | string | The resource group of the deployed MX record |
 | `resourceId` | string | The resource ID of the deployed MX record |
 
+<<<<<<< HEAD
+
 ## Template references
 
 - [Privatednszones/MX](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-06-01/privateDnsZones/MX)
 - [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)
+=======
+>>>>>>> main

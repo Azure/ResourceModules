@@ -7,13 +7,12 @@ This module deploys a Protection Container for a Recovery Services Vault
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Template references](#Template-references)
 
 ## Resource types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.RecoveryServices/vaults/backupFabrics/protectionContainers` | 2021-08-01 |
+| `Microsoft.RecoveryServices/vaults/backupFabrics/protectionContainers` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2021-08-01/vaults/backupFabrics/protectionContainers) |
 
 ## Parameters
 
@@ -40,7 +39,3 @@ This module deploys a Protection Container for a Recovery Services Vault
 | `name` | string | The Name of the Protection Container. |
 | `resourceGroupName` | string | The name of the Resource Group the Protection Container was created in. |
 | `resourceId` | string | The resource ID of the Protection Container. |
-
-## Template references
-
-- [Vaults/Backupfabrics/Protectioncontainers](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2021-08-01/vaults/backupFabrics/protectionContainers)

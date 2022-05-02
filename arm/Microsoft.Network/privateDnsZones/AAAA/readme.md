@@ -13,8 +13,15 @@ This module deploys a Private DNS Zone AAAA record.
 
 | Resource Type | API Version |
 | :-- | :-- |
+| `Microsoft.Authorization/roleAssignments` | [2021-04-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments) |
+| `Microsoft.Network/privateDnsZones/AAAA` | [2020-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-06-01/privateDnsZones/AAAA) |
+
+<<<<<<< HEAD
 | `Microsoft.Authorization/roleAssignments` | 2021-04-01-preview |
 | `Microsoft.Network/privateDnsZones/AAAA` | 2020-06-01 |
+=======
+| `Microsoft.Network/privateDnsZones/AAAA` | [2020-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-06-01/privateDnsZones/AAAA) |
+>>>>>>> main
 
 ## Parameters
 
@@ -80,7 +87,11 @@ Create a role assignment for the given resource. If you want to assign a service
 | `resourceGroupName` | string | The resource group of the deployed AAAA record |
 | `resourceId` | string | The resource ID of the deployed AAAA record |
 
+<<<<<<< HEAD
+
 ## Template references
 
 - [Privatednszones/AAAA](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-06-01/privateDnsZones/AAAA)
 - [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)
+=======
+>>>>>>> main

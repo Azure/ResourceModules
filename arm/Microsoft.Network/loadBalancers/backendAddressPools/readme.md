@@ -7,13 +7,12 @@ This module deploys load balancer backend address pools.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Template references](#Template-references)
 
 ## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Network/loadBalancers/backendAddressPools` | 2021-05-01 |
+| `Microsoft.Network/loadBalancers/backendAddressPools` | [2021-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/loadBalancers/backendAddressPools) |
 
 ## Parameters
 
@@ -38,7 +37,3 @@ This module deploys load balancer backend address pools.
 | `name` | string | The name of the backend address pool |
 | `resourceGroupName` | string | The resource group the backend address pool was deployed into |
 | `resourceId` | string | The resource ID of the backend address pool |
-
-## Template references
-
-- [Loadbalancers/Backendaddresspools](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/loadBalancers/backendAddressPools)

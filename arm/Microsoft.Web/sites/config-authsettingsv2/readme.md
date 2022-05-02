@@ -7,13 +7,12 @@ This module deploys the auth settings v2.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Template references](#Template-references)
 
 ## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Web/sites/config` | 2020-12-01 |
+| `Microsoft.Web/sites/config` | [2020-12-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Web/sites) |
 
 ## Parameters
 
@@ -49,7 +48,3 @@ The auth settings V2 configuration.
 | `name` | string | The name of the site config. |
 | `resourceGroupName` | string | The resource group the site config was deployed into. |
 | `resourceId` | string | The resource ID of the site config. |
-
-## Template references
-
-- ['sites/config' Parent Documentation](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Web/sites)

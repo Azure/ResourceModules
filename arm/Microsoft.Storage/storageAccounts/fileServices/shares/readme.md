@@ -7,14 +7,13 @@ This module deploys a storage account file share.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Template references](#Template-references)
 
 ## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/roleAssignments` | 2021-04-01-preview |
-| `Microsoft.Storage/storageAccounts/fileServices/shares` | 2021-08-01 |
+| `Microsoft.Authorization/roleAssignments` | [2021-04-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments) |
+| `Microsoft.Storage/storageAccounts/fileServices/shares` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Storage/2021-08-01/storageAccounts/fileServices/shares) |
 
 ## Parameters
 
@@ -68,8 +67,3 @@ Create a role assignment for the given resource. If you want to assign a service
 | `name` | string | The name of the deployed file share |
 | `resourceGroupName` | string | The resource group of the deployed file share |
 | `resourceId` | string | The resource ID of the deployed file share |
-
-## Template references
-
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)
-- [Storageaccounts/Fileservices/Shares](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Storage/2021-08-01/storageAccounts/fileServices/shares)

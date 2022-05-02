@@ -7,22 +7,15 @@ This module deploys an Analysis Services Server.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Template references](#Template-references)
 
 ## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.AnalysisServices/servers` | 2017-08-01 |
-| `Microsoft.Authorization/locks` | 2017-04-01 |
-| `Microsoft.Authorization/roleAssignments` | 2021-04-01-preview |
-| `Microsoft.Insights/diagnosticSettings` | 2021-05-01-preview |
-
-### Resource dependency
-
-The following resources are required to be able to deploy this resource.
-
-- `Microsoft.Network/VirtualNetwork`
+| `Microsoft.AnalysisServices/servers` | [2017-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.AnalysisServices/2017-08-01/servers) |
+| `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
+| `Microsoft.Authorization/roleAssignments` | [2021-04-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments) |
+| `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
 
 ## Parameters
 
@@ -102,10 +95,3 @@ Create a role assignment for the given resource. If you want to assign a service
 | `name` | string | The name of the analysis service |
 | `resourceGroupName` | string | The resource group the analysis service was deployed into |
 | `resourceId` | string | The resource ID of the analysis service |
-
-## Template references
-
-- [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings)
-- [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)
-- [Servers](https://docs.microsoft.com/en-us/azure/templates/Microsoft.AnalysisServices/2017-08-01/servers)

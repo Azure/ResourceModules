@@ -7,13 +7,12 @@ This module deploys an Azure Automation Account Schedule.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Template references](#Template-references)
 
 ## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Automation/automationAccounts/schedules` | 2020-01-13-preview |
+| `Microsoft.Automation/automationAccounts/schedules` | [2020-01-13-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Automation/2020-01-13-preview/automationAccounts/schedules) |
 
 ## Parameters
 
@@ -48,7 +47,3 @@ This module deploys an Azure Automation Account Schedule.
 | `name` | string | The name of the deployed schedule |
 | `resourceGroupName` | string | The resource group of the deployed schedule |
 | `resourceId` | string | The resource ID of the deployed schedule |
-
-## Template references
-
-- [Automationaccounts/Schedules](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Automation/2020-01-13-preview/automationAccounts/schedules)

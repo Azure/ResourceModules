@@ -13,8 +13,15 @@ This module deploys a Private DNS Zone TXT record.
 
 | Resource Type | API Version |
 | :-- | :-- |
+| `Microsoft.Authorization/roleAssignments` | [2021-04-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments) |
+| `Microsoft.Network/privateDnsZones/TXT` | [2020-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-06-01/privateDnsZones/TXT) |
+
+<<<<<<< HEAD
 | `Microsoft.Authorization/roleAssignments` | 2021-04-01-preview |
 | `Microsoft.Network/privateDnsZones/TXT` | 2020-06-01 |
+=======
+| `Microsoft.Network/privateDnsZones/TXT` | [2020-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-06-01/privateDnsZones/TXT) |
+>>>>>>> main
 
 ## Parameters
 
@@ -80,7 +87,11 @@ Create a role assignment for the given resource. If you want to assign a service
 | `resourceGroupName` | string | The resource group of the deployed TXT record |
 | `resourceId` | string | The resource ID of the deployed TXT record |
 
+<<<<<<< HEAD
+
 ## Template references
 
 - [Privatednszones/TXT](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-06-01/privateDnsZones/TXT)
 - [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)
+=======
+>>>>>>> main

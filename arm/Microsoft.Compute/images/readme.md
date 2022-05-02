@@ -7,14 +7,13 @@ This module deploys a compute image.
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Template references](#Template-references)
 
 ## Resource types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/roleAssignments` | 2021-04-01-preview |
-| `Microsoft.Compute/images` | 2021-04-01 |
+| `Microsoft.Authorization/roleAssignments` | [2021-04-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments) |
+| `Microsoft.Compute/images` | [2021-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Compute/2021-04-01/images) |
 
 ## Parameters
 
@@ -88,8 +87,3 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | `name` | string | The name of the image |
 | `resourceGroupName` | string | The resource group the image was deployed into |
 | `resourceId` | string | The resource ID of the image |
-
-## Template references
-
-- [Images](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Compute/2021-04-01/images)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)

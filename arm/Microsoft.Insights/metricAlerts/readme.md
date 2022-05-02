@@ -7,14 +7,13 @@ This module deploys an alert based on metrics.
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Template references](#Template-references)
 
 ## Resource types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/roleAssignments` | 2021-04-01-preview |
-| `Microsoft.Insights/metricAlerts` | 2018-03-01 |
+| `Microsoft.Authorization/roleAssignments` | [2021-04-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments) |
+| `Microsoft.Insights/metricAlerts` | [2018-03-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2018-03-01/metricAlerts) |
 
 ## Parameters
 
@@ -182,8 +181,3 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | `name` | string | The name of the metric alert |
 | `resourceGroupName` | string | The resource group the metric alert was deployed into |
 | `resourceId` | string | The resource ID of the metric alert |
-
-## Template references
-
-- [Metricalerts](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2018-03-01/metricAlerts)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)
