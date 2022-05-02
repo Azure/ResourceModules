@@ -38,7 +38,7 @@
             "value": "https://adp-carml-az-kv-nopr-002.vault.azure.net/keys/keyEncryptionKey/5263fcde203347baa7cda35d074073b2" // ID must be updated for new keys
         },
         "encryptionKeyVaultResourceId": {
-            "value": "/subscriptions/a7439831-1cd9-435d-a091-4aa863c96556/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-carml-az-kv-nopr-002"
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-carml-az-kv-nopr-002"
         },
         "imageBuildCompute": {
             "value": "testcompute"

@@ -29,13 +29,13 @@ This module deploys a Machine Learning Services Workspace.
 | `associatedKeyVaultResourceId` | string |  | The resource ID of the associated Key Vault. |
 | `associatedStorageAccountResourceId` | string |  | The resource ID of the associated Storage Account. |
 | `name` | string |  | The name of the machine learning workspace. |
-| `sku` | string | `[Basic, Enterprise]` | Specifies the sku, also referred as 'edition' of the Azure Machine Learning workspace. |
+| `sku` | string | `[Basic, Enterprise]` | Specifies the SKU, also referred as 'edition' of the Azure Machine Learning workspace. |
 
 **Conditional parameters**
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `encryptionKeyVaultResourceId` | string |  | The ResourceID of the keyVault where the customer owned encryption key is present. Required if an 'encryptionIdentity' was provided. |
-| `primaryUserAssignedIdentity` | string | `''` | The user assigned identity resource id that represents the workspace identity. Requried if 'userAssignedIdentities' is not empty. |
+| `primaryUserAssignedIdentity` | string | `''` | The user assigned identity resource id that represents the workspace identity. Required if 'userAssignedIdentities' is not empty. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
