@@ -190,6 +190,7 @@ module automationAccount_modules 'modules/deploy.bicep' = [for (module, index) i
     uri: module.uri
     location: location
     tags: tags
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }]
 
@@ -205,6 +206,7 @@ module automationAccount_schedules 'schedules/deploy.bicep' = [for (schedule, in
     interval: contains(schedule, 'interval') ? schedule.interval : 0
     startTime: contains(schedule, 'startTime') ? schedule.startTime : ''
     timeZone: contains(schedule, 'timeZone') ? schedule.timeZone : ''
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }]
 
@@ -219,6 +221,7 @@ module automationAccount_runbooks 'runbooks/deploy.bicep' = [for (runbook, index
     version: contains(runbook, 'version') ? runbook.version : ''
     location: location
     tags: tags
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }]
 
@@ -230,6 +233,7 @@ module automationAccount_jobSchedules 'jobSchedules/deploy.bicep' = [for (jobSch
     scheduleName: jobSchedule.scheduleName
     parameters: contains(jobSchedule, 'parameters') ? jobSchedule.parameters : {}
     runOn: contains(jobSchedule, 'runOn') ? jobSchedule.runOn : ''
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
   dependsOn: [
     automationAccount_schedules
@@ -245,6 +249,7 @@ module automationAccount_variables 'variables/deploy.bicep' = [for (variable, in
     description: contains(variable, 'description') ? variable.description : ''
     value: variable.value
     isEncrypted: contains(variable, 'isEncrypted') ? variable.isEncrypted : true
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }]
 
@@ -316,6 +321,7 @@ module automationAccount_softwareUpdateConfigurations 'softwareUpdateConfigurati
       'Security'
     ]
     weekDays: contains(softwareUpdateConfiguration, 'weekDays') ? softwareUpdateConfiguration.weekDays : []
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
   dependsOn: [
     automationAccount_solutions

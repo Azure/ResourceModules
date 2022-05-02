@@ -46,7 +46,7 @@ resource server 'Microsoft.Sql/servers@2020-02-02-preview' existing = {
 }
 
 resource roleAssignment 'Microsoft.Authorization/roleAssignments@2021-04-01-preview' = [for principalId in principalIds: {
-  name: guid(server.name, principalId, roleDefinitionIdOrName)
+  name: guid(server.id, principalId, roleDefinitionIdOrName)
   properties: {
     description: description
     roleDefinitionId: contains(builtInRoleNames, roleDefinitionIdOrName) ? builtInRoleNames[roleDefinitionIdOrName] : roleDefinitionIdOrName

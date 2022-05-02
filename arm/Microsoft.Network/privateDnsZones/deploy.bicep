@@ -74,6 +74,7 @@ module privateDnsZone_A 'A/deploy.bicep' = [for (aRecord, index) in a: {
     aRecords: contains(aRecord, 'aRecords') ? aRecord.aRecords : []
     metadata: contains(aRecord, 'metadata') ? aRecord.metadata : {}
     ttl: contains(aRecord, 'ttl') ? aRecord.ttl : 3600
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }]
 
@@ -85,6 +86,7 @@ module privateDnsZone_AAAA 'AAAA/deploy.bicep' = [for (aaaaRecord, index) in aaa
     aaaaRecords: contains(aaaaRecord, 'aaaaRecords') ? aaaaRecord.aaaaRecords : []
     metadata: contains(aaaaRecord, 'metadata') ? aaaaRecord.metadata : {}
     ttl: contains(aaaaRecord, 'ttl') ? aaaaRecord.ttl : 3600
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }]
 
@@ -96,6 +98,7 @@ module privateDnsZone_CNAME 'CNAME/deploy.bicep' = [for (cnameRecord, index) in 
     cnameRecord: contains(cnameRecord, 'cnameRecord') ? cnameRecord.cnameRecord : {}
     metadata: contains(cnameRecord, 'metadata') ? cnameRecord.metadata : {}
     ttl: contains(cnameRecord, 'ttl') ? cnameRecord.ttl : 3600
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }]
 
@@ -107,6 +110,7 @@ module privateDnsZone_MX 'MX/deploy.bicep' = [for (mxRecord, index) in mx: {
     metadata: contains(mxRecord, 'metadata') ? mxRecord.metadata : {}
     mxRecords: contains(mxRecord, 'mxRecords') ? mxRecord.mxRecords : []
     ttl: contains(mxRecord, 'ttl') ? mxRecord.ttl : 3600
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }]
 
@@ -118,6 +122,7 @@ module privateDnsZone_PTR 'PTR/deploy.bicep' = [for (ptrRecord, index) in ptr: {
     metadata: contains(ptrRecord, 'metadata') ? ptrRecord.metadata : {}
     ptrRecords: contains(ptrRecord, 'ptrRecords') ? ptrRecord.ptrRecords : []
     ttl: contains(ptrRecord, 'ttl') ? ptrRecord.ttl : 3600
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }]
 
@@ -129,6 +134,7 @@ module privateDnsZone_SOA 'SOA/deploy.bicep' = [for (soaRecord, index) in soa: {
     metadata: contains(soaRecord, 'metadata') ? soaRecord.metadata : {}
     soaRecord: contains(soaRecord, 'soaRecord') ? soaRecord.soaRecord : {}
     ttl: contains(soaRecord, 'ttl') ? soaRecord.ttl : 3600
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }]
 
@@ -140,6 +146,7 @@ module privateDnsZone_SRV 'SRV/deploy.bicep' = [for (srvRecord, index) in srv: {
     metadata: contains(srvRecord, 'metadata') ? srvRecord.metadata : {}
     srvRecords: contains(srvRecord, 'srvRecords') ? srvRecord.srvRecords : []
     ttl: contains(srvRecord, 'ttl') ? srvRecord.ttl : 3600
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }]
 
@@ -151,6 +158,7 @@ module privateDnsZone_TXT 'TXT/deploy.bicep' = [for (txtRecord, index) in txt: {
     metadata: contains(txtRecord, 'metadata') ? txtRecord.metadata : {}
     txtRecords: contains(txtRecord, 'txtRecords') ? txtRecord.txtRecords : []
     ttl: contains(txtRecord, 'ttl') ? txtRecord.ttl : 3600
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }]
 
@@ -163,6 +171,7 @@ module privateDnsZone_virtualNetworkLinks 'virtualNetworkLinks/deploy.bicep' = [
     location: contains(virtualNetworkLink, 'location') ? virtualNetworkLink.location : 'global'
     registrationEnabled: contains(virtualNetworkLink, 'registrationEnabled') ? virtualNetworkLink.registrationEnabled : false
     tags: contains(virtualNetworkLink, 'tags') ? virtualNetworkLink.tags : {}
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }]
 

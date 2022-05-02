@@ -6,6 +6,7 @@ param (
         (Get-ChildItem $_ -File -Depth 0 -Include @('deploy.json', 'deploy.bicep') -Force).Count -gt 0
         }),
 
+    # Tokens to test for (i.e. their value should not be used in the parameter files, but their placeholder)
     [Parameter(Mandatory = $false)]
     [hashtable] $enforcedTokenList = @{}
 )
@@ -153,7 +154,7 @@ Describe 'Readme tests' -Tag Readme {
             $readMeContent | Should -Not -Be $null
         }
 
-        It '[<moduleFolderName>] Readme.md file should contain the these titles in order: Resource Types, Parameters, Outputs, Template references' -TestCases $readmeFolderTestCases {
+        It '[<moduleFolderName>] Readme.md file should contain the these titles in order: Resource Types, Parameters, Outputs' -TestCases $readmeFolderTestCases {
             param(
                 $moduleFolderName,
                 $readMeContent
@@ -161,7 +162,7 @@ Describe 'Readme tests' -Tag Readme {
 
             $ReadmeHTML = ($readMeContent | ConvertFrom-Markdown -ErrorAction SilentlyContinue).Html
 
-            $Heading2Order = @('Resource Types', 'parameters', 'Outputs', 'Template references')
+            $Heading2Order = @('Resource Types', 'parameters', 'Outputs')
             $Headings2List = @()
             foreach ($H in $ReadmeHTML) {
                 if ($H.Contains('<h2')) {
@@ -398,31 +399,6 @@ Describe 'Readme tests' -Tag Readme {
 
             $differentiatingItems = $ReadMeoutputsList | Where-Object { $expectedOutputs -notcontains $_ }
             $differentiatingItems.Count | Should -Be 0 -Because ('list of excess template outputs defined in the ReadMe file [{0}] should be empty' -f ($differentiatingItems -join ','))
-        }
-
-        It '[<moduleFolderName>] Template References section should contain at least one bullet point with a reference' -TestCases $readmeFolderTestCases {
-            param(
-                $moduleFolderName,
-                $readMeContent
-            )
-
-            $ReadmeHTML = ($readMeContent | ConvertFrom-Markdown -ErrorAction SilentlyContinue).Html
-            $Headings = @(@())
-            foreach ($H in $ReadmeHTML) {
-                if ($H.Contains('<h')) {
-                    $StartingIndex = $H.IndexOf('>') + 1
-                    $EndIndex = $H.LastIndexof('<')
-                    $Headings += , (@($H.Substring($StartingIndex, $EndIndex - $StartingIndex), $ReadmeHTML.IndexOf($H)))
-                }
-            }
-            $HeadingIndex = $Headings | Where-Object { $_ -eq 'Template References' }
-            if ($HeadingIndex -eq $null) {
-                Write-Verbose "[Template References should contain at least one bullet point with a reference] Error At ($moduleFolderName)" -Verbose
-                $true | Should -Be $false
-            }
-            $StartIndex = $HeadingIndex[1] + 2
-            ($ReadmeHTML[$StartIndex].Contains('<li>')) | Should -Be $true
-            ($ReadmeHTML[$StartIndex].Contains('href')) | Should -Be $true
         }
 
         It '[<moduleFolderName>] Set-ModuleReadMe script should not apply any updates' -TestCases $readmeFolderTestCases {

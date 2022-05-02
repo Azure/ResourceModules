@@ -48,6 +48,7 @@ module fabric_container_containerMappings 'replicationProtectionContainerMapping
     targetProtectionContainerId: contains(mapping, 'targetProtectionContainerId') ? mapping.targetProtectionContainerId : ''
     targetContainerFabricName: contains(mapping, 'targetContainerFabricName') ? mapping.targetContainerFabricName : replicationFabricName
     targetContainerName: contains(mapping, 'targetContainerName') ? mapping.targetContainerName : ''
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
   dependsOn: [
     replicationContainer

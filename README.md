@@ -44,7 +44,7 @@ The CI environment supports both ARM and Bicep and can be leveraged using GitHub
 | [AVD Host Pools](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.DesktopVirtualization/hostpools) | [!['DesktopVirtualization: HostPools'](https://github.com/Azure/ResourceModules/workflows/DesktopVirtualization:%20HostPools/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.desktopvirtualization.hostpools.yml) |
 | [AVD Scaling Plans](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.DesktopVirtualization/scalingplans) | [!['DesktopVirtualization: Scalingplans'](https://github.com/Azure/ResourceModules/workflows/DesktopVirtualization:%20Scalingplans/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.desktopvirtualization.scalingplans.yml) |
 | [AVD Workspaces](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.DesktopVirtualization/workspaces) | [!['DesktopVirtualization: Workspaces'](https://github.com/Azure/ResourceModules/workflows/DesktopVirtualization:%20Workspaces/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.desktopvirtualization.workspaces.yml) |
-| [Azure Active Directory Domain Services](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.AAD/DomainServices) | [!['AAD - DomainServices'](https://github.com/Azure/ResourceModules/workflows/AAD%20-%20DomainServices/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.aad.domainservices.yml) |
+| [Azure Active Directory Domain Services](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.AAD/DomainServices) | [!['AAD: DomainServices'](https://github.com/Azure/ResourceModules/workflows/AAD:%20DomainServices/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.aad.domainservices.yml) |
 | [Azure Compute Galleries](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Compute/galleries) | [!['Compute: Galleries'](https://github.com/Azure/ResourceModules/workflows/Compute:%20Galleries/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.compute.galleries.yml) |
 | [Azure Databricks](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Databricks/workspaces) | [!['Databricks: Workspaces'](https://github.com/Azure/ResourceModules/workflows/Databricks:%20Workspaces/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.databricks.workspaces.yml) |
 | [Azure Firewalls](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Network/azureFirewalls) | [!['Network: AzureFirewalls'](https://github.com/Azure/ResourceModules/workflows/Network:%20AzureFirewalls/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.network.azurefirewalls.yml) |
@@ -140,7 +140,7 @@ When you submit a pull request, a CLA bot will automatically determine whether y
 This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/).
 For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
 
-For specific guidelines on how to contribute to this repository please refer to the [Contribution guide](./Contribution%20guide) Wiki section.
+For specific guidelines on how to contribute to this repository please refer to the [Contribution guide](https://github.com/Azure/ResourceModules/wiki/Contribution%20guide) Wiki section.
 
 ## Trademarks
 

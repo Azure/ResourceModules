@@ -144,6 +144,7 @@ module virtualHub_routeTables 'hubRouteTables/deploy.bicep' = [for (routeTable, 
     name: routeTable.name
     labels: contains(routeTable, 'labels') ? routeTable.labels : []
     routes: contains(routeTable, 'routes') ? routeTable.routes : []
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }]
 
@@ -155,6 +156,7 @@ module virtualHub_hubVirtualNetworkConnections 'hubVirtualNetworkConnections/dep
     enableInternetSecurity: contains(virtualNetworkConnection, 'enableInternetSecurity') ? virtualNetworkConnection.enableInternetSecurity : true
     remoteVirtualNetworkId: virtualNetworkConnection.remoteVirtualNetworkId
     routingConfiguration: contains(virtualNetworkConnection, 'routingConfiguration') ? virtualNetworkConnection.routingConfiguration : {}
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
   dependsOn: [
     virtualHub_routeTables

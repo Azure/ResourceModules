@@ -151,10 +151,10 @@ function Test-ModuleLocally {
             Write-Verbose "Pester Testing Module: $ModuleName"
             try {
                 $enforcedTokenList = @{}
-                if ($AdditionalTokens.ContainsKey('subscriptionId')) {
+                if ($ValidateOrDeployParameters.ContainsKey('subscriptionId')) {
                     $enforcedTokenList['subscriptionId'] = $ValidateOrDeployParameters.SubscriptionId
                 }
-                if ($AdditionalTokens.ContainsKey('managementGroupId')) {
+                if ($ValidateOrDeployParameters.ContainsKey('managementGroupId')) {
                     $enforcedTokenList['managementGroupId'] = $ValidateOrDeployParameters.ManagementGroupId
                 }
                 if ($AdditionalTokens.ContainsKey('deploymentSpId')) {
@@ -168,7 +168,7 @@ function Test-ModuleLocally {
                     Run    = @{
                         Container = New-PesterContainer -Path (Join-Path (Get-Item $PSScriptRoot).Parent.Parent 'arm/.global/global.module.tests.ps1') -Data @{
                             moduleFolderPaths = Split-Path $TemplateFilePath -Parent
-                            enforcedTokenList     = $enforcedTokenList
+                            enforcedTokenList = $enforcedTokenList
                         }
                     }
                     Output = @{

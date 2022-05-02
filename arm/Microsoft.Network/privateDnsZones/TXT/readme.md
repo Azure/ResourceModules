@@ -7,13 +7,12 @@ This module deploys a Private DNS Zone TXT record.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Template references](#Template-references)
 
 ## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Network/privateDnsZones/TXT` | 2020-06-01 |
+| `Microsoft.Network/privateDnsZones/TXT` | [2020-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-06-01/privateDnsZones/TXT) |
 
 ## Parameters
 
@@ -51,7 +50,3 @@ This module deploys a Private DNS Zone TXT record.
 | `name` | string | The name of the deployed TXT record |
 | `resourceGroupName` | string | The resource group of the deployed TXT record |
 | `resourceId` | string | The resource ID of the deployed TXT record |
-
-## Template references
-
-- [Privatednszones/TXT](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-06-01/privateDnsZones/TXT)

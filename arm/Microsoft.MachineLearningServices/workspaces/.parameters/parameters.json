@@ -17,6 +17,44 @@
         "associatedApplicationInsightsResourceId": {
             "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Insights/components/adp-<<namePrefix>>-az-appi-x-001"
         },
+        "systemAssignedIdentity": {
+            "value": true
+        },
+        "userAssignedIdentities": {
+            "value": {
+                "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001": {}
+            }
+        },
+        "computes": {
+            "value": [
+                {
+                    "name": "DefaultCPU",
+                    "location": "westeurope",
+                    "computeLocation": "westeurope",
+                    "sku": "Basic",
+                    "systemAssignedIdentity": true,
+                    "userAssignedIdentities": {
+                        "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001": {}
+                    },
+                    "description": "Default CPU Cluster",
+                    "disableLocalAuth": false,
+                    "computeType": "AmlCompute",
+                    "properties": {
+                        "enableNodePublicIp": true,
+                        "isolatedNetwork": false,
+                        "osType": "Linux",
+                        "remoteLoginPortPublicAccess": "Disabled",
+                        "scaleSettings": {
+                            "maxNodeCount": 3,
+                            "minNodeCount": 0,
+                            "nodeIdleTimeBeforeScaleDown": "PT5M"
+                        },
+                        "vmPriority": "Dedicated",
+                        "vmSize": "STANDARD_DS11_V2"
+                    }
+                }
+            ]
+        },
         "roleAssignments": {
             "value": [
                 {
@@ -41,9 +79,6 @@
         },
         "diagnosticEventHubName": {
             "value": "adp-<<namePrefix>>-az-evh-x-001"
-        },
-        "systemAssignedIdentity": {
-            "value": true
         }
     }
 }

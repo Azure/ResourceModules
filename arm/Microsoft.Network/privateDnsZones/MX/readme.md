@@ -7,13 +7,12 @@ This module deploys a Private DNS Zone MX record.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Template references](#Template-references)
 
 ## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Network/privateDnsZones/MX` | 2020-06-01 |
+| `Microsoft.Network/privateDnsZones/MX` | [2020-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-06-01/privateDnsZones/MX) |
 
 ## Parameters
 
@@ -52,7 +51,3 @@ This module deploys a Private DNS Zone MX record.
 | `name` | string | The name of the deployed MX record |
 | `resourceGroupName` | string | The resource group of the deployed MX record |
 | `resourceId` | string | The resource ID of the deployed MX record |
-
-## Template references
-
-- [Privatednszones/MX](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-06-01/privateDnsZones/MX)

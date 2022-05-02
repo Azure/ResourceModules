@@ -48,7 +48,7 @@ resource diskEncryptionSet 'Microsoft.Compute/diskEncryptionSets@2020-12-01' exi
 }
 
 resource roleAssignment 'Microsoft.Authorization/roleAssignments@2021-04-01-preview' = [for principalId in principalIds: {
-  name: guid(diskEncryptionSet.name, principalId, roleDefinitionIdOrName)
+  name: guid(diskEncryptionSet.id, principalId, roleDefinitionIdOrName)
   properties: {
     description: description
     roleDefinitionId: contains(builtInRoleNames, roleDefinitionIdOrName) ? builtInRoleNames[roleDefinitionIdOrName] : roleDefinitionIdOrName

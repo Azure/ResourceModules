@@ -7,18 +7,17 @@ This template enables Azure security center - Standard tier by default, could be
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Template references](#Template-references)
 
 ## Resource types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Security/autoProvisioningSettings` | 2017-08-01-preview |
-| `Microsoft.Security/deviceSecurityGroups` | 2019-08-01 |
-| `Microsoft.Security/iotSecuritySolutions` | 2019-08-01 |
-| `Microsoft.Security/pricings` | 2018-06-01 |
-| `Microsoft.Security/securityContacts` | 2017-08-01-preview |
-| `Microsoft.Security/workspaceSettings` | 2017-08-01-preview |
+| `Microsoft.Security/autoProvisioningSettings` | [2017-08-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Security/2017-08-01-preview/autoProvisioningSettings) |
+| `Microsoft.Security/deviceSecurityGroups` | [2019-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Security/2019-08-01/deviceSecurityGroups) |
+| `Microsoft.Security/iotSecuritySolutions` | [2019-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Security/2019-08-01/iotSecuritySolutions) |
+| `Microsoft.Security/pricings` | [2018-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Security/2018-06-01/pricings) |
+| `Microsoft.Security/securityContacts` | [2017-08-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Security/2017-08-01-preview/securityContacts) |
+| `Microsoft.Security/workspaceSettings` | [2017-08-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Security/2017-08-01-preview/workspaceSettings) |
 
 ## Parameters
 
@@ -148,12 +147,3 @@ This template enables Azure security center - Standard tier by default, could be
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
 | `workspaceId` | string | The resource IDs of the used log analytics workspace |
-
-## Template references
-
-- [Autoprovisioningsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Security/2017-08-01-preview/autoProvisioningSettings)
-- [Devicesecuritygroups](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Security/2019-08-01/deviceSecurityGroups)
-- [Iotsecuritysolutions](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Security/2019-08-01/iotSecuritySolutions)
-- [Pricings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Security/2018-06-01/pricings)
-- [Securitycontacts](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Security/2017-08-01-preview/securityContacts)
-- [Workspacesettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Security/2017-08-01-preview/workspaceSettings)

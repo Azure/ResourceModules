@@ -7,13 +7,12 @@ With this module you can create role definitions on a resource group level
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Template references](#Template-references)
 
 ## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/roleDefinitions` | 2018-01-01-preview |
+| `Microsoft.Authorization/roleDefinitions` | [2018-01-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2018-01-01-preview/roleDefinitions) |
 
 ## Parameters
 
@@ -44,7 +43,3 @@ With this module you can create role definitions on a resource group level
 | `resourceGroupName` | string | The name of the resource group the role definition was created at |
 | `resourceId` | string | The resource ID of the Role Definition |
 | `scope` | string | The scope this Role Definition applies to |
-
-## Template references
-
-- [Roledefinitions](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2018-01-01-preview/roleDefinitions)

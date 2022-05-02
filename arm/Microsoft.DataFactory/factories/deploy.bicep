@@ -163,6 +163,7 @@ module dataFactory_managedVirtualNetwork 'managedVirtualNetwork/deploy.bicep' = 
   params: {
     name: managedVirtualNetworkName
     dataFactoryName: dataFactory.name
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }
 
@@ -174,6 +175,7 @@ module dataFactory_integrationRuntime 'integrationRuntime/deploy.bicep' = if (!e
     type: integrationRuntime.type
     managedVirtualNetworkName: contains(integrationRuntime, 'managedVirtualNetworkName') ? integrationRuntime.managedVirtualNetworkName : ''
     typeProperties: integrationRuntime.typeProperties
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
   dependsOn: [
     dataFactory_managedVirtualNetwork

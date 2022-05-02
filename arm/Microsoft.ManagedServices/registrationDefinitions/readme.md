@@ -12,14 +12,13 @@ remote/managing tenant.
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Considerations](#Considerations)
-- [Template references](#Template-references)
 
 ## Resource types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.ManagedServices/registrationAssignments` | 2019-09-01 |
-| `Microsoft.ManagedServices/registrationDefinitions` | 2019-09-01 |
+| `Microsoft.ManagedServices/registrationAssignments` | [2019-09-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ManagedServices/2019-09-01/registrationAssignments) |
+| `Microsoft.ManagedServices/registrationDefinitions` | [2019-09-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ManagedServices/2019-09-01/registrationDefinitions) |
 
 ## Parameters
 
@@ -131,8 +130,3 @@ There are a couple of limitations that you should be aware of with Lighthouse:
 
 - [Current limitations - Cross-tenant management experiences | Microsoft Docs](https://docs.microsoft.com/en-us/azure/lighthouse/concepts/cross-tenant-management-experience#current-limitations)
 - [Troubleshooting - Onboard a customer to Azure Lighthouse | Microsoft Docs](https://docs.microsoft.com/en-us/azure/lighthouse/how-to/onboard-customer#troubleshooting)
-
-## Template references
-
-- [Registrationassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ManagedServices/2019-09-01/registrationAssignments)
-- [Registrationdefinitions](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ManagedServices/2019-09-01/registrationDefinitions)

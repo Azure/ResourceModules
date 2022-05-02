@@ -44,7 +44,7 @@ resource queryAlert 'microsoft.insights/scheduledQueryRules@2018-04-16' existing
 }
 
 resource roleAssignment 'Microsoft.Authorization/roleAssignments@2021-04-01-preview' = [for principalId in principalIds: {
-  name: guid(queryAlert.name, principalId, roleDefinitionIdOrName)
+  name: guid(queryAlert.id, principalId, roleDefinitionIdOrName)
   properties: {
     description: description
     roleDefinitionId: contains(builtInRoleNames, roleDefinitionIdOrName) ? builtInRoleNames[roleDefinitionIdOrName] : roleDefinitionIdOrName

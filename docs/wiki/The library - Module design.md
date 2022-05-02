@@ -203,7 +203,7 @@ resource <mainResource> '<mainResourceProviderNamespace>/<resourceType>@<resourc
 }
 
 resource roleAssignment 'Microsoft.Authorization/roleAssignments@2021-04-01-preview' = [for principalId in principalIds: {
-  name: guid(<mainResource>.name, principalId, roleDefinitionIdOrName)
+  name: guid(<mainResource>.id, principalId, roleDefinitionIdOrName)
   properties: {
     roleDefinitionId: contains(builtInRoleNames, roleDefinitionIdOrName) ? builtInRoleNames[roleDefinitionIdOrName] : roleDefinitionIdOrName
     principalId: principalId

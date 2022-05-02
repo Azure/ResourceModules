@@ -42,6 +42,7 @@ module fabric_replicationContainers 'replicationProtectionContainers/deploy.bice
     recoveryVaultName: recoveryVaultName
     replicationFabricName: name
     replicationContainerMappings: contains(container, 'replicationContainerMappings') ? container.replicationContainerMappings : []
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
   dependsOn: [
     replicationFabric

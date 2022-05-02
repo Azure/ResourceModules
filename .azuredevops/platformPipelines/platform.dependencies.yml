@@ -116,6 +116,21 @@ stages:
               templateFilePath: $(templateFilePath)
               displayName: Server farm
 
+  - stage: deploy_app
+    displayName: Deploy app
+    dependsOn:
+      - deploy_sf
+    variables:
+      resourceType: 'Microsoft.Web/sites'
+      templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
+    jobs:
+      - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
+        parameters:
+          deploymentBlocks:
+            - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: Function App
+
   - stage: deploy_pa
     displayName: Deploy policy assignment
     dependsOn:
