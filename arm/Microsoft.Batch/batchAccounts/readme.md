@@ -5,7 +5,6 @@
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Template references](#Template-references)
 
 ## Resource types
 
@@ -14,10 +13,6 @@
 | `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
 | `Microsoft.Batch/batchAccounts` | [2022-01-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Batch/2022-01-01/batchAccounts) |
 | `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
-
-| `Microsoft.Authorization/locks` | 2017-04-01 |
-| `Microsoft.Batch/batchAccounts` | 2022-01-01 |
-| `Microsoft.Insights/diagnosticSettings` | 2021-05-01-preview |
 
 ## Parameters
 
@@ -96,10 +91,3 @@ You can specify multiple user assigned identities to a resource by providing add
 | `name` | string | The name of the batch account |
 | `resourceGroupName` | string | The resource group the batch account was deployed into |
 | `resourceId` | string | The resource ID of the batch account |
-
-
-## Template references
-
-- [Batchaccounts](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Batch/2022-01-01/batchAccounts)
-- [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings)
-- [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
