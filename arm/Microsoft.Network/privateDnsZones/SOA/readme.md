@@ -7,13 +7,12 @@ This module deploys a Private DNS Zone SOA record.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Template references](#Template-references)
 
 ## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Network/privateDnsZones/SOA` | 2020-06-01 |
+| `Microsoft.Network/privateDnsZones/SOA` | [2020-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-06-01/privateDnsZones/SOA) |
 
 ## Parameters
 
@@ -55,7 +54,3 @@ This module deploys a Private DNS Zone SOA record.
 | `name` | string | The name of the deployed SOA record |
 | `resourceGroupName` | string | The resource group of the deployed SOA record |
 | `resourceId` | string | The resource ID of the deployed SOA record |
-
-## Template references
-
-- [Privatednszones/SOA](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-06-01/privateDnsZones/SOA)

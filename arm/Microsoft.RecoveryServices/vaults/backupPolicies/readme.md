@@ -7,13 +7,12 @@ This module deploys a Backup Policy for a Recovery Services Vault
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Template references](#Template-references)
 
 ## Resource types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.RecoveryServices/vaults/backupPolicies` | 2021-08-01 |
+| `Microsoft.RecoveryServices/vaults/backupPolicies` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2021-08-01/vaults/backupPolicies) |
 
 ## Parameters
 
@@ -125,7 +124,3 @@ Object continaining the configuration for backup policies. It needs to be proper
 | `name` | string | The name of the backup policy |
 | `resourceGroupName` | string | The name of the resource group the backup policy was created in. |
 | `resourceId` | string | The resource ID of the backup policy |
-
-## Template references
-
-- [Vaults/Backuppolicies](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2021-08-01/vaults/backupPolicies)

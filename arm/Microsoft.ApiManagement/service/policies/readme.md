@@ -7,13 +7,12 @@ This module deploys API Management Service Policy.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Template references](#Template-references)
 
 ## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.ApiManagement/service/policies` | 2021-08-01 |
+| `Microsoft.ApiManagement/service/policies` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2021-08-01/service/policies) |
 
 ## Parameters
 
@@ -38,7 +37,3 @@ This module deploys API Management Service Policy.
 | `name` | string | The name of the API management service policy |
 | `resourceGroupName` | string | The resource group the API management service policy was deployed into |
 | `resourceId` | string | The resource ID of the API management service policy |
-
-## Template references
-
-- [Service/Policies](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2021-08-01/service/policies)

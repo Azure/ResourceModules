@@ -7,13 +7,12 @@ This module deploys an EventHub Namespace Authorization Rule
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Template references](#Template-references)
 
 ## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.EventHub/namespaces/authorizationRules` | 2017-04-01 |
+| `Microsoft.EventHub/namespaces/authorizationRules` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.EventHub/2017-04-01/namespaces/authorizationRules) |
 
 ## Parameters
 
@@ -37,7 +36,3 @@ This module deploys an EventHub Namespace Authorization Rule
 | `name` | string | The name of the authorization rule. |
 | `resourceGroupName` | string | The name of the resource group the authorization rule was created in. |
 | `resourceId` | string | The resource ID of the authorization rule. |
-
-## Template references
-
-- [Namespaces/Authorizationrules](https://docs.microsoft.com/en-us/azure/templates/Microsoft.EventHub/2017-04-01/namespaces/authorizationRules)

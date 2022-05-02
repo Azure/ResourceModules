@@ -8,7 +8,6 @@ This module deploys Kubernetes Configuration Extensions.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Template references](#Template-references)
 
 ## Prerequisites
 
@@ -31,7 +30,7 @@ For Details see [Prerequisites](https://docs.microsoft.com/en-us/azure/azure-arc
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.KubernetesConfiguration/extensions` | 2022-03-01 |
+| `Microsoft.KubernetesConfiguration/extensions` | [2022-03-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.KubernetesConfiguration/2022-03-01/extensions) |
 
 ## Parameters
 
@@ -50,9 +49,9 @@ For Details see [Prerequisites](https://docs.microsoft.com/en-us/azure/azure-arc
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `location` | string | `[resourceGroup().location]` | Location for all resources. |
 | `releaseNamespace` | string | `''` | Namespace where the extension Release must be placed, for a Cluster scoped extension. If this namespace does not exist, it will be created |
-| `releaseTrain` | string | `'Stable'` | ReleaseTrain this extension participates in for auto-upgrade (e.g. Stable, Preview, etc.) - no version must be supplied in that case. |
+| `releaseTrain` | string | `'Stable'` | ReleaseTrain this extension participates in for auto-upgrade (e.g. Stable, Preview, etc.) - only if autoUpgradeMinorVersion is "true". |
 | `targetNamespace` | string | `''` | Namespace where the extension will be created for an Namespace scoped extension. If this namespace does not exist, it will be created |
-| `version` | string | `''` | Version of the extension for this extension, if it is "pinned" to a specific version. autoUpgradeMinorVersion will be set to "false". |
+| `version` | string | `''` | Version of the extension for this extension, if it is "pinned" to a specific version. |
 
 
 ## Outputs
@@ -62,7 +61,3 @@ For Details see [Prerequisites](https://docs.microsoft.com/en-us/azure/azure-arc
 | `name` | string | The name of the extension |
 | `resourceGroupName` | string | The name of the resource group the extension was deployed into |
 | `resourceId` | string | The resource ID of the extension |
-
-## Template references
-
-- [Extensions](https://docs.microsoft.com/en-us/azure/templates/Microsoft.KubernetesConfiguration/2022-03-01/extensions)
