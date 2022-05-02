@@ -202,10 +202,10 @@ resource workspace 'Microsoft.MachineLearningServices/workspaces@2021-07-01' = {
     description: description
     discoveryUrl: discoveryUrl
     encryption: any({
-      identity: empty(encryptionIdentity) ? {
+      identity: !empty(encryptionIdentity) ? {
         userAssignedIdentity: encryptionIdentity
       } : null
-      keyVaultProperties: empty(encryptionIdentity) ? {
+      keyVaultProperties: !empty(encryptionIdentity) ? {
         keyIdentifier: encryptionKeyIdentifier
         keyVaultArmId: encryptionKeyVaultResourceId
       } : null
