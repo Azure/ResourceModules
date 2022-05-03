@@ -112,6 +112,17 @@
                     "service": "amlworkspace"
                 }
             ]
+        },
+        "sharedPrivateLinkResources": {
+            "value": [
+                {
+                    "name": "customServiceLink",
+                    "properties": {
+                        "groupId": "amlworkspace",
+                        "privateLinkResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.MachineLearningServices/workspaces/<<namePrefix>>-az-mls-x-001"
+                    }
+                }
+            ]
         }
     }
 }
