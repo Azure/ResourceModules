@@ -135,9 +135,6 @@ param primaryUserAssignedIdentity string = ''
 ])
 param publicNetworkAccess string = 'Disabled'
 
-@sys.description('Optional. The list of shared private link resources in this workspace.')
-param sharedPrivateLinkResources array = []
-
 // ================//
 // Variables       //
 // ================//
@@ -213,7 +210,6 @@ resource workspace 'Microsoft.MachineLearningServices/workspaces@2021-07-01' = {
     imageBuildCompute: imageBuildCompute
     primaryUserAssignedIdentity: primaryUserAssignedIdentity
     publicNetworkAccess: publicNetworkAccess
-    sharedPrivateLinkResources: sharedPrivateLinkResources
   }
 }
 
