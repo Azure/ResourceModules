@@ -191,7 +191,7 @@ resource workspace 'Microsoft.MachineLearningServices/workspaces@2021-07-01' = {
     tier: sku
   }
   identity: identity
-  properties: union({
+  properties: {
     friendlyName: name
     storageAccount: associatedStorageAccountResourceId
     keyVault: associatedKeyVaultResourceId
@@ -213,10 +213,8 @@ resource workspace 'Microsoft.MachineLearningServices/workspaces@2021-07-01' = {
     imageBuildCompute: imageBuildCompute
     primaryUserAssignedIdentity: primaryUserAssignedIdentity
     publicNetworkAccess: publicNetworkAccess
-  }, (!empty(sharedPrivateLinkResources) ? {
-    // requires to be added via `union` as neither `[]` nor `null` are supported defaults
     sharedPrivateLinkResources: sharedPrivateLinkResources
-  } : {}))
+  }
 }
 
 module workspace_computes 'computes/deploy.bicep' = [for compute in computes: {
