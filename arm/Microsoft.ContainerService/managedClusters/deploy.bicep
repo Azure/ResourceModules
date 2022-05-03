@@ -128,6 +128,12 @@ param agentPools array = []
 @description('Optional. Specifies whether the httpApplicationRouting add-on is enabled or not.')
 param httpApplicationRoutingEnabled bool = false
 
+@description('Optional. Specifies whether the ingressApplicationGateway (AGIC) add-on is enabled or not.')
+param ingressApplicationGatewayEnabled bool = false
+
+@description('Conditional. Required if `ingressApplicationGatewayEnabled` is set to `true`. Specifies the resource ID of connected application gateway.')
+param appGatewayResourceId string = ''
+
 @description('Optional. Specifies whether the aciConnectorLinux add-on is enabled or not.')
 param aciConnectorLinuxEnabled bool = false
 
@@ -202,7 +208,7 @@ param autoScalerProfileMaxTotalUnreadyPercentage string = '45'
 @description('Optional. For scenarios like burst/batch scale where you do not want CA to act before the kubernetes scheduler could schedule all the pods, you can tell CA to ignore unscheduled pods before they are a certain age. Values must be an integer followed by a unit ("s" for seconds, "m" for minutes, "h" for hours, etc).')
 param autoScalerProfileNewPodScaleUpDelay string = '0s'
 
-@description('Optional. Specifies the ok total unready count for the auto-scaler of the AKS cluster.')
+@description('Optional. Specifies the OK total unready count for the auto-scaler of the AKS cluster.')
 param autoScalerProfileOkTotalUnreadyCount string = '3'
 
 @allowed([
@@ -328,10 +334,10 @@ var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
 
 var identityType = systemAssignedIdentity ? 'SystemAssigned' : (!empty(userAssignedIdentities) ? 'UserAssigned' : 'None')
 
-var identity = identityType != 'None' ? {
+var identity = {
   type: identityType
   userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
-} : null
+}
 
 var aksClusterLinuxProfile = {
   adminUsername: aksClusterAdminUsername
@@ -363,10 +369,10 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource managedCluster 'Microsoft.ContainerService/managedClusters@2022-01-01' = {
+resource managedCluster 'Microsoft.ContainerService/managedClusters@2022-02-01' = {
   name: name
   location: location
-  tags: (empty(tags) ? null : tags)
+  tags: tags
   identity: identity
   sku: {
     name: 'Basic'
@@ -381,6 +387,13 @@ resource managedCluster 'Microsoft.ContainerService/managedClusters@2022-01-01' 
     addonProfiles: {
       httpApplicationRouting: {
         enabled: httpApplicationRoutingEnabled
+      }
+      ingressApplicationGateway: {
+        enabled: ingressApplicationGatewayEnabled && !empty(appGatewayResourceId)
+        config: {
+          applicationGatewayId: !empty(appGatewayResourceId) ? any(appGatewayResourceId) : null
+          effectiveApplicationGatewayId: !empty(appGatewayResourceId) ? any(appGatewayResourceId) : null
+        }
       }
       omsagent: {
         enabled: omsAgentEnabled && !empty(monitoringWorkspaceId)
