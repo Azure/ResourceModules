@@ -375,7 +375,7 @@ Create a role assignment for the given resource. If you want to assign a service
 
 <details>
 
-<summary>JSON format</summary>
+<summary>Parameter JSON format</summary>
 
 ```json
 "roleAssignments": {
@@ -434,7 +434,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 <details>
 
-<summary>JSON format</summary>
+<summary>Parameter JSON format</summary>
 
 ```json
 "tags": {
@@ -475,7 +475,7 @@ You can specify multiple user assigned identities to a resource by providing add
 
 <details>
 
-<summary>JSON format</summary>
+<summary>Parameter JSON format</summary>
 
 ```json
 "userAssignedIdentities": {

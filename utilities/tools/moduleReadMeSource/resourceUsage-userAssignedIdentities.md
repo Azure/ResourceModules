@@ -2,7 +2,7 @@ You can specify multiple user assigned identities to a resource by providing add
 
 <details>
 
-<summary>JSON format</summary>
+<summary>Parameter JSON format</summary>
 
 ```json
 "userAssignedIdentities": {

@@ -5,7 +5,7 @@ To use Private Endpoint the following dependencies must be deployed:
 
 <details>
 
-<summary>JSON format</summary>
+<summary>Parameter JSON format</summary>
 
 ```json
 "privateEndpoints": {
