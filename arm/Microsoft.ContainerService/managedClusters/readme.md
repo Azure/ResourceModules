@@ -14,7 +14,7 @@ This module deploys Azure Kubernetes Cluster (AKS).
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2021-04-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments) |
-| `Microsoft.ContainerService/managedClusters` | [2022-01-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ContainerService/2022-01-01/managedClusters) |
+| `Microsoft.ContainerService/managedClusters` | [2022-02-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ContainerService/2022-02-01/managedClusters) |
 | `Microsoft.ContainerService/managedClusters/agentPools` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ContainerService/2021-08-01/managedClusters/agentPools) |
 | `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
 
@@ -29,7 +29,7 @@ This module deploys Azure Kubernetes Cluster (AKS).
 **Conditional parameters**
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
-| `appGatewayResourceId` | string | `''` | Specifies the resource ID of conected application gateway. Must be set if `ingressApplicationGatewayEnabled` is set to `true`. |
+| `appGatewayResourceId` | string | `''` | Required if `ingressApplicationGatewayEnabled` is set to `true`. Specifies the resource ID of connected application gateway. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
