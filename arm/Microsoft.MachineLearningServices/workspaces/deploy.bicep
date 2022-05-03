@@ -213,8 +213,8 @@ resource workspace 'Microsoft.MachineLearningServices/workspaces@2021-07-01' = {
     imageBuildCompute: imageBuildCompute
     primaryUserAssignedIdentity: primaryUserAssignedIdentity
     publicNetworkAccess: publicNetworkAccess
-    // sharedPrivateLinkResources: !empty(sharedPrivateLinkResources) ? sharedPrivateLinkResources : null
   }, (!empty(sharedPrivateLinkResources) ? {
+    // requires to be added via `union` as neither `[]` nor `null` are supported defaults
     sharedPrivateLinkResources: sharedPrivateLinkResources
   } : {}))
 }
