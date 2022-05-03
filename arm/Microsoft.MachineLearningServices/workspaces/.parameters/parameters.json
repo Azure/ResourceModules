@@ -110,8 +110,20 @@
         "privateEndpoints": {
             "value": [
                 {
+                    "name": "testLink",
                     "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints",
                     "service": "amlworkspace"
+                }
+            ]
+        },
+        "sharedPrivateLinkResources ": {
+            "value": [
+                {
+                    "name": "testLink",
+                    "properties": {
+                        "privateLinkResourceId": "/subscriptions/00000000-1111-2222-3333-444444444444/resourceGroups/workspace-1234/providers/Microsoft.DocumentDB/databaseAccounts/testcosmosdbresource/privateLinkResources/Sql",
+                        "groupId": "Sql"
+                    }
                 }
             ]
         }
