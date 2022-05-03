@@ -65,6 +65,10 @@ This module deploys an Azure virtual desktop host pool.
 
 Create a role assignment for the given resource. If you want to assign a service principal / managed identity that is created in the same deployment, make sure to also specify the `'principalType'` parameter and set it to `'ServicePrincipal'`. This will ensure the role assignment waits for the principal's propagation in Azure.
 
+<details>
+
+<summary>JSON format</summary>
+
 ```json
 "roleAssignments": {
     "value": [
@@ -86,6 +90,35 @@ Create a role assignment for the given resource. If you want to assign a service
     ]
 }
 ```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+roleAssignments: [
+    {
+        roleDefinitionIdOrName: 'Reader'
+        description: 'Reader Role Assignment'
+        principalIds: [
+            '12345678-1234-1234-1234-123456789012' // object 1
+            '78945612-1234-1234-1234-123456789012' // object 2
+        ]
+    }
+    {
+        roleDefinitionIdOrName: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'
+        principalIds: [
+            '12345678-1234-1234-1234-123456789012' // object 1
+        ]
+        principalType: 'ServicePrincipal'
+    }
+]
+```
+
+</details>
+<p>
 
 ### Parameter Usage: `vmTemplate`
 
@@ -125,6 +158,10 @@ The below parameter object is converted to an in-line string when handed over to
 
 Tag names and tag values can be provided as needed. A tag can be left without a value.
 
+<details>
+
+<summary>JSON format</summary>
+
 ```json
 "tags": {
     "value": {
@@ -137,6 +174,26 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
     }
 }
 ```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+tags: {
+    Environment: 'Non-Prod'
+    Contact: 'test.user@testcompany.com'
+    PurchaseOrder: '1234'
+    CostCenter: '7890'
+    ServiceName: 'DeploymentValidation'
+    Role: 'DeploymentValidation'
+}
+```
+
+</details>
+<p>
 
 ## Outputs
 
@@ -256,32 +313,32 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 module hostpools './Microsoft.DesktopVirtualization/hostpools/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-hostpools'
   params: {
-      validationEnviroment: false
-      location: 'westeurope'
-      hostpoolType: 'Pooled'
-      name: '<<namePrefix>>-az-avdhp-x-001'
-      personalDesktopAssignmentType: 'Automatic'
+      diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
+      diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
       diagnosticLogsRetentionInDays: 7
+      diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
+      hostpoolFriendlyName: 'AVDv2'
+      validationEnviroment: false
+      name: '<<namePrefix>>-az-avdhp-x-001'
+      loadBalancerType: 'BreadthFirst'
+      hostpoolDescription: 'My first AVD Host Pool'
       vmTemplate: {
+        osDiskType: 'StandardSSD_LRS'
+        useManagedDisks: true
         imageUri: null
         vmSize: {
-          cores: 2
-          id: 'Standard_D2s_v3'
           ram: 8
+          id: 'Standard_D2s_v3'
+          cores: 2
         }
-        domain: 'domainname.onmicrosoft.com'
-        namePrefix: 'avdv2'
-        osDiskType: 'StandardSSD_LRS'
-        customImageId: null
-        galleryImagePublisher: 'microsoftwindowsdesktop'
-        useManagedDisks: true
         galleryImageOffer: 'office-365'
-        galleryImageSKU: '20h1-evd-o365pp'
+        namePrefix: 'avdv2'
         imageType: 'Gallery'
+        domain: 'domainname.onmicrosoft.com'
+        customImageId: null
+        galleryImageSKU: '20h1-evd-o365pp'
+        galleryImagePublisher: 'microsoftwindowsdesktop'
       }
-      diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
-      maxSessionLimit: 99999
-      hostpoolFriendlyName: 'AVDv2'
       roleAssignments: [
         {
           principalIds: [
@@ -290,12 +347,12 @@ module hostpools './Microsoft.DesktopVirtualization/hostpools/deploy.bicep' = {
           roleDefinitionIdOrName: 'Reader'
         }
       ]
+      maxSessionLimit: 99999
+      personalDesktopAssignmentType: 'Automatic'
+      diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
       customRdpProperty: 'audiocapturemode:i:1;audiomode:i:0;drivestoredirect:s:;redirectclipboard:i:1;redirectcomports:i:1;redirectprinters:i:1;redirectsmartcards:i:1;screen mode id:i:2;'
-      hostpoolDescription: 'My first AVD Host Pool'
-      diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
-      diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
-      diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
-      loadBalancerType: 'BreadthFirst'
+      location: 'westeurope'
+      hostpoolType: 'Pooled'
   }
 ```
 

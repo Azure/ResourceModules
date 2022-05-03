@@ -202,13 +202,13 @@ module azureSecurityCenter './Microsoft.Security/azureSecurityCenter/deploy.bice
   name: '${uniqueString(deployment().name)}-azureSecurityCenter'
   params: {
       scope: '/subscriptions/<<subscriptionId>>'
+      workspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
       securityContactProperties: {
+        email: 'foo@contoso.com'
         alertNotifications: 'Off'
         alertsToAdmins: 'Off'
-        email: 'foo@contoso.com'
         phone: '+12345678'
       }
-      workspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
   }
 ```
 

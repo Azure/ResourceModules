@@ -96,10 +96,6 @@ This module deploys budgets for subscriptions.
 module budgets './Microsoft.Consumption/budgets/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-budgets'
   params: {
-      contactEmails: [
-        'dummy@contoso.com'
-      ]
-      amount: 500
       thresholds: [
         50
         75
@@ -107,6 +103,10 @@ module budgets './Microsoft.Consumption/budgets/deploy.bicep' = {
         100
         110
       ]
+      contactEmails: [
+        'dummy@contoso.com'
+      ]
+      amount: 500
   }
 ```
 

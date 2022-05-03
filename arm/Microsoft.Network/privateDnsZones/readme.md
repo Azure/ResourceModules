@@ -57,6 +57,10 @@ This template deploys a private DNS zone.
 
 Create a role assignment for the given resource. If you want to assign a service principal / managed identity that is created in the same deployment, make sure to also specify the `'principalType'` parameter and set it to `'ServicePrincipal'`. This will ensure the role assignment waits for the principal's propagation in Azure.
 
+<details>
+
+<summary>JSON format</summary>
+
 ```json
 "roleAssignments": {
     "value": [
@@ -79,9 +83,42 @@ Create a role assignment for the given resource. If you want to assign a service
 }
 ```
 
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+roleAssignments: [
+    {
+        roleDefinitionIdOrName: 'Reader'
+        description: 'Reader Role Assignment'
+        principalIds: [
+            '12345678-1234-1234-1234-123456789012' // object 1
+            '78945612-1234-1234-1234-123456789012' // object 2
+        ]
+    }
+    {
+        roleDefinitionIdOrName: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'
+        principalIds: [
+            '12345678-1234-1234-1234-123456789012' // object 1
+        ]
+        principalType: 'ServicePrincipal'
+    }
+]
+```
+
+</details>
+<p>
+
 ### Parameter Usage: `tags`
 
 Tag names and tag values can be provided as needed. A tag can be left without a value.
+
+<details>
+
+<summary>JSON format</summary>
 
 ```json
 "tags": {
@@ -95,6 +132,26 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
     }
 }
 ```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+tags: {
+    Environment: 'Non-Prod'
+    Contact: 'test.user@testcompany.com'
+    PurchaseOrder: '1234'
+    CostCenter: '7890'
+    ServiceName: 'DeploymentValidation'
+    Role: 'DeploymentValidation'
+}
+```
+
+</details>
+<p>
 
 ## Outputs
 
@@ -318,78 +375,21 @@ module privateDnsZones './Microsoft.Network/privateDnsZones/deploy.bicep' = {
       SOA: [
         {
           soaRecord: {
-            minimumTtl: 10
             retryTime: 300
-            serialNumber: '1'
             email: 'azureprivatedns-host.microsoft.com'
-            expireTime: 2419200
-            host: 'azureprivatedns.net'
             refreshTime: 3600
+            expireTime: 2419200
+            serialNumber: '1'
+            minimumTtl: 10
+            host: 'azureprivatedns.net'
           }
+          ttl: 3600
           name: '@'
-          ttl: 3600
-        }
-      ]
-      AAAA: [
-        {
-          name: 'AAAA_2001_0db8_85a3_0000_0000_8a2e_0370_7334'
-          aaaaRecords: [
-            {
-              ipv6Address: '2001:0db8:85a3:0000:0000:8a2e:0370:7334'
-            }
-          ]
-          ttl: 3600
-        }
-      ]
-      A: [
-        {
-          name: 'A_10.240.4.4'
-          ttl: 3600
-          aRecords: [
-            {
-              ipv4Address: '10.240.4.4'
-            }
-          ]
-        }
-      ]
-      MX: [
-        {
-          name: 'MX_contoso'
-          ttl: 3600
-          mxRecords: [
-            {
-              preference: 100
-              exchange: 'contoso.com'
-            }
-          ]
-        }
-      ]
-      virtualNetworkLinks: [
-        {
-          virtualNetworkResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001'
-          registrationEnabled: true
-        }
-      ]
-      CNAME: [
-        {
-          name: 'CNAME_test'
-          ttl: 3600
-          cnameRecord: {
-            cname: 'test'
-          }
-        }
-      ]
-      name: '<<namePrefix>>-az-privdns-x-002.com'
-      roleAssignments: [
-        {
-          principalIds: [
-            '<<deploymentSpId>>'
-          ]
-          roleDefinitionIdOrName: 'Reader'
         }
       ]
       TXT: [
         {
+          ttl: 3600
           txtRecords: [
             {
               value: [
@@ -398,32 +398,89 @@ module privateDnsZones './Microsoft.Network/privateDnsZones/deploy.bicep' = {
             }
           ]
           name: 'TXT_test'
-          ttl: 3600
-        }
-      ]
-      SRV: [
-        {
-          name: 'SRV_contoso'
-          ttl: 3600
-          srvRecords: [
-            {
-              priority: 0
-              weight: 0
-              target: 'test.contoso.com'
-              port: 9332
-            }
-          ]
         }
       ]
       PTR: [
         {
-          name: 'PTR_contoso'
-          ttl: 3600
           ptrRecords: [
             {
               ptrdname: 'contoso.com'
             }
           ]
+          ttl: 3600
+          name: 'PTR_contoso'
+        }
+      ]
+      MX: [
+        {
+          ttl: 3600
+          mxRecords: [
+            {
+              exchange: 'contoso.com'
+              preference: 100
+            }
+          ]
+          name: 'MX_contoso'
+        }
+      ]
+      CNAME: [
+        {
+          ttl: 3600
+          name: 'CNAME_test'
+          cnameRecord: {
+            cname: 'test'
+          }
+        }
+      ]
+      A: [
+        {
+          ttl: 3600
+          aRecords: [
+            {
+              ipv4Address: '10.240.4.4'
+            }
+          ]
+          name: 'A_10.240.4.4'
+        }
+      ]
+      AAAA: [
+        {
+          ttl: 3600
+          name: 'AAAA_2001_0db8_85a3_0000_0000_8a2e_0370_7334'
+          aaaaRecords: [
+            {
+              ipv6Address: '2001:0db8:85a3:0000:0000:8a2e:0370:7334'
+            }
+          ]
+        }
+      ]
+      name: '<<namePrefix>>-az-privdns-x-002.com'
+      SRV: [
+        {
+          ttl: 3600
+          name: 'SRV_contoso'
+          srvRecords: [
+            {
+              target: 'test.contoso.com'
+              weight: 0
+              port: 9332
+              priority: 0
+            }
+          ]
+        }
+      ]
+      roleAssignments: [
+        {
+          principalIds: [
+            '<<deploymentSpId>>'
+          ]
+          roleDefinitionIdOrName: 'Reader'
+        }
+      ]
+      virtualNetworkLinks: [
+        {
+          virtualNetworkResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001'
+          registrationEnabled: true
         }
       ]
   }

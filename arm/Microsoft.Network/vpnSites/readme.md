@@ -112,6 +112,10 @@ An array of links. Should be used instead of the top-level `ipAddress` & `bgpPro
 
 Tag names and tag values can be provided as needed. A tag can be left without a value.
 
+<details>
+
+<summary>JSON format</summary>
+
 ```json
 "tags": {
     "value": {
@@ -125,9 +129,33 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 }
 ```
 
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+tags: {
+    Environment: 'Non-Prod'
+    Contact: 'test.user@testcompany.com'
+    PurchaseOrder: '1234'
+    CostCenter: '7890'
+    ServiceName: 'DeploymentValidation'
+    Role: 'DeploymentValidation'
+}
+```
+
+</details>
+<p>
+
 ### Parameter Usage: `roleAssignments`
 
 Create a role assignment for the given resource. If you want to assign a service principal / managed identity that is created in the same deployment, make sure to also specify the `'principalType'` parameter and set it to `'ServicePrincipal'`. This will ensure the role assignment waits for the principal's propagation in Azure.
+
+<details>
+
+<summary>JSON format</summary>
 
 ```json
 "roleAssignments": {
@@ -150,6 +178,35 @@ Create a role assignment for the given resource. If you want to assign a service
     ]
 }
 ```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+roleAssignments: [
+    {
+        roleDefinitionIdOrName: 'Reader'
+        description: 'Reader Role Assignment'
+        principalIds: [
+            '12345678-1234-1234-1234-123456789012' // object 1
+            '78945612-1234-1234-1234-123456789012' // object 2
+        ]
+    }
+    {
+        roleDefinitionIdOrName: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'
+        principalIds: [
+            '12345678-1234-1234-1234-123456789012' // object 1
+        ]
+        principalType: 'ServicePrincipal'
+    }
+]
+```
+
+</details>
+<p>
 
 ## Outputs
 
@@ -207,12 +264,12 @@ Create a role assignment for the given resource. If you want to assign a service
 module vpnSites './Microsoft.Network/vpnSites/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-vpnSites'
   params: {
-      virtualWanId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualWans/apd-<<namePrefix>>-az-vw-x-001'
-      ipAddress: '1.2.3.4'
       addressPrefixes: [
         '10.0.0.0/16'
       ]
       name: '<<namePrefix>>-az-vSite-min-001'
+      ipAddress: '1.2.3.4'
+      virtualWanId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualWans/apd-<<namePrefix>>-az-vw-x-001'
   }
 ```
 
@@ -315,11 +372,11 @@ module vpnSites './Microsoft.Network/vpnSites/deploy.bicep' = {
       vpnSiteLinks: [
         {
           properties: {
-            linkProperties: {
-              linkSpeedInMbps: 5
-              linkProviderName: 'contoso'
-            }
             ipAddress: '1.2.3.4'
+            linkProperties: {
+              linkProviderName: 'contoso'
+              linkSpeedInMbps: 5
+            }
             bgpProperties: {
               bgpPeeringAddress: '1.1.1.1'
               asn: 65010
@@ -329,11 +386,11 @@ module vpnSites './Microsoft.Network/vpnSites/deploy.bicep' = {
         }
         {
           properties: {
-            linkProperties: {
-              linkSpeedInMbps: 5
-              linkProviderName: 'contoso'
-            }
             ipAddress: '2.2.2.2'
+            linkProperties: {
+              linkProviderName: 'contoso'
+              linkSpeedInMbps: 5
+            }
             bgpProperties: {
               bgpPeeringAddress: '192.168.1.0'
               asn: 65020
@@ -342,22 +399,18 @@ module vpnSites './Microsoft.Network/vpnSites/deploy.bicep' = {
           name: 'Link1'
         }
       ]
-      virtualWanId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualWans/apd-<<namePrefix>>-az-vw-x-001'
-      tags: {
-        tagA: 'valueA'
-        tagB: 'valueB'
-      }
-      o365Policy: {
-        breakOutCategories: {
-          allow: true
-          optimize: true
-          default: true
-        }
-      }
       deviceProperties: {
         linkSpeedInMbps: 0
       }
+      o365Policy: {
+        breakOutCategories: {
+          optimize: true
+          allow: true
+          default: true
+        }
+      }
       name: '<<namePrefix>>-az-vSite-x-001'
+      virtualWanId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualWans/apd-<<namePrefix>>-az-vw-x-001'
       roleAssignments: [
         {
           principalIds: [
@@ -366,6 +419,10 @@ module vpnSites './Microsoft.Network/vpnSites/deploy.bicep' = {
           roleDefinitionIdOrName: 'Reader'
         }
       ]
+      tags: {
+        tagB: 'valueB'
+        tagA: 'valueA'
+      }
   }
 ```
 

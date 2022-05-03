@@ -33,6 +33,10 @@ This module deploys Resources Tags on a subscription or resource group scope.
 
 Tag names and tag values can be provided as needed. A tag can be left without a value.
 
+<details>
+
+<summary>JSON format</summary>
+
 ```json
 "tags": {
     "value": {
@@ -45,6 +49,26 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
     }
 }
 ```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+tags: {
+    Environment: 'Non-Prod'
+    Contact: 'test.user@testcompany.com'
+    PurchaseOrder: '1234'
+    CostCenter: '7890'
+    ServiceName: 'DeploymentValidation'
+    Role: 'DeploymentValidation'
+}
+```
+
+</details>
+<p>
 
 ## Outputs
 
@@ -129,11 +153,11 @@ module tags './Microsoft.Resources/tags/deploy.bicep' = {
 module tags './Microsoft.Resources/tags/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-tags'
   params: {
-      onlyUpdate: false
       tags: {
-        Test: 'Yes'
         TestToo: 'No'
+        Test: 'Yes'
       }
+      onlyUpdate: false
       resourceGroupName: 'validation-rg'
   }
 ```
@@ -177,8 +201,8 @@ module tags './Microsoft.Resources/tags/deploy.bicep' = {
   params: {
       onlyUpdate: true
       tags: {
-        Test: 'Yes'
         TestToo: 'No'
+        Test: 'Yes'
       }
   }
 ```

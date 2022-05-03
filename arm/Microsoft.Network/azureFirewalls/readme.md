@@ -58,6 +58,10 @@ This module deploys a firewall.
 
 Create a role assignment for the given resource. If you want to assign a service principal / managed identity that is created in the same deployment, make sure to also specify the `'principalType'` parameter and set it to `'ServicePrincipal'`. This will ensure the role assignment waits for the principal's propagation in Azure.
 
+<details>
+
+<summary>JSON format</summary>
+
 ```json
 "roleAssignments": {
     "value": [
@@ -80,9 +84,42 @@ Create a role assignment for the given resource. If you want to assign a service
 }
 ```
 
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+roleAssignments: [
+    {
+        roleDefinitionIdOrName: 'Reader'
+        description: 'Reader Role Assignment'
+        principalIds: [
+            '12345678-1234-1234-1234-123456789012' // object 1
+            '78945612-1234-1234-1234-123456789012' // object 2
+        ]
+    }
+    {
+        roleDefinitionIdOrName: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'
+        principalIds: [
+            '12345678-1234-1234-1234-123456789012' // object 1
+        ]
+        principalType: 'ServicePrincipal'
+    }
+]
+```
+
+</details>
+<p>
+
 ### Parameter Usage: `tags`
 
 Tag names and tag values can be provided as needed. A tag can be left without a value.
+
+<details>
+
+<summary>JSON format</summary>
 
 ```json
 "tags": {
@@ -96,6 +133,26 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
     }
 }
 ```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+tags: {
+    Environment: 'Non-Prod'
+    Contact: 'test.user@testcompany.com'
+    PurchaseOrder: '1234'
+    CostCenter: '7890'
+    ServiceName: 'DeploymentValidation'
+    Role: 'DeploymentValidation'
+}
+```
+
+</details>
+<p>
 
 ## Outputs
 
@@ -278,15 +335,76 @@ The `networkRuleCollections` parameter accepts a JSON Array of AzureFirewallNetw
 module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-azureFirewalls'
   params: {
+      diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
+      diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
+      diagnosticLogsRetentionInDays: 7
+      applicationRuleCollections: [
+        {
+          properties: {
+            action: {
+              type: 'allow'
+            }
+            priority: 100
+            rules: [
+              {
+                fqdnTags: [
+                  'AppServiceEnvironment'
+                  'WindowsUpdate'
+                ]
+                protocols: [
+                  {
+                    protocolType: 'HTTP'
+                    port: '80'
+                  }
+                  {
+                    protocolType: 'HTTPS'
+                    port: '443'
+                  }
+                ]
+                sourceAddresses: [
+                  '*'
+                ]
+                name: 'allow-ase-tags'
+              }
+              {
+                targetFqdns: [
+                  'management.azure.com'
+                ]
+                protocols: [
+                  {
+                    protocolType: 'HTTP'
+                    port: '80'
+                  }
+                  {
+                    protocolType: 'HTTPS'
+                    port: '443'
+                  }
+                ]
+                sourceAddresses: [
+                  '*'
+                ]
+                name: 'allow-ase-management'
+              }
+            ]
+          }
+          name: 'allow-app-rules'
+        }
+      ]
+      diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
+      ipConfigurations: [
+        {
+          publicIPAddressResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/publicIPAddresses/adp-<<namePrefix>>-az-pip-x-fw'
+          name: 'ipConfig01'
+          subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-azfw/subnets/AzureFirewallSubnet'
+        }
+      ]
+      diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
+      name: '<<namePrefix>>-az-azfw-x-001'
       zones: [
         '1'
         '2'
         '3'
       ]
-      diagnosticLogsRetentionInDays: 7
-      diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
-      diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
-      name: '<<namePrefix>>-az-azfw-x-001'
       roleAssignments: [
         {
           principalIds: [
@@ -295,89 +413,28 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
           roleDefinitionIdOrName: 'Reader'
         }
       ]
-      ipConfigurations: [
-        {
-          subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-azfw/subnets/AzureFirewallSubnet'
-          name: 'ipConfig01'
-          publicIPAddressResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/publicIPAddresses/adp-<<namePrefix>>-az-pip-x-fw'
-        }
-      ]
-      diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
-      diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
-      applicationRuleCollections: [
-        {
-          properties: {
-            priority: 100
-            action: {
-              type: 'allow'
-            }
-            rules: [
-              {
-                sourceAddresses: [
-                  '*'
-                ]
-                protocols: [
-                  {
-                    protocolType: 'HTTP'
-                    port: '80'
-                  }
-                  {
-                    protocolType: 'HTTPS'
-                    port: '443'
-                  }
-                ]
-                name: 'allow-ase-tags'
-                fqdnTags: [
-                  'AppServiceEnvironment'
-                  'WindowsUpdate'
-                ]
-              }
-              {
-                sourceAddresses: [
-                  '*'
-                ]
-                protocols: [
-                  {
-                    protocolType: 'HTTP'
-                    port: '80'
-                  }
-                  {
-                    protocolType: 'HTTPS'
-                    port: '443'
-                  }
-                ]
-                name: 'allow-ase-management'
-                targetFqdns: [
-                  'management.azure.com'
-                ]
-              }
-            ]
-          }
-          name: 'allow-app-rules'
-        }
-      ]
       networkRuleCollections: [
         {
           properties: {
-            priority: 100
             action: {
               type: 'allow'
             }
+            priority: 100
             rules: [
               {
-                sourceAddresses: [
+                destinationAddresses: [
                   '*'
                 ]
                 protocols: [
                   'Any'
                 ]
+                sourceAddresses: [
+                  '*'
+                ]
                 name: 'allow-ntp'
                 destinationPorts: [
                   '123'
                   '12000'
-                ]
-                destinationAddresses: [
-                  '*'
                 ]
               }
             ]

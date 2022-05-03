@@ -56,6 +56,10 @@ This module deploys a Virtual Hub.
 
 Tag names and tag values can be provided as needed. A tag can be left without a value.
 
+<details>
+
+<summary>JSON format</summary>
+
 ```json
 "tags": {
     "value": {
@@ -68,6 +72,26 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
     }
 }
 ```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+tags: {
+    Environment: 'Non-Prod'
+    Contact: 'test.user@testcompany.com'
+    PurchaseOrder: '1234'
+    CostCenter: '7890'
+    ServiceName: 'DeploymentValidation'
+    Role: 'DeploymentValidation'
+}
+```
+
+</details>
+<p>
 
 ## Outputs
 
@@ -121,9 +145,9 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 module virtualHubs './Microsoft.Network/virtualHubs/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-virtualHubs'
   params: {
-      virtualWanId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualWans/adp-<<namePrefix>>-az-vw-x-001'
-      addressPrefix: '10.0.0.0/16'
       name: '<<namePrefix>>-az-vhub-min-001'
+      addressPrefix: '10.0.0.0/16'
+      virtualWanId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualWans/adp-<<namePrefix>>-az-vw-x-001'
   }
 ```
 
@@ -194,12 +218,18 @@ module virtualHubs './Microsoft.Network/virtualHubs/deploy.bicep' = {
 module virtualHubs './Microsoft.Network/virtualHubs/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-virtualHubs'
   params: {
-      virtualWanId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualWans/adp-<<namePrefix>>-az-vw-x-001'
-      addressPrefix: '10.1.0.0/16'
+      name: '<<namePrefix>>-az-vhub-x-001'
+      hubRouteTables: [
+        {
+          name: 'routeTable1'
+        }
+      ]
       hubVirtualNetworkConnections: [
         {
-          name: 'connection1'
           routingConfiguration: {
+            associatedRouteTable: {
+              id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualHubs/<<namePrefix>>-az-vHub-x-001/hubRouteTables/routeTable1'
+            }
             propagatedRouteTables: {
               ids: [
                 {
@@ -210,19 +240,13 @@ module virtualHubs './Microsoft.Network/virtualHubs/deploy.bicep' = {
                 'none'
               ]
             }
-            associatedRouteTable: {
-              id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualHubs/<<namePrefix>>-az-vHub-x-001/hubRouteTables/routeTable1'
-            }
           }
+          name: 'connection1'
           remoteVirtualNetworkId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-vhub'
         }
       ]
-      hubRouteTables: [
-        {
-          name: 'routeTable1'
-        }
-      ]
-      name: '<<namePrefix>>-az-vhub-x-001'
+      addressPrefix: '10.1.0.0/16'
+      virtualWanId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualWans/adp-<<namePrefix>>-az-vw-x-001'
   }
 ```
 

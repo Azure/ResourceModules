@@ -42,6 +42,10 @@ This module deploys an Azure compute gallery (formerly known as shared image gal
 
 Create a role assignment for the given resource. If you want to assign a service principal / managed identity that is created in the same deployment, make sure to also specify the `'principalType'` parameter and set it to `'ServicePrincipal'`. This will ensure the role assignment waits for the principal's propagation in Azure.
 
+<details>
+
+<summary>JSON format</summary>
+
 ```json
 "roleAssignments": {
     "value": [
@@ -64,9 +68,42 @@ Create a role assignment for the given resource. If you want to assign a service
 }
 ```
 
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+roleAssignments: [
+    {
+        roleDefinitionIdOrName: 'Reader'
+        description: 'Reader Role Assignment'
+        principalIds: [
+            '12345678-1234-1234-1234-123456789012' // object 1
+            '78945612-1234-1234-1234-123456789012' // object 2
+        ]
+    }
+    {
+        roleDefinitionIdOrName: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'
+        principalIds: [
+            '12345678-1234-1234-1234-123456789012' // object 1
+        ]
+        principalType: 'ServicePrincipal'
+    }
+]
+```
+
+</details>
+<p>
+
 ### Parameter Usage: `tags`
 
 Tag names and tag values can be provided as needed. A tag can be left without a value.
+
+<details>
+
+<summary>JSON format</summary>
 
 ```json
 "tags": {
@@ -80,6 +117,26 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
     }
 }
 ```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+tags: {
+    Environment: 'Non-Prod'
+    Contact: 'test.user@testcompany.com'
+    PurchaseOrder: '1234'
+    CostCenter: '7890'
+    ServiceName: 'DeploymentValidation'
+    Role: 'DeploymentValidation'
+}
+```
+
+</details>
+<p>
 
 ## Outputs
 
@@ -174,16 +231,12 @@ module galleries './Microsoft.Compute/galleries/deploy.bicep' = {
           name: '<<namePrefix>>-az-imgd-x-003'
         }
         {
-          minRecommendedvCPUs: 2
+          hyperVGeneration: 'V1'
+          name: '<<namePrefix>>-az-imgd-x-001'
           offer: 'WindowsServer'
           osState: 'Generalized'
-          maxRecommendedMemory: 16
-          maxRecommendedvCPUs: 8
-          name: '<<namePrefix>>-az-imgd-x-001'
-          hyperVGeneration: 'V1'
-          publisher: 'MicrosoftWindowsServer'
           osType: 'Windows'
-          sku: '2022-datacenter-azure-edition'
+          maxRecommendedvCPUs: 8
           roleAssignments: [
             {
               principalIds: [
@@ -192,18 +245,22 @@ module galleries './Microsoft.Compute/galleries/deploy.bicep' = {
               roleDefinitionIdOrName: 'Reader'
             }
           ]
+          minRecommendedvCPUs: 2
+          maxRecommendedMemory: 16
+          publisher: 'MicrosoftWindowsServer'
+          sku: '2022-datacenter-azure-edition'
           minRecommendedMemory: 4
         }
         {
-          minRecommendedvCPUs: 1
+          hyperVGeneration: 'V2'
+          name: '<<namePrefix>>-az-imgd-x-002'
           offer: '0001-com-ubuntu-server-focal'
           osState: 'Generalized'
-          maxRecommendedMemory: 32
-          maxRecommendedvCPUs: 4
-          name: '<<namePrefix>>-az-imgd-x-002'
-          hyperVGeneration: 'V2'
-          publisher: 'canonical'
           osType: 'Linux'
+          maxRecommendedvCPUs: 4
+          minRecommendedvCPUs: 1
+          maxRecommendedMemory: 32
+          publisher: 'canonical'
           sku: '20_04-lts-gen2'
           minRecommendedMemory: 4
         }
@@ -252,7 +309,6 @@ module galleries './Microsoft.Compute/galleries/deploy.bicep' = {
 module galleries './Microsoft.Compute/galleries/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-galleries'
   params: {
-      name: '<<namePrefix>>azsigweux001'
       roleAssignments: [
         {
           principalIds: [
@@ -261,6 +317,7 @@ module galleries './Microsoft.Compute/galleries/deploy.bicep' = {
           roleDefinitionIdOrName: 'Reader'
         }
       ]
+      name: '<<namePrefix>>azsigweux001'
   }
 ```
 

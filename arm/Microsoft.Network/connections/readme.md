@@ -123,6 +123,10 @@ Format of the full customIPSecPolicy parameter in parameter file.
 
 Tag names and tag values can be provided as needed. A tag can be left without a value.
 
+<details>
+
+<summary>JSON format</summary>
+
 ```json
 "tags": {
     "value": {
@@ -135,6 +139,26 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
     }
 }
 ```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+tags: {
+    Environment: 'Non-Prod'
+    Contact: 'test.user@testcompany.com'
+    PurchaseOrder: '1234'
+    CostCenter: '7890'
+    ServiceName: 'DeploymentValidation'
+    Role: 'DeploymentValidation'
+}
+```
+
+</details>
+<p>
 
 ## Outputs
 
@@ -212,16 +236,16 @@ resource kv1 'Microsoft.KeyVault/vaults@2019-09-01' existing = {
 module connections './Microsoft.Network/connections/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-connections'
   params: {
-      enableBgp: false
-      vpnSharedKey: kv1.getSecret('vpnSharedKey')
       location: 'eastus'
-      name: '<<namePrefix>>-az-vnetgwc-x-001'
-      virtualNetworkGateway1: {
-        id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworkGateways/<<namePrefix>>-az-vnet-vpn-gw-p-001'
-      }
+      enableBgp: false
       virtualNetworkGateway2: {
         id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworkGateways/<<namePrefix>>-az-vnet-vpn-gw-p-002'
       }
+      virtualNetworkGateway1: {
+        id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworkGateways/<<namePrefix>>-az-vnet-vpn-gw-p-001'
+      }
+      vpnSharedKey: kv1.getSecret('vpnSharedKey')
+      name: '<<namePrefix>>-az-vnetgwc-x-001'
       virtualNetworkGatewayConnectionType: 'Vnet2Vnet'
   }
 ```

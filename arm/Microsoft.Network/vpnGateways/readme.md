@@ -81,6 +81,10 @@ This module deploys VPN Gateways.
 
 Tag names and tag values can be provided as needed. A tag can be left without a value.
 
+<details>
+
+<summary>JSON format</summary>
+
 ```json
 "tags": {
     "value": {
@@ -93,6 +97,26 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
     }
 }
 ```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+tags: {
+    Environment: 'Non-Prod'
+    Contact: 'test.user@testcompany.com'
+    PurchaseOrder: '1234'
+    CostCenter: '7890'
+    ServiceName: 'DeploymentValidation'
+    Role: 'DeploymentValidation'
+}
+```
+
+</details>
+<p>
 
 ## Outputs
 
@@ -235,34 +259,35 @@ module vpnGateways './Microsoft.Network/vpnGateways/deploy.bicep' = {
 module vpnGateways './Microsoft.Network/vpnGateways/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-vpnGateways'
   params: {
+      name: '<<namePrefix>>-az-vpngw-x-001'
+      bgpSettings: {
+        peerWeight: 0
+        asn: 65515
+      }
+      virtualHubResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualHubs/<<namePrefix>>-az-vhub-x-001'
       natRules: [
         {
-          internalMappings: [
-            {
-              addressSpace: '10.4.0.0/24'
-            }
-          ]
-          name: 'natRule1'
-          mode: 'EgressSnat'
-          type: 'Static'
           externalMappings: [
             {
               addressSpace: '192.168.21.0/24'
             }
           ]
+          internalMappings: [
+            {
+              addressSpace: '10.4.0.0/24'
+            }
+          ]
+          type: 'Static'
+          mode: 'EgressSnat'
+          name: 'natRule1'
         }
       ]
-      virtualHubResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualHubs/<<namePrefix>>-az-vhub-x-001'
-      bgpSettings: {
-        peerWeight: 0
-        asn: 65515
-      }
-      name: '<<namePrefix>>-az-vpngw-x-001'
       connections: [
         {
-          connectionBandwidth: 10
-          name: 'Connection-<<namePrefix>>-az-vsite-x-001'
           routingConfiguration: {
+            vnetRoutes: {
+              staticRoutes: []
+            }
             propagatedRouteTables: {
               labels: [
                 'default'
@@ -276,12 +301,11 @@ module vpnGateways './Microsoft.Network/vpnGateways/deploy.bicep' = {
             associatedRouteTable: {
               id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualHubs/<<namePrefix>>-az-vhub-x-001/hubRouteTables/defaultRouteTable'
             }
-            vnetRoutes: {
-              staticRoutes: []
-            }
           }
-          remoteVpnSiteResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/vpnSites/<<namePrefix>>-az-vsite-x-001'
           enableBgp: true
+          connectionBandwidth: 10
+          name: 'Connection-<<namePrefix>>-az-vsite-x-001'
+          remoteVpnSiteResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/vpnSites/<<namePrefix>>-az-vsite-x-001'
         }
       ]
   }

@@ -147,6 +147,10 @@ Each condition can specify only one field between `equals` and `containsAny`.
 
 Create a role assignment for the given resource. If you want to assign a service principal / managed identity that is created in the same deployment, make sure to also specify the `'principalType'` parameter and set it to `'ServicePrincipal'`. This will ensure the role assignment waits for the principal's propagation in Azure.
 
+<details>
+
+<summary>JSON format</summary>
+
 ```json
 "roleAssignments": {
     "value": [
@@ -169,9 +173,42 @@ Create a role assignment for the given resource. If you want to assign a service
 }
 ```
 
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+roleAssignments: [
+    {
+        roleDefinitionIdOrName: 'Reader'
+        description: 'Reader Role Assignment'
+        principalIds: [
+            '12345678-1234-1234-1234-123456789012' // object 1
+            '78945612-1234-1234-1234-123456789012' // object 2
+        ]
+    }
+    {
+        roleDefinitionIdOrName: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'
+        principalIds: [
+            '12345678-1234-1234-1234-123456789012' // object 1
+        ]
+        principalType: 'ServicePrincipal'
+    }
+]
+```
+
+</details>
+<p>
+
 ### Parameter Usage: `tags`
 
 Tag names and tag values can be provided as needed. A tag can be left without a value.
+
+<details>
+
+<summary>JSON format</summary>
 
 ```json
 "tags": {
@@ -185,6 +222,26 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
     }
 }
 ```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+tags: {
+    Environment: 'Non-Prod'
+    Contact: 'test.user@testcompany.com'
+    PurchaseOrder: '1234'
+    CostCenter: '7890'
+    ServiceName: 'DeploymentValidation'
+    Role: 'DeploymentValidation'
+}
+```
+
+</details>
+<p>
 
 ## Outputs
 
@@ -268,20 +325,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 module activityLogAlerts './Microsoft.Insights/activityLogAlerts/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-activityLogAlerts'
   params: {
-      conditions: [
-        {
-          equals: 'Administrative'
-          field: 'category'
-        }
-        {
-          equals: 'microsoft.compute/virtualmachines'
-          field: 'resourceType'
-        }
-        {
-          equals: 'Microsoft.Compute/virtualMachines/performMaintenance/action'
-          field: 'operationName'
-        }
-      ]
+      name: '<<namePrefix>>-az-ala-x-001'
       actions: [
         {
           actionGroupId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/microsoft.insights/actiongroups/adp-<<namePrefix>>-az-ag-x-001'
@@ -298,7 +342,20 @@ module activityLogAlerts './Microsoft.Insights/activityLogAlerts/deploy.bicep' =
           roleDefinitionIdOrName: 'Reader'
         }
       ]
-      name: '<<namePrefix>>-az-ala-x-001'
+      conditions: [
+        {
+          field: 'category'
+          equals: 'Administrative'
+        }
+        {
+          field: 'resourceType'
+          equals: 'microsoft.compute/virtualmachines'
+        }
+        {
+          field: 'operationName'
+          equals: 'Microsoft.Compute/virtualMachines/performMaintenance/action'
+        }
+      ]
   }
 ```
 

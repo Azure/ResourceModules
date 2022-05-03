@@ -59,6 +59,10 @@ This template deploys a disk
 
 Create a role assignment for the given resource. If you want to assign a service principal / managed identity that is created in the same deployment, make sure to also specify the `'principalType'` parameter and set it to `'ServicePrincipal'`. This will ensure the role assignment waits for the principal's propagation in Azure.
 
+<details>
+
+<summary>JSON format</summary>
+
 ```json
 "roleAssignments": {
     "value": [
@@ -81,9 +85,42 @@ Create a role assignment for the given resource. If you want to assign a service
 }
 ```
 
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+roleAssignments: [
+    {
+        roleDefinitionIdOrName: 'Reader'
+        description: 'Reader Role Assignment'
+        principalIds: [
+            '12345678-1234-1234-1234-123456789012' // object 1
+            '78945612-1234-1234-1234-123456789012' // object 2
+        ]
+    }
+    {
+        roleDefinitionIdOrName: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'
+        principalIds: [
+            '12345678-1234-1234-1234-123456789012' // object 1
+        ]
+        principalType: 'ServicePrincipal'
+    }
+]
+```
+
+</details>
+<p>
+
 ### Parameter Usage: `tags`
 
 Tag names and tag values can be provided as needed. A tag can be left without a value.
+
+<details>
+
+<summary>JSON format</summary>
 
 ```json
 "tags": {
@@ -97,6 +134,26 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
     }
 }
 ```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+tags: {
+    Environment: 'Non-Prod'
+    Contact: 'test.user@testcompany.com'
+    PurchaseOrder: '1234'
+    CostCenter: '7890'
+    ServiceName: 'DeploymentValidation'
+    Role: 'DeploymentValidation'
+}
+```
+
+</details>
+<p>
 
 ## Outputs
 
@@ -162,7 +219,6 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 module disks './Microsoft.Compute/disks/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-disks'
   params: {
-      sku: 'Standard_LRS'
       createOption: 'FromImage'
       roleAssignments: [
         {
@@ -174,6 +230,7 @@ module disks './Microsoft.Compute/disks/deploy.bicep' = {
       ]
       imageReferenceId: '/Subscriptions/<<subscriptionId>>/Providers/Microsoft.Compute/Locations/westeurope/Publishers/MicrosoftWindowsServer/ArtifactTypes/VMImage/Offers/WindowsServer/Skus/2016-Datacenter/Versions/14393.4906.2112080838'
       name: '<<namePrefix>>-az-disk-image-001'
+      sku: 'Standard_LRS'
   }
 ```
 
@@ -230,9 +287,9 @@ module disks './Microsoft.Compute/disks/deploy.bicep' = {
 module disks './Microsoft.Compute/disks/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-disks'
   params: {
-      sourceUri: 'https://adp<<namePrefix>>azsax001.blob.core.windows.net/vhds/adp-<<namePrefix>>-az-imgt-x-001.vhd'
       sku: 'Standard_LRS'
-      createOption: 'Import'
+      sourceUri: 'https://adp<<namePrefix>>azsax001.blob.core.windows.net/vhds/adp-<<namePrefix>>-az-imgt-x-001.vhd'
+      storageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
       name: '<<namePrefix>>-az-disk-import-001'
       roleAssignments: [
         {
@@ -242,7 +299,7 @@ module disks './Microsoft.Compute/disks/deploy.bicep' = {
           roleDefinitionIdOrName: 'Reader'
         }
       ]
-      storageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
+      createOption: 'Import'
   }
 ```
 
@@ -293,7 +350,8 @@ module disks './Microsoft.Compute/disks/deploy.bicep' = {
 module disks './Microsoft.Compute/disks/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-disks'
   params: {
-      sku: 'Standard_LRS'
+      name: '<<namePrefix>>-az-disk-min-001'
+      diskSizeGB: 1
       roleAssignments: [
         {
           principalIds: [
@@ -302,8 +360,7 @@ module disks './Microsoft.Compute/disks/deploy.bicep' = {
           roleDefinitionIdOrName: 'Reader'
         }
       ]
-      diskSizeGB: 1
-      name: '<<namePrefix>>-az-disk-min-001'
+      sku: 'Standard_LRS'
   }
 ```
 
@@ -369,10 +426,12 @@ module disks './Microsoft.Compute/disks/deploy.bicep' = {
 module disks './Microsoft.Compute/disks/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-disks'
   params: {
-      diskMBpsReadWrite: 60
-      logicalSectorSize: 512
+      osType: 'Windows'
       sku: 'UltraSSD_LRS'
+      publicNetworkAccess: 'Enabled'
+      diskMBpsReadWrite: 60
       diskSizeGB: 128
+      logicalSectorSize: 512
       diskIOPSReadWrite: 500
       name: '<<namePrefix>>-az-disk-x-001'
       roleAssignments: [
@@ -383,8 +442,6 @@ module disks './Microsoft.Compute/disks/deploy.bicep' = {
           roleDefinitionIdOrName: 'Reader'
         }
       ]
-      osType: 'Windows'
-      publicNetworkAccess: 'Enabled'
   }
 ```
 

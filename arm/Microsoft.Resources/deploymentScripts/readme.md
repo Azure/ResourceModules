@@ -57,6 +57,10 @@ This module deploys a deployment script.
 
 Tag names and tag values can be provided as needed. A tag can be left without a value.
 
+<details>
+
+<summary>JSON format</summary>
+
 ```json
 "tags": {
     "value": {
@@ -70,9 +74,33 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 }
 ```
 
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+tags: {
+    Environment: 'Non-Prod'
+    Contact: 'test.user@testcompany.com'
+    PurchaseOrder: '1234'
+    CostCenter: '7890'
+    ServiceName: 'DeploymentValidation'
+    Role: 'DeploymentValidation'
+}
+```
+
+</details>
+<p>
+
 ### Parameter Usage: `userAssignedIdentities`
 
 You can specify multiple user assigned identities to a resource by providing additional resource IDs using the following format:
+
+<details>
+
+<summary>JSON format</summary>
 
 ```json
 "userAssignedIdentities": {
@@ -80,8 +108,24 @@ You can specify multiple user assigned identities to a resource by providing add
         "/subscriptions/12345678-1234-1234-1234-123456789012/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001": {},
         "/subscriptions/12345678-1234-1234-1234-123456789012/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002": {}
     }
-},
+}
 ```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+userAssignedIdentities: {
+    '/subscriptions/12345678-1234-1234-1234-123456789012/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001': {}
+    '/subscriptions/12345678-1234-1234-1234-123456789012/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002': {}
+}
+```
+
+</details>
+<p>
 
 ## Outputs
 
@@ -157,17 +201,17 @@ This module requires a User Assigned Identity (MSI, managed service identity) to
 module deploymentScripts './Microsoft.Resources/deploymentScripts/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-deploymentScripts'
   params: {
-      timeout: 'PT30M'
       retentionInterval: 'P1D'
-      scriptContent: 'echo \'Hello from inside the script\''
-      name: '<<namePrefix>>-az-ds-cli-001'
-      cleanupPreference: 'Always'
+      azCliVersion: '2.15.0'
       userAssignedIdentities: {
         '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
       }
+      timeout: 'PT30M'
       kind: 'AzureCLI'
+      cleanupPreference: 'Always'
       runOnce: false
-      azCliVersion: '2.15.0'
+      scriptContent: 'echo \'Hello from inside the script\''
+      name: '<<namePrefix>>-az-ds-cli-001'
   }
 ```
 
@@ -228,17 +272,17 @@ module deploymentScripts './Microsoft.Resources/deploymentScripts/deploy.bicep' 
 module deploymentScripts './Microsoft.Resources/deploymentScripts/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-deploymentScripts'
   params: {
-      timeout: 'PT30M'
-      azPowerShellVersion: '3.0'
       retentionInterval: 'P1D'
-      name: '<<namePrefix>>-az-ds-ps-001'
-      cleanupPreference: 'Always'
       userAssignedIdentities: {
         '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
       }
+      timeout: 'PT30M'
       kind: 'AzurePowerShell'
+      cleanupPreference: 'Always'
       runOnce: false
+      azPowerShellVersion: '3.0'
       scriptContent: 'Write-Host 'Running PowerShell from template''
+      name: '<<namePrefix>>-az-ds-ps-001'
   }
 ```
 

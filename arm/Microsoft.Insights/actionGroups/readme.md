@@ -81,6 +81,10 @@ Example:
 
 Create a role assignment for the given resource. If you want to assign a service principal / managed identity that is created in the same deployment, make sure to also specify the `'principalType'` parameter and set it to `'ServicePrincipal'`. This will ensure the role assignment waits for the principal's propagation in Azure.
 
+<details>
+
+<summary>JSON format</summary>
+
 ```json
 "roleAssignments": {
     "value": [
@@ -103,9 +107,42 @@ Create a role assignment for the given resource. If you want to assign a service
 }
 ```
 
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+roleAssignments: [
+    {
+        roleDefinitionIdOrName: 'Reader'
+        description: 'Reader Role Assignment'
+        principalIds: [
+            '12345678-1234-1234-1234-123456789012' // object 1
+            '78945612-1234-1234-1234-123456789012' // object 2
+        ]
+    }
+    {
+        roleDefinitionIdOrName: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'
+        principalIds: [
+            '12345678-1234-1234-1234-123456789012' // object 1
+        ]
+        principalType: 'ServicePrincipal'
+    }
+]
+```
+
+</details>
+<p>
+
 ### Parameter Usage: `tags`
 
 Tag names and tag values can be provided as needed. A tag can be left without a value.
+
+<details>
+
+<summary>JSON format</summary>
 
 ```json
 "tags": {
@@ -119,6 +156,26 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
     }
 }
 ```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+tags: {
+    Environment: 'Non-Prod'
+    Contact: 'test.user@testcompany.com'
+    PurchaseOrder: '1234'
+    CostCenter: '7890'
+    ServiceName: 'DeploymentValidation'
+    Role: 'DeploymentValidation'
+}
+```
+
+</details>
+<p>
 
 ### Additional notes on parameters
 
@@ -142,7 +199,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 ## Template references
 
-- [Actiongroups](https://docs.microsoft.com/en-us/azure/templates/microsoft.insights/actionGroups)
+- [Actiongroups](https://docs.microsoft.com/en-us/azure/templates/microsoft.insights/2019-06-01/actionGroups)
 - [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)
 
 ## Deployment examples
@@ -212,33 +269,33 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 module actionGroups './Microsoft.Insights/actionGroups/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-actionGroups'
   params: {
+      name: '<<namePrefix>>-az-ag-x-001'
       smsReceivers: [
         {
           phoneNumber: '2345678901'
-          name: 'TestUser_-SMSAction-'
           countryCode: '1'
+          name: 'TestUser_-SMSAction-'
         }
       ]
-      groupShortName: 'azagweux001'
-      emailReceivers: [
-        {
-          emailAddress: 'test.user@testcompany.com'
-          name: 'TestUser_-EmailAction-'
-          useCommonAlertSchema: true
-        }
-        {
-          emailAddress: 'test.user2@testcompany.com'
-          name: 'TestUser2'
-          useCommonAlertSchema: true
-        }
-      ]
-      name: '<<namePrefix>>-az-ag-x-001'
       roleAssignments: [
         {
           principalIds: [
             '<<deploymentSpId>>'
           ]
           roleDefinitionIdOrName: 'Reader'
+        }
+      ]
+      groupShortName: 'azagweux001'
+      emailReceivers: [
+        {
+          emailAddress: 'test.user@testcompany.com'
+          useCommonAlertSchema: true
+          name: 'TestUser_-EmailAction-'
+        }
+        {
+          emailAddress: 'test.user2@testcompany.com'
+          useCommonAlertSchema: true
+          name: 'TestUser2'
         }
       ]
   }

@@ -194,6 +194,10 @@ This template deploys a log analytics workspace.
 
 Create a role assignment for the given resource. If you want to assign a service principal / managed identity that is created in the same deployment, make sure to also specify the `'principalType'` parameter and set it to `'ServicePrincipal'`. This will ensure the role assignment waits for the principal's propagation in Azure.
 
+<details>
+
+<summary>JSON format</summary>
+
 ```json
 "roleAssignments": {
     "value": [
@@ -216,9 +220,42 @@ Create a role assignment for the given resource. If you want to assign a service
 }
 ```
 
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+roleAssignments: [
+    {
+        roleDefinitionIdOrName: 'Reader'
+        description: 'Reader Role Assignment'
+        principalIds: [
+            '12345678-1234-1234-1234-123456789012' // object 1
+            '78945612-1234-1234-1234-123456789012' // object 2
+        ]
+    }
+    {
+        roleDefinitionIdOrName: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'
+        principalIds: [
+            '12345678-1234-1234-1234-123456789012' // object 1
+        ]
+        principalType: 'ServicePrincipal'
+    }
+]
+```
+
+</details>
+<p>
+
 ### Parameter Usage: `tags`
 
 Tag names and tag values can be provided as needed. A tag can be left without a value.
+
+<details>
+
+<summary>JSON format</summary>
 
 ```json
 "tags": {
@@ -232,6 +269,26 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
     }
 }
 ```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+tags: {
+    Environment: 'Non-Prod'
+    Contact: 'test.user@testcompany.com'
+    PurchaseOrder: '1234'
+    CostCenter: '7890'
+    ServiceName: 'DeploymentValidation'
+    Role: 'DeploymentValidation'
+}
+```
+
+</details>
+<p>
 
 ## Outputs
 
@@ -479,48 +536,17 @@ module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
 module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-workspaces'
   params: {
+      diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
+      diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
+      diagnosticLogsRetentionInDays: 7
       linkedServices: [
         {
           resourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Automation/automationAccounts/adp-<<namePrefix>>-wd-aut-x-001'
           name: 'Automation'
         }
       ]
-      publicNetworkAccessForIngestion: 'Disabled'
-      name: '<<namePrefix>>-az-la-x-001'
-      gallerySolutions: [
-        {
-          name: 'AzureAutomation'
-          product: 'OMSGallery'
-          publisher: 'Microsoft'
-        }
-      ]
-      useResourcePermissions: true
-      diagnosticLogsRetentionInDays: 7
-      publicNetworkAccessForQuery: 'Disabled'
-      diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
       diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
-      storageInsightsConfigs: [
-        {
-          storageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsalaw001'
-          tables: [
-            'WADWindowsEventLogsTable'
-            'WADETWEventTable'
-            'WADServiceFabric*EventTable'
-            'LinuxsyslogVer2v0'
-          ]
-        }
-      ]
-      diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
-      diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
-      dailyQuotaGb: 10
-      savedSearches: [
-        {
-          category: 'VDC Saved Searches'
-          displayName: 'VMSS Instance Count2'
-          name: 'VMSSQueries'
-          query: 'Event | where Source == 'ServiceFabricNodeBootstrapAgent' | summarize AggregatedValue = count() by Computer'
-        }
-      ]
+      name: '<<namePrefix>>-az-la-x-001'
       dataSources: [
         {
           eventTypes: [
@@ -534,26 +560,24 @@ module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
               eventType: 'Information'
             }
           ]
-          eventLogName: 'Application'
-          name: 'applicationEvent'
           kind: 'WindowsEvent'
+          name: 'applicationEvent'
+          eventLogName: 'Application'
         }
         {
           kind: 'WindowsPerformanceCounter'
           intervalSeconds: 60
           name: 'windowsPerfCounter1'
-          objectName: 'Processor'
-          instanceName: '*'
           counterName: '% Processor Time'
+          instanceName: '*'
+          objectName: 'Processor'
         }
         {
           state: 'OnPremiseEnabled'
-          name: 'sampleIISLog1'
           kind: 'IISLogs'
+          name: 'sampleIISLog1'
         }
         {
-          syslogName: 'kern'
-          name: 'sampleSyslog1'
           kind: 'LinuxSyslog'
           syslogSeverities: [
             {
@@ -572,17 +596,20 @@ module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
               severity: 'warning'
             }
           ]
+          name: 'sampleSyslog1'
+          syslogName: 'kern'
         }
         {
           state: 'Enabled'
-          name: 'sampleSyslogCollection1'
           kind: 'LinuxSyslogCollection'
+          name: 'sampleSyslogCollection1'
         }
         {
           kind: 'LinuxPerformanceObject'
-          intervalSeconds: 10
-          name: 'sampleLinuxPerf1'
           objectName: 'Logical Disk'
+          name: 'sampleLinuxPerf1'
+          intervalSeconds: 10
+          instanceName: '*'
           syslogSeverities: [
             {
               counterName: '% Used Inodes'
@@ -603,14 +630,44 @@ module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
               counterName: 'Disk Writes/sec'
             }
           ]
-          instanceName: '*'
         }
         {
           state: 'Enabled'
-          name: 'sampleLinuxPerfCollection1'
           kind: 'LinuxPerformanceCollection'
+          name: 'sampleLinuxPerfCollection1'
         }
       ]
+      publicNetworkAccessForQuery: 'Disabled'
+      publicNetworkAccessForIngestion: 'Disabled'
+      diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
+      gallerySolutions: [
+        {
+          product: 'OMSGallery'
+          name: 'AzureAutomation'
+          publisher: 'Microsoft'
+        }
+      ]
+      dailyQuotaGb: 10
+      savedSearches: [
+        {
+          category: 'VDC Saved Searches'
+          displayName: 'VMSS Instance Count2'
+          name: 'VMSSQueries'
+          query: 'Event | where Source == 'ServiceFabricNodeBootstrapAgent' | summarize AggregatedValue = count() by Computer'
+        }
+      ]
+      storageInsightsConfigs: [
+        {
+          storageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsalaw001'
+          tables: [
+            'WADWindowsEventLogsTable'
+            'WADETWEventTable'
+            'WADServiceFabric*EventTable'
+            'LinuxsyslogVer2v0'
+          ]
+        }
+      ]
+      useResourcePermissions: true
   }
 ```
 

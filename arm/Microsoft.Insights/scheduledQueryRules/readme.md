@@ -51,6 +51,10 @@ This module deploys a scheduled query rule.
 
 Create a role assignment for the given resource. If you want to assign a service principal / managed identity that is created in the same deployment, make sure to also specify the `'principalType'` parameter and set it to `'ServicePrincipal'`. This will ensure the role assignment waits for the principal's propagation in Azure.
 
+<details>
+
+<summary>JSON format</summary>
+
 ```json
 "roleAssignments": {
     "value": [
@@ -73,9 +77,42 @@ Create a role assignment for the given resource. If you want to assign a service
 }
 ```
 
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+roleAssignments: [
+    {
+        roleDefinitionIdOrName: 'Reader'
+        description: 'Reader Role Assignment'
+        principalIds: [
+            '12345678-1234-1234-1234-123456789012' // object 1
+            '78945612-1234-1234-1234-123456789012' // object 2
+        ]
+    }
+    {
+        roleDefinitionIdOrName: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'
+        principalIds: [
+            '12345678-1234-1234-1234-123456789012' // object 1
+        ]
+        principalType: 'ServicePrincipal'
+    }
+]
+```
+
+</details>
+<p>
+
 ### Parameter Usage: `tags`
 
 Tag names and tag values can be provided as needed. A tag can be left without a value.
+
+<details>
+
+<summary>JSON format</summary>
 
 ```json
 "tags": {
@@ -89,6 +126,26 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
     }
 }
 ```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+tags: {
+    Environment: 'Non-Prod'
+    Contact: 'test.user@testcompany.com'
+    PurchaseOrder: '1234'
+    CostCenter: '7890'
+    ServiceName: 'DeploymentValidation'
+    Role: 'DeploymentValidation'
+}
+```
+
+</details>
+<p>
 
 ## Outputs
 
@@ -196,41 +253,9 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 module scheduledQueryRules './Microsoft.Insights/scheduledQueryRules/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-scheduledQueryRules'
   params: {
-      queryTimeRange: 'PT5M'
       scopes: [
         '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
       ]
-      evaluationFrequency: 'PT5M'
-      criterias: {
-        allOf: [
-          {
-            timeAggregation: 'Average'
-            query: 'Perf | where ObjectName == \'LogicalDisk\' | where CounterName == \'% Free Space\' | where InstanceName <> \'HarddiskVolume1\' and InstanceName <> \'_Total\' | summarize AggregatedValue = min(CounterValue) by Computer InstanceName bin(TimeGenerated5m)'
-            dimensions: [
-              {
-                name: 'Computer'
-                operator: 'Include'
-                values: [
-                  '*'
-                ]
-              }
-              {
-                name: 'InstanceName'
-                operator: 'Include'
-                values: [
-                  '*'
-                ]
-              }
-            ]
-            threshold: 0
-            operator: 'GreaterThan'
-            metricMeasureColumn: 'AggregatedValue'
-          }
-        ]
-      }
-      windowSize: 'PT5M'
-      alertDescription: 'My sample Alert'
-      name: 'myAlert01'
       roleAssignments: [
         {
           principalIds: [
@@ -239,8 +264,40 @@ module scheduledQueryRules './Microsoft.Insights/scheduledQueryRules/deploy.bice
           roleDefinitionIdOrName: 'Reader'
         }
       ]
-      suppressForMinutes: 'PT5M'
+      evaluationFrequency: 'PT5M'
+      criterias: {
+        allOf: [
+          {
+            query: 'Perf | where ObjectName == \'LogicalDisk\' | where CounterName == \'% Free Space\' | where InstanceName <> \'HarddiskVolume1\' and InstanceName <> \'_Total\' | summarize AggregatedValue = min(CounterValue) by Computer InstanceName bin(TimeGenerated5m)'
+            dimensions: [
+              {
+                operator: 'Include'
+                name: 'Computer'
+                values: [
+                  '*'
+                ]
+              }
+              {
+                operator: 'Include'
+                name: 'InstanceName'
+                values: [
+                  '*'
+                ]
+              }
+            ]
+            metricMeasureColumn: 'AggregatedValue'
+            operator: 'GreaterThan'
+            timeAggregation: 'Average'
+            threshold: 0
+          }
+        ]
+      }
+      queryTimeRange: 'PT5M'
+      windowSize: 'PT5M'
+      name: 'myAlert01'
+      alertDescription: 'My sample Alert'
       autoMitigate: false
+      suppressForMinutes: 'PT5M'
   }
 ```
 

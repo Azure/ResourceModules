@@ -197,11 +197,11 @@ module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' 
 module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-roleAssignments'
   params: {
-      description: 'Role Assignment (management group scope)'
       principalId: '<<deploymentSpId>>'
+      principalType: 'ServicePrincipal'
       managementGroupId: '<<managementGroupId>>'
       roleDefinitionIdOrName: 'Backup Reader'
-      principalType: 'ServicePrincipal'
+      description: 'Role Assignment (management group scope)'
   }
 ```
 
@@ -246,9 +246,9 @@ module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' 
   name: '${uniqueString(deployment().name)}-roleAssignments'
   params: {
       principalId: '<<deploymentSpId>>'
-      resourceGroupName: '<<resourceGroupName>>'
-      roleDefinitionIdOrName: 'Storage Queue Data Reader'
       subscriptionId: '<<subscriptionId>>'
+      roleDefinitionIdOrName: 'Storage Queue Data Reader'
+      resourceGroupName: '<<resourceGroupName>>'
   }
 ```
 
@@ -299,11 +299,11 @@ module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' 
   name: '${uniqueString(deployment().name)}-roleAssignments'
   params: {
       resourceGroupName: '<<resourceGroupName>>'
-      principalType: 'ServicePrincipal'
-      description: 'Role Assignment (resource group scope)'
       subscriptionId: '<<subscriptionId>>'
       principalId: '<<deploymentSpId>>'
+      principalType: 'ServicePrincipal'
       roleDefinitionIdOrName: 'Backup Reader'
+      description: 'Role Assignment (resource group scope)'
   }
 ```
 
@@ -345,8 +345,8 @@ module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' 
   name: '${uniqueString(deployment().name)}-roleAssignments'
   params: {
       principalId: '<<deploymentSpId>>'
-      roleDefinitionIdOrName: 'Storage Queue Data Reader'
       subscriptionId: '<<subscriptionId>>'
+      roleDefinitionIdOrName: 'Storage Queue Data Reader'
   }
 ```
 
@@ -393,11 +393,11 @@ module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' 
 module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-roleAssignments'
   params: {
-      subscriptionId: '<<subscriptionId>>'
       principalId: '<<deploymentSpId>>'
       principalType: 'ServicePrincipal'
-      description: 'Role Assignment (subscription scope)'
+      subscriptionId: '<<subscriptionId>>'
       roleDefinitionIdOrName: 'Backup Reader'
+      description: 'Role Assignment (subscription scope)'
   }
 ```
 

@@ -49,6 +49,10 @@ This template deploys a network security group (NSG) with optional security rule
 
 Create a role assignment for the given resource. If you want to assign a service principal / managed identity that is created in the same deployment, make sure to also specify the `'principalType'` parameter and set it to `'ServicePrincipal'`. This will ensure the role assignment waits for the principal's propagation in Azure.
 
+<details>
+
+<summary>JSON format</summary>
+
 ```json
 "roleAssignments": {
     "value": [
@@ -71,9 +75,42 @@ Create a role assignment for the given resource. If you want to assign a service
 }
 ```
 
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+roleAssignments: [
+    {
+        roleDefinitionIdOrName: 'Reader'
+        description: 'Reader Role Assignment'
+        principalIds: [
+            '12345678-1234-1234-1234-123456789012' // object 1
+            '78945612-1234-1234-1234-123456789012' // object 2
+        ]
+    }
+    {
+        roleDefinitionIdOrName: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'
+        principalIds: [
+            '12345678-1234-1234-1234-123456789012' // object 1
+        ]
+        principalType: 'ServicePrincipal'
+    }
+]
+```
+
+</details>
+<p>
+
 ### Parameter Usage: `tags`
 
 Tag names and tag values can be provided as needed. A tag can be left without a value.
+
+<details>
+
+<summary>JSON format</summary>
 
 ```json
 "tags": {
@@ -87,6 +124,26 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
     }
 }
 ```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+tags: {
+    Environment: 'Non-Prod'
+    Contact: 'test.user@testcompany.com'
+    PurchaseOrder: '1234'
+    CostCenter: '7890'
+    ServiceName: 'DeploymentValidation'
+    Role: 'DeploymentValidation'
+}
+```
+
+</details>
+<p>
 
 ## Outputs
 
@@ -261,24 +318,36 @@ module networkSecurityGroups './Microsoft.Network/networkSecurityGroups/deploy.b
 module networkSecurityGroups './Microsoft.Network/networkSecurityGroups/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-networkSecurityGroups'
   params: {
+      diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
       diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
+      diagnosticLogsRetentionInDays: 7
       securityRules: [
         {
           properties: {
+            protocol: '*'
+            sourceAddressPrefix: '*'
+            direction: 'Inbound'
             priority: 100
-            destinationAddressPrefix: '*'
             destinationPortRange: '8080'
             sourcePortRange: '*'
-            sourceAddressPrefix: '*'
             description: 'Tests specific IPs and ports'
-            direction: 'Inbound'
+            destinationAddressPrefix: '*'
             access: 'Allow'
-            protocol: '*'
           }
           name: 'Specific'
         }
         {
           properties: {
+            protocol: '*'
+            sourcePortRanges: [
+              '80'
+              '81'
+            ]
+            destinationPortRanges: [
+              '90'
+              '91'
+            ]
+            direction: 'Inbound'
             priority: 101
             destinationAddressPrefixes: [
               '10.2.0.0/16'
@@ -289,22 +358,19 @@ module networkSecurityGroups './Microsoft.Network/networkSecurityGroups/deploy.b
               '10.1.0.0/16'
             ]
             description: 'Tests Ranges'
-            sourcePortRanges: [
-              '80'
-              '81'
-            ]
-            destinationPortRanges: [
-              '90'
-              '91'
-            ]
-            direction: 'Inbound'
             access: 'Allow'
-            protocol: '*'
           }
           name: 'Ranges'
         }
         {
           properties: {
+            protocol: '*'
+            destinationApplicationSecurityGroups: [
+              {
+                id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationSecurityGroups/adp-<<namePrefix>>-az-asg-x-001'
+              }
+            ]
+            direction: 'Inbound'
             priority: 102
             destinationPortRange: '8082'
             sourcePortRange: '*'
@@ -314,21 +380,14 @@ module networkSecurityGroups './Microsoft.Network/networkSecurityGroups/deploy.b
               }
             ]
             description: 'Allow inbound access on TCP 8082'
-            destinationApplicationSecurityGroups: [
-              {
-                id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationSecurityGroups/adp-<<namePrefix>>-az-asg-x-001'
-              }
-            ]
-            direction: 'Inbound'
             access: 'Allow'
-            protocol: '*'
           }
           name: 'Port_8082'
         }
       ]
-      diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
-      diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
       name: '<<namePrefix>>-az-nsg-x-001'
+      diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
+      diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
       roleAssignments: [
         {
           principalIds: [
@@ -337,8 +396,6 @@ module networkSecurityGroups './Microsoft.Network/networkSecurityGroups/deploy.b
           roleDefinitionIdOrName: 'Reader'
         }
       ]
-      diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
-      diagnosticLogsRetentionInDays: 7
   }
 ```
 

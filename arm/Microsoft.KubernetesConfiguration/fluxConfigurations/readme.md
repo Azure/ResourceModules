@@ -162,20 +162,20 @@ For Details see [Prerequisites](https://docs.microsoft.com/en-us/azure/azure-arc
 module fluxConfigurations './Microsoft.KubernetesConfiguration/fluxConfigurations/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-fluxConfigurations'
   params: {
+      scope: 'cluster'
       namespace: 'flux-system'
+      sourceKind: 'GitRepository'
+      name: 'flux2'
       clusterName: '<<namePrefix>>-az-aks-kubenet-001'
       gitRepository: {
+        timeoutInSeconds: 180
         syncIntervalInSeconds: 300
         repositoryRef: {
           branch: 'main'
         }
-        url: 'https://github.com/mspnp/aks-baseline'
-        timeoutInSeconds: 180
         sshKnownHosts: ''
+        url: 'https://github.com/mspnp/aks-baseline'
       }
-      name: 'flux2'
-      sourceKind: 'GitRepository'
-      scope: 'cluster'
   }
 ```
 
@@ -245,28 +245,28 @@ module fluxConfigurations './Microsoft.KubernetesConfiguration/fluxConfiguration
 module fluxConfigurations './Microsoft.KubernetesConfiguration/fluxConfigurations/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-fluxConfigurations'
   params: {
-      namespace: 'flux-system'
-      clusterName: '<<namePrefix>>-az-aks-kubenet-001'
+      scope: 'cluster'
       gitRepository: {
+        timeoutInSeconds: 180
         syncIntervalInSeconds: 300
         repositoryRef: {
           branch: 'main'
         }
-        url: 'https://github.com/mspnp/aks-baseline'
-        timeoutInSeconds: 180
         sshKnownHosts: ''
+        url: 'https://github.com/mspnp/aks-baseline'
       }
-      name: 'flux2'
+      namespace: 'flux-system'
       sourceKind: 'GitRepository'
-      scope: 'cluster'
+      name: 'flux2'
+      clusterName: '<<namePrefix>>-az-aks-kubenet-001'
       kustomizations: {
         unified: {
           path: './cluster-manifests'
           timeoutInSeconds: 300
-          dependsOn: []
-          force: false
-          prune: true
           syncIntervalInSeconds: 300
+          force: false
+          dependsOn: []
+          prune: true
         }
       }
   }
