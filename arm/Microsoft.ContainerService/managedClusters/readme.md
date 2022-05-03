@@ -13,13 +13,8 @@ This module deploys Azure Kubernetes Cluster (AKS).
 | Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
-<<<<<<< HEAD
 | `Microsoft.Authorization/roleAssignments` | [2020-10-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-10-01-preview/roleAssignments) |
-| `Microsoft.ContainerService/managedClusters` | [2022-01-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ContainerService/2022-01-01/managedClusters) |
-=======
-| `Microsoft.Authorization/roleAssignments` | [2021-04-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments) |
 | `Microsoft.ContainerService/managedClusters` | [2022-02-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ContainerService/2022-02-01/managedClusters) |
->>>>>>> main
 | `Microsoft.ContainerService/managedClusters/agentPools` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ContainerService/2021-08-01/managedClusters/agentPools) |
 | `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
 
