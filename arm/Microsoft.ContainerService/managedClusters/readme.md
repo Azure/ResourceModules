@@ -13,8 +13,13 @@ This module deploys Azure Kubernetes Cluster (AKS).
 | Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
+<<<<<<< HEAD
 | `Microsoft.Authorization/roleAssignments` | [2020-10-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-10-01-preview/roleAssignments) |
 | `Microsoft.ContainerService/managedClusters` | [2022-01-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ContainerService/2022-01-01/managedClusters) |
+=======
+| `Microsoft.Authorization/roleAssignments` | [2021-04-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments) |
+| `Microsoft.ContainerService/managedClusters` | [2022-02-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ContainerService/2022-02-01/managedClusters) |
+>>>>>>> main
 | `Microsoft.ContainerService/managedClusters/agentPools` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ContainerService/2021-08-01/managedClusters/agentPools) |
 | `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
 
@@ -25,6 +30,11 @@ This module deploys Azure Kubernetes Cluster (AKS).
 | :-- | :-- | :-- |
 | `name` | string | Specifies the name of the AKS cluster. |
 | `primaryAgentPoolProfile` | array | Properties of the primary agent pool. |
+
+**Conditional parameters**
+| Parameter Name | Type | Default Value | Description |
+| :-- | :-- | :-- | :-- |
+| `appGatewayResourceId` | string | `''` | Required if `ingressApplicationGatewayEnabled` is set to `true`. Specifies the resource ID of connected application gateway. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
@@ -60,7 +70,7 @@ This module deploys Azure Kubernetes Cluster (AKS).
 | `autoScalerProfileMaxNodeProvisionTime` | string | `'15m'` |  | Specifies the maximum node provisioning time for the auto-scaler of the AKS cluster. Values must be an integer followed by an "m". No unit of time other than minutes (m) is supported. |
 | `autoScalerProfileMaxTotalUnreadyPercentage` | string | `'45'` |  | Specifies the mximum total unready percentage for the auto-scaler of the AKS cluster. The maximum is 100 and the minimum is 0. |
 | `autoScalerProfileNewPodScaleUpDelay` | string | `'0s'` |  | For scenarios like burst/batch scale where you do not want CA to act before the kubernetes scheduler could schedule all the pods, you can tell CA to ignore unscheduled pods before they are a certain age. Values must be an integer followed by a unit ("s" for seconds, "m" for minutes, "h" for hours, etc). |
-| `autoScalerProfileOkTotalUnreadyCount` | string | `'3'` |  | Specifies the ok total unready count for the auto-scaler of the AKS cluster. |
+| `autoScalerProfileOkTotalUnreadyCount` | string | `'3'` |  | Specifies the OK total unready count for the auto-scaler of the AKS cluster. |
 | `autoScalerProfileScaleDownDelayAfterAdd` | string | `'10m'` |  | Specifies the scale down delay after add of the auto-scaler of the AKS cluster. |
 | `autoScalerProfileScaleDownDelayAfterDelete` | string | `'20s'` |  | Specifies the scale down delay after delete of the auto-scaler of the AKS cluster. |
 | `autoScalerProfileScaleDownDelayAfterFailure` | string | `'3m'` |  | Specifies scale down delay after failure of the auto-scaler of the AKS cluster. |
@@ -91,6 +101,7 @@ This module deploys Azure Kubernetes Cluster (AKS).
 | `enablePrivateClusterPublicFQDN` | bool | `False` |  | Whether to create additional public FQDN for private cluster or not. |
 | `enableSecretRotation` | string | `'false'` | `[false, true]` | Specifies whether the KeyvaultSecretsProvider add-on uses secret rotation. |
 | `httpApplicationRoutingEnabled` | bool | `False` |  | Specifies whether the httpApplicationRouting add-on is enabled or not. |
+| `ingressApplicationGatewayEnabled` | bool | `False` |  | Specifies whether the ingressApplicationGateway (AGIC) add-on is enabled or not. |
 | `kubeDashboardEnabled` | bool | `False` |  | Specifies whether the kubeDashboard add-on is enabled or not. |
 | `location` | string | `[resourceGroup().location]` |  | Specifies the location of AKS cluster. It picks up Resource Group's location by default. |
 | `lock` | string | `'NotSpecified'` | `[CanNotDelete, NotSpecified, ReadOnly]` | Specify the type of lock. |
