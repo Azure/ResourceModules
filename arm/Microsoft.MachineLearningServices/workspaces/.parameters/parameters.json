@@ -112,17 +112,6 @@
                     "service": "amlworkspace"
                 }
             ]
-        },
-        "sharedPrivateLinkResources": {
-            "value": [
-                {
-                    "name": "customServiceLink",
-                    "properties": {
-                        "groupId": "vault",
-                        "privateLinkResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001"
-                    }
-                }
-            ]
         }
     }
 }
