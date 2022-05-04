@@ -184,6 +184,10 @@ userAssignedIdentities: {
 Configure Azure Active Directory Authentication method for server administrator.
 https://docs.microsoft.com/en-us/azure/templates/microsoft.sql/servers/administrators?tabs=bicep
 
+<details>
+
+<summary>Parameter JSON format</summary>
+
 ```json
 "administrators": {
     "value": {

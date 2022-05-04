@@ -57,6 +57,10 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 #### Platform Image
 
+<details>
+
+<summary>Parameter JSON format</summary>
+
 ```json
 "source": {
     "type": "PlatformImage",
@@ -67,7 +71,24 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 }
 ```
 
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+
+```
+
+</details>
+<p>
+
 #### Managed Image
+
+<details>
+
+<summary>Parameter JSON format</summary>
 
 ```json
 "source": {
@@ -76,7 +97,24 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 }
 ```
 
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+
+```
+
+</details>
+<p>
+
 #### Shared Image
+
+<details>
+
+<summary>Parameter JSON format</summary>
 
 ```json
 "source": {

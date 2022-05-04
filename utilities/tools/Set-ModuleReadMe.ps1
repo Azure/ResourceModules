@@ -474,6 +474,7 @@ function Set-UsageExamples {
                 '```',
                 '',
                 '</details>'
+                '<p>'
             )
         }
 

@@ -33,6 +33,10 @@ This module deploys the auth settings v2.
 
 The auth settings V2 configuration.
 
+<details>
+
+<summary>Parameter JSON format</summary>
+
 ```json
 "siteConfig": {
     "value": [

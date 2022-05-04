@@ -37,6 +37,10 @@ This module deploys the app settings.
 AzureWebJobsStorage, AzureWebJobsDashboard, APPINSIGHTS_INSTRUMENTATIONKEY and APPLICATIONINSIGHTS_CONNECTION_STRING are set separately (check parameters storageAccountId, setAzureWebJobsDashboard, appInsightId).
 For all other app settings key-value pairs use this object.
 
+<details>
+
+<summary>Parameter JSON format</summary>
+
 ```json
 "appSettingsKeyValuePairs": {
     "value": [

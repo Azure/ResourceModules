@@ -66,6 +66,19 @@ This module can be used to deploy a management policies into a storage account.
     }
 ]
 ```
+</details>
+
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+
+```
+
+</details>
+<p>
 
 ## Outputs
 

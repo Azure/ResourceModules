@@ -33,6 +33,10 @@ This module deploys a Backup Policy for a Recovery Services Vault
 
 Object continaining the configuration for backup policies. It needs to be properly formatted and can be VM backup policies, SQL on VM backup policies or fileshare policies. The following example shows a VM backup policy.
 
+<details>
+
+<summary>Parameter JSON format</summary>
+
 ```json
 "backupPolicyProperties": {
   "value": {
@@ -115,6 +119,20 @@ Object continaining the configuration for backup policies. It needs to be proper
     }
 }
 ```
+
+</details>
+
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+
+```
+
+</details>
+<p>
 
 ## Outputs
 

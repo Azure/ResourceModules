@@ -95,6 +95,10 @@ SQL MI allows for Azure AD Authentication via an [Azure AD Admin](https://docs.m
 
 ### Parameter Usage : `userAssignedIdentities`
 
+<details>
+
+<summary>Parameter JSON format</summary>
+
 ```json
 "userAssignedIdentities": {
     "value": {
@@ -103,6 +107,20 @@ SQL MI allows for Azure AD Authentication via an [Azure AD Admin](https://docs.m
     }
 },
 ```
+
+</details>
+
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+
+```
+
+</details>
+<p>
 
 ### Parameter Usage: `roleAssignments`
 
