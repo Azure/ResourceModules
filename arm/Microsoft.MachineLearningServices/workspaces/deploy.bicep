@@ -56,10 +56,10 @@ param tags object = {}
 param enableDefaultTelemetry bool = true
 
 // Identity
-@sys.description('Optional. Enables system assigned managed identity on the resource.')
+@sys.description('Conditional. Enables system assigned managed identity on the resource. Required if `userAssignedIdentities` is not provided.')
 param systemAssignedIdentity bool = false
 
-@sys.description('Optional. The ID(s) to assign to the resource.')
+@sys.description('Conditional. The ID(s) to assign to the resource. Required if `systemAssignedIdentity` is set to false.')
 param userAssignedIdentities object = {}
 
 // Diagnostic Settings
