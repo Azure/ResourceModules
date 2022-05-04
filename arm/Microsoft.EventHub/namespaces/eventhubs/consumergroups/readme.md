@@ -39,6 +39,4 @@ This module deploys an EventHub Namespace EventHubs Consumer Group
 | `resourceGroupName` | string | The name of the resource group the consumer group was created in. |
 | `resourceId` | string | The resource ID of the consumer group. |
 
-## Template references
 
-- [Namespaces/Eventhubs/Consumergroups](https://docs.microsoft.com/en-us/azure/templates/Microsoft.EventHub/2021-06-01-preview/namespaces/eventhubs/consumergroups)

@@ -144,12 +144,6 @@ tags: {
 | `resourceGroupName` | string | The resource group the proximity placement group was deployed into |
 | `resourceId` | string | The resourceId the proximity placement group |
 
-## Template references
-
-- [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
-- [Proximityplacementgroups](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Compute/2021-04-01/proximityPlacementGroups)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)
-
 ## Deployment examples
 
 <h3>Example 1</h3>

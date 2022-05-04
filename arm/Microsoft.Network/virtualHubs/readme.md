@@ -101,13 +101,6 @@ tags: {
 | `resourceGroupName` | string | The resource group the virtual hub was deployed into |
 | `resourceId` | string | The resource ID of the virtual hub |
 
-## Template references
-
-- [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
-- [Virtualhubs](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/virtualHubs)
-- [Virtualhubs/Hubroutetables](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/virtualHubs/hubRouteTables)
-- [Virtualhubs/Hubvirtualnetworkconnections](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/virtualHubs/hubVirtualNetworkConnections)
-
 ## Deployment examples
 
 <h3>Example 1</h3>

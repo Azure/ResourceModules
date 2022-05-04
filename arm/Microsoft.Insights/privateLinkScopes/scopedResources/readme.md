@@ -38,6 +38,4 @@ This module deploys Insights PrivateLinkScopes ScopedResources.
 | `resourceGroupName` | string | The name of the resource group where the resource has been deployed |
 | `resourceId` | string | The resource ID of the deployed scopedResource |
 
-## Template references
 
-- [Privatelinkscopes/Scopedresources](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-07-01-preview/privateLinkScopes/scopedResources)

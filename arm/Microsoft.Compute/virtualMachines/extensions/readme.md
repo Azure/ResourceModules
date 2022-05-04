@@ -47,6 +47,4 @@ This module deploys a virtual machine extension.
 | `resourceGroupName` | string | The name of the Resource Group the extension was created in. |
 | `resourceId` | string | The resource ID of the extension |
 
-## Template references
 
-- [Virtualmachines/Extensions](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Compute/2021-07-01/virtualMachines/extensions)

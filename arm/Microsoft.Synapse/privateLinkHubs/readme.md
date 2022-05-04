@@ -223,14 +223,6 @@ tags: {
 | `resourceGroupName` | string | The resource group of the deployed Synapse Private Link Hub. |
 | `resourceId` | string | The resource ID of the deployed Synapse Private Link Hub. |
 
-## Template references
-
-- [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
-- [Privateendpoints](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/privateEndpoints)
-- [Privateendpoints/Privatednszonegroups](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/privateEndpoints/privateDnsZoneGroups)
-- [Privatelinkhubs](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Synapse/2021-06-01/privateLinkHubs)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)
-
 ## Deployment examples
 
 <h3>Example 1</h3>

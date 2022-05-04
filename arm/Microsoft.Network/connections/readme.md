@@ -302,11 +302,6 @@ tags: {
 | `resourceGroupName` | string | The resource group the remote connection was deployed into |
 | `resourceId` | string | The resource ID of the remote connection |
 
-## Template references
-
-- [Connections](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/connections)
-- [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
-
 ## Deployment examples
 
 <h3>Example 1</h3>

@@ -144,12 +144,6 @@ tags: {
 | `resourceGroupName` | string | The resource group the public IP prefix was deployed into |
 | `resourceId` | string | The resource ID of the public IP prefix |
 
-## Template references
-
-- [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
-- [Publicipprefixes](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/publicIPPrefixes)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)
-
 ## Deployment examples
 
 <h3>Example 1</h3>

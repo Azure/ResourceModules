@@ -268,15 +268,6 @@ securityContactProperties: {
 | :-- | :-- | :-- |
 | `workspaceId` | string | The resource IDs of the used log analytics workspace |
 
-## Template references
-
-- [Autoprovisioningsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Security/2017-08-01-preview/autoProvisioningSettings)
-- [Devicesecuritygroups](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Security/2019-08-01/deviceSecurityGroups)
-- [Iotsecuritysolutions](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Security/2019-08-01/iotSecuritySolutions)
-- [Pricings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Security/2018-06-01/pricings)
-- [Securitycontacts](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Security/2017-08-01-preview/securityContacts)
-- [Workspacesettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Security/2017-08-01-preview/workspaceSettings)
-
 ## Deployment examples
 
 <h3>Example 1</h3>

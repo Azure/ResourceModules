@@ -80,6 +80,4 @@ tags: {
 | `resourceGroupName` | string | The resource group the connection monitor was deployed into |
 | `resourceId` | string | The resource ID of the deployed connection monitor |
 
-## Template references
 
-- [Networkwatchers/Connectionmonitors](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/networkWatchers/connectionMonitors)

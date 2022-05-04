@@ -241,11 +241,6 @@ tags: {
 | `resourceGroupName` | string | The resource group the metric alert was deployed into |
 | `resourceId` | string | The resource ID of the metric alert |
 
-## Template references
-
-- [Metricalerts](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2018-03-01/metricAlerts)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)
-
 ## Deployment examples
 
 <h3>Example 1</h3>

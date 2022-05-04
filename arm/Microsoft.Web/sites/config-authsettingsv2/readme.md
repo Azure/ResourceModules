@@ -65,6 +65,4 @@ siteConfig: [
 | `resourceGroupName` | string | The resource group the site config was deployed into. |
 | `resourceId` | string | The resource ID of the site config. |
 
-## Template references
 
-- ['sites/config' Parent Documentation](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Web/sites)

@@ -378,16 +378,6 @@ userAssignedIdentities: {
 | `resourceId` | string | The resource ID of the site. |
 | `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
 
-## Template references
-
-- ['sites/config' Parent Documentation](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Web/sites)
-- [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings)
-- [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
-- [Privateendpoints](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/privateEndpoints)
-- [Privateendpoints/Privatednszonegroups](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/privateEndpoints/privateDnsZoneGroups)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)
-- [Sites](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Web/2021-03-01/sites)
-
 ## Deployment examples
 
 <h3>Example 1</h3>

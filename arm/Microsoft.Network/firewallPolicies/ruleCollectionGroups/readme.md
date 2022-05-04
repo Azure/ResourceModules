@@ -54,6 +54,4 @@ For remaining properties, see [FirewallPolicyRuleCollection objects](https://doc
 | `resourceGroupName` | string | The resource group of the deployed rule collection group |
 | `resourceId` | string | The resource ID of the deployed rule collection group |
 
-## Template references
 
-- [Firewallpolicies/Rulecollectiongroups](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/firewallPolicies/ruleCollectionGroups)

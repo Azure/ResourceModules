@@ -102,7 +102,4 @@ roleAssignments: [
 | `resourceGroupName` | string | The resource group of the deployed file share |
 | `resourceId` | string | The resource ID of the deployed file share |
 
-## Template references
 
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)
-- [Storageaccounts/Fileservices/Shares](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Storage/2021-08-01/storageAccounts/fileServices/shares)

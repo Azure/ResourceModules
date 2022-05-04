@@ -244,12 +244,6 @@ roleAssignments: [
 | `resourceGroupName` | string | The resource group the VPN site was deployed into |
 | `resourceId` | string | The resource ID of the VPN site |
 
-## Template references
-
-- [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)
-- [Vpnsites](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/vpnSites)
-
 ## Deployment examples
 
 <h3>Example 1</h3>

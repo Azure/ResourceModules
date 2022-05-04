@@ -42,6 +42,4 @@ This module deploys VPN Gateways NATRules
 | `resourceGroupName` | string | The name of the resource group the NAT rule was deployed into |
 | `resourceId` | string | The resource ID of the NAT rule |
 
-## Template references
 
-- [Vpngateways/Natrules](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/vpnGateways/natRules)

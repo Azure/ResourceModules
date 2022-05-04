@@ -170,13 +170,6 @@ tags: {
 | `resourceGroupName` | string | The name of the resource group the VPN gateway was deployed into |
 | `resourceId` | string | The resource ID of the VPN gateway |
 
-## Template references
-
-- [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
-- [Vpngateways](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/vpnGateways)
-- [Vpngateways/Natrules](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/vpnGateways/natRules)
-- [Vpngateways/Vpnconnections](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/vpnGateways/vpnConnections)
-
 ## Deployment examples
 
 <h3>Example 1</h3>

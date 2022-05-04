@@ -280,13 +280,6 @@ workerCount: {
 | `resourceGroupName` | string | The resource group the app service environment was deployed into |
 | `resourceId` | string | The resource ID of the app service environment |
 
-## Template references
-
-- [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings)
-- [Hostingenvironments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Web/2021-02-01/hostingEnvironments)
-- [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)
-
 ## Deployment examples
 
 <h3>Example 1</h3>

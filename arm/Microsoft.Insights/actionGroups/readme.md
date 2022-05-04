@@ -230,11 +230,6 @@ tags: {
 | `resourceGroupName` | string | The resource group the action group was deployed into |
 | `resourceId` | string | The resource ID of the action group  |
 
-## Template references
-
-- [Actiongroups](https://docs.microsoft.com/en-us/azure/templates/microsoft.insights/2019-06-01/actionGroups)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)
-
 ## Deployment examples
 
 <h3>Example 1</h3>

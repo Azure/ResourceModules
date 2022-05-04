@@ -45,6 +45,4 @@ With this module you can perform role assignments on a resource group level
 | `resourceId` | string | The scope this Role Assignment applies to |
 | `scope` | string | The resource ID of the Role Assignment |
 
-## Template references
 
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)

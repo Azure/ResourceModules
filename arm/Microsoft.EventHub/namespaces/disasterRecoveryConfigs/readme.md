@@ -38,6 +38,4 @@ This module deploys an EventHub Namespace Disaster Recovery Config
 | `resourceGroupName` | string | The name of the resource group the disaster recovery config was created in. |
 | `resourceId` | string | The resource ID of the disaster recovery config. |
 
-## Template references
 
-- [Namespaces/Disasterrecoveryconfigs](https://docs.microsoft.com/en-us/azure/templates/Microsoft.EventHub/2017-04-01/namespaces/disasterRecoveryConfigs)

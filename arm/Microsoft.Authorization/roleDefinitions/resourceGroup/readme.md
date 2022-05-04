@@ -45,6 +45,4 @@ With this module you can create role definitions on a resource group level
 | `resourceId` | string | The resource ID of the Role Definition |
 | `scope` | string | The scope this Role Definition applies to |
 
-## Template references
 
-- [Roledefinitions](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2018-01-01-preview/roleDefinitions)

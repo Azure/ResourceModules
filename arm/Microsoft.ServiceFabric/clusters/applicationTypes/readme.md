@@ -79,6 +79,4 @@ tags: {
 | `resourceGroupName` | string | The resource group of the Application type. |
 | `resourceID` | string | The resource ID of the Application type. |
 
-## Template references
 
-- [Clusters/Applicationtypes](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ServiceFabric/2021-06-01/clusters/applicationTypes)

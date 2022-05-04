@@ -161,13 +161,6 @@ roleAssignments: [
 | `resourceGroupName` | string | The resource group the analysis service was deployed into |
 | `resourceId` | string | The resource ID of the analysis service |
 
-## Template references
-
-- [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings)
-- [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)
-- [Servers](https://docs.microsoft.com/en-us/azure/templates/Microsoft.AnalysisServices/2017-08-01/servers)
-
 ## Deployment examples
 
 <h3>Example 1</h3>

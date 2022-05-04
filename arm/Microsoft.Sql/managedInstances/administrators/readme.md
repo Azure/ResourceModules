@@ -40,6 +40,4 @@ This module deploys an administrator for the SQL managed instance
 | `resourceGroupName` | string | The resource group of the deployed managed instance |
 | `resourceId` | string | The resource ID of the deployed managed instance |
 
-## Template references
 
-- [Managedinstances/Administrators](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Sql/2021-02-01-preview/managedInstances/administrators)

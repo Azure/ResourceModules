@@ -39,6 +39,4 @@ This module deploys load balancer backend address pools.
 | `resourceGroupName` | string | The resource group the backend address pool was deployed into |
 | `resourceId` | string | The resource ID of the backend address pool |
 
-## Template references
 
-- [Loadbalancers/Backendaddresspools](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/loadBalancers/backendAddressPools)

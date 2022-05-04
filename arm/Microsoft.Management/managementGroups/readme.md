@@ -124,11 +124,6 @@ New-AzRoleAssignment -ObjectId $PrincipalID -Scope "/" -RoleDefinitionName "Auto
 New-AzRoleAssignment -ObjectId $PrincipalID -Scope "/providers/Microsoft.Management/managementGroups/$TopMGID" -RoleDefinitionName "Management Group Contributor"
 ```
 
-## Template references
-
-- [Managementgroups](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Management/2021-04-01/managementGroups)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)
-
 ## Deployment examples
 
 <h3>Example 1</h3>

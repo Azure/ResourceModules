@@ -64,10 +64,6 @@ For Details see [Prerequisites](https://docs.microsoft.com/en-us/azure/azure-arc
 | `resourceGroupName` | string | The name of the resource group the extension was deployed into |
 | `resourceId` | string | The resource ID of the extension |
 
-## Template references
-
-- [Extensions](https://docs.microsoft.com/en-us/azure/templates/Microsoft.KubernetesConfiguration/2022-03-01/extensions)
-
 ## Deployment examples
 
 <h3>Example 1</h3>

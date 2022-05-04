@@ -91,6 +91,4 @@ tags: {
 | `resourceGroupName` | string | The resource group where the data source is deployed |
 | `resourceId` | string | The resource ID of the deployed data source |
 
-## Template references
 
-- [Workspaces/Datasources](https://docs.microsoft.com/en-us/azure/templates/Microsoft.OperationalInsights/2020-08-01/workspaces/dataSources)

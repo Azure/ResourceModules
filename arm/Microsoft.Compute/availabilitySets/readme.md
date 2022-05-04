@@ -147,12 +147,6 @@ tags: {
 | `resourceGroupName` | string | The resource group the availability set was deployed into |
 | `resourceId` | string | The resource ID of the availability set |
 
-## Template references
-
-- [Availabilitysets](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Compute/2021-07-01/availabilitySets)
-- [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)
-
 ## Deployment examples
 
 <h3>Example 1</h3>

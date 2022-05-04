@@ -44,6 +44,4 @@ This module deploys an SQL Server Security Alert Policy.
 | `resourceGroupName` | string | The resourceGroup of the deployed security alert policy |
 | `resourceId` | string | The resource ID of the deployed security alert policy |
 
-## Template references
 
-- [Servers/Securityalertpolicies](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Sql/2021-05-01-preview/servers/securityAlertPolicies)

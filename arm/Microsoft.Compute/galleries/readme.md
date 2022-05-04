@@ -146,13 +146,6 @@ tags: {
 | `resourceGroupName` | string | The resource group of the deployed image gallery |
 | `resourceId` | string | The resource ID of the deployed image gallery |
 
-## Template references
-
-- [Galleries](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Compute/2020-09-30/galleries)
-- [Galleries/Images](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Compute/2020-09-30/galleries/images)
-- [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)
-
 ## Deployment examples
 
 <h3>Example 1</h3>

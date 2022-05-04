@@ -39,6 +39,4 @@ This module deploys an EventHub Namespace EventHubs Authorization Rule
 | `resourceGroupName` | string | The name of the resource group the authorization rule was created in. |
 | `resourceId` | string | The resource ID of the authorization rule. |
 
-## Template references
 
-- [Namespaces/Eventhubs/Authorizationrules](https://docs.microsoft.com/en-us/azure/templates/Microsoft.EventHub/2021-06-01-preview/namespaces/eventhubs/authorizationRules)

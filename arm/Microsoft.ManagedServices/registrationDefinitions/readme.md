@@ -128,7 +128,6 @@ If the subscription was created through the Cloud Solution Provider (CSP) progra
 
 **More info on this topic:**
 
-- [Deploy the Azure Resource Manager templates - Onboard a customer to Azure Lighthouse | Microsoft Docs](https://docs.microsoft.com/en-us/azure/lighthouse/how-to/onboard-customer#deploy-the-azure-resource-manager-templates)
 
 ### Permissions required to remove delegations
 
@@ -148,7 +147,6 @@ removed by a user in the customer's tenant.
 
 **More info on this topic:**
 
-- [Service providers - Remove access to a delegation | Microsoft Docs](https://docs.microsoft.com/en-us/azure/lighthouse/how-to/remove-delegation#service-providers)
 
 ### Limitations with Lighthouse and resource delegation
 
@@ -161,13 +159,6 @@ There are a couple of limitations that you should be aware of with Lighthouse:
 
 **More info on this topic:**
 
-- [Current limitations - Cross-tenant management experiences | Microsoft Docs](https://docs.microsoft.com/en-us/azure/lighthouse/concepts/cross-tenant-management-experience#current-limitations)
-- [Troubleshooting - Onboard a customer to Azure Lighthouse | Microsoft Docs](https://docs.microsoft.com/en-us/azure/lighthouse/how-to/onboard-customer#troubleshooting)
-
-## Template references
-
-- [Registrationassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ManagedServices/2019-09-01/registrationAssignments)
-- [Registrationdefinitions](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ManagedServices/2019-09-01/registrationDefinitions)
 
 ## Deployment examples
 

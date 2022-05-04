@@ -128,10 +128,6 @@ This module can be deployed both at subscription or resource group level:
 - To deploy the module at the subscription level, provide an existing subscription ID in the `subscriptionId` parameter.
 - To deploy the module at the management group level, provide an existing management group ID in the `managementGroupId` parameter.
 
-## Template references
-
-- [Roledefinitions](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2018-01-01-preview/roleDefinitions)
-
 ## Deployment examples
 
 <h3>Example 1</h3>

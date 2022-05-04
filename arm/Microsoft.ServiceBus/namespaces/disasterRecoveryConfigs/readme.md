@@ -39,6 +39,4 @@ This module deploys a disaster recovery config for a service bus Namespace
 | `resourceGroupName` | string | The name of the Resource Group the disaster recovery config was created in. |
 | `resourceId` | string | The Resource ID of the disaster recovery config. |
 
-## Template references
 
-- [Namespaces/Disasterrecoveryconfigs](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ServiceBus/2017-04-01/namespaces/disasterRecoveryConfigs)

@@ -76,6 +76,4 @@ This module can be used to deploy a management policies into a storage account.
 | `resourceGroupName` | string | The resource group of the deployed management policy |
 | `resourceId` | string | The resource ID of the deployed management policy |
 
-## Template references
 
-- [Storageaccounts/Managementpolicies](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Storage/2019-06-01/storageAccounts/managementPolicies)

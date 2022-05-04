@@ -38,6 +38,4 @@ This module deploys authorization rules for a service bus namespace
 | `resourceGroupName` | string | The name of the Resource Group the authorization rule was created in. |
 | `resourceId` | string | The resource ID of the authorization rule. |
 
-## Template references
 
-- [Namespaces/Authorizationrules](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ServiceBus/2017-04-01/namespaces/AuthorizationRules)

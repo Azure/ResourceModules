@@ -91,6 +91,4 @@ value: '\'TestString\''
 | `resourceGroupName` | string | The resource group of the deployed variable |
 | `resourceId` | string | The resource ID of the deployed variable |
 
-## Template references
 
-- [Automationaccounts/Variables](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Automation/2020-01-13-preview/automationAccounts/variables)

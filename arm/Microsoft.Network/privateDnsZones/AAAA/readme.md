@@ -73,6 +73,4 @@ aaaaRecords: [
 | `resourceGroupName` | string | The resource group of the deployed AAAA record |
 | `resourceId` | string | The resource ID of the deployed AAAA record |
 
-## Template references
 
-- [Privatednszones/AAAA](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-06-01/privateDnsZones/AAAA)

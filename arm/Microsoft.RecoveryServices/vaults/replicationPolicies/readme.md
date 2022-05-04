@@ -43,6 +43,4 @@ This module deploys a Replication Policy for Disaster Recovery scenario.
 | `resourceGroupName` | string | The name of the resource group the replication policy was created in. |
 | `resourceId` | string | The resource ID of the replication policy. |
 
-## Template references
 
-- [Vaults/Replicationpolicies](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2021-12-01/vaults/replicationPolicies)

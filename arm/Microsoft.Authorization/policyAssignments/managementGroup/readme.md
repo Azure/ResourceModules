@@ -49,7 +49,4 @@ With this module you can perform policy assignments on a management group level.
 | `principalId` | string | Policy Assignment principal ID |
 | `resourceId` | string | Policy Assignment resource ID |
 
-## Template references
 
-- [Policyassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2021-06-01/policyAssignments)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)

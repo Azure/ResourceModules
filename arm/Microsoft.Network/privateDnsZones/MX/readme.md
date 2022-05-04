@@ -75,6 +75,4 @@ mxRecords: [
 | `resourceGroupName` | string | The resource group of the deployed MX record |
 | `resourceId` | string | The resource ID of the deployed MX record |
 
-## Template references
 
-- [Privatednszones/MX](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-06-01/privateDnsZones/MX)

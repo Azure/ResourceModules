@@ -143,12 +143,6 @@ roleAssignments: [
 | `resourceGroupName` | string | The resource group the application security group was deployed into |
 | `resourceId` | string | The resource ID of the application security group |
 
-## Template references
-
-- [Applicationsecuritygroups](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/applicationSecurityGroups)
-- [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)
-
 ## Deployment examples
 
 <h3>Example 1</h3>

@@ -255,12 +255,6 @@ roleAssignments: [
 | `resourceGroupName` | string | The resource group the AVD scaling plan was deployed into |
 | `resourceId` | string | The resource ID of the AVD scaling plan |
 
-## Template references
-
-- [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)
-- [Scalingplans](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DesktopVirtualization/2021-09-03-preview/scalingPlans)
-
 ## Deployment examples
 
 <h3>Example 1</h3>

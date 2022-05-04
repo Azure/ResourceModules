@@ -39,6 +39,4 @@ This module deploys an SQL Server Firewall rule.
 | `resourceGroupName` | string | The resourceGroup of the deployed firewall rule |
 | `resourceId` | string | The resource ID of the deployed firewall rule |
 
-## Template references
 
-- [Servers/Firewallrules](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Sql/2021-05-01-preview/servers/firewallRules)

@@ -164,11 +164,6 @@ userAssignedIdentities: {
 | `resourceId` | string | The resource ID of the container group |
 | `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
 
-## Template references
-
-- [Containergroups](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ContainerInstance/2021-03-01/containerGroups)
-- [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
-
 ## Deployment examples
 
 <h3>Example 1</h3>

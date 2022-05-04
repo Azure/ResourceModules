@@ -90,10 +90,6 @@ module policydefinition 'yourpath/arm/Microsoft.Authorization.policyDefinitions/
 | `resourceId` | string | Policy Definition resource ID |
 | `roleDefinitionIds` | array | Policy Definition Role Definition IDs |
 
-## Template references
-
-- [Policydefinitions](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2021-06-01/policyDefinitions)
-
 ## Deployment examples
 
 <h3>Example 1</h3>

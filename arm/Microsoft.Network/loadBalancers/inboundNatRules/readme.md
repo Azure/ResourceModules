@@ -47,6 +47,4 @@ This module deploys load balancers inbound NAT rules.
 | `resourceGroupName` | string | The resource group the inbound NAT rule was deployed into |
 | `resourceId` | string | The resource ID of the inbound NAT rule |
 
-## Template references
 
-- [Loadbalancers/Inboundnatrules](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/loadBalancers/inboundNatRules)

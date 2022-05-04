@@ -163,6 +163,4 @@ shardKey: {
 | `resourceGroupName` | string | The name of the resource group the mongodb database was created in. |
 | `resourceId` | string | The resource ID of the mongodb database. |
 
-## Template references
 
-- [Databaseaccounts/Mongodbdatabases/Collections](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DocumentDB/2021-07-01-preview/databaseAccounts/mongodbDatabases/collections)

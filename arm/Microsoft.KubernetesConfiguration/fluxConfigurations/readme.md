@@ -160,10 +160,6 @@ gitRepository: {
 | `resourceGroupName` | string | The name of the resource group the flux configuration was deployed into |
 | `resourceId` | string | The resource ID of the flux configuration |
 
-## Template references
-
-- [Fluxconfigurations](https://docs.microsoft.com/en-us/azure/templates/Microsoft.KubernetesConfiguration/2022-03-01/fluxConfigurations)
-
 ## Deployment examples
 
 <h3>Example 1</h3>

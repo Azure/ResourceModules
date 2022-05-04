@@ -80,7 +80,4 @@ tags: {
 | `resourceGroupName` | string | The name of the resource group the SQL database was created in. |
 | `resourceId` | string | The resource ID of the SQL database. |
 
-## Template references
 
-- [Databaseaccounts/Sqldatabases](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DocumentDB/2021-06-15/databaseAccounts/sqlDatabases)
-- [Databaseaccounts/Sqldatabases/Containers](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DocumentDB/2021-07-01-preview/databaseAccounts/sqlDatabases/containers)

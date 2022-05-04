@@ -165,13 +165,6 @@ tags: {
 | `resourceId` | string | The resource ID of express route curcuit |
 | `serviceKey` | string | The service key of the express route circuit |
 
-## Template references
-
-- [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings)
-- [Expressroutecircuits](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/expressRouteCircuits)
-- [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)
-
 ## Deployment examples
 
 <h3>Example 1</h3>

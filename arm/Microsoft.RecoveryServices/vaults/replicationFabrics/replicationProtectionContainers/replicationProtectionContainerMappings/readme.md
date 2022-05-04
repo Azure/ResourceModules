@@ -46,6 +46,4 @@ This module deploys a Replication Protection Container Mapping.
 | `resourceGroupName` | string | The name of the resource group the replication container was created in. |
 | `resourceId` | string | The resource ID of the replication container. |
 
-## Template references
 
-- [Vaults/Replicationfabrics/Replicationprotectioncontainers/Replicationprotectioncontainermappings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2021-12-01/vaults/replicationFabrics/replicationProtectionContainers/replicationProtectionContainerMappings)

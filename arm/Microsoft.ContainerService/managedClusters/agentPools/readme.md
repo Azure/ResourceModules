@@ -112,6 +112,4 @@ tags: {
 | `resourceGroupName` | string | The resource group the agent pool was deployed into. |
 | `resourceId` | string | The resource ID of the agent pool |
 
-## Template references
 
-- [Managedclusters/Agentpools](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ContainerService/2021-08-01/managedClusters/agentPools)

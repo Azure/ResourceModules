@@ -77,10 +77,6 @@ tags: {
 | `name` | string | The name of the tags resource |
 | `tags` | object | The applied tags |
 
-## Template references
-
-- [Tags](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Resources/2019-10-01/tags)
-
 ## Deployment examples
 
 <h3>Example 1</h3>

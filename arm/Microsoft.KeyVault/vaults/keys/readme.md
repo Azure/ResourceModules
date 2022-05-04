@@ -147,7 +147,4 @@ roleAssignments: [
 | `resourceGroupName` | string | The name of the resource group the key was created in. |
 | `resourceId` | string | The resource ID of the key. |
 
-## Template references
 
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)
-- [Vaults/Keys](https://docs.microsoft.com/en-us/azure/templates/Microsoft.KeyVault/2019-09-01/vaults/keys)

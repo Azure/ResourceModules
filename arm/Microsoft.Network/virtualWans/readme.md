@@ -147,12 +147,6 @@ tags: {
 | `resourceGroupName` | string | The resource group the virtual WAN was deployed into |
 | `resourceId` | string | The resource ID of the virtual WAN |
 
-## Template references
-
-- [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)
-- [Virtualwans](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/virtualWans)
-
 ## Deployment examples
 
 <h3>Example 1</h3>

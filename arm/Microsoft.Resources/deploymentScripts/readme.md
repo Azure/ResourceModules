@@ -139,11 +139,6 @@ userAssignedIdentities: {
 
 This module requires a User Assigned Identity (MSI, managed service identity) to exist, and this MSI has to have contributor rights on the subscription - that allows the Deployment Script to create the required Storage Account and the Azure Container Instance.
 
-## Template references
-
-- [Deploymentscripts](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Resources/2020-10-01/deploymentScripts)
-- [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
-
 ## Deployment examples
 
 <h3>Example 1</h3>

@@ -149,12 +149,6 @@ tags: {
 | `resourceGroupName` | string | The resource group the local network gateway was deployed into |
 | `resourceId` | string | The resource ID of the local network gateway |
 
-## Template references
-
-- [Localnetworkgateways](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/localNetworkGateways)
-- [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)
-
 ## Deployment examples
 
 <h3>Example 1</h3>

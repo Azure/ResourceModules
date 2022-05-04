@@ -108,6 +108,4 @@ routingConfiguration: {
 | `resourceGroupName` | string | The name of the resource group the VPN connection was deployed into |
 | `resourceId` | string | The resource ID of the VPN connection |
 
-## Template references
 
-- [Vpngateways/Vpnconnections](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/vpnGateways/vpnConnections)

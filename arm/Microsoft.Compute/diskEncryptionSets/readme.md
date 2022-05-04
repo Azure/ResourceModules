@@ -148,12 +148,6 @@ tags: {
 | `resourceId` | string | The resource ID of the disk encryption set |
 | `systemAssignedPrincipalId` | string | The principal ID of the disk encryption set |
 
-## Template references
-
-- [Diskencryptionsets](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Compute/2021-04-01/diskEncryptionSets)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)
-- [Vaults/Accesspolicies](https://docs.microsoft.com/en-us/azure/templates/Microsoft.KeyVault/2021-06-01-preview/vaults/accessPolicies)
-
 ## Deployment examples
 
 <h3>Example 1</h3>

@@ -147,8 +147,4 @@ roleAssignments: [
 | `resourceGroupName` | string | The name of the Resource Group the Capacity Pool was created in. |
 | `resourceId` | string | The resource ID of the Capacity Pool. |
 
-## Template references
 
-- [Netappaccounts/Capacitypools](https://docs.microsoft.com/en-us/azure/templates/Microsoft.NetApp/2021-06-01/netAppAccounts/capacityPools)
-- [Netappaccounts/Capacitypools/Volumes](https://docs.microsoft.com/en-us/azure/templates/Microsoft.NetApp/2021-06-01/netAppAccounts/capacityPools/volumes)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)

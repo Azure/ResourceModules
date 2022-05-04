@@ -38,6 +38,4 @@ This module deploys a virtual network rule for a service bus namespace.
 | `resourceGroupName` | string | The name of the Resource Group the virtual network rule was created in. |
 | `resourceId` | string | The Resource ID of the virtual network rule. |
 
-## Template references
 
-- [Namespaces/Virtualnetworkrules](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ServiceBus/2018-01-01-preview/namespaces/virtualnetworkrules)

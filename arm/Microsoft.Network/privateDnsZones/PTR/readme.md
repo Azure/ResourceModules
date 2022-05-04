@@ -73,6 +73,4 @@ ptrRecords: [
 | `resourceGroupName` | string | The resource group of the deployed PTR record |
 | `resourceId` | string | The resource ID of the deployed PTR record |
 
-## Template references
 
-- [Privatednszones/PTR](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-06-01/privateDnsZones/PTR)

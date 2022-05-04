@@ -94,10 +94,6 @@ module policysetdefinition 'yourpath/arm/Microsoft.Authorization.policySetDefini
 
 - Policy Set Definitions (Initiatives) have a dependency on Policy Assignments being applied before creating an initiative. You can use the Policy Assignment [Module](../policyDefinitions/deploy.bicep) to deploy a Policy Definition and then create an initiative for it on the required scope.
 
-## Template references
-
-- [Policysetdefinitions](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2021-06-01/policySetDefinitions)
-
 ## Deployment examples
 
 <h3>Example 1</h3>

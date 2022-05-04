@@ -124,10 +124,6 @@ module roleassignment 'yourpath/arm/Microsoft.Authorization.roleAssignments/subs
 
 This module can be deployed at the management group, subscription or resource group level
 
-## Template references
-
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)
-
 ## Deployment examples
 
 <h3>Example 1</h3>

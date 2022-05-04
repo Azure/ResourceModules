@@ -144,12 +144,6 @@ roleAssignments: [
 | `resourceGroupName` | string | The resource group the health bot was deployed into |
 | `resourceId` | string | The resource ID of the health bot |
 
-## Template references
-
-- [Healthbots](https://docs.microsoft.com/en-us/azure/templates/Microsoft.HealthBot/2020-12-08/healthBots)
-- [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)
-
 ## Deployment examples
 
 <h3>Example 1</h3>

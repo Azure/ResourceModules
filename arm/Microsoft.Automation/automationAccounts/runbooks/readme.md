@@ -91,6 +91,4 @@ tags: {
 | `resourceGroupName` | string | The resource group of the deployed runbook |
 | `resourceId` | string | The resource ID of the deployed runbook |
 
-## Template references
 
-- [Automationaccounts/Runbooks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Automation/2019-06-01/automationAccounts/runbooks)

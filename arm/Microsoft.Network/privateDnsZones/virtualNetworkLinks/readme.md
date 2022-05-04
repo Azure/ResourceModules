@@ -82,6 +82,4 @@ tags: {
 | `resourceGroupName` | string | The resource group of the deployed virtual network link |
 | `resourceId` | string | The resource ID of the deployed virtual network link |
 
-## Template references
 
-- [Privatednszones/Virtualnetworklinks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-06-01/privateDnsZones/virtualNetworkLinks)

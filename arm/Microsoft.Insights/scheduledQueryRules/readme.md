@@ -155,11 +155,6 @@ tags: {
 | `resourceGroupName` | string | The Resource Group of the created query rule. |
 | `resourceId` | string | The resource ID of the created query rule. |
 
-## Template references
-
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)
-- [Scheduledqueryrules](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-02-01-preview/scheduledQueryRules)
-
 ## Deployment examples
 
 <h3>Example 1</h3>

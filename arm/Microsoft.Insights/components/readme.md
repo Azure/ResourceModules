@@ -147,11 +147,6 @@ tags: {
 | `resourceGroupName` | string | The resource group the application insights component was deployed into |
 | `resourceId` | string | The resource ID of the application insights component |
 
-## Template references
-
-- [Components](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2020-02-02/components)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)
-
 ## Deployment examples
 
 <h3>Example 1</h3>

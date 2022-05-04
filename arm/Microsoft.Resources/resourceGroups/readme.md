@@ -147,12 +147,6 @@ This module requires a User Assigned Identity (MSI, managed service identity) to
 | `name` | string | The name of the resource group |
 | `resourceId` | string | The resource ID of the resource group |
 
-## Template references
-
-- [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
-- [Resourcegroups](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Resources/2019-05-01/resourceGroups)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)
-
 ## Deployment examples
 
 <h3>Example 1</h3>

@@ -211,12 +211,6 @@ roleAssignments: [
 | `resourceId` | string | The resource ID of the image template |
 | `runThisCommand` | string | The command to run in order to trigger the image build |
 
-## Template references
-
-- [Imagetemplates](https://docs.microsoft.com/en-us/azure/templates/Microsoft.VirtualMachineImages/2020-02-14/imageTemplates)
-- [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)
-
 ## Deployment examples
 
 <h3>Example 1</h3>

@@ -134,11 +134,6 @@ userAssignedIdentities: {
 | `resourceGroupName` | string | The resource group of the deployed firewall policy |
 | `resourceId` | string | The resource ID of the deployed firewall policy |
 
-## Template references
-
-- [Firewallpolicies](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/firewallPolicies)
-- [Firewallpolicies/Rulecollectiongroups](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/firewallPolicies/ruleCollectionGroups)
-
 ## Deployment examples
 
 <h3>Example 1</h3>

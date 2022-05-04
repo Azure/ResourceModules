@@ -145,7 +145,4 @@ roleAssignments: [
 | `resourceGroupName` | string | The name of the resource group the secret was created in. |
 | `resourceId` | string | The resource ID of the secret. |
 
-## Template references
 
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)
-- [Vaults/Secrets](https://docs.microsoft.com/en-us/azure/templates/Microsoft.KeyVault/2019-09-01/vaults/secrets)

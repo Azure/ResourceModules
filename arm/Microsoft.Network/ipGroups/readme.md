@@ -144,12 +144,6 @@ tags: {
 | `resourceGroupName` | string | The resource group of the IP group was deployed into |
 | `resourceId` | string | The resource ID of the IP group |
 
-## Template references
-
-- [Ipgroups](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/ipGroups)
-- [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)
-
 ## Deployment examples
 
 <h3>Example 1</h3>

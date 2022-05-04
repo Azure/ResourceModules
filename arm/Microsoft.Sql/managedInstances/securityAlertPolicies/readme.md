@@ -39,6 +39,4 @@ This module deploys a security alert policy for a SQL managed instance.
 | `resourceGroupName` | string | The resource group of the deployed security alert policy |
 | `resourceId` | string | The resource ID of the deployed security alert policy |
 
-## Template references
 
-- [Managedinstances/Securityalertpolicies](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Sql/2017-03-01-preview/managedInstances/securityAlertPolicies)

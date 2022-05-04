@@ -106,7 +106,4 @@ roleAssignments: [
 | `resourceGroupName` | string | The name of the Resource Group the Volume was created in. |
 | `resourceId` | string | The Resource ID of the Volume. |
 
-## Template references
 
-- [Netappaccounts/Capacitypools/Volumes](https://docs.microsoft.com/en-us/azure/templates/Microsoft.NetApp/2021-06-01/netAppAccounts/capacityPools/volumes)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)

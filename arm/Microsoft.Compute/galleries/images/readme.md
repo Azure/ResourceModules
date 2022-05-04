@@ -160,7 +160,4 @@ tags: {
 | `resourceGroupName` | string | The resource group the image was deployed into |
 | `resourceId` | string | The resource ID of the image |
 
-## Template references
 
-- [Galleries/Images](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Compute/2020-09-30/galleries/images)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)

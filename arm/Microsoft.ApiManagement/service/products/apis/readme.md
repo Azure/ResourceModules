@@ -38,6 +38,4 @@ This module deploys API Management Service Product APIs.
 | `resourceGroupName` | string | The resource group the product API was deployed into |
 | `resourceId` | string | The resource ID of the product API |
 
-## Template references
 
-- [Service/Products/Apis](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2021-08-01/service/products/apis)

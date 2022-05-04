@@ -106,7 +106,4 @@ tags: {
 | `resourceGroupName` | string | The resourceGroup of the deployed database |
 | `resourceId` | string | The resource ID of the deployed database |
 
-## Template references
 
-- [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings)
-- [Servers/Databases](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Sql/2021-02-01-preview/servers/databases)

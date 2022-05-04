@@ -82,6 +82,4 @@ tags: {
 | `resourceGroupName` | string | The resource group of the deployed module |
 | `resourceId` | string | The resource ID of the deployed module |
 
-## Template references
 
-- [Automationaccounts/Modules](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Automation/2020-01-13-preview/automationAccounts/modules)

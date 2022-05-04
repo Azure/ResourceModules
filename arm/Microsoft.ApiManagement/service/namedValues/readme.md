@@ -79,6 +79,4 @@ keyVault: {
 | `resourceGroupName` | string | The resource group the named value was deployed into |
 | `resourceId` | string | The resource ID of the named value |
 
-## Template references
 
-- [Service/Namedvalues](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2021-08-01/service/namedValues)

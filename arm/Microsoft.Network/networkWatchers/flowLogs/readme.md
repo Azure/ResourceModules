@@ -88,6 +88,4 @@ tags: {
 | `resourceGroupName` | string | The resource group the flow log was deployed into |
 | `resourceId` | string | The resource ID of the flow log |
 
-## Template references
 
-- [Networkwatchers/Flowlogs](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/networkWatchers/flowLogs)

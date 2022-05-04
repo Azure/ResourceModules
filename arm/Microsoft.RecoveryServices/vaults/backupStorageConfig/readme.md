@@ -38,6 +38,4 @@ This module deploys the Backup Storage Configuration for the Recovery Service Va
 | `resourceGroupName` | string | The name of the Resource Group the backup storage configuration was created in. |
 | `resourceId` | string | The resource ID of the backup storage config |
 
-## Template references
 
-- [Vaults/Backupstorageconfig](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2021-08-01/vaults/backupstorageconfig)

@@ -126,6 +126,4 @@ Object continaining the configuration for backup policies. It needs to be proper
 | `resourceGroupName` | string | The name of the resource group the backup policy was created in. |
 | `resourceId` | string | The resource ID of the backup policy |
 
-## Template references
 
-- [Vaults/Backuppolicies](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2021-08-01/vaults/backupPolicies)

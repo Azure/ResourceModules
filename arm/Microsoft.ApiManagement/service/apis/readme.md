@@ -108,7 +108,4 @@ apiVersionSet:{
 | `resourceGroupName` | string | The resource group the API management service API was deployed to |
 | `resourceId` | string | The resource ID of the API management service API |
 
-## Template references
 
-- [Service/Apis](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2021-08-01/service/apis)
-- [Service/Apis/Policies](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2021-08-01/service/apis/policies)

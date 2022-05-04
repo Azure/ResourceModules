@@ -44,6 +44,4 @@ This module deploys virtual hub virtual network connections.
 | `resourceGroupName` | string | The resource group the virtual hub connection was deployed into |
 | `resourceId` | string | The resource ID of the virtual hub connection |
 
-## Template references
 
-- [Virtualhubs/Hubvirtualnetworkconnections](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/virtualHubs/hubVirtualNetworkConnections)

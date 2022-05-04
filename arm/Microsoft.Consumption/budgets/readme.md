@@ -47,10 +47,6 @@ This module deploys budgets for subscriptions.
 | `resourceId` | string | The resource ID of the budget |
 | `subscriptionName` | string | The subscription the budget was deployed into |
 
-## Template references
-
-- [Budgets](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Consumption/2019-05-01/budgets)
-
 ## Deployment examples
 
 <h3>Example 1</h3>

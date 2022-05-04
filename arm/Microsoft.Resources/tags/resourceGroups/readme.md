@@ -76,6 +76,4 @@ tags: {
 | `resourceId` | string | The resourceId of the resource group the tags were applied to |
 | `tags` | object | The applied tags |
 
-## Template references
 
-- [Tags](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Resources/2019-10-01/tags)

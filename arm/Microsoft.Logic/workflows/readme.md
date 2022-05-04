@@ -256,13 +256,6 @@ userAssignedIdentities: {
 | `resourceId` | string | The resource ID of the logic app |
 | `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
 
-## Template references
-
-- [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings)
-- [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)
-- [Workflows](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Logic/2019-05-01/workflows)
-
 ## Deployment examples
 
 <h3>Example 1</h3>

@@ -44,6 +44,4 @@ With this module you can create policy definitions on a management group level.
 | `resourceId` | string | Policy Definition resource ID |
 | `roleDefinitionIds` | array | Policy Definition Role Definition IDs |
 
-## Template references
 
-- [Policydefinitions](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2021-06-01/policyDefinitions)

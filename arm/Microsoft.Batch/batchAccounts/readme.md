@@ -89,12 +89,6 @@ tags: {
 | `resourceGroupName` | string | The resource group the batch account was deployed into |
 | `resourceId` | string | The resource ID of the batch account |
 
-## Template references
-
-- [Batchaccounts](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Batch/2020-09-01/batchAccounts)
-- [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings)
-- [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
-
 ## Deployment examples
 
 <h3>Example 1</h3>

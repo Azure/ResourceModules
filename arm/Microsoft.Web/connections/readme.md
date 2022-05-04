@@ -282,12 +282,6 @@ testLinks: [
 | `resourceGroupName` | string | The resource group the connection was deployed into |
 | `resourceId` | string | The resource ID of the connection |
 
-## Template references
-
-- [Connections](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Web/2016-06-01/connections)
-- [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)
-
 ## Deployment examples
 
 <h3>Example 1</h3>

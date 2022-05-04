@@ -39,6 +39,4 @@ This module deploys a migration configuration for a service bus namespace
 | `resourceGroupName` | string | The name of the Resource Group the migration configuration was created in. |
 | `resourceId` | string | The Resource ID of the migration configuration |
 
-## Template references
 
-- [Namespaces/Migrationconfigurations](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ServiceBus/2017-04-01/namespaces/migrationConfigurations)

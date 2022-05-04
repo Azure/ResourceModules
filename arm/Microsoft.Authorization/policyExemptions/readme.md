@@ -125,10 +125,6 @@ module policyexemption 'yourpath/arm/Microsoft.Authorization.policyExemptions/su
 
 - Policy Exemptions have a dependency on Policy Assignments being applied before creating an exemption. You can use the Policy Assignment [Module](../policyAssignments/deploy.bicep) to deploy a Policy Assignment and then create the exemption for it on the required scope.
 
-## Template references
-
-- [Policyexemptions](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-07-01-preview/policyExemptions)
-
 ## Deployment examples
 
 <h3>Example 1</h3>

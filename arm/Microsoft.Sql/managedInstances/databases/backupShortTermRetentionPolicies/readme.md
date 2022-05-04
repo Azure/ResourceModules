@@ -40,6 +40,4 @@ This module deploys a backup short-term retention policies for SQL Managed Insta
 | `resourceGroupName` | string | The resource group of the deployed database backup short-term retention policy |
 | `resourceId` | string | The resource ID of the deployed database backup short-term retention policy |
 
-## Template references
 
-- [Managedinstances/Databases/Backupshorttermretentionpolicies](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Sql/2017-03-01-preview/managedInstances/databases/backupShortTermRetentionPolicies)

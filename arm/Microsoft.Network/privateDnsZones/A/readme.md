@@ -73,6 +73,4 @@ aRecords: [
 | `resourceGroupName` | string | The resource group of the deployed A record |
 | `resourceId` | string | The resource ID of the deployed A record |
 
-## Template references
 
-- [Privatednszones/A](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-06-01/privateDnsZones/A)

@@ -38,6 +38,4 @@ This module deploys a private endpoint private DNS zone group
 | `resourceGroupName` | string | The resource group the private endpoint DNS zone group was deployed into |
 | `resourceId` | string | The resource ID of the private endpoint DNS zone group |
 
-## Template references
 
-- [Privateendpoints/Privatednszonegroups](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/privateEndpoints/privateDnsZoneGroups)

@@ -52,6 +52,4 @@ This module deploys Network Security Group Security Rules.
 | `resourceGroupName` | string | The resource group the security rule was deployed into |
 | `resourceId` | string | The resource ID of the security rule |
 
-## Template references
 
-- [Networksecuritygroups/Securityrules](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/networkSecurityGroups/securityRules)

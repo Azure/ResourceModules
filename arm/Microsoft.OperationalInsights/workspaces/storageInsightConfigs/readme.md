@@ -82,6 +82,4 @@ tags: {
 | `resourceGroupName` | string | The resource group where the storage insight configuration is deployed |
 | `resourceId` | string | The resource ID of the deployed storage insights configuration |
 
-## Template references
 
-- [Workspaces/Storageinsightconfigs](https://docs.microsoft.com/en-us/azure/templates/Microsoft.OperationalInsights/2020-08-01/workspaces/storageInsightConfigs)

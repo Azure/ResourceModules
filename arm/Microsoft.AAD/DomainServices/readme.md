@@ -204,13 +204,6 @@ $pfxCertificate = [System.Convert]::ToBase64String($rawCertByteStream)
 | `resourceGroupName` | string | The name of the resource group the Azure Active Directory Domain Services(Azure ADDS) was created in. |
 | `resourceId` | string | The resource ID of the Azure Active Directory Domain Services(Azure ADDS) |
 
-## Template references
-
-- [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings)
-- [Domainservices](https://docs.microsoft.com/en-us/azure/templates/Microsoft.AAD/2021-05-01/domainServices)
-- [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)
-
 ## Deployment examples
 
 <h3>Example 1</h3>

@@ -100,7 +100,4 @@ roleAssignments: [
 | `resourceGroupName` | string | The resource group of the deployed queue |
 | `resourceId` | string | The resource ID of the deployed queue |
 
-## Template references
 
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)
-- [Storageaccounts/Queueservices/Queues](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Storage/2019-06-01/storageAccounts/queueServices/queues)

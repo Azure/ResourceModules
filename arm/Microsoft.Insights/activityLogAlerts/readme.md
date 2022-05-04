@@ -370,11 +370,6 @@ tags: {
 | `resourceGroupName` | string | The resource group the activity log alert was deployed into |
 | `resourceId` | string | The resource ID of the activity log alert |
 
-## Template references
-
-- [Activitylogalerts](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2020-10-01/activityLogAlerts)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)
-
 ## Deployment examples
 
 <h3>Example 1</h3>

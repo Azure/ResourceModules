@@ -48,6 +48,4 @@ This module deploys API Management Service Identity Provider.
 | `resourceGroupName` | string | The resource group the API management service identity provider was deployed into |
 | `resourceId` | string | The resource ID of the API management service identity provider |
 
-## Template references
 
-- [Service/Identityproviders](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2021-08-01/service/identityProviders)

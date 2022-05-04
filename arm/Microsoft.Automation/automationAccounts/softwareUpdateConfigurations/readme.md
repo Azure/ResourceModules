@@ -159,6 +159,4 @@ monthlyOccurrences: [
 | `resourceGroupName` | string | The resource group of the deployed softwareUpdateConfiguration |
 | `resourceId` | string | The resource ID of the deployed softwareUpdateConfiguration |
 
-## Template references
 
-- [Automationaccounts/Softwareupdateconfigurations](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Automation/2019-06-01/automationAccounts/softwareUpdateConfigurations)

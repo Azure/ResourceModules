@@ -234,15 +234,6 @@ tags: {
 | `resourceGroupName` | string | The name of the resource group the event grid was deployed into |
 | `resourceId` | string | The resource ID of the event grid |
 
-## Template references
-
-- [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings)
-- [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
-- [Privateendpoints](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/privateEndpoints)
-- [Privateendpoints/Privatednszonegroups](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-02-01/privateEndpoints/privateDnsZoneGroups)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)
-- [Topics](https://docs.microsoft.com/en-us/azure/templates/Microsoft.EventGrid/2020-06-01/topics)
-
 ## Deployment examples
 
 <h3>Example 1</h3>

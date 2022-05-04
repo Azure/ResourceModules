@@ -140,12 +140,6 @@ tags: {
 | `resourceGroupName` | string | The resource group the user assigned identity was deployed into |
 | `resourceId` | string | The resource ID of the user assigned identity |
 
-## Template references
-
-- [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)
-- [Userassignedidentities](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ManagedIdentity/2018-11-30/userAssignedIdentities)
-
 ## Deployment examples
 
 <h3>Example 1</h3>

@@ -232,6 +232,4 @@ tls: {
 | `resourceGroupName` | string | The resource group the API management service backend was deployed into |
 | `resourceId` | string | The resource ID of the API management service backend |
 
-## Template references
 
-- [Service/Backends](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2021-08-01/service/backends)

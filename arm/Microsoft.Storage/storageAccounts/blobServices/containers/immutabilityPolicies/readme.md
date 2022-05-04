@@ -41,6 +41,4 @@ This module deploys an Immutability Policy for a blob container
 | `resourceGroupName` | string | The resource group of the deployed immutability policy. |
 | `resourceId` | string | The resource ID of the deployed immutability policy. |
 
-## Template references
 
-- [Storageaccounts/Blobservices/Containers/Immutabilitypolicies](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Storage/2019-06-01/storageAccounts/blobServices/containers/immutabilityPolicies)
