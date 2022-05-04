@@ -43,7 +43,7 @@ The following resources are required to be able to deploy this resource.
 | `tls` | object | `{object}` | Backend TLS Properties |
 
 
-### Parameters - credentials
+### Parameter Usage: Credentials
 
 | Parameter Name| Type | Default Value  | Possible values | Description |
 | :-- | :-- | :--- | :-- | :- |
@@ -105,6 +105,10 @@ credentials: {
 | `username` | string | | | Username to connect to the WebProxy server|
 | `password`| string | | | Password to connect to the WebProxy Server|
 
+<details>
+
+<summary>Parameter JSON format</summary>
+
 ```json
 "proxy": {
     "value":{
@@ -142,6 +146,10 @@ proxy: {
 | `managementEndpoints` | array | | | Required (if this object is used). The cluster management endpoint. - string|
 | `serverCertificateThumbprints`| array | | | Optional. Thumbprints of certificates cluster management service uses for TLS communication - string|
 | `serverX509Names` | array | | | Optional. Server X509 Certificate Names Collection|
+
+<details>
+
+<summary>Parameter JSON format</summary>
 
 ```json
 "serviceFabricCluster": {

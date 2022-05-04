@@ -45,17 +45,40 @@ With this module you can create policy exemptions across the management group, s
 
 To deploy resource to a Management Group, provide the `managementGroupId` as an input parameter to the module.
 
+
+<details>
+
+<summary>Parameter JSON format</summary>
+
 ```json
 "managementGroupId": {
     "value": "contoso-group"
 }
 ```
 
+</details>
+
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+
+```
+
+</details>
+<p>
+
 > `managementGroupId` is an optional parameter. If not provided, the deployment will use the management group defined in the current deployment scope (i.e. `managementGroup().name`).
 
 ### Parameter Usage: `subscriptionId`
 
 To deploy resource to an Azure Subscription, provide the `subscriptionId` as an input parameter to the module. **Example**:
+
+<details>
+
+<summary>Parameter JSON format</summary>
 
 ```json
 "subscriptionId": {

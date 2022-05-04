@@ -44,17 +44,40 @@ This module deploys custom RBAC Role Definitions across the management group, su
 
 To deploy resource to a Management Group, provide the `managementGroupId` as an input parameter to the module.
 
+<details>
+
+<summary>Parameter JSON format</summary>
+
 ```json
 "managementGroupId": {
     "value": "contoso-group"
 }
 ```
 
+</details>
+
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+
+```
+
+</details>
+<p>
+
 > `managementGroupId` is an optional parameter. If not provided, the deployment will use the management group defined in the current deployment scope (i.e. `managementGroup().name`).
 
 ### Parameter Usage: `subscriptionId`
 
 To deploy resource to an Azure Subscription, provide the `subscriptionId` as an input parameter to the module. **Example**:
+
+
+<details>
+
+<summary>Parameter JSON format</summary>
 
 ```json
 "subscriptionId": {
@@ -79,6 +102,10 @@ subscriptionId: '12345678-b049-471c-95af-123456789012'
 
 To deploy resource to a Resource Group, provide the `subscriptionId` and `resourceGroupName` as an input parameter to the module. **Example**:
 
+<details>
+
+<summary>Parameter JSON format</summary>
+
 ```json
 "subscriptionId": {
     "value": "12345678-b049-471c-95af-123456789012"
@@ -87,6 +114,20 @@ To deploy resource to a Resource Group, provide the `subscriptionId` and `resour
     "value": "target-resourceGroup"
 }
 ```
+
+</details>
+
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+
+```
+
+</details>
+<p>
 
 > The `subscriptionId` is used to enable deployment to a Resource Group Scope, allowing the use of the `resourceGroup()` function from a Management Group Scope. [Additional Details](https://github.com/Azure/bicep/pull/1420).
 

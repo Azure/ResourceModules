@@ -76,6 +76,10 @@ Prerequsites:
 - User Assigned Identity have to be one of the defined identities in userAssignedIdentities parameter block.
 - To use Azure Automation with customer managed keys, both `Soft Delete` and `Do Not Purge` features must be turned on to allow for recovery of keys in case of accidental deletion.
 
+<details>
+
+<summary>Parameter JSON format</summary>
+
 ```json
 "encryptionKeySource" : {
     "value" : "Microsoft.KeyVault"
@@ -100,6 +104,21 @@ Prerequsites:
     }
 },
 ```
+
+</details>
+
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+
+```
+
+</details>
+<p>
+
 ### Parameter Usage: `privateEndpoints`
 
 To use Private Endpoint the following dependencies must be deployed:
@@ -351,7 +370,7 @@ userAssignedIdentities: {
         "keyVersion" : {
                     "value" : "9917c14be51d4d93b37218de7d326f60"
         },
-        
+
         "userAssignedIdentities": {
             "value": {
                 "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001": {}

@@ -71,6 +71,11 @@ Provide tag keys, with an array of values, filtering in machines that should be 
 | :------------ | :---- | :-------------- | :---------- |
 | \<tag key\>   | array | string          | tag values  |
 
+
+<details>
+
+<summary>Parameter JSON format</summary>
+
 ```json
 "scopeByTags": {
     "value": {
@@ -112,6 +117,10 @@ Occurrences of days within a month.
 | :------------ | :----- | :------------------------------------------------------------- | :----------------------------------------------------------------------------------- |
 | `occurance`   | int    | 1-5                                                            | Occurrence of the week within the month. Must be between 1 and 5, where 5 is "last". |
 | `day`         | string | Monday, Tuesday, Wednesday, Thursday, Friday, Saturday, Sunday | Day of the occurrence.                                                               |
+
+<details>
+
+<summary>Parameter JSON format</summary>
 
 ```json
 "monthlyOccurrences": {
