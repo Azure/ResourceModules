@@ -44,7 +44,7 @@ resource trafficmanagerprofile 'Microsoft.Network/trafficmanagerprofiles@2018-08
   name: last(split(resourceId, '/'))
 }
 
-resource roleAssignment 'Microsoft.Authorization/roleAssignments@2021-04-01-preview' = [for principalId in principalIds: {
+resource roleAssignment 'Microsoft.Authorization/roleAssignments@2020-10-01-preview' = [for principalId in principalIds: {
   name: guid(trafficmanagerprofile.id, principalId, roleDefinitionIdOrName)
   properties: {
     description: description

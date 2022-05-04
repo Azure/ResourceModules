@@ -45,7 +45,7 @@ resource galleryImage 'Microsoft.Compute/galleries/images@2020-09-30' existing =
   name: '${split(resourceId, '/')[8]}/${split(resourceId, '/')[10]}'
 }
 
-resource roleAssignment 'Microsoft.Authorization/roleAssignments@2021-04-01-preview' = [for principalId in principalIds: {
+resource roleAssignment 'Microsoft.Authorization/roleAssignments@2020-10-01-preview' = [for principalId in principalIds: {
   name: guid(galleryImage.id, principalId, roleDefinitionIdOrName)
   properties: {
     description: description

@@ -43,7 +43,7 @@ resource userMsi 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-11-30' e
   name: last(split(resourceId, '/'))
 }
 
-resource roleAssignment 'Microsoft.Authorization/roleAssignments@2021-04-01-preview' = [for principalId in principalIds: {
+resource roleAssignment 'Microsoft.Authorization/roleAssignments@2020-10-01-preview' = [for principalId in principalIds: {
   name: guid(userMsi.id, principalId, roleDefinitionIdOrName)
   properties: {
     description: description

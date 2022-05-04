@@ -58,7 +58,7 @@ resource subnet 'Microsoft.Network/virtualNetworks/subnets@2021-03-01' existing 
   name: '${split(resourceId, '/')[8]}/${split(resourceId, '/')[10]}'
 }
 
-resource roleAssignment 'Microsoft.Authorization/roleAssignments@2021-04-01-preview' = [for principalId in principalIds: {
+resource roleAssignment 'Microsoft.Authorization/roleAssignments@2020-10-01-preview' = [for principalId in principalIds: {
   name: guid(subnet.id, principalId, roleDefinitionIdOrName)
   properties: {
     description: description
