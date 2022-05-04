@@ -46,6 +46,10 @@ This module deploys an alert based on metrics.
 
 ### Parameter Usage: actions
 
+<details>
+
+<summary>Parameter JSON format</summary>
+
 ```json
 "actions": {
   "value": [
@@ -57,9 +61,26 @@ This module deploys an alert based on metrics.
 }
 ```
 
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+
+```
+
+</details>
+<p>
+
 `webhookProperties` is optional.
 
 If you do only want to provide actionGroupIds, a shorthand use of the parameter is available.
+
+<details>
+
+<summary>Parameter JSON format</summary>
 
 ```json
 "actions": {
@@ -69,9 +90,28 @@ If you do only want to provide actionGroupIds, a shorthand use of the parameter 
 }
 ```
 
-### Parameter Usage: criteria
+</details>
+
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+
+
+```
+
+</details>
+
+### Parameter Usage: `criteria`
 
 **SingleResourceMultipleMetricCriteria**
+
+
+<details>
+
+<summary>Parameter JSON format</summary>
 
 ```json
 {
@@ -86,7 +126,25 @@ If you do only want to provide actionGroupIds, a shorthand use of the parameter 
 }
 ```
 
+</details>
+
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+
+```
+
+</details>
+<p>
+
 **MultipleResourceMultipleMetricCriteria**
+
+<details>
+
+<summary>Parameter JSON format</summary>
 
 ```json
 {
@@ -107,8 +165,26 @@ If you do only want to provide actionGroupIds, a shorthand use of the parameter 
 }
 ```
 
+</details>
+
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+
+```
+
+</details>
+<p>
+
 **Sample**
 The following sample can be use both for Single and Multiple criteria. The other parameters are optional.
+
+<details>
+
+<summary>Parameter JSON format</summary>
 
 ```json
 "criterias":{
@@ -125,6 +201,19 @@ The following sample can be use both for Single and Multiple criteria. The other
   ]
 }
 ```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+
+```
+
+</details>
+<p>
 
 ### Parameter Usage: `roleAssignments`
 

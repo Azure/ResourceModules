@@ -107,6 +107,11 @@ actions: [
 
 **Conditions can also be combined with logical operators `allOf` and `anyOf`**
 
+
+<details>
+
+<summary>Parameter JSON format</summary>
+
 ```json
 {
   "field": "string",
@@ -114,6 +119,20 @@ actions: [
   "containsAny": "array"
 }
 ```
+
+</details>
+
+
+<details>
+
+<summary>Parameter JSON format</summary>
+
+```bicep
+
+```
+
+</details>
+</p>
 
 Each condition can specify only one field between `equals` and `containsAny`.
 

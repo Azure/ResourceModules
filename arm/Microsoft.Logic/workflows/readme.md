@@ -68,6 +68,10 @@ This module deploys a Logic App resource.
 - `triggersAccessControlConfiguration`
 - `workflowManagementAccessControlConfiguration`
 
+<details>
+
+<summary>Parameter JSON format</summary>
+
 ```json
 "<accessControl>AccessControlConfiguration": {
     "value": {
@@ -83,10 +87,28 @@ This module deploys a Logic App resource.
 }
 ```
 
+</details>
+
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+
+```
+
+</details>
+<p>
+
 ### Parameter Usage `<flow>EndpointsConfiguration`
 
 - `connectorEndpointsConfiguration`
 - `workflowEndpointsConfiguration`
+
+<details>
+
+<summary>Parameter JSON format</summary>
 
 ```json
 "<flow>EndpointsConfiguration": {
@@ -103,6 +125,19 @@ This module deploys a Logic App resource.
     ]
 }
 ```
+
+</details>
+
+<details>
+
+<summary>Parameter JSON format</summary>
+
+```bicep
+
+```
+
+</details>
+<p>
 
 ### Parameter Usage `workflow*`
 
