@@ -52,12 +52,12 @@ This module deploys an alert based on metrics.
 
 ```json
 "actions": {
-  "value": [
-    {
-      "actionGroupId": "/subscriptions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/resourceGroups/rgName/providers/microsoft.insights/actiongroups/ActionGroupName",
-      "webhookProperties": {}
-    }
-  ]
+    "value": [
+        {
+            "actionGroupId": "/subscriptions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/resourceGroups/rgName/providers/microsoft.insights/actiongroups/ActionGroupName",
+            "webhookProperties": {}
+        }
+    ]
 }
 ```
 
@@ -68,7 +68,12 @@ This module deploys an alert based on metrics.
 <summary>Bicep format</summary>
 
 ```bicep
-
+actions: [
+    {
+        actionGroupId: '/subscriptions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/resourceGroups/rgName/providers/microsoft.insights/actiongroups/ActionGroupName'
+        webhookProperties: {}
+    }
+]
 ```
 
 </details>
@@ -115,14 +120,14 @@ If you do only want to provide actionGroupIds, a shorthand use of the parameter 
 
 ```json
 {
-  "criterionType": "string",
-  "dimensions": [],
-  "metricName": "string",
-  "metricNamespace": "string",
-  "name": "string",
-  "operator": "string",
-  "threshold": "integer",
-  "timeAggregation": "string"
+    "criterionType": "string",
+    "dimensions": [],
+    "metricName": "string",
+    "metricNamespace": "string",
+    "name": "string",
+    "operator": "string",
+    "threshold": "integer",
+    "timeAggregation": "string"
 }
 ```
 
@@ -134,7 +139,16 @@ If you do only want to provide actionGroupIds, a shorthand use of the parameter 
 <summary>Bicep format</summary>
 
 ```bicep
-
+{
+    criterionType: 'string'
+    dimensions: []
+    metricName: 'string'
+    metricNamespace: 'string'
+    name: 'string'
+    operator: 'string'
+    threshold: 'integer'
+    timeAggregation: 'string'
+}
 ```
 
 </details>
@@ -173,7 +187,22 @@ If you do only want to provide actionGroupIds, a shorthand use of the parameter 
 <summary>Bicep format</summary>
 
 ```bicep
-
+{
+    criterionType: 'string'
+    dimensions: []
+    metricName: 'string'
+    metricNamespace: 'string'
+    name: 'string'
+    operator: 'string'
+    threshold: 'integer'
+    timeAggregation: 'string'
+    alertSensitivity: 'string'
+    failingPeriods: {
+        minFailingPeriodsToAlert: 'integer'
+        numberOfEvaluationPeriods: 'integer'
+    }
+    ignoreDataBefore: 'string'
+}
 ```
 
 </details>
@@ -209,7 +238,17 @@ The following sample can be use both for Single and Multiple criteria. The other
 <summary>Bicep format</summary>
 
 ```bicep
-
+criterias: [
+    {
+      criterionType: 'StaticThresholdCriterion'
+      metricName: 'Percentage CPU'
+      metricNamespace: 'microsoft.compute/virtualmachines'
+      name: 'HighCPU'
+      operator: 'GreaterThan'
+      threshold: '90'
+      timeAggregation: 'Average'
+    }
+]
 ```
 
 </details>

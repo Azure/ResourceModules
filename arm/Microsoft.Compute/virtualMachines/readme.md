@@ -134,7 +134,12 @@ This module deploys one Virtual Machine with one or multiple nics and optionally
 <summary>Bicep format</summary>
 
 ```bicep
-
+imageReference: {
+      publisher: 'MicrosoftWindowsServer'
+      offer: 'WindowsServer'
+      sku: '2016-Datacenter'
+      version: 'latest'
+}
 ```
 
 </details>

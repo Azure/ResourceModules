@@ -41,10 +41,10 @@ For remaining properties, see [FirewallPolicyRuleCollection objects](https://doc
 ```json
 "ruleCollections": [
     {
-    "name": "string",
-    "priority": "int",
-    "ruleCollectionType": "string"
-    // For remaining properties, see FirewallPolicyRuleCollection objects
+        "name": "string",
+        "priority": "int",
+        "ruleCollectionType": "string"
+        // For remaining properties, see FirewallPolicyRuleCollection objects
     }
 ]
 ```
@@ -57,7 +57,14 @@ For remaining properties, see [FirewallPolicyRuleCollection objects](https://doc
 <summary>Bicep format</summary>
 
 ```bicep
-
+ruleCollections: [
+    {
+        name: 'string'
+        priority: 'int'
+        ruleCollectionType: 'string'
+        // For remaining properties see FirewallPolicyRuleCollection objects
+    }
+]
 ```
 
 </details>

@@ -273,13 +273,25 @@ sqlDatabases: {
 
 </details>
 
-
 <details>
 
 <summary>Bicep format</summary>
 
 ```bicep
-
+mongodbDatabases: [
+    {
+        name: 'sxx-az-mdb-x-001'
+        collections: [
+            <...>
+        ]
+    }
+    {
+        name: 'sxx-az-mdb-x-002'
+        collections: [
+            <...>
+        ]
+    }
+]
 ```
 
 </details>

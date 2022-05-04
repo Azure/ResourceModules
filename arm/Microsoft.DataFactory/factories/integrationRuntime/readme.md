@@ -45,16 +45,18 @@ This module deploys a Managed or Self-Hosted Integration Runtime for an Azure Da
         }
     }
 }
-
 ```
-
 
 <details>
 
 <summary>Bicep format</summary>
 
 ```bicep
-
+typeProperties: {
+    computeProperties: {
+        location: 'AutoResolve'
+    }
+}
 ```
 
 <details>

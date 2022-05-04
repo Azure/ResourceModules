@@ -96,24 +96,28 @@ Prerequsites:
 "keyVersion" : {
             "value" : "aa11b22c1234567890c3608c657cd5a2"
 },
-
 "userAssignedIdentities": {
     "value": {
         "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001": {}, // same value as 'encryptionUserAssignedIdentity' parameter
-        ...
     }
-},
+}
 ```
 
 </details>
-
 
 <details>
 
 <summary>Bicep format</summary>
 
 ```bicep
-
+encryptionKeySource: 'Microsoft.KeyVault'
+encryptionUserAssignedIdentity: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001' // this identity needs to be one of the identities defined in userAssignedIdentities section
+keyName : 'keyEncryptionKey'
+keyvaultUri: 'https://<<keyValutName>>.vault.azure.net/'
+keyVersion: 'aa11b22c1234567890c3608c657cd5a2'
+userAssignedIdentities: {
+    '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {} // same value as 'encryptionUserAssignedIdentity' parameter
+}
 ```
 
 </details>

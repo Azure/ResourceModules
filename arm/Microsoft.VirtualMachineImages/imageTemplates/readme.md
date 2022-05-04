@@ -78,7 +78,13 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 <summary>Bicep format</summary>
 
 ```bicep
-
+source: {
+    type: 'PlatformImage'
+    publisher: 'MicrosoftWindowsDesktop'
+    offer: 'Windows-10'
+    sku: '19h2-evd'
+    version: 'latest'
+}
 ```
 
 </details>
@@ -104,7 +110,10 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 <summary>Bicep format</summary>
 
 ```bicep
-
+source: {
+    type: 'ManagedImage'
+    imageId: '/subscriptions/<subscriptionId>/resourceGroups/{destinationResourceGroupName}/providers/Microsoft.Compute/images/<imageName>'
+}
 ```
 
 </details>

@@ -68,7 +68,13 @@ This module deploys a VPN Site.
 <summary>Bicep format</summary>
 
 ```bicep
-
+o365Policy: {
+    breakOutCategories: {
+        optimize: true
+        allow: true
+        default: true
+    }
+}
 ```
 
 </details>
@@ -98,7 +104,11 @@ This module deploys a VPN Site.
 <summary>Bicep format</summary>
 
 ```bicep
-
+deviceProperties: {
+    deviceModel: 'morty'
+    deviceVendor: 'contoso'
+    linkSpeedInMbps: 0
+}
 ```
 
 </details>
@@ -130,7 +140,11 @@ The BGP properties. Note: This is a deprecated property, please use the correspo
 <summary>Bicep format</summary>
 
 ```bicep
-
+bgpProperties: {
+    asn: 65010
+    bgpPeeringAddress: '1.1.1.1'
+    peerWeight: 0
+}
 ```
 
 </details>

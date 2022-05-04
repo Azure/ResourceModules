@@ -76,12 +76,12 @@ This module deploys a Logic App resource.
 "<accessControl>AccessControlConfiguration": {
     "value": {
         "allowedCallerIpAddresses": [
-        {
-  "addressRange": "string"
-        }
+            {
+                "addressRange": "string"
+            }
         ],
         "openAuthenticationPolicies": {
-"policies": {}
+            "policies": {}
         }
     }
 }
@@ -95,7 +95,16 @@ This module deploys a Logic App resource.
 <summary>Bicep format</summary>
 
 ```bicep
-
+'<accessControl>AccessControlConfiguration': {
+    allowedCallerIpAddresses: [
+        {
+            addressRange: 'string'
+        }
+    ]
+    openAuthenticationPolicies: {
+        policies: {}
+    }
+}
 ```
 
 </details>
@@ -114,15 +123,16 @@ This module deploys a Logic App resource.
 "<flow>EndpointsConfiguration": {
     "value": {
         "outgoingIpAddresses": [
-        {
-  "address": "string"
-        }
+            {
+                "address": "string"
+            }
         ],
-        "accessEndpointIpAddresses": [
-        {
-  "address": "string"
-        }
-    ]
+            "accessEndpointIpAddresses": [
+            {
+                "address": "string"
+            }
+        ]
+    }
 }
 ```
 
@@ -130,10 +140,21 @@ This module deploys a Logic App resource.
 
 <details>
 
-<summary>Parameter JSON format</summary>
+<summary>Bicep format</summary>
 
 ```bicep
-
+'<flow>EndpointsConfiguration': {
+    outgoingIpAddresses: [
+        {
+            address: 'string'
+        }
+    ]
+    accessEndpointIpAddresses: [
+        {
+            address: 'string'
+        }
+    ]
+}
 ```
 
 </details>

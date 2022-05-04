@@ -122,13 +122,16 @@ actions: [
 
 </details>
 
-
 <details>
 
-<summary>Parameter JSON format</summary>
+<summary>Bicep format</summary>
 
 ```bicep
-
+{
+    field: 'string'
+    equals: 'string'
+    containsAny: 'array'
+}
 ```
 
 </details>

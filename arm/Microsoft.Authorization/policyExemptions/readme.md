@@ -64,7 +64,7 @@ To deploy resource to a Management Group, provide the `managementGroupId` as an 
 <summary>Bicep format</summary>
 
 ```bicep
-
+managementGroupId: 'contoso-group'
 ```
 
 </details>

@@ -264,7 +264,7 @@ tags: {
       }
     ]
   }
-},
+}
 ```
 
 </details>
@@ -275,7 +275,23 @@ tags: {
 <summary>Bicep format</summary>
 
 ```bicep
-
+networkAcls: {
+    defaultAction: 'Deny'
+    virtualNetworkRules: [
+        {
+            id: '/subscriptions/<subscription-ID>/resourceGroups/resourceGroup/providers/Microsoft.Network/virtualNetworks/<vnet-name>/subnets/<subnet-name>'
+            ignoreMissingVnetServiceEndpoint: false
+        }
+    ]
+    ipRules: [
+        {
+            value: '1.1.1.1'
+        }
+        {
+            value: '<IP address or CIDR>'
+        }
+    ]
+}
 ```
 
 </details>

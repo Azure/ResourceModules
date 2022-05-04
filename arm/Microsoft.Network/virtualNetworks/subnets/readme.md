@@ -62,13 +62,19 @@ This module deploys a virtual network subnet.
 
 </details>
 
-
 <details>
 
 <summary>Bicep format</summary>
 
 ```bicep
-
+delegations: [
+    {
+        name: 'sqlMiDel'
+        properties: {
+            serviceName: 'Microsoft.Sql/managedInstances'
+        }
+    }
+]
 ```
 
 </details>
@@ -97,7 +103,12 @@ This module deploys a virtual network subnet.
 <summary>Bicep format</summary>
 
 ```bicep
-
+serviceEndpoints: [
+    'Microsoft.EventHub'
+    'Microsoft.Sql'
+    'Microsoft.Storage'
+    'Microsoft.KeyVault'
+]
 ```
 
 </details>
