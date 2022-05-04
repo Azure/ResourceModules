@@ -62,14 +62,36 @@ This module deploys a recovery service vault.
 
 ### Parameter Usage: `backupStorageConfig`
 
+<details>
+
+<summary>Parameter JSON format</summary>
+
 ```json
 "backupStorageConfig": {
     "value": {
-      "storageModelType": "GeoRedundant",
-      "crossRegionRestoreFlag": true
+        "storageModelType": "GeoRedundant",
+        "crossRegionRestoreFlag": true
     }
 }
 ```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+backupStorageConfig: {
+    value: {
+        storageModelType: 'GeoRedundant'
+        crossRegionRestoreFlag: true
+    }
+}
+```
+
+</details>
+<p>
 
 ### Parameter Usage: `roleAssignments`
 
@@ -174,6 +196,10 @@ tags: {
 ### Parameter Usage: `backupPolicies`
 
 Array of backup policies. They need to be properly formatted and can be VM backup policies, SQL on VM backup policies or fileshare policies. The following example shows all three types of backup policies.
+
+<details>
+
+<summary>Parameter JSON format</summary>
 
 ```json
 "backupPolicies": {
@@ -413,7 +439,256 @@ Array of backup policies. They need to be properly formatted and can be VM backu
 }
 ```
 
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+backupPolicies: [
+    {
+      name: 'VMpolicy'
+      type: 'Microsoft.RecoveryServices/vaults/backupPolicies'
+      properties: {
+        backupManagementType: 'AzureIaasVM'
+        instantRPDetails: {}
+        schedulePolicy: {
+          schedulePolicyType: 'SimpleSchedulePolicy'
+          scheduleRunFrequency: 'Daily'
+          scheduleRunTimes: [
+            '2019-11-07T07:00:00Z'
+          ]
+          scheduleWeeklyFrequency: 0
+        }
+        retentionPolicy: {
+          retentionPolicyType: 'LongTermRetentionPolicy'
+          dailySchedule: {
+            retentionTimes: [
+              '2019-11-07T07:00:00Z'
+            ]
+            retentionDuration: {
+              count: 180
+              durationType: 'Days'
+            }
+          }
+          weeklySchedule: {
+            daysOfTheWeek: [
+              'Sunday'
+            ]
+            retentionTimes: [
+              '2019-11-07T07:00:00Z'
+            ]
+            retentionDuration: {
+              count: 12
+              durationType: 'Weeks'
+            }
+          }
+          monthlySchedule: {
+            retentionScheduleFormatType: 'Weekly'
+            retentionScheduleWeekly: {
+              daysOfTheWeek: [
+                'Sunday'
+              ]
+              weeksOfTheMonth: [
+                'First'
+              ]
+            }
+            retentionTimes: [
+              '2019-11-07T07:00:00Z'
+            ]
+            retentionDuration: {
+              count: 60
+              durationType: 'Months'
+            }
+          }
+          yearlySchedule: {
+            retentionScheduleFormatType: 'Weekly'
+            monthsOfYear: [
+              'January'
+            ]
+            retentionScheduleWeekly: {
+              daysOfTheWeek: [
+                'Sunday'
+              ]
+              weeksOfTheMonth: [
+                'First'
+              ]
+            }
+            retentionTimes: [
+              '2019-11-07T07:00:00Z'
+            ]
+            retentionDuration: {
+              count: 10
+              durationType: 'Years'
+            }
+          }
+        }
+        instantRpRetentionRangeInDays: 2
+        timeZone: 'UTC'
+        protectedItemsCount: 0
+      }
+    }
+    {
+      name: 'sqlpolicy'
+      type: 'Microsoft.RecoveryServices/vaults/backupPolicies'
+      properties: {
+        backupManagementType: 'AzureWorkload'
+        workLoadType: 'SQLDataBase'
+        settings: {
+          timeZone: 'UTC'
+          issqlcompression: true
+          isCompression: true
+        }
+        subProtectionPolicy: [
+          {
+            policyType: 'Full'
+            schedulePolicy: {
+              schedulePolicyType: 'SimpleSchedulePolicy'
+              scheduleRunFrequency: 'Weekly'
+              scheduleRunDays: [
+                'Sunday'
+              ]
+              scheduleRunTimes: [
+                '2019-11-07T22:00:00Z'
+              ]
+              scheduleWeeklyFrequency: 0
+            }
+            retentionPolicy: {
+              retentionPolicyType: 'LongTermRetentionPolicy'
+              weeklySchedule: {
+                daysOfTheWeek: [
+                  'Sunday'
+                ]
+                retentionTimes: [
+                  '2019-11-07T22:00:00Z'
+                ]
+                retentionDuration: {
+                  count: 104
+                  durationType: 'Weeks'
+                }
+              }
+              monthlySchedule: {
+                retentionScheduleFormatType: 'Weekly'
+                retentionScheduleWeekly: {
+                  daysOfTheWeek: [
+                    'Sunday'
+                  ]
+                  weeksOfTheMonth: [
+                    'First'
+                  ]
+                }
+                retentionTimes: [
+                  '2019-11-07T22:00:00Z'
+                ]
+                retentionDuration: {
+                  count: 60
+                  durationType: 'Months'
+                }
+              }
+              yearlySchedule: {
+                retentionScheduleFormatType: 'Weekly'
+                monthsOfYear: [
+                  'January'
+                ]
+                retentionScheduleWeekly: {
+                  daysOfTheWeek: [
+                    'Sunday'
+                  ]
+                  weeksOfTheMonth: [
+                    'First'
+                  ]
+                }
+                retentionTimes: [
+                  '2019-11-07T22:00:00Z'
+                ]
+                retentionDuration: {
+                  count: 10
+                  durationType: 'Years'
+                }
+              }
+            }
+          }
+          {
+            policyType: 'Differential'
+            schedulePolicy: {
+              schedulePolicyType: 'SimpleSchedulePolicy'
+              scheduleRunFrequency: 'Weekly'
+              scheduleRunDays: [
+                'Monday'
+              ]
+              scheduleRunTimes: [
+                '2017-03-07T02:00:00Z'
+              ]
+              scheduleWeeklyFrequency: 0
+            }
+            retentionPolicy: {
+              retentionPolicyType: 'SimpleRetentionPolicy'
+              retentionDuration: {
+                count: 30
+                durationType: 'Days'
+              }
+            }
+          }
+          {
+            policyType: 'Log'
+            schedulePolicy: {
+              schedulePolicyType: 'LogSchedulePolicy'
+              scheduleFrequencyInMins: 120
+            }
+            retentionPolicy: {
+              retentionPolicyType: 'SimpleRetentionPolicy'
+              retentionDuration: {
+                count: 15
+                durationType: 'Days'
+              }
+            }
+          }
+        ]
+        protectedItemsCount: 0
+      }
+    }
+    {
+      name: 'filesharepolicy'
+      type: 'Microsoft.RecoveryServices/vaults/backupPolicies'
+      properties: {
+        backupManagementType: 'AzureStorage'
+        workloadType: 'AzureFileShare'
+        schedulePolicy: {
+          schedulePolicyType: 'SimpleSchedulePolicy'
+          scheduleRunFrequency: 'Daily'
+          scheduleRunTimes: [
+            '2019-11-07T04:30:00Z'
+          ]
+          scheduleWeeklyFrequency: 0
+        }
+        retentionPolicy: {
+          retentionPolicyType: 'LongTermRetentionPolicy'
+          dailySchedule: {
+            retentionTimes: [
+              '2019-11-07T04:30:00Z'
+            ]
+            retentionDuration: {
+              count: 30
+              durationType: 'Days'
+            }
+          }
+        }
+        timeZone: 'UTC'
+        protectedItemsCount: 0
+      }
+    }
+]
+```
+
+</details>
+<p>
+
 ### Parameter Usage: `replicationFabrics`
+
+<details>
+
+<summary>Parameter JSON format</summary>
 
 ```json
 "replicationFabrics": {
@@ -448,6 +723,10 @@ Array of backup policies. They need to be properly formatted and can be VM backu
 
 ### Parameter Usage: `replicationPolicies`
 
+<details>
+
+<summary>Parameter JSON format</summary>
+
 ```json
 "replicationPolicies": {
     "value": [
@@ -464,6 +743,30 @@ Array of backup policies. They need to be properly formatted and can be VM backu
     ]
 }
 ```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+replicationPolicies: [
+    {
+        name: 'Default_values'
+    }
+    {
+        name: 'Custom_values'
+        appConsistentFrequencyInMinutes: 240
+        crashConsistentFrequencyInMinutes: 7
+        multiVmSyncStatus: 'Disable'
+        recoveryPointHistory: 2880
+    }
+]
+```
+
+</details>
+<p>
 
 ### Parameter Usage: `userAssignedIdentities`
 

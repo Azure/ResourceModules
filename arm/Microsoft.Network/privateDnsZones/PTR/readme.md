@@ -34,15 +34,36 @@ This module deploys a Private DNS Zone PTR record.
 
 ### Parameter Usage: `ptrRecords`
 
+<details>
+
+<summary>Parameter JSON format</summary>
+
 ```json
 "ptrRecords": {
     "value": [
-      {
-        "ptrdname": "string"
-      }
+        {
+            "ptrdname": "string"
+        }
     ]
 }
 ```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+ptrRecords: [
+    {
+        ptrdname: 'string'
+    }
+]
+```
+
+</details>
+<p>
 
 ## Outputs
 

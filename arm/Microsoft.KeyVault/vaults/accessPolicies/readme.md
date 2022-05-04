@@ -32,6 +32,10 @@ This module deploys key vault access policies.
 
 ### Parameter Usage: `accessPolicies`
 
+<details>
+
+<summary>Parameter JSON format</summary>
+
 ```json
 "accessPolicies": {
     "value": [
@@ -54,6 +58,36 @@ This module deploys key vault access policies.
     ]
 }
 ```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+accessPolicies: [
+    {
+        tenantId: null // Optional
+        applicationId: null // Optional
+        objectId: null
+        permissions: {
+            certificates: [
+                'All'
+            ]
+            keys: [
+                'All'
+            ]
+            secrets: [
+                'All'
+            ]
+        }
+    }
+]
+```
+
+</details>
+<p>
 
 ## Outputs
 

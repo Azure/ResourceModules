@@ -55,6 +55,10 @@ This template enables Azure security center - Standard tier by default, could be
 
 ### Parameter Usage: `deviceSecurityGroupProperties`
 
+<details>
+
+<summary>Parameter JSON format</summary>
+
 ```json
 "deviceSecurityGroupProperties": {
     "value": {
@@ -97,7 +101,60 @@ This template enables Azure security center - Standard tier by default, could be
 }
 ```
 
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+deviceSecurityGroupProperties: {
+    thresholdRules: [
+      {
+        isEnabled: 'boolean'
+        ruleType: 'string'
+        minThreshold: 'integer'
+        maxThreshold: 'integer'
+      }
+    ]
+    timeWindowRules: [
+      {
+        isEnabled: 'boolean'
+        ruleType: 'string'
+        minThreshold: 'integer'
+        maxThreshold: 'integer'
+        timeWindowSize: 'string'
+      }
+    ]
+    allowlistRules: [
+      {
+        isEnabled: 'boolean'
+        ruleType: 'string'
+        allowlistValues: [
+          'string'
+        ]
+      }
+    ]
+    denylistRules: [
+      {
+        isEnabled: 'boolean'
+        ruleType: 'string'
+        denylistValues: [
+          'string'
+        ]
+      }
+    ]
+}
+```
+
+</details>
+<p>
+
 ### Parameter Usage: `ioTSecuritySolutionProperties`
+
+<details>
+
+<summary>Parameter JSON format</summary>
 
 ```json
 "ioTSecuritySolutionProperties": {
@@ -131,7 +188,50 @@ This template enables Azure security center - Standard tier by default, could be
 }
 ```
 
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+ioTSecuritySolutionProperties: {
+    resourceGroup: 'string'
+    workspace: 'string'
+    displayName: 'string'
+    status: 'string'
+    export: [
+       'RawEvents'
+    ]
+    disabledDataSources: [
+        'TwinData'
+    ]
+    iotHubs: [
+       'string'
+    ]
+    userDefinedResources: {
+        query: 'string'
+        querySubscriptions: [
+          'string'
+        ]
+    }
+    recommendationsConfiguration: [
+        {
+          recommendationType: 'string'
+          status: 'string'
+        }
+    ]
+}
+```
+
+</details>
+<p>
+
 ### Parameter Usage: `securityContactProperties`
+
+<details>
+
+<summary>Parameter JSON format</summary>
 
 ```json
 "securityContactProperties": {
@@ -143,6 +243,24 @@ This template enables Azure security center - Standard tier by default, could be
   }
 }
 ```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+securityContactProperties: {
+    email: 'test@contoso.com'
+    phone: '+12345678'
+    alertNotifications: 'On'
+    alertsToAdmins: 'Off'
+}
+```
+
+</details>
+<p>
 
 ## Outputs
 

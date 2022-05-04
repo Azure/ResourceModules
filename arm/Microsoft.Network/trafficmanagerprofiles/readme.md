@@ -53,41 +53,93 @@ This module deploys a traffic manager profile.
 
 ### Parameter Usage: `monitorConfig`
 
+<details>
+
+<summary>Parameter JSON format</summary>
+
 ```json
 "monitorConfig": {
-    "value":
-        {
-            "protocol": "http",
-            "port": "80",
-            "path": "/"
-        }
+    "value": {
+        "protocol": "http",
+        "port": "80",
+        "path": "/"
+    }
 }
 ```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+monitorConfig: {
+    protocol: 'http'
+    port: '80'
+    path: '/'
+}
+```
+
+</details>
+<p>
 
 ### Parameter Usage: `endpoints`
 
+<details>
+
+<summary>Parameter JSON format</summary>
+
 ```json
 "endpoints": {
-    "value":
-        [
+    "value": [
+        {
+            "id": "/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/<rgname>/providers/Microsoft.Network/trafficManagerProfiles/<tmname>/azureEndpoints/<endpointname>",
+            "name": "MyEndpoint001",
+            "type": "Microsoft.Network/trafficManagerProfiles/azureEndpoints",
+            "properties":
             {
-                "id": "/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/<rgname>/providers/Microsoft.Network/trafficManagerProfiles/<tmname>/azureEndpoints/<endpointname>",
-                "name": "MyEndpoint001",
-                "type": "Microsoft.Network/trafficManagerProfiles/azureEndpoints",
-                "properties":
-                {
-                    "endpointStatus": "Enabled",
-                    "endpointMonitorStatus": "CheckingEndpoint",
-                    "targetResourceId": "/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/<rgname>/providers/Microsoft.Network/publicIPAddresses/<pipname>",
-                    "target": "my-pip-001.eastus.cloudapp.azure.com",
-                    "weight": 1,
-                    "priority": 1,
-                    "endpointLocation": "East US"
-                }
+                "endpointStatus": "Enabled",
+                "endpointMonitorStatus": "CheckingEndpoint",
+                "targetResourceId": "/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/<rgname>/providers/Microsoft.Network/publicIPAddresses/<pipname>",
+                "target": "my-pip-001.eastus.cloudapp.azure.com",
+                "weight": 1,
+                "priority": 1,
+                "endpointLocation": "East US"
             }
-        ]
+        }
+    ]
 }
 ```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+endpoints: [
+    {
+        id: '/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/<rgname>/providers/Microsoft.Network/trafficManagerProfiles/<tmname>/azureEndpoints/<endpointname>'
+        name: 'MyEndpoint001'
+        type: 'Microsoft.Network/trafficManagerProfiles/azureEndpoints'
+        properties:
+        {
+            endpointStatus: 'Enabled'
+            endpointMonitorStatus: 'CheckingEndpoint'
+            targetResourceId: '/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/<rgname>/providers/Microsoft.Network/publicIPAddresses/<pipname>'
+            target: 'my-pip-001.eastus.cloudapp.azure.com'
+            weight: 1
+            priority: 1
+            endpointLocation: 'East US'
+        }
+    }
+]
+```
+
+</details>
+<p>
 
 ### Parameter Usage: `roleAssignments`
 

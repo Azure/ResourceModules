@@ -54,6 +54,10 @@ This module deploys a load balancer.
 
 ### Parameter Usage: `frontendIPConfigurations`
 
+<details>
+
+<summary>Parameter JSON format</summary>
+
 ```json
 "frontendIPConfigurations": {
     "value": [
@@ -69,7 +73,33 @@ This module deploys a load balancer.
 }
 ```
 
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+frontendIPConfigurations: [
+    {
+        name: 'p_hub-bfw-server-feip'
+        properties: {
+            publicIPAddressId: '[reference(variables('deploymentPIP-VPN')).outputs.publicIPAddressResourceId.value]'
+            subnetId: ''
+            privateIPAddress: ''
+        }
+    }
+]
+```
+
+</details>
+<p>
+
 ### Parameter Usage: `backendAddressPools`
+
+<details>
+
+<summary>Parameter JSON format</summary>
 
 ```json
 "backendAddressPools": {
@@ -103,68 +133,181 @@ This module deploys a load balancer.
 }
 ```
 
-### Parameter Usage: `loadBalancingRules`
+</details>
 
-```json
-"loadBalancingRules": {
-"value": [
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+backendAddressPools: [
     {
-        "name": "p_hub-bfw-server-IPSEC-IKE-lbrule",
-        "properties": {
-            "frontendIPConfigurationName": "p_hub-bfw-server-feip",
-            "backendAddressPoolName": "p_hub-bfw-server-bepool",
-            "protocol": "Udp",
-            "frontendPort": 500,
-            "backendPort": 500,
-            "enableFloatingIP": false,
-            "idleTimeoutInMinutes": 5,
-            "probeName": "p_hub-bfw-server-tcp-65001-probe"
-        }
-    },
-    {
-        "name": "p_hub-bfw-server-IPSEC-NATT-lbrule",
-        "properties": {
-            "frontendIPConfigurationName": "p_hub-bfw-server-feip",
-            "backendAddressPoolName": "p_hub-bfw-server-bepool",
-            "protocol": "Udp",
-            "frontendPort": 4500,
-            "backendPort": 4500,
-            "enableFloatingIP": false,
-            "idleTimeoutInMinutes": 5,
-            "probeName": "p_hub-bfw-server-tcp-65001-probe"
-        }
-    },
-    {
-        "name": "p_hub-bfw-server-TINA-UDP-lbrule",
-        "properties": {
-            "frontendIPConfigurationName": "p_hub-bfw-server-feip",
-            "backendAddressPoolName": "p_hub-bfw-server-bepool",
-            "protocol": "Udp",
-            "frontendPort": 691,
-            "backendPort": 691,
-            "enableFloatingIP": false,
-            "idleTimeoutInMinutes": 5,
-            "probeName": "p_hub-bfw-server-tcp-65001-probe"
-        }
-    },
-    {
-        "name": "p_hub-bfw-server-TINA-TCP-lbrule",
-        "properties": {
-            "frontendIPConfigurationName": "p_hub-bfw-server-feip",
-            "backendAddressPoolName": "p_hub-bfw-server-bepool",
-            "protocol": "Tcp",
-            "frontendPort": 691,
-            "backendPort": 691,
-            "enableFloatingIP": false,
-            "idleTimeoutInMinutes": 5,
-            "probeName": "p_hub-bfw-server-tcp-65001-probe"
+        name: 'p_hub-bfw-server-bepool'
+        properties: {
+            loadBalancerBackendAddresses: [
+                {
+                    name: 'iacs-sh-main-pd-01-euw-rg-network_awefwa01p-nic-int-01ipconfig-internal'
+                    properties: {
+                        virtualNetwork: {
+                            id: '[reference(variables('deploymentVNET')).outputs.vNetResourceId.value]'
+                        }
+                        ipAddress: '172.22.232.5'
+                    }
+                }
+                {
+                    name: 'iacs-sh-main-pd-01-euw-rg-network_awefwa01p-ha-nic-int-01ipconfig-internal'
+                    properties: {
+                        virtualNetwork: {
+                            id: '[reference(variables('deploymentVNET')).outputs.vNetResourceId.value]'
+                        }
+                        ipAddress: '172.22.232.6'
+                    }
+                }
+            ]
         }
     }
 ]
+```
+
+</details>
+<p>
+
+### Parameter Usage: `loadBalancingRules`
+
+<details>
+
+<summary>Parameter JSON format</summary>
+
+```json
+"loadBalancingRules": {
+    "value": [
+        {
+            "name": "p_hub-bfw-server-IPSEC-IKE-lbrule",
+            "properties": {
+                "frontendIPConfigurationName": "p_hub-bfw-server-feip",
+                "backendAddressPoolName": "p_hub-bfw-server-bepool",
+                "protocol": "Udp",
+                "frontendPort": 500,
+                "backendPort": 500,
+                "enableFloatingIP": false,
+                "idleTimeoutInMinutes": 5,
+                "probeName": "p_hub-bfw-server-tcp-65001-probe"
+            }
+        },
+        {
+            "name": "p_hub-bfw-server-IPSEC-NATT-lbrule",
+            "properties": {
+                "frontendIPConfigurationName": "p_hub-bfw-server-feip",
+                "backendAddressPoolName": "p_hub-bfw-server-bepool",
+                "protocol": "Udp",
+                "frontendPort": 4500,
+                "backendPort": 4500,
+                "enableFloatingIP": false,
+                "idleTimeoutInMinutes": 5,
+                "probeName": "p_hub-bfw-server-tcp-65001-probe"
+            }
+        },
+        {
+            "name": "p_hub-bfw-server-TINA-UDP-lbrule",
+            "properties": {
+                "frontendIPConfigurationName": "p_hub-bfw-server-feip",
+                "backendAddressPoolName": "p_hub-bfw-server-bepool",
+                "protocol": "Udp",
+                "frontendPort": 691,
+                "backendPort": 691,
+                "enableFloatingIP": false,
+                "idleTimeoutInMinutes": 5,
+                "probeName": "p_hub-bfw-server-tcp-65001-probe"
+            }
+        },
+        {
+            "name": "p_hub-bfw-server-TINA-TCP-lbrule",
+            "properties": {
+                "frontendIPConfigurationName": "p_hub-bfw-server-feip",
+                "backendAddressPoolName": "p_hub-bfw-server-bepool",
+                "protocol": "Tcp",
+                "frontendPort": 691,
+                "backendPort": 691,
+                "enableFloatingIP": false,
+                "idleTimeoutInMinutes": 5,
+                "probeName": "p_hub-bfw-server-tcp-65001-probe"
+            }
+        }
+    ]
 }
 ```
 
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+loadBalancingRules: [
+    {
+        name: 'p_hub-bfw-server-IPSEC-IKE-lbrule'
+        properties: {
+            frontendIPConfigurationName: 'p_hub-bfw-server-feip'
+            backendAddressPoolName: 'p_hub-bfw-server-bepool'
+            protocol: 'Udp'
+            frontendPort: 500
+            backendPort: 500
+            enableFloatingIP: false
+            idleTimeoutInMinutes: 5
+            probeName: 'p_hub-bfw-server-tcp-65001-probe'
+        }
+    }
+    {
+        name: 'p_hub-bfw-server-IPSEC-NATT-lbrule'
+        properties: {
+            frontendIPConfigurationName: 'p_hub-bfw-server-feip'
+            backendAddressPoolName: 'p_hub-bfw-server-bepool'
+            protocol: 'Udp'
+            frontendPort: 4500
+            backendPort: 4500
+            enableFloatingIP: false
+            idleTimeoutInMinutes: 5
+            probeName: 'p_hub-bfw-server-tcp-65001-probe'
+        }
+    }
+    {
+        name: 'p_hub-bfw-server-TINA-UDP-lbrule'
+        properties: {
+            frontendIPConfigurationName: 'p_hub-bfw-server-feip'
+            backendAddressPoolName: 'p_hub-bfw-server-bepool'
+            protocol: 'Udp'
+            frontendPort: 691
+            backendPort: 691
+            enableFloatingIP: false
+            idleTimeoutInMinutes: 5
+            probeName: 'p_hub-bfw-server-tcp-65001-probe'
+        }
+    }
+    {
+        name: 'p_hub-bfw-server-TINA-TCP-lbrule'
+        properties: {
+            frontendIPConfigurationName: 'p_hub-bfw-server-feip'
+            backendAddressPoolName: 'p_hub-bfw-server-bepool'
+            protocol: 'Tcp'
+            frontendPort: 691
+            backendPort: 691
+            enableFloatingIP: false
+            idleTimeoutInMinutes: 5
+            probeName: 'p_hub-bfw-server-tcp-65001-probe'
+        }
+    }
+]
+```
+
+</details>
+<p>
+
 ### Parameter Usage: `probes`
+
+<details>
+
+<summary>Parameter JSON format</summary>
 
 ```json
 "probes": {
@@ -181,6 +324,29 @@ This module deploys a load balancer.
     ]
 }
 ```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+probes: [
+    {
+        name: 'p_hub-bfw-server-tcp-65001-probe'
+        properties: {
+            protocol: 'Tcp'
+            port: 65001
+            intervalInSeconds: 5
+            numberOfProbes: 2
+        }
+    }
+]
+```
+
+</details>
+<p>
 
 ### Parameter Usage: `roleAssignments`
 

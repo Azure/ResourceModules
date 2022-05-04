@@ -72,6 +72,37 @@ remote/managing tenant.
 }
 ```
 
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+authorizations: [
+    // Delegates 'Reader' to a group in managing tenant (managedByTenantId)
+    {
+        principalId: '9d949eef-00d5-45d9-8586-56be91a13398'
+        principalIdDisplayName: 'Reader-Group'
+        roleDefinitionId: 'acdd72a7-3385-48ef-bd42-f606fba81ae7'
+    }
+    // Delegates 'Contributor' to a group in managing tenant (managedByTenantId)
+    {
+        principalId: '06eb144f-1a10-4935-881b-757efd1d0b58'
+        roleDefinitionId: 'b24988ac-6180-42a0-ab88-20f7382dd24c'
+    }
+    // Delegates 'Managed Services Registration assignment Delete Role' to a group in managing tenant (managedByTenantId)
+    {
+        principalId: '9cd792b0-dc7c-4551-84f8-dd87388030fb'
+        principalIdDisplayName: 'LighthouseManagement-Group'
+        roleDefinitionId: '91c1777a-f3dc-4fae-b103-61d183457e46'
+    }
+]
+```
+
+</details>
+<p>
+
 ## Outputs
 
 | Output Name | Type | Description |

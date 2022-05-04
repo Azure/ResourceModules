@@ -34,19 +34,44 @@ This module deploys a Private DNS Zone SOA record.
 
 ### Parameter Usage: `soaRecord`
 
+<details>
+
+<summary>Parameter JSON format</summary>
+
 ```json
 "soaRecord": {
     "value": {
-      "email": "string",
-      "expireTime": "int",
-      "host": "string",
-      "minimumTtl": "int",
-      "refreshTime": "int",
-      "retryTime": "int",
-      "serialNumber": "int"
+        "email": "string",
+        "expireTime": "int",
+        "host": "string",
+        "minimumTtl": "int",
+        "refreshTime": "int",
+        "retryTime": "int",
+        "serialNumber": "int"
     }
 }
 ```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+soaRecord: {
+    email: 'string'
+    expireTime: 'int'
+    host: 'string'
+    minimumTtl: 'int'
+    refreshTime: 'int'
+    retryTime: 'int'
+    serialNumber: 'int'
+}
+```
+
+</details>
+<p>
 
 ## Outputs
 

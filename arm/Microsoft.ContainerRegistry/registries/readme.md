@@ -68,6 +68,10 @@ Azure Container Registry is a managed, private Docker registry service based on 
 
 ### Parameter Usage: `keyVaultProperties`
 
+<details>
+
+<summary>Parameter JSON format</summary>
+
 ```json
 "keyVaultProperties": {
     "value": {
@@ -76,6 +80,22 @@ Azure Container Registry is a managed, private Docker registry service based on 
     }
 }
 ```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+keyVaultProperties: {
+    identity: 'string' // The client id of the identity which will be used to access key vault.
+    keyIdentifier: 'string' // Key vault uri to access the encryption key.
+}
+```
+
+</details>
+<p>
 
 ### Parameter Usage: `roleAssignments`
 
@@ -141,15 +161,31 @@ roleAssignments: [
 The image registry credentials by which the container group is created from.
 
 ```json
-    "acrName": {
-      "value": {
-          "server": "acrx001",
-        }
-    },
-    "acrAdminUserEnabled": {
-      "value": false
+"acrName": {
+    "value": {
+        "server": "acrx001",
     }
+},
+"acrAdminUserEnabled": {
+    "value": false
+}
 ```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+acrName: {
+    server: 'acrx001'
+}
+acrAdminUserEnabled: false
+```
+
+</details>
+<p>
 
 ### Parameter Usage: `privateEndpoints`
 

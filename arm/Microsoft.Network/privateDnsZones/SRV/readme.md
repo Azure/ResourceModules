@@ -34,6 +34,10 @@ This module deploys a Private DNS Zone TXT record.
 
 ### Parameter Usage: `srvRecords`
 
+<details>
+
+<summary>Parameter JSON format</summary>
+
 ```json
 "srvRecords": {
     "value": [
@@ -46,6 +50,26 @@ This module deploys a Private DNS Zone TXT record.
     ]
 }
 ```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+srvRecords: [
+    {
+        port: 'int'
+        priority: 'int'
+        target: 'string'
+        weight: 'int'
+    }
+]
+```
+
+</details>
+<p>
 
 ## Outputs
 

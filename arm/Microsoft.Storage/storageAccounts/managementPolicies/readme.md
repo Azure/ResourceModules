@@ -32,6 +32,10 @@ This module can be used to deploy a management policies into a storage account.
 
 ### Parameter Usage: `rules`
 
+<details>
+
+<summary>Parameter JSON format</summary>
+
 ```json
 [
     {

@@ -53,46 +53,99 @@ Multiple schedules can be provided as needed. If a schedule is not provided, a d
 ```json
 "schedules" : {
     "value": [
-    {
-        "rampUpStartTime": {
-            "hour": 7,
-            "minute": 0
-        },
+        {
+            "rampUpStartTime": {
+                "hour": 7,
+                "minute": 0
+            },
             "peakStartTime": {
-            "hour": 9,
-            "minute": 0
-        },
+                "hour": 9,
+                "minute": 0
+            },
             "rampDownStartTime": {
-            "hour": 18,
-            "minute": 0
-        },
-        "offPeakStartTime": {
-            "hour": 20,
-            "minute": 0
-        },
-        "name": "weekdays_schedule",
+                "hour": 18,
+                "minute": 0
+            },
+            "offPeakStartTime": {
+                "hour": 20,
+                "minute": 0
+            },
+            "name": "weekdays_schedule",
             "daysOfWeek": [
-            "Monday",
-            "Tuesday",
-            "Wednesday",
-            "Thursday",
-            "Friday"
-        ],
-        "rampUpLoadBalancingAlgorithm": "DepthFirst",
-        "rampUpMinimumHostsPct": 20,
-        "rampUpCapacityThresholdPct": 60,
-        "peakLoadBalancingAlgorithm": "DepthFirst",
-        "rampDownLoadBalancingAlgorithm": "DepthFirst",
-        "rampDownMinimumHostsPct": 10,
-        "rampDownCapacityThresholdPct": 90,
-        "rampDownForceLogoffUsers": true,
-        "rampDownWaitTimeMinutes": 30,
-        "rampDownNotificationMessage": "You will be logged off in 30 min. Make sure to save your work.",
-        "rampDownStopHostsWhen": "ZeroSessions",
-        "offPeakLoadBalancingAlgorithm": "DepthFirst"
-    }]
+                "Monday",
+                "Tuesday",
+                "Wednesday",
+                "Thursday",
+                "Friday"
+            ],
+            "rampUpLoadBalancingAlgorithm": "DepthFirst",
+            "rampUpMinimumHostsPct": 20,
+            "rampUpCapacityThresholdPct": 60,
+            "peakLoadBalancingAlgorithm": "DepthFirst",
+            "rampDownLoadBalancingAlgorithm": "DepthFirst",
+            "rampDownMinimumHostsPct": 10,
+            "rampDownCapacityThresholdPct": 90,
+            "rampDownForceLogoffUsers": true,
+            "rampDownWaitTimeMinutes": 30,
+            "rampDownNotificationMessage": "You will be logged off in 30 min. Make sure to save your work.",
+            "rampDownStopHostsWhen": "ZeroSessions",
+            "offPeakLoadBalancingAlgorithm": "DepthFirst"
+        }
+    ]
 }
 ```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+'schedules': [
+    {
+        rampUpStartTime: {
+            hour: 7
+            minute: 0
+        }
+        peakStartTime: {
+            hour: 9
+            minute: 0
+        }
+        rampDownStartTime: {
+            hour: 18
+            minute: 0
+        }
+        offPeakStartTime: {
+            hour: 20
+            minute: 0
+        }
+        name: 'weekdays_schedule'
+        daysOfWeek: [
+            'Monday'
+            'Tuesday'
+            'Wednesday'
+            'Thursday'
+            'Friday'
+        ]
+        rampUpLoadBalancingAlgorithm: 'DepthFirst'
+        rampUpMinimumHostsPct: 20
+        rampUpCapacityThresholdPct: 60
+        peakLoadBalancingAlgorithm: 'DepthFirst'
+        rampDownLoadBalancingAlgorithm: 'DepthFirst'
+        rampDownMinimumHostsPct: 10
+        rampDownCapacityThresholdPct: 90
+        rampDownForceLogoffUsers: true
+        rampDownWaitTimeMinutes: 30
+        rampDownNotificationMessage: 'You will be logged off in 30 min. Make sure to save your work.'
+        rampDownStopHostsWhen: 'ZeroSessions'
+        offPeakLoadBalancingAlgorithm: 'DepthFirst'
+    }
+]
+```
+
+</details>
+<p>
 
 ### Parameter Usage: `tags`
 

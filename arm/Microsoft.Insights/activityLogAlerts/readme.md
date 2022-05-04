@@ -40,28 +40,69 @@ This module deploys an Alert based on Activity Log.
 
 ### Parameter Usage: actions
 
+<details>
+
+<summary>Parameter JSON format</summary>
+
 ```json
 "actions": {
-  "value": [
-    {
-      "actionGroupId": "/subscriptions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/resourceGroups/rgName/providers/microsoft.insights/actiongroups/actionGroupName",
-      "webhookProperties": {}
-    }
-  ]
+    "value": [
+        {
+            "actionGroupId": "/subscriptions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/resourceGroups/rgName/providers/microsoft.insights/actiongroups/actionGroupName",
+            "webhookProperties": {}
+        }
+    ]
 }
 ```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+actions: [
+    {
+        actionGroupId: '/subscriptions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/resourceGroups/rgName/providers/microsoft.insights/actiongroups/actionGroupName'
+        webhookProperties: {}
+    }
+]
+```
+
+</details>
+<p>
 
 `webhookProperties` is optional.
 
 If you do only want to provide actionGroupIds, a shorthand use of the parameter is available.
 
+<details>
+
+<summary>Parameter JSON format</summary>
+
 ```json
 "actions": {
-  "value": [
-      "/subscriptions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/resourceGroups/rgName/providers/microsoft.insights/actiongroups/actionGroupName"
-  ]
+    "value": [
+        "/subscriptions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/resourceGroups/rgName/providers/microsoft.insights/actiongroups/actionGroupName"
+    ]
 }
 ```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+actions: [
+    '/subscriptions/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/resourceGroups/rgName/providers/microsoft.insights/actiongroups/actionGroupName'
+]
+```
+
+</details>
+<p>
 
 ### Parameter Usage: conditions
 
@@ -85,26 +126,60 @@ Each condition can specify only one field between `equals` and `containsAny`.
 
 **Sample**
 
+<details>
+
+<summary>Parameter JSON format</summary>
+
 ```json
-"conditions":{
-  "value":  [
-      {
-          "field": "category",
-          "equals": "Administrative"
-      },
-      {
-          "field": "resourceType",
-          "equals": "microsoft.compute/virtualmachines"
-      },
-      {
-          "field": "operationName",
-          "equals": "Microsoft.Compute/virtualMachines/performMaintenance/action"
-      }
-  ]
+"conditions": {
+    "value": [
+        {
+            "field": "category",
+            "equals": "Administrative"
+        },
+        {
+            "field": "resourceType",
+            "equals": "microsoft.compute/virtualmachines"
+        },
+        {
+            "field": "operationName",
+            "equals": "Microsoft.Compute/virtualMachines/performMaintenance/action"
+        }
+    ]
 }
 ```
 
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+conditions: [
+    {
+        field: 'category'
+        equals: 'Administrative'
+    }
+    {
+        field: 'resourceType'
+        equals: 'microsoft.compute/virtualmachines'
+    }
+    {
+        field: 'operationName'
+        equals: 'Microsoft.Compute/virtualMachines/performMaintenance/action'
+    }
+]
+```
+
+</details>
+<p>
+
 **Sample 2**
+
+<details>
+
+<summary>Parameter JSON format</summary>
 
 ```json
 "conditions":{
@@ -142,6 +217,50 @@ Each condition can specify only one field between `equals` and `containsAny`.
     ]
 }
 ```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+conditions: [
+    {
+        field: 'category'
+        equals: 'ServiceHealth'
+    }
+    {
+        anyOf: [
+            {
+                field: 'properties.incidentType'
+                equals: 'Incident'
+            }
+            {
+                field: 'properties.incidentType'
+                equals: 'Maintenance'
+            }
+        ]
+    }
+    {
+        field: 'properties.impactedServices[*].ServiceName'
+        containsAny: [
+            'Action Groups'
+            'Activity Logs & Alerts'
+        ]
+    }
+    {
+        field: 'properties.impactedServices[*].ImpactedRegions[*].RegionName'
+        containsAny: [
+            'West Europe'
+            'Global'
+        ]
+    }
+]
+```
+
+</details>
+<p>
 
 ### Parameter Usage: `roleAssignments`
 

@@ -79,6 +79,49 @@ Here's an example of specifying a few routes:
 }
 ```
 
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+routes: [
+    {
+      name: 'tojumpboxes'
+      properties: {
+        addressPrefix: '172.16.0.48/28'
+        nextHopType: 'VnetLocal'
+      }
+    }
+    {
+      name: 'tosharedservices'
+      properties: {
+        addressPrefix: '172.16.0.64/27'
+        nextHopType: 'VnetLocal'
+      }
+    }
+    {
+      name: 'toonprem'
+      properties: {
+        addressPrefix: '10.0.0.0/8'
+        nextHopType: 'VirtualNetworkGateway'
+      }
+    }
+    {
+      name: 'tonva'
+      properties: {
+        addressPrefix: '172.16.0.0/18'
+        nextHopType: 'VirtualAppliance'
+        nextHopIpAddress: '172.16.0.20'
+      }
+    }
+]
+```
+
+</details>
+<p>
+
 ### Parameter Usage: `roleAssignments`
 
 Create a role assignment for the given resource. If you want to assign a service principal / managed identity that is created in the same deployment, make sure to also specify the `'principalType'` parameter and set it to `'ServicePrincipal'`. This will ensure the role assignment waits for the principal's propagation in Azure.

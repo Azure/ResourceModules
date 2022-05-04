@@ -45,6 +45,10 @@ This module deploys VPN Gateways Connections.
 
 ### Parameter Usage: `routingConfiguration`
 
+<details>
+
+<summary>Parameter JSON format</summary>
+
 ```json
 "routingConfiguration": {
     "associatedRouteTable": {
@@ -65,6 +69,36 @@ This module deploys VPN Gateways Connections.
     }
 }
 ```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+routingConfiguration: {
+    associatedRouteTable: {
+        id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualHubs/SampleVirtualHub/hubRouteTables/defaultRouteTable'
+    }
+    propagatedRouteTables: {
+        labels: [
+            'default'
+        ]
+        ids: [
+            {
+                id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualHubs/SampleVirtualHub/hubRouteTables/defaultRouteTable'
+            }
+        ]
+    }
+    vnetRoutes: {
+        staticRoutes: []
+    }
+}
+```
+
+</details>
+<p>
 
 ## Outputs
 

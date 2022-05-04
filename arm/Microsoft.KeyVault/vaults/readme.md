@@ -167,6 +167,10 @@ tags: {
 
 ### Parameter Usage: `networkAcls`
 
+<details>
+
+<summary>Parameter JSON format</summary>
+
 ```json
 "networkAcls": {
     "value": {
@@ -182,7 +186,33 @@ tags: {
 }
 ```
 
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+networkAcls: {
+    bypass: 'AzureServices'
+    defaultAction: 'Deny'
+    virtualNetworkRules: [
+        {
+            subnetId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001'
+        }
+    ]
+    ipRules: []
+}
+```
+
+</details>
+<p>
+
 ### Parameter Usage: `vNetId`
+
+<details>
+
+<summary>Parameter JSON format</summary>
 
 ```json
 "vNetId": {
@@ -190,7 +220,24 @@ tags: {
 }
 ```
 
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+vNetId: '/subscriptions/00000000/resourceGroups/resourceGroup'
+```
+
+</details>
+<p>
+
 ### Parameter Usage: `accessPolicies`
+
+<details>
+
+<summary>Parameter JSON format</summary>
 
 ```json
 "accessPolicies": {
@@ -214,6 +261,36 @@ tags: {
     ]
 }
 ```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+accessPolicies: [
+    {
+        tenantId: null // Optional
+        applicationId: null // Optional
+        objectId: null
+        permissions: {
+            certificates: [
+                'All'
+            ]
+            keys: [
+                'All'
+            ]
+            secrets: [
+                'All'
+            ]
+        }
+    }
+]
+```
+
+</details>
+<p>
 
 ### Parameter Usage: `privateEndpoints`
 

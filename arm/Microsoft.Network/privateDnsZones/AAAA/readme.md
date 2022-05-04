@@ -34,15 +34,36 @@ This module deploys a Private DNS Zone AAAA record.
 
 ### Parameter Usage: `aaaaRecords`
 
+<details>
+
+<summary>Parameter JSON format</summary>
+
 ```json
 "aaaaRecords": {
     "value": [
-      {
-        "ipv6Address": "string"
-      }
+        {
+            "ipv6Address": "string"
+        }
     ]
 }
 ```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+aaaaRecords: [
+    {
+        ipv6Address: 'string'
+    }
+]
+```
+
+</details>
+<p>
 
 ## Outputs
 

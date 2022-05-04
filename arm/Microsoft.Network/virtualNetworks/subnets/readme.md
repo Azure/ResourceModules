@@ -46,6 +46,10 @@ This module deploys a virtual network subnet.
 
 ### Parameter Usage: `delegations`
 
+<details>
+
+<summary>Parameter JSON format</summary>
+
 ```json
 "delegations": [
     {
@@ -58,6 +62,10 @@ This module deploys a virtual network subnet.
 ```
 
 ### Parameter Usage: `serviceEndpoints`
+
+<details>
+
+<summary>Parameter JSON format</summary>
 
 ```json
 "serviceEndpoints": [

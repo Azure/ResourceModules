@@ -34,6 +34,10 @@ This module deploys a Private DNS Zone TXT record.
 
 ### Parameter Usage: `txtRecords`
 
+<details>
+
+<summary>Parameter JSON format</summary>
+
 ```json
 "txtRecords": {
     "value": [
@@ -43,6 +47,23 @@ This module deploys a Private DNS Zone TXT record.
     ]
 }
 ```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+txtRecords: [
+    {
+        value: [ 'string' ]
+    }
+]
+```
+
+</details>
+<p>
 
 ## Outputs
 

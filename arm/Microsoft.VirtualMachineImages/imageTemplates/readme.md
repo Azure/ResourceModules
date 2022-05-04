@@ -86,6 +86,22 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 }
 ```
 
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+source: {
+    type: 'SharedImageVersion'
+    imageVersionID: '/subscriptions/<subscriptionId>/resourceGroups/<resourceGroup>/providers/Microsoft.Compute/galleries/<sharedImageGalleryName>/images/<imageDefinitionName/versions/<imageVersion>'
+}
+```
+
+</details>
+<p>
+
 ### Parameter Usage: `tags`
 
 Tag names and tag values can be provided as needed. A tag can be left without a value.

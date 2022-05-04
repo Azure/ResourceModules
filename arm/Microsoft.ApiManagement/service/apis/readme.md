@@ -59,6 +59,10 @@ The following resources are required to be able to deploy this resource.
 
 ### Parameter Usage: `apiVersionSet`
 
+<details>
+
+<summary>Parameter JSON format</summary>
+
 ```json
 "apiVersionSet":{
     "value":{
@@ -73,6 +77,28 @@ The following resources are required to be able to deploy this resource.
     }
 }
 ```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+apiVersionSet:{
+    name:'' //Required. API Version Set identifier. Must be unique in the current API Management service instance.
+    properties:{
+        description: 'string' //Description of API Version Set.
+        versionQueryName: 'string' //Optional. Name of query parameter that indicates the API Version if versioningScheme is set to query.
+        versionHeaderName: 'string' //Optional. Name of HTTP header parameter that indicates the API Version if versioningScheme is set to header.
+        displayName: 'string' //Required. Name of API Version Set
+        versioningScheme: 'string' //Required. An value that determines where the API Version identifer will be located in a HTTP request. - Segment Query Header
+    }
+}
+```
+
+</details>
+<p>
 
 ## Outputs
 

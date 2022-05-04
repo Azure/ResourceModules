@@ -224,6 +224,24 @@ See also <https://docs.microsoft.com/en-us/azure/templates/microsoft.containerse
 }
 ```
 
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+identity: {
+    value: {
+        type: 'string'
+        userAssignedIdentities: {}
+    }
+}
+```
+
+</details>
+<p>
+
 ### Parameter Usage: `aksServicePrincipalProfile`
 
 See also <https://docs.microsoft.com/en-us/azure/templates/microsoft.containerservice/managedclusters?tabs=json#managedclusterserviceprincipalprofile-object>
@@ -236,6 +254,22 @@ See also <https://docs.microsoft.com/en-us/azure/templates/microsoft.containerse
   }
 }
 ```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+aksServicePrincipalProfile: {
+    clientId: 'string'
+    secret: 'string'
+}
+```
+
+</details>
+<p>
 
 ### Parameter Usage: `primaryAgentPoolProfile`
 
@@ -280,6 +314,52 @@ For available properties check <https://docs.microsoft.com/en-us/azure/templates
   ]
 }
 ```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+primaryAgentPoolProfile: [
+    {
+        name: 'poolname'
+        vmSize: 'Standard_DS3_v2'
+        osDiskSizeGB: 128
+        count: 2
+        osType: 'Linux'
+        maxCount: 5
+        minCount: 1
+        enableAutoScaling: true
+        scaleSetPriority: 'Regular'
+        scaleSetEvictionPolicy: 'Delete'
+        nodeLabels: {}
+        nodeTaints: [
+            'CriticalAddonsOnly=true:NoSchedule'
+        ]
+        type: 'VirtualMachineScaleSets'
+        availabilityZones: [
+            '1'
+            '2'
+            '3'
+        ]
+        maxPods: 30
+        storageProfile: 'ManagedDisks'
+        mode: 'System'
+        vnetSubnetID: '/subscriptions/XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX/resourceGroups/myRg/providers/Microsoft.Network/virtualNetworks/myVnet/subnets/mySubnet'
+        tags: {
+            Owner: 'test.user@testcompany.com'
+            BusinessUnit: 'IaCs'
+            Environment: 'PROD'
+            Region: 'USEast'
+        }
+    }
+]
+```
+
+</details>
+<p>
 
 ### Parameter Usage: `userAssignedIdentities`
 

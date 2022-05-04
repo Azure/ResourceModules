@@ -108,6 +108,34 @@ An array of links. Should be used instead of the top-level `ipAddress` & `bgpPro
 }
 ```
 
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+vpnSiteLinks: [
+    {
+        name: '<<namePrefix>>-az-vSite-x-001'
+        properties: {
+            bgpProperties: {
+                asn: 65010
+                bgpPeeringAddress: '1.1.1.1'
+            }
+            ipAddress: '1.2.3.4'
+            linkProperties: {
+                linkProviderName: 'contoso'
+                linkSpeedInMbps: 5
+            }
+        }
+    }
+]
+```
+
+</details>
+<p>
+
 ### Parameter Usage: `tags`
 
 Tag names and tag values can be provided as needed. A tag can be left without a value.

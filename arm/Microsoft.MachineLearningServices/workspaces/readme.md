@@ -109,6 +109,57 @@ For more information see https://docs.microsoft.com/en-us/azure/templates/micros
 }
 ```
 
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+computes: [
+    // Attach existing resources
+    {
+        name: 'DefaultAKS'
+        location: 'westeurope'
+        description: 'Default AKS Cluster'
+        disableLocalAuth: false
+        deployCompute: true
+        computeType: 'AKS'
+        resourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.ContainerService/managedClusters/xxx'
+    }
+    // Create new compute resource
+    {
+        name: 'DefaultCPU'
+        location: 'westeurope'
+        computeLocation: 'westeurope'
+        sku: 'Basic'
+        systemAssignedIdentity: true
+        userAssignedIdentities: {
+            '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
+        }
+        description: 'Default CPU Cluster'
+        disableLocalAuth: false
+        computeType: 'AmlCompute'
+        properties: {
+            enableNodePublicIp: true
+            isolatedNetwork: false
+            osType: 'Linux'
+            remoteLoginPortPublicAccess: 'Disabled'
+            scaleSettings: {
+                maxNodeCount: 3
+                minNodeCount: 0
+                nodeIdleTimeBeforeScaleDown: 'PT5M'
+            }
+            vmPriority: 'Dedicated'
+            vmSize: 'STANDARD_DS11_V2'
+        }
+    }
+]
+```
+
+</details>
+<p>
+
 ### Parameter Usage: `roleAssignments`
 
 Create a role assignment for the given resource. If you want to assign a service principal / managed identity that is created in the same deployment, make sure to also specify the `'principalType'` parameter and set it to `'ServicePrincipal'`. This will ensure the role assignment waits for the principal's propagation in Azure.

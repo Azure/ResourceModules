@@ -191,7 +191,11 @@ tags: {
 
 ### Parameter Usage: `apiManagementServicePolicy`
 
-```Json
+<details>
+
+<summary>Parameter JSON format</summary>
+
+```json
 "apiManagementServicePolicy": {
     "value": {
         "value":"<policies> <inbound> <rate-limit-by-key calls='250' renewal-period='60' counter-key='@(context.Request.IpAddress)' /> </inbound> <backend> <forward-request /> </backend> <outbound> </outbound> </policies>",
@@ -199,6 +203,22 @@ tags: {
     }
 }
 ```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+apiManagementServicePolicy: {
+    value:'<policies> <inbound> <rate-limit-by-key calls=\'250\' renewal-period='60' counter-key=\'@(context.Request.IpAddress)\' /> </inbound> <backend> <forward-request /> </backend> <outbound> </outbound> </policies>'
+    format:'xml'
+}
+```
+
+</details>
+<p>
 
 ### Parameter Usage: `userAssignedIdentities`
 

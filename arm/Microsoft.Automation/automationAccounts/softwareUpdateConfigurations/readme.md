@@ -85,6 +85,26 @@ Provide tag keys, with an array of values, filtering in machines that should be 
 }
 ```
 
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+scopeByTags: {
+    Update: [
+        'Automatic'
+    ]
+    MaintenanceWindow: [
+        '1-Sat-22'
+    ]
+}
+```
+
+</details>
+<p>
+
 ### Parameter Usage: `monthlyOccurrences`
 
 Occurrences of days within a month.
@@ -108,6 +128,28 @@ Occurrences of days within a month.
     ]
 }
 ```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+monthlyOccurrences: [
+    {
+        occurrence: 1
+        day: 'Monday'
+    }
+    {
+        occurrence: 2
+        day: 'Friday'
+    }
+]
+```
+
+</details>
+<p>
 
 ## Outputs
 

@@ -55,6 +55,10 @@ The following resources are required to be able to deploy this resource.
 
 ### Parameter Usage: `credentials`
 
+<details>
+
+<summary>Parameter JSON format</summary>
+
 ```json
 "credentials": {
     "value":{
@@ -70,6 +74,29 @@ The following resources are required to be able to deploy this resource.
     }
 }
 ```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+credentials: {
+    certificate: [
+        'string'
+    ]
+    query: {}
+    header: {}
+    authorization: {
+        scheme: 'Authentication Scheme name.-string'
+        parameter: 'Authentication Parameter value. - string'
+    }
+}
+```
+
+</details>
+<p>
 
 ### Parameter Usage: `proxy`
 
@@ -88,6 +115,24 @@ The following resources are required to be able to deploy this resource.
     }
 }
 ```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+{
+proxy: {
+    url: 'string'
+    username: 'string'
+    password: 'string'
+}
+```
+
+</details>
+<p>
 
 ### Parameter Usage: `serviceFabricCluster`
 
@@ -120,7 +165,39 @@ The following resources are required to be able to deploy this resource.
 }
 ```
 
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+serviceFabricCluster: {
+    clientCertificatethumbprint: 'string'
+    maxPartitionResolutionRetries: 'integer'
+    managementEndpoints: [
+        'string'
+    ]
+    serverCertificateThumbprints: [
+        'string'
+    ]
+    serverX509Names: [
+        {
+        name: 'Common Name of the Certificate.- string'
+        issuerCertificateThumbprint: 'Thumbprint for the Issuer of the Certificate. - string'
+        }
+    ]
+}
+```
+
+</details>
+<p>
+
 ### Parameter Usage: `tls`
+
+<details>
+
+<summary>Parameter JSON format</summary>
 
 ```json
 "tls": {
@@ -130,6 +207,22 @@ The following resources are required to be able to deploy this resource.
     }
 }
 ```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+tls: {
+    validateCertificateChain: 'Flag indicating whether SSL certificate chain validation should be done when using self-signed certificates for this backend host. - boolean'
+    validateCertificateName: 'Flag indicating whether SSL certificate name validation should be done when using self-signed certificates for this backend host. - boolean'
+}
+```
+
+</details>
+<p>
 
 ## Outputs
 

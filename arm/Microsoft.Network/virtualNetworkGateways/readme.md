@@ -74,24 +74,56 @@ Here's an example of specifying a couple Subnets to deploy:
     {
         "name": "app",
         "properties": {
-        "addressPrefix": "10.1.0.0/24",
-        "networkSecurityGroup": {
-            "id": "[resourceId('Microsoft.Network/networkSecurityGroups', 'app-nsg')]"
-        },
-        "routeTable": {
-            "id": "[resourceId('Microsoft.Network/routeTables', 'app-udr')]"
-        }
+            "addressPrefix": "10.1.0.0/24",
+            "networkSecurityGroup": {
+                "id": "[resourceId('Microsoft.Network/networkSecurityGroups', 'app-nsg')]"
+            },
+            "routeTable": {
+                "id": "[resourceId('Microsoft.Network/routeTables', 'app-udr')]"
+            }
         }
     },
     {
         "name": "data",
         "properties": {
-        "addressPrefix": "10.1.1.0/24"
+            "addressPrefix": "10.1.1.0/24"
         }
     }
     ]
 }
 ```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+subnets: [
+    {
+        name: 'app'
+        properties: {
+            addressPrefix: '10.1.0.0/24'
+            networkSecurityGroup: {
+                id: '[resourceId('Microsoft.Network/networkSecurityGroups' 'app-nsg')]'
+            }
+            routeTable: {
+                id: '[resourceId('Microsoft.Network/routeTables' 'app-udr')]'
+            }
+        }
+    }
+    {
+        name: 'data'
+        properties: {
+            addressPrefix: '10.1.1.0/24'
+        }
+    }
+]
+```
+
+</details>
+<p>
 
 ### Parameter Usage: `roleAssignments`
 

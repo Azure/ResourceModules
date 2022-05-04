@@ -83,6 +83,28 @@ For all other app settings key-value pairs use this object.
 }
 ```
 
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+appSettingsKeyValuePairs: [
+    {
+        name: 'key1'
+        value: 'val1'
+    }
+    {
+        name: 'key2'
+        value: 'val2'
+    }
+]
+```
+
+</details>
+<p>
+
 ### Parameter Usage: `authSettingV2Configuration`
 
 The auth settings V2 configuration.
@@ -95,6 +117,21 @@ The auth settings V2 configuration.
 }
 ```
 
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+siteConfig: [
+    // Check out https://docs.microsoft.com/en-us/azure/templates/microsoft.web/sites/config-authsettingsv2?tabs=bicep#siteauthsettingsv2properties for possible properties
+]
+```
+
+</details>
+<p>
+
 ### Parameter Usage: `siteConfig`
 
 The site config.
@@ -106,6 +143,21 @@ The site config.
     ]
 }
 ```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+siteConfig: [
+    // Check out https://docs.microsoft.com/en-us/azure/templates/Microsoft.Web/sites?tabs=bicep#siteconfig for possible properties
+]
+```
+
+</details>
+<p>
 
 ### Parameter Usage: `privateEndpoints`
 

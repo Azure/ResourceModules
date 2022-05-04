@@ -116,25 +116,54 @@ roleAssignments: [
 
 ```json
 "workspaceParameters": {
-      "value": {
+    "value": {
         "amlWorkspaceId": {
-          "value": "/subscriptions/xxx/resourceGroups/xxx/providers/Microsoft.MachineLearningServices/workspaces/xxx"
+            "value": "/subscriptions/xxx/resourceGroups/xxx/providers/Microsoft.MachineLearningServices/workspaces/xxx"
         },
         "customVirtualNetworkId": {
-          "value": "/subscriptions/xxx/resourceGroups/xxx/providers/Microsoft.Network/virtualNetworks/xxx"
+            "value": "/subscriptions/xxx/resourceGroups/xxx/providers/Microsoft.Network/virtualNetworks/xxx"
         },
         "customPublicSubnetName": {
-          "value": "xxx"
+            "value": "xxx"
         },
         "customPrivateSubnetName": {
-          "value": "xxx"
+            "value": "xxx"
         },
         "enableNoPublicIp": {
-          "value": true
+            "value": true
         }
-      }
     }
+}
 ```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+workspaceParameters: {
+    amlWorkspaceId: {
+        value: '/subscriptions/xxx/resourceGroups/xxx/providers/Microsoft.MachineLearningServices/workspaces/xxx'
+    }
+    customVirtualNetworkId: {
+        value: '/subscriptions/xxx/resourceGroups/xxx/providers/Microsoft.Network/virtualNetworks/xxx'
+    }
+    customPublicSubnetName: {
+        value: 'xxx'
+    }
+    customPrivateSubnetName: {
+        value: 'xxx'
+    }
+    enableNoPublicIp: {
+        value: true
+    }
+}
+```
+
+</details>
+<p>
 
 ### Parameter Usage: `tags`
 

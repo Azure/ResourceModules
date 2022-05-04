@@ -60,41 +60,97 @@ For Details see [Prerequisites](https://docs.microsoft.com/en-us/azure/azure-arc
 
 ### Parameter Usage: `bucket`
 
+<details>
+
+<summary>Parameter JSON format</summary>
+
 ```json
 "bucket": {
     "value": {
-      "accessKey": "string",
-      "bucketName": "string",
-      "insecure": "bool",
-      "localAuthRef": "string",
-      "syncIntervalInSeconds": "int",
-      "timeoutInSeconds": "int",
-      "url": "string"
+        "accessKey": "string",
+        "bucketName": "string",
+        "insecure": "bool",
+        "localAuthRef": "string",
+        "syncIntervalInSeconds": "int",
+        "timeoutInSeconds": "int",
+        "url": "string"
     }
 }
 ```
 
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+bucket: {
+    accessKey: 'string'
+    bucketName: 'string'
+    insecure: 'bool'
+    localAuthRef: 'string'
+    syncIntervalInSeconds: 'int'
+    timeoutInSeconds: 'int'
+    url: 'string'
+}
+```
+
+</details>
+<p>
+
 ### Parameter Usage: `gitRepository`
+
+<details>
+
+<summary>Parameter JSON format</summary>
 
 ```json
 "gitRepository": {
     "value": {
-      "httpsCACert": "string",
-      "httpsUser": "string",
-      "localAuthRef": "string",
-      "repositoryRef": {
-        "branch": "string",
-        "commit": "string",
-        "semver": "string",
-        "tag": "string"
-      },
-      "sshKnownHosts": "string",
-      "syncIntervalInSeconds": "int",
-      "timeoutInSeconds": "int",
-      "url": "string"
+        "httpsCACert": "string",
+        "httpsUser": "string",
+        "localAuthRef": "string",
+        "repositoryRef": {
+            "branch": "string",
+            "commit": "string",
+            "semver": "string",
+            "tag": "string"
+        },
+        "sshKnownHosts": "string",
+        "syncIntervalInSeconds": "int",
+        "timeoutInSeconds": "int",
+        "url": "string"
     }
 }
 ```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+gitRepository: {
+    httpsCACert: 'string'
+    httpsUser: 'string'
+    localAuthRef: 'string'
+    repositoryRef: {
+        branch: 'string'
+        commit: 'string'
+        semver: 'string'
+        tag: 'string'
+    }
+    sshKnownHosts: 'string'
+    syncIntervalInSeconds: 'int'
+    timeoutInSeconds: 'int'
+    url: 'string'
+}
+```
+
+</details>
+<p>
 
 ## Outputs
 

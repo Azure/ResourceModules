@@ -66,6 +66,10 @@ This module deploys a Service Fabric Cluster.
 
 ### Parameter Usage: `notifications`
 
+<details>
+
+<summary>Parameter JSON format</summary>
+
 ```json
 "notifications": {
     "value": [
@@ -85,6 +89,33 @@ This module deploys a Service Fabric Cluster.
     ]
 }
 ```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+notifications: [
+    {
+        isEnabled: true // Required. Indicates if the notification is enabled.
+        notificationCategory: 'WaveProgress' // Required. The category of notification. Possible values include: 'WaveProgress'.
+        notificationLevel: 'Critical' // Required. The level of notification. Possible values include: 'Critical' 'All'.
+        notificationTargets: [
+            {
+                notificationChannel: 'EmailUser' // Required. The notification channel indicates the type of receivers subscribed to the notification either user or subscription. Possible values include: 'EmailUser' 'EmailSubscription'.
+                receivers: [
+                    'SomeReceiver' // Required. List of targets that subscribe to the notification.
+                ]
+            }
+        ]
+    }
+]
+```
+
+</details>
+<p>
 
 ### Parameter Usage: `roleAssignments`
 

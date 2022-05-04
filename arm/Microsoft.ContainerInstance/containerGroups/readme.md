@@ -52,15 +52,33 @@ The top-level resource in Azure Container Instances is the container group. A co
 The image registry credentials by which the container group is created from.
 
 ```json
-    "imageRegistryCredentials": {
-      "value": [
+"imageRegistryCredentials": {
+    "value": [
         {
-          "server": "sxxazacrx001.azurecr.io",
-          "username": "sxxazacrx001"
+            "server": "sxxazacrx001.azurecr.io",
+            "username": "sxxazacrx001"
         }
-      ]
-    }
+    ]
+}
 ```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+imageRegistryCredentials: [
+    {
+        server: 'sxxazacrx001.azurecr.io'
+        username: 'sxxazacrx001'
+    }
+]
+```
+
+</details>
+<p>
 
 ### Parameter Usage: `tags`
 

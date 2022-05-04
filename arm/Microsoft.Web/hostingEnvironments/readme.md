@@ -161,6 +161,10 @@ tags: {
 
 ### Parameter Usage: `workerPools`
 
+<details>
+
+<summary>Parameter JSON format</summary>
+
 ```json
 "workerPools": {
     "value": {
@@ -180,32 +184,93 @@ tags: {
 }
 ```
 
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+workerPools: {
+    workerPools: [
+        {
+            workerSizeId: 0
+            workerSize: 'Small'
+            workerCount: 2
+        }
+        {
+            workerSizeId: 1
+            workerSize: 'Small'
+            workerCount: 2
+        }
+    ]
+}
+```
+
 workerPools can have two properties workerSize and workerCount:
 
+<details>
+
+<summary>Parameter JSON format</summary>
+
 ```json
-    "workerSize": {
-      "type": "string",
-      "allowedValues": [
-        "Small",
-        "Medium",
-        "Large",
-        "ExtraLarge"
-      ],
-      "defaultValue": "Small",
-      "metadata": {
-        "description": "Instance size for worker pool one.  Maps to P1,P2,P3,P4."
-      }
-    },
-    "workerCount": {
-      "type": "int",
-      "defaultValue": 2,
-      "minValue": 2,
-      "maxValue": 100,
-      "metadata": {
-        "description": "Number of instances in worker pool one.  Minimum of two."
-      }
+"workerSize": {
+    "type": "string",
+    "allowedValues": [
+    "Small",
+    "Medium",
+    "Large",
+    "ExtraLarge"
+    ],
+    "defaultValue": "Small",
+    "metadata": {
+    "description": "Instance size for worker pool one.  Maps to P1,P2,P3,P4."
     }
+},
+"workerCount": {
+    "type": "int",
+    "defaultValue": 2,
+    "minValue": 2,
+    "maxValue": 100,
+    "metadata": {
+    "description": "Number of instances in worker pool one. Minimum of two."
+    }
+}
 ```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+workerSize: {
+    type: 'string'
+    allowedValues: [
+        'Small'
+        'Medium'
+        'Large'
+        'ExtraLarge'
+    ]
+    defaultValue: 'Small'
+    metadata: {
+        description: 'Instance size for worker pool one.  Maps to P1P2P3P4.'
+    }
+}
+workerCount: {
+    type: 'int'
+    defaultValue: 2
+    minValue: 2
+    maxValue: 100
+    metadata: {
+        description: 'Number of instances in worker pool one. Minimum of two.'
+    }
+}
+```
+
+</details>
+<p>
 
 ## Outputs
 

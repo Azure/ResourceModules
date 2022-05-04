@@ -137,6 +137,10 @@ roleAssignments: [
 
 ### Parameter Usage: `networkAcls`
 
+<details>
+
+<summary>Parameter JSON format</summary>
+
 ```json
 "networkAcls": {
     "value": {
@@ -156,6 +160,33 @@ roleAssignments: [
     }
 }
 ```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+networkAcls: {
+    bypass: 'AzureServices'
+    defaultAction: 'Deny'
+    virtualNetworkRules: [
+        {
+            subnetId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001'
+        }
+    ]
+    ipRules: [
+        {
+            action: 'Allow'
+            value: '1.1.1.1'
+        }
+    ]
+}
+```
+
+</details>
+<p>
 
 ### Parameter Usage: `tags`
 

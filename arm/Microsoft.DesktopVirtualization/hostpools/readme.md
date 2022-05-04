@@ -146,13 +146,59 @@ The below parameter object is converted to an in-line string when handed over to
 }
 ```
 
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+vmTemplate: {
+    domain: '<yourAddsDomain>.com'
+    galleryImageOffer: 'office-365'
+    galleryImagePublisher: 'microsoftwindowsdesktop'
+    galleryImageSKU: '19h2-evd-o365pp'
+    imageType: 'Gallery'
+    imageUri: null
+    customImageId: null
+    namePrefix: 'AVDv2'
+    osDiskType: 'StandardSSD_LRS'
+    useManagedDisks: true
+    vmSize: {
+        id: 'Standard_D2s_v3'
+        cores: 2
+        ram: 8
+    }
+}
+```
+
+</details>
+<p>
+
 ### Parameter Usage: `customRdpProperty`
+
+<details>
+
+<summary>Parameter JSON format</summary>
 
 ```json
 "customRdpProperty": {
     "value": "audiocapturemode:i:1;audiomode:i:0;drivestoredirect:s:;redirectclipboard:i:1;redirectcomports:i:1;redirectprinters:i:1;redirectsmartcards:i:1;screen mode ID:i:2;"
 }
 ```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+customRdpProperty: 'audiocapturemode:i:1;audiomode:i:0;drivestoredirect:s:;redirectclipboard:i:1;redirectcomports:i:1;redirectprinters:i:1;redirectsmartcards:i:1;screen mode ID:i:2;'
+```
+
+</details>
+<p>
 
 ### Parameter Usage: `tags`
 

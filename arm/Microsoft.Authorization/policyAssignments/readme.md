@@ -67,6 +67,19 @@ To deploy resource to an Azure Subscription, provide the `subscriptionId` as an 
 }
 ```
 
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+subscriptionId: '12345678-b049-471c-95af-123456789012'
+```
+
+</details>
+<p>
+
 ### Parameter Usage: `resourceGroupName`
 
 To deploy resource to a Resource Group, provide the `subscriptionId` and `resourceGroupName` as an input parameter to the module. **Example**:
@@ -102,6 +115,7 @@ module policyassignment 'br:bicepregistry.azurecr.io/bicep/modules/microsoft.aut
 ```bicep
 module policyassignment 'yourpath/arm/Microsoft.Authorization.policyAssignments/subscription/deploy.bicep' = {}
 ```
+
 
 ## Outputs
 

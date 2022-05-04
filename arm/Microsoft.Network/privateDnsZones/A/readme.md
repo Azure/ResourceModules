@@ -34,15 +34,36 @@ This module deploys a Private DNS Zone A record.
 
 ### Parameter Usage: `aRecords`
 
+<details>
+
+<summary>Parameter JSON format</summary>
+
 ```json
 "aRecords": {
     "value": [
-      {
-        "ipv4Address": "string"
-      }
+        {
+            "ipv4Address": "string"
+        }
     ]
 }
 ```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+aRecords: [
+    {
+        ipv4Address: 'string'
+    }
+]
+```
+
+</details>
+<p>
 
 ## Outputs
 

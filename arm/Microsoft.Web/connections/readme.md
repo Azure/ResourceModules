@@ -106,6 +106,10 @@ roleAssignments: [
 
 ### Parameter Usage: `connectionApi`
 
+<details>
+
+<summary>Parameter JSON format</summary>
+
 ```json
 "connectionApi": {
     "value": {
@@ -121,7 +125,33 @@ roleAssignments: [
 }
 ```
 
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+connectionApi: {
+    id: 'string'
+    type: 'string'
+    swagger: {}
+    brandColor: 'string'
+    description: 'string'
+    displayName: 'string'
+    iconUri: 'string'
+    name: 'string'
+}
+```
+
+</details>
+<p>
+
 ### Parameter Usage: `statuses`
+
+<details>
+
+<summary>Parameter JSON format</summary>
 
 ```json
 "statuses": {
@@ -141,6 +171,32 @@ roleAssignments: [
     ]
 }
 ```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+statuses: [
+    {
+        status: 'string'
+        target: 'string'
+        error: {
+            location: 'string'
+            tags: {}
+            properties: {
+                code: 'string'
+                message: 'string'
+            }
+        }
+    }
+]
+```
+
+</details>
+<p>
 
 ### Parameter Usage: `tags`
 
@@ -185,6 +241,10 @@ tags: {
 
 ### Parameter Usage: `testLinks`
 
+<details>
+
+<summary>Parameter JSON format</summary>
+
 ```json
 "testLinks": {
     "value":[
@@ -195,6 +255,24 @@ tags: {
     ]
 }
 ```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+testLinks: [
+    {
+        requestUri: 'string'
+        method: 'string'
+    }
+]
+```
+
+</details>
+<p>
 
 ## Outputs
 

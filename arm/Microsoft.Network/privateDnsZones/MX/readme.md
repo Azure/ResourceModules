@@ -34,16 +34,38 @@ This module deploys a Private DNS Zone MX record.
 
 ### Parameter Usage: `mxRecords`
 
+<details>
+
+<summary>Parameter JSON format</summary>
+
 ```json
 "mxRecords": {
     "value": [
-      {
-        "exchange": "string",
-        "preference": "int"
-      }
+        {
+            "exchange": "string",
+            "preference": "int"
+        }
     ]
 }
 ```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+mxRecords: [
+    {
+        exchange: 'string'
+        preference: 'int'
+    }
+]
+```
+
+</details>
+<p>
 
 ## Outputs
 

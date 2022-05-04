@@ -242,6 +242,10 @@ tags: {
 
 ### Parameter Usage: `networkAcls`
 
+<details>
+
+<summary>Parameter JSON format</summary>
+
 ```json
 "networkAcls": {
   "value": {

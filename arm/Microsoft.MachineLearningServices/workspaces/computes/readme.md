@@ -55,6 +55,21 @@ Will be ignored in case a resource ID is provided.
 }
 ```
 
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+properties: {
+    // See https://docs.microsoft.com/en-us/azure/templates/microsoft.machinelearningservices/workspaces/computes?tabs=bicep#compute for the properties for the difference compute types
+}
+```
+
+</details>
+<p>
+
 ### Parameter Usage: `tags`
 
 Tag names and tag values can be provided as needed. A tag can be left without a value.

@@ -54,35 +54,46 @@ This module deploys a Static Web Site.
 
 [StaticSiteBuildProperties - Microsoft.Web/staticSites 2021-03-01 - Bicep & ARM template reference | Microsoft Docs](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Web/2021-03-01/staticSites?tabs=bicep#staticsitebuildproperties)
 
-```bicep
-    buildProperties: {
-      apiBuildCommand: 'string'
-      apiLocation: 'string'
-      appArtifactLocation: 'string'
-      appBuildCommand: 'string'
-      appLocation: 'string'
-      githubActionSecretNameOverride: 'string'
-      outputLocation: 'string'
-      skipGithubActionWorkflowGeneration: bool
+<details>
+
+<summary>Parameter JSON format</summary>
+
+```json
+"buildProperties": {
+    "value": {
+        "apiBuildCommand": "string",
+        "apiLocation": "string",
+        "appArtifactLocation": "string",
+        "appBuildCommand": "string",
+        "appLocation": "string",
+        "githubActionSecretNameOverride": "string",
+        "outputLocation": "string",
+        "skipGithubActionWorkflowGeneration": "bool"
     }
+}
 ```
 
-### Parameter Usage: `templateProperties`
+</details>
 
-[StaticSiteTemplateOptions - Microsoft.Web/staticSites 2021-03-01 - Bicep & ARM template reference | Microsoft Docs](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Web/2021-03-01/staticSites?tabs=bicep#staticsitetemplateoptions)
+<details>
+
+<summary>Bicep format</summary>
 
 ```bicep
-    buildProperties: {
-      apiBuildCommand: 'string'
-      apiLocation: 'string'
-      appArtifactLocation: 'string'
-      appBuildCommand: 'string'
-      appLocation: 'string'
-      githubActionSecretNameOverride: 'string'
-      outputLocation: 'string'
-      skipGithubActionWorkflowGeneration: bool
-    }
+buildProperties: {
+    apiBuildCommand: 'string'
+    apiLocation: 'string'
+    appArtifactLocation: 'string'
+    appBuildCommand: 'string'
+    appLocation: 'string'
+    githubActionSecretNameOverride: 'string'
+    outputLocation: 'string'
+    skipGithubActionWorkflowGeneration: bool
+}
 ```
+
+</details>
+<p>
 
 ### Parameter Usage: `privateEndpoints`
 

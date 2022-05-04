@@ -161,19 +161,46 @@ tags: {
 
 ### Parameter Usage: `locations`
 
+<details>
+
+<summary>Parameter JSON format</summary>
+
 ```json
 "locations": {
     "value": [
-      {
-        "failoverPriority": 1,
-        "locationName": "East US",
-        "isZoneRedundant": false
-      }
+        {
+            "failoverPriority": 1,
+            "locationName": "East US",
+            "isZoneRedundant": false
+        }
     ]
 }
 ```
 
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+locations: [
+    {
+        failoverPriority: 1
+        locationName: 'East US'
+        isZoneRedundant: false
+    }
+]
+```
+
+</details>
+<p>
+
 ### Parameter Usage: `sqlDatabases`
+
+<details>
+
+<summary>Parameter JSON format</summary>
 
 ```json
 "sqlDatabases": {
@@ -193,7 +220,38 @@ tags: {
 }
 ```
 
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+sqlDatabases: {
+    value: [
+        {
+            name: 'sxx-az-sql-x-001'
+            containers: [
+                'container-001'
+                'container-002'
+            ]
+        }
+        {
+            name: 'sxx-az-sql-x-002'
+            containers: []
+        }
+    ]
+}
+```
+
+</details>
+<p>
+
 ### Parameter Usage: `mongodbDatabases`
+
+<details>
+
+<summary>Parameter JSON format</summary>
 
 ```json
 "mongodbDatabases": {
@@ -248,6 +306,41 @@ Create a role assignment for the given resource. If you want to assign a service
 }
 ```
 
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+roleAssignments: [
+    {
+        roleDefinitionIdOrName: 'Desktop Virtualization User'
+        principalIds: [
+            '12345678-1234-1234-1234-123456789012' // object 1
+            '78945612-1234-1234-1234-123456789012' // object 2
+        ]
+    }
+    {
+        roleDefinitionIdOrName: 'Reader'
+        principalIds: [
+            '12345678-1234-1234-1234-123456789012' // object 1
+            '78945612-1234-1234-1234-123456789012' // object 2
+        ]
+    }
+    {
+        roleDefinitionIdOrName: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'
+        principalIds: [
+            '12345678-1234-1234-1234-123456789012' // object 1
+        ]
+        principalType: 'ServicePrincipal'
+    }
+]
+```
+
+</details>
+<p>
+
 ### Parameter Usage: `tags`
 
 Tag names and tag values can be provided as needed. A tag can be left without a value.
@@ -264,6 +357,26 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
     }
 }
 ```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+tags: {
+    Environment: 'Non-Prod'
+    Contact: 'test.user@testcompany.com'
+    PurchaseOrder: '1234'
+    CostCenter: '7890'
+    ServiceName: 'DeploymentValidation'
+    Role: 'DeploymentValidation'
+}
+```
+
+</details>
+<p>
 
 ### Parameter Usage: `userAssignedIdentities`
 

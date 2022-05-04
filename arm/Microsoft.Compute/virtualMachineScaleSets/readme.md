@@ -143,7 +143,26 @@ The following resources are required to be able to deploy this resource.
 }
 ```
 
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+imageReference: {
+    id: '/subscriptions/12345-6789-1011-1213-15161718/resourceGroups/rg-name/providers/Microsoft.Compute/images/imagename'
+}
+```
+
+</details>
+<p>
+
 ### Parameter Usage: `plan`
+
+<details>
+
+<summary>Parameter JSON format</summary>
 
 ```json
 "plan": {
@@ -155,49 +174,134 @@ The following resources are required to be able to deploy this resource.
 }
 ```
 
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+plan: {
+    name: 'qvsa-25'
+    product: 'qualys-virtual-scanner'
+    publisher: 'qualysguard'
+}
+```
+
+</details>
+<p>
+
 ### Parameter Usage: `osDisk`
 
+<details>
+
+<summary>Parameter JSON format</summary>
+
 ```json
- "osDisk": {
+"osDisk": {
     "value": {
         "createOption": "fromImage",
         "diskSizeGB": "128",
         "managedDisk": {
             "storageAccountType": "Premium_LRS",
             "diskEncryptionSet": { // Restrictions: DiskEncryptionSet cannot be enabled if Azure Disk Encryption (guest-VM encryption using bitlocker/DM-Crypt) is enabled on your VM Scale sets.
-                        "id": "/subscriptions/<subscriptionId>/resourceGroups/<resourceGroupName>/providers/Microsoft.Compute/diskEncryptionSets/<desName>"
-              }
+                "id": "/subscriptions/<subscriptionId>/resourceGroups/<resourceGroupName>/providers/Microsoft.Compute/diskEncryptionSets/<desName>"
+            }
         }
     }
 }
 ```
 
-### Parameter Usage: `dataDisks`
+</details>
 
-```json
-"dataDisks": {
-    "value": [{
-        "caching": "ReadOnly",
-        "createOption": "Empty",
-        "diskSizeGB": "256",
-        "writeAcceleratorEnabled": true,
-        "managedDisk": {
-            "storageAccountType": "Premium_LRS"
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+osDisk: {
+    createOption: 'fromImage'
+    diskSizeGB: '128'
+    managedDisk: {
+        storageAccountType: 'Premium_LRS'
+        diskEncryptionSet: { // Restrictions: DiskEncryptionSet cannot be enabled if Azure Disk Encryption (guest-VM encryption using bitlocker/DM-Crypt) is enabled on your VM Scale sets.
+            id: '/subscriptions/<subscriptionId>/resourceGroups/<resourceGroupName>/providers/Microsoft.Compute/diskEncryptionSets/<desName>'
         }
-    },
-    {
-        "caching": "ReadOnly",
-        "createOption": "Empty",
-        "diskSizeGB": "128",
-        "writeAcceleratorEnabled": true,
-        "managedDisk": {
-            "storageAccountType": "Premium_LRS"
-        }
-    }]
+    }
 }
 ```
 
+</details>
+<p>
+
+### Parameter Usage: `dataDisks`
+
+<details>
+
+<summary>Parameter JSON format</summary>
+
+```json
+"dataDisks": {
+    "value": [
+        {
+            "caching": "ReadOnly",
+            "createOption": "Empty",
+            "diskSizeGB": "256",
+            "writeAcceleratorEnabled": true,
+            "managedDisk": {
+                "storageAccountType": "Premium_LRS"
+            }
+        },
+        {
+            "caching": "ReadOnly",
+            "createOption": "Empty",
+            "diskSizeGB": "128",
+            "writeAcceleratorEnabled": true,
+            "managedDisk": {
+                "storageAccountType": "Premium_LRS"
+            }
+        }
+    ]
+}
+```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+dataDisks: [
+    {
+        caching: 'ReadOnly'
+        createOption: 'Empty'
+        diskSizeGB: '256'
+        writeAcceleratorEnabled: true
+        managedDisk: {
+            storageAccountType: 'Premium_LRS'
+        }
+    }
+    {
+        caching: 'ReadOnly'
+        createOption: 'Empty'
+        diskSizeGB: '128'
+        writeAcceleratorEnabled: true
+        managedDisk: {
+            storageAccountType: 'Premium_LRS'
+        }
+    }
+]
+```
+
+</details>
+<p>
+
 ### Parameter Usage: `nicConfigurations`
+
+<details>
+
+<summary>Parameter JSON format</summary>
 
 ```json
 "nicConfigurations": {
@@ -219,28 +323,94 @@ The following resources are required to be able to deploy this resource.
 }
 ```
 
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+nicConfigurations: [
+    {
+        nicSuffix: '-nic01'
+        ipConfigurations: [
+            {
+                name: 'ipconfig1'
+                properties: {
+                    subnet: {
+                        id: '/subscriptions/<<subscriptionId>>/resourceGroups/agents-vmss-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-scaleset/subnets/sxx-az-subnet-scaleset-linux'
+                    }
+                }
+            }
+        ]
+    }
+]
+```
+
+</details>
+<p>
 
 ### Parameter Usage: `extensionDomainJoinConfig`
 
+<details>
+
+<summary>Parameter JSON format</summary>
 
 ```json
-"windowsScriptExtensionFileData": {
-    "value": [
-        //storage accounts with SAS token requirement
-        {
-            "uri": "https://mystorageAccount.blob.core.windows.net/avdscripts/File1.ps1",
-            "storageAccountId": "/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/rgName/providers/Microsoft.Storage/storageAccounts/storageAccountName"
-        },
-        {
-            "uri": "https://mystorageAccount.blob.core.windows.net/avdscripts/File2.ps1",
-            "storageAccountId": "/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/rgName/providers/Microsoft.Storage/storageAccounts/storageAccountName"
-        },
-        "secretName": "domainJoinUser-Password"
+"extensionDomainJoinConfig": {
+  "value": {
+    "enabled": true,
+    "settings": {
+      "domainName": "contoso.com",
+      "domainJoinUser": "test.user@testcompany.com",
+      "domainJoinOU": "OU=testOU; DC=contoso; DC=com",
+      "domainJoinRestart": true,
+      "domainJoinOptions": 3
     }
+  }
+},
+"extensionDomainJoinPassword": {
+  "keyVault": {
+    "id": "/subscriptions/62826c76-d304-46d8-a0f6-718dbdcc536c/resourceGroups/WVD-Mgmt-TO-RG/providers/Microsoft.KeyVault/vaults/wvd-to-kvlt"
+  },
+  "secretName": "domainJoinUser02-Password"
 }
 ```
 
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+extensionDomainJoinConfig: {
+    enabled: true
+    settings: {
+      domainName: 'contoso.com'
+      domainJoinUser: 'test.user@testcompany.com'
+      domainJoinOU: 'OU=testOU; DC=contoso; DC=com'
+      domainJoinRestart: true
+      domainJoinOptions: 3
+    }
+}
+
+resource kv1 'Microsoft.KeyVault/vaults@2019-09-01' existing = {
+  name: 'adp-<<namePrefix>>-az-kv-x-001'
+  scope: resourceGroup('<<subscriptionId>>','validation-rg')
+}
+
+extensionDomainJoinPassword: kv1.getSecret('domainJoinUser02-Password')
+```
+
+</details>
+<p>
+
 ### Parameter Usage: `extensionNetworkWatcherAgentConfig`
+
+<details>
+
+<summary>Parameter JSON format</summary>
 
 ```json
 "extensionNetworkWatcherAgentConfig": {
@@ -249,6 +419,21 @@ The following resources are required to be able to deploy this resource.
     }
 }
 ```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+extensionNetworkWatcherAgentConfig: {
+    enabled: true
+}
+```
+
+</details>
+<p>
 
 ### Parameter Usage: `extensionAntiMalwareConfig`
 
@@ -277,27 +462,90 @@ Only for OSType Windows
 }
 ```
 
-### Parameter Usage: `extensionDiskEncryptionConfig`
+</details>
 
-```json
-"extensionDiskEncryptionConfig": {
-  "value": {
-    "enabled": true,
-    "settings": {
-      "EncryptionOperation": "EnableEncryption",
-      "KeyVaultURL": "https://mykeyvault.vault.azure.net/",
-      "KeyVaultResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-sxx-az-kv-x-001",
-      "KeyEncryptionKeyURL": "https://mykeyvault.vault.azure.net/keys/keyEncryptionKey/bc3bb46d95c64367975d722f473eeae5", // ID must be updated for new keys
-      "KekVaultResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-sxx-az-kv-x-001",
-      "KeyEncryptionAlgorithm": "RSA-OAEP", //'RSA-OAEP'/'RSA-OAEP-256'/'RSA1_5'
-      "VolumeType": "All", //'OS'/'Data'/'All'
-      "ResizeOSDisk": "false"
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+extensionAntiMalwareConfig: {
+    enabled: true
+    settings: {
+        AntimalwareEnabled: true
+        Exclusions: {
+            Extensions: '.log;.ldf'
+            Paths: 'D:\\IISlogs;D:\\DatabaseLogs'
+            Processes: 'mssence.svc'
+        }
+        RealtimeProtectionEnabled: true
+        ScheduledScanSettings: {
+            isEnabled: 'true'
+            scanType: 'Quick'
+            day: '7'
+            time: '120'
+        }
     }
-  }
 }
 ```
 
+</details>
+<p>
+
+### Parameter Usage: `extensionDiskEncryptionConfig`
+
+<details>
+
+<summary>Parameter JSON format</summary>
+
+```json
+"extensionDiskEncryptionConfig": {
+    "value": {
+        "enabled": true,
+        "settings": {
+            "EncryptionOperation": "EnableEncryption",
+            "KeyVaultURL": "https://mykeyvault.vault.azure.net/",
+            "KeyVaultResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-sxx-az-kv-x-001",
+            "KeyEncryptionKeyURL": "https://mykeyvault.vault.azure.net/keys/keyEncryptionKey/bc3bb46d95c64367975d722f473eeae5", // ID must be updated for new keys
+            "KekVaultResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-sxx-az-kv-x-001",
+            "KeyEncryptionAlgorithm": "RSA-OAEP", //'RSA-OAEP'/'RSA-OAEP-256'/'RSA1_5'
+            "VolumeType": "All", //'OS'/'Data'/'All'
+            "ResizeOSDisk": "false"
+        }
+    }
+}
+```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+extensionDiskEncryptionConfig: {
+    enabled: true
+    settings: {
+        EncryptionOperation: 'EnableEncryption'
+        KeyVaultURL: 'https://mykeyvault.vault.azure.net/'
+        KeyVaultResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-sxx-az-kv-x-001'
+        KeyEncryptionKeyURL: 'https://mykeyvault.vault.azure.net/keys/keyEncryptionKey/bc3bb46d95c64367975d722f473eeae5' // ID must be updated for new keys
+        KekVaultResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-sxx-az-kv-x-001'
+        KeyEncryptionAlgorithm: 'RSA-OAEP' //'RSA-OAEP'/'RSA-OAEP-256'/'RSA1_5'
+        VolumeType: 'All' //'OS'/'Data'/'All'
+        ResizeOSDisk: 'false'
+    }
+}
+```
+
+</details>
+<p>
+
 ### Parameter Usage: `extensionCustomScriptConfig`
+
+<details>
+
+<summary>Parameter JSON format</summary>
 
 ```json
 "extensionCustomScriptConfig": {
@@ -326,48 +574,130 @@ Only for OSType Windows
 }
 ```
 
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+extensionCustomScriptConfig: {
+    enabled: true
+    fileData: [
+        //storage accounts with SAS token requirement
+        {
+            uri: 'https://mystorageaccount.blob.core.windows.net/avdscripts/File1.ps1'
+            storageAccountId: '/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/rgName/providers/Microsoft.Storage/storageAccounts/storageAccountName'
+        }
+        {
+            uri: 'https://mystorageaccount.blob.core.windows.net/avdscripts/File2.ps1'
+            storageAccountId: '/subscriptions/12345678-1234-1234-1234-123456789012/resourceGroups/rgName/providers/Microsoft.Storage/storageAccounts/storageAccountName'
+        }
+        //storage account with public container (no SAS token is required) OR other public URL (not a storage account)
+        {
+            uri: 'https://github.com/myProject/File3.ps1'
+            storageAccountId: ''
+        }
+    ]
+    settings: {
+        commandToExecute: 'powershell -ExecutionPolicy Unrestricted -File testscript.ps1'
+    }
+}
+```
+
+</details>
+<p>
+
 ### Parameter Usage: `extensionDSCConfig`
+
+<details>
+
+<summary>Parameter JSON format</summary>
 
 ```json
 "extensionDSCConfig": {
-  "value": {
-    {
-      "enabled": true,
-      "settings": {
-        "wmfVersion": "latest",
-        "configuration": {
-          "url": "http://validURLToConfigLocation",
-          "script": "ConfigurationScript.ps1",
-          "function": "ConfigurationFunction"
+    "value": {
+        "enabled": true,
+        "settings": {
+            "wmfVersion": "latest",
+            "configuration": {
+                "url": "http://validURLToConfigLocation",
+                "script": "ConfigurationScript.ps1",
+                "function": "ConfigurationFunction"
+            },
+            "configurationArguments": {
+                "argument1": "Value1",
+                "argument2": "Value2"
+            },
+            "configurationData": {
+                "url": "https://foo.psd1"
+            },
+            "privacy": {
+                "dataCollection": "enable"
+            },
+            "advancedOptions": {
+                "forcePullAndApply": false,
+                "downloadMappings": {
+                    "specificDependencyKey": "https://myCustomDependencyLocation"
+                }
+            }
         },
-        "configurationArguments": {
-          "argument1": "Value1",
-          "argument2": "Value2"
-        },
-        "configurationData": {
-          "url": "https://foo.psd1"
-        },
-        "privacy": {
-          "dataCollection": "enable"
-        },
-        "advancedOptions": {
-          "forcePullAndApply": false,
-          "downloadMappings": {
-            "specificDependencyKey": "https://myCustomDependencyLocation"
-          }
+        "protectedSettings": {
+            "configurationArguments": {
+                "mySecret": "MyPlaceholder"
+            },
+            "configurationUrlSasToken": "MyPlaceholder",
+            "configurationDataUrlSasToken": "MyPlaceholder"
         }
-      },
-      "protectedSettings": {
-        "configurationArguments": {
-          "mySecret": "MyPlaceholder"
-        },
-        "configurationUrlSasToken": "MyPlaceholder",
-        "configurationDataUrlSasToken": "MyPlaceholder"
-      }
     }
-  }
 }
 ```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+extensionDSCConfig: {
+    enabled: true
+    settings: {
+        wmfVersion: 'latest'
+        configuration: {
+            url: 'http://validURLToConfigLocation'
+            script: 'ConfigurationScript.ps1'
+            function: 'ConfigurationFunction'
+        }
+        configurationArguments: {
+            argument1: 'Value1'
+            argument2: 'Value2'
+        }
+        configurationData: {
+            url: 'https://foo.psd1'
+        }
+        privacy: {
+            dataCollection: 'enable'
+        }
+        advancedOptions: {
+            forcePullAndApply: false
+            downloadMappings: {
+                specificDependencyKey: 'https://myCustomDependencyLocation'
+            }
+        }
+    }
+    protectedSettings: {
+        configurationArguments: {
+            mySecret: 'MyPlaceholder'
+        }
+        configurationUrlSasToken: 'MyPlaceholder'
+        configurationDataUrlSasToken: 'MyPlaceholder'
+    }
+}
+```
+
+</details>
+<p>
 
 ### Parameter Usage: `roleAssignments`
 

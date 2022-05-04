@@ -49,33 +49,66 @@ This module deploys an Action Group.
 
 See [Documentation](https://docs.microsoft.com/en-us/azure/templates/microsoft.insights/2019-06-01/actiongroups) for description of parameters usage and syntax.
 
-Example:
+<details>
+
+<summary>Parameter JSON file</summary>
 
 ```json
-"emailReceivers":{
-  "value":[
-    {
-      "name": "TestUser_-EmailAction-",
-      "emailAddress": "test.user@testcompany.com",
-      "useCommonAlertSchema": true
-    },
-    {
-      "name": "TestUser2",
-      "emailAddress": "test.user2@testcompany.com",
-      "useCommonAlertSchema": true
-    }
-  ]
+"emailReceivers": {
+    "value": [
+        {
+            "name": "TestUser_-EmailAction-",
+            "emailAddress": "test.user@testcompany.com",
+            "useCommonAlertSchema": true
+        },
+        {
+            "name": "TestUser2",
+            "emailAddress": "test.user2@testcompany.com",
+            "useCommonAlertSchema": true
+        }
+    ]
 },
-"smsReceivers":{
-  "value": [
-    {
-      "name": "TestUser_-SMSAction-",
-      "countryCode": "1",
-      "phoneNumber": "2345678901"
-    }
-  ]
+"smsReceivers": {
+    "value": [
+        {
+            "name": "TestUser_-SMSAction-",
+            "countryCode": "1",
+            "phoneNumber": "2345678901"
+        }
+    ]
 }
 ```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+emailReceivers: [
+    {
+        name: 'TestUser_-EmailAction-'
+        emailAddress: 'test.user@testcompany.com'
+        useCommonAlertSchema: true
+    }
+    {
+        name: 'TestUser2'
+        emailAddress: 'test.user2@testcompany.com'
+        useCommonAlertSchema: true
+    }
+]
+smsReceivers: [
+    {
+        name: 'TestUser_-SMSAction-'
+        countryCode: '1'
+        phoneNumber: '2345678901'
+    }
+]
+```
+
+</details>
+<p>
 
 ### Parameter Usage: `roleAssignments`
 

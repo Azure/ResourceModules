@@ -70,7 +70,7 @@ If you do only want to provide actionGroupIds, a shorthand use of the parameter 
 }
 ```
 
-### Parameter Usage: criterias
+### Parameter Usage: criteria
 
 **SingleResourceMultipleMetricCriteria**
 
@@ -109,7 +109,7 @@ If you do only want to provide actionGroupIds, a shorthand use of the parameter 
 ```
 
 **Sample**
-The following sample can be use both for Single and Multiple criterias. The other parameters are optional.
+The following sample can be use both for Single and Multiple criteria. The other parameters are optional.
 
 ```json
 "criterias":{

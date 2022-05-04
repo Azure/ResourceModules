@@ -53,6 +53,10 @@ This module deploys an app service plan.
 
 ### Parameter Usage: `sku`
 
+<details>
+
+<summary>Parameter JSON format</summary>
+
 ```json
 "sku": {
     "value": {
@@ -64,6 +68,25 @@ This module deploys an app service plan.
     }
 }
 ```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+sku: {
+    name: 'P1v2'
+    tier: 'PremiumV2'
+    size: 'P1v2'
+    family: 'Pv2'
+    capacity: 1
+}
+```
+
+</details>
+<p>
 
 ### Parameter Usage: `roleAssignments`
 
