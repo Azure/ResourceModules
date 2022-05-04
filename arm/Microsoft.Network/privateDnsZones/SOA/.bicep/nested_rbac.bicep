@@ -44,7 +44,7 @@ resource SOA 'Microsoft.Network/privateDnsZones/SOA@2018-09-01' existing = {
   name: '${split(resourceId, '/')[8]}/${split(resourceId, '/')[10]}'
 }
 
-resource roleAssignment 'Microsoft.Authorization/roleAssignments@2021-04-01-preview' = [for principalId in principalIds: {
+resource roleAssignment 'Microsoft.Authorization/roleAssignments@2020-10-01-preview' = [for principalId in principalIds: {
   name: guid(SOA.name, principalId, roleDefinitionIdOrName)
   properties: {
     description: description
