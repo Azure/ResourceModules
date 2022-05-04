@@ -30,6 +30,7 @@ This module deploys a subscription wide export of the activity log.
 | `location` | string | `[deployment().location]` |  | Location deployment metadata. |
 | `name` | string | `[format('{0}-ActivityLog', uniqueString(subscription().id))]` |  | Name of the ActivityLog diagnostic settings. |
 
+
 ## Outputs
 
 | Output Name | Type | Description |
@@ -84,12 +85,12 @@ This module deploys a subscription wide export of the activity log.
 module diagnosticSettings './Microsoft.Insights/diagnosticSettings/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-diagnosticSettings'
   params: {
-      diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
-      diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
-      diagnosticLogsRetentionInDays: 7
+      name: '<<namePrefix>>-az-diag-x-001'
       diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
       diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
-      name: '<<namePrefix>>-az-diag-x-001'
+      diagnosticLogsRetentionInDays: 7
+      diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
+      diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
   }
 ```
 

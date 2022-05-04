@@ -223,7 +223,9 @@ module containerGroups './Microsoft.ContainerInstance/containerGroups/deploy.bic
       userAssignedIdentities: {
         '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
       }
-      systemAssignedIdentity: true
+      name: '<<namePrefix>>-az-acg-x-001'
+      image: 'mcr.microsoft.com/azuredocs/aci-helloworld'
+      containerName: '<<namePrefix>>-az-aci-x-001'
       ports: [
         {
           protocol: 'Tcp'
@@ -234,9 +236,7 @@ module containerGroups './Microsoft.ContainerInstance/containerGroups/deploy.bic
           port: '443'
         }
       ]
-      image: 'mcr.microsoft.com/azuredocs/aci-helloworld'
-      name: '<<namePrefix>>-az-acg-x-001'
-      containerName: '<<namePrefix>>-az-aci-x-001'
+      systemAssignedIdentity: true
   }
 ```
 

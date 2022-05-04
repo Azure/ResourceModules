@@ -100,5 +100,3 @@ roleAssignments: [
 | `name` | string | The name of the deployed file share |
 | `resourceGroupName` | string | The resource group of the deployed file share |
 | `resourceId` | string | The resource ID of the deployed file share |
-
-

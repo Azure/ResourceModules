@@ -266,10 +266,10 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
   params: {
       name: '<<namePrefix>>-az-sqlsrv-admin-001'
       administrators: {
-        principalType: 'Application'
-        login: 'myspn'
-        azureADOnlyAuthentication: true
         sid: '<<deploymentSpId>>'
+        azureADOnlyAuthentication: true
+        login: 'myspn'
+        principalType: 'Application'
         tenantId: '<<tenantId>>'
       }
   }
@@ -385,11 +385,25 @@ resource kv1 'Microsoft.KeyVault/vaults@2019-09-01' existing = {
 module servers './Microsoft.Sql/servers/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-servers'
   params: {
+      userAssignedIdentities: {
+        '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
+      }
+      name: '<<namePrefix>>-az-sqlsrv-x-001'
+      administratorLogin: kv1.getSecret('administratorLogin')
+      administratorLoginPassword: kv1.getSecret('administratorLoginPassword')
       firewallRules: [
         {
           endIpAddress: '0.0.0.0'
           name: 'AllowAllWindowsAzureIps'
           startIpAddress: '0.0.0.0'
+        }
+      ]
+      roleAssignments: [
+        {
+          principalIds: [
+            '<<deploymentSpId>>'
+          ]
+          roleDefinitionIdOrName: 'Reader'
         }
       ]
       securityAlertPolicies: [
@@ -399,37 +413,23 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
           name: 'Default'
         }
       ]
-      userAssignedIdentities: {
-        '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
-      }
-      administratorLoginPassword: kv1.getSecret('administratorLoginPassword')
-      administratorLogin: kv1.getSecret('administratorLogin')
-      systemAssignedIdentity: true
       location: 'westeurope'
-      name: '<<namePrefix>>-az-sqlsrv-x-001'
-      roleAssignments: [
-        {
-          principalIds: [
-            '<<deploymentSpId>>'
-          ]
-          roleDefinitionIdOrName: 'Reader'
-        }
-      ]
+      systemAssignedIdentity: true
       databases: [
         {
-          diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
-          collation: 'SQL_Latin1_General_CP1_CI_AS'
-          diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
-          licenseType: 'LicenseIncluded'
-          diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
           diagnosticLogsRetentionInDays: 7
-          maxSizeBytes: 34359738368
-          diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
-          skuFamily: 'Gen5'
-          skuTier: 'BusinessCritical'
+          diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
           skuCapacity: 12
           name: '<<namePrefix>>-az-sqldb-x-001'
+          collation: 'SQL_Latin1_General_CP1_CI_AS'
+          licenseType: 'LicenseIncluded'
           skuName: 'BC_Gen5'
+          skuTier: 'BusinessCritical'
+          skuFamily: 'Gen5'
+          diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
+          diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
+          diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
+          maxSizeBytes: 34359738368
         }
       ]
   }

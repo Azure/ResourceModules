@@ -29,6 +29,7 @@ This module deploys virtual hub route tables.
 | `labels` | array | `[]` | List of labels associated with this route table. |
 | `routes` | array | `[]` | List of all routes. |
 
+
 ## Outputs
 
 | Output Name | Type | Description |
@@ -36,5 +37,3 @@ This module deploys virtual hub route tables.
 | `name` | string | The name of the deployed virtual hub route table |
 | `resourceGroupName` | string | The resource group the virtual hub route table was deployed into |
 | `resourceId` | string | The resource ID of the deployed virtual hub route table |
-
-

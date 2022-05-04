@@ -376,12 +376,11 @@ module systemTopics './Microsoft.EventGrid/systemTopics/deploy.bicep' = {
   params: {
       source: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
       diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
-      diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
-      diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
-      diagnosticLogsRetentionInDays: 7
-      topicType: 'Microsoft.Storage.StorageAccounts'
       diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
-      name: '<<namePrefix>>-az-egstn-x-001'
+      diagnosticLogsRetentionInDays: 7
+      diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
+      topicType: 'Microsoft.Storage.StorageAccounts'
+      diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
       roleAssignments: [
         {
           principalIds: [
@@ -390,6 +389,7 @@ module systemTopics './Microsoft.EventGrid/systemTopics/deploy.bicep' = {
           roleDefinitionIdOrName: 'Reader'
         }
       ]
+      name: '<<namePrefix>>-az-egstn-x-001'
   }
 ```
 

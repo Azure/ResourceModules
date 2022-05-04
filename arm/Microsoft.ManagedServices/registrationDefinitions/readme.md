@@ -216,25 +216,25 @@ module registrationDefinitions './Microsoft.ManagedServices/registrationDefiniti
   name: '${uniqueString(deployment().name)}-registrationDefinitions'
   params: {
       managedByTenantId: '195ee85d-2f10-4764-8352-a3c99aa772fb'
+      registrationDescription: 'Managed by Lighthouse'
       name: 'Component Validation - Subscription assignment'
       authorizations: [
         {
-          principalIdDisplayName: 'ResourceModules-Reader'
           roleDefinitionId: 'acdd72a7-3385-48ef-bd42-f606fba81ae7'
+          principalIdDisplayName: 'ResourceModules-Reader'
           principalId: 'e87a249c-b53b-4685-94fe-863af522e4ee'
         }
         {
-          principalIdDisplayName: 'ResourceModules-Contributor'
           roleDefinitionId: 'b24988ac-6180-42a0-ab88-20f7382dd24c'
+          principalIdDisplayName: 'ResourceModules-Contributor'
           principalId: 'e2f126a7-136e-443f-b39f-f73ddfd146b1'
         }
         {
-          principalIdDisplayName: 'ResourceModules-LHManagement'
           roleDefinitionId: '91c1777a-f3dc-4fae-b103-61d183457e46'
+          principalIdDisplayName: 'ResourceModules-LHManagement'
           principalId: '87813317-fb25-4c76-91fe-783af429d109'
         }
       ]
-      registrationDescription: 'Managed by Lighthouse'
   }
 ```
 
@@ -297,27 +297,27 @@ module registrationDefinitions './Microsoft.ManagedServices/registrationDefiniti
 module registrationDefinitions './Microsoft.ManagedServices/registrationDefinitions/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-registrationDefinitions'
   params: {
-      resourceGroupName: 'validation-rg'
+      managedByTenantId: '195ee85d-2f10-4764-8352-a3c99aa772fb'
+      registrationDescription: 'Managed by Lighthouse'
       name: 'Component Validation - Resource group assignment'
       authorizations: [
         {
-          principalIdDisplayName: 'ResourceModules-Reader'
           roleDefinitionId: 'acdd72a7-3385-48ef-bd42-f606fba81ae7'
+          principalIdDisplayName: 'ResourceModules-Reader'
           principalId: 'e87a249c-b53b-4685-94fe-863af522e4ee'
         }
         {
-          principalIdDisplayName: 'ResourceModules-Contributor'
           roleDefinitionId: 'b24988ac-6180-42a0-ab88-20f7382dd24c'
+          principalIdDisplayName: 'ResourceModules-Contributor'
           principalId: 'e2f126a7-136e-443f-b39f-f73ddfd146b1'
         }
         {
-          principalIdDisplayName: 'ResourceModules-LHManagement'
           roleDefinitionId: '91c1777a-f3dc-4fae-b103-61d183457e46'
+          principalIdDisplayName: 'ResourceModules-LHManagement'
           principalId: '87813317-fb25-4c76-91fe-783af429d109'
         }
       ]
-      managedByTenantId: '195ee85d-2f10-4764-8352-a3c99aa772fb'
-      registrationDescription: 'Managed by Lighthouse'
+      resourceGroupName: 'validation-rg'
   }
 ```
 

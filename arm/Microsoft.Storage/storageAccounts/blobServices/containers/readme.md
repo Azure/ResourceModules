@@ -101,5 +101,3 @@ roleAssignments: [
 | `name` | string | The name of the deployed container |
 | `resourceGroupName` | string | The resource group of the deployed container |
 | `resourceId` | string | The resource ID of the deployed container |
-
-

@@ -110,5 +110,3 @@ tags: {
 | `name` | string | The name of the agent pool |
 | `resourceGroupName` | string | The resource group the agent pool was deployed into. |
 | `resourceId` | string | The resource ID of the agent pool |
-
-

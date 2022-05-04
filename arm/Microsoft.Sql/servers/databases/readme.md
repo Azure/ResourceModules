@@ -104,5 +104,3 @@ tags: {
 | `name` | string | The name of the deployed database |
 | `resourceGroupName` | string | The resourceGroup of the deployed database |
 | `resourceId` | string | The resource ID of the deployed database |
-
-

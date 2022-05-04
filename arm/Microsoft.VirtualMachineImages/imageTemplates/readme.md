@@ -298,26 +298,6 @@ roleAssignments: [
 module imageTemplates './Microsoft.VirtualMachineImages/imageTemplates/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-imageTemplates'
   params: {
-      sigImageDefinitionId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Compute/galleries/adp<<namePrefix>>azsigweux001/images/adp-<<namePrefix>>-az-imgd-x-001'
-      managedImageName: '<<namePrefix>>-az-mi-x-001'
-      subnetId: ''
-      buildTimeoutInMinutes: 0
-      userMsiName: 'adp-<<namePrefix>>-az-msi-x-001'
-      customizationSteps: [
-        {
-          restartTimeout: '30m'
-          type: 'WindowsRestart'
-        }
-      ]
-      osDiskSizeGB: 127
-      name: '<<namePrefix>>-az-imgt-x-001'
-      imageSource: {
-        sku: '19h2-evd'
-        version: 'latest'
-        type: 'PlatformImage'
-        offer: 'Windows-10'
-        publisher: 'MicrosoftWindowsDesktop'
-      }
       roleAssignments: [
         {
           principalIds: [
@@ -326,10 +306,30 @@ module imageTemplates './Microsoft.VirtualMachineImages/imageTemplates/deploy.bi
           roleDefinitionIdOrName: 'Reader'
         }
       ]
-      imageReplicationRegions: []
-      userMsiResourceGroup: 'validation-rg'
-      vmSize: 'Standard_D2s_v3'
+      name: '<<namePrefix>>-az-imgt-x-001'
+      sigImageDefinitionId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Compute/galleries/adp<<namePrefix>>azsigweux001/images/adp-<<namePrefix>>-az-imgd-x-001'
+      buildTimeoutInMinutes: 0
       unManagedImageName: '<<namePrefix>>-az-umi-x-001'
+      customizationSteps: [
+        {
+          type: 'WindowsRestart'
+          restartTimeout: '30m'
+        }
+      ]
+      managedImageName: '<<namePrefix>>-az-mi-x-001'
+      subnetId: ''
+      vmSize: 'Standard_D2s_v3'
+      imageReplicationRegions: []
+      userMsiName: 'adp-<<namePrefix>>-az-msi-x-001'
+      userMsiResourceGroup: 'validation-rg'
+      osDiskSizeGB: 127
+      imageSource: {
+        offer: 'Windows-10'
+        version: 'latest'
+        publisher: 'MicrosoftWindowsDesktop'
+        sku: '19h2-evd'
+        type: 'PlatformImage'
+      }
   }
 ```
 

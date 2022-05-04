@@ -35,6 +35,7 @@ This module deploys AVD Applications.
 | `iconPath` | string | `''` |  | Path to icon. |
 | `showInPortal` | bool | `False` |  | Specifies whether to show the RemoteApp program in the RD Web Access server. |
 
+
 ## Outputs
 
 | Output Name | Type | Description |
@@ -42,5 +43,3 @@ This module deploys AVD Applications.
 | `applicationResourceIds` | string | The resource ID of the deployed Application. |
 | `name` | string | The Name of the Application Group to register the Application in. |
 | `resourceGroupName` | string | The name of the Resource Group the AVD Application was created in. |
-
-

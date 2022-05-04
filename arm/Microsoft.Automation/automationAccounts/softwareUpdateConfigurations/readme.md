@@ -157,5 +157,3 @@ monthlyOccurrences: [
 | `name` | string | The name of the deployed softwareUpdateConfiguration |
 | `resourceGroupName` | string | The resource group of the deployed softwareUpdateConfiguration |
 | `resourceId` | string | The resource ID of the deployed softwareUpdateConfiguration |
-
-

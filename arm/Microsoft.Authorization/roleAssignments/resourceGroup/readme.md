@@ -34,6 +34,7 @@ With this module you can perform role assignments on a resource group level
 | `resourceGroupName` | string | `[resourceGroup().name]` |  | Name of the Resource Group to assign the RBAC role to. If not provided, will use the current scope for deployment. |
 | `subscriptionId` | string | `[subscription().subscriptionId]` |  | Subscription ID of the subscription to assign the RBAC role to. If not provided, will use the current scope for deployment. |
 
+
 ## Outputs
 
 | Output Name | Type | Description |
@@ -42,5 +43,3 @@ With this module you can perform role assignments on a resource group level
 | `resourceGroupName` | string | The name of the resource group the role assignment was applied at |
 | `resourceId` | string | The scope this Role Assignment applies to |
 | `scope` | string | The resource ID of the Role Assignment |
-
-

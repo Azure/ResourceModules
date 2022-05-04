@@ -89,5 +89,3 @@ value: '\'TestString\''
 | `name` | string | The name of the deployed variable |
 | `resourceGroupName` | string | The resource group of the deployed variable |
 | `resourceId` | string | The resource ID of the deployed variable |
-
-

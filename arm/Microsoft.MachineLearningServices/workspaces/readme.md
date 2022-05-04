@@ -484,16 +484,7 @@ userAssignedIdentities: {
 module workspaces './Microsoft.MachineLearningServices/workspaces/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-workspaces'
   params: {
-      diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
       diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
-      associatedStorageAccountResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
-      diagnosticLogsRetentionInDays: 7
-      sku: 'Basic'
-      diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
-      userAssignedIdentities: {
-        '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
-      }
-      name: '<<namePrefix>>-az-mls-x-001'
       roleAssignments: [
         {
           principalIds: [
@@ -504,36 +495,45 @@ module workspaces './Microsoft.MachineLearningServices/workspaces/deploy.bicep' 
       ]
       computes: [
         {
-          userAssignedIdentities: {
-            '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
-          }
-          name: 'DefaultCPU'
+          location: 'westeurope'
+          disableLocalAuth: false
+          computeLocation: 'westeurope'
+          description: 'Default CPU Cluster'
+          sku: 'Basic'
           computeType: 'AmlCompute'
           properties: {
             vmPriority: 'Dedicated'
             osType: 'Linux'
+            vmSize: 'STANDARD_DS11_V2'
             remoteLoginPortPublicAccess: 'Disabled'
+            enableNodePublicIp: true
             scaleSettings: {
               maxNodeCount: 3
-              nodeIdleTimeBeforeScaleDown: 'PT5M'
               minNodeCount: 0
+              nodeIdleTimeBeforeScaleDown: 'PT5M'
             }
-            enableNodePublicIp: true
-            vmSize: 'STANDARD_DS11_V2'
             isolatedNetwork: false
           }
-          computeLocation: 'westeurope'
-          description: 'Default CPU Cluster'
-          location: 'westeurope'
-          disableLocalAuth: false
+          userAssignedIdentities: {
+            '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
+          }
           systemAssignedIdentity: true
-          sku: 'Basic'
+          name: 'DefaultCPU'
         }
       ]
-      associatedApplicationInsightsResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Insights/components/adp-<<namePrefix>>-az-appi-x-001'
-      diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
+      sku: 'Basic'
+      name: '<<namePrefix>>-az-mls-x-001'
+      diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
+      userAssignedIdentities: {
+        '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
+      }
+      diagnosticLogsRetentionInDays: 7
       associatedKeyVaultResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001'
+      associatedStorageAccountResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
       systemAssignedIdentity: true
+      associatedApplicationInsightsResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Insights/components/adp-<<namePrefix>>-az-appi-x-001'
+      diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
+      diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
   }
 ```
 

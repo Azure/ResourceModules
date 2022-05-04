@@ -217,18 +217,17 @@ tags: {
 module galleries './Microsoft.Compute/galleries/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-galleries'
   params: {
-      name: '<<namePrefix>>azsigweuimages001'
       images: [
         {
           name: '<<namePrefix>>-az-imgd-x-003'
         }
         {
-          hyperVGeneration: 'V1'
-          name: '<<namePrefix>>-az-imgd-x-001'
-          offer: 'WindowsServer'
-          osState: 'Generalized'
           osType: 'Windows'
+          offer: 'WindowsServer'
           maxRecommendedvCPUs: 8
+          publisher: 'MicrosoftWindowsServer'
+          hyperVGeneration: 'V1'
+          sku: '2022-datacenter-azure-edition'
           roleAssignments: [
             {
               principalIds: [
@@ -237,26 +236,27 @@ module galleries './Microsoft.Compute/galleries/deploy.bicep' = {
               roleDefinitionIdOrName: 'Reader'
             }
           ]
-          minRecommendedvCPUs: 2
           maxRecommendedMemory: 16
-          publisher: 'MicrosoftWindowsServer'
-          sku: '2022-datacenter-azure-edition'
+          minRecommendedvCPUs: 2
           minRecommendedMemory: 4
+          osState: 'Generalized'
+          name: '<<namePrefix>>-az-imgd-x-001'
         }
         {
-          hyperVGeneration: 'V2'
-          name: '<<namePrefix>>-az-imgd-x-002'
-          offer: '0001-com-ubuntu-server-focal'
-          osState: 'Generalized'
           osType: 'Linux'
+          offer: '0001-com-ubuntu-server-focal'
           maxRecommendedvCPUs: 4
-          minRecommendedvCPUs: 1
-          maxRecommendedMemory: 32
           publisher: 'canonical'
+          hyperVGeneration: 'V2'
           sku: '20_04-lts-gen2'
+          maxRecommendedMemory: 32
+          minRecommendedvCPUs: 1
           minRecommendedMemory: 4
+          osState: 'Generalized'
+          name: '<<namePrefix>>-az-imgd-x-002'
         }
       ]
+      name: '<<namePrefix>>azsigweuimages001'
   }
 ```
 

@@ -40,6 +40,7 @@ The following resources are required to be able to deploy this resource.
 | `name` | string | `[format('{0}-{1}', parameters('localVnetName'), last(split(parameters('remoteVirtualNetworkId'), '/')))]` | The Name of Vnet Peering resource. If not provided, default value will be localVnetName-remoteVnetName |
 | `useRemoteGateways` | bool | `False` | If remote gateways can be used on this virtual network. If the flag is set to true, and allowGatewayTransit on remote peering is also true, virtual network will use gateways of remote virtual network for transit. Only one peering can have this flag set to true. This flag cannot be set if virtual network already has a gateway. Default is false |
 
+
 ## Outputs
 
 | Output Name | Type | Description |
@@ -47,5 +48,3 @@ The following resources are required to be able to deploy this resource.
 | `name` | string | The name of the virtual network peering |
 | `resourceGroupName` | string | The resource group the virtual network peering was deployed into |
 | `resourceId` | string | The resource ID of the virtual network peering |
-
-

@@ -225,19 +225,6 @@ roleAssignments: [
 module publicIPAddresses './Microsoft.Network/publicIPAddresses/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-publicIPAddresses'
   params: {
-      diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
-      diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
-      diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
-      diagnosticLogsRetentionInDays: 7
-      publicIPAllocationMethod: 'Static'
-      zones: [
-        '1'
-        '2'
-        '3'
-      ]
-      diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
-      name: '<<namePrefix>>-az-pip-x-001'
-      skuName: 'Standard'
       roleAssignments: [
         {
           principalIds: [
@@ -246,6 +233,19 @@ module publicIPAddresses './Microsoft.Network/publicIPAddresses/deploy.bicep' = 
           roleDefinitionIdOrName: 'Reader'
         }
       ]
+      diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
+      diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
+      diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
+      diagnosticLogsRetentionInDays: 7
+      skuName: 'Standard'
+      zones: [
+        '1'
+        '2'
+        '3'
+      ]
+      diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
+      publicIPAllocationMethod: 'Static'
+      name: '<<namePrefix>>-az-pip-x-001'
   }
 ```
 

@@ -213,20 +213,20 @@ gitRepository: {
 module fluxConfigurations './Microsoft.KubernetesConfiguration/fluxConfigurations/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-fluxConfigurations'
   params: {
-      scope: 'cluster'
-      namespace: 'flux-system'
-      sourceKind: 'GitRepository'
       name: 'flux2'
-      clusterName: '<<namePrefix>>-az-aks-kubenet-001'
+      scope: 'cluster'
+      sourceKind: 'GitRepository'
       gitRepository: {
-        timeoutInSeconds: 180
+        url: 'https://github.com/mspnp/aks-baseline'
+        sshKnownHosts: ''
         syncIntervalInSeconds: 300
         repositoryRef: {
           branch: 'main'
         }
-        sshKnownHosts: ''
-        url: 'https://github.com/mspnp/aks-baseline'
+        timeoutInSeconds: 180
       }
+      clusterName: '<<namePrefix>>-az-aks-kubenet-001'
+      namespace: 'flux-system'
   }
 ```
 
@@ -296,30 +296,30 @@ module fluxConfigurations './Microsoft.KubernetesConfiguration/fluxConfiguration
 module fluxConfigurations './Microsoft.KubernetesConfiguration/fluxConfigurations/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-fluxConfigurations'
   params: {
+      kustomizations: {
+        unified: {
+          timeoutInSeconds: 300
+          prune: true
+          path: './cluster-manifests'
+          force: false
+          syncIntervalInSeconds: 300
+          dependsOn: []
+        }
+      }
       scope: 'cluster'
+      sourceKind: 'GitRepository'
       gitRepository: {
-        timeoutInSeconds: 180
+        url: 'https://github.com/mspnp/aks-baseline'
+        sshKnownHosts: ''
         syncIntervalInSeconds: 300
         repositoryRef: {
           branch: 'main'
         }
-        sshKnownHosts: ''
-        url: 'https://github.com/mspnp/aks-baseline'
+        timeoutInSeconds: 180
       }
-      namespace: 'flux-system'
-      sourceKind: 'GitRepository'
-      name: 'flux2'
       clusterName: '<<namePrefix>>-az-aks-kubenet-001'
-      kustomizations: {
-        unified: {
-          path: './cluster-manifests'
-          timeoutInSeconds: 300
-          syncIntervalInSeconds: 300
-          force: false
-          dependsOn: []
-          prune: true
-        }
-      }
+      namespace: 'flux-system'
+      name: 'flux2'
   }
 ```
 

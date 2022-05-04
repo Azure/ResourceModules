@@ -660,19 +660,27 @@ module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
 module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-workspaces'
   params: {
-      diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
       diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
-      diagnosticLogsRetentionInDays: 7
-      linkedServices: [
+      dailyQuotaGb: 10
+      publicNetworkAccessForIngestion: 'Disabled'
+      gallerySolutions: [
         {
-          resourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Automation/automationAccounts/adp-<<namePrefix>>-wd-aut-x-001'
-          name: 'Automation'
+          product: 'OMSGallery'
+          publisher: 'Microsoft'
+          name: 'AzureAutomation'
         }
       ]
-      diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
-      name: '<<namePrefix>>-az-la-x-001'
+      savedSearches: [
+        {
+          category: 'VDC Saved Searches'
+          query: 'Event | where Source == 'ServiceFabricNodeBootstrapAgent' | summarize AggregatedValue = count() by Computer'
+          name: 'VMSSQueries'
+          displayName: 'VMSS Instance Count2'
+        }
+      ]
       dataSources: [
         {
+          kind: 'WindowsEvent'
           eventTypes: [
             {
               eventType: 'Error'
@@ -684,25 +692,26 @@ module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
               eventType: 'Information'
             }
           ]
-          kind: 'WindowsEvent'
-          name: 'applicationEvent'
           eventLogName: 'Application'
+          name: 'applicationEvent'
         }
         {
+          objectName: 'Processor'
           kind: 'WindowsPerformanceCounter'
-          intervalSeconds: 60
           name: 'windowsPerfCounter1'
           counterName: '% Processor Time'
+          intervalSeconds: 60
           instanceName: '*'
-          objectName: 'Processor'
         }
         {
-          state: 'OnPremiseEnabled'
           kind: 'IISLogs'
+          state: 'OnPremiseEnabled'
           name: 'sampleIISLog1'
         }
         {
           kind: 'LinuxSyslog'
+          syslogName: 'kern'
+          name: 'sampleSyslog1'
           syslogSeverities: [
             {
               severity: 'emerg'
@@ -720,20 +729,15 @@ module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
               severity: 'warning'
             }
           ]
-          name: 'sampleSyslog1'
-          syslogName: 'kern'
         }
         {
-          state: 'Enabled'
           kind: 'LinuxSyslogCollection'
+          state: 'Enabled'
           name: 'sampleSyslogCollection1'
         }
         {
-          kind: 'LinuxPerformanceObject'
           objectName: 'Logical Disk'
-          name: 'sampleLinuxPerf1'
-          intervalSeconds: 10
-          instanceName: '*'
+          kind: 'LinuxPerformanceObject'
           syslogSeverities: [
             {
               counterName: '% Used Inodes'
@@ -754,32 +758,19 @@ module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
               counterName: 'Disk Writes/sec'
             }
           ]
+          name: 'sampleLinuxPerf1'
+          intervalSeconds: 10
+          instanceName: '*'
         }
         {
-          state: 'Enabled'
           kind: 'LinuxPerformanceCollection'
+          state: 'Enabled'
           name: 'sampleLinuxPerfCollection1'
         }
       ]
-      publicNetworkAccessForQuery: 'Disabled'
-      publicNetworkAccessForIngestion: 'Disabled'
-      diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
-      gallerySolutions: [
-        {
-          product: 'OMSGallery'
-          name: 'AzureAutomation'
-          publisher: 'Microsoft'
-        }
-      ]
-      dailyQuotaGb: 10
-      savedSearches: [
-        {
-          category: 'VDC Saved Searches'
-          displayName: 'VMSS Instance Count2'
-          name: 'VMSSQueries'
-          query: 'Event | where Source == 'ServiceFabricNodeBootstrapAgent' | summarize AggregatedValue = count() by Computer'
-        }
-      ]
+      diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
+      name: '<<namePrefix>>-az-la-x-001'
+      diagnosticLogsRetentionInDays: 7
       storageInsightsConfigs: [
         {
           storageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsalaw001'
@@ -791,7 +782,16 @@ module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
           ]
         }
       ]
+      linkedServices: [
+        {
+          resourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Automation/automationAccounts/adp-<<namePrefix>>-wd-aut-x-001'
+          name: 'Automation'
+        }
+      ]
+      publicNetworkAccessForQuery: 'Disabled'
+      diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
       useResourcePermissions: true
+      diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
   }
 ```
 

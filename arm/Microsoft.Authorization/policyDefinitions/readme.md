@@ -146,16 +146,6 @@ module policydefinition 'yourpath/arm/Microsoft.Authorization.policyDefinitions/
 module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-policyDefinitions'
   params: {
-      name: '<<namePrefix>>-mg-min-policyDef'
-      parameters: {
-        effect: {
-          type: 'String'
-          defaultValue: 'Audit'
-          allowedValues: [
-            'Audit'
-          ]
-        }
-      }
       policyRule: {
         if: {
           allOf: [
@@ -167,6 +157,16 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
         }
         then: {
           effect: '[parameters('effect')]'
+        }
+      }
+      name: '<<namePrefix>>-mg-min-policyDef'
+      parameters: {
+        effect: {
+          defaultValue: 'Audit'
+          allowedValues: [
+            'Audit'
+          ]
+          type: 'String'
         }
       }
   }
@@ -266,8 +266,28 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
 module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-policyDefinitions'
   params: {
-      displayName: '[DisplayName] This policy definition is deployed at the management group scope'
       managementGroupId: '<<managementGroupId>>'
+      name: '<<namePrefix>>-mg-policyDef'
+      metadata: {
+        category: 'Security'
+      }
+      parameters: {
+        tagName: {
+          type: 'String'
+          metadata: {
+            displayName: 'Tag Name'
+            description: 'Name of the tag such as 'environment''
+          }
+        }
+        tagValue: {
+          type: 'String'
+          metadata: {
+            displayName: 'Tag Value'
+            description: 'Value of the tag such as 'production''
+          }
+        }
+      }
+      description: '[Description] This policy definition is deployed at the management group scope'
       policyRule: {
         if: {
           allOf: [
@@ -282,42 +302,22 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
           ]
         }
         then: {
+          effect: 'modify'
           details: {
-            operations: [
-              {
-                operation: 'add'
-                value: '[parameters('tagValue')]'
-                field: '[concat('tags[' parameters('tagName') ']')]'
-              }
-            ]
             roleDefinitionIds: [
               '/providers/microsoft.authorization/roleDefinitions/4a9ae827-6dc8-4573-8ac7-8239d42aa03f'
             ]
+            operations: [
+              {
+                value: '[parameters('tagValue')]'
+                operation: 'add'
+                field: '[concat('tags[' parameters('tagName') ']')]'
+              }
+            ]
           }
-          effect: 'modify'
         }
       }
-      parameters: {
-        tagName: {
-          metadata: {
-            description: 'Name of the tag such as 'environment''
-            displayName: 'Tag Name'
-          }
-          type: 'String'
-        }
-        tagValue: {
-          metadata: {
-            description: 'Value of the tag such as 'production''
-            displayName: 'Tag Value'
-          }
-          type: 'String'
-        }
-      }
-      name: '<<namePrefix>>-mg-policyDef'
-      description: '[Description] This policy definition is deployed at the management group scope'
-      metadata: {
-        category: 'Security'
-      }
+      displayName: '[DisplayName] This policy definition is deployed at the management group scope'
   }
 ```
 
@@ -381,17 +381,7 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
 module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-policyDefinitions'
   params: {
-      subscriptionId: '<<subscriptionId>>'
       name: '<<namePrefix>>-sub-min-policyDef'
-      parameters: {
-        effect: {
-          type: 'String'
-          defaultValue: 'Audit'
-          allowedValues: [
-            'Audit'
-          ]
-        }
-      }
       policyRule: {
         if: {
           allOf: [
@@ -403,6 +393,16 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
         }
         then: {
           effect: '[parameters('effect')]'
+        }
+      }
+      subscriptionId: '<<subscriptionId>>'
+      parameters: {
+        effect: {
+          defaultValue: 'Audit'
+          allowedValues: [
+            'Audit'
+          ]
+          type: 'String'
         }
       }
   }
@@ -502,8 +502,27 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
 module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-policyDefinitions'
   params: {
-      displayName: '[DisplayName] This policy definition is deployed at subscription scope'
-      subscriptionId: '<<subscriptionId>>'
+      name: '<<namePrefix>>-sub-policyDef'
+      metadata: {
+        category: 'Security'
+      }
+      parameters: {
+        tagName: {
+          type: 'String'
+          metadata: {
+            displayName: 'Tag Name'
+            description: 'Name of the tag such as 'environment''
+          }
+        }
+        tagValue: {
+          type: 'String'
+          metadata: {
+            displayName: 'Tag Value'
+            description: 'Value of the tag such as 'production''
+          }
+        }
+      }
+      description: '[Description] This policy definition is deployed at subscription scope'
       policyRule: {
         if: {
           allOf: [
@@ -518,42 +537,23 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
           ]
         }
         then: {
+          effect: 'modify'
           details: {
-            operations: [
-              {
-                operation: 'add'
-                value: '[parameters('tagValue')]'
-                field: '[concat('tags[' parameters('tagName') ']')]'
-              }
-            ]
             roleDefinitionIds: [
               '/providers/microsoft.authorization/roleDefinitions/4a9ae827-6dc8-4573-8ac7-8239d42aa03f'
             ]
+            operations: [
+              {
+                value: '[parameters('tagValue')]'
+                operation: 'add'
+                field: '[concat('tags[' parameters('tagName') ']')]'
+              }
+            ]
           }
-          effect: 'modify'
         }
       }
-      parameters: {
-        tagName: {
-          metadata: {
-            description: 'Name of the tag such as 'environment''
-            displayName: 'Tag Name'
-          }
-          type: 'String'
-        }
-        tagValue: {
-          metadata: {
-            description: 'Value of the tag such as 'production''
-            displayName: 'Tag Value'
-          }
-          type: 'String'
-        }
-      }
-      name: '<<namePrefix>>-sub-policyDef'
-      description: '[Description] This policy definition is deployed at subscription scope'
-      metadata: {
-        category: 'Security'
-      }
+      subscriptionId: '<<subscriptionId>>'
+      displayName: '[DisplayName] This policy definition is deployed at subscription scope'
   }
 ```
 

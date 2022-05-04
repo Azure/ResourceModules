@@ -190,11 +190,11 @@ tags: {
 module ipGroups './Microsoft.Network/ipGroups/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-ipGroups'
   params: {
+      name: 'iacsGroup-servers'
       ipAddresses: [
         '10.0.0.1'
         '10.0.0.2'
       ]
-      name: 'iacsGroup-servers'
       roleAssignments: [
         {
           principalIds: [

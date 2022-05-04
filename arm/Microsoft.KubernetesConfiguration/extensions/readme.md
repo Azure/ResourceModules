@@ -54,6 +54,7 @@ For Details see [Prerequisites](https://docs.microsoft.com/en-us/azure/azure-arc
 | `targetNamespace` | string | `''` | Namespace where the extension will be created for an Namespace scoped extension. If this namespace does not exist, it will be created |
 | `version` | string | `''` | Version of the extension for this extension, if it is "pinned" to a specific version. |
 
+
 ## Outputs
 
 | Output Name | Type | Description |
@@ -105,11 +106,11 @@ For Details see [Prerequisites](https://docs.microsoft.com/en-us/azure/azure-arc
 module extensions './Microsoft.KubernetesConfiguration/extensions/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-extensions'
   params: {
-      clusterName: '<<namePrefix>>-az-aks-kubenet-001'
-      releaseNamespace: 'flux-system'
-      extensionType: 'microsoft.flux'
-      name: 'flux'
       releaseTrain: 'Stable'
+      releaseNamespace: 'flux-system'
+      name: 'flux'
+      extensionType: 'microsoft.flux'
+      clusterName: '<<namePrefix>>-az-aks-kubenet-001'
   }
 ```
 
@@ -169,19 +170,19 @@ module extensions './Microsoft.KubernetesConfiguration/extensions/deploy.bicep' 
 module extensions './Microsoft.KubernetesConfiguration/extensions/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-extensions'
   params: {
-      extensionType: 'microsoft.flux'
+      releaseNamespace: 'flux-system'
+      name: 'flux'
       configurationSettings: {
         'source-controller.enabled': 'true'
         'notification-controller.enabled': 'false'
-        'kustomize-controller.enabled': 'true'
         'image-automation-controller.enabled': 'false'
         'image-reflector-controller.enabled': 'false'
+        'kustomize-controller.enabled': 'true'
       }
-      version: '0.5.2'
-      releaseNamespace: 'flux-system'
       releaseTrain: 'Stable'
-      name: 'flux'
       clusterName: '<<namePrefix>>-az-aks-kubenet-001'
+      extensionType: 'microsoft.flux'
+      version: '0.5.2'
   }
 ```
 

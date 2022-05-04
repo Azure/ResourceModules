@@ -29,6 +29,7 @@ This module deploys a disaster recovery config for a service bus Namespace
 | `name` | string | `'default'` | The name of the disaster recovery config |
 | `partnerNamespaceResourceID` | string | `''` | Resource ID of the Primary/Secondary event hub namespace name, which is part of GEO DR pairing |
 
+
 ## Outputs
 
 | Output Name | Type | Description |
@@ -36,5 +37,3 @@ This module deploys a disaster recovery config for a service bus Namespace
 | `name` | string | The name of the disaster recovery config. |
 | `resourceGroupName` | string | The name of the Resource Group the disaster recovery config was created in. |
 | `resourceId` | string | The Resource ID of the disaster recovery config. |
-
-

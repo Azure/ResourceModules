@@ -286,9 +286,9 @@ module routeTables './Microsoft.Network/routeTables/deploy.bicep' = {
       routes: [
         {
           properties: {
+            addressPrefix: '0.0.0.0/0'
             nextHopIpAddress: '172.16.0.20'
             nextHopType: 'VirtualAppliance'
-            addressPrefix: '0.0.0.0/0'
           }
           name: 'default'
         }

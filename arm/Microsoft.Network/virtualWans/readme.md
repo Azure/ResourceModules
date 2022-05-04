@@ -234,10 +234,9 @@ module virtualWans './Microsoft.Network/virtualWans/deploy.bicep' = {
 module virtualWans './Microsoft.Network/virtualWans/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-virtualWans'
   params: {
+      name: '<<namePrefix>>-az-vw-x-001'
       type: 'Basic'
       allowBranchToBranchTraffic: true
-      disableVpnEncryption: true
-      name: '<<namePrefix>>-az-vw-x-001'
       allowVnetToVnetTraffic: true
       roleAssignments: [
         {
@@ -247,6 +246,7 @@ module virtualWans './Microsoft.Network/virtualWans/deploy.bicep' = {
           roleDefinitionIdOrName: 'Reader'
         }
       ]
+      disableVpnEncryption: true
   }
 ```
 

@@ -273,13 +273,13 @@ tags: {
 module privateLinkScopes './Microsoft.Insights/privateLinkScopes/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-privateLinkScopes'
   params: {
-      name: '<<namePrefix>>-az-pls-x-001'
       scopedResources: [
         {
           linkedResourceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
           name: 'scoped1'
         }
       ]
+      name: '<<namePrefix>>-az-pls-x-001'
       roleAssignments: [
         {
           principalIds: [

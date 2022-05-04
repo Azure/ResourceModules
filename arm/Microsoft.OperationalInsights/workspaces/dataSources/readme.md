@@ -89,5 +89,3 @@ tags: {
 | `name` | string | The name of the deployed data source |
 | `resourceGroupName` | string | The resource group where the data source is deployed |
 | `resourceId` | string | The resource ID of the deployed data source |
-
-

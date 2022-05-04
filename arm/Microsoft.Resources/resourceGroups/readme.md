@@ -192,10 +192,10 @@ This module requires a User Assigned Identity (MSI, managed service identity) to
 module resourceGroups './Microsoft.Resources/resourceGroups/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-resourceGroups'
   params: {
-      name: '<<namePrefix>>-az-rg-x-001'
       tags: {
         Test: 'Yes'
       }
+      name: '<<namePrefix>>-az-rg-x-001'
       roleAssignments: [
         {
           principalIds: [

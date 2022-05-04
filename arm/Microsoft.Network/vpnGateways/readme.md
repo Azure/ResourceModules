@@ -295,34 +295,14 @@ module vpnGateways './Microsoft.Network/vpnGateways/deploy.bicep' = {
 module vpnGateways './Microsoft.Network/vpnGateways/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-vpnGateways'
   params: {
-      name: '<<namePrefix>>-az-vpngw-x-001'
-      bgpSettings: {
-        peerWeight: 0
-        asn: 65515
-      }
-      virtualHubResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualHubs/<<namePrefix>>-az-vhub-x-001'
-      natRules: [
-        {
-          externalMappings: [
-            {
-              addressSpace: '192.168.21.0/24'
-            }
-          ]
-          internalMappings: [
-            {
-              addressSpace: '10.4.0.0/24'
-            }
-          ]
-          type: 'Static'
-          mode: 'EgressSnat'
-          name: 'natRule1'
-        }
-      ]
       connections: [
         {
+          enableBgp: true
+          remoteVpnSiteResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/vpnSites/<<namePrefix>>-az-vsite-x-001'
+          connectionBandwidth: 10
           routingConfiguration: {
-            vnetRoutes: {
-              staticRoutes: []
+            associatedRouteTable: {
+              id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualHubs/<<namePrefix>>-az-vhub-x-001/hubRouteTables/defaultRouteTable'
             }
             propagatedRouteTables: {
               labels: [
@@ -334,16 +314,36 @@ module vpnGateways './Microsoft.Network/vpnGateways/deploy.bicep' = {
                 }
               ]
             }
-            associatedRouteTable: {
-              id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualHubs/<<namePrefix>>-az-vhub-x-001/hubRouteTables/defaultRouteTable'
+            vnetRoutes: {
+              staticRoutes: []
             }
           }
-          enableBgp: true
-          connectionBandwidth: 10
           name: 'Connection-<<namePrefix>>-az-vsite-x-001'
-          remoteVpnSiteResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/vpnSites/<<namePrefix>>-az-vsite-x-001'
         }
       ]
+      virtualHubResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualHubs/<<namePrefix>>-az-vhub-x-001'
+      name: '<<namePrefix>>-az-vpngw-x-001'
+      natRules: [
+        {
+          mode: 'EgressSnat'
+          externalMappings: [
+            {
+              addressSpace: '192.168.21.0/24'
+            }
+          ]
+          internalMappings: [
+            {
+              addressSpace: '10.4.0.0/24'
+            }
+          ]
+          name: 'natRule1'
+          type: 'Static'
+        }
+      ]
+      bgpSettings: {
+        asn: 65515
+        peerWeight: 0
+      }
   }
 ```
 

@@ -48,6 +48,7 @@ The following resources are required to be able to deploy this resource.
 | `tokenBodyParameters` | array | `[]` | Additional parameters required by the token endpoint of this authorization server represented as an array of JSON objects with name and value string properties, i.e. {"name" : "name value", "value": "a value"}. - TokenBodyParameterContract object |
 | `tokenEndpoint` | string | `''` | OAuth token endpoint. Contains absolute URI to entity being referenced. |
 
+
 ## Outputs
 
 | Output Name | Type | Description |
@@ -55,5 +56,3 @@ The following resources are required to be able to deploy this resource.
 | `name` | string | The name of the API management service authorization server |
 | `resourceGroupName` | string | The resource group the API management service authorization server was deployed into |
 | `resourceId` | string | The resource ID of the API management service authorization server |
-
-

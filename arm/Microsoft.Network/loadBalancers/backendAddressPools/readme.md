@@ -29,6 +29,7 @@ This module deploys load balancer backend address pools.
 | `loadBalancerBackendAddresses` | array | `[]` | An array of backend addresses. |
 | `tunnelInterfaces` | array | `[]` | An array of gateway load balancer tunnel interfaces. |
 
+
 ## Outputs
 
 | Output Name | Type | Description |
@@ -36,5 +37,3 @@ This module deploys load balancer backend address pools.
 | `name` | string | The name of the backend address pool |
 | `resourceGroupName` | string | The resource group the backend address pool was deployed into |
 | `resourceId` | string | The resource ID of the backend address pool |
-
-

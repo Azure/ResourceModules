@@ -296,12 +296,25 @@ tags: {
 module actionGroups './Microsoft.Insights/actionGroups/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-actionGroups'
   params: {
+      groupShortName: 'azagweux001'
       name: '<<namePrefix>>-az-ag-x-001'
       smsReceivers: [
         {
-          phoneNumber: '2345678901'
           countryCode: '1'
+          phoneNumber: '2345678901'
           name: 'TestUser_-SMSAction-'
+        }
+      ]
+      emailReceivers: [
+        {
+          useCommonAlertSchema: true
+          name: 'TestUser_-EmailAction-'
+          emailAddress: 'test.user@testcompany.com'
+        }
+        {
+          useCommonAlertSchema: true
+          name: 'TestUser2'
+          emailAddress: 'test.user2@testcompany.com'
         }
       ]
       roleAssignments: [
@@ -310,19 +323,6 @@ module actionGroups './Microsoft.Insights/actionGroups/deploy.bicep' = {
             '<<deploymentSpId>>'
           ]
           roleDefinitionIdOrName: 'Reader'
-        }
-      ]
-      groupShortName: 'azagweux001'
-      emailReceivers: [
-        {
-          emailAddress: 'test.user@testcompany.com'
-          useCommonAlertSchema: true
-          name: 'TestUser_-EmailAction-'
-        }
-        {
-          emailAddress: 'test.user2@testcompany.com'
-          useCommonAlertSchema: true
-          name: 'TestUser2'
         }
       ]
   }

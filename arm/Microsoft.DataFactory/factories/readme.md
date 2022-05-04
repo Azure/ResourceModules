@@ -282,27 +282,7 @@ userAssignedIdentities: {
 module factories './Microsoft.DataFactory/factories/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-factories'
   params: {
-      diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
-      gitConfigureLater: true
-      diagnosticLogsRetentionInDays: 7
-      integrationRuntime: {
-        type: 'Managed'
-        typeProperties: {
-          computeProperties: {
-            location: 'AutoResolve'
-          }
-        }
-        name: 'AutoResolveIntegrationRuntime'
-        managedVirtualNetworkName: 'default'
-      }
       diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
-      publicNetworkAccess: true
-      diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
-      userAssignedIdentities: {
-        '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
-      }
-      name: '<<namePrefix>>-adf-001'
-      managedVirtualNetworkName: 'default'
       roleAssignments: [
         {
           principalIds: [
@@ -311,8 +291,28 @@ module factories './Microsoft.DataFactory/factories/deploy.bicep' = {
           roleDefinitionIdOrName: 'Reader'
         }
       ]
-      diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
+      diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
+      publicNetworkAccess: true
+      diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
+      name: '<<namePrefix>>-adf-001'
+      userAssignedIdentities: {
+        '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
+      }
+      diagnosticLogsRetentionInDays: 7
       systemAssignedIdentity: true
+      managedVirtualNetworkName: 'default'
+      gitConfigureLater: true
+      diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
+      integrationRuntime: {
+        managedVirtualNetworkName: 'default'
+        typeProperties: {
+          computeProperties: {
+            location: 'AutoResolve'
+          }
+        }
+        name: 'AutoResolveIntegrationRuntime'
+        type: 'Managed'
+      }
   }
 ```
 

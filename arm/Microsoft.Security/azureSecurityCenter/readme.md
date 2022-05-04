@@ -309,14 +309,14 @@ securityContactProperties: {
 module azureSecurityCenter './Microsoft.Security/azureSecurityCenter/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-azureSecurityCenter'
   params: {
-      scope: '/subscriptions/<<subscriptionId>>'
       workspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
       securityContactProperties: {
         email: 'foo@contoso.com'
-        alertNotifications: 'Off'
         alertsToAdmins: 'Off'
         phone: '+12345678'
+        alertNotifications: 'Off'
       }
+      scope: '/subscriptions/<<subscriptionId>>'
   }
 ```
 

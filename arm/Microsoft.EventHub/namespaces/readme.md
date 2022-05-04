@@ -458,39 +458,15 @@ module namespaces './Microsoft.EventHub/namespaces/deploy.bicep' = {
 module namespaces './Microsoft.EventHub/namespaces/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-namespaces'
   params: {
-      diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
-      diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
-      diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
       userAssignedIdentities: {
         '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
       }
-      diagnosticLogsRetentionInDays: 7
-      authorizationRules: [
-        {
-          rights: [
-            'Listen'
-            'Manage'
-            'Send'
-          ]
-          name: 'RootManageSharedAccessKey'
-        }
-        {
-          rights: [
-            'Listen'
-            'Send'
-          ]
-          name: 'SendListenAccess'
-        }
-      ]
       eventHubs: [
         {
           name: '<<namePrefix>>-az-evh-x-001'
         }
         {
-          captureDescriptionDestinationStorageAccountResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
-          captureDescriptionDestinationArchiveNameFormat: '{Namespace}/{EventHub}/{PartitionId}/{Year}/{Month}/{Day}/{Hour}/{Minute}/{Second}'
-          captureDescriptionSkipEmptyArchives: true
-          captureDescriptionDestinationName: 'EventHubArchive.AzureBlockBlob'
+          captureDescriptionEnabled: true
           authorizationRules: [
             {
               rights: [
@@ -508,21 +484,15 @@ module namespaces './Microsoft.EventHub/namespaces/deploy.bicep' = {
               name: 'SendListenAccess'
             }
           ]
-          captureDescriptionEnabled: true
-          messageRetentionInDays: 1
-          captureDescriptionDestinationBlobContainer: 'eventhub'
-          captureDescriptionIntervalInSeconds: 300
-          captureDescriptionSizeLimitInBytes: 314572800
-          captureDescriptionEncoding: 'Avro'
-          consumerGroups: [
-            {
-              userMetadata: 'customMetadata'
-              name: 'custom'
-            }
-          ]
-          partitionCount: 2
-          status: 'Active'
+          captureDescriptionDestinationName: 'EventHubArchive.AzureBlockBlob'
           name: '<<namePrefix>>-az-evh-x-002'
+          captureDescriptionSizeLimitInBytes: 314572800
+          captureDescriptionIntervalInSeconds: 300
+          captureDescriptionDestinationArchiveNameFormat: '{Namespace}/{EventHub}/{PartitionId}/{Year}/{Month}/{Day}/{Hour}/{Minute}/{Second}'
+          captureDescriptionSkipEmptyArchives: true
+          captureDescriptionDestinationStorageAccountResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
+          captureDescriptionDestinationBlobContainer: 'eventhub'
+          messageRetentionInDays: 1
           roleAssignments: [
             {
               principalIds: [
@@ -531,11 +501,32 @@ module namespaces './Microsoft.EventHub/namespaces/deploy.bicep' = {
               roleDefinitionIdOrName: 'Reader'
             }
           ]
+          status: 'Active'
+          partitionCount: 2
+          consumerGroups: [
+            {
+              userMetadata: 'customMetadata'
+              name: 'custom'
+            }
+          ]
+          captureDescriptionEncoding: 'Avro'
         }
       ]
+      diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
+      networkAcls: {
+        virtualNetworkRules: [
+          {
+            id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001'
+            action: 'Allow'
+          }
+        ]
+        defaultAction: 'Deny'
+        bypass: 'AzureServices'
+        ipRules: []
+      }
       diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
-      name: '<<namePrefix>>-az-evnsp-x-001'
-      systemAssignedIdentity: true
+      diagnosticLogsRetentionInDays: 7
+      diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
       roleAssignments: [
         {
           principalIds: [
@@ -544,17 +535,26 @@ module namespaces './Microsoft.EventHub/namespaces/deploy.bicep' = {
           roleDefinitionIdOrName: 'Reader'
         }
       ]
-      networkAcls: {
-        ipRules: []
-        virtualNetworkRules: [
-          {
-            action: 'Allow'
-            id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001'
-          }
-        ]
-        bypass: 'AzureServices'
-        defaultAction: 'Deny'
-      }
+      diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
+      systemAssignedIdentity: true
+      name: '<<namePrefix>>-az-evnsp-x-001'
+      authorizationRules: [
+        {
+          rights: [
+            'Listen'
+            'Manage'
+            'Send'
+          ]
+          name: 'RootManageSharedAccessKey'
+        }
+        {
+          rights: [
+            'Listen'
+            'Send'
+          ]
+          name: 'SendListenAccess'
+        }
+      ]
   }
 ```
 

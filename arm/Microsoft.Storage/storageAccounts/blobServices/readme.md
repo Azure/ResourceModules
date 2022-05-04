@@ -43,6 +43,7 @@ This module can be used to deploy a blob service into a storage account.
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `name` | string | `'default'` |  | The name of the blob service |
 
+
 ## Outputs
 
 | Output Name | Type | Description |
@@ -50,5 +51,3 @@ This module can be used to deploy a blob service into a storage account.
 | `name` | string | The name of the deployed blob service |
 | `resourceGroupName` | string | The name of the deployed blob service |
 | `resourceId` | string | The resource ID of the deployed blob service |
-
-

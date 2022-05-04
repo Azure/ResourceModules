@@ -74,5 +74,3 @@ This module can be used to deploy a management policies into a storage account.
 | `name` | string | The name of the deployed management policy |
 | `resourceGroupName` | string | The resource group of the deployed management policy |
 | `resourceId` | string | The resource ID of the deployed management policy |
-
-

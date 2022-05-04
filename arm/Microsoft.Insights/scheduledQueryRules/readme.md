@@ -247,9 +247,40 @@ tags: {
 module scheduledQueryRules './Microsoft.Insights/scheduledQueryRules/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-scheduledQueryRules'
   params: {
+      alertDescription: 'My sample Alert'
       scopes: [
         '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
       ]
+      criterias: {
+        allOf: [
+          {
+            query: 'Perf | where ObjectName == \'LogicalDisk\' | where CounterName == \'% Free Space\' | where InstanceName <> \'HarddiskVolume1\' and InstanceName <> \'_Total\' | summarize AggregatedValue = min(CounterValue) by Computer InstanceName bin(TimeGenerated5m)'
+            dimensions: [
+              {
+                values: [
+                  '*'
+                ]
+                operator: 'Include'
+                name: 'Computer'
+              }
+              {
+                values: [
+                  '*'
+                ]
+                operator: 'Include'
+                name: 'InstanceName'
+              }
+            ]
+            timeAggregation: 'Average'
+            threshold: 0
+            metricMeasureColumn: 'AggregatedValue'
+            operator: 'GreaterThan'
+          }
+        ]
+      }
+      suppressForMinutes: 'PT5M'
+      autoMitigate: false
+      name: 'myAlert01'
       roleAssignments: [
         {
           principalIds: [
@@ -258,40 +289,9 @@ module scheduledQueryRules './Microsoft.Insights/scheduledQueryRules/deploy.bice
           roleDefinitionIdOrName: 'Reader'
         }
       ]
-      evaluationFrequency: 'PT5M'
-      criterias: {
-        allOf: [
-          {
-            query: 'Perf | where ObjectName == \'LogicalDisk\' | where CounterName == \'% Free Space\' | where InstanceName <> \'HarddiskVolume1\' and InstanceName <> \'_Total\' | summarize AggregatedValue = min(CounterValue) by Computer InstanceName bin(TimeGenerated5m)'
-            dimensions: [
-              {
-                operator: 'Include'
-                name: 'Computer'
-                values: [
-                  '*'
-                ]
-              }
-              {
-                operator: 'Include'
-                name: 'InstanceName'
-                values: [
-                  '*'
-                ]
-              }
-            ]
-            metricMeasureColumn: 'AggregatedValue'
-            operator: 'GreaterThan'
-            timeAggregation: 'Average'
-            threshold: 0
-          }
-        ]
-      }
-      queryTimeRange: 'PT5M'
       windowSize: 'PT5M'
-      name: 'myAlert01'
-      alertDescription: 'My sample Alert'
-      autoMitigate: false
-      suppressForMinutes: 'PT5M'
+      evaluationFrequency: 'PT5M'
+      queryTimeRange: 'PT5M'
   }
 ```
 

@@ -335,7 +335,9 @@ module connections './Microsoft.Web/connections/deploy.bicep' = {
   params: {
       name: 'azuremonitor'
       connectionKind: 'V1'
-      displayName: 'azuremonitorlogs'
+      connectionApi: {
+        id: '/subscriptions/<<subscriptionId>>/providers/Microsoft.Web/locations/westeurope/managedApis/azuremonitorlogs'
+      }
       roleAssignments: [
         {
           principalIds: [
@@ -344,9 +346,7 @@ module connections './Microsoft.Web/connections/deploy.bicep' = {
           roleDefinitionIdOrName: 'Reader'
         }
       ]
-      connectionApi: {
-        id: '/subscriptions/<<subscriptionId>>/providers/Microsoft.Web/locations/westeurope/managedApis/azuremonitorlogs'
-      }
+      displayName: 'azuremonitorlogs'
   }
 ```
 

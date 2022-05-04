@@ -83,5 +83,3 @@ tags: {
 | `name` | string | The name of the deployed saved search |
 | `resourceGroupName` | string | The resource group where the saved search is deployed |
 | `resourceId` | string | The resource ID of the deployed saved search |
-
-

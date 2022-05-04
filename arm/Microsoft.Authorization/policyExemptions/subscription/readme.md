@@ -35,6 +35,7 @@ With this module you can create policy exemptions on a subscription level.
 | `policyDefinitionReferenceIds` | array | `[]` |  | The policy definition reference ID list when the associated policy assignment is an assignment of a policy set definition. |
 | `subscriptionId` | string | `[subscription().subscriptionId]` |  | The subscription ID of the subscription to be exempted from the policy assignment. If not provided, will use the current scope for deployment. |
 
+
 ## Outputs
 
 | Output Name | Type | Description |
@@ -42,5 +43,3 @@ With this module you can create policy exemptions on a subscription level.
 | `name` | string | Policy Exemption Name |
 | `resourceId` | string | Policy Exemption resource ID |
 | `scope` | string | Policy Exemption Scope |
-
-

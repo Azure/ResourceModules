@@ -87,5 +87,3 @@ replicationContainerMappings: [
 | `name` | string | The name of the replication container. |
 | `resourceGroupName` | string | The name of the resource group the replication container was created in. |
 | `resourceId` | string | The resource ID of the replication container. |
-
-

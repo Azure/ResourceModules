@@ -77,5 +77,3 @@ tags: {
 | `name` | string | The resource name of the Application type. |
 | `resourceGroupName` | string | The resource group of the Application type. |
 | `resourceID` | string | The resource ID of the Application type. |
-
-

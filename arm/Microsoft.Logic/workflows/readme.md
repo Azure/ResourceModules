@@ -352,45 +352,6 @@ userAssignedIdentities: {
 module workflows './Microsoft.Logic/workflows/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-workflows'
   params: {
-      workflowActions: {
-        HTTP: {
-          inputs: {
-            uri: 'https://testStringForValidation.com'
-            method: 'POST'
-            body: {
-              UtcOffset: '[UtcOffset]'
-              LAWorkspaceName: '[LAWorkspaceName]'
-              EndPeakTime: '[EndPeakTime]'
-              LimitSecondsToForceLogOffUser: '[LimitSecondsToForceLogOffUser]'
-              SessionThresholdPerCPU: 1
-              BeginPeakTime: '[BeginPeakTime]'
-              HostPoolName: '[HostPoolName]'
-              ResourceGroupName: '[ResourceGroupName]'
-              MinimumNumberOfRDSH: 1
-              LogOffMessageBody: '[LogOffMessageBody]'
-              LogOffMessageTitle: '[LogOffMessageTitle]'
-            }
-          }
-          type: 'Http'
-        }
-      }
-      diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
-      diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
-      diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
-      workflowTriggers: {
-        Recurrence: {
-          recurrence: {
-            interval: 15
-            frequency: 'Minute'
-          }
-          type: 'Recurrence'
-        }
-      }
-      tags: {}
-      systemAssignedIdentity: true
-      diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
-      name: '<<namePrefix>>-az-lga-x-001'
-      diagnosticLogsRetentionInDays: 7
       roleAssignments: [
         {
           principalIds: [
@@ -399,6 +360,45 @@ module workflows './Microsoft.Logic/workflows/deploy.bicep' = {
           roleDefinitionIdOrName: 'Reader'
         }
       ]
+      diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
+      workflowTriggers: {
+        Recurrence: {
+          type: 'Recurrence'
+          recurrence: {
+            frequency: 'Minute'
+            interval: 15
+          }
+        }
+      }
+      diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
+      workflowActions: {
+        HTTP: {
+          type: 'Http'
+          inputs: {
+            uri: 'https://testStringForValidation.com'
+            body: {
+              UtcOffset: '[UtcOffset]'
+              MinimumNumberOfRDSH: 1
+              EndPeakTime: '[EndPeakTime]'
+              HostPoolName: '[HostPoolName]'
+              BeginPeakTime: '[BeginPeakTime]'
+              SessionThresholdPerCPU: 1
+              LimitSecondsToForceLogOffUser: '[LimitSecondsToForceLogOffUser]'
+              ResourceGroupName: '[ResourceGroupName]'
+              LogOffMessageTitle: '[LogOffMessageTitle]'
+              LAWorkspaceName: '[LAWorkspaceName]'
+              LogOffMessageBody: '[LogOffMessageBody]'
+            }
+            method: 'POST'
+          }
+        }
+      }
+      diagnosticLogsRetentionInDays: 7
+      tags: {}
+      diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
+      diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
+      systemAssignedIdentity: true
+      name: '<<namePrefix>>-az-lga-x-001'
   }
 ```
 

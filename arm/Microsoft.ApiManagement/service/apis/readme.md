@@ -106,5 +106,3 @@ apiVersionSet:{
 | `name` | string | The name of the API management service API |
 | `resourceGroupName` | string | The resource group the API management service API was deployed to |
 | `resourceId` | string | The resource ID of the API management service API |
-
-

@@ -73,5 +73,3 @@ tags: {
 | :-- | :-- | :-- |
 | `name` | string | The name of the tags resource |
 | `tags` | object | The applied tags |
-
-

@@ -29,6 +29,7 @@ This module deploys a key for a SQL managed instance.
 | `serverKeyType` | string | `'ServiceManaged'` | `[AzureKeyVault, ServiceManaged]` | The encryption protector type like "ServiceManaged", "AzureKeyVault" |
 | `uri` | string | `''` |  | The URI of the key. If the ServerKeyType is AzureKeyVault, then either the URI or the keyVaultName/keyName combination is required. |
 
+
 ## Outputs
 
 | Output Name | Type | Description |
@@ -36,5 +37,3 @@ This module deploys a key for a SQL managed instance.
 | `name` | string | The name of the deployed managed instance |
 | `resourceGroupName` | string | The resource group of the deployed managed instance |
 | `resourceId` | string | The resource ID of the deployed managed instance |
-
-

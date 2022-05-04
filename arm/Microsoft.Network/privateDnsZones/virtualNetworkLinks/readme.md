@@ -80,5 +80,3 @@ tags: {
 | `name` | string | The name of the deployed virtual network link |
 | `resourceGroupName` | string | The resource group of the deployed virtual network link |
 | `resourceId` | string | The resource ID of the deployed virtual network link |
-
-

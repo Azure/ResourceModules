@@ -30,6 +30,7 @@ This module deploys an encryption protector for a SQL managed instance.
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `serverKeyType` | string | `'ServiceManaged'` | `[AzureKeyVault, ServiceManaged]` | The encryption protector type like "ServiceManaged", "AzureKeyVault". |
 
+
 ## Outputs
 
 | Output Name | Type | Description |
@@ -37,5 +38,3 @@ This module deploys an encryption protector for a SQL managed instance.
 | `name` | string | The name of the deployed managed instance |
 | `resourceGroupName` | string | The resource group of the deployed managed instance |
 | `resourceId` | string | The resource ID of the deployed managed instance |
-
-

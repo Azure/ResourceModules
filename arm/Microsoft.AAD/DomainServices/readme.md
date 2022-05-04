@@ -286,24 +286,24 @@ resource kv1 'Microsoft.KeyVault/vaults@2019-09-01' existing = {
 module DomainServices './Microsoft.AAD/DomainServices/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-DomainServices'
   params: {
-      domainName: '<<namePrefix>>.onmicrosoft.com'
-      diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
+      sku: 'Standard'
+      diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
       diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
+      domainName: '<<namePrefix>>.onmicrosoft.com'
+      diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
+      pfxCertificatePassword: kv1.getSecret('pfxCertificatePassword')
       additionalRecipients: [
         '<<namePrefix>>@noreply.github.com'
       ]
-      pfxCertificatePassword: kv1.getSecret('pfxCertificatePassword')
+      diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
       pfxCertificate: kv1.getSecret('pfxBase64Certificate')
+      lock: 'NotSpecified'
       replicaSets: [
         {
           location: 'WestEurope'
           subnetId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-aadds-001/subnets/AADDSSubnet'
         }
       ]
-      sku: 'Standard'
-      diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
-      diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
-      lock: 'NotSpecified'
   }
 ```
 

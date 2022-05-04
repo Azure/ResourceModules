@@ -77,5 +77,3 @@ keyVault: {
 | `name` | string | The name of the named value |
 | `resourceGroupName` | string | The resource group the named value was deployed into |
 | `resourceId` | string | The resource ID of the named value |
-
-

@@ -31,6 +31,7 @@ This module deploys an Immutability Policy for a blob container
 | `immutabilityPeriodSinceCreationInDays` | int | `365` | The immutability period for the blobs in the container since the policy creation, in days. |
 | `name` | string | `'default'` | Name of the immutable policy. |
 
+
 ## Outputs
 
 | Output Name | Type | Description |
@@ -38,5 +39,3 @@ This module deploys an Immutability Policy for a blob container
 | `name` | string | The name of the deployed immutability policy. |
 | `resourceGroupName` | string | The resource group of the deployed immutability policy. |
 | `resourceId` | string | The resource ID of the deployed immutability policy. |
-
-

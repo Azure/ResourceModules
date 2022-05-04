@@ -41,6 +41,7 @@ This module can be used to deploy a file share service into a storage account.
 | `shareDeleteRetentionPolicy` | object | `{object}` |  | The service properties for soft delete. |
 | `shares` | _[shares](shares/readme.md)_ array | `[]` |  | File shares to create. |
 
+
 ## Outputs
 
 | Output Name | Type | Description |
@@ -48,5 +49,3 @@ This module can be used to deploy a file share service into a storage account.
 | `name` | string | The name of the deployed file share service |
 | `resourceGroupName` | string | The resource group of the deployed file share service |
 | `resourceId` | string | The resource ID of the deployed file share service |
-
-

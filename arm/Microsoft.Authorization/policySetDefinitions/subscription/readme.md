@@ -34,11 +34,10 @@ With this module you can create policy set definitions on a subscription level.
 | `policyDefinitionGroups` | array | `[]` | The metadata describing groups of policy definition references within the Policy Set Definition (Initiative). |
 | `subscriptionId` | string | `[subscription().subscriptionId]` | The subscription ID of the subscription |
 
+
 ## Outputs
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | Policy Set Definition Name |
 | `resourceId` | string | Policy Set Definition resource ID |
-
-

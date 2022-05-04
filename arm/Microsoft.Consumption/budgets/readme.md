@@ -37,6 +37,7 @@ This module deploys budgets for subscriptions.
 | `resetPeriod` | string | `'Monthly'` | `[Monthly, Quarterly, Annually, BillingMonth, BillingQuarter, BillingAnnual]` | The time covered by a budget. Tracking of the amount will be reset based on the time grain. BillingMonth, BillingQuarter, and BillingAnnual are only supported by WD customers. |
 | `thresholds` | array | `[50, 75, 90, 100, 110]` |  | Percent thresholds of budget for when to get a notification. Can be up to 5 thresholds, where each must be between 1 and 1000. |
 
+
 ## Outputs
 
 | Output Name | Type | Description |
@@ -90,6 +91,7 @@ This module deploys budgets for subscriptions.
 module budgets './Microsoft.Consumption/budgets/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-budgets'
   params: {
+      amount: 500
       thresholds: [
         50
         75
@@ -100,7 +102,6 @@ module budgets './Microsoft.Consumption/budgets/deploy.bicep' = {
       contactEmails: [
         'dummy@contoso.com'
       ]
-      amount: 500
   }
 ```
 

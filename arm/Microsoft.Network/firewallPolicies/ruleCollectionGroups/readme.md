@@ -52,5 +52,3 @@ For remaining properties, see [FirewallPolicyRuleCollection objects](https://doc
 | `name` | string | The name of the deployed rule collection group |
 | `resourceGroupName` | string | The resource group of the deployed rule collection group |
 | `resourceId` | string | The resource ID of the deployed rule collection group |
-
-

@@ -285,11 +285,11 @@ roleAssignments: [
 module vpnSites './Microsoft.Network/vpnSites/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-vpnSites'
   params: {
+      ipAddress: '1.2.3.4'
+      name: '<<namePrefix>>-az-vSite-min-001'
       addressPrefixes: [
         '10.0.0.0/16'
       ]
-      name: '<<namePrefix>>-az-vSite-min-001'
-      ipAddress: '1.2.3.4'
       virtualWanId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualWans/apd-<<namePrefix>>-az-vw-x-001'
   }
 ```
@@ -390,48 +390,22 @@ module vpnSites './Microsoft.Network/vpnSites/deploy.bicep' = {
 module vpnSites './Microsoft.Network/vpnSites/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-vpnSites'
   params: {
-      vpnSiteLinks: [
-        {
-          properties: {
-            ipAddress: '1.2.3.4'
-            linkProperties: {
-              linkProviderName: 'contoso'
-              linkSpeedInMbps: 5
-            }
-            bgpProperties: {
-              bgpPeeringAddress: '1.1.1.1'
-              asn: 65010
-            }
-          }
-          name: '<<namePrefix>>-az-vSite-x-001'
-        }
-        {
-          properties: {
-            ipAddress: '2.2.2.2'
-            linkProperties: {
-              linkProviderName: 'contoso'
-              linkSpeedInMbps: 5
-            }
-            bgpProperties: {
-              bgpPeeringAddress: '192.168.1.0'
-              asn: 65020
-            }
-          }
-          name: 'Link1'
-        }
-      ]
-      deviceProperties: {
-        linkSpeedInMbps: 0
+      name: '<<namePrefix>>-az-vSite-x-001'
+      tags: {
+        tagB: 'valueB'
+        tagA: 'valueA'
       }
       o365Policy: {
         breakOutCategories: {
-          optimize: true
-          allow: true
           default: true
+          allow: true
+          optimize: true
         }
       }
-      name: '<<namePrefix>>-az-vSite-x-001'
       virtualWanId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualWans/apd-<<namePrefix>>-az-vw-x-001'
+      deviceProperties: {
+        linkSpeedInMbps: 0
+      }
       roleAssignments: [
         {
           principalIds: [
@@ -440,10 +414,36 @@ module vpnSites './Microsoft.Network/vpnSites/deploy.bicep' = {
           roleDefinitionIdOrName: 'Reader'
         }
       ]
-      tags: {
-        tagB: 'valueB'
-        tagA: 'valueA'
-      }
+      vpnSiteLinks: [
+        {
+          properties: {
+            ipAddress: '1.2.3.4'
+            bgpProperties: {
+              bgpPeeringAddress: '1.1.1.1'
+              asn: 65010
+            }
+            linkProperties: {
+              linkProviderName: 'contoso'
+              linkSpeedInMbps: 5
+            }
+          }
+          name: '<<namePrefix>>-az-vSite-x-001'
+        }
+        {
+          properties: {
+            ipAddress: '2.2.2.2'
+            bgpProperties: {
+              bgpPeeringAddress: '192.168.1.0'
+              asn: 65020
+            }
+            linkProperties: {
+              linkProviderName: 'contoso'
+              linkSpeedInMbps: 5
+            }
+          }
+          name: 'Link1'
+        }
+      ]
   }
 ```
 

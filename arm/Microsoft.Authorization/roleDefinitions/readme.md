@@ -237,27 +237,27 @@ module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' 
 module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-roleDefinitions'
   params: {
-      roleName: '<<namePrefix>>-az-testRole-mg'
       managementGroupId: '<<managementGroupId>>'
-      notDataActions: [
-        'Microsoft.Storage/storageAccounts/blobServices/containers/blobs/read'
+      actions: [
+        'Microsoft.Compute/galleries/*'
+        'Microsoft.Network/virtualNetworks/read'
       ]
       notActions: [
         'Microsoft.Compute/images/write'
         'Microsoft.Compute/images/delete'
         'Microsoft.Network/virtualNetworks/subnets/join/action'
       ]
-      assignableScopes: [
-        '/providers/Microsoft.Management/managementGroups/<<managementGroupId>>'
-      ]
-      actions: [
-        'Microsoft.Compute/galleries/*'
-        'Microsoft.Network/virtualNetworks/read'
-      ]
       dataActions: [
         'Microsoft.Storage/storageAccounts/blobServices/*/read'
       ]
+      assignableScopes: [
+        '/providers/Microsoft.Management/managementGroups/<<managementGroupId>>'
+      ]
+      roleName: '<<namePrefix>>-az-testRole-mg'
       description: 'Test Custom Role Definition Standard (management group scope)'
+      notDataActions: [
+        'Microsoft.Storage/storageAccounts/blobServices/containers/blobs/read'
+      ]
   }
 ```
 
@@ -308,9 +308,9 @@ module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' 
         'Microsoft.Compute/galleries/read'
         'Microsoft.Compute/galleries/images/read'
       ]
+      resourceGroupName: '<<resourceGroupName>>'
       subscriptionId: '<<subscriptionId>>'
       roleName: '<<namePrefix>>-az-testRole-rg-min'
-      resourceGroupName: '<<resourceGroupName>>'
   }
 ```
 
@@ -382,19 +382,6 @@ module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' 
 module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-roleDefinitions'
   params: {
-      resourceGroupName: '<<resourceGroupName>>'
-      subscriptionId: '<<subscriptionId>>'
-      notActions: [
-        'Microsoft.Compute/images/write'
-        'Microsoft.Compute/images/delete'
-        'Microsoft.Network/virtualNetworks/subnets/join/action'
-      ]
-      notDataActions: [
-        'Microsoft.Storage/storageAccounts/blobServices/containers/blobs/read'
-      ]
-      dataActions: [
-        'Microsoft.Storage/storageAccounts/blobServices/*/read'
-      ]
       assignableScopes: [
         '/subscriptions/<<subscriptionId>>/resourceGroups/<<resourceGroupName>>'
       ]
@@ -402,8 +389,21 @@ module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' 
         'Microsoft.Compute/galleries/*'
         'Microsoft.Network/virtualNetworks/read'
       ]
+      resourceGroupName: '<<resourceGroupName>>'
+      dataActions: [
+        'Microsoft.Storage/storageAccounts/blobServices/*/read'
+      ]
+      notActions: [
+        'Microsoft.Compute/images/write'
+        'Microsoft.Compute/images/delete'
+        'Microsoft.Network/virtualNetworks/subnets/join/action'
+      ]
       roleName: '<<namePrefix>>-az-testRole-rg'
       description: 'Test Custom Role Definition Standard (resource group scope)'
+      subscriptionId: '<<subscriptionId>>'
+      notDataActions: [
+        'Microsoft.Storage/storageAccounts/blobServices/containers/blobs/read'
+      ]
   }
 ```
 
@@ -521,27 +521,27 @@ module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' 
 module roleDefinitions './Microsoft.Authorization/roleDefinitions/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-roleDefinitions'
   params: {
-      subscriptionId: '<<subscriptionId>>'
-      roleName: '<<namePrefix>>-az-testRole-sub'
-      notDataActions: [
-        'Microsoft.Storage/storageAccounts/blobServices/containers/blobs/read'
+      actions: [
+        'Microsoft.Compute/galleries/*'
+        'Microsoft.Network/virtualNetworks/read'
       ]
       notActions: [
         'Microsoft.Compute/images/write'
         'Microsoft.Compute/images/delete'
         'Microsoft.Network/virtualNetworks/subnets/join/action'
       ]
-      assignableScopes: [
-        '/subscriptions/<<subscriptionId>>'
-      ]
-      actions: [
-        'Microsoft.Compute/galleries/*'
-        'Microsoft.Network/virtualNetworks/read'
-      ]
       dataActions: [
         'Microsoft.Storage/storageAccounts/blobServices/*/read'
       ]
+      assignableScopes: [
+        '/subscriptions/<<subscriptionId>>'
+      ]
+      roleName: '<<namePrefix>>-az-testRole-sub'
       description: 'Test Custom Role Definition Standard (subscription scope)'
+      subscriptionId: '<<subscriptionId>>'
+      notDataActions: [
+        'Microsoft.Storage/storageAccounts/blobServices/containers/blobs/read'
+      ]
   }
 ```
 

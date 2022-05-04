@@ -28,6 +28,7 @@ This module deploys a storage account table
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `tableServicesName` | string | `'default'` | The name of the table service |
 
+
 ## Outputs
 
 | Output Name | Type | Description |
@@ -35,5 +36,3 @@ This module deploys a storage account table
 | `name` | string | The name of the deployed file share service |
 | `resourceGroupName` | string | The resource group of the deployed file share service |
 | `resourceId` | string | The resource ID of the deployed file share service |
-
-

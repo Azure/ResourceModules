@@ -89,5 +89,3 @@ tags: {
 | `name` | string | The name of the deployed runbook |
 | `resourceGroupName` | string | The resource group of the deployed runbook |
 | `resourceId` | string | The resource ID of the deployed runbook |
-
-

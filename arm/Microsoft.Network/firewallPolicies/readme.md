@@ -247,34 +247,34 @@ module firewallPolicies './Microsoft.Network/firewallPolicies/deploy.bicep' = {
                 type: 'Allow'
               }
               ruleCollectionType: 'FirewallPolicyFilterRuleCollection'
-              priority: 5555
-              name: 'collection002'
               rules: [
                 {
-                  name: 'rule002'
-                  sourceIpGroups: []
-                  sourceAddresses: [
-                    '*'
-                  ]
-                  destinationAddresses: [
-                    '*'
-                  ]
-                  destinationIpGroups: []
-                  destinationPorts: [
-                    '80'
-                  ]
-                  destinationFqdns: []
-                  ruleType: 'NetworkRule'
                   ipProtocols: [
                     'TCP'
                     'UDP'
                   ]
+                  destinationFqdns: []
+                  destinationAddresses: [
+                    '*'
+                  ]
+                  ruleType: 'NetworkRule'
+                  sourceIpGroups: []
+                  destinationPorts: [
+                    '80'
+                  ]
+                  destinationIpGroups: []
+                  sourceAddresses: [
+                    '*'
+                  ]
+                  name: 'rule002'
                 }
               ]
+              name: 'collection002'
+              priority: 5555
             }
           ]
-          priority: 5000
           name: '<<namePrefix>>-rule-001'
+          priority: 5000
         }
       ]
       name: '<<namePrefix>>-az-fwpol-x-002'

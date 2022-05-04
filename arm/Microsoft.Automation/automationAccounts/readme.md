@@ -351,7 +351,7 @@ userAssignedIdentities: {
         "keyVersion" : {
                     "value" : "9917c14be51d4d93b37218de7d326f60"
         },
-
+        
         "userAssignedIdentities": {
             "value": {
                 "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001": {}
@@ -372,15 +372,15 @@ userAssignedIdentities: {
 module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-automationAccounts'
   params: {
-      encryptionUserAssignedIdentity: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001'
       userAssignedIdentities: {
         '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
       }
-      keyName: 'keyEncryptionKey'
-      keyVersion: '9917c14be51d4d93b37218de7d326f60'
-      keyvaultUri: 'https://adp-carml-az-kv-nopr-002.vault.azure.net/'
       name: '<<namePrefix>>-wd-aut-encr-001'
+      encryptionUserAssignedIdentity: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001'
+      keyName: 'keyEncryptionKey'
       encryptionKeySource: 'Microsoft.Keyvault'
+      keyvaultUri: 'https://adp-carml-az-kv-nopr-002.vault.azure.net/'
+      keyVersion: '9917c14be51d4d93b37218de7d326f60'
   }
 ```
 
@@ -633,10 +633,86 @@ module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bice
 module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-automationAccounts'
   params: {
-      diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
-      linkedWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-aut-001'
+      diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
+      roleAssignments: [
+        {
+          principalIds: [
+            '<<deploymentSpId>>'
+          ]
+          roleDefinitionIdOrName: 'Reader'
+        }
+      ]
+      modules: [
+        {
+          uri: 'https://www.powershellgallery.com/api/v2/package'
+          version: 'latest'
+          name: 'PSWindowsUpdate'
+        }
+      ]
+      jobSchedules: [
+        {
+          runbookName: 'TestRunbook'
+          scheduleName: 'TestSchedule'
+        }
+      ]
+      name: '<<namePrefix>>-wd-aut-x-001'
+      variables: [
+        {
+          value: '\'TestString\''
+          description: 'TestStringDescription'
+          name: 'TestString'
+        }
+        {
+          value: '500'
+          description: 'TestIntegerDescription'
+          name: 'TestInteger'
+        }
+        {
+          value: 'false'
+          description: 'TestBooleanDescription'
+          name: 'TestBoolean'
+        }
+        {
+          value: '\'\\/Date(1637934042656)\\/\''
+          isEncrypted: false
+          description: 'TestDateTimeDescription'
+          name: 'TestDateTime'
+        }
+        {
+          value: '\'TestEncryptedValue\''
+          description: 'TestEncryptedDescription'
+          name: 'TestEncryptedVariable'
+        }
+      ]
+      runbooks: [
+        {
+          uri: 'https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/quickstarts/microsoft.automation/101-automation/scripts/AzureAutomationTutorial.ps1'
+          version: '1.0.0.0'
+          description: 'Test runbook'
+          runbookType: 'PowerShell'
+          name: 'TestRunbook'
+        }
+      ]
+      schedules: [
+        {
+          timeZone: 'Europe/Berlin'
+          advancedSchedule: {}
+          expiryTime: '9999-12-31T23:59:59.9999999+01:00'
+          name: 'TestSchedule'
+          frequency: 'Minute'
+          startTime: ''
+          interval: 15
+        }
+      ]
+      systemAssignedIdentity: true
+      userAssignedIdentities: {
+        '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
+      }
       softwareUpdateConfigurations: [
         {
+          excludeUpdates: [
+            '123456'
+          ]
           updateClassifications: [
             'Critical'
             'Security'
@@ -647,99 +723,54 @@ module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bice
             'Tools'
             'Updates'
           ]
-          includeUpdates: [
-            '654321'
-          ]
-          name: 'Windows_ZeroDay'
-          frequency: 'Month'
+          maintenanceWindow: 'PT4H'
+          interval: 1
+          rebootSetting: 'IfRequired'
           monthlyOccurrences: [
             {
               day: 'Friday'
               occurrence: 3
             }
           ]
+          includeUpdates: [
+            '654321'
+          ]
           scopeByTags: {
             Update: [
               'Automatic-Wave1'
             ]
           }
-          startTime: '22:00'
-          maintenanceWindow: 'PT4H'
           operatingSystem: 'Windows'
-          excludeUpdates: [
-            '123456'
-          ]
-          rebootSetting: 'IfRequired'
-          interval: 1
+          startTime: '22:00'
+          frequency: 'Month'
+          name: 'Windows_ZeroDay'
         }
         {
+          excludeUpdates: [
+            'icacls'
+          ]
           updateClassifications: [
             'Critical'
             'Security'
             'Other'
           ]
+          rebootSetting: 'IfRequired'
           includeUpdates: [
             'kernel'
           ]
-          name: 'Linux_ZeroDay'
-          frequency: 'OneTime'
-          startTime: '22:00'
           maintenanceWindow: 'PT4H'
           operatingSystem: 'Linux'
-          excludeUpdates: [
-            'icacls'
-          ]
-          rebootSetting: 'IfRequired'
-        }
-      ]
-      jobSchedules: [
-        {
-          runbookName: 'TestRunbook'
-          scheduleName: 'TestSchedule'
-        }
-      ]
-      diagnosticLogsRetentionInDays: 7
-      variables: [
-        {
-          description: 'TestStringDescription'
-          value: '\'TestString\''
-          name: 'TestString'
-        }
-        {
-          description: 'TestIntegerDescription'
-          value: '500'
-          name: 'TestInteger'
-        }
-        {
-          description: 'TestBooleanDescription'
-          value: 'false'
-          name: 'TestBoolean'
-        }
-        {
-          description: 'TestDateTimeDescription'
-          isEncrypted: false
-          value: '\'\\/Date(1637934042656)\\/\''
-          name: 'TestDateTime'
-        }
-        {
-          description: 'TestEncryptedDescription'
-          value: '\'TestEncryptedValue\''
-          name: 'TestEncryptedVariable'
-        }
-      ]
-      diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
-      modules: [
-        {
-          version: 'latest'
-          name: 'PSWindowsUpdate'
-          uri: 'https://www.powershellgallery.com/api/v2/package'
+          startTime: '22:00'
+          frequency: 'OneTime'
+          name: 'Linux_ZeroDay'
         }
       ]
       diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
-      userAssignedIdentities: {
-        '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
-      }
-      name: '<<namePrefix>>-wd-aut-x-001'
+      diagnosticLogsRetentionInDays: 7
+      linkedWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-aut-001'
+      gallerySolutions: [
+        'Updates'
+      ]
       privateEndpoints: [
         {
           subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints'
@@ -750,39 +781,8 @@ module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bice
           service: 'DSCAndHybridWorker'
         }
       ]
-      roleAssignments: [
-        {
-          principalIds: [
-            '<<deploymentSpId>>'
-          ]
-          roleDefinitionIdOrName: 'Reader'
-        }
-      ]
-      gallerySolutions: [
-        'Updates'
-      ]
-      runbooks: [
-        {
-          version: '1.0.0.0'
-          uri: 'https://raw.githubusercontent.com/Azure/azure-quickstart-templates/master/quickstarts/microsoft.automation/101-automation/scripts/AzureAutomationTutorial.ps1'
-          description: 'Test runbook'
-          name: 'TestRunbook'
-          runbookType: 'PowerShell'
-        }
-      ]
-      schedules: [
-        {
-          advancedSchedule: {}
-          startTime: ''
-          expiryTime: '9999-12-31T23:59:59.9999999+01:00'
-          name: 'TestSchedule'
-          frequency: 'Minute'
-          interval: 15
-          timeZone: 'Europe/Berlin'
-        }
-      ]
+      diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
       diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
-      systemAssignedIdentity: true
   }
 ```
 

@@ -417,21 +417,13 @@ module staticSites './Microsoft.Web/staticSites/deploy.bicep' = {
 module staticSites './Microsoft.Web/staticSites/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-staticSites'
   params: {
-      sku: 'Standard'
-      privateEndpoints: [
-        {
-          subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints'
-          service: 'staticSites'
-        }
-      ]
       userAssignedIdentities: {
         '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
       }
-      allowConfigFileUpdates: true
-      enterpriseGradeCdnStatus: 'Disabled'
-      systemAssignedIdentity: true
-      name: '<<namePrefix>>-az-wss-x-001'
+      sku: 'Standard'
       stagingEnvironmentPolicy: 'Enabled'
+      name: '<<namePrefix>>-az-wss-x-001'
+      enterpriseGradeCdnStatus: 'Disabled'
       roleAssignments: [
         {
           principalIds: [
@@ -440,6 +432,14 @@ module staticSites './Microsoft.Web/staticSites/deploy.bicep' = {
           roleDefinitionIdOrName: 'Reader'
         }
       ]
+      systemAssignedIdentity: true
+      privateEndpoints: [
+        {
+          subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints'
+          service: 'staticSites'
+        }
+      ]
+      allowConfigFileUpdates: true
   }
 ```
 

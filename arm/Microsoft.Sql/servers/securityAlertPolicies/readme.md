@@ -34,6 +34,7 @@ This module deploys an SQL Server Security Alert Policy.
 | `storageAccountAccessKey` | secureString | `''` |  | Specifies the identifier key of the Threat Detection audit storage account.. |
 | `storageEndpoint` | string | `''` |  | Specifies the blob storage endpoint (e.g. https://mystorageaccount.blob.core.windows.net). This blob storage will hold all Threat Detection audit logs. |
 
+
 ## Outputs
 
 | Output Name | Type | Description |
@@ -41,5 +42,3 @@ This module deploys an SQL Server Security Alert Policy.
 | `name` | string | The name of the deployed security alert policy |
 | `resourceGroupName` | string | The resourceGroup of the deployed security alert policy |
 | `resourceId` | string | The resource ID of the deployed security alert policy |
-
-

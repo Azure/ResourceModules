@@ -190,6 +190,8 @@ tags: {
 module components './Microsoft.Insights/components/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-components'
   params: {
+      name: '<<namePrefix>>-az-appi-x-001'
+      workspaceResourceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-appi-001'
       roleAssignments: [
         {
           principalIds: [
@@ -198,8 +200,6 @@ module components './Microsoft.Insights/components/deploy.bicep' = {
           roleDefinitionIdOrName: 'Reader'
         }
       ]
-      name: '<<namePrefix>>-az-appi-x-001'
-      workspaceResourceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-appi-001'
   }
 ```
 

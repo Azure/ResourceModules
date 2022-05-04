@@ -38,6 +38,7 @@ This module deploys a storage account table service
 | `name` | string | `'default'` |  | The name of the table service |
 | `tables` | _[tables](tables/readme.md)_ array | `[]` |  | tables to create. |
 
+
 ## Outputs
 
 | Output Name | Type | Description |
@@ -45,5 +46,3 @@ This module deploys a storage account table service
 | `name` | string | The name of the deployed table service |
 | `resourceGroupName` | string | The resource group of the deployed table service |
 | `resourceId` | string | The resource ID of the deployed table service |
-
-

@@ -80,5 +80,3 @@ tags: {
 | `name` | string | The name of the storage insights configuration |
 | `resourceGroupName` | string | The resource group where the storage insight configuration is deployed |
 | `resourceId` | string | The resource ID of the deployed storage insights configuration |
-
-

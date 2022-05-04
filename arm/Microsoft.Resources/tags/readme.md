@@ -152,8 +152,8 @@ module tags './Microsoft.Resources/tags/deploy.bicep' = {
         TestToo: 'No'
         Test: 'Yes'
       }
-      onlyUpdate: false
       resourceGroupName: 'validation-rg'
+      onlyUpdate: false
   }
 ```
 

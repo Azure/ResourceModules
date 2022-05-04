@@ -235,16 +235,13 @@ tags: {
 module expressRouteCircuits './Microsoft.Network/expressRouteCircuits/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-expressRouteCircuits'
   params: {
+      skuFamily: 'MeteredData'
       peeringLocation: 'Amsterdam'
-      diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
-      diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
-      bandwidthInMbps: 50
-      diagnosticLogsRetentionInDays: 7
-      skuTier: 'Standard'
       diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
-      serviceProviderName: 'Equinix'
       diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
-      name: '<<namePrefix>>-az-erc-x-001'
+      serviceProviderName: 'Equinix'
+      diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
+      diagnosticLogsRetentionInDays: 7
       roleAssignments: [
         {
           principalIds: [
@@ -253,7 +250,10 @@ module expressRouteCircuits './Microsoft.Network/expressRouteCircuits/deploy.bic
           roleDefinitionIdOrName: 'Reader'
         }
       ]
-      skuFamily: 'MeteredData'
+      bandwidthInMbps: 50
+      diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
+      skuTier: 'Standard'
+      name: '<<namePrefix>>-az-erc-x-001'
   }
 ```
 

@@ -111,5 +111,3 @@ roleAssignments: [
 | `name` | string | The name of the deployed topic |
 | `resourceGroupName` | string | The resource group of the deployed topic |
 | `resourceId` | string | The resource ID of the deployed topic |
-
-

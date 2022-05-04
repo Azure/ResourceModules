@@ -187,7 +187,6 @@ tags: {
 module publicIPPrefixes './Microsoft.Network/publicIPPrefixes/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-publicIPPrefixes'
   params: {
-      prefixLength: 28
       name: '<<namePrefix>>-az-pippfx-x-001'
       roleAssignments: [
         {
@@ -197,6 +196,7 @@ module publicIPPrefixes './Microsoft.Network/publicIPPrefixes/deploy.bicep' = {
           roleDefinitionIdOrName: 'Reader'
         }
       ]
+      prefixLength: 28
   }
 ```
 

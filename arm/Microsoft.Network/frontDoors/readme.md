@@ -294,75 +294,6 @@ tags: {
 module frontDoors './Microsoft.Network/frontDoors/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-frontDoors'
   params: {
-      routingRules: [
-        {
-          properties: {
-            frontendEndpoints: [
-              {
-                id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/frontDoors/<<namePrefix>>-az-fd-x-001/FrontendEndpoints/frontEnd'
-              }
-            ]
-            enabledState: 'Enabled'
-            routeConfiguration: {
-              forwardingProtocol: 'MatchRequest'
-              '@odata.type': '#Microsoft.Azure.FrontDoor.Models.FrontdoorForwardingConfiguration'
-              backendPool: {
-                id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/frontDoors/<<namePrefix>>-az-fd-x-001/BackendPools/backendPool'
-              }
-            }
-            patternsToMatch: [
-              '/*'
-            ]
-            acceptedProtocols: [
-              'Http'
-              'Https'
-            ]
-          }
-          name: 'routingRule'
-        }
-      ]
-      healthProbeSettings: [
-        {
-          properties: {
-            enabledState: ''
-            protocol: 'Https'
-            healthProbeMethod: ''
-            intervalInSeconds: 60
-            path: '/'
-          }
-          name: 'heathProbe'
-        }
-      ]
-      backendPools: [
-        {
-          properties: {
-            backends: [
-              {
-                enabledState: 'Enabled'
-                privateLinkAlias: ''
-                priority: 1
-                backendHostHeader: 'backendAddress'
-                privateLinkResourceId: ''
-                privateLinkApprovalMessage: ''
-                address: 'biceptest.local'
-                privateLinkLocation: ''
-                weight: 50
-                httpsPort: 443
-                httpPort: 80
-              }
-            ]
-            LoadBalancingSettings: {
-              id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/frontDoors/<<namePrefix>>-az-fd-x-001/LoadBalancingSettings/loadBalancer'
-            }
-            HealthProbeSettings: {
-              id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/frontDoors/<<namePrefix>>-az-fd-x-001/HealthProbeSettings/heathProbe'
-            }
-          }
-          name: 'backendPool'
-        }
-      ]
-      name: '<<namePrefix>>-az-fd-x-001'
-      sendRecvTimeoutSeconds: 10
       frontendEndpoints: [
         {
           properties: {
@@ -373,7 +304,48 @@ module frontDoors './Microsoft.Network/frontDoors/deploy.bicep' = {
           name: 'frontEnd'
         }
       ]
+      name: '<<namePrefix>>-az-fd-x-001'
       enforceCertificateNameCheck: 'Disabled'
+      backendPools: [
+        {
+          properties: {
+            LoadBalancingSettings: {
+              id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/frontDoors/<<namePrefix>>-az-fd-x-001/LoadBalancingSettings/loadBalancer'
+            }
+            HealthProbeSettings: {
+              id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/frontDoors/<<namePrefix>>-az-fd-x-001/HealthProbeSettings/heathProbe'
+            }
+            backends: [
+              {
+                privateLinkAlias: ''
+                privateLinkResourceId: ''
+                httpPort: 80
+                privateLinkApprovalMessage: ''
+                httpsPort: 443
+                privateLinkLocation: ''
+                enabledState: 'Enabled'
+                priority: 1
+                backendHostHeader: 'backendAddress'
+                address: 'biceptest.local'
+                weight: 50
+              }
+            ]
+          }
+          name: 'backendPool'
+        }
+      ]
+      healthProbeSettings: [
+        {
+          properties: {
+            healthProbeMethod: ''
+            protocol: 'Https'
+            path: '/'
+            intervalInSeconds: 60
+            enabledState: ''
+          }
+          name: 'heathProbe'
+        }
+      ]
       loadBalancingSettings: [
         {
           properties: {
@@ -384,6 +356,34 @@ module frontDoors './Microsoft.Network/frontDoors/deploy.bicep' = {
           name: 'loadBalancer'
         }
       ]
+      routingRules: [
+        {
+          properties: {
+            routeConfiguration: {
+              backendPool: {
+                id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/frontDoors/<<namePrefix>>-az-fd-x-001/BackendPools/backendPool'
+              }
+              forwardingProtocol: 'MatchRequest'
+              '@odata.type': '#Microsoft.Azure.FrontDoor.Models.FrontdoorForwardingConfiguration'
+            }
+            acceptedProtocols: [
+              'Http'
+              'Https'
+            ]
+            frontendEndpoints: [
+              {
+                id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/frontDoors/<<namePrefix>>-az-fd-x-001/FrontendEndpoints/frontEnd'
+              }
+            ]
+            patternsToMatch: [
+              '/*'
+            ]
+            enabledState: 'Enabled'
+          }
+          name: 'routingRule'
+        }
+      ]
+      sendRecvTimeoutSeconds: 10
   }
 ```
 

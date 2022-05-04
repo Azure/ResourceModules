@@ -28,6 +28,7 @@ This module deploys authorization rules for a service bus namespace
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `rights` | array | `[]` | `[Listen, Manage, Send]` | The rights associated with the rule. |
 
+
 ## Outputs
 
 | Output Name | Type | Description |
@@ -35,5 +36,3 @@ This module deploys authorization rules for a service bus namespace
 | `name` | string | The name of the authorization rule. |
 | `resourceGroupName` | string | The name of the Resource Group the authorization rule was created in. |
 | `resourceId` | string | The resource ID of the authorization rule. |
-
-

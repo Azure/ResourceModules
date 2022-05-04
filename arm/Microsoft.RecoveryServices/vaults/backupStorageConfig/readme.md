@@ -28,6 +28,7 @@ This module deploys the Backup Storage Configuration for the Recovery Service Va
 | `name` | string | `'vaultstorageconfig'` |  | The name of the backup storage config |
 | `storageModelType` | string | `'GeoRedundant'` | `[GeoRedundant, LocallyRedundant, ReadAccessGeoZoneRedundant, ZoneRedundant]` | Change Vault Storage Type (Works if vault has not registered any backup instance) |
 
+
 ## Outputs
 
 | Output Name | Type | Description |
@@ -35,5 +36,3 @@ This module deploys the Backup Storage Configuration for the Recovery Service Va
 | `name` | string | The name of the backup storage config |
 | `resourceGroupName` | string | The name of the Resource Group the backup storage configuration was created in. |
 | `resourceId` | string | The resource ID of the backup storage config |
-
-

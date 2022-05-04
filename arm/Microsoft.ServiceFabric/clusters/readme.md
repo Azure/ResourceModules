@@ -288,29 +288,29 @@ module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-clusters'
   params: {
       reliabilityLevel: 'None'
-      name: '<<namePrefix>>-az-sfc-cert-001'
-      managementEndpoint: 'https://<<namePrefix>>-az-sfc-cert-001.westeurope.cloudapp.azure.com:19080'
-      nodeTypes: [
-        {
-          isPrimary: true
-          httpGatewayEndpointPort: 19080
-          ephemeralPorts: {
-            endPort: 65534
-            startPort: 49152
-          }
-          clientConnectionEndpointPort: 19000
-          durabilityLevel: 'Bronze'
-          name: 'Node01'
-          applicationPorts: {
-            endPort: 30000
-            startPort: 20000
-          }
-        }
-      ]
       certificate: {
         x509StoreName: 'My'
         thumbprint: '0AC113D5E1D94C401DDEB0EE2B1B96CC130'
       }
+      nodeTypes: [
+        {
+          isPrimary: true
+          clientConnectionEndpointPort: 19000
+          durabilityLevel: 'Bronze'
+          applicationPorts: {
+            startPort: 20000
+            endPort: 30000
+          }
+          ephemeralPorts: {
+            startPort: 49152
+            endPort: 65534
+          }
+          httpGatewayEndpointPort: 19080
+          name: 'Node01'
+        }
+      ]
+      managementEndpoint: 'https://<<namePrefix>>-az-sfc-cert-001.westeurope.cloudapp.azure.com:19080'
+      name: '<<namePrefix>>-az-sfc-cert-001'
   }
 ```
 
@@ -541,95 +541,12 @@ module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
 module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-clusters'
   params: {
-      clientCertificateCommonNames: [
-        {
-          certificateCommonName: 'clientcommoncert1'
-          isAdmin: false
-          certificateIssuerThumbprint: '0AC113D5E1D94C401DDEB0EE2B1B96CC130'
-        }
-        {
-          certificateCommonName: 'clientcommoncert2'
-          isAdmin: false
-          certificateIssuerThumbprint: '0AC113D5E1D94C401DDEB0EE2B1B96CC131'
-        }
+      addOnFeatures: [
+        'RepairManager'
+        'DnsService'
+        'BackupRestoreService'
+        'ResourceMonitorService'
       ]
-      applicationTypes: [
-        {
-          name: 'WordCount'
-        }
-      ]
-      certificateCommonNames: {
-        x509StoreName: ''
-        commonNames: [
-          {
-            certificateCommonName: 'certcommon'
-            certificateIssuerThumbprint: '0AC113D5E1D94C401DDEB0EE2B1B96CC130'
-          }
-        ]
-      }
-      maxUnusedVersionsToKeep: 2
-      tags: {
-        resourceType: 'Service Fabric'
-        clusterName: '<<namePrefix>>-az-sfc-full-001'
-      }
-      nodeTypes: [
-        {
-          httpGatewayEndpointPort: 19080
-          placementProperties: {}
-          vmInstanceCount: 5
-          ephemeralPorts: {
-            endPort: 65534
-            startPort: 49152
-          }
-          capacities: {}
-          multipleAvailabilityZones: false
-          durabilityLevel: 'Silver'
-          reverseProxyEndpointPort: ''
-          isStateless: false
-          name: 'Node01'
-          clientConnectionEndpointPort: 19000
-          applicationPorts: {
-            endPort: 30000
-            startPort: 20000
-          }
-          isPrimary: true
-        }
-        {
-          httpGatewayEndpointPort: 19007
-          isPrimary: true
-          ephemeralPorts: {
-            endPort: 64000
-            startPort: 49000
-          }
-          vmInstanceCount: 5
-          durabilityLevel: 'Bronze'
-          clientConnectionEndpointPort: 19000
-          applicationPorts: {
-            endPort: 30000
-            startPort: 20000
-          }
-          name: 'Node02'
-        }
-      ]
-      name: '<<namePrefix>>-az-sfc-full-001'
-      upgradeDescription: {
-        healthCheckStableDuration: '00:01:00'
-        healthCheckWaitDuration: '00:00:30'
-        healthCheckRetryTimeout: '00:45:00'
-        upgradeDomainTimeout: '02:00:00'
-        upgradeReplicaSetCheckTimeout: '1.00:00:00'
-        upgradeTimeout: '02:00:00'
-        forceRestart: false
-        healthPolicy: {
-          maxPercentUnhealthyNodes: 0
-          maxPercentUnhealthyApplications: 0
-        }
-        deltaHealthPolicy: {
-          maxPercentDeltaUnhealthyNodes: 0
-          maxPercentDeltaUnhealthyApplications: 0
-          maxPercentUpgradeDomainDeltaUnhealthyNodes: 0
-        }
-      }
       roleAssignments: [
         {
           principalIds: [
@@ -638,52 +555,91 @@ module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
           roleDefinitionIdOrName: 'Reader'
         }
       ]
-      clientCertificateThumbprints: [
+      reliabilityLevel: 'Silver'
+      certificateCommonNames: {
+        x509StoreName: ''
+        commonNames: [
+          {
+            certificateIssuerThumbprint: '0AC113D5E1D94C401DDEB0EE2B1B96CC130'
+            certificateCommonName: 'certcommon'
+          }
+        ]
+      }
+      clientCertificateCommonNames: [
         {
-          certificateThumbprint: '0AC113D5E1D94C401DDEB0EE2B1B96CC130'
+          certificateIssuerThumbprint: '0AC113D5E1D94C401DDEB0EE2B1B96CC130'
           isAdmin: false
+          certificateCommonName: 'clientcommoncert1'
         }
         {
-          certificateThumbprint: '0AC113D5E1D94C401DDEB0EE2B1B96CC131'
+          certificateIssuerThumbprint: '0AC113D5E1D94C401DDEB0EE2B1B96CC131'
           isAdmin: false
+          certificateCommonName: 'clientcommoncert2'
         }
       ]
+      upgradeDescription: {
+        healthCheckRetryTimeout: '00:45:00'
+        healthPolicy: {
+          maxPercentUnhealthyNodes: 0
+          maxPercentUnhealthyApplications: 0
+        }
+        deltaHealthPolicy: {
+          maxPercentDeltaUnhealthyNodes: 0
+          maxPercentUpgradeDomainDeltaUnhealthyNodes: 0
+          maxPercentDeltaUnhealthyApplications: 0
+        }
+        healthCheckStableDuration: '00:01:00'
+        healthCheckWaitDuration: '00:00:30'
+        upgradeReplicaSetCheckTimeout: '1.00:00:00'
+        upgradeTimeout: '02:00:00'
+        forceRestart: false
+        upgradeDomainTimeout: '02:00:00'
+      }
+      maxUnusedVersionsToKeep: 2
+      managementEndpoint: 'https://<<namePrefix>>-az-sfc-full-001.westeurope.cloudapp.azure.com:19080'
+      clientCertificateThumbprints: [
+        {
+          isAdmin: false
+          certificateThumbprint: '0AC113D5E1D94C401DDEB0EE2B1B96CC130'
+        }
+        {
+          isAdmin: false
+          certificateThumbprint: '0AC113D5E1D94C401DDEB0EE2B1B96CC131'
+        }
+      ]
+      name: '<<namePrefix>>-az-sfc-full-001'
       azureActiveDirectory: {
-        tenantId: '<<tenantId>>'
         clientApplication: '<<deploymentSpId>>'
         clusterApplication: 'cf33fea8-b30f-424f-ab73-c48d99e0b222'
-      }
-      diagnosticsStorageAccountConfig: {
-        queueEndpoint: 'https://adp<<namePrefix>>azsaweux001.queue.core.windows.net/'
-        blobEndpoint: 'https://adp<<namePrefix>>azsaweux001.blob.core.windows.net/'
-        tableEndpoint: 'https://adp<<namePrefix>>azsaweux001.table.core.windows.net/'
-        protectedAccountKeyName: 'StorageAccountKey1'
-        storageAccountName: 'adp<<namePrefix>>azsaweux001'
+        tenantId: '<<tenantId>>'
       }
       fabricSettings: [
         {
-          name: 'Security'
           parameters: [
             {
               value: 'EncryptAndSign'
               name: 'ClusterProtectionLevel'
             }
           ]
+          name: 'Security'
         }
         {
-          name: 'UpgradeService'
           parameters: [
             {
               value: '60'
               name: 'AppPollIntervalInSeconds'
             }
           ]
+          name: 'UpgradeService'
         }
       ]
+      vmImage: 'Linux'
+      tags: {
+        clusterName: '<<namePrefix>>-az-sfc-full-001'
+        resourceType: 'Service Fabric'
+      }
       notifications: [
         {
-          notificationLevel: 'Critical'
-          isEnabled: true
           notificationTargets: [
             {
               receivers: [
@@ -692,18 +648,62 @@ module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
               notificationChannel: 'EmailUser'
             }
           ]
+          notificationLevel: 'Critical'
           notificationCategory: 'WaveProgress'
+          isEnabled: true
         }
       ]
-      vmImage: 'Linux'
-      managementEndpoint: 'https://<<namePrefix>>-az-sfc-full-001.westeurope.cloudapp.azure.com:19080'
-      addOnFeatures: [
-        'RepairManager'
-        'DnsService'
-        'BackupRestoreService'
-        'ResourceMonitorService'
+      diagnosticsStorageAccountConfig: {
+        queueEndpoint: 'https://adp<<namePrefix>>azsaweux001.queue.core.windows.net/'
+        protectedAccountKeyName: 'StorageAccountKey1'
+        tableEndpoint: 'https://adp<<namePrefix>>azsaweux001.table.core.windows.net/'
+        blobEndpoint: 'https://adp<<namePrefix>>azsaweux001.blob.core.windows.net/'
+        storageAccountName: 'adp<<namePrefix>>azsaweux001'
+      }
+      nodeTypes: [
+        {
+          httpGatewayEndpointPort: 19080
+          durabilityLevel: 'Silver'
+          reverseProxyEndpointPort: ''
+          ephemeralPorts: {
+            startPort: 49152
+            endPort: 65534
+          }
+          name: 'Node01'
+          clientConnectionEndpointPort: 19000
+          placementProperties: {}
+          capacities: {}
+          applicationPorts: {
+            startPort: 20000
+            endPort: 30000
+          }
+          isStateless: false
+          isPrimary: true
+          multipleAvailabilityZones: false
+          vmInstanceCount: 5
+        }
+        {
+          httpGatewayEndpointPort: 19007
+          durabilityLevel: 'Bronze'
+          name: 'Node02'
+          applicationPorts: {
+            startPort: 20000
+            endPort: 30000
+          }
+          clientConnectionEndpointPort: 19000
+          isPrimary: true
+          ephemeralPorts: {
+            startPort: 49000
+            endPort: 64000
+          }
+          vmInstanceCount: 5
+        }
       ]
-      reliabilityLevel: 'Silver'
+      applicationTypes: [
+        {
+          name: 'WordCount'
+        }
+      ]
   }
 ```
 
@@ -765,24 +765,24 @@ module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
   params: {
       reliabilityLevel: 'None'
       name: '<<namePrefix>>-az-sfc-min-001'
-      managementEndpoint: 'https://<<namePrefix>>-az-sfc-min-001.westeurope.cloudapp.azure.com:19080'
       nodeTypes: [
         {
           isPrimary: true
-          httpGatewayEndpointPort: 19080
-          ephemeralPorts: {
-            endPort: 65534
-            startPort: 49152
-          }
           clientConnectionEndpointPort: 19000
           durabilityLevel: 'Bronze'
-          name: 'Node01'
           applicationPorts: {
-            endPort: 30000
             startPort: 20000
+            endPort: 30000
           }
+          ephemeralPorts: {
+            startPort: 49152
+            endPort: 65534
+          }
+          httpGatewayEndpointPort: 19080
+          name: 'Node01'
         }
       ]
+      managementEndpoint: 'https://<<namePrefix>>-az-sfc-min-001.westeurope.cloudapp.azure.com:19080'
   }
 ```
 
