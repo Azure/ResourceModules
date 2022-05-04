@@ -16,9 +16,6 @@
         },
         "associatedApplicationInsightsResourceId": {
             "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Insights/components/adp-<<namePrefix>>-az-appi-x-001"
-        },
-        "systemAssignedIdentity": {
-            "value": true
         }
     }
 }
