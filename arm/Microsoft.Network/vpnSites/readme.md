@@ -44,6 +44,10 @@ This module deploys a VPN Site.
 
 ### Parameter Usage `o365Policy`
 
+<details>
+
+<summary>Parameter JSON format</summary>
+
 ```json
 "o365Policy": {
     "value": {
@@ -56,7 +60,25 @@ This module deploys a VPN Site.
 }
 ```
 
+</details>
+
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+
+```
+
+</details>
+<p>
+
 ### Parameter Usage `deviceProperties`
+
+<details>
+
+<summary>Parameter JSON format</summary>
 
 ```json
 "deviceProperties": {
@@ -68,9 +90,27 @@ This module deploys a VPN Site.
 }
 ```
 
+</details>
+
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+
+```
+
+</details>
+<p>
+
 ### Parameter Usage `bgpProperties`
 
 The BGP properties. Note: This is a deprecated property, please use the corresponding `VpnSiteLinks` property instead.
+
+<details>
+
+<summary>Parameter JSON format</summary>
 
 ```json
 "bgpProperties": {
@@ -82,9 +122,27 @@ The BGP properties. Note: This is a deprecated property, please use the correspo
 }
 ```
 
+</details>
+
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+
+```
+
+</details>
+<p>
+
 ### Parameter Usage `vpnSiteLinks`
 
 An array of links. Should be used instead of the top-level `ipAddress` & `bgpProperties` properties. If using links,  one default link with same name and properties as VpnSite itself is mandatory.
+
+<details>
+
+<summary>Parameter JSON format</summary>
 
 ```json
 "vpnSiteLinks": {

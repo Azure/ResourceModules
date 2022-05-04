@@ -67,6 +67,10 @@ The `subnets` parameter accepts a JSON Array of `subnet` objects to deploy to th
 
 Here's an example of specifying a couple Subnets to deploy:
 
+<details>
+
+<summary>Parameter JSON format</summary>
+
 ```json
 "subnets": {
     "value": [

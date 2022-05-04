@@ -40,9 +40,6 @@ This module deploys VPN Gateways.
 | `tags` | object | `{object}` |  | Tags of the resource. |
 | `vpnGatewayScaleUnit` | int | `2` |  | The scale unit for this VPN gateway. |
 
-
-### Parameter Usage:
-
 ### Parameter Usage: `bgpSettings`
 
 <details>

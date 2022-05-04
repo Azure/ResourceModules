@@ -46,6 +46,10 @@ Attaching a compute is not idempotent and will fail in case you try to redeploy 
 Properties for the compute resource to create.
 Will be ignored in case a resource ID is provided.
 
+<details>
+
+<summary>Parameter JSON format</summary>
+
 ```json
 "properties": {
     "value": {

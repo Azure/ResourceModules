@@ -42,6 +42,10 @@ The `routes` parameter accepts a JSON Array of Route objects to deploy to the Ro
 
 Here's an example of specifying a few routes:
 
+<details>
+
+<summary>Parameter JSON format</summary>
+
 ```json
 "routes": {
   "value": [

@@ -64,6 +64,10 @@ In case you provide a resource id, it will attach the resource and ignore "prope
 Attaching a compute is not idempotent and will fail in case you try to redeploy over an existing compute in AML. I.e. for the first run set "deploy" to true, and after successful deployment to false.
 For more information see https://docs.microsoft.com/en-us/azure/templates/microsoft.machinelearningservices/workspaces/computes?tabs=bicep
 
+<details>
+
+<summary>Parameter JSON format</summary>
+
 ```json
 "computes": {
     "value": [

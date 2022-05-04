@@ -60,6 +60,20 @@ This module deploys a virtual network subnet.
 ]
 ```
 
+</details>
+
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+
+```
+
+</details>
+<p>
+
 ### Parameter Usage: `serviceEndpoints`
 
 <details>
@@ -74,6 +88,20 @@ This module deploys a virtual network subnet.
     "Microsoft.KeyVault"
 ]
 ```
+
+</details>
+
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+
+```
+
+</details>
+<p>
 
 ### Parameter Usage: `roleAssignments`
 

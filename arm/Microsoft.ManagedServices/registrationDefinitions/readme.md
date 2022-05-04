@@ -47,6 +47,10 @@ remote/managing tenant.
 | `principalIdDisplayName` | string | `principalId` |                 | Optional. A display name of the principal that is delegated permissions to.                 |
 | `roleDefinitionId`       | string |               | GUID            | Required. The role definition ID to delegate to the principal in the managing tenant.       |
 
+<details>
+
+<summary>Parameter JSON format</summary>
+
 ```json
 "authorizations": {
     "value": [

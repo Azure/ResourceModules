@@ -203,6 +203,11 @@ The `addressPrefixes` parameter accepts a JSON Array of string values containing
 
 Here's an example of specifying a single Address Prefix:
 
+
+<details>
+
+<summary>Parameter JSON format</summary>
+
 ```json
 "addressPrefixes": {
     "value": [

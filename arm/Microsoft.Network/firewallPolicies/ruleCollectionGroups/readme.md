@@ -34,6 +34,10 @@ This module deploys Network Firewall Policies Rule Collection Groups.
 
 For remaining properties, see [FirewallPolicyRuleCollection objects](https://docs.microsoft.com/en-us/azure/templates/microsoft.network/firewallpolicies/rulecollectiongroups?tabs=json#firewallpolicyrulecollection-objects)
 
+<details>
+
+<summary>Parameter JSON format</summary>
+
 ```json
 "ruleCollections": [
     {
@@ -44,6 +48,20 @@ For remaining properties, see [FirewallPolicyRuleCollection objects](https://doc
     }
 ]
 ```
+
+</details>
+
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+
+```
+
+</details>
+<p>
 
 ## Outputs
 
