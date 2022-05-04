@@ -290,3 +290,4 @@ module scalingplans './Microsoft.DesktopVirtualization/scalingplans/deploy.bicep
 ```
 
 </details>
+<p>

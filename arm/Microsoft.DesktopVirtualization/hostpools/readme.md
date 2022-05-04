@@ -399,3 +399,4 @@ module hostpools './Microsoft.DesktopVirtualization/hostpools/deploy.bicep' = {
 ```
 
 </details>
+<p>

@@ -998,6 +998,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
 ```
 
 </details>
+<p>
 
 <h3>Example 2</h3>
 
@@ -1327,6 +1328,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
 ```
 
 </details>
+<p>
 
 <h3>Example 3</h3>
 
@@ -1455,6 +1457,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
 ```
 
 </details>
+<p>
 
 <h3>Example 4</h3>
 
@@ -1777,3 +1780,4 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
 ```
 
 </details>
+<p>

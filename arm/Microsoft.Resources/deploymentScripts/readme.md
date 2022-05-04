@@ -210,6 +210,7 @@ module deploymentScripts './Microsoft.Resources/deploymentScripts/deploy.bicep' 
 ```
 
 </details>
+<p>
 
 <h3>Example 2</h3>
 
@@ -281,3 +282,4 @@ module deploymentScripts './Microsoft.Resources/deploymentScripts/deploy.bicep' 
 ```
 
 </details>
+<p>

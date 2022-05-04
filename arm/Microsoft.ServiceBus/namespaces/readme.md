@@ -323,6 +323,7 @@ module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
 ```
 
 </details>
+<p>
 
 <h3>Example 2</h3>
 
@@ -618,3 +619,4 @@ module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
 ```
 
 </details>
+<p>

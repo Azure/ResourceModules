@@ -261,6 +261,7 @@ module galleries './Microsoft.Compute/galleries/deploy.bicep' = {
 ```
 
 </details>
+<p>
 
 <h3>Example 2</h3>
 
@@ -314,3 +315,4 @@ module galleries './Microsoft.Compute/galleries/deploy.bicep' = {
 ```
 
 </details>
+<p>

@@ -367,6 +367,7 @@ module vpnSites './Microsoft.Network/vpnSites/deploy.bicep' = {
 ```
 
 </details>
+<p>
 
 <h3>Example 2</h3>
 
@@ -520,3 +521,4 @@ module vpnSites './Microsoft.Network/vpnSites/deploy.bicep' = {
 ```
 
 </details>
+<p>

@@ -40,6 +40,7 @@ This module deploys VPN Gateways.
 | `tags` | object | `{object}` |  | Tags of the resource. |
 | `vpnGatewayScaleUnit` | int | `2` |  | The scale unit for this VPN gateway. |
 
+
 ### Parameter Usage: `bgpSettings`
 
 <details>
@@ -206,6 +207,7 @@ module vpnGateways './Microsoft.Network/vpnGateways/deploy.bicep' = {
 ```
 
 </details>
+<p>
 
 <h3>Example 2</h3>
 
@@ -345,3 +347,4 @@ module vpnGateways './Microsoft.Network/vpnGateways/deploy.bicep' = {
 ```
 
 </details>
+<p>

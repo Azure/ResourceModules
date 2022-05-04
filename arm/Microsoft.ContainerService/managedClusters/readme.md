@@ -587,6 +587,7 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
 ```
 
 </details>
+<p>
 
 <h3>Example 2</h3>
 
@@ -816,3 +817,4 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
 ```
 
 </details>
+<p>

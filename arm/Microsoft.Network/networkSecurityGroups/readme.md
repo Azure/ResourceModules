@@ -188,6 +188,7 @@ module networkSecurityGroups './Microsoft.Network/networkSecurityGroups/deploy.b
 ```
 
 </details>
+<p>
 
 <h3>Example 2</h3>
 
@@ -391,3 +392,4 @@ module networkSecurityGroups './Microsoft.Network/networkSecurityGroups/deploy.b
 ```
 
 </details>
+<p>

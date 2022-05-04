@@ -349,6 +349,7 @@ module staticSites './Microsoft.Web/staticSites/deploy.bicep' = {
 ```
 
 </details>
+<p>
 
 <h3>Example 2</h3>
 
@@ -444,3 +445,4 @@ module staticSites './Microsoft.Web/staticSites/deploy.bicep' = {
 ```
 
 </details>
+<p>

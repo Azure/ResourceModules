@@ -353,6 +353,7 @@ module virtualNetworkGateways './Microsoft.Network/virtualNetworkGateways/deploy
 ```
 
 </details>
+<p>
 
 <h3>Example 2</h3>
 
@@ -462,3 +463,4 @@ module virtualNetworkGateways './Microsoft.Network/virtualNetworkGateways/deploy
 ```
 
 </details>
+<p>

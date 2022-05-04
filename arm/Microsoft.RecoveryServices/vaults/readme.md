@@ -959,6 +959,7 @@ module vaults './Microsoft.RecoveryServices/vaults/deploy.bicep' = {
 ```
 
 </details>
+<p>
 
 <h3>Example 2</h3>
 
@@ -994,6 +995,7 @@ module vaults './Microsoft.RecoveryServices/vaults/deploy.bicep' = {
 ```
 
 </details>
+<p>
 
 <h3>Example 3</h3>
 
@@ -1561,3 +1563,4 @@ module vaults './Microsoft.RecoveryServices/vaults/deploy.bicep' = {
 ```
 
 </details>
+<p>

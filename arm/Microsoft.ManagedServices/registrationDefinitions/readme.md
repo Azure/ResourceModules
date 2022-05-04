@@ -243,6 +243,7 @@ module registrationDefinitions './Microsoft.ManagedServices/registrationDefiniti
 ```
 
 </details>
+<p>
 
 <h3>Example 2</h3>
 
@@ -326,3 +327,4 @@ module registrationDefinitions './Microsoft.ManagedServices/registrationDefiniti
 ```
 
 </details>
+<p>

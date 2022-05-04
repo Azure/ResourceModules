@@ -310,6 +310,7 @@ module namespaces './Microsoft.EventHub/namespaces/deploy.bicep' = {
 ```
 
 </details>
+<p>
 
 <h3>Example 2</h3>
 
@@ -559,3 +560,4 @@ module namespaces './Microsoft.EventHub/namespaces/deploy.bicep' = {
 ```
 
 </details>
+<p>

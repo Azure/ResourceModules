@@ -925,3 +925,4 @@ module applicationGateways './Microsoft.Network/applicationGateways/deploy.bicep
 ```
 
 </details>
+<p>

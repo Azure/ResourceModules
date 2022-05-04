@@ -931,6 +931,7 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
 ```
 
 </details>
+<p>
 
 <h3>Example 2</h3>
 
@@ -1030,6 +1031,7 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
 ```
 
 </details>
+<p>
 
 <h3>Example 3</h3>
 
@@ -1179,3 +1181,4 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
 ```
 
 </details>
+<p>

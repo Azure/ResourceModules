@@ -115,6 +115,7 @@ module extensions './Microsoft.KubernetesConfiguration/extensions/deploy.bicep' 
 ```
 
 </details>
+<p>
 
 <h3>Example 2</h3>
 
@@ -187,3 +188,4 @@ module extensions './Microsoft.KubernetesConfiguration/extensions/deploy.bicep' 
 ```
 
 </details>
+<p>

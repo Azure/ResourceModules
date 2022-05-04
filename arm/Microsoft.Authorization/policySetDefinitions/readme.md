@@ -192,6 +192,7 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
 ```
 
 </details>
+<p>
 
 <h3>Example 2</h3>
 
@@ -329,6 +330,7 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
 ```
 
 </details>
+<p>
 
 <h3>Example 3</h3>
 
@@ -394,6 +396,7 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
 ```
 
 </details>
+<p>
 
 <h3>Example 4</h3>
 
@@ -531,3 +534,4 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
 ```
 
 </details>
+<p>

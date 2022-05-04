@@ -200,6 +200,7 @@ module applicationgroups './Microsoft.DesktopVirtualization/applicationgroups/de
 ```
 
 </details>
+<p>
 
 <h3>Example 2</h3>
 
@@ -331,3 +332,4 @@ module applicationgroups './Microsoft.DesktopVirtualization/applicationgroups/de
 ```
 
 </details>
+<p>

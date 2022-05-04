@@ -313,6 +313,7 @@ module systemTopics './Microsoft.EventGrid/systemTopics/deploy.bicep' = {
 ```
 
 </details>
+<p>
 
 <h3>Example 2</h3>
 
@@ -394,3 +395,4 @@ module systemTopics './Microsoft.EventGrid/systemTopics/deploy.bicep' = {
 ```
 
 </details>
+<p>

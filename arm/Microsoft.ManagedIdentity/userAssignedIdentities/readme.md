@@ -193,3 +193,4 @@ module userAssignedIdentities './Microsoft.ManagedIdentity/userAssignedIdentitie
 ```
 
 </details>
+<p>

@@ -381,3 +381,4 @@ module imageTemplates './Microsoft.VirtualMachineImages/imageTemplates/deploy.bi
 ```
 
 </details>
+<p>

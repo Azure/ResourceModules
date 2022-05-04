@@ -182,6 +182,7 @@ module virtualWans './Microsoft.Network/virtualWans/deploy.bicep' = {
 ```
 
 </details>
+<p>
 
 <h3>Example 2</h3>
 
@@ -251,3 +252,4 @@ module virtualWans './Microsoft.Network/virtualWans/deploy.bicep' = {
 ```
 
 </details>
+<p>

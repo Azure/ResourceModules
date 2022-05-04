@@ -182,6 +182,7 @@ module availabilitySets './Microsoft.Compute/availabilitySets/deploy.bicep' = {
 ```
 
 </details>
+<p>
 
 <h3>Example 2</h3>
 
@@ -239,3 +240,4 @@ module availabilitySets './Microsoft.Compute/availabilitySets/deploy.bicep' = {
 ```
 
 </details>
+<p>

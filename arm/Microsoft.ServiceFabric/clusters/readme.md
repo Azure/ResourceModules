@@ -315,6 +315,7 @@ module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
 ```
 
 </details>
+<p>
 
 <h3>Example 2</h3>
 
@@ -708,6 +709,7 @@ module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
 ```
 
 </details>
+<p>
 
 <h3>Example 3</h3>
 
@@ -787,3 +789,4 @@ module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
 ```
 
 </details>
+<p>

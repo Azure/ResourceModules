@@ -209,6 +209,7 @@ module privateEndpoints './Microsoft.Network/privateEndpoints/deploy.bicep' = {
 ```
 
 </details>
+<p>
 
 <h3>Example 2</h3>
 
@@ -294,3 +295,4 @@ module privateEndpoints './Microsoft.Network/privateEndpoints/deploy.bicep' = {
 ```
 
 </details>
+<p>

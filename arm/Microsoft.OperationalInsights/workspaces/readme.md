@@ -471,6 +471,7 @@ module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
 ```
 
 </details>
+<p>
 
 <h3>Example 2</h3>
 
@@ -796,3 +797,4 @@ module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
 ```
 
 </details>
+<p>

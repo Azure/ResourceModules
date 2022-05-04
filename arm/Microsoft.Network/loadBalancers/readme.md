@@ -652,6 +652,7 @@ module loadBalancers './Microsoft.Network/loadBalancers/deploy.bicep' = {
 ```
 
 </details>
+<p>
 
 <h3>Example 2</h3>
 
@@ -701,6 +702,7 @@ module loadBalancers './Microsoft.Network/loadBalancers/deploy.bicep' = {
 ```
 
 </details>
+<p>
 
 <h3>Example 3</h3>
 
@@ -946,3 +948,4 @@ module loadBalancers './Microsoft.Network/loadBalancers/deploy.bicep' = {
 ```
 
 </details>
+<p>

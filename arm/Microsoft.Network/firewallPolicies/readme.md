@@ -169,6 +169,7 @@ module firewallPolicies './Microsoft.Network/firewallPolicies/deploy.bicep' = {
 ```
 
 </details>
+<p>
 
 <h3>Example 2</h3>
 
@@ -282,3 +283,4 @@ module firewallPolicies './Microsoft.Network/firewallPolicies/deploy.bicep' = {
 ```
 
 </details>
+<p>

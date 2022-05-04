@@ -228,6 +228,7 @@ module disks './Microsoft.Compute/disks/deploy.bicep' = {
 ```
 
 </details>
+<p>
 
 <h3>Example 2</h3>
 
@@ -297,6 +298,7 @@ module disks './Microsoft.Compute/disks/deploy.bicep' = {
 ```
 
 </details>
+<p>
 
 <h3>Example 3</h3>
 
@@ -358,6 +360,7 @@ module disks './Microsoft.Compute/disks/deploy.bicep' = {
 ```
 
 </details>
+<p>
 
 <h3>Example 4</h3>
 
@@ -439,3 +442,4 @@ module disks './Microsoft.Compute/disks/deploy.bicep' = {
 ```
 
 </details>
+<p>

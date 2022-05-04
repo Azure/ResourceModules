@@ -208,6 +208,7 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
 ```
 
 </details>
+<p>
 
 <h3>Example 2</h3>
 
@@ -357,6 +358,7 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
 ```
 
 </details>
+<p>
 
 <h3>Example 3</h3>
 
@@ -444,6 +446,7 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
 ```
 
 </details>
+<p>
 
 <h3>Example 4</h3>
 
@@ -593,3 +596,4 @@ module policyDefinitions './Microsoft.Authorization/policyDefinitions/deploy.bic
 ```
 
 </details>
+<p>

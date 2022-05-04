@@ -177,6 +177,7 @@ module batchAccounts './Microsoft.Batch/batchAccounts/deploy.bicep' = {
 ```
 
 </details>
+<p>
 
 <h3>Example 2</h3>
 
@@ -252,3 +253,4 @@ module batchAccounts './Microsoft.Batch/batchAccounts/deploy.bicep' = {
 ```
 
 </details>
+<p>

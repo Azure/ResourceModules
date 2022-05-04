@@ -231,6 +231,7 @@ module fluxConfigurations './Microsoft.KubernetesConfiguration/fluxConfiguration
 ```
 
 </details>
+<p>
 
 <h3>Example 2</h3>
 
@@ -324,3 +325,4 @@ module fluxConfigurations './Microsoft.KubernetesConfiguration/fluxConfiguration
 ```
 
 </details>
+<p>

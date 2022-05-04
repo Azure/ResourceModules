@@ -280,6 +280,7 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
 ```
 
 </details>
+<p>
 
 <h3>Example 2</h3>
 
@@ -440,3 +441,4 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
 ```
 
 </details>
+<p>

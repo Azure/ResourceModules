@@ -204,6 +204,7 @@ module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bic
 ```
 
 </details>
+<p>
 
 <h3>Example 2</h3>
 
@@ -315,6 +316,7 @@ module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bic
 ```
 
 </details>
+<p>
 
 <h3>Example 3</h3>
 
@@ -362,6 +364,7 @@ module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bic
 ```
 
 </details>
+<p>
 
 <h3>Example 4</h3>
 
@@ -477,6 +480,7 @@ module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bic
 ```
 
 </details>
+<p>
 
 <h3>Example 5</h3>
 
@@ -520,6 +524,7 @@ module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bic
 ```
 
 </details>
+<p>
 
 <h3>Example 6</h3>
 
@@ -631,3 +636,4 @@ module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bic
 ```
 
 </details>
+<p>

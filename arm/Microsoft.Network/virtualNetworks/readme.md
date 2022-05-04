@@ -389,6 +389,7 @@ module virtualNetworks './Microsoft.Network/virtualNetworks/deploy.bicep' = {
 ```
 
 </details>
+<p>
 
 <h3>Example 2</h3>
 
@@ -574,6 +575,7 @@ module virtualNetworks './Microsoft.Network/virtualNetworks/deploy.bicep' = {
 ```
 
 </details>
+<p>
 
 <h3>Example 3</h3>
 
@@ -679,3 +681,4 @@ module virtualNetworks './Microsoft.Network/virtualNetworks/deploy.bicep' = {
 ```
 
 </details>
+<p>

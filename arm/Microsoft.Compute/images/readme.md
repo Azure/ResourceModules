@@ -224,3 +224,4 @@ module images './Microsoft.Compute/images/deploy.bicep' = {
 ```
 
 </details>
+<p>

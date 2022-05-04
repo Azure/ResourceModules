@@ -182,6 +182,7 @@ module networkWatchers './Microsoft.Network/networkWatchers/deploy.bicep' = {
 ```
 
 </details>
+<p>
 
 <h3>Example 2</h3>
 
@@ -377,3 +378,4 @@ module networkWatchers './Microsoft.Network/networkWatchers/deploy.bicep' = {
 ```
 
 </details>
+<p>

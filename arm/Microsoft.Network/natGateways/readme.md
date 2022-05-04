@@ -238,3 +238,4 @@ module natGateways './Microsoft.Network/natGateways/deploy.bicep' = {
 ```
 
 </details>
+<p>
