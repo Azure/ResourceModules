@@ -41,7 +41,7 @@
         },
         "notScopes": {
             "value": [
-                "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg"
+                "/subscriptions/<<subscriptionId>>/resourceGroups/<<resourceGroupName>>"
             ]
         },
         "identity": {
