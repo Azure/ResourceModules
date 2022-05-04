@@ -38,7 +38,6 @@ This module deploys API Management Service Identity Provider.
 | `identityProviderSignUpPolicyName` | string | `''` |  | Signup Policy Name. Only applies to AAD B2C Identity Provider. |
 | `identityProviderType` | string | `'aad'` | `[aad, aadB2C, facebook, google, microsoft, twitter]` | Identity Provider Type identifier. |
 
-
 ## Outputs
 
 | Output Name | Type | Description |

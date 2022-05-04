@@ -115,7 +115,6 @@ module policyassignment 'br:bicepregistry.azurecr.io/bicep/modules/microsoft.aut
 module policyassignment 'yourpath/arm/Microsoft.Authorization.policyAssignments/subscription/deploy.bicep' = {}
 ```
 
-
 ## Outputs
 
 | Output Name | Type | Description |

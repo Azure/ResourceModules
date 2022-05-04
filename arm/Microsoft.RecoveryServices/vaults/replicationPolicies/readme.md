@@ -33,7 +33,6 @@ This module deploys a Replication Policy for Disaster Recovery scenario.
 | `multiVmSyncStatus` | string | `'Enable'` | `[Enable, Disable]` | A value indicating whether multi-VM sync has to be enabled. |
 | `recoveryPointHistory` | int | `1440` |  | The duration in minutes until which the recovery points need to be stored. |
 
-
 ## Outputs
 
 | Output Name | Type | Description |

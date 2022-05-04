@@ -28,7 +28,6 @@ This module deploys a private endpoint private DNS zone group
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `name` | string | `'default'` | The name of the private DNS Zone Group |
 
-
 ## Outputs
 
 | Output Name | Type | Description |

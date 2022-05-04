@@ -36,7 +36,6 @@ This module deploys a virtual machine scale set extension.
 | `settings` | object | `{object}` | Any object that contains the extension specific settings |
 | `supressFailures` | bool | `False` | Indicates whether failures stemming from the extension will be suppressed (Operational failures such as not connecting to the VM will not be suppressed regardless of this value). The default is false |
 
-
 ## Outputs
 
 | Output Name | Type | Description |

@@ -48,7 +48,6 @@ The following resources are required to be able to deploy this resource.
 | `tokenBodyParameters` | array | `[]` | Additional parameters required by the token endpoint of this authorization server represented as an array of JSON objects with name and value string properties, i.e. {"name" : "name value", "value": "a value"}. - TokenBodyParameterContract object |
 | `tokenEndpoint` | string | `''` | OAuth token endpoint. Contains absolute URI to entity being referenced. |
 
-
 ## Outputs
 
 | Output Name | Type | Description |

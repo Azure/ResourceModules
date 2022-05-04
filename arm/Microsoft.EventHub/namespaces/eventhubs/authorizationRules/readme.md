@@ -29,7 +29,6 @@ This module deploys an EventHub Namespace EventHubs Authorization Rule
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `rights` | array | `[]` | `[Listen, Manage, Send]` | The rights associated with the rule. |
 
-
 ## Outputs
 
 | Output Name | Type | Description |

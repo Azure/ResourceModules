@@ -28,7 +28,6 @@ This module deploys API Management Service Product APIs.
 | :-- | :-- | :-- | :-- |
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 
-
 ## Outputs
 
 | Output Name | Type | Description |

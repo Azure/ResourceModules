@@ -39,7 +39,6 @@ This module deploys an Azure Automation Account Schedule.
 | :-- | :-- | :-- | :-- |
 | `baseTime` | string | `[utcNow('u')]` | Time used as a basis for e.g. the schedule start date. |
 
-
 ## Outputs
 
 | Output Name | Type | Description |

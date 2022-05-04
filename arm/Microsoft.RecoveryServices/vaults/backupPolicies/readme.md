@@ -116,7 +116,6 @@ Object continaining the configuration for backup policies. It needs to be proper
 }
 ```
 
-
 ## Outputs
 
 | Output Name | Type | Description |

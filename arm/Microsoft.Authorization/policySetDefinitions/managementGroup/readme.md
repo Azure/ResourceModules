@@ -34,7 +34,6 @@ With this module you can create policy set definitions on a management group lev
 | `parameters` | object | `{object}` | The Set Definition (Initiative) parameters that can be used in policy definition references. |
 | `policyDefinitionGroups` | array | `[]` | The metadata describing groups of policy definition references within the Policy Set Definition (Initiative). |
 
-
 ## Outputs
 
 | Output Name | Type | Description |

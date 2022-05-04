@@ -30,7 +30,6 @@ This module deploys IP filter rules for a service bus namespace
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `name` | string | `[parameters('filterName')]` | The name of the ip filter rule |
 
-
 ## Outputs
 
 | Output Name | Type | Description |

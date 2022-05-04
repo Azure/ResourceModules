@@ -32,7 +32,6 @@ This module deploys a backup long-term retention policies for SQL Managed Instan
 | `weekOfYear` | int | `5` | The week of year to take the yearly backup in an ISO 8601 format. |
 | `yearlyRetention` | string | `'P5Y'` | The yearly retention policy for an LTR backup in an ISO 8601 format. |
 
-
 ## Outputs
 
 | Output Name | Type | Description |

@@ -28,7 +28,6 @@ This module deploys API Management Service Portal Setting.
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `properties` | object | `{object}` | Portal setting properties. |
 
-
 ## Outputs
 
 | Output Name | Type | Description |

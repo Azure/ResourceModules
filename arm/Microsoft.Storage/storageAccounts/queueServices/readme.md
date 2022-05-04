@@ -39,7 +39,6 @@ This module can be used to deploy a file share service into a storage account.
 | `name` | string | `'default'` |  | The name of the queue service |
 | `queues` | _[queues](queues/readme.md)_ array | `[]` |  | Queues to create. |
 
-
 ## Outputs
 
 | Output Name | Type | Description |

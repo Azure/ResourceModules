@@ -35,7 +35,6 @@ This module deploys AVD Applications.
 | `iconPath` | string | `''` |  | Path to icon. |
 | `showInPortal` | bool | `False` |  | Specifies whether to show the RemoteApp program in the RD Web Access server. |
 
-
 ## Outputs
 
 | Output Name | Type | Description |

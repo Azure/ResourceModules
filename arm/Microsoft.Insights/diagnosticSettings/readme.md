@@ -30,7 +30,6 @@ This module deploys a subscription wide export of the activity log.
 | `location` | string | `[deployment().location]` |  | Location deployment metadata. |
 | `name` | string | `[format('{0}-ActivityLog', uniqueString(subscription().id))]` |  | Name of the ActivityLog diagnostic settings. |
 
-
 ## Outputs
 
 | Output Name | Type | Description |

@@ -31,7 +31,6 @@ This module deploys a Protection Container for a Recovery Services Vault
 | `friendlyName` | string | `''` |  | Friendly name of the Protection Container |
 | `sourceResourceId` | string | `''` |  | Resource ID of the target resource for the Protection Container  |
 
-
 ## Outputs
 
 | Output Name | Type | Description |

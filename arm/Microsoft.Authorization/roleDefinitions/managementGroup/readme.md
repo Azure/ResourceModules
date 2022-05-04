@@ -32,7 +32,6 @@ With this module you can create role definitions on a management group level
 | `managementGroupId` | string | `[managementGroup().name]` | The group ID of the Management Group where the Role Definition and Target Scope will be applied to. If not provided, will use the current scope for deployment. |
 | `notActions` | array | `[]` | List of denied actions. |
 
-
 ## Outputs
 
 | Output Name | Type | Description |

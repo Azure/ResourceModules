@@ -28,7 +28,6 @@ This module deploys a virtual network rule for a service bus namespace.
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `name` | string | `[format('{0}-vnr', parameters('namespaceName'))]` | The name of the virtual network rule |
 
-
 ## Outputs
 
 | Output Name | Type | Description |

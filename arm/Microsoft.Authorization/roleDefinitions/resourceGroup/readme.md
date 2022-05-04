@@ -34,7 +34,6 @@ With this module you can create role definitions on a resource group level
 | `resourceGroupName` | string | `[resourceGroup().name]` | The name of the Resource Group where the Role Definition and Target Scope will be applied to. If not provided, will use the current scope for deployment. |
 | `subscriptionId` | string | `[subscription().subscriptionId]` | The subscription ID where the Role Definition and Target Scope will be applied to. If not provided, will use the current scope for deployment. |
 
-
 ## Outputs
 
 | Output Name | Type | Description |

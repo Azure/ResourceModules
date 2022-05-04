@@ -42,7 +42,6 @@ This module deploys Network Security Group Security Rules.
 | `sourcePortRange` | string | `''` |  | The source port or range. Integer or range between 0 and 65535. Asterisk "*" can also be used to match all ports. |
 | `sourcePortRanges` | array | `[]` |  | The source port ranges. |
 
-
 ## Outputs
 
 | Output Name | Type | Description |

@@ -30,7 +30,6 @@ This module deploys API Management Service APIs policies.
 | `format` | string | `'xml'` | `[rawxml, rawxml-link, xml, xml-link]` | Format of the policyContent. |
 | `name` | string | `'policy'` |  | The name of the policy |
 
-
 ## Outputs
 
 | Output Name | Type | Description |

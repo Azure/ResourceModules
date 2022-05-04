@@ -27,7 +27,6 @@ This module deploys a Managed Virtual Network for an Azure Data Factory
 | :-- | :-- | :-- | :-- |
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 
-
 ## Outputs
 
 | Output Name | Type | Description |

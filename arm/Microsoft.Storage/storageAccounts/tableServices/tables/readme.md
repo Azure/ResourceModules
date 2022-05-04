@@ -28,7 +28,6 @@ This module deploys a storage account table
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `tableServicesName` | string | `'default'` | The name of the table service |
 
-
 ## Outputs
 
 | Output Name | Type | Description |

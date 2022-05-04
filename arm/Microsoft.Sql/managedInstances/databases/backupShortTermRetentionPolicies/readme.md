@@ -30,7 +30,6 @@ This module deploys a backup short-term retention policies for SQL Managed Insta
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `retentionDays` | int | `35` | The backup retention period in days. This is how many days Point-in-Time Restore will be supported. |
 
-
 ## Outputs
 
 | Output Name | Type | Description |

@@ -33,7 +33,6 @@ This module deploys recovery services vault backup config.
 | `storageType` | string | `'GeoRedundant'` | `[GeoRedundant, LocallyRedundant, ReadAccessGeoZoneRedundant, ZoneRedundant]` | Storage type |
 | `storageTypeState` | string | `'Locked'` | `[Locked, Unlocked]` | Once a machine is registered against a resource, the storageTypeState is always Locked. |
 
-
 ## Outputs
 
 | Output Name | Type | Description |

@@ -34,7 +34,6 @@ With this module you can create policy definitions on a management group level.
 | `mode` | string | `'All'` | `[All, Indexed, Microsoft.KeyVault.Data, Microsoft.ContainerService.Data, Microsoft.Kubernetes.Data]` | The policy definition mode. Default is All, Some examples are All, Indexed, Microsoft.KeyVault.Data. |
 | `parameters` | object | `{object}` |  | The policy definition parameters that can be used in policy definition references. |
 
-
 ## Outputs
 
 | Output Name | Type | Description |

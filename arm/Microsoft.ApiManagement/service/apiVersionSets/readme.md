@@ -28,7 +28,6 @@ This module deploys API Management Service APIs Version Set.
 | `name` | string | `'default'` | API Version set name |
 | `properties` | object | `{object}` | API Version set properties |
 
-
 ## Outputs
 
 | Output Name | Type | Description |

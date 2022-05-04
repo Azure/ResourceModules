@@ -34,7 +34,6 @@ With this module you can create role definitions on a subscription level
 | `notDataActions` | array | `[]` | List of denied data actions. This is not supported if the assignableScopes contains Management Group Scopes |
 | `subscriptionId` | string | `[subscription().subscriptionId]` | The subscription ID where the Role Definition and Target Scope will be applied to. If not provided, will use the current scope for deployment. |
 
-
 ## Outputs
 
 | Output Name | Type | Description |

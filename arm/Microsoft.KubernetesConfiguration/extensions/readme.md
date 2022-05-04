@@ -54,7 +54,6 @@ For Details see [Prerequisites](https://docs.microsoft.com/en-us/azure/azure-arc
 | `targetNamespace` | string | `''` | Namespace where the extension will be created for an Namespace scoped extension. If this namespace does not exist, it will be created |
 | `version` | string | `''` | Version of the extension for this extension, if it is "pinned" to a specific version. |
 
-
 ## Outputs
 
 | Output Name | Type | Description |

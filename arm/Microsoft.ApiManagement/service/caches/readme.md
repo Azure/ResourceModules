@@ -37,7 +37,6 @@ The following resources are required to be able to deploy this resource.
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `resourceId` | string | `''` | Original uri of entity in external system cache points to. |
 
-
 ## Outputs
 
 | Output Name | Type | Description |

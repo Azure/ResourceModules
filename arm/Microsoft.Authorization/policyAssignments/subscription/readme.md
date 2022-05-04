@@ -39,7 +39,6 @@ With this module you can perform policy assignments on a subscription level.
 | `parameters` | object | `{object}` |  | Parameters for the policy assignment if needed. |
 | `subscriptionId` | string | `[subscription().subscriptionId]` |  | The Target Scope for the Policy. The subscription ID of the subscription for the policy assignment. If not provided, will use the current scope for deployment. |
 
-
 ## Outputs
 
 | Output Name | Type | Description |

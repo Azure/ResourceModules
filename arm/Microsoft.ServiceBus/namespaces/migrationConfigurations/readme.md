@@ -29,7 +29,6 @@ This module deploys a migration configuration for a service bus namespace
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `name` | string | `'$default'` | The name of the migration configuration |
 
-
 ## Outputs
 
 | Output Name | Type | Description |

@@ -39,7 +39,6 @@ With this module you can perform policy assignments on a management group level.
 | `notScopes` | array | `[]` |  | The policy excluded scopes |
 | `parameters` | object | `{object}` |  | Parameters for the policy assignment if needed. |
 
-
 ## Outputs
 
 | Output Name | Type | Description |

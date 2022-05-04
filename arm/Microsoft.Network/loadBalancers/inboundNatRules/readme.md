@@ -37,7 +37,6 @@ This module deploys load balancers inbound NAT rules.
 | `idleTimeoutInMinutes` | int | `4` |  | The timeout for the TCP idle connection. The value can be set between 4 and 30 minutes. The default value is 4 minutes. This element is only used when the protocol is set to TCP. |
 | `protocol` | string | `'Tcp'` | `[All, Tcp, Udp]` | The transport protocol for the endpoint. |
 
-
 ## Outputs
 
 | Output Name | Type | Description |

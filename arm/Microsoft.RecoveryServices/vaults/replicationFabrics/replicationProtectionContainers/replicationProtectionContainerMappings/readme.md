@@ -36,7 +36,6 @@ This module deploys a Replication Protection Container Mapping.
 | `targetContainerName` | string | `''` | Name of the target container. Must be specified if targetProtectionContainerId is not. If targetProtectionContainerId is specified, this parameter will be ignored |
 | `targetProtectionContainerId` | string | `''` | Resource ID of the target Replication container. Must be specified if targetContainerName is not. If specified, targetContainerFabricName and targetContainerName will be ignored |
 
-
 ## Outputs
 
 | Output Name | Type | Description |

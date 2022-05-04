@@ -29,7 +29,6 @@ This module deploys virtual hub route tables.
 | `labels` | array | `[]` | List of labels associated with this route table. |
 | `routes` | array | `[]` | List of all routes. |
 
-
 ## Outputs
 
 | Output Name | Type | Description |

@@ -31,7 +31,6 @@ This module deploys an Azure Automation Account Job Schedule.
 | `parameters` | object | `{object}` | List of job properties. |
 | `runOn` | string | `''` | The hybrid worker group that the scheduled job should run on. |
 
-
 ## Outputs
 
 | Output Name | Type | Description |
