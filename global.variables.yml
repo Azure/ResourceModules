@@ -7,7 +7,7 @@ variables:
   # Validation deployment settings
   ######################################
 
-  location: 'West Europe' # The default location to test deploy resources to
+  location: 'WestEurope' # The default location to test deploy resources to
   resourceGroupName: 'validation-rg' # The default resource group to test deployment resources into
 
   ######################################
