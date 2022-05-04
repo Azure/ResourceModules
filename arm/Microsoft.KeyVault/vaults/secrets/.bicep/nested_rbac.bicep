@@ -48,7 +48,7 @@ resource secret 'Microsoft.KeyVault/vaults/secrets@2021-06-01-preview' existing 
   name: '${split(resourceId, '/')[8]}/${split(resourceId, '/')[10]}'
 }
 
-resource roleAssignment 'Microsoft.Authorization/roleAssignments@2021-04-01-preview' = [for principalId in principalIds: {
+resource roleAssignment 'Microsoft.Authorization/roleAssignments@2020-10-01-preview' = [for principalId in principalIds: {
   name: guid(secret.id, principalId, roleDefinitionIdOrName)
   properties: {
     description: description
