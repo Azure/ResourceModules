@@ -123,6 +123,10 @@ roleAssignments: [
 
 The below parameter object is converted to an in-line string when handed over to the resource deployment, since that only takes strings.
 
+<details>
+
+<summary>Parameter JSON format</summary>
+
 ```json
 "vmTemplate": {
     "value": {

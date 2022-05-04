@@ -121,6 +121,10 @@ The following resources are required to be able to deploy this resource.
 
 #### Marketplace images
 
+<details>
+
+<summary>Parameter JSON format</summary>
+
 ```json
 "imageReference": {
     "value": {
@@ -132,7 +136,24 @@ The following resources are required to be able to deploy this resource.
 }
 ```
 
+</details>
+
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+
+```
+
+</details>
+
 #### Custom images
+
+<details>
+
+<summary>Parameter JSON format</summary>
 
 ```json
 "imageReference": {
@@ -437,6 +458,10 @@ extensionNetworkWatcherAgentConfig: {
 ### Parameter Usage: `extensionAntiMalwareConfig`
 
 Only for OSType Windows
+
+<details>
+
+<summary>Parameter JSON format</summary>
 
 ```json
 "extensionAntiMalwareConfig": {

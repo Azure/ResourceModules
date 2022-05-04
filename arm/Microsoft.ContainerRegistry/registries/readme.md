@@ -159,6 +159,10 @@ roleAssignments: [
 
 The image registry credentials by which the container group is created from.
 
+<details>
+
+<summary>Parameter JSON format</summary>
+
 ```json
 "acrName": {
     "value": {

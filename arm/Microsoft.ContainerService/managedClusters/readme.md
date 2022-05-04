@@ -216,70 +216,14 @@ tags: {
 </details>
 <p>
 
-### Parameter Usage: `identity`
-
-See also <https://docs.microsoft.com/en-us/azure/templates/microsoft.containerservice/managedclusters?tabs=json#managedclusteridentity-object>
-
-```json
-"identity": {
-  "value": {
-    "type": "string",
-    "userAssignedIdentities": {}
-  }
-}
-```
-
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-identity: {
-    value: {
-        type: 'string'
-        userAssignedIdentities: {}
-    }
-}
-```
-
-</details>
-<p>
-
-### Parameter Usage: `aksServicePrincipalProfile`
-
-See also <https://docs.microsoft.com/en-us/azure/templates/microsoft.containerservice/managedclusters?tabs=json#managedclusterserviceprincipalprofile-object>
-
-```json
-"aksServicePrincipalProfile": {
-  "value": {
-    "clientId": "string",
-    "secret": "string"
-  }
-}
-```
-
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-aksServicePrincipalProfile: {
-    clientId: 'string'
-    secret: 'string'
-}
-```
-
-</details>
-<p>
-
 ### Parameter Usage: `primaryAgentPoolProfile`
 
 Provide values for primary agent pool as needed.
 For available properties check <https://docs.microsoft.com/en-us/azure/templates/microsoft.containerservice/managedclusters?tabs=json#managedclusteragentpoolprofile-object>
+
+<details>
+
+<summary>Parameter JSON format</summary>
 
 ```json
 "primaryAgentPoolProfile": {

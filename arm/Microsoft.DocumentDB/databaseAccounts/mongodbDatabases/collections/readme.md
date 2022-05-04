@@ -36,6 +36,10 @@ This module deploys a collection within a MongoDB.
 
 Array of index keys as MongoIndex. The array contains keys for each MongoDB collection in the Azure Cosmos DB service with a collection resource object (as `key`) and collection index options (as `options`).
 
+<details>
+
+<summary>Parameter JSON format</summary>
+
 ```json
 "indexes": {
     "value": [
@@ -130,6 +134,10 @@ indexes: [
 ### Parameter Usage: `shardKey`
 
 The shard key and partition kind pair, only support "Hash" partition kind.
+
+<details>
+
+<summary>Parameter JSON format</summary>
 
 ```json
 "shardKey": {

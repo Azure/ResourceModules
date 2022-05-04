@@ -104,14 +104,17 @@ roleAssignments: [
 
 ### Parameter Usage: `customPublicSubnetName` and `customPrivateSubnetName`
 
-- Require Network Security Groups attached to the subnets
-  - The rule don't have to be set, they are set through the deployment
+- Require Network Security Groups attached to the subnets (Note: Rule don't have to be set, they are set through the deployment)
 
 - The two subnets also need the delegation to service `Microsoft.Databricks/workspaces`
 
 ### Parameter Usage: `workspaceParameters`
 
 - Include only those elements (e.g. amlWorkspaceId) as object if specified, otherwise remove it
+
+<details>
+
+<summary>Parameter JSON format</summary>
 
 ```json
 "workspaceParameters": {

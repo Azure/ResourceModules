@@ -50,6 +50,10 @@ The top-level resource in Azure Container Instances is the container group. A co
 
 The image registry credentials by which the container group is created from.
 
+<details>
+
+<summary>Parameter JSON format</summary>
+
 ```json
 "imageRegistryCredentials": {
     "value": [

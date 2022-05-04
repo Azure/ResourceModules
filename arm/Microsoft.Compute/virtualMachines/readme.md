@@ -113,6 +113,10 @@ This module deploys one Virtual Machine with one or multiple nics and optionally
 
 #### Marketplace images
 
+<details>
+
+<summary>Parameter JSON format</summary>
+
 ```json
 "imageReference": {
     "value": {
@@ -124,7 +128,23 @@ This module deploys one Virtual Machine with one or multiple nics and optionally
 }
 ```
 
+</details>
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+
+```
+
+</details>
+<p>
+
 #### Custom images
+
+<details>
+
+<summary>Parameter JSON format</summary>
 
 ```json
 "imageReference": {
@@ -295,6 +315,10 @@ Comments:
 - If `enablePublicIP` is set to true, then `publicIpNameSuffix` is also mandatory.
 - Each IP config needs to have the mandatory field `name`.
 - If not disabled, `enableAcceleratedNetworking` is considered `true` by default and requires the VM to be deployed with a supported OS and VM size.
+
+<details>
+
+<summary>Parameter JSON format</summary>
 
 ```json
 "nicConfigurations": {
@@ -513,6 +537,10 @@ extensionDomainJoinPassword: kv1.getSecret('domainJoinUser02-Password')
 ### Parameter Usage: `extensionAntiMalwareConfig`
 
 Only for OSType Windows
+
+<details>
+
+<summary>Parameter JSON format</summary>
 
 ```json
 "extensionAntiMalwareConfig": {
@@ -797,6 +825,8 @@ This is used if you are going to use secrets or other sensitive information that
 ```
 
 </details>
+
+<details>
 
 <summary>Bicep format</summary>
 
