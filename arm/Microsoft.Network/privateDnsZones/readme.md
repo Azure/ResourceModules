@@ -7,25 +7,24 @@ This template deploys a private DNS zone.
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Template references](#Template-references)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/locks` | 2017-04-01 |
-| `Microsoft.Authorization/roleAssignments` | 2021-04-01-preview |
-| `Microsoft.Network/privateDnsZones` | 2020-06-01 |
-| `Microsoft.Network/privateDnsZones/A` | 2020-06-01 |
-| `Microsoft.Network/privateDnsZones/AAAA` | 2020-06-01 |
-| `Microsoft.Network/privateDnsZones/CNAME` | 2020-06-01 |
-| `Microsoft.Network/privateDnsZones/MX` | 2020-06-01 |
-| `Microsoft.Network/privateDnsZones/PTR` | 2020-06-01 |
-| `Microsoft.Network/privateDnsZones/SOA` | 2020-06-01 |
-| `Microsoft.Network/privateDnsZones/SRV` | 2020-06-01 |
-| `Microsoft.Network/privateDnsZones/TXT` | 2020-06-01 |
-| `Microsoft.Network/privateDnsZones/virtualNetworkLinks` | 2020-06-01 |
+| `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
+| `Microsoft.Authorization/roleAssignments` | [2020-10-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-10-01-preview/roleAssignments) |
+| `Microsoft.Network/privateDnsZones` | [2020-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-06-01/privateDnsZones) |
+| `Microsoft.Network/privateDnsZones/A` | [2020-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-06-01/privateDnsZones/A) |
+| `Microsoft.Network/privateDnsZones/AAAA` | [2020-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-06-01/privateDnsZones/AAAA) |
+| `Microsoft.Network/privateDnsZones/CNAME` | [2020-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-06-01/privateDnsZones/CNAME) |
+| `Microsoft.Network/privateDnsZones/MX` | [2020-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-06-01/privateDnsZones/MX) |
+| `Microsoft.Network/privateDnsZones/PTR` | [2020-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-06-01/privateDnsZones/PTR) |
+| `Microsoft.Network/privateDnsZones/SOA` | [2020-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-06-01/privateDnsZones/SOA) |
+| `Microsoft.Network/privateDnsZones/SRV` | [2020-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-06-01/privateDnsZones/SRV) |
+| `Microsoft.Network/privateDnsZones/TXT` | [2020-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-06-01/privateDnsZones/TXT) |
+| `Microsoft.Network/privateDnsZones/virtualNetworkLinks` | [2020-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-06-01/privateDnsZones/virtualNetworkLinks) |
 
 ## Parameters
 

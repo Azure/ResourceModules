@@ -7,13 +7,12 @@ This module deploys a virtual machine scale set extension.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Template references](#Template-references)
 
 ## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Compute/virtualMachineScaleSets/extensions` | 2021-07-01 |
+| `Microsoft.Compute/virtualMachineScaleSets/extensions` | [2021-07-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Compute/2021-07-01/virtualMachineScaleSets/extensions) |
 
 ## Parameters
 

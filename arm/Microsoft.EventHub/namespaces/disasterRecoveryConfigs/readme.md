@@ -7,13 +7,12 @@ This module deploys an EventHub Namespace Disaster Recovery Config
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Template references](#Template-references)
 
 ## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.EventHub/namespaces/disasterRecoveryConfigs` | 2017-04-01 |
+| `Microsoft.EventHub/namespaces/disasterRecoveryConfigs` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.EventHub/2017-04-01/namespaces/disasterRecoveryConfigs) |
 
 ## Parameters
 

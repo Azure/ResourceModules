@@ -6,13 +6,12 @@ This module deploys the Backup Storage Configuration for the Recovery Service Va
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Template references](#Template-references)
 
 ## Resource types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.RecoveryServices/vaults/backupstorageconfig` | 2021-08-01 |
+| `Microsoft.RecoveryServices/vaults/backupstorageconfig` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2021-08-01/vaults/backupstorageconfig) |
 
 ## Parameters
 

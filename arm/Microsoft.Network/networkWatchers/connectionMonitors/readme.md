@@ -7,13 +7,12 @@ This template deploys Connection Monitors.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Template references](#Template-references)
 
 ## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Network/networkWatchers/connectionMonitors` | 2021-05-01 |
+| `Microsoft.Network/networkWatchers/connectionMonitors` | [2021-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/networkWatchers/connectionMonitors) |
 
 ## Parameters
 

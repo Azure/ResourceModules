@@ -7,13 +7,12 @@ This module deploys a Managed Virtual Network for an Azure Data Factory
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Template references](#Template-references)
 
 ## Resource types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.DataFactory/factories/managedVirtualNetworks` | 2018-06-01 |
+| `Microsoft.DataFactory/factories/managedVirtualNetworks` | [2018-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DataFactory/2018-06-01/factories/managedVirtualNetworks) |
 
 ## Parameters
 

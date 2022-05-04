@@ -7,13 +7,12 @@ This module deploys an Azure Automation Account Runbook.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Template references](#Template-references)
 
 ## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Automation/automationAccounts/runbooks` | 2019-06-01 |
+| `Microsoft.Automation/automationAccounts/runbooks` | [2019-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Automation/2019-06-01/automationAccounts/runbooks) |
 
 ## Parameters
 

@@ -7,13 +7,12 @@ This module deploys IP filter rules for a service bus namespace
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Template references](#Template-references)
 
 ## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.ServiceBus/namespaces/ipfilterrules` | 2018-01-01-preview |
+| `Microsoft.ServiceBus/namespaces/ipfilterrules` | [2018-01-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ServiceBus/2018-01-01-preview/namespaces/ipfilterrules) |
 
 ## Parameters
 

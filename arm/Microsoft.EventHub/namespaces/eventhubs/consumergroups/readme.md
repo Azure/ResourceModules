@@ -7,13 +7,12 @@ This module deploys an EventHub Namespace EventHubs Consumer Group
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Template references](#Template-references)
 
 ## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.EventHub/namespaces/eventhubs/consumergroups` | 2021-06-01-preview |
+| `Microsoft.EventHub/namespaces/eventhubs/consumergroups` | [2021-06-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.EventHub/2021-06-01-preview/namespaces/eventhubs/consumergroups) |
 
 ## Parameters
 

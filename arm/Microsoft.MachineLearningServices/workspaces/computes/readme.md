@@ -8,13 +8,12 @@ Attaching a compute is not idempotent and will fail in case you try to redeploy 
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Template references](#Template-references)
 
 ## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.MachineLearningServices/workspaces/computes` | 2022-01-01-preview |
+| `Microsoft.MachineLearningServices/workspaces/computes` | [2022-01-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.MachineLearningServices/2022-01-01-preview/workspaces/computes) |
 
 ## Parameters
 

@@ -8,13 +8,12 @@ This module controls the Network Security Group Flow Logs and analytics settings
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Template references](#Template-references)
 
 ## Resource types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Network/networkWatchers/flowLogs` | 2021-05-01 |
+| `Microsoft.Network/networkWatchers/flowLogs` | [2021-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/networkWatchers/flowLogs) |
 
 ## Parameters
 

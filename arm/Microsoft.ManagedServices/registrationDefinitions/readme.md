@@ -12,15 +12,14 @@ remote/managing tenant.
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Considerations](#Considerations)
-- [Template references](#Template-references)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.ManagedServices/registrationAssignments` | 2019-09-01 |
-| `Microsoft.ManagedServices/registrationDefinitions` | 2019-09-01 |
+| `Microsoft.ManagedServices/registrationAssignments` | [2019-09-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ManagedServices/2019-09-01/registrationAssignments) |
+| `Microsoft.ManagedServices/registrationDefinitions` | [2019-09-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ManagedServices/2019-09-01/registrationDefinitions) |
 
 ## Parameters
 

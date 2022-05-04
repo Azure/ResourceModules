@@ -8,7 +8,6 @@ This module deploys Kubernetes Configuration Extensions.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Template references](#Template-references)
 - [Deployment examples](#Deployment-examples)
 
 ## Prerequisites
@@ -32,7 +31,7 @@ For Details see [Prerequisites](https://docs.microsoft.com/en-us/azure/azure-arc
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.KubernetesConfiguration/extensions` | 2022-03-01 |
+| `Microsoft.KubernetesConfiguration/extensions` | [2022-03-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.KubernetesConfiguration/2022-03-01/extensions) |
 
 ## Parameters
 

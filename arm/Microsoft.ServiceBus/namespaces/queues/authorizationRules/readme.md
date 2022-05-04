@@ -7,13 +7,12 @@ This module deploys an authorization rule for a service bus namespace queue.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Template references](#Template-references)
 
 ## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.ServiceBus/namespaces/queues/authorizationRules` | 2017-04-01 |
+| `Microsoft.ServiceBus/namespaces/queues/authorizationRules` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ServiceBus/2017-04-01/namespaces/queues/authorizationRules) |
 
 ## Parameters
 

@@ -7,17 +7,16 @@ This module deploys a Virtual Hub.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Template references](#Template-references)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/locks` | 2017-04-01 |
-| `Microsoft.Network/virtualHubs` | 2021-05-01 |
-| `Microsoft.Network/virtualHubs/hubRouteTables` | 2021-05-01 |
-| `Microsoft.Network/virtualHubs/hubVirtualNetworkConnections` | 2021-05-01 |
+| `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
+| `Microsoft.Network/virtualHubs` | [2021-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/virtualHubs) |
+| `Microsoft.Network/virtualHubs/hubRouteTables` | [2021-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/virtualHubs/hubRouteTables) |
+| `Microsoft.Network/virtualHubs/hubVirtualNetworkConnections` | [2021-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/virtualHubs/hubVirtualNetworkConnections) |
 
 ## Parameters
 

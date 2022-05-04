@@ -5,7 +5,6 @@
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Template references](#Template-references)
 - [Deployment examples](#Deployment-examples)
 
 ### Container groups in Azure Container Instances
@@ -16,8 +15,8 @@ The top-level resource in Azure Container Instances is the container group. A co
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/locks` | 2017-04-01 |
-| `Microsoft.ContainerInstance/containerGroups` | 2021-03-01 |
+| `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
+| `Microsoft.ContainerInstance/containerGroups` | [2021-03-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ContainerInstance/2021-03-01/containerGroups) |
 
 ## Parameters
 

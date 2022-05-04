@@ -9,13 +9,12 @@ This module deploys a Replication Policy for Disaster Recovery scenario.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Template references](#Template-references)
 
 ## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.RecoveryServices/vaults/replicationPolicies` | 2021-12-01 |
+| `Microsoft.RecoveryServices/vaults/replicationPolicies` | [2021-12-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2021-12-01/vaults/replicationPolicies) |
 
 ## Parameters
 

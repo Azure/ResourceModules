@@ -7,14 +7,13 @@ This module deploys budgets for subscriptions.
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Template references](#Template-references)
 - [Deployment examples](#Deployment-examples)
 
 ## Resource types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Consumption/budgets` | 2019-05-01 |
+| `Microsoft.Consumption/budgets` | [2019-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Consumption/2019-05-01/budgets) |
 
 ## Parameters
 
