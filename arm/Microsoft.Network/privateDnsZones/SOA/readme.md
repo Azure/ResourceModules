@@ -32,48 +32,6 @@ This module deploys a Private DNS Zone SOA record.
 | `soaRecord` | object | `{object}` | A SOA record. |
 | `ttl` | int | `3600` | The TTL (time-to-live) of the records in the record set. |
 
-
-### Parameter Usage: `soaRecord`
-
-<details>
-
-<summary>Parameter JSON format</summary>
-
-```json
-"soaRecord": {
-    "value": {
-        "email": "string",
-        "expireTime": "int",
-        "host": "string",
-        "minimumTtl": "int",
-        "refreshTime": "int",
-        "retryTime": "int",
-        "serialNumber": "int"
-    }
-}
-```
-
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-soaRecord: {
-    email: 'string'
-    expireTime: 'int'
-    host: 'string'
-    minimumTtl: 'int'
-    refreshTime: 'int'
-    retryTime: 'int'
-    serialNumber: 'int'
-}
-```
-
-</details>
-<p>
-
 ### Parameter Usage: `roleAssignments`
 
 Create a role assignment for the given resource. If you want to assign a service principal / managed identity that is created in the same deployment, make sure to also specify the `'principalType'` parameter and set it to `'ServicePrincipal'`. This will ensure the role assignment waits for the principal's propagation in Azure.

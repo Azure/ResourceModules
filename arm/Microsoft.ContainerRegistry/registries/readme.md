@@ -64,38 +64,6 @@ Azure Container Registry is a managed, private Docker registry service based on 
 | `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. |
 | `zoneRedundancy` | string | `'Disabled'` | `[Disabled, Enabled]` | Whether or not zone redundancy is enabled for this container registry |
 
-
-### Parameter Usage: `keyVaultProperties`
-
-<details>
-
-<summary>Parameter JSON format</summary>
-
-```json
-"keyVaultProperties": {
-    "value": {
-        "identity": "string", // The client id of the identity which will be used to access key vault.
-        "keyIdentifier": "string" // Key vault uri to access the encryption key.
-    }
-}
-```
-
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-keyVaultProperties: {
-    identity: 'string' // The client id of the identity which will be used to access key vault.
-    keyIdentifier: 'string' // Key vault uri to access the encryption key.
-}
-```
-
-</details>
-<p>
-
 ### Parameter Usage: `roleAssignments`
 
 Create a role assignment for the given resource. If you want to assign a service principal / managed identity that is created in the same deployment, make sure to also specify the `'principalType'` parameter and set it to `'ServicePrincipal'`. This will ensure the role assignment waits for the principal's propagation in Azure.
