@@ -41,7 +41,6 @@ This module deploys a VPN Site.
 | `tags` | object | `{object}` |  | Tags of the resource. |
 | `vpnSiteLinks` | array | `[]` |  | List of all VPN site links. |
 
-
 ### Parameter Usage `o365Policy`
 
 ```json
@@ -158,8 +157,3 @@ Create a role assignment for the given resource. If you want to assign a service
 | `resourceGroupName` | string | The resource group the VPN site was deployed into. |
 | `resourceId` | string | The resource ID of the VPN site. |
 
-## Template references
-
-- [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)
-- [Vpnsites](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/vpnSites)

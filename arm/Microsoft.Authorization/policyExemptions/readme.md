@@ -40,7 +40,6 @@ With this module you can create policy exemptions across the management group, s
 | `resourceGroupName` | string | `''` |  | The name of the resource group to be exempted from the policy assignment. Must also use the subscription ID parameter. |
 | `subscriptionId` | string | `''` |  | The subscription ID of the subscription to be exempted from the policy assignment. Cannot use with management group ID parameter. |
 
-
 ### Parameter Usage: `managementGroupId`
 
 To deploy resource to a Management Group, provide the `managementGroupId` as an input parameter to the module.
@@ -111,6 +110,3 @@ module policyexemption 'yourpath/arm/Microsoft.Authorization.policyExemptions/su
 
 - Policy Exemptions have a dependency on Policy Assignments being applied before creating an exemption. You can use the Policy Assignment [Module](../policyAssignments/deploy.bicep) to deploy a Policy Assignment and then create the exemption for it on the required scope.
 
-## Template references
-
-- [Policyexemptions](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-07-01-preview/policyExemptions)

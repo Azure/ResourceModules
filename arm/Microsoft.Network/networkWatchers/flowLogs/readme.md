@@ -38,7 +38,6 @@ This module controls the Network Security Group Flow Logs and analytics settings
 | `trafficAnalyticsInterval` | int | `60` | `[10, 60]` | The interval in minutes which would decide how frequently TA service should do flow analytics. |
 | `workspaceResourceId` | string | `''` |  | Specify the Log Analytics Workspace Resource ID. |
 
-
 ### Parameter Usage: `tags`
 
 Tag names and tag values can be provided as needed. A tag can be left without a value.
@@ -64,6 +63,3 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | `resourceGroupName` | string | The resource group the flow log was deployed into. |
 | `resourceId` | string | The resource ID of the flow log. |
 
-## Template references
-
-- [Networkwatchers/Flowlogs](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/networkWatchers/flowLogs)

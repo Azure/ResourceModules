@@ -36,7 +36,6 @@ With this module you can create policy exemptions on a subscription level.
 | `policyDefinitionReferenceIds` | array | `[]` |  | The policy definition reference ID list when the associated policy assignment is an assignment of a policy set definition. |
 | `subscriptionId` | string | `[subscription().subscriptionId]` |  | The subscription ID of the subscription to be exempted from the policy assignment. If not provided, will use the current scope for deployment. |
 
-
 ## Outputs
 
 | Output Name | Type | Description |
@@ -45,6 +44,3 @@ With this module you can create policy exemptions on a subscription level.
 | `resourceId` | string | Policy Exemption resource ID |
 | `scope` | string | Policy Exemption Scope |
 
-## Template references
-
-- [Policyexemptions](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-07-01-preview/policyExemptions)

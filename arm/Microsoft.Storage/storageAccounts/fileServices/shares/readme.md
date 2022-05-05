@@ -38,7 +38,6 @@ This module deploys a storage account file share.
 | `rootSquash` | string | `'NoRootSquash'` | `[AllSquash, NoRootSquash, RootSquash]` | Permissions for NFS file shares are enforced by the client OS rather than the Azure Files service. Toggling the root squash behavior reduces the rights of the root user for NFS shares. |
 | `sharedQuota` | int | `5120` |  | The maximum size of the share, in gigabytes. Must be greater than 0, and less than or equal to 5TB (5120). For Large File Shares, the maximum size is 102400. |
 
-
 ### Parameter Usage: `roleAssignments`
 
 Create a role assignment for the given resource. If you want to assign a service principal / managed identity that is created in the same deployment, make sure to also specify the `'principalType'` parameter and set it to `'ServicePrincipal'`. This will ensure the role assignment waits for the principal's propagation in Azure.
@@ -73,7 +72,3 @@ Create a role assignment for the given resource. If you want to assign a service
 | `resourceGroupName` | string | The resource group of the deployed file share. |
 | `resourceId` | string | The resource ID of the deployed file share. |
 
-## Template references
-
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)
-- [Storageaccounts/Fileservices/Shares](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Storage/2021-08-01/storageAccounts/fileServices/shares)

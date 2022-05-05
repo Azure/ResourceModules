@@ -33,7 +33,6 @@ This module deploys API Management Service Portal Setting.
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `properties` | object | `{object}` | Portal setting properties. |
 
-
 ## Outputs
 
 | Output Name | Type | Description |
@@ -42,6 +41,3 @@ This module deploys API Management Service Portal Setting.
 | `resourceGroupName` | string | The resource group the API management service portal setting was deployed into. |
 | `resourceId` | string | The resource ID of the API management service portal setting. |
 
-## Template references
-
-- ['service/portalsettings' Parent Documentation](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/service)

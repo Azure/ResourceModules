@@ -35,7 +35,6 @@ This module deploys a backup short-term retention policies for SQL Managed Insta
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `retentionDays` | int | `35` | The backup retention period in days. This is how many days Point-in-Time Restore will be supported. |
 
-
 ## Outputs
 
 | Output Name | Type | Description |
@@ -44,6 +43,3 @@ This module deploys a backup short-term retention policies for SQL Managed Insta
 | `resourceGroupName` | string | The resource group of the deployed database backup short-term retention policy. |
 | `resourceId` | string | The resource ID of the deployed database backup short-term retention policy. |
 
-## Template references
-
-- [Managedinstances/Databases/Backupshorttermretentionpolicies](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Sql/2017-03-01-preview/managedInstances/databases/backupShortTermRetentionPolicies)

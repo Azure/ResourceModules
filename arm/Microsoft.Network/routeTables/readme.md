@@ -35,7 +35,6 @@ This module deploys a user defined route table.
 | `routes` | array | `[]` |  | An Array of Routes to be established within the hub route table. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
 
-
 ### Parameter Usage: `routes`
 
 The `routes` parameter accepts a JSON Array of Route objects to deploy to the Route Table.
@@ -129,8 +128,3 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | `resourceGroupName` | string | The resource group the route table was deployed into. |
 | `resourceId` | string | The resource ID of the route table. |
 
-## Template references
-
-- [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)
-- [Routetables](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/routeTables)

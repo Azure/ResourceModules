@@ -43,7 +43,6 @@ With this module you can perform policy assignments across the management group,
 | `resourceGroupName` | string | `''` |  | The Target Scope for the Policy. The name of the resource group for the policy assignment |
 | `subscriptionId` | string | `''` |  | The Target Scope for the Policy. The subscription ID of the subscription for the policy assignment |
 
-
 ### Parameter Usage: `managementGroupId`
 
 To deploy resource to a Management Group, provide the `managementGroupId` as an input parameter to the module.
@@ -110,7 +109,3 @@ module policyassignment 'yourpath/arm/Microsoft.Authorization.policyAssignments/
 | `principalId` | string | Policy Assignment principal ID |
 | `resourceId` | string | Policy Assignment resource ID |
 
-## Template references
-
-- [Policyassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2021-06-01/policyAssignments)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)

@@ -41,7 +41,6 @@ With this module you can perform policy assignments on a resource group level
 | `resourceGroupName` | string | `[resourceGroup().name]` |  | The Target Scope for the Policy. The name of the resource group for the policy assignment. If not provided, will use the current scope for deployment. |
 | `subscriptionId` | string | `[subscription().subscriptionId]` |  | The Target Scope for the Policy. The subscription ID of the subscription for the policy assignment. If not provided, will use the current scope for deployment. |
 
-
 ## Outputs
 
 | Output Name | Type | Description |
@@ -51,7 +50,3 @@ With this module you can perform policy assignments on a resource group level
 | `resourceGroupName` | string | The name of the resource group the policy was assigned to |
 | `resourceId` | string | Policy Assignment resource ID |
 
-## Template references
-
-- [Policyassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/policyAssignments)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)

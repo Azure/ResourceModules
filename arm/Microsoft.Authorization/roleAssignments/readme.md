@@ -39,7 +39,6 @@ This module deploys Role Assignments across the management group, subscription o
 | `resourceGroupName` | string | `''` |  | Name of the Resource Group to assign the RBAC role to. If Resource Group name is provided, and Subscription ID is provided, the module deploys at resource group level, therefore assigns the provided RBAC role to the resource group. |
 | `subscriptionId` | string | `''` |  | Subscription ID of the subscription to assign the RBAC role to. If no Resource Group name is provided, the module deploys at subscription level, therefore assigns the provided RBAC role to the subscription. |
 
-
 ### Parameter Usage: `managementGroupId`
 
 To deploy resource to a Management Group, provide the `managementGroupId` as an input parameter to the module.
@@ -110,6 +109,3 @@ module roleassignment 'yourpath/arm/Microsoft.Authorization.roleAssignments/subs
 
 This module can be deployed at the management group, subscription or resource group level
 
-## Template references
-
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)

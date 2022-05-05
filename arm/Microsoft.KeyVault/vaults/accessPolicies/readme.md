@@ -29,7 +29,6 @@ This module deploys key vault access policies.
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `name` | string | `'add'` | The access policy deployment. |
 
-
 ### Parameter Usage: `accessPolicies`
 
 ```json
@@ -63,6 +62,3 @@ This module deploys key vault access policies.
 | `resourceGroupName` | string | The name of the resource group the access policies assignment was created in. |
 | `resourceId` | string | The resource ID of the access policies assignment. |
 
-## Template references
-
-- [Vaults/Accesspolicies](https://docs.microsoft.com/en-us/azure/templates/Microsoft.KeyVault/2021-06-01-preview/vaults/accessPolicies)

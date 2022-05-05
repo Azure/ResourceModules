@@ -37,7 +37,6 @@ With this module you can create policy definitions across the management group o
 | `parameters` | object | `{object}` |  | The policy definition parameters that can be used in policy definition references. |
 | `subscriptionId` | string | `''` |  | The subscription ID of the subscription (Scope). Cannot be used with managementGroupId |
 
-
 ### Parameter Usage: `managementGroupId`
 
 To deploy resource to a Management Group, provide the `managementGroupId` as an input parameter to the module.
@@ -89,6 +88,3 @@ module policydefinition 'yourpath/arm/Microsoft.Authorization.policyDefinitions/
 | `resourceId` | string | Policy Definition resource ID |
 | `roleDefinitionIds` | array | Policy Definition Role Definition IDs |
 
-## Template references
-
-- [Policydefinitions](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2021-06-01/policyDefinitions)

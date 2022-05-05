@@ -35,7 +35,6 @@ This module deploys a Private DNS Zone SOA record.
 | `soaRecord` | object | `{object}` | A SOA record. |
 | `ttl` | int | `3600` | The TTL (time-to-live) of the records in the record set. |
 
-
 ### Parameter Usage: `soaRecord`
 
 ```json
@@ -60,6 +59,3 @@ This module deploys a Private DNS Zone SOA record.
 | `resourceGroupName` | string | The resource group of the deployed SOA record. |
 | `resourceId` | string | The resource ID of the deployed SOA record. |
 
-## Template references
-
-- [Privatednszones/SOA](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-06-01/privateDnsZones/SOA)

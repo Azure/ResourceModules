@@ -34,7 +34,6 @@ This module deploys an Azure Health Bot.
 | `sku` | string | `'F0'` |  | The resource model definition representing SKU. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
 
-
 ### Parameter Usage: `tags`
 
 Tag names and tag values can be provided as needed. A tag can be left without a value.
@@ -86,8 +85,3 @@ Create a role assignment for the given resource. If you want to assign a service
 | `resourceGroupName` | string | The resource group the health bot was deployed into. |
 | `resourceId` | string | The resource ID of the health bot. |
 
-## Template references
-
-- [Healthbots](https://docs.microsoft.com/en-us/azure/templates/Microsoft.HealthBot/2020-12-08/healthBots)
-- [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)

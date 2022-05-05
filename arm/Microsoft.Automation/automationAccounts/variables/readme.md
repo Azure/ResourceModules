@@ -35,7 +35,6 @@ This module deploys a variable to an Azure Automation Account.
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `isEncrypted` | bool | `True` | If the variable should be encrypted. For security reasons encryption of variables should be enabled |
 
-
 ### Parameter Usage: `value`
 
 ```json
@@ -68,6 +67,3 @@ This module deploys a variable to an Azure Automation Account.
 | `resourceGroupName` | string | The resource group of the deployed variable |
 | `resourceId` | string | The resource ID of the deployed variable |
 
-## Template references
-
-- [Automationaccounts/Variables](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Automation/2020-01-13-preview/automationAccounts/variables)

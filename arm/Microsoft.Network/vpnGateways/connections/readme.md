@@ -46,7 +46,6 @@ This module deploys VPN Gateways Connections.
 | `vpnConnectionProtocolType` | string | `'IKEv2'` | `[IKEv1, IKEv2]` | Gateway connection protocol. |
 | `vpnLinkConnections` | array | `[]` |  | List of all VPN site link connections to the gateway. |
 
-
 ### Parameter Usage: `routingConfiguration`
 
 ```json
@@ -78,6 +77,3 @@ This module deploys VPN Gateways Connections.
 | `resourceGroupName` | string | The name of the resource group the VPN connection was deployed into. |
 | `resourceId` | string | The resource ID of the VPN connection. |
 
-## Template references
-
-- [Vpngateways/Vpnconnections](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/vpnGateways/vpnConnections)

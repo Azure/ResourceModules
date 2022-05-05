@@ -45,7 +45,6 @@ The top-level resource in Azure Container Instances is the container group. A co
 | `tags` | object | `{object}` |  | Tags of the resource. |
 | `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. |
 
-
 ### Parameter Usage: `imageRegistryCredentials`
 
 The image registry credentials by which the container group is created from.
@@ -101,7 +100,3 @@ You can specify multiple user assigned identities to a resource by providing add
 | `resourceId` | string | The resource ID of the container group. |
 | `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
 
-## Template references
-
-- [Containergroups](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ContainerInstance/2021-03-01/containerGroups)
-- [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)

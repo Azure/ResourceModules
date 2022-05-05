@@ -36,7 +36,6 @@ This module deploys an Azure Automation Account Module.
 | `tags` | object | `{object}` | Tags of the Automation Account resource. |
 | `version` | string | `'latest'` | Module version or specify latest to get the latest version. |
 
-
 ### Parameter Usage: `tags`
 
 Tag names and tag values can be provided as needed. A tag can be left without a value.
@@ -62,6 +61,3 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | `resourceGroupName` | string | The resource group of the deployed module. |
 | `resourceId` | string | The resource ID of the deployed module. |
 
-## Template references
-
-- [Automationaccounts/Modules](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Automation/2020-01-13-preview/automationAccounts/modules)

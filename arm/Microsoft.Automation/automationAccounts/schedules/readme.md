@@ -44,7 +44,6 @@ This module deploys an Azure Automation Account Schedule.
 | :-- | :-- | :-- | :-- |
 | `baseTime` | string | `[utcNow('u')]` | Time used as a basis for e.g. the schedule start date. |
 
-
 ## Outputs
 
 | Output Name | Type | Description |
@@ -53,6 +52,3 @@ This module deploys an Azure Automation Account Schedule.
 | `resourceGroupName` | string | The resource group of the deployed schedule. |
 | `resourceId` | string | The resource ID of the deployed schedule. |
 
-## Template references
-
-- [Automationaccounts/Schedules](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Automation/2020-01-13-preview/automationAccounts/schedules)

@@ -35,7 +35,6 @@ This module deploys a Private DNS Zone MX record.
 | `mxRecords` | array | `[]` | The list of MX records in the record set. |
 | `ttl` | int | `3600` | The TTL (time-to-live) of the records in the record set. |
 
-
 ### Parameter Usage: `mxRecords`
 
 ```json
@@ -57,6 +56,3 @@ This module deploys a Private DNS Zone MX record.
 | `resourceGroupName` | string | The resource group of the deployed MX record. |
 | `resourceId` | string | The resource ID of the deployed MX record. |
 
-## Template references
-
-- [Privatednszones/MX](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-06-01/privateDnsZones/MX)

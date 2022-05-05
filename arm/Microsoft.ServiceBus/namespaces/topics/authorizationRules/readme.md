@@ -34,7 +34,6 @@ This module deploys an authorization rule for a service bus namespace topic.
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `rights` | array | `[]` | `[Listen, Manage, Send]` | The rights associated with the rule. |
 
-
 ## Outputs
 
 | Output Name | Type | Description |
@@ -43,6 +42,3 @@ This module deploys an authorization rule for a service bus namespace topic.
 | `resourceGroupName` | string | The name of the Resource Group the authorization rule was created in. |
 | `resourceId` | string | The Resource ID of the authorization rule. |
 
-## Template references
-
-- [Namespaces/Topics/Authorizationrules](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ServiceBus/2021-06-01-preview/namespaces/topics/authorizationRules)

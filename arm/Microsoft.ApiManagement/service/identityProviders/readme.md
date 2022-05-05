@@ -43,7 +43,6 @@ This module deploys API Management Service Identity Provider.
 | `identityProviderSignUpPolicyName` | string | `''` |  | Signup Policy Name. Only applies to AAD B2C Identity Provider. |
 | `identityProviderType` | string | `'aad'` | `[aad, aadB2C, facebook, google, microsoft, twitter]` | Identity Provider Type identifier. |
 
-
 ## Outputs
 
 | Output Name | Type | Description |
@@ -52,6 +51,3 @@ This module deploys API Management Service Identity Provider.
 | `resourceGroupName` | string | The resource group the API management service identity provider was deployed into. |
 | `resourceId` | string | The resource ID of the API management service identity provider. |
 
-## Template references
-
-- [Service/Identityproviders](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2021-08-01/service/identityProviders)

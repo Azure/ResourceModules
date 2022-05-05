@@ -28,7 +28,6 @@ This template deploys Virtual Network Peering.
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `peeringConfigurations` | array | `[]` | Optional. The list of remote networks to peering peer with, including the configuration. |
 
-
 ### Parameter Usage: `peeringConfigurations`
 
 Array containing multiple objects for different VNETs to peer with.
@@ -56,6 +55,3 @@ Array containing multiple objects for different VNETs to peer with.
 | `virtualNetworkPeeringNames` | array | The names of the deployed virtual network peerings. |
 | `virtualNetworkPeeringResourceGroup` | string | The resource group of the deployed virtual network peerings. |
 
-## Template references
-
-- [Virtualnetworks/Virtualnetworkpeerings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/virtualNetworks/virtualNetworkPeerings)

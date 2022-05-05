@@ -38,7 +38,6 @@ With this module you can create policy set definitions across the management gro
 | `policyDefinitionGroups` | array | `[]` | The metadata describing groups of policy definition references within the Policy Set Definition (Initiative). |
 | `subscriptionId` | string | `''` | The subscription ID of the subscription (Scope). Cannot be used with managementGroupId |
 
-
 ### Parameter Usage: `managementGroupId`
 
 To deploy resource to a Management Group, provide the `managementGroupId` as an input parameter to the module.
@@ -93,6 +92,3 @@ module policysetdefinition 'yourpath/arm/Microsoft.Authorization.policySetDefini
 
 - Policy Set Definitions (Initiatives) have a dependency on Policy Assignments being applied before creating an initiative. You can use the Policy Assignment [Module](../policyDefinitions/deploy.bicep) to deploy a Policy Definition and then create an initiative for it on the required scope.
 
-## Template references
-
-- [Policysetdefinitions](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2021-06-01/policySetDefinitions)

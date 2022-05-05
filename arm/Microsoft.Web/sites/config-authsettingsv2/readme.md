@@ -33,7 +33,6 @@ This module deploys the auth settings v2.
 | :-- | :-- | :-- | :-- |
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 
-
 ### Parameter Usage: `authSettingV2Configuration`
 
 The auth settings V2 configuration.
@@ -54,6 +53,3 @@ The auth settings V2 configuration.
 | `resourceGroupName` | string | The resource group the site config was deployed into. |
 | `resourceId` | string | The resource ID of the site config. |
 
-## Template references
-
-- ['sites/config' Parent Documentation](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Web/sites)

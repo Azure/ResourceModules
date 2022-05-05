@@ -34,7 +34,6 @@ This module deploys an SQL Server Firewall rule.
 | `endIpAddress` | string | `'0.0.0.0'` | The end IP address of the firewall rule. Must be IPv4 format. Must be greater than or equal to startIpAddress. Use value '0.0.0.0' for all Azure-internal IP addresses. |
 | `startIpAddress` | string | `'0.0.0.0'` | The start IP address of the firewall rule. Must be IPv4 format. Use value '0.0.0.0' for all Azure-internal IP addresses. |
 
-
 ## Outputs
 
 | Output Name | Type | Description |
@@ -43,6 +42,3 @@ This module deploys an SQL Server Firewall rule.
 | `resourceGroupName` | string | The resourceGroup of the deployed firewall rule. |
 | `resourceId` | string | The resource ID of the deployed firewall rule. |
 
-## Template references
-
-- [Servers/Firewallrules](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Sql/2021-05-01-preview/servers/firewallRules)

@@ -42,7 +42,6 @@ This module deploys load balancers inbound NAT rules.
 | `idleTimeoutInMinutes` | int | `4` |  | The timeout for the TCP idle connection. The value can be set between 4 and 30 minutes. The default value is 4 minutes. This element is only used when the protocol is set to TCP. |
 | `protocol` | string | `'Tcp'` | `[All, Tcp, Udp]` | The transport protocol for the endpoint. |
 
-
 ## Outputs
 
 | Output Name | Type | Description |
@@ -51,6 +50,3 @@ This module deploys load balancers inbound NAT rules.
 | `resourceGroupName` | string | The resource group the inbound NAT rule was deployed into. |
 | `resourceId` | string | The resource ID of the inbound NAT rule. |
 
-## Template references
-
-- [Loadbalancers/Inboundnatrules](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/loadBalancers/inboundNatRules)

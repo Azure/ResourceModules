@@ -39,7 +39,6 @@ This template deploys a saved search for a Log Analytics workspace.
 | `tags` | array | `[]` | Tags to configure in the resource. |
 | `version` | int | `2` | The version number of the query language. |
 
-
 ### Parameter Usage: `tags`
 
 Tag names and tag values can be provided as needed. A tag can be left without a value.
@@ -65,6 +64,3 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | `resourceGroupName` | string | The resource group where the saved search is deployed. |
 | `resourceId` | string | The resource ID of the deployed saved search. |
 
-## Template references
-
-- [Workspaces/Savedsearches](https://docs.microsoft.com/en-us/azure/templates/Microsoft.OperationalInsights/2020-08-01/workspaces/savedSearches)

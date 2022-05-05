@@ -33,7 +33,6 @@ This module deploys a Backup Policy for a Recovery Services Vault
 | :-- | :-- | :-- | :-- |
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 
-
 ### Parameter Usage: `backupPolicyProperties`
 
 Object continaining the configuration for backup policies. It needs to be properly formatted and can be VM backup policies, SQL on VM backup policies or fileshare policies. The following example shows a VM backup policy.
@@ -130,6 +129,3 @@ Object continaining the configuration for backup policies. It needs to be proper
 | `resourceGroupName` | string | The name of the resource group the backup policy was created in. |
 | `resourceId` | string | The resource ID of the backup policy. |
 
-## Template references
-
-- [Vaults/Backuppolicies](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2021-08-01/vaults/backupPolicies)

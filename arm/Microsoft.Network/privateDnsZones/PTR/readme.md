@@ -35,7 +35,6 @@ This module deploys a Private DNS Zone PTR record.
 | `ptrRecords` | array | `[]` | The list of PTR records in the record set. |
 | `ttl` | int | `3600` | The TTL (time-to-live) of the records in the record set. |
 
-
 ### Parameter Usage: `ptrRecords`
 
 ```json
@@ -56,6 +55,3 @@ This module deploys a Private DNS Zone PTR record.
 | `resourceGroupName` | string | The resource group of the deployed PTR record. |
 | `resourceId` | string | The resource ID of the deployed PTR record. |
 
-## Template references
-
-- [Privatednszones/PTR](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-06-01/privateDnsZones/PTR)

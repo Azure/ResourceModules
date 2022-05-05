@@ -123,5 +123,3 @@ This template is using a **Tenant level deployment**, meaning the user/principal
 
 ## Additional resources
 
-- [Management group](https://docs.microsoft.com/en-us/azure/governance/management-groups/)
-- [Managementgroups](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Management/2021-04-01/managementGroups)

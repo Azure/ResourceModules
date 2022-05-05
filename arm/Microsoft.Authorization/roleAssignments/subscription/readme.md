@@ -35,7 +35,6 @@ With this module you can perform role assignments on a subscription level
 | `principalType` | string | `''` | `[ServicePrincipal, Group, User, ForeignGroup, Device, ]` | The principal type of the assigned principal ID. |
 | `subscriptionId` | string | `[subscription().subscriptionId]` |  | Subscription ID of the subscription to assign the RBAC role to. If not provided, will use the current scope for deployment. |
 
-
 ## Outputs
 
 | Output Name | Type | Description |
@@ -44,6 +43,3 @@ With this module you can perform role assignments on a subscription level
 | `resourceId` | string | The scope this Role Assignment applies to |
 | `scope` | string | The resource ID of the Role Assignment |
 
-## Template references
-
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)

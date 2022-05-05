@@ -35,7 +35,6 @@ With this module you can create policy set definitions on a subscription level.
 | `policyDefinitionGroups` | array | `[]` | The metadata describing groups of policy definition references within the Policy Set Definition (Initiative). |
 | `subscriptionId` | string | `[subscription().subscriptionId]` | The subscription ID of the subscription |
 
-
 ## Outputs
 
 | Output Name | Type | Description |
@@ -43,6 +42,3 @@ With this module you can create policy set definitions on a subscription level.
 | `name` | string | Policy Set Definition Name |
 | `resourceId` | string | Policy Set Definition resource ID |
 
-## Template references
-
-- [Policysetdefinitions](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2021-06-01/policySetDefinitions)

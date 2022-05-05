@@ -43,7 +43,6 @@ The following resources are required to be able to deploy this resource.
 | `secret` | bool | `False` | Determines whether the value is a secret and should be encrypted or not. Default value is false. |
 | `value` | string | `[newGuid()]` | Value of the NamedValue. Can contain policy expressions. It may not be empty or consist only of whitespace. This property will not be filled on 'GET' operations! Use '/listSecrets' POST request to get the value. |
 
-
 ### Parameter Usage: `keyVault`
 
 ```json
@@ -63,6 +62,3 @@ The following resources are required to be able to deploy this resource.
 | `resourceGroupName` | string | The resource group the named value was deployed into. |
 | `resourceId` | string | The resource ID of the named value. |
 
-## Template references
-
-- [Service/Namedvalues](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2021-08-01/service/namedValues)

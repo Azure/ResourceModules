@@ -35,7 +35,6 @@ With this module you can create role definitions on a resource group level
 | `resourceGroupName` | string | `[resourceGroup().name]` | The name of the Resource Group where the Role Definition and Target Scope will be applied to. If not provided, will use the current scope for deployment. |
 | `subscriptionId` | string | `[subscription().subscriptionId]` | The subscription ID where the Role Definition and Target Scope will be applied to. If not provided, will use the current scope for deployment. |
 
-
 ## Outputs
 
 | Output Name | Type | Description |
@@ -45,6 +44,3 @@ With this module you can create role definitions on a resource group level
 | `resourceId` | string | The resource ID of the Role Definition |
 | `scope` | string | The scope this Role Definition applies to |
 
-## Template references
-
-- [Roledefinitions](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2018-01-01-preview/roleDefinitions)

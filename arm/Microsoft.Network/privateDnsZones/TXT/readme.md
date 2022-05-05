@@ -35,7 +35,6 @@ This module deploys a Private DNS Zone TXT record.
 | `ttl` | int | `3600` | The TTL (time-to-live) of the records in the record set. |
 | `txtRecords` | array | `[]` | The list of TXT records in the record set. |
 
-
 ### Parameter Usage: `txtRecords`
 
 ```json
@@ -56,6 +55,3 @@ This module deploys a Private DNS Zone TXT record.
 | `resourceGroupName` | string | The resource group of the deployed TXT record. |
 | `resourceId` | string | The resource ID of the deployed TXT record. |
 
-## Template references
-
-- [Privatednszones/TXT](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-06-01/privateDnsZones/TXT)

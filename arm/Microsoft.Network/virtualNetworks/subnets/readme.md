@@ -47,7 +47,6 @@ This module deploys a virtual network subnet.
 | `serviceEndpointPolicies` | array | `[]` |  | An array of service endpoint policies. |
 | `serviceEndpoints` | array | `[]` |  | The service endpoints to enable on the subnet. |
 
-
 ### Parameter Usage: `delegations`
 
 ```json
@@ -113,7 +112,3 @@ The `privateEndpointNetworkPolicies` property must be set to disabled for subnet
 | `subnetAddressPrefix` | string | The address prefix for the subnet. |
 | `subnetAddressPrefixes` | array | List of address prefixes for the subnet. |
 
-## Template references
-
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)
-- [Virtualnetworks/Subnets](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/virtualNetworks/subnets)

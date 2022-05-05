@@ -40,7 +40,6 @@ This module deploys AVD Applications.
 | `iconPath` | string | `''` |  | Path to icon. |
 | `showInPortal` | bool | `False` |  | Specifies whether to show the RemoteApp program in the RD Web Access server. |
 
-
 ## Outputs
 
 | Output Name | Type | Description |
@@ -49,6 +48,3 @@ This module deploys AVD Applications.
 | `name` | string | The Name of the Application Group to register the Application in. |
 | `resourceGroupName` | string | The name of the Resource Group the AVD Application was created in. |
 
-## Template references
-
-- [Applicationgroups/Applications](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DesktopVirtualization/2021-07-12/applicationGroups/applications)

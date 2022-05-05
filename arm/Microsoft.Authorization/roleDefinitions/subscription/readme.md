@@ -35,7 +35,6 @@ With this module you can create role definitions on a subscription level
 | `notDataActions` | array | `[]` | List of denied data actions. This is not supported if the assignableScopes contains Management Group Scopes |
 | `subscriptionId` | string | `[subscription().subscriptionId]` | The subscription ID where the Role Definition and Target Scope will be applied to. If not provided, will use the current scope for deployment. |
 
-
 ## Outputs
 
 | Output Name | Type | Description |
@@ -44,6 +43,3 @@ With this module you can create role definitions on a subscription level
 | `resourceId` | string | The resource ID of the Role Definition |
 | `scope` | string | The scope this Role Definition applies to |
 
-## Template references
-
-- [Roledefinitions](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2018-01-01-preview/roleDefinitions)

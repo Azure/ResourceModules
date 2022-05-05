@@ -35,7 +35,6 @@ With this module you can create policy definitions on a subscription level.
 | `parameters` | object | `{object}` |  | The policy definition parameters that can be used in policy definition references. |
 | `subscriptionId` | string | `[subscription().subscriptionId]` |  | The subscription ID of the subscription |
 
-
 ## Outputs
 
 | Output Name | Type | Description |
@@ -44,6 +43,3 @@ With this module you can create policy definitions on a subscription level.
 | `resourceId` | string | Policy Definition resource ID |
 | `roleDefinitionIds` | array | Policy Definition Role Definition IDs |
 
-## Template references
-
-- [Policydefinitions](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2021-06-01/policyDefinitions)

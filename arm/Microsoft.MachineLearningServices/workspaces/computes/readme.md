@@ -45,7 +45,6 @@ Attaching a compute is not idempotent and will fail in case you try to redeploy 
 | `tags` | object | `{object}` |  | Contains resource tags defined as key-value pairs. Ignored when attaching a compute resource, i.e. when you provide a resource ID. |
 | `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. Ignored when attaching a compute resource, i.e. when you provide a resource ID. |
 
-
 ### Parameter Usage: `properties`
 
 Properties for the compute resource to create.
@@ -98,7 +97,3 @@ You can specify multiple user assigned identities to a resource by providing add
 | `resourceId` | string | The resource ID of the compute. |
 | `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. Is null in case of attaching a compute resource, i.e. when you provide a resource ID. |
 
-
-## Template references
-
-- [Workspaces/Computes](https://docs.microsoft.com/en-us/azure/templates/Microsoft.MachineLearningServices/2022-01-01-preview/workspaces/computes)

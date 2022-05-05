@@ -25,7 +25,6 @@ This module deploys Resources Tags on a resource group scope.
 | `onlyUpdate` | bool | `False` | Instead of overwriting the existing tags, combine them with the new tags. |
 | `tags` | object | `{object}` | Tags for the resource group. If not provided, removes existing tags. |
 
-
 ### Parameter Usage: `tags`
 
 Tag names and tag values can be provided as needed. A tag can be left without a value.
@@ -52,6 +51,3 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | `resourceId` | string | The resourceId of the resource group the tags were applied to. |
 | `tags` | object | The applied tags. |
 
-## Template references
-
-- [Tags](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Resources/2019-10-01/tags)

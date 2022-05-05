@@ -32,7 +32,6 @@ This module deploys a Managed Virtual Network for an Azure Data Factory
 | :-- | :-- | :-- | :-- |
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 
-
 ## Outputs
 
 | Output Name | Type | Description |
@@ -41,6 +40,3 @@ This module deploys a Managed Virtual Network for an Azure Data Factory
 | `resourceGroupName` | string | The name of the Resource Group the Managed Virtual Network was created in. |
 | `resourceId` | string | The resource ID of the Managed Virtual Network. |
 
-## Template references
-
-- [Factories/Managedvirtualnetworks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DataFactory/2018-06-01/factories/managedVirtualNetworks)

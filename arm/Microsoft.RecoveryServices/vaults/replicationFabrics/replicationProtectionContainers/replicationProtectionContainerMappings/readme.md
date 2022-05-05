@@ -37,7 +37,6 @@ This module deploys a Replication Protection Container Mapping.
 | `targetContainerName` | string | `''` | Name of the target container. Must be specified if targetProtectionContainerId is not. If targetProtectionContainerId is specified, this parameter will be ignored. |
 | `targetProtectionContainerId` | string | `''` | Resource ID of the target Replication container. Must be specified if targetContainerName is not. If specified, targetContainerFabricName and targetContainerName will be ignored. |
 
-
 ## Outputs
 
 | Output Name | Type | Description |
@@ -46,6 +45,3 @@ This module deploys a Replication Protection Container Mapping.
 | `resourceGroupName` | string | The name of the resource group the replication container was created in. |
 | `resourceId` | string | The resource ID of the replication container. |
 
-## Template references
-
-- [Vaults/Replicationfabrics/Replicationprotectioncontainers/Replicationprotectioncontainermappings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2021-12-01/vaults/replicationFabrics/replicationProtectionContainers/replicationProtectionContainerMappings)

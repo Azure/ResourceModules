@@ -42,7 +42,6 @@ This module deploys a virtual machine extension.
 | `settings` | object | `{object}` | Any object that contains the extension specific settings. |
 | `supressFailures` | bool | `False` | Indicates whether failures stemming from the extension will be suppressed (Operational failures such as not connecting to the VM will not be suppressed regardless of this value). The default is false. |
 
-
 ## Outputs
 
 | Output Name | Type | Description |
@@ -51,6 +50,3 @@ This module deploys a virtual machine extension.
 | `resourceGroupName` | string | The name of the Resource Group the extension was created in. |
 | `resourceId` | string | The resource ID of the extension. |
 
-## Template references
-
-- [Virtualmachines/Extensions](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Compute/2021-07-01/virtualMachines/extensions)

@@ -35,7 +35,6 @@ This module deploys a Private DNS Zone TXT record.
 | `srvRecords` | array | `[]` | The list of SRV records in the record set. |
 | `ttl` | int | `3600` | The TTL (time-to-live) of the records in the record set. |
 
-
 ### Parameter Usage: `srvRecords`
 
 ```json
@@ -59,6 +58,3 @@ This module deploys a Private DNS Zone TXT record.
 | `resourceGroupName` | string | The resource group of the deployed SRV record. |
 | `resourceId` | string | The resource ID of the deployed SRV record. |
 
-## Template references
-
-- [Privatednszones/SRV](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-06-01/privateDnsZones/SRV)

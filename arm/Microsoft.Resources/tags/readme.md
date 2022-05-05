@@ -27,7 +27,6 @@ This module deploys Resources Tags on a subscription or resource group scope.
 | `subscriptionId` | string | `[subscription().id]` | Subscription ID of the subscription to assign the tags to. If no Resource Group name is provided, the module deploys at subscription level, therefore assigns the provided tags to the subscription. |
 | `tags` | object | `{object}` | Tags for the resource group. If not provided, removes existing tags. |
 
-
 ### Parameter Usage: `tags`
 
 Tag names and tag values can be provided as needed. A tag can be left without a value.
@@ -52,6 +51,3 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | `name` | string | The name of the tags resource. |
 | `tags` | object | The applied tags. |
 
-## Template references
-
-- [Tags](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Resources/2019-10-01/tags)

@@ -43,7 +43,6 @@ This module deploys an Action Group.
 | `voiceReceivers` | array | `[]` | The list of voice receivers that are part of this action group. |
 | `webhookReceivers` | array | `[]` | The list of webhook receivers that are part of this action group. |
 
-
 ### Parameter Usage: receivers
 
 See [Documentation](https://docs.microsoft.com/en-us/azure/templates/microsoft.insights/2019-06-01/actiongroups) for description of parameters usage and syntax.
@@ -139,7 +138,3 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | `resourceGroupName` | string | The resource group the action group was deployed into. |
 | `resourceId` | string | The resource ID of the action group . |
 
-## Template references
-
-- [Actiongroups](https://docs.microsoft.com/en-us/azure/templates/microsoft.insights/2019-06-01/actionGroups)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)

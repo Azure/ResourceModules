@@ -37,7 +37,6 @@ This module deploys VPN Gateways NATRules
 | `mode` | string | `''` | `[, EgressSnat, IngressSnat]` | The type of NAT rule for VPN NAT. IngressSnat mode (also known as Ingress Source NAT) is applicable to traffic entering the Azure hub's site-to-site VPN gateway. EgressSnat mode (also known as Egress Source NAT) is applicable to traffic leaving the Azure hub's Site-to-site VPN gateway. |
 | `type` | string | `''` | `[, Dynamic, Static]` | The type of NAT rule for VPN NAT. Static one-to-one NAT establishes a one-to-one relationship between an internal address and an external address while Dynamic NAT assigns an IP and port based on availability. |
 
-
 ## Outputs
 
 | Output Name | Type | Description |
@@ -46,6 +45,3 @@ This module deploys VPN Gateways NATRules
 | `resourceGroupName` | string | The name of the resource group the NAT rule was deployed into. |
 | `resourceId` | string | The resource ID of the NAT rule. |
 
-## Template references
-
-- [Vpngateways/Natrules](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/vpnGateways/natRules)

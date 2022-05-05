@@ -60,7 +60,6 @@ The following resources are required to be able to deploy this resource.
 | `value` | string | `''` |  | Content value when Importing an API. |
 | `wsdlSelector` | object | `{object}` |  | Criteria to limit import of WSDL to a subset of the document. |
 
-
 ### Parameter Usage: `apiVersionSet`
 
 ```json
@@ -86,7 +85,3 @@ The following resources are required to be able to deploy this resource.
 | `resourceGroupName` | string | The resource group the API management service API was deployed to. |
 | `resourceId` | string | The resource ID of the API management service API. |
 
-## Template references
-
-- [Service/Apis](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2021-08-01/service/apis)
-- [Service/Apis/Policies](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2021-08-01/service/apis/policies)

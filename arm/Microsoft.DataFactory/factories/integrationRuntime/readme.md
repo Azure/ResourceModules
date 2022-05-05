@@ -35,7 +35,6 @@ This module deploys a Managed or Self-Hosted Integration Runtime for an Azure Da
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `managedVirtualNetworkName` | string | `''` | The name of the Managed Virtual Network if using type "Managed" . |
 
-
 ### Parameter Usage: [`typeProperties`](https://docs.microsoft.com/en-us/azure/templates/microsoft.datafactory/factories/integrationruntimes?tabs=bicep#integrationruntime-objects)
 
 ```json
@@ -57,6 +56,3 @@ This module deploys a Managed or Self-Hosted Integration Runtime for an Azure Da
 | `resourceGroupName` | string | The name of the Resource Group the Integration Runtime was created in. |
 | `resourceId` | string | The resource ID of the Integration Runtime. |
 
-## Template references
-
-- [Factories/Integrationruntimes](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DataFactory/2018-06-01/factories/integrationRuntimes)

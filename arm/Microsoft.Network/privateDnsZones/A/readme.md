@@ -35,7 +35,6 @@ This module deploys a Private DNS Zone A record.
 | `metadata` | object | `{object}` | The metadata attached to the record set. |
 | `ttl` | int | `3600` | The TTL (time-to-live) of the records in the record set. |
 
-
 ### Parameter Usage: `aRecords`
 
 ```json
@@ -56,6 +55,3 @@ This module deploys a Private DNS Zone A record.
 | `resourceGroupName` | string | The resource group of the deployed A record. |
 | `resourceId` | string | The resource ID of the deployed A record. |
 
-## Template references
-
-- [Privatednszones/A](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-06-01/privateDnsZones/A)

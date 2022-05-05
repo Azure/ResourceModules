@@ -30,7 +30,6 @@ This module deploys a subscription wide export of the activity log.
 | `location` | string | `[deployment().location]` |  | Location deployment metadata. |
 | `name` | string | `[format('{0}-ActivityLog', uniqueString(subscription().id))]` |  | Name of the ActivityLog diagnostic settings. |
 
-
 ## Outputs
 
 | Output Name | Type | Description |
@@ -39,6 +38,3 @@ This module deploys a subscription wide export of the activity log.
 | `resourceId` | string | The resource ID of the diagnostic settings. |
 | `subscriptionName` | string | The name of the subscription to deploy into. |
 
-## Template references
-
-- [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings)

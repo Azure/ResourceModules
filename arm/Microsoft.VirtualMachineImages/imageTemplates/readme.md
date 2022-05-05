@@ -50,7 +50,6 @@ This module deploys an image template that can be consumed by the Azure Image Bu
 | :-- | :-- | :-- | :-- |
 | `baseTime` | string | `[utcNow('yyyy-MM-dd-HH-mm-ss')]` | Do not provide a value! This date value is used to generate a unique image template name. |
 
-
 ### Parameter Usage: `imageSource`
 
 Tag names and tag values can be provided as needed. A tag can be left without a value.
@@ -137,8 +136,3 @@ Create a role assignment for the given resource. If you want to assign a service
 | `resourceId` | string | The resource ID of the image template. |
 | `runThisCommand` | string | The command to run in order to trigger the image build. |
 
-## Template references
-
-- [Imagetemplates](https://docs.microsoft.com/en-us/azure/templates/Microsoft.VirtualMachineImages/2020-02-14/imageTemplates)
-- [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)

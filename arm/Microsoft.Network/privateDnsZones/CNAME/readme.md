@@ -35,7 +35,6 @@ This module deploys a Private DNS Zone CNAME record.
 | `metadata` | object | `{object}` | The metadata attached to the record set. |
 | `ttl` | int | `3600` | The TTL (time-to-live) of the records in the record set. |
 
-
 ## Outputs
 
 | Output Name | Type | Description |
@@ -44,6 +43,3 @@ This module deploys a Private DNS Zone CNAME record.
 | `resourceGroupName` | string | The resource group of the deployed CNAME record. |
 | `resourceId` | string | The resource ID of the deployed CNAME record. |
 
-## Template references
-
-- [Privatednszones/CNAME](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-06-01/privateDnsZones/CNAME)

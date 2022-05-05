@@ -58,7 +58,6 @@ For Details see [Prerequisites](https://docs.microsoft.com/en-us/azure/azure-arc
 | `targetNamespace` | string | `''` | Namespace where the extension will be created for an Namespace scoped extension. If this namespace does not exist, it will be created. |
 | `version` | string | `''` | Version of the extension for this extension, if it is "pinned" to a specific version. |
 
-
 ## Outputs
 
 | Output Name | Type | Description |
@@ -67,6 +66,3 @@ For Details see [Prerequisites](https://docs.microsoft.com/en-us/azure/azure-arc
 | `resourceGroupName` | string | The name of the resource group the extension was deployed into. |
 | `resourceId` | string | The resource ID of the extension. |
 
-## Template references
-
-- [Extensions](https://docs.microsoft.com/en-us/azure/templates/Microsoft.KubernetesConfiguration/2022-03-01/extensions)

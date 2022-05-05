@@ -34,7 +34,6 @@ This module deploys a security alert policy for a SQL managed instance.
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `state` | string | `'Disabled'` | `[Enabled, Disabled]` | Enables advanced data security features, like recuring vulnerability assesment scans and ATP. If enabled, storage account must be provided. |
 
-
 ## Outputs
 
 | Output Name | Type | Description |
@@ -43,6 +42,3 @@ This module deploys a security alert policy for a SQL managed instance.
 | `resourceGroupName` | string | The resource group of the deployed security alert policy. |
 | `resourceId` | string | The resource ID of the deployed security alert policy. |
 
-## Template references
-
-- [Managedinstances/Securityalertpolicies](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Sql/2017-03-01-preview/managedInstances/securityAlertPolicies)

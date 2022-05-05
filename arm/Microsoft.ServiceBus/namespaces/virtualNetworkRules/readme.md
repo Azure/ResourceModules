@@ -33,7 +33,6 @@ This module deploys a virtual network rule for a service bus namespace.
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `name` | string | `[format('{0}-vnr', parameters('namespaceName'))]` | The name of the virtual network rule. |
 
-
 ## Outputs
 
 | Output Name | Type | Description |
@@ -42,6 +41,3 @@ This module deploys a virtual network rule for a service bus namespace.
 | `resourceGroupName` | string | The name of the Resource Group the virtual network rule was created in. |
 | `resourceId` | string | The Resource ID of the virtual network rule. |
 
-## Template references
-
-- [Namespaces/Virtualnetworkrules](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ServiceBus/2018-01-01-preview/namespaces/virtualnetworkrules)

@@ -62,7 +62,6 @@ This template deploys Azure Active Directory Domain Services (AADDS).
 | `tags` | object | `{object}` |  | Tags of the resource. |
 | `tlsV1` | string | `'Enabled'` | `[Enabled, Disabled]` | The value is to enable clients making request using TLSv1. |
 
-
 ### Parameter Usage: `roleAssignments`
 
 Create a role assignment for the given resource. If you want to assign a service principal / managed identity that is created in the same deployment, make sure to also specify the `'principalType'` parameter and set it to `'ServicePrincipal'`. This will ensure the role assignment waits for the principal's propagation in Azure.
@@ -146,9 +145,3 @@ $pfxCertificate = [System.Convert]::ToBase64String($rawCertByteStream)
 | `resourceGroupName` | string | The name of the resource group the Azure Active Directory Domain Services(Azure ADDS) was created in. |
 | `resourceId` | string | The resource ID of the Azure Active Directory Domain Services(Azure ADDS). |
 
-## Template references
-
-- [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings)
-- [Domainservices](https://docs.microsoft.com/en-us/azure/templates/Microsoft.AAD/2021-05-01/domainServices)
-- [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)

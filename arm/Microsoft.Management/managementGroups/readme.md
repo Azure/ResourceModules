@@ -38,7 +38,6 @@ This module has some known **limitations**:
 | `parentId` | string | `''` | The management group parent ID. Defaults to current scope. |
 | `roleAssignments` | array | `[]` | Array of role assignment objects to define RBAC on this resource. |
 
-
 ### Parameter Usage: `roleAssignments`
 
 Create a role assignment for the given resource. If you want to assign a service principal / managed identity that is created in the same deployment, make sure to also specify the `'principalType'` parameter and set it to `'ServicePrincipal'`. This will ensure the role assignment waits for the principal's propagation in Azure.
@@ -90,7 +89,3 @@ New-AzRoleAssignment -ObjectId $PrincipalID -Scope "/" -RoleDefinitionName "Auto
 New-AzRoleAssignment -ObjectId $PrincipalID -Scope "/providers/Microsoft.Management/managementGroups/$TopMGID" -RoleDefinitionName "Management Group Contributor"
 ```
 
-## Template references
-
-- [Managementgroups](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Management/2021-04-01/managementGroups)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)

@@ -36,7 +36,6 @@ This template deploys a storage insights configuration for a Log Analytics works
 | `tables` | array | `[]` | The names of the Azure tables that the workspace should read. |
 | `tags` | object | `{object}` | Tags to configure in the resource. |
 
-
 ### Parameter Usage: `tags`
 
 Tag names and tag values can be provided as needed. A tag can be left without a value.
@@ -62,6 +61,3 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | `resourceGroupName` | string | The resource group where the storage insight configuration is deployed. |
 | `resourceId` | string | The resource ID of the deployed storage insights configuration. |
 
-## Template references
-
-- [Workspaces/Storageinsightconfigs](https://docs.microsoft.com/en-us/azure/templates/Microsoft.OperationalInsights/2020-08-01/workspaces/storageInsightConfigs)

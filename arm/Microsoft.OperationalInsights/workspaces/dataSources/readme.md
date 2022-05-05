@@ -45,7 +45,6 @@ This template deploys a data source for a Log Analytics workspace.
 | `syslogSeverities` | array | `[]` | Severities to configure when kind is LinuxSyslog. |
 | `tags` | object | `{object}` | Tags to configure in the resource. |
 
-
 ### Parameter Usage: `tags`
 
 Tag names and tag values can be provided as needed. A tag can be left without a value.
@@ -71,6 +70,3 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | `resourceGroupName` | string | The resource group where the data source is deployed. |
 | `resourceId` | string | The resource ID of the deployed data source. |
 
-## Template references
-
-- [Workspaces/Datasources](https://docs.microsoft.com/en-us/azure/templates/Microsoft.OperationalInsights/2020-08-01/workspaces/dataSources)

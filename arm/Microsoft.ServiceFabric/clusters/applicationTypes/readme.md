@@ -29,7 +29,6 @@ This module deploys a Service Fabric Cluster Application Type.
 | `name` | string | `'defaultApplicationType'` | Application type name. |
 | `tags` | object | `{object}` | Tags of the resource. |
 
-
 ### Parameter Usage: `tags`
 
 Tag names and tag values can be provided as needed. A tag can be left without a value.
@@ -55,6 +54,3 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | `resourceGroupName` | string | The resource group of the Application type. |
 | `resourceID` | string | The resource ID of the Application type. |
 
-## Template references
-
-- [Clusters/Applicationtypes](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ServiceFabric/2021-06-01/clusters/applicationTypes)

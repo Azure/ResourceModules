@@ -39,7 +39,6 @@ This module deploys a storage account table service
 | `name` | string | `'default'` |  | The name of the table service. |
 | `tables` | _[tables](tables/readme.md)_ array | `[]` |  | tables to create. |
 
-
 ## Outputs
 
 | Output Name | Type | Description |
@@ -48,8 +47,3 @@ This module deploys a storage account table service
 | `resourceGroupName` | string | The resource group of the deployed table service. |
 | `resourceId` | string | The resource ID of the deployed table service. |
 
-## Template references
-
-- [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings)
-- [Storageaccounts/Tableservices](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Storage/2021-04-01/storageAccounts/tableServices)
-- [Storageaccounts/Tableservices/Tables](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Storage/2021-06-01/storageAccounts/tableServices/tables)

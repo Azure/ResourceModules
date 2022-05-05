@@ -36,7 +36,6 @@ This module deploys ContainerRegistry Registries Replications.
 | `tags` | object | `{object}` |  | Tags of the resource. |
 | `zoneRedundancy` | string | `'Disabled'` | `[Disabled, Enabled]` | Whether or not zone redundancy is enabled for this container registry. |
 
-
 ### Parameter Usage: `tags`
 
 Tag names and tag values can be provided as needed. A tag can be left without a value.
@@ -62,6 +61,3 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | `resourceGroupName` | string | The name of the resource group the replication was created in. |
 | `resourceId` | string | The resource ID of the replication. |
 
-## Template references
-
-- [Registries/Replications](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ContainerRegistry/2021-12-01-preview/registries/replications)

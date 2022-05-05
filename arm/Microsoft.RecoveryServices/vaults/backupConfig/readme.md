@@ -34,7 +34,6 @@ This module deploys recovery services vault backup config.
 | `storageType` | string | `'GeoRedundant'` | `[GeoRedundant, LocallyRedundant, ReadAccessGeoZoneRedundant, ZoneRedundant]` | Storage type. |
 | `storageTypeState` | string | `'Locked'` | `[Locked, Unlocked]` | Once a machine is registered against a resource, the storageTypeState is always Locked. |
 
-
 ## Outputs
 
 | Output Name | Type | Description |
@@ -43,6 +42,3 @@ This module deploys recovery services vault backup config.
 | `resourceGroupName` | string | The name of the resource group the backup config was created in. |
 | `resourceId` | string | The resource ID of the backup config. |
 
-## Template references
-
-- [Vaults/Backupconfig](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2021-10-01/vaults/backupconfig)
