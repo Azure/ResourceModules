@@ -9,7 +9,7 @@
       "value": [
         {
           "tenantId": "<<tenantId>>",
-          "objectId": "bab643ad-2988-4560-9f2b-c8282ba345f0", // Backup Management Service needs access to back up the keys and secrets, along with the associated VMs
+          "objectId": "5aaf472e-e998-4c1c-9f75-e0bdd0a58630", // Backup Management Service needs access to back up the keys and secrets, along with the associated VMs
           "permissions": {
             "keys": [
               "Get",
