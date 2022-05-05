@@ -7,13 +7,12 @@ This module deploys a migration configuration for a service bus namespace
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Template references](#Template-references)
 
 ## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.ServiceBus/namespaces/migrationConfigurations` | 2017-04-01 |
+| `Microsoft.ServiceBus/namespaces/migrationConfigurations` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ServiceBus/2017-04-01/namespaces/migrationConfigurations) |
 
 ## Parameters
 
@@ -34,6 +33,7 @@ This module deploys a migration configuration for a service bus namespace
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `name` | string | `'$default'` | The name of the migration configuration. |
 
+
 ## Outputs
 
 | Output Name | Type | Description |
@@ -41,4 +41,3 @@ This module deploys a migration configuration for a service bus namespace
 | `name` | string | The name of the migration configuration. |
 | `resourceGroupName` | string | The name of the Resource Group the migration configuration was created in. |
 | `resourceId` | string | The Resource ID of the migration configuration. |
-

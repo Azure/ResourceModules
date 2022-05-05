@@ -7,13 +7,12 @@ This module deploys an encryption protector for a SQL managed instance.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Template references](#Template-references)
 
 ## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Sql/managedInstances/encryptionProtector` | 2021-05-01-preview |
+| `Microsoft.Sql/managedInstances/encryptionProtector` | [2021-05-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Sql/2021-05-01-preview/managedInstances/encryptionProtector) |
 
 ## Parameters
 
@@ -35,6 +34,7 @@ This module deploys an encryption protector for a SQL managed instance.
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `serverKeyType` | string | `'ServiceManaged'` | `[AzureKeyVault, ServiceManaged]` | The encryption protector type like "ServiceManaged", "AzureKeyVault". |
 
+
 ## Outputs
 
 | Output Name | Type | Description |
@@ -42,4 +42,3 @@ This module deploys an encryption protector for a SQL managed instance.
 | `name` | string | The name of the deployed managed instance. |
 | `resourceGroupName` | string | The resource group of the deployed managed instance. |
 | `resourceId` | string | The resource ID of the deployed managed instance. |
-

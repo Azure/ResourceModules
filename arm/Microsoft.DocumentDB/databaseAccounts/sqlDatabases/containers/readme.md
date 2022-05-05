@@ -5,13 +5,12 @@
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Template references](#Template-references)
 
 ## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers` | 2021-07-01-preview |
+| `Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers` | [2021-07-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DocumentDB/2021-07-01-preview/databaseAccounts/sqlDatabases/containers) |
 
 ## Parameters
 
@@ -34,6 +33,7 @@
 | `paths` | array | `[]` |  | List of paths using which data within the container can be partitioned. |
 | `tags` | object | `{object}` |  | Tags of the SQL Database resource. |
 | `throughput` | int | `400` |  | Request Units per second. |
+
 
 ### Parameter Usage: `tags`
 
@@ -59,4 +59,3 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | `name` | string | The name of the container. |
 | `resourceGroupName` | string | The name of the resource group the container was created in. |
 | `resourceId` | string | The resource ID of the container. |
-

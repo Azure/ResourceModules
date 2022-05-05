@@ -12,14 +12,13 @@ remote/managing tenant.
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Considerations](#Considerations)
-- [Template references](#Template-references)
 
 ## Resource types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.ManagedServices/registrationAssignments` | 2019-09-01 |
-| `Microsoft.ManagedServices/registrationDefinitions` | 2019-09-01 |
+| `Microsoft.ManagedServices/registrationAssignments` | [2019-09-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ManagedServices/2019-09-01/registrationAssignments) |
+| `Microsoft.ManagedServices/registrationDefinitions` | [2019-09-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ManagedServices/2019-09-01/registrationDefinitions) |
 
 ## Parameters
 
@@ -37,6 +36,7 @@ remote/managing tenant.
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `location` | string | `[deployment().location]` | Location deployment metadata. |
 | `resourceGroupName` | string | `''` | Specify the name of the Resource Group to delegate access to. If not provided, delegation will be done on the targeted subscription. |
+
 
 ### Parameter Usage: `authorizations`
 
@@ -127,3 +127,7 @@ There are a couple of limitations that you should be aware of with Lighthouse:
 **More info on this topic:**
 
 
+
+=======
+- [Current limitations - Cross-tenant management experiences | Microsoft Docs](https://docs.microsoft.com/en-us/azure/lighthouse/concepts/cross-tenant-management-experience#current-limitations)
+- [Troubleshooting - Onboard a customer to Azure Lighthouse | Microsoft Docs](https://docs.microsoft.com/en-us/azure/lighthouse/how-to/onboard-customer#troubleshooting)

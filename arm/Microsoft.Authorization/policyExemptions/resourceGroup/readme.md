@@ -7,13 +7,12 @@ With this module you can create policy exemptions on a resource group level.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Template references](#Template-references)
 
 ## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/policyExemptions` | 2020-07-01-preview |
+| `Microsoft.Authorization/policyExemptions` | [2020-07-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-07-01-preview/policyExemptions) |
 
 ## Parameters
 
@@ -36,6 +35,7 @@ With this module you can create policy exemptions on a resource group level.
 | `resourceGroupName` | string | `[resourceGroup().name]` |  | The name of the resource group to be exempted from the policy assignment. If not provided, will use the current scope for deployment. |
 | `subscriptionId` | string | `[subscription().subscriptionId]` |  | The subscription ID of the subscription to be exempted from the policy assignment. If not provided, will use the current scope for deployment. |
 
+
 ## Outputs
 
 | Output Name | Type | Description |
@@ -44,4 +44,3 @@ With this module you can create policy exemptions on a resource group level.
 | `resourceGroupName` | string | The name of the resource group the policy exemption was applied at |
 | `resourceId` | string | Policy Exemption resource ID |
 | `scope` | string | Policy Exemption Scope |
-

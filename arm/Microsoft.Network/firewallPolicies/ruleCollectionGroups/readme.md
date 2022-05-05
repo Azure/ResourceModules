@@ -7,13 +7,12 @@ This module deploys Network Firewall Policies Rule Collection Groups.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Template references](#Template-references)
 
 ## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Network/firewallPolicies/ruleCollectionGroups` | 2021-05-01 |
+| `Microsoft.Network/firewallPolicies/ruleCollectionGroups` | [2021-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/firewallPolicies/ruleCollectionGroups) |
 
 ## Parameters
 
@@ -33,6 +32,7 @@ This module deploys Network Firewall Policies Rule Collection Groups.
 | :-- | :-- | :-- | :-- |
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `ruleCollections` | array | `[]` | Group of Firewall Policy rule collections. |
+
 
 ### Parameter Usage: `ruleCollections`
 
@@ -56,4 +56,3 @@ For remaining properties, see [FirewallPolicyRuleCollection objects](https://doc
 | `name` | string | The name of the deployed rule collection group. |
 | `resourceGroupName` | string | The resource group of the deployed rule collection group. |
 | `resourceId` | string | The resource ID of the deployed rule collection group. |
-

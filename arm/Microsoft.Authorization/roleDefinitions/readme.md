@@ -9,13 +9,12 @@ This module deploys custom RBAC Role Definitions across the management group, su
 - [Module Usage Guidance](#Module-Usage-Guidance)
 - [Outputs](#Outputs)
 - [Considerations](#Considerations)
-- [Template references](#Template-references)
 
 ## Resource types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/roleDefinitions` | 2018-01-01-preview |
+| `Microsoft.Authorization/roleDefinitions` | [2018-01-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2018-01-01-preview/roleDefinitions) |
 
 ## Parameters
 
@@ -38,6 +37,7 @@ This module deploys custom RBAC Role Definitions across the management group, su
 | `notDataActions` | array | `[]` | List of denied data actions. This is not supported if the assignableScopes contains Management Group Scopes |
 | `resourceGroupName` | string | `''` | The name of the Resource Group where the Role Definition and Target Scope will be applied to. |
 | `subscriptionId` | string | `''` | The subscription ID where the Role Definition and Target Scope will be applied to. Use for both Subscription level and Resource Group Level. |
+
 
 ### Parameter Usage: `managementGroupId`
 
@@ -112,4 +112,3 @@ This module can be deployed both at subscription or resource group level:
 - To deploy the module at resource group level, provide a valid name of an existing Resource Group in the `resourceGroupName` parameter and an existing subscription ID in the `subscriptionId` parameter.
 - To deploy the module at the subscription level, provide an existing subscription ID in the `subscriptionId` parameter.
 - To deploy the module at the management group level, provide an existing management group ID in the `managementGroupId` parameter.
-

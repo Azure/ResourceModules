@@ -7,13 +7,12 @@ This module deploys an Azure Automation Account Job Schedule.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Template references](#Template-references)
 
 ## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Automation/automationAccounts/jobSchedules` | 2020-01-13-preview |
+| `Microsoft.Automation/automationAccounts/jobSchedules` | [2020-01-13-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Automation/2020-01-13-preview/automationAccounts/jobSchedules) |
 
 ## Parameters
 
@@ -36,6 +35,7 @@ This module deploys an Azure Automation Account Job Schedule.
 | `parameters` | object | `{object}` | List of job properties. |
 | `runOn` | string | `''` | The hybrid worker group that the scheduled job should run on. |
 
+
 ## Outputs
 
 | Output Name | Type | Description |
@@ -43,4 +43,3 @@ This module deploys an Azure Automation Account Job Schedule.
 | `name` | string | The name of the deployed job schedule. |
 | `resourceGroupName` | string | The resource group of the deployed job schedule. |
 | `resourceId` | string | The resource ID of the deployed job schedule. |
-

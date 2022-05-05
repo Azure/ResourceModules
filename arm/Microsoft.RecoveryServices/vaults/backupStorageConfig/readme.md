@@ -6,13 +6,12 @@ This module deploys the Backup Storage Configuration for the Recovery Service Va
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Template references](#Template-references)
 
 ## Resource types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.RecoveryServices/vaults/backupstorageconfig` | 2021-08-01 |
+| `Microsoft.RecoveryServices/vaults/backupstorageconfig` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2021-08-01/vaults/backupstorageconfig) |
 
 ## Parameters
 
@@ -29,6 +28,7 @@ This module deploys the Backup Storage Configuration for the Recovery Service Va
 | `name` | string | `'vaultstorageconfig'` |  | The name of the backup storage config. |
 | `storageModelType` | string | `'GeoRedundant'` | `[GeoRedundant, LocallyRedundant, ReadAccessGeoZoneRedundant, ZoneRedundant]` | Change Vault Storage Type (Works if vault has not registered any backup instance). |
 
+
 ## Outputs
 
 | Output Name | Type | Description |
@@ -36,4 +36,3 @@ This module deploys the Backup Storage Configuration for the Recovery Service Va
 | `name` | string | The name of the backup storage config. |
 | `resourceGroupName` | string | The name of the Resource Group the backup storage configuration was created in. |
 | `resourceId` | string | The resource ID of the backup storage config. |
-

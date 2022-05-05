@@ -7,14 +7,13 @@ With this module you can perform policy assignments on a resource group level
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Template references](#Template-references)
 
 ## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/policyAssignments` | 2021-06-01 |
-| `Microsoft.Authorization/roleAssignments` | 2021-04-01-preview |
+| `Microsoft.Authorization/policyAssignments` | [2021-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2021-06-01/policyAssignments) |
+| `Microsoft.Authorization/roleAssignments` | [2020-10-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-10-01-preview/roleAssignments) |
 
 ## Parameters
 
@@ -41,6 +40,7 @@ With this module you can perform policy assignments on a resource group level
 | `resourceGroupName` | string | `[resourceGroup().name]` |  | The Target Scope for the Policy. The name of the resource group for the policy assignment. If not provided, will use the current scope for deployment. |
 | `subscriptionId` | string | `[subscription().subscriptionId]` |  | The Target Scope for the Policy. The subscription ID of the subscription for the policy assignment. If not provided, will use the current scope for deployment. |
 
+
 ## Outputs
 
 | Output Name | Type | Description |
@@ -49,4 +49,3 @@ With this module you can perform policy assignments on a resource group level
 | `principalId` | string | Policy Assignment principal ID |
 | `resourceGroupName` | string | The name of the resource group the policy was assigned to |
 | `resourceId` | string | Policy Assignment resource ID |
-

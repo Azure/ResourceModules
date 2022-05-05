@@ -7,13 +7,12 @@ This module can be used to deploy a management policies into a storage account.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Template references](#Template-references)
 
 ## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Storage/storageAccounts/managementPolicies` | 2019-06-01 |
+| `Microsoft.Storage/storageAccounts/managementPolicies` | [2019-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Storage/2019-06-01/storageAccounts/managementPolicies) |
 
 ## Parameters
 
@@ -32,6 +31,7 @@ This module can be used to deploy a management policies into a storage account.
 | :-- | :-- | :-- | :-- |
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `name` | string | `'default'` | The name of the storage container to deploy. |
+
 
 ### Parameter Usage: `rules`
 
@@ -74,4 +74,3 @@ This module can be used to deploy a management policies into a storage account.
 | `name` | string | The name of the deployed management policy. |
 | `resourceGroupName` | string | The resource group of the deployed management policy. |
 | `resourceId` | string | The resource ID of the deployed management policy. |
-

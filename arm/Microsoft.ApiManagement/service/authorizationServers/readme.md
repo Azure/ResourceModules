@@ -7,13 +7,12 @@ This module deploys API Management Service Authorization Servers.
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Template references](#Template-references)
 
 ## Resource types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.ApiManagement/service/authorizationServers` | 2021-08-01 |
+| `Microsoft.ApiManagement/service/authorizationServers` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2021-08-01/service/authorizationServers) |
 
 ### Resource dependency
 
@@ -53,6 +52,7 @@ The following resources are required to be able to deploy this resource.
 | `tokenBodyParameters` | array | `[]` | Additional parameters required by the token endpoint of this authorization server represented as an array of JSON objects with name and value string properties, i.e. {"name" : "name value", "value": "a value"}. - TokenBodyParameterContract object. |
 | `tokenEndpoint` | string | `''` | OAuth token endpoint. Contains absolute URI to entity being referenced. |
 
+
 ## Outputs
 
 | Output Name | Type | Description |
@@ -60,4 +60,3 @@ The following resources are required to be able to deploy this resource.
 | `name` | string | The name of the API management service authorization server. |
 | `resourceGroupName` | string | The resource group the API management service authorization server was deployed into. |
 | `resourceId` | string | The resource ID of the API management service authorization server. |
-

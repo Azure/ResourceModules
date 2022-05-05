@@ -7,16 +7,15 @@ This module deploys a traffic manager profile.
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Template references](#Template-references)
 
 ## Resource types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/locks` | 2017-04-01 |
-| `Microsoft.Authorization/roleAssignments` | 2021-04-01-preview |
-| `Microsoft.Insights/diagnosticSettings` | 2021-05-01-preview |
-| `Microsoft.Network/trafficmanagerprofiles` | 2018-08-01 |
+| `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
+| `Microsoft.Authorization/roleAssignments` | [2020-10-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-10-01-preview/roleAssignments) |
+| `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
+| `Microsoft.Network/trafficmanagerprofiles` | [2018-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2018-08-01/trafficmanagerprofiles) |
 
 ## Parameters
 
@@ -48,6 +47,7 @@ This module deploys a traffic manager profile.
 | `trafficRoutingMethod` | string | `'Performance'` | `[Performance, Priority, Weighted, Geographic, MultiValue, Subnet]` | The traffic routing method of the Traffic Manager profile. |
 | `trafficViewEnrollmentStatus` | string | `'Disabled'` | `[Disabled, Enabled]` | Indicates whether Traffic View is 'Enabled' or 'Disabled' for the Traffic Manager profile. Null, indicates 'Disabled'. Enabling this feature will increase the cost of the Traffic Manage profile. |
 | `ttl` | int | `60` |  | The DNS Time-To-Live (TTL), in seconds. This informs the local DNS resolvers and DNS clients how long to cache DNS responses provided by this Traffic Manager profile. |
+
 
 ### Parameter Usage: `monitorConfig`
 
@@ -137,4 +137,3 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | `name` | string | The name of the traffix manager was deployed into. |
 | `resourceGroupName` | string | The resource group the traffix manager was deployed into. |
 | `resourceId` | string | The resource ID of the traffix manager. |
-

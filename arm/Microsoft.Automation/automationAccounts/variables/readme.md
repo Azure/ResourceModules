@@ -7,13 +7,12 @@ This module deploys a variable to an Azure Automation Account.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Template references](#Template-references)
 
 ## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Automation/automationAccounts/variables` | 2020-01-13-preview |
+| `Microsoft.Automation/automationAccounts/variables` | [2020-01-13-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Automation/2020-01-13-preview/automationAccounts/variables) |
 
 ## Parameters
 
@@ -34,6 +33,7 @@ This module deploys a variable to an Azure Automation Account.
 | `description` | string | `''` | The description of the variable. |
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `isEncrypted` | bool | `True` | If the variable should be encrypted. For security reasons encryption of variables should be enabled |
+
 
 ### Parameter Usage: `value`
 
@@ -66,4 +66,3 @@ This module deploys a variable to an Azure Automation Account.
 | `name` | string | The name of the deployed variable |
 | `resourceGroupName` | string | The resource group of the deployed variable |
 | `resourceId` | string | The resource ID of the deployed variable |
-

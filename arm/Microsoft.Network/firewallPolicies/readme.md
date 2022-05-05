@@ -7,14 +7,13 @@ This module deploys Firewall Policies.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Template references](#Template-references)
 
 ## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Network/firewallPolicies` | 2021-05-01 |
-| `Microsoft.Network/firewallPolicies/ruleCollectionGroups` | 2021-05-01 |
+| `Microsoft.Network/firewallPolicies` | [2021-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/firewallPolicies) |
+| `Microsoft.Network/firewallPolicies/ruleCollectionGroups` | [2021-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/firewallPolicies/ruleCollectionGroups) |
 
 ## Parameters
 
@@ -49,6 +48,7 @@ This module deploys Firewall Policies.
 | `tier` | string | `'Standard'` | `[Premium, Standard]` | Tier of Firewall Policy. |
 | `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. |
 | `workspaces` | array | `[]` |  | List of workspaces for Firewall Policy Insights. |
+
 
 ### Parameter Usage: `tags`
 
@@ -87,4 +87,3 @@ You can specify multiple user assigned identities to a resource by providing add
 | `name` | string | The name of the deployed firewall policy. |
 | `resourceGroupName` | string | The resource group of the deployed firewall policy. |
 | `resourceId` | string | The resource ID of the deployed firewall policy. |
-

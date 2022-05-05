@@ -8,7 +8,6 @@ This module deploys Kubernetes Configuration Flux Configurations.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Template references](#Template-references)
 
 ## Prerequisites
 
@@ -32,7 +31,7 @@ For Details see [Prerequisites](https://docs.microsoft.com/en-us/azure/azure-arc
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.KubernetesConfiguration/fluxConfigurations` | 2022-03-01 |
+| `Microsoft.KubernetesConfiguration/fluxConfigurations` | [2022-03-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.KubernetesConfiguration/2022-03-01/fluxConfigurations) |
 
 ## Parameters
 
@@ -55,6 +54,7 @@ For Details see [Prerequisites](https://docs.microsoft.com/en-us/azure/azure-arc
 | `kustomizations` | object | `{object}` | Array of kustomizations used to reconcile the artifact pulled by the source type on the cluster. |
 | `location` | string | `[resourceGroup().location]` | Location for all resources. |
 | `suspend` | bool | `False` | Whether this configuration should suspend its reconciliation of its kustomizations and sources. |
+
 
 ### Parameter Usage: `bucket`
 
@@ -101,4 +101,3 @@ For Details see [Prerequisites](https://docs.microsoft.com/en-us/azure/azure-arc
 | `name` | string | The name of the flux configuration. |
 | `resourceGroupName` | string | The name of the resource group the flux configuration was deployed into. |
 | `resourceId` | string | The resource ID of the flux configuration. |
-

@@ -7,13 +7,12 @@ This module deploys a collection within a MongoDB.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Template references](#Template-references)
 
 ## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.DocumentDB/databaseAccounts/mongodbDatabases/collections` | 2021-07-01-preview |
+| `Microsoft.DocumentDB/databaseAccounts/mongodbDatabases/collections` | [2021-07-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DocumentDB/2021-07-01-preview/databaseAccounts/mongodbDatabases/collections) |
 
 ## Parameters
 
@@ -35,6 +34,7 @@ This module deploys a collection within a MongoDB.
 | :-- | :-- | :-- | :-- |
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `throughput` | int | `400` | Name of the mongodb database. |
+
 
 ### Parameter Usage: `indexes`
 
@@ -101,4 +101,3 @@ The shard key and partition kind pair, only support "Hash" partition kind.
 | `name` | string | The name of the mongodb database. |
 | `resourceGroupName` | string | The name of the resource group the mongodb database was created in. |
 | `resourceId` | string | The resource ID of the mongodb database. |
-

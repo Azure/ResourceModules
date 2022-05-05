@@ -7,13 +7,12 @@ This module deploys an API Management Service Cache.
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Template references](#Template-references)
 
 ## Resource types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.ApiManagement/service/caches` | 2021-08-01 |
+| `Microsoft.ApiManagement/service/caches` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2021-08-01/service/caches) |
 
 ### Resource dependency
 
@@ -42,6 +41,7 @@ The following resources are required to be able to deploy this resource.
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `resourceId` | string | `''` | Original uri of entity in external system cache points to. |
 
+
 ## Outputs
 
 | Output Name | Type | Description |
@@ -49,4 +49,3 @@ The following resources are required to be able to deploy this resource.
 | `name` | string | The name of the API management service cache. |
 | `resourceGroupName` | string | The resource group the API management service cache was deployed into. |
 | `resourceId` | string | The resource ID of the API management service cache. |
-

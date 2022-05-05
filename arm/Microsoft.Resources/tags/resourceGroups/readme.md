@@ -7,13 +7,12 @@ This module deploys Resources Tags on a resource group scope.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Template references](#Template-references)
 
 ## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Resources/tags` | 2019-10-01 |
+| `Microsoft.Resources/tags` | [2019-10-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Resources/2019-10-01/tags) |
 
 ## Parameters
 
@@ -24,6 +23,7 @@ This module deploys Resources Tags on a resource group scope.
 | `name` | string | `'default'` | The name of the tags resource. |
 | `onlyUpdate` | bool | `False` | Instead of overwriting the existing tags, combine them with the new tags. |
 | `tags` | object | `{object}` | Tags for the resource group. If not provided, removes existing tags. |
+
 
 ### Parameter Usage: `tags`
 
@@ -50,4 +50,3 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | `resourceGroupName` | string | The name of the resource group the tags were applied to. |
 | `resourceId` | string | The resourceId of the resource group the tags were applied to. |
 | `tags` | object | The applied tags. |
-

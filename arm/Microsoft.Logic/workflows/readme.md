@@ -7,16 +7,15 @@ This module deploys a Logic App resource.
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Template references](#Template-references)
 
 ## Resource types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/locks` | 2017-04-01 |
-| `Microsoft.Authorization/roleAssignments` | 2021-04-01-preview |
-| `Microsoft.Insights/diagnosticSettings` | 2021-05-01-preview |
-| `Microsoft.Logic/workflows` | 2019-05-01 |
+| `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
+| `Microsoft.Authorization/roleAssignments` | [2020-10-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-10-01-preview/roleAssignments) |
+| `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
+| `Microsoft.Logic/workflows` | [2019-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Logic/2019-05-01/workflows) |
 
 ## Parameters
 
@@ -59,6 +58,7 @@ This module deploys a Logic App resource.
 | `workflowParameters` | object | `{object}` |  | The definitions for one or more parameters that pass the values to use at your logic app's runtime. |
 | `workflowStaticResults` | object | `{object}` |  | The definitions for one or more static results returned by actions as mock outputs when static results are enabled on those actions. In each action definition, the runtimeConfiguration.staticResult.name attribute references the corresponding definition inside staticResults. |
 | `workflowTriggers` | object | `{object}` |  | The definitions for one or more triggers that instantiate your workflow. You can define more than one trigger, but only with the Workflow Definition Language, not visually through the Logic Apps Designer. |
+
 
 ### Parameter Usage `<accessControl>AccessControlConfiguration`
 
@@ -176,4 +176,3 @@ You can specify multiple user assigned identities to a resource by providing add
 | `resourceGroupName` | string | The resource group the logic app was deployed into. |
 | `resourceId` | string | The resource ID of the logic app. |
 | `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
-

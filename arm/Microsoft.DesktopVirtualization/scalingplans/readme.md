@@ -7,15 +7,14 @@ This module deploys an AVD Scaling Plan.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Template references](#Template-references)
 
 ## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/roleAssignments` | 2021-04-01-preview |
-| `Microsoft.DesktopVirtualization/scalingPlans` | 2021-09-03-preview |
-| `Microsoft.Insights/diagnosticSettings` | 2021-05-01-preview |
+| `Microsoft.Authorization/roleAssignments` | [2020-10-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-10-01-preview/roleAssignments) |
+| `Microsoft.DesktopVirtualization/scalingPlans` | [2021-09-03-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DesktopVirtualization/2021-09-03-preview/scalingPlans) |
+| `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
 
 ## Parameters
 
@@ -43,6 +42,7 @@ This module deploys an AVD Scaling Plan.
 | `schedules` | array | `[System.Collections.Hashtable]` |  | The schedules related to this scaling plan. If no value is provided a default schedule will be provided. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
 | `timeZone` | string | `'W. Europe Standard Time'` |  | Timezone to be used for the scaling plan. |
+
 
 ### Parameter Usage: `schedules`
 
@@ -142,4 +142,3 @@ Create a role assignment for the given resource. If you want to assign a service
 | `name` | string | The name of the AVD scaling plan. |
 | `resourceGroupName` | string | The resource group the AVD scaling plan was deployed into. |
 | `resourceId` | string | The resource ID of the AVD scaling plan. |
-

@@ -7,13 +7,12 @@ This module deploys an Azure Automation Account Software update Configuration.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Template references](#Template-references)
 
 ## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Automation/automationAccounts/softwareUpdateConfigurations` | 2019-06-01 |
+| `Microsoft.Automation/automationAccounts/softwareUpdateConfigurations` | [2019-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Automation/2019-06-01/automationAccounts/softwareUpdateConfigurations) |
 
 ## Parameters
 
@@ -67,6 +66,7 @@ This module deploys an Azure Automation Account Software update Configuration.
 | :-- | :-- | :-- | :-- |
 | `baseTime` | string | `[utcNow('u')]` | Do not touch. Is used to provide the base time for time comparison for startTime. If startTime is specified in HH:MM format, baseTime is used to check if the provided startTime has passed, adding one day before setting the deployment schedule. |
 
+
 ### Parameter Usage: `scopeByTags`
 
 Provide tag keys, with an array of values, filtering in machines that should be included in the deployment schedule.
@@ -119,4 +119,3 @@ Occurrences of days within a month.
 | `name` | string | The name of the deployed softwareUpdateConfiguration. |
 | `resourceGroupName` | string | The resource group of the deployed softwareUpdateConfiguration. |
 | `resourceId` | string | The resource ID of the deployed softwareUpdateConfiguration. |
-

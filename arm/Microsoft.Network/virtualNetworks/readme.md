@@ -8,18 +8,17 @@ This template deploys a virtual network (vNet).
 - [Parameters](#Parameters)
 - [Considerations](#Considerations)
 - [Outputs](#Outputs)
-- [Template references](#Template-references)
 
 ## Resource types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/locks` | 2017-04-01 |
-| `Microsoft.Authorization/roleAssignments` | 2021-04-01-preview |
-| `Microsoft.Insights/diagnosticSettings` | 2021-05-01-preview |
-| `Microsoft.Network/virtualNetworks` | 2021-05-01 |
-| `Microsoft.Network/virtualNetworks/subnets` | 2021-05-01 |
-| `Microsoft.Network/virtualNetworks/virtualNetworkPeerings` | 2021-05-01 |
+| `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
+| `Microsoft.Authorization/roleAssignments` | [2020-10-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-10-01-preview/roleAssignments) |
+| `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
+| `Microsoft.Network/virtualNetworks` | [2021-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/virtualNetworks) |
+| `Microsoft.Network/virtualNetworks/subnets` | [2021-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/virtualNetworks/subnets) |
+| `Microsoft.Network/virtualNetworks/virtualNetworkPeerings` | [2021-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/virtualNetworks/virtualNetworkPeerings) |
 
 ## Parameters
 
@@ -49,6 +48,7 @@ This template deploys a virtual network (vNet).
 | `subnets` | _[subnets](subnets/readme.md)_ array | `[]` |  | An Array of subnets to deploy to the Virtual Network. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
 | `virtualNetworkPeerings` | _[virtualNetworkPeerings](virtualNetworkPeerings/readme.md)_ array | `[]` |  | Virtual Network Peerings configurations. |
+
 
 ### Parameter Usage: `subnets`
 
@@ -191,4 +191,3 @@ The network security group and route table resources must reside in the same res
 | `resourceId` | string | The resource ID of the virtual network. |
 | `subnetNames` | array | The names of the deployed subnets. |
 | `subnetResourceIds` | array | The resource IDs of the deployed subnets. |
-

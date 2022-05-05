@@ -7,13 +7,12 @@ This module deploys a subscription wide export of the activity log.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Template references](#Template-references)
 
 ## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Insights/diagnosticSettings` | 2021-05-01-preview |
+| `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
 
 ## Parameters
 
@@ -30,6 +29,7 @@ This module deploys a subscription wide export of the activity log.
 | `location` | string | `[deployment().location]` |  | Location deployment metadata. |
 | `name` | string | `[format('{0}-ActivityLog', uniqueString(subscription().id))]` |  | Name of the ActivityLog diagnostic settings. |
 
+
 ## Outputs
 
 | Output Name | Type | Description |
@@ -37,4 +37,3 @@ This module deploys a subscription wide export of the activity log.
 | `name` | string | The name of the diagnostic settings. |
 | `resourceId` | string | The resource ID of the diagnostic settings. |
 | `subscriptionName` | string | The name of the subscription to deploy into. |
-

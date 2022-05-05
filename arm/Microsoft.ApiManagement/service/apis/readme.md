@@ -7,14 +7,13 @@ This module deploys API Management Service APIs.
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Template references](#Template-references)
 
 ## Resource types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.ApiManagement/service/apis` | 2021-08-01 |
-| `Microsoft.ApiManagement/service/apis/policies` | 2021-08-01 |
+| `Microsoft.ApiManagement/service/apis` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2021-08-01/service/apis) |
+| `Microsoft.ApiManagement/service/apis/policies` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2021-08-01/service/apis/policies) |
 
 ### Resource dependency
 
@@ -60,6 +59,7 @@ The following resources are required to be able to deploy this resource.
 | `value` | string | `''` |  | Content value when Importing an API. |
 | `wsdlSelector` | object | `{object}` |  | Criteria to limit import of WSDL to a subset of the document. |
 
+
 ### Parameter Usage: `apiVersionSet`
 
 ```json
@@ -84,4 +84,3 @@ The following resources are required to be able to deploy this resource.
 | `name` | string | The name of the API management service API. |
 | `resourceGroupName` | string | The resource group the API management service API was deployed to. |
 | `resourceId` | string | The resource ID of the API management service API. |
-

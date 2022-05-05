@@ -70,6 +70,13 @@ function Invoke-ResourceRemoval {
             # Not a 'resource' that can be removed, but represents settings on the RSV. The config is deleted with the RSV
             break
         }
+        'Microsoft.Authorization/roleAssignments' {
+            $idElem = $ResourceId.Split('/')
+            $scope = $idElem[0..($idElem.Count - 5)] -join '/'
+            $roleAssignmentsOnScope = Get-AzRoleAssignment -Scope $scope
+            $roleAssignmentsOnScope | Where-Object { $_.RoleAssignmentId -eq $ResourceId } | Remove-AzRoleAssignment
+            break
+        }
         'Microsoft.RecoveryServices/vaults' {
             # Pre-Removal
             # -----------

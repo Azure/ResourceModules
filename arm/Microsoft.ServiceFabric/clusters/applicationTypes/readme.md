@@ -7,13 +7,12 @@ This module deploys a Service Fabric Cluster Application Type.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Template references](#Template-references)
 
 ## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.ServiceFabric/clusters/applicationTypes` | 2021-06-01 |
+| `Microsoft.ServiceFabric/clusters/applicationTypes` | [2021-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ServiceFabric/2021-06-01/clusters/applicationTypes) |
 
 ## Parameters
 
@@ -28,6 +27,7 @@ This module deploys a Service Fabric Cluster Application Type.
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `name` | string | `'defaultApplicationType'` | Application type name. |
 | `tags` | object | `{object}` | Tags of the resource. |
+
 
 ### Parameter Usage: `tags`
 
@@ -53,4 +53,3 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | `name` | string | The resource name of the Application type. |
 | `resourceGroupName` | string | The resource group of the Application type. |
 | `resourceID` | string | The resource ID of the Application type. |
-

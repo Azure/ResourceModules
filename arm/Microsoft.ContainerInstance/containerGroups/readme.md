@@ -5,7 +5,6 @@
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Template references](#Template-references)
 
 ### Container groups in Azure Container Instances
 
@@ -15,8 +14,8 @@ The top-level resource in Azure Container Instances is the container group. A co
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/locks` | 2017-04-01 |
-| `Microsoft.ContainerInstance/containerGroups` | 2021-03-01 |
+| `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
+| `Microsoft.ContainerInstance/containerGroups` | [2021-03-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ContainerInstance/2021-03-01/containerGroups) |
 
 ## Parameters
 
@@ -32,7 +31,7 @@ The top-level resource in Azure Container Instances is the container group. A co
 | :-- | :-- | :-- | :-- | :-- |
 | `cpuCores` | int | `2` |  | The number of CPU cores to allocate to the container. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `environmentVariables` | array | `[]` |  | Envrionment variables of the container group. |
+| `environmentVariables` | array | `[]` |  | Environment variables of the container group. |
 | `imageRegistryCredentials` | array | `[]` |  | The image registry credentials by which the container group is created from. |
 | `ipAddressType` | string | `'Public'` |  | Specifies if the IP is exposed to the public internet or private VNET. - Public or Private. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all Resources. |
@@ -44,6 +43,7 @@ The top-level resource in Azure Container Instances is the container group. A co
 | `systemAssignedIdentity` | bool | `False` |  | Enables system assigned managed identity on the resource. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
 | `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. |
+
 
 ### Parameter Usage: `imageRegistryCredentials`
 
@@ -99,4 +99,3 @@ You can specify multiple user assigned identities to a resource by providing add
 | `resourceGroupName` | string | The resource group the container group was deployed into. |
 | `resourceId` | string | The resource ID of the container group. |
 | `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
-

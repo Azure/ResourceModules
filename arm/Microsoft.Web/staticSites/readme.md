@@ -7,17 +7,16 @@ This module deploys a Static Web Site.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Template references](#Template-references)
 
 ## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/locks` | 2017-04-01 |
-| `Microsoft.Authorization/roleAssignments` | 2021-04-01-preview |
-| `Microsoft.Network/privateEndpoints` | 2021-05-01 |
-| `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | 2021-05-01 |
-| `Microsoft.Web/staticSites` | 2021-03-01 |
+| `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
+| `Microsoft.Authorization/roleAssignments` | [2020-10-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-10-01-preview/roleAssignments) |
+| `Microsoft.Network/privateEndpoints` | [2021-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/privateEndpoints) |
+| `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | [2021-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/privateEndpoints/privateDnsZoneGroups) |
+| `Microsoft.Web/staticSites` | [2021-03-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Web/2021-03-01/staticSites) |
 
 ## Parameters
 
@@ -47,6 +46,7 @@ This module deploys a Static Web Site.
 | `tags` | object | `{object}` |  | Tags of the resource. |
 | `templateProperties` | object | `{object}` |  | Template Options for the static site. |
 | `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. |
+
 
 ### Parameter Usage: `buildProperties`
 
@@ -182,4 +182,3 @@ You can specify multiple user assigned identities to a resource by providing add
 | `resourceGroupName` | string | The resource group the static site was deployed into. |
 | `resourceId` | string | The resource ID of the static site. |
 | `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
-

@@ -7,13 +7,12 @@ This template deploys a linked service for a Log Analytics workspace.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Template references](#Template-references)
 
 ## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.OperationalInsights/workspaces/linkedServices` | 2020-08-01 |
+| `Microsoft.OperationalInsights/workspaces/linkedServices` | [2020-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.OperationalInsights/2020-08-01/workspaces/linkedServices) |
 
 ## Parameters
 
@@ -34,6 +33,7 @@ This template deploys a linked service for a Log Analytics workspace.
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `tags` | object | `{object}` | Tags to configure in the resource. |
 | `writeAccessResourceId` | string | `''` | The resource ID of the resource that will be linked to the workspace. This should be used for linking resources which require write access. |
+
 
 ### Parameter Usage: `tags`
 
@@ -59,4 +59,3 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | `name` | string | The name of the deployed linked service. |
 | `resourceGroupName` | string | The resource group where the linked service is deployed. |
 | `resourceId` | string | The resource ID of the deployed linked service. |
-

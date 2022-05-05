@@ -37,6 +37,14 @@
                         {
                             "ipv4Address": "10.240.4.4"
                         }
+                    ],
+                    "roleAssignments": [
+                        {
+                            "roleDefinitionIdOrName": "Reader",
+                            "principalIds": [
+                                "<<deploymentSpId>>"
+                            ]
+                        }
                     ]
                 }
             ]
@@ -48,7 +56,15 @@
                     "ttl": 3600,
                     "cnameRecord": {
                         "cname": "test"
-                    }
+                    },
+                    "roleAssignments": [
+                        {
+                            "roleDefinitionIdOrName": "Reader",
+                            "principalIds": [
+                                "<<deploymentSpId>>"
+                            ]
+                        }
+                    ]
                 }
             ]
         },
@@ -62,6 +78,14 @@
                             "exchange": "contoso.com",
                             "preference": 100
                         }
+                    ],
+                    "roleAssignments": [
+                        {
+                            "roleDefinitionIdOrName": "Reader",
+                            "principalIds": [
+                                "<<deploymentSpId>>"
+                            ]
+                        }
                     ]
                 }
             ]
@@ -74,6 +98,14 @@
                     "ptrRecords": [
                         {
                             "ptrdname": "contoso.com"
+                        }
+                    ],
+                    "roleAssignments": [
+                        {
+                            "roleDefinitionIdOrName": "Reader",
+                            "principalIds": [
+                                "<<deploymentSpId>>"
+                            ]
                         }
                     ]
                 }
@@ -92,7 +124,15 @@
                         "refreshTime": 3600,
                         "retryTime": 300,
                         "serialNumber": "1"
-                    }
+                    },
+                    "roleAssignments": [
+                        {
+                            "roleDefinitionIdOrName": "Reader",
+                            "principalIds": [
+                                "<<deploymentSpId>>"
+                            ]
+                        }
+                    ]
                 }
             ]
         },
@@ -108,6 +148,14 @@
                             "target": "test.contoso.com",
                             "weight": 0
                         }
+                    ],
+                    "roleAssignments": [
+                        {
+                            "roleDefinitionIdOrName": "Reader",
+                            "principalIds": [
+                                "<<deploymentSpId>>"
+                            ]
+                        }
                     ]
                 }
             ]
@@ -121,6 +169,14 @@
                         {
                             "value": [
                                 "test"
+                            ]
+                        }
+                    ],
+                    "roleAssignments": [
+                        {
+                            "roleDefinitionIdOrName": "Reader",
+                            "principalIds": [
+                                "<<deploymentSpId>>"
                             ]
                         }
                     ]

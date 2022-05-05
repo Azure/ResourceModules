@@ -7,13 +7,12 @@ With this module you can create policy exemptions on a management group level.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Template references](#Template-references)
 
 ## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/policyExemptions` | 2020-07-01-preview |
+| `Microsoft.Authorization/policyExemptions` | [2020-07-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-07-01-preview/policyExemptions) |
 
 ## Parameters
 
@@ -36,6 +35,7 @@ With this module you can create policy exemptions on a management group level.
 | `metadata` | object | `{object}` |  | The policy exemption metadata. Metadata is an open ended object and is typically a collection of key-value pairs. |
 | `policyDefinitionReferenceIds` | array | `[]` |  | The policy definition reference ID list when the associated policy assignment is an assignment of a policy set definition. |
 
+
 ## Outputs
 
 | Output Name | Type | Description |
@@ -43,4 +43,3 @@ With this module you can create policy exemptions on a management group level.
 | `name` | string | Policy Exemption Name |
 | `resourceId` | string | Policy Exemption resource ID |
 | `scope` | string | Policy Exemption Scope |
-

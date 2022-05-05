@@ -8,16 +8,15 @@ This template deploys Azure Active Directory Domain Services (AADDS).
 - [Parameters](#Parameters)
 - [Considerations](#Considerations)
 - [Outputs](#Outputs)
-- [Template references](#Template-references)
 
 ## Resource types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.AAD/domainServices` | 2021-05-01 |
-| `Microsoft.Authorization/locks` | 2017-04-01 |
-| `Microsoft.Authorization/roleAssignments` | 2021-04-01-preview |
-| `Microsoft.Insights/diagnosticSettings` | 2021-05-01-preview |
+| `Microsoft.AAD/domainServices` | [2021-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.AAD/2021-05-01/domainServices) |
+| `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
+| `Microsoft.Authorization/roleAssignments` | [2020-10-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-10-01-preview/roleAssignments) |
+| `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
 
 ## Parameters
 
@@ -61,6 +60,7 @@ This template deploys Azure Active Directory Domain Services (AADDS).
 | `syncOnPremPasswords` | string | `'Enabled'` | `[Enabled, Disabled]` | The value is to enable on-premises users to authenticate against managed domain. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
 | `tlsV1` | string | `'Enabled'` | `[Enabled, Disabled]` | The value is to enable clients making request using TLSv1. |
+
 
 ### Parameter Usage: `roleAssignments`
 
@@ -144,4 +144,3 @@ $pfxCertificate = [System.Convert]::ToBase64String($rawCertByteStream)
 | `name` | string | The domain name of the Azure Active Directory Domain Services(Azure ADDS). |
 | `resourceGroupName` | string | The name of the resource group the Azure Active Directory Domain Services(Azure ADDS) was created in. |
 | `resourceId` | string | The resource ID of the Azure Active Directory Domain Services(Azure ADDS). |
-

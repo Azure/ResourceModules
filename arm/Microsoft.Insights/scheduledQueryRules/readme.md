@@ -7,14 +7,13 @@ This module deploys a scheduled query rule.
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Template references](#Template-references)
 
 ## Resource types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/roleAssignments` | 2021-04-01-preview |
-| `Microsoft.Insights/scheduledQueryRules` | 2021-02-01-preview |
+| `Microsoft.Authorization/roleAssignments` | [2020-10-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-10-01-preview/roleAssignments) |
+| `Microsoft.Insights/scheduledQueryRules` | [2021-02-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-02-01-preview/scheduledQueryRules) |
 
 ## Parameters
 
@@ -44,6 +43,7 @@ This module deploys a scheduled query rule.
 | `tags` | object | `{object}` |  | Tags of the resource. |
 | `targetResourceTypes` | array | `[]` |  | List of resource type of the target resource(s) on which the alert is created/updated. For example if the scope is a resource group and targetResourceTypes is Microsoft.Compute/virtualMachines, then a different alert will be fired for each virtual machine in the resource group which meet the alert criteria. Relevant only for rules of the kind LogAlert. |
 | `windowSize` | string | `''` |  | The period of time (in ISO 8601 duration format) on which the Alert query will be executed (bin size). Relevant and required only for rules of the kind LogAlert. |
+
 
 ### Parameter Usage: `roleAssignments`
 
@@ -95,4 +95,3 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | `name` | string | The Name of the created query rule. |
 | `resourceGroupName` | string | The Resource Group of the created query rule. |
 | `resourceId` | string | The resource ID of the created query rule. |
-

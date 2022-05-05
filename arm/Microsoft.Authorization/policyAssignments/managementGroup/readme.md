@@ -7,14 +7,13 @@ With this module you can perform policy assignments on a management group level.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Template references](#Template-references)
 
 ## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/policyAssignments` | 2021-06-01 |
-| `Microsoft.Authorization/roleAssignments` | 2021-04-01-preview |
+| `Microsoft.Authorization/policyAssignments` | [2021-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2021-06-01/policyAssignments) |
+| `Microsoft.Authorization/roleAssignments` | [2020-10-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-10-01-preview/roleAssignments) |
 
 ## Parameters
 
@@ -40,6 +39,7 @@ With this module you can perform policy assignments on a management group level.
 | `notScopes` | array | `[]` |  | The policy excluded scopes |
 | `parameters` | object | `{object}` |  | Parameters for the policy assignment if needed. |
 
+
 ## Outputs
 
 | Output Name | Type | Description |
@@ -47,4 +47,3 @@ With this module you can perform policy assignments on a management group level.
 | `name` | string | Policy Assignment Name |
 | `principalId` | string | Policy Assignment principal ID |
 | `resourceId` | string | Policy Assignment resource ID |
-

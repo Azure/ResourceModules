@@ -7,15 +7,14 @@ This module deploys API Management Service Products.
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Template references](#Template-references)
 
 ## Resource types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.ApiManagement/service/products` | 2021-08-01 |
-| `Microsoft.ApiManagement/service/products/apis` | 2021-08-01 |
-| `Microsoft.ApiManagement/service/products/groups` | 2021-08-01 |
+| `Microsoft.ApiManagement/service/products` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2021-08-01/service/products) |
+| `Microsoft.ApiManagement/service/products/apis` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2021-08-01/service/products/apis) |
+| `Microsoft.ApiManagement/service/products/groups` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2021-08-01/service/products/groups) |
 
 ### Resource dependency
 
@@ -48,6 +47,7 @@ The following resources are required to be able to deploy this resource.
 | `subscriptionsLimit` | int | `1` | Whether the number of subscriptions a user can have to this product at the same time. Set to null or omit to allow unlimited per user subscriptions. Can be present only if subscriptionRequired property is present and has a value of false. |
 | `terms` | string | `''` | Product terms of use. Developers trying to subscribe to the product will be presented and required to accept these terms before they can complete the subscription process. |
 
+
 ## Outputs
 
 | Output Name | Type | Description |
@@ -57,4 +57,3 @@ The following resources are required to be able to deploy this resource.
 | `name` | string | The name of the API management service product. |
 | `resourceGroupName` | string | The resource group the API management service product was deployed into. |
 | `resourceId` | string | The resource ID of the API management service product. |
-

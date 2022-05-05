@@ -7,13 +7,12 @@ This module deploys a private endpoint private DNS zone group
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Template references](#Template-references)
 
 ## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | 2021-05-01 |
+| `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | [2021-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/privateEndpoints/privateDnsZoneGroups) |
 
 ## Parameters
 
@@ -33,6 +32,7 @@ This module deploys a private endpoint private DNS zone group
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `name` | string | `'default'` | The name of the private DNS Zone Group. |
 
+
 ## Outputs
 
 | Output Name | Type | Description |
@@ -40,4 +40,3 @@ This module deploys a private endpoint private DNS zone group
 | `name` | string | The name of the private endpoint DNS zone group. |
 | `resourceGroupName` | string | The resource group the private endpoint DNS zone group was deployed into. |
 | `resourceId` | string | The resource ID of the private endpoint DNS zone group. |
-

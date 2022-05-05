@@ -7,13 +7,12 @@ This template deploys Virtual Network Peering.
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Template references](#Template-references)
 
 ## Resource types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Network/virtualNetworks/virtualNetworkPeerings` | 2021-05-01 |
+| `Microsoft.Network/virtualNetworks/virtualNetworkPeerings` | [2021-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/virtualNetworks/virtualNetworkPeerings) |
 
 ## Parameters
 
@@ -54,4 +53,7 @@ Array containing multiple objects for different VNETs to peer with.
 | `localVirtualNetworkPeeringResourceIds` | array | The resource IDs of the deployed virtual network peerings. |
 | `virtualNetworkPeeringNames` | array | The names of the deployed virtual network peerings. |
 | `virtualNetworkPeeringResourceGroup` | string | The resource group of the deployed virtual network peerings. |
+| `localVirtualNetworkPeeringResourceIds` | array | The resource IDs of the deployed virtual network peerings |
+| `virtualNetworkPeeringNames` | array | The names of the deployed virtual network peerings |
+| `virtualNetworkPeeringResourceGroup` | string | The resource group of the deployed virtual network peerings |
 

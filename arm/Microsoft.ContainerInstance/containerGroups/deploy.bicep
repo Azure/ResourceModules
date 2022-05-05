@@ -33,7 +33,7 @@ param ipAddressType string = 'Public'
 @description('Optional. The image registry credentials by which the container group is created from.')
 param imageRegistryCredentials array = []
 
-@description('Optional. Envrionment variables of the container group.')
+@description('Optional. Environment variables of the container group.')
 param environmentVariables array = []
 
 @description('Optional. Location for all Resources.')

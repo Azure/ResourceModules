@@ -7,13 +7,12 @@ This module deploys an Azure Automation Account Module.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Template references](#Template-references)
 
 ## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Automation/automationAccounts/modules` | 2020-01-13-preview |
+| `Microsoft.Automation/automationAccounts/modules` | [2020-01-13-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Automation/2020-01-13-preview/automationAccounts/modules) |
 
 ## Parameters
 
@@ -35,6 +34,7 @@ This module deploys an Azure Automation Account Module.
 | `location` | string | `[resourceGroup().location]` | Location for all resources. |
 | `tags` | object | `{object}` | Tags of the Automation Account resource. |
 | `version` | string | `'latest'` | Module version or specify latest to get the latest version. |
+
 
 ### Parameter Usage: `tags`
 
@@ -60,4 +60,3 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | `name` | string | The name of the deployed module. |
 | `resourceGroupName` | string | The resource group of the deployed module. |
 | `resourceId` | string | The resource ID of the deployed module. |
-

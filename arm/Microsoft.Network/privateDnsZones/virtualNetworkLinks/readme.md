@@ -7,13 +7,12 @@ This module deploys private dns zone virtual network links.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Template references](#Template-references)
 
 ## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Network/privateDnsZones/virtualNetworkLinks` | 2020-06-01 |
+| `Microsoft.Network/privateDnsZones/virtualNetworkLinks` | [2020-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-06-01/privateDnsZones/virtualNetworkLinks) |
 
 ## Parameters
 
@@ -35,6 +34,7 @@ This module deploys private dns zone virtual network links.
 | `name` | string | `[format('{0}-vnetlink', last(split(parameters('virtualNetworkResourceId'), '/')))]` | The name of the virtual network link. |
 | `registrationEnabled` | bool | `False` | Is auto-registration of virtual machine records in the virtual network in the Private DNS zone enabled?. |
 | `tags` | object | `{object}` | Tags of the resource. |
+
 
 ### Parameter Usage: `tags`
 
@@ -60,4 +60,3 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | `name` | string | The name of the deployed virtual network link. |
 | `resourceGroupName` | string | The resource group of the deployed virtual network link. |
 | `resourceId` | string | The resource ID of the deployed virtual network link. |
-

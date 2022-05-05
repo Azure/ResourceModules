@@ -7,24 +7,23 @@ This template deploys a private DNS zone.
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Template references](#Template-references)
 
 ## Resource types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/locks` | 2017-04-01 |
-| `Microsoft.Authorization/roleAssignments` | 2021-04-01-preview |
-| `Microsoft.Network/privateDnsZones` | 2020-06-01 |
-| `Microsoft.Network/privateDnsZones/A` | 2020-06-01 |
-| `Microsoft.Network/privateDnsZones/AAAA` | 2020-06-01 |
-| `Microsoft.Network/privateDnsZones/CNAME` | 2020-06-01 |
-| `Microsoft.Network/privateDnsZones/MX` | 2020-06-01 |
-| `Microsoft.Network/privateDnsZones/PTR` | 2020-06-01 |
-| `Microsoft.Network/privateDnsZones/SOA` | 2020-06-01 |
-| `Microsoft.Network/privateDnsZones/SRV` | 2020-06-01 |
-| `Microsoft.Network/privateDnsZones/TXT` | 2020-06-01 |
-| `Microsoft.Network/privateDnsZones/virtualNetworkLinks` | 2020-06-01 |
+| `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
+| `Microsoft.Authorization/roleAssignments` | [2020-10-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-10-01-preview/roleAssignments) |
+| `Microsoft.Network/privateDnsZones` | [2020-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-06-01/privateDnsZones) |
+| `Microsoft.Network/privateDnsZones/A` | [2020-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-06-01/privateDnsZones/A) |
+| `Microsoft.Network/privateDnsZones/AAAA` | [2020-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-06-01/privateDnsZones/AAAA) |
+| `Microsoft.Network/privateDnsZones/CNAME` | [2020-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-06-01/privateDnsZones/CNAME) |
+| `Microsoft.Network/privateDnsZones/MX` | [2020-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-06-01/privateDnsZones/MX) |
+| `Microsoft.Network/privateDnsZones/PTR` | [2020-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-06-01/privateDnsZones/PTR) |
+| `Microsoft.Network/privateDnsZones/SOA` | [2020-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-06-01/privateDnsZones/SOA) |
+| `Microsoft.Network/privateDnsZones/SRV` | [2020-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-06-01/privateDnsZones/SRV) |
+| `Microsoft.Network/privateDnsZones/TXT` | [2020-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-06-01/privateDnsZones/TXT) |
+| `Microsoft.Network/privateDnsZones/virtualNetworkLinks` | [2020-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2020-06-01/privateDnsZones/virtualNetworkLinks) |
 
 ## Parameters
 
@@ -50,6 +49,7 @@ This template deploys a private DNS zone.
 | `tags` | object | `{object}` |  | Tags of the resource. |
 | `txt` | _[txt](txt/readme.md)_ array | `[]` |  | Array of TXT records. |
 | `virtualNetworkLinks` | _[virtualNetworkLinks](virtualNetworkLinks/readme.md)_ array | `[]` |  | Array of custom objects describing vNet links of the DNS zone. Each object should contain properties 'vnetResourceId' and 'registrationEnabled'. The 'vnetResourceId' is a resource ID of a vNet to link, 'registrationEnabled' (bool) enables automatic DNS registration in the zone for the linked vNet. |
+
 
 ### Parameter Usage: `roleAssignments`
 
@@ -101,4 +101,3 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | `name` | string | The name of the private DNS zone. |
 | `resourceGroupName` | string | The resource group the private DNS zone was deployed into. |
 | `resourceId` | string | The resource ID of the private DNS zone. |
-

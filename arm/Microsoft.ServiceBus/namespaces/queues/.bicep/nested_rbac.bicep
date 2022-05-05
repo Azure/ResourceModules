@@ -44,8 +44,8 @@ resource queue 'Microsoft.ServiceBus/namespaces/queues@2021-06-01-preview' exist
   name: '${split(resourceId, '/')[8]}/${split(resourceId, '/')[10]}'
 }
 
-resource roleAssigment 'Microsoft.Authorization/roleAssignments@2021-04-01-preview' = [for principalId in principalIds: {
-  name: guid(queue.name, principalId, roleDefinitionIdOrName)
+resource roleAssigment 'Microsoft.Authorization/roleAssignments@2020-10-01-preview' = [for principalId in principalIds: {
+  name: guid(queue.id, principalId, roleDefinitionIdOrName)
   properties: {
     description: description
     roleDefinitionId: contains(builtInRoleNames, roleDefinitionIdOrName) ? builtInRoleNames[roleDefinitionIdOrName] : roleDefinitionIdOrName
