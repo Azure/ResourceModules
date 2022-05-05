@@ -47,6 +47,11 @@ SQL MI allows for Azure AD Authentication via an [Azure AD Admin](https://docs.m
 | `name` | string | The name of the SQL managed instance. |
 | `subnetId` | string | The fully qualified resource ID of the subnet on which the SQL managed instance will be placed. |
 
+**Conditional parameters**
+| Parameter Name | Type | Default Value | Description |
+| :-- | :-- | :-- | :-- |
+| `primaryUserAssignedIdentityId` | string | `''` | Required if "userAssignedIdentities" is not empty. The resource ID of a user assigned identity to be used by default. |
+
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
@@ -71,7 +76,6 @@ SQL MI allows for Azure AD Authentication via an [Azure AD Admin](https://docs.m
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `'NotSpecified'` | `[CanNotDelete, NotSpecified, ReadOnly]` | Specify the type of lock. |
 | `managedInstanceCreateMode` | string | `'Default'` | `[Default, PointInTimeRestore]` | Specifies the mode of database creation. Default: Regular instance creation. Restore: Creates an instance by restoring a set of backups to specific point in time. RestorePointInTime and SourceManagedInstanceId must be specified. |
-| `primaryUserAssignedIdentityId` | string | `''` |  | Mandatory if "managedServiceIdentity" contains UserAssigned. The resource ID of a user assigned identity to be used by default. |
 | `proxyOverride` | string | `'Proxy'` | `[Proxy, Redirect, Default]` | Connection type used for connecting to the instance. |
 | `publicDataEndpointEnabled` | bool | `False` |  | Whether or not the public data endpoint is enabled. |
 | `requestedBackupStorageRedundancy` | string | `'Geo'` | `[Geo, GeoZone, Local, Zone]` | The storage account type used to store backups for this database. |

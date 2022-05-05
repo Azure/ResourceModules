@@ -1,29 +1,29 @@
 // ================ //
 // Parameters       //
 // ================ //
-@description('Required. The name of the machine learning workspace.')
+@sys.description('Required. The name of the machine learning workspace.')
 param name string
 
-@description('Optional. Location for all resources.')
+@sys.description('Optional. Location for all resources.')
 param location string = resourceGroup().location
 
-@description('Required. Specifies the sku, also referred as \'edition\' of the Azure Machine Learning workspace.')
+@sys.description('Required. Specifies the SKU, also referred as \'edition\' of the Azure Machine Learning workspace.')
 @allowed([
   'Basic'
   'Enterprise'
 ])
 param sku string
 
-@description('Required. The resource ID of the associated Storage Account.')
+@sys.description('Required. The resource ID of the associated Storage Account.')
 param associatedStorageAccountResourceId string
 
-@description('Required. The resource ID of the associated Key Vault.')
+@sys.description('Required. The resource ID of the associated Key Vault.')
 param associatedKeyVaultResourceId string
 
-@description('Required. The resource ID of the associated Application Insights.')
+@sys.description('Required. The resource ID of the associated Application Insights.')
 param associatedApplicationInsightsResourceId string
 
-@description('Optional. The resource ID of the associated Container Registry.')
+@sys.description('Optional. The resource ID of the associated Container Registry.')
 param associatedContainerRegistryResourceId string = ''
 
 @allowed([
@@ -31,56 +31,56 @@ param associatedContainerRegistryResourceId string = ''
   'NotSpecified'
   'ReadOnly'
 ])
-@description('Optional. Specify the type of lock.')
+@sys.description('Optional. Specify the type of lock.')
 param lock string = 'NotSpecified'
 
-@description('Optional. The flag to signal HBI data in the workspace and reduce diagnostic data collected by the service.')
+@sys.description('Optional. The flag to signal HBI data in the workspace and reduce diagnostic data collected by the service.')
 param hbiWorkspace bool = false
 
-@description('Optional. The flag to indicate whether to allow public access when behind VNet.')
+@sys.description('Optional. The flag to indicate whether to allow public access when behind VNet.')
 param allowPublicAccessWhenBehindVnet bool = false
 
-@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'')
+@sys.description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'')
 param roleAssignments array = []
 
-@description('Optional. Configuration Details for private endpoints.')
+@sys.description('Optional. Configuration Details for private endpoints.')
 param privateEndpoints array = []
 
-@description('Optional. Computes to create respectively attach to the workspace.')
+@sys.description('Optional. Computes to create respectively attach to the workspace.')
 param computes array = []
 
-@description('Optional. Resource tags.')
+@sys.description('Optional. Resource tags.')
 param tags object = {}
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@sys.description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
 
 // Identity
-@description('Optional. Enables system assigned managed identity on the resource.')
+@sys.description('Conditional. Enables system assigned managed identity on the resource. Required if `userAssignedIdentities` is not provided.')
 param systemAssignedIdentity bool = false
 
-@description('Optional. The ID(s) to assign to the resource.')
+@sys.description('Conditional. The ID(s) to assign to the resource. Required if `systemAssignedIdentity` is set to false.')
 param userAssignedIdentities object = {}
 
 // Diagnostic Settings
-@description('Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.')
+@sys.description('Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.')
 @minValue(0)
 @maxValue(365)
 param diagnosticLogsRetentionInDays int = 365
 
-@description('Optional. Resource ID of the diagnostic storage account.')
+@sys.description('Optional. Resource ID of the diagnostic storage account.')
 param diagnosticStorageAccountId string = ''
 
-@description('Optional. Resource ID of the diagnostic log analytics workspace.')
+@sys.description('Optional. Resource ID of the diagnostic log analytics workspace.')
 param diagnosticWorkspaceId string = ''
 
-@description('Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.')
+@sys.description('Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.')
 param diagnosticEventHubAuthorizationRuleId string = ''
 
-@description('Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.')
+@sys.description('Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.')
 param diagnosticEventHubName string = ''
 
-@description('Optional. The name of logs that will be streamed.')
+@sys.description('Optional. The name of logs that will be streamed.')
 @allowed([
   'AmlComputeClusterEvent'
   'AmlComputeClusterNodeEvent'
@@ -96,7 +96,7 @@ param diagnosticLogCategoriesToEnable array = [
   'AmlRunStatusChangedEvent'
 ]
 
-@description('Optional. The name of metrics that will be streamed.')
+@sys.description('Optional. The name of metrics that will be streamed.')
 @allowed([
   'AllMetrics'
 ])
@@ -104,8 +104,36 @@ param diagnosticMetricsToEnable array = [
   'AllMetrics'
 ]
 
-@description('Optional. The name of the diagnostic setting, if deployed.')
+@sys.description('Optional. The name of the diagnostic setting, if deployed.')
 param diagnosticSettingsName string = '${name}-diagnosticSettings'
+
+@sys.description('Optional. The description of this workspace.')
+param description string = ''
+
+@sys.description('Optional. URL for the discovery service to identify regional endpoints for machine learning experimentation services.')
+param discoveryUrl string = ''
+
+@sys.description('Optional. The Resource ID of the user assigned identity that will be used to access the customer managed key vault.')
+param encryptionIdentity string = ''
+
+@sys.description('Conditional. Key vault URI to access the encryption key. Required if an \'encryptionIdentity\' was provided.')
+param encryptionKeyIdentifier string = ''
+
+@sys.description('Conditional. The ResourceID of the keyVault where the customer owned encryption key is present. Required if an \'encryptionIdentity\' was provided.')
+param encryptionKeyVaultResourceId string = ''
+
+@sys.description('Optional. The compute name for image build.')
+param imageBuildCompute string = ''
+
+@sys.description('Conditional. The user assigned identity resource id that represents the workspace identity. Required if \'userAssignedIdentities\' is not empty and may not be used if \'systemAssignedIdentity\' is enabled.')
+param primaryUserAssignedIdentity string = ''
+
+@sys.description('Optional. Whether requests from Public Network are allowed.')
+@allowed([
+  'Enabled'
+  'Disabled'
+])
+param publicNetworkAccess string = 'Disabled'
 
 // ================//
 // Variables       //
@@ -151,7 +179,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource workspace 'Microsoft.MachineLearningServices/workspaces@2021-04-01' = {
+resource workspace 'Microsoft.MachineLearningServices/workspaces@2021-07-01' = {
   name: name
   location: location
   tags: tags
@@ -165,9 +193,23 @@ resource workspace 'Microsoft.MachineLearningServices/workspaces@2021-04-01' = {
     storageAccount: associatedStorageAccountResourceId
     keyVault: associatedKeyVaultResourceId
     applicationInsights: associatedApplicationInsightsResourceId
-    containerRegistry: ((!(associatedContainerRegistryResourceId == '')) ? associatedContainerRegistryResourceId : null)
+    containerRegistry: !empty(associatedContainerRegistryResourceId) ? associatedContainerRegistryResourceId : null
     hbiWorkspace: hbiWorkspace
     allowPublicAccessWhenBehindVnet: allowPublicAccessWhenBehindVnet
+    description: description
+    discoveryUrl: discoveryUrl
+    encryption: any({
+      identity: !empty(encryptionIdentity) ? {
+        userAssignedIdentity: encryptionIdentity
+      } : null
+      keyVaultProperties: !empty(encryptionIdentity) ? {
+        keyIdentifier: encryptionKeyIdentifier
+        keyVaultArmId: encryptionKeyVaultResourceId
+      } : null
+    })
+    imageBuildCompute: imageBuildCompute
+    primaryUserAssignedIdentity: primaryUserAssignedIdentity
+    publicNetworkAccess: publicNetworkAccess
   }
 }
 
@@ -237,14 +279,14 @@ module workspace_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) 
 // ================//
 // Outputs         //
 // ================//
-@description('The resource ID of the machine learning service')
+@sys.description('The resource ID of the machine learning service')
 output resourceId string = workspace.id
 
-@description('The resource group the machine learning service was deployed into')
+@sys.description('The resource group the machine learning service was deployed into')
 output resourceGroupName string = resourceGroup().name
 
-@description('The name of the machine learning service')
+@sys.description('The name of the machine learning service')
 output name string = workspace.name
 
-@description('The principal ID of the system assigned identity.')
+@sys.description('The principal ID of the system assigned identity.')
 output principalId string = (!empty(identity) && contains(identity.type, 'SystemAssigned')) ? workspace.identity.principalId : ''
