@@ -11,7 +11,7 @@ param tags object = {}
 param name string = '${last(split(privateEndpointResourceId, '/'))}-${service}'
 
 @description('Required. The service/groupId his private endpoint should connect to')
-param service string
+param service string = 'sqlServer'
 
 @description('Required. Subnet in a virtual network resource.')
 param subnetResourceId string

@@ -148,7 +148,7 @@ module server_privateEndpoints '.bicep/nested_privateEndpoint.bicep' = [for (end
   params: {
     privateEndpointResourceId: server.id
     privateEndpointVnetLocation: !empty(privateEndpoints) ? reference(split(endpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location : 'dummy'
-    service: 'sql'
+    service: contains(endpoint, 'service') ? endpoint.service : 'sqlServer'
     subnetResourceId: endpoint.subnetResourceId
     customDnsConfigs: contains(endpoint, 'customDnsConfigs') ? endpoint.customDnsConfigs : []
     name: contains(endpoint, 'name') ? endpoint.name : '${last(split(server.id, '/'))}-sql'
