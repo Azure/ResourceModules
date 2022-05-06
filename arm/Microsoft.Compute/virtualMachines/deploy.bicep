@@ -3,6 +3,11 @@
 param name string = take(toLower(uniqueString(resourceGroup().name)), 10)
 
 @description('Optional. Specifies whether the computer names should be transformed. The transformation is performed on all computer names. Available transformations are \'none\' (Default), \'uppercase\' and \'lowercase\'.')
+@allowed([
+  'none'
+  'uppercase'
+  'lowercase'
+])
 param vmComputerNamesTransformation string = 'none'
 
 @description('Required. Specifies the size for the VMs')
