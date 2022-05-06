@@ -57,7 +57,7 @@ To run the dependencies pipeline you can perform the following steps:
 
 By default, i.e. by keeping the optional flags disables, the dependencies pipeline may take up to 30 minutes to execute.
 
-> **Note:** For details about the dependencies pipeline design please refer to the dedicated [Dependencies pipeline design](./The%20CI%20environment%20-%20Pipeline%20design.md#dependencies-pipeline) section.
+> **Note:** For details about the dependencies pipeline design please refer to the dedicated [Dependencies pipeline design](./The%20CI%20environment%20-%20Pipeline%20design#dependencies-pipeline) section.
 
 ## Add a new dependency
 

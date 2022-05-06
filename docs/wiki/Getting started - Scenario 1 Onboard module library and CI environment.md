@@ -344,7 +344,7 @@ The repository comes with a platform pipeline, the dependencies pipeline, that d
 
 Run the dependencies pipeline by following instructions provided in the specific [Dependencies pipeline usage](./The%20CI%20environment%20-%20Pipeline%20usage#operate-the-dependencies-pipeline) section.
 
-> **Note**: For details about the dependencies pipeline design please refer to the dedicated [Dependencies pipeline design](./The%20CI%20environment%20-%20Pipeline%20design.md#dependencies-pipeline) section.
+> **Note**: For details about the dependencies pipeline design please refer to the dedicated [Dependencies pipeline design](./The%20CI%20environment%20-%20Pipeline%20design#dependencies-pipeline) section.
 
 ## 4.1 Manual Dependencies
 
