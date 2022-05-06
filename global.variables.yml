@@ -8,7 +8,7 @@ variables:
     ######################################
 
     location: "West Europe" # The default location to test deploy resources to
-    resourceGroupName: "rg-resourcemodules-dev-weu" # The default resource group to test deployment resources into
+    resourceGroupName: "rg-weu-peakbit-resourcemodules-dev" # The default resource group to test deployment resources into
 
     ######################################
     # Publish: Template-Spec settings
