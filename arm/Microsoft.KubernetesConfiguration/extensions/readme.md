@@ -37,13 +37,9 @@ For Details see [Prerequisites](https://docs.microsoft.com/en-us/azure/azure-arc
 **Required parameters**
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
+| `clusterName` | string | The name of the AKS cluster that should be configured. |
 | `extensionType` | string | Type of the Extension, of which this resource is an instance of. It must be one of the Extension Types registered with Microsoft.KubernetesConfiguration by the Extension publisher. |
 | `name` | string | The name of the Flux Configuration. |
-
-**Conditional parameters**
-| Parameter Name | Type | Description |
-| :-- | :-- | :-- |
-| `clusterName` | string | The name of the AKS cluster that should be configured. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Description |
