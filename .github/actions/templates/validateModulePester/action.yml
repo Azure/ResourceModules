@@ -121,7 +121,7 @@ runs:
           if: always() && !contains('cancelled,skipped', steps.pester_run_step.outcome)
           with:
               files: arm/.global/global-testResults.xml
-              github_token: ${{ secrets.PLATFORM_REPO_UPDATE_PAT}}
+              github_token: ${{ secrets.PLATFORM_REPO_UPDATE_PAT }}
 
         # [Module Pester Test] task(s)
         #-----------------------------
@@ -172,4 +172,4 @@ runs:
           if: always() && !contains('cancelled,skipped', steps.pester_api_run_step.outcome)
           with:
               files: arm/.global/api-testResults.xml
-              github_token: ${{ secrets.PLATFORM_REPO_UPDATE_PAT}}
+              github_token: ${{ secrets.PLATFORM_REPO_UPDATE_PAT }}
