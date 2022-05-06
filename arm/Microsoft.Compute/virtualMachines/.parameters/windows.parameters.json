@@ -199,7 +199,7 @@
                     "EncryptionOperation": "EnableEncryption",
                     "KeyVaultURL": "https://adp-<<namePrefix>>-az-kv-x-001.vault.azure.net/",
                     "KeyVaultResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001",
-                    "KeyEncryptionKeyURL": "https://adp-<<namePrefix>>-az-kv-x-001.vault.azure.net/keys/keyEncryptionKey/bc3bb46d95c64367975d722f473eeae5", // ID must be updated for new keys
+                    "KeyEncryptionKeyURL": "https://adp-<<namePrefix>>-az-kv-x-001.vault.azure.net/keys/keyEncryptionKey/8902f27c5c2545aea9c5ecb1b1e3a232", // ID must be updated for new keys
                     "KekVaultResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001",
                     "KeyEncryptionAlgorithm": "RSA-OAEP",
                     "VolumeType": "All",
