@@ -1,4 +1,3 @@
-// Main resource
 @description('Optional. Name(s) of the virtual machine(s). If no explicit names are provided, VM name(s) will be generated based on the vmNamePrefix, vmNumberOfInstances and vmInitialNumber parameters.')
 param vmNames array = []
 
@@ -378,3 +377,12 @@ module virtualMachine '../../../arm/Microsoft.Compute/virtualMachines/deploy.bic
     availabilityZone: availabilityZone
   }
 }]
+
+@description('The Resource Id(s) of the VM(s).')
+output virtualMachinesResourceId array = [for vmIndex in range(0, length(vmNamesToApply)): virtualMachine[vmIndex].outputs.resourceId]
+
+@description('The name of the Resource Group the VM(s) was/were created in.')
+output virtualMachinesResourceGroup string = resourceGroup().name
+
+@description('The Names of the VMs.')
+output virtualMachinesName array = [for vmIndex in range(0, length(vmNamesToApply)): virtualMachine[vmIndex].outputs.name]
