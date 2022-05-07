@@ -18,15 +18,13 @@ $script:Subscriptiondeployment = 'https://schema.management.azure.com/schemas/20
 $script:MGdeployment = 'https://schema.management.azure.com/schemas/2019-08-01/managementGroupDeploymentTemplate.json#'
 $script:Tenantdeployment = 'https://schema.management.azure.com/schemas/2019-08-01/tenantDeploymentTemplate.json#'
 $script:moduleFolderPaths = $moduleFolderPaths
-$script:moduleFolderPathsFiltered = $moduleFolderPaths | Where-Object {
-    (Split-Path $_ -Leaf) -notin @( 'AzureNetappFiles', 'TrafficManager', 'PrivateDnsZones', 'ManagementGroups') }
 $script:enforcedTokenList = $enforcedTokenList
 
 # For runtime purposes, we cache the compiled template in a hashtable that uses a formatted relative module path as a key
 $script:convertedTemplates = @{}
 
 # Import any helper function used in this test script
-Import-Module (Join-Path $PSScriptRoot 'shared\helper.psm1')
+Import-Module (Join-Path $PSScriptRoot 'shared\helper.psm1') -Force
 
 Describe 'File/folder tests' -Tag Modules {
 
@@ -205,7 +203,7 @@ Describe 'Readme tests' -Tag Readme {
             }
 
             # Get template data
-            $templateResources = (Get-NestedResourceList -TemplateContent $templateContent | Where-Object {
+            $templateResources = (Get-NestedResourceList -TemplateFileContent $templateContent | Where-Object {
                     $_.type -notin @('Microsoft.Resources/deployments') -and $_ }).type | Select-Object -Unique
 
             # Compare
@@ -242,7 +240,7 @@ Describe 'Readme tests' -Tag Readme {
             }
 
             # Get template data
-            $templateResources = (Get-NestedResourceList -TemplateContent $templateContent | Where-Object {
+            $templateResources = (Get-NestedResourceList -TemplateFileContent $templateContent | Where-Object {
                     $_.type -notin @('Microsoft.Resources/deployments') -and $_ }).type | Select-Object -Unique
 
             # Compare
@@ -432,7 +430,6 @@ Describe 'Deployment template tests' -Tag Template {
     Context 'Deployment template tests' {
 
         $deploymentFolderTestCases = [System.Collections.ArrayList] @()
-        $deploymentFolderTestCasesException = [System.Collections.ArrayList] @()
         foreach ($moduleFolderPath in $moduleFolderPaths) {
 
             # For runtime purposes, we cache the compiled template in a hashtable that uses a formatted relative module path as a key
@@ -477,13 +474,8 @@ Describe 'Deployment template tests' -Tag Template {
             $deploymentFolderTestCases += @{
                 moduleFolderName       = $moduleFolderPath.Replace('\', '/').Split('/arm/')[1]
                 templateContent        = $templateContent
+                templateFilePath       = $templateFilePath
                 parameterFileTestCases = $parameterFileTestCases
-            }
-        }
-        foreach ($moduleFolderPath in $moduleFolderPathsFiltered) {
-            $deploymentFolderTestCasesException += @{
-                moduleFolderNameException = $moduleFolderPath.Replace('\', '/').Split('/arm/')[1]
-                templateContent           = $templateContent
             }
         }
 
@@ -679,34 +671,40 @@ Describe 'Deployment template tests' -Tag Template {
             }
         }
 
-        It "[<moduleFolderNameException>] All resources that have a Location property should refer to the Location parameter 'parameters('Location')'" -TestCases $deploymentFolderTestCasesException {
+
+        It '[<moduleFolderName>] Location output should be returned for resources that use it' -TestCases $deploymentFolderTestCases {
             param(
-                $moduleFolderNameException,
-                $templateContent
+                $moduleFolderName,
+                $templateContent,
+                $templateFilePath
             )
-            $LocationParamFlag = @()
-            $Locmandoutput = $templateContent.resources
-            foreach ($Locmand in $Locmandoutput) {
-                if ($Locmand.Keys -contains 'Location' -and $Locmand.Location -eq "[parameters('Location')]") {
-                    $LocationParamFlag += $true
-                } elseIf ($Locmand.Keys -notcontains 'Location') {
-                    $LocationParamFlag += $true
-                } elseIf ($Locmand.Keys -notcontains 'resourceGroup') {
-                    $LocationParamFlag += $true
-                } else {
-                    $LocationParamFlag += $false
+
+            $outputs = $templateContent.Outputs
+
+            $deploymentScope = Get-ScopeOfTemplateFile -TemplateFilePath $TemplateFilePath -Verbose
+
+            switch ($deploymentScope) {
+                'resourceGroup' {
+                    $outputs.Keys | Should -Contain 'location'
+                    break
                 }
-                foreach ($Locm in $Locmand.resources) {
-                    if ($Locm.Keys -contains 'Location' -and $Locm.Location -eq "[parameters('Location')]") {
-                        $LocationParamFlag += $true
-                    } elseIf ($Locm.Keys -notcontains 'Location') {
-                        $LocationParamFlag += $true
-                    } else {
-                        $LocationParamFlag += $false
-                    }
+                'subscription' {
+
+                    break
+                }
+                'managementGroup' {
+
+                    break
+                }
+                'tenant' {
+
+                    break
+                }
+                default {
+                    throw "[$deploymentScope] is a non-supported template scope"
                 }
             }
-            $LocationParamFlag | Should -Not -Contain $false
+
         }
 
         It '[<moduleFolderName>] Standard outputs should be provided (e.g. resourceName, resourceId, resouceGroupName)' -TestCases $deploymentFolderTestCases {
@@ -855,7 +853,7 @@ Describe "API version tests [All apiVersions in the template should be 'recent']
             $templateContent = $convertedTemplates[$moduleFolderPathKey]
         }
 
-        $nestedResources = Get-NestedResourceList -TemplateContent $templateContent | Where-Object {
+        $nestedResources = Get-NestedResourceList -TemplateFileContent $templateContent | Where-Object {
             $_.type -notin @('Microsoft.Resources/deployments') -and $_
         } | Select-Object 'Type', 'ApiVersion' -Unique | Sort-Object Type
 
