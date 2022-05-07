@@ -25,7 +25,7 @@ This module deploys a storage account table
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `storageAccountName` | string |  | Name of the Storage Account. Required if the template is used in a standalone deployment. |
-| `tableServicesName` | string | `'default'` | The name of the table service. Required if the template is used in a standalone deployment. |
+| `tableServicesName` | string | `'default'` | The name of the parent table service. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Description |

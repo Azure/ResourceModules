@@ -1,4 +1,4 @@
-@description('Conditional. The name of the parent load balancer. Required if the template is used in a standalone deployment.')
+@description('Conditional. The name of the parent parent load balancer. Required if the template is used in a standalone deployment.')
 param loadBalancerName string
 
 @description('Required. The name of the inbound NAT rule.')

@@ -1,7 +1,7 @@
-@description('Conditional. The name of the NetApp account. Required if the template is used in a standalone deployment.')
+@description('Conditional. The name of the parent NetApp account. Required if the template is used in a standalone deployment.')
 param netAppAccountName string
 
-@description('Conditional. The name of the capacity pool. Required if the template is used in a standalone deployment.')
+@description('Conditional. The name of the parent capacity pool. Required if the template is used in a standalone deployment.')
 param capacityPoolName string
 
 @description('Required. The name of the pool volume.')

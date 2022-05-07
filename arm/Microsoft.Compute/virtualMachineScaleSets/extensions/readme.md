@@ -29,7 +29,7 @@ This module deploys a virtual machine scale set extension.
 **Conditional parameters**
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `virtualMachineScaleSetName` | string | The name of the virtual machine scale set that extension is provisioned for. Required if the template is used in a standalone deployment. |
+| `virtualMachineScaleSetName` | string | The name of the parent virtual machine scale set that extension is provisioned for. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Description |

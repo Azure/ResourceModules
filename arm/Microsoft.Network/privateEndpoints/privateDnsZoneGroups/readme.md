@@ -24,7 +24,7 @@ This module deploys a private endpoint private DNS zone group
 **Conditional parameters**
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `privateEndpointName` | string | The name of the private endpoint. Required if the template is used in a standalone deployment. |
+| `privateEndpointName` | string | The name of the parent private endpoint. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Description |

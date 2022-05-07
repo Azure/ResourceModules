@@ -7,7 +7,7 @@ param endIpAddress string = '0.0.0.0'
 @description('Optional. The start IP address of the firewall rule. Must be IPv4 format. Use value \'0.0.0.0\' for all Azure-internal IP addresses.')
 param startIpAddress string = '0.0.0.0'
 
-@description('Conditional. The Name of SQL Server. Required if the template is used in a standalone deployment.')
+@description('Conditional. The name of the parent SQL Server. Required if the template is used in a standalone deployment.')
 param serverName string
 
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')

@@ -1,7 +1,7 @@
 @description('Required. The name of the NAT rule.')
 param name string
 
-@description('Conditional. The name of the VPN gateway this NAT rule is associated with. Required if the template is used in a standalone deployment.')
+@description('Conditional. The name of the parent VPN gateway this NAT rule is associated with. Required if the template is used in a standalone deployment.')
 param vpnGatewayName string
 
 @description('Optional. An address prefix range of destination IPs on the outside network that source IPs will be mapped to. In other words, your post-NAT address prefix range.')

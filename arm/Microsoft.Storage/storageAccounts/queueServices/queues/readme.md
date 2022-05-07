@@ -26,7 +26,7 @@ This module deploys a storage account queue
 **Conditional parameters**
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
-| `queueServicesName` | string | `'default'` | The name of the queue service. Required if the template is used in a standalone deployment. |
+| `queueServicesName` | string | `'default'` | The name of the parent queue service. Required if the template is used in a standalone deployment. |
 | `storageAccountName` | string |  | Name of the Storage Account. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**

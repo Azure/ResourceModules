@@ -29,7 +29,7 @@ This module deploys a virtual machine extension.
 **Conditional parameters**
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `virtualMachineName` | string | The name of the virtual machine that extension is provisioned for. Required if the template is used in a standalone deployment. |
+| `virtualMachineName` | string | The name of the parent virtual machine that extension is provisioned for. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Description |

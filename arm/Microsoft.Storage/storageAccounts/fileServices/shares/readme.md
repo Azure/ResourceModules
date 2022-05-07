@@ -25,7 +25,7 @@ This module deploys a storage account file share.
 **Conditional parameters**
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
-| `fileServicesName` | string | `'default'` | The name of the file service. Required if the template is used in a standalone deployment. |
+| `fileServicesName` | string | `'default'` | The name of the parent file service. Required if the template is used in a standalone deployment. |
 | `storageAccountName` | string |  | Name of the Storage Account. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**

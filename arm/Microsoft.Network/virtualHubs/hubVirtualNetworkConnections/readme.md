@@ -25,7 +25,7 @@ This module deploys virtual hub virtual network connections.
 **Conditional parameters**
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `virtualHubName` | string | The virtual hub name. Required if the template is used in a standalone deployment. |
+| `virtualHubName` | string | The name of the parent virtual hub. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Description |

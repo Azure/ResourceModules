@@ -24,7 +24,7 @@ This module deploys a backup long-term retention policies for SQL Managed Instan
 **Conditional parameters**
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `databaseName` | string | The name of the managed instance database. Required if the template is used in a standalone deployment. |
+| `databaseName` | string | The name of the parent managed instance database. Required if the template is used in a standalone deployment. |
 | `managedInstanceName` | string | Name of the managed instance. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**

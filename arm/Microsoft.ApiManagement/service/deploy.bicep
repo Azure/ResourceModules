@@ -1,7 +1,7 @@
 @description('Optional. Additional datacenter locations of the API Management service.')
 param additionalLocations array = []
 
-@description('Required. The name of the of the API Management service.')
+@description('Required. The name of the API Management service.')
 param name string
 
 @description('Optional. List of Certificates that need to be installed in the API Management service. Max supported certificates that can be installed is 10.')

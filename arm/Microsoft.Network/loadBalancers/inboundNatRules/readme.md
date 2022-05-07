@@ -26,7 +26,7 @@ This module deploys load balancers inbound NAT rules.
 **Conditional parameters**
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `loadBalancerName` | string | The name of the parent load balancer. Required if the template is used in a standalone deployment. |
+| `loadBalancerName` | string | The name of the parent parent load balancer. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
