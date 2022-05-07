@@ -31,7 +31,7 @@ The following resources are required to be able to deploy this resource.
 **Conditional parameters**
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `localVnetName` | string | The Name of the Virtual Network to add the peering to. Required if the template is used in a standalone deployment. |
+| `localVnetName` | string | The name of the parent Virtual Network to add the peering to. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Description |

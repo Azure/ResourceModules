@@ -19,7 +19,7 @@ This module deploys key vault access policies.
 **Conditional parameters**
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `keyVaultName` | string | The name of the key vault. Required if the template is used in a standalone deployment. |
+| `keyVaultName` | string | The name of the parent key vault. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Description |

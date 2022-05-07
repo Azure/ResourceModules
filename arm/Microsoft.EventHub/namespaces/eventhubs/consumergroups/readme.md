@@ -24,8 +24,8 @@ This module deploys an EventHub Namespace EventHubs Consumer Group
 **Conditional parameters**
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `eventHubName` | string | The name of the event hub namespace event hub. Required if the template is used in a standalone deployment. |
-| `namespaceName` | string | The name of the event hub namespace. Required if the template is used in a standalone deployment.s. |
+| `eventHubName` | string | The name of the parent event hub namespace event hub. Required if the template is used in a standalone deployment. |
+| `namespaceName` | string | The name of the parent event hub namespace. Required if the template is used in a standalone deployment.s. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Description |

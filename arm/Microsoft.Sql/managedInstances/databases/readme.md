@@ -32,7 +32,7 @@ The SQL Managed Instance Database is deployed on a SQL Managed Instance.
 **Conditional parameters**
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `managedInstanceName` | string | The name of the SQL managed instance. Required if the template is used in a standalone deployment. |
+| `managedInstanceName` | string | The name of the parent SQL managed instance. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |

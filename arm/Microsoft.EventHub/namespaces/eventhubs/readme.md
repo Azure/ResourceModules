@@ -28,7 +28,7 @@ This module deploys an Event Hub.
 **Conditional parameters**
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `namespaceName` | string | The name of the event hub namespace. Required if the template is used in a standalone deployment. |
+| `namespaceName` | string | The name of the parent event hub namespace. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |

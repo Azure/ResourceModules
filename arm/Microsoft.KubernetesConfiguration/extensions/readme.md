@@ -43,7 +43,7 @@ For Details see [Prerequisites](https://docs.microsoft.com/en-us/azure/azure-arc
 **Conditional parameters**
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `clusterName` | string | The name of the AKS cluster that should be configured. Required if the template is used in a standalone deployment. |
+| `clusterName` | string | The name of the parent AKS cluster that should be configured. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Description |

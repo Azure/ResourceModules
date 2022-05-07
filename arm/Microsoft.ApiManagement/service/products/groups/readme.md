@@ -24,8 +24,8 @@ This module deploys API Management Service Product Groups.
 **Conditional parameters**
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `apiManagementServiceName` | string | The name of the API Management service. Required if the template is used in a standalone deployment. |
-| `productName` | string | The name of the Product. Required if the template is used in a standalone deployment. |
+| `apiManagementServiceName` | string | The name of the parent API Management service. Required if the template is used in a standalone deployment. |
+| `productName` | string | The name of the parent Product. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Description |

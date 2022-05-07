@@ -26,7 +26,7 @@ This module deploys a Managed or Self-Hosted Integration Runtime for an Azure Da
 **Conditional parameters**
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `dataFactoryName` | string | The name of the Azure Data Factory. Required if the template is used in a standalone deployment. |
+| `dataFactoryName` | string | The name of the parent Azure Data Factory. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Description |

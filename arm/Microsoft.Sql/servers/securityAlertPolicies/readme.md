@@ -24,7 +24,7 @@ This module deploys an SQL Server Security Alert Policy.
 **Conditional parameters**
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `serverName` | string | The Name of SQL Server. Required if the template is used in a standalone deployment. |
+| `serverName` | string | The name of the parent SQL Server. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |

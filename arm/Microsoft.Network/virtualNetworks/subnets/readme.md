@@ -26,7 +26,7 @@ This module deploys a virtual network subnet.
 **Conditional parameters**
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `virtualNetworkName` | string | The name of the parent virtual network. Required if the template is used in a standalone deployment. |
+| `virtualNetworkName` | string | The name of the parent parent virtual network. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
