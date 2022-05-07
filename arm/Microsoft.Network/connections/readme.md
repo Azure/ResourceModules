@@ -7,14 +7,13 @@ This template deploys a virtual network gateway connection.
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Template references](#Template-references)
 
 ## Resource types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/locks` | 2017-04-01 |
-| `Microsoft.Network/connections` | 2021-05-01 |
+| `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
+| `Microsoft.Network/connections` | [2021-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/connections) |
 
 ## Parameters
 
@@ -142,8 +141,3 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | `name` | string | The name of the remote connection |
 | `resourceGroupName` | string | The resource group the remote connection was deployed into |
 | `resourceId` | string | The resource ID of the remote connection |
-
-## Template references
-
-- [Connections](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/connections)
-- [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)

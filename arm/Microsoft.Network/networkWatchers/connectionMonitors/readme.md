@@ -7,13 +7,12 @@ This template deploys Connection Monitors.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Template references](#Template-references)
 
 ## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Network/networkWatchers/connectionMonitors` | 2021-05-01 |
+| `Microsoft.Network/networkWatchers/connectionMonitors` | [2021-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/networkWatchers/connectionMonitors) |
 
 ## Parameters
 
@@ -55,7 +54,3 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | `name` | string | The name of the deployed connection monitor |
 | `resourceGroupName` | string | The resource group the connection monitor was deployed into |
 | `resourceId` | string | The resource ID of the deployed connection monitor |
-
-## Template references
-
-- [Networkwatchers/Connectionmonitors](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/networkWatchers/connectionMonitors)

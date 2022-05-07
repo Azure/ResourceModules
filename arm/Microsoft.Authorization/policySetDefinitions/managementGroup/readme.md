@@ -7,13 +7,12 @@ With this module you can create policy set definitions on a management group lev
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Template references](#Template-references)
 
 ## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/policySetDefinitions` | 2021-06-01 |
+| `Microsoft.Authorization/policySetDefinitions` | [2021-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2021-06-01/policySetDefinitions) |
 
 ## Parameters
 
@@ -42,7 +41,3 @@ With this module you can create policy set definitions on a management group lev
 | :-- | :-- | :-- |
 | `name` | string | Policy Set Definition Name |
 | `resourceId` | string | Policy Set Definition resource ID |
-
-## Template references
-
-- [Policysetdefinitions](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2021-06-01/policySetDefinitions)

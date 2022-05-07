@@ -7,14 +7,13 @@ This module deploys an Image Definition in a Shared Image Gallery.
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Template references](#Template-references)
 
 ## Resource types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/roleAssignments` | 2021-04-01-preview |
-| `Microsoft.Compute/galleries/images` | 2020-09-30 |
+| `Microsoft.Authorization/roleAssignments` | [2020-10-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-10-01-preview/roleAssignments) |
+| `Microsoft.Compute/galleries/images` | [2020-09-30](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Compute/2020-09-30/galleries/images) |
 
 ## Parameters
 
@@ -102,8 +101,3 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | `name` | string | The name of the image |
 | `resourceGroupName` | string | The resource group the image was deployed into |
 | `resourceId` | string | The resource ID of the image |
-
-## Template references
-
-- [Galleries/Images](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Compute/2020-09-30/galleries/images)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)

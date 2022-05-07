@@ -7,15 +7,14 @@ This module deploys an Azure API connection.
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Template references](#Template-references)
 
 ## Resource types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/locks` | 2017-04-01 |
-| `Microsoft.Authorization/roleAssignments` | 2021-04-01-preview |
-| `Microsoft.Web/connections` | 2016-06-01 |
+| `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
+| `Microsoft.Authorization/roleAssignments` | [2020-10-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-10-01-preview/roleAssignments) |
+| `Microsoft.Web/connections` | [2016-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Web/2016-06-01/connections) |
 
 ## Parameters
 
@@ -145,9 +144,3 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | `name` | string | The name of the connection |
 | `resourceGroupName` | string | The resource group the connection was deployed into |
 | `resourceId` | string | The resource ID of the connection |
-
-## Template references
-
-- [Connections](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Web/2016-06-01/connections)
-- [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)
