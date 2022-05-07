@@ -212,3 +212,6 @@ output resourceId string = natGateway.id
 
 @description('The resource group the NAT Gateway was deployed into')
 output resourceGroupName string = resourceGroup().name
+
+@description('The location the resource was deployed into.')
+output location string = natGateway.location

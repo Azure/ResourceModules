@@ -92,3 +92,6 @@ output resourceId string = availabilitySet.id
 
 @description('The resource group the availability set was deployed into')
 output resourceGroupName string = resourceGroup().name
+
+@description('The location the resource was deployed into.')
+output location string = availabilitySet.location

@@ -584,3 +584,6 @@ output kubeletidentityObjectId string = contains(managedCluster.properties, 'ide
 
 @description('The Object ID of the OMS agent identity.')
 output omsagentIdentityObjectId string = contains(managedCluster.properties, 'addonProfiles') ? contains(managedCluster.properties.addonProfiles, 'omsagent') ? contains(managedCluster.properties.addonProfiles.omsagent, 'identity') ? managedCluster.properties.addonProfiles.omsagent.identity.objectId : '' : '' : ''
+
+@description('The location the resource was deployed into.')
+output location string = managedCluster.location

@@ -108,3 +108,6 @@ output resourceGroupName string = resourceGroup().name
 
 @description('The application ID of the application insights component')
 output applicationId string = appInsights.properties.AppId
+
+@description('The location the resource was deployed into.')
+output location string = appInsights.location

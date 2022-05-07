@@ -77,3 +77,6 @@ output resourceId string = proximityPlacementGroup.id
 
 @description('The resource group the proximity placement group was deployed into')
 output resourceGroupName string = resourceGroup().name
+
+@description('The location the resource was deployed into.')
+output location string = proximityPlacementGroup.location

@@ -177,3 +177,6 @@ output resourceId string = firewallPolicy.id
 
 @description('The resource group of the deployed firewall policy')
 output resourceGroupName string = resourceGroup().name
+
+@description('The location the resource was deployed into.')
+output location string = firewallPolicy.location

@@ -81,6 +81,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
+| `location` | string | The location the resource was deployed into. |
 | `name` | string | The name of the IP group |
 | `resourceGroupName` | string | The resource group of the IP group was deployed into |
 | `resourceId` | string | The resource ID of the IP group |

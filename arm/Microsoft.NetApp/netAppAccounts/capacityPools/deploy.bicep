@@ -108,3 +108,6 @@ output resourceId string = capacityPool.id
 
 @description('The name of the Resource Group the Capacity Pool was created in.')
 output resourceGroupName string = resourceGroup().name
+
+@description('The location the resource was deployed into.')
+output location string = capacityPool.location

@@ -257,3 +257,6 @@ output subnetNames array = [for subnet in subnets: subnet.name]
 
 @description('The resource IDs of the deployed subnets')
 output subnetResourceIds array = [for subnet in subnets: az.resourceId('Microsoft.Network/virtualNetworks/subnets', name, subnet.name)]
+
+@description('The location the resource was deployed into.')
+output location string = virtualNetwork.location

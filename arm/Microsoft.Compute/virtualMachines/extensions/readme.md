@@ -42,6 +42,7 @@ This module deploys a virtual machine extension.
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
+| `location` | string | The location the resource was deployed into. |
 | `name` | string | The name of the extension |
 | `resourceGroupName` | string | The name of the Resource Group the extension was created in. |
 | `resourceId` | string | The resource ID of the extension |

@@ -77,3 +77,6 @@ output name string = routeTable.name
 
 @description('The resource ID of the route table')
 output resourceId string = routeTable.id
+
+@description('The location the resource was deployed into.')
+output location string = routeTable.location

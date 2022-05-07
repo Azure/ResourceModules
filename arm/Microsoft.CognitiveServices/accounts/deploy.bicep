@@ -279,3 +279,6 @@ output endpoint string = cognitiveServices.properties.endpoint
 
 @description('The principal ID of the system assigned identity.')
 output systemAssignedPrincipalId string = systemAssignedIdentity && contains(cognitiveServices.identity, 'principalId') ? cognitiveServices.identity.principalId : ''
+
+@description('The location the resource was deployed into.')
+output location string = cognitiveServices.location

@@ -195,3 +195,6 @@ output name string = azureBastion.name
 
 @description('The resource ID the Azure Bastion')
 output resourceId string = azureBastion.id
+
+@description('The location the resource was deployed into.')
+output location string = azureBastion.location

@@ -166,6 +166,7 @@ You can specify multiple user assigned identities to a resource by providing add
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
+| `location` | string | The location the resource was deployed into. |
 | `name` | string | The name of the deployed service bus namespace |
 | `resourceGroupName` | string | The resource group of the deployed service bus namespace |
 | `resourceId` | string | The resource ID of the deployed service bus namespace |

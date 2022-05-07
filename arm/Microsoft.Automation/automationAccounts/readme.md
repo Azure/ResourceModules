@@ -196,6 +196,7 @@ You can specify multiple user assigned identities to a resource by providing add
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
+| `location` | string | The location the resource was deployed into. |
 | `name` | string | The name of the deployed automation account |
 | `resourceGroupName` | string | The resource group of the deployed automation account |
 | `resourceId` | string | The resource ID of the deployed automation account |

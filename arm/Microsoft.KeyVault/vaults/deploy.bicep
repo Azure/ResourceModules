@@ -314,3 +314,6 @@ output name string = keyVault.name
 
 @description('The URI of the key vault.')
 output uri string = keyVault.properties.vaultUri
+
+@description('The location the resource was deployed into.')
+output location string = keyVault.location

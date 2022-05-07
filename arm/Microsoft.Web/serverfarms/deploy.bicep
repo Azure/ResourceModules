@@ -180,3 +180,6 @@ output name string = appServicePlan.name
 
 @description('The resource ID of the app service plan')
 output resourceId string = appServicePlan.id
+
+@description('The location the resource was deployed into.')
+output location string = appServicePlan.location

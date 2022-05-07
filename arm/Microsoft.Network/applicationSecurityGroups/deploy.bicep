@@ -68,3 +68,6 @@ output resourceId string = applicationSecurityGroup.id
 
 @description('The name of the application security group')
 output name string = applicationSecurityGroup.name
+
+@description('The location the resource was deployed into.')
+output location string = applicationSecurityGroup.location

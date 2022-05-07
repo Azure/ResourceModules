@@ -123,3 +123,6 @@ output name string = connection.name
 
 @description('The resource ID of the remote connection')
 output resourceId string = connection.id
+
+@description('The location the resource was deployed into.')
+output location string = connection.location

@@ -160,3 +160,6 @@ output resourceId string = eventGrid.id
 
 @description('The name of the resource group the event grid was deployed into')
 output resourceGroupName string = resourceGroup().name
+
+@description('The location the resource was deployed into.')
+output location string = eventGrid.location

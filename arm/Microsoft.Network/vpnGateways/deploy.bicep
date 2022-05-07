@@ -117,3 +117,6 @@ output resourceId string = vpnGateway.id
 
 @description('The name of the resource group the VPN gateway was deployed into')
 output resourceGroupName string = resourceGroup().name
+
+@description('The location the resource was deployed into.')
+output location string = vpnGateway.location

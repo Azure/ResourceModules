@@ -109,3 +109,6 @@ output systemAssignedPrincipalId string = diskEncryptionSet.identity.principalId
 
 @description('The name of the key vault with the disk encryption key')
 output keyVaultName string = last(split(keyVaultId, '/'))
+
+@description('The location the resource was deployed into.')
+output location string = diskEncryptionSet.location

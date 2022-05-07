@@ -218,3 +218,6 @@ output name string = expressRouteCircuits.name
 
 @description('The service key of the express route circuit')
 output serviceKey string = reference(expressRouteCircuits.id, '2021-02-01').serviceKey
+
+@description('The location the resource was deployed into.')
+output location string = expressRouteCircuits.location

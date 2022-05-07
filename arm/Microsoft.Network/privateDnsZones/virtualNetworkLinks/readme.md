@@ -53,6 +53,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
+| `location` | string | The location the resource was deployed into. |
 | `name` | string | The name of the deployed virtual network link |
 | `resourceGroupName` | string | The resource group of the deployed virtual network link |
 | `resourceId` | string | The resource ID of the deployed virtual network link |

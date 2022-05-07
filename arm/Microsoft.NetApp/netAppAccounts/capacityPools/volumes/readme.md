@@ -68,6 +68,7 @@ Create a role assignment for the given resource. If you want to assign a service
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
+| `location` | string | The location the resource was deployed into. |
 | `name` | string | The name of the Volume. |
 | `resourceGroupName` | string | The name of the Resource Group the Volume was created in. |
 | `resourceId` | string | The Resource ID of the Volume. |

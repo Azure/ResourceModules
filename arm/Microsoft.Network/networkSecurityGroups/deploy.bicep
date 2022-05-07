@@ -167,3 +167,6 @@ output resourceId string = networkSecurityGroup.id
 
 @description('The name of the network security group')
 output name string = networkSecurityGroup.name
+
+@description('The location the resource was deployed into.')
+output location string = networkSecurityGroup.location

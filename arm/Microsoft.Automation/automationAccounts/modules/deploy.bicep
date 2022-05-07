@@ -56,3 +56,6 @@ output resourceId string = module.id
 
 @description('The resource group of the deployed module')
 output resourceGroupName string = resourceGroup().name
+
+@description('The location the resource was deployed into.')
+output location string = module.location

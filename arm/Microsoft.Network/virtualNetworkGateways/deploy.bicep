@@ -406,3 +406,6 @@ output resourceId string = virtualNetworkGateway.id
 
 @description('Shows if the virtual network gateway is configured in active-active mode')
 output activeActive bool = virtualNetworkGateway.properties.activeActive
+
+@description('The location the resource was deployed into.')
+output location string = virtualNetworkGateway.location

@@ -132,6 +132,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
 | `endpoint` | string | The Service Fabric Cluster endpoint. |
+| `location` | string | The location the resource was deployed into. |
 | `name` | string | The Service Fabric Cluster name. |
 | `resourceGroupName` | string | The Service Fabric Cluster resource group. |
 | `resourceId` | string | The Service Fabric Cluster resource ID. |

@@ -136,3 +136,6 @@ output resourceGroupName string = resourceGroup().name
 
 @description('The name of the AVD workspace')
 output name string = workspace.name
+
+@description('The location the resource was deployed into.')
+output location string = workspace.location

@@ -212,3 +212,6 @@ output resourceId string = batchAccount.id
 
 @description('The resource group the batch account was deployed into')
 output resourceGroupName string = resourceGroup().name
+
+@description('The location the resource was deployed into.')
+output location string = batchAccount.location

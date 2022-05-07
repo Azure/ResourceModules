@@ -212,3 +212,6 @@ output name string = hostPool.name
 
 @description('The expiration time for the registration token')
 output tokenExpirationTime string = dateTimeAdd(baseTime, tokenValidityLength)
+
+@description('The location the resource was deployed into.')
+output location string = hostPool.location

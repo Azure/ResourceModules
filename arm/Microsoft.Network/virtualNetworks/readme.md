@@ -186,6 +186,7 @@ The network security group and route table resources must reside in the same res
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
+| `location` | string | The location the resource was deployed into. |
 | `name` | string | The name of the virtual network |
 | `resourceGroupName` | string | The resource group the virtual network was deployed into |
 | `resourceId` | string | The resource ID of the virtual network |

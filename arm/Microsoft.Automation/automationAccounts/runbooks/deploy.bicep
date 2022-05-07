@@ -95,3 +95,6 @@ output resourceId string = runbook.id
 
 @description('The resource group of the deployed runbook')
 output resourceGroupName string = resourceGroup().name
+
+@description('The location the resource was deployed into.')
+output location string = runbook.location

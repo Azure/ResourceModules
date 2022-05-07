@@ -100,3 +100,6 @@ output name string = actionGroup.name
 
 @description('The resource ID of the action group ')
 output resourceId string = actionGroup.id
+
+@description('The location the resource was deployed into.')
+output location string = actionGroup.location

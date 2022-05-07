@@ -95,3 +95,6 @@ output resourceId string = volume.id
 
 @description('The name of the Resource Group the Volume was created in.')
 output resourceGroupName string = resourceGroup().name
+
+@description('The location the resource was deployed into.')
+output location string = volume.location

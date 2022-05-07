@@ -186,3 +186,6 @@ output name string = imageTemplate.name
 
 @description('The command to run in order to trigger the image build')
 output runThisCommand string = 'Invoke-AzResourceAction -ResourceName ${imageTemplate.name} -ResourceGroupName ${resourceGroup().name} -ResourceType Microsoft.VirtualMachineImages/imageTemplates -Action Run -Force'
+
+@description('The location the resource was deployed into.')
+output location string = imageTemplate.location
