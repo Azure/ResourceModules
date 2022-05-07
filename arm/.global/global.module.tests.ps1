@@ -671,7 +671,6 @@ Describe 'Deployment template tests' -Tag Template {
             }
         }
 
-
         It '[<moduleFolderName>] Location output should be returned for resources that use it' -TestCases $deploymentFolderTestCases {
             param(
                 $moduleFolderName,
@@ -679,57 +678,53 @@ Describe 'Deployment template tests' -Tag Template {
                 $templateFilePath
             )
 
-            $outputs = $templateContent.Outputs
+            $outputs = $templateContent.outputs
 
-            $deploymentScope = Get-ScopeOfTemplateFile -TemplateFilePath $TemplateFilePath -Verbose
+            $primaryResourceType = (Split-Path $TemplateFilePath -Parent).Replace('\', '/').split('/arm/')[1]
+            $primaryResourceTypeResource = $templateContent.resources | Where-Object { $_.type -eq $primaryResourceType }
 
-            switch ($deploymentScope) {
-                'resourceGroup' {
-                    $outputs.Keys | Should -Contain 'location'
-                    break
-                }
-                'subscription' {
+            if ($primaryResourceTypeResource.keys -contains 'location') {
+                # If the main resource has a location property, an output should be returned too
+                $outputs.keys | Should -Contain 'location'
 
-                    break
-                }
-                'managementGroup' {
-
-                    break
-                }
-                'tenant' {
-
-                    break
-                }
-                default {
-                    throw "[$deploymentScope] is a non-supported template scope"
-                }
+                # It should further reference the location property of the primary resource and not e.g. the location input parameter
+                $outputs.location.value | Should -Match $primaryResourceType
             }
-
         }
 
-        It '[<moduleFolderName>] Standard outputs should be provided (e.g. resourceName, resourceId, resouceGroupName)' -TestCases $deploymentFolderTestCases {
+        It '[<moduleFolderName>] Resource Group output should exist for resources that are deployed into a resource group scope' -TestCases $deploymentFolderTestCases {
+            param(
+                $moduleFolderName,
+                $templateContent,
+                $templateFilePath
+            )
+
+            $outputs = $templateContent.outputs.Keys
+            $deploymentScope = Get-ScopeOfTemplateFile -TemplateFilePath $templateFilePath
+
+            if ($deploymentScope -eq 'resourceGroup') {
+                $outputs | Should -Contain 'resourceGroupName'
+            }
+        }
+
+        It '[<moduleFolderName>] Resource name output should exist' -TestCases $deploymentFolderTestCases {
             param(
                 $moduleFolderName,
                 $templateContent
             )
 
-            $Stdoutput = $templateContent.outputs.Keys
-            $i = 0
-            $Schemaverion = $templateContent.'$schema'
-            if ((($Schemaverion.Split('/')[5]).Split('.')[0]) -eq (($RGdeployment.Split('/')[5]).Split('.')[0])) {
-                # Resource Group Level deployment
-                foreach ($Stdo in $Stdoutput) {
-                    if ($Stdo -like '*Name*' -or $Stdo -like '*ResourceId*' -or $Stdo -like '*ResourceGroup*') {
-                        $true | Should -Be $true
-                        $i = $i + 1
-                    }
-                }
-                $i | Should -Not -BeLessThan 3
-            } elseIf ((($schemaverion.Split('/')[5]).Split('.')[0]) -eq (($Subscriptiondeployment.Split('/')[5]).Split('.')[0])) {
-                # Subscription Level deployment
-                $Stdoutput | Should -Not -BeNullOrEmpty
-            }
+            $outputs = $templateContent.outputs.Keys
+            $outputs | Should -Contain 'name'
+        }
 
+        It '[<moduleFolderName>] Resource ID output should exist' -TestCases $deploymentFolderTestCases {
+            param(
+                $moduleFolderName,
+                $templateContent
+            )
+
+            $outputs = $templateContent.outputs.Keys
+            $outputs | Should -Contain 'resourceId'
         }
 
         It "[<moduleFolderName>] parameters' description shoud start with a one word category followed by a dot, a space and the actual description text." -TestCases $deploymentFolderTestCases {
