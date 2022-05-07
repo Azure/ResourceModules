@@ -58,7 +58,6 @@ Describes the Management groups to be created. Each management group is represen
         }
     ]
 }
-
 ```
 
 | Parameter Name | Type | Default Value | Possible values | Description |
@@ -120,6 +119,3 @@ This template is using a **Tenant level deployment**, meaning the user/principal
 >> `$TopMGID = "<The group ID of the management group here>"`<br>
 >> `New-AzRoleAssignment -ObjectId $PrincipalID -Scope "/" -RoleDefinitionName "Automation Job Operator"`<br>
 >> `New-AzRoleAssignment -ObjectId $PrincipalID -Scope "/providers/Microsoft.Management/managementGroups/$TopMGID" -RoleDefinitionName "Management Group Contributor"`
-
-## Additional resources
-
