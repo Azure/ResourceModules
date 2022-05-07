@@ -378,11 +378,11 @@ module virtualMachine '../../../arm/Microsoft.Compute/virtualMachines/deploy.bic
   }
 }]
 
-@description('The Resource Id(s) of the VM(s).')
+@description('The resource ID(s) of the VM(s).')
 output virtualMachinesResourceId array = [for vmIndex in range(0, length(vmNamesToApply)): virtualMachine[vmIndex].outputs.resourceId]
 
-@description('The name of the Resource Group the VM(s) was/were created in.')
+@description('The name of the resource group the VM(s) was/were created in.')
 output virtualMachinesResourceGroup string = resourceGroup().name
 
-@description('The Names of the VMs.')
+@description('The names of the VMs.')
 output virtualMachinesName array = [for vmIndex in range(0, length(vmNamesToApply)): virtualMachine[vmIndex].outputs.name]

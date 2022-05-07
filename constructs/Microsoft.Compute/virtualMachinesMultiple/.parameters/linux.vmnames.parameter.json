@@ -4,9 +4,9 @@
     "parameters": {
         "vmNames": {
             "value": [
-                "alsehr-vm-linux-min-01",
-                "alsehr-vm-linux-min-02",
-                "alsehr-vm-linux-min-03"
+                "<<namePrefix>>-vm-linux-vmnames-01",
+                "<<namePrefix>>-vm-linux-vmnames-02",
+                "<<namePrefix>>-vm-linux-vmnames-03"
             ]
         },
         "osType": {

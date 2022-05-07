@@ -7,7 +7,6 @@ This module deploys one or multiple Virtual Machines.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Template references](#Template-references)
 
 ## Resource Types
 
@@ -123,9 +122,9 @@ Name(s) of the virtual machine(s). If no explicit names are provided, VM name(s)
 ```json
 "vmNames": {
     "value": [
-        "alsehr-vm-linux-min-01",
-        "alsehr-vm-linux-min-02",
-        "alsehr-vm-linux-min-03"
+        "<<namePrefix>>-vm-linux-vmnames-01",
+        "<<namePrefix>>-vm-linux-vmnames-02",
+        "<<namePrefix>>-vm-linux-vmnames-03"
     ]
 }
 ```
@@ -190,8 +189,6 @@ You can specify multiple user assigned identities to a resource by providing add
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `virtualMachinesName` | array | The Names of the VMs. |
-| `virtualMachinesResourceGroup` | string | The name of the Resource Group the VM(s) was/were created in. |
-| `virtualMachinesResourceId` | array | The Resource Id(s) of the VM(s). |
-
-## Template references
+| `virtualMachinesName` | array | The names of the VMs. |
+| `virtualMachinesResourceGroup` | string | The name of the resource group the VM(s) was/were created in. |
+| `virtualMachinesResourceId` | array | The resource ID(s) of the VM(s). |

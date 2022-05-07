@@ -3,10 +3,10 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "vmInitialNumber": {
-            "value": 111
+            "value": 1
         },
         "vmNamePrefix": {
-            "value": "alsehr"
+            "value": "<<namePrefix>>vm"
         },
         "vmNumberOfInstances": {
             "value": 3
