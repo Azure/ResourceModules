@@ -125,7 +125,7 @@ Describe 'Readme tests' -Tag Readme {
                 if (Test-Path (Join-Path $moduleFolderPath 'deploy.bicep')) {
                     $templateFilePath = Join-Path $moduleFolderPath 'deploy.bicep'
                     $templateContent = az bicep build --file $templateFilePath --stdout | ConvertFrom-Json -AsHashtable
-                } elseif (Test-Path (Join-Path $moduleFolderPath 'deploy.json')) {
+                } elseIf (Test-Path (Join-Path $moduleFolderPath 'deploy.json')) {
                     $templateFilePath = Join-Path $moduleFolderPath 'deploy.json'
                     $templateContent = Get-Content $templateFilePath -Raw | ConvertFrom-Json -AsHashtable
                 } else {
@@ -441,7 +441,7 @@ Describe 'Deployment template tests' -Tag Template {
                 if (Test-Path (Join-Path $moduleFolderPath 'deploy.bicep')) {
                     $templateFilePath = Join-Path $moduleFolderPath 'deploy.bicep'
                     $templateContent = az bicep build --file $templateFilePath --stdout | ConvertFrom-Json -AsHashtable
-                } elseif (Test-Path (Join-Path $moduleFolderPath 'deploy.json')) {
+                } elseIf (Test-Path (Join-Path $moduleFolderPath 'deploy.json')) {
                     $templateFilePath = Join-Path $moduleFolderPath 'deploy.json'
                     $templateContent = Get-Content $templateFilePath -Raw | ConvertFrom-Json -AsHashtable
                 } else {
@@ -507,11 +507,11 @@ Describe 'Deployment template tests' -Tag Template {
             $SchemaArray = @()
             if ($Schemaverion -eq $RGdeployment) {
                 $SchemaOutput = $true
-            } elseif ($Schemaverion -eq $Subscriptiondeployment) {
+            } elseIf ($Schemaverion -eq $Subscriptiondeployment) {
                 $SchemaOutput = $true
-            } elseif ($Schemaverion -eq $MGdeployment) {
+            } elseIf ($Schemaverion -eq $MGdeployment) {
                 $SchemaOutput = $true
-            } elseif ($Schemaverion -eq $Tenantdeployment) {
+            } elseIf ($Schemaverion -eq $Tenantdeployment) {
                 $SchemaOutput = $true
             } else {
                 $SchemaOutput = $false
@@ -540,10 +540,10 @@ Describe 'Deployment template tests' -Tag Template {
             foreach ($API in $ApiVersion) {
                 if ($API.Substring(0, 2) -eq '20') {
                     $ApiVersionOutput = $true
-                } elseif ($API.substring(1, 10) -eq 'parameters') {
+                } elseIf ($API.substring(1, 10) -eq 'parameters') {
                     # An API version should not be referenced as a parameter
                     $ApiVersionOutput = $false
-                } elseif ($API.substring(1, 10) -eq 'variables') {
+                } elseIf ($API.substring(1, 10) -eq 'variables') {
                     # An API version should not be referenced as a variable
                     $ApiVersionOutput = $false
                 } else {
@@ -689,9 +689,9 @@ Describe 'Deployment template tests' -Tag Template {
             foreach ($Locmand in $Locmandoutput) {
                 if ($Locmand.Keys -contains 'Location' -and $Locmand.Location -eq "[parameters('Location')]") {
                     $LocationParamFlag += $true
-                } elseif ($Locmand.Keys -notcontains 'Location') {
+                } elseIf ($Locmand.Keys -notcontains 'Location') {
                     $LocationParamFlag += $true
-                } elseif ($Locmand.Keys -notcontains 'resourceGroup') {
+                } elseIf ($Locmand.Keys -notcontains 'resourceGroup') {
                     $LocationParamFlag += $true
                 } else {
                     $LocationParamFlag += $false
@@ -699,7 +699,7 @@ Describe 'Deployment template tests' -Tag Template {
                 foreach ($Locm in $Locmand.resources) {
                     if ($Locm.Keys -contains 'Location' -and $Locm.Location -eq "[parameters('Location')]") {
                         $LocationParamFlag += $true
-                    } elseif ($Locm.Keys -notcontains 'Location') {
+                    } elseIf ($Locm.Keys -notcontains 'Location') {
                         $LocationParamFlag += $true
                     } else {
                         $LocationParamFlag += $false
@@ -727,7 +727,7 @@ Describe 'Deployment template tests' -Tag Template {
                     }
                 }
                 $i | Should -Not -BeLessThan 3
-            } ElseIf ((($schemaverion.Split('/')[5]).Split('.')[0]) -eq (($Subscriptiondeployment.Split('/')[5]).Split('.')[0])) {
+            } elseIf ((($schemaverion.Split('/')[5]).Split('.')[0]) -eq (($Subscriptiondeployment.Split('/')[5]).Split('.')[0])) {
                 # Subscription Level deployment
                 $Stdoutput | Should -Not -BeNullOrEmpty
             }
@@ -844,7 +844,7 @@ Describe "API version tests [All apiVersions in the template should be 'recent']
             if (Test-Path (Join-Path $moduleFolderPath 'deploy.bicep')) {
                 $templateFilePath = Join-Path $moduleFolderPath 'deploy.bicep'
                 $templateContent = az bicep build --file $templateFilePath --stdout | ConvertFrom-Json -AsHashtable
-            } elseif (Test-Path (Join-Path $moduleFolderPath 'deploy.json')) {
+            } elseIf (Test-Path (Join-Path $moduleFolderPath 'deploy.json')) {
                 $templateFilePath = Join-Path $moduleFolderPath 'deploy.json'
                 $templateContent = Get-Content $templateFilePath -Raw | ConvertFrom-Json -AsHashtable
             } else {
