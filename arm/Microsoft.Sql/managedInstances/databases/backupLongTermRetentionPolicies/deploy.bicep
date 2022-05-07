@@ -1,7 +1,7 @@
 @description('Required. The name of the Long Term Retention backup policy. For example "default".')
 param name string
 
-@description('Conditional. The name of the managed instance database. Required if the template is used in a standalone deployment.')
+@description('Conditional. The name of the parent managed instance database. Required if the template is used in a standalone deployment.')
 param databaseName string
 
 @description('Conditional. Name of the managed instance. Required if the template is used in a standalone deployment.')

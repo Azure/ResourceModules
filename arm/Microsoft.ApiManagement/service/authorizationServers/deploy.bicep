@@ -1,7 +1,7 @@
 @description('Required. Identifier of the authorization server.')
 param name string
 
-@description('Conditional. The name of the of the API Management service. Required if the template is used in a standalone deployment.')
+@description('Conditional. The name of the parent API Management service. Required if the template is used in a standalone deployment.')
 param apiManagementServiceName string
 
 @description('Required. OAuth authorization endpoint. See <http://tools.ietf.org/html/rfc6749#section-3.2>.')

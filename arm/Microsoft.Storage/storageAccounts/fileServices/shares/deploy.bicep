@@ -2,7 +2,7 @@
 @description('Conditional. Name of the Storage Account. Required if the template is used in a standalone deployment.')
 param storageAccountName string
 
-@description('Conditional. The name of the file service. Required if the template is used in a standalone deployment.')
+@description('Conditional. The name of the parent file service. Required if the template is used in a standalone deployment.')
 param fileServicesName string = 'default'
 
 @description('Required. The name of the file share to create.')

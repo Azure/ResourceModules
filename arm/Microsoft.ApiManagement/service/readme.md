@@ -37,7 +37,7 @@ This module deploys an API management service.
 **Required parameters**
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the of the API Management service. |
+| `name` | string | The name of the API Management service. |
 | `publisherEmail` | string | The email address of the owner of the service. |
 | `publisherName` | string | The name of the owner of the service. |
 
