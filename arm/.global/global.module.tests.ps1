@@ -129,9 +129,13 @@ Describe 'Readme tests' -Tag Readme {
                 } else {
                     throw "No template file found in folder [$moduleFolderPath]"
                 }
-                $convertedTemplates[$moduleFolderPathKey] = $templateContent
+                $convertedTemplates[$moduleFolderPathKey] = @{
+                    templateFilePath = $templateFilePath
+                    templateContent  = $templateContent
+                }
             } else {
-                $templateContent = $convertedTemplates[$moduleFolderPathKey]
+                $templateContent = $convertedTemplates[$moduleFolderPathKey].templateContent
+                $templateFilePath = $convertedTemplates[$moduleFolderPathKey].templateFilePath
             }
 
             $readmeFolderTestCases += @{
@@ -444,9 +448,13 @@ Describe 'Deployment template tests' -Tag Template {
                 } else {
                     throw "No template file found in folder [$moduleFolderPath]"
                 }
-                $convertedTemplates[$moduleFolderPathKey] = $templateContent
+                $convertedTemplates[$moduleFolderPathKey] = @{
+                    templateFilePath = $templateFilePath
+                    templateContent  = $templateContent
+                }
             } else {
-                $templateContent = $convertedTemplates[$moduleFolderPathKey]
+                $templateContent = $convertedTemplates[$moduleFolderPathKey].templateContent
+                $templateFilePath = $convertedTemplates[$moduleFolderPathKey].templateFilePath
             }
 
             # Parameter file test cases
@@ -672,10 +680,11 @@ Describe 'Deployment template tests' -Tag Template {
         }
 
         It '[<moduleFolderName>] Location output should be returned for resources that use it' -TestCases $deploymentFolderTestCases {
+
             param(
-                $moduleFolderName,
+                [string] $moduleFolderName,
                 $templateContent,
-                $templateFilePath
+                [string] $templateFilePath
             )
 
             $outputs = $templateContent.outputs
@@ -693,10 +702,11 @@ Describe 'Deployment template tests' -Tag Template {
         }
 
         It '[<moduleFolderName>] Resource Group output should exist for resources that are deployed into a resource group scope' -TestCases $deploymentFolderTestCases {
+
             param(
-                $moduleFolderName,
+                [string] $moduleFolderName,
                 $templateContent,
-                $templateFilePath
+                [string] $templateFilePath
             )
 
             $outputs = $templateContent.outputs.Keys
@@ -843,9 +853,13 @@ Describe "API version tests [All apiVersions in the template should be 'recent']
             } else {
                 throw "No template file found in folder [$moduleFolderPath]"
             }
-            $convertedTemplates[$moduleFolderPathKey] = $templateContent
+            $convertedTemplates[$moduleFolderPathKey] = @{
+                templateFilePath = $templateFilePath
+                templateContent  = $templateContent
+            }
         } else {
-            $templateContent = $convertedTemplates[$moduleFolderPathKey]
+            $templateContent = $convertedTemplates[$moduleFolderPathKey].templateContent
+            $templateFilePath = $convertedTemplates[$moduleFolderPathKey].templateFilePath
         }
 
         $nestedResources = Get-NestedResourceList -TemplateFileContent $templateContent | Where-Object {
