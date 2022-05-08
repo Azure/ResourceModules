@@ -46,3 +46,4 @@ jobs:
               }
             }
             Write-Host ('##vso[task.setVariable variable=parameterTests;isOutput=true]{0}' -f ($testTable | ConvertTo-Json -Compress))
+            Write-Verbose "Parameter files: ($testTable | ConvertTo-Json -Compress)" -Verbose

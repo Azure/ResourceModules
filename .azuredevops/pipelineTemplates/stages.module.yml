@@ -46,7 +46,7 @@ stages:
 
   - ${{ if eq(parameters.removeDeployment, 'true') }}:
     - stage: dependencyRemoval
-      displayName: Dependency Removal
+      displayName: Dependency removal
       dependsOn:
         - dependencyDeployment
         # - deployment
