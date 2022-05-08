@@ -70,7 +70,7 @@ param diagnosticEventHubAuthorizationRuleId string = ''
 @description('Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.')
 param diagnosticEventHubName string = ''
 
-@description('Optional. Subdomain name used for token-based authentication. Required if \'networkAcls\' are set.')
+@description('Conditional. Subdomain name used for token-based authentication. Required if \'networkAcls\' are set.')
 param customSubDomainName string = ''
 
 @description('Optional. Subdomain name used for token-based authentication. Must be set if \'networkAcls\' are set.')

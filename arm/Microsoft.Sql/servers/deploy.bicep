@@ -1,7 +1,7 @@
-@description('Optional. Administrator username for the server. Required if no `administrators` object for AAD authentication is provided.')
+@description('Conditional. The administrator username for the server. Required if no `administrators` object for AAD authentication is provided.')
 param administratorLogin string = ''
 
-@description('Optional. The administrator login password. Required if no `administrators` object for AAD authentication is provided.')
+@description('Conditional. The administrator login password. Required if no `administrators` object for AAD authentication is provided.')
 @secure()
 param administratorLoginPassword string = ''
 
@@ -43,7 +43,7 @@ param firewallRules array = []
 @description('Optional. The security alert policies to create in the server.')
 param securityAlertPolicies array = []
 
-@description('Optional. The Azure Active Directory (AAD) administrator authentication. Required if no `administratorLogin` & `administratorLoginPassword` is provided.')
+@description('Conditional. The Azure Active Directory (AAD) administrator authentication. Required if no `administratorLogin` & `administratorLoginPassword` is provided.')
 param administrators object = {}
 
 var identityType = systemAssignedIdentity ? (!empty(userAssignedIdentities) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned') : (!empty(userAssignedIdentities) ? 'UserAssigned' : 'None')
