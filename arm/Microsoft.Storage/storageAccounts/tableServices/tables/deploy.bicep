@@ -1,5 +1,5 @@
 @maxLength(24)
-@description('Conditional. The name of the parent storage account. Required if the template is used in a standalone deployment.')
+@description('Conditional. The name of the parent Storage Account. Required if the template is used in a standalone deployment.')
 param storageAccountName string
 
 @description('Conditional. The name of the parent table service. Required if the template is used in a standalone deployment.')

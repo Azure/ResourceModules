@@ -1,5 +1,5 @@
 @maxLength(24)
-@description('Conditional. The name of the parent storage account. Required if the template is used in a standalone deployment.')
+@description('Conditional. The name of the parent Storage Account. Required if the template is used in a standalone deployment.')
 param storageAccountName string
 
 @description('Optional. The name of the queue service.')

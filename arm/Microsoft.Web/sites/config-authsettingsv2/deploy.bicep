@@ -1,7 +1,7 @@
 // ================ //
 // Parameters       //
 // ================ //
-@description('Conditional. Name of the site parent resource. Required if the template is used in a standalone deployment.')
+@description('Conditional. The name of the parent site resource. Required if the template is used in a standalone deployment.')
 param appName string
 
 @description('Required. Type of site to deploy.')
