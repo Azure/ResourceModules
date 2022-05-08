@@ -1,10 +1,10 @@
 @description('Required. The name of the service bus namespace topic.')
 param name string
 
-@description('Conditional. The name of the parent parent service bus namespace. Required if the template is used in a standalone deployment.')
+@description('Conditional. The name of the parent Service Bus Namespace. Required if the template is used in a standalone deployment.')
 param namespaceName string
 
-@description('Conditional. The name of the parent parent service bus namespace topic. Required if the template is used in a standalone deployment.')
+@description('Conditional. The name of the parent Service Bus Namespace Topic. Required if the template is used in a standalone deployment.')
 param topicName string
 
 @description('Optional. The rights associated with the rule.')
