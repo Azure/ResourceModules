@@ -2,10 +2,10 @@
 @description('Conditional. The name of the parent Storage Account. Required if the template is used in a standalone deployment.')
 param storageAccountName string
 
-@description('Conditional. Name of the blob service. Required if the template is used in a standalone deployment.')
+@description('Conditional. The name of the parent blob service. Required if the template is used in a standalone deployment.')
 param blobServicesName string = 'default'
 
-@description('Conditional. Name of the container to apply the policy to. Required if the template is used in a standalone deployment.')
+@description('Conditional. The name of the parent container to apply the policy to. Required if the template is used in a standalone deployment.')
 param containerName string
 
 @description('Optional. Name of the immutable policy.')
