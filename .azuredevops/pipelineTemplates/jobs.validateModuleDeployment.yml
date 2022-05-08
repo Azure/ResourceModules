@@ -364,8 +364,12 @@ jobs:
             # Load used function
             . (Join-Path '$(moduleRepoRoot)' '$(pipelineFunctionsPath)' 'resourceRemoval' 'Initialize-DeploymentRemoval.ps1')
 
+            # ----------------- #
+            # INVOKE DEPLOYMENT #
+            # ----------------- #
+            $templateFilePath     = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.templateFilePath }}'
             $functionInput = @{
-              TemplateFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.templateFilePath }}'
+              templateFilePath     = $templateFilePath
               ResourceGroupName = '${{ parameters.resourceGroupName }}'
               ManagementGroupId = '${{ parameters.managementGroupId }}'
               Verbose           = $true
@@ -383,29 +387,3 @@ jobs:
             Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
             Initialize-DeploymentRemoval @functionInput
-
-
-
-            # if(-not [String]::IsNullOrEmpty('${{ templateFilePath }}')) {
-            #   $templateFilePath = Join-Path '$(moduleRepoRoot)' '${{ templateFilePath }}'
-            # } else {
-            #   # Use default path
-            #   $templateFilePath = (Test-Path (Join-Path '$(ModuleRepoRoot)' '$(modulePath)' 'deploy.bicep')) ?
-            #     (Join-Path '$(ModuleRepoRoot)' '$(modulePath)' 'deploy.bicep') :
-            #     (Join-Path '$(ModuleRepoRoot)' '$(modulePath)' 'deploy.json')
-            # }
-
-            # if (-not [String]::IsNullOrEmpty('$(deploymentName)')) {
-            #   $functionInput = @{
-            #       DeploymentName    = '$(deploymentName)'
-            #       TemplateFilePath  = $templateFilePath
-            #       ResourceGroupName = '${{ parameters.resourceGroupName }}'
-            #       ManagementGroupId = '${{ parameters.managementGroupId }}'
-            #       Verbose           = $true
-            #   }
-
-            #   Write-Verbose 'Invoke task with' -Verbose
-            #   Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
-
-            #   Initialize-DeploymentRemoval @functionInput
-            # }
