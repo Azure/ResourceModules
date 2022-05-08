@@ -1,7 +1,7 @@
-@description('Required. Name of the Azure Recovery Service Vault')
+@description('Required. Name of the Azure Recovery Service Vault.')
 param name string
 
-@description('Optional. The storage configuration for the Azure Recovery Service Vault')
+@description('Optional. The storage configuration for the Azure Recovery Service Vault.')
 param backupStorageConfig object = {}
 
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
@@ -45,7 +45,7 @@ param diagnosticEventHubAuthorizationRuleId string = ''
 @description('Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.')
 param diagnosticEventHubName string = ''
 
-@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'')
+@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
 param roleAssignments array = []
 
 @allowed([
@@ -268,13 +268,13 @@ module rsv_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in rol
   }
 }]
 
-@description('The resource ID of the recovery services vault')
+@description('The resource ID of the recovery services vault.')
 output resourceId string = rsv.id
 
-@description('The name of the resource group the recovery services vault was created in')
+@description('The name of the resource group the recovery services vault was created in.')
 output resourceGroupName string = resourceGroup().name
 
-@description('The Name of the recovery services vault')
+@description('The Name of the recovery services vault.')
 output name string = rsv.name
 
 @description('The principal ID of the system assigned identity.')

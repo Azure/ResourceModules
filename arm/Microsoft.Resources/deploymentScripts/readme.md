@@ -85,9 +85,9 @@ You can specify multiple user assigned identities to a resource by providing add
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the deployment script |
-| `resourceGroupName` | string | The resource group the deployment script was deployed into |
-| `resourceId` | string | The resource ID of the deployment script |
+| `name` | string | The name of the deployment script. |
+| `resourceGroupName` | string | The resource group the deployment script was deployed into. |
+| `resourceId` | string | The resource ID of the deployment script. |
 
 ## Considerations
 

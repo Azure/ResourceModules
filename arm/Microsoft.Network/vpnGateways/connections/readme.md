@@ -20,7 +20,11 @@ This module deploys VPN Gateways Connections.
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The name of the VPN connection. |
-| `vpnGatewayName` | string | The name of the VPN gateway this VPN connection is associated with. |
+
+**Conditional parameters**
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `vpnGatewayName` | string | The name of the parent VPN gateway this VPN connection is associated with. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
@@ -31,7 +35,7 @@ This module deploys VPN Gateways Connections.
 | `enableInternetSecurity` | bool | `False` |  | Enable internet security. |
 | `enableRateLimiting` | bool | `False` |  | Enable rate limiting. |
 | `ipsecPolicies` | array | `[]` |  | The IPSec policies to be considered by this connection. |
-| `remoteVpnSiteResourceId` | string | `''` |  | Reference to a VPN site to link to |
+| `remoteVpnSiteResourceId` | string | `''` |  | Reference to a VPN site to link to. |
 | `routingConfiguration` | object | `{object}` |  | Routing configuration indicating the associated and propagated route tables for this connection. |
 | `routingWeight` | int | `0` |  | Routing weight for VPN connection. |
 | `sharedKey` | string | `''` |  | SharedKey for the VPN connection. |
@@ -69,6 +73,6 @@ This module deploys VPN Gateways Connections.
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the VPN connection |
-| `resourceGroupName` | string | The name of the resource group the VPN connection was deployed into |
-| `resourceId` | string | The resource ID of the VPN connection |
+| `name` | string | The name of the VPN connection. |
+| `resourceGroupName` | string | The name of the resource group the VPN connection was deployed into. |
+| `resourceId` | string | The resource ID of the VPN connection. |

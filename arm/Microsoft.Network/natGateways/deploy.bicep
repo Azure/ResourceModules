@@ -1,4 +1,4 @@
-@description('Required. Name of the Azure Bastion resource')
+@description('Required. Name of the Azure Bastion resource.')
 param name string
 
 @description('Optional. The idle timeout of the nat gateway.')
@@ -13,7 +13,7 @@ param natGatewayPipName string = ''
 @description('Optional. Resource ID of the Public IP Prefix object. This is only needed if you want your Public IPs created in a PIP Prefix.')
 param natGatewayPublicIPPrefixId string = ''
 
-@description('Optional. DNS name of the Public IP resource. A region specific suffix will be appended to it, e.g.: your-DNS-name.westeurope.cloudapp.azure.com')
+@description('Optional. DNS name of the Public IP resource. A region specific suffix will be appended to it, e.g.: your-DNS-name.westeurope.cloudapp.azure.com.')
 param natGatewayDomainNameLabel string = ''
 
 @description('Optional. Existing Public IP Address resource names to use for the NAT Gateway.')
@@ -53,7 +53,7 @@ param diagnosticEventHubName string = ''
 @description('Optional. Specify the type of lock.')
 param lock string = 'NotSpecified'
 
-@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'')
+@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
 param roleAssignments array = []
 
 @description('Optional. Tags for the resource.')
@@ -204,11 +204,11 @@ module natGateway_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index)
   }
 }]
 
-@description('The name of the NAT Gateway')
+@description('The name of the NAT Gateway.')
 output name string = natGateway.name
 
-@description('The resource ID of the NAT Gateway')
+@description('The resource ID of the NAT Gateway.')
 output resourceId string = natGateway.id
 
-@description('The resource group the NAT Gateway was deployed into')
+@description('The resource group the NAT Gateway was deployed into.')
 output resourceGroupName string = resourceGroup().name

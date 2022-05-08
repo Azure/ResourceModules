@@ -1,4 +1,4 @@
-@description('Required. Name of the Traffic Manager')
+@description('Required. Name of the Traffic Manager.')
 @minLength(1)
 param name string
 
@@ -71,7 +71,7 @@ param diagnosticEventHubName string = ''
 @description('Optional. Specify the type of lock.')
 param lock string = 'NotSpecified'
 
-@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'')
+@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
 param roleAssignments array = []
 
 @description('Optional. Resource tags.')
@@ -181,11 +181,11 @@ module trafficManagerProfile_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignm
   }
 }]
 
-@description('The resource ID of the traffix manager')
+@description('The resource ID of the traffix manager.')
 output resourceId string = trafficManagerProfile.id
 
-@description('The resource group the traffix manager was deployed into')
+@description('The resource group the traffix manager was deployed into.')
 output resourceGroupName string = resourceGroup().name
 
-@description('The name of the traffix manager was deployed into')
+@description('The name of the traffix manager was deployed into.')
 output name string = trafficManagerProfile.name

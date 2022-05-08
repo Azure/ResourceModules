@@ -19,14 +19,18 @@ This module deploys an EventHub Namespace Disaster Recovery Config
 **Required parameters**
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the disaster recovery config |
-| `namespaceName` | string | The name of the event hub namespace |
+| `name` | string | The name of the disaster recovery config. |
+
+**Conditional parameters**
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `namespaceName` | string | The name of the parent event hub namespace. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `partnerNamespaceId` | string | `''` | Resource ID of the Primary/Secondary event hub namespace name, which is part of GEO DR pairing |
+| `partnerNamespaceId` | string | `''` | Resource ID of the Primary/Secondary event hub namespace name, which is part of GEO DR pairing. |
 
 
 ## Outputs

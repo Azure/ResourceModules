@@ -19,9 +19,13 @@ This module deploys an authorization rule for a service bus namespace topic.
 **Required parameters**
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the service bus namespace topic |
-| `namespaceName` | string | The name of the parent service bus namespace |
-| `topicName` | string | The name of the parent service bus namespace topic |
+| `name` | string | The name of the service bus namespace topic. |
+
+**Conditional parameters**
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `namespaceName` | string | The name of the parent Service Bus Namespace. Required if the template is used in a standalone deployment. |
+| `topicName` | string | The name of the parent Service Bus Namespace Topic. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |

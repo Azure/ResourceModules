@@ -1,7 +1,7 @@
 @description('Optional. Name of the Automation Account job schedule. Must be a GUID. If not provided, a new GUID is generated.')
 param name string = newGuid()
 
-@description('Required. Name of the parent Automation Account.')
+@description('Conditional. The name of the parent Automation Account. Required if the template is used in a standalone deployment.')
 param automationAccountName string
 
 @description('Required. The runbook property associated with the entity.')
@@ -50,11 +50,11 @@ resource jobSchedule 'Microsoft.Automation/automationAccounts/jobSchedules@2020-
   }
 }
 
-@description('The name of the deployed job schedule')
+@description('The name of the deployed job schedule.')
 output name string = jobSchedule.name
 
-@description('The resource ID of the deployed job schedule')
+@description('The resource ID of the deployed job schedule.')
 output resourceId string = jobSchedule.id
 
-@description('The resource group of the deployed job schedule')
+@description('The resource group of the deployed job schedule.')
 output resourceGroupName string = resourceGroup().name

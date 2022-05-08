@@ -522,9 +522,7 @@ function Set-ModuleReadMe {
             ''
             '// TODO: Fill in Parameter usage'
             '',
-            '## Outputs',
-            '',
-            '## Template references'
+            '## Outputs'
         )
         # New-Item $path $ReadMeFilePath -ItemType 'File' -Force -Value $initialContent
         $readMeFileContent = $initialContent

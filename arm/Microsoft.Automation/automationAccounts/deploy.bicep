@@ -48,10 +48,10 @@ param variables array = []
 @description('Optional. ID of the log analytics workspace to be linked to the deployed automation account.')
 param linkedWorkspaceId string = ''
 
-@description('Optional. List of gallerySolutions to be created in the linked log analytics workspace')
+@description('Optional. List of gallerySolutions to be created in the linked log analytics workspace.')
 param gallerySolutions array = []
 
-@description('Optional. List of softwareUpdateConfigurations to be created in the automation account')
+@description('Optional. List of softwareUpdateConfigurations to be created in the automation account.')
 param softwareUpdateConfigurations array = []
 
 @description('Optional. Configuration Details for private endpoints.')
@@ -371,13 +371,13 @@ module automationAccount_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment,
   }
 }]
 
-@description('The name of the deployed automation account')
+@description('The name of the deployed automation account.')
 output name string = automationAccount.name
 
-@description('The resource ID of the deployed automation account')
+@description('The resource ID of the deployed automation account.')
 output resourceId string = automationAccount.id
 
-@description('The resource group of the deployed automation account')
+@description('The resource group of the deployed automation account.')
 output resourceGroupName string = resourceGroup().name
 
 @description('The principal ID of the system assigned identity.')
