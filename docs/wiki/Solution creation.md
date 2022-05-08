@@ -31,9 +31,7 @@ There are several open-source repositories that leverage the CARML library today
 | - | - | - |
 | AVD Accelerator | [link](https://github.com/Azure/avdaccelerator) | AVD Accelerator deployment automation to simplify the setup of AVD (Azure Virtual Desktop) |
 | AKS Baseline Automation | [link](https://github.com/Azure/aks-baseline-automation) | Repository for the AKS Landing Zone Accelerator program's Automation reference implementation |
-| DevOps Self-Hosted Image Builder | [link](https://github.com/Azure/DevOps-Self-Hosted/tree/main/constructs/azureImageBuilder) | Create & maintain images with a pipeline using the Azure Image Builder service |
-| DevOps Self-Hosted Scale Set | [link](https://github.com/Azure/DevOps-Self-Hosted/tree/main/constructs/azureDevOpsScaleSet) | Deploy & maintain Azure DevOps Self-Hosted agent pools with a pipeline using Virtual Machine Scale Sets |
-
+| DevOps Self-Hosted | [link](https://github.com/Azure/DevOps-Self-Hosted) | - Create & maintain images with a pipeline using the Azure Image Builder service <p> - Deploy & maintain Azure DevOps Self-Hosted agent pools with a pipeline using Virtual Machine Scale Set|
 
 # Orchestration overview
 
