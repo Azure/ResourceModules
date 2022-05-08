@@ -19,14 +19,18 @@ This module deploys an encryption protector for a SQL managed instance.
 **Required parameters**
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
-| `managedInstanceName` | string |  | Name of the SQL managed instance. |
-| `name` | string | `'current'` | The name of the encryptionProtector |
+| `name` | string | `'current'` | The name of the encryptionProtector. |
 | `serverKeyName` | string |  | The name of the SQL managed instance key. |
+
+**Conditional parameters**
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `managedInstanceName` | string | The name of the parent SQL managed instance. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `autoRotationEnabled` | bool | `False` |  | Key auto rotation opt-in flag |
+| `autoRotationEnabled` | bool | `False` |  | Key auto rotation opt-in flag. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `serverKeyType` | string | `'ServiceManaged'` | `[AzureKeyVault, ServiceManaged]` | The encryption protector type like "ServiceManaged", "AzureKeyVault". |
 
@@ -35,6 +39,6 @@ This module deploys an encryption protector for a SQL managed instance.
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the deployed managed instance |
-| `resourceGroupName` | string | The resource group of the deployed managed instance |
-| `resourceId` | string | The resource ID of the deployed managed instance |
+| `name` | string | The name of the deployed managed instance. |
+| `resourceGroupName` | string | The resource group of the deployed managed instance. |
+| `resourceId` | string | The resource ID of the deployed managed instance. |

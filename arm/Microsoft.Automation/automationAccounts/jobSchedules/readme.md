@@ -19,9 +19,13 @@ This module deploys an Azure Automation Account Job Schedule.
 **Required parameters**
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `automationAccountName` | string | Name of the parent Automation Account. |
 | `runbookName` | string | The runbook property associated with the entity. |
 | `scheduleName` | string | The schedule property associated with the entity. |
+
+**Conditional parameters**
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `automationAccountName` | string | The name of the parent Automation Account. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Description |
@@ -36,6 +40,6 @@ This module deploys an Azure Automation Account Job Schedule.
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the deployed job schedule |
-| `resourceGroupName` | string | The resource group of the deployed job schedule |
-| `resourceId` | string | The resource ID of the deployed job schedule |
+| `name` | string | The name of the deployed job schedule. |
+| `resourceGroupName` | string | The resource group of the deployed job schedule. |
+| `resourceId` | string | The resource ID of the deployed job schedule. |

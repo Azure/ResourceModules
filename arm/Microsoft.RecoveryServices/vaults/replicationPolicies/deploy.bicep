@@ -1,7 +1,7 @@
-@description('Required. Name of the Azure Recovery Service Vault')
+@description('Conditional. The name of the parent Azure Recovery Service Vault. Required if the template is used in a standalone deployment.')
 param recoveryVaultName string
 
-@description('Required. The name of the replication policy')
+@description('Required. The name of the replication policy.')
 param name string
 
 @description('Optional. The app consistent snapshot frequency (in minutes).')

@@ -22,12 +22,12 @@ This module deploys an Azure virtual desktop host pool.
 **Required parameters**
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | Name of the Host Pool |
+| `name` | string | Name of the Host Pool. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `customRdpProperty` | string | `'audiocapturemode:i:1;audiomode:i:0;drivestoredirect:s:;redirectclipboard:i:1;redirectcomports:i:1;redirectprinters:i:1;redirectsmartcards:i:1;screen mode id:i:2;'` |  | Host Pool RDP properties |
+| `customRdpProperty` | string | `'audiocapturemode:i:1;audiomode:i:0;drivestoredirect:s:;redirectclipboard:i:1;redirectcomports:i:1;redirectprinters:i:1;redirectsmartcards:i:1;screen mode id:i:2;'` |  | Host Pool RDP properties. |
 | `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
 | `diagnosticLogCategoriesToEnable` | array | `[Checkpoint, Error, Management, Connection, HostRegistration, AgentHealthStatus]` | `[Checkpoint, Error, Management, Connection, HostRegistration, AgentHealthStatus]` | The name of logs that will be streamed. |
@@ -43,9 +43,9 @@ This module deploys an Azure virtual desktop host pool.
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `'NotSpecified'` | `[CanNotDelete, NotSpecified, ReadOnly]` | Specify the type of lock. |
 | `maxSessionLimit` | int | `99999` |  | Maximum number of sessions. |
-| `personalDesktopAssignmentType` | string | `''` | `[Automatic, Direct, ]` | Set the type of assignment for a Personal Host Pool type |
-| `preferredAppGroupType` | string | `'Desktop'` | `[Desktop, None, RailApplications]` | The type of preferred application group type, default to Desktop Application Group |
-| `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalIds' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
+| `personalDesktopAssignmentType` | string | `''` | `[Automatic, Direct, ]` | Set the type of assignment for a Personal Host Pool type. |
+| `preferredAppGroupType` | string | `'Desktop'` | `[Desktop, None, RailApplications]` | The type of preferred application group type, default to Desktop Application Group. |
+| `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalIds' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `startVMOnConnect` | bool | `False` |  | Enable Start VM on connect to allow users to start the virtual machine from a deallocated state. Important: Custom RBAC role required to power manage VMs. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
 | `tokenValidityLength` | string | `'PT8H'` |  | Host Pool token validity length. Usage: 'PT8H' - valid for 8 hours; 'P5D' - valid for 5 days; 'P1Y' - valid for 1 year. When not provided, the token will be valid for 8 hours. |
@@ -140,7 +140,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the AVD host pool |
-| `resourceGroupName` | string | The resource group the AVD host pool was deployed into |
-| `resourceId` | string | The resource ID of the AVD host pool |
-| `tokenExpirationTime` | string | The expiration time for the registration token |
+| `name` | string | The name of the AVD host pool. |
+| `resourceGroupName` | string | The resource group the AVD host pool was deployed into. |
+| `resourceId` | string | The resource ID of the AVD host pool. |
+| `tokenExpirationTime` | string | The expiration time for the registration token. |

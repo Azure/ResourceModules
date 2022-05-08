@@ -1,4 +1,4 @@
-@description('Required. Private DNS zone name.')
+@description('Conditional. The name of the parent Private DNS zone. Required if the template is used in a standalone deployment.')
 param privateDnsZoneName string
 
 @description('Required. The name of the A record.')
@@ -59,8 +59,8 @@ module A_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleA
 @description('The name of the deployed A record')
 output name string = A.name
 
-@description('The resource ID of the deployed A record')
+@description('The resource ID of the deployed A record.')
 output resourceId string = A.id
 
-@description('The resource group of the deployed A record')
+@description('The resource group of the deployed A record.')
 output resourceGroupName string = resourceGroup().name

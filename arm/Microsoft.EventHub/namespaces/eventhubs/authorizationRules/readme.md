@@ -19,9 +19,13 @@ This module deploys an EventHub Namespace EventHubs Authorization Rule
 **Required parameters**
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `eventHubName` | string | The name of the event hub namespace event hub |
-| `name` | string | The name of the authorization rule |
-| `namespaceName` | string | The name of the event hub namespace |
+| `name` | string | The name of the authorization rule. |
+
+**Conditional parameters**
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `eventHubName` | string | The name of the parent event hub namespace event hub. Required if the template is used in a standalone deployment. |
+| `namespaceName` | string | The name of the parent event hub namespace. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |

@@ -1,7 +1,7 @@
-@description('Required. The name of the security alert policy')
+@description('Required. The name of the security alert policy.')
 param name string
 
-@description('Required. Name of the SQL managed instance.')
+@description('Conditional. The name of the parent SQL managed instance. Required if the template is used in a standalone deployment.')
 param managedInstanceName string
 
 @description('Optional. Enables advanced data security features, like recuring vulnerability assesment scans and ATP. If enabled, storage account must be provided.')
@@ -42,11 +42,11 @@ resource securityAlertPolicy 'Microsoft.Sql/managedInstances/securityAlertPolici
   }
 }
 
-@description('The name of the deployed security alert policy')
+@description('The name of the deployed security alert policy.')
 output name string = securityAlertPolicy.name
 
-@description('The resource ID of the deployed security alert policy')
+@description('The resource ID of the deployed security alert policy.')
 output resourceId string = securityAlertPolicy.id
 
-@description('The resource group of the deployed security alert policy')
+@description('The resource group of the deployed security alert policy.')
 output resourceGroupName string = resourceGroup().name

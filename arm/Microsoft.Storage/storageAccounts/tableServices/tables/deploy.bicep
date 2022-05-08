@@ -1,8 +1,8 @@
 @maxLength(24)
-@description('Required. Name of the Storage Account.')
+@description('Conditional. The name of the parent Storage Account. Required if the template is used in a standalone deployment.')
 param storageAccountName string
 
-@description('Optional. The name of the table service')
+@description('Conditional. The name of the parent table service. Required if the template is used in a standalone deployment.')
 param tableServicesName string = 'default'
 
 @description('Required. Name of the table.')
@@ -36,11 +36,11 @@ resource table 'Microsoft.Storage/storageAccounts/tableServices/tables@2021-06-0
   parent: storageAccount::tableServices
 }
 
-@description('The name of the deployed file share service')
+@description('The name of the deployed file share service.')
 output name string = table.name
 
-@description('The resource ID of the deployed file share service')
+@description('The resource ID of the deployed file share service.')
 output resourceId string = table.id
 
-@description('The resource group of the deployed file share service')
+@description('The resource group of the deployed file share service.')
 output resourceGroupName string = resourceGroup().name

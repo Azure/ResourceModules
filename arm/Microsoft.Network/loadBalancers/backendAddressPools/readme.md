@@ -19,8 +19,12 @@ This module deploys load balancer backend address pools.
 **Required parameters**
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `loadBalancerName` | string | The name of the parent load balancer |
-| `name` | string | The name of the backend address pool |
+| `name` | string | The name of the backend address pool. |
+
+**Conditional parameters**
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `loadBalancerName` | string | The name of the parent load balancer. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Description |
@@ -34,6 +38,6 @@ This module deploys load balancer backend address pools.
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the backend address pool |
-| `resourceGroupName` | string | The resource group the backend address pool was deployed into |
-| `resourceId` | string | The resource ID of the backend address pool |
+| `name` | string | The name of the backend address pool. |
+| `resourceGroupName` | string | The resource group the backend address pool was deployed into. |
+| `resourceId` | string | The resource ID of the backend address pool. |
