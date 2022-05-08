@@ -78,8 +78,7 @@ Alternatively, you can also do the same with a specific release by navigating to
 
 To configure the CI environment you have to perform several tasks:
 - [3.1 Update default `namePrefix`](#31-update-default-nameprefix)
-- [3.2 Configure tests](#32-configure-tests)
-- [3.3 Setup CI-environment-specific configuration](#33-setup-ci-environment-specific-configuration)
+- [3.2 Setup CI-environment-specific configuration](#32-setup-ci-environment-specific-configuration)
 
 > **Note:** While you can use the browser, we recommend that you clone all files to your local machine and update them using, for example, Visual Studio Code.
 
@@ -107,16 +106,7 @@ To update the `namePrefix`, perform the following steps:
 
  For further information on the token replacement logic, please refer to the corresponding [Token replacement](./The%20CI%20environment%20-%20Token%20replacement) section.
 
-## 3.2 Configure tests
-
-In the `settings.json` file you further have the option to configure how Pester tests the environment by adjusting the `pesterConfiguration` object. Following you can find an overview of these options and what they do:
-
-| Setting | Description |
-| - | - |
-| `enableAzureDevOpsSpecificTests` | Disables/Enables tests that are specific to an Azure DevOps environment. <p><p><b>Should be disabled if using only a GitHub environment.</b> |
-| `enableGitHubSpecificTests` | Disables/Enables tests that are specific to a GitHub environment. <p><p><b>Should be disabled if using only an Azure DevOps environment.</b> |
-
-## 3.3 Setup CI-environment-specific configuration
+## 3.2 Setup CI-environment-specific configuration
 
 While the concepts are the same, the configuration of the CI environment can differ drastically depending on the DevOps environment in which you want to register and run your pipelines. Following you can find instructions on how to perform the remaining configuration in the corresponding DevOps environment:
 
@@ -339,7 +329,7 @@ This section will explain what is required to publish the modules to [Azure Arti
 1. If you chose the feed to be project-scoped, you will need the Project Build Service account to have `Contributor` access to publish to the Azure Artifacts feed. To set this, follow the [Pipeline permission](https://docs.microsoft.com/en-us/azure/devops/artifacts/feeds/feed-permissions?view=azure-devops#pipelines-permissions) steps.
 
 #### Implementation Guidance
-Each `./azuredevops/modulePipelines` yaml pipeline already calls `/.azuredevops/pipelineTemplates/jobs.publishModule.yml`. This yaml template contains a method to `Publish module to artifacts feed` via `utilities\pipelines\resourcePublish\Publish-ModuleToUniversalArtifactFeed.ps1`.
+Each `./azuredevops/modulePipelines` yaml pipeline already calls `/.azuredevops/pipelineTemplates/jobs.publishModule.yml`. This YAML template contains a method to `Publish module to artifacts feed` via `utilities\pipelines\resourcePublish\Publish-ModuleToUniversalArtifactFeed.ps1`.
 
 
 </details>
