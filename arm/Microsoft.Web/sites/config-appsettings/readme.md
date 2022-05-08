@@ -24,7 +24,7 @@ This module deploys the app settings.
 **Conditional parameters**
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `appName` | string | Name of the site parent resource. Required if the template is used in a standalone deployment. |
+| `appName` | string | The name of the parent site resource. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Description |

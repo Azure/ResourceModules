@@ -50,7 +50,7 @@ SQL MI allows for Azure AD Authentication via an [Azure AD Admin](https://docs.m
 **Conditional parameters**
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
-| `primaryUserAssignedIdentityId` | string | `''` | Required if "userAssignedIdentities" is not empty. The resource ID of a user assigned identity to be used by default. |
+| `primaryUserAssignedIdentityId` | string | `''` | The resource ID of a user assigned identity to be used by default. Required if "userAssignedIdentities" is not empty. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |

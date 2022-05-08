@@ -25,7 +25,7 @@ This module deploys a Backup Policy for a Recovery Services Vault
 **Conditional parameters**
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `recoveryVaultName` | string | Name of the Azure Recovery Service Vault. Required if the template is used in a standalone deployment. |
+| `recoveryVaultName` | string | The name of the parent Azure Recovery Service Vault. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Description |

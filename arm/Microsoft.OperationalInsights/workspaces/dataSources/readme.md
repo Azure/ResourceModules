@@ -25,7 +25,7 @@ This template deploys a data source for a Log Analytics workspace.
 **Conditional parameters**
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `logAnalyticsWorkspaceName` | string | Name of the Log Analytics workspace. Required if the template is used in a standalone deployment. |
+| `logAnalyticsWorkspaceName` | string | The name of the parent Log Analytics workspace. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Description |

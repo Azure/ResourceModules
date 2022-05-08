@@ -26,7 +26,7 @@ This module deploys a backup short-term retention policies for SQL Managed Insta
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `databaseName` | string | The name of the parent SQL managed instance database. Required if the template is used in a standalone deployment. |
-| `managedInstanceName` | string | Name of the SQL managed instance. Required if the template is used in a standalone deployment. |
+| `managedInstanceName` | string | The name of the parent SQL managed instance. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Description |

@@ -24,7 +24,7 @@ This module deploys a security alert policy for a SQL managed instance.
 **Conditional parameters**
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `managedInstanceName` | string | Name of the SQL managed instance. Required if the template is used in a standalone deployment. |
+| `managedInstanceName` | string | The name of the parent SQL managed instance. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
