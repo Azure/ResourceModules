@@ -48,10 +48,10 @@ param scopes array = [
   subscription().id
 ]
 
-@description('Optional. The resource type of the target resource(s) on which the alert is created/updated. Mandatory for MultipleResourceMultipleMetricCriteria.')
+@description('Conditional. The resource type of the target resource(s) on which the alert is created/updated. Required if alertCriteriaType is MultipleResourceMultipleMetricCriteria.')
 param targetResourceType string = ''
 
-@description('Optional. The region of the target resource(s) on which the alert is created/updated. Mandatory for MultipleResourceMultipleMetricCriteria.')
+@description('Conditional. The region of the target resource(s) on which the alert is created/updated. Required if alertCriteriaType is MultipleResourceMultipleMetricCriteria.')
 param targetResourceRegion string = ''
 
 @description('Optional. The flag that indicates whether the alert should be auto resolved or not.')

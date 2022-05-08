@@ -13,10 +13,10 @@ param identityProviderAllowedTenants array = []
 @description('Optional. OpenID Connect discovery endpoint hostname for AAD or AAD B2C.')
 param identityProviderAuthority string = ''
 
-@description('Optional. Client ID of the Application in the external Identity Provider. Required if identity provider is used.')
+@description('Conditional. Client ID of the Application in the external Identity Provider. Required if identity provider is used.')
 param identityProviderClientId string = ''
 
-@description('Optional. Client secret of the Application in external Identity Provider, used to authenticate login request. Required if identity provider is used.')
+@description('Conditional. Client secret of the Application in external Identity Provider, used to authenticate login request. Required if identity provider is used.')
 @secure()
 param identityProviderClientSecret string = ''
 
