@@ -1,4 +1,4 @@
-@description('Required. Private DNS zone name.')
+@description('Conditional. Private DNS zone name. Required if the template is used in a standalone deployment.')
 param privateDnsZoneName string
 
 @description('Required. The name of the TXT record.')
@@ -59,8 +59,8 @@ module TXT_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in rol
 @description('The name of the deployed TXT record')
 output name string = TXT.name
 
-@description('The resource ID of the deployed TXT record')
+@description('The resource ID of the deployed TXT record.')
 output resourceId string = TXT.id
 
-@description('The resource group of the deployed TXT record')
+@description('The resource group of the deployed TXT record.')
 output resourceGroupName string = resourceGroup().name

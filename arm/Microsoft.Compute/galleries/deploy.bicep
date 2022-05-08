@@ -1,14 +1,14 @@
 @minLength(1)
-@description('Required. Name of the Azure Shared Image Gallery')
+@description('Required. Name of the Azure Shared Image Gallery.')
 param name string
 
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
 
-@description('Optional. Description of the Azure Shared Image Gallery')
+@description('Optional. Description of the Azure Shared Image Gallery.')
 param galleryDescription string = ''
 
-@description('Optional. Images to create')
+@description('Optional. Images to create.')
 param images array = []
 
 @allowed([
@@ -19,7 +19,7 @@ param images array = []
 @description('Optional. Specify the type of lock.')
 param lock string = 'NotSpecified'
 
-@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'')
+@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
 param roleAssignments array = []
 
 @description('Optional. Tags for all resources.')
@@ -101,11 +101,11 @@ module galleries_images 'images/deploy.bicep' = [for (image, index) in images: {
   }
 }]
 
-@description('The resource ID of the deployed image gallery')
+@description('The resource ID of the deployed image gallery.')
 output resourceId string = gallery.id
 
-@description('The resource group of the deployed image gallery')
+@description('The resource group of the deployed image gallery.')
 output resourceGroupName string = resourceGroup().name
 
-@description('The name of the deployed image gallery')
+@description('The name of the deployed image gallery.')
 output name string = gallery.name

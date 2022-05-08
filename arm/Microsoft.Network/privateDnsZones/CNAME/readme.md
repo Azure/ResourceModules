@@ -21,7 +21,11 @@ This module deploys a Private DNS Zone CNAME record.
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The name of the CNAME record. |
-| `privateDnsZoneName` | string | Private DNS zone name. |
+
+**Conditional parameters**
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `privateDnsZoneName` | string | Private DNS zone name. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Description |
@@ -64,5 +68,5 @@ Create a role assignment for the given resource. If you want to assign a service
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The name of the deployed CNAME record |
-| `resourceGroupName` | string | The resource group of the deployed CNAME record |
-| `resourceId` | string | The resource ID of the deployed CNAME record |
+| `resourceGroupName` | string | The resource group of the deployed CNAME record. |
+| `resourceId` | string | The resource ID of the deployed CNAME record. |

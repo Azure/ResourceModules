@@ -1,4 +1,4 @@
-@description('Required. Private DNS zone name.')
+@description('Conditional. Private DNS zone name. Required if the template is used in a standalone deployment.')
 param privateDnsZoneName string
 
 @description('Required. The name of the CNAME record.')
@@ -59,8 +59,8 @@ module CNAME_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in r
 @description('The name of the deployed CNAME record')
 output name string = CNAME.name
 
-@description('The resource ID of the deployed CNAME record')
+@description('The resource ID of the deployed CNAME record.')
 output resourceId string = CNAME.id
 
-@description('The resource group of the deployed CNAME record')
+@description('The resource group of the deployed CNAME record.')
 output resourceGroupName string = resourceGroup().name

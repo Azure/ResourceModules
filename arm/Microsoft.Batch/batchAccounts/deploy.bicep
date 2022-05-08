@@ -1,4 +1,4 @@
-@description('Required. Name of the Azure Batch')
+@description('Required. Name of the Azure Batch.')
 param name string
 
 @description('Optional. Location for all Resources.')
@@ -204,11 +204,11 @@ resource batchAccount_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@
   scope: batchAccount
 }
 
-@description('The name of the batch account')
+@description('The name of the batch account.')
 output name string = batchAccount.name
 
-@description('The resource ID of the batch account')
+@description('The resource ID of the batch account.')
 output resourceId string = batchAccount.id
 
-@description('The resource group the batch account was deployed into')
+@description('The resource group the batch account was deployed into.')
 output resourceGroupName string = resourceGroup().name

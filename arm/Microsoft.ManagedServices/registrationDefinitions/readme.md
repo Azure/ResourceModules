@@ -27,8 +27,8 @@ remote/managing tenant.
 | :-- | :-- | :-- |
 | `authorizations` | array | Specify an array of objects, containing object of Azure Active Directory principalId, a Azure roleDefinitionId, and an optional principalIdDisplayName. The roleDefinition specified is granted to the principalId in the provider's Active Directory and the principalIdDisplayName is visible to customers. |
 | `managedByTenantId` | string | Specify the tenant ID of the tenant which homes the principals you are delegating permissions to. |
-| `name` | string | Specify a unique name for your offer/registration. i.e '<Managing Tenant> - <Remote Tenant> - <ResourceName>' |
-| `registrationDescription` | string | Description of the offer/registration. i.e. 'Managed by <Managing Org Name>' |
+| `name` | string | Specify a unique name for your offer/registration. i.e '<Managing Tenant> - <Remote Tenant> - <ResourceName>'. |
+| `registrationDescription` | string | Description of the offer/registration. i.e. 'Managed by <Managing Org Name>'. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Description |
@@ -74,10 +74,10 @@ remote/managing tenant.
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `assignmentResourceId` | string | The registration assignment resource ID |
-| `name` | string | The name of the registration definition |
-| `resourceId` | string | The resource ID of the registration definition |
-| `subscriptionName` | string | The subscription the registration definition was deployed into |
+| `assignmentResourceId` | string | The registration assignment resource ID. |
+| `name` | string | The name of the registration definition. |
+| `resourceId` | string | The resource ID of the registration definition. |
+| `subscriptionName` | string | The subscription the registration definition was deployed into. |
 
 ## Considerations
 
@@ -95,7 +95,6 @@ If the subscription was created through the Cloud Solution Provider (CSP) progra
 
 **More info on this topic:**
 
-- [Deploy the Azure Resource Manager templates - Onboard a customer to Azure Lighthouse | Microsoft Docs](https://docs.microsoft.com/en-us/azure/lighthouse/how-to/onboard-customer#deploy-the-azure-resource-manager-templates)
 
 ### Permissions required to remove delegations
 
@@ -115,7 +114,6 @@ removed by a user in the customer's tenant.
 
 **More info on this topic:**
 
-- [Service providers - Remove access to a delegation | Microsoft Docs](https://docs.microsoft.com/en-us/azure/lighthouse/how-to/remove-delegation#service-providers)
 
 ### Limitations with Lighthouse and resource delegation
 
@@ -128,5 +126,8 @@ There are a couple of limitations that you should be aware of with Lighthouse:
 
 **More info on this topic:**
 
+
+
+=======
 - [Current limitations - Cross-tenant management experiences | Microsoft Docs](https://docs.microsoft.com/en-us/azure/lighthouse/concepts/cross-tenant-management-experience#current-limitations)
 - [Troubleshooting - Onboard a customer to Azure Lighthouse | Microsoft Docs](https://docs.microsoft.com/en-us/azure/lighthouse/how-to/onboard-customer#troubleshooting)

@@ -17,18 +17,22 @@
 **Required parameters**
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `databaseAccountName` | string | Name of the Database Account |
 | `name` | string | Name of the container. |
-| `sqlDatabaseName` | string | Name of the SQL Database  |
+
+**Conditional parameters**
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `databaseAccountName` | string | Name of the Database Account. Required if the template is used in a standalone deployment. |
+| `sqlDatabaseName` | string | Name of the SQL Database. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `kind` | string | `'Hash'` | `[Hash, MultiHash, Range]` | Indicates the kind of algorithm used for partitioning |
-| `paths` | array | `[]` |  | List of paths using which data within the container can be partitioned |
+| `kind` | string | `'Hash'` | `[Hash, MultiHash, Range]` | Indicates the kind of algorithm used for partitioning. |
+| `paths` | array | `[]` |  | List of paths using which data within the container can be partitioned. |
 | `tags` | object | `{object}` |  | Tags of the SQL Database resource. |
-| `throughput` | int | `400` |  | Request Units per second |
+| `throughput` | int | `400` |  | Request Units per second. |
 
 
 ### Parameter Usage: `tags`

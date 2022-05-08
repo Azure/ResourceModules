@@ -13,16 +13,16 @@ param addressPrefix string
 @description('Optional. Flag to control transit for VirtualRouter hub.')
 param allowBranchToBranchTraffic bool = true
 
-@description('Optional. Resource ID of the Azure Firewall to link to')
+@description('Optional. Resource ID of the Azure Firewall to link to.')
 param azureFirewallId string = ''
 
-@description('Optional. Resource ID of the Express Route Gateway to link to')
+@description('Optional. Resource ID of the Express Route Gateway to link to.')
 param expressRouteGatewayId string = ''
 
-@description('Optional. Resource ID of the Point-to-Site VPN Gateway to link to')
+@description('Optional. Resource ID of the Point-to-Site VPN Gateway to link to.')
 param p2SVpnGatewayId string = ''
 
-@description('Optional. The preferred routing gateway types')
+@description('Optional. The preferred routing gateway types.')
 @allowed([
   'ExpressRoute'
   'None'
@@ -31,10 +31,10 @@ param p2SVpnGatewayId string = ''
 ])
 param preferredRoutingGateway string = ''
 
-@description('Optional. VirtualHub route tables')
+@description('Optional. VirtualHub route tables.')
 param routeTableRoutes array = []
 
-@description('Optional. ID of the Security Partner Provider to link to')
+@description('Optional. ID of the Security Partner Provider to link to.')
 param securityPartnerProviderId string = ''
 
 @description('Optional. The Security Provider name.')
@@ -56,10 +56,10 @@ param virtualRouterAsn int = -1
 @description('Optional. VirtualRouter IPs.')
 param virtualRouterIps array = []
 
-@description('Required. Resource ID of the virtual WAN to link to')
+@description('Required. Resource ID of the virtual WAN to link to.')
 param virtualWanId string
 
-@description('Optional. Resource ID of the VPN Gateway to link to')
+@description('Optional. Resource ID of the VPN Gateway to link to.')
 param vpnGatewayId string = ''
 
 @description('Optional. Route tables to create for the virtual hub.')
@@ -163,11 +163,11 @@ module virtualHub_hubVirtualNetworkConnections 'hubVirtualNetworkConnections/dep
   ]
 }]
 
-@description('The resource group the virtual hub was deployed into')
+@description('The resource group the virtual hub was deployed into.')
 output resourceGroupName string = resourceGroup().name
 
-@description('The resource ID of the virtual hub')
+@description('The resource ID of the virtual hub.')
 output resourceId string = virtualHub.id
 
-@description('The name of the virtual hub')
+@description('The name of the virtual hub.')
 output name string = virtualHub.name

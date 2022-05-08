@@ -1,13 +1,13 @@
-@description('Required. ID of the Cosmos DB database account.')
+@description('Conditional. ID of the Cosmos DB database account. Required if the template is used in a standalone deployment.')
 param databaseAccountName string
 
-@description('Required. Name of the SQL database ')
+@description('Required. Name of the SQL database .')
 param name string
 
 @description('Optional. Array of containers to deploy in the SQL database.')
 param containers array = []
 
-@description('Optional. Request units per second')
+@description('Optional. Request units per second.')
 param throughput int = 400
 
 @description('Optional. Tags of the SQL database resource.')

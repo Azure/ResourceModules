@@ -1,7 +1,7 @@
 @description('Required. The name of the SQL managed instance database.')
 param name string
 
-@description('Required. The name of the SQL managed instance.')
+@description('Conditional. The name of the parent SQL managed instance. Required if the template is used in a standalone deployment.')
 param managedInstanceName string
 
 @description('Optional. Location for all resources.')
@@ -69,10 +69,10 @@ param diagnosticEventHubName string = ''
 @description('Optional. Specify the type of lock.')
 param lock string = 'NotSpecified'
 
-@description('Optional. The configuration for the backup short term retention policy definition')
+@description('Optional. The configuration for the backup short term retention policy definition.')
 param backupShortTermRetentionPoliciesObj object = {}
 
-@description('Optional. The configuration for the backup long term retention policy definition')
+@description('Optional. The configuration for the backup long term retention policy definition.')
 param backupLongTermRetentionPoliciesObj object = {}
 
 @description('Optional. Tags of the resource.')
@@ -188,11 +188,11 @@ module database_backupLongTermRetentionPolicy 'backupLongTermRetentionPolicies/d
   }
 }
 
-@description('The name of the deployed database')
+@description('The name of the deployed database.')
 output name string = database.name
 
-@description('The resource ID of the deployed database')
+@description('The resource ID of the deployed database.')
 output resourceId string = database.id
 
-@description('The resource group the database was deployed into')
+@description('The resource group the database was deployed into.')
 output resourceGroupName string = resourceGroup().name

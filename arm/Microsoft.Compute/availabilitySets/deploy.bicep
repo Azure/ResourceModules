@@ -27,7 +27,7 @@ param location string = resourceGroup().location
 @description('Optional. Specify the type of lock.')
 param lock string = 'NotSpecified'
 
-@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'')
+@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
 param roleAssignments array = []
 
 @description('Optional. Tags of the availability set resource.')
@@ -84,11 +84,11 @@ module availabilitySet_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, i
   }
 }]
 
-@description('The name of the availability set')
+@description('The name of the availability set.')
 output name string = availabilitySet.name
 
-@description('The resource ID of the availability set')
+@description('The resource ID of the availability set.')
 output resourceId string = availabilitySet.id
 
-@description('The resource group the availability set was deployed into')
+@description('The resource group the availability set was deployed into.')
 output resourceGroupName string = resourceGroup().name

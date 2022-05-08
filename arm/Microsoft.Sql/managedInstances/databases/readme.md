@@ -27,14 +27,18 @@ The SQL Managed Instance Database is deployed on a SQL Managed Instance.
 **Required parameters**
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `managedInstanceName` | string | The name of the SQL managed instance. |
 | `name` | string | The name of the SQL managed instance database. |
+
+**Conditional parameters**
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `managedInstanceName` | string | The name of the parent SQL managed instance. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `backupLongTermRetentionPoliciesObj` | _[backupLongTermRetentionPolicies](backupLongTermRetentionPolicies/readme.md)_ object | `{object}` |  | The configuration for the backup long term retention policy definition |
-| `backupShortTermRetentionPoliciesObj` | _[backupShortTermRetentionPolicies](backupShortTermRetentionPolicies/readme.md)_ object | `{object}` |  | The configuration for the backup short term retention policy definition |
+| `backupLongTermRetentionPoliciesObj` | _[backupLongTermRetentionPolicies](backupLongTermRetentionPolicies/readme.md)_ object | `{object}` |  | The configuration for the backup long term retention policy definition. |
+| `backupShortTermRetentionPoliciesObj` | _[backupShortTermRetentionPolicies](backupShortTermRetentionPolicies/readme.md)_ object | `{object}` |  | The configuration for the backup short term retention policy definition. |
 | `catalogCollation` | string | `'SQL_Latin1_General_CP1_CI_AS'` |  | Collation of the managed instance. |
 | `collation` | string | `'SQL_Latin1_General_CP1_CI_AS'` |  | Collation of the managed instance database. |
 | `createMode` | string | `'Default'` | `[Default, RestoreExternalBackup, PointInTimeRestore, Recovery, RestoreLongTermRetentionBackup]` | Managed database create mode. PointInTimeRestore: Create a database by restoring a point in time backup of an existing database. SourceDatabaseName, SourceManagedInstanceName and PointInTime must be specified. RestoreExternalBackup: Create a database by restoring from external backup files. Collation, StorageContainerUri and StorageContainerSasToken must be specified. Recovery: Creates a database by restoring a geo-replicated backup. RecoverableDatabaseId must be specified as the recoverable database resource ID to restore. |
@@ -79,6 +83,6 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the deployed database |
-| `resourceGroupName` | string | The resource group the database was deployed into |
-| `resourceId` | string | The resource ID of the deployed database |
+| `name` | string | The name of the deployed database. |
+| `resourceGroupName` | string | The resource group the database was deployed into. |
+| `resourceId` | string | The resource ID of the deployed database. |
