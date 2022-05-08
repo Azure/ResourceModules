@@ -11,15 +11,9 @@ This section shows you how you can orchestrate a deployment using multiple resou
 - [Upstream workloads](#upstream-workloads)
 - [Orchestration overview](#orchestration-overview)
 - [Template orchestration](#template-orchestration)
-  - [Example with local file references](#example-with-local-file-references)
-  - [Example with a Private Bicep Registry](#example-with-a-Private-Bicep-Registry)
-  - [Example with template-specs](#example-with-template-specs)
+  - [How to start](#how-to-start)
+  - [Examples](#examples)
 - [Pipeline orchestration](#pipeline-orchestration)
-  - [\[GitHub\] Sample solution for multi-repository approach](#github-sample-solution-for-multi-repository-approach)
-    - [Summary](#summary)
-    - [Repo structure](#repo-structure)
-    - [YAML pipeline](#yaml-pipeline)
-    - [Notes](#notes)
 
 ---
 
@@ -54,7 +48,12 @@ With this approach, modules need to be stored in an available location, where th
 
 In an enterprise environment, the recommended approach is to store these templates in a private environment, only accessible by enterprise resources. Thus, only trusted authorities can have access to these files.
 
-## ***Example with local file references***
+## How to start
+
+## Examples
+
+<details>
+<summary>Referencing <b>local files</b></summary>
 
 The following example shows how you could orchestrate a deployment of multiple resources using local module references. In this example we will deploy a resource group with a contained NSG and use the same in a subsequent VNET deployment.
 
@@ -140,7 +139,10 @@ module vnet '../arm/Microsoft.Network/virtualNetworks/deploy.bicep' = {
 }
 ```
 
-## ***Example with a Private Bicep Registry***
+</details>
+
+<details>
+<summary>Referencing a <b>Private Bicep Registry</b></summary>
 
 The following example shows how you could orchestrate a deployment of multiple resources using modules from a private Bicep Registry. In this example we will deploy a resource group with a contained NSG and use the same in a subsequent VNET deployment.
 
@@ -243,7 +245,10 @@ The example assumes you are using a [`bicepconfig.json`](https://docs.microsoft.
 }
 ```
 
-## ***Example with template-specs***
+</details>
+
+<details>
+<summary>Referencing <b>Template-Specs</b></summary>
 
 The following example shows how you could orchestrate a deployment of multiple resources using template specs. In this example we will deploy a NSG and use the same in a subsequent VNET deployment.
 
@@ -346,11 +351,15 @@ The example assumes you are using a [`bicepconfig.json`](https://docs.microsoft.
 }
 ```
 
+</details>
+<p>
+
 # Pipeline-orchestration
 
 The modules provided by this repo can be orchestrated to create more complex infrastructures and as such reusable solutions or products. This approach leverages the main 'ResourceModules' repository alongside its contained modules & pipeline templates to deploy resources. Each pipeline job deploys one instance of a resources and their order is controlled by specifying dependencies in the pipeline itself.
 
-## ***[GitHub] Sample solution for multi-repository approach***
+<details>
+<summary>[GitHub] Sample solution for <b>multi-repository approach</b></summary>
 
 ### Summary
 
@@ -371,7 +380,7 @@ The modules provided by this repo can be orchestrated to create more complex inf
 
 ### YAML pipeline
 
-``` YAML
+```YAML
 name: 'Multi-Repo solution deployment'
 
 on:
@@ -448,3 +457,5 @@ jobs:
 
 > 1. 'Azure/ResourceModules' repo has been checked out at the root location intentionally because GitHub Actions expect the underlying utility scripts and variables at a specific location
 > 1. 'contoso/MultiRepoTest' repo has been checked out in a nested folder called as "MultiRepoTestParentFolder" to distinguish it from the folders from the other repo in the agent but can be downloaded at the root location too if desired
+
+</details>
