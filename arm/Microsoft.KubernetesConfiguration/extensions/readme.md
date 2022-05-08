@@ -40,7 +40,7 @@ For Details see [Prerequisites](https://docs.microsoft.com/en-us/azure/azure-arc
 | :-- | :-- | :-- |
 | `clusterName` | string | The name of the AKS cluster that should be configured. |
 | `extensionType` | string | Type of the Extension, of which this resource is an instance of. It must be one of the Extension Types registered with Microsoft.KubernetesConfiguration by the Extension publisher. |
-| `name` | string | The name of the Flux Configuration |
+| `name` | string | The name of the Flux Configuration. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Description |
@@ -49,9 +49,9 @@ For Details see [Prerequisites](https://docs.microsoft.com/en-us/azure/azure-arc
 | `configurationSettings` | object | `{object}` | Configuration settings, as name-value pairs for configuring this extension. |
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `location` | string | `[resourceGroup().location]` | Location for all resources. |
-| `releaseNamespace` | string | `''` | Namespace where the extension Release must be placed, for a Cluster scoped extension. If this namespace does not exist, it will be created |
+| `releaseNamespace` | string | `''` | Namespace where the extension Release must be placed, for a Cluster scoped extension. If this namespace does not exist, it will be created. |
 | `releaseTrain` | string | `'Stable'` | ReleaseTrain this extension participates in for auto-upgrade (e.g. Stable, Preview, etc.) - only if autoUpgradeMinorVersion is "true". |
-| `targetNamespace` | string | `''` | Namespace where the extension will be created for an Namespace scoped extension. If this namespace does not exist, it will be created |
+| `targetNamespace` | string | `''` | Namespace where the extension will be created for an Namespace scoped extension. If this namespace does not exist, it will be created. |
 | `version` | string | `''` | Version of the extension for this extension, if it is "pinned" to a specific version. |
 
 
@@ -59,9 +59,9 @@ For Details see [Prerequisites](https://docs.microsoft.com/en-us/azure/azure-arc
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the extension |
-| `resourceGroupName` | string | The name of the resource group the extension was deployed into |
-| `resourceId` | string | The resource ID of the extension |
+| `name` | string | The name of the extension. |
+| `resourceGroupName` | string | The name of the resource group the extension was deployed into. |
+| `resourceId` | string | The resource ID of the extension. |
 
 ## Deployment examples
 
@@ -106,11 +106,11 @@ For Details see [Prerequisites](https://docs.microsoft.com/en-us/azure/azure-arc
 module extensions './Microsoft.KubernetesConfiguration/extensions/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-extensions'
   params: {
+      clusterName: '<<namePrefix>>-az-aks-kubenet-001'
       releaseTrain: 'Stable'
+      extensionType: 'microsoft.flux'
       releaseNamespace: 'flux-system'
       name: 'flux'
-      extensionType: 'microsoft.flux'
-      clusterName: '<<namePrefix>>-az-aks-kubenet-001'
   }
 ```
 
@@ -171,19 +171,19 @@ module extensions './Microsoft.KubernetesConfiguration/extensions/deploy.bicep' 
 module extensions './Microsoft.KubernetesConfiguration/extensions/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-extensions'
   params: {
+      releaseTrain: 'Stable'
+      clusterName: '<<namePrefix>>-az-aks-kubenet-001'
       releaseNamespace: 'flux-system'
-      name: 'flux'
       configurationSettings: {
+        'image-automation-controller.enabled': 'false'
         'source-controller.enabled': 'true'
         'notification-controller.enabled': 'false'
-        'image-automation-controller.enabled': 'false'
         'image-reflector-controller.enabled': 'false'
         'kustomize-controller.enabled': 'true'
       }
-      releaseTrain: 'Stable'
-      clusterName: '<<namePrefix>>-az-aks-kubenet-001'
       extensionType: 'microsoft.flux'
       version: '0.5.2'
+      name: 'flux'
   }
 ```
 

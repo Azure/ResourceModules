@@ -24,17 +24,17 @@ This template deploys a network watcher.
 **Required parameters**
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
-| `name` | string | `[format('NetworkWatcher_{0}', parameters('location'))]` | Name of the Network Watcher resource (hidden) |
+| `name` | string | `[format('NetworkWatcher_{0}', parameters('location'))]` | Name of the Network Watcher resource (hidden). |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `connectionMonitors` | _[connectionMonitors](connectionMonitors/readme.md)_ array | `[]` |  | Array that contains the Connection Monitors |
+| `connectionMonitors` | _[connectionMonitors](connectionMonitors/readme.md)_ array | `[]` |  | Array that contains the Connection Monitors. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `flowLogs` | _[flowLogs](flowLogs/readme.md)_ array | `[]` |  | Array that contains the Flow Logs |
+| `flowLogs` | _[flowLogs](flowLogs/readme.md)_ array | `[]` |  | Array that contains the Flow Logs. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `'NotSpecified'` | `[CanNotDelete, NotSpecified, ReadOnly]` | Specify the type of lock. |
-| `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
+| `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
 
 
@@ -142,9 +142,9 @@ tags: {
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the deployed network watcher |
-| `resourceGroupName` | string | The resource group the network watcher was deployed into |
-| `resourceId` | string | The resource ID of the deployed network watcher |
+| `name` | string | The name of the deployed network watcher. |
+| `resourceGroupName` | string | The resource group the network watcher was deployed into. |
+| `resourceId` | string | The resource ID of the deployed network watcher. |
 
 ## Deployment examples
 
@@ -296,9 +296,58 @@ module networkWatchers './Microsoft.Network/networkWatchers/deploy.bicep' = {
 module networkWatchers './Microsoft.Network/networkWatchers/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-networkWatchers'
   params: {
+      flowLogs: [
+        {
+          storageId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
+          enabled: false
+          targetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/networkSecurityGroups/adp-<<namePrefix>>-az-nsg-x-001'
+        }
+        {
+          workspaceResourceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
+          storageId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
+          trafficAnalyticsInterval: 10
+          formatVersion: 1
+          retentionInDays: 8
+          targetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/networkSecurityGroups/adp-<<namePrefix>>-az-nsg-x-apgw'
+          name: 'adp-<<namePrefix>>-az-nsg-x-apgw-flowlog'
+        }
+      ]
       connectionMonitors: [
         {
           workspaceResourceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
+          testConfigurations: [
+            {
+              testFrequencySec: 30
+              protocol: 'Http'
+              httpConfiguration: {
+                requestHeaders: []
+                method: 'Get'
+                validStatusCodeRanges: [
+                  '200'
+                ]
+                preferHTTPS: false
+                port: 80
+              }
+              name: 'HTTP Test'
+              successThreshold: {
+                roundTripTimeMs: 100
+                checksFailedPercent: 5
+              }
+            }
+          ]
+          name: 'adp-<<namePrefix>>-az-conn-mon-x-001'
+          endpoints: [
+            {
+              type: 'AzureVM'
+              resourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Compute/virtualMachines/adp-<<namePrefix>>-vm-01'
+              name: '<<namePrefix>>-az-subnet-x-001(validation-rg)'
+            }
+            {
+              type: 'ExternalAddress'
+              name: 'Office Portal'
+              address: 'www.office.com'
+            }
+          ]
           testGroups: [
             {
               destinations: [
@@ -307,44 +356,11 @@ module networkWatchers './Microsoft.Network/networkWatchers/deploy.bicep' = {
               sources: [
                 '<<namePrefix>>-az-subnet-x-001(validation-rg)'
               ]
-              disable: false
               name: 'TestHTTPBing'
               testConfigurations: [
                 'HTTP Test'
               ]
-            }
-          ]
-          endpoints: [
-            {
-              resourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Compute/virtualMachines/adp-<<namePrefix>>-vm-01'
-              name: '<<namePrefix>>-az-subnet-x-001(validation-rg)'
-              type: 'AzureVM'
-            }
-            {
-              address: 'www.office.com'
-              name: 'Office Portal'
-              type: 'ExternalAddress'
-            }
-          ]
-          name: 'adp-<<namePrefix>>-az-conn-mon-x-001'
-          testConfigurations: [
-            {
-              httpConfiguration: {
-                port: 80
-                requestHeaders: []
-                validStatusCodeRanges: [
-                  '200'
-                ]
-                method: 'Get'
-                preferHTTPS: false
-              }
-              protocol: 'Http'
-              successThreshold: {
-                roundTripTimeMs: 100
-                checksFailedPercent: 5
-              }
-              name: 'HTTP Test'
-              testFrequencySec: 30
+              disable: false
             }
           ]
         }
@@ -352,26 +368,10 @@ module networkWatchers './Microsoft.Network/networkWatchers/deploy.bicep' = {
       name: 'adp-<<namePrefix>>-az-nw-x-001'
       roleAssignments: [
         {
+          roleDefinitionIdOrName: 'Reader'
           principalIds: [
             '<<deploymentSpId>>'
           ]
-          roleDefinitionIdOrName: 'Reader'
-        }
-      ]
-      flowLogs: [
-        {
-          storageId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
-          enabled: false
-          targetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/networkSecurityGroups/adp-<<namePrefix>>-az-nsg-x-001'
-        }
-        {
-          targetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/networkSecurityGroups/adp-<<namePrefix>>-az-nsg-x-apgw'
-          formatVersion: 1
-          retentionInDays: 8
-          name: 'adp-<<namePrefix>>-az-nsg-x-apgw-flowlog'
-          trafficAnalyticsInterval: 10
-          workspaceResourceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
-          storageId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
         }
       ]
   }

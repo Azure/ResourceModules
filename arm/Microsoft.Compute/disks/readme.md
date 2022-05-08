@@ -45,11 +45,11 @@ This template deploys a disk
 | `networkAccessPolicy` | string | `'DenyAll'` | `[AllowAll, AllowPrivate, DenyAll]` | Policy for accessing the disk via network. |
 | `osType` | string | `''` | `[Windows, Linux, ]` | Sources of a disk creation. |
 | `publicNetworkAccess` | string | `'Disabled'` | `[Disabled, Enabled]` | Policy for controlling export on the disk. |
-| `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
+| `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `securityDataUri` | string | `''` |  | If create option is ImportSecure, this is the URI of a blob to be imported into VM guest state. |
 | `sourceResourceId` | string | `''` |  | If create option is Copy, this is the ARM id of the source snapshot or disk. |
 | `sourceUri` | string | `''` |  | If create option is Import, this is the URI of a blob to be imported into a managed disk. |
-| `storageAccountId` | string | `''` |  | Required if create option is Import. The Azure Resource Manager identifier of the storage account containing the blob to import as a disk |
+| `storageAccountId` | string | `''` |  | Required if create option is Import. The Azure Resource Manager identifier of the storage account containing the blob to import as a disk. |
 | `tags` | object | `{object}` |  | Tags of the availability set resource. |
 | `uploadSizeBytes` | int | `20972032` |  | If create option is Upload, this is the size of the contents of the upload including the VHD footer. |
 
@@ -158,9 +158,9 @@ tags: {
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the disk |
-| `resourceGroupName` | string | The resource group the  disk was deployed into |
-| `resourceId` | string | The resource ID of the disk |
+| `name` | string | The name of the disk. |
+| `resourceGroupName` | string | The resource group the  disk was deployed into. |
+| `resourceId` | string | The resource ID of the disk. |
 
 ## Deployment examples
 
@@ -212,18 +212,18 @@ tags: {
 module disks './Microsoft.Compute/disks/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-disks'
   params: {
+      createOption: 'FromImage'
       sku: 'Standard_LRS'
       name: '<<namePrefix>>-az-disk-image-001'
       imageReferenceId: '/Subscriptions/<<subscriptionId>>/Providers/Microsoft.Compute/Locations/westeurope/Publishers/MicrosoftWindowsServer/ArtifactTypes/VMImage/Offers/WindowsServer/Skus/2016-Datacenter/Versions/14393.4906.2112080838'
       roleAssignments: [
         {
+          roleDefinitionIdOrName: 'Reader'
           principalIds: [
             '<<deploymentSpId>>'
           ]
-          roleDefinitionIdOrName: 'Reader'
         }
       ]
-      createOption: 'FromImage'
   }
 ```
 
@@ -281,19 +281,19 @@ module disks './Microsoft.Compute/disks/deploy.bicep' = {
 module disks './Microsoft.Compute/disks/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-disks'
   params: {
-      name: '<<namePrefix>>-az-disk-import-001'
-      createOption: 'Import'
       sourceUri: 'https://adp<<namePrefix>>azsax001.blob.core.windows.net/vhds/adp-<<namePrefix>>-az-imgt-x-001.vhd'
-      storageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
-      sku: 'Standard_LRS'
+      createOption: 'Import'
       roleAssignments: [
         {
+          roleDefinitionIdOrName: 'Reader'
           principalIds: [
             '<<deploymentSpId>>'
           ]
-          roleDefinitionIdOrName: 'Reader'
         }
       ]
+      storageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
+      sku: 'Standard_LRS'
+      name: '<<namePrefix>>-az-disk-import-001'
   }
 ```
 
@@ -345,15 +345,15 @@ module disks './Microsoft.Compute/disks/deploy.bicep' = {
 module disks './Microsoft.Compute/disks/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-disks'
   params: {
+      diskSizeGB: 1
       name: '<<namePrefix>>-az-disk-min-001'
       sku: 'Standard_LRS'
-      diskSizeGB: 1
       roleAssignments: [
         {
+          roleDefinitionIdOrName: 'Reader'
           principalIds: [
             '<<deploymentSpId>>'
           ]
-          roleDefinitionIdOrName: 'Reader'
         }
       ]
   }
@@ -423,21 +423,21 @@ module disks './Microsoft.Compute/disks/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-disks'
   params: {
       sku: 'UltraSSD_LRS'
-      diskIOPSReadWrite: 500
-      logicalSectorSize: 512
+      publicNetworkAccess: 'Enabled'
       osType: 'Windows'
       diskMBpsReadWrite: 60
+      diskIOPSReadWrite: 500
       roleAssignments: [
         {
+          roleDefinitionIdOrName: 'Reader'
           principalIds: [
             '<<deploymentSpId>>'
           ]
-          roleDefinitionIdOrName: 'Reader'
         }
       ]
       diskSizeGB: 128
+      logicalSectorSize: 512
       name: '<<namePrefix>>-az-disk-x-001'
-      publicNetworkAccess: 'Enabled'
   }
 ```
 

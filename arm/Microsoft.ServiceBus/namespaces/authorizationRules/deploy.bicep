@@ -1,9 +1,9 @@
-@description('Required. Name of the parent Service Bus Namespace for the Service Bus Queue.')
+@description('Conditional. The name of the parent Service Bus Namespace for the Service Bus Queue. Required if the template is used in a standalone deployment.')
 @minLength(6)
 @maxLength(50)
 param namespaceName string
 
-@description('Required. The name of the authorization rule')
+@description('Required. The name of the authorization rule.')
 param name string
 
 @description('Optional. The rights associated with the rule.')

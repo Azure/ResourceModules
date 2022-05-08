@@ -25,7 +25,7 @@ This module deploys an event grid topic.
 **Required parameters**
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the Event Grid Topic |
+| `name` | string | The name of the Event Grid Topic. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
@@ -44,7 +44,7 @@ This module deploys an event grid topic.
 | `lock` | string | `'NotSpecified'` | `[CanNotDelete, NotSpecified, ReadOnly]` | Specify the type of lock. |
 | `privateEndpoints` | array | `[]` |  | Configuration Details for private endpoints. |
 | `publicNetworkAccess` | string | `'Enabled'` |  | Determines if traffic is allowed over public network. |
-| `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
+| `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
 
 
@@ -229,9 +229,9 @@ tags: {
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the event grid topic |
-| `resourceGroupName` | string | The name of the resource group the event grid was deployed into |
-| `resourceId` | string | The resource ID of the event grid |
+| `name` | string | The name of the event grid topic. |
+| `resourceGroupName` | string | The name of the resource group the event grid was deployed into. |
+| `resourceId` | string | The resource ID of the event grid. |
 
 ## Deployment examples
 
@@ -289,20 +289,20 @@ tags: {
 module topics './Microsoft.EventGrid/topics/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-topics'
   params: {
-      name: '<<namePrefix>>-az-egtn-x-001'
+      diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
       diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
       diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
-      diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
-      diagnosticLogsRetentionInDays: 7
+      diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
       roleAssignments: [
         {
+          roleDefinitionIdOrName: 'Reader'
           principalIds: [
             '<<deploymentSpId>>'
           ]
-          roleDefinitionIdOrName: 'Reader'
         }
       ]
-      diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
+      diagnosticLogsRetentionInDays: 7
+      name: '<<namePrefix>>-az-egtn-x-001'
   }
 ```
 

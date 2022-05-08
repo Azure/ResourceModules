@@ -27,7 +27,7 @@ This module has some known **limitations**:
 **Required parameters**
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The group ID of the Management group |
+| `name` | string | The group ID of the Management group. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Description |
@@ -102,8 +102,8 @@ roleAssignments: [
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the management group |
-| `resourceId` | string | The resource ID of the management group |
+| `name` | string | The name of the management group. |
+| `resourceId` | string | The resource ID of the management group. |
 
 ## Considerations
 
@@ -170,17 +170,17 @@ New-AzRoleAssignment -ObjectId $PrincipalID -Scope "/providers/Microsoft.Managem
 module managementGroups './Microsoft.Management/managementGroups/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-managementGroups'
   params: {
+      parentId: '<<managementGroupId>>'
+      displayName: 'Test MG'
       name: 'testMG'
       roleAssignments: [
         {
+          roleDefinitionIdOrName: 'Reader'
           principalIds: [
             '<<deploymentSpId>>'
           ]
-          roleDefinitionIdOrName: 'Reader'
         }
       ]
-      displayName: 'Test MG'
-      parentId: '<<managementGroupId>>'
   }
 ```
 

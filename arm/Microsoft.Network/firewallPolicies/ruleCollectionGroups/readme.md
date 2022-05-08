@@ -19,9 +19,13 @@ This module deploys Network Firewall Policies Rule Collection Groups.
 **Required parameters**
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `firewallPolicyName` | string | Name of the Firewall Policy. |
-| `name` | string | The name of the rule collection group to deploy |
+| `name` | string | The name of the rule collection group to deploy. |
 | `priority` | int | Priority of the Firewall Policy Rule Collection Group resource. |
+
+**Conditional parameters**
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `firewallPolicyName` | string | The name of the parent Firewall Policy. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Description |
@@ -29,10 +33,11 @@ This module deploys Network Firewall Policies Rule Collection Groups.
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `ruleCollections` | array | `[]` | Group of Firewall Policy rule collections. |
 
+
 ## Outputs
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the deployed rule collection group |
-| `resourceGroupName` | string | The resource group of the deployed rule collection group |
-| `resourceId` | string | The resource ID of the deployed rule collection group |
+| `name` | string | The name of the deployed rule collection group. |
+| `resourceGroupName` | string | The resource group of the deployed rule collection group. |
+| `resourceId` | string | The resource ID of the deployed rule collection group. |

@@ -175,7 +175,6 @@ module policysetdefinition 'yourpath/arm/Microsoft.Authorization.policySetDefini
 module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-policySetDefinitions'
   params: {
-      name: '<<namePrefix>>-mg-min-policySet'
       policyDefinitions: [
         {
           policyDefinitionId: '/providers/Microsoft.Authorization/policyDefinitions/e56962a6-4747-49cd-b67b-bf8b01975c4c'
@@ -188,6 +187,7 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
           }
         }
       ]
+      name: '<<namePrefix>>-mg-min-policySet'
   }
 ```
 
@@ -280,15 +280,8 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
 module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-policySetDefinitions'
   params: {
-      managementGroupId: '<<managementGroupId>>'
-      name: '<<namePrefix>>-mg-policySet'
       policyDefinitions: [
         {
-          policyDefinitionReferenceId: 'Allowed locations_1'
-          groupNames: [
-            'ARM'
-          ]
-          policyDefinitionId: '/providers/Microsoft.Authorization/policyDefinitions/e56962a6-4747-49cd-b67b-bf8b01975c4c'
           parameters: {
             listOfAllowedLocations: {
               value: [
@@ -296,13 +289,13 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
               ]
             }
           }
+          groupNames: [
+            'ARM'
+          ]
+          policyDefinitionReferenceId: 'Allowed locations_1'
+          policyDefinitionId: '/providers/Microsoft.Authorization/policyDefinitions/e56962a6-4747-49cd-b67b-bf8b01975c4c'
         }
         {
-          policyDefinitionReferenceId: 'Allowed locations for resource groups_1'
-          groupNames: [
-            'ARM'
-          ]
-          policyDefinitionId: '/providers/Microsoft.Authorization/policyDefinitions/e765b5de-1225-4ba3-bd56-1ac6695af988'
           parameters: {
             listOfAllowedLocations: {
               value: [
@@ -310,8 +303,18 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
               ]
             }
           }
+          groupNames: [
+            'ARM'
+          ]
+          policyDefinitionReferenceId: 'Allowed locations for resource groups_1'
+          policyDefinitionId: '/providers/Microsoft.Authorization/policyDefinitions/e765b5de-1225-4ba3-bd56-1ac6695af988'
         }
       ]
+      metadata: {
+        category: 'Security'
+        version: '1'
+      }
+      description: '[Description] This policy set definition is deployed at management group scope'
       policyDefinitionGroups: [
         {
           name: 'Network'
@@ -320,11 +323,8 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
           name: 'ARM'
         }
       ]
-      description: '[Description] This policy set definition is deployed at management group scope'
-      metadata: {
-        version: '1'
-        category: 'Security'
-      }
+      managementGroupId: '<<managementGroupId>>'
+      name: '<<namePrefix>>-mg-policySet'
       displayName: '[DisplayName] This policy set definition is deployed at management group scope'
   }
 ```
@@ -486,11 +486,6 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
   params: {
       policyDefinitions: [
         {
-          policyDefinitionReferenceId: 'Allowed locations_1'
-          groupNames: [
-            'ARM'
-          ]
-          policyDefinitionId: '/providers/Microsoft.Authorization/policyDefinitions/e56962a6-4747-49cd-b67b-bf8b01975c4c'
           parameters: {
             listOfAllowedLocations: {
               value: [
@@ -498,13 +493,13 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
               ]
             }
           }
+          groupNames: [
+            'ARM'
+          ]
+          policyDefinitionReferenceId: 'Allowed locations_1'
+          policyDefinitionId: '/providers/Microsoft.Authorization/policyDefinitions/e56962a6-4747-49cd-b67b-bf8b01975c4c'
         }
         {
-          policyDefinitionReferenceId: 'Allowed locations for resource groups_1'
-          groupNames: [
-            'ARM'
-          ]
-          policyDefinitionId: '/providers/Microsoft.Authorization/policyDefinitions/e765b5de-1225-4ba3-bd56-1ac6695af988'
           parameters: {
             listOfAllowedLocations: {
               value: [
@@ -512,9 +507,19 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
               ]
             }
           }
+          groupNames: [
+            'ARM'
+          ]
+          policyDefinitionReferenceId: 'Allowed locations for resource groups_1'
+          policyDefinitionId: '/providers/Microsoft.Authorization/policyDefinitions/e765b5de-1225-4ba3-bd56-1ac6695af988'
         }
       ]
-      name: '<<namePrefix>>-sub-policySet'
+      metadata: {
+        category: 'Security'
+        version: '1'
+      }
+      subscriptionId: '<<subscriptionId>>'
+      description: '[Description] This policy set definition is deployed at subscription scope'
       policyDefinitionGroups: [
         {
           name: 'Network'
@@ -523,12 +528,7 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
           name: 'ARM'
         }
       ]
-      description: '[Description] This policy set definition is deployed at subscription scope'
-      metadata: {
-        version: '1'
-        category: 'Security'
-      }
-      subscriptionId: '<<subscriptionId>>'
+      name: '<<namePrefix>>-sub-policySet'
       displayName: '[DisplayName] This policy set definition is deployed at subscription scope'
   }
 ```

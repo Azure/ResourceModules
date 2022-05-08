@@ -34,7 +34,7 @@ This module deploys a Static Web Site.
 | `buildProperties` | object | `{object}` |  | Build properties for the static site. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `enterpriseGradeCdnStatus` | string | `'Disabled'` | `[Disabled, Disabling, Enabled, Enabling]` | State indicating the status of the enterprise grade CDN serving traffic to the static web app. |
-| `location` | string | `[resourceGroup().location]` |  | Location to deploy static site. The following locations are supported: CentralUS, EastUS2, EastAsia, WestEurope, WestUS2 |
+| `location` | string | `[resourceGroup().location]` |  | Location to deploy static site. The following locations are supported: CentralUS, EastUS2, EastAsia, WestEurope, WestUS2. |
 | `lock` | string | `'NotSpecified'` | `[CanNotDelete, NotSpecified, ReadOnly]` | Specify the type of lock. |
 | `privateEndpoints` | array | `[]` |  | Configuration details for private endpoints. |
 | `provider` | string | `'None'` |  | The provider that submitted the last deployment to the primary environment of the static site. |
@@ -47,6 +47,7 @@ This module deploys a Static Web Site.
 | `tags` | object | `{object}` |  | Tags of the resource. |
 | `templateProperties` | object | `{object}` |  | Template Options for the static site. |
 | `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. |
+
 
 ### Parameter Usage: `privateEndpoints`
 
@@ -372,29 +373,29 @@ module staticSites './Microsoft.Web/staticSites/deploy.bicep' = {
 module staticSites './Microsoft.Web/staticSites/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-staticSites'
   params: {
+      allowConfigFileUpdates: true
+      enterpriseGradeCdnStatus: 'Disabled'
+      systemAssignedIdentity: true
       userAssignedIdentities: {
         '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
       }
-      sku: 'Standard'
-      stagingEnvironmentPolicy: 'Enabled'
-      name: '<<namePrefix>>-az-wss-x-001'
-      enterpriseGradeCdnStatus: 'Disabled'
       roleAssignments: [
         {
+          roleDefinitionIdOrName: 'Reader'
           principalIds: [
             '<<deploymentSpId>>'
           ]
-          roleDefinitionIdOrName: 'Reader'
         }
       ]
-      systemAssignedIdentity: true
+      stagingEnvironmentPolicy: 'Enabled'
+      sku: 'Standard'
       privateEndpoints: [
         {
           subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints'
           service: 'staticSites'
         }
       ]
-      allowConfigFileUpdates: true
+      name: '<<namePrefix>>-az-wss-x-001'
   }
 ```
 

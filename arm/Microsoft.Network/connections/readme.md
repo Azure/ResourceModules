@@ -21,25 +21,25 @@ This template deploys a virtual network gateway connection.
 **Required parameters**
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | Remote connection name |
+| `name` | string | Remote connection name. |
 | `virtualNetworkGateway1` | object | The primary Virtual Network Gateway. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `customIPSecPolicy` | object | `{object}` |  | The IPSec Policies to be considered by this connection |
-| `enableBgp` | bool | `False` |  | Value to specify if BGP is enabled or not |
+| `customIPSecPolicy` | object | `{object}` |  | The IPSec Policies to be considered by this connection. |
+| `enableBgp` | bool | `False` |  | Value to specify if BGP is enabled or not. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `localNetworkGateway2` | object | `{object}` |  | The local network gateway. Used for connection type [IPsec] |
+| `localNetworkGateway2` | object | `{object}` |  | The local network gateway. Used for connection type [IPsec]. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `'NotSpecified'` | `[CanNotDelete, NotSpecified, ReadOnly]` | Specify the type of lock. |
-| `peer` | object | `{object}` |  | The remote peer. Used for connection type [ExpressRoute] |
+| `peer` | object | `{object}` |  | The remote peer. Used for connection type [ExpressRoute]. |
 | `routingWeight` | int | `-1` |  | The weight added to routes learned from this BGP speaker. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
-| `usePolicyBasedTrafficSelectors` | bool | `False` |  | Enable policy-based traffic selectors |
-| `virtualNetworkGateway2` | object | `{object}` |  | The remote Virtual Network Gateway. Used for connection type [Vnet2Vnet] |
+| `usePolicyBasedTrafficSelectors` | bool | `False` |  | Enable policy-based traffic selectors. |
+| `virtualNetworkGateway2` | object | `{object}` |  | The remote Virtual Network Gateway. Used for connection type [Vnet2Vnet]. |
 | `virtualNetworkGatewayConnectionType` | string | `'IPsec'` | `[IPsec, Vnet2Vnet, ExpressRoute, VPNClient]` | Gateway connection type. |
-| `vpnSharedKey` | string | `''` |  | Specifies a VPN shared key. The same value has to be specified on both Virtual Network Gateways |
+| `vpnSharedKey` | string | `''` |  | Specifies a VPN shared key. The same value has to be specified on both Virtual Network Gateways. |
 
 
 ### Parameter Usage: `virtualNetworkGateway1`
@@ -297,9 +297,9 @@ tags: {
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the remote connection |
-| `resourceGroupName` | string | The resource group the remote connection was deployed into |
-| `resourceId` | string | The resource ID of the remote connection |
+| `name` | string | The name of the remote connection. |
+| `resourceGroupName` | string | The resource group the remote connection was deployed into. |
+| `resourceId` | string | The resource ID of the remote connection. |
 
 ## Deployment examples
 
@@ -364,17 +364,17 @@ resource kv1 'Microsoft.KeyVault/vaults@2019-09-01' existing = {
 module connections './Microsoft.Network/connections/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-connections'
   params: {
-      vpnSharedKey: kv1.getSecret('vpnSharedKey')
-      enableBgp: false
+      virtualNetworkGatewayConnectionType: 'Vnet2Vnet'
       virtualNetworkGateway1: {
         id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworkGateways/<<namePrefix>>-az-vnet-vpn-gw-p-001'
       }
+      vpnSharedKey: kv1.getSecret('vpnSharedKey')
+      enableBgp: false
+      name: '<<namePrefix>>-az-vnetgwc-x-001'
       location: 'eastus'
       virtualNetworkGateway2: {
         id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworkGateways/<<namePrefix>>-az-vnet-vpn-gw-p-002'
       }
-      virtualNetworkGatewayConnectionType: 'Vnet2Vnet'
-      name: '<<namePrefix>>-az-vnetgwc-x-001'
   }
 ```
 

@@ -39,15 +39,15 @@ This module deploys a firewall.
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticMetricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | The name of metrics that will be streamed. |
 | `diagnosticSettingsName` | string | `[format('{0}-diagnosticSettings', parameters('name'))]` |  | The name of the diagnostic setting, if deployed. |
-| `diagnosticStorageAccountId` | string | `''` |  | Diagnostic Storage Account resource identifier |
-| `diagnosticWorkspaceId` | string | `''` |  | Log Analytics workspace resource identifier |
+| `diagnosticStorageAccountId` | string | `''` |  | Diagnostic Storage Account resource identifier. |
+| `diagnosticWorkspaceId` | string | `''` |  | Log Analytics workspace resource identifier. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `firewallPolicyId` | string | `''` |  | Resource ID of the Firewall Policy that should be attached. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `'NotSpecified'` | `[CanNotDelete, NotSpecified, ReadOnly]` | Specify the type of lock. |
 | `natRuleCollections` | array | `[]` |  | Collection of NAT rule collections used by Azure Firewall. |
 | `networkRuleCollections` | array | `[]` |  | Collection of network rule collections used by Azure Firewall. |
-| `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
+| `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `tags` | object | `{object}` |  | Tags of the Azure Firewall resource. |
 | `threatIntelMode` | string | `'Deny'` | `[Alert, Deny, Off]` | The operation mode for Threat Intel. |
 | `zones` | array | `[1, 2, 3]` |  | Zone numbers e.g. 1,2,3. |
@@ -157,13 +157,13 @@ tags: {
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `applicationRuleCollections` | array | List of Application Rule Collections |
-| `name` | string | The name of the Azure firewall |
-| `natRuleCollections` | array | Collection of NAT rule collections used by Azure Firewall |
-| `networkRuleCollections` | array | List of Network Rule Collections |
-| `privateIp` | string | The private IP of the Azure firewall |
-| `resourceGroupName` | string | The resource group the Azure firewall was deployed into |
-| `resourceId` | string | The resource ID of the Azure firewall |
+| `applicationRuleCollections` | array | List of Application Rule Collections. |
+| `name` | string | The name of the Azure firewall. |
+| `natRuleCollections` | array | Collection of NAT rule collections used by Azure Firewall. |
+| `networkRuleCollections` | array | List of Network Rule Collections. |
+| `privateIp` | string | The private IP of the Azure firewall. |
+| `resourceGroupName` | string | The resource group the Azure firewall was deployed into. |
+| `resourceId` | string | The resource ID of the Azure firewall. |
 
 ## Considerations
 
@@ -327,44 +327,25 @@ The `networkRuleCollections` parameter accepts a JSON Array of AzureFirewallNetw
 module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-azureFirewalls'
   params: {
-      networkRuleCollections: [
+      diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
+      diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
+      ipConfigurations: [
         {
-          properties: {
-            action: {
-              type: 'allow'
-            }
-            rules: [
-              {
-                destinationPorts: [
-                  '123'
-                  '12000'
-                ]
-                sourceAddresses: [
-                  '*'
-                ]
-                protocols: [
-                  'Any'
-                ]
-                name: 'allow-ntp'
-                destinationAddresses: [
-                  '*'
-                ]
-              }
-            ]
-            priority: 100
-          }
-          name: 'allow-network-rules'
+          publicIPAddressResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/publicIPAddresses/adp-<<namePrefix>>-az-pip-x-fw'
+          name: 'ipConfig01'
+          subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-azfw/subnets/AzureFirewallSubnet'
         }
       ]
-      diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
       applicationRuleCollections: [
         {
+          name: 'allow-app-rules'
           properties: {
-            action: {
-              type: 'allow'
-            }
             rules: [
               {
+                fqdnTags: [
+                  'AppServiceEnvironment'
+                  'WindowsUpdate'
+                ]
                 protocols: [
                   {
                     port: '80'
@@ -375,13 +356,9 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
                     protocolType: 'HTTPS'
                   }
                 ]
+                name: 'allow-ase-tags'
                 sourceAddresses: [
                   '*'
-                ]
-                name: 'allow-ase-tags'
-                fqdnTags: [
-                  'AppServiceEnvironment'
-                  'WindowsUpdate'
                 ]
               }
               {
@@ -398,33 +375,17 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
                     protocolType: 'HTTPS'
                   }
                 ]
+                name: 'allow-ase-management'
                 sourceAddresses: [
                   '*'
                 ]
-                name: 'allow-ase-management'
               }
             ]
+            action: {
+              type: 'allow'
+            }
             priority: 100
           }
-          name: 'allow-app-rules'
-        }
-      ]
-      diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
-      diagnosticLogsRetentionInDays: 7
-      diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
-      roleAssignments: [
-        {
-          principalIds: [
-            '<<deploymentSpId>>'
-          ]
-          roleDefinitionIdOrName: 'Reader'
-        }
-      ]
-      ipConfigurations: [
-        {
-          subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-azfw/subnets/AzureFirewallSubnet'
-          publicIPAddressResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/publicIPAddresses/adp-<<namePrefix>>-az-pip-x-fw'
-          name: 'ipConfig01'
         }
       ]
       diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
@@ -432,6 +393,45 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
         '1'
         '2'
         '3'
+      ]
+      roleAssignments: [
+        {
+          roleDefinitionIdOrName: 'Reader'
+          principalIds: [
+            '<<deploymentSpId>>'
+          ]
+        }
+      ]
+      diagnosticLogsRetentionInDays: 7
+      diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
+      networkRuleCollections: [
+        {
+          name: 'allow-network-rules'
+          properties: {
+            rules: [
+              {
+                protocols: [
+                  'Any'
+                ]
+                destinationPorts: [
+                  '123'
+                  '12000'
+                ]
+                name: 'allow-ntp'
+                destinationAddresses: [
+                  '*'
+                ]
+                sourceAddresses: [
+                  '*'
+                ]
+              }
+            ]
+            action: {
+              type: 'allow'
+            }
+            priority: 100
+          }
+        }
       ]
       name: '<<namePrefix>>-az-azfw-x-001'
   }

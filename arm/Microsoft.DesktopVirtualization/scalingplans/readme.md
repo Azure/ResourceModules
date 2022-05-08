@@ -22,7 +22,7 @@ This module deploys an AVD Scaling Plan.
 **Required parameters**
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | Name of the scaling plan |
+| `name` | string | Name of the scaling plan. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
@@ -33,12 +33,12 @@ This module deploys an AVD Scaling Plan.
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
 | `exclusionTag` | string | `''` |  | Provide a tag to be used for hosts that should not be affected by the scaling plan. |
-| `friendlyName` | string | `[parameters('name')]` |  | Friendly Name of the scaling plan |
+| `friendlyName` | string | `[parameters('name')]` |  | Friendly Name of the scaling plan. |
 | `hostPoolReferences` | array | `[]` |  | An array of references to hostpools. |
 | `hostPoolType` | string | `'Pooled'` | `[Pooled]` | The type of hostpool where this scaling plan should be applied. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `logsToEnable` | array | `[Autoscale]` | `[Autoscale]` | The name of logs that will be streamed. |
-| `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalIds' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
+| `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalIds' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `scalingplanDescription` | string | `[parameters('name')]` |  | Description of the scaling plan. |
 | `schedules` | array | `[System.Collections.Hashtable]` |  | The schedules related to this scaling plan. If no value is provided a default schedule will be provided. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
@@ -250,9 +250,9 @@ roleAssignments: [
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the AVD scaling plan |
-| `resourceGroupName` | string | The resource group the AVD scaling plan was deployed into |
-| `resourceId` | string | The resource ID of the AVD scaling plan |
+| `name` | string | The name of the AVD scaling plan. |
+| `resourceGroupName` | string | The resource group the AVD scaling plan was deployed into. |
+| `resourceId` | string | The resource ID of the AVD scaling plan. |
 
 ## Deployment examples
 

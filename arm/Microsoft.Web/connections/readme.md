@@ -148,9 +148,9 @@ tags: {
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the connection |
-| `resourceGroupName` | string | The resource group the connection was deployed into |
-| `resourceId` | string | The resource ID of the connection |
+| `name` | string | The name of the connection. |
+| `resourceGroupName` | string | The resource group the connection was deployed into. |
+| `resourceId` | string | The resource ID of the connection. |
 
 ## Deployment examples
 
@@ -204,20 +204,20 @@ tags: {
 module connections './Microsoft.Web/connections/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-connections'
   params: {
-      name: 'azuremonitor'
       connectionKind: 'V1'
       connectionApi: {
         id: '/subscriptions/<<subscriptionId>>/providers/Microsoft.Web/locations/westeurope/managedApis/azuremonitorlogs'
       }
+      displayName: 'azuremonitorlogs'
+      name: 'azuremonitor'
       roleAssignments: [
         {
+          roleDefinitionIdOrName: 'Reader'
           principalIds: [
             '<<deploymentSpId>>'
           ]
-          roleDefinitionIdOrName: 'Reader'
         }
       ]
-      displayName: 'azuremonitorlogs'
   }
 ```
 

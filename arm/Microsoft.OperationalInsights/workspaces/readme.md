@@ -28,13 +28,13 @@ This template deploys a log analytics workspace.
 **Required parameters**
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | Name of the Log Analytics workspace |
+| `name` | string | Name of the Log Analytics workspace. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `dailyQuotaGb` | int | `-1` |  | The workspace daily quota for ingestion. |
-| `dataRetention` | int | `365` |  | Number of days data will be retained for |
+| `dataRetention` | int | `365` |  | Number of days data will be retained for. |
 | `dataSources` | _[dataSources](dataSources/readme.md)_ array | `[]` |  | LAW data sources to configure. |
 | `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
@@ -51,9 +51,9 @@ This template deploys a log analytics workspace.
 | `lock` | string | `'NotSpecified'` | `[CanNotDelete, NotSpecified, ReadOnly]` | Specify the type of lock. |
 | `publicNetworkAccessForIngestion` | string | `'Enabled'` | `[Enabled, Disabled]` | The network access type for accessing Log Analytics ingestion. |
 | `publicNetworkAccessForQuery` | string | `'Enabled'` | `[Enabled, Disabled]` | The network access type for accessing Log Analytics query. |
-| `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
+| `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `savedSearches` | _[savedSearches](savedSearches/readme.md)_ array | `[]` |  | Kusto Query Language searches to save. |
-| `serviceTier` | string | `'PerGB2018'` | `[Free, Standalone, PerNode, PerGB2018]` | Service Tier: PerGB2018, Free, Standalone, PerGB or PerNode |
+| `serviceTier` | string | `'PerGB2018'` | `[Free, Standalone, PerNode, PerGB2018]` | Service Tier: PerGB2018, Free, Standalone, PerGB or PerNode. |
 | `storageInsightsConfigs` | array | `[]` |  | List of storage accounts to be read by the workspace. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
 | `useResourcePermissions` | bool | `False` |  | Set to 'true' to use resource or workspace permissions and 'false' (or leave empty) to require workspace permissions. |
@@ -430,10 +430,10 @@ tags: {
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `logAnalyticsWorkspaceId` | string | The ID associated with the workspace |
-| `name` | string | The name of the deployed log analytics workspace |
-| `resourceGroupName` | string | The resource group of the deployed log analytics workspace |
-| `resourceId` | string | The resource ID of the deployed log analytics workspace |
+| `logAnalyticsWorkspaceId` | string | The ID associated with the workspace. |
+| `name` | string | The name of the deployed log analytics workspace. |
+| `resourceGroupName` | string | The resource group of the deployed log analytics workspace. |
+| `resourceId` | string | The resource ID of the deployed log analytics workspace. |
 
 ## Deployment examples
 
@@ -661,27 +661,52 @@ module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
 module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-workspaces'
   params: {
-      diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
-      dailyQuotaGb: 10
       publicNetworkAccessForIngestion: 'Disabled'
-      gallerySolutions: [
+      name: '<<namePrefix>>-az-la-x-001'
+      diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
+      storageInsightsConfigs: [
         {
-          product: 'OMSGallery'
-          publisher: 'Microsoft'
-          name: 'AzureAutomation'
+          tables: [
+            'WADWindowsEventLogsTable'
+            'WADETWEventTable'
+            'WADServiceFabric*EventTable'
+            'LinuxsyslogVer2v0'
+          ]
+          storageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsalaw001'
         }
       ]
+      diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
+      linkedServices: [
+        {
+          name: 'Automation'
+          resourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Automation/automationAccounts/adp-<<namePrefix>>-wd-aut-x-001'
+        }
+      ]
+      diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
       savedSearches: [
         {
-          category: 'VDC Saved Searches'
           query: 'Event | where Source == 'ServiceFabricNodeBootstrapAgent' | summarize AggregatedValue = count() by Computer'
           name: 'VMSSQueries'
           displayName: 'VMSS Instance Count2'
+          category: 'VDC Saved Searches'
         }
       ]
+      publicNetworkAccessForQuery: 'Disabled'
+      diagnosticLogsRetentionInDays: 7
+      gallerySolutions: [
+        {
+          publisher: 'Microsoft'
+          product: 'OMSGallery'
+          name: 'AzureAutomation'
+        }
+      ]
+      useResourcePermissions: true
+      diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
       dataSources: [
         {
           kind: 'WindowsEvent'
+          eventLogName: 'Application'
+          name: 'applicationEvent'
           eventTypes: [
             {
               eventType: 'Error'
@@ -693,16 +718,14 @@ module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
               eventType: 'Information'
             }
           ]
-          eventLogName: 'Application'
-          name: 'applicationEvent'
         }
         {
           objectName: 'Processor'
-          kind: 'WindowsPerformanceCounter'
-          name: 'windowsPerfCounter1'
+          instanceName: '*'
           counterName: '% Processor Time'
           intervalSeconds: 60
-          instanceName: '*'
+          kind: 'WindowsPerformanceCounter'
+          name: 'windowsPerfCounter1'
         }
         {
           kind: 'IISLogs'
@@ -711,8 +734,6 @@ module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
         }
         {
           kind: 'LinuxSyslog'
-          syslogName: 'kern'
-          name: 'sampleSyslog1'
           syslogSeverities: [
             {
               severity: 'emerg'
@@ -730,6 +751,8 @@ module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
               severity: 'warning'
             }
           ]
+          name: 'sampleSyslog1'
+          syslogName: 'kern'
         }
         {
           kind: 'LinuxSyslogCollection'
@@ -738,7 +761,8 @@ module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
         }
         {
           objectName: 'Logical Disk'
-          kind: 'LinuxPerformanceObject'
+          instanceName: '*'
+          intervalSeconds: 10
           syslogSeverities: [
             {
               counterName: '% Used Inodes'
@@ -759,9 +783,8 @@ module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
               counterName: 'Disk Writes/sec'
             }
           ]
+          kind: 'LinuxPerformanceObject'
           name: 'sampleLinuxPerf1'
-          intervalSeconds: 10
-          instanceName: '*'
         }
         {
           kind: 'LinuxPerformanceCollection'
@@ -769,30 +792,7 @@ module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
           name: 'sampleLinuxPerfCollection1'
         }
       ]
-      diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
-      name: '<<namePrefix>>-az-la-x-001'
-      diagnosticLogsRetentionInDays: 7
-      storageInsightsConfigs: [
-        {
-          storageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsalaw001'
-          tables: [
-            'WADWindowsEventLogsTable'
-            'WADETWEventTable'
-            'WADServiceFabric*EventTable'
-            'LinuxsyslogVer2v0'
-          ]
-        }
-      ]
-      linkedServices: [
-        {
-          resourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Automation/automationAccounts/adp-<<namePrefix>>-wd-aut-x-001'
-          name: 'Automation'
-        }
-      ]
-      publicNetworkAccessForQuery: 'Disabled'
-      diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
-      useResourcePermissions: true
-      diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
+      dailyQuotaGb: 10
   }
 ```
 

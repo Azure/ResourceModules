@@ -17,18 +17,22 @@ This module deploys API Management Service Named Values.
 ## Parameters
 
 **Required parameters**
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `displayName` | string | Unique name of NamedValue. It may contain only letters, digits, period, dash, and underscore characters. |
+| `name` | string | Named value Name. |
+
+**Conditional parameters**
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
-| `apiManagementServiceName` | string | `''` | The name of the of the API Management service. |
-| `displayName` | string |  | Unique name of NamedValue. It may contain only letters, digits, period, dash, and underscore characters. |
-| `name` | string |  | Named value Name. |
+| `apiManagementServiceName` | string | `''` | The name of the parent API Management service. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `keyVault` | object | `{object}` | KeyVault location details of the namedValue.  |
-| `namedValueTags` | array | `[]` | Tags that when provided can be used to filter the NamedValue list. - string |
+| `keyVault` | object | `{object}` | KeyVault location details of the namedValue. |
+| `namedValueTags` | array | `[]` | Tags that when provided can be used to filter the NamedValue list. - string. |
 | `secret` | bool | `False` | Determines whether the value is a secret and should be encrypted or not. Default value is false. |
 | `value` | string | `[newGuid()]` | Value of the NamedValue. Can contain policy expressions. It may not be empty or consist only of whitespace. This property will not be filled on 'GET' operations! Use '/listSecrets' POST request to get the value. |
 
@@ -68,6 +72,6 @@ keyVault: {
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the named value |
-| `resourceGroupName` | string | The resource group the named value was deployed into |
-| `resourceId` | string | The resource ID of the named value |
+| `name` | string | The name of the named value. |
+| `resourceGroupName` | string | The resource group the named value was deployed into. |
+| `resourceId` | string | The resource ID of the named value. |

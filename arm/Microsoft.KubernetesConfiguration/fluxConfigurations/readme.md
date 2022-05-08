@@ -40,7 +40,7 @@ For Details see [Prerequisites](https://docs.microsoft.com/en-us/azure/azure-arc
 | Parameter Name | Type | Allowed Values | Description |
 | :-- | :-- | :-- | :-- |
 | `clusterName` | string |  | The name of the AKS cluster that should be configured. |
-| `name` | string |  | The name of the Flux Configuration |
+| `name` | string |  | The name of the Flux Configuration. |
 | `namespace` | string |  | The namespace to which this configuration is installed to. Maximum of 253 lower case alphanumeric characters, hyphen and period only. |
 | `scope` | string | `[cluster, namespace]` | Scope at which the configuration will be installed. |
 | `sourceKind` | string | `[Bucket, GitRepository]` | Source Kind to pull the configuration data from. |
@@ -49,20 +49,21 @@ For Details see [Prerequisites](https://docs.microsoft.com/en-us/azure/azure-arc
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `bucket` | object | `{object}` | Parameters to reconcile to the GitRepository source kind type. |
-| `configurationProtectedSettings` | object | `{object}` | Key-value pairs of protected configuration settings for the configuration |
+| `configurationProtectedSettings` | object | `{object}` | Key-value pairs of protected configuration settings for the configuration. |
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `gitRepository` | object | `{object}` | Parameters to reconcile to the GitRepository source kind type. |
 | `kustomizations` | object | `{object}` | Array of kustomizations used to reconcile the artifact pulled by the source type on the cluster. |
 | `location` | string | `[resourceGroup().location]` | Location for all resources. |
 | `suspend` | bool | `False` | Whether this configuration should suspend its reconciliation of its kustomizations and sources. |
 
+
 ## Outputs
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the flux configuration |
-| `resourceGroupName` | string | The name of the resource group the flux configuration was deployed into |
-| `resourceId` | string | The resource ID of the flux configuration |
+| `name` | string | The name of the flux configuration. |
+| `resourceGroupName` | string | The name of the resource group the flux configuration was deployed into. |
+| `resourceId` | string | The resource ID of the flux configuration. |
 
 ## Deployment examples
 
@@ -118,20 +119,20 @@ For Details see [Prerequisites](https://docs.microsoft.com/en-us/azure/azure-arc
 module fluxConfigurations './Microsoft.KubernetesConfiguration/fluxConfigurations/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-fluxConfigurations'
   params: {
-      name: 'flux2'
-      scope: 'cluster'
-      sourceKind: 'GitRepository'
+      clusterName: '<<namePrefix>>-az-aks-kubenet-001'
       gitRepository: {
-        url: 'https://github.com/mspnp/aks-baseline'
         sshKnownHosts: ''
-        syncIntervalInSeconds: 300
+        timeoutInSeconds: 180
         repositoryRef: {
           branch: 'main'
         }
-        timeoutInSeconds: 180
+        url: 'https://github.com/mspnp/aks-baseline'
+        syncIntervalInSeconds: 300
       }
-      clusterName: '<<namePrefix>>-az-aks-kubenet-001'
       namespace: 'flux-system'
+      sourceKind: 'GitRepository'
+      scope: 'cluster'
+      name: 'flux2'
   }
 ```
 
@@ -202,29 +203,29 @@ module fluxConfigurations './Microsoft.KubernetesConfiguration/fluxConfiguration
 module fluxConfigurations './Microsoft.KubernetesConfiguration/fluxConfigurations/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-fluxConfigurations'
   params: {
+      clusterName: '<<namePrefix>>-az-aks-kubenet-001'
       kustomizations: {
         unified: {
-          timeoutInSeconds: 300
+          syncIntervalInSeconds: 300
           prune: true
           path: './cluster-manifests'
-          force: false
-          syncIntervalInSeconds: 300
           dependsOn: []
+          force: false
+          timeoutInSeconds: 300
         }
       }
-      scope: 'cluster'
+      namespace: 'flux-system'
       sourceKind: 'GitRepository'
+      scope: 'cluster'
       gitRepository: {
-        url: 'https://github.com/mspnp/aks-baseline'
         sshKnownHosts: ''
-        syncIntervalInSeconds: 300
+        timeoutInSeconds: 180
         repositoryRef: {
           branch: 'main'
         }
-        timeoutInSeconds: 180
+        url: 'https://github.com/mspnp/aks-baseline'
+        syncIntervalInSeconds: 300
       }
-      clusterName: '<<namePrefix>>-az-aks-kubenet-001'
-      namespace: 'flux-system'
       name: 'flux2'
   }
 ```

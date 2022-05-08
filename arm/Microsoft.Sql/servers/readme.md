@@ -28,19 +28,23 @@ This module deploys a SQL server.
 | :-- | :-- | :-- |
 | `name` | string | The name of the server. |
 
+**Conditional parameters**
+| Parameter Name | Type | Default Value | Description |
+| :-- | :-- | :-- | :-- |
+| `administratorLogin` | string | `''` | The administrator username for the server. Required if no `administrators` object for AAD authentication is provided. |
+| `administratorLoginPassword` | secureString | `''` | The administrator login password. Required if no `administrators` object for AAD authentication is provided. |
+| `administrators` | object | `{object}` | The Azure Active Directory (AAD) administrator authentication. Required if no `administratorLogin` & `administratorLoginPassword` is provided. |
+
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `administratorLogin` | string | `''` |  | Administrator username for the server. Required if no `administrators` object for AAD authentication is provided. |
-| `administratorLoginPassword` | secureString | `''` |  | The administrator login password. Required if no `administrators` object for AAD authentication is provided. |
-| `administrators` | object | `{object}` |  | The Azure Active Directory (AAD) administrator authentication. Required if no `administratorLogin` & `administratorLoginPassword` is provided. |
-| `databases` | _[databases](databases/readme.md)_ array | `[]` |  | The databases to create in the server |
+| `databases` | _[databases](databases/readme.md)_ array | `[]` |  | The databases to create in the server. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `firewallRules` | _[firewallRules](firewallRules/readme.md)_ array | `[]` |  | The firewall rules to create in the server |
+| `firewallRules` | _[firewallRules](firewallRules/readme.md)_ array | `[]` |  | The firewall rules to create in the server. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `'NotSpecified'` | `[CanNotDelete, NotSpecified, ReadOnly]` | Specify the type of lock. |
-| `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
-| `securityAlertPolicies` | _[securityAlertPolicies](securityAlertPolicies/readme.md)_ array | `[]` |  | The security alert policies to create in the server |
+| `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
+| `securityAlertPolicies` | _[securityAlertPolicies](securityAlertPolicies/readme.md)_ array | `[]` |  | The security alert policies to create in the server. |
 | `systemAssignedIdentity` | bool | `False` |  | Enables system assigned managed identity on the resource. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
 | `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. |
@@ -223,9 +227,9 @@ administrators: {
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the deployed SQL server |
-| `resourceGroupName` | string | The resourceGroup of the deployed SQL server |
-| `resourceId` | string | The resource ID of the deployed SQL server |
+| `name` | string | The name of the deployed SQL server. |
+| `resourceGroupName` | string | The resourceGroup of the deployed SQL server. |
+| `resourceId` | string | The resource ID of the deployed SQL server. |
 | `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
 
 ## Deployment examples
@@ -268,7 +272,6 @@ administrators: {
 module servers './Microsoft.Sql/servers/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-servers'
   params: {
-      name: '<<namePrefix>>-az-sqlsrv-admin-001'
       administrators: {
         sid: '<<deploymentSpId>>'
         azureADOnlyAuthentication: true
@@ -276,6 +279,7 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
         principalType: 'Application'
         tenantId: '<<tenantId>>'
       }
+      name: '<<namePrefix>>-az-sqlsrv-admin-001'
   }
 ```
 
@@ -390,53 +394,53 @@ resource kv1 'Microsoft.KeyVault/vaults@2019-09-01' existing = {
 module servers './Microsoft.Sql/servers/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-servers'
   params: {
-      userAssignedIdentities: {
-        '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
-      }
-      name: '<<namePrefix>>-az-sqlsrv-x-001'
-      administratorLogin: kv1.getSecret('administratorLogin')
-      administratorLoginPassword: kv1.getSecret('administratorLoginPassword')
-      firewallRules: [
-        {
-          endIpAddress: '0.0.0.0'
-          name: 'AllowAllWindowsAzureIps'
-          startIpAddress: '0.0.0.0'
-        }
-      ]
-      roleAssignments: [
-        {
-          principalIds: [
-            '<<deploymentSpId>>'
-          ]
-          roleDefinitionIdOrName: 'Reader'
-        }
-      ]
       securityAlertPolicies: [
         {
           state: 'Enabled'
-          emailAccountAdmins: true
           name: 'Default'
+          emailAccountAdmins: true
+        }
+      ]
+      databases: [
+        {
+          diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
+          collation: 'SQL_Latin1_General_CP1_CI_AS'
+          diagnosticLogsRetentionInDays: 7
+          maxSizeBytes: 34359738368
+          diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
+          skuCapacity: 12
+          skuTier: 'BusinessCritical'
+          skuName: 'BC_Gen5'
+          licenseType: 'LicenseIncluded'
+          diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
+          name: '<<namePrefix>>-az-sqldb-x-001'
+          skuFamily: 'Gen5'
+          diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
+        }
+      ]
+      administratorLoginPassword: kv1.getSecret('administratorLoginPassword')
+      userAssignedIdentities: {
+        '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
+      }
+      systemAssignedIdentity: true
+      administratorLogin: kv1.getSecret('administratorLogin')
+      roleAssignments: [
+        {
+          roleDefinitionIdOrName: 'Reader'
+          principalIds: [
+            '<<deploymentSpId>>'
+          ]
         }
       ]
       location: 'westeurope'
-      systemAssignedIdentity: true
-      databases: [
+      firewallRules: [
         {
-          diagnosticLogsRetentionInDays: 7
-          diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
-          skuCapacity: 12
-          name: '<<namePrefix>>-az-sqldb-x-001'
-          collation: 'SQL_Latin1_General_CP1_CI_AS'
-          licenseType: 'LicenseIncluded'
-          skuName: 'BC_Gen5'
-          skuTier: 'BusinessCritical'
-          skuFamily: 'Gen5'
-          diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
-          diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
-          diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
-          maxSizeBytes: 34359738368
+          startIpAddress: '0.0.0.0'
+          endIpAddress: '0.0.0.0'
+          name: 'AllowAllWindowsAzureIps'
         }
       ]
+      name: '<<namePrefix>>-az-sqlsrv-x-001'
   }
 ```
 

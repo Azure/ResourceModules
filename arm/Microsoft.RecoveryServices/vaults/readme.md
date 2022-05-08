@@ -31,14 +31,14 @@ This module deploys a recovery service vault.
 **Required parameters**
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | Name of the Azure Recovery Service Vault |
+| `name` | string | Name of the Azure Recovery Service Vault. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `backupConfig` | _[backupConfig](backupConfig/readme.md)_ object | `{object}` |  | The backup configuration. |
 | `backupPolicies` | _[backupPolicies](backupPolicies/readme.md)_ array | `[]` |  | List of all backup policies. |
-| `backupStorageConfig` | _[backupStorageConfig](backupStorageConfig/readme.md)_ object | `{object}` |  | The storage configuration for the Azure Recovery Service Vault |
+| `backupStorageConfig` | _[backupStorageConfig](backupStorageConfig/readme.md)_ object | `{object}` |  | The storage configuration for the Azure Recovery Service Vault. |
 | `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
 | `diagnosticLogCategoriesToEnable` | array | `[AzureBackupReport, CoreAzureBackup, AddonAzureBackupJobs, AddonAzureBackupAlerts, AddonAzureBackupPolicy, AddonAzureBackupStorage, AddonAzureBackupProtectedInstance, AzureSiteRecoveryJobs, AzureSiteRecoveryEvents, AzureSiteRecoveryReplicatedItems, AzureSiteRecoveryReplicationStats, AzureSiteRecoveryRecoveryPoints, AzureSiteRecoveryReplicationDataUploadRate, AzureSiteRecoveryProtectedDiskDataChurn]` | `[AzureBackupReport, CoreAzureBackup, AddonAzureBackupJobs, AddonAzureBackupAlerts, AddonAzureBackupPolicy, AddonAzureBackupStorage, AddonAzureBackupProtectedInstance, AzureSiteRecoveryJobs, AzureSiteRecoveryEvents, AzureSiteRecoveryReplicatedItems, AzureSiteRecoveryReplicationStats, AzureSiteRecoveryRecoveryPoints, AzureSiteRecoveryReplicationDataUploadRate, AzureSiteRecoveryProtectedDiskDataChurn]` | The name of logs that will be streamed. |
@@ -53,7 +53,7 @@ This module deploys a recovery service vault.
 | `protectionContainers` | _[protectionContainers](protectionContainers/readme.md)_ array | `[]` |  | List of all protection containers. |
 | `replicationFabrics` | _[replicationFabrics](replicationFabrics/readme.md)_ array | `[]` |  | List of all replication fabrics. |
 | `replicationPolicies` | _[replicationPolicies](replicationPolicies/readme.md)_ array | `[]` |  | List of all replication policies. |
-| `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
+| `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `systemAssignedIdentity` | bool | `False` |  | Enables system assigned managed identity on the resource. |
 | `tags` | object | `{object}` |  | Tags of the Recovery Service Vault resource. |
 | `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. |
@@ -804,9 +804,9 @@ userAssignedIdentities: {
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The Name of the recovery services vault |
-| `resourceGroupName` | string | The name of the resource group the recovery services vault was created in |
-| `resourceId` | string | The resource ID of the recovery services vault |
+| `name` | string | The Name of the recovery services vault. |
+| `resourceGroupName` | string | The name of the resource group the recovery services vault was created in. |
+| `resourceId` | string | The resource ID of the recovery services vault. |
 | `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
 
 ## Deployment examples
@@ -899,17 +899,16 @@ userAssignedIdentities: {
 module vaults './Microsoft.RecoveryServices/vaults/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-vaults'
   params: {
-      name: '<<namePrefix>>-az-rsv-dr-001'
       replicationPolicies: [
         {
           name: 'Default_values'
         }
         {
-          multiVmSyncStatus: 'Disable'
-          crashConsistentFrequencyInMinutes: 7
-          appConsistentFrequencyInMinutes: 240
-          name: 'Custom_values'
           recoveryPointHistory: 2880
+          crashConsistentFrequencyInMinutes: 7
+          multiVmSyncStatus: 'Disable'
+          name: 'Custom_values'
+          appConsistentFrequencyInMinutes: 240
         }
       ]
       replicationFabrics: [
@@ -917,44 +916,45 @@ module vaults './Microsoft.RecoveryServices/vaults/deploy.bicep' = {
           location: 'NorthEurope'
           replicationContainers: [
             {
+              name: 'ne-container1'
               replicationContainerMappings: [
                 {
-                  targetContainerName: 'pluto'
                   targetProtectionContainerId: '/Subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.RecoveryServices/vaults/<<namePrefix>>-az-rsv-min-001/replicationFabrics/NorthEurope/replicationProtectionContainers/ne-container2'
+                  targetContainerName: 'pluto'
                   policyName: 'Default_values'
                 }
               ]
-              name: 'ne-container1'
             }
             {
+              name: 'ne-container2'
               replicationContainerMappings: [
                 {
                   targetContainerName: 'we-container1'
-                  targetContainerFabricName: 'WE-2'
                   policyName: 'Default_values'
+                  targetContainerFabricName: 'WE-2'
                 }
               ]
-              name: 'ne-container2'
             }
           ]
         }
         {
           replicationContainers: [
             {
+              name: 'we-container1'
               replicationContainerMappings: [
                 {
                   targetContainerName: 'ne-container2'
-                  targetContainerFabricName: 'NorthEurope'
                   policyName: 'Default_values'
+                  targetContainerFabricName: 'NorthEurope'
                 }
               ]
-              name: 'we-container1'
             }
           ]
           name: 'WE-2'
           location: 'WestEurope'
         }
       ]
+      name: '<<namePrefix>>-az-rsv-dr-001'
   }
 ```
 
@@ -1303,49 +1303,61 @@ module vaults './Microsoft.RecoveryServices/vaults/deploy.bicep' = {
 module vaults './Microsoft.RecoveryServices/vaults/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-vaults'
   params: {
+      diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
+      diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
+      diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
+      backupStorageConfig: {
+        crossRegionRestoreFlag: true
+        storageModelType: 'GeoRedundant'
+      }
       userAssignedIdentities: {
         '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
       }
+      systemAssignedIdentity: true
+      backupConfig: {
+        softDeleteFeatureState: 'Disabled'
+        enhancedSecurityState: 'Disabled'
+      }
       roleAssignments: [
         {
+          roleDefinitionIdOrName: 'Reader'
           principalIds: [
             '<<deploymentSpId>>'
           ]
-          roleDefinitionIdOrName: 'Reader'
         }
       ]
+      diagnosticLogsRetentionInDays: 7
       diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
       backupPolicies: [
         {
+          name: 'VMpolicy'
           properties: {
+            protectedItemsCount: 0
             schedulePolicy: {
               scheduleRunFrequency: 'Daily'
+              schedulePolicyType: 'SimpleSchedulePolicy'
               scheduleWeeklyFrequency: 0
               scheduleRunTimes: [
                 '2019-11-07T07:00:00Z'
               ]
-              schedulePolicyType: 'SimpleSchedulePolicy'
             }
+            instantRPDetails: {}
+            instantRpRetentionRangeInDays: 2
+            timeZone: 'UTC'
             retentionPolicy: {
-              retentionPolicyType: 'LongTermRetentionPolicy'
-              monthlySchedule: {
-                retentionScheduleFormatType: 'Weekly'
-                retentionDuration: {
-                  durationType: 'Months'
-                  count: 60
-                }
+              weeklySchedule: {
                 retentionTimes: [
                   '2019-11-07T07:00:00Z'
                 ]
-                retentionScheduleWeekly: {
-                  daysOfTheWeek: [
-                    'Sunday'
-                  ]
-                  weeksOfTheMonth: [
-                    'First'
-                  ]
+                retentionDuration: {
+                  durationType: 'Weeks'
+                  count: 12
                 }
+                daysOfTheWeek: [
+                  'Sunday'
+                ]
               }
+              retentionPolicyType: 'LongTermRetentionPolicy'
               dailySchedule: {
                 retentionTimes: [
                   '2019-11-07T07:00:00Z'
@@ -1355,7 +1367,33 @@ module vaults './Microsoft.RecoveryServices/vaults/deploy.bicep' = {
                   count: 180
                 }
               }
+              monthlySchedule: {
+                retentionScheduleWeekly: {
+                  daysOfTheWeek: [
+                    'Sunday'
+                  ]
+                  weeksOfTheMonth: [
+                    'First'
+                  ]
+                }
+                retentionScheduleFormatType: 'Weekly'
+                retentionDuration: {
+                  durationType: 'Months'
+                  count: 60
+                }
+                retentionTimes: [
+                  '2019-11-07T07:00:00Z'
+                ]
+              }
               yearlySchedule: {
+                retentionScheduleWeekly: {
+                  daysOfTheWeek: [
+                    'Sunday'
+                  ]
+                  weeksOfTheMonth: [
+                    'First'
+                  ]
+                }
                 retentionScheduleFormatType: 'Weekly'
                 retentionDuration: {
                   durationType: 'Years'
@@ -1367,60 +1405,39 @@ module vaults './Microsoft.RecoveryServices/vaults/deploy.bicep' = {
                 monthsOfYear: [
                   'January'
                 ]
-                retentionScheduleWeekly: {
-                  daysOfTheWeek: [
-                    'Sunday'
-                  ]
-                  weeksOfTheMonth: [
-                    'First'
-                  ]
-                }
-              }
-              weeklySchedule: {
-                daysOfTheWeek: [
-                  'Sunday'
-                ]
-                retentionDuration: {
-                  durationType: 'Weeks'
-                  count: 12
-                }
-                retentionTimes: [
-                  '2019-11-07T07:00:00Z'
-                ]
               }
             }
-            instantRpRetentionRangeInDays: 2
-            instantRPDetails: {}
-            timeZone: 'UTC'
-            protectedItemsCount: 0
             backupManagementType: 'AzureIaasVM'
           }
-          name: 'VMpolicy'
         }
         {
+          name: 'sqlpolicy'
           properties: {
+            workLoadType: 'SQLDataBase'
             settings: {
               timeZone: 'UTC'
-              isCompression: true
               issqlcompression: true
+              isCompression: true
             }
-            backupManagementType: 'AzureWorkload'
-            workLoadType: 'SQLDataBase'
             protectedItemsCount: 0
+            backupManagementType: 'AzureWorkload'
             subProtectionPolicy: [
               {
-                policyType: 'Full'
                 retentionPolicy: {
-                  retentionPolicyType: 'LongTermRetentionPolicy'
-                  monthlySchedule: {
-                    retentionScheduleFormatType: 'Weekly'
-                    retentionDuration: {
-                      durationType: 'Months'
-                      count: 60
-                    }
+                  weeklySchedule: {
                     retentionTimes: [
                       '2019-11-07T22:00:00Z'
                     ]
+                    retentionDuration: {
+                      durationType: 'Weeks'
+                      count: 104
+                    }
+                    daysOfTheWeek: [
+                      'Sunday'
+                    ]
+                  }
+                  retentionPolicyType: 'LongTermRetentionPolicy'
+                  monthlySchedule: {
                     retentionScheduleWeekly: {
                       daysOfTheWeek: [
                         'Sunday'
@@ -1429,8 +1446,24 @@ module vaults './Microsoft.RecoveryServices/vaults/deploy.bicep' = {
                         'First'
                       ]
                     }
+                    retentionScheduleFormatType: 'Weekly'
+                    retentionDuration: {
+                      durationType: 'Months'
+                      count: 60
+                    }
+                    retentionTimes: [
+                      '2019-11-07T22:00:00Z'
+                    ]
                   }
                   yearlySchedule: {
+                    retentionScheduleWeekly: {
+                      daysOfTheWeek: [
+                        'Sunday'
+                      ]
+                      weeksOfTheMonth: [
+                        'First'
+                      ]
+                    }
                     retentionScheduleFormatType: 'Weekly'
                     retentionDuration: {
                       durationType: 'Years'
@@ -1442,30 +1475,12 @@ module vaults './Microsoft.RecoveryServices/vaults/deploy.bicep' = {
                     monthsOfYear: [
                       'January'
                     ]
-                    retentionScheduleWeekly: {
-                      daysOfTheWeek: [
-                        'Sunday'
-                      ]
-                      weeksOfTheMonth: [
-                        'First'
-                      ]
-                    }
-                  }
-                  weeklySchedule: {
-                    daysOfTheWeek: [
-                      'Sunday'
-                    ]
-                    retentionDuration: {
-                      durationType: 'Weeks'
-                      count: 104
-                    }
-                    retentionTimes: [
-                      '2019-11-07T22:00:00Z'
-                    ]
                   }
                 }
+                policyType: 'Full'
                 schedulePolicy: {
                   scheduleRunFrequency: 'Weekly'
+                  schedulePolicyType: 'SimpleSchedulePolicy'
                   scheduleWeeklyFrequency: 0
                   scheduleRunTimes: [
                     '2019-11-07T22:00:00Z'
@@ -1473,11 +1488,9 @@ module vaults './Microsoft.RecoveryServices/vaults/deploy.bicep' = {
                   scheduleRunDays: [
                     'Sunday'
                   ]
-                  schedulePolicyType: 'SimpleSchedulePolicy'
                 }
               }
               {
-                policyType: 'Differential'
                 retentionPolicy: {
                   retentionDuration: {
                     durationType: 'Days'
@@ -1485,8 +1498,10 @@ module vaults './Microsoft.RecoveryServices/vaults/deploy.bicep' = {
                   }
                   retentionPolicyType: 'SimpleRetentionPolicy'
                 }
+                policyType: 'Differential'
                 schedulePolicy: {
                   scheduleRunFrequency: 'Weekly'
+                  schedulePolicyType: 'SimpleSchedulePolicy'
                   scheduleWeeklyFrequency: 0
                   scheduleRunTimes: [
                     '2017-03-07T02:00:00Z'
@@ -1494,11 +1509,9 @@ module vaults './Microsoft.RecoveryServices/vaults/deploy.bicep' = {
                   scheduleRunDays: [
                     'Monday'
                   ]
-                  schedulePolicyType: 'SimpleSchedulePolicy'
                 }
               }
               {
-                policyType: 'Log'
                 retentionPolicy: {
                   retentionDuration: {
                     durationType: 'Days'
@@ -1506,26 +1519,29 @@ module vaults './Microsoft.RecoveryServices/vaults/deploy.bicep' = {
                   }
                   retentionPolicyType: 'SimpleRetentionPolicy'
                 }
+                policyType: 'Log'
                 schedulePolicy: {
-                  schedulePolicyType: 'LogSchedulePolicy'
                   scheduleFrequencyInMins: 120
+                  schedulePolicyType: 'LogSchedulePolicy'
                 }
               }
             ]
           }
-          name: 'sqlpolicy'
         }
         {
+          name: 'filesharepolicy'
           properties: {
+            workloadType: 'AzureFileShare'
+            protectedItemsCount: 0
             schedulePolicy: {
               scheduleRunFrequency: 'Daily'
+              schedulePolicyType: 'SimpleSchedulePolicy'
               scheduleWeeklyFrequency: 0
               scheduleRunTimes: [
                 '2019-11-07T04:30:00Z'
               ]
-              schedulePolicyType: 'SimpleSchedulePolicy'
             }
-            workloadType: 'AzureFileShare'
+            timeZone: 'UTC'
             retentionPolicy: {
               dailySchedule: {
                 retentionTimes: [
@@ -1538,26 +1554,10 @@ module vaults './Microsoft.RecoveryServices/vaults/deploy.bicep' = {
               }
               retentionPolicyType: 'LongTermRetentionPolicy'
             }
-            timeZone: 'UTC'
-            protectedItemsCount: 0
             backupManagementType: 'AzureStorage'
           }
-          name: 'filesharepolicy'
         }
       ]
-      diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
-      systemAssignedIdentity: true
-      diagnosticLogsRetentionInDays: 7
-      diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
-      diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
-      backupConfig: {
-        softDeleteFeatureState: 'Disabled'
-        enhancedSecurityState: 'Disabled'
-      }
-      backupStorageConfig: {
-        storageModelType: 'GeoRedundant'
-        crossRegionRestoreFlag: true
-      }
       name: '<<namePrefix>>-az-rsv-x-001'
   }
 ```

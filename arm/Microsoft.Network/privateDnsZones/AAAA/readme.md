@@ -21,7 +21,11 @@ This module deploys a Private DNS Zone AAAA record.
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The name of the AAAA record. |
-| `privateDnsZoneName` | string | Private DNS zone name. |
+
+**Conditional parameters**
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `privateDnsZoneName` | string | The name of the parent Private DNS zone. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Description |
@@ -97,5 +101,5 @@ roleAssignments: [
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The name of the deployed AAAA record |
-| `resourceGroupName` | string | The resource group of the deployed AAAA record |
-| `resourceId` | string | The resource ID of the deployed AAAA record |
+| `resourceGroupName` | string | The resource group of the deployed AAAA record. |
+| `resourceId` | string | The resource ID of the deployed AAAA record. |

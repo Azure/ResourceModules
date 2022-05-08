@@ -30,9 +30,9 @@ This template deploys a disk encryption set.
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `encryptionType` | string | `'EncryptionAtRestWithPlatformAndCustomerKeys'` | `[EncryptionAtRestWithCustomerKey, EncryptionAtRestWithPlatformAndCustomerKeys]` | The type of key used to encrypt the data of the disk. For security reasons, it is recommended to set encryptionType to EncryptionAtRestWithPlatformAndCustomerKeys |
+| `encryptionType` | string | `'EncryptionAtRestWithPlatformAndCustomerKeys'` | `[EncryptionAtRestWithCustomerKey, EncryptionAtRestWithPlatformAndCustomerKeys]` | The type of key used to encrypt the data of the disk. For security reasons, it is recommended to set encryptionType to EncryptionAtRestWithPlatformAndCustomerKeys. |
 | `location` | string | `[resourceGroup().location]` |  | Resource location. |
-| `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
+| `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `rotationToLatestKeyVersionEnabled` | bool | `False` |  | Set this flag to true to enable auto-updating of this disk encryption set to the latest key version. |
 | `tags` | object | `{object}` |  | Tags of the disk encryption resource. |
 
@@ -141,11 +141,11 @@ tags: {
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `keyVaultName` | string | The name of the key vault with the disk encryption key |
-| `name` | string | The name of the disk encryption set |
-| `resourceGroupName` | string | The resource group the disk encryption set was deployed into |
-| `resourceId` | string | The resource ID of the disk encryption set |
-| `systemAssignedPrincipalId` | string | The principal ID of the disk encryption set |
+| `keyVaultName` | string | The name of the key vault with the disk encryption key. |
+| `name` | string | The name of the disk encryption set. |
+| `resourceGroupName` | string | The resource group the disk encryption set was deployed into. |
+| `resourceId` | string | The resource ID of the disk encryption set. |
+| `systemAssignedPrincipalId` | string | The principal ID of the disk encryption set. |
 
 ## Deployment examples
 
@@ -194,15 +194,15 @@ tags: {
 module diskEncryptionSets './Microsoft.Compute/diskEncryptionSets/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-diskEncryptionSets'
   params: {
+      keyUrl: 'https://adp-<<namePrefix>>-az-kv-x-001.vault.azure.net/keys/keyEncryptionKey/bc3bb46d95c64367975d722f473eeae5'
       keyVaultId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001'
       name: '<<namePrefix>>-az-des-x-001'
-      keyUrl: 'https://adp-<<namePrefix>>-az-kv-x-001.vault.azure.net/keys/keyEncryptionKey/bc3bb46d95c64367975d722f473eeae5'
       roleAssignments: [
         {
+          roleDefinitionIdOrName: 'Reader'
           principalIds: [
             '<<deploymentSpId>>'
           ]
-          roleDefinitionIdOrName: 'Reader'
         }
       ]
   }

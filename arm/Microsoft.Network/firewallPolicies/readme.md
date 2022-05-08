@@ -35,7 +35,7 @@ This module deploys Firewall Policies.
 | `fqdns` | array | `[]` |  | List of FQDNs for the ThreatIntel Allowlist. |
 | `insightsIsEnabled` | bool | `False` |  | A flag to indicate if the insights are enabled on the policy. |
 | `ipAddresses` | array | `[]` |  | List of IP addresses for the ThreatIntel Allowlist. |
-| `keyVaultSecretId` | string | `''` |  | Secret ID of (base-64 encoded unencrypted pfx) Secret or Certificate object stored in KeyVault.	 |
+| `keyVaultSecretId` | string | `''` |  | Secret ID of (base-64 encoded unencrypted pfx) Secret or Certificate object stored in KeyVault.	. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `mode` | string | `'Off'` | `[Alert, Deny, Off]` | The configuring of intrusion detection. |
 | `privateRanges` | array | `[]` |  | List of private IP addresses/IP address ranges to not be SNAT. |
@@ -129,9 +129,9 @@ userAssignedIdentities: {
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the deployed firewall policy |
-| `resourceGroupName` | string | The resource group of the deployed firewall policy |
-| `resourceId` | string | The resource ID of the deployed firewall policy |
+| `name` | string | The name of the deployed firewall policy. |
+| `resourceGroupName` | string | The resource group of the deployed firewall policy. |
+| `resourceId` | string | The resource ID of the deployed firewall policy. |
 
 ## Deployment examples
 
@@ -244,33 +244,33 @@ module firewallPolicies './Microsoft.Network/firewallPolicies/deploy.bicep' = {
         {
           ruleCollections: [
             {
-              action: {
-                type: 'Allow'
-              }
               ruleCollectionType: 'FirewallPolicyFilterRuleCollection'
               rules: [
                 {
+                  name: 'rule002'
                   ipProtocols: [
                     'TCP'
                     'UDP'
                   ]
-                  destinationFqdns: []
+                  ruleType: 'NetworkRule'
                   destinationAddresses: [
                     '*'
                   ]
-                  ruleType: 'NetworkRule'
-                  sourceIpGroups: []
+                  destinationIpGroups: []
                   destinationPorts: [
                     '80'
                   ]
-                  destinationIpGroups: []
                   sourceAddresses: [
                     '*'
                   ]
-                  name: 'rule002'
+                  destinationFqdns: []
+                  sourceIpGroups: []
                 }
               ]
               name: 'collection002'
+              action: {
+                type: 'Allow'
+              }
               priority: 5555
             }
           ]

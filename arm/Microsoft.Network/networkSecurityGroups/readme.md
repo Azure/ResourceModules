@@ -39,7 +39,7 @@ This template deploys a network security group (NSG) with optional security rule
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `'NotSpecified'` | `[CanNotDelete, NotSpecified, ReadOnly]` | Specify the type of lock. |
-| `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
+| `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `securityRules` | _[securityRules](securityRules/readme.md)_ array | `[]` |  | Array of Security Rules to deploy to the Network Security Group. When not provided, an NSG including only the built-in roles will be deployed. |
 | `tags` | object | `{object}` |  | Tags of the NSG resource. |
 
@@ -148,9 +148,9 @@ tags: {
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the network security group |
-| `resourceGroupName` | string | The resource group the network security group was deployed into |
-| `resourceId` | string | The resource ID of the network security group |
+| `name` | string | The name of the network security group. |
+| `resourceGroupName` | string | The resource group the network security group was deployed into. |
+| `resourceId` | string | The resource ID of the network security group. |
 
 ## Deployment examples
 
@@ -310,84 +310,84 @@ module networkSecurityGroups './Microsoft.Network/networkSecurityGroups/deploy.b
 module networkSecurityGroups './Microsoft.Network/networkSecurityGroups/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-networkSecurityGroups'
   params: {
-      name: '<<namePrefix>>-az-nsg-x-001'
-      diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
       diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
-      diagnosticLogsRetentionInDays: 7
-      diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
-      diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
-      roleAssignments: [
-        {
-          principalIds: [
-            '<<deploymentSpId>>'
-          ]
-          roleDefinitionIdOrName: 'Reader'
-        }
-      ]
+      diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
       securityRules: [
         {
-          properties: {
-            access: 'Allow'
-            sourcePortRange: '*'
-            destinationPortRange: '8080'
-            direction: 'Inbound'
-            sourceAddressPrefix: '*'
-            description: 'Tests specific IPs and ports'
-            destinationAddressPrefix: '*'
-            protocol: '*'
-            priority: 100
-          }
           name: 'Specific'
+          properties: {
+            sourcePortRange: '*'
+            priority: 100
+            protocol: '*'
+            sourceAddressPrefix: '*'
+            direction: 'Inbound'
+            access: 'Allow'
+            description: 'Tests specific IPs and ports'
+            destinationPortRange: '8080'
+            destinationAddressPrefix: '*'
+          }
         }
         {
+          name: 'Ranges'
           properties: {
-            access: 'Allow'
-            destinationAddressPrefixes: [
-              '10.2.0.0/16'
-              '10.3.0.0/16'
-            ]
             sourceAddressPrefixes: [
               '10.0.0.0/16'
               '10.1.0.0/16'
             ]
-            destinationPortRanges: [
-              '90'
-              '91'
+            protocol: '*'
+            destinationAddressPrefixes: [
+              '10.2.0.0/16'
+              '10.3.0.0/16'
             ]
             direction: 'Inbound'
+            access: 'Allow'
+            description: 'Tests Ranges'
             sourcePortRanges: [
               '80'
               '81'
             ]
             priority: 101
-            description: 'Tests Ranges'
-            protocol: '*'
+            destinationPortRanges: [
+              '90'
+              '91'
+            ]
           }
-          name: 'Ranges'
         }
         {
+          name: 'Port_8082'
           properties: {
-            access: 'Allow'
             sourcePortRange: '*'
-            destinationPortRange: '8082'
+            protocol: '*'
+            direction: 'Inbound'
+            access: 'Allow'
+            description: 'Allow inbound access on TCP 8082'
             destinationApplicationSecurityGroups: [
               {
                 id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationSecurityGroups/adp-<<namePrefix>>-az-asg-x-001'
               }
             ]
-            direction: 'Inbound'
+            destinationPortRange: '8082'
+            priority: 102
             sourceApplicationSecurityGroups: [
               {
                 id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationSecurityGroups/adp-<<namePrefix>>-az-asg-x-001'
               }
             ]
-            priority: 102
-            description: 'Allow inbound access on TCP 8082'
-            protocol: '*'
           }
-          name: 'Port_8082'
         }
       ]
+      diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
+      diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
+      roleAssignments: [
+        {
+          roleDefinitionIdOrName: 'Reader'
+          principalIds: [
+            '<<deploymentSpId>>'
+          ]
+        }
+      ]
+      diagnosticLogsRetentionInDays: 7
+      name: '<<namePrefix>>-az-nsg-x-001'
   }
 ```
 

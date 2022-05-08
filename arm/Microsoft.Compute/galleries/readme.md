@@ -23,17 +23,17 @@ This module deploys an Azure compute gallery (formerly known as shared image gal
 **Required parameters**
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | Name of the Azure Shared Image Gallery |
+| `name` | string | Name of the Azure Shared Image Gallery. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `galleryDescription` | string | `''` |  | Description of the Azure Shared Image Gallery |
-| `images` | _[images](images/readme.md)_ array | `[]` |  | Images to create |
+| `galleryDescription` | string | `''` |  | Description of the Azure Shared Image Gallery. |
+| `images` | _[images](images/readme.md)_ array | `[]` |  | Images to create. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `'NotSpecified'` | `[CanNotDelete, NotSpecified, ReadOnly]` | Specify the type of lock. |
-| `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
+| `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `tags` | object | `{object}` |  | Tags for all resources. |
 
 
@@ -141,9 +141,9 @@ tags: {
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the deployed image gallery |
-| `resourceGroupName` | string | The resource group of the deployed image gallery |
-| `resourceId` | string | The resource ID of the deployed image gallery |
+| `name` | string | The name of the deployed image gallery. |
+| `resourceGroupName` | string | The resource group of the deployed image gallery. |
+| `resourceId` | string | The resource ID of the deployed image gallery. |
 
 ## Deployment examples
 
@@ -222,38 +222,38 @@ module galleries './Microsoft.Compute/galleries/deploy.bicep' = {
           name: '<<namePrefix>>-az-imgd-x-003'
         }
         {
+          name: '<<namePrefix>>-az-imgd-x-001'
           osType: 'Windows'
-          offer: 'WindowsServer'
+          osState: 'Generalized'
           maxRecommendedvCPUs: 8
-          publisher: 'MicrosoftWindowsServer'
+          minRecommendedMemory: 4
           hyperVGeneration: 'V1'
+          publisher: 'MicrosoftWindowsServer'
           sku: '2022-datacenter-azure-edition'
+          maxRecommendedMemory: 16
+          offer: 'WindowsServer'
+          minRecommendedvCPUs: 2
           roleAssignments: [
             {
+              roleDefinitionIdOrName: 'Reader'
               principalIds: [
                 '<<deploymentSpId>>'
               ]
-              roleDefinitionIdOrName: 'Reader'
             }
           ]
-          maxRecommendedMemory: 16
-          minRecommendedvCPUs: 2
-          minRecommendedMemory: 4
-          osState: 'Generalized'
-          name: '<<namePrefix>>-az-imgd-x-001'
         }
         {
+          name: '<<namePrefix>>-az-imgd-x-002'
           osType: 'Linux'
-          offer: '0001-com-ubuntu-server-focal'
+          osState: 'Generalized'
           maxRecommendedvCPUs: 4
-          publisher: 'canonical'
+          minRecommendedMemory: 4
           hyperVGeneration: 'V2'
+          publisher: 'canonical'
           sku: '20_04-lts-gen2'
           maxRecommendedMemory: 32
+          offer: '0001-com-ubuntu-server-focal'
           minRecommendedvCPUs: 1
-          minRecommendedMemory: 4
-          osState: 'Generalized'
-          name: '<<namePrefix>>-az-imgd-x-002'
         }
       ]
       name: '<<namePrefix>>azsigweuimages001'
@@ -304,10 +304,10 @@ module galleries './Microsoft.Compute/galleries/deploy.bicep' = {
   params: {
       roleAssignments: [
         {
+          roleDefinitionIdOrName: 'Reader'
           principalIds: [
             '<<deploymentSpId>>'
           ]
-          roleDefinitionIdOrName: 'Reader'
         }
       ]
       name: '<<namePrefix>>azsigweux001'

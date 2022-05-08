@@ -181,8 +181,8 @@ module policyexemption 'yourpath/arm/Microsoft.Authorization.policyExemptions/su
 module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-policyExemptions'
   params: {
-      name: '<<namePrefix>>-min-mg-polexem'
       policyAssignmentId: '/providers/Microsoft.Management/managementGroups/<<managementGroupId>>/providers/Microsoft.Authorization/policyAssignments/adp-<<namePrefix>>-mg-pass-loc-rg'
+      name: '<<namePrefix>>-min-mg-polexem'
   }
 ```
 
@@ -238,14 +238,14 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
 module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-policyExemptions'
   params: {
-      managementGroupId: '<<managementGroupId>>'
-      name: '<<namePrefix>>-mg-polexem'
-      exemptionCategory: 'Waiver'
       expiresOn: '2025-10-02T03:57:00Z'
-      policyAssignmentId: '/providers/Microsoft.Management/managementGroups/<<managementGroupId>>/providers/Microsoft.Authorization/policyAssignments/adp-<<namePrefix>>-mg-pass-loc-rg'
+      exemptionCategory: 'Waiver'
       metadata: {
         category: 'Security'
       }
+      managementGroupId: '<<managementGroupId>>'
+      policyAssignmentId: '/providers/Microsoft.Management/managementGroups/<<managementGroupId>>/providers/Microsoft.Authorization/policyAssignments/adp-<<namePrefix>>-mg-pass-loc-rg'
+      name: '<<namePrefix>>-mg-polexem'
       displayName: '[Display Name] policy exempt (management group scope)'
   }
 ```
@@ -291,9 +291,9 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
 module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-policyExemptions'
   params: {
+      policyAssignmentId: '/subscriptions/<<subscriptionId>>/providers/Microsoft.Authorization/policyAssignments/adp-<<namePrefix>>-sb-pass-loc-rg'
       name: '<<namePrefix>>-min-rg-polexem'
       subscriptionId: '<<subscriptionId>>'
-      policyAssignmentId: '/subscriptions/<<subscriptionId>>/providers/Microsoft.Authorization/policyAssignments/adp-<<namePrefix>>-sb-pass-loc-rg'
       resourceGroupName: '<<resourceGroupName>>'
   }
 ```
@@ -353,15 +353,15 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
 module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-policyExemptions'
   params: {
-      name: '<<namePrefix>>-rg-polexem'
       exemptionCategory: 'Waiver'
-      expiresOn: '2025-10-02T03:57:00Z'
-      resourceGroupName: '<<resourceGroupName>>'
-      policyAssignmentId: '/subscriptions/<<subscriptionId>>/providers/Microsoft.Authorization/policyAssignments/adp-<<namePrefix>>-sb-pass-loc-rg'
+      subscriptionId: '<<subscriptionId>>'
       metadata: {
         category: 'Security'
       }
-      subscriptionId: '<<subscriptionId>>'
+      expiresOn: '2025-10-02T03:57:00Z'
+      policyAssignmentId: '/subscriptions/<<subscriptionId>>/providers/Microsoft.Authorization/policyAssignments/adp-<<namePrefix>>-sb-pass-loc-rg'
+      name: '<<namePrefix>>-rg-polexem'
+      resourceGroupName: '<<resourceGroupName>>'
       displayName: '[Display Name] policy exempt (resource group scope)'
   }
 ```
@@ -462,14 +462,14 @@ module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep
 module policyExemptions './Microsoft.Authorization/policyExemptions/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-policyExemptions'
   params: {
-      name: '<<namePrefix>>-sub-polexem'
       exemptionCategory: 'Waiver'
-      expiresOn: '2025-10-02T03:57:00Z'
-      policyAssignmentId: '/subscriptions/<<subscriptionId>>/providers/Microsoft.Authorization/policyAssignments/adp-<<namePrefix>>-sb-pass-loc-rg'
+      subscriptionId: '<<subscriptionId>>'
       metadata: {
         category: 'Security'
       }
-      subscriptionId: '<<subscriptionId>>'
+      expiresOn: '2025-10-02T03:57:00Z'
+      policyAssignmentId: '/subscriptions/<<subscriptionId>>/providers/Microsoft.Authorization/policyAssignments/adp-<<namePrefix>>-sb-pass-loc-rg'
+      name: '<<namePrefix>>-sub-polexem'
       displayName: '[Display Name] policy exempt (subscription scope)'
   }
 ```

@@ -34,7 +34,7 @@ This module deploys an Azure Monitor Private Link Scope.
 | `location` | string | `'global'` |  | The location of the private link scope. Should be global. |
 | `lock` | string | `'NotSpecified'` | `[CanNotDelete, NotSpecified, ReadOnly]` | Specify the type of lock. |
 | `privateEndpoints` | array | `[]` |  | Configuration Details for private endpoints. |
-| `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
+| `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `scopedResources` | _[scopedResources](scopedResources/readme.md)_ array | `[]` |  | Configuration Details for Azure Monitor Resources. |
 | `tags` | object | `{object}` |  | Resource tags. |
 
@@ -220,9 +220,9 @@ tags: {
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the private link scope |
-| `resourceGroupName` | string | The resource group the private link scope was deployed into |
-| `resourceId` | string | The resource ID of the private link scope |
+| `name` | string | The name of the private link scope. |
+| `resourceGroupName` | string | The resource group the private link scope was deployed into. |
+| `resourceId` | string | The resource ID of the private link scope. |
 
 ## Deployment examples
 
@@ -273,19 +273,19 @@ tags: {
 module privateLinkScopes './Microsoft.Insights/privateLinkScopes/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-privateLinkScopes'
   params: {
+      name: '<<namePrefix>>-az-pls-x-001'
+      roleAssignments: [
+        {
+          roleDefinitionIdOrName: 'Reader'
+          principalIds: [
+            '<<deploymentSpId>>'
+          ]
+        }
+      ]
       scopedResources: [
         {
           linkedResourceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
           name: 'scoped1'
-        }
-      ]
-      name: '<<namePrefix>>-az-pls-x-001'
-      roleAssignments: [
-        {
-          principalIds: [
-            '<<deploymentSpId>>'
-          ]
-          roleDefinitionIdOrName: 'Reader'
         }
       ]
   }

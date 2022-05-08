@@ -36,18 +36,18 @@ This module deploys Front Doors.
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.  |
-| `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub |
+| `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
+| `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
-| `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub |
-| `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub |
+| `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
+| `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `enforceCertificateNameCheck` | string | `'Disabled'` |  | Enforce certificate name check of the frontdoor resource. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `'NotSpecified'` | `[CanNotDelete, NotSpecified, ReadOnly]` | Specify the type of lock. |
 | `logsToEnable` | array | `[FrontdoorAccessLog, FrontdoorWebApplicationFirewallLog]` | `[FrontdoorAccessLog, FrontdoorWebApplicationFirewallLog]` | The name of logs that will be streamed. |
 | `metricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | The name of metrics that will be streamed. |
-| `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
+| `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `sendRecvTimeoutSeconds` | int | `600` |  | Certificate name check time of the frontdoor resource. |
 | `tags` | object | `{object}` |  | Resource tags. |
 
@@ -156,9 +156,9 @@ tags: {
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the front door |
-| `resourceGroupName` | string | The resource group the front door was deployed into |
-| `resourceId` | string | The resource ID of the front door |
+| `name` | string | The name of the front door. |
+| `resourceGroupName` | string | The resource group the front door was deployed into. |
+| `resourceId` | string | The resource ID of the front door. |
 
 ## Deployment examples
 
@@ -294,96 +294,96 @@ tags: {
 module frontDoors './Microsoft.Network/frontDoors/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-frontDoors'
   params: {
+      enforceCertificateNameCheck: 'Disabled'
       frontendEndpoints: [
         {
-          properties: {
-            hostName: '<<namePrefix>>-az-fd-x-001.azurefd.net'
-            sessionAffinityTtlSeconds: 60
-            sessionAffinityEnabledState: 'Disabled'
-          }
           name: 'frontEnd'
+          properties: {
+            sessionAffinityEnabledState: 'Disabled'
+            sessionAffinityTtlSeconds: 60
+            hostName: '<<namePrefix>>-az-fd-x-001.azurefd.net'
+          }
         }
       ]
-      name: '<<namePrefix>>-az-fd-x-001'
-      enforceCertificateNameCheck: 'Disabled'
+      sendRecvTimeoutSeconds: 10
+      routingRules: [
+        {
+          name: 'routingRule'
+          properties: {
+            patternsToMatch: [
+              '/*'
+            ]
+            enabledState: 'Enabled'
+            acceptedProtocols: [
+              'Http'
+              'Https'
+            ]
+            routeConfiguration: {
+              backendPool: {
+                id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/frontDoors/<<namePrefix>>-az-fd-x-001/BackendPools/backendPool'
+              }
+              '@odata.type': '#Microsoft.Azure.FrontDoor.Models.FrontdoorForwardingConfiguration'
+              forwardingProtocol: 'MatchRequest'
+            }
+            frontendEndpoints: [
+              {
+                id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/frontDoors/<<namePrefix>>-az-fd-x-001/FrontendEndpoints/frontEnd'
+              }
+            ]
+          }
+        }
+      ]
+      healthProbeSettings: [
+        {
+          name: 'heathProbe'
+          properties: {
+            path: '/'
+            healthProbeMethod: ''
+            enabledState: ''
+            protocol: 'Https'
+            intervalInSeconds: 60
+          }
+        }
+      ]
       backendPools: [
         {
+          name: 'backendPool'
           properties: {
+            backends: [
+              {
+                address: 'biceptest.local'
+                privateLinkApprovalMessage: ''
+                privateLinkLocation: ''
+                httpPort: 80
+                httpsPort: 443
+                weight: 50
+                enabledState: 'Enabled'
+                privateLinkResourceId: ''
+                priority: 1
+                backendHostHeader: 'backendAddress'
+                privateLinkAlias: ''
+              }
+            ]
             LoadBalancingSettings: {
               id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/frontDoors/<<namePrefix>>-az-fd-x-001/LoadBalancingSettings/loadBalancer'
             }
             HealthProbeSettings: {
               id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/frontDoors/<<namePrefix>>-az-fd-x-001/HealthProbeSettings/heathProbe'
             }
-            backends: [
-              {
-                privateLinkAlias: ''
-                privateLinkResourceId: ''
-                httpPort: 80
-                privateLinkApprovalMessage: ''
-                httpsPort: 443
-                privateLinkLocation: ''
-                enabledState: 'Enabled'
-                priority: 1
-                backendHostHeader: 'backendAddress'
-                address: 'biceptest.local'
-                weight: 50
-              }
-            ]
           }
-          name: 'backendPool'
-        }
-      ]
-      healthProbeSettings: [
-        {
-          properties: {
-            healthProbeMethod: ''
-            protocol: 'Https'
-            path: '/'
-            intervalInSeconds: 60
-            enabledState: ''
-          }
-          name: 'heathProbe'
         }
       ]
       loadBalancingSettings: [
         {
-          properties: {
-            additionalLatencyMilliseconds: 0
-            successfulSamplesRequired: 1
-            sampleSize: 50
-          }
           name: 'loadBalancer'
-        }
-      ]
-      routingRules: [
-        {
           properties: {
-            routeConfiguration: {
-              backendPool: {
-                id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/frontDoors/<<namePrefix>>-az-fd-x-001/BackendPools/backendPool'
-              }
-              forwardingProtocol: 'MatchRequest'
-              '@odata.type': '#Microsoft.Azure.FrontDoor.Models.FrontdoorForwardingConfiguration'
-            }
-            acceptedProtocols: [
-              'Http'
-              'Https'
-            ]
-            frontendEndpoints: [
-              {
-                id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/frontDoors/<<namePrefix>>-az-fd-x-001/FrontendEndpoints/frontEnd'
-              }
-            ]
-            patternsToMatch: [
-              '/*'
-            ]
-            enabledState: 'Enabled'
+            sampleSize: 50
+            successfulSamplesRequired: 1
+            additionalLatencyMilliseconds: 0
           }
-          name: 'routingRule'
         }
       ]
-      sendRecvTimeoutSeconds: 10
+      name: '<<namePrefix>>-az-fd-x-001'
   }
 ```
 

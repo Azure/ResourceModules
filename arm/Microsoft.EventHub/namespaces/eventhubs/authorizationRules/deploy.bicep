@@ -1,10 +1,10 @@
-@description('Required. The name of the event hub namespace')
+@description('Conditional. The name of the parent event hub namespace. Required if the template is used in a standalone deployment.')
 param namespaceName string
 
-@description('Required. The name of the event hub namespace event hub')
+@description('Conditional. The name of the parent event hub namespace event hub. Required if the template is used in a standalone deployment.')
 param eventHubName string
 
-@description('Required. The name of the authorization rule')
+@description('Required. The name of the authorization rule.')
 param name string
 
 @description('Optional. The rights associated with the rule.')

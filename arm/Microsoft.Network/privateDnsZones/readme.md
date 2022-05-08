@@ -44,7 +44,7 @@ This template deploys a private DNS zone.
 | `lock` | string | `'NotSpecified'` | `[CanNotDelete, NotSpecified, ReadOnly]` | Specify the type of lock. |
 | `mx` | _[mx](mx/readme.md)_ array | `[]` |  | Array of MX records. |
 | `ptr` | _[ptr](ptr/readme.md)_ array | `[]` |  | Array of PTR records. |
-| `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
+| `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `soa` | _[soa](soa/readme.md)_ array | `[]` |  | Array of SOA records. |
 | `srv` | _[srv](srv/readme.md)_ array | `[]` |  | Array of SRV records. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
@@ -156,9 +156,9 @@ tags: {
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the private DNS zone |
-| `resourceGroupName` | string | The resource group the private DNS zone was deployed into |
-| `resourceId` | string | The resource ID of the private DNS zone |
+| `name` | string | The name of the private DNS zone. |
+| `resourceGroupName` | string | The resource group the private DNS zone was deployed into. |
+| `resourceId` | string | The resource ID of the private DNS zone. |
 
 ## Deployment examples
 
@@ -413,165 +413,38 @@ module privateDnsZones './Microsoft.Network/privateDnsZones/deploy.bicep' = {
 module privateDnsZones './Microsoft.Network/privateDnsZones/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-privateDnsZones'
   params: {
-      name: '<<namePrefix>>-az-privdns-x-002.com'
-      CNAME: [
-        {
-          ttl: 3600
-          cnameRecord: {
-            cname: 'test'
-          }
-          roleAssignments: [
-            {
-              principalIds: [
-                '<<deploymentSpId>>'
-              ]
-              roleDefinitionIdOrName: 'Reader'
-            }
-          ]
-          name: 'CNAME_test'
-        }
-      ]
-      A: [
-        {
-          ttl: 3600
-          roleAssignments: [
-            {
-              principalIds: [
-                '<<deploymentSpId>>'
-              ]
-              roleDefinitionIdOrName: 'Reader'
-            }
-          ]
-          aRecords: [
-            {
-              ipv4Address: '10.240.4.4'
-            }
-          ]
-          name: 'A_10.240.4.4'
-        }
-      ]
       SOA: [
         {
           soaRecord: {
+            refreshTime: 3600
             host: 'azureprivatedns.net'
-            serialNumber: '1'
             minimumTtl: 10
             expireTime: 2419200
             email: 'azureprivatedns-host.microsoft.com'
             retryTime: 300
-            refreshTime: 3600
+            serialNumber: '1'
           }
           ttl: 3600
           roleAssignments: [
             {
+              roleDefinitionIdOrName: 'Reader'
               principalIds: [
                 '<<deploymentSpId>>'
               ]
-              roleDefinitionIdOrName: 'Reader'
             }
           ]
           name: '@'
         }
       ]
-      roleAssignments: [
-        {
-          principalIds: [
-            '<<deploymentSpId>>'
-          ]
-          roleDefinitionIdOrName: 'Reader'
-        }
-      ]
-      SRV: [
-        {
-          ttl: 3600
-          roleAssignments: [
-            {
-              principalIds: [
-                '<<deploymentSpId>>'
-              ]
-              roleDefinitionIdOrName: 'Reader'
-            }
-          ]
-          name: 'SRV_contoso'
-          srvRecords: [
-            {
-              port: 9332
-              weight: 0
-              target: 'test.contoso.com'
-              priority: 0
-            }
-          ]
-        }
-      ]
-      TXT: [
-        {
-          txtRecords: [
-            {
-              value: [
-                'test'
-              ]
-            }
-          ]
-          ttl: 3600
-          roleAssignments: [
-            {
-              principalIds: [
-                '<<deploymentSpId>>'
-              ]
-              roleDefinitionIdOrName: 'Reader'
-            }
-          ]
-          name: 'TXT_test'
-        }
-      ]
-      MX: [
-        {
-          ttl: 3600
-          roleAssignments: [
-            {
-              principalIds: [
-                '<<deploymentSpId>>'
-              ]
-              roleDefinitionIdOrName: 'Reader'
-            }
-          ]
-          mxRecords: [
-            {
-              exchange: 'contoso.com'
-              preference: 100
-            }
-          ]
-          name: 'MX_contoso'
-        }
-      ]
-      PTR: [
-        {
-          ttl: 3600
-          roleAssignments: [
-            {
-              principalIds: [
-                '<<deploymentSpId>>'
-              ]
-              roleDefinitionIdOrName: 'Reader'
-            }
-          ]
-          ptrRecords: [
-            {
-              ptrdname: 'contoso.com'
-            }
-          ]
-          name: 'PTR_contoso'
-        }
-      ]
       AAAA: [
         {
+          ttl: 3600
+          name: 'AAAA_2001_0db8_85a3_0000_0000_8a2e_0370_7334'
           aaaaRecords: [
             {
               ipv6Address: '2001:0db8:85a3:0000:0000:8a2e:0370:7334'
             }
           ]
-          ttl: 3600
-          name: 'AAAA_2001_0db8_85a3_0000_0000_8a2e_0370_7334'
         }
       ]
       virtualNetworkLinks: [
@@ -580,6 +453,133 @@ module privateDnsZones './Microsoft.Network/privateDnsZones/deploy.bicep' = {
           registrationEnabled: true
         }
       ]
+      PTR: [
+        {
+          ptrRecords: [
+            {
+              ptrdname: 'contoso.com'
+            }
+          ]
+          ttl: 3600
+          roleAssignments: [
+            {
+              roleDefinitionIdOrName: 'Reader'
+              principalIds: [
+                '<<deploymentSpId>>'
+              ]
+            }
+          ]
+          name: 'PTR_contoso'
+        }
+      ]
+      TXT: [
+        {
+          ttl: 3600
+          txtRecords: [
+            {
+              value: [
+                'test'
+              ]
+            }
+          ]
+          roleAssignments: [
+            {
+              roleDefinitionIdOrName: 'Reader'
+              principalIds: [
+                '<<deploymentSpId>>'
+              ]
+            }
+          ]
+          name: 'TXT_test'
+        }
+      ]
+      CNAME: [
+        {
+          cnameRecord: {
+            cname: 'test'
+          }
+          ttl: 3600
+          roleAssignments: [
+            {
+              roleDefinitionIdOrName: 'Reader'
+              principalIds: [
+                '<<deploymentSpId>>'
+              ]
+            }
+          ]
+          name: 'CNAME_test'
+        }
+      ]
+      MX: [
+        {
+          ttl: 3600
+          roleAssignments: [
+            {
+              roleDefinitionIdOrName: 'Reader'
+              principalIds: [
+                '<<deploymentSpId>>'
+              ]
+            }
+          ]
+          name: 'MX_contoso'
+          mxRecords: [
+            {
+              preference: 100
+              exchange: 'contoso.com'
+            }
+          ]
+        }
+      ]
+      roleAssignments: [
+        {
+          roleDefinitionIdOrName: 'Reader'
+          principalIds: [
+            '<<deploymentSpId>>'
+          ]
+        }
+      ]
+      A: [
+        {
+          ttl: 3600
+          roleAssignments: [
+            {
+              roleDefinitionIdOrName: 'Reader'
+              principalIds: [
+                '<<deploymentSpId>>'
+              ]
+            }
+          ]
+          name: 'A_10.240.4.4'
+          aRecords: [
+            {
+              ipv4Address: '10.240.4.4'
+            }
+          ]
+        }
+      ]
+      SRV: [
+        {
+          ttl: 3600
+          srvRecords: [
+            {
+              target: 'test.contoso.com'
+              weight: 0
+              priority: 0
+              port: 9332
+            }
+          ]
+          roleAssignments: [
+            {
+              roleDefinitionIdOrName: 'Reader'
+              principalIds: [
+                '<<deploymentSpId>>'
+              ]
+            }
+          ]
+          name: 'SRV_contoso'
+        }
+      ]
+      name: '<<namePrefix>>-az-privdns-x-002.com'
   }
 ```
 
