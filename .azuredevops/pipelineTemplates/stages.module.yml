@@ -56,7 +56,7 @@ stages:
           variables:
             deploymentName: $[ stageDependencies.dependencyDeployment.deploy.outputs['deployModule.deploymentName'] ]
           parameters:
-            templateFilePath: '$(modulePath)/deploy.bicep'
+            templateFilePath: '$(modulePath)/.dependencies/dependencies.bicep'
             resourceGroupName: '${{ parameters.moduleResourceGroupName }}'
             deploymentName: '$(deploymentName)'
             enableDeployment: false
