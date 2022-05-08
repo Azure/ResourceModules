@@ -8,7 +8,7 @@ This section shows you how you can orchestrate a deployment using multiple resou
 
 ### _Navigation_
 
-- [Workloads leveraging the library](#workloads-leveraging-the-library)
+- [Upstream workloads](#upstream-workloads)
 - [Orchestration overview](#orchestration-overview)
 - [Template orchestration](#template-orchestration)
   - [Example with local file references](#example-with-local-file-references)
@@ -23,7 +23,7 @@ This section shows you how you can orchestrate a deployment using multiple resou
 
 ---
 
-# Workloads leveraging the library
+# Upstream workloads
 
 There are several open-source repositories that leverage the CARML library today. Alongside the examples we provide you with below, the referenced repositories are a good reference on how you can leverage CARML for larger solutions.
 
