@@ -28,7 +28,7 @@ With this module you can perform role assignments on a resource group level
 | `condition` | string | `''` |  | The conditions on the role assignment. This limits the resources it can be assigned to |
 | `conditionVersion` | string | `'2.0'` | `[2.0]` | Version of the condition. Currently accepted value is "2.0" |
 | `delegatedManagedIdentityResourceId` | string | `''` |  | ID of the delegated managed identity resource |
-| `description` | string | `''` |  | Description of role assignment |
+| `description` | string | `''` |  | The description of the role assignment. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `principalType` | string | `''` | `[ServicePrincipal, Group, User, ForeignGroup, Device, ]` | The principal type of the assigned principal ID. |
 | `resourceGroupName` | string | `[resourceGroup().name]` |  | Name of the Resource Group to assign the RBAC role to. If not provided, will use the current scope for deployment. |
