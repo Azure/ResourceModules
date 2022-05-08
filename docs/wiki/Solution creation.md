@@ -2,10 +2,13 @@
 
 This section shows you how you can orchestrate a deployment using multiple resource modules.
 
+> **Note:** For the sake of any of the below examples we assume you leverage Bicep as your primary DSL.
+
 ---
 
 ### _Navigation_
 
+- [Workloads leveraging the library](#workloads-leveraging-the-library)
 - [Orchestration overview](#orchestration-overview)
 - [Template orchestration](#template-orchestration)
   - [Example with local file references](#example-with-local-file-references)
@@ -20,7 +23,17 @@ This section shows you how you can orchestrate a deployment using multiple resou
 
 ---
 
-> **Note:** For the sake of the below examples we assume you leverage Bicep as your primary DSL.
+# Workloads leveraging the library
+
+There are several open-source repositories that leverage the CARML library today. Alongside the examples we provide you with below, the referenced repositories are a good reference on how you can leverage CARML for larger solutions.
+
+| Repository | Link | Description |
+| - | - | - |
+| AVD Accelerator | [link](https://github.com/Azure/avdaccelerator) | AVD Accelerator deployment automation to simplify the setup of AVD (Azure Virtual Desktop) |
+| AKS Baseline Automation | [link](https://github.com/Azure/aks-baseline-automation) | Repository for the AKS Landing Zone Accelerator program's Automation reference implementation |
+| DevOps Self-Hosted Image Builder | [link](https://github.com/Azure/DevOps-Self-Hosted/tree/main/constructs/azureImageBuilder) | Create & maintain images with a pipeline using the Azure Image Builder service |
+| DevOps Self-Hosted Scale Set | [link](https://github.com/Azure/DevOps-Self-Hosted/tree/main/constructs/azureDevOpsScaleSet) | Deploy & maintain Azure DevOps Self-Hosted agent pools with a pipeline using Virtual Machine Scale Sets |
+
 
 # Orchestration overview
 
