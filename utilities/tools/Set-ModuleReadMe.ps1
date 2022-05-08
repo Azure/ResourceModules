@@ -95,7 +95,6 @@ function Set-ResourceTypesSection {
         $_.type -notin $ResourceTypesToExclude -and $_
     } | Select-Object 'Type', 'ApiVersion' -Unique | Sort-Object Type -Culture en-US
 
-    $TextInfo = (Get-Culture).TextInfo
     foreach ($resourceTypeObject in $RelevantResourceTypeObjects) {
         $ProviderNamespace, $ResourceType = $resourceTypeObject.Type -split '/', 2
         # Validate if Reference URL Is working
