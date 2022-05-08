@@ -26,38 +26,40 @@ stages:
         parameters:
           templateFilePath: '$(modulePath)/.dependencies/dependencies.bicep'
           resourceGroupName: '${{ parameters.moduleResourceGroupName }}'
+          removeDeployment: false
 
-  - stage: deployment
-    displayName: Deployment validation
-    dependsOn:
-      - dependencyDeployment
-      - init
-    variables:
-      $parameterTests: $[ stageDependencies.init.getParameterFilePaths.outputs['getParameterFilePathsTask.parameterTests'] ]
-    # strategy:
-    #   matrix: $parameterTests
-    jobs:
-      - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
-        parameters:
-          templateFilePath: '$(modulePath)/deploy.bicep'
-          parameterFilePath: '$(modulePath)/$(parameterTests)'
-          resourceGroupName: '${{ parameters.moduleResourceGroupName }}'
+  # - stage: deployment
+  #   displayName: Deployment validation
+  #   dependsOn:
+  #     - dependencyDeployment
+  #     - init
+  #   variables:
+  #     $parameterTests: $[ stageDependencies.init.getParameterFilePaths.outputs['getParameterFilePathsTask.parameterTests'] ]
+  #   # strategy:
+  #   #   matrix: $parameterTests
+  #   jobs:
+  #     - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
+  #       parameters:
+  #         templateFilePath: '$(modulePath)/deploy.bicep'
+  #         parameterFilePath: '$(modulePath)/$(parameterTests)'
+  #         resourceGroupName: '${{ parameters.moduleResourceGroupName }}'
 
-  # - ${{ if eq(parameters.removeDeployment, 'true') }}:
-  #   - stage: dependencyRemoval
-  #     displayName: Dependency Removal
-  #     dependsOn:
-  #       - dependencyDeployment
-  #       - deployment
-  #     condition: and(succeededOrFailed(), ne(dependencies.dependencyDeployment.outputs['deploy.deployModule.deploymentName'],''))
-  #     jobs:
-  #       - template: /.azuredevops/pipelineTemplates/jobs.validateModulePester.yml
-  #         variables:
-  #             deploymentName: $[ stageDependencies.dependencyDeployment.deploy.outputs['deployModule.deploymentName'] ]
-  #         parameters:
-  #           templateFilePath: '$(modulePath)/deploy.bicep'
-  #           resourceGroupName: '${{ parameters.moduleResourceGroupName }}'
-  #           deploymentName: '$(deploymentName)'
+  - ${{ if eq(parameters.removeDeployment, 'true') }}:
+    - stage: dependencyRemoval
+      displayName: Dependency Removal
+      dependsOn:
+        - dependencyDeployment
+        # - deployment
+      condition: and(succeededOrFailed(), ne(dependencies.dependencyDeployment.outputs['deploy.deployModule.deploymentName'],''))
+      jobs:
+        - template: /.azuredevops/pipelineTemplates/jobs.validateModulePester.yml
+          variables:
+            deploymentName: $[ stageDependencies.dependencyDeployment.deploy.outputs['deployModule.deploymentName'] ]
+          parameters:
+            templateFilePath: '$(modulePath)/deploy.bicep'
+            resourceGroupName: '${{ parameters.moduleResourceGroupName }}'
+            deploymentName: '$(deploymentName)'
+            enableDeployment: false
 
   # - stage: Publishing
   #   dependsOn:

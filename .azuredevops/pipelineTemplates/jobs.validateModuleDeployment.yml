@@ -58,8 +58,9 @@ parameters:
   parameterFilePath: ''
   customParameterFileTokens: ''
 
-  removeDeployment: false
+  removeDeployment: true
   enableDeployment: true
+  deploymentName: ''
   modulePath: '$(modulePath)'
   deploymentBlocks: ''
   location: '$(location)'
@@ -197,6 +198,7 @@ jobs:
           displayName: 'Validate parameter file via connection [${{ parameters.serviceConnection }}]'
         ${{ if eq(parameters.parameterFilePath,'') }}:
           displayName: 'Validate template file via connection [${{ parameters.serviceConnection }}]'
+        condition: and(succeeded(), eq( '${{ parameters.enableDeployment }}', 'true'))
         inputs:
           azureSubscription: ${{ parameters.serviceConnection }}
           azurePowerShellVersion: 'latestVersion'
@@ -259,11 +261,12 @@ jobs:
       # [Deployment] task(s)
       #---------------------
       - task: AzurePowerShell@5
+        name: deployModule
         ${{ if ne(parameters.parameterFilePath,'') }}:
           displayName: 'Deploy parameter file via connection [${{ parameters.serviceConnection }}]'
         ${{ if eq(parameters.parameterFilePath,'') }}:
           displayName: 'Deploy template file via connection [${{ parameters.serviceConnection }}]'
-        name: deployModule
+        condition: and(succeeded(), eq( '${{ parameters.enableDeployment }}', 'true'))
         inputs:
           azureSubscription: ${{ parameters.serviceConnection }}
           azurePowerShellVersion: 'latestVersion'
@@ -345,42 +348,42 @@ jobs:
               throw $res.exception
             }
 
-          # # [Removal] task(s)
-          # #------------------
-          # - task: AzurePowerShell@5
-          #   displayName: 'Remove deployed resources via [${{ parameters.serviceConnection }}]'
-          #   condition: and(succeededOrFailed(), eq( '${{ parameters.removeDeployment }}', 'true'), not(eq(variables['deploymentName'],'')))
-          #   inputs:
-          #     azureSubscription: ${{ parameters.serviceConnection }}
-          #     azurePowerShellVersion: ${{ parameters.azurePowerShellVersion }}
-          #     preferredAzurePowerShellVersion: ${{ parameters.preferredAzurePowerShellVersion }}
-          #     ScriptType: InlineScript
-          #     failOnStandardError: false
-          #     pwsh: true
-          #     inline: |
-          #       # Load used function
-          #       . (Join-Path '$(moduleRepoRoot)' '$(pipelineFunctionsPath)' 'resourceRemoval' 'Initialize-DeploymentRemoval.ps1')
+      # [Removal] task(s)
+      #------------------
+      - task: AzurePowerShell@5
+        displayName: 'Remove deployed resources via [${{ parameters.serviceConnection }}]'
+        condition: and(succeededOrFailed(), eq( '${{ parameters.removeDeployment }}', 'true'), or(ne( parameters['deploymentName'], ''), ne( variables['deploymentName'], '')))
+        inputs:
+          azureSubscription: ${{ parameters.serviceConnection }}
+          azurePowerShellVersion: ${{ parameters.azurePowerShellVersion }}
+          preferredAzurePowerShellVersion: ${{ parameters.preferredAzurePowerShellVersion }}
+          ScriptType: InlineScript
+          failOnStandardError: false
+          pwsh: true
+          inline: |
+            # Load used function
+            . (Join-Path '$(moduleRepoRoot)' '$(pipelineFunctionsPath)' 'resourceRemoval' 'Initialize-DeploymentRemoval.ps1')
 
-          #       if(-not [String]::IsNullOrEmpty('${{ deploymentBlock.templateFilePath }}')) {
-          #         $templateFilePath = Join-Path '$(moduleRepoRoot)' '${{ deploymentBlock.templateFilePath }}'
-          #       } else {
-          #         # Use default path
-          #         $templateFilePath = (Test-Path (Join-Path '$(ModuleRepoRoot)' '$(modulePath)' 'deploy.bicep')) ?
-          #           (Join-Path '$(ModuleRepoRoot)' '$(modulePath)' 'deploy.bicep') :
-          #           (Join-Path '$(ModuleRepoRoot)' '$(modulePath)' 'deploy.json')
-          #       }
+            if(-not [String]::IsNullOrEmpty('${{ deploymentBlock.templateFilePath }}')) {
+              $templateFilePath = Join-Path '$(moduleRepoRoot)' '${{ deploymentBlock.templateFilePath }}'
+            } else {
+              # Use default path
+              $templateFilePath = (Test-Path (Join-Path '$(ModuleRepoRoot)' '$(modulePath)' 'deploy.bicep')) ?
+                (Join-Path '$(ModuleRepoRoot)' '$(modulePath)' 'deploy.bicep') :
+                (Join-Path '$(ModuleRepoRoot)' '$(modulePath)' 'deploy.json')
+            }
 
-          #       if (-not [String]::IsNullOrEmpty('$(deploymentName)')) {
-          #         $functionInput = @{
-          #             DeploymentName    = '$(deploymentName)'
-          #             TemplateFilePath  = $templateFilePath
-          #             ResourceGroupName = '${{ parameters.resourceGroupName }}'
-          #             ManagementGroupId = '${{ parameters.managementGroupId }}'
-          #             Verbose           = $true
-          #         }
+            if (-not [String]::IsNullOrEmpty('$(deploymentName)')) {
+              $functionInput = @{
+                  DeploymentName    = '$(deploymentName)'
+                  TemplateFilePath  = $templateFilePath
+                  ResourceGroupName = '${{ parameters.resourceGroupName }}'
+                  ManagementGroupId = '${{ parameters.managementGroupId }}'
+                  Verbose           = $true
+              }
 
-          #         Write-Verbose 'Invoke task with' -Verbose
-          #         Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
+              Write-Verbose 'Invoke task with' -Verbose
+              Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
-          #         Initialize-DeploymentRemoval @functionInput
-          #       }
+              Initialize-DeploymentRemoval @functionInput
+            }
