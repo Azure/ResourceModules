@@ -19,14 +19,18 @@ This module can be used to deploy a management policies into a storage account.
 **Required parameters**
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `rules` | array | The Storage Account ManagementPolicies Rules |
-| `storageAccountName` | string | Name of the Storage Account. |
+| `rules` | array | The Storage Account ManagementPolicies Rules. |
+
+**Conditional parameters**
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `storageAccountName` | string | Name of the Storage Account. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `name` | string | `'default'` | The name of the storage container to deploy |
+| `name` | string | `'default'` | The name of the storage container to deploy. |
 
 
 ### Parameter Usage: `rules`
@@ -67,6 +71,6 @@ This module can be used to deploy a management policies into a storage account.
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the deployed management policy |
-| `resourceGroupName` | string | The resource group of the deployed management policy |
-| `resourceId` | string | The resource ID of the deployed management policy |
+| `name` | string | The name of the deployed management policy. |
+| `resourceGroupName` | string | The resource group of the deployed management policy. |
+| `resourceId` | string | The resource ID of the deployed management policy. |

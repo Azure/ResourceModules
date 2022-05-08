@@ -20,8 +20,12 @@ This template deploys a data source for a Log Analytics workspace.
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `kind` | string | `'AzureActivityLog'` | `[AzureActivityLog, WindowsEvent, WindowsPerformanceCounter, IISLogs, LinuxSyslog, LinuxSyslogCollection, LinuxPerformanceObject, LinuxPerformanceCollection]` | The kind of the DataSource. |
-| `logAnalyticsWorkspaceName` | string |  |  | Name of the Log Analytics workspace |
-| `name` | string |  |  | Name of the solution |
+| `name` | string |  |  | Name of the solution. |
+
+**Conditional parameters**
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `logAnalyticsWorkspaceName` | string | Name of the Log Analytics workspace. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Description |
@@ -62,6 +66,6 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the deployed data source |
-| `resourceGroupName` | string | The resource group where the data source is deployed |
-| `resourceId` | string | The resource ID of the deployed data source |
+| `name` | string | The name of the deployed data source. |
+| `resourceGroupName` | string | The resource group where the data source is deployed. |
+| `resourceId` | string | The resource ID of the deployed data source. |

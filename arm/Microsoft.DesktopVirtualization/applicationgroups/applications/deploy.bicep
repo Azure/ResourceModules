@@ -1,4 +1,4 @@
-@sys.description('Required. Name of the Application Group to create the application(s) in.')
+@sys.description('Conditional. Name of the Application Group to create the application(s) in. Required if the template is used in a standalone deployment.')
 param appGroupName string
 
 @sys.description('Required. Name of the Application to be created in the Application Group.')

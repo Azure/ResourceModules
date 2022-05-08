@@ -34,27 +34,27 @@ This template deploys Azure Active Directory Domain Services (AADDS).
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `additionalRecipients` | array | `[]` |  | The email recipient value to receive alerts |
+| `additionalRecipients` | array | `[]` |  | The email recipient value to receive alerts. |
 | `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
-| `domainConfigurationType` | string | `'FullySynced'` | `[FullySynced, ResourceTrusting]` | The value is to provide domain configuration type |
-| `externalAccess` | string | `'Enabled'` | `[Enabled, Disabled]` | The value is to enable the Secure LDAP for external services of Azure ADDS Services |
+| `domainConfigurationType` | string | `'FullySynced'` | `[FullySynced, ResourceTrusting]` | The value is to provide domain configuration type. |
+| `externalAccess` | string | `'Enabled'` | `[Enabled, Disabled]` | The value is to enable the Secure LDAP for external services of Azure ADDS Services. |
 | `filteredSync` | string | `'Enabled'` |  | The value is to synchronise scoped users and groups. |
 | `kerberosArmoring` | string | `'Enabled'` | `[Enabled, Disabled]` | The value is to enable to provide a protected channel between the Kerberos client and the KDC. |
 | `kerberosRc4Encryption` | string | `'Enabled'` | `[Enabled, Disabled]` | The value is to enable Kerberos requests that use RC4 encryption. |
 | `ldaps` | string | `'Enabled'` | `[Enabled, Disabled]` | A flag to determine whether or not Secure LDAP is enabled or disabled. |
-| `location` | string | `[resourceGroup().location]` |  | The location to deploy the Azure ADDS Services |
+| `location` | string | `[resourceGroup().location]` |  | The location to deploy the Azure ADDS Services. |
 | `lock` | string | `'NotSpecified'` | `[CanNotDelete, NotSpecified, ReadOnly]` | Specify the type of lock. |
 | `logsToEnable` | array | `[SystemSecurity, AccountManagement, LogonLogoff, ObjectAccess, PolicyChange, PrivilegeUse, DetailTracking, DirectoryServiceAccess, AccountLogon]` | `[SystemSecurity, AccountManagement, LogonLogoff, ObjectAccess, PolicyChange, PrivilegeUse, DetailTracking, DirectoryServiceAccess, AccountLogon]` | The name of logs that will be streamed. |
 | `name` | string | `[parameters('domainName')]` |  | The name of the AADDS resource. Defaults to the domain name specific to the Azure ADDS service. |
-| `notifyDcAdmins` | string | `'Enabled'` | `[Enabled, Disabled]` | The value is to notify the DC Admins.  |
+| `notifyDcAdmins` | string | `'Enabled'` | `[Enabled, Disabled]` | The value is to notify the DC Admins. |
 | `notifyGlobalAdmins` | string | `'Enabled'` | `[Enabled, Disabled]` | The value is to notify the Global Admins. |
 | `ntlmV1` | string | `'Enabled'` | `[Enabled, Disabled]` | The value is to enable clients making request using NTLM v1. |
-| `replicaSets` | array | `[]` |  | Additional replica set for the managed domain |
-| `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
+| `replicaSets` | array | `[]` |  | Additional replica set for the managed domain. |
+| `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `sku` | string | `'Standard'` | `[Standard, Enterprise, Premium]` | The name of the SKU specific to Azure ADDS Services. |
 | `syncNtlmPasswords` | string | `'Enabled'` | `[Enabled, Disabled]` | The value is to enable synchronized users to use NTLM authentication. |
 | `syncOnPremPasswords` | string | `'Enabled'` | `[Enabled, Disabled]` | The value is to enable on-premises users to authenticate against managed domain. |
@@ -141,6 +141,6 @@ $pfxCertificate = [System.Convert]::ToBase64String($rawCertByteStream)
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The domain name of the Azure Active Directory Domain Services(Azure ADDS) |
+| `name` | string | The domain name of the Azure Active Directory Domain Services(Azure ADDS). |
 | `resourceGroupName` | string | The name of the resource group the Azure Active Directory Domain Services(Azure ADDS) was created in. |
-| `resourceId` | string | The resource ID of the Azure Active Directory Domain Services(Azure ADDS) |
+| `resourceId` | string | The resource ID of the Azure Active Directory Domain Services(Azure ADDS). |

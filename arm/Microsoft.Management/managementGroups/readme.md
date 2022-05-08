@@ -26,7 +26,7 @@ This module has some known **limitations**:
 **Required parameters**
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The group ID of the Management group |
+| `name` | string | The group ID of the Management group. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Description |
@@ -68,8 +68,8 @@ Create a role assignment for the given resource. If you want to assign a service
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the management group |
-| `resourceId` | string | The resource ID of the management group |
+| `name` | string | The name of the management group. |
+| `resourceId` | string | The resource ID of the management group. |
 
 ## Considerations
 

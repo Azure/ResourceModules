@@ -1,10 +1,10 @@
-@description('Required. The name of the Azure Factory to create')
+@description('Required. The name of the Azure Factory to create.')
 param name string
 
-@description('Optional. The name of the Managed Virtual Network')
+@description('Optional. The name of the Managed Virtual Network.')
 param managedVirtualNetworkName string = ''
 
-@description('Optional. The object for the configuration of a Integration Runtime')
+@description('Optional. The object for the configuration of a Integration Runtime.')
 param integrationRuntime object = {}
 
 @description('Optional. Location for all Resources.')

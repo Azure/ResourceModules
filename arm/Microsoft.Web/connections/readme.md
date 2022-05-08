@@ -141,6 +141,6 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the connection |
-| `resourceGroupName` | string | The resource group the connection was deployed into |
-| `resourceId` | string | The resource ID of the connection |
+| `name` | string | The name of the connection. |
+| `resourceGroupName` | string | The resource group the connection was deployed into. |
+| `resourceId` | string | The resource ID of the connection. |
