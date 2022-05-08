@@ -51,10 +51,10 @@ stages:
         - dependencyDeployment
         # - deployment
       condition: and(succeededOrFailed(), ne(dependencies.dependencyDeployment.outputs['deploy.deployModule.deploymentName'],''))
+      variables:
+            deploymentName: $[ stageDependencies.dependencyDeployment.deploy.outputs['deployModule.deploymentName'] ]
       jobs:
         - template: /.azuredevops/pipelineTemplates/jobs.validateModulePester.yml
-          variables:
-            deploymentName: $[ stageDependencies.dependencyDeployment.deploy.outputs['deployModule.deploymentName'] ]
           parameters:
             templateFilePath: '$(modulePath)/.dependencies/dependencies.bicep'
             resourceGroupName: '${{ parameters.moduleResourceGroupName }}'
