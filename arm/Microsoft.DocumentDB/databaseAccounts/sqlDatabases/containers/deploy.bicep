@@ -1,7 +1,7 @@
-@description('Conditional. Name of the Database Account. Required if the template is used in a standalone deployment.')
+@description('Conditional. The name of the parent Database Account. Required if the template is used in a standalone deployment.')
 param databaseAccountName string
 
-@description('Conditional. Name of the SQL Database. Required if the template is used in a standalone deployment.')
+@description('Conditional. The name of the parent SQL Database. Required if the template is used in a standalone deployment.')
 param sqlDatabaseName string
 
 @description('Required. Name of the container.')

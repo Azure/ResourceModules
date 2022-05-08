@@ -22,8 +22,8 @@
 **Conditional parameters**
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `databaseAccountName` | string | Name of the Database Account. Required if the template is used in a standalone deployment. |
-| `sqlDatabaseName` | string | Name of the SQL Database. Required if the template is used in a standalone deployment. |
+| `databaseAccountName` | string | The name of the parent Database Account. Required if the template is used in a standalone deployment. |
+| `sqlDatabaseName` | string | The name of the parent SQL Database. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |

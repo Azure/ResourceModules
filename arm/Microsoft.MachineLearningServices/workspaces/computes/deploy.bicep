@@ -1,7 +1,7 @@
 // ================ //
 // Parameters       //
 // ================ //
-@sys.description('Conditional. Name of the Machine Learning Workspace. Required if the template is used in a standalone deployment.')
+@sys.description('Conditional. The name of the parent Machine Learning Workspace. Required if the template is used in a standalone deployment.')
 param machineLearningWorkspaceName string
 
 @sys.description('Required. Name of the compute.')

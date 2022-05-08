@@ -25,7 +25,7 @@ This module deploys Insights PrivateLinkScopes ScopedResources.
 **Conditional parameters**
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `privateLinkScopeName` | string | Name of the parent private link scope. Required if the template is used in a standalone deployment. |
+| `privateLinkScopeName` | string | The name of the parent private link scope. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Description |

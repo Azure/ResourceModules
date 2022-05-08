@@ -24,7 +24,7 @@ This module deploys an Agent Pool for a Container Service Managed Cluster
 **Conditional parameters**
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `managedClusterName` | string | Name of the managed cluster. Required if the template is used in a standalone deployment. |
+| `managedClusterName` | string | The name of the parent managed cluster. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |

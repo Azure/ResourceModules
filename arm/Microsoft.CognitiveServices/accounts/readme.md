@@ -28,12 +28,16 @@ This module deploys different kinds of cognitive services resources
 | `kind` | string | `[AnomalyDetector, Bing.Autosuggest.v7, Bing.CustomSearch, Bing.EntitySearch, Bing.Search.v7, Bing.SpellCheck.v7, CognitiveServices, ComputerVision, ContentModerator, CustomVision.Prediction, CustomVision.Training, Face, FormRecognizer, ImmersiveReader, Internal.AllInOne, LUIS, LUIS.Authoring, Personalizer, QnAMaker, SpeechServices, TextAnalytics, TextTranslation]` | Kind of the Cognitive Services. Use 'Get-AzCognitiveServicesAccountSku' to determine a valid combinations of 'kind' and 'sku' for your Azure region. |
 | `name` | string |  | The name of Cognitive Services account. |
 
+**Conditional parameters**
+| Parameter Name | Type | Default Value | Description |
+| :-- | :-- | :-- | :-- |
+| `customSubDomainName` | string | `''` | Subdomain name used for token-based authentication. Required if 'networkAcls' are set. |
+
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `allowedFqdnList` | array | `[]` |  | List of allowed FQDN. |
 | `apiProperties` | object | `{object}` |  | The API properties for special APIs. |
-| `customSubDomainName` | string | `''` |  | Subdomain name used for token-based authentication. Required if 'networkAcls' are set. |
 | `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
 | `diagnosticLogCategoriesToEnable` | array | `[Audit, RequestResponse]` | `[Audit, RequestResponse]` | The name of logs that will be streamed. |

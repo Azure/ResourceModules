@@ -10,13 +10,10 @@ param location string = resourceGroup().location
 @description('Optional. Collation of the managed instance database.')
 param collation string = 'SQL_Latin1_General_CP1_CI_AS'
 
-@description('Optional. Conditional. If createMode is PointInTimeRestore, this value is required. Specifies the point in time (ISO8601 format) of the source database that will be restored to create the new database.')
-param restorePointInTime string = ''
-
 @description('Optional. Collation of the managed instance.')
 param catalogCollation string = 'SQL_Latin1_General_CP1_CI_AS'
 
-@description('Optional. Managed database create mode. PointInTimeRestore: Create a database by restoring a point in time backup of an existing database. SourceDatabaseName, SourceManagedInstanceName and PointInTime must be specified. RestoreExternalBackup: Create a database by restoring from external backup files. Collation, StorageContainerUri and StorageContainerSasToken must be specified. Recovery: Creates a database by restoring a geo-replicated backup. RecoverableDatabaseId must be specified as the recoverable database resource ID to restore.')
+@description('Optional. Managed database create mode. PointInTimeRestore: Create a database by restoring a point in time backup of an existing database. SourceDatabaseName, SourceManagedInstanceName and PointInTime must be specified. RestoreExternalBackup: Create a database by restoring from external backup files. Collation, StorageContainerUri and StorageContainerSasToken must be specified. Recovery: Creates a database by restoring a geo-replicated backup. RecoverableDatabaseId must be specified as the recoverable database resource ID to restore. RestoreLongTermRetentionBackup: Create a database by restoring from a long term retention backup (longTermRetentionBackupResourceId required).')
 @allowed([
   'Default'
   'RestoreExternalBackup'
@@ -26,22 +23,25 @@ param catalogCollation string = 'SQL_Latin1_General_CP1_CI_AS'
 ])
 param createMode string = 'Default'
 
-@description('Optional. Conditional. If createMode is RestoreExternalBackup, this value is required. Specifies the uri of the storage container where backups for this restore are stored.')
-param storageContainerUri string = ''
-
-@description('Optional. Conditional. The resource identifier of the source database associated with create operation of this database.')
+@description('Conditional. The resource identifier of the source database associated with create operation of this database. Required if createMode is PointInTimeRestore.')
 param sourceDatabaseId string = ''
 
-@description('Optional. Conditional. The restorable dropped database resource ID to restore when creating this database.')
+@description('Conditional. Specifies the point in time (ISO8601 format) of the source database that will be restored to create the new database. Required if createMode is PointInTimeRestore.')
+param restorePointInTime string = ''
+
+@description('Optional. The restorable dropped database resource ID to restore when creating this database.')
 param restorableDroppedDatabaseId string = ''
 
-@description('Optional. Conditional. If createMode is RestoreExternalBackup, this value is required. Specifies the storage container sas token.')
+@description('Conditional. Specifies the uri of the storage container where backups for this restore are stored. Required if createMode is RestoreExternalBackup.')
+param storageContainerUri string = ''
+
+@description('Conditional. Specifies the storage container sas token. Required if createMode is RestoreExternalBackup.')
 param storageContainerSasToken string = ''
 
-@description('Optional. Conditional. The resource identifier of the recoverable database associated with create operation of this database.')
+@description('Conditional. The resource identifier of the recoverable database associated with create operation of this database. Required if createMode is Recovery.')
 param recoverableDatabaseId string = ''
 
-@description('Optional. Conditional. The name of the Long Term Retention backup to be used for restore of this managed database.')
+@description('Conditional. The resource ID of the Long Term Retention backup to be used for restore of this managed database. Required if createMode is RestoreLongTermRetentionBackup.')
 param longTermRetentionBackupResourceId string = ''
 
 @description('Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.')

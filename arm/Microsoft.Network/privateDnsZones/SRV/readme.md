@@ -25,7 +25,7 @@ This module deploys a Private DNS Zone TXT record.
 **Conditional parameters**
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `privateDnsZoneName` | string | Private DNS zone name. Required if the template is used in a standalone deployment. |
+| `privateDnsZoneName` | string | The name of the parent Private DNS zone. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Description |

@@ -24,7 +24,7 @@ This module can be used to deploy a management policies into a storage account.
 **Conditional parameters**
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `storageAccountName` | string | Name of the Storage Account. Required if the template is used in a standalone deployment. |
+| `storageAccountName` | string | The name of the parent Storage Account. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Description |

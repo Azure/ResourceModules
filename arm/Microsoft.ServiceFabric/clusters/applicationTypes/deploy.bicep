@@ -1,4 +1,4 @@
-@description('Conditional. Name of the Service Fabric cluster. Required if the template is used in a standalone deployment.')
+@description('Conditional. The name of the parent Service Fabric cluster. Required if the template is used in a standalone deployment.')
 param serviceFabricClusterName string = ''
 
 @description('Optional. Application type name.')

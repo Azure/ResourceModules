@@ -1,4 +1,4 @@
-@description('Conditional. Private DNS zone name. Required if the template is used in a standalone deployment.')
+@description('Conditional. The name of the parent Private DNS zone. Required if the template is used in a standalone deployment.')
 param privateDnsZoneName string
 
 @description('Optional. The name of the virtual network link.')

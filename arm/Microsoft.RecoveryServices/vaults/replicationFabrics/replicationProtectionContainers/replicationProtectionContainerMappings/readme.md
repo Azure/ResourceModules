@@ -21,9 +21,9 @@ This module deploys a Replication Protection Container Mapping.
 **Conditional parameters**
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `recoveryVaultName` | string | Name of the Azure Recovery Service Vault. Required if the template is used in a standalone deployment. |
-| `replicationFabricName` | string | Name of the Replication Fabric. Required if the template is used in a standalone deployment. |
-| `sourceProtectionContainerName` | string | Name of the source Replication container. Required if the template is used in a standalone deployment. |
+| `recoveryVaultName` | string | The name of the parent Azure Recovery Service Vault. Required if the template is used in a standalone deployment. |
+| `replicationFabricName` | string | The name of the parent Replication Fabric. Required if the template is used in a standalone deployment. |
+| `sourceProtectionContainerName` | string | The name of the parent source Replication container. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Description |

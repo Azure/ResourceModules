@@ -23,6 +23,12 @@ This module deploys an alert based on metrics.
 | `criterias` | array | Criterias to trigger the alert. Array of 'Microsoft.Azure.Monitor.SingleResourceMultipleMetricCriteria' or 'Microsoft.Azure.Monitor.MultipleResourceMultipleMetricCriteria' objects. |
 | `name` | string | The name of the alert. |
 
+**Conditional parameters**
+| Parameter Name | Type | Default Value | Description |
+| :-- | :-- | :-- | :-- |
+| `targetResourceRegion` | string | `''` | The region of the target resource(s) on which the alert is created/updated. Required if alertCriteriaType is MultipleResourceMultipleMetricCriteria. |
+| `targetResourceType` | string | `''` | The resource type of the target resource(s) on which the alert is created/updated. Required if alertCriteriaType is MultipleResourceMultipleMetricCriteria. |
+
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
@@ -38,8 +44,6 @@ This module deploys an alert based on metrics.
 | `scopes` | array | `[[subscription().id]]` |  | the list of resource IDs that this metric alert is scoped to. |
 | `severity` | int | `3` | `[0, 1, 2, 3, 4]` | The severity of the alert. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
-| `targetResourceRegion` | string | `''` |  | The region of the target resource(s) on which the alert is created/updated. Mandatory for MultipleResourceMultipleMetricCriteria. |
-| `targetResourceType` | string | `''` |  | The resource type of the target resource(s) on which the alert is created/updated. Mandatory for MultipleResourceMultipleMetricCriteria. |
 | `windowSize` | string | `'PT15M'` | `[PT1M, PT5M, PT15M, PT30M, PT1H, PT6H, PT12H, P1D]` | the period of time (in ISO 8601 duration format) that is used to monitor alert activity based on the threshold. |
 
 

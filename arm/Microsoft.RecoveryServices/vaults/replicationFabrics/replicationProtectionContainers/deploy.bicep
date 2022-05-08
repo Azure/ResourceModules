@@ -1,7 +1,7 @@
-@description('Conditional. Name of the Azure Recovery Service Vault. Required if the template is used in a standalone deployment.')
+@description('Conditional. The name of the parent Azure Recovery Service Vault. Required if the template is used in a standalone deployment.')
 param recoveryVaultName string
 
-@description('Conditional. Name of the Replication Fabric. Required if the template is used in a standalone deployment.')
+@description('Conditional. The name of the parent Replication Fabric. Required if the template is used in a standalone deployment.')
 param replicationFabricName string
 
 @description('Required. The name of the replication container.')

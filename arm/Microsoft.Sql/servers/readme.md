@@ -27,12 +27,16 @@ This module deploys a SQL server.
 | :-- | :-- | :-- |
 | `name` | string | The name of the server. |
 
+**Conditional parameters**
+| Parameter Name | Type | Default Value | Description |
+| :-- | :-- | :-- | :-- |
+| `administratorLogin` | string | `''` | The administrator username for the server. Required if no `administrators` object for AAD authentication is provided. |
+| `administratorLoginPassword` | secureString | `''` | The administrator login password. Required if no `administrators` object for AAD authentication is provided. |
+| `administrators` | object | `{object}` | The Azure Active Directory (AAD) administrator authentication. Required if no `administratorLogin` & `administratorLoginPassword` is provided. |
+
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `administratorLogin` | string | `''` |  | Administrator username for the server. Required if no `administrators` object for AAD authentication is provided. |
-| `administratorLoginPassword` | secureString | `''` |  | The administrator login password. Required if no `administrators` object for AAD authentication is provided. |
-| `administrators` | object | `{object}` |  | The Azure Active Directory (AAD) administrator authentication. Required if no `administratorLogin` & `administratorLoginPassword` is provided. |
 | `databases` | _[databases](databases/readme.md)_ array | `[]` |  | The databases to create in the server. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `firewallRules` | _[firewallRules](firewallRules/readme.md)_ array | `[]` |  | The firewall rules to create in the server. |

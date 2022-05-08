@@ -29,7 +29,7 @@ This module deploys Azure Kubernetes Cluster (AKS).
 **Conditional parameters**
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
-| `appGatewayResourceId` | string | `''` | Required if `ingressApplicationGatewayEnabled` is set to `true`. Specifies the resource ID of connected application gateway. |
+| `appGatewayResourceId` | string | `''` | Specifies the resource ID of connected application gateway. Required if `ingressApplicationGatewayEnabled` is set to `true`. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |

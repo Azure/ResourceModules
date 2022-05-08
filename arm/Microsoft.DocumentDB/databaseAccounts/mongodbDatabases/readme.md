@@ -25,7 +25,7 @@ This module deploys a MongoDB within a CosmosDB account.
 **Conditional parameters**
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `databaseAccountName` | string | Name of the Cosmos DB database account. Required if the template is used in a standalone deployment. |
+| `databaseAccountName` | string | The name of the parent Cosmos DB database account. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Description |

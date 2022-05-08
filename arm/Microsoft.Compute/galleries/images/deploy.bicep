@@ -7,7 +7,7 @@ param enableDefaultTelemetry bool = true
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
 
-@description('Conditional. Name of the Azure Shared Image Gallery. Required if the template is used in a standalone deployment.')
+@description('Conditional. The name of the parent Azure Shared Image Gallery. Required if the template is used in a standalone deployment.')
 @minLength(1)
 param galleryName string
 
