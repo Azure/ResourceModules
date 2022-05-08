@@ -41,7 +41,7 @@ Describe 'File/folder tests' -Tag Modules {
             }
         }
 
-        if ($settings.pesterConfiguration.enableGitHubSpecificTests) {
+        if (Test-Path (Join-Path $repoRoot '.github')) {
             It '[<moduleFolderName>] Module should have a GitHub workflow' -TestCases ($moduleFolderTestCases | Where-Object { $_.isTopLevelModule }) {
 
                 param(
@@ -56,7 +56,7 @@ Describe 'File/folder tests' -Tag Modules {
             }
         }
 
-        if ($settings.pesterConfiguration.enableAzureDevOpsSpecificTests) {
+        if (Test-Path (Join-Path $repoRoot '.azuredevops')) {
             It '[<moduleFolderName>] Module should have an Azure DevOps pipeline' -TestCases ($moduleFolderTestCases | Where-Object { $_.isTopLevelModule }) {
 
                 param(

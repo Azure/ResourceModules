@@ -12,9 +12,5 @@
             }
         ]
     },
-    "enableDefaultTelemetry": true,
-    "pesterConfiguration": {
-        "enableAzureDevOpsSpecificTests": true,
-        "enableGitHubSpecificTests": true
-    }
+    "enableDefaultTelemetry": true
 }
