@@ -6,7 +6,7 @@
             "value": 1
         },
         "vmNamePrefix": {
-            "value": "<<namePrefix>>vm"
+            "value": "<<namePrefix>>-vm-linux-prefix"
         },
         "vmNumberOfInstances": {
             "value": 3
