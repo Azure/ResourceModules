@@ -734,7 +734,7 @@ Describe 'Deployment template tests' -Tag Template {
 
         }
 
-        It "[<moduleFolderName>] parameters' description shoud start with a one word category followed by a dot, a space and the actual description text." -TestCases $deploymentFolderTestCases {
+        It "[<moduleFolderName>] parameters' description shoud start with a one word category followed by a dot, a space and the actual description text ending with a dot." -TestCases $deploymentFolderTestCases {
             param(
                 $moduleFolderName,
                 $templateContent
@@ -750,7 +750,7 @@ Describe 'Deployment template tests' -Tag Template {
             $Paramdescoutput = $templateContent.parameters.Keys
             foreach ($Param in $Paramdescoutput) {
                 $Data = ($templateContent.parameters.$Param.metadata).description
-                if ($Data -notmatch '^[a-zA-Z]+\. .+') {
+                if ($Data -notmatch '^[a-zA-Z]+\. .+\.$') {
                     $IncorrectParameters += $Param
                 }
             }
