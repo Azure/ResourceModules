@@ -365,7 +365,7 @@ jobs:
             . (Join-Path '$(moduleRepoRoot)' '$(pipelineFunctionsPath)' 'resourceRemoval' 'Initialize-DeploymentRemoval.ps1')
 
             $functionInput = @{
-              TemplateFilePath  = $templateFilePath
+              TemplateFilePath  = '${{ parameters.templateFilePath }}'
               ResourceGroupName = '${{ parameters.resourceGroupName }}'
               ManagementGroupId = '${{ parameters.managementGroupId }}'
               Verbose           = $true
