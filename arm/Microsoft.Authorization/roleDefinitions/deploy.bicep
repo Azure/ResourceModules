@@ -12,10 +12,10 @@ param actions array = []
 @sys.description('Optional. List of denied actions.')
 param notActions array = []
 
-@sys.description('Optional. List of allowed data actions. This is not supported if the assignableScopes contains Management Group Scopes')
+@sys.description('Optional. List of allowed data actions. This is not supported if the assignableScopes contains Management Group Scopes.')
 param dataActions array = []
 
-@sys.description('Optional. List of denied data actions. This is not supported if the assignableScopes contains Management Group Scopes')
+@sys.description('Optional. List of denied data actions. This is not supported if the assignableScopes contains Management Group Scopes.')
 param notDataActions array = []
 
 @sys.description('Optional. The group ID of the Management Group where the Role Definition and Target Scope will be applied to. If not provided, will use the current scope for deployment.')
