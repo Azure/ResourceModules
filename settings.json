@@ -14,7 +14,7 @@
     },
     "enableDefaultTelemetry": true,
     "pesterConfiguration": {
-        "testForAzureDevOpsPipelines": true,
-        "testForGitHubPipelines": true
+        "enableAzureDevOpsSpecificTests": true,
+        "enableGitHubSpecificTests": true
     }
 }
