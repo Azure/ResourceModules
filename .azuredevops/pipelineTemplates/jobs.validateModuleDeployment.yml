@@ -95,16 +95,16 @@ jobs:
         targetType: inline
           pwsh: true
           script: |
-            # $json='$(parameterFilePath)'
+            Write-Verbose "test" -Verbose
+          name: printvar
+
+# $json='$(parameterFilePath)'
             # $json = ConvertFrom-Json '$(parameterFilePath)'
             # Write-Verbose "json 1 $json" -Verbose
             # $json="{'parameters.json':{'parameterFilePath':'.parameters/parameters.json'},'min.parameters.json':{'parameterFilePath':'.parameters/min.parameters.json'},'max.parameters.json':{'parameterFilePath':'.parameters/max.parameters.json'}}"
             # $json="{'job1': {'Work': 'work1'}, 'job2': {'Work': 'work2'}}"
             # Write-Verbose "json 2 $json" -Verbose
-            Write-Verbose "test" -Verbose
             # Write-Host "##vso[task.setvariable variable=$jobsToRunInParallel;isOutput=true]$json"
-          name: printvar
-
   # # - ${{ each deploymentBlock in parameters.deploymentBlocks }}:
   # - job: deploy
   # # - job: ${{ deploymentBlock.jobName }}
