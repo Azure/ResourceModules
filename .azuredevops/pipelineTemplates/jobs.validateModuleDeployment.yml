@@ -96,69 +96,69 @@ jobs:
           script: |
             $json='$(parameterFilePath)'
             Write-Verbose "json 1 $json" -Verbose
-            $json={"parameters.json":{"parameterFilePath":".parameters/parameters.json"},"min.parameters.json":{"parameterFilePath":".parameters/min.parameters.json"},"max.parameters.json":{"parameterFilePath":".parameters/max.parameters.json"}}
+            $json='{"parameters.json":{"parameterFilePath":".parameters/parameters.json"},"min.parameters.json":{"parameterFilePath":".parameters/min.parameters.json"},"max.parameters.json":{"parameterFilePath":".parameters/max.parameters.json"}}'
             Write-Verbose "json 2 $json" -Verbose
-            Write-Host "##vso[task.setvariable variable=$jobsToRunInParallel;isOutput=true]$json"
+            # Write-Host "##vso[task.setvariable variable=$jobsToRunInParallel;isOutput=true]$json"
           name: printvar
 
-  # - ${{ each deploymentBlock in parameters.deploymentBlocks }}:
-  - job: deploy
-  # - job: ${{ deploymentBlock.jobName }}
+  # # - ${{ each deploymentBlock in parameters.deploymentBlocks }}:
+  # - job: deploy
+  # # - job: ${{ deploymentBlock.jobName }}
 
-    # ${{ if ne( deploymentBlock.displayName, '') }}:
-    #   displayName: ${{ deploymentBlock.displayName }}
-    # ${{ if eq( deploymentBlock.displayName, '') }}:
-    #   displayName: Deploy with [${{ replace( deploymentBlock.path, '$(modulePath)', '') }}]
-    timeoutInMinutes: ${{ parameters.defaultJobTimeoutInMinutes }}
-    # ${{ if ne( parameters.dependsOn, '') }}:
-    #   dependsOn: ${{ parameters.dependsOn }}
-    pool:
-      ${{ if ne(parameters.vmImage, '') }}:
-        vmImage: ${{ parameters.vmImage }}
-      ${{ if ne(parameters.poolName, '') }}:
-        name: ${{ parameters.poolName }}
+  #   # ${{ if ne( deploymentBlock.displayName, '') }}:
+  #   #   displayName: ${{ deploymentBlock.displayName }}
+  #   # ${{ if eq( deploymentBlock.displayName, '') }}:
+  #   #   displayName: Deploy with [${{ replace( deploymentBlock.path, '$(modulePath)', '') }}]
+  #   timeoutInMinutes: ${{ parameters.defaultJobTimeoutInMinutes }}
+  #   # ${{ if ne( parameters.dependsOn, '') }}:
+  #   #   dependsOn: ${{ parameters.dependsOn }}
+  #   pool:
+  #     ${{ if ne(parameters.vmImage, '') }}:
+  #       vmImage: ${{ parameters.vmImage }}
+  #     ${{ if ne(parameters.poolName, '') }}:
+  #       name: ${{ parameters.poolName }}
 
-    strategy:
-          matrix: $[ dependencies.print.outputs['printvar.jobsToRunInParallel'] ]
+  #   strategy:
+  #         matrix: $[ dependencies.print.outputs['printvar.jobsToRunInParallel'] ]
 
-    ##---------------------------------------------##
-    ## TEMPLATE LOGIC                              ##
-    ##---------------------------------------------##
+  #   ##---------------------------------------------##
+  #   ## TEMPLATE LOGIC                              ##
+  #   ##---------------------------------------------##
 
-    steps:
-      # [Agent] Prepare environment
-      #----------------------------
-      - task: PowerShell@2
-        displayName: 'Setup agent for deployment'
-        inputs:
-          targetType: inline
-          pwsh: true
-          script: |
-            # Load used functions
-            . (Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
+  #   steps:
+  #     # [Agent] Prepare environment
+  #     #----------------------------
+  #     - task: PowerShell@2
+  #       displayName: 'Setup agent for deployment'
+  #       inputs:
+  #         targetType: inline
+  #         pwsh: true
+  #         script: |
+  #           # Load used functions
+  #           . (Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
 
-            # Write-Verbose "parameterPaths: $(parameterFilePath)" -Verbose
+  #           # Write-Verbose "parameterPaths: $(parameterFilePath)" -Verbose
 
-            # Define PS modules to install on the runner
-            $Modules = @(
-                @{ Name = 'Az.Accounts' },
-                @{ Name = 'Az.Resources' }
-            )
+  #           # Define PS modules to install on the runner
+  #           $Modules = @(
+  #               @{ Name = 'Az.Accounts' },
+  #               @{ Name = 'Az.Resources' }
+  #           )
 
-            # Additional PS modules need to be installed for the removal step in case it is enabled
-            if ('${{ parameters.removeDeployment}}' -eq 'true') {
-              $Modules += @(
-                @{ Name = 'Az.CognitiveServices' },
-                @{ Name = 'Az.Compute' },
-                @{ Name = 'Az.KeyVault' },
-                @{ Name = 'Az.Monitor' },
-                @{ Name = 'Az.OperationalInsights' },
-                @{ Name = 'Az.RecoveryServices' }
-              )
-            }
+  #           # Additional PS modules need to be installed for the removal step in case it is enabled
+  #           if ('${{ parameters.removeDeployment}}' -eq 'true') {
+  #             $Modules += @(
+  #               @{ Name = 'Az.CognitiveServices' },
+  #               @{ Name = 'Az.Compute' },
+  #               @{ Name = 'Az.KeyVault' },
+  #               @{ Name = 'Az.Monitor' },
+  #               @{ Name = 'Az.OperationalInsights' },
+  #               @{ Name = 'Az.RecoveryServices' }
+  #             )
+  #           }
 
-            # Set agent up
-            Set-EnvironmentOnAgent -PSModules $Modules
+  #           # Set agent up
+  #           Set-EnvironmentOnAgent -PSModules $Modules
 
       # # [Agent] Replace tokens
       # #-----------------------
