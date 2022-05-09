@@ -89,23 +89,23 @@ jobs:
 
   - template: /.azuredevops/pipelineTemplates/jobs.getParameterFiles.yml
   - job: print
-      dependsOn:
-        - getParameterFilePaths
-      # strategy:
-      #   matrix: $parameterTests
-      variables:
-        parameterTests: $[ dependencies.getParameterFilePaths.outputs['getParameterFilePathsTask.parameterTests'] ]
-      steps:
-        - task: PowerShell@2
-          name: print_msi_prinId
-          inputs:
-            targetType: inline
-            pwsh: true
-            script: |
-              Write-Verbose '$(parameterTests)' -Verbose
-              $msiPrincipalId = (ConvertFrom-Json '$(parameterTests)').'parameters.json'
-              Write-Verbose "msiPrincipalId: $msiPrincipalId" -Verbose
-              # Write-Output ('##vso[task.setvariable variable={0};isOutput=true]{1}' -f 'msiPrincipalId', $msiPrincipalId)
+    dependsOn:
+      - getParameterFilePaths
+    # strategy:
+    #   matrix: $parameterTests
+    variables:
+      parameterTests: $[ dependencies.getParameterFilePaths.outputs['getParameterFilePathsTask.parameterTests'] ]
+    steps:
+      - task: PowerShell@2
+        name: print_msi_prinId
+        inputs:
+          targetType: inline
+          pwsh: true
+          script: |
+            Write-Verbose '$(parameterTests)' -Verbose
+            $msiPrincipalId = (ConvertFrom-Json '$(parameterTests)').'parameters.json'
+            Write-Verbose "msiPrincipalId: $msiPrincipalId" -Verbose
+            # Write-Output ('##vso[task.setvariable variable={0};isOutput=true]{1}' -f 'msiPrincipalId', $msiPrincipalId)
 
   # - job: print
   #   steps:
