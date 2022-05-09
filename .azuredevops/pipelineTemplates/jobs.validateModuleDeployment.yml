@@ -55,7 +55,7 @@ parameters:
   # Logic-related parameters
 
   templateFilePath: ''
-  parameterFilePath:
+  parameterFilePath: ''
   customParameterFileTokens: ''
 
   removeDeployment: true
@@ -86,6 +86,7 @@ jobs:
   #       $json='$(parameterFilePath)'
   #       Write-Host "##vso[task.setvariable variable=$jobsToRunInParallel;isOutput=true]$json"
   #     name: printvar
+
   - job: print
     steps:
       - task: PowerShell@2
