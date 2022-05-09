@@ -395,7 +395,7 @@ function Set-UsageExamples {
         if ($addBicep) {
             $JSONParameters = (ConvertFrom-Json $contentInJSONFormat -AsHashtable -Depth 99).parameters
 
-            ## Handle KeyVaut references
+            # Handle KeyVaut references
             $keyVaultReferences = $JSONParameters.Keys | Where-Object { $JSONParameters[$_].Keys -contains 'reference' }
 
             if ($keyVaultReferences.Count -gt 0) {
