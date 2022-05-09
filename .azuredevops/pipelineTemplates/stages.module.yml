@@ -10,6 +10,8 @@ stages:
     jobs:
       - template: /.azuredevops/pipelineTemplates/jobs.getParameterFiles.yml
       - job: print3
+        dependsOn:
+          - getParameterFilePaths
         # strategy:
         #   matrix: $parameterTests
         variables:
