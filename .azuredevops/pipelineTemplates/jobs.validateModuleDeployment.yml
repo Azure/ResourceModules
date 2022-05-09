@@ -82,7 +82,8 @@ jobs:
   - job: print
     steps:
     - script: |
-        $json="{'job1': {'Work': 'work1'}, 'job2': {'Work': 'work2'}}"
+        # $json="{'job1': {'Work': 'work1'}, 'job2': {'Work': 'work2'}}"
+        $json='$(parameterFilePath)'
         Write-Host "##vso[task.setvariable variable=$jobsToRunInParallel;isOutput=true]$json"
       name: printvar
 
