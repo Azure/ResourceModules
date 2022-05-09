@@ -94,7 +94,8 @@ jobs:
     # variables:
     #   parameterTests: $[ dependencies.getParameterFilePaths.outputs['getParameterFilePathsTask.parameterTests'] ]
     strategy:
-      matrix: $[ dependencies.getParameterFilePaths.outputs['getParameterFilePathsTask.parameterTests'] ]
+      # matrix: $[ dependencies.getParameterFilePaths.outputs['getParameterFilePathsTask.parameterTests'] ]
+      matrix: '$(parameterFilePaths)'
     steps:
       - task: PowerShell@2
         name: print_msi_prinId
