@@ -35,9 +35,10 @@ stages:
       - init
     variables:
       $parameterTests: $[ stageDependencies.init.getParameterFilePaths.outputs['getParameterFilePathsTask.parameterTests'] ]
-    strategy:
-      matrix: $parameterTests
+
     jobs:
+      strategy:
+        matrix: $parameterTests
       - job: print2
         steps:
           - task: PowerShell@2
