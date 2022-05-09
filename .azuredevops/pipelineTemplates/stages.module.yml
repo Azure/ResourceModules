@@ -51,7 +51,7 @@ stages:
                 # $json = '${{ parameters.parameterFilePath}}'
                 # $json = ConvertFrom-Json '${{ parameters.parameterFilePath}}'
                 Write-Verbose "json 1 $json" -Verbose
-
+                Write-Verbose $(parameterTests) -Verbose
                 # Write-Host "##vso[task.setvariable variable=$jobsToRunInParallel;isOutput=true]$json"
               name: printvar2
       # - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
