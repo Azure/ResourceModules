@@ -35,8 +35,8 @@ stages:
       - init
     variables:
       $parameterTests: $[ stageDependencies.init.getParameterFilePaths.outputs['getParameterFilePathsTask.parameterTests'] ]
-    # strategy:
-    #   matrix: $parameterTests
+    strategy:
+      matrix: $parameterTests
     jobs:
       - job: print2
         steps:
@@ -53,11 +53,11 @@ stages:
 
                 # Write-Host "##vso[task.setvariable variable=$jobsToRunInParallel;isOutput=true]$json"
               name: printvar2
-      - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
-        parameters:
-          templateFilePath: '$(modulePath)/deploy.bicep'
-          parameterFilePath: $(parameterTests)
-          resourceGroupName: '${{ parameters.moduleResourceGroupName }}'
+      # - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
+      #   parameters:
+      #     templateFilePath: '$(modulePath)/deploy.bicep'
+      #     parameterFilePath: $(parameterTests)
+      #     resourceGroupName: '${{ parameters.moduleResourceGroupName }}'
 
 
   # - stage: dependencyRemoval
