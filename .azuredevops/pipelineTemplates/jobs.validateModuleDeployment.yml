@@ -55,7 +55,7 @@ parameters:
   # Logic-related parameters
 
   templateFilePath: ''
-  parameterFilePath: {}
+  parameterFilePath: ''
   customParameterFileTokens: ''
 
   removeDeployment: true
@@ -79,6 +79,13 @@ parameters:
 ##---------------------------------------------##
 
 jobs:
+  - job: print
+    steps:
+    - script: |
+        $json="{'job1': {'Work': 'work1'}, 'job2': {'Work': 'work2'}}"
+        Write-Host "##vso[task.setvariable variable=$jobsToRunInParallel;isOutput=true]$json"
+      name: printvar
+
   # - ${{ each deploymentBlock in parameters.deploymentBlocks }}:
   - job: deploy
   # - job: ${{ deploymentBlock.jobName }}
@@ -97,7 +104,7 @@ jobs:
         name: ${{ parameters.poolName }}
 
     strategy:
-          matrix: $(parameterFilePath)
+          matrix: $[ dependencies.print.outputs['printvar.jobsToRunInParallel'] ]
 
     ##---------------------------------------------##
     ## TEMPLATE LOGIC                              ##
