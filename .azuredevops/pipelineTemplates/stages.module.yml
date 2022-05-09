@@ -72,30 +72,30 @@ stages:
     variables:
       $parameterTests: $[ stageDependencies.init.getParameterFilePaths.outputs['getParameterFilePathsTask.parameterTests'] ]
     jobs:
-      - job: print2
-        # strategy:
-        #   matrix: $parameterTests
-        steps:
-          - task: PowerShell@2
-            displayName: 'Print2'
-            inputs:
-              targetType: inline
-              pwsh: true
-              script: |
-                # $json='$(parameterTests)'
-                $json='{"parameterTests":"$(parameterTests)"}'
-                # $json = '${{ parameters.parameterFilePath}}'
-                # $json = ConvertFrom-Json '${{ parameters.parameterFilePath}}'
-                Write-Verbose "json 1 $json" -Verbose
-                $msiPrincipalId = (ConvertFrom-Json '$(parameterTests)').'parameters.json'
-                Write-Verbose "msiPrincipalId: $msiPrincipalId" -Verbose
-                # Write-Host "##vso[task.setvariable variable=$jobsToRunInParallel;isOutput=true]$json"
-              name: printvar2
-      # - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
-      #   parameters:
-      #     templateFilePath: '$(modulePath)/deploy.bicep'
-      #     parameterFilePath: $(parameterTests)
-      #     resourceGroupName: '${{ parameters.moduleResourceGroupName }}'
+      # - job: print2
+      #   # strategy:
+      #   #   matrix: $parameterTests
+      #   steps:
+      #     - task: PowerShell@2
+      #       displayName: 'Print2'
+      #       inputs:
+      #         targetType: inline
+      #         pwsh: true
+      #         script: |
+      #           # $json='$(parameterTests)'
+      #           $json='{"parameterTests":"$(parameterTests)"}'
+      #           # $json = '${{ parameters.parameterFilePath}}'
+      #           # $json = ConvertFrom-Json '${{ parameters.parameterFilePath}}'
+      #           Write-Verbose "json 1 $json" -Verbose
+      #           $msiPrincipalId = (ConvertFrom-Json '$(parameterTests)').'parameters.json'
+      #           Write-Verbose "msiPrincipalId: $msiPrincipalId" -Verbose
+      #           # Write-Host "##vso[task.setvariable variable=$jobsToRunInParallel;isOutput=true]$json"
+      #         name: printvar2
+      - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
+        parameters:
+          templateFilePath: '$(modulePath)/deploy.bicep'
+          parameterFilePath: $(parameterTests)
+          resourceGroupName: '${{ parameters.moduleResourceGroupName }}'
 
 
   # - stage: dependencyRemoval
