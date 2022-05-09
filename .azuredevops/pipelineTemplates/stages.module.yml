@@ -22,7 +22,7 @@ stages:
               pwsh: true
               script: |
                 Write-Verbose '$(parameterTestsToPrint)' -Verbose
-                # Write-Output ('##vso[task.setvariable variable={0};isOutput=true]{1}' -f 'parameterTestsToPrint', '$(parameterTestsToPrint)')
+                Write-Output ('##vso[task.setvariable variable={0};isOutput=true]{1}' -f 'parameterTestsToPrint', '$(parameterTestsToPrint)')
       #### OK
       # - job: print3
       #   dependsOn:
@@ -83,7 +83,7 @@ stages:
       # - dependencyDeployment
       - init
     variables:
-      $parameterTests: $[ stageDependencies.init.getParameterFilePaths.outputs['getParameterFilePathsTask.parameterTests'] ]
+      $parameterTests: $[ stageDependencies.init.printParameterFilePaths.outputs['print_parameter_tests.parameterTestsToPrint'] ]
     jobs:
       # - job: print2
       #   # strategy:
@@ -107,7 +107,7 @@ stages:
       - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
         parameters:
           templateFilePath: '$(modulePath)/deploy.bicep'
-          parameterFilePaths: $(parameterTests)
+          parameterFilePaths: '$(parameterTests)'
           resourceGroupName: '${{ parameters.moduleResourceGroupName }}'
 
 
