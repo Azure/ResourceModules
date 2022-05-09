@@ -87,15 +87,15 @@ jobs:
   #       Write-Host "##vso[task.setvariable variable=$jobsToRunInParallel;isOutput=true]$json"
   #     name: printvar
 
-  - template: /.azuredevops/pipelineTemplates/jobs.getParameterFiles.yml
+  # - template: /.azuredevops/pipelineTemplates/jobs.getParameterFiles.yml
   - job: print
-    dependsOn:
-      - getParameterFilePaths
-    # variables:
-    #   parameterTests: $[ dependencies.getParameterFilePaths.outputs['getParameterFilePathsTask.parameterTests'] ]
+    # dependsOn:
+    #   - getParameterFilePaths
+    # # variables:
+    # #   parameterTests: $[ dependencies.getParameterFilePaths.outputs['getParameterFilePathsTask.parameterTests'] ]
     strategy:
       # matrix: $[ dependencies.getParameterFilePaths.outputs['getParameterFilePathsTask.parameterTests'] ]
-      matrix: $[ $parameterFilePaths ]
+      matrix: $[ '$(parameterFilePaths)' ]
     steps:
       - task: PowerShell@2
         name: print_msi_prinId
