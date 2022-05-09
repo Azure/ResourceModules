@@ -97,7 +97,7 @@ jobs:
         name: ${{ parameters.poolName }}
 
     strategy:
-          matrix: '$(parameterFilePath)'
+          matrix: $(parameterFilePath)
 
     ##---------------------------------------------##
     ## TEMPLATE LOGIC                              ##
