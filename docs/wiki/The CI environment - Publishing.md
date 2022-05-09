@@ -43,7 +43,7 @@ The publishing works as follows:
 Lets look at an example run where we would do a patch change on the `fileShares` module:
 1. A new branch is created for further development of the `fileShare` module. Let's assume the new branch started from commit `500` on the default branch and the `version.json` of the `fileShare` module contains major and minor `0.3`.
 1. Bug-fixes, documentation, and security updates are added to the `fileShare` module by the author. The `version.json` file is not changed in either the child or parent module folders.
-1. The author runs a manual workflow based on their development branch, with the 'publish prerelease' option enabled.
+1. The author runs a manual workflow based on their development branch, with the 'Publish prerelease module' option enabled.
 1. A prerelease run of publishing triggers after test and validation of the module.
    - For the child and parent modules, the module version's major and minor version is read from the `version.json` file in the module folder respectively. Being unchanged, it still contains the version `0.3`.
    - The patch is calculated based on the total number of commits in history on the branch (independent on the module). The new branch started from commit `500` on the default branch and 1 commit has been pushed, so the total number of commits on the new branch is `501`.

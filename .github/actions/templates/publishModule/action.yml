@@ -31,6 +31,10 @@ name: 'Publishing'
 description: 'Publishing'
 
 inputs:
+  publishAll:
+    description: 'Publish module and all child modules'
+    required: false
+    default: 'false'
   templateFilePath:
     description: 'The path to the template file to publish'
     required: true
@@ -104,6 +108,7 @@ runs:
 
         $functionInput = @{
           TemplateFilePath = Join-Path $env:GITHUB_WORKSPACE "${{ inputs.templateFilePath }}"
+          PublishAll            = '${{ inputs.publishAll }}' -match '^(1|true|yes|on|enabled)$'
         }
 
         Write-Verbose "Invoke task with" -Verbose
@@ -146,6 +151,7 @@ runs:
 
         $functionInput = @{
           TemplateFilePath = Join-Path $env:GITHUB_WORKSPACE "${{ inputs.templateFilePath }}"
+          PublishAll            = '${{ inputs.publishAll }}' -match '^(1|true|yes|on|enabled)$'
         }
 
         Write-Verbose "Invoke task with" -Verbose

@@ -216,6 +216,9 @@ function Get-ParentModuleTemplateFile {
         $ParentTemplateFilePath = Join-Path -Path $ParentFolderPath -ChildPath 'deploy.json'
     }
 
+    $ParentTemplateFileRelPath = $ParentTemplateFilePath.Split('/arm/')[-1]
+    $ParentTemplateFileRelPath = $ParentTemplateFileRelPath.Split('/deploy.')[0]
+
     if (-not (Test-Path -Path $ParentTemplateFilePath)) {
         return
     }
@@ -346,6 +349,9 @@ Generates a hashtable with template file paths to publish with a new version.
 .PARAMETER TemplateFilePath
 Mandatory. Path to a deploy.bicep/json file.
 
+.PARAMETER PublishAll
+Optional. If true, the module will be published regardless of it being modified or not.
+
 .EXAMPLE
 Get-ModulesToPublish -TemplateFilePath 'C:\Repos\Azure\ResourceModules\arm\Microsoft.Storage\storageAccounts\deploy.bicep'
 
@@ -368,11 +374,19 @@ function Get-ModulesToPublish {
     [CmdletBinding()]
     param (
         [Parameter(Mandatory)]
-        [string] $TemplateFilePath
+        [string] $TemplateFilePath,
+
+        [Parameter(Mandatory = $false)]
+        [switch] $PublishAll
     )
 
     $ModuleFolderPath = Split-Path $TemplateFilePath -Parent
-    $TemplateFilesToPublish = Get-TemplateFileToPublish -ModuleFolderPath $ModuleFolderPath | Sort-Object FullName -Descending
+    if ($PublishAll) {
+        Write-Verbose '[PublishAll] Publish module and all child modules.' -Verbose
+        $TemplateFilesToPublish = $ModuleFolderPath | Get-ChildItem -File -Include deploy.* -Recurse -Force
+    } else {
+        $TemplateFilesToPublish = Get-TemplateFileToPublish -ModuleFolderPath $ModuleFolderPath | Sort-Object FullName -Descending
+    }
 
     $ModulesToPublish = [System.Collections.ArrayList]@()
     foreach ($TemplateFileToPublish in $TemplateFilesToPublish) {
