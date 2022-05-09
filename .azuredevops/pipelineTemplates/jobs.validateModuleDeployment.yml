@@ -55,7 +55,7 @@ parameters:
   # Logic-related parameters
 
   templateFilePath: ''
-  parameterFilePath:
+  parameterFilePath: {}
   customParameterFileTokens: ''
 
   removeDeployment: true
