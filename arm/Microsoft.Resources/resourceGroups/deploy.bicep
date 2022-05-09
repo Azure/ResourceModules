@@ -1,6 +1,6 @@
 targetScope = 'subscription'
 
-@description('Required. The name of the Resource Group')
+@description('Required. The name of the Resource Group.')
 param name string
 
 @description('Optional. Location of the Resource Group. It uses the deployment\'s location when not provided.')
@@ -14,7 +14,7 @@ param location string = deployment().location
 @description('Optional. Specify the type of lock.')
 param lock string = 'NotSpecified'
 
-@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'')
+@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
 param roleAssignments array = []
 
 @description('Optional. Tags of the storage account resource.')
@@ -64,10 +64,10 @@ module resourceGroup_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, ind
   scope: resourceGroup
 }]
 
-@description('The name of the resource group')
+@description('The name of the resource group.')
 output name string = resourceGroup.name
 
-@description('The resource ID of the resource group')
+@description('The resource ID of the resource group.')
 output resourceId string = resourceGroup.id
 
 @description('The location the resource was deployed into.')

@@ -21,8 +21,12 @@ This module deploys a blob container
 **Required parameters**
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the storage container to deploy |
-| `storageAccountName` | string | Name of the Storage Account. |
+| `name` | string | The name of the storage container to deploy. |
+
+**Conditional parameters**
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `storageAccountName` | string | The name of the parent Storage Account. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
@@ -32,7 +36,7 @@ This module deploys a blob container
 | `immutabilityPolicyName` | string | `'default'` |  | Name of the immutable policy. |
 | `immutabilityPolicyProperties` | object | `{object}` |  | Configure immutability policy. |
 | `publicAccess` | string | `'None'` | `[Container, Blob, None]` | Specifies whether data in the container may be accessed publicly and the level of access. |
-| `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
+| `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 
 
 ### Parameter Usage: `roleAssignments`
@@ -65,6 +69,6 @@ Create a role assignment for the given resource. If you want to assign a service
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the deployed container |
-| `resourceGroupName` | string | The resource group of the deployed container |
-| `resourceId` | string | The resource ID of the deployed container |
+| `name` | string | The name of the deployed container. |
+| `resourceGroupName` | string | The resource group of the deployed container. |
+| `resourceId` | string | The resource ID of the deployed container. |

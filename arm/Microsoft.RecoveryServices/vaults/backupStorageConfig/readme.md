@@ -15,24 +15,24 @@ This module deploys the Backup Storage Configuration for the Recovery Service Va
 
 ## Parameters
 
-**Required parameters**
+**Conditional parameters**
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `recoveryVaultName` | string | Name of the Azure Recovery Service Vault |
+| `recoveryVaultName` | string | The name of the parent Azure Recovery Service Vault. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `crossRegionRestoreFlag` | bool | `True` |  | Opt in details of Cross Region Restore feature |
+| `crossRegionRestoreFlag` | bool | `True` |  | Opt in details of Cross Region Restore feature. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `name` | string | `'vaultstorageconfig'` |  | The name of the backup storage config |
-| `storageModelType` | string | `'GeoRedundant'` | `[GeoRedundant, LocallyRedundant, ReadAccessGeoZoneRedundant, ZoneRedundant]` | Change Vault Storage Type (Works if vault has not registered any backup instance) |
+| `name` | string | `'vaultstorageconfig'` |  | The name of the backup storage config. |
+| `storageModelType` | string | `'GeoRedundant'` | `[GeoRedundant, LocallyRedundant, ReadAccessGeoZoneRedundant, ZoneRedundant]` | Change Vault Storage Type (Works if vault has not registered any backup instance). |
 
 
 ## Outputs
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the backup storage config |
+| `name` | string | The name of the backup storage config. |
 | `resourceGroupName` | string | The name of the Resource Group the backup storage configuration was created in. |
-| `resourceId` | string | The resource ID of the backup storage config |
+| `resourceId` | string | The resource ID of the backup storage config. |

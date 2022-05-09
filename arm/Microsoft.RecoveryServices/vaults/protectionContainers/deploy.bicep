@@ -1,7 +1,7 @@
-@description('Required. Name of the Azure Recovery Service Vault')
+@description('Conditional. The name of the parent Azure Recovery Service Vault. Required if the template is used in a standalone deployment.')
 param recoveryVaultName string
 
-@description('Required. Name of the Azure Recovery Service Vault Protection Container')
+@description('Required. Name of the Azure Recovery Service Vault Protection Container.')
 param name string
 
 @description('Optional. Backup management type to execute the current Protection Container job.')
@@ -19,13 +19,13 @@ param name string
 ])
 param backupManagementType string = ''
 
-@description('Optional. Resource ID of the target resource for the Protection Container ')
+@description('Optional. Resource ID of the target resource for the Protection Container.')
 param sourceResourceId string = ''
 
-@description('Optional. Friendly name of the Protection Container')
+@description('Optional. Friendly name of the Protection Container.')
 param friendlyName string = ''
 
-@description('Optional. Type of the container')
+@description('Optional. Type of the container.')
 @allowed([
   'AzureBackupServerContainer'
   'AzureSqlContainer'

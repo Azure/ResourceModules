@@ -7,6 +7,7 @@ This module deploys an API management service.
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Considerations](#Considerations)
 
 ## Resource types
 
@@ -36,7 +37,7 @@ This module deploys an API management service.
 **Required parameters**
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the of the API Management service. |
+| `name` | string | The name of the API Management service. |
 | `publisherEmail` | string | The email address of the owner of the service. |
 | `publisherName` | string | The name of the owner of the service. |
 
@@ -74,7 +75,7 @@ This module deploys an API management service.
 | `portalSettings` | _[portalSettings](portalSettings/readme.md)_ array | `[]` |  | Portal settings. |
 | `products` | _[products](products/readme.md)_ array | `[]` |  | Products. |
 | `restore` | bool | `False` |  | Undelete API Management Service if it was previously soft-deleted. If this flag is specified and set to True all other properties will be ignored. |
-| `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
+| `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `sku` | string | `'Developer'` | `[Consumption, Developer, Basic, Standard, Premium]` | The pricing tier of this API Management service. |
 | `skuCount` | int | `1` | `[1, 2]` | The instance size of this API Management service. |
 | `subnetResourceId` | string | `''` |  | The full resource ID of a subnet in a virtual network to deploy the API Management service in. |
@@ -158,7 +159,12 @@ You can specify multiple user assigned identities to a resource by providing add
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
 | `location` | string | The location the resource was deployed into. |
-| `name` | string | The name of the API management service |
-| `resourceGroupName` | string | The resource group the API management service was deployed into |
-| `resourceId` | string | The resource ID of the API management service |
+| `name` | string | The name of the API management service. |
+| `resourceGroupName` | string | The resource group the API management service was deployed into. |
+| `resourceId` | string | The resource ID of the API management service. |
 | `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
+
+
+## Considerations
+
+- *None*

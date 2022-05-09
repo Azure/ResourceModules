@@ -24,7 +24,7 @@ This module deploys an event grid topic.
 **Required parameters**
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the Event Grid Topic |
+| `name` | string | The name of the Event Grid Topic. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
@@ -43,7 +43,7 @@ This module deploys an event grid topic.
 | `lock` | string | `'NotSpecified'` | `[CanNotDelete, NotSpecified, ReadOnly]` | Specify the type of lock. |
 | `privateEndpoints` | array | `[]` |  | Configuration Details for private endpoints. |
 | `publicNetworkAccess` | string | `'Enabled'` |  | Determines if traffic is allowed over public network. |
-| `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
+| `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
 
 
@@ -131,6 +131,6 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
 | `location` | string | The location the resource was deployed into. |
-| `name` | string | The name of the event grid topic |
-| `resourceGroupName` | string | The name of the resource group the event grid was deployed into |
-| `resourceId` | string | The resource ID of the event grid |
+| `name` | string | The name of the event grid topic. |
+| `resourceGroupName` | string | The name of the resource group the event grid was deployed into. |
+| `resourceId` | string | The resource ID of the event grid. |

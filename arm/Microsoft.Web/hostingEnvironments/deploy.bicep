@@ -1,4 +1,4 @@
-@description('Required. Name of the App Service Environment')
+@description('Required. Name of the App Service Environment.')
 @minLength(1)
 param name string
 
@@ -8,10 +8,10 @@ param location string = resourceGroup().location
 @description('Optional. Kind of resource.')
 param kind string = 'ASEV2'
 
-@description('Required. ResourceId for the sub net')
+@description('Required. ResourceId for the sub net.')
 param subnetResourceId string
 
-@description('Optional. Specifies which endpoints to serve internally in the Virtual Network for the App Service Environment. - None, Web, Publishing, Web,Publishing')
+@description('Optional. Specifies which endpoints to serve internally in the Virtual Network for the App Service Environment. - None, Web, Publishing, Web,Publishing.')
 @allowed([
   'None'
   'Web'
@@ -19,7 +19,7 @@ param subnetResourceId string
 ])
 param internalLoadBalancingMode string = 'None'
 
-@description('Optional. Frontend VM size, e.g. Medium, Large')
+@description('Optional. Frontend VM size, e.g. Medium, Large.')
 @allowed([
   'Medium'
   'Large'
@@ -61,13 +61,13 @@ param suspended bool = false
 @description('Optional. True/false indicating whether the App Service Environment is suspended. The environment can be suspended e.g. when the management endpoint is no longer available(most likely because NSG blocked the incoming traffic).')
 param dynamicCacheEnabled bool = false
 
-@description('Optional. User added ip ranges to whitelist on ASE db - string')
+@description('Optional. User added ip ranges to whitelist on ASE db - string.')
 param userWhitelistedIpRanges array = []
 
-@description('Optional. Flag that displays whether an ASE has linux workers or not')
+@description('Optional. Flag that displays whether an ASE has linux workers or not.')
 param hasLinuxWorkers bool = false
 
-@description('Optional. Custom settings for changing the behavior of the App Service Environment')
+@description('Optional. Custom settings for changing the behavior of the App Service Environment.')
 param clusterSettings array = []
 
 @description('Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.')
@@ -95,7 +95,7 @@ param diagnosticEventHubName string = ''
 @description('Optional. Specify the type of lock.')
 param lock string = 'NotSpecified'
 
-@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'')
+@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
 param roleAssignments array = []
 
 @description('Optional. Resource tags.')
@@ -199,13 +199,13 @@ module appServiceEnvironment_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignm
   }
 }]
 
-@description('The resource ID of the app service environment')
+@description('The resource ID of the app service environment.')
 output resourceId string = appServiceEnvironment.id
 
-@description('The resource group the app service environment was deployed into')
+@description('The resource group the app service environment was deployed into.')
 output resourceGroupName string = resourceGroup().name
 
-@description('The name of the app service environment')
+@description('The name of the app service environment.')
 output name string = appServiceEnvironment.name
 
 @description('The location the resource was deployed into.')

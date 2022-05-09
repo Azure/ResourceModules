@@ -19,15 +19,15 @@
 **Required parameters**
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | Name of the Azure Batch |
+| `name` | string | Name of the Azure Batch. |
 | `storageAccountId` | string | The resource ID of the storage account to be used for auto-storage account. |
 
 **Conditional parameters**
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
-| `encryptionKeyIdentifier` | string | `''` | Full path to the versioned secret. Must be set if `encryptionKeySource` is set to `Microsoft.KeyVault` or `poolAllocationMode` is set to `UserSubscription`. |
-| `keyVaultResourceId` | string | `''` | The resource ID of the Azure key vault associated with the Batch account. Must be set if `encryptionKeySource` is set to `Microsoft.KeyVault` or `poolAllocationMode` is set to `UserSubscription`. |
-| `keyVaultUri` | string | `''` | The URL of the Azure key vault associated with the Batch account. Must be set if `encryptionKeySource` is set to `Microsoft.KeyVault` or `poolAllocationMode` is set to `UserSubscription`. |
+| `encryptionKeyIdentifier` | string | `''` | Full path to the versioned secret. Required if `encryptionKeySource` is set to `Microsoft.KeyVault` or `poolAllocationMode` is set to `UserSubscription`. |
+| `keyVaultResourceId` | string | `''` | The resource ID of the Azure key vault associated with the Batch account. Required if `encryptionKeySource` is set to `Microsoft.KeyVault` or `poolAllocationMode` is set to `UserSubscription`. |
+| `keyVaultUri` | string | `''` | The URL of the Azure key vault associated with the Batch account. Required if `encryptionKeySource` is set to `Microsoft.KeyVault` or `poolAllocationMode` is set to `UserSubscription`. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
@@ -89,6 +89,6 @@ You can specify multiple user assigned identities to a resource by providing add
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
 | `location` | string | The location the resource was deployed into. |
-| `name` | string | The name of the batch account |
-| `resourceGroupName` | string | The resource group the batch account was deployed into |
-| `resourceId` | string | The resource ID of the batch account |
+| `name` | string | The name of the batch account. |
+| `resourceGroupName` | string | The resource group the batch account was deployed into. |
+| `resourceId` | string | The resource ID of the batch account. |

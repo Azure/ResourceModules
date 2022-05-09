@@ -33,7 +33,7 @@ This template deploys an availability set
 | `location` | string | `[resourceGroup().location]` |  | Resource location. |
 | `lock` | string | `'NotSpecified'` | `[CanNotDelete, NotSpecified, ReadOnly]` | Specify the type of lock. |
 | `proximityPlacementGroupId` | string | `''` |  | Resource ID of a proximity placement group. |
-| `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
+| `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `tags` | object | `{object}` |  | Tags of the availability set resource. |
 
 
@@ -85,6 +85,6 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
 | `location` | string | The location the resource was deployed into. |
-| `name` | string | The name of the availability set |
-| `resourceGroupName` | string | The resource group the availability set was deployed into |
-| `resourceId` | string | The resource ID of the availability set |
+| `name` | string | The name of the availability set. |
+| `resourceGroupName` | string | The resource group the availability set was deployed into. |
+| `resourceId` | string | The resource ID of the availability set. |

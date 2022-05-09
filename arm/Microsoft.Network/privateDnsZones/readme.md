@@ -43,7 +43,7 @@ This template deploys a private DNS zone.
 | `lock` | string | `'NotSpecified'` | `[CanNotDelete, NotSpecified, ReadOnly]` | Specify the type of lock. |
 | `mx` | _[mx](mx/readme.md)_ array | `[]` |  | Array of MX records. |
 | `ptr` | _[ptr](ptr/readme.md)_ array | `[]` |  | Array of PTR records. |
-| `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
+| `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `soa` | _[soa](soa/readme.md)_ array | `[]` |  | Array of SOA records. |
 | `srv` | _[srv](srv/readme.md)_ array | `[]` |  | Array of SRV records. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
@@ -99,6 +99,6 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
 | `location` | string | The location the resource was deployed into. |
-| `name` | string | The name of the private DNS zone |
-| `resourceGroupName` | string | The resource group the private DNS zone was deployed into |
-| `resourceId` | string | The resource ID of the private DNS zone |
+| `name` | string | The name of the private DNS zone. |
+| `resourceGroupName` | string | The resource group the private DNS zone was deployed into. |
+| `resourceId` | string | The resource ID of the private DNS zone. |

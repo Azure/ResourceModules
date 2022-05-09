@@ -10,7 +10,7 @@ param keyVaultId string
 @description('Required. Key URL (with version) pointing to a key or secret in KeyVault.')
 param keyUrl string
 
-@description('Optional. The type of key used to encrypt the data of the disk. For security reasons, it is recommended to set encryptionType to EncryptionAtRestWithPlatformAndCustomerKeys')
+@description('Optional. The type of key used to encrypt the data of the disk. For security reasons, it is recommended to set encryptionType to EncryptionAtRestWithPlatformAndCustomerKeys.')
 @allowed([
   'EncryptionAtRestWithCustomerKey'
   'EncryptionAtRestWithPlatformAndCustomerKeys'
@@ -20,7 +20,7 @@ param encryptionType string = 'EncryptionAtRestWithPlatformAndCustomerKeys'
 @description('Optional. Set this flag to true to enable auto-updating of this disk encryption set to the latest key version.')
 param rotationToLatestKeyVersionEnabled bool = false
 
-@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'')
+@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
 param roleAssignments array = []
 
 @description('Optional. Tags of the disk encryption resource.')
@@ -95,19 +95,19 @@ module diskEncryptionSet_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment,
   }
 }]
 
-@description('The resource ID of the disk encryption set')
+@description('The resource ID of the disk encryption set.')
 output resourceId string = diskEncryptionSet.id
 
-@description('The name of the disk encryption set')
+@description('The name of the disk encryption set.')
 output name string = diskEncryptionSet.name
 
-@description('The resource group the disk encryption set was deployed into')
+@description('The resource group the disk encryption set was deployed into.')
 output resourceGroupName string = resourceGroup().name
 
-@description('The principal ID of the disk encryption set')
+@description('The principal ID of the disk encryption set.')
 output systemAssignedPrincipalId string = diskEncryptionSet.identity.principalId
 
-@description('The name of the key vault with the disk encryption key')
+@description('The name of the key vault with the disk encryption key.')
 output keyVaultName string = last(split(keyVaultId, '/'))
 
 @description('The location the resource was deployed into.')

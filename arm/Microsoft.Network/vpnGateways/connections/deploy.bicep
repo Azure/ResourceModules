@@ -1,7 +1,7 @@
 @description('Required. The name of the VPN connection.')
 param name string
 
-@description('Required. The name of the VPN gateway this VPN connection is associated with.')
+@description('Conditional. The name of the parent VPN gateway this VPN connection is associated with. Required if the template is used in a standalone deployment.')
 param vpnGatewayName string
 
 @description('Optional. The IPSec policies to be considered by this connection.')
@@ -47,7 +47,7 @@ param vpnConnectionProtocolType string = 'IKEv2'
 @description('Optional. SharedKey for the VPN connection.')
 param sharedKey string = ''
 
-@description('Optional. Reference to a VPN site to link to')
+@description('Optional. Reference to a VPN site to link to.')
 param remoteVpnSiteResourceId string = ''
 
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
@@ -92,11 +92,11 @@ resource vpnConnection 'Microsoft.Network/vpnGateways/vpnConnections@2021-05-01'
   }
 }
 
-@description('The name of the VPN connection')
+@description('The name of the VPN connection.')
 output name string = vpnConnection.name
 
-@description('The resource ID of the VPN connection')
+@description('The resource ID of the VPN connection.')
 output resourceId string = vpnConnection.id
 
-@description('The name of the resource group the VPN connection was deployed into')
+@description('The name of the resource group the VPN connection was deployed into.')
 output resourceGroupName string = resourceGroup().name

@@ -102,13 +102,13 @@ module connection_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index)
   }
 }]
 
-@description('The resource ID of the connection')
+@description('The resource ID of the connection.')
 output resourceId string = connection.id
 
-@description('The resource group the connection was deployed into')
+@description('The resource group the connection was deployed into.')
 output resourceGroupName string = resourceGroup().name
 
-@description('The name of the connection')
+@description('The name of the connection.')
 output name string = connection.name
 
 @description('The location the resource was deployed into.')

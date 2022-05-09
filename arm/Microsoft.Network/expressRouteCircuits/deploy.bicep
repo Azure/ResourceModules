@@ -1,4 +1,4 @@
-@description('Required. This is the name of the ExpressRoute circuit')
+@description('Required. This is the name of the ExpressRoute circuit.')
 param name string
 
 @description('Required. This is the name of the ExpressRoute Service Provider. It must exactly match one of the Service Providers from List ExpressRoute Service Providers API call.')
@@ -82,7 +82,7 @@ param diagnosticEventHubName string = ''
 @description('Optional. Specify the type of lock.')
 param lock string = 'NotSpecified'
 
-@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'')
+@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
 param roleAssignments array = []
 
 @description('Optional. Tags of the resource.')
@@ -207,16 +207,16 @@ module expressRouteCircuits_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignme
   }
 }]
 
-@description('The resource ID of express route curcuit')
+@description('The resource ID of express route curcuit.')
 output resourceId string = expressRouteCircuits.id
 
-@description('The resource group the express route curcuit was deployed into')
+@description('The resource group the express route curcuit was deployed into.')
 output resourceGroupName string = resourceGroup().name
 
-@description('The name of express route curcuit')
+@description('The name of express route curcuit.')
 output name string = expressRouteCircuits.name
 
-@description('The service key of the express route circuit')
+@description('The service key of the express route circuit.')
 output serviceKey string = reference(expressRouteCircuits.id, '2021-02-01').serviceKey
 
 @description('The location the resource was deployed into.')

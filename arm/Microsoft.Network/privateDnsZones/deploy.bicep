@@ -31,7 +31,7 @@ param virtualNetworkLinks array = []
 @description('Optional. The location of the PrivateDNSZone. Should be global.')
 param location string = 'global'
 
-@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'')
+@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
 param roleAssignments array = []
 
 @description('Optional. Tags of the resource.')
@@ -203,13 +203,13 @@ module privateDnsZone_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, in
   }
 }]
 
-@description('The resource group the private DNS zone was deployed into')
+@description('The resource group the private DNS zone was deployed into.')
 output resourceGroupName string = resourceGroup().name
 
-@description('The name of the private DNS zone')
+@description('The name of the private DNS zone.')
 output name string = privateDnsZone.name
 
-@description('The resource ID of the private DNS zone')
+@description('The resource ID of the private DNS zone.')
 output resourceId string = privateDnsZone.id
 
 @description('The location the resource was deployed into.')

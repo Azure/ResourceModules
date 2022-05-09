@@ -21,7 +21,11 @@ This module deploys an Azure SQL Server.
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The name of the database. |
-| `serverName` | string | The Name of SQL Server |
+
+**Conditional parameters**
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `serverName` | string | The name of the parent SQL Server. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
@@ -78,6 +82,6 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
 | `location` | string | The location the resource was deployed into. |
-| `name` | string | The name of the deployed database |
-| `resourceGroupName` | string | The resourceGroup of the deployed database |
-| `resourceId` | string | The resource ID of the deployed database |
+| `name` | string | The name of the deployed database. |
+| `resourceGroupName` | string | The resourceGroup of the deployed database. |
+| `resourceId` | string | The resource ID of the deployed database. |

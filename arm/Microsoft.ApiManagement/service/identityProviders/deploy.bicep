@@ -1,4 +1,4 @@
-@description('Required. The name of the of the API Management service.')
+@description('Conditional. The name of the parent API Management service. Required if the template is used in a standalone deployment.')
 param apiManagementServiceName string
 
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
@@ -7,16 +7,16 @@ param enableDefaultTelemetry bool = true
 @description('Optional. Used to enable the deployment of the identityProviders child resource.')
 param enableIdentityProviders bool = false
 
-@description('Optional. List of Allowed Tenants when configuring Azure Active Directory login. - string')
+@description('Optional. List of Allowed Tenants when configuring Azure Active Directory login. - string.')
 param identityProviderAllowedTenants array = []
 
 @description('Optional. OpenID Connect discovery endpoint hostname for AAD or AAD B2C.')
 param identityProviderAuthority string = ''
 
-@description('Optional. Client ID of the Application in the external Identity Provider. Required if identity provider is used.')
+@description('Conditional. Client ID of the Application in the external Identity Provider. Required if identity provider is used.')
 param identityProviderClientId string = ''
 
-@description('Optional. Client secret of the Application in external Identity Provider, used to authenticate login request. Required if identity provider is used.')
+@description('Conditional. Client secret of the Application in external Identity Provider, used to authenticate login request. Required if identity provider is used.')
 @secure()
 param identityProviderClientSecret string = ''
 
@@ -29,7 +29,7 @@ param identityProviderProfileEditingPolicyName string = ''
 @description('Optional. Signin Policy Name. Only applies to AAD B2C Identity Provider.')
 param identityProviderSignInPolicyName string = ''
 
-@description('Optional. The TenantId to use instead of Common when logging into Active Directory')
+@description('Optional. The TenantId to use instead of Common when logging into Active Directory.')
 param identityProviderSignInTenant string = ''
 
 @description('Optional. Signup Policy Name. Only applies to AAD B2C Identity Provider.')
@@ -46,7 +46,7 @@ param identityProviderSignUpPolicyName string = ''
 ])
 param identityProviderType string = 'aad'
 
-@description('Required. Identity provider name')
+@description('Required. Identity provider name.')
 param name string
 
 var isAadB2C = (identityProviderType == 'aadB2C')
@@ -84,11 +84,11 @@ resource identityProvider 'Microsoft.ApiManagement/service/identityProviders@202
   }
 }
 
-@description('The resource ID of the API management service identity provider')
+@description('The resource ID of the API management service identity provider.')
 output resourceId string = identityProvider.id
 
-@description('The name of the API management service identity provider')
+@description('The name of the API management service identity provider.')
 output name string = identityProvider.name
 
-@description('The resource group the API management service identity provider was deployed into')
+@description('The resource group the API management service identity provider was deployed into.')
 output resourceGroupName string = resourceGroup().name

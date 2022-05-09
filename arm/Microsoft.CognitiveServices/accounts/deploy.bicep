@@ -1,4 +1,4 @@
-@description('Required. The name of Cognitive Services account')
+@description('Required. The name of Cognitive Services account.')
 param name string
 
 @description('Required. Kind of the Cognitive Services. Use \'Get-AzCognitiveServicesAccountSku\' to determine a valid combinations of \'kind\' and \'sku\' for your Azure region.')
@@ -70,7 +70,7 @@ param diagnosticEventHubAuthorizationRuleId string = ''
 @description('Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.')
 param diagnosticEventHubName string = ''
 
-@description('Optional. Subdomain name used for token-based authentication. Required if \'networkAcls\' are set.')
+@description('Conditional. Subdomain name used for token-based authentication. Required if \'networkAcls\' are set.')
 param customSubDomainName string = ''
 
 @description('Optional. Subdomain name used for token-based authentication. Must be set if \'networkAcls\' are set.')
@@ -80,7 +80,7 @@ param customSubDomainName string = ''
 ])
 param publicNetworkAccess string = 'Enabled'
 
-@description('Optional. Service endpoint object information')
+@description('Optional. Service endpoint object information.')
 param networkAcls object = {}
 
 @description('Optional. Enables system assigned managed identity on the resource.')
@@ -100,7 +100,7 @@ param lock string = 'NotSpecified'
 @description('Optional. Configuration Details for private endpoints.')
 param privateEndpoints array = []
 
-@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'')
+@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
 param roleAssignments array = []
 
 @description('Optional. Tags of the resource.')
@@ -115,7 +115,7 @@ param apiProperties object = {}
 @description('Optional. Allow only Azure AD authentication.')
 param disableLocalAuth bool = false
 
-@description('Optional. Properties to configure encryption')
+@description('Optional. Properties to configure encryption.')
 param encryption object = {}
 
 @description('Optional. Resource migration token.')
@@ -265,16 +265,16 @@ module cognitiveServices_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment,
   }
 }]
 
-@description('The name of the cognitive services account')
+@description('The name of the cognitive services account.')
 output name string = cognitiveServices.name
 
-@description('The resource ID of the cognitive services account')
+@description('The resource ID of the cognitive services account.')
 output resourceId string = cognitiveServices.id
 
-@description('The resource group the cognitive services account was deployed into')
+@description('The resource group the cognitive services account was deployed into.')
 output resourceGroupName string = resourceGroup().name
 
-@description('The service endpoint of the cognitive services account')
+@description('The service endpoint of the cognitive services account.')
 output endpoint string = cognitiveServices.properties.endpoint
 
 @description('The principal ID of the system assigned identity.')

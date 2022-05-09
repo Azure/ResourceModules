@@ -7,7 +7,7 @@ param groupShortName string
 @description('Optional. Indicates whether this action group is enabled. If an action group is not enabled, then none of its receivers will receive communications.')
 param enabled bool = true
 
-@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'')
+@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
 param roleAssignments array = []
 
 @description('Optional. The list of email receivers that are part of this action group.')
@@ -92,13 +92,13 @@ module actionGroup_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index
   }
 }]
 
-@description('The resource group the action group was deployed into')
+@description('The resource group the action group was deployed into.')
 output resourceGroupName string = resourceGroup().name
 
-@description('The name of the action group ')
+@description('The name of the action group .')
 output name string = actionGroup.name
 
-@description('The resource ID of the action group ')
+@description('The resource ID of the action group .')
 output resourceId string = actionGroup.id
 
 @description('The location the resource was deployed into.')

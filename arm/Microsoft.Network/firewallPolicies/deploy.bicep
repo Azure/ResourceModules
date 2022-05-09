@@ -72,7 +72,7 @@ param fqdns array = []
 @description('Optional. List of IP addresses for the ThreatIntel Allowlist.')
 param ipAddresses array = []
 
-@description('Optional. Secret ID of (base-64 encoded unencrypted pfx) Secret or Certificate object stored in KeyVault.	')
+@description('Optional. Secret ID of (base-64 encoded unencrypted pfx) Secret or Certificate object stored in KeyVault.	.')
 param keyVaultSecretId string = ''
 
 @description('Optional. Name of the CA certificate.')
@@ -169,13 +169,13 @@ module firewallPolicy_ruleCollectionGroups 'ruleCollectionGroups/deploy.bicep' =
   }
 }]
 
-@description('The name of the deployed firewall policy')
+@description('The name of the deployed firewall policy.')
 output name string = firewallPolicy.name
 
-@description('The resource ID of the deployed firewall policy')
+@description('The resource ID of the deployed firewall policy.')
 output resourceId string = firewallPolicy.id
 
-@description('The resource group of the deployed firewall policy')
+@description('The resource group of the deployed firewall policy.')
 output resourceGroupName string = resourceGroup().name
 
 @description('The location the resource was deployed into.')

@@ -21,7 +21,7 @@ This module deploys an Azure Health Bot.
 **Required parameters**
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | Name of the resource |
+| `name` | string | Name of the resource. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
@@ -29,7 +29,7 @@ This module deploys an Azure Health Bot.
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `'NotSpecified'` | `[CanNotDelete, NotSpecified, ReadOnly]` | Specify the type of lock. |
-| `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
+| `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `sku` | string | `'F0'` |  | The resource model definition representing SKU. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
 
@@ -82,6 +82,6 @@ Create a role assignment for the given resource. If you want to assign a service
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
 | `location` | string | The location the resource was deployed into. |
-| `name` | string | The name of the health bot |
-| `resourceGroupName` | string | The resource group the health bot was deployed into |
-| `resourceId` | string | The resource ID of the health bot |
+| `name` | string | The name of the health bot. |
+| `resourceGroupName` | string | The resource group the health bot was deployed into. |
+| `resourceId` | string | The resource ID of the health bot. |

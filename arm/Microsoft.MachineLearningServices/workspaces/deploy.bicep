@@ -279,6 +279,7 @@ module workspace_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) 
 // ================//
 // Outputs         //
 // ================//
+
 @sys.description('The resource ID of the machine learning service')
 output resourceId string = workspace.id
 

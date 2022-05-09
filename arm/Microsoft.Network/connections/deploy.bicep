@@ -1,7 +1,7 @@
-@description('Required. Remote connection name')
+@description('Required. Remote connection name.')
 param name string
 
-@description('Optional. Specifies a VPN shared key. The same value has to be specified on both Virtual Network Gateways')
+@description('Optional. Specifies a VPN shared key. The same value has to be specified on both Virtual Network Gateways.')
 param vpnSharedKey string = ''
 
 @description('Optional. Location for all resources.')
@@ -16,13 +16,13 @@ param location string = resourceGroup().location
 ])
 param virtualNetworkGatewayConnectionType string = 'IPsec'
 
-@description('Optional. Value to specify if BGP is enabled or not')
+@description('Optional. Value to specify if BGP is enabled or not.')
 param enableBgp bool = false
 
-@description('Optional. Enable policy-based traffic selectors')
+@description('Optional. Enable policy-based traffic selectors.')
 param usePolicyBasedTrafficSelectors bool = false
 
-@description('Optional. The IPSec Policies to be considered by this connection')
+@description('Optional. The IPSec Policies to be considered by this connection.')
 param customIPSecPolicy object = {
   saLifeTimeSeconds: 0
   saDataSizeKilobytes: 0
@@ -54,13 +54,13 @@ param enableDefaultTelemetry bool = true
 @description('Required. The primary Virtual Network Gateway.')
 param virtualNetworkGateway1 object
 
-@description('Optional. The remote Virtual Network Gateway. Used for connection type [Vnet2Vnet]')
+@description('Optional. The remote Virtual Network Gateway. Used for connection type [Vnet2Vnet].')
 param virtualNetworkGateway2 object = {}
 
-@description('Optional. The remote peer. Used for connection type [ExpressRoute]')
+@description('Optional. The remote peer. Used for connection type [ExpressRoute].')
 param peer object = {}
 
-@description('Optional. The local network gateway. Used for connection type [IPsec]')
+@description('Optional. The local network gateway. Used for connection type [IPsec].')
 param localNetworkGateway2 object = {}
 
 var customIPSecPolicy_var = [
@@ -115,13 +115,13 @@ resource connection_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock !
   scope: connection
 }
 
-@description('The resource group the remote connection was deployed into')
+@description('The resource group the remote connection was deployed into.')
 output resourceGroupName string = resourceGroup().name
 
-@description('The name of the remote connection')
+@description('The name of the remote connection.')
 output name string = connection.name
 
-@description('The resource ID of the remote connection')
+@description('The resource ID of the remote connection.')
 output resourceId string = connection.id
 
 @description('The location the resource was deployed into.')

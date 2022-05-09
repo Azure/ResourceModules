@@ -20,11 +20,15 @@ This template deploys volumes in a capacity pool of an Azure NetApp files.
 **Required parameters**
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `capacityPoolName` | string | The name of the capacity pool. |
 | `name` | string | The name of the pool volume. |
-| `netAppAccountName` | string | The name of the NetApp account. |
 | `subnetResourceId` | string | The Azure Resource URI for a delegated subnet. Must have the delegation Microsoft.NetApp/volumes. |
 | `usageThreshold` | int | Maximum storage quota allowed for a file system in bytes. |
+
+**Conditional parameters**
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `capacityPoolName` | string | The name of the parent capacity pool. Required if the template is used in a standalone deployment. |
+| `netAppAccountName` | string | The name of the parent NetApp account. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
@@ -34,7 +38,7 @@ This template deploys volumes in a capacity pool of an Azure NetApp files.
 | `exportPolicyRules` | array | `[]` |  | Export policy rules. |
 | `location` | string | `[resourceGroup().location]` |  | Location of the pool volume. |
 | `protocolTypes` | array | `[]` |  | Set of protocol types. |
-| `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
+| `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `serviceLevel` | string | `'Standard'` | `[Premium, Standard, StandardZRS, Ultra]` | The pool service level. Must match the one of the parent capacity pool. |
 
 
