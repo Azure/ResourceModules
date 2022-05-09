@@ -1,7 +1,7 @@
-@description('Required. The name of the parent load balancer')
+@description('Conditional. The name of the parent load balancer. Required if the template is used in a standalone deployment.')
 param loadBalancerName string
 
-@description('Required. The name of the backend address pool')
+@description('Required. The name of the backend address pool.')
 param name string
 
 @description('Optional. An array of backend addresses.')
@@ -38,11 +38,11 @@ resource backendAddressPool 'Microsoft.Network/loadBalancers/backendAddressPools
   parent: loadBalancer
 }
 
-@description('The name of the backend address pool')
+@description('The name of the backend address pool.')
 output name string = backendAddressPool.name
 
-@description('The resource ID of the backend address pool')
+@description('The resource ID of the backend address pool.')
 output resourceId string = backendAddressPool.id
 
-@description('The resource group the backend address pool was deployed into')
+@description('The resource group the backend address pool was deployed into.')
 output resourceGroupName string = resourceGroup().name

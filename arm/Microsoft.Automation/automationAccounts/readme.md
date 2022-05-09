@@ -48,7 +48,7 @@ This module deploys an Azure Automation Account.
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `encryptionKeySource` | string | `'Microsoft.Automation'` | `[Microsoft.Automation, Microsoft.Keyvault]` | Encryption Key Source. For security reasons it is recommended to use Microsoft.Keyvault if custom keys are available. |
 | `encryptionUserAssignedIdentity` | string | `''` |  | User identity used for CMK. If you set encryptionKeySource as Microsoft.Keyvault encryptionUserAssignedIdentity is required. |
-| `gallerySolutions` | array | `[]` |  | List of gallerySolutions to be created in the linked log analytics workspace |
+| `gallerySolutions` | array | `[]` |  | List of gallerySolutions to be created in the linked log analytics workspace. |
 | `jobSchedules` | _[jobSchedules](jobSchedules/readme.md)_ array | `[]` |  | List of jobSchedules to be created in the automation account. |
 | `keyName` | string | `''` |  | The name of key used to encrypt data. This parameter is needed only if you enable Microsoft.Keyvault as encryptionKeySource. |
 | `keyvaultUri` | string | `''` |  | The URI of the key vault key used to encrypt data. This parameter is needed only if you enable Microsoft.Keyvault as encryptionKeySource. |
@@ -62,7 +62,7 @@ This module deploys an Azure Automation Account.
 | `runbooks` | _[runbooks](runbooks/readme.md)_ array | `[]` |  | List of runbooks to be created in the automation account. |
 | `schedules` | _[schedules](schedules/readme.md)_ array | `[]` |  | List of schedules to be created in the automation account. |
 | `skuName` | string | `'Basic'` | `[Free, Basic]` | SKU name of the account. |
-| `softwareUpdateConfigurations` | _[softwareUpdateConfigurations](softwareUpdateConfigurations/readme.md)_ array | `[]` |  | List of softwareUpdateConfigurations to be created in the automation account |
+| `softwareUpdateConfigurations` | _[softwareUpdateConfigurations](softwareUpdateConfigurations/readme.md)_ array | `[]` |  | List of softwareUpdateConfigurations to be created in the automation account. |
 | `systemAssignedIdentity` | bool | `False` |  | Enables system assigned managed identity on the resource. |
 | `tags` | object | `{object}` |  | Tags of the Automation Account resource. |
 | `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. |
@@ -196,7 +196,7 @@ You can specify multiple user assigned identities to a resource by providing add
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the deployed automation account |
-| `resourceGroupName` | string | The resource group of the deployed automation account |
-| `resourceId` | string | The resource ID of the deployed automation account |
+| `name` | string | The name of the deployed automation account. |
+| `resourceGroupName` | string | The resource group of the deployed automation account. |
+| `resourceId` | string | The resource ID of the deployed automation account. |
 | `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |

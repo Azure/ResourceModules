@@ -23,14 +23,18 @@ This module deploys a Replication Fabric for Azure to Azure disaster recovery sc
 **Required parameters**
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
-| `location` | string | `[resourceGroup().location]` | The recovery location the fabric represents |
-| `recoveryVaultName` | string |  | Name of the Azure Recovery Service Vault |
+| `location` | string | `[resourceGroup().location]` | The recovery location the fabric represents. |
+
+**Conditional parameters**
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `recoveryVaultName` | string | The name of the parent Azure Recovery Service Vault. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `name` | string | `[parameters('location')]` | The name of the fabric |
+| `name` | string | `[parameters('location')]` | The name of the fabric. |
 | `replicationContainers` | array | `[]` | Replication containers to create. |
 
 

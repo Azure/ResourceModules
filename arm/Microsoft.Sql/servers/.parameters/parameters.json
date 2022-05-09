@@ -28,11 +28,21 @@
             "value": [
                 {
                     "roleDefinitionIdOrName": "Reader",
-                    "principalIds": [
-                        "<<deploymentSpId>>"
-                    ]
+                    "principalIds": ["<<deploymentSpId>>"]
                 }
             ]
+        },
+        "vulnerabilityAssessmentsObj": {
+            "value": {
+                "name": "default",
+                "emailSubscriptionAdmins": true,
+                "recurringScansIsEnabled": true,
+                "recurringScansEmails": [
+                    "test1@contoso.com",
+                    "test2@contoso.com"
+                ],
+                "vulnerabilityAssessmentsStorageAccountId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
+            }
         },
         "databases": {
             "value": [

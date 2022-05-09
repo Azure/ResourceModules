@@ -1,4 +1,4 @@
-@description('Required. Private DNS zone name.')
+@description('Conditional. The name of the parent Private DNS zone. Required if the template is used in a standalone deployment.')
 param privateDnsZoneName string
 
 @description('Required. The name of the SOA record.')
@@ -59,8 +59,8 @@ module SOA_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in rol
 @description('The name of the deployed SOA record')
 output name string = SOA.name
 
-@description('The resource ID of the deployed SOA record')
+@description('The resource ID of the deployed SOA record.')
 output resourceId string = SOA.id
 
-@description('The resource group of the deployed SOA record')
+@description('The resource group of the deployed SOA record.')
 output resourceGroupName string = resourceGroup().name

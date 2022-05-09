@@ -172,7 +172,7 @@ You can specify multiple user assigned identities to a resource by providing add
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the logic app |
-| `resourceGroupName` | string | The resource group the logic app was deployed into |
-| `resourceId` | string | The resource ID of the logic app |
+| `name` | string | The name of the logic app. |
+| `resourceGroupName` | string | The resource group the logic app was deployed into. |
+| `resourceId` | string | The resource ID of the logic app. |
 | `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |

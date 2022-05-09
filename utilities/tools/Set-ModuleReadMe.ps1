@@ -486,8 +486,8 @@ function Set-ModuleReadMe {
     # Load external functions
     . (Join-Path $PSScriptRoot 'helper/Merge-FileWithNewContent.ps1')
 
-    # Check template
-    $null = Test-Path $TemplateFilePath -ErrorAction Stop
+    # Check template & make full path
+    $TemplateFilePath = Resolve-Path -Path $TemplateFilePath -ErrorAction Stop
 
     if (-not $TemplateFileContent) {
         if ((Split-Path -Path $TemplateFilePath -Extension) -eq '.bicep') {
@@ -523,9 +523,7 @@ function Set-ModuleReadMe {
             ''
             '// TODO: Fill in Parameter usage'
             '',
-            '## Outputs',
-            '',
-            '## Template references'
+            '## Outputs'
         )
         # New-Item $path $ReadMeFilePath -ItemType 'File' -Force -Value $initialContent
         $readMeFileContent = $initialContent

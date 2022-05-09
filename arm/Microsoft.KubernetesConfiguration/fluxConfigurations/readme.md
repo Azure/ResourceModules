@@ -39,7 +39,7 @@ For Details see [Prerequisites](https://docs.microsoft.com/en-us/azure/azure-arc
 | Parameter Name | Type | Allowed Values | Description |
 | :-- | :-- | :-- | :-- |
 | `clusterName` | string |  | The name of the AKS cluster that should be configured. |
-| `name` | string |  | The name of the Flux Configuration |
+| `name` | string |  | The name of the Flux Configuration. |
 | `namespace` | string |  | The namespace to which this configuration is installed to. Maximum of 253 lower case alphanumeric characters, hyphen and period only. |
 | `scope` | string | `[cluster, namespace]` | Scope at which the configuration will be installed. |
 | `sourceKind` | string | `[Bucket, GitRepository]` | Source Kind to pull the configuration data from. |
@@ -48,7 +48,7 @@ For Details see [Prerequisites](https://docs.microsoft.com/en-us/azure/azure-arc
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `bucket` | object | `{object}` | Parameters to reconcile to the GitRepository source kind type. |
-| `configurationProtectedSettings` | object | `{object}` | Key-value pairs of protected configuration settings for the configuration |
+| `configurationProtectedSettings` | object | `{object}` | Key-value pairs of protected configuration settings for the configuration. |
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `gitRepository` | object | `{object}` | Parameters to reconcile to the GitRepository source kind type. |
 | `kustomizations` | object | `{object}` | Array of kustomizations used to reconcile the artifact pulled by the source type on the cluster. |
@@ -98,6 +98,6 @@ For Details see [Prerequisites](https://docs.microsoft.com/en-us/azure/azure-arc
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the flux configuration |
-| `resourceGroupName` | string | The name of the resource group the flux configuration was deployed into |
-| `resourceId` | string | The resource ID of the flux configuration |
+| `name` | string | The name of the flux configuration. |
+| `resourceGroupName` | string | The name of the resource group the flux configuration was deployed into. |
+| `resourceId` | string | The resource ID of the flux configuration. |
