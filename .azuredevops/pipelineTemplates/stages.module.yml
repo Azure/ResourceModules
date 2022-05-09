@@ -35,11 +35,10 @@ stages:
       - init
     variables:
       $parameterTests: $[ stageDependencies.init.getParameterFilePaths.outputs['getParameterFilePathsTask.parameterTests'] ]
-
     jobs:
-      strategy:
-        matrix: $parameterTests
       - job: print2
+        strategy:
+          matrix: $parameterTests
         steps:
           - task: PowerShell@2
             displayName: 'Print2'
@@ -47,7 +46,8 @@ stages:
               targetType: inline
               pwsh: true
               script: |
-                $json='$(parameterTests)'
+                # $json='$(parameterTests)'
+                $json="test"
                 # $json = '${{ parameters.parameterFilePath}}'
                 # $json = ConvertFrom-Json '${{ parameters.parameterFilePath}}'
                 Write-Verbose "json 1 $json" -Verbose
