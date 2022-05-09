@@ -50,7 +50,8 @@ stages:
     dependsOn:
       - dependencyDeployment
       # - deployment
-    condition: and(succeededOrFailed(), ne(dependencies.dependencyDeployment.outputs['deploy.deployModule.deploymentName'],''))
+    condition: succeededOrFailed()
+    # and(succeededOrFailed(), ne(dependencies.dependencyDeployment.outputs['deploy.deployModule.deploymentName'],''))
     variables:
       deploymentName: $[ stageDependencies.dependencyDeployment.deploy.outputs['deployModule.deploymentName'] ]
     jobs:
