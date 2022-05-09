@@ -47,7 +47,7 @@ stages:
               pwsh: true
               script: |
                 # $json='$(parameterTests)'
-                $json="test"
+                $json='{"parameterTests":"$(parameterTests)"}'
                 # $json = '${{ parameters.parameterFilePath}}'
                 # $json = ConvertFrom-Json '${{ parameters.parameterFilePath}}'
                 Write-Verbose "json 1 $json" -Verbose
