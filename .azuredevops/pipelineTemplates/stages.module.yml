@@ -83,7 +83,8 @@ stages:
       # - dependencyDeployment
       - init
     variables:
-      $parameterTests: $[ stageDependencies.init.printParameterFilePaths.outputs['print_parameter_tests.parameterTestsToPrint'] ]
+      $parameterTests: stageDependencies.init.printParameterFilePaths.outputs['print_parameter_tests.parameterTestsToPrint']
+      # $parameterTests: $[ stageDependencies.init.printParameterFilePaths.outputs['print_parameter_tests.parameterTestsToPrint'] ]
     jobs:
       # - job: print2
       #   # strategy:
