@@ -88,7 +88,10 @@ param systemAssignedIdentity bool = false
 @description('Optional. The ID(s) to assign to the resource.')
 param userAssignedIdentities object = {}
 
-@description('Optional. Storage account used to store boot diagnostic information. Boot diagnostics will be disabled if no value is provided.')
+@description('Optional. Whether boot diagnostics should be enabled on the Virtual Machine. Boot diagnostics will be enabled with a managed storage account if no bootDiagnosticsStorageAccountName value is provided. If bootDiagnostics and bootDiagnosticsStorageAccountName values are not provided, boot diagnostics will be disabled.')
+param bootDiagnostics bool = false
+
+@description('Optional. Custom storage account used to store boot diagnostic information. Boot diagnostics will be enabled with a custom storage account if a value is provided.')
 param bootDiagnosticStorageAccountName string = ''
 
 @description('Optional. Storage account boot diagnostic base URI.')
@@ -437,7 +440,7 @@ resource virtualMachine 'Microsoft.Compute/virtualMachines@2021-07-01' = {
     }
     diagnosticsProfile: {
       bootDiagnostics: {
-        enabled: !empty(bootDiagnosticStorageAccountName)
+        enabled: !empty(bootDiagnosticStorageAccountName) ? true : bootDiagnostics
         storageUri: !empty(bootDiagnosticStorageAccountName) ? 'https://${bootDiagnosticStorageAccountName}${bootDiagnosticStorageAccountUri}' : null
       }
     }
