@@ -1,4 +1,4 @@
-@description('Required. Private DNS zone name.')
+@description('Conditional. The name of the parent Private DNS zone. Required if the template is used in a standalone deployment.')
 param privateDnsZoneName string
 
 @description('Required. The name of the MX record.')
@@ -59,8 +59,8 @@ module MX_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in role
 @description('The name of the deployed MX record')
 output name string = MX.name
 
-@description('The resource ID of the deployed MX record')
+@description('The resource ID of the deployed MX record.')
 output resourceId string = MX.id
 
-@description('The resource group of the deployed MX record')
+@description('The resource group of the deployed MX record.')
 output resourceGroupName string = resourceGroup().name

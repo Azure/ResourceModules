@@ -1,4 +1,4 @@
-@description('Required. Name of the SQL managed instance.')
+@description('Conditional. The name of the parent SQL managed instance. Required if the template is used in a standalone deployment.')
 param managedInstanceName string
 
 @description('Required. Login name of the managed instance administrator.')
@@ -7,7 +7,7 @@ param login string
 @description('Required. SID (object ID) of the managed instance administrator.')
 param sid string
 
-@description('Optional. The name of the managed instance administrator')
+@description('Optional. The name of the managed instance administrator.')
 param name string = 'ActiveDirectory'
 
 @description('Optional. Tenant ID of the managed instance administrator.')
@@ -43,11 +43,11 @@ resource administrator 'Microsoft.Sql/managedInstances/administrators@2021-02-01
   }
 }
 
-@description('The name of the deployed managed instance')
+@description('The name of the deployed managed instance.')
 output name string = administrator.name
 
-@description('The resource ID of the deployed managed instance')
+@description('The resource ID of the deployed managed instance.')
 output resourceId string = administrator.id
 
-@description('The resource group of the deployed managed instance')
+@description('The resource group of the deployed managed instance.')
 output resourceGroupName string = resourceGroup().name

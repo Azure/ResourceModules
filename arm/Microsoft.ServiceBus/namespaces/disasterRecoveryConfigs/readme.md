@@ -16,18 +16,18 @@ This module deploys a disaster recovery config for a service bus Namespace
 
 ## Parameters
 
-**Required parameters**
+**Conditional parameters**
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `namespaceName` | string | Name of the parent Service Bus Namespace for the Service Bus Queue. |
+| `namespaceName` | string | The name of the parent Service Bus Namespace for the Service Bus Queue. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
-| `alternateName` | string | `''` | Primary/Secondary eventhub namespace name, which is part of GEO DR pairing |
+| `alternateName` | string | `''` | Primary/Secondary eventhub namespace name, which is part of GEO DR pairing. |
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `name` | string | `'default'` | The name of the disaster recovery config |
-| `partnerNamespaceResourceID` | string | `''` | Resource ID of the Primary/Secondary event hub namespace name, which is part of GEO DR pairing |
+| `name` | string | `'default'` | The name of the disaster recovery config. |
+| `partnerNamespaceResourceID` | string | `''` | Resource ID of the Primary/Secondary event hub namespace name, which is part of GEO DR pairing. |
 
 
 ## Outputs

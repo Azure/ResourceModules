@@ -1,7 +1,7 @@
 @description('Required. Identifier of the authorization server.')
 param name string
 
-@description('Required. The name of the of the API Management service.')
+@description('Required. The name of the API Management service.')
 param apiManagementServiceName string
 
 @description('Required. OAuth authorization endpoint. See <http://tools.ietf.org/html/rfc6749#section-3.2>.')
