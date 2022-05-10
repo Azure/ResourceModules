@@ -22,7 +22,8 @@ stages:
               pwsh: true
               script: |
                 Write-Verbose '$(parameterTestsToPrint)' -Verbose
-                Write-Output ('##vso[task.setvariable variable={0};isOutput=true]{1}' -f 'parameterTestsToPrint', '$(parameterTestsToPrint)')
+                $parameterTestsToPrint = '$(parameterTestsToPrint)'
+                Write-Output ('##vso[task.setvariable variable={0};isOutput=true]{1}' -f 'parameterTestsToPrint', $parameterTestsToPrint)
       #### OK
       # - job: print3
       #   dependsOn:
@@ -85,7 +86,8 @@ stages:
     variables:
       # $parameterTests: stageDependencies.init.printParameterFilePaths.outputs['print_parameter_tests.parameterTestsToPrint']
       # $parameterTests: $[ stageDependencies.init.printParameterFilePaths.outputs['print_parameter_tests.parameterTestsToPrint'] ]
-      $parameterTests: $[ dependencies.init.outputs['getParameterFilePaths.getParameterFilePaths.getParameterFilePathsTask.parameterTests'] ]
+      $parameterTests: $[ stageDependencies.init.printParameterFilePaths.outputs['print_parameter_tests.parameterTestsToPrint'] ]
+      # $parameterTests: $[ dependencies.init.outputs['printParameterFilePaths.printParameterFilePaths.print_parameter_tests.parameterTestsToPrint'] ]
     jobs:
       - job: print_before_template
         # strategy:
