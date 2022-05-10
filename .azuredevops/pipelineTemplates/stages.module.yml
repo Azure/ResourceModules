@@ -85,7 +85,7 @@ stages:
     variables:
       # $parameterTests: stageDependencies.init.printParameterFilePaths.outputs['print_parameter_tests.parameterTestsToPrint']
       # $parameterTests: $[ stageDependencies.init.printParameterFilePaths.outputs['print_parameter_tests.parameterTestsToPrint'] ]
-      $parameterTests: $[ dependencies.init.outputs['getParameterFilePaths.getParameterFilePathsTask.parameterTests'] ]
+      $parameterTests: $[ dependencies.init.outputs['getParameterFilePaths.getParameterFilePaths.getParameterFilePathsTask.parameterTests'] ]
     jobs:
       - job: print_before_template
         # strategy:
