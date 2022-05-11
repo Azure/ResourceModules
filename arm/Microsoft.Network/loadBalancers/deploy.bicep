@@ -266,3 +266,6 @@ output resourceGroupName string = resourceGroup().name
 
 @description('The backend address pools available in the load balancer.')
 output backendpools array = loadBalancer.properties.backendAddressPools
+
+@description('The location the resource was deployed into.')
+output location string = loadBalancer.location

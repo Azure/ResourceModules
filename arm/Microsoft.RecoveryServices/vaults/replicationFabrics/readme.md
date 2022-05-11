@@ -63,6 +63,7 @@ This module deploys a Replication Fabric for Azure to Azure disaster recovery sc
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
+| `location` | string | The location the resource was deployed into. |
 | `name` | string | The name of the replication fabric. |
 | `resourceGroupName` | string | The name of the resource group the replication fabric was created in. |
 | `resourceId` | string | The resource ID of the replication fabric. |

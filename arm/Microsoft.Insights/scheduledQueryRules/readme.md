@@ -92,6 +92,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
+| `location` | string | The location the resource was deployed into. |
 | `name` | string | The Name of the created query rule. |
 | `resourceGroupName` | string | The Resource Group of the created query rule. |
 | `resourceId` | string | The resource ID of the created query rule. |

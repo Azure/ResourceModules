@@ -274,3 +274,6 @@ output name string = logAnalyticsWorkspace.name
 
 @description('The ID associated with the workspace.')
 output logAnalyticsWorkspaceId string = logAnalyticsWorkspace.properties.customerId
+
+@description('The location the resource was deployed into.')
+output location string = logAnalyticsWorkspace.location

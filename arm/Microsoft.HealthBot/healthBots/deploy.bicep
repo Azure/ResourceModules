@@ -74,3 +74,6 @@ output name string = azureHealthBot.name
 
 @description('The resource ID of the health bot.')
 output resourceId string = azureHealthBot.id
+
+@description('The location the resource was deployed into.')
+output location string = azureHealthBot.location

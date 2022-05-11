@@ -45,6 +45,7 @@ With this module you can perform policy assignments on a subscription level.
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
+| `location` | string | The location the resource was deployed into. |
 | `name` | string | Policy Assignment Name |
 | `principalId` | string | Policy Assignment principal ID |
 | `resourceId` | string | Policy Assignment resource ID |
