@@ -104,3 +104,6 @@ output resourceId string = privateEndpoint.id
 
 @description('The name of the private endpoint.')
 output name string = privateEndpoint.name
+
+@description('The location the resource was deployed into.')
+output location string = privateEndpoint.location

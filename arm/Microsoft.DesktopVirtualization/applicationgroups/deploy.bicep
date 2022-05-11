@@ -167,3 +167,6 @@ output resourceGroupName string = resourceGroup().name
 
 @sys.description('The name of the AVD application group')
 output name string = appGroup.name
+
+@sys.description('The location the resource was deployed into.')
+output location string = appGroup.location

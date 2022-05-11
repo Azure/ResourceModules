@@ -291,3 +291,6 @@ output name string = workspace.name
 
 @sys.description('The principal ID of the system assigned identity.')
 output principalId string = (!empty(identity) && contains(identity.type, 'SystemAssigned')) ? workspace.identity.principalId : ''
+
+@sys.description('The location the resource was deployed into.')
+output location string = workspace.location

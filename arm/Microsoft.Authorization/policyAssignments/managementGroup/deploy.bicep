@@ -115,3 +115,6 @@ output principalId string = identity == 'SystemAssigned' ? policyAssignment.iden
 
 @sys.description('Policy Assignment resource ID')
 output resourceId string = extensionResourceId(tenantResourceId('Microsoft.Management/managementGroups', managementGroupId), 'Microsoft.Authorization/policyAssignments', policyAssignment.name)
+
+@sys.description('The location the resource was deployed into.')
+output location string = policyAssignment.location

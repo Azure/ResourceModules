@@ -70,3 +70,6 @@ output principalId string = userMsi.properties.principalId
 
 @description('The resource group the user assigned identity was deployed into.')
 output resourceGroupName string = resourceGroup().name
+
+@description('The location the resource was deployed into.')
+output location string = userMsi.location

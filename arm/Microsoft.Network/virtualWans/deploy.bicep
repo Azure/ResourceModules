@@ -89,3 +89,6 @@ output resourceId string = virtualWan.id
 
 @description('The resource group the virtual WAN was deployed into.')
 output resourceGroupName string = resourceGroup().name
+
+@description('The location the resource was deployed into.')
+output location string = virtualWan.location

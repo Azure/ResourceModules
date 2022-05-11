@@ -154,3 +154,6 @@ output resourceGroupName string = resourceGroup().name
 
 @description('The name of the AVD scaling plan.')
 output name string = scalingPlan.name
+
+@description('The location the resource was deployed into.')
+output location string = scalingPlan.location

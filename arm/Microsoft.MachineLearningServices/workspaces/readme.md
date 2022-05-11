@@ -215,6 +215,7 @@ You can specify multiple user assigned identities to a resource by providing add
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
+| `location` | string | The location the resource was deployed into. |
 | `name` | string | The name of the machine learning service |
 | `principalId` | string | The principal ID of the system assigned identity. |
 | `resourceGroupName` | string | The resource group the machine learning service was deployed into |
