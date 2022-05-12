@@ -107,7 +107,6 @@ param disasterRecoveryConfig object = {}
   'CustomerManagedKeyUserLogs'
   'RuntimeAuditLogs'
   'ApplicationMetricsLogs'
-  'AllMetrics'
 ])
 param diagnosticLogCategoriesToEnable array = [
   'ArchiveLogs'
@@ -119,7 +118,6 @@ param diagnosticLogCategoriesToEnable array = [
   'CustomerManagedKeyUserLogs'
   'RuntimeAuditLogs'
   'ApplicationMetricsLogs'
-  'AllMetrics'
 ]
 
 @description('Optional. The name of metrics that will be streamed.')
