@@ -1,47 +1,5 @@
 ﻿#requires -version 6.0
 
-#region Helper functions
-<#
-.SYNOPSIS
-Get a list of all resources (provider + service) in the given template content
-
-.DESCRIPTION
-Get a list of all resources (provider + service) in the given template content. Crawls through any children & nested deployment templates.
-
-.PARAMETER TemplateFileContent
-Mandatory. The template file content object to crawl data from
-
-.EXAMPLE
-Get-NestedResourceList -TemplateFileContent @{ resource = @{}; ... }
-
-Returns a list of all resources in the given template object
-#>
-function Get-NestedResourceList {
-
-    [CmdletBinding()]
-    param(
-        [Parameter(Mandatory)]
-        [Alias('Path')]
-        [hashtable] $TemplateFileContent
-    )
-
-    $res = @()
-    $currLevelResources = @()
-    if ($TemplateFileContent.resources) {
-        $currLevelResources += $TemplateFileContent.resources
-    }
-    foreach ($resource in $currLevelResources) {
-        $res += $resource
-
-        if ($resource.type -eq 'Microsoft.Resources/deployments') {
-            $res += Get-NestedResourceList -TemplateFileContent $resource.properties.template
-        } else {
-            $res += Get-NestedResourceList -TemplateFileContent $resource
-        }
-    }
-    return $res
-}
-
 <#
 .SYNOPSIS
 Update the 'Resource Types' section of the given readme file
@@ -640,6 +598,7 @@ function Set-ModuleReadMe {
 
     # Load external functions
     . (Join-Path $PSScriptRoot 'helper/Merge-FileWithNewContent.ps1')
+    . (Join-Path (Split-Path $PSScriptRoot -Parent) 'pipelines' 'sharedScripts' 'Get-NestedResourceList.ps1')
 
     # Check template & make full path
     $TemplateFilePath = Resolve-Path -Path $TemplateFilePath -ErrorAction Stop
@@ -678,9 +637,7 @@ function Set-ModuleReadMe {
             ''
             '// TODO: Fill in Parameter usage'
             '',
-            '## Outputs',
-            '',
-            '## Template references'
+            '## Outputs'
         )
         # New-Item $path $ReadMeFilePath -ItemType 'File' -Force -Value $initialContent
         $readMeFileContent = $initialContent

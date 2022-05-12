@@ -46,6 +46,7 @@ With this module you can perform policy assignments on a resource group level
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
+| `location` | string | The location the resource was deployed into. |
 | `name` | string | Policy Assignment Name |
 | `principalId` | string | Policy Assignment principal ID |
 | `resourceGroupName` | string | The name of the resource group the policy was assigned to |

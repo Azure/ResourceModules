@@ -215,6 +215,7 @@ userAssignedIdentities: {
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
+| `location` | string | The location the resource was deployed into. |
 | `name` | string | The name of the application gateway. |
 | `resourceGroupName` | string | The resource group the application gateway was deployed into. |
 | `resourceId` | string | The resource ID of the application gateway. |

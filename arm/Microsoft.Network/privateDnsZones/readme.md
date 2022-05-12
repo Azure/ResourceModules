@@ -156,6 +156,7 @@ tags: {
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
+| `location` | string | The location the resource was deployed into. |
 | `name` | string | The name of the private DNS zone. |
 | `resourceGroupName` | string | The resource group the private DNS zone was deployed into. |
 | `resourceId` | string | The resource ID of the private DNS zone. |

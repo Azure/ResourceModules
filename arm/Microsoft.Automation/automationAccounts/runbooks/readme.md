@@ -90,6 +90,7 @@ tags: {
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
+| `location` | string | The location the resource was deployed into. |
 | `name` | string | The name of the deployed runbook. |
 | `resourceGroupName` | string | The resource group of the deployed runbook. |
 | `resourceId` | string | The resource ID of the deployed runbook. |

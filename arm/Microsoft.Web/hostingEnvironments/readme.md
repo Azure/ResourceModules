@@ -275,6 +275,7 @@ workerCount: {
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
+| `location` | string | The location the resource was deployed into. |
 | `name` | string | The name of the app service environment. |
 | `resourceGroupName` | string | The resource group the app service environment was deployed into. |
 | `resourceId` | string | The resource ID of the app service environment. |

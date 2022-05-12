@@ -138,6 +138,7 @@ roleAssignments: [
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
+| `location` | string | The location the resource was deployed into. |
 | `name` | string | The name of the application security group. |
 | `resourceGroupName` | string | The resource group the application security group was deployed into. |
 | `resourceId` | string | The resource ID of the application security group. |

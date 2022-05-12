@@ -58,3 +58,6 @@ output resourceId string = replication.id
 
 @description('The name of the resource group the replication was created in.')
 output resourceGroupName string = resourceGroup().name
+
+@description('The location the resource was deployed into.')
+output location string = replication.location

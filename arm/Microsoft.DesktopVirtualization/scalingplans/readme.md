@@ -250,6 +250,7 @@ roleAssignments: [
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
+| `location` | string | The location the resource was deployed into. |
 | `name` | string | The name of the AVD scaling plan. |
 | `resourceGroupName` | string | The resource group the AVD scaling plan was deployed into. |
 | `resourceId` | string | The resource ID of the AVD scaling plan. |

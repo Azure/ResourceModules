@@ -139,6 +139,7 @@ tags: {
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
+| `location` | string | The location the resource was deployed into. |
 | `name` | string | The name of the public IP prefix. |
 | `resourceGroupName` | string | The resource group the public IP prefix was deployed into. |
 | `resourceId` | string | The resource ID of the public IP prefix. |

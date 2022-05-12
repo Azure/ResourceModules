@@ -142,6 +142,7 @@ tags: {
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
+| `location` | string | The location the resource was deployed into. |
 | `name` | string | The name of the virtual WAN. |
 | `resourceGroupName` | string | The resource group the virtual WAN was deployed into. |
 | `resourceId` | string | The resource ID of the virtual WAN. |

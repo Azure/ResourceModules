@@ -306,6 +306,7 @@ userAssignedIdentities: {
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
+| `location` | string | The location the resource was deployed into. |
 | `name` | string | The name of the logic app. |
 | `resourceGroupName` | string | The resource group the logic app was deployed into. |
 | `resourceId` | string | The resource ID of the logic app. |

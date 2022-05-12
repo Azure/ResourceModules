@@ -452,6 +452,7 @@ tags: {
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
 | `backendpools` | array | The backend address pools available in the load balancer. |
+| `location` | string | The location the resource was deployed into. |
 | `name` | string | The name of the load balancer. |
 | `resourceGroupName` | string | The resource group the load balancer was deployed into. |
 | `resourceId` | string | The resource ID of the load balancer. |

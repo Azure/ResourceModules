@@ -138,3 +138,6 @@ output name string = metricAlert.name
 
 @description('The resource ID of the metric alert.')
 output resourceId string = metricAlert.id
+
+@description('The location the resource was deployed into.')
+output location string = metricAlert.location

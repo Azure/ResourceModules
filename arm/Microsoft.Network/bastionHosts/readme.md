@@ -152,6 +152,7 @@ roleAssignments: [
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
+| `location` | string | The location the resource was deployed into. |
 | `name` | string | The name the Azure Bastion. |
 | `resourceGroupName` | string | The resource group the Azure Bastion was deployed into. |
 | `resourceId` | string | The resource ID the Azure Bastion. |

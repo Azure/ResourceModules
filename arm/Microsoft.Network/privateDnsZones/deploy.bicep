@@ -211,3 +211,6 @@ output name string = privateDnsZone.name
 
 @description('The resource ID of the private DNS zone.')
 output resourceId string = privateDnsZone.id
+
+@description('The location the resource was deployed into.')
+output location string = privateDnsZone.location

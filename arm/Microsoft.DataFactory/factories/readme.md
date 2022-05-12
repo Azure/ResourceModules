@@ -192,6 +192,7 @@ userAssignedIdentities: {
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
+| `location` | string | The location the resource was deployed into. |
 | `name` | string | The Name of the Azure Data Factory instance. |
 | `resourceGroupName` | string | The name of the Resource Group with the Data factory. |
 | `resourceId` | string | The Resource ID of the Data factory. |

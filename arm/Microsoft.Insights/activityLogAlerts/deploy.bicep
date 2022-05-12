@@ -83,3 +83,6 @@ output resourceId string = activityLogAlert.id
 
 @description('The resource group the activity log alert was deployed into.')
 output resourceGroupName string = resourceGroup().name
+
+@description('The location the resource was deployed into.')
+output location string = activityLogAlert.location

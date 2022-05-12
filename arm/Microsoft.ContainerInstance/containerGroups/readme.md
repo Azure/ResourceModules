@@ -162,6 +162,7 @@ userAssignedIdentities: {
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
 | `iPv4Address` | string | The IPv4 address of the container group. |
+| `location` | string | The location the resource was deployed into. |
 | `name` | string | The name of the container group. |
 | `resourceGroupName` | string | The resource group the container group was deployed into. |
 | `resourceId` | string | The resource ID of the container group. |

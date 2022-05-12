@@ -155,6 +155,7 @@ userAssignedIdentities: {
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
+| `location` | string | The location the resource was deployed into. |
 | `name` | string | The name of the compute. |
 | `resourceGroupName` | string | The resource group the compute was deployed into. |
 | `resourceId` | string | The resource ID of the compute. |

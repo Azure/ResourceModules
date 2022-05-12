@@ -218,6 +218,7 @@ tags: {
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
+| `location` | string | The location the resource was deployed into. |
 | `name` | string | The name of the deployed Synapse Private Link Hub. |
 | `resourceGroupName` | string | The resource group of the deployed Synapse Private Link Hub. |
 | `resourceId` | string | The resource ID of the deployed Synapse Private Link Hub. |

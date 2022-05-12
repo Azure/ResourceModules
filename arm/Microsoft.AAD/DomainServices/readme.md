@@ -199,6 +199,7 @@ $pfxCertificate = [System.Convert]::ToBase64String($rawCertByteStream)
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
+| `location` | string | The location the resource was deployed into. |
 | `name` | string | The domain name of the Azure Active Directory Domain Services(Azure ADDS). |
 | `resourceGroupName` | string | The name of the resource group the Azure Active Directory Domain Services(Azure ADDS) was created in. |
 | `resourceId` | string | The resource ID of the Azure Active Directory Domain Services(Azure ADDS). |

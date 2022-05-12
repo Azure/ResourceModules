@@ -142,6 +142,7 @@ tags: {
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
 | `applicationId` | string | The application ID of the application insights component. |
+| `location` | string | The location the resource was deployed into. |
 | `name` | string | The name of the application insights component. |
 | `resourceGroupName` | string | The resource group the application insights component was deployed into. |
 | `resourceId` | string | The resource ID of the application insights component. |

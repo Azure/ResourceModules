@@ -139,6 +139,7 @@ tags: {
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
+| `location` | string | The location the resource was deployed into. |
 | `name` | string | The name of the proximity placement group. |
 | `resourceGroupName` | string | The resource group the proximity placement group was deployed into. |
 | `resourceId` | string | The resourceId the proximity placement group. |

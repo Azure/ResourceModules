@@ -233,6 +233,7 @@ tags: {
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
 | `activeActive` | bool | Shows if the virtual network gateway is configured in active-active mode. |
+| `location` | string | The location the resource was deployed into. |
 | `name` | string | The name of the virtual network gateway. |
 | `resourceGroupName` | string | The resource group the virtual network gateway was deployed. |
 | `resourceId` | string | The resource ID of the virtual network gateway. |

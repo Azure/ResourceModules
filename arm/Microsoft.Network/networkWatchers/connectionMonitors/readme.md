@@ -75,6 +75,7 @@ tags: {
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
+| `location` | string | The location the resource was deployed into. |
 | `name` | string | The name of the deployed connection monitor. |
 | `resourceGroupName` | string | The resource group the connection monitor was deployed into. |
 | `resourceId` | string | The resource ID of the deployed connection monitor. |

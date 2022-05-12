@@ -314,6 +314,7 @@ userAssignedIdentities: {
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
+| `location` | string | The location the resource was deployed into. |
 | `loginServer` | string | The reference to the Azure container registry. |
 | `name` | string | The Name of the Azure container registry. |
 | `resourceGroupName` | string | The name of the Azure container registry. |

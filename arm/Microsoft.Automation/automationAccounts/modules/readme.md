@@ -81,6 +81,7 @@ tags: {
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
+| `location` | string | The location the resource was deployed into. |
 | `name` | string | The name of the deployed module. |
 | `resourceGroupName` | string | The resource group of the deployed module. |
 | `resourceId` | string | The resource ID of the deployed module. |

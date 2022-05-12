@@ -804,6 +804,7 @@ userAssignedIdentities: {
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
+| `location` | string | The location the resource was deployed into. |
 | `name` | string | The Name of the recovery services vault. |
 | `resourceGroupName` | string | The name of the resource group the recovery services vault was created in. |
 | `resourceId` | string | The resource ID of the recovery services vault. |

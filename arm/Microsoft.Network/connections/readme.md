@@ -297,6 +297,7 @@ tags: {
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
+| `location` | string | The location the resource was deployed into. |
 | `name` | string | The name of the remote connection. |
 | `resourceGroupName` | string | The resource group the remote connection was deployed into. |
 | `resourceId` | string | The resource ID of the remote connection. |

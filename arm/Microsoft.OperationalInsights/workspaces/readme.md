@@ -430,6 +430,7 @@ tags: {
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
+| `location` | string | The location the resource was deployed into. |
 | `logAnalyticsWorkspaceId` | string | The ID associated with the workspace. |
 | `name` | string | The name of the deployed log analytics workspace. |
 | `resourceGroupName` | string | The resource group of the deployed log analytics workspace. |

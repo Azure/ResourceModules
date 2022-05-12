@@ -339,6 +339,7 @@ userAssignedIdentities: {
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
 | `endpoint` | string | The service endpoint of the cognitive services account. |
+| `location` | string | The location the resource was deployed into. |
 | `name` | string | The name of the cognitive services account. |
 | `resourceGroupName` | string | The resource group the cognitive services account was deployed into. |
 | `resourceId` | string | The resource ID of the cognitive services account. |

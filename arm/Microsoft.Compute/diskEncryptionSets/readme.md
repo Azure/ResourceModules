@@ -142,6 +142,7 @@ tags: {
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
 | `keyVaultName` | string | The name of the key vault with the disk encryption key. |
+| `location` | string | The location the resource was deployed into. |
 | `name` | string | The name of the disk encryption set. |
 | `resourceGroupName` | string | The resource group the disk encryption set was deployed into. |
 | `resourceId` | string | The resource ID of the disk encryption set. |
