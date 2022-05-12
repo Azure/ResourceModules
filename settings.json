@@ -5,7 +5,7 @@
         "localTokens": [
             {
                 "name": "namePrefix",
-                "value": "mra", //Make this one character shorter, this may be why you got an error on the KV, but why are there KV's in my sub then the role assignments error may be because your SP ain't got enough clout
+                "value": "rma", //Make this one character shorter, this may be why you got an error on the KV, but why are there KV's in my sub then the role assignments error may be because your SP ain't got enough clout
                 "metadata": {
                     "description": "A 3-5 character length string, included in the resources names"
                 }
