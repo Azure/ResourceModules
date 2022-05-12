@@ -105,9 +105,8 @@
         "systemAssignedIdentity": {
             "value": true
         },
-        "networkAcls": {
+        "networkRuleSets": {
             "value": {
-                "bypass": "AzureServices",
                 "defaultAction": "Deny",
                 "virtualNetworkRules": [
                     {
@@ -115,7 +114,7 @@
                         "action": "Allow"
                     }
                 ],
-                "ipRules": []
+                "trustedServiceAccessEnabled": false
             }
         },
         "userAssignedIdentities": {

@@ -43,8 +43,12 @@ param authorizationRules array = [
 @description('Optional. Configuration Details for private endpoints.For security reasons, it is recommended to use private endpoints whenever possible.')
 param privateEndpoints array = []
 
-@description('Optional. Networks ACLs, this value contains IPs to whitelist and/or Subnet information. For security reasons, it is recommended to set the DefaultAction Deny.')
-param networkAcls object = {}
+@description('Optional. Networks ACLs, this object contains IPs/Subnets to whitelist or restrict access to private endpoints only. For security reasons, it is recommended to configure this object on the Namespace.')
+param networkRuleSets object = {
+  publicNetworkAccess: 'Enabled'
+  defaultAction: 'Allow'
+  trustedServiceAccessEnabled: true
+}
 
 @description('Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.')
 @minValue(0)
@@ -96,20 +100,26 @@ param disasterRecoveryConfig object = {}
 @allowed([
   'ArchiveLogs'
   'OperationalLogs'
+  'AutoScaleLogs'
   'KafkaCoordinatorLogs'
   'KafkaUserErrorLogs'
   'EventHubVNetConnectionEvent'
   'CustomerManagedKeyUserLogs'
-  'AutoScaleLogs'
+  'RuntimeAuditLogs'
+  'ApplicationMetricsLogs'
+  'AllMetrics'
 ])
 param diagnosticLogCategoriesToEnable array = [
   'ArchiveLogs'
   'OperationalLogs'
+  'AutoScaleLogs'
   'KafkaCoordinatorLogs'
   'KafkaUserErrorLogs'
   'EventHubVNetConnectionEvent'
   'CustomerManagedKeyUserLogs'
-  'AutoScaleLogs'
+  'RuntimeAuditLogs'
+  'ApplicationMetricsLogs'
+  'AllMetrics'
 ]
 
 @description('Optional. The name of metrics that will be streamed.')
@@ -165,7 +175,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource eventHubNamespace 'Microsoft.EventHub/namespaces@2021-06-01-preview' = {
+resource eventHubNamespace 'Microsoft.EventHub/namespaces@2021-11-01' = {
   name: name_var
   location: location
   tags: tags
@@ -179,12 +189,6 @@ resource eventHubNamespace 'Microsoft.EventHub/namespaces@2021-06-01-preview' = 
     zoneRedundant: zoneRedundant
     isAutoInflateEnabled: isAutoInflateEnabled
     maximumThroughputUnits: maximumThroughputUnits_var
-    networkAcls: !empty(networkAcls) ? {
-      bypass: !empty(networkAcls) ? networkAcls.bypass : null
-      defaultAction: !empty(networkAcls) ? networkAcls.defaultAction : null
-      virtualNetworkRules: (!empty(networkAcls) && contains(networkAcls, 'virtualNetworkRules')) ? networkAcls.virtualNetworkRules : []
-      ipRules: (!empty(networkAcls) && contains(networkAcls, 'ipRules')) ? networkAcls.ipRules : []
-    } : null
   }
 }
 
@@ -263,6 +267,19 @@ module eventHubNamespace_authorizationRules 'authorizationRules/deploy.bicep' = 
     enableDefaultTelemetry: enableDefaultTelemetry
   }
 }]
+
+module eventHubNamespace_networkRuleSet 'networkRuleSets/deploy.bicep' = {
+  name: '${uniqueString(deployment().name, location)}-EvhbNamespace-NetworkRuleSet'
+  params: {
+    namespaceName: eventHubNamespace.name
+    publicNetworkAccess: contains(networkRuleSets, 'publicNetworkAccess') ? networkRuleSets.publicNetworkAccess : 'Enabled'
+    defaultAction: contains(networkRuleSets, 'defaultAction') ? networkRuleSets.defaultAction : 'Allow'
+    trustedServiceAccessEnabled: contains(networkRuleSets, 'trustedServiceAccessEnabled') ? networkRuleSets.trustedServiceAccessEnabled : true
+    ipRules: contains(networkRuleSets, 'ipRules') ? networkRuleSets.ipRules : []
+    virtualNetworkRules: contains(networkRuleSets, 'virtualNetworkRules') ? networkRuleSets.virtualNetworkRules : []
+    enableDefaultTelemetry: enableDefaultTelemetry
+  }
+}
 
 module eventHubNamespace_privateEndpoints '.bicep/nested_privateEndpoint.bicep' = [for (endpoint, index) in privateEndpoints: {
   name: '${uniqueString(deployment().name, location)}-EvhbNamespace-PrivateEndpoint-${index}'
