@@ -46,12 +46,18 @@ param securityAlertPolicies array = []
 @description('Conditional. The Azure Active Directory (AAD) administrator authentication. Required if no `administratorLogin` & `administratorLoginPassword` is provided.')
 param administrators object = {}
 
+@description('Optional. Configuration Details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible.')
+param privateEndpoints array = []
+
 var identityType = systemAssignedIdentity ? (!empty(userAssignedIdentities) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned') : (!empty(userAssignedIdentities) ? 'UserAssigned' : 'None')
 
 var identity = identityType != 'None' ? {
   type: identityType
   userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
 } : null
+
+@description('Optional. The vulnerability assessment configuration')
+param vulnerabilityAssessmentsObj object = {}
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
@@ -140,6 +146,20 @@ module server_databases 'databases/deploy.bicep' = [for (database, index) in dat
   }
 }]
 
+module server_privateEndpoints '.bicep/nested_privateEndpoint.bicep' = [for (endpoint, index) in privateEndpoints: if (!empty(privateEndpoints)) {
+  name: '${uniqueString(deployment().name, location)}-Sql-PrivateEndpoints-${index}'
+  params: {
+    privateEndpointResourceId: server.id
+    privateEndpointVnetLocation: !empty(privateEndpoints) ? reference(split(endpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location : 'dummy'
+    service: contains(endpoint, 'service') ? endpoint.service : 'sqlServer'
+    subnetResourceId: endpoint.subnetResourceId
+    customDnsConfigs: contains(endpoint, 'customDnsConfigs') ? endpoint.customDnsConfigs : []
+    name: contains(endpoint, 'name') ? endpoint.name : '${last(split(server.id, '/'))}-sql'
+    privateDnsZoneResourceIds: contains(endpoint, 'privateDnsZoneResourceIds') ? endpoint.privateDnsZoneResourceIds : []
+    tags: contains(endpoint, 'tags') ? endpoint.tags : {}
+  }
+}]
+
 module server_firewallRules 'firewallRules/deploy.bicep' = [for (firewallRule, index) in firewallRules: {
   name: '${uniqueString(deployment().name, location)}-Sql-FirewallRules-${index}'
   params: {
@@ -167,6 +187,22 @@ module server_securityAlertPolicies 'securityAlertPolicies/deploy.bicep' = [for 
   }
 }]
 
+module server_vulnerabilityAssessment 'vulnerabilityAssessments/deploy.bicep' = if (!empty(vulnerabilityAssessmentsObj)) {
+  name: '${uniqueString(deployment().name, location)}-Sql-VulnAssessm'
+  params: {
+    serverName: server.name
+    name: vulnerabilityAssessmentsObj.name
+    recurringScansEmails: contains(vulnerabilityAssessmentsObj, 'recurringScansEmails') ? vulnerabilityAssessmentsObj.recurringScansEmails : []
+    recurringScansEmailSubscriptionAdmins: contains(vulnerabilityAssessmentsObj, 'recurringScansEmailSubscriptionAdmins') ? vulnerabilityAssessmentsObj.recurringScansEmailSubscriptionAdmins : false
+    recurringScansIsEnabled: contains(vulnerabilityAssessmentsObj, 'recurringScansIsEnabled') ? vulnerabilityAssessmentsObj.recurringScansIsEnabled : false
+    vulnerabilityAssessmentsStorageAccountId: contains(vulnerabilityAssessmentsObj, 'vulnerabilityAssessmentsStorageAccountId') ? vulnerabilityAssessmentsObj.vulnerabilityAssessmentsStorageAccountId : ''
+    enableDefaultTelemetry: enableDefaultTelemetry
+  }
+  dependsOn: [
+    server_securityAlertPolicies
+  ]
+}
+
 @description('The name of the deployed SQL server.')
 output name string = server.name
 
@@ -178,3 +214,6 @@ output resourceGroupName string = resourceGroup().name
 
 @description('The principal ID of the system assigned identity.')
 output systemAssignedPrincipalId string = systemAssignedIdentity && contains(server.identity, 'principalId') ? server.identity.principalId : ''
+
+@description('The location the resource was deployed into.')
+output location string = server.location

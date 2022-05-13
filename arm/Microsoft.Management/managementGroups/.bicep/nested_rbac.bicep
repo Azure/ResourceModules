@@ -20,7 +20,7 @@ param resourceId string
 ])
 param principalType string = ''
 
-@sys.description('Optional. Description of role assignment')
+@sys.description('Optional. The description of the role assignment.')
 param description string = ''
 
 var builtInRoleNames = {

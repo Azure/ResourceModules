@@ -18,7 +18,7 @@ param managementGroupId string = managementGroup().name
 @sys.description('Optional. Location deployment metadata.')
 param location string = deployment().location
 
-@sys.description('Optional. Description of role assignment')
+@sys.description('Optional. The description of the role assignment.')
 param description string = ''
 
 @sys.description('Optional. ID of the delegated managed identity resource')

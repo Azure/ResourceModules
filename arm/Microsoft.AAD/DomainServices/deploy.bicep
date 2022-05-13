@@ -244,3 +244,6 @@ output resourceGroupName string = resourceGroup().name
 
 @description('The resource ID of the Azure Active Directory Domain Services(Azure ADDS).')
 output resourceId string = domainService.id
+
+@description('The location the resource was deployed into.')
+output location string = domainService.location

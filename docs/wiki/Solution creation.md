@@ -356,7 +356,7 @@ The modules provided by this repo can be orchestrated to create more complex inf
 
 ### Repo structure
 
-![RepoStructure](../media/MultiRepoTestFolderStructure.png)
+   <img src="../media/MultiRepoTestFolderStructure.png" alt="Repo Structure">
 
 ### YAML pipeline
 

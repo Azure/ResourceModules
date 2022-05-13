@@ -18,15 +18,13 @@ $script:Subscriptiondeployment = 'https://schema.management.azure.com/schemas/20
 $script:MGdeployment = 'https://schema.management.azure.com/schemas/2019-08-01/managementGroupDeploymentTemplate.json#'
 $script:Tenantdeployment = 'https://schema.management.azure.com/schemas/2019-08-01/tenantDeploymentTemplate.json#'
 $script:moduleFolderPaths = $moduleFolderPaths
-$script:moduleFolderPathsFiltered = $moduleFolderPaths | Where-Object {
-    (Split-Path $_ -Leaf) -notin @( 'AzureNetappFiles', 'TrafficManager', 'PrivateDnsZones', 'ManagementGroups') }
 $script:enforcedTokenList = $enforcedTokenList
 
 # For runtime purposes, we cache the compiled template in a hashtable that uses a formatted relative module path as a key
 $script:convertedTemplates = @{}
 
 # Import any helper function used in this test script
-Import-Module (Join-Path $PSScriptRoot 'shared\helper.psm1')
+Import-Module (Join-Path $PSScriptRoot 'shared\helper.psm1') -Force
 
 Describe 'File/folder tests' -Tag Modules {
 
@@ -37,6 +35,37 @@ Describe 'File/folder tests' -Tag Modules {
             $moduleFolderTestCases += @{
                 moduleFolderName = $moduleFolderPath.Replace('\', '/').Split('/arm/')[1]
                 moduleFolderPath = $moduleFolderPath
+                isTopLevelModule = $moduleFolderPath.Replace('\', '/').Split('/arm/')[1].Split('/').Count -eq 2 # <provider>/<resourceType>
+            }
+        }
+
+        if (Test-Path (Join-Path $repoRoot '.github')) {
+            It '[<moduleFolderName>] Module should have a GitHub workflow' -TestCases ($moduleFolderTestCases | Where-Object { $_.isTopLevelModule }) {
+
+                param(
+                    [string] $moduleFolderName,
+                    [string] $moduleFolderPath
+                )
+
+                $workflowsFolderName = Join-Path $RepoRoot '.github' 'workflows'
+                $workflowFileName = '{0}.yml' -f $moduleFolderName.Replace('\', '/').Replace('/', '.').Replace('Microsoft', 'ms').ToLower()
+
+                Test-Path (Join-Path $workflowsFolderName $workflowFileName) | Should -Be $true
+            }
+        }
+
+        if (Test-Path (Join-Path $repoRoot '.azuredevops')) {
+            It '[<moduleFolderName>] Module should have an Azure DevOps pipeline' -TestCases ($moduleFolderTestCases | Where-Object { $_.isTopLevelModule }) {
+
+                param(
+                    [string] $moduleFolderName,
+                    [string] $moduleFolderPath
+                )
+
+                $pipelinesFolderName = Join-Path $RepoRoot '.azuredevops' 'modulePipelines'
+                $pipelineFileName = '{0}.yml' -f $moduleFolderName.Replace('\', '/').Replace('/', '.').Replace('Microsoft', 'ms').ToLower()
+
+                Test-Path (Join-Path $pipelinesFolderName $pipelineFileName) | Should -Be $true
             }
         }
 
@@ -53,13 +82,9 @@ Describe 'File/folder tests' -Tag Modules {
             (Test-Path (Join-Path -Path $moduleFolderPath 'readme.md')) | Should -Be $true
         }
 
-        It '[<moduleFolderName>] Module should contain a [.parameters] folder' -TestCases $moduleFolderTestCases {
+        It '[<moduleFolderName>] Module should contain a [.parameters] folder' -TestCases ($moduleFolderTestCases | Where-Object { $_.isTopLevelModule }) {
             param( [string] $moduleFolderPath )
-            if ((Split-Path (Split-Path $moduleFolderPath -Parent) -Leaf) -like 'Microsoft.*') {
-                (Test-Path (Join-Path -Path $moduleFolderPath '.parameters')) | Should -Be $true
-            } else {
-                $true | Should -Be $true
-            }
+            Test-Path (Join-Path -Path $moduleFolderPath '.parameters') | Should -Be $true
         }
 
         It '[<moduleFolderName>] Module should contain a [version.json] file' -TestCases $moduleFolderTestCases {
@@ -125,15 +150,19 @@ Describe 'Readme tests' -Tag Readme {
                 if (Test-Path (Join-Path $moduleFolderPath 'deploy.bicep')) {
                     $templateFilePath = Join-Path $moduleFolderPath 'deploy.bicep'
                     $templateContent = az bicep build --file $templateFilePath --stdout | ConvertFrom-Json -AsHashtable
-                } elseif (Test-Path (Join-Path $moduleFolderPath 'deploy.json')) {
+                } elseIf (Test-Path (Join-Path $moduleFolderPath 'deploy.json')) {
                     $templateFilePath = Join-Path $moduleFolderPath 'deploy.json'
                     $templateContent = Get-Content $templateFilePath -Raw | ConvertFrom-Json -AsHashtable
                 } else {
                     throw "No template file found in folder [$moduleFolderPath]"
                 }
-                $convertedTemplates[$moduleFolderPathKey] = $templateContent
+                $convertedTemplates[$moduleFolderPathKey] = @{
+                    templateFilePath = $templateFilePath
+                    templateContent  = $templateContent
+                }
             } else {
-                $templateContent = $convertedTemplates[$moduleFolderPathKey]
+                $templateContent = $convertedTemplates[$moduleFolderPathKey].templateContent
+                $templateFilePath = $convertedTemplates[$moduleFolderPathKey].templateFilePath
             }
 
             $readmeFolderTestCases += @{
@@ -205,7 +234,7 @@ Describe 'Readme tests' -Tag Readme {
             }
 
             # Get template data
-            $templateResources = (Get-NestedResourceList -TemplateContent $templateContent | Where-Object {
+            $templateResources = (Get-NestedResourceList -TemplateFileContent $templateContent | Where-Object {
                     $_.type -notin @('Microsoft.Resources/deployments') -and $_ }).type | Select-Object -Unique
 
             # Compare
@@ -242,7 +271,7 @@ Describe 'Readme tests' -Tag Readme {
             }
 
             # Get template data
-            $templateResources = (Get-NestedResourceList -TemplateContent $templateContent | Where-Object {
+            $templateResources = (Get-NestedResourceList -TemplateFileContent $templateContent | Where-Object {
                     $_.type -notin @('Microsoft.Resources/deployments') -and $_ }).type | Select-Object -Unique
 
             # Compare
@@ -432,7 +461,6 @@ Describe 'Deployment template tests' -Tag Template {
     Context 'Deployment template tests' {
 
         $deploymentFolderTestCases = [System.Collections.ArrayList] @()
-        $deploymentFolderTestCasesException = [System.Collections.ArrayList] @()
         foreach ($moduleFolderPath in $moduleFolderPaths) {
 
             # For runtime purposes, we cache the compiled template in a hashtable that uses a formatted relative module path as a key
@@ -441,15 +469,19 @@ Describe 'Deployment template tests' -Tag Template {
                 if (Test-Path (Join-Path $moduleFolderPath 'deploy.bicep')) {
                     $templateFilePath = Join-Path $moduleFolderPath 'deploy.bicep'
                     $templateContent = az bicep build --file $templateFilePath --stdout | ConvertFrom-Json -AsHashtable
-                } elseif (Test-Path (Join-Path $moduleFolderPath 'deploy.json')) {
+                } elseIf (Test-Path (Join-Path $moduleFolderPath 'deploy.json')) {
                     $templateFilePath = Join-Path $moduleFolderPath 'deploy.json'
                     $templateContent = Get-Content $templateFilePath -Raw | ConvertFrom-Json -AsHashtable
                 } else {
                     throw "No template file found in folder [$moduleFolderPath]"
                 }
-                $convertedTemplates[$moduleFolderPathKey] = $templateContent
+                $convertedTemplates[$moduleFolderPathKey] = @{
+                    templateFilePath = $templateFilePath
+                    templateContent  = $templateContent
+                }
             } else {
-                $templateContent = $convertedTemplates[$moduleFolderPathKey]
+                $templateContent = $convertedTemplates[$moduleFolderPathKey].templateContent
+                $templateFilePath = $convertedTemplates[$moduleFolderPathKey].templateFilePath
             }
 
             # Parameter file test cases
@@ -477,13 +509,8 @@ Describe 'Deployment template tests' -Tag Template {
             $deploymentFolderTestCases += @{
                 moduleFolderName       = $moduleFolderPath.Replace('\', '/').Split('/arm/')[1]
                 templateContent        = $templateContent
+                templateFilePath       = $templateFilePath
                 parameterFileTestCases = $parameterFileTestCases
-            }
-        }
-        foreach ($moduleFolderPath in $moduleFolderPathsFiltered) {
-            $deploymentFolderTestCasesException += @{
-                moduleFolderNameException = $moduleFolderPath.Replace('\', '/').Split('/arm/')[1]
-                templateContent           = $templateContent
             }
         }
 
@@ -507,11 +534,11 @@ Describe 'Deployment template tests' -Tag Template {
             $SchemaArray = @()
             if ($Schemaverion -eq $RGdeployment) {
                 $SchemaOutput = $true
-            } elseif ($Schemaverion -eq $Subscriptiondeployment) {
+            } elseIf ($Schemaverion -eq $Subscriptiondeployment) {
                 $SchemaOutput = $true
-            } elseif ($Schemaverion -eq $MGdeployment) {
+            } elseIf ($Schemaverion -eq $MGdeployment) {
                 $SchemaOutput = $true
-            } elseif ($Schemaverion -eq $Tenantdeployment) {
+            } elseIf ($Schemaverion -eq $Tenantdeployment) {
                 $SchemaOutput = $true
             } else {
                 $SchemaOutput = $false
@@ -540,10 +567,10 @@ Describe 'Deployment template tests' -Tag Template {
             foreach ($API in $ApiVersion) {
                 if ($API.Substring(0, 2) -eq '20') {
                     $ApiVersionOutput = $true
-                } elseif ($API.substring(1, 10) -eq 'parameters') {
+                } elseIf ($API.substring(1, 10) -eq 'parameters') {
                     # An API version should not be referenced as a parameter
                     $ApiVersionOutput = $false
-                } elseif ($API.substring(1, 10) -eq 'variables') {
+                } elseIf ($API.substring(1, 10) -eq 'variables') {
                     # An API version should not be referenced as a variable
                     $ApiVersionOutput = $false
                 } else {
@@ -679,59 +706,62 @@ Describe 'Deployment template tests' -Tag Template {
             }
         }
 
-        It "[<moduleFolderNameException>] All resources that have a Location property should refer to the Location parameter 'parameters('Location')'" -TestCases $deploymentFolderTestCasesException {
+        It '[<moduleFolderName>] Location output should be returned for resources that use it' -TestCases $deploymentFolderTestCases {
+
             param(
-                $moduleFolderNameException,
-                $templateContent
+                [string] $moduleFolderName,
+                $templateContent,
+                [string] $templateFilePath
             )
-            $LocationParamFlag = @()
-            $Locmandoutput = $templateContent.resources
-            foreach ($Locmand in $Locmandoutput) {
-                if ($Locmand.Keys -contains 'Location' -and $Locmand.Location -eq "[parameters('Location')]") {
-                    $LocationParamFlag += $true
-                } elseif ($Locmand.Keys -notcontains 'Location') {
-                    $LocationParamFlag += $true
-                } elseif ($Locmand.Keys -notcontains 'resourceGroup') {
-                    $LocationParamFlag += $true
-                } else {
-                    $LocationParamFlag += $false
-                }
-                foreach ($Locm in $Locmand.resources) {
-                    if ($Locm.Keys -contains 'Location' -and $Locm.Location -eq "[parameters('Location')]") {
-                        $LocationParamFlag += $true
-                    } elseif ($Locm.Keys -notcontains 'Location') {
-                        $LocationParamFlag += $true
-                    } else {
-                        $LocationParamFlag += $false
-                    }
-                }
+
+            $outputs = $templateContent.outputs
+
+            $primaryResourceType = (Split-Path $TemplateFilePath -Parent).Replace('\', '/').split('/arm/')[1]
+            $primaryResourceTypeResource = $templateContent.resources | Where-Object { $_.type -eq $primaryResourceType }
+
+            if ($primaryResourceTypeResource.keys -contains 'location' -and $primaryResourceTypeResource.location -ne 'global') {
+                # If the main resource has a location property, an output should be returned too
+                $outputs.keys | Should -Contain 'location'
+
+                # It should further reference the location property of the primary resource and not e.g. the location input parameter
+                $outputs.location.value | Should -Match $primaryResourceType
             }
-            $LocationParamFlag | Should -Not -Contain $false
         }
 
-        It '[<moduleFolderName>] Standard outputs should be provided (e.g. resourceName, resourceId, resouceGroupName)' -TestCases $deploymentFolderTestCases {
+        It '[<moduleFolderName>] Resource Group output should exist for resources that are deployed into a resource group scope' -TestCases $deploymentFolderTestCases {
+
+            param(
+                [string] $moduleFolderName,
+                $templateContent,
+                [string] $templateFilePath
+            )
+
+            $outputs = $templateContent.outputs.Keys
+            $deploymentScope = Get-ScopeOfTemplateFile -TemplateFilePath $templateFilePath
+
+            if ($deploymentScope -eq 'resourceGroup') {
+                $outputs | Should -Contain 'resourceGroupName'
+            }
+        }
+
+        It '[<moduleFolderName>] Resource name output should exist' -TestCases $deploymentFolderTestCases {
             param(
                 $moduleFolderName,
                 $templateContent
             )
 
-            $Stdoutput = $templateContent.outputs.Keys
-            $i = 0
-            $Schemaverion = $templateContent.'$schema'
-            if ((($Schemaverion.Split('/')[5]).Split('.')[0]) -eq (($RGdeployment.Split('/')[5]).Split('.')[0])) {
-                # Resource Group Level deployment
-                foreach ($Stdo in $Stdoutput) {
-                    if ($Stdo -like '*Name*' -or $Stdo -like '*ResourceId*' -or $Stdo -like '*ResourceGroup*') {
-                        $true | Should -Be $true
-                        $i = $i + 1
-                    }
-                }
-                $i | Should -Not -BeLessThan 3
-            } ElseIf ((($schemaverion.Split('/')[5]).Split('.')[0]) -eq (($Subscriptiondeployment.Split('/')[5]).Split('.')[0])) {
-                # Subscription Level deployment
-                $Stdoutput | Should -Not -BeNullOrEmpty
-            }
+            $outputs = $templateContent.outputs.Keys
+            $outputs | Should -Contain 'name'
+        }
 
+        It '[<moduleFolderName>] Resource ID output should exist' -TestCases $deploymentFolderTestCases {
+            param(
+                $moduleFolderName,
+                $templateContent
+            )
+
+            $outputs = $templateContent.outputs.Keys
+            $outputs | Should -Contain 'resourceId'
         }
 
         It "[<moduleFolderName>] parameters' description shoud start with a one word category followed by a dot, a space and the actual description text ending with a dot." -TestCases $deploymentFolderTestCases {
@@ -844,18 +874,22 @@ Describe "API version tests [All apiVersions in the template should be 'recent']
             if (Test-Path (Join-Path $moduleFolderPath 'deploy.bicep')) {
                 $templateFilePath = Join-Path $moduleFolderPath 'deploy.bicep'
                 $templateContent = az bicep build --file $templateFilePath --stdout | ConvertFrom-Json -AsHashtable
-            } elseif (Test-Path (Join-Path $moduleFolderPath 'deploy.json')) {
+            } elseIf (Test-Path (Join-Path $moduleFolderPath 'deploy.json')) {
                 $templateFilePath = Join-Path $moduleFolderPath 'deploy.json'
                 $templateContent = Get-Content $templateFilePath -Raw | ConvertFrom-Json -AsHashtable
             } else {
                 throw "No template file found in folder [$moduleFolderPath]"
             }
-            $convertedTemplates[$moduleFolderPathKey] = $templateContent
+            $convertedTemplates[$moduleFolderPathKey] = @{
+                templateFilePath = $templateFilePath
+                templateContent  = $templateContent
+            }
         } else {
-            $templateContent = $convertedTemplates[$moduleFolderPathKey]
+            $templateContent = $convertedTemplates[$moduleFolderPathKey].templateContent
+            $templateFilePath = $convertedTemplates[$moduleFolderPathKey].templateFilePath
         }
 
-        $nestedResources = Get-NestedResourceList -TemplateContent $templateContent | Where-Object {
+        $nestedResources = Get-NestedResourceList -TemplateFileContent $templateContent | Where-Object {
             $_.type -notin @('Microsoft.Resources/deployments') -and $_
         } | Select-Object 'Type', 'ApiVersion' -Unique | Sort-Object Type
 

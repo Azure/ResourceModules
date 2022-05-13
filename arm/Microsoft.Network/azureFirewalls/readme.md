@@ -100,6 +100,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
 | `applicationRuleCollections` | array | List of Application Rule Collections. |
+| `location` | string | The location the resource was deployed into. |
 | `name` | string | The name of the Azure firewall. |
 | `natRuleCollections` | array | Collection of NAT rule collections used by Azure Firewall. |
 | `networkRuleCollections` | array | List of Network Rule Collections. |

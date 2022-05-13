@@ -205,7 +205,6 @@ The primary pipeline variable file `global.variables.yml` hosts the fundamental 
 
 ### 3.2.3 Enable actions
 
-
 Finally, 'GitHub Actions' are disabled by default and must be enabled for execution.
 
 To do so, perform the following steps:
@@ -229,6 +228,7 @@ For _Azure DevOps_, you have to perform the following environment-specific steps
 - [3.2.3 Setup variables file](#323-setup-variables-file)
 - [3.2.4 Register pipelines](#324-register-pipelines)
 - [3.2.5 Azure Artifacts Universal Packages](#325-azure-artifacts-universal-packages)
+
 ### 3.2.1 Setup service connection
 
 The service connection must be set up in the project's settings under _Pipelines: Service connections_ (a step by step guide can be found [here](https://docs.microsoft.com/en-us/azure/devops/pipelines/library/service-endpoints?view=azure-devops&tabs=yaml)).
@@ -329,7 +329,7 @@ This section will explain what is required to publish the modules to [Azure Arti
 1. If you chose the feed to be project-scoped, you will need the Project Build Service account to have `Contributor` access to publish to the Azure Artifacts feed. To set this, follow the [Pipeline permission](https://docs.microsoft.com/en-us/azure/devops/artifacts/feeds/feed-permissions?view=azure-devops#pipelines-permissions) steps.
 
 #### Implementation Guidance
-Each `./azuredevops/modulePipelines` yaml pipeline already calls `/.azuredevops/pipelineTemplates/jobs.publishModule.yml`. This yaml template contains a method to `Publish module to artifacts feed` via `utilities\pipelines\resourcePublish\Publish-ModuleToUniversalArtifactFeed.ps1`.
+Each `./azuredevops/modulePipelines` yaml pipeline already calls `/.azuredevops/pipelineTemplates/jobs.publishModule.yml`. This YAML template contains a method to `Publish module to artifacts feed` via `utilities\pipelines\resourcePublish\Publish-ModuleToUniversalArtifactFeed.ps1`.
 
 
 </details>

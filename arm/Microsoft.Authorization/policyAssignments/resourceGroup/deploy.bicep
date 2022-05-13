@@ -120,3 +120,6 @@ output resourceId string = az.resourceId(subscriptionId, resourceGroupName, 'Mic
 
 @sys.description('The name of the resource group the policy was assigned to')
 output resourceGroupName string = resourceGroup().name
+
+@sys.description('The location the resource was deployed into.')
+output location string = policyAssignment.location
