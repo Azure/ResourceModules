@@ -58,6 +58,7 @@ This module deploys a firewall.
 | `threatIntelMode` | string | `'Deny'` | `[Alert, Deny, Off]` | The operation mode for Threat Intel. |
 | `zones` | array | `[1, 2, 3]` |  | Zone numbers e.g. 1,2,3. |
 
+
 ### Parameter Usage: `additionalPublicIpConfigurations`
 
 Create additional public ip configurations from existing public ips
