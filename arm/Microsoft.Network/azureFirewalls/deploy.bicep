@@ -283,7 +283,7 @@ resource azureFirewall_diagnosticSettings 'Microsoft.Insights/diagnosticSettings
 }
 
 module azureFirewall_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
-  name: '${uniqueString(deployment().name, location)}-afw-rbac-${index}'
+  name: '${uniqueString(deployment().name, location)}-AzFW-Rbac-${index}'
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
     principalIds: roleAssignment.principalIds
@@ -293,28 +293,28 @@ module azureFirewall_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, ind
   }
 }]
 
-@description('The resource ID of the Azure firewall')
+@description('The resource ID of the Azure firewall.')
 output resourceId string = azureFirewall.id
 
-@description('The name of the Azure firewall')
+@description('The name of the Azure firewall.')
 output name string = azureFirewall.name
 
-@description('The resource group the Azure firewall was deployed into')
+@description('The resource group the Azure firewall was deployed into.')
 output resourceGroupName string = resourceGroup().name
 
-@description('The private IP of the Azure firewall')
+@description('The private IP of the Azure firewall.')
 output privateIp string = azureFirewall.properties.ipConfigurations[0].properties.privateIPAddress
 
-@description('The private IP of the Azure firewall')
+@description('The public ipconfiguration object for the AzureFirewallSubnet')
 output ipConfAzureFirewallSubnet object = azureFirewall.properties.ipConfigurations[0]
 
-@description('List of Application Rule Collections')
+@description('List of Application Rule Collections.')
 output applicationRuleCollections array = applicationRuleCollections
 
-@description('List of Network Rule Collections')
+@description('List of Network Rule Collections.')
 output networkRuleCollections array = networkRuleCollections
 
-@description('Collection of NAT rule collections used by Azure Firewall')
+@description('Collection of NAT rule collections used by Azure Firewall.')
 output natRuleCollections array = natRuleCollections
 
 @description('The location the resource was deployed into.')
