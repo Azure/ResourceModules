@@ -97,4 +97,4 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | `location` | string | The location the resource was deployed into. |
 | `name` | string | The name of the AVD application group |
 | `resourceGroupName` | string | The resource group the AVD application group was deployed into |
-| `resourceId` | string | The resource ID  of the AVD application group |
+| `resourceId` | string | The resource ID of the AVD application group |
