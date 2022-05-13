@@ -7,8 +7,8 @@ variables:
   # Validation deployment settings
   ######################################
 
-  location: 'West Europe' # The default location to test deploy resources to
-  resourceGroupName: 'validation-rg' # The default resource group to test deployment resources into
+  location: 'WestUS' # The default location to test deploy resources to
+  resourceGroupName: 'app-config-rg' # The default resource group to test deployment resources into
 
   ######################################
   # Publish: Template-Spec settings
