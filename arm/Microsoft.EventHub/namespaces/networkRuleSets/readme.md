@@ -52,6 +52,7 @@ Contains an array of subnets that this Event Hub Namespace is exposed to via Ser
         "id": "/subscriptions/<<subscriptionId>>/resourcegroups/<<resourceGroupName>>/providers/Microsoft.Network/virtualNetworks/<<virtualNetworkName>>/subnets/<<subnetName2>>"
         }
       }
+    ]
 }
 ```
 
@@ -70,6 +71,7 @@ Contains an array of objects for the public IP ranges you want to allow via the 
         "action": "Allow",
         "ipMask": "x.x.x.x/x"
       }
+    ]
 }
 ```
 
