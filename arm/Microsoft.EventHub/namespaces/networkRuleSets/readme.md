@@ -1,7 +1,6 @@
 # EventHub Namespaces NetworkRuleSets `[Microsoft.EventHub/namespaces/networkRuleSets]`
 
 This module deploys EventHub Namespaces NetworkRuleSets.
-// TODO: Replace Resource and fill in description
 
 ## Navigation
 
