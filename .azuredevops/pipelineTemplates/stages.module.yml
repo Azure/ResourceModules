@@ -105,10 +105,10 @@ stages:
               targetType: inline
               pwsh: true
               script: |
-                Write-Verbose '$(parameterTestsToPrint1)' -Verbose
-                Write-Verbose '$(parameterTestsToPrint2)' -Verbose
-                Write-Verbose '$(parameterTestsToPrint3)' -Verbose
-                Write-Verbose '$(parameterTestsToPrint4)' -Verbose
+                Write-Verbose $(parameterTestsToPrint1) -Verbose
+                Write-Verbose $(parameterTestsToPrint2) -Verbose
+                Write-Verbose $(parameterTestsToPrint3) -Verbose
+                Write-Verbose $(parameterTestsToPrint4) -Verbose
                 # Write-Host "##vso[task.setvariable variable=$jobsToRunInParallel;isOutput=true]$json"
               name: printvar2
       - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
