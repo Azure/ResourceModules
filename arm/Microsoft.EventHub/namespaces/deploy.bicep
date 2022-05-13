@@ -44,11 +44,7 @@ param authorizationRules array = [
 param privateEndpoints array = []
 
 @description('Optional. Networks ACLs, this object contains IPs/Subnets to whitelist or restrict access to private endpoints only. For security reasons, it is recommended to configure this object on the Namespace.')
-param networkRuleSets object = {
-  publicNetworkAccess: 'Enabled'
-  defaultAction: 'Allow'
-  trustedServiceAccessEnabled: true
-}
+param networkRuleSets object = {}
 
 @description('Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.')
 @minValue(0)
@@ -266,13 +262,13 @@ module eventHubNamespace_authorizationRules 'authorizationRules/deploy.bicep' = 
   }
 }]
 
-module eventHubNamespace_networkRuleSet 'networkRuleSets/deploy.bicep' = {
+module eventHubNamespace_networkRuleSet 'networkRuleSets/deploy.bicep' = if (!empty(networkRuleSets)) {
   name: '${uniqueString(deployment().name, location)}-EvhbNamespace-NetworkRuleSet'
   params: {
     namespaceName: eventHubNamespace.name
     publicNetworkAccess: contains(networkRuleSets, 'publicNetworkAccess') ? networkRuleSets.publicNetworkAccess : 'Enabled'
     defaultAction: contains(networkRuleSets, 'defaultAction') ? networkRuleSets.defaultAction : 'Allow'
-    trustedServiceAccessEnabled: contains(networkRuleSets, 'trustedServiceAccessEnabled') ? networkRuleSets.trustedServiceAccessEnabled : true
+    trustedServiceAccessEnabled: contains(networkRuleSets, 'trustedServiceAccessEnabled') ? networkRuleSets.trustedServiceAccessEnabled : null
     ipRules: contains(networkRuleSets, 'ipRules') ? networkRuleSets.ipRules : []
     virtualNetworkRules: contains(networkRuleSets, 'virtualNetworkRules') ? networkRuleSets.virtualNetworkRules : []
     enableDefaultTelemetry: enableDefaultTelemetry
