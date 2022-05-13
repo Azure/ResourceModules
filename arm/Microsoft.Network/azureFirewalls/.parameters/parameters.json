@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "<<namePrefix>>-az-afw-x-001"
+            "value": "<<namePrefix>>-az-fw-x-001"
         },
         "zones": {
             "value": [

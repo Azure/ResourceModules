@@ -164,15 +164,15 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `applicationRuleCollections` | array | List of Application Rule Collections |
-| `ipConfAzureFirewallSubnet` | object | The private IP of the Azure firewall |
+| `applicationRuleCollections` | array | List of Application Rule Collections. |
+| `ipConfAzureFirewallSubnet` | object | The public ipconfiguration object for the AzureFirewallSubnet |
 | `location` | string | The location the resource was deployed into. |
-| `name` | string | The name of the Azure firewall |
-| `natRuleCollections` | array | Collection of NAT rule collections used by Azure Firewall |
-| `networkRuleCollections` | array | List of Network Rule Collections |
-| `privateIp` | string | The private IP of the Azure firewall |
-| `resourceGroupName` | string | The resource group the Azure firewall was deployed into |
-| `resourceId` | string | The resource ID of the Azure firewall |
+| `name` | string | The name of the Azure firewall. |
+| `natRuleCollections` | array | Collection of NAT rule collections used by Azure Firewall. |
+| `networkRuleCollections` | array | List of Network Rule Collections. |
+| `privateIp` | string | The private IP of the Azure firewall. |
+| `resourceGroupName` | string | The resource group the Azure firewall was deployed into. |
+| `resourceId` | string | The resource ID of the Azure firewall. |
 
 ## Considerations
 
