@@ -56,7 +56,7 @@ module TXT_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in rol
   }
 }]
 
-@description('The name of the deployed TXT record')
+@description('The name of the deployed TXT record.')
 output name string = TXT.name
 
 @description('The resource ID of the deployed TXT record.')

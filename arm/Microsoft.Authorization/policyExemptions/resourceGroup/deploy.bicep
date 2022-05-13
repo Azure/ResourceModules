@@ -14,7 +14,7 @@ param description string = ''
 @sys.description('Optional. The policy exemption metadata. Metadata is an open ended object and is typically a collection of key-value pairs.')
 param metadata object = {}
 
-@sys.description('Optional. The policy exemption category. Possible values are Waiver and Mitigated. Default is Mitigated')
+@sys.description('Optional. The policy exemption category. Possible values are Waiver and Mitigated. Default is Mitigated.')
 @allowed([
   'Mitigated'
   'Waiver'
@@ -64,14 +64,14 @@ resource policyExemption 'Microsoft.Authorization/policyExemptions@2020-07-01-pr
   }
 }
 
-@sys.description('Policy Exemption Name')
+@sys.description('Policy Exemption Name.')
 output name string = policyExemption.name
 
-@sys.description('Policy Exemption resource ID')
+@sys.description('Policy Exemption resource ID.')
 output resourceId string = az.resourceId(subscriptionId, resourceGroupName, 'Microsoft.Authorization/policyExemptions', policyExemption.name)
 
-@sys.description('Policy Exemption Scope')
+@sys.description('Policy Exemption Scope.')
 output scope string = resourceGroup().id
 
-@sys.description('The name of the resource group the policy exemption was applied at')
+@sys.description('The name of the resource group the policy exemption was applied at.')
 output resourceGroupName string = resourceGroup().name

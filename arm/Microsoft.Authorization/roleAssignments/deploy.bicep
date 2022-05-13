@@ -21,10 +21,10 @@ param location string = deployment().location
 @sys.description('Optional. The description of the role assignment.')
 param description string = ''
 
-@sys.description('Optional. ID of the delegated managed identity resource')
+@sys.description('Optional. ID of the delegated managed identity resource.')
 param delegatedManagedIdentityResourceId string = ''
 
-@sys.description('Optional. The conditions on the role assignment. This limits the resources it can be assigned to')
+@sys.description('Optional. The conditions on the role assignment. This limits the resources it can be assigned to.')
 param condition string = ''
 
 @sys.description('Optional. Version of the condition. Currently accepted value is "2.0"')
@@ -111,11 +111,11 @@ module roleAssignment_rg 'resourceGroup/deploy.bicep' = if (!empty(resourceGroup
   }
 }
 
-@sys.description('The GUID of the Role Assignment')
+@sys.description('The GUID of the Role Assignment.')
 output name string = empty(subscriptionId) && empty(resourceGroupName) ? roleAssignment_mg.outputs.name : (!empty(subscriptionId) && empty(resourceGroupName) ? roleAssignment_sub.outputs.name : roleAssignment_rg.outputs.name)
 
-@sys.description('The resource ID of the Role Assignment')
+@sys.description('The resource ID of the Role Assignment.')
 output resourceId string = empty(subscriptionId) && empty(resourceGroupName) ? roleAssignment_mg.outputs.resourceId : (!empty(subscriptionId) && empty(resourceGroupName) ? roleAssignment_sub.outputs.resourceId : roleAssignment_rg.outputs.resourceId)
 
-@sys.description('The scope this Role Assignment applies to')
+@sys.description('The scope this Role Assignment applies to.')
 output scope string = empty(subscriptionId) && empty(resourceGroupName) ? roleAssignment_mg.outputs.scope : (!empty(subscriptionId) && empty(resourceGroupName) ? roleAssignment_sub.outputs.scope : roleAssignment_rg.outputs.scope)

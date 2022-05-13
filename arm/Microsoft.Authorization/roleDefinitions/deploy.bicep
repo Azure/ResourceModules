@@ -98,11 +98,11 @@ module roleDefinition_rg 'resourceGroup/deploy.bicep' = if (!empty(resourceGroup
   }
 }
 
-@sys.description('The GUID of the Role Definition')
+@sys.description('The GUID of the Role Definition.')
 output name string = empty(subscriptionId) && empty(resourceGroupName) ? roleDefinition_mg.outputs.name : (!empty(subscriptionId) && empty(resourceGroupName) ? roleDefinition_sub.outputs.name : roleDefinition_rg.outputs.name)
 
-@sys.description('The resource ID of the Role Definition')
+@sys.description('The resource ID of the Role Definition.')
 output resourceId string = empty(subscriptionId) && empty(resourceGroupName) ? roleDefinition_mg.outputs.resourceId : (!empty(subscriptionId) && empty(resourceGroupName) ? roleDefinition_sub.outputs.resourceId : roleDefinition_rg.outputs.resourceId)
 
-@sys.description('The scope this Role Definition applies to')
+@sys.description('The scope this Role Definition applies to.')
 output roleDefinitionScope string = empty(subscriptionId) && empty(resourceGroupName) ? roleDefinition_mg.outputs.scope : (!empty(subscriptionId) && empty(resourceGroupName) ? roleDefinition_sub.outputs.scope : roleDefinition_rg.outputs.scope)

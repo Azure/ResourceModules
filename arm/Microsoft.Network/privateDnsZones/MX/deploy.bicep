@@ -56,7 +56,7 @@ module MX_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in role
   }
 }]
 
-@description('The name of the deployed MX record')
+@description('The name of the deployed MX record.')
 output name string = MX.name
 
 @description('The resource ID of the deployed MX record.')

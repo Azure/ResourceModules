@@ -14,7 +14,7 @@ param description string = ''
 @sys.description('Optional. The policy exemption metadata. Metadata is an open ended object and is typically a collection of key-value pairs.')
 param metadata object = {}
 
-@sys.description('Optional. The policy exemption category. Possible values are Waiver and Mitigated. Default is Mitigated')
+@sys.description('Optional. The policy exemption category. Possible values are Waiver and Mitigated. Default is Mitigated.')
 @allowed([
   'Mitigated'
   'Waiver'
@@ -112,11 +112,11 @@ module policyExemption_rg 'resourceGroup/deploy.bicep' = if (!empty(resourceGrou
   }
 }
 
-@sys.description('Policy Exemption Name')
+@sys.description('Policy Exemption Name.')
 output name string = empty(subscriptionId) && empty(resourceGroupName) ? policyExemption_mg.outputs.name : (!empty(subscriptionId) && empty(resourceGroupName) ? policyExemption_sub.outputs.name : policyExemption_rg.outputs.name)
 
-@sys.description('Policy Exemption resource ID')
+@sys.description('Policy Exemption resource ID.')
 output resourceId string = empty(subscriptionId) && empty(resourceGroupName) ? policyExemption_mg.outputs.resourceId : (!empty(subscriptionId) && empty(resourceGroupName) ? policyExemption_sub.outputs.resourceId : policyExemption_rg.outputs.resourceId)
 
-@sys.description('Policy Exemption Scope')
+@sys.description('Policy Exemption Scope.')
 output scope string = empty(subscriptionId) && empty(resourceGroupName) ? policyExemption_mg.outputs.scope : (!empty(subscriptionId) && empty(resourceGroupName) ? policyExemption_sub.outputs.scope : policyExemption_rg.outputs.scope)

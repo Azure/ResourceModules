@@ -56,7 +56,7 @@ module AAAA_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in ro
   }
 }]
 
-@description('The name of the deployed AAAA record')
+@description('The name of the deployed AAAA record.')
 output name string = AAAA.name
 
 @description('The resource ID of the deployed AAAA record.')

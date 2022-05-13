@@ -56,7 +56,7 @@ module SOA_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in rol
   }
 }]
 
-@description('The name of the deployed SOA record')
+@description('The name of the deployed SOA record.')
 output name string = SOA.name
 
 @description('The resource ID of the deployed SOA record.')
