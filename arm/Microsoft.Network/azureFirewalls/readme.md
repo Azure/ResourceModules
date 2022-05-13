@@ -62,6 +62,63 @@ This module deploys a firewall.
 | `threatIntelMode` | string | `'Deny'` | `[Alert, Deny, Off]` | The operation mode for Threat Intel. |
 | `zones` | array | `[1, 2, 3]` |  | Zone numbers e.g. 1,2,3. |
 
+### Parameter Usage: `additionalPublicIpConfigurations`
+
+Create additional public ip configurations from existing public ips
+
+```json
+        "additionalPublicIpConfigurations": {
+            "value": [
+                {
+                    "name": "ipConfig01",
+                    "publicIPAddressResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/publicIPAddresses/adp-<<namePrefix>>-az-pip-x-fw-01"
+                },
+                {
+                    "name": "ipConfig02",
+                    "publicIPAddressResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/publicIPAddresses/adp-<<namePrefix>>-az-pip-x-fw-02"
+                }
+            ]
+        }
+```
+
+### Parameter Usage: `publicIPAddressObject`
+
+The Public IP Address object to create as part of the module. This will be created if `isCreateDefaultPublicIP` is true (which it is by default). If not provided, the name and other configurations will be set by default.
+
+```json
+        "publicIPAddressObject": {
+            "value": {
+                "name": "mypip",
+                "publicIPPrefixResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/publicIPPrefixes/myprefix",
+                "publicIPAllocationMethod": "Dynamic",
+                "skuName": "Basic",
+                "skuTier": "Regional",
+                "roleAssignments": {
+                    "value": [
+                        {
+                            "roleDefinitionIdOrName": "Reader",
+                            "principalIds": [
+                                "<<deploymentSpId>>"
+                            ]
+                        }
+                    ]
+                },
+                "diagnosticMetricsToEnable": {
+                    "value": [
+                        "AllMetrics"
+                    ]
+                },
+                "diagnosticLogCategoriesToEnable": {
+                    "value": [
+                        "DDoSProtectionNotifications",
+                        "DDoSMitigationFlowLogs",
+                        "DDoSMitigationReports"
+                    ]
+                }
+            }
+        }
+
+```
 
 ### Parameter Usage: `roleAssignments`
 
