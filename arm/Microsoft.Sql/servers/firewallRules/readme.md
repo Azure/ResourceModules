@@ -7,13 +7,12 @@ This module deploys an SQL Server Firewall rule.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Template references](#Template-references)
 
 ## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Sql/servers/firewallRules` | 2021-05-01-preview |
+| `Microsoft.Sql/servers/firewallRules` | [2021-05-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Sql/2021-05-01-preview/servers/firewallRules) |
 
 ## Parameters
 
@@ -21,7 +20,11 @@ This module deploys an SQL Server Firewall rule.
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The name of the Server Firewall Rule. |
-| `serverName` | string | The Name of SQL Server |
+
+**Conditional parameters**
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `serverName` | string | The name of the parent SQL Server. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Description |
@@ -35,10 +38,6 @@ This module deploys an SQL Server Firewall rule.
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the deployed firewall rule |
-| `resourceGroupName` | string | The resourceGroup of the deployed firewall rule |
-| `resourceId` | string | The resource ID of the deployed firewall rule |
-
-## Template references
-
-- [Servers/Firewallrules](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Sql/2021-05-01-preview/servers/firewallRules)
+| `name` | string | The name of the deployed firewall rule. |
+| `resourceGroupName` | string | The resourceGroup of the deployed firewall rule. |
+| `resourceId` | string | The resource ID of the deployed firewall rule. |

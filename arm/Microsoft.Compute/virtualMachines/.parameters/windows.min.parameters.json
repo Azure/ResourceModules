@@ -13,6 +13,9 @@
         "osType": {
             "value": "Windows"
         },
+        "vmSize": {
+            "value": "Standard_B12ms"
+        },
         "osDisk": {
             "value": {
                 "diskSizeGB": "128",

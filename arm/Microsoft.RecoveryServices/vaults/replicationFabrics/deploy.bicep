@@ -1,10 +1,10 @@
-@description('Required. Name of the Azure Recovery Service Vault')
+@description('Conditional. The name of the parent Azure Recovery Service Vault. Required if the template is used in a standalone deployment.')
 param recoveryVaultName string
 
-@description('Required. The recovery location the fabric represents')
+@description('Required. The recovery location the fabric represents.')
 param location string = resourceGroup().location
 
-@description('Optional. The name of the fabric')
+@description('Optional. The name of the fabric.')
 param name string = location
 
 @description('Optional. Replication containers to create.')
@@ -42,6 +42,7 @@ module fabric_replicationContainers 'replicationProtectionContainers/deploy.bice
     recoveryVaultName: recoveryVaultName
     replicationFabricName: name
     replicationContainerMappings: contains(container, 'replicationContainerMappings') ? container.replicationContainerMappings : []
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
   dependsOn: [
     replicationFabric
@@ -56,3 +57,6 @@ output resourceId string = replicationFabric.id
 
 @description('The name of the resource group the replication fabric was created in.')
 output resourceGroupName string = resourceGroup().name
+
+@description('The location the resource was deployed into.')
+output location string = replicationFabric.location

@@ -1,14 +1,14 @@
-@description('Required. Name of the Network Watcher resource (hidden)')
+@description('Required. Name of the Network Watcher resource (hidden).')
 @minLength(1)
 param name string = 'NetworkWatcher_${location}'
 
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
 
-@description('Optional. Array that contains the Connection Monitors')
+@description('Optional. Array that contains the Connection Monitors.')
 param connectionMonitors array = []
 
-@description('Optional. Array that contains the Flow Logs')
+@description('Optional. Array that contains the Flow Logs.')
 param flowLogs array = []
 
 @allowed([
@@ -19,7 +19,7 @@ param flowLogs array = []
 @description('Optional. Specify the type of lock.')
 param lock string = 'NotSpecified'
 
-@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'')
+@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
 param roleAssignments array = []
 
 @description('Optional. Tags of the resource.')
@@ -76,6 +76,7 @@ module networkWatcher_connectionMonitors 'connectionMonitors/deploy.bicep' = [fo
     testConfigurations: contains(connectionMonitor, 'testConfigurations') ? connectionMonitor.testConfigurations : []
     testGroups: contains(connectionMonitor, 'testGroups') ? connectionMonitor.testGroups : []
     workspaceResourceId: contains(connectionMonitor, 'workspaceResourceId') ? connectionMonitor.workspaceResourceId : ''
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }]
 
@@ -92,14 +93,18 @@ module networkWatcher_flowLogs 'flowLogs/deploy.bicep' = [for (flowLog, index) i
     targetResourceId: flowLog.targetResourceId
     trafficAnalyticsInterval: contains(flowLog, 'trafficAnalyticsInterval') ? flowLog.trafficAnalyticsInterval : 60
     workspaceResourceId: contains(flowLog, 'workspaceResourceId') ? flowLog.workspaceResourceId : ''
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }]
 
-@description('The name of the deployed network watcher')
+@description('The name of the deployed network watcher.')
 output name string = networkWatcher.name
 
-@description('The resource ID of the deployed network watcher')
+@description('The resource ID of the deployed network watcher.')
 output resourceId string = networkWatcher.id
 
-@description('The resource group the network watcher was deployed into')
+@description('The resource group the network watcher was deployed into.')
 output resourceGroupName string = resourceGroup().name
+
+@description('The location the resource was deployed into.')
+output location string = networkWatcher.location

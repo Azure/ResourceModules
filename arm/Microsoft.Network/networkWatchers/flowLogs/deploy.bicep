@@ -1,4 +1,4 @@
-@description('Optional. Name of the network watcher resource. Must be in the resource group where the Flow log will be created and same region as the NSG')
+@description('Optional. Name of the network watcher resource. Must be in the resource group where the Flow log will be created and same region as the NSG.')
 param networkWatcherName string = 'NetworkWatcher_${resourceGroup().location}'
 
 @description('Optional. Name of the resource.')
@@ -16,17 +16,17 @@ param targetResourceId string
 @description('Required. Resource ID of the diagnostic storage account.')
 param storageId string
 
-@description('Optional. If the flow log should be enabled')
+@description('Optional. If the flow log should be enabled.')
 param enabled bool = true
 
-@description('Optional. The flow log format version')
+@description('Optional. The flow log format version.')
 @allowed([
   1
   2
 ])
 param formatVersion int = 2
 
-@description('Optional. Specify the Log Analytics Workspace Resource ID')
+@description('Optional. Specify the Log Analytics Workspace Resource ID.')
 param workspaceResourceId string = ''
 
 @description('Optional. The interval in minutes which would decide how frequently TA service should do flow analytics.')
@@ -92,11 +92,14 @@ resource flowLog 'Microsoft.Network/networkWatchers/flowLogs@2021-05-01' = {
     flowAnalyticsConfiguration: flowAnalyticsConfiguration
   }
 }
-@description('The name of the flow log')
+@description('The name of the flow log.')
 output name string = flowLog.name
 
-@description('The resource ID of the flow log')
+@description('The resource ID of the flow log.')
 output resourceId string = flowLog.id
 
-@description('The resource group the flow log was deployed into')
+@description('The resource group the flow log was deployed into.')
 output resourceGroupName string = resourceGroup().name
+
+@description('The location the resource was deployed into.')
+output location string = flowLog.location

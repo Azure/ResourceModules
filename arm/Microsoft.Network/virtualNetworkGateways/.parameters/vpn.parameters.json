@@ -25,7 +25,7 @@
             "value": "RouteBased"
         },
         "activeActive": {
-            "value": false
+            "value": true
         },
         "vNetResourceId": {
             "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001"

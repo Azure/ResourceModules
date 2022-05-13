@@ -21,7 +21,7 @@
 ##   |======================================================================================================================================================================================================================|
 ##   | Parameter                       | Default Value                        | Description                                                                                             | Example                           |
 ##   |---------------------------------|--------------------------------------|---------------------------------------------------------------------------------------------------------|-----------------------------------|
-##   | displayName                     | 'Publish module'                     | Name for the pipeline job                                                                               | 'Publish KeyVault'                |
+##   | displayName                     | 'Publishing'                     | Name for the pipeline job                                                                               | 'Publish KeyVault'                |
 ##   | serviceConnection               | '$(serviceConnection)'               | The service connection that connects to Azure                                                           | 'demo-internal'                   |
 ##   | poolName                        | '$(poolName)'                        | You can provide either a [poolname] or [vmImage] to run the job on                                      | 'Custom Deployment Pool'          |
 ##   | vmImage                         | '$(vmImage)'                         | You can provide either a [poolname] or [vmImage] to run the job on                                      | 'ubuntu20.04'                     |
@@ -46,7 +46,7 @@
 parameters:
   # Pipeline-related parameters
   checkoutRepositories: ''
-  displayName: 'Publish module'
+  displayName: 'Publishing'
   serviceConnection: '$(serviceConnection)'
   poolName: '$(poolName)'
   vmImage: '$(vmImage)'
@@ -255,20 +255,23 @@ jobs:
 
       # [private bicep registry publish] task(s)
       #-------------------------------------------
-      - task: AzurePowerShell@5
+      - task: AzureCLI@2
         displayName: 'Publish module to private bicep registry'
         condition: and(
           eq(variables['bicepRegistryDoPublish'], true),
           succeeded()
           )
-        enabled: true
         inputs:
+          addSpnToEnvironment: true
           azureSubscription: '${{ parameters.serviceConnection }}'
-          azurePowerShellVersion: ${{ parameters.azurePowerShellVersion }}
-          preferredAzurePowerShellVersion: ${{ parameters.preferredAzurePowerShellVersion }}
-          pwsh: true
-          ScriptType: InlineScript
-          inline: |
+          scriptType: pscore
+          scriptLocation: inlineScript
+          inlineScript: |
+            # Log into Az-PowerShell context
+            $SecuredPassword = ConvertTo-SecureString -AsPlainText -String $env:servicePrincipalKey
+            $Credential = New-Object -TypeName System.Management.Automation.PSCredential -ArgumentList $env:servicePrincipalId, $SecuredPassword
+            Connect-AzAccount -ServicePrincipal -TenantId $env:tenantId -Credential $Credential
+
             # Load used functions
             . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Get-ModulesToPublish.ps1')
             . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourcePublish' 'Publish-ModuleToPrivateBicepRegistry.ps1')
@@ -295,11 +298,11 @@ jobs:
               Write-Host "##[group]$(' - [{0}] [{1}]' -f $RelPath, $ModuleToPublish.Version)"
 
               $functionInput = @{
-                TemplateFilePath         = $ModuleToPublish.TemplateFilePath
+                TemplateFilePath        = $ModuleToPublish.TemplateFilePath
                 BicepRegistryName       = '${{ parameters.bicepRegistryName }}'
                 BicepRegistryRgName     = '${{ parameters.bicepRegistryRgName }}'
                 BicepRegistryRgLocation = '${{ parameters.bicepRegistryRgLocation }}'
-                ModuleVersion            = $ModuleToPublish.Version
+                ModuleVersion           = $ModuleToPublish.Version
               }
 
               Write-Verbose "Invoke Publish-ModuleToPrivateBicepRegistry with" -Verbose

@@ -7,22 +7,25 @@ This module deploys a Backup Policy for a Recovery Services Vault
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Template references](#Template-references)
 
 ## Resource types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.RecoveryServices/vaults/backupPolicies` | 2021-08-01 |
+| `Microsoft.RecoveryServices/vaults/backupPolicies` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2021-08-01/vaults/backupPolicies) |
 
 ## Parameters
 
 **Required parameters**
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `backupPolicyProperties` | object | Configuration of the Azure Recovery Service Vault Backup Policy |
-| `name` | string | Name of the Azure Recovery Service Vault Backup Policy |
-| `recoveryVaultName` | string | Name of the Azure Recovery Service Vault |
+| `backupPolicyProperties` | object | Configuration of the Azure Recovery Service Vault Backup Policy. |
+| `name` | string | Name of the Azure Recovery Service Vault Backup Policy. |
+
+**Conditional parameters**
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `recoveryVaultName` | string | The name of the parent Azure Recovery Service Vault. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Description |
@@ -122,10 +125,6 @@ Object continaining the configuration for backup policies. It needs to be proper
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the backup policy |
+| `name` | string | The name of the backup policy. |
 | `resourceGroupName` | string | The name of the resource group the backup policy was created in. |
-| `resourceId` | string | The resource ID of the backup policy |
-
-## Template references
-
-- [Vaults/Backuppolicies](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2021-08-01/vaults/backupPolicies)
+| `resourceId` | string | The resource ID of the backup policy. |

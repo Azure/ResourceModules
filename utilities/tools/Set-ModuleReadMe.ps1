@@ -1,47 +1,5 @@
 ﻿#requires -version 6.0
 
-#region Helper functions
-<#
-.SYNOPSIS
-Get a list of all resources (provider + service) in the given template content
-
-.DESCRIPTION
-Get a list of all resources (provider + service) in the given template content. Crawls through any children & nested deployment templates.
-
-.PARAMETER TemplateFileContent
-Mandatory. The template file content object to crawl data from
-
-.EXAMPLE
-Get-NestedResourceList -TemplateFileContent @{ resource = @{}; ... }
-
-Returns a list of all resources in the given template object
-#>
-function Get-NestedResourceList {
-
-    [CmdletBinding()]
-    param(
-        [Parameter(Mandatory)]
-        [Alias('Path')]
-        [hashtable] $TemplateFileContent
-    )
-
-    $res = @()
-    $currLevelResources = @()
-    if ($TemplateFileContent.resources) {
-        $currLevelResources += $TemplateFileContent.resources
-    }
-    foreach ($resource in $currLevelResources) {
-        $res += $resource
-
-        if ($resource.type -eq 'Microsoft.Resources/deployments') {
-            $res += Get-NestedResourceList -TemplateFileContent $resource.properties.template
-        } else {
-            $res += Get-NestedResourceList -TemplateFileContent $resource
-        }
-    }
-    return $res
-}
-
 <#
 .SYNOPSIS
 Update the 'Resource Types' section of the given readme file
@@ -91,12 +49,33 @@ function Set-ResourceTypesSection {
         '| :-- | :-- |'
     )
 
-    $RelevantResourceTypes = Get-NestedResourceList $TemplateFileContent | Where-Object {
+    $RelevantResourceTypeObjects = Get-NestedResourceList $TemplateFileContent | Where-Object {
         $_.type -notin $ResourceTypesToExclude -and $_
     } | Select-Object 'Type', 'ApiVersion' -Unique | Sort-Object Type -Culture en-US
 
-    foreach ($resourceType in $RelevantResourceTypes) {
-        $SectionContent += ('| `{0}` | {1} |' -f $resourceType.type, $resourceType.apiVersion)
+    foreach ($resourceTypeObject in $RelevantResourceTypeObjects) {
+        $ProviderNamespace, $ResourceType = $resourceTypeObject.Type -split '/', 2
+        # Validate if Reference URL Is working
+        $TemplatesBaseUrl = 'https://docs.microsoft.com/en-us/azure/templates'
+        try {
+            $ResourceReferenceUrl = '{0}/{1}/{2}/{3}' -f $TemplatesBaseUrl, $ProviderNamespace, $resourceTypeObject.ApiVersion, $ResourceType
+            $null = Invoke-WebRequest -Uri $ResourceReferenceUrl
+        } catch {
+            # Validate if Reference URL is working using the latest documented API version (with no API version in the URL)
+            try {
+                $ResourceReferenceUrl = '{0}/{1}/{2}' -f $TemplatesBaseUrl, $ProviderNamespace, $ResourceType
+                $null = Invoke-WebRequest -Uri $ResourceReferenceUrl
+            } catch {
+                # Check if the resource is a child resource
+                if ($ResourceType.Split('/').length -gt 1) {
+                    $ResourceReferenceUrl = '{0}/{1}/{2}' -f $TemplatesBaseUrl, $ProviderNamespace, $ResourceType.Split('/')[0]
+                } else {
+                    # Use the default Templates URL (Last resort)
+                    $ResourceReferenceUrl = '{0}' -f $TemplatesBaseUrl
+                }
+            }
+        }
+        $SectionContent += ('| `{0}` | [{1}]({2}) |' -f $resourceTypeObject.type, $resourceTypeObject.apiVersion, $ResourceReferenceUrl)
     }
 
     # Build result
@@ -322,92 +301,6 @@ function Set-OutputsSection {
 
 <#
 .SYNOPSIS
-Update the 'Template references' section of the given readme file
-
-.DESCRIPTION
-Update the 'Template references' section of the given readme file
-The section is added at the end if it does not exist
-
-.PARAMETER TemplateFileContent
-Mandatory. The template file content object to crawl data from
-
-.PARAMETER ReadMeFileContent
-Mandatory. The readme file content array to update
-
-.PARAMETER SectionStartIdentifier
-Optional. The identifier of the 'outputs' section. Defaults to '## Template references'
-
-.PARAMETER ResourceTypesToExclude
-Optional. The resource types to exclude from the list. By default excludes 'Microsoft.Resources/deployments'
-
-.EXAMPLE
-Set-ResourceTypesSection -TemplateFileContent @{ resource = @{}; ... } -ReadMeFileContent @('# Title', '', '## Section 1', ...)
-
-Update the given readme file's 'Template references' section based on the given template file content
-#>
-function Set-TemplateReferencesSection {
-
-    [CmdletBinding(SupportsShouldProcess)]
-    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSReviewUnusedParameter', 'ResourceTypesToExclude', Justification = 'Variable used inside Where-Object block.')]
-    param (
-        [Parameter(Mandatory)]
-        [hashtable] $TemplateFileContent,
-
-        [Parameter(Mandatory)]
-        [object[]] $ReadMeFileContent,
-
-        [Parameter(Mandatory = $false)]
-        [string] $SectionStartIdentifier = '## Template references',
-
-        [Parameter(Mandatory = $false)]
-        [string[]] $ResourceTypesToExclude = @('Microsoft.Resources/deployments')
-    )
-
-    # Process content
-    $SectionContent = [System.Collections.ArrayList]@()
-
-    $RelevantResourceTypes = Get-NestedResourceList $TemplateFileContent | Where-Object {
-        $_.type -notin $ResourceTypesToExclude -and $_ -and $_.type -notlike '*/providers/*'
-    } | Select-Object 'Type', 'ApiVersion' -Unique | Sort-Object Type -Culture en-US
-
-    $TextInfo = (Get-Culture).TextInfo
-    foreach ($RelevantResourceType in $RelevantResourceTypes) {
-        $ProviderNamespace, $ResourceType = $RelevantResourceType.Type -split '/', 2
-        $ResourceReferenceTitle = $TextInfo.ToTitleCase($ResourceType)
-        # Validate if Reference URL Is working
-        $TemplatesBaseUrl = 'https://docs.microsoft.com/en-us/azure/templates'
-        try {
-            $ResourceReferenceUrl = '{0}/{1}/{2}/{3}' -f $TemplatesBaseUrl, $ProviderNamespace, $RelevantResourceType.ApiVersion, $ResourceType
-            $null = Invoke-WebRequest -Uri $ResourceReferenceUrl
-        } catch {
-            # Validate if Reference URL is working using the latest documented API version (with no API version in the URL)
-            try {
-                $ResourceReferenceUrl = '{0}/{1}/{2}' -f $TemplatesBaseUrl, $ProviderNamespace, $ResourceType
-                $null = Invoke-WebRequest -Uri $ResourceReferenceUrl
-            } catch {
-                # Check if the resource is a child resource
-                if ($ResourceType.Split('/').length -gt 1) {
-                    $ResourceReferenceUrl = '{0}/{1}/{2}' -f $TemplatesBaseUrl, $ProviderNamespace, $ResourceType.Split('/')[0]
-                    $ResourceReferenceTitle = "'$ResourceType' Parent Documentation"
-                } else {
-                    # Use the default Templates URL (Last resort)
-                    $ResourceReferenceUrl = '{0}' -f $TemplatesBaseUrl
-                    $ResourceReferenceTitle = 'Define resources with Bicep and ARM templates'
-                }
-            }
-        }
-        $SectionContent += ('- [{0}]({1})' -f $ResourceReferenceTitle, $ResourceReferenceUrl)
-    }
-    $SectionContent = $SectionContent | Sort-Object -Unique
-    # Build result
-    if ($PSCmdlet.ShouldProcess('Original file with new template references content', 'Merge')) {
-        $updatedFileContent = Merge-FileWithNewContent -oldContent $ReadMeFileContent -newContent $SectionContent -SectionStartIdentifier $SectionStartIdentifier -contentType 'list'
-    }
-    return $updatedFileContent
-}
-
-<#
-.SYNOPSIS
 Generate a table of content section for the given readme file
 
 .DESCRIPTION
@@ -476,6 +369,10 @@ Supports both ARM & bicep templates.
 .PARAMETER TemplateFilePath
 Mandatory. The path to the template to update
 
+.PARAMETER TemplateFileContent
+Optional. The template file content to process. If not provided, the template file content will be read from the TemplateFilePath file.
+Using this property is useful if you already compiled the bicep template before invoking this function and want to avoid re-compiling it.
+
 .PARAMETER ReadMeFilePath
 Optional. The path to the readme to update. If not provided assumes a 'readme.md' file in the same folder as the template
 
@@ -492,6 +389,11 @@ Update the readme in path 'C:\readme.md' based on the bicep template in path 'C:
 Set-ModuleReadMe -TemplateFilePath 'C:/Microsoft.Network/loadBalancers/deploy.bicep' -SectionsToRefresh @('Parameters', 'Outputs')
 
 Generate the Module ReadMe only for specific sections. Updates only the sections `Parameters` & `Outputs`. Other sections remain untouched.
+
+.EXAMPLE
+Set-ModuleReadMe -TemplateFilePath 'C:/Microsoft.Network/loadBalancers/deploy.bicep' -TemplateFileContent @{...}
+
+(Re)Generate the readme file for template 'loadBalancer' based on the content provided in the TemplateFileContent parameter
 
 .EXAMPLE
 Set-ModuleReadMe -TemplateFilePath 'C:/Microsoft.Network/loadBalancers/deploy.bicep' -ReadMeFilePath 'C:/differentFolder'
@@ -517,6 +419,9 @@ function Set-ModuleReadMe {
         [string] $TemplateFilePath,
 
         [Parameter(Mandatory = $false)]
+        [Hashtable] $TemplateFileContent,
+
+        [Parameter(Mandatory = $false)]
         [string] $ReadMeFilePath = (Join-Path (Split-Path $TemplateFilePath -Parent) 'readme.md'),
 
         [Parameter(Mandatory = $false)]
@@ -537,14 +442,17 @@ function Set-ModuleReadMe {
 
     # Load external functions
     . (Join-Path $PSScriptRoot 'helper/Merge-FileWithNewContent.ps1')
+    . (Join-Path (Split-Path $PSScriptRoot -Parent) 'pipelines' 'sharedScripts' 'Get-NestedResourceList.ps1')
 
-    # Check template
-    $null = Test-Path $TemplateFilePath -ErrorAction Stop
+    # Check template & make full path
+    $TemplateFilePath = Resolve-Path -Path $TemplateFilePath -ErrorAction Stop
 
-    if ((Split-Path -Path $TemplateFilePath -Extension) -eq '.bicep') {
-        $templateFileContent = az bicep build --file $TemplateFilePath --stdout | ConvertFrom-Json -AsHashtable
-    } else {
-        $templateFileContent = ConvertFrom-Json (Get-Content $TemplateFilePath -Encoding 'utf8' -Raw) -ErrorAction Stop -AsHashtable
+    if (-not $TemplateFileContent) {
+        if ((Split-Path -Path $TemplateFilePath -Extension) -eq '.bicep') {
+            $templateFileContent = az bicep build --file $TemplateFilePath --stdout | ConvertFrom-Json -AsHashtable
+        } else {
+            $templateFileContent = ConvertFrom-Json (Get-Content $TemplateFilePath -Encoding 'utf8' -Raw) -ErrorAction Stop -AsHashtable
+        }
     }
 
     $fullResourcePath = (Split-Path $TemplateFilePath -Parent).Replace('\', '/').split('/arm/')[1]
@@ -573,9 +481,7 @@ function Set-ModuleReadMe {
             ''
             '// TODO: Fill in Parameter usage'
             '',
-            '## Outputs',
-            '',
-            '## Template references'
+            '## Outputs'
         )
         # New-Item $path $ReadMeFilePath -ItemType 'File' -Force -Value $initialContent
         $readMeFileContent = $initialContent
@@ -626,16 +532,6 @@ function Set-ModuleReadMe {
             TemplateFileContent = $templateFileContent
         }
         $readMeFileContent = Set-OutputsSection @inputObject
-    }
-
-    if ($SectionsToRefresh -contains 'Template references') {
-        # Handle [TemplateReferences] section
-        # ===================================
-        $inputObject = @{
-            ReadMeFileContent   = $readMeFileContent
-            TemplateFileContent = $templateFileContent
-        }
-        $readMeFileContent = Set-TemplateReferencesSection @inputObject
     }
 
     if ($SectionsToRefresh -contains 'Navigation') {

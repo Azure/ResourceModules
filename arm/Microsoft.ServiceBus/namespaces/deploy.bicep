@@ -5,7 +5,7 @@ param name string = ''
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
 
-@description('Required. Name of this SKU. - Basic, Standard, Premium')
+@description('Required. Name of this SKU. - Basic, Standard, Premium.')
 @allowed([
   'Basic'
   'Standard'
@@ -16,7 +16,7 @@ param skuName string = 'Basic'
 @description('Optional. Enabling this property creates a Premium Service Bus Namespace in regions supported availability zones.')
 param zoneRedundant bool = false
 
-@description('Optional. Authorization Rules for the Service Bus namespace')
+@description('Optional. Authorization Rules for the Service Bus namespace.')
 param authorizationRules array = [
   {
     name: 'RootManageSharedAccessKey'
@@ -28,7 +28,7 @@ param authorizationRules array = [
   }
 ]
 
-@description('Optional. IP Filter Rules for the Service Bus namespace')
+@description('Optional. IP Filter Rules for the Service Bus namespace.')
 param ipFilterRules array = []
 
 @description('Optional. The migration configuration.')
@@ -71,7 +71,7 @@ param systemAssignedIdentity bool = false
 @description('Optional. The ID(s) to assign to the resource.')
 param userAssignedIdentities object = {}
 
-@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'')
+@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
 param roleAssignments array = []
 
 @description('Optional. Configuration Details for private endpoints.')
@@ -86,10 +86,10 @@ param enableDefaultTelemetry bool = true
 @description('Generated. Do not provide a value! This date value is used to generate a SAS token to access the modules.')
 param baseTime string = utcNow('u')
 
-@description('Optional. The queues to create in the service bus namespace')
+@description('Optional. The queues to create in the service bus namespace.')
 param queues array = []
 
-@description('Optional. The topics to create in the service bus namespace')
+@description('Optional. The topics to create in the service bus namespace.')
 param topics array = []
 
 @description('Optional. The name of logs that will be streamed.')
@@ -173,6 +173,7 @@ module serviceBusNamespace_disasterRecoveryConfig 'disasterRecoveryConfigs/deplo
     name: contains(disasterRecoveryConfigs, 'name') ? disasterRecoveryConfigs.name : 'default'
     alternateName: contains(disasterRecoveryConfigs, 'alternateName') ? disasterRecoveryConfigs.alternateName : ''
     partnerNamespaceResourceID: contains(disasterRecoveryConfigs, 'partnerNamespace') ? disasterRecoveryConfigs.partnerNamespace : ''
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }
 
@@ -183,6 +184,7 @@ module serviceBusNamespace_migrationConfigurations 'migrationConfigurations/depl
     name: contains(migrationConfigurations, 'name') ? migrationConfigurations.name : '$default'
     postMigrationName: migrationConfigurations.postMigrationName
     targetNamespaceResourceId: migrationConfigurations.targetNamespace
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }
 
@@ -192,6 +194,7 @@ module serviceBusNamespace_virtualNetworkRules 'virtualNetworkRules/deploy.bicep
     namespaceName: serviceBusNamespace.name
     name: last(split(virtualNetworkRule, '/'))
     virtualNetworkSubnetId: virtualNetworkRule
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }]
 
@@ -201,6 +204,7 @@ module serviceBusNamespace_authorizationRules 'authorizationRules/deploy.bicep' 
     namespaceName: serviceBusNamespace.name
     name: authorizationRule.name
     rights: contains(authorizationRule, 'rights') ? authorizationRule.rights : []
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }]
 
@@ -212,6 +216,7 @@ module serviceBusNamespace_ipFilterRules 'ipFilterRules/deploy.bicep' = [for (ip
     action: ipFilterRule.action
     filterName: ipFilterRule.filterName
     ipMask: ipFilterRule.ipMask
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }]
 
@@ -244,6 +249,7 @@ module serviceBusNamespace_queues 'queues/deploy.bicep' = [for (queue, index) in
     requiresSession: contains(queue, 'requiresSession') ? queue.requiresSession : false
     roleAssignments: contains(queue, 'roleAssignments') ? queue.roleAssignments : []
     status: contains(queue, 'status') ? queue.status : 'Active'
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }]
 
@@ -275,6 +281,7 @@ module serviceBusNamespace_topics 'topics/deploy.bicep' = [for (topic, index) in
     roleAssignments: contains(topic, 'roleAssignments') ? topic.roleAssignments : []
     status: contains(topic, 'status') ? topic.status : 'Active'
     supportOrdering: contains(topic, 'supportOrdering') ? topic.supportOrdering : false
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }]
 
@@ -321,14 +328,17 @@ module serviceBusNamespace_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignmen
   }
 }]
 
-@description('The resource ID of the deployed service bus namespace')
+@description('The resource ID of the deployed service bus namespace.')
 output resourceId string = serviceBusNamespace.id
 
-@description('The resource group of the deployed service bus namespace')
+@description('The resource group of the deployed service bus namespace.')
 output resourceGroupName string = resourceGroup().name
 
-@description('The name of the deployed service bus namespace')
+@description('The name of the deployed service bus namespace.')
 output name string = serviceBusNamespace.name
 
 @description('The principal ID of the system assigned identity.')
 output systemAssignedPrincipalId string = systemAssignedIdentity && contains(serviceBusNamespace.identity, 'principalId') ? serviceBusNamespace.identity.principalId : ''
+
+@description('The location the resource was deployed into.')
+output location string = serviceBusNamespace.location

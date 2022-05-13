@@ -10,6 +10,8 @@ parameters:
     type: boolean
     default: false
 
+pr: none
+
 trigger:
   batch: true
   branches:
@@ -20,6 +22,7 @@ trigger:
       - '/.azuredevops/modulePipelines/ms.network.networksecuritygroups.yml'
       - '/.azuredevops/pipelineTemplates/module.*.yml'
       - '/arm/Microsoft.Network/networkSecurityGroups/*'
+      - '/arm/.global/global.module.tests.ps1'
     exclude:
       - '/**/*.md'
 
@@ -31,12 +34,12 @@ variables:
 
 stages:
   - stage: Validation
-    displayName: Pester tests
+    displayName: Static validation
     jobs:
       - template: /.azuredevops/pipelineTemplates/jobs.validateModulePester.yml
 
   - stage: Deployment
-    displayName: Deployment tests
+    displayName: Deployment validation
     jobs:
       - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
         parameters:
@@ -46,7 +49,7 @@ stages:
             - path: $(modulePath)/.parameters/parameters.json
 
   - stage: Publishing
-    displayName: Publish module
+    displayName: Publishing
     condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/main'), eq(variables['Build.SourceBranch'], 'refs/heads/master'), eq('${{ parameters.prerelease }}', 'true')))
     jobs:
       - template: /.azuredevops/pipelineTemplates/jobs.publishModule.yml

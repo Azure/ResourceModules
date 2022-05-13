@@ -1,40 +1,28 @@
-@description('Required. Remote connection name')
+@description('Required. Remote connection name.')
 param name string
 
-@description('Optional. Specifies a VPN shared key. The same value has to be specified on both Virtual Network Gateways')
+@description('Optional. Specifies a VPN shared key. The same value has to be specified on both Virtual Network Gateways.')
 param vpnSharedKey string = ''
-
-@description('Required. Specifies the remote Virtual Network Gateway/ExpressRoute')
-param remoteEntityName string
-
-@description('Required. Specifies the local Virtual Network Gateway name')
-param localVirtualNetworkGatewayName string
 
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
 
 @description('Optional. Gateway connection type.')
 @allowed([
-  'Ipsec'
-  'VNet2VNet'
+  'IPsec'
+  'Vnet2Vnet'
   'ExpressRoute'
   'VPNClient'
 ])
-param virtualNetworkGatewayConnectionType string = 'Ipsec'
+param virtualNetworkGatewayConnectionType string = 'IPsec'
 
-@description('Optional. Remote Virtual Network Gateway/ExpressRoute resource group name')
-param remoteEntityResourceGroup string = ''
-
-@description('Optional. Remote Virtual Network Gateway/ExpressRoute Subscription ID')
-param remoteEntitySubscriptionId string = ''
-
-@description('Optional. Value to specify if BGP is enabled or not')
+@description('Optional. Value to specify if BGP is enabled or not.')
 param enableBgp bool = false
 
-@description('Optional. Enable policy-based traffic selectors')
+@description('Optional. Enable policy-based traffic selectors.')
 param usePolicyBasedTrafficSelectors bool = false
 
-@description('Optional. The IPSec Policies to be considered by this connection')
+@description('Optional. The IPSec Policies to be considered by this connection.')
 param customIPSecPolicy object = {
   saLifeTimeSeconds: 0
   saDataSizeKilobytes: 0
@@ -47,7 +35,7 @@ param customIPSecPolicy object = {
 }
 
 @description('Optional. The weight added to routes learned from this BGP speaker.')
-param routingWeight string = ''
+param routingWeight int = -1
 
 @allowed([
   'CanNotDelete'
@@ -63,18 +51,18 @@ param tags object = {}
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
 
-var localVirtualNetworkGatewayId = az.resourceId(resourceGroup().name, 'Microsoft.Network/virtualNetworkGateways', localVirtualNetworkGatewayName)
-var remoteEntitySubscriptionId_var = (empty(remoteEntitySubscriptionId) ? subscription().subscriptionId : remoteEntitySubscriptionId)
-var remoteEntityResourceGroup_var = (empty(remoteEntityResourceGroup) ? resourceGroup().name : remoteEntityResourceGroup)
-var virtualNetworkGateway2Id = {
-  id: az.resourceId(remoteEntitySubscriptionId_var, remoteEntityResourceGroup_var, 'Microsoft.Network/virtualNetworkGateways', remoteEntityName)
-}
-var localNetworkGateway2Id = {
-  id: az.resourceId(remoteEntitySubscriptionId_var, remoteEntityResourceGroup_var, 'Microsoft.Network/localNetworkGateways', remoteEntityName)
-}
-var peer = {
-  id: az.resourceId(remoteEntitySubscriptionId_var, remoteEntityResourceGroup_var, 'Microsoft.Network/expressRouteCircuits', remoteEntityName)
-}
+@description('Required. The primary Virtual Network Gateway.')
+param virtualNetworkGateway1 object
+
+@description('Optional. The remote Virtual Network Gateway. Used for connection type [Vnet2Vnet].')
+param virtualNetworkGateway2 object = {}
+
+@description('Optional. The remote peer. Used for connection type [ExpressRoute].')
+param peer object = {}
+
+@description('Optional. The local network gateway. Used for connection type [IPsec].')
+param localNetworkGateway2 object = {}
+
 var customIPSecPolicy_var = [
   {
     saLifeTimeSeconds: customIPSecPolicy.saLifeTimeSeconds
@@ -105,18 +93,16 @@ resource connection 'Microsoft.Network/connections@2021-05-01' = {
   location: location
   tags: tags
   properties: {
-    virtualNetworkGateway1: {
-      id: localVirtualNetworkGatewayId
-    }
-    virtualNetworkGateway2: virtualNetworkGatewayConnectionType == 'VNet2VNet' ? virtualNetworkGateway2Id : null
-    localNetworkGateway2: virtualNetworkGatewayConnectionType == 'Ipsec' ? localNetworkGateway2Id : null
-    peer: virtualNetworkGatewayConnectionType == 'ExpressRoute' ? peer : null
-    enableBgp: enableBgp
     connectionType: virtualNetworkGatewayConnectionType
-    routingWeight: routingWeight
-    sharedKey: virtualNetworkGatewayConnectionType == 'ExpressRoute' ? null : vpnSharedKey
+    virtualNetworkGateway1: virtualNetworkGateway1
+    virtualNetworkGateway2: virtualNetworkGatewayConnectionType == 'Vnet2Vnet' ? virtualNetworkGateway2 : null
+    localNetworkGateway2: virtualNetworkGatewayConnectionType == 'Ipsec' ? localNetworkGateway2 : null
+    peer: virtualNetworkGatewayConnectionType == 'ExpressRoute' ? peer : null
+    sharedKey: virtualNetworkGatewayConnectionType != 'ExpressRoute' ? vpnSharedKey : null
     usePolicyBasedTrafficSelectors: usePolicyBasedTrafficSelectors
-    ipsecPolicies: empty(customIPSecPolicy.ipsecEncryption) ? customIPSecPolicy.ipsecEncryption : customIPSecPolicy_var
+    ipsecPolicies: !empty(customIPSecPolicy.ipsecEncryption) ? customIPSecPolicy_var : customIPSecPolicy.ipsecEncryption
+    routingWeight: routingWeight != -1 ? routingWeight : null
+    enableBgp: enableBgp
   }
 }
 
@@ -129,11 +115,14 @@ resource connection_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock !
   scope: connection
 }
 
-@description('The resource group the remote connection was deployed into')
+@description('The resource group the remote connection was deployed into.')
 output resourceGroupName string = resourceGroup().name
 
-@description('The name of the remote connection')
+@description('The name of the remote connection.')
 output name string = connection.name
 
-@description('The resource ID of the remote connection')
+@description('The resource ID of the remote connection.')
 output resourceId string = connection.id
+
+@description('The location the resource was deployed into.')
+output location string = connection.location

@@ -1,10 +1,10 @@
-@sys.description('Required. The IDs of the prinicpals to assign to role to')
+@sys.description('Required. The IDs of the principals to assign the role to.')
 param principalIds array
 
-@sys.description('Required. The name of the role to assign. If it cannot be found you can specify the role definition ID instead')
+@sys.description('Required. The name of the role to assign. If it cannot be found you can specify the role definition ID instead.')
 param roleDefinitionIdOrName string
 
-@sys.description('Required. The resource ID of the resource to apply the role assignment to')
+@sys.description('Required. The resource ID of the resource to apply the role assignment to.')
 param resourceId string
 
 @sys.description('Optional. The principal type of the assigned principal ID.')
@@ -18,7 +18,7 @@ param resourceId string
 ])
 param principalType string = ''
 
-@sys.description('Optional. Description of role assignment')
+@sys.description('Optional. The description of the role assignment.')
 param description string = ''
 
 var builtInRoleNames = {
@@ -44,8 +44,8 @@ resource managedInstance 'Microsoft.Sql/managedInstances@2020-08-01-preview' exi
   name: last(split(resourceId, '/'))
 }
 
-resource roleAssignment 'Microsoft.Authorization/roleAssignments@2021-04-01-preview' = [for principalId in principalIds: {
-  name: guid(managedInstance.name, principalId, roleDefinitionIdOrName)
+resource roleAssignment 'Microsoft.Authorization/roleAssignments@2020-10-01-preview' = [for principalId in principalIds: {
+  name: guid(managedInstance.id, principalId, roleDefinitionIdOrName)
   properties: {
     description: description
     roleDefinitionId: contains(builtInRoleNames, roleDefinitionIdOrName) ? builtInRoleNames[roleDefinitionIdOrName] : roleDefinitionIdOrName

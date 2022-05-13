@@ -7,13 +7,12 @@ This module deploys API Management Service Backends.
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Template references](#Template-references)
 
 ## Resource types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.ApiManagement/service/backends` | 2021-08-01 |
+| `Microsoft.ApiManagement/service/backends` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2021-08-01/service/backends) |
 
 ### Resource dependency
 
@@ -26,9 +25,13 @@ The following resources are required to be able to deploy this resource.
 **Required parameters**
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `apiManagementServiceName` | string | The name of the of the API Management service. |
 | `name` | string | Backend Name. |
 | `url` | string | Runtime URL of the Backend. |
+
+**Conditional parameters**
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `apiManagementServiceName` | string | The name of the parent API Management service. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Description |
@@ -36,12 +39,12 @@ The following resources are required to be able to deploy this resource.
 | `backendDescription` | string | `''` | Backend Description. |
 | `credentials` | object | `{object}` | Backend Credentials Contract Properties. |
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `protocol` | string | `'http'` | Backend communication protocol. - http or soap |
-| `proxy` | object | `{object}` | Backend Proxy Contract Properties |
+| `protocol` | string | `'http'` | Backend communication protocol. - http or soap. |
+| `proxy` | object | `{object}` | Backend Proxy Contract Properties. |
 | `resourceId` | string | `''` | Management Uri of the Resource in External System. This URL can be the Arm Resource ID of Logic Apps, Function Apps or API Apps. |
 | `serviceFabricCluster` | object | `{object}` | Backend Service Fabric Cluster Properties. |
 | `title` | string | `''` | Backend Title. |
-| `tls` | object | `{object}` | Backend TLS Properties |
+| `tls` | object | `{object}` | Backend TLS Properties. |
 
 
 ### Parameters - credentials
@@ -135,10 +138,6 @@ The following resources are required to be able to deploy this resource.
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the API management service backend |
-| `resourceGroupName` | string | The resource group the API management service backend was deployed into |
-| `resourceId` | string | The resource ID of the API management service backend |
-
-## Template references
-
-- [Service/Backends](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2021-08-01/service/backends)
+| `name` | string | The name of the API management service backend. |
+| `resourceGroupName` | string | The resource group the API management service backend was deployed into. |
+| `resourceId` | string | The resource ID of the API management service backend. |

@@ -7,13 +7,12 @@ This module deploys virtual hub virtual network connections.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Template references](#Template-references)
 
 ## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Network/virtualHubs/hubVirtualNetworkConnections` | 2021-05-01 |
+| `Microsoft.Network/virtualHubs/hubVirtualNetworkConnections` | [2021-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/virtualHubs/hubVirtualNetworkConnections) |
 
 ## Parameters
 
@@ -21,8 +20,12 @@ This module deploys virtual hub virtual network connections.
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The connection name. |
-| `remoteVirtualNetworkId` | string | Resource ID of the virtual network to link to |
-| `virtualHubName` | string | The virtual hub name. |
+| `remoteVirtualNetworkId` | string | Resource ID of the virtual network to link to. |
+
+**Conditional parameters**
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `virtualHubName` | string | The name of the parent virtual hub. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Description |
@@ -40,10 +43,6 @@ This module deploys virtual hub virtual network connections.
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the virtual hub connection |
-| `resourceGroupName` | string | The resource group the virtual hub connection was deployed into |
-| `resourceId` | string | The resource ID of the virtual hub connection |
-
-## Template references
-
-- [Virtualhubs/Hubvirtualnetworkconnections](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/virtualHubs/hubVirtualNetworkConnections)
+| `name` | string | The name of the virtual hub connection. |
+| `resourceGroupName` | string | The resource group the virtual hub connection was deployed into. |
+| `resourceId` | string | The resource ID of the virtual hub connection. |

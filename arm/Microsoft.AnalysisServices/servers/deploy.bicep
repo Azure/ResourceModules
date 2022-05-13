@@ -1,4 +1,4 @@
-@description('Required. The name of the Azure Analysis Services server to create...')
+@description('Required. The name of the Azure Analysis Services server to create.')
 param name string
 
 @description('Optional. The SKU name of the Azure Analysis Services server to create.')
@@ -47,7 +47,7 @@ param diagnosticEventHubName string = ''
 @description('Optional. Specify the type of lock.')
 param lock string = 'NotSpecified'
 
-@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'')
+@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
 param roleAssignments array = []
 
 @description('Optional. Tags of the resource.')
@@ -154,11 +154,14 @@ module server_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in 
   }
 }]
 
-@description('The name of the analysis service')
+@description('The name of the analysis service.')
 output name string = server.name
 
-@description('The resource ID of the analysis service')
+@description('The resource ID of the analysis service.')
 output resourceId string = server.id
 
-@description('The resource group the analysis service was deployed into')
+@description('The resource group the analysis service was deployed into.')
 output resourceGroupName string = resourceGroup().name
+
+@description('The location the resource was deployed into.')
+output location string = server.location

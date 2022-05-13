@@ -7,13 +7,12 @@ This module deploys budgets for subscriptions.
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Template references](#Template-references)
 
 ## Resource types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Consumption/budgets` | 2019-05-01 |
+| `Microsoft.Consumption/budgets` | [2019-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Consumption/2019-05-01/budgets) |
 
 ## Parameters
 
@@ -42,10 +41,6 @@ This module deploys budgets for subscriptions.
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the budget |
-| `resourceId` | string | The resource ID of the budget |
-| `subscriptionName` | string | The subscription the budget was deployed into |
-
-## Template references
-
-- [Budgets](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Consumption/2019-05-01/budgets)
+| `name` | string | The name of the budget. |
+| `resourceId` | string | The resource ID of the budget. |
+| `subscriptionName` | string | The subscription the budget was deployed into. |

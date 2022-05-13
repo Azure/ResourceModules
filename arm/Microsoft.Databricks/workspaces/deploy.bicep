@@ -1,10 +1,10 @@
-@description('Required. The name of the Azure Databricks workspace to create')
+@description('Required. The name of the Azure Databricks workspace to create.')
 param name string
 
-@description('Optional. The managed resource group ID')
+@description('Optional. The managed resource group ID.')
 param managedResourceGroupId string = ''
 
-@description('Optional. The pricing tier of workspace')
+@description('Optional. The pricing tier of workspace.')
 @allowed([
   'trial'
   'standard'
@@ -151,11 +151,14 @@ module workspace_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) 
   }
 }]
 
-@description('The name of the deployed databricks workspace')
+@description('The name of the deployed databricks workspace.')
 output name string = workspace.name
 
-@description('The resource ID of the deployed databricks workspace')
+@description('The resource ID of the deployed databricks workspace.')
 output resourceId string = workspace.id
 
-@description('The resource group of the deployed databricks workspace')
+@description('The resource group of the deployed databricks workspace.')
 output resourceGroupName string = resourceGroup().name
+
+@description('The location the resource was deployed into.')
+output location string = workspace.location

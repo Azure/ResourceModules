@@ -39,7 +39,7 @@ param hardwareFamily string = 'Gen5'
 @description('Optional. Whether or not multi-az is enabled.')
 param zoneRedundant bool = false
 
-@description('Optional. Service principal type. If using AD Authentication and applying Admin, must be set to `SystemAssigned`. Then Global Admin must allow Reader access to Azure AD for the Service Principal')
+@description('Optional. Service principal type. If using AD Authentication and applying Admin, must be set to `SystemAssigned`. Then Global Admin must allow Reader access to Azure AD for the Service Principal.')
 @allowed([
   'None'
   'SystemAssigned'
@@ -107,7 +107,7 @@ param diagnosticEventHubName string = ''
 @description('Optional. Specify the type of lock.')
 param lock string = 'NotSpecified'
 
-@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'')
+@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
 param roleAssignments array = []
 
 @description('Optional. Tags of the resource.')
@@ -122,25 +122,25 @@ param systemAssignedIdentity bool = false
 @description('Optional. The ID(s) to assign to the resource.')
 param userAssignedIdentities object = {}
 
-@description('Optional. Mandatory if "managedServiceIdentity" contains UserAssigned. The resource ID of a user assigned identity to be used by default.')
+@description('Conditional. The resource ID of a user assigned identity to be used by default. Required if "userAssignedIdentities" is not empty.')
 param primaryUserAssignedIdentityId string = ''
 
 @description('Optional. Databases to create in this server.')
 param databases array = []
 
-@description('Optional. The vulnerability assessment configuration')
+@description('Optional. The vulnerability assessment configuration.')
 param vulnerabilityAssessmentsObj object = {}
 
-@description('Optional. The security alert policy configuration')
+@description('Optional. The security alert policy configuration.')
 param securityAlertPoliciesObj object = {}
 
-@description('Optional. The keys to configure')
+@description('Optional. The keys to configure.')
 param keys array = []
 
-@description('Optional. The encryption protection configuration')
+@description('Optional. The encryption protection configuration.')
 param encryptionProtectorObj object = {}
 
-@description('Optional. The administrator configuration')
+@description('Optional. The administrator configuration.')
 param administratorsObj object = {}
 
 @description('Optional. The storage account type used to store backups for this database.')
@@ -304,6 +304,7 @@ module managedInstance_databases 'databases/deploy.bicep' = [for (database, inde
     diagnosticWorkspaceId: contains(database, 'diagnosticWorkspaceId') ? database.diagnosticWorkspaceId : ''
     backupShortTermRetentionPoliciesObj: contains(database, 'backupShortTermRetentionPolicies') ? database.backupShortTermRetentionPolicies : {}
     backupLongTermRetentionPoliciesObj: contains(database, 'backupLongTermRetentionPolicies') ? database.backupLongTermRetentionPolicies : {}
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }]
 
@@ -314,6 +315,7 @@ module managedInstance_securityAlertPolicy 'securityAlertPolicies/deploy.bicep' 
     name: securityAlertPoliciesObj.name
     emailAccountAdmins: contains(securityAlertPoliciesObj, 'emailAccountAdmins') ? securityAlertPoliciesObj.emailAccountAdmins : false
     state: contains(securityAlertPoliciesObj, 'state') ? securityAlertPoliciesObj.state : 'Disabled'
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }
 
@@ -326,6 +328,7 @@ module managedInstance_vulnerabilityAssessment 'vulnerabilityAssessments/deploy.
     recurringScansEmailSubscriptionAdmins: contains(vulnerabilityAssessmentsObj, 'recurringScansEmailSubscriptionAdmins') ? vulnerabilityAssessmentsObj.recurringScansEmailSubscriptionAdmins : false
     recurringScansIsEnabled: contains(vulnerabilityAssessmentsObj, 'recurringScansIsEnabled') ? vulnerabilityAssessmentsObj.recurringScansIsEnabled : false
     vulnerabilityAssessmentsStorageAccountId: contains(vulnerabilityAssessmentsObj, 'vulnerabilityAssessmentsStorageAccountId') ? vulnerabilityAssessmentsObj.vulnerabilityAssessmentsStorageAccountId : ''
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
   dependsOn: [
     managedInstance_securityAlertPolicy
@@ -339,6 +342,7 @@ module managedInstance_key 'keys/deploy.bicep' = [for (key, index) in keys: {
     name: contains(key, 'name') ? key.name : ''
     serverKeyType: contains(key, 'serverKeyType') ? key.serverKeyType : 'ServiceManaged'
     uri: contains(key, 'uri') ? key.uri : ''
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }]
 
@@ -350,6 +354,7 @@ module managedInstance_encryptionProtector 'encryptionProtector/deploy.bicep' = 
     name: contains(encryptionProtectorObj, 'name') ? encryptionProtectorObj.serverKeyType : 'current'
     serverKeyType: contains(encryptionProtectorObj, 'serverKeyType') ? encryptionProtectorObj.serverKeyType : 'ServiceManaged'
     autoRotationEnabled: contains(encryptionProtectorObj, 'autoRotationEnabled') ? encryptionProtectorObj.autoRotationEnabled : true
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }
 
@@ -360,17 +365,21 @@ module managedInstance_administrator 'administrators/deploy.bicep' = if (!empty(
     login: administratorsObj.name
     sid: administratorsObj.sid
     tenantId: contains(administratorsObj, 'tenantId') ? administratorsObj.tenantId : ''
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }
 
-@description('The name of the deployed managed instance')
+@description('The name of the deployed managed instance.')
 output name string = managedInstance.name
 
-@description('The resource ID of the deployed managed instance')
+@description('The resource ID of the deployed managed instance.')
 output resourceId string = managedInstance.id
 
-@description('The resource group of the deployed managed instance')
+@description('The resource group of the deployed managed instance.')
 output resourceGroupName string = resourceGroup().name
 
 @description('The principal ID of the system assigned identity.')
 output systemAssignedPrincipalId string = systemAssignedIdentity && contains(managedInstance.identity, 'principalId') ? managedInstance.identity.principalId : ''
+
+@description('The location the resource was deployed into.')
+output location string = managedInstance.location

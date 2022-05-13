@@ -1,11 +1,11 @@
 @maxLength(24)
-@description('Required. Name of the Storage Account.')
+@description('Conditional. The name of the parent Storage Account. Required if the template is used in a standalone deployment.')
 param storageAccountName string
 
 @description('Optional. Name of the blob service.')
 param blobServicesName string = 'default'
 
-@description('Required. The name of the storage container to deploy')
+@description('Required. The name of the storage container to deploy.')
 param name string
 
 @description('Optional. Name of the immutable policy.')
@@ -22,7 +22,7 @@ param publicAccess string = 'None'
 @description('Optional. Configure immutability policy.')
 param immutabilityPolicyProperties object = {}
 
-@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'')
+@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
 param roleAssignments array = []
 
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
@@ -64,6 +64,7 @@ module immutabilityPolicy 'immutabilityPolicies/deploy.bicep' = if (!empty(immut
     containerName: container.name
     immutabilityPeriodSinceCreationInDays: contains(immutabilityPolicyProperties, 'immutabilityPeriodSinceCreationInDays') ? immutabilityPolicyProperties.immutabilityPeriodSinceCreationInDays : 365
     allowProtectedAppendWrites: contains(immutabilityPolicyProperties, 'allowProtectedAppendWrites') ? immutabilityPolicyProperties.allowProtectedAppendWrites : true
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }
 
@@ -78,11 +79,11 @@ module container_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) 
   }
 }]
 
-@description('The name of the deployed container')
+@description('The name of the deployed container.')
 output name string = container.name
 
-@description('The resource ID of the deployed container')
+@description('The resource ID of the deployed container.')
 output resourceId string = container.id
 
-@description('The resource group of the deployed container')
+@description('The resource group of the deployed container.')
 output resourceGroupName string = resourceGroup().name

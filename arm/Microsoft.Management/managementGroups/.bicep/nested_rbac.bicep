@@ -20,7 +20,7 @@ param resourceId string
 ])
 param principalType string = ''
 
-@sys.description('Optional. Description of role assignment')
+@sys.description('Optional. The description of the role assignment.')
 param description string = ''
 
 var builtInRoleNames = {
@@ -307,7 +307,7 @@ var builtInRoleNames = {
   'Azure Maps Contributor': '/providers/Microsoft.Authorization/roleDefinitions/dba33070-676a-4fb0-87fa-064dc56ff7fb'
 }
 
-resource roleAssignment 'Microsoft.Authorization/roleAssignments@2021-04-01-preview' = [for principalId in principalIds: {
+resource roleAssignment 'Microsoft.Authorization/roleAssignments@2020-10-01-preview' = [for principalId in principalIds: {
   name: guid(last(split(resourceId, '/')), principalId, roleDefinitionIdOrName)
   properties: {
     description: description

@@ -20,9 +20,13 @@ param parameters object = {}
 @sys.description('Optional. The managed identity associated with the policy assignment. Policy assignments must include a resource identity when assigning \'Modify\' policy definitions.')
 @allowed([
   'SystemAssigned'
+  'UserAssigned'
   'None'
 ])
 param identity string = 'SystemAssigned'
+
+@sys.description('Optional. The Resource ID for the user assigned identity to assign to the policy assignment.')
+param userAssignedIdentityId string = ''
 
 @sys.description('Required. The IDs Of the Azure Role Definition list that is used to assign permissions to the identity. You need to provide either the fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.. See https://docs.microsoft.com/en-us/azure/role-based-access-control/built-in-roles for the list IDs for built-in Roles. They must match on what is on the policy definition')
 param roleDefinitionIds array = []
@@ -73,6 +77,11 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
 
 var identity_var = identity == 'SystemAssigned' ? {
   type: identity
+} : identity == 'UserAssigned' ? {
+  type: identity
+  userAssignedIdentities: {
+    '${userAssignedIdentityId}': {}
+  }
 } : null
 
 resource policyAssignment 'Microsoft.Authorization/policyAssignments@2021-06-01' = {
@@ -91,7 +100,7 @@ resource policyAssignment 'Microsoft.Authorization/policyAssignments@2021-06-01'
   identity: identity_var
 }
 
-resource roleAssignment 'Microsoft.Authorization/roleAssignments@2021-04-01-preview' = [for roleDefinitionId in roleDefinitionIds: if (!empty(roleDefinitionIds) && identity != 'None') {
+resource roleAssignment 'Microsoft.Authorization/roleAssignments@2020-10-01-preview' = [for roleDefinitionId in roleDefinitionIds: if (!empty(roleDefinitionIds) && identity == 'SystemAssigned') {
   name: guid(subscriptionId, resourceGroupName, roleDefinitionId, location, name)
   properties: {
     roleDefinitionId: roleDefinitionId
@@ -111,3 +120,6 @@ output resourceId string = az.resourceId(subscriptionId, resourceGroupName, 'Mic
 
 @sys.description('The name of the resource group the policy was assigned to')
 output resourceGroupName string = resourceGroup().name
+
+@sys.description('The location the resource was deployed into.')
+output location string = policyAssignment.location

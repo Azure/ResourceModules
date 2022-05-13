@@ -1,8 +1,8 @@
 @maxLength(24)
-@description('Required. Name of the Storage Account.')
+@description('Conditional. The name of the parent Storage Account. Required if the template is used in a standalone deployment.')
 param storageAccountName string
 
-@description('Optional. The name of the blob service')
+@description('Optional. The name of the blob service.')
 param name string = 'default'
 
 @description('Optional. Indicates whether DeleteRetentionPolicy is enabled for the Blob service.')
@@ -129,14 +129,15 @@ module blobServices_container 'containers/deploy.bicep' = [for (container, index
     publicAccess: contains(container, 'publicAccess') ? container.publicAccess : 'None'
     roleAssignments: contains(container, 'roleAssignments') ? container.roleAssignments : []
     immutabilityPolicyProperties: contains(container, 'immutabilityPolicyProperties') ? container.immutabilityPolicyProperties : {}
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }]
 
-@description('The name of the deployed blob service')
+@description('The name of the deployed blob service.')
 output name string = blobServices.name
 
-@description('The resource ID of the deployed blob service')
+@description('The resource ID of the deployed blob service.')
 output resourceId string = blobServices.id
 
-@description('The name of the deployed blob service')
+@description('The name of the deployed blob service.')
 output resourceGroupName string = resourceGroup().name

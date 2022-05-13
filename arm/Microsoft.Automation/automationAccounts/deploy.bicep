@@ -48,10 +48,10 @@ param variables array = []
 @description('Optional. ID of the log analytics workspace to be linked to the deployed automation account.')
 param linkedWorkspaceId string = ''
 
-@description('Optional. List of gallerySolutions to be created in the linked log analytics workspace')
+@description('Optional. List of gallerySolutions to be created in the linked log analytics workspace.')
 param gallerySolutions array = []
 
-@description('Optional. List of softwareUpdateConfigurations to be created in the automation account')
+@description('Optional. List of softwareUpdateConfigurations to be created in the automation account.')
 param softwareUpdateConfigurations array = []
 
 @description('Optional. Configuration Details for private endpoints.')
@@ -190,6 +190,7 @@ module automationAccount_modules 'modules/deploy.bicep' = [for (module, index) i
     uri: module.uri
     location: location
     tags: tags
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }]
 
@@ -205,6 +206,7 @@ module automationAccount_schedules 'schedules/deploy.bicep' = [for (schedule, in
     interval: contains(schedule, 'interval') ? schedule.interval : 0
     startTime: contains(schedule, 'startTime') ? schedule.startTime : ''
     timeZone: contains(schedule, 'timeZone') ? schedule.timeZone : ''
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }]
 
@@ -219,6 +221,7 @@ module automationAccount_runbooks 'runbooks/deploy.bicep' = [for (runbook, index
     version: contains(runbook, 'version') ? runbook.version : ''
     location: location
     tags: tags
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }]
 
@@ -230,6 +233,7 @@ module automationAccount_jobSchedules 'jobSchedules/deploy.bicep' = [for (jobSch
     scheduleName: jobSchedule.scheduleName
     parameters: contains(jobSchedule, 'parameters') ? jobSchedule.parameters : {}
     runOn: contains(jobSchedule, 'runOn') ? jobSchedule.runOn : ''
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
   dependsOn: [
     automationAccount_schedules
@@ -245,6 +249,7 @@ module automationAccount_variables 'variables/deploy.bicep' = [for (variable, in
     description: contains(variable, 'description') ? variable.description : ''
     value: variable.value
     isEncrypted: contains(variable, 'isEncrypted') ? variable.isEncrypted : true
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }]
 
@@ -316,6 +321,7 @@ module automationAccount_softwareUpdateConfigurations 'softwareUpdateConfigurati
       'Security'
     ]
     weekDays: contains(softwareUpdateConfiguration, 'weekDays') ? softwareUpdateConfiguration.weekDays : []
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
   dependsOn: [
     automationAccount_solutions
@@ -365,14 +371,17 @@ module automationAccount_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment,
   }
 }]
 
-@description('The name of the deployed automation account')
+@description('The name of the deployed automation account.')
 output name string = automationAccount.name
 
-@description('The resource ID of the deployed automation account')
+@description('The resource ID of the deployed automation account.')
 output resourceId string = automationAccount.id
 
-@description('The resource group of the deployed automation account')
+@description('The resource group of the deployed automation account.')
 output resourceGroupName string = resourceGroup().name
 
 @description('The principal ID of the system assigned identity.')
 output systemAssignedPrincipalId string = systemAssignedIdentity && contains(automationAccount.identity, 'principalId') ? automationAccount.identity.principalId : ''
+
+@description('The location the resource was deployed into.')
+output location string = automationAccount.location

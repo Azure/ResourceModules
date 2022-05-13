@@ -4,7 +4,7 @@ This section provides an overview of the principles the static validation is bui
 - [API version validation](#api-version-validation)
 - [Verify the static validation of your module locally](#verify-the-static-validation-of-your-module-locally)
 
-<img src=".\media\CIEnvironment\staticValidationStep.png" alt="Static Validation Step" height="300">
+<img src="./media/CIEnvironment/staticValidationStep.png" alt="Static Validation Step" height="300">
 
 ---
 
@@ -21,7 +21,7 @@ The following activities are run executing the `arm/.global/global.module.tests.
 - **Deployment template tests** check the template's structure and elements for errors as well as consistency matters. e.g.
   - template file (or the built bicep template) converts from JSON and has all expected properties
   - variable names are camelCase
-  - the minimum set of outputs is returned
+  - the minimum set of outputs is returned (see [module design](./The%20library%20-%20Module%20design#Outputs))
 - **Module (readme.md) documentation** contains all required sections. e.g.:
   - is not empty
   - contains all the mandatory sections
@@ -30,10 +30,11 @@ The following activities are run executing the `arm/.global/global.module.tests.
   - at least one `*parameters.json` exists
   - files should be valid JSON
   - contains all required parameters
+  - (if tokens are used) Tests that no token values (e.g. `11111111-1111-1111-1111-11111111111`) from the specified token list (i.e. `deploymentSpId`, `subscriptionId`, `managementGroupId`, `tenantId`) are used in the parameter files. Instead, the token itself should be referenced.
 
 ## Output example
 
-<img src=".\media\CIEnvironment\staticValidationOutput.png" alt="Static Validation Output" height="400">
+<img src="./media/CIEnvironment/staticValidationOutput.png" alt="Static Validation Output" height="400">
 
 ## Additional resources
 

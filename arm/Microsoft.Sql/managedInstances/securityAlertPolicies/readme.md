@@ -7,21 +7,24 @@ This module deploys a security alert policy for a SQL managed instance.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Template references](#Template-references)
 
 ## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Sql/managedInstances/securityAlertPolicies` | 2017-03-01-preview |
+| `Microsoft.Sql/managedInstances/securityAlertPolicies` | [2017-03-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Sql/2017-03-01-preview/managedInstances/securityAlertPolicies) |
 
 ## Parameters
 
 **Required parameters**
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `managedInstanceName` | string | Name of the SQL managed instance. |
-| `name` | string | The name of the security alert policy |
+| `name` | string | The name of the security alert policy. |
+
+**Conditional parameters**
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `managedInstanceName` | string | The name of the parent SQL managed instance. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
@@ -35,10 +38,6 @@ This module deploys a security alert policy for a SQL managed instance.
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the deployed security alert policy |
-| `resourceGroupName` | string | The resource group of the deployed security alert policy |
-| `resourceId` | string | The resource ID of the deployed security alert policy |
-
-## Template references
-
-- [Managedinstances/Securityalertpolicies](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Sql/2017-03-01-preview/managedInstances/securityAlertPolicies)
+| `name` | string | The name of the deployed security alert policy. |
+| `resourceGroupName` | string | The resource group of the deployed security alert policy. |
+| `resourceId` | string | The resource ID of the deployed security alert policy. |

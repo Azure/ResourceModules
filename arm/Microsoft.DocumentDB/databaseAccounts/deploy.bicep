@@ -1,4 +1,4 @@
-@description('Required. Name of the Database Account')
+@description('Required. Name of the Database Account.')
 param name string
 
 @description('Optional. Location for all resources.')
@@ -32,7 +32,7 @@ param locations array
 @description('Optional. The default consistency level of the Cosmos DB account.')
 param defaultConsistencyLevel string = 'Session'
 
-@description('Optional. Enable automatic failover for regions')
+@description('Optional. Enable automatic failover for regions.')
 param automaticFailover bool = true
 
 @minValue(10)
@@ -53,10 +53,10 @@ param maxIntervalInSeconds int = 300
 ])
 param serverVersion string = '4.0'
 
-@description('Optional. SQL Databases configurations')
+@description('Optional. SQL Databases configurations.')
 param sqlDatabases array = []
 
-@description('Optional. MongoDB Databases configurations')
+@description('Optional. MongoDB Databases configurations.')
 param mongodbDatabases array = []
 
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
@@ -70,7 +70,7 @@ param enableDefaultTelemetry bool = true
 @description('Optional. Specify the type of lock.')
 param lock string = 'NotSpecified'
 
-@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalIds\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'')
+@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalIds\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
 param roleAssignments array = []
 
 @description('Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.')
@@ -255,6 +255,7 @@ module sqlDatabases_resource 'sqlDatabases/deploy.bicep' = [for sqlDatabase in s
     databaseAccountName: databaseAccount.name
     name: sqlDatabase.name
     containers: contains(sqlDatabase, 'containers') ? sqlDatabase.containers : []
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }]
 
@@ -264,6 +265,7 @@ module mongodbDatabases_resource 'mongodbDatabases/deploy.bicep' = [for mongodbD
     databaseAccountName: databaseAccount.name
     name: mongodbDatabase.name
     collections: contains(mongodbDatabase, 'collections') ? mongodbDatabase.collections : []
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }]
 
@@ -278,3 +280,6 @@ output resourceGroupName string = resourceGroup().name
 
 @description('The principal ID of the system assigned identity.')
 output systemAssignedPrincipalId string = systemAssignedIdentity && contains(databaseAccount.identity, 'principalId') ? databaseAccount.identity.principalId : ''
+
+@description('The location the resource was deployed into.')
+output location string = databaseAccount.location
