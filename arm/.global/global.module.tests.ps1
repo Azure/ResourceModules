@@ -719,7 +719,7 @@ Describe 'Deployment template tests' -Tag Template {
             $primaryResourceType = (Split-Path $TemplateFilePath -Parent).Replace('\', '/').split('/arm/')[1]
             $primaryResourceTypeResource = $templateContent.resources | Where-Object { $_.type -eq $primaryResourceType }
 
-            if ($primaryResourceTypeResource.keys -contains 'location') {
+            if ($primaryResourceTypeResource.keys -contains 'location' -and $primaryResourceTypeResource.location -ne 'global') {
                 # If the main resource has a location property, an output should be returned too
                 $outputs.keys | Should -Contain 'location'
 
