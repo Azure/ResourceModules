@@ -108,6 +108,12 @@
         "networkRuleSets": {
             "value": {
                 "defaultAction": "Deny",
+                "ipRules": [
+                    {
+                        "action": "Allow",
+                        "ipMask": "10.10.10.10"
+                    }
+                ],
                 "virtualNetworkRules": [
                     {
                         "subnet": {
