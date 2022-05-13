@@ -46,6 +46,9 @@ param securityAlertPolicies array = []
 @description('Conditional. The Azure Active Directory (AAD) administrator authentication. Required if no `administratorLogin` & `administratorLoginPassword` is provided.')
 param administrators object = {}
 
+@description('Optional. Configuration Details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible.')
+param privateEndpoints array = []
+
 var identityType = systemAssignedIdentity ? (!empty(userAssignedIdentities) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned') : (!empty(userAssignedIdentities) ? 'UserAssigned' : 'None')
 
 var identity = identityType != 'None' ? {
@@ -140,6 +143,20 @@ module server_databases 'databases/deploy.bicep' = [for (database, index) in dat
     diagnosticWorkspaceId: contains(database, 'diagnosticWorkspaceId') ? database.diagnosticWorkspaceId : ''
     zoneRedundant: contains(database, 'zoneRedundant') ? database.zoneRedundant : false
     enableDefaultTelemetry: enableDefaultTelemetry
+  }
+}]
+
+module server_privateEndpoints '.bicep/nested_privateEndpoint.bicep' = [for (endpoint, index) in privateEndpoints: if (!empty(privateEndpoints)) {
+  name: '${uniqueString(deployment().name, location)}-Sql-PrivateEndpoints-${index}'
+  params: {
+    privateEndpointResourceId: server.id
+    privateEndpointVnetLocation: !empty(privateEndpoints) ? reference(split(endpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location : 'dummy'
+    service: contains(endpoint, 'service') ? endpoint.service : 'sqlServer'
+    subnetResourceId: endpoint.subnetResourceId
+    customDnsConfigs: contains(endpoint, 'customDnsConfigs') ? endpoint.customDnsConfigs : []
+    name: contains(endpoint, 'name') ? endpoint.name : '${last(split(server.id, '/'))}-sql'
+    privateDnsZoneResourceIds: contains(endpoint, 'privateDnsZoneResourceIds') ? endpoint.privateDnsZoneResourceIds : []
+    tags: contains(endpoint, 'tags') ? endpoint.tags : {}
   }
 }]
 
