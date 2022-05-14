@@ -21,7 +21,7 @@ With this module you can create policy definitions across the management group o
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | Specifies the name of the policy definition. Maximum length is 64 characters for management group scope and subscription scope. |
-| `policyRule` | object | The Policy Rule details for the Policy Definition |
+| `policyRule` | object | The Policy Rule details for the Policy Definition. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
@@ -34,7 +34,7 @@ With this module you can create policy definitions across the management group o
 | `metadata` | object | `{object}` |  | The policy Definition metadata. Metadata is an open ended object and is typically a collection of key-value pairs. |
 | `mode` | string | `'All'` | `[All, Indexed, Microsoft.KeyVault.Data, Microsoft.ContainerService.Data, Microsoft.Kubernetes.Data]` | The policy definition mode. Default is All, Some examples are All, Indexed, Microsoft.KeyVault.Data. |
 | `parameters` | object | `{object}` |  | The policy definition parameters that can be used in policy definition references. |
-| `subscriptionId` | string | `''` |  | The subscription ID of the subscription (Scope). Cannot be used with managementGroupId |
+| `subscriptionId` | string | `''` |  | The subscription ID of the subscription (Scope). Cannot be used with managementGroupId. |
 
 
 ### Parameter Usage: `managementGroupId`
@@ -84,6 +84,6 @@ module policydefinition 'yourpath/arm/Microsoft.Authorization.policyDefinitions/
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | Policy Definition Name |
-| `resourceId` | string | Policy Definition resource ID |
-| `roleDefinitionIds` | array | Policy Definition Role Definition IDs |
+| `name` | string | Policy Definition Name. |
+| `resourceId` | string | Policy Definition resource ID. |
+| `roleDefinitionIds` | array | Policy Definition Role Definition IDs. |

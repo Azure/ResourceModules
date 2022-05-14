@@ -80,6 +80,6 @@ Create a role assignment for the given resource. If you want to assign a service
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the deployed MX record |
+| `name` | string | The name of the deployed MX record. |
 | `resourceGroupName` | string | The resource group of the deployed MX record. |
 | `resourceId` | string | The resource ID of the deployed MX record. |

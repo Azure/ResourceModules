@@ -101,9 +101,9 @@ module roledefinition 'yourpath/arm/Microsoft.Authorization.roleDefinitions/subs
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The GUID of the Role Definition |
-| `resourceId` | string | The resource ID of the Role Definition |
-| `roleDefinitionScope` | string | The scope this Role Definition applies to |
+| `name` | string | The GUID of the Role Definition. |
+| `resourceId` | string | The resource ID of the Role Definition. |
+| `roleDefinitionScope` | string | The scope this Role Definition applies to. |
 
 ## Considerations
 
