@@ -30,6 +30,12 @@ param roleAssignments array = []
 @description('Optional. Tags to be applied on all resources/resource groups in this deployment.')
 param tags object = {}
 
+@description('Optional. Custom DNS configurations.')
+param customDnsConfigs array = []
+
+@description('Optional. Manual PrivateLink Service Connections.')
+param manualPrivateLinkServiceConnections array = []
+
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
 
@@ -59,11 +65,11 @@ resource privateEndpoint 'Microsoft.Network/privateEndpoints@2021-05-01' = {
         }
       }
     ]
-    manualPrivateLinkServiceConnections: []
+    manualPrivateLinkServiceConnections: manualPrivateLinkServiceConnections
     subnet: {
       id: subnetId
     }
-    customDnsConfigs: []
+    customDnsConfigs: customDnsConfigs
   }
 }
 
