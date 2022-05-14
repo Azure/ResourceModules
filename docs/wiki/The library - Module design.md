@@ -549,6 +549,6 @@ When consuming the modules outside of CARML's pipelines you can either
 - Set the parameter to a default value of `'false'`
 - Set the parameter to false when deploying a module
 
-> **Note:** The deployment and its GUID can NOT be used to track [Azure Consumed Revenue (ACR)](https://docs.microsoft.com/en-us/azure/marketplace/azure-partner-customer-usage-attribution).
+> **Note:** _The deployment and its GUID can NOT be used to track [Azure Consumed Revenue (ACR)](https://docs.microsoft.com/en-us/azure/marketplace/azure-partner-customer-usage-attribution)._
 >
-> If you want to track it, we recommend to implement it on the consuming template's level (i.e. the workload/solution) and apply the required naming format `'pid-<GUID>'` (without the suffix).
+> _If you want to track it, we recommend to implement it on the consuming template's level (i.e. the workload/solution) and apply the required naming format `'pid-<GUID>'` (without the suffix)._
