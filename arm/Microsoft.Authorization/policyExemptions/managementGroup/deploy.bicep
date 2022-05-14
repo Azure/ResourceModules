@@ -27,7 +27,7 @@ param policyAssignmentId string
 @sys.description('Optional. The policy definition reference ID list when the associated policy assignment is an assignment of a policy set definition.')
 param policyDefinitionReferenceIds array = []
 
-@sys.description('Optional. The expiration date and time (in UTC ISO 8601 format yyyy-MM-ddTHH:mm:ssZ) of the policy exemption. e.g. 2021-10-02T03:57:00.000Z ')
+@sys.description('Optional. The expiration date and time (in UTC ISO 8601 format yyyy-MM-ddTHH:mm:ssZ) of the policy exemption. e.g. 2021-10-02T03:57:00.000Z.')
 param expiresOn string = ''
 
 @sys.description('Optional. The group ID of the management group to be exempted from the policy assignment. If not provided, will use the current scope for deployment.')
