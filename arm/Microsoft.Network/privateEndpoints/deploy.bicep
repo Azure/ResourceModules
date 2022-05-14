@@ -1,8 +1,8 @@
-@description('Required. Name of the private endpoint resource to create.')
-param name string
+@description('Optional. Name of the private endpoint resource to create.')
+param name string = '${last(split(serviceResourceId, '/'))}-${groupId[0]}'
 
 @description('Required. Resource ID of the subnet where the endpoint needs to be created.')
-param targetSubnetResourceId string
+param subnetId string
 
 @description('Required. Resource ID of the resource that needs to be connected to the network.')
 param serviceResourceId string
@@ -61,7 +61,7 @@ resource privateEndpoint 'Microsoft.Network/privateEndpoints@2021-05-01' = {
     ]
     manualPrivateLinkServiceConnections: []
     subnet: {
-      id: targetSubnetResourceId
+      id: subnetId
     }
     customDnsConfigs: []
   }
