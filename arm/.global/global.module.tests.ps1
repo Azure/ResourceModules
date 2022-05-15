@@ -49,8 +49,8 @@ Describe 'File/folder tests' -Tag Modules {
 
                 $workflowsFolderName = Join-Path $RepoRoot '.github' 'workflows'
                 $workflowFileName = '{0}.yml' -f $moduleFolderName.Replace('\', '/').Replace('/', '.').Replace('Microsoft', 'ms').ToLower()
-
-                Test-Path (Join-Path $workflowsFolderName $workflowFileName) | Should -Be $true
+                $workflowPath = Join-Path $workflowsFolderName $workflowFileName
+                Test-Path $workflowPath | Should -Be $true -Because "path [$workflowPath] should exist."
             }
         }
 
@@ -64,8 +64,8 @@ Describe 'File/folder tests' -Tag Modules {
 
                 $pipelinesFolderName = Join-Path $RepoRoot '.azuredevops' 'modulePipelines'
                 $pipelineFileName = '{0}.yml' -f $moduleFolderName.Replace('\', '/').Replace('/', '.').Replace('Microsoft', 'ms').ToLower()
-
-                Test-Path (Join-Path $pipelinesFolderName $pipelineFileName) | Should -Be $true
+                $pipelinePath = Join-Path $pipelinesFolderName $pipelineFileName
+                Test-Path $pipelinePath | Should -Be $true -Because "path [$pipelinePath] should exist."
             }
         }
 
