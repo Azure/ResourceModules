@@ -346,6 +346,7 @@ module virtualMachine_nic '.bicep/nested_networkInterface.bicep' = [for (nicConf
   name: '${uniqueString(deployment().name, location)}-VM-Nic-${index}'
   params: {
     networkInterfaceName: '${name}${nicConfiguration.nicSuffix}'
+    enableDefaultTelemetry: enableDefaultTelemetry
     virtualMachineName: name
     location: location
     tags: tags

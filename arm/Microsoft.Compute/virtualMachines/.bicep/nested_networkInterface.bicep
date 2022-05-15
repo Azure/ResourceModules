@@ -18,6 +18,9 @@ param pipdiagnosticLogCategoriesToEnable array
 param nicDiagnosticMetricsToEnable array
 param roleAssignments array
 
+@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+param enableDefaultTelemetry bool = true
+
 @description('Optional. The name of the PIP diagnostic setting, if deployed.')
 param pipDiagnosticSettingsName string = '${virtualMachineName}-diagnosticSettings'
 
@@ -34,26 +37,29 @@ var nicDiagnosticsMetrics = [for metric in nicDiagnosticMetricsToEnable: {
   }
 }]
 
-module networkInterface_publicIPConfigurations 'nested_networkInterface_publicIPAddress.bicep' = [for (ipConfiguration, index) in ipConfigurationArray: if (contains(ipConfiguration, 'pipconfiguration')) {
-  name: '${deployment().name}-PIP-${index}'
+module networkInterface_publicIPConfigurations '../../../Microsoft.Network/publicIPAddresses/deploy.bicep' = [for (ipConfiguration, index) in ipConfigurationArray: if (contains(ipConfiguration, 'pipconfiguration')) {
+  name: '${deployment().name}-publicIP-${index}'
   params: {
-    publicIPAddressName: '${virtualMachineName}${ipConfiguration.pipconfiguration.publicIpNameSuffix}'
-    publicIPPrefixId: (contains(ipConfiguration.pipconfiguration, 'publicIPPrefixId') ? (!(empty(ipConfiguration.pipconfiguration.publicIPPrefixId)) ? ipConfiguration.pipconfiguration.publicIPPrefixId : '') : '')
-    publicIPAllocationMethod: (contains(ipConfiguration.pipconfiguration, 'publicIPAllocationMethod') ? (!(empty(ipConfiguration.pipconfiguration.publicIPAllocationMethod)) ? ipConfiguration.pipconfiguration.publicIPAllocationMethod : 'Static') : 'Static')
-    skuName: (contains(ipConfiguration.pipconfiguration, 'skuName') ? (!(empty(ipConfiguration.pipconfiguration.skuName)) ? ipConfiguration.pipconfiguration.skuName : 'Standard') : 'Standard')
-    skuTier: (contains(ipConfiguration.pipconfiguration, 'skuTier') ? (!(empty(ipConfiguration.pipconfiguration.skuTier)) ? ipConfiguration.pipconfiguration.skuTier : 'Regional') : 'Regional')
-    location: location
-    diagnosticStorageAccountId: diagnosticStorageAccountId
-    diagnosticLogsRetentionInDays: diagnosticLogsRetentionInDays
-    diagnosticWorkspaceId: diagnosticWorkspaceId
+    name: contains(ipConfiguration, 'name') ? ipConfiguration.name : '${virtualMachineName}${ipConfiguration.pipconfiguration.publicIpNameSuffix}'
     diagnosticEventHubAuthorizationRuleId: diagnosticEventHubAuthorizationRuleId
     diagnosticEventHubName: diagnosticEventHubName
-    diagnosticSettingsName: pipDiagnosticSettingsName
-    diagnosticMetricsToEnable: pipdiagnosticMetricsToEnable
     diagnosticLogCategoriesToEnable: pipdiagnosticLogCategoriesToEnable
+    diagnosticLogsRetentionInDays: diagnosticLogsRetentionInDays
+    diagnosticMetricsToEnable: pipdiagnosticMetricsToEnable
+    diagnosticSettingsName: pipDiagnosticSettingsName
+    diagnosticStorageAccountId: diagnosticStorageAccountId
+    diagnosticWorkspaceId: diagnosticWorkspaceId
+    enableDefaultTelemetry: enableDefaultTelemetry
+    location: location
     lock: lock
-    roleAssignments: contains(ipConfiguration.pipconfiguration, 'roleAssignments') ? (!empty(ipConfiguration.pipconfiguration.roleAssignments) ? ipConfiguration.pipconfiguration.roleAssignments : []) : []
+    publicIPAddressVersion: contains(ipConfiguration, 'publicIPAddressVersion') ? ipConfiguration.publicIPAddressVersion : 'IPv4'
+    publicIPAllocationMethod: contains(ipConfiguration, 'publicIPAllocationMethod') ? ipConfiguration.publicIPAllocationMethod : 'Static'
+    publicIPPrefixResourceId: contains(ipConfiguration, 'publicIPPrefixResourceId') ? ipConfiguration.publicIPPrefixResourceId : ''
+    roleAssignments: contains(ipConfiguration, 'roleAssignments') ? ipConfiguration.roleAssignments : []
+    skuName: contains(ipConfiguration, 'skuName') ? ipConfiguration.skuName : 'Basic'
+    skuTier: contains(ipConfiguration, 'skuTier') ? ipConfiguration.skuTier : 'Regional'
     tags: tags
+    zones: contains(ipConfiguration, 'zones') ? ipConfiguration.zones : []
   }
 }]
 
@@ -76,7 +82,9 @@ resource networkInterface 'Microsoft.Network/networkInterfaces@2021-05-01' = {
         primary: ((index == 0) ? true : false)
         privateIPAllocationMethod: contains(ipConfiguration, 'privateIPAllocationMethod') ? (!empty(ipConfiguration.privateIPAllocationMethod) ? ipConfiguration.privateIPAllocationMethod : null) : null
         privateIPAddress: contains(ipConfiguration, 'vmIPAddress') ? (!empty(ipConfiguration.vmIPAddress) ? ipConfiguration.vmIPAddress : null) : null
-        publicIPAddress: contains(ipConfiguration, 'pipconfiguration') ? json('{"id":"${resourceId('Microsoft.Network/publicIPAddresses', '${virtualMachineName}${ipConfiguration.pipconfiguration.publicIpNameSuffix}')}"}') : null
+        publicIPAddress: contains(ipConfiguration, 'pipconfiguration') ? {
+          id: resourceId('Microsoft.Network/publicIPAddresses', '${virtualMachineName}${ipConfiguration.pipconfiguration.publicIpNameSuffix}')
+        } : null
         subnet: {
           id: ipConfiguration.subnetId
         }
