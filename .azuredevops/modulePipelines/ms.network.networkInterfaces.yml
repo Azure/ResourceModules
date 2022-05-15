@@ -49,6 +49,6 @@ stages:
 
   - stage: Publishing
     displayName: Publishing
-    condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/main'), eq(variables['Build.SourceBranch'], 'refs/heads/master'), eq('${{ parameters.prerelease }}', 'true')))
+    condition: and(succeeded( ), or(eq(variables['Build.SourceBranch'], 'refs/heads/main'), eq(variables['Build.SourceBranch'], 'refs/heads/master'), eq('${{ parameters.prerelease }}', 'true')))
     jobs:
       - template: /.azuredevops/pipelineTemplates/jobs.publishModule.yml
