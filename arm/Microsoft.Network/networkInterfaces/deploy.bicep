@@ -10,7 +10,7 @@ param tags object = {}
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
 
-@description('Optional.	Indicates whether IP forwarding is enabled on this network interface.')
+@description('Optional. Indicates whether IP forwarding is enabled on this network interface.')
 param enableIPForwarding bool = false
 
 @description('Optional. If the network interface is accelerated networking enabled.')
