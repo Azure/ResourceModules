@@ -1,8 +1,6 @@
 @description('Required. The name of the network interface.')
 param name string
 
-param virtualMachineName string
-
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
 
