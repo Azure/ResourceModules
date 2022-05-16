@@ -22,8 +22,8 @@ param dnsServers array = []
 @description('Optional. The network security group (NSG) to attach to the network interface.')
 param networkSecurityGroupResourceId string = ''
 
-@description('Optional. A list of IPConfigurations of the network interface.')
-param ipConfigurations array = []
+@description('Required. A list of IPConfigurations of the network interface.')
+param ipConfigurations array
 
 @allowed([
   'CanNotDelete'

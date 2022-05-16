@@ -21,6 +21,7 @@ This module deploys Network Interfaces.
 **Required parameters**
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
+| `ipConfigurations` | array | A list of IPConfigurations of the network interface. |
 | `name` | string | The name of the network interface. |
 
 **Optional parameters**
@@ -30,7 +31,6 @@ This module deploys Network Interfaces.
 | `enableAcceleratedNetworking` | bool | `False` |  | If the network interface is accelerated networking enabled. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `enableIPForwarding` | bool | `False` |  | Indicates whether IP forwarding is enabled on this network interface. |
-| `ipConfigurations` | array | `[]` |  | A list of IPConfigurations of the network interface. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `'NotSpecified'` | `[CanNotDelete, NotSpecified, ReadOnly]` | Specify the type of lock. |
 | `networkSecurityGroupResourceId` | string | `''` |  | The network security group (NSG) to attach to the network interface. |
