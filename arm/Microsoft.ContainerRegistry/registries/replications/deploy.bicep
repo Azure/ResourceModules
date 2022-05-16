@@ -1,4 +1,4 @@
-@description('Required. The name of the registry.')
+@description('Conditional. The name of the parent registry. Required if the template is used in a standalone deployment.')
 param registryName string
 
 @description('Required. The name of the replication.')
@@ -17,7 +17,7 @@ param regionEndpointEnabled bool = true
   'Disabled'
   'Enabled'
 ])
-@description('Optional. Whether or not zone redundancy is enabled for this container registry')
+@description('Optional. Whether or not zone redundancy is enabled for this container registry.')
 param zoneRedundancy string = 'Disabled'
 
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
@@ -58,3 +58,6 @@ output resourceId string = replication.id
 
 @description('The name of the resource group the replication was created in.')
 output resourceGroupName string = resourceGroup().name
+
+@description('The location the resource was deployed into.')
+output location string = replication.location

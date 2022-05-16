@@ -116,6 +116,21 @@ stages:
               templateFilePath: $(templateFilePath)
               displayName: Server farm
 
+  - stage: deploy_app
+    displayName: Deploy app
+    dependsOn:
+      - deploy_sf
+    variables:
+      resourceType: 'Microsoft.Web/sites'
+      templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
+    jobs:
+      - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
+        parameters:
+          deploymentBlocks:
+            - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: Function App
+
   - stage: deploy_pa
     displayName: Deploy policy assignment
     dependsOn:
@@ -493,6 +508,9 @@ stages:
             - path: $(dependencyPath)/$(resourceType)/parameters/bastion.parameters.json
               templateFilePath: $(templateFilePath)
               displayName: Bastion NSG
+            - path: $(dependencyPath)/$(resourceType)/parameters/aadds.parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: AADDS NSG
             - ${{ if eq( parameters.deploySqlMiDependencies, true) }}:
                 - path: $(dependencyPath)/$(resourceType)/parameters/sqlmi.parameters.json
                   templateFilePath: $(templateFilePath)
@@ -639,10 +657,8 @@ stages:
           - default_kv
           - default_kv_nopr
         pool:
-          ${{ if eq(variables['vmImage'], '') }}:
-            name: $(poolName)
-          ${{ if eq(variables['poolName'], '') }}:
-            vmImage: $(vmImage)
+          # Must run on windows as the used `New-SelfSignedCertificate` function is not available on linux
+          vmImage: windows-2022
         steps:
           - task: PowerShell@2
             displayName: 'Setup agent'
@@ -711,6 +727,21 @@ stages:
                 $vpnSharedKeyString = (New-Guid).Guid.SubString(0, 32)
                 $vpnSharedKey = ConvertTo-SecureString -String $vpnSharedKeyString -AsPlainText -Force
 
+                $namePrefixToken = $Settings.parameterFileTokens.localTokens | Where-Object { $_.name -eq 'namePrefix' }
+                $certInputObject = @{
+                    Subject           = 'CN=*.{0}.onmicrosoft.com' -f $namePrefixToken.value
+                    DnsName           = '*.{0}.onmicrosoft.com' -f $namePrefixToken.value
+                    CertStoreLocation = 'cert:\LocalMachine\My'
+                    KeyExportPolicy   = 'Exportable'
+                    Provider          = 'Microsoft Enhanced RSA and AES Cryptographic Provider'
+                    NotAfter          = (Get-Date).AddMonths(3)
+                    HashAlgorithm     = 'SHA256'
+                }
+                $rawCert = New-SelfSignedCertificate @certInputObject
+                Export-PfxCertificate -Cert ('Cert:\localmachine\my\' + $rawCert.Thumbprint) -FilePath "$home/aadds.pfx" -Password $password -Force
+                $rawCertByteStream = Get-Content "$home/aadds.pfx" -AsByteStream
+                $pfxCertificate = ConvertTo-SecureString -String ([System.Convert]::ToBase64String($rawCertByteStream)) -AsPlainText -Force
+
                 # Set secrets
                 # -------
                 @(
@@ -721,6 +752,8 @@ stages:
                   @{ name = 'vpnSharedKey'; secretValue = $vpnSharedKey } # VirtualNetworkGateway
                   @{ name = 'apimClientId'; secretValue = $username } # API management
                   @{ name = 'apimClientSecret'; secretValue = $password } # API management
+                  @{ name = 'pfxCertificatePassword'; secretValue = $password } # AADDS
+                  @{ name = 'pfxBase64Certificate'; secretValue = $pfxCertificate } # AADDS
                 ) | ForEach-Object {
                   $null = Set-AzKeyVaultSecret -VaultName $keyVaultName -Name $_.name -SecretValue $_.secretValue
                   Write-Verbose ('Added secret [{0}] to key vault [{1}]' -f $_.name, $keyVaultName) -Verbose
@@ -907,6 +940,9 @@ stages:
             - path: $(dependencyPath)/$(resourceType)/parameters/7.virtualHubConnection.parameters.json
               templateFilePath: $(templateFilePath)
               displayName: Virtual Hub Connection Virtual Network
+            - path: $(dependencyPath)/$(resourceType)/parameters/8.aadds.parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: AADDS Virtual Network
             - ${{ if eq( parameters.deploySqlMiDependencies, true) }}:
                 - path: $(dependencyPath)/$(resourceType)/parameters/6.sqlmi.parameters.json
                   templateFilePath: $(templateFilePath)

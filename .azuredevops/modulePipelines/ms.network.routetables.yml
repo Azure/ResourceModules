@@ -22,6 +22,7 @@ trigger:
       - '/.azuredevops/modulePipelines/ms.network.routetables.yml'
       - '/.azuredevops/pipelineTemplates/module.*.yml'
       - '/arm/Microsoft.Network/routeTables/*'
+      - '/arm/.global/global.module.tests.ps1'
     exclude:
       - '/**/*.md'
 

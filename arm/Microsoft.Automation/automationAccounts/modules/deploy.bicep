@@ -1,7 +1,7 @@
 @description('Required. Name of the Automation Account module.')
 param name string
 
-@description('Required. Name of the parent Automation Account.')
+@description('Conditional. The name of the parent Automation Account. Required if the template is used in a standalone deployment.')
 param automationAccountName string
 
 @description('Required. Module package uri, e.g. https://www.powershellgallery.com/api/v2/package.')
@@ -48,11 +48,14 @@ resource module 'Microsoft.Automation/automationAccounts/modules@2020-01-13-prev
   }
 }
 
-@description('The name of the deployed module')
+@description('The name of the deployed module.')
 output name string = module.name
 
-@description('The resource ID of the deployed module')
+@description('The resource ID of the deployed module.')
 output resourceId string = module.id
 
-@description('The resource group of the deployed module')
+@description('The resource group of the deployed module.')
 output resourceGroupName string = resourceGroup().name
+
+@description('The location the resource was deployed into.')
+output location string = module.location

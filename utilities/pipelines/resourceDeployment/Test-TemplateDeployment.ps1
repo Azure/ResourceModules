@@ -94,7 +94,7 @@ function Test-TemplateDeployment {
             $DeploymentInputs += $additionalParameters
         }
 
-        $deploymentScope = Get-ScopeOfTemplateFile -TemplateFilePath $templateFilePath
+        $deploymentScope = Get-ScopeOfTemplateFile -TemplateFilePath $templateFilePath -Verbose
 
         if ($deploymentScope -ne 'resourceGroup') {
             $deploymentNamePrefix = Split-Path -Path (Split-Path $templateFilePath -Parent) -LeafBase
@@ -115,6 +115,10 @@ function Test-TemplateDeployment {
         #######################
         switch ($deploymentScope) {
             'resourceGroup' {
+                if (-not [String]::IsNullOrEmpty($subscriptionId)) {
+                    Write-Verbose ('Setting context to subscription [{0}]' -f $subscriptionId)
+                    $null = Set-AzContext -Subscription $subscriptionId
+                }
                 if (-not (Get-AzResourceGroup -Name $resourceGroupName -ErrorAction 'SilentlyContinue')) {
                     if ($PSCmdlet.ShouldProcess("Resource group [$resourceGroupName] in location [$location]", 'Create')) {
                         New-AzResourceGroup -Name $resourceGroupName -Location $location
@@ -126,9 +130,9 @@ function Test-TemplateDeployment {
                 break
             }
             'subscription' {
-                if ($subscriptionId -and ($Context = Get-AzContext -ListAvailable | Where-Object { $_.Subscription.Id -eq $subscriptionId })) {
-                    Write-Verbose ('Setting context to subscription [{0}]' -f $Context.Subscription.Name)
-                    $null = $Context | Set-AzContext
+                if (-not [String]::IsNullOrEmpty($subscriptionId)) {
+                    Write-Verbose ('Setting context to subscription [{0}]' -f $subscriptionId)
+                    $null = Set-AzContext -Subscription $subscriptionId
                 }
                 if ($PSCmdlet.ShouldProcess('Subscription level deployment', 'Test')) {
                     $res = Test-AzSubscriptionDeployment @DeploymentInputs -Location $Location

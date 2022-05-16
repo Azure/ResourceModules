@@ -205,7 +205,6 @@ The primary pipeline variable file `global.variables.yml` hosts the fundamental 
 
 ### 3.2.3 Enable actions
 
-
 Finally, 'GitHub Actions' are disabled by default and must be enabled for execution.
 
 To do so, perform the following steps:
@@ -228,6 +227,7 @@ For _Azure DevOps_, you have to perform the following environment-specific steps
 - [3.2.2 Setup secrets in variable group](#322-setup-secrets-in-variable-group)
 - [3.2.3 Setup variables file](#323-setup-variables-file)
 - [3.2.4 Register pipelines](#324-register-pipelines)
+- [3.2.5 Azure Artifacts Universal Packages](#325-azure-artifacts-universal-packages)
 
 ### 3.2.1 Setup service connection
 
@@ -316,6 +316,22 @@ The primary pipeline variable file `global.variables.yml` hosts the fundamental 
 
 To use the pipelines that come with the environment in Azure DevOps, you need to register them first. You can either do this manually, or, execute the utility `Register-AzureDevOpsPipeline` we provide in path `utilities/tools/AzureDevOps`. For further information, please refer to the corresponding [documentation](./Interoperability%20-%20Register%20Azure%20DevOps%20Pipelines).
 
+
+### 3.2.5 Azure Artifacts Universal Packages
+
+This section will explain what is required to publish the modules to [Azure Artifacts Universal Packages](https://docs.microsoft.com/en-us/azure/devops/artifacts/quickstarts/universal-packages?view=azure-devops). It will also assume you are publishing from Azure DevOps Pipelines.
+#### The dependent components are
+1. An Azure DevOps organization
+1. An Azure DevOps artifacts feed
+   > Note: The default feed name is `ResourceModules` as configured in the `./global.variables.yaml` file's variable `vstsFeedName`. Update the value here if you want to use a different name, but make sure it matches the name of the artifact feed created in Azure DevOps.
+1. An Azure DevOps project to host the artifact feed
+   > Note: There are a couple options to consider when setting up an Azure Artifact feed. For example, organization-scoped feeds vs project-scoped feeds. Please see what option suits your needs by reviewing the [feeds](https://docs.microsoft.com/en-us/azure/devops/artifacts/concepts/feeds?view=azure-devops) document first.
+1. If you chose the feed to be project-scoped, you will need the Project Build Service account to have `Contributor` access to publish to the Azure Artifacts feed. To set this, follow the [Pipeline permission](https://docs.microsoft.com/en-us/azure/devops/artifacts/feeds/feed-permissions?view=azure-devops#pipelines-permissions) steps.
+
+#### Implementation Guidance
+Each `./azuredevops/modulePipelines` yaml pipeline already calls `/.azuredevops/pipelineTemplates/jobs.publishModule.yml`. This YAML template contains a method to `Publish module to artifacts feed` via `utilities\pipelines\resourcePublish\Publish-ModuleToUniversalArtifactFeed.ps1`.
+
+
 </details>
 
 <p>
@@ -330,6 +346,15 @@ Run the dependencies pipeline by following instructions provided in the specific
 
 > **Note**: For details about the dependencies pipeline design please refer to the dedicated [Dependencies pipeline design](./The%20CI%20environment%20-%20Pipeline%20design.md#dependencies-pipeline) section.
 
+## 4.1 Manual Dependencies
+
+In special cases, manual actions may be required to provision certain resources that are not covered by our dependency pipeline. In the following you can find an overview of these resources, for which modules you'd need them and what you'd need to do:
+
+### Microsoft.Web/sites
+
+To successfully deploy the sites module using the parameter file `fa.parameters.json` you need to create an Azure Active Directory App with its API endpoint enabled (e.g. `api://<app id>`) and add a secret. The secret value needs then to be stored in a Key Vault secret.
+
+
 # 5. Update module parameter files
 
 Once the required dependencies are deployed, there is one more step left to get as many module pipelines running as possible.
@@ -338,15 +363,18 @@ Several module parameters reference resources with unique values. For example, i
 
 For this reason, make sure to update the references in the following modules once the dependencies pipeline concluded:
 
-| File | Parameter |
-| - | - |
-| `arm\Microsoft.Compute\diskEncryptionSets\.parameters\parameters.json` |`keyUrl.value` |
-| `arm\Microsoft.Compute\virtualMachines\.parameters\linux.parameters.json` | `extensionDiskEncryptionConfig.value.settings.KeyEncryptionKeyURL` |
-| `arm\Microsoft.Compute\virtualMachines\.parameters\windows.parameters.json` | `extensionDiskEncryptionConfig.value.settings.KeyEncryptionKeyURL` |
-| `arm\Microsoft.Compute\virtualMachineScaleSets\.parameters\linux.parameters.json` | `extensionDiskEncryptionConfig.value.settings.KeyEncryptionKeyURL` |
-| `arm\Microsoft.Compute\virtualMachineScaleSets\.parameters\windows.parameters.json` | `extensionDiskEncryptionConfig.value.settings.KeyEncryptionKeyURL` |
-| `arm\Microsoft.Sql\managedInstances\.parameters\parameters.json` | `keys.value.uri` |
-| `arm\Microsoft.Network\applicationGateways\.parameters\parameters.json` | `sslCertificates.value.properties.keyVaultSecretId` |
+| File | Parameter | Notes |
+| - | - | - |
+| `arm\Microsoft.Compute\diskEncryptionSets\.parameters\parameters.json` |`keyUrl.value` | |
+| `arm\Microsoft.Compute\virtualMachines\.parameters\linux.parameters.json` | `extensionDiskEncryptionConfig.value.settings.KeyEncryptionKeyURL` | |
+| `arm\Microsoft.Compute\virtualMachines\.parameters\windows.parameters.json` | `extensionDiskEncryptionConfig.value.settings.KeyEncryptionKeyURL` | |
+| `arm\Microsoft.Compute\virtualMachineScaleSets\.parameters\linux.parameters.json` | `extensionDiskEncryptionConfig.value.settings.KeyEncryptionKeyURL` | |
+| `arm\Microsoft.Compute\virtualMachineScaleSets\.parameters\windows.parameters.json` | `extensionDiskEncryptionConfig.value.settings.KeyEncryptionKeyURL` | |
+| `arm\Microsoft.Sql\managedInstances\.parameters\parameters.json` | `keys.value.uri` | |
+| `arm\Microsoft.Network\applicationGateways\.parameters\parameters.json` | `sslCertificates.value.properties.keyVaultSecretId` | |
+| `arm\Microsoft.Web\sites\.parameters\fa.parameters.json` | `appSettingsKeyValuePairs.value.EASYAUTH_SECRET` | Key Vault secret URI without version |
+| `arm\Microsoft.Web\sites\.parameters\fa.parameters.json` | `authSettingV2Configuration.value.identityProviders.azureActiveDirectory.registration.clientId` | App ID from the Azure Active Directory App |
+| `arm\Microsoft.Web\sites\.parameters\fa.parameters.json` | `authSettingV2Configuration.value.identityProviders.azureActiveDirectory.validation.allowedAudiences` | API endpoint from the Azure Active Directory app |
 
 </details>
 

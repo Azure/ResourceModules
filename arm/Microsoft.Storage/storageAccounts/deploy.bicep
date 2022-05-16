@@ -5,7 +5,7 @@ param name string = ''
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
 
-@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'')
+@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
 param roleAssignments array = []
 
 @description('Optional. Enables system assigned managed identity on the resource.')
@@ -47,25 +47,22 @@ param storageAccountAccessTier string = 'Hot'
 @description('Optional. Provides the identity based authentication settings for Azure Files.')
 param azureFilesIdentityBasedAuthentication object = {}
 
-@description('Optional. Virtual Network Identifier used to create a service endpoint.')
-param vNetId string = ''
-
-@description('Optional. Configuration Details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible')
+@description('Optional. Configuration Details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible.')
 param privateEndpoints array = []
 
 @description('Optional. The Storage Account ManagementPolicies Rules.')
 param managementPolicyRules array = []
 
-@description('Optional. Networks ACLs, this value contains IPs to whitelist and/or Subnet information. For security reasons, it is recommended to set the DefaultAction Deny')
+@description('Optional. Networks ACLs, this value contains IPs to whitelist and/or Subnet information. For security reasons, it is recommended to set the DefaultAction Deny.')
 param networkAcls object = {}
 
 @description('Optional. A boolean indicating whether or not the service applies a secondary layer of encryption with platform managed keys for data at rest. For security reasons, it is recommended to set it to true.')
 param requireInfrastructureEncryption bool = true
 
-@description('Optional. Blob service and containers to deploy')
+@description('Optional. Blob service and containers to deploy.')
 param blobServices object = {}
 
-@description('Optional. File service and shares to deploy')
+@description('Optional. File service and shares to deploy.')
 param fileServices object = {}
 
 @description('Optional. Queue service and queues to create.')
@@ -85,7 +82,7 @@ param allowBlobPublicAccess bool = false
 @description('Optional. Set the minimum TLS version on request to storage.')
 param minimumTlsVersion string = 'TLS1_2'
 
-@description('Optional. If true, enables Hierarchical Namespace for the storage account')
+@description('Optional. If true, enables Hierarchical Namespace for the storage account.')
 param enableHierarchicalNamespace bool = false
 
 @description('Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.')
@@ -154,10 +151,6 @@ var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
   }
 }]
 
-var virtualNetworkRules = [for index in range(0, (empty(networkAcls) ? 0 : length(networkAcls.virtualNetworkRules))): {
-  id: '${vNetId}/subnets/${networkAcls.virtualNetworkRules[index].subnet}'
-}]
-
 var maxNameLength = 24
 var uniqueStorageNameUntrim = '${uniqueString('Storage Account${basetime}')}'
 var uniqueStorageName = length(uniqueStorageNameUntrim) > maxNameLength ? substring(uniqueStorageNameUntrim, 0, maxNameLength) : uniqueStorageNameUntrim
@@ -212,8 +205,8 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-08-01' = {
     networkAcls: !empty(networkAcls) ? {
       bypass: !empty(networkAcls) ? networkAcls.bypass : null
       defaultAction: !empty(networkAcls) ? networkAcls.defaultAction : null
-      virtualNetworkRules: !empty(networkAcls) ? virtualNetworkRules : null
-      ipRules: !empty(networkAcls) ? (length(networkAcls.ipRules) != 0 ? networkAcls.ipRules : null) : null
+      virtualNetworkRules: (!empty(networkAcls) && contains(networkAcls, 'virtualNetworkRules')) ? networkAcls.virtualNetworkRules : []
+      ipRules: (!empty(networkAcls) && contains(networkAcls, 'ipRules')) ? networkAcls.ipRules : []
     } : null
     allowBlobPublicAccess: allowBlobPublicAccess
     publicNetworkAccess: publicNetworkAccess
@@ -269,6 +262,7 @@ module storageAccount_managementPolicies 'managementPolicies/deploy.bicep' = if 
   params: {
     storageAccountName: storageAccount.name
     rules: managementPolicyRules
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }
 
@@ -288,6 +282,7 @@ module storageAccount_blobServices 'blobServices/deploy.bicep' = if (!empty(blob
     diagnosticLogCategoriesToEnable: contains(blobServices, 'diagnosticLogCategoriesToEnable') ? blobServices.diagnosticLogCategoriesToEnable : []
     diagnosticMetricsToEnable: contains(blobServices, 'diagnosticMetricsToEnable') ? blobServices.diagnosticMetricsToEnable : []
     diagnosticWorkspaceId: contains(blobServices, 'diagnosticWorkspaceId') ? blobServices.diagnosticWorkspaceId : ''
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }
 
@@ -309,6 +304,7 @@ module storageAccount_fileServices 'fileServices/deploy.bicep' = if (!empty(file
     }
     shares: contains(fileServices, 'shares') ? fileServices.shares : []
     diagnosticWorkspaceId: contains(fileServices, 'diagnosticWorkspaceId') ? fileServices.diagnosticWorkspaceId : ''
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }
 
@@ -325,6 +321,7 @@ module storageAccount_queueServices 'queueServices/deploy.bicep' = if (!empty(qu
     diagnosticMetricsToEnable: contains(queueServices, 'diagnosticMetricsToEnable') ? queueServices.diagnosticMetricsToEnable : []
     queues: contains(queueServices, 'queues') ? queueServices.queues : []
     diagnosticWorkspaceId: contains(queueServices, 'diagnosticWorkspaceId') ? queueServices.diagnosticWorkspaceId : ''
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }
 
@@ -341,16 +338,17 @@ module storageAccount_tableServices 'tableServices/deploy.bicep' = if (!empty(ta
     diagnosticMetricsToEnable: contains(tableServices, 'diagnosticMetricsToEnable') ? tableServices.diagnosticMetricsToEnable : []
     tables: contains(tableServices, 'tables') ? tableServices.tables : []
     diagnosticWorkspaceId: contains(tableServices, 'diagnosticWorkspaceId') ? tableServices.diagnosticWorkspaceId : ''
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }
 
-@description('The resource ID of the deployed storage account')
+@description('The resource ID of the deployed storage account.')
 output resourceId string = storageAccount.id
 
-@description('The name of the deployed storage account')
+@description('The name of the deployed storage account.')
 output name string = storageAccount.name
 
-@description('The resource group of the deployed storage account')
+@description('The resource group of the deployed storage account.')
 output resourceGroupName string = resourceGroup().name
 
 @description('The primary blob endpoint reference if blob services are deployed.')
@@ -358,3 +356,6 @@ output primaryBlobEndpoint string = !empty(blobServices) && contains(blobService
 
 @description('The principal ID of the system assigned identity.')
 output systemAssignedPrincipalId string = systemAssignedIdentity && contains(storageAccount.identity, 'principalId') ? storageAccount.identity.principalId : ''
+
+@description('The location the resource was deployed into.')
+output location string = storageAccount.location

@@ -72,7 +72,7 @@ param fqdns array = []
 @description('Optional. List of IP addresses for the ThreatIntel Allowlist.')
 param ipAddresses array = []
 
-@description('Optional. Secret ID of (base-64 encoded unencrypted pfx) Secret or Certificate object stored in KeyVault.	')
+@description('Optional. Secret ID of (base-64 encoded unencrypted pfx) Secret or Certificate object stored in KeyVault.	.')
 param keyVaultSecretId string = ''
 
 @description('Optional. Name of the CA certificate.')
@@ -153,6 +153,11 @@ resource firewallPolicy 'Microsoft.Network/firewallPolicies@2021-05-01' = {
   }
 }
 
+// When a FW policy uses a base policy and have more rule collection groups,
+// they need to be deployed sequentially, otherwise the deployment would fail
+// because of concurrent access to the base policy.
+// The next line forces ARM to deploy them one after the other, so no race concition on the base policy will happen.
+@batchSize(1)
 module firewallPolicy_ruleCollectionGroups 'ruleCollectionGroups/deploy.bicep' = [for (ruleCollectionGroup, index) in ruleCollectionGroups: {
   name: '${uniqueString(deployment().name, location)}-firewallPolicy_ruleCollectionGroups-${index}'
   params: {
@@ -160,14 +165,18 @@ module firewallPolicy_ruleCollectionGroups 'ruleCollectionGroups/deploy.bicep' =
     name: ruleCollectionGroup.name
     priority: ruleCollectionGroup.priority
     ruleCollections: ruleCollectionGroup.ruleCollections
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }]
 
-@description('The name of the deployed firewall policy')
+@description('The name of the deployed firewall policy.')
 output name string = firewallPolicy.name
 
-@description('The resource ID of the deployed firewall policy')
+@description('The resource ID of the deployed firewall policy.')
 output resourceId string = firewallPolicy.id
 
-@description('The resource group of the deployed firewall policy')
+@description('The resource group of the deployed firewall policy.')
 output resourceGroupName string = resourceGroup().name
+
+@description('The location the resource was deployed into.')
+output location string = firewallPolicy.location

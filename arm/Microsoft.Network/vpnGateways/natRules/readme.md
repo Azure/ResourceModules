@@ -7,13 +7,12 @@ This module deploys VPN Gateways NATRules
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Template references](#Template-references)
 
 ## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Network/vpnGateways/natRules` | 2021-05-01 |
+| `Microsoft.Network/vpnGateways/natRules` | [2021-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/vpnGateways/natRules) |
 
 ## Parameters
 
@@ -21,7 +20,11 @@ This module deploys VPN Gateways NATRules
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The name of the NAT rule. |
-| `vpnGatewayName` | string | The name of the VPN gateway this NAT rule is associated with. |
+
+**Conditional parameters**
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `vpnGatewayName` | string | The name of the parent VPN gateway this NAT rule is associated with. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
@@ -38,10 +41,6 @@ This module deploys VPN Gateways NATRules
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the NAT rule |
-| `resourceGroupName` | string | The name of the resource group the NAT rule was deployed into |
-| `resourceId` | string | The resource ID of the NAT rule |
-
-## Template references
-
-- [Vpngateways/Natrules](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/vpnGateways/natRules)
+| `name` | string | The name of the NAT rule. |
+| `resourceGroupName` | string | The name of the resource group the NAT rule was deployed into. |
+| `resourceId` | string | The resource ID of the NAT rule. |

@@ -8,14 +8,13 @@ This module deploys a deployment script.
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Considerations](#Considerations)
-- [Template references](#Template-references)
 
 ## Resource types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/locks` | 2017-04-01 |
-| `Microsoft.Resources/deploymentScripts` | 2020-10-01 |
+| `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
+| `Microsoft.Resources/deploymentScripts` | [2020-10-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Resources/2020-10-01/deploymentScripts) |
 
 ## Parameters
 
@@ -86,15 +85,11 @@ You can specify multiple user assigned identities to a resource by providing add
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the deployment script |
-| `resourceGroupName` | string | The resource group the deployment script was deployed into |
-| `resourceId` | string | The resource ID of the deployment script |
+| `location` | string | The location the resource was deployed into. |
+| `name` | string | The name of the deployment script. |
+| `resourceGroupName` | string | The resource group the deployment script was deployed into. |
+| `resourceId` | string | The resource ID of the deployment script. |
 
 ## Considerations
 
 This module requires a User Assigned Identity (MSI, managed service identity) to exist, and this MSI has to have contributor rights on the subscription - that allows the Deployment Script to create the required Storage Account and the Azure Container Instance.
-
-## Template references
-
-- [Deploymentscripts](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Resources/2020-10-01/deploymentScripts)
-- [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)

@@ -7,14 +7,13 @@ With this module you can perform policy assignments on a subscription level.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Template references](#Template-references)
 
 ## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/policyAssignments` | 2021-06-01 |
-| `Microsoft.Authorization/roleAssignments` | 2021-04-01-preview |
+| `Microsoft.Authorization/policyAssignments` | [2021-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2021-06-01/policyAssignments) |
+| `Microsoft.Authorization/roleAssignments` | [2020-10-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-10-01-preview/roleAssignments) |
 
 ## Parameters
 
@@ -32,24 +31,21 @@ With this module you can perform policy assignments on a subscription level.
 | `displayName` | string | `''` |  | The display name of the policy assignment. Maximum length is 128 characters. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `enforcementMode` | string | `'Default'` | `[Default, DoNotEnforce]` | The policy assignment enforcement mode. Possible values are Default and DoNotEnforce. - Default or DoNotEnforce |
-| `identity` | string | `'SystemAssigned'` | `[SystemAssigned, None]` | The managed identity associated with the policy assignment. Policy assignments must include a resource identity when assigning 'Modify' policy definitions. |
+| `identity` | string | `'SystemAssigned'` | `[SystemAssigned, UserAssigned, None]` | The managed identity associated with the policy assignment. Policy assignments must include a resource identity when assigning 'Modify' policy definitions. |
 | `location` | string | `[deployment().location]` |  | Location for all resources. |
 | `metadata` | object | `{object}` |  | The policy assignment metadata. Metadata is an open ended object and is typically a collection of key-value pairs. |
 | `nonComplianceMessage` | string | `''` |  | The messages that describe why a resource is non-compliant with the policy. |
 | `notScopes` | array | `[]` |  | The policy excluded scopes |
 | `parameters` | object | `{object}` |  | Parameters for the policy assignment if needed. |
 | `subscriptionId` | string | `[subscription().subscriptionId]` |  | The Target Scope for the Policy. The subscription ID of the subscription for the policy assignment. If not provided, will use the current scope for deployment. |
+| `userAssignedIdentityId` | string | `''` |  | The Resource ID for the user assigned identity to assign to the policy assignment. |
 
 
 ## Outputs
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
+| `location` | string | The location the resource was deployed into. |
 | `name` | string | Policy Assignment Name |
 | `principalId` | string | Policy Assignment principal ID |
 | `resourceId` | string | Policy Assignment resource ID |
-
-## Template references
-
-- [Policyassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2021-06-01/policyAssignments)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)

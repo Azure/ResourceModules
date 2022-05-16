@@ -1,7 +1,7 @@
-@description('Optional. Administrator username for the server. Required if no `administrators` object for AAD authentication is provided.')
+@description('Conditional. The administrator username for the server. Required if no `administrators` object for AAD authentication is provided.')
 param administratorLogin string = ''
 
-@description('Optional. The administrator login password. Required if no `administrators` object for AAD authentication is provided.')
+@description('Conditional. The administrator login password. Required if no `administrators` object for AAD authentication is provided.')
 @secure()
 param administratorLoginPassword string = ''
 
@@ -25,7 +25,7 @@ param userAssignedIdentities object = {}
 @description('Optional. Specify the type of lock.')
 param lock string = 'NotSpecified'
 
-@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'')
+@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
 param roleAssignments array = []
 
 @description('Optional. Tags of the resource.')
@@ -34,17 +34,20 @@ param tags object = {}
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
 
-@description('Optional. The databases to create in the server')
+@description('Optional. The databases to create in the server.')
 param databases array = []
 
-@description('Optional. The firewall rules to create in the server')
+@description('Optional. The firewall rules to create in the server.')
 param firewallRules array = []
 
-@description('Optional. The security alert policies to create in the server')
+@description('Optional. The security alert policies to create in the server.')
 param securityAlertPolicies array = []
 
-@description('Optional. The Azure Active Directory (AAD) administrator authentication. Required if no `administratorLogin` & `administratorLoginPassword` is provided.')
+@description('Conditional. The Azure Active Directory (AAD) administrator authentication. Required if no `administratorLogin` & `administratorLoginPassword` is provided.')
 param administrators object = {}
+
+@description('Optional. Configuration Details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible.')
+param privateEndpoints array = []
 
 var identityType = systemAssignedIdentity ? (!empty(userAssignedIdentities) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned') : (!empty(userAssignedIdentities) ? 'UserAssigned' : 'None')
 
@@ -52,6 +55,9 @@ var identity = identityType != 'None' ? {
   type: identityType
   userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
 } : null
+
+@description('Optional. The vulnerability assessment configuration')
+param vulnerabilityAssessmentsObj object = {}
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
@@ -136,6 +142,21 @@ module server_databases 'databases/deploy.bicep' = [for (database, index) in dat
     tags: contains(database, 'tags') ? database.tags : {}
     diagnosticWorkspaceId: contains(database, 'diagnosticWorkspaceId') ? database.diagnosticWorkspaceId : ''
     zoneRedundant: contains(database, 'zoneRedundant') ? database.zoneRedundant : false
+    enableDefaultTelemetry: enableDefaultTelemetry
+  }
+}]
+
+module server_privateEndpoints '.bicep/nested_privateEndpoint.bicep' = [for (endpoint, index) in privateEndpoints: if (!empty(privateEndpoints)) {
+  name: '${uniqueString(deployment().name, location)}-Sql-PrivateEndpoints-${index}'
+  params: {
+    privateEndpointResourceId: server.id
+    privateEndpointVnetLocation: !empty(privateEndpoints) ? reference(split(endpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location : 'dummy'
+    service: contains(endpoint, 'service') ? endpoint.service : 'sqlServer'
+    subnetResourceId: endpoint.subnetResourceId
+    customDnsConfigs: contains(endpoint, 'customDnsConfigs') ? endpoint.customDnsConfigs : []
+    name: contains(endpoint, 'name') ? endpoint.name : '${last(split(server.id, '/'))}-sql'
+    privateDnsZoneResourceIds: contains(endpoint, 'privateDnsZoneResourceIds') ? endpoint.privateDnsZoneResourceIds : []
+    tags: contains(endpoint, 'tags') ? endpoint.tags : {}
   }
 }]
 
@@ -146,6 +167,7 @@ module server_firewallRules 'firewallRules/deploy.bicep' = [for (firewallRule, i
     serverName: server.name
     endIpAddress: contains(firewallRule, 'endIpAddress') ? firewallRule.endIpAddress : '0.0.0.0'
     startIpAddress: contains(firewallRule, 'startIpAddress') ? firewallRule.startIpAddress : '0.0.0.0'
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }]
 
@@ -161,17 +183,37 @@ module server_securityAlertPolicies 'securityAlertPolicies/deploy.bicep' = [for 
     state: contains(securityAlertPolicy, 'state') ? securityAlertPolicy.state : 'Disabled'
     storageAccountAccessKey: contains(securityAlertPolicy, 'storageAccountAccessKey') ? securityAlertPolicy.storageAccountAccessKey : ''
     storageEndpoint: contains(securityAlertPolicy, 'storageEndpoint') ? securityAlertPolicy.storageEndpoint : ''
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }]
 
-@description('The name of the deployed SQL server')
+module server_vulnerabilityAssessment 'vulnerabilityAssessments/deploy.bicep' = if (!empty(vulnerabilityAssessmentsObj)) {
+  name: '${uniqueString(deployment().name, location)}-Sql-VulnAssessm'
+  params: {
+    serverName: server.name
+    name: vulnerabilityAssessmentsObj.name
+    recurringScansEmails: contains(vulnerabilityAssessmentsObj, 'recurringScansEmails') ? vulnerabilityAssessmentsObj.recurringScansEmails : []
+    recurringScansEmailSubscriptionAdmins: contains(vulnerabilityAssessmentsObj, 'recurringScansEmailSubscriptionAdmins') ? vulnerabilityAssessmentsObj.recurringScansEmailSubscriptionAdmins : false
+    recurringScansIsEnabled: contains(vulnerabilityAssessmentsObj, 'recurringScansIsEnabled') ? vulnerabilityAssessmentsObj.recurringScansIsEnabled : false
+    vulnerabilityAssessmentsStorageAccountId: contains(vulnerabilityAssessmentsObj, 'vulnerabilityAssessmentsStorageAccountId') ? vulnerabilityAssessmentsObj.vulnerabilityAssessmentsStorageAccountId : ''
+    enableDefaultTelemetry: enableDefaultTelemetry
+  }
+  dependsOn: [
+    server_securityAlertPolicies
+  ]
+}
+
+@description('The name of the deployed SQL server.')
 output name string = server.name
 
-@description('The resource ID of the deployed SQL server')
+@description('The resource ID of the deployed SQL server.')
 output resourceId string = server.id
 
-@description('The resourceGroup of the deployed SQL server')
+@description('The resourceGroup of the deployed SQL server.')
 output resourceGroupName string = resourceGroup().name
 
 @description('The principal ID of the system assigned identity.')
 output systemAssignedPrincipalId string = systemAssignedIdentity && contains(server.identity, 'principalId') ? server.identity.principalId : ''
+
+@description('The location the resource was deployed into.')
+output location string = server.location

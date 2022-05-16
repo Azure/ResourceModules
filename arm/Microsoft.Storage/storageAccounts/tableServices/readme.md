@@ -7,22 +7,21 @@ This module deploys a storage account table service
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Template references](#Template-references)
 
 ## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Insights/diagnosticSettings` | 2021-05-01-preview |
-| `Microsoft.Storage/storageAccounts/tableServices` | 2021-04-01 |
-| `Microsoft.Storage/storageAccounts/tableServices/tables` | 2021-06-01 |
+| `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
+| `Microsoft.Storage/storageAccounts/tableServices` | [2021-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Storage/2021-04-01/storageAccounts/tableServices) |
+| `Microsoft.Storage/storageAccounts/tableServices/tables` | [2021-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Storage/2021-06-01/storageAccounts/tableServices/tables) |
 
 ## Parameters
 
-**Required parameters**
+**Conditional parameters**
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `storageAccountName` | string | Name of the Storage Account. |
+| `storageAccountName` | string | The name of the parent Storage Account. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
@@ -36,7 +35,7 @@ This module deploys a storage account table service
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of a log analytics workspace. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `name` | string | `'default'` |  | The name of the table service |
+| `name` | string | `'default'` |  | The name of the table service. |
 | `tables` | _[tables](tables/readme.md)_ array | `[]` |  | tables to create. |
 
 
@@ -44,12 +43,6 @@ This module deploys a storage account table service
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the deployed table service |
-| `resourceGroupName` | string | The resource group of the deployed table service |
-| `resourceId` | string | The resource ID of the deployed table service |
-
-## Template references
-
-- [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings)
-- [Storageaccounts/Tableservices](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Storage/2021-04-01/storageAccounts/tableServices)
-- [Storageaccounts/Tableservices/Tables](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Storage/2021-06-01/storageAccounts/tableServices/tables)
+| `name` | string | The name of the deployed table service. |
+| `resourceGroupName` | string | The resource group of the deployed table service. |
+| `resourceId` | string | The resource ID of the deployed table service. |

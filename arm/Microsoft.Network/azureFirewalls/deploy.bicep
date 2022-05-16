@@ -45,10 +45,10 @@ param zones array = [
   '3'
 ]
 
-@description('Optional. Diagnostic Storage Account resource identifier')
+@description('Optional. Diagnostic Storage Account resource identifier.')
 param diagnosticStorageAccountId string = ''
 
-@description('Optional. Log Analytics workspace resource identifier')
+@description('Optional. Log Analytics workspace resource identifier.')
 param diagnosticWorkspaceId string = ''
 
 @description('Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.')
@@ -73,7 +73,7 @@ param location string = resourceGroup().location
 @description('Optional. Specify the type of lock.')
 param lock string = 'NotSpecified'
 
-@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'')
+@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
 param roleAssignments array = []
 
 @description('Optional. Tags of the Azure Firewall resource.')
@@ -202,23 +202,26 @@ module azureFirewall_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, ind
   }
 }]
 
-@description('The resource ID of the Azure firewall')
+@description('The resource ID of the Azure firewall.')
 output resourceId string = azureFirewall.id
 
-@description('The name of the Azure firewall')
+@description('The name of the Azure firewall.')
 output name string = azureFirewall.name
 
-@description('The resource group the Azure firewall was deployed into')
+@description('The resource group the Azure firewall was deployed into.')
 output resourceGroupName string = resourceGroup().name
 
-@description('The private IP of the Azure firewall')
+@description('The private IP of the Azure firewall.')
 output privateIp string = azureFirewall.properties.ipConfigurations[0].properties.privateIPAddress
 
-@description('List of Application Rule Collections')
+@description('List of Application Rule Collections.')
 output applicationRuleCollections array = applicationRuleCollections
 
-@description('List of Network Rule Collections')
+@description('List of Network Rule Collections.')
 output networkRuleCollections array = networkRuleCollections
 
-@description('Collection of NAT rule collections used by Azure Firewall')
+@description('Collection of NAT rule collections used by Azure Firewall.')
 output natRuleCollections array = natRuleCollections
+
+@description('The location the resource was deployed into.')
+output location string = azureFirewall.location

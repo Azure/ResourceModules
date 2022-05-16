@@ -7,22 +7,25 @@ This module deploys a variable to an Azure Automation Account.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Template references](#Template-references)
 
 ## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Automation/automationAccounts/variables` | 2020-01-13-preview |
+| `Microsoft.Automation/automationAccounts/variables` | [2020-01-13-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Automation/2020-01-13-preview/automationAccounts/variables) |
 
 ## Parameters
 
 **Required parameters**
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `automationAccountName` | string | Name of the parent Automation Account |
 | `name` | string | The name of the variable. |
 | `value` | string | The value of the variable. |
+
+**Conditional parameters**
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `automationAccountName` | string | The name of the parent Automation Account. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Description |
@@ -63,7 +66,3 @@ This module deploys a variable to an Azure Automation Account.
 | `name` | string | The name of the deployed variable |
 | `resourceGroupName` | string | The resource group of the deployed variable |
 | `resourceId` | string | The resource ID of the deployed variable |
-
-## Template references
-
-- [Automationaccounts/Variables](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Automation/2020-01-13-preview/automationAccounts/variables)

@@ -7,39 +7,38 @@ This template deploys a virtual network gateway connection.
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Template references](#Template-references)
 
 ## Resource types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/locks` | 2017-04-01 |
-| `Microsoft.Network/connections` | 2021-05-01 |
+| `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
+| `Microsoft.Network/connections` | [2021-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/connections) |
 
 ## Parameters
 
 **Required parameters**
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | Remote connection name |
+| `name` | string | Remote connection name. |
 | `virtualNetworkGateway1` | object | The primary Virtual Network Gateway. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `customIPSecPolicy` | object | `{object}` |  | The IPSec Policies to be considered by this connection |
-| `enableBgp` | bool | `False` |  | Value to specify if BGP is enabled or not |
+| `customIPSecPolicy` | object | `{object}` |  | The IPSec Policies to be considered by this connection. |
+| `enableBgp` | bool | `False` |  | Value to specify if BGP is enabled or not. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `localNetworkGateway2` | object | `{object}` |  | The local network gateway. Used for connection type [IPsec] |
+| `localNetworkGateway2` | object | `{object}` |  | The local network gateway. Used for connection type [IPsec]. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `'NotSpecified'` | `[CanNotDelete, NotSpecified, ReadOnly]` | Specify the type of lock. |
-| `peer` | object | `{object}` |  | The remote peer. Used for connection type [ExpressRoute] |
+| `peer` | object | `{object}` |  | The remote peer. Used for connection type [ExpressRoute]. |
 | `routingWeight` | int | `-1` |  | The weight added to routes learned from this BGP speaker. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
-| `usePolicyBasedTrafficSelectors` | bool | `False` |  | Enable policy-based traffic selectors |
-| `virtualNetworkGateway2` | object | `{object}` |  | The remote Virtual Network Gateway. Used for connection type [Vnet2Vnet] |
+| `usePolicyBasedTrafficSelectors` | bool | `False` |  | Enable policy-based traffic selectors. |
+| `virtualNetworkGateway2` | object | `{object}` |  | The remote Virtual Network Gateway. Used for connection type [Vnet2Vnet]. |
 | `virtualNetworkGatewayConnectionType` | string | `'IPsec'` | `[IPsec, Vnet2Vnet, ExpressRoute, VPNClient]` | Gateway connection type. |
-| `vpnSharedKey` | string | `''` |  | Specifies a VPN shared key. The same value has to be specified on both Virtual Network Gateways |
+| `vpnSharedKey` | string | `''` |  | Specifies a VPN shared key. The same value has to be specified on both Virtual Network Gateways. |
 
 
 ### Parameter Usage: `virtualNetworkGateway1`
@@ -139,11 +138,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the remote connection |
-| `resourceGroupName` | string | The resource group the remote connection was deployed into |
-| `resourceId` | string | The resource ID of the remote connection |
-
-## Template references
-
-- [Connections](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/connections)
-- [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
+| `location` | string | The location the resource was deployed into. |
+| `name` | string | The name of the remote connection. |
+| `resourceGroupName` | string | The resource group the remote connection was deployed into. |
+| `resourceId` | string | The resource ID of the remote connection. |

@@ -1,4 +1,4 @@
-@description('Required. The name of the NetApp account.')
+@description('Conditional. The name of the parent NetApp account. Required if the template is used in a standalone deployment.')
 param netAppAccountName string
 
 @description('Required. The name of the capacity pool.')
@@ -35,7 +35,7 @@ param volumes array = []
 @description('Optional. If enabled (true) the pool can contain cool Access enabled volumes.')
 param coolAccess bool = false
 
-@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'')
+@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
 param roleAssignments array = []
 
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
@@ -85,6 +85,7 @@ module capacityPool_volumes 'volumes/deploy.bicep' = [for (volume, index) in vol
     subnetResourceId: volume.subnetResourceId
     exportPolicyRules: contains(volume, 'exportPolicyRules') ? volume.exportPolicyRules : []
     roleAssignments: contains(volume, 'roleAssignments') ? volume.roleAssignments : []
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }]
 
@@ -107,3 +108,6 @@ output resourceId string = capacityPool.id
 
 @description('The name of the Resource Group the Capacity Pool was created in.')
 output resourceGroupName string = resourceGroup().name
+
+@description('The location the resource was deployed into.')
+output location string = capacityPool.location

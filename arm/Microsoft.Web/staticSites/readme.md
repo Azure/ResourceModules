@@ -7,17 +7,16 @@ This module deploys a Static Web Site.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Template references](#Template-references)
 
 ## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/locks` | 2017-04-01 |
-| `Microsoft.Authorization/roleAssignments` | 2021-04-01-preview |
-| `Microsoft.Network/privateEndpoints` | 2021-05-01 |
-| `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | 2021-05-01 |
-| `Microsoft.Web/staticSites` | 2021-03-01 |
+| `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
+| `Microsoft.Authorization/roleAssignments` | [2020-10-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-10-01-preview/roleAssignments) |
+| `Microsoft.Network/privateEndpoints` | [2021-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/privateEndpoints) |
+| `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | [2021-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/privateEndpoints/privateDnsZoneGroups) |
+| `Microsoft.Web/staticSites` | [2021-03-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Web/2021-03-01/staticSites) |
 
 ## Parameters
 
@@ -34,7 +33,7 @@ This module deploys a Static Web Site.
 | `buildProperties` | object | `{object}` |  | Build properties for the static site. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `enterpriseGradeCdnStatus` | string | `'Disabled'` | `[Disabled, Disabling, Enabled, Enabling]` | State indicating the status of the enterprise grade CDN serving traffic to the static web app. |
-| `location` | string | `[resourceGroup().location]` |  | Location to deploy static site. The following locations are supported: CentralUS, EastUS2, EastAsia, WestEurope, WestUS2 |
+| `location` | string | `[resourceGroup().location]` |  | Location to deploy static site. The following locations are supported: CentralUS, EastUS2, EastAsia, WestEurope, WestUS2. |
 | `lock` | string | `'NotSpecified'` | `[CanNotDelete, NotSpecified, ReadOnly]` | Specify the type of lock. |
 | `privateEndpoints` | array | `[]` |  | Configuration details for private endpoints. |
 | `provider` | string | `'None'` |  | The provider that submitted the last deployment to the primary environment of the static site. |
@@ -179,15 +178,8 @@ You can specify multiple user assigned identities to a resource by providing add
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
+| `location` | string | The location the resource was deployed into. |
 | `name` | string | The name of the static site. |
 | `resourceGroupName` | string | The resource group the static site was deployed into. |
 | `resourceId` | string | The resource ID of the static site. |
 | `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
-
-## Template references
-
-- [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
-- [Privateendpoints](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/privateEndpoints)
-- [Privateendpoints/Privatednszonegroups](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/privateEndpoints/privateDnsZoneGroups)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)
-- [Staticsites](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Web/2021-03-01/staticSites)

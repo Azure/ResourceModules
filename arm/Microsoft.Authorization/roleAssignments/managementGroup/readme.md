@@ -7,13 +7,12 @@ With this module you can perform role assignments on a management group level
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Template references](#Template-references)
 
 ## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/roleAssignments` | 2021-04-01-preview |
+| `Microsoft.Authorization/roleAssignments` | [2020-10-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-10-01-preview/roleAssignments) |
 
 ## Parameters
 
@@ -29,7 +28,7 @@ With this module you can perform role assignments on a management group level
 | `condition` | string | `''` |  | The conditions on the role assignment. This limits the resources it can be assigned to |
 | `conditionVersion` | string | `'2.0'` | `[2.0]` | Version of the condition. Currently accepted value is "2.0" |
 | `delegatedManagedIdentityResourceId` | string | `''` |  | ID of the delegated managed identity resource |
-| `description` | string | `''` |  | Description of role assignment |
+| `description` | string | `''` |  | The description of the role assignment. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `location` | string | `[deployment().location]` |  | Location deployment metadata. |
 | `managementGroupId` | string | `[managementGroup().name]` |  | Group ID of the Management Group to assign the RBAC role to. If not provided, will use the current scope for deployment. |
@@ -43,7 +42,3 @@ With this module you can perform role assignments on a management group level
 | `name` | string | The GUID of the Role Assignment |
 | `resourceId` | string | The scope this Role Assignment applies to |
 | `scope` | string | The resource ID of the Role Assignment |
-
-## Template references
-
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)

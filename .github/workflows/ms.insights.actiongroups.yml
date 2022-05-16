@@ -20,6 +20,7 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.insights.actiongroups.yml'
       - 'arm/Microsoft.Insights/actionGroups/**'
+      - 'arm/.global/global.module.tests.ps1'
       - '!*/**/readme.md'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/dependencies/**'

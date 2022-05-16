@@ -1,11 +1,11 @@
 @maxLength(24)
-@description('Required. Name of the Storage Account.')
+@description('Conditional. The name of the parent Storage Account. Required if the template is used in a standalone deployment.')
 param storageAccountName string
 
-@description('Optional. The name of the file service')
+@description('Optional. The name of the file service.')
 param name string = 'default'
 
-@description('Optional. Protocol settings for file service')
+@description('Optional. Protocol settings for file service.')
 param protocolSettings object = {}
 
 @description('Optional. The service properties for soft delete.')
@@ -127,14 +127,15 @@ module fileServices_shares 'shares/deploy.bicep' = [for (share, index) in shares
     rootSquash: contains(share, 'rootSquash') ? share.rootSquash : 'NoRootSquash'
     sharedQuota: contains(share, 'sharedQuota') ? share.sharedQuota : 5120
     roleAssignments: contains(share, 'roleAssignments') ? share.roleAssignments : []
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }]
 
-@description('The name of the deployed file share service')
+@description('The name of the deployed file share service.')
 output name string = fileServices.name
 
-@description('The resource ID of the deployed file share service')
+@description('The resource ID of the deployed file share service.')
 output resourceId string = fileServices.id
 
-@description('The resource group of the deployed file share service')
+@description('The resource group of the deployed file share service.')
 output resourceGroupName string = resourceGroup().name

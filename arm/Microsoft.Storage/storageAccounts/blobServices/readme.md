@@ -7,24 +7,23 @@ This module can be used to deploy a blob service into a storage account.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Template references](#Template-references)
 
 ## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/roleAssignments` | 2021-04-01-preview |
-| `Microsoft.Insights/diagnosticSettings` | 2021-05-01-preview |
-| `Microsoft.Storage/storageAccounts/blobServices` | 2021-06-01 |
-| `Microsoft.Storage/storageAccounts/blobServices/containers` | 2019-06-01 |
-| `Microsoft.Storage/storageAccounts/blobServices/containers/immutabilityPolicies` | 2019-06-01 |
+| `Microsoft.Authorization/roleAssignments` | [2020-10-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-10-01-preview/roleAssignments) |
+| `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
+| `Microsoft.Storage/storageAccounts/blobServices` | [2021-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Storage/2021-06-01/storageAccounts/blobServices) |
+| `Microsoft.Storage/storageAccounts/blobServices/containers` | [2019-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Storage/2019-06-01/storageAccounts/blobServices/containers) |
+| `Microsoft.Storage/storageAccounts/blobServices/containers/immutabilityPolicies` | [2019-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Storage/2019-06-01/storageAccounts/blobServices/containers/immutabilityPolicies) |
 
 ## Parameters
 
-**Required parameters**
+**Conditional parameters**
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `storageAccountName` | string | Name of the Storage Account. |
+| `storageAccountName` | string | The name of the parent Storage Account. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
@@ -42,21 +41,13 @@ This module can be used to deploy a blob service into a storage account.
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of a log analytics workspace. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `name` | string | `'default'` |  | The name of the blob service |
+| `name` | string | `'default'` |  | The name of the blob service. |
 
 
 ## Outputs
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the deployed blob service |
-| `resourceGroupName` | string | The name of the deployed blob service |
-| `resourceId` | string | The resource ID of the deployed blob service |
-
-## Template references
-
-- [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)
-- [Storageaccounts/Blobservices](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Storage/2021-06-01/storageAccounts/blobServices)
-- [Storageaccounts/Blobservices/Containers](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Storage/2019-06-01/storageAccounts/blobServices/containers)
-- [Storageaccounts/Blobservices/Containers/Immutabilitypolicies](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Storage/2019-06-01/storageAccounts/blobServices/containers/immutabilityPolicies)
+| `name` | string | The name of the deployed blob service. |
+| `resourceGroupName` | string | The name of the deployed blob service. |
+| `resourceId` | string | The resource ID of the deployed blob service. |

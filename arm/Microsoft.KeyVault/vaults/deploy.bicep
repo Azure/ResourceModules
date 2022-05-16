@@ -8,24 +8,24 @@ param name string = ''
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
 
-@description('Optional. Array of access policies object')
+@description('Optional. Array of access policies object.')
 param accessPolicies array = []
 
-@description('Optional. All secrets to create')
+@description('Optional. All secrets to create.')
 @secure()
 param secrets object = {}
 
-@description('Optional. All keys to create')
+@description('Optional. All keys to create.')
 param keys array = []
 
-@description('Optional. Specifies if the vault is enabled for deployment by script or compute')
+@description('Optional. Specifies if the vault is enabled for deployment by script or compute.')
 @allowed([
   true
   false
 ])
 param enableVaultForDeployment bool = true
 
-@description('Optional. Specifies if the vault is enabled for a template deployment')
+@description('Optional. Specifies if the vault is enabled for a template deployment.')
 @allowed([
   true
   false
@@ -54,14 +54,14 @@ param createMode string = 'default'
 @description('Optional. Provide \'true\' to enable Key Vault\'s purge protection feature.')
 param enablePurgeProtection bool = false
 
-@description('Optional. Specifies the SKU for the vault')
+@description('Optional. Specifies the SKU for the vault.')
 @allowed([
   'premium'
   'standard'
 ])
 param vaultSku string = 'premium'
 
-@description('Optional. Service endpoint object information. For security reasons, it is recommended to set the DefaultAction Deny')
+@description('Optional. Service endpoint object information. For security reasons, it is recommended to set the DefaultAction Deny.')
 param networkAcls object = {}
 
 @description('Optional. Property to specify whether the vault will accept traffic from public internet. If set to "disabled" all traffic except private endpoint traffic and that that originates from trusted services will be blocked. This will override the set firewall rules, meaning that even if the firewall rules are present we will not honor the rules.')
@@ -71,24 +71,21 @@ param networkAcls object = {}
 ])
 param publicNetworkAccess string = 'enabled'
 
-@description('Optional. Virtual Network resource identifier, if networkAcls is passed, this value must be passed as well')
-param vNetId string = ''
-
 @description('Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.')
 @minValue(0)
 @maxValue(365)
 param diagnosticLogsRetentionInDays int = 365
 
-@description('Optional. Resource ID of the diagnostic storage account. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub')
+@description('Optional. Resource ID of the diagnostic storage account. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub.')
 param diagnosticStorageAccountId string = ''
 
-@description('Optional. Resource ID of the diagnostic log analytics workspace. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub')
+@description('Optional. Resource ID of the diagnostic log analytics workspace. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub.')
 param diagnosticWorkspaceId string = ''
 
-@description('Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. ')
+@description('Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.')
 param diagnosticEventHubAuthorizationRuleId string = ''
 
-@description('Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub')
+@description('Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub.')
 param diagnosticEventHubName string = ''
 
 @allowed([
@@ -99,10 +96,10 @@ param diagnosticEventHubName string = ''
 @description('Optional. Specify the type of lock.')
 param lock string = 'NotSpecified'
 
-@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'')
+@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
 param roleAssignments array = []
 
-@description('Optional. Configuration Details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible')
+@description('Optional. Configuration Details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible.')
 param privateEndpoints array = []
 
 @description('Optional. Resource tags.')
@@ -161,13 +158,11 @@ var maxNameLength = 24
 var uniquenameUntrim = uniqueString('Key Vault${baseTime}')
 var uniquename = (length(uniquenameUntrim) > maxNameLength ? substring(uniquenameUntrim, 0, maxNameLength) : uniquenameUntrim)
 var name_var = !empty(name) ? name : uniquename
-var virtualNetworkRules = [for networkrule in ((contains(networkAcls, 'virtualNetworkRules')) ? networkAcls.virtualNetworkRules : []): {
-  id: '${vNetId}/subnets/${networkrule.subnet}'
-}]
+
 var networkAcls_var = {
   bypass: !empty(networkAcls) ? networkAcls.bypass : null
   defaultAction: !empty(networkAcls) ? networkAcls.defaultAction : null
-  virtualNetworkRules: !empty(networkAcls) ? virtualNetworkRules : null
+  virtualNetworkRules: (!empty(networkAcls) && contains(networkAcls, 'virtualNetworkRules')) ? networkAcls.virtualNetworkRules : []
   ipRules: (!empty(networkAcls) && contains(networkAcls, 'ipRules')) ? networkAcls.ipRules : []
 }
 
@@ -246,6 +241,7 @@ module keyVault_accessPolicies 'accessPolicies/deploy.bicep' = if (!empty(access
   params: {
     keyVaultName: keyVault.name
     accessPolicies: formattedAccessPolicies
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }
 
@@ -261,6 +257,7 @@ module keyVault_secrets 'secrets/deploy.bicep' = [for (secret, index) in secretL
     contentType: contains(secret, 'contentType') ? secret.contentType : ''
     tags: contains(secret, 'tags') ? secret.tags : {}
     roleAssignments: contains(secret, 'roleAssignments') ? secret.roleAssignments : []
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }]
 
@@ -278,6 +275,7 @@ module keyVault_keys 'keys/deploy.bicep' = [for (key, index) in keys: {
     kty: contains(key, 'kty') ? key.kty : 'EC'
     tags: contains(key, 'tags') ? key.tags : {}
     roleAssignments: contains(key, 'roleAssignments') ? key.roleAssignments : []
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }]
 
@@ -316,3 +314,6 @@ output name string = keyVault.name
 
 @description('The URI of the key vault.')
 output uri string = keyVault.properties.vaultUri
+
+@description('The location the resource was deployed into.')
+output location string = keyVault.location

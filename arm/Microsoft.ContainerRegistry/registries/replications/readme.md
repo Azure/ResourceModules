@@ -7,13 +7,12 @@ This module deploys ContainerRegistry Registries Replications.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Template references](#Template-references)
 
 ## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.ContainerRegistry/registries/replications` | 2021-12-01-preview |
+| `Microsoft.ContainerRegistry/registries/replications` | [2021-12-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ContainerRegistry/2021-12-01-preview/registries/replications) |
 
 ## Parameters
 
@@ -21,7 +20,11 @@ This module deploys ContainerRegistry Registries Replications.
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The name of the replication. |
-| `registryName` | string | The name of the registry. |
+
+**Conditional parameters**
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `registryName` | string | The name of the parent registry. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
@@ -30,7 +33,7 @@ This module deploys ContainerRegistry Registries Replications.
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `regionEndpointEnabled` | bool | `True` |  | Specifies whether the replication regional endpoint is enabled. Requests will not be routed to a replication whose regional endpoint is disabled, however its data will continue to be synced with other replications. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
-| `zoneRedundancy` | string | `'Disabled'` | `[Disabled, Enabled]` | Whether or not zone redundancy is enabled for this container registry |
+| `zoneRedundancy` | string | `'Disabled'` | `[Disabled, Enabled]` | Whether or not zone redundancy is enabled for this container registry. |
 
 
 ### Parameter Usage: `tags`
@@ -54,10 +57,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
+| `location` | string | The location the resource was deployed into. |
 | `name` | string | The name of the replication. |
 | `resourceGroupName` | string | The name of the resource group the replication was created in. |
 | `resourceId` | string | The resource ID of the replication. |
-
-## Template references
-
-- [Registries/Replications](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ContainerRegistry/2021-12-01-preview/registries/replications)

@@ -20,6 +20,7 @@ on:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.authorization.policyexemptions.yml'
       - 'arm/Microsoft.Authorization/policyExemptions/**'
+      - 'arm/.global/global.module.tests.ps1'
       - '!*/**/readme.md'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/dependencies/**'

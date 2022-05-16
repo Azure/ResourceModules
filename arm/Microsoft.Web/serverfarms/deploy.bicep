@@ -50,7 +50,7 @@ param targetWorkerSize int = 0
 @description('Optional. Specify the type of lock.')
 param lock string = 'NotSpecified'
 
-@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'')
+@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
 param roleAssignments array = []
 
 @description('Optional. Tags of the resource.')
@@ -67,16 +67,16 @@ param diagnosticSettingsName string = '${name}-diagnosticSettings'
 @maxValue(365)
 param diagnosticLogsRetentionInDays int = 365
 
-@description('Optional. Resource ID of the diagnostic storage account. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub')
+@description('Optional. Resource ID of the diagnostic storage account. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub.')
 param diagnosticStorageAccountId string = ''
 
-@description('Optional. Resource ID of the diagnostic log analytics workspace. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub')
+@description('Optional. Resource ID of the diagnostic log analytics workspace. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub.')
 param diagnosticWorkspaceId string = ''
 
-@description('Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. ')
+@description('Optional. Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to.')
 param diagnosticEventHubAuthorizationRuleId string = ''
 
-@description('Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub')
+@description('Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. For security reasons, it is recommended to set diagnostic settings to send data to either storage account, log analytics workspace or event hub.')
 param diagnosticEventHubName string = ''
 
 @description('Optional. The name of metrics that will be streamed.')
@@ -172,11 +172,14 @@ module appServicePlan_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, in
 // =========== //
 // Outputs     //
 // =========== //
-@description('The resource group the app service plan was deployed into')
+@description('The resource group the app service plan was deployed into.')
 output resourceGroupName string = resourceGroup().name
 
-@description('The name of the app service plan')
+@description('The name of the app service plan.')
 output name string = appServicePlan.name
 
-@description('The resource ID of the app service plan')
+@description('The resource ID of the app service plan.')
 output resourceId string = appServicePlan.id
+
+@description('The location the resource was deployed into.')
+output location string = appServicePlan.location

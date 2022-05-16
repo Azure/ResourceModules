@@ -8,28 +8,27 @@ This module is used to deploy a storage account, with the ability to deploy 1 or
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Considerations](#Considerations)
-- [Template references](#Template-references)
 
 ## Resource types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/locks` | 2017-04-01 |
-| `Microsoft.Authorization/roleAssignments` | 2021-04-01-preview |
-| `Microsoft.Insights/diagnosticSettings` | 2021-05-01-preview |
-| `Microsoft.Network/privateEndpoints` | 2021-05-01 |
-| `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | 2021-02-01 |
-| `Microsoft.Storage/storageAccounts` | 2021-08-01 |
-| `Microsoft.Storage/storageAccounts/blobServices` | 2021-06-01 |
-| `Microsoft.Storage/storageAccounts/blobServices/containers` | 2019-06-01 |
-| `Microsoft.Storage/storageAccounts/blobServices/containers/immutabilityPolicies` | 2019-06-01 |
-| `Microsoft.Storage/storageAccounts/fileServices` | 2021-04-01 |
-| `Microsoft.Storage/storageAccounts/fileServices/shares` | 2021-08-01 |
-| `Microsoft.Storage/storageAccounts/managementPolicies` | 2019-06-01 |
-| `Microsoft.Storage/storageAccounts/queueServices` | 2021-04-01 |
-| `Microsoft.Storage/storageAccounts/queueServices/queues` | 2019-06-01 |
-| `Microsoft.Storage/storageAccounts/tableServices` | 2021-04-01 |
-| `Microsoft.Storage/storageAccounts/tableServices/tables` | 2021-06-01 |
+| `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
+| `Microsoft.Authorization/roleAssignments` | [2020-10-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-10-01-preview/roleAssignments) |
+| `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
+| `Microsoft.Network/privateEndpoints` | [2021-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/privateEndpoints) |
+| `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | [2021-02-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-02-01/privateEndpoints/privateDnsZoneGroups) |
+| `Microsoft.Storage/storageAccounts` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Storage/2021-08-01/storageAccounts) |
+| `Microsoft.Storage/storageAccounts/blobServices` | [2021-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Storage/2021-06-01/storageAccounts/blobServices) |
+| `Microsoft.Storage/storageAccounts/blobServices/containers` | [2019-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Storage/2019-06-01/storageAccounts/blobServices/containers) |
+| `Microsoft.Storage/storageAccounts/blobServices/containers/immutabilityPolicies` | [2019-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Storage/2019-06-01/storageAccounts/blobServices/containers/immutabilityPolicies) |
+| `Microsoft.Storage/storageAccounts/fileServices` | [2021-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Storage/2021-04-01/storageAccounts/fileServices) |
+| `Microsoft.Storage/storageAccounts/fileServices/shares` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Storage/2021-08-01/storageAccounts/fileServices/shares) |
+| `Microsoft.Storage/storageAccounts/managementPolicies` | [2019-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Storage/2019-06-01/storageAccounts/managementPolicies) |
+| `Microsoft.Storage/storageAccounts/queueServices` | [2021-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Storage/2021-04-01/storageAccounts/queueServices) |
+| `Microsoft.Storage/storageAccounts/queueServices/queues` | [2019-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Storage/2019-06-01/storageAccounts/queueServices/queues) |
+| `Microsoft.Storage/storageAccounts/tableServices` | [2021-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Storage/2021-04-01/storageAccounts/tableServices) |
+| `Microsoft.Storage/storageAccounts/tableServices/tables` | [2021-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Storage/2021-06-01/storageAccounts/tableServices/tables) |
 
 ## Parameters
 
@@ -38,7 +37,7 @@ This module is used to deploy a storage account, with the ability to deploy 1 or
 | :-- | :-- | :-- | :-- | :-- |
 | `allowBlobPublicAccess` | bool | `False` |  | Indicates whether public access is enabled for all blobs or containers in the storage account. For security reasons, it is recommended to set it to false. |
 | `azureFilesIdentityBasedAuthentication` | object | `{object}` |  | Provides the identity based authentication settings for Azure Files. |
-| `blobServices` | _[blobServices](blobServices/readme.md)_ object | `{object}` |  | Blob service and containers to deploy |
+| `blobServices` | _[blobServices](blobServices/readme.md)_ object | `{object}` |  | Blob service and containers to deploy. |
 | `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
@@ -47,19 +46,19 @@ This module is used to deploy a storage account, with the ability to deploy 1 or
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `enableHierarchicalNamespace` | bool | `False` |  | If true, enables Hierarchical Namespace for the storage account |
-| `fileServices` | _[fileServices](fileServices/readme.md)_ object | `{object}` |  | File service and shares to deploy |
+| `enableHierarchicalNamespace` | bool | `False` |  | If true, enables Hierarchical Namespace for the storage account. |
+| `fileServices` | _[fileServices](fileServices/readme.md)_ object | `{object}` |  | File service and shares to deploy. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `'NotSpecified'` | `[CanNotDelete, NotSpecified, ReadOnly]` | Specify the type of lock. |
 | `managementPolicyRules` | array | `[]` |  | The Storage Account ManagementPolicies Rules. |
 | `minimumTlsVersion` | string | `'TLS1_2'` | `[TLS1_0, TLS1_1, TLS1_2]` | Set the minimum TLS version on request to storage. |
 | `name` | string | `''` |  | Name of the Storage Account. Autogenerated with a unique string if not provided. |
-| `networkAcls` | object | `{object}` |  | Networks ACLs, this value contains IPs to whitelist and/or Subnet information. For security reasons, it is recommended to set the DefaultAction Deny |
-| `privateEndpoints` | array | `[]` |  | Configuration Details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible |
+| `networkAcls` | object | `{object}` |  | Networks ACLs, this value contains IPs to whitelist and/or Subnet information. For security reasons, it is recommended to set the DefaultAction Deny. |
+| `privateEndpoints` | array | `[]` |  | Configuration Details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. |
 | `publicNetworkAccess` | string | `'Enabled'` | `[Enabled, Disabled]` | Enable or disallow public network access to Storage Account.. |
 | `queueServices` | _[queueServices](queueServices/readme.md)_ object | `{object}` |  | Queue service and queues to create. |
 | `requireInfrastructureEncryption` | bool | `True` |  | A boolean indicating whether or not the service applies a secondary layer of encryption with platform managed keys for data at rest. For security reasons, it is recommended to set it to true. |
-| `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
+| `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `storageAccountAccessTier` | string | `'Hot'` | `[Hot, Cool]` | Storage Account Access Tier. |
 | `storageAccountKind` | string | `'StorageV2'` | `[Storage, StorageV2, BlobStorage, FileStorage, BlockBlobStorage]` | Type of Storage Account to create. |
 | `storageAccountSku` | string | `'Standard_GRS'` | `[Standard_LRS, Standard_GRS, Standard_RAGRS, Standard_ZRS, Premium_LRS, Premium_ZRS, Standard_GZRS, Standard_RAGZRS]` | Storage Account Sku Name. |
@@ -68,7 +67,6 @@ This module is used to deploy a storage account, with the ability to deploy 1 or
 | `tableServices` | _[tableServices](tableServices/readme.md)_ object | `{object}` |  | Table service and tables to create. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
 | `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. |
-| `vNetId` | string | `''` |  | Virtual Network Identifier used to create a service endpoint. |
 
 **Generated parameters**
 | Parameter Name | Type | Default Value | Description |
@@ -111,10 +109,15 @@ Create a role assignment for the given resource. If you want to assign a service
         "defaultAction": "Deny",
         "virtualNetworkRules": [
             {
-                "subnet": "sharedsvcs"
+                "subnetId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001"
             }
         ],
-        "ipRules": []
+        "ipRules": [
+            {
+                "action": "Allow",
+                "value": "1.1.1.1"
+            }
+        ]
     }
 }
 ```
@@ -189,32 +192,14 @@ You can specify multiple user assigned identities to a resource by providing add
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the deployed storage account |
+| `location` | string | The location the resource was deployed into. |
+| `name` | string | The name of the deployed storage account. |
 | `primaryBlobEndpoint` | string | The primary blob endpoint reference if blob services are deployed. |
-| `resourceGroupName` | string | The resource group of the deployed storage account |
-| `resourceId` | string | The resource ID of the deployed storage account |
+| `resourceGroupName` | string | The resource group of the deployed storage account. |
+| `resourceId` | string | The resource ID of the deployed storage account. |
 | `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
 
 ## Considerations
 
 This is a generic module for deploying a Storage Account. Any customization for different storage needs (such as a diagnostic or other storage account) need to be done through the Archetype.
 The hierarchical namespace of the storage account (see parameter `enableHierarchicalNamespace`), can be only set at creation time.
-
-## Template references
-
-- [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings)
-- [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
-- [Privateendpoints](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/privateEndpoints)
-- [Privateendpoints/Privatednszonegroups](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-02-01/privateEndpoints/privateDnsZoneGroups)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)
-- [Storageaccounts](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Storage/2021-08-01/storageAccounts)
-- [Storageaccounts/Blobservices](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Storage/2021-06-01/storageAccounts/blobServices)
-- [Storageaccounts/Blobservices/Containers](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Storage/2019-06-01/storageAccounts/blobServices/containers)
-- [Storageaccounts/Blobservices/Containers/Immutabilitypolicies](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Storage/2019-06-01/storageAccounts/blobServices/containers/immutabilityPolicies)
-- [Storageaccounts/Fileservices](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Storage/2021-04-01/storageAccounts/fileServices)
-- [Storageaccounts/Fileservices/Shares](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Storage/2021-08-01/storageAccounts/fileServices/shares)
-- [Storageaccounts/Managementpolicies](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Storage/2019-06-01/storageAccounts/managementPolicies)
-- [Storageaccounts/Queueservices](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Storage/2021-04-01/storageAccounts/queueServices)
-- [Storageaccounts/Queueservices/Queues](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Storage/2019-06-01/storageAccounts/queueServices/queues)
-- [Storageaccounts/Tableservices](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Storage/2021-04-01/storageAccounts/tableServices)
-- [Storageaccounts/Tableservices/Tables](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Storage/2021-06-01/storageAccounts/tableServices/tables)

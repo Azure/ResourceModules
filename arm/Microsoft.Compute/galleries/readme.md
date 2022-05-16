@@ -7,33 +7,32 @@ This module deploys an Azure compute gallery (formerly known as shared image gal
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Template references](#Template-references)
 
 ## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/locks` | 2017-04-01 |
-| `Microsoft.Authorization/roleAssignments` | 2021-04-01-preview |
-| `Microsoft.Compute/galleries` | 2020-09-30 |
-| `Microsoft.Compute/galleries/images` | 2020-09-30 |
+| `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
+| `Microsoft.Authorization/roleAssignments` | [2020-10-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-10-01-preview/roleAssignments) |
+| `Microsoft.Compute/galleries` | [2020-09-30](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Compute/2020-09-30/galleries) |
+| `Microsoft.Compute/galleries/images` | [2020-09-30](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Compute/2020-09-30/galleries/images) |
 
 ## Parameters
 
 **Required parameters**
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | Name of the Azure Shared Image Gallery |
+| `name` | string | Name of the Azure Shared Image Gallery. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `galleryDescription` | string | `''` |  | Description of the Azure Shared Image Gallery |
-| `images` | _[images](images/readme.md)_ array | `[]` |  | Images to create |
+| `galleryDescription` | string | `''` |  | Description of the Azure Shared Image Gallery. |
+| `images` | _[images](images/readme.md)_ array | `[]` |  | Images to create. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `'NotSpecified'` | `[CanNotDelete, NotSpecified, ReadOnly]` | Specify the type of lock. |
-| `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
+| `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `tags` | object | `{object}` |  | Tags for all resources. |
 
 
@@ -84,13 +83,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the deployed image gallery |
-| `resourceGroupName` | string | The resource group of the deployed image gallery |
-| `resourceId` | string | The resource ID of the deployed image gallery |
-
-## Template references
-
-- [Galleries](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Compute/2020-09-30/galleries)
-- [Galleries/Images](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Compute/2020-09-30/galleries/images)
-- [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)
+| `location` | string | The location the resource was deployed into. |
+| `name` | string | The name of the deployed image gallery. |
+| `resourceGroupName` | string | The resource group of the deployed image gallery. |
+| `resourceId` | string | The resource ID of the deployed image gallery. |

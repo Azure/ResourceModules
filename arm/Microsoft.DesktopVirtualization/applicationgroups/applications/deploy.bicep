@@ -1,4 +1,4 @@
-@sys.description('Required. Name of the Application Group to create the application(s) in.')
+@sys.description('Conditional. The name of the parent Application Group to create the application(s) in. Required if the template is used in a standalone deployment.')
 param appGroupName string
 
 @sys.description('Required. Name of the Application to be created in the Application Group.')
@@ -68,7 +68,7 @@ resource application 'Microsoft.DesktopVirtualization/applicationGroups/applicat
 }
 
 @sys.description('The resource ID of the deployed Application.')
-output applicationResourceIds string = application.id
+output resourceId string = application.id
 
 @sys.description('The name of the Resource Group the AVD Application was created in.')
 output resourceGroupName string = resourceGroup().name

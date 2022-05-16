@@ -7,14 +7,13 @@ This module deploys an Azure SQL Server.
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Template references](#Template-references)
 
 ## Resource types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Insights/diagnosticSettings` | 2021-05-01-preview |
-| `Microsoft.Sql/servers/databases` | 2021-02-01-preview |
+| `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
+| `Microsoft.Sql/servers/databases` | [2021-02-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Sql/2021-02-01-preview/servers/databases) |
 
 ## Parameters
 
@@ -22,7 +21,11 @@ This module deploys an Azure SQL Server.
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The name of the database. |
-| `serverName` | string | The Name of SQL Server |
+
+**Conditional parameters**
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `serverName` | string | The name of the parent SQL Server. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
@@ -78,11 +81,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the deployed database |
-| `resourceGroupName` | string | The resourceGroup of the deployed database |
-| `resourceId` | string | The resource ID of the deployed database |
-
-## Template references
-
-- [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings)
-- [Servers/Databases](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Sql/2021-02-01-preview/servers/databases)
+| `location` | string | The location the resource was deployed into. |
+| `name` | string | The name of the deployed database. |
+| `resourceGroupName` | string | The resourceGroup of the deployed database. |
+| `resourceId` | string | The resource ID of the deployed database. |

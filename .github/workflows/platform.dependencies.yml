@@ -154,6 +154,33 @@ jobs:
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
           removeDeployment: '${{ env.removeDeployment }}'
 
+  job_deploy_app:
+    runs-on: ubuntu-20.04
+    name: 'Deploy app'
+    env:
+      namespace: 'Microsoft.Web/sites'
+    needs:
+      - job_deploy_sf
+    strategy:
+      fail-fast: false
+      matrix:
+        parameterFilePaths: ['parameters.json']
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: 'Deploy module'
+        uses: ./.github/actions/templates/validateModuleDeployment
+        with:
+          templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
+          parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
+          location: '${{ env.location }}'
+          resourceGroupName: '${{ env.defaultResourceGroupName }}'
+          subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
+          managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
+          removeDeployment: '${{ env.removeDeployment }}'
+
   job_deploy_pa:
     runs-on: ubuntu-20.04
     name: 'Deploy policy assignment'
@@ -657,6 +684,7 @@ jobs:
             'apgw.parameters.json',
             'ase.parameters.json',
             'bastion.parameters.json',
+            'aadds.parameters.json',
             'parameters.json',
           ]
     steps:
@@ -892,7 +920,8 @@ jobs:
           customParameterFileTokens: '{"msiPrincipalId":"${{ needs.job_deploy_msi.outputs.msiPrincipalId }}"}'
 
   job_deploy_kv_secrets:
-    runs-on: ubuntu-20.04
+    # Must run on windows as the used `New-SelfSignedCertificate` function is not available on linux
+    runs-on: windows-2022
     name: 'Set key vault secrets keys and certificates'
     env:
       namespace: 'Microsoft.KeyVault\vaults'
@@ -925,7 +954,6 @@ jobs:
         uses: azure/powershell@v1
         with:
           inlineScript: |
-
             $parameterFilePath = Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'dependencies' '${{ env.namespace }}' 'parameters' 'parameters.json'
             $noprParameterFilePath = Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'dependencies' '${{ env.namespace }}' 'parameters' 'nopr.parameters.json'
             # Load used functions
@@ -939,7 +967,7 @@ jobs:
                 TokenPrefix = $Settings.parameterFileTokens.tokenPrefix
                 TokenSuffix = $Settings.parameterFileTokens.tokenSuffix
             }
-             $NoprConvertTokensInputs = @{
+            $NoprConvertTokensInputs = @{
                 FilePath    = $noprParameterFilePath
                 Tokens      = @{}
                 TokenPrefix = $Settings.parameterFileTokens.tokenPrefix
@@ -973,6 +1001,21 @@ jobs:
             $vpnSharedKeyString = (New-Guid).Guid.SubString(0, 32)
             $vpnSharedKey = ConvertTo-SecureString -String $vpnSharedKeyString -AsPlainText -Force
 
+            $namePrefixToken = $Settings.parameterFileTokens.localTokens | Where-Object { $_.name -eq 'namePrefix' }
+            $certInputObject = @{
+                Subject           = 'CN=*.{0}.onmicrosoft.com' -f $namePrefixToken.value
+                DnsName           = '*.{0}.onmicrosoft.com' -f $namePrefixToken.value
+                CertStoreLocation = 'cert:\LocalMachine\My'
+                KeyExportPolicy   = 'Exportable'
+                Provider          = 'Microsoft Enhanced RSA and AES Cryptographic Provider'
+                NotAfter          = (Get-Date).AddMonths(3)
+                HashAlgorithm     = 'SHA256'
+            }
+            $rawCert = New-SelfSignedCertificate @certInputObject
+            Export-PfxCertificate -Cert ('Cert:\localmachine\my\' + $rawCert.Thumbprint) -FilePath "$home/aadds.pfx" -Password $password -Force
+            $rawCertByteStream = Get-Content "$home/aadds.pfx" -AsByteStream
+            $pfxCertificate = ConvertTo-SecureString -String ([System.Convert]::ToBase64String($rawCertByteStream)) -AsPlainText -Force
+
             # Set secrets
             # -------
             @(
@@ -983,6 +1026,8 @@ jobs:
               @{ name = 'vpnSharedKey'; secretValue = $vpnSharedKey } # VirtualNetworkGateway
               @{ name = 'apimClientId'; secretValue = $username } # API management
               @{ name = 'apimClientSecret'; secretValue = $password } # API management
+              @{ name = 'pfxCertificatePassword'; secretValue = $password } # AADDS
+              @{ name = 'pfxBase64Certificate'; secretValue = $pfxCertificate } # AADDS
             ) | ForEach-Object {
               $null = Set-AzKeyVaultSecret -VaultName $keyVaultName -Name $_.name -SecretValue $_.secretValue
               Write-Verbose ('Added secret [{0}] to key vault [{1}]' -f $_.name, $keyVaultName) -Verbose
@@ -1009,7 +1054,7 @@ jobs:
             }
 
             # noprKeyVault Keys
-             @(
+            @(
               @{ name = 'keyEncryptionKey'; Destination = 'Software' } # Automation Account
             ) | ForEach-Object {
                 $null = Add-AzKeyVaultKey -VaultName $noprKeyVaultName -Name $_.name -Destination $_.Destination
@@ -1214,6 +1259,7 @@ jobs:
             '4.azfw.parameters.json',
             '5.aks.parameters.json',
             '7.virtualHubConnection.parameters.json',
+            '8.aadds.parameters.json',
             'parameters.json',
           ]
     steps:

@@ -22,6 +22,7 @@ trigger:
       - '/.azuredevops/modulePipelines/ms.insights.activitylogalerts.yml'
       - '/.azuredevops/pipelineTemplates/module.*.yml'
       - '/arm/Microsoft.Insights/activityLogAlerts/*'
+      - '/arm/.global/global.module.tests.ps1'
     exclude:
       - '/**/*.md'
 

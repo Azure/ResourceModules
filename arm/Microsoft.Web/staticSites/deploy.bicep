@@ -13,7 +13,7 @@ param sku string = 'Free'
 @description('Optional. If config file is locked for this static web app.')
 param allowConfigFileUpdates bool = true
 
-@description('Optional. Location to deploy static site. The following locations are supported: CentralUS, EastUS2, EastAsia, WestEurope, WestUS2')
+@description('Optional. Location to deploy static site. The following locations are supported: CentralUS, EastUS2, EastAsia, WestEurope, WestUS2.')
 param location string = resourceGroup().location
 
 @allowed([
@@ -157,3 +157,6 @@ output resourceGroupName string = resourceGroup().name
 
 @description('The principal ID of the system assigned identity.')
 output systemAssignedPrincipalId string = systemAssignedIdentity && contains(staticSite.identity, 'principalId') ? staticSite.identity.principalId : ''
+
+@description('The location the resource was deployed into.')
+output location string = staticSite.location

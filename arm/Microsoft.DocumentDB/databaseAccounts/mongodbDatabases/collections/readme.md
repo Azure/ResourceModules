@@ -7,30 +7,33 @@ This module deploys a collection within a MongoDB.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Template references](#Template-references)
 
 ## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.DocumentDB/databaseAccounts/mongodbDatabases/collections` | 2021-07-01-preview |
+| `Microsoft.DocumentDB/databaseAccounts/mongodbDatabases/collections` | [2021-07-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DocumentDB/2021-07-01-preview/databaseAccounts/mongodbDatabases/collections) |
 
 ## Parameters
 
 **Required parameters**
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `databaseAccountName` | string | Name of the Cosmos DB database account. |
-| `indexes` | array | Indexes for the collection |
-| `mongodbDatabaseName` | string | Name of the mongodb database |
-| `name` | string | Name of the collection |
-| `shardKey` | object | ShardKey for the collection |
+| `indexes` | array | Indexes for the collection. |
+| `name` | string | Name of the collection. |
+| `shardKey` | object | ShardKey for the collection. |
+
+**Conditional parameters**
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `databaseAccountName` | string | The name of the parent Cosmos DB database account. Required if the template is used in a standalone deployment. |
+| `mongodbDatabaseName` | string | The name of the parent mongodb database. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `throughput` | int | `400` | Name of the mongodb database |
+| `throughput` | int | `400` | Name of the mongodb database. |
 
 
 ### Parameter Usage: `indexes`
@@ -98,7 +101,3 @@ The shard key and partition kind pair, only support "Hash" partition kind.
 | `name` | string | The name of the mongodb database. |
 | `resourceGroupName` | string | The name of the resource group the mongodb database was created in. |
 | `resourceId` | string | The resource ID of the mongodb database. |
-
-## Template references
-
-- [Databaseaccounts/Mongodbdatabases/Collections](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DocumentDB/2021-07-01-preview/databaseAccounts/mongodbDatabases/collections)

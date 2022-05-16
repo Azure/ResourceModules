@@ -144,6 +144,7 @@ module appGroup_applications 'applications/deploy.bicep' = [for (application, in
     showInPortal: contains(application, 'showInPortal') ? application.showInPortal : false
     iconPath: contains(application, 'iconPath') ? application.iconPath : application.filePath
     iconIndex: contains(application, 'iconIndex') ? application.iconIndex : 0
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }]
 
@@ -158,7 +159,7 @@ module appGroup_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) i
   }
 }]
 
-@sys.description('The resource ID  of the AVD application group')
+@sys.description('The resource ID of the AVD application group')
 output resourceId string = appGroup.id
 
 @sys.description('The resource group the AVD application group was deployed into')
@@ -166,3 +167,6 @@ output resourceGroupName string = resourceGroup().name
 
 @sys.description('The name of the AVD application group')
 output name string = appGroup.name
+
+@sys.description('The location the resource was deployed into.')
+output location string = appGroup.location

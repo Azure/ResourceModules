@@ -9,21 +9,24 @@ This module deploys a Replication Policy for Disaster Recovery scenario.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
-- [Template references](#Template-references)
 
 ## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.RecoveryServices/vaults/replicationPolicies` | 2021-12-01 |
+| `Microsoft.RecoveryServices/vaults/replicationPolicies` | [2021-12-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2021-12-01/vaults/replicationPolicies) |
 
 ## Parameters
 
 **Required parameters**
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the replication policy |
-| `recoveryVaultName` | string | Name of the Azure Recovery Service Vault |
+| `name` | string | The name of the replication policy. |
+
+**Conditional parameters**
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `recoveryVaultName` | string | The name of the parent Azure Recovery Service Vault. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
@@ -42,7 +45,3 @@ This module deploys a Replication Policy for Disaster Recovery scenario.
 | `name` | string | The name of the replication policy. |
 | `resourceGroupName` | string | The name of the resource group the replication policy was created in. |
 | `resourceId` | string | The resource ID of the replication policy. |
-
-## Template references
-
-- [Vaults/Replicationpolicies](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2021-12-01/vaults/replicationPolicies)

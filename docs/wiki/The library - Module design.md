@@ -202,8 +202,8 @@ resource <mainResource> '<mainResourceProviderNamespace>/<resourceType>@<resourc
   // name: '${split(resourceId,'/')[8]}/${split(resourceId,'/')[10]}/${split(resourceId,'/')[12]'
 }
 
-resource roleAssignment 'Microsoft.Authorization/roleAssignments@2021-04-01-preview' = [for principalId in principalIds: {
-  name: guid(<mainResource>.name, principalId, roleDefinitionIdOrName)
+resource roleAssignment 'Microsoft.Authorization/roleAssignments@2020-10-01-preview' = [for principalId in principalIds: {
+  name: guid(<mainResource>.id, principalId, roleDefinitionIdOrName)
   properties: {
     roleDefinitionId: contains(builtInRoleNames, roleDefinitionIdOrName) ? builtInRoleNames[roleDefinitionIdOrName] : roleDefinitionIdOrName
     principalId: principalId
@@ -505,8 +505,9 @@ While exceptions might be needed, the following guidance should be followed as m
 - At a minimum, reference the following:
   - `name`
   - `resourceId`
-  - `resourceGroupName` for resources deployed at resource group scope
-  - `systemAssignedPrincipalId` for all resources supporting a managed identity
+  - `resourceGroupName` for modules that are deployed at resource group scope
+  - `systemAssignedPrincipalId` for all modules that support a managed identities
+  - `location` for all modules where the primary resource has a location property
 - Add a `@description('...')` annotation with meaningful description to each output.
 
 ---

@@ -1,4 +1,4 @@
-@sys.description('Required. Name of the parent Automation Account')
+@sys.description('Conditional. The name of the parent Automation Account. Required if the template is used in a standalone deployment.')
 param automationAccountName string
 
 @sys.description('Required. The name of the variable.')
