@@ -18,7 +18,7 @@ on:
       - main
     paths:
       - '.github/actions/templates/**'
-      - '.github/workflows/ms.network.networkInterfaces.yml'
+      - '.github/workflows/ms.network.networkinterfaces.yml'
       - 'arm/Microsoft.Network/networkInterfaces/**'
       - 'arm/.global/global.module.tests.ps1'
       - '!*/**/readme.md'
