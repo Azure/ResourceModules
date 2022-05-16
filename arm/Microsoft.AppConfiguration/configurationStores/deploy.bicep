@@ -75,10 +75,12 @@ param enableDefaultTelemetry bool = true
 
 @description('Optional. The name of logs that will be streamed.')
 @allowed([
-  'ServiceLog'
+  'HttpRequest'
+  'Audit'
 ])
 param diagnosticLogCategoriesToEnable array = [
-  'ServiceLog'
+  'HttpRequest'
+  'Audit'
 ]
 
 @description('Optional. The name of metrics that will be streamed.')
