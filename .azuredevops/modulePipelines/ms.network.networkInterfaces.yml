@@ -19,7 +19,7 @@ trigger:
       - main
   paths:
     include:
-      - '/.azuredevops/modulePipelines/ms.network.networkInterfaces.yml'
+      - '/.azuredevops/modulePipelines     /ms.network.networkInterfaces.yml'
       - '/.azuredevops/pipelineTemplates/module.*.yml'
       - '/arm/Microsoft.Network/networkInterfaces/*'
       - '/arm/.global/global.module.tests.ps1'
