@@ -247,7 +247,7 @@ resource azureFirewall 'Microsoft.Network/azureFirewalls@2021-05-01' = {
     }
     ipConfigurations: concat([
       //Use existing public ip, new public ip created as in this module, or none if isCreateDefaultPublicIP is false
-      !(empty(azureFirewallSubnetPublicIpId)) ? existingPip : (isCreateDefaultPublicIP ? newPip : noPip)
+      !empty(azureFirewallSubnetPublicIpId) ? existingPip : (isCreateDefaultPublicIP ? newPip : noPip)
     ], additionalPublicIpConfigurations_var)
 
     sku: {
