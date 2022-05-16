@@ -9,21 +9,24 @@ This module deploys a firewall.
 - [Outputs](#Outputs)
 - [Considerations](#Considerations)
 <<<<<<< HEAD
+<<<<<<< HEAD
 - [Deployment examples](#Deployment-examples)
 =======
 - [Template references](#Template-references)
 >>>>>>> 440c784db (update azure firewall for PIP use cases)
+=======
+>>>>>>> 6c0f1f644 (remove template reference and regenerate readme)
 
 ## Resource types
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
-| `Microsoft.Authorization/roleAssignments` | [2021-04-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments) |
-| `Microsoft.Authorization/roleAssignments` | [2020-10-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-10-01-preview/roleAssignments) |
-| `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
-| `Microsoft.Network/azureFirewalls` | [2021-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/azureFirewalls) |
-| `Microsoft.Network/publicIPAddresses` | [2021-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/publicIPAddresses) |
+| `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates) |
+| `Microsoft.Authorization/roleAssignments` | [2021-04-01-preview](https://docs.microsoft.com/en-us/azure/templates) |
+| `Microsoft.Authorization/roleAssignments` | [2020-10-01-preview](https://docs.microsoft.com/en-us/azure/templates) |
+| `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://docs.microsoft.com/en-us/azure/templates) |
+| `Microsoft.Network/azureFirewalls` | [2021-05-01](https://docs.microsoft.com/en-us/azure/templates) |
+| `Microsoft.Network/publicIPAddresses` | [2021-05-01](https://docs.microsoft.com/en-us/azure/templates) |
 
 ## Parameters
 
@@ -47,8 +50,8 @@ This module deploys a firewall.
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticMetricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | The name of metrics that will be streamed. |
 | `diagnosticSettingsName` | string | `[format('{0}-diagnosticSettings', parameters('name'))]` |  | The name of the diagnostic setting, if deployed. |
-| `diagnosticStorageAccountId` | string | `''` |  | Diagnostic Storage Account resource identifier |
-| `diagnosticWorkspaceId` | string | `''` |  | Log Analytics workspace resource identifier |
+| `diagnosticStorageAccountId` | string | `''` |  | Diagnostic Storage Account resource identifier. |
+| `diagnosticWorkspaceId` | string | `''` |  | Log Analytics workspace resource identifier. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `firewallPolicyId` | string | `''` |  | Resource ID of the Firewall Policy that should be attached. |
 | `isCreateDefaultPublicIP` | bool | `True` |  | Specifies if a public ip should be created by default if one is not provided |
@@ -239,6 +242,7 @@ tags: {
 
 The `applicationRuleCollections` parameter accepts a JSON Array of AzureFirewallApplicationRule objects.
 The `networkRuleCollections` parameter accepts a JSON Array of AzureFirewallNetworkRuleCollection objects.
+<<<<<<< HEAD
 
 <<<<<<< HEAD
 ## Deployment examples
@@ -519,3 +523,5 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
 - [Publicipaddresses](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/publicIPAddresses)
 - [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)
 >>>>>>> 440c784db (update azure firewall for PIP use cases)
+=======
+>>>>>>> 6c0f1f644 (remove template reference and regenerate readme)
