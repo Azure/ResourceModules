@@ -615,7 +615,7 @@ module virtualMachine_backup '../../Microsoft.RecoveryServices/vaults/protection
     name: 'vm;iaasvmcontainerv2;${resourceGroup().name};${virtualMachine.name}'
     policyId: az.resourceId('Microsoft.RecoveryServices/vaults/backupPolicies', backupVaultName, backupPolicyName)
     protectedItemType: 'Microsoft.Compute/virtualMachines'
-    protectionContainerName: 'Azure/iaasvmcontainer;iaasvmcontainerv2;${resourceGroup().name};${virtualMachine.name}'
+    protectionContainerName: 'iaasvmcontainer;iaasvmcontainerv2;${resourceGroup().name};${virtualMachine.name}'
     recoveryVaultName: backupVaultName
     sourceResourceId: virtualMachine.id
   }
