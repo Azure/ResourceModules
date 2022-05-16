@@ -60,6 +60,28 @@ resource diskEncryptionSet 'Microsoft.Compute/diskEncryptionSets@2021-04-01' = {
   }
 }
 
+resource policies 'Microsoft.KeyVault/vaults/accessPolicies@2021-06-01-preview' = {
+  name: '${last(split(keyVaultId, '/'))}/add'
+  properties: {
+    accessPolicies: [
+      {
+        objectId: diskEncryptionSet.identity.principalId
+        permissions: {
+          keys: [
+            'get'
+            'wrapKey'
+            'unwrapKey'
+          ]
+          secrets: []
+          certificates: []
+        }
+        tenantId: subscription().tenantId
+      }
+    ]
+  }
+  scope: resourceGroup(split(keyVaultId, '/')[2], split(keyVaultId, '/')[4])
+}
+
 module keyVaultAccessPolicies '.bicep/nested_kvAccessPolicy.bicep' = {
   name: '${uniqueString(deployment().name, location)}-DiskEncrSet-KVAccessPolicies'
   params: {

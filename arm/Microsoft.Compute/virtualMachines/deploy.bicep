@@ -609,12 +609,14 @@ module vm_diskEncryptionExtension 'extensions/deploy.bicep' = if (extensionDiskE
   ]
 }
 
-module virtualMachine_backup '.bicep/nested_backup.bicep' = if (!empty(backupVaultName)) {
+module virtualMachine_backup '../../Microsoft.RecoveryServices/vaults/protectionContainers/protectedItems/deploy.bicep' = {
   name: '${uniqueString(deployment().name, location)}-VM-Backup'
   params: {
-    backupResourceName: '${backupVaultName}/Azure/iaasvmcontainer;iaasvmcontainerv2;${resourceGroup().name};${virtualMachine.name}/vm;iaasvmcontainerv2;${resourceGroup().name};${virtualMachine.name}'
+    name: 'vm;iaasvmcontainerv2;${resourceGroup().name};${virtualMachine.name}'
+    policyId: az.resourceId('Microsoft.RecoveryServices/vaults/backupPolicies', backupVaultName, backupPolicyName)
     protectedItemType: 'Microsoft.Compute/virtualMachines'
-    backupPolicyId: az.resourceId('Microsoft.RecoveryServices/vaults/backupPolicies', backupVaultName, backupPolicyName)
+    protectionContainerName: 'iaasvmcontainer;iaasvmcontainerv2;${resourceGroup().name};${virtualMachine.name}'
+    recoveryVaultName: backupVaultName
     sourceResourceId: virtualMachine.id
   }
   scope: az.resourceGroup(backupVaultResourceGroup)
