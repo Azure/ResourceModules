@@ -97,6 +97,9 @@ param zoneRedundancy string = 'Disabled'
 @description('Optional. All replications to create.')
 param replications array = []
 
+@description('Optional. All webhooks to create')
+param webhooks array = []
+
 @allowed([
   'CanNotDelete'
   'NotSpecified'
@@ -244,6 +247,27 @@ module registry_replications 'replications/deploy.bicep' = [for (replication, in
     zoneRedundancy: contains(replication, 'zoneRedundancy') ? replication.zoneRedundancy : 'Disabled'
     tags: contains(replication, 'tags') ? replication.tags : {}
     enableDefaultTelemetry: enableDefaultTelemetry
+  }
+}]
+
+module registry_webhooks 'webhooks/deploy.bicep' = [for (webhook, index) in webhooks: {
+  name: '${uniqueString(deployment().name, location)}-Registry-Replication-${index}'
+  params: {
+    webhookName: webhook.name
+    registryName: registry.name
+    location: contains(webhook, 'location') ? webhook.location : resourceGroup().location
+    action: contains(webhook, 'action') ? webhook.action : [
+      'chart_delete'
+      'chart_push'
+      'delete'
+      'push'
+      'quarantine'
+    ]
+    customHeaders: contains(webhook, 'customHeaders') ? webhook.customHeaders : {}
+    scope: contains(webhook, 'scope') ? webhook.scope : ''
+    status: contains(webhook, 'status') ? webhook.status : 'enabled'
+    serviceUri: webhook.serviceUri
+    tags: contains(webhook, 'tags') ? webhook.tags : {}
   }
 }]
 
