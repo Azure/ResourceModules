@@ -68,7 +68,7 @@ resource application 'Microsoft.DesktopVirtualization/applicationGroups/applicat
 }
 
 @sys.description('The resource ID of the deployed Application.')
-output applicationResourceIds string = application.id
+output resourceId string = application.id
 
 @sys.description('The name of the Resource Group the AVD Application was created in.')
 output resourceGroupName string = resourceGroup().name
