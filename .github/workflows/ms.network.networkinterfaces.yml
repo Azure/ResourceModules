@@ -17,7 +17,7 @@ on:
     branches:
       - main
     paths:
-      - '.github    /actions/templates/**'
+      - '.github/actions/templates/**'
       - '.github/workflows/ms.network.networkInterfaces.yml'
       - 'arm/Microsoft.Network/networkInterfaces/**'
       - 'arm/.global/global.module.tests.ps1'
