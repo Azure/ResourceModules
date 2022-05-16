@@ -37,6 +37,41 @@ This module deploys Network Interfaces.
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
 
+### Parameter Usage: `ipConfigurations`
+
+The IP configurations to apply to the network interface.
+
+```json
+"ipConfigurations": {
+    "value": [
+        {
+            "name": "ipconfig01",
+            "subnetId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001",
+            "pipConfiguration": {
+                "publicIpNameSuffix": "-pip-01",
+                "roleAssignments": [
+                    {
+                        "roleDefinitionIdOrName": "Reader",
+                        "principalIds": [
+                            "<<deploymentSpId>>"
+                        ]
+                    }
+                ]
+            },
+            "loadBalancerBackendAddressPools": [
+                {
+                    "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/loadBalancers/adp-<<namePrefix>>-az-lb-internal-001/backendAddressPools/servers"
+                }
+            ],
+            "applicationSecurityGroups": [
+                {
+                    "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationSecurityGroups/adp-<<namePrefix>>-az-asg-x-001"
+                }
+            ]
+        }
+    ]
+}
+```
 
 ### Parameter Usage: `roleAssignments`
 
