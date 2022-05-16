@@ -43,32 +43,17 @@ This module deploys Network Interfaces.
 The IP configurations to apply to the network interface.
 
 ```json
-"ipConfigurations": {
-    "value": [
+{
+    "name": "ipconfig01",
+    "subnetId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001",
+    "loadBalancerBackendAddressPools": [
         {
-            "name": "ipconfig01",
-            "subnetId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001",
-            "pipConfiguration": {
-                "publicIpNameSuffix": "-pip-01",
-                "roleAssignments": [
-                    {
-                        "roleDefinitionIdOrName": "Reader",
-                        "principalIds": [
-                            "<<deploymentSpId>>"
-                        ]
-                    }
-                ]
-            },
-            "loadBalancerBackendAddressPools": [
-                {
-                    "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/loadBalancers/adp-<<namePrefix>>-az-lb-internal-001/backendAddressPools/servers"
-                }
-            ],
-            "applicationSecurityGroups": [
-                {
-                    "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationSecurityGroups/adp-<<namePrefix>>-az-asg-x-001"
-                }
-            ]
+            "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/loadBalancers/adp-<<namePrefix>>-az-lb-internal-001/backendAddressPools/servers"
+        }
+    ],
+    "applicationSecurityGroups": [
+        {
+            "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationSecurityGroups/adp-<<namePrefix>>-az-asg-x-001"
         }
     ]
 }
