@@ -57,10 +57,10 @@ param zones array = [
   '3'
 ]
 
-@description('Optional. Diagnostic Storage Account resource identifier')
+@description('Optional. Diagnostic Storage Account resource identifier.')
 param diagnosticStorageAccountId string = ''
 
-@description('Optional. Log Analytics workspace resource identifier')
+@description('Optional. Log Analytics workspace resource identifier.')
 param diagnosticWorkspaceId string = ''
 
 @description('Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.')
