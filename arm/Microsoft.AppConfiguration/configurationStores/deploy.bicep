@@ -40,7 +40,7 @@ param publicNetworkAccess string = 'Enabled'
 @description('Optional. The amount of time in days that the configuration store will be retained when it is soft deleted.')
 @minValue(1)
 @maxValue(7)
-param softDeleteRetentionInDays int = 7
+param softDeleteRetentionInDays int = 1
 
 @description('Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.')
 @minValue(0)

@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "<<namePrefix>>azbaweux001"
+            "value": "<<namePrefix>>azappcs123"
         },
         "diagnosticLogsRetentionInDays": {
             "value": 7
@@ -36,7 +36,7 @@
             "value": "Enabled"
         },
         "softDeleteRetentionInDays": {
-            "value": null
+            "value": 1
         }
     }
 }
