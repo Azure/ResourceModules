@@ -56,7 +56,7 @@ module networkInterface_publicIPAddresses '../../../Microsoft.Network/publicIPAd
     publicIPAllocationMethod: contains(ipConfiguration, 'publicIPAllocationMethod') ? ipConfiguration.publicIPAllocationMethod : 'Static'
     publicIPPrefixResourceId: contains(ipConfiguration, 'publicIPPrefixResourceId') ? ipConfiguration.publicIPPrefixResourceId : ''
     roleAssignments: contains(ipConfiguration, 'roleAssignments') ? ipConfiguration.roleAssignments : []
-    skuName: contains(ipConfiguration, 'skuName') ? ipConfiguration.skuName : 'Basic'
+    skuName: contains(ipConfiguration, 'skuName') ? ipConfiguration.skuName : 'Standard'
     skuTier: contains(ipConfiguration, 'skuTier') ? ipConfiguration.skuTier : 'Regional'
     tags: tags
     zones: contains(ipConfiguration, 'zones') ? ipConfiguration.zones : []
