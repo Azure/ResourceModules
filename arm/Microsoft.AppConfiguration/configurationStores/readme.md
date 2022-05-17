@@ -28,7 +28,7 @@
 | `createMode` | string | `'Default'` | `[Default, Recover]` | Indicates whether the configuration store need to be recovered. |
 | `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
-| `diagnosticLogCategoriesToEnable` | array | `[ServiceLog]` | `[ServiceLog]` | The name of logs that will be streamed. |
+| `diagnosticLogCategoriesToEnable` | array | `[HttpRequest, Audit]` | `[HttpRequest, Audit]` | The name of logs that will be streamed. |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticMetricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | The name of metrics that will be streamed. |
 | `diagnosticSettingsName` | string | `[format('{0}-diagnosticSettings', parameters('name'))]` |  | The name of the diagnostic setting, if deployed. |
@@ -40,7 +40,7 @@
 | `location` | string | `[resourceGroup().location]` |  | Location for all Resources. |
 | `lock` | string | `'NotSpecified'` | `[CanNotDelete, NotSpecified, ReadOnly]` | Specify the type of lock. |
 | `publicNetworkAccess` | string | `'Enabled'` | `[Disabled, Enabled]` | Control permission for data plane traffic coming from public networks while private endpoint is enabled. |
-| `softDeleteRetentionInDays` | int | `7` |  | The amount of time in days that the configuration store will be retained when it is soft deleted. |
+| `softDeleteRetentionInDays` | int | `1` |  | The amount of time in days that the configuration store will be retained when it is soft deleted. |
 | `systemAssignedIdentity` | bool | `False` |  | Enables system assigned managed identity on the resource. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
 | `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. |
