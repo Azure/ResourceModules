@@ -6,7 +6,7 @@
             "value": "adp-<<namePrefix>>-vm-01"
         },
         "vmSize": {
-            "value": "Standard_D2ads_v5"
+            "value": "Standard_B1s"
         },
         "imageReference": {
             "value": {

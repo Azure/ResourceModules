@@ -9,7 +9,7 @@
       "value": [
         {
           "tenantId": "<<tenantId>>",
-          "objectId": "d72d8543-04e9-4f53-9ea9-023e049bba4e",
+          "objectId": "bab643ad-2988-4560-9f2b-c8282ba345f0", // Backup Management Service needs access to back up the keys and secrets, along with the associated VMs
           "permissions": {
             "keys": [
               "Get",
@@ -26,7 +26,7 @@
         },
         {
           "tenantId": "<<tenantId>>",
-          "objectId": "<<msiPrincipalID>>",
+          "objectId": "<<msiPrincipalID>>", // The object ID of the deployed MSI. Replaced by the pipeline
           "permissions": {
             "keys": [],
             "secrets": [
@@ -37,7 +37,7 @@
         },
         {
           "tenantId": "<<tenantId>>",
-          "objectId": "<<deploymentSpId>>",
+          "objectId": "<<deploymentSpId>>", // dependency access
           "permissions": {
             "keys": [
               "all"
