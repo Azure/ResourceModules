@@ -71,7 +71,7 @@ resource protectionContainer 'Microsoft.RecoveryServices/vaults/backupFabrics/pr
   }
 }
 
-module protectionContainer_replicationFabrics 'protectedItems/deploy.bicep' = [for (protectedItem, index) in protectedItems: {
+module protectionContainer_protectedItems 'protectedItems/deploy.bicep' = [for (protectedItem, index) in protectedItems: {
   name: '${uniqueString(deployment().name, location)}-ProtectedItem-${index}'
   params: {
     policyId: protectedItem.policyId
