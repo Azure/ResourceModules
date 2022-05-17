@@ -63,5 +63,6 @@ module nested_rbac_rg '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) 
 
 @description('The scope of the deployed role assignments.')
 output roleAssignmentScope string = !empty(managementGroupId) ? nested_rbac_mg[0].outputs.roleAssignmentScope : (!empty(resourceGroupName) ? nested_rbac_rg[0].outputs.roleAssignmentScope : nested_rbac_sub[0].outputs.roleAssignmentScope)
+
 @description('The names of the deployed role assignments.')
 output roleAssignments array = roleAssignments

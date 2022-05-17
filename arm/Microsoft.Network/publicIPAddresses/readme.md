@@ -94,6 +94,7 @@ Create a role assignment for the given resource. If you want to assign a service
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
 | `ipAddress` | string | The public IP address of the public IP address resource. |
+| `location` | string | The location the resource was deployed into. |
 | `name` | string | The name of the public IP address. |
 | `resourceGroupName` | string | The resource group the public IP address was deployed into. |
 | `resourceId` | string | The resource ID of the public IP address. |

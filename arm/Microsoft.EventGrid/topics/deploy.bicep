@@ -27,7 +27,7 @@ param diagnosticEventHubAuthorizationRuleId string = ''
 @description('Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.')
 param diagnosticEventHubName string = ''
 
-@description('Optional. Configuration Details for private endpoints.')
+@description('Optional. Configuration Details for private endpoints. Event Grid topics should use private endpoints.')
 param privateEndpoints array = []
 
 @description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
@@ -160,3 +160,6 @@ output resourceId string = eventGrid.id
 
 @description('The name of the resource group the event grid was deployed into.')
 output resourceGroupName string = resourceGroup().name
+
+@description('The location the resource was deployed into.')
+output location string = eventGrid.location

@@ -69,3 +69,6 @@ output name string = resourceGroup.name
 
 @description('The resource ID of the resource group.')
 output resourceId string = resourceGroup.id
+
+@description('The location the resource was deployed into.')
+output location string = resourceGroup.location

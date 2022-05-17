@@ -171,3 +171,6 @@ output resourceId string = virtualHub.id
 
 @description('The name of the virtual hub.')
 output name string = virtualHub.name
+
+@description('The location the resource was deployed into.')
+output location string = virtualHub.location

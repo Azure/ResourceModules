@@ -148,3 +148,6 @@ output principalId string = empty(subscriptionId) && empty(resourceGroupName) ? 
 
 @sys.description('Policy Assignment resource ID')
 output resourceId string = empty(subscriptionId) && empty(resourceGroupName) ? policyAssignment_mg.outputs.resourceId : (!empty(subscriptionId) && empty(resourceGroupName) ? policyAssignment_sub.outputs.resourceId : policyAssignment_rg.outputs.resourceId)
+
+@sys.description('The location the resource was deployed into.')
+output location string = empty(subscriptionId) && empty(resourceGroupName) ? policyAssignment_mg.outputs.location : (!empty(subscriptionId) && empty(resourceGroupName) ? policyAssignment_sub.outputs.location : policyAssignment_rg.outputs.location)

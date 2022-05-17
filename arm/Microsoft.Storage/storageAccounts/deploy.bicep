@@ -356,3 +356,6 @@ output primaryBlobEndpoint string = !empty(blobServices) && contains(blobService
 
 @description('The principal ID of the system assigned identity.')
 output systemAssignedPrincipalId string = systemAssignedIdentity && contains(storageAccount.identity, 'principalId') ? storageAccount.identity.principalId : ''
+
+@description('The location the resource was deployed into.')
+output location string = storageAccount.location

@@ -225,3 +225,6 @@ output resourceId string = database.id
 
 @description('The resourceGroup of the deployed database.')
 output resourceGroupName string = resourceGroup().name
+
+@description('The location the resource was deployed into.')
+output location string = database.location
