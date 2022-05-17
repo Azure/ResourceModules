@@ -83,7 +83,7 @@ resource networkInterface 'Microsoft.Network/networkInterfaces@2021-05-01' = {
         privateIPAllocationMethod: contains(ipConfiguration, 'privateIPAllocationMethod') ? (!empty(ipConfiguration.privateIPAllocationMethod) ? ipConfiguration.privateIPAllocationMethod : null) : null
         privateIPAddress: contains(ipConfiguration, 'vmIPAddress') ? (!empty(ipConfiguration.vmIPAddress) ? ipConfiguration.vmIPAddress : null) : null
         publicIPAddress: contains(ipConfiguration, 'pipconfiguration') ? {
-          id: resourceId('Microsoft.Network/publicIPAddresses', '${virtualMachineName}${ipConfiguration.pipconfiguration.publicIpNameSuffix}')
+          id: resourceId('Microsoft.Network/publicIPAddresses', (contains(ipConfiguration, 'name') ? ipConfiguration.name : '${virtualMachineName}${ipConfiguration.pipconfiguration.publicIpNameSuffix}'))
         } : null
         subnet: {
           id: ipConfiguration.subnetId
