@@ -141,7 +141,7 @@ resource appConfiguration 'Microsoft.AppConfiguration/configurationStores@2021-1
   }
   identity: identity
   properties: {
-    createMode: createMode // To get the pester tests to pass I gave these params default values and they all passed. So does that mean these are required?
+    createMode: createMode
     disableLocalAuth: disableLocalAuth
     enablePurgeProtection: enablePurgeProtection
     publicNetworkAccess: publicNetworkAccess
