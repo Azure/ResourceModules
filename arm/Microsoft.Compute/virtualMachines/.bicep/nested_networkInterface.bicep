@@ -37,10 +37,10 @@ var nicDiagnosticsMetrics = [for metric in nicDiagnosticMetricsToEnable: {
   }
 }]
 
-module networkInterface_publicIPConfigurations '../../../Microsoft.Network/publicIPAddresses/deploy.bicep' = [for (ipConfiguration, index) in ipConfigurationArray: if (contains(ipConfiguration, 'pipconfiguration')) {
+module networkInterface_publicIPAddresses '../../../Microsoft.Network/publicIPAddresses/deploy.bicep' = [for (ipConfiguration, index) in ipConfigurationArray: if (contains(ipConfiguration, 'pipconfiguration')) {
   name: '${deployment().name}-publicIP-${index}'
   params: {
-    name: contains(ipConfiguration, 'name') ? ipConfiguration.name : '${virtualMachineName}${ipConfiguration.pipconfiguration.publicIpNameSuffix}'
+    name: '${virtualMachineName}${ipConfiguration.pipconfiguration.publicIpNameSuffix}'
     diagnosticEventHubAuthorizationRuleId: diagnosticEventHubAuthorizationRuleId
     diagnosticEventHubName: diagnosticEventHubName
     diagnosticLogCategoriesToEnable: pipdiagnosticLogCategoriesToEnable
@@ -83,7 +83,7 @@ resource networkInterface 'Microsoft.Network/networkInterfaces@2021-05-01' = {
         privateIPAllocationMethod: contains(ipConfiguration, 'privateIPAllocationMethod') ? (!empty(ipConfiguration.privateIPAllocationMethod) ? ipConfiguration.privateIPAllocationMethod : null) : null
         privateIPAddress: contains(ipConfiguration, 'vmIPAddress') ? (!empty(ipConfiguration.vmIPAddress) ? ipConfiguration.vmIPAddress : null) : null
         publicIPAddress: contains(ipConfiguration, 'pipconfiguration') ? {
-          id: resourceId('Microsoft.Network/publicIPAddresses', (contains(ipConfiguration, 'name') ? ipConfiguration.name : '${virtualMachineName}${ipConfiguration.pipconfiguration.publicIpNameSuffix}'))
+          id: resourceId('Microsoft.Network/publicIPAddresses', '${virtualMachineName}${ipConfiguration.pipconfiguration.publicIpNameSuffix}')
         } : null
         subnet: {
           id: ipConfiguration.subnetId
@@ -94,7 +94,7 @@ resource networkInterface 'Microsoft.Network/networkInterfaces@2021-05-01' = {
     }]
   }
   dependsOn: [
-    networkInterface_publicIPConfigurations
+    networkInterface_publicIPAddresses
   ]
 }
 
