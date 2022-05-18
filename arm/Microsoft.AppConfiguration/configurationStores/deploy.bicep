@@ -67,6 +67,9 @@ param diagnosticEventHubName string = ''
 @description('Optional. Specify the type of lock.')
 param lock string = 'NotSpecified'
 
+@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
+param roleAssignments array = []
+
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
@@ -170,6 +173,17 @@ resource appConfiguration_diagnosticSettings 'Microsoft.Insights/diagnosticsetti
   }
   scope: appConfiguration
 }
+
+module appConfiguration_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+  name: '${uniqueString(deployment().name, location)}-AppConfig-Rbac-${index}'
+  params: {
+    description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
+    principalIds: roleAssignment.principalIds
+    principalType: contains(roleAssignment, 'principalType') ? roleAssignment.principalType : ''
+    roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
+    resourceId: appConfiguration.id
+  }
+}]
 
 @description('The name of the app configuration.')
 output name string = appConfiguration.name
