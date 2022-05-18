@@ -149,11 +149,11 @@ module tags './Microsoft.Resources/tags/deploy.bicep' = {
 module tags './Microsoft.Resources/tags/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-tags'
   params: {
-      tags: {
-        Test: 'Yes'
-        TestToo: 'No'
-      }
       onlyUpdate: false
+      tags: {
+        TestToo: 'No'
+        Test: 'Yes'
+      }
       resourceGroupName: 'validation-rg'
   }
 ```
@@ -197,8 +197,8 @@ module tags './Microsoft.Resources/tags/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-tags'
   params: {
       tags: {
-        Test: 'Yes'
         TestToo: 'No'
+        Test: 'Yes'
       }
       onlyUpdate: true
   }

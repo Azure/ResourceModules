@@ -133,6 +133,6 @@ roleAssignments: [
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the deployed TXT record |
+| `name` | string | The name of the deployed TXT record. |
 | `resourceGroupName` | string | The resource group of the deployed TXT record. |
 | `resourceId` | string | The resource ID of the deployed TXT record. |

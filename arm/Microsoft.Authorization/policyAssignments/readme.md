@@ -24,7 +24,7 @@ With this module you can perform policy assignments across the management group,
 | :-- | :-- | :-- |
 | `name` | string | Specifies the name of the policy assignment. Maximum length is 24 characters for management group scope, 64 characters for subscription and resource group scopes. |
 | `policyDefinitionId` | string | Specifies the ID of the policy definition or policy set definition being assigned. |
-| `roleDefinitionIds` | array | The IDs Of the Azure Role Definition list that is used to assign permissions to the identity. You need to provide either the fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'.. See https://docs.microsoft.com/en-us/azure/role-based-access-control/built-in-roles for the list IDs for built-in Roles. They must match on what is on the policy definition |
+| `roleDefinitionIds` | array | The IDs Of the Azure Role Definition list that is used to assign permissions to the identity. You need to provide either the fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'.. See https://docs.microsoft.com/en-us/azure/role-based-access-control/built-in-roles for the list IDs for built-in Roles. They must match on what is on the policy definition. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
@@ -32,16 +32,16 @@ With this module you can perform policy assignments across the management group,
 | `description` | string | `''` |  | This message will be part of response in case of policy violation. |
 | `displayName` | string | `''` |  | The display name of the policy assignment. Maximum length is 128 characters. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `enforcementMode` | string | `'Default'` | `[Default, DoNotEnforce]` | The policy assignment enforcement mode. Possible values are Default and DoNotEnforce. - Default or DoNotEnforce |
+| `enforcementMode` | string | `'Default'` | `[Default, DoNotEnforce]` | The policy assignment enforcement mode. Possible values are Default and DoNotEnforce. - Default or DoNotEnforce. |
 | `identity` | string | `'SystemAssigned'` | `[SystemAssigned, UserAssigned, None]` | The managed identity associated with the policy assignment. Policy assignments must include a resource identity when assigning 'Modify' policy definitions. |
 | `location` | string | `[deployment().location]` |  | Location for all resources. |
 | `managementGroupId` | string | `[managementGroup().name]` |  | The Target Scope for the Policy. The name of the management group for the policy assignment. If not provided, will use the current scope for deployment. |
 | `metadata` | object | `{object}` |  | The policy assignment metadata. Metadata is an open ended object and is typically a collection of key-value pairs. |
 | `nonComplianceMessage` | string | `''` |  | The messages that describe why a resource is non-compliant with the policy. |
-| `notScopes` | array | `[]` |  | The policy excluded scopes |
+| `notScopes` | array | `[]` |  | The policy excluded scopes. |
 | `parameters` | object | `{object}` |  | Parameters for the policy assignment if needed. |
-| `resourceGroupName` | string | `''` |  | The Target Scope for the Policy. The name of the resource group for the policy assignment |
-| `subscriptionId` | string | `''` |  | The Target Scope for the Policy. The subscription ID of the subscription for the policy assignment |
+| `resourceGroupName` | string | `''` |  | The Target Scope for the Policy. The name of the resource group for the policy assignment. |
+| `subscriptionId` | string | `''` |  | The Target Scope for the Policy. The subscription ID of the subscription for the policy assignment. |
 | `userAssignedIdentityId` | string | `''` |  | The Resource ID for the user assigned identity to assign to the policy assignment. |
 
 
@@ -162,9 +162,9 @@ module policyassignment 'yourpath/arm/Microsoft.Authorization.policyAssignments/
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
 | `location` | string | The location the resource was deployed into. |
-| `name` | string | Policy Assignment Name |
-| `principalId` | string | Policy Assignment principal ID |
-| `resourceId` | string | Policy Assignment resource ID |
+| `name` | string | Policy Assignment Name. |
+| `principalId` | string | Policy Assignment principal ID. |
+| `resourceId` | string | Policy Assignment resource ID. |
 
 ## Deployment examples
 
@@ -200,8 +200,8 @@ module policyassignment 'yourpath/arm/Microsoft.Authorization.policyAssignments/
 module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-policyAssignments'
   params: {
-      policyDefinitionID: '/providers/Microsoft.Authorization/policyDefinitions/06a78e20-9358-41c9-923c-fb736d382a4d'
       name: '<<namePrefix>>-min-mg-polAss'
+      policyDefinitionID: '/providers/Microsoft.Authorization/policyDefinitions/06a78e20-9358-41c9-923c-fb736d382a4d'
   }
 ```
 
@@ -287,31 +287,31 @@ module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bic
 module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-policyAssignments'
   params: {
-      displayName: '[Display Name] Policy Assignment at the management group scope'
-      name: '<<namePrefix>>-mg-polAss'
-      roleDefinitionIds: [
-        '/providers/microsoft.authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c'
+      notScopes: [
+        '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg'
       ]
+      description: '[Description] Policy Assignment at the management group scope'
+      identity: 'SystemAssigned'
+      location: 'australiaeast'
+      managementGroupId: '<<managementGroupId>>'
+      policyDefinitionId: '/providers/Microsoft.Authorization/policyDefinitions/4f9dc7db-30c1-420c-b61a-e1d640128d26'
+      name: '<<namePrefix>>-mg-polAss'
       metadata: {
         category: 'Security'
         version: '1.0'
       }
-      managementGroupId: '<<managementGroupId>>'
-      location: 'australiaeast'
-      identity: 'SystemAssigned'
-      description: '[Description] Policy Assignment at the management group scope'
       nonComplianceMessage: 'Violated Policy Assignment - This is a Non Compliance Message'
-      policyDefinitionId: '/providers/Microsoft.Authorization/policyDefinitions/4f9dc7db-30c1-420c-b61a-e1d640128d26'
       enforcementMode: 'DoNotEnforce'
-      notScopes: [
-        '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg'
+      displayName: '[Display Name] Policy Assignment at the management group scope'
+      roleDefinitionIds: [
+        '/providers/microsoft.authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c'
       ]
       parameters: {
-        tagValue: {
-          value: 'prod'
-        }
         tagName: {
           value: 'env'
+        }
+        tagValue: {
+          value: 'prod'
         }
       }
   }
@@ -360,8 +360,8 @@ module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bic
   params: {
       name: '<<namePrefix>>-min-rg-polAss'
       policyDefinitionID: '/providers/Microsoft.Authorization/policyDefinitions/06a78e20-9358-41c9-923c-fb736d382a4d'
-      subscriptionId: '<<subscriptionId>>'
       resourceGroupName: 'validation-rg'
+      subscriptionId: '<<subscriptionId>>'
   }
 ```
 
@@ -453,33 +453,33 @@ module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bic
 module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-policyAssignments'
   params: {
-      displayName: '[Display Name] Policy Assignment at the resource group scope'
-      name: '<<namePrefix>>-rg-polAss'
-      roleDefinitionIds: [
-        '/providers/microsoft.authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c'
+      subscriptionId: '<<subscriptionId>>'
+      notScopes: [
+        '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001'
       ]
+      description: '[Description] Policy Assignment at the resource group scope'
+      identity: 'UserAssigned'
+      location: 'australiaeast'
+      userAssignedIdentityId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001'
+      policyDefinitionId: '/providers/Microsoft.Authorization/policyDefinitions/4f9dc7db-30c1-420c-b61a-e1d640128d26'
+      name: '<<namePrefix>>-rg-polAss'
       metadata: {
         category: 'Security'
         version: '1.0'
       }
-      location: 'australiaeast'
-      subscriptionId: '<<subscriptionId>>'
-      identity: 'UserAssigned'
-      description: '[Description] Policy Assignment at the resource group scope'
-      userAssignedIdentityId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001'
-      nonComplianceMessage: 'Violated Policy Assignment - This is a Non Compliance Message'
-      policyDefinitionId: '/providers/Microsoft.Authorization/policyDefinitions/4f9dc7db-30c1-420c-b61a-e1d640128d26'
-      enforcementMode: 'DoNotEnforce'
-      notScopes: [
-        '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001'
-      ]
       resourceGroupName: 'validation-rg'
+      nonComplianceMessage: 'Violated Policy Assignment - This is a Non Compliance Message'
+      enforcementMode: 'DoNotEnforce'
+      displayName: '[Display Name] Policy Assignment at the resource group scope'
+      roleDefinitionIds: [
+        '/providers/microsoft.authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c'
+      ]
       parameters: {
-        tagValue: {
-          value: 'prod'
-        }
         tagName: {
           value: 'env'
+        }
+        tagValue: {
+          value: 'prod'
         }
       }
   }
@@ -523,9 +523,9 @@ module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bic
 module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-policyAssignments'
   params: {
+      name: '<<namePrefix>>-min-sub-polAss'
       policyDefinitionID: '/providers/Microsoft.Authorization/policyDefinitions/06a78e20-9358-41c9-923c-fb736d382a4d'
       subscriptionId: '<<subscriptionId>>'
-      name: '<<namePrefix>>-min-sub-polAss'
   }
 ```
 
@@ -614,32 +614,32 @@ module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bic
 module policyAssignments './Microsoft.Authorization/policyAssignments/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-policyAssignments'
   params: {
-      displayName: '[Display Name] Policy Assignment at the subscription scope'
-      name: '<<namePrefix>>-sub-polAss'
-      roleDefinitionIds: [
-        '/providers/microsoft.authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c'
+      subscriptionId: '<<subscriptionId>>'
+      notScopes: [
+        '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg'
       ]
+      description: '[Description] Policy Assignment at the subscription scope'
+      identity: 'UserAssigned'
+      location: 'australiaeast'
+      userAssignedIdentityId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001'
+      policyDefinitionId: '/providers/Microsoft.Authorization/policyDefinitions/4f9dc7db-30c1-420c-b61a-e1d640128d26'
+      name: '<<namePrefix>>-sub-polAss'
       metadata: {
         category: 'Security'
         version: '1.0'
       }
-      location: 'australiaeast'
-      subscriptionId: '<<subscriptionId>>'
-      identity: 'UserAssigned'
-      description: '[Description] Policy Assignment at the subscription scope'
-      userAssignedIdentityId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001'
       nonComplianceMessage: 'Violated Policy Assignment - This is a Non Compliance Message'
-      policyDefinitionId: '/providers/Microsoft.Authorization/policyDefinitions/4f9dc7db-30c1-420c-b61a-e1d640128d26'
       enforcementMode: 'DoNotEnforce'
-      notScopes: [
-        '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg'
+      displayName: '[Display Name] Policy Assignment at the subscription scope'
+      roleDefinitionIds: [
+        '/providers/microsoft.authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c'
       ]
       parameters: {
-        tagValue: {
-          value: 'prod'
-        }
         tagName: {
           value: 'env'
+        }
+        tagValue: {
+          value: 'prod'
         }
       }
   }

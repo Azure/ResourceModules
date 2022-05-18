@@ -25,9 +25,9 @@ With this module you can perform role assignments on a management group level
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `condition` | string | `''` |  | The conditions on the role assignment. This limits the resources it can be assigned to |
+| `condition` | string | `''` |  | The conditions on the role assignment. This limits the resources it can be assigned to. |
 | `conditionVersion` | string | `'2.0'` | `[2.0]` | Version of the condition. Currently accepted value is "2.0" |
-| `delegatedManagedIdentityResourceId` | string | `''` |  | ID of the delegated managed identity resource |
+| `delegatedManagedIdentityResourceId` | string | `''` |  | ID of the delegated managed identity resource. |
 | `description` | string | `''` |  | The description of the role assignment. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `location` | string | `[deployment().location]` |  | Location deployment metadata. |
@@ -39,6 +39,6 @@ With this module you can perform role assignments on a management group level
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The GUID of the Role Assignment |
-| `resourceId` | string | The scope this Role Assignment applies to |
-| `scope` | string | The resource ID of the Role Assignment |
+| `name` | string | The GUID of the Role Assignment. |
+| `resourceId` | string | The scope this Role Assignment applies to. |
+| `scope` | string | The resource ID of the Role Assignment. |

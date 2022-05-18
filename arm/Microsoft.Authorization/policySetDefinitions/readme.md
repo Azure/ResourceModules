@@ -23,7 +23,7 @@ With this module you can create policy set definitions across the management gro
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | Specifies the name of the policy Set Definition (Initiative). Maximum length is 24 characters for management group scope and 64 characters for subscription scope. |
-| `policyDefinitions` | array | The array of Policy definitions object to include for this policy set. Each object must include the Policy definition ID, and optionally other properties like parameters |
+| `policyDefinitions` | array | The array of Policy definitions object to include for this policy set. Each object must include the Policy definition ID, and optionally other properties like parameters. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Description |
@@ -36,7 +36,7 @@ With this module you can create policy set definitions across the management gro
 | `metadata` | object | `{object}` | The Set Definition (Initiative) metadata. Metadata is an open ended object and is typically a collection of key-value pairs. |
 | `parameters` | object | `{object}` | The Set Definition (Initiative) parameters that can be used in policy definition references. |
 | `policyDefinitionGroups` | array | `[]` | The metadata describing groups of policy definition references within the Policy Set Definition (Initiative). |
-| `subscriptionId` | string | `''` | The subscription ID of the subscription (Scope). Cannot be used with managementGroupId |
+| `subscriptionId` | string | `''` | The subscription ID of the subscription (Scope). Cannot be used with managementGroupId. |
 
 
 ### Parameter Usage: `managementGroupId`
@@ -123,8 +123,8 @@ module policysetdefinition 'yourpath/arm/Microsoft.Authorization.policySetDefini
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | Policy Set Definition Name |
-| `resourceId` | string | Policy Set Definition resource ID |
+| `name` | string | Policy Set Definition Name. |
+| `resourceId` | string | Policy Set Definition resource ID. |
 
 ## Considerations
 
@@ -280,41 +280,6 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
 module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-policySetDefinitions'
   params: {
-      policyDefinitions: [
-        {
-          parameters: {
-            listOfAllowedLocations: {
-              value: [
-                'australiaeast'
-              ]
-            }
-          }
-          groupNames: [
-            'ARM'
-          ]
-          policyDefinitionReferenceId: 'Allowed locations_1'
-          policyDefinitionId: '/providers/Microsoft.Authorization/policyDefinitions/e56962a6-4747-49cd-b67b-bf8b01975c4c'
-        }
-        {
-          parameters: {
-            listOfAllowedLocations: {
-              value: [
-                'australiaeast'
-              ]
-            }
-          }
-          groupNames: [
-            'ARM'
-          ]
-          policyDefinitionReferenceId: 'Allowed locations for resource groups_1'
-          policyDefinitionId: '/providers/Microsoft.Authorization/policyDefinitions/e765b5de-1225-4ba3-bd56-1ac6695af988'
-        }
-      ]
-      metadata: {
-        category: 'Security'
-        version: '1'
-      }
-      description: '[Description] This policy set definition is deployed at management group scope'
       policyDefinitionGroups: [
         {
           name: 'Network'
@@ -323,9 +288,44 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
           name: 'ARM'
         }
       ]
+      policyDefinitions: [
+        {
+          policyDefinitionReferenceId: 'Allowed locations_1'
+          parameters: {
+            listOfAllowedLocations: {
+              value: [
+                'australiaeast'
+              ]
+            }
+          }
+          groupNames: [
+            'ARM'
+          ]
+          policyDefinitionId: '/providers/Microsoft.Authorization/policyDefinitions/e56962a6-4747-49cd-b67b-bf8b01975c4c'
+        }
+        {
+          policyDefinitionReferenceId: 'Allowed locations for resource groups_1'
+          parameters: {
+            listOfAllowedLocations: {
+              value: [
+                'australiaeast'
+              ]
+            }
+          }
+          groupNames: [
+            'ARM'
+          ]
+          policyDefinitionId: '/providers/Microsoft.Authorization/policyDefinitions/e765b5de-1225-4ba3-bd56-1ac6695af988'
+        }
+      ]
       managementGroupId: '<<managementGroupId>>'
       name: '<<namePrefix>>-mg-policySet'
       displayName: '[DisplayName] This policy set definition is deployed at management group scope'
+      description: '[Description] This policy set definition is deployed at management group scope'
+      metadata: {
+        category: 'Security'
+        version: '1'
+      }
   }
 ```
 
@@ -378,6 +378,7 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
 module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-policySetDefinitions'
   params: {
+      name: '<<namePrefix>>-sub-min-policySet'
       policyDefinitions: [
         {
           policyDefinitionId: '/providers/Microsoft.Authorization/policyDefinitions/e56962a6-4747-49cd-b67b-bf8b01975c4c'
@@ -390,7 +391,6 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
           }
         }
       ]
-      name: '<<namePrefix>>-sub-min-policySet'
       subscriptionId: '<<subscriptionId>>'
   }
 ```
@@ -484,42 +484,6 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
 module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-policySetDefinitions'
   params: {
-      policyDefinitions: [
-        {
-          parameters: {
-            listOfAllowedLocations: {
-              value: [
-                'australiaeast'
-              ]
-            }
-          }
-          groupNames: [
-            'ARM'
-          ]
-          policyDefinitionReferenceId: 'Allowed locations_1'
-          policyDefinitionId: '/providers/Microsoft.Authorization/policyDefinitions/e56962a6-4747-49cd-b67b-bf8b01975c4c'
-        }
-        {
-          parameters: {
-            listOfAllowedLocations: {
-              value: [
-                'australiaeast'
-              ]
-            }
-          }
-          groupNames: [
-            'ARM'
-          ]
-          policyDefinitionReferenceId: 'Allowed locations for resource groups_1'
-          policyDefinitionId: '/providers/Microsoft.Authorization/policyDefinitions/e765b5de-1225-4ba3-bd56-1ac6695af988'
-        }
-      ]
-      metadata: {
-        category: 'Security'
-        version: '1'
-      }
-      subscriptionId: '<<subscriptionId>>'
-      description: '[Description] This policy set definition is deployed at subscription scope'
       policyDefinitionGroups: [
         {
           name: 'Network'
@@ -528,8 +492,44 @@ module policySetDefinitions './Microsoft.Authorization/policySetDefinitions/depl
           name: 'ARM'
         }
       ]
+      policyDefinitions: [
+        {
+          policyDefinitionReferenceId: 'Allowed locations_1'
+          parameters: {
+            listOfAllowedLocations: {
+              value: [
+                'australiaeast'
+              ]
+            }
+          }
+          groupNames: [
+            'ARM'
+          ]
+          policyDefinitionId: '/providers/Microsoft.Authorization/policyDefinitions/e56962a6-4747-49cd-b67b-bf8b01975c4c'
+        }
+        {
+          policyDefinitionReferenceId: 'Allowed locations for resource groups_1'
+          parameters: {
+            listOfAllowedLocations: {
+              value: [
+                'australiaeast'
+              ]
+            }
+          }
+          groupNames: [
+            'ARM'
+          ]
+          policyDefinitionId: '/providers/Microsoft.Authorization/policyDefinitions/e765b5de-1225-4ba3-bd56-1ac6695af988'
+        }
+      ]
+      subscriptionId: '<<subscriptionId>>'
       name: '<<namePrefix>>-sub-policySet'
       displayName: '[DisplayName] This policy set definition is deployed at subscription scope'
+      description: '[Description] This policy set definition is deployed at subscription scope'
+      metadata: {
+        category: 'Security'
+        version: '1'
+      }
   }
 ```
 

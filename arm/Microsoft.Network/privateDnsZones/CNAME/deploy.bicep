@@ -56,7 +56,7 @@ module CNAME_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in r
   }
 }]
 
-@description('The name of the deployed CNAME record')
+@description('The name of the deployed CNAME record.')
 output name string = CNAME.name
 
 @description('The resource ID of the deployed CNAME record.')

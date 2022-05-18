@@ -205,12 +205,11 @@ tags: {
 module connections './Microsoft.Web/connections/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-connections'
   params: {
-      connectionKind: 'V1'
+      name: 'azuremonitor'
       connectionApi: {
         id: '/subscriptions/<<subscriptionId>>/providers/Microsoft.Web/locations/westeurope/managedApis/azuremonitorlogs'
       }
       displayName: 'azuremonitorlogs'
-      name: 'azuremonitor'
       roleAssignments: [
         {
           roleDefinitionIdOrName: 'Reader'
@@ -219,6 +218,7 @@ module connections './Microsoft.Web/connections/deploy.bicep' = {
           ]
         }
       ]
+      connectionKind: 'V1'
   }
 ```
 

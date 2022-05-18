@@ -213,10 +213,10 @@ tags: {
 module disks './Microsoft.Compute/disks/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-disks'
   params: {
-      createOption: 'FromImage'
-      sku: 'Standard_LRS'
       name: '<<namePrefix>>-az-disk-image-001'
+      sku: 'Standard_LRS'
       imageReferenceId: '/Subscriptions/<<subscriptionId>>/Providers/Microsoft.Compute/Locations/westeurope/Publishers/MicrosoftWindowsServer/ArtifactTypes/VMImage/Offers/WindowsServer/Skus/2016-Datacenter/Versions/14393.4906.2112080838'
+      createOption: 'FromImage'
       roleAssignments: [
         {
           roleDefinitionIdOrName: 'Reader'
@@ -282,8 +282,7 @@ module disks './Microsoft.Compute/disks/deploy.bicep' = {
 module disks './Microsoft.Compute/disks/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-disks'
   params: {
-      sourceUri: 'https://adp<<namePrefix>>azsax001.blob.core.windows.net/vhds/adp-<<namePrefix>>-az-imgt-x-001.vhd'
-      createOption: 'Import'
+      sku: 'Standard_LRS'
       roleAssignments: [
         {
           roleDefinitionIdOrName: 'Reader'
@@ -292,9 +291,10 @@ module disks './Microsoft.Compute/disks/deploy.bicep' = {
           ]
         }
       ]
-      storageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
-      sku: 'Standard_LRS'
+      sourceUri: 'https://adp<<namePrefix>>azsax001.blob.core.windows.net/vhds/adp-<<namePrefix>>-az-imgt-x-001.vhd'
+      createOption: 'Import'
       name: '<<namePrefix>>-az-disk-import-001'
+      storageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
   }
 ```
 
@@ -346,9 +346,9 @@ module disks './Microsoft.Compute/disks/deploy.bicep' = {
 module disks './Microsoft.Compute/disks/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-disks'
   params: {
-      diskSizeGB: 1
       name: '<<namePrefix>>-az-disk-min-001'
       sku: 'Standard_LRS'
+      diskSizeGB: 1
       roleAssignments: [
         {
           roleDefinitionIdOrName: 'Reader'
@@ -424,10 +424,6 @@ module disks './Microsoft.Compute/disks/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-disks'
   params: {
       sku: 'UltraSSD_LRS'
-      publicNetworkAccess: 'Enabled'
-      osType: 'Windows'
-      diskMBpsReadWrite: 60
-      diskIOPSReadWrite: 500
       roleAssignments: [
         {
           roleDefinitionIdOrName: 'Reader'
@@ -436,9 +432,13 @@ module disks './Microsoft.Compute/disks/deploy.bicep' = {
           ]
         }
       ]
-      diskSizeGB: 128
+      publicNetworkAccess: 'Enabled'
       logicalSectorSize: 512
       name: '<<namePrefix>>-az-disk-x-001'
+      osType: 'Windows'
+      diskIOPSReadWrite: 500
+      diskSizeGB: 128
+      diskMBpsReadWrite: 60
   }
 ```
 

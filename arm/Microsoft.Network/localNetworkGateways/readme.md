@@ -15,7 +15,7 @@ This module deploys a local network gateway.
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2020-10-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-10-01-preview/roleAssignments) |
-| `Microsoft.Network/localNetworkGateways` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/localNetworkGateways) |
+| `Microsoft.Network/localNetworkGateways` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-08-01/localNetworkGateways) |
 
 ## Parameters
 
@@ -204,12 +204,6 @@ tags: {
 module localNetworkGateways './Microsoft.Network/localNetworkGateways/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-localNetworkGateways'
   params: {
-      localAddressPrefixes: [
-        '192.168.1.0/24'
-      ]
-      localBgpPeeringAddress: '192.168.1.5'
-      localGatewayPublicIpAddress: '8.8.8.8'
-      localAsn: '65123'
       roleAssignments: [
         {
           roleDefinitionIdOrName: 'Reader'
@@ -218,7 +212,13 @@ module localNetworkGateways './Microsoft.Network/localNetworkGateways/deploy.bic
           ]
         }
       ]
+      localAsn: '65123'
       name: '<<namePrefix>>-az-lng-x-001'
+      localGatewayPublicIpAddress: '8.8.8.8'
+      localAddressPrefixes: [
+        '192.168.1.0/24'
+      ]
+      localBgpPeeringAddress: '192.168.1.5'
   }
 ```
 

@@ -273,10 +273,7 @@ tags: {
 module workspaces './Microsoft.Databricks/workspaces/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-workspaces'
   params: {
-      diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
-      diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
-      diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
-      diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
+      diagnosticLogsRetentionInDays: 7
       roleAssignments: [
         {
           roleDefinitionIdOrName: 'Reader'
@@ -285,8 +282,11 @@ module workspaces './Microsoft.Databricks/workspaces/deploy.bicep' = {
           ]
         }
       ]
-      diagnosticLogsRetentionInDays: 7
+      diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
+      diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
       name: '<<namePrefix>>-az-adb-x-001'
+      diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
+      diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
   }
 ```
 

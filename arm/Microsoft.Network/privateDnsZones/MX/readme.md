@@ -100,6 +100,6 @@ roleAssignments: [
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the deployed MX record |
+| `name` | string | The name of the deployed MX record. |
 | `resourceGroupName` | string | The resource group of the deployed MX record. |
 | `resourceId` | string | The resource ID of the deployed MX record. |

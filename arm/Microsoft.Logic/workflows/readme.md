@@ -409,28 +409,16 @@ userAssignedIdentities: {
 module workflows './Microsoft.Logic/workflows/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-workflows'
   params: {
-      workflowActions: {
-        HTTP: {
-          inputs: {
-            uri: 'https://testStringForValidation.com'
-            method: 'POST'
-            body: {
-              BeginPeakTime: '[BeginPeakTime]'
-              MinimumNumberOfRDSH: 1
-              SessionThresholdPerCPU: 1
-              EndPeakTime: '[EndPeakTime]'
-              LAWorkspaceName: '[LAWorkspaceName]'
-              HostPoolName: '[HostPoolName]'
-              LogOffMessageTitle: '[LogOffMessageTitle]'
-              LogOffMessageBody: '[LogOffMessageBody]'
-              LimitSecondsToForceLogOffUser: '[LimitSecondsToForceLogOffUser]'
-              ResourceGroupName: '[ResourceGroupName]'
-              UtcOffset: '[UtcOffset]'
-            }
-          }
-          type: 'Http'
+      diagnosticLogsRetentionInDays: 7
+      roleAssignments: [
+        {
+          roleDefinitionIdOrName: 'Reader'
+          principalIds: [
+            '<<deploymentSpId>>'
+          ]
         }
-      }
+      ]
+      systemAssignedIdentity: true
       diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
       workflowTriggers: {
         Recurrence: {
@@ -441,21 +429,33 @@ module workflows './Microsoft.Logic/workflows/deploy.bicep' = {
           type: 'Recurrence'
         }
       }
-      diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
-      roleAssignments: [
-        {
-          roleDefinitionIdOrName: 'Reader'
-          principalIds: [
-            '<<deploymentSpId>>'
-          ]
-        }
-      ]
-      systemAssignedIdentity: true
       diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
-      tags: {}
-      diagnosticLogsRetentionInDays: 7
-      diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
       name: '<<namePrefix>>-az-lga-x-001'
+      workflowActions: {
+        HTTP: {
+          inputs: {
+            uri: 'https://testStringForValidation.com'
+            method: 'POST'
+            body: {
+              LimitSecondsToForceLogOffUser: '[LimitSecondsToForceLogOffUser]'
+              SessionThresholdPerCPU: 1
+              LAWorkspaceName: '[LAWorkspaceName]'
+              UtcOffset: '[UtcOffset]'
+              LogOffMessageTitle: '[LogOffMessageTitle]'
+              BeginPeakTime: '[BeginPeakTime]'
+              ResourceGroupName: '[ResourceGroupName]'
+              MinimumNumberOfRDSH: 1
+              EndPeakTime: '[EndPeakTime]'
+              HostPoolName: '[HostPoolName]'
+              LogOffMessageBody: '[LogOffMessageBody]'
+            }
+          }
+          type: 'Http'
+        }
+      }
+      diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
+      diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
+      tags: {}
   }
 ```
 

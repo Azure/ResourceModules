@@ -226,16 +226,7 @@ roleAssignments: [
 module publicIPAddresses './Microsoft.Network/publicIPAddresses/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-publicIPAddresses'
   params: {
-      diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
-      diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
-      diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
-      publicIPAllocationMethod: 'Static'
-      diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
-      zones: [
-        '1'
-        '2'
-        '3'
-      ]
+      diagnosticLogsRetentionInDays: 7
       roleAssignments: [
         {
           roleDefinitionIdOrName: 'Reader'
@@ -244,9 +235,18 @@ module publicIPAddresses './Microsoft.Network/publicIPAddresses/deploy.bicep' = 
           ]
         }
       ]
-      diagnosticLogsRetentionInDays: 7
       skuName: 'Standard'
+      diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
+      publicIPAllocationMethod: 'Static'
+      diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
+      diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
       name: '<<namePrefix>>-az-pip-x-001'
+      zones: [
+        '1'
+        '2'
+        '3'
+      ]
+      diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
   }
 ```
 

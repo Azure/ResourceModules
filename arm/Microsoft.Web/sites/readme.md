@@ -432,12 +432,12 @@ userAssignedIdentities: {
 module sites './Microsoft.Web/sites/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-sites'
   params: {
+      name: '<<namePrefix>>-az-fa-min-001'
       siteConfig: {
         alwaysOn: true
       }
       kind: 'functionapp'
       serverFarmResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Web/serverFarms/adp-<<namePrefix>>-az-asp-x-001'
-      name: '<<namePrefix>>-az-fa-min-001'
   }
 ```
 
@@ -599,34 +599,17 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
 module sites './Microsoft.Web/sites/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-sites'
   params: {
-      name: '<<namePrefix>>-az-fa-x-001'
-      diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
+      appSettingsKeyValuePairs: {
+        FUNCTIONS_EXTENSION_VERSION: '~4'
+        AzureFunctionsJobHost__logging__logLevel__default: 'Trace'
+        EASYAUTH_SECRET: 'https://adp-<<namePrefix>>-az-kv-x-001.vault.azure.net/secrets/Modules-Test-SP-Password'
+        FUNCTIONS_WORKER_RUNTIME: 'dotnet'
+      }
+      setAzureWebJobsDashboard: true
+      diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
+      diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
+      appInsightId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Insights/components/adp-<<namePrefix>>-az-appi-x-001'
       authSettingV2Configuration: {
-        platform: {
-          runtimeVersion: '~1'
-          enabled: true
-        }
-        login: {
-          tokenStore: {
-            enabled: true
-            azureBlobStorage: {}
-            tokenRefreshExtensionHours: 72
-            fileSystem: {}
-          }
-          routes: {}
-          cookieExpiration: {
-            convention: 'FixedTime'
-            timeToExpiration: '08:00:00'
-          }
-          allowedExternalRedirectUrls: [
-            'string'
-          ]
-          nonce: {
-            nonceExpirationInterval: '00:05:00'
-            validateNonce: true
-          }
-          preserveUrlFragmentsForLogins: false
-        }
         httpSettings: {
           routes: {
             apiPrefix: '/.auth'
@@ -636,38 +619,62 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
             convention: 'NoProxy'
           }
         }
-        globalValidation: {
-          requireAuthentication: true
-          unauthenticatedClientAction: 'Return401'
+        platform: {
+          runtimeVersion: '~1'
+          enabled: true
         }
         identityProviders: {
           azureActiveDirectory: {
-            validation: {
-              defaultAuthorizationPolicy: {
-                allowedPrincipals: {}
-              }
-              allowedAudiences: [
-                'api://d874dd2f-2032-4db1-a053-f0ec243685aa'
-              ]
-              jwtClaimChecks: {}
-            }
             registration: {
-              openIdIssuer: 'https://sts.windows.net/<<tenantId>>/v2.0/'
               clientId: 'd874dd2f-2032-4db1-a053-f0ec243685aa'
               clientSecretSettingName: 'EASYAUTH_SECRET'
+              openIdIssuer: 'https://sts.windows.net/<<tenantId>>/v2.0/'
             }
             login: {
               disableWWWAuthenticate: false
             }
+            validation: {
+              allowedAudiences: [
+                'api://d874dd2f-2032-4db1-a053-f0ec243685aa'
+              ]
+              defaultAuthorizationPolicy: {
+                allowedPrincipals: {}
+              }
+              jwtClaimChecks: {}
+            }
             enabled: true
           }
         }
+        login: {
+          preserveUrlFragmentsForLogins: false
+          tokenStore: {
+            fileSystem: {}
+            azureBlobStorage: {}
+            tokenRefreshExtensionHours: 72
+            enabled: true
+          }
+          routes: {}
+          allowedExternalRedirectUrls: [
+            'string'
+          ]
+          cookieExpiration: {
+            timeToExpiration: '08:00:00'
+            convention: 'FixedTime'
+          }
+          nonce: {
+            nonceExpirationInterval: '00:05:00'
+            validateNonce: true
+          }
+        }
+        globalValidation: {
+          unauthenticatedClientAction: 'Return401'
+          requireAuthentication: true
+        }
       }
-      siteConfig: {
-        use32BitWorkerProcess: false
-        alwaysOn: true
-      }
-      diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
+      name: '<<namePrefix>>-az-fa-x-001'
+      systemAssignedIdentity: true
+      diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
+      diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
       roleAssignments: [
         {
           roleDefinitionIdOrName: 'Reader'
@@ -676,24 +683,17 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
           ]
         }
       ]
-      setAzureWebJobsDashboard: true
       kind: 'functionapp'
-      diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
-      serverFarmResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Web/serverFarms/adp-<<namePrefix>>-az-asp-x-001'
-      appSettingsKeyValuePairs: {
-        FUNCTIONS_EXTENSION_VERSION: '~4'
-        EASYAUTH_SECRET: 'https://adp-<<namePrefix>>-az-kv-x-001.vault.azure.net/secrets/Modules-Test-SP-Password'
-        AzureFunctionsJobHost__logging__logLevel__default: 'Trace'
-        FUNCTIONS_WORKER_RUNTIME: 'dotnet'
-      }
       storageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
       diagnosticLogsRetentionInDays: 7
+      serverFarmResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Web/serverFarms/adp-<<namePrefix>>-az-asp-x-001'
+      siteConfig: {
+        alwaysOn: true
+        use32BitWorkerProcess: false
+      }
       userAssignedIdentities: {
         '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
       }
-      systemAssignedIdentity: true
-      diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
-      appInsightId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Insights/components/adp-<<namePrefix>>-az-appi-x-001'
   }
 ```
 
@@ -735,9 +735,9 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
 module sites './Microsoft.Web/sites/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-sites'
   params: {
+      name: '<<namePrefix>>-az-wa-min-001'
       kind: 'app'
       serverFarmResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Web/serverFarms/adp-<<namePrefix>>-az-asp-x-001'
-      name: '<<namePrefix>>-az-wa-min-001'
   }
 ```
 
@@ -826,19 +826,13 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
 module sites './Microsoft.Web/sites/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-sites'
   params: {
-      name: '<<namePrefix>>-az-wa-x-001'
-      diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
-      serverFarmResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Web/serverFarms/adp-<<namePrefix>>-az-asp-x-001'
-      siteConfig: {
-        metadata: [
-          {
-            value: 'dotnetcore'
-            name: 'CURRENT_STACK'
-          }
-        ]
-        alwaysOn: true
-      }
       diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
+      diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
+      httpsOnly: true
+      name: '<<namePrefix>>-az-wa-x-001'
+      systemAssignedIdentity: true
+      diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
+      diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
       roleAssignments: [
         {
           roleDefinitionIdOrName: 'Reader'
@@ -848,14 +842,20 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
         }
       ]
       kind: 'app'
-      diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
       diagnosticLogsRetentionInDays: 7
-      httpsOnly: true
+      serverFarmResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Web/serverFarms/adp-<<namePrefix>>-az-asp-x-001'
+      siteConfig: {
+        alwaysOn: true
+        metadata: [
+          {
+            value: 'dotnetcore'
+            name: 'CURRENT_STACK'
+          }
+        ]
+      }
       userAssignedIdentities: {
         '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
       }
-      systemAssignedIdentity: true
-      diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
   }
 ```
 

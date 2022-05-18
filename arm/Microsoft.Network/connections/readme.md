@@ -365,17 +365,17 @@ resource kv1 'Microsoft.KeyVault/vaults@2019-09-01' existing = {
 module connections './Microsoft.Network/connections/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-connections'
   params: {
+      name: '<<namePrefix>>-az-vnetgwc-x-001'
+      vpnSharedKey: kv1.getSecret('vpnSharedKey')
+      enableBgp: false
+      virtualNetworkGateway2: {
+        id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworkGateways/<<namePrefix>>-az-vnet-vpn-gw-p-002'
+      }
       virtualNetworkGatewayConnectionType: 'Vnet2Vnet'
       virtualNetworkGateway1: {
         id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworkGateways/<<namePrefix>>-az-vnet-vpn-gw-p-001'
       }
-      vpnSharedKey: kv1.getSecret('vpnSharedKey')
-      enableBgp: false
-      name: '<<namePrefix>>-az-vnetgwc-x-001'
       location: 'eastus'
-      virtualNetworkGateway2: {
-        id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworkGateways/<<namePrefix>>-az-vnet-vpn-gw-p-002'
-      }
   }
 ```
 

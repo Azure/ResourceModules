@@ -195,9 +195,9 @@ tags: {
 module diskEncryptionSets './Microsoft.Compute/diskEncryptionSets/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-diskEncryptionSets'
   params: {
+      name: '<<namePrefix>>-az-des-x-001'
       keyUrl: 'https://adp-<<namePrefix>>-az-kv-x-001.vault.azure.net/keys/keyEncryptionKey/bc3bb46d95c64367975d722f473eeae5'
       keyVaultId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001'
-      name: '<<namePrefix>>-az-des-x-001'
       roleAssignments: [
         {
           roleDefinitionIdOrName: 'Reader'

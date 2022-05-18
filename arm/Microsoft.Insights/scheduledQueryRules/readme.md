@@ -248,6 +248,8 @@ tags: {
 module scheduledQueryRules './Microsoft.Insights/scheduledQueryRules/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-scheduledQueryRules'
   params: {
+      evaluationFrequency: 'PT5M'
+      name: 'myAlert01'
       roleAssignments: [
         {
           roleDefinitionIdOrName: 'Reader'
@@ -256,43 +258,41 @@ module scheduledQueryRules './Microsoft.Insights/scheduledQueryRules/deploy.bice
           ]
         }
       ]
+      queryTimeRange: 'PT5M'
+      suppressForMinutes: 'PT5M'
+      windowSize: 'PT5M'
+      autoMitigate: false
+      alertDescription: 'My sample Alert'
       scopes: [
         '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
       ]
-      alertDescription: 'My sample Alert'
-      windowSize: 'PT5M'
-      queryTimeRange: 'PT5M'
-      evaluationFrequency: 'PT5M'
-      suppressForMinutes: 'PT5M'
-      autoMitigate: false
       criterias: {
         allOf: [
           {
-            query: 'Perf | where ObjectName == \'LogicalDisk\' | where CounterName == \'% Free Space\' | where InstanceName <> \'HarddiskVolume1\' and InstanceName <> \'_Total\' | summarize AggregatedValue = min(CounterValue) by Computer InstanceName bin(TimeGenerated5m)'
             timeAggregation: 'Average'
+            threshold: 0
             dimensions: [
               {
-                operator: 'Include'
                 name: 'Computer'
                 values: [
                   '*'
                 ]
+                operator: 'Include'
               }
               {
-                operator: 'Include'
                 name: 'InstanceName'
                 values: [
                   '*'
                 ]
+                operator: 'Include'
               }
             ]
-            operator: 'GreaterThan'
-            threshold: 0
             metricMeasureColumn: 'AggregatedValue'
+            query: 'Perf | where ObjectName == \'LogicalDisk\' | where CounterName == \'% Free Space\' | where InstanceName <> \'HarddiskVolume1\' and InstanceName <> \'_Total\' | summarize AggregatedValue = min(CounterValue) by Computer InstanceName bin(TimeGenerated5m)'
+            operator: 'GreaterThan'
           }
         ]
       }
-      name: 'myAlert01'
   }
 ```
 

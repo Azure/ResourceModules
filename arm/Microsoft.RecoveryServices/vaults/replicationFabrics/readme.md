@@ -16,7 +16,7 @@ This module deploys a Replication Fabric for Azure to Azure disaster recovery sc
 | :-- | :-- |
 | `Microsoft.RecoveryServices/vaults/replicationFabrics` | [2021-12-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2021-12-01/vaults/replicationFabrics) |
 | `Microsoft.RecoveryServices/vaults/replicationFabrics/replicationProtectionContainers` | [2021-12-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2021-12-01/vaults/replicationFabrics/replicationProtectionContainers) |
-| `Microsoft.RecoveryServices/vaults/replicationFabrics/replicationProtectionContainers/replicationProtectionContainerMappings` | [2021-12-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2021-12-01/vaults/replicationFabrics/replicationProtectionContainers/replicationProtectionContainerMappings) |
+| `Microsoft.RecoveryServices/vaults/replicationFabrics/replicationProtectionContainers/replicationProtectionContainerMappings` | [2021-12-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/vaults/replicationFabrics/replicationProtectionContainers/replicationProtectionContainerMappings) |
 
 ## Parameters
 
@@ -93,7 +93,6 @@ replicationContainers: [
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `location` | string | The location the resource was deployed into. |
 | `name` | string | The name of the replication fabric. |
 | `resourceGroupName` | string | The name of the resource group the replication fabric was created in. |
 | `resourceId` | string | The resource ID of the replication fabric. |

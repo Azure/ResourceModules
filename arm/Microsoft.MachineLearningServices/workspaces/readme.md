@@ -390,10 +390,10 @@ userAssignedIdentities: {
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
 | `location` | string | The location the resource was deployed into. |
-| `name` | string | The name of the machine learning service |
+| `name` | string | The name of the machine learning service. |
 | `principalId` | string | The principal ID of the system assigned identity. |
-| `resourceGroupName` | string | The resource group the machine learning service was deployed into |
-| `resourceId` | string | The resource ID of the machine learning service |
+| `resourceGroupName` | string | The resource group the machine learning service was deployed into. |
+| `resourceId` | string | The resource ID of the machine learning service. |
 
 ## Deployment examples
 
@@ -441,12 +441,12 @@ userAssignedIdentities: {
 module workspaces './Microsoft.MachineLearningServices/workspaces/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-workspaces'
   params: {
-      associatedKeyVaultResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001'
-      systemAssignedIdentity: true
-      associatedApplicationInsightsResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Insights/components/adp-<<namePrefix>>-az-appi-x-001'
-      associatedStorageAccountResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
       sku: 'Basic'
+      systemAssignedIdentity: true
+      associatedStorageAccountResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
+      associatedKeyVaultResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001'
       name: '<<namePrefix>>-az-mls-min-001'
+      associatedApplicationInsightsResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Insights/components/adp-<<namePrefix>>-az-appi-x-001'
   }
 ```
 
@@ -589,40 +589,57 @@ module workspaces './Microsoft.MachineLearningServices/workspaces/deploy.bicep' 
 module workspaces './Microsoft.MachineLearningServices/workspaces/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-workspaces'
   params: {
-      publicNetworkAccess: 'Enabled'
+      description: 'The cake is a lie.'
+      encryptionKeyVaultResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-carml-az-kv-nopr-002'
       computes: [
         {
-          name: 'DefaultCPU'
           computeType: 'AmlCompute'
-          userAssignedIdentities: {
-            '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
-          }
-          disableLocalAuth: false
-          description: 'Default CPU Cluster'
-          computeLocation: 'westeurope'
-          systemAssignedIdentity: false
-          sku: 'Basic'
+          name: 'DefaultCPU'
           location: 'westeurope'
           properties: {
+            scaleSettings: {
+              minNodeCount: 0
+              maxNodeCount: 3
+              nodeIdleTimeBeforeScaleDown: 'PT5M'
+            }
             remoteLoginPortPublicAccess: 'Disabled'
             vmPriority: 'Dedicated'
             enableNodePublicIp: true
-            vmSize: 'STANDARD_DS11_V2'
             isolatedNetwork: false
-            scaleSettings: {
-              maxNodeCount: 3
-              nodeIdleTimeBeforeScaleDown: 'PT5M'
-              minNodeCount: 0
-            }
+            vmSize: 'STANDARD_DS11_V2'
             osType: 'Linux'
+          }
+          sku: 'Basic'
+          description: 'Default CPU Cluster'
+          disableLocalAuth: false
+          systemAssignedIdentity: false
+          computeLocation: 'westeurope'
+          userAssignedIdentities: {
+            '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
           }
         }
       ]
-      name: '<<namePrefix>>-az-mls-x-001'
+      diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
+      encryptionIdentity: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001'
       encryptionKeyIdentifier: 'https://adp-carml-az-kv-nopr-002.vault.azure.net/keys/keyEncryptionKey/5263fcde203347baa7cda35d074073b2'
-      diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
       primaryUserAssignedIdentity: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001'
-      diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
+      userAssignedIdentities: {
+        '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
+      }
+      associatedKeyVaultResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001'
+      discoveryUrl: 'http://example.com'
+      name: '<<namePrefix>>-az-mls-x-001'
+      systemAssignedIdentity: false
+      associatedApplicationInsightsResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Insights/components/adp-<<namePrefix>>-az-appi-x-001'
+      diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
+      privateEndpoints: [
+        {
+          subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints'
+          service: 'amlworkspace'
+        }
+      ]
+      diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
+      sku: 'Basic'
       roleAssignments: [
         {
           roleDefinitionIdOrName: 'Reader'
@@ -631,28 +648,11 @@ module workspaces './Microsoft.MachineLearningServices/workspaces/deploy.bicep' 
           ]
         }
       ]
-      sku: 'Basic'
-      associatedKeyVaultResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001'
-      diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
-      diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
-      privateEndpoints: [
-        {
-          subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints'
-          service: 'amlworkspace'
-        }
-      ]
-      associatedStorageAccountResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
-      description: 'The cake is a lie.'
-      imageBuildCompute: 'testcompute'
+      publicNetworkAccess: 'Enabled'
       diagnosticLogsRetentionInDays: 7
-      discoveryUrl: 'http://example.com'
-      userAssignedIdentities: {
-        '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
-      }
-      systemAssignedIdentity: false
-      encryptionKeyVaultResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-carml-az-kv-nopr-002'
-      encryptionIdentity: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001'
-      associatedApplicationInsightsResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Insights/components/adp-<<namePrefix>>-az-appi-x-001'
+      associatedStorageAccountResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
+      imageBuildCompute: 'testcompute'
+      diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
   }
 ```
 

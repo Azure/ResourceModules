@@ -321,10 +321,22 @@ tags: {
 module virtualNetworkGateways './Microsoft.Network/virtualNetworkGateways/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-virtualNetworkGateways'
   params: {
+      tags: {
+        CostCenter: ''
+        ServiceName: 'DeploymentValidation'
+        Environment: 'Validation'
+        Role: 'DeploymentValidation'
+        PurchaseOrder: ''
+        Contact: 'test.user@testcompany.com'
+      }
       virtualNetworkGatewayType: 'ExpressRoute'
+      diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
+      vNetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001'
+      virtualNetworkGatewaySku: 'ErGw1AZ'
       name: '<<namePrefix>>-az-gw-er-001'
+      diagnosticLogsRetentionInDays: 7
       diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
-      diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
+      diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
       roleAssignments: [
         {
           roleDefinitionIdOrName: 'Reader'
@@ -334,22 +346,10 @@ module virtualNetworkGateways './Microsoft.Network/virtualNetworkGateways/deploy
         }
       ]
       gatewayPipName: '<<namePrefix>>-az-gw-er-001-pip'
-      tags: {
-        Contact: 'test.user@testcompany.com'
-        ServiceName: 'DeploymentValidation'
-        PurchaseOrder: ''
-        CostCenter: ''
-        Environment: 'Validation'
-        Role: 'DeploymentValidation'
-      }
-      diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
-      virtualNetworkGatewaySku: 'ErGw1AZ'
-      diagnosticLogsRetentionInDays: 7
-      vNetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001'
       domainNameLabel: [
         '<<namePrefix>>-az-gw-er-dm-001'
       ]
-      diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
+      diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
   }
 ```
 
@@ -436,11 +436,14 @@ module virtualNetworkGateways './Microsoft.Network/virtualNetworkGateways/deploy
   name: '${uniqueString(deployment().name)}-virtualNetworkGateways'
   params: {
       virtualNetworkGatewayType: 'Vpn'
-      publicIpZones: [
-        '1'
-      ]
+      diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
+      activeActive: true
+      vNetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001'
+      virtualNetworkGatewaySku: 'VpnGw1AZ'
+      name: '<<namePrefix>>-az-gw-vpn-001'
+      diagnosticLogsRetentionInDays: 7
       diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
-      diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
+      diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
       roleAssignments: [
         {
           roleDefinitionIdOrName: 'Reader'
@@ -449,17 +452,14 @@ module virtualNetworkGateways './Microsoft.Network/virtualNetworkGateways/deploy
           ]
         }
       ]
-      vpnType: 'RouteBased'
-      diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
-      activeActive: true
-      virtualNetworkGatewaySku: 'VpnGw1AZ'
-      diagnosticLogsRetentionInDays: 7
-      vNetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001'
+      publicIpZones: [
+        '1'
+      ]
       domainNameLabel: [
         '<<namePrefix>>-az-gw-vpn-dm-001'
       ]
-      diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
-      name: '<<namePrefix>>-az-gw-vpn-001'
+      vpnType: 'RouteBased'
+      diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
   }
 ```
 

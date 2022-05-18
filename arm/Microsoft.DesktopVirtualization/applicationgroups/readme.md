@@ -24,7 +24,7 @@ This module deploys an Azure virtual desktop application group.
 **Required parameters**
 | Parameter Name | Type | Allowed Values | Description |
 | :-- | :-- | :-- | :-- |
-| `applicationGroupType` | string | `[RemoteApp, Desktop]` | The type of the Application Group to be created. Allowed values: RemoteApp or Desktop |
+| `applicationGroupType` | string | `[RemoteApp, Desktop]` | The type of the Application Group to be created. Allowed values: RemoteApp or Desktop. |
 | `hostpoolName` | string |  | Name of the Host Pool to be linked to this Application Group. |
 | `name` | string |  | Name of the Application Group to create this application in. |
 
@@ -153,9 +153,9 @@ tags: {
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
 | `location` | string | The location the resource was deployed into. |
-| `name` | string | The name of the AVD application group |
-| `resourceGroupName` | string | The resource group the AVD application group was deployed into |
-| `resourceId` | string | The resource ID of the AVD application group |
+| `name` | string | The name of the AVD application group. |
+| `resourceGroupName` | string | The resource group the AVD application group was deployed into. |
+| `resourceId` | string | The resource ID of the AVD application group. |
 
 ## Deployment examples
 

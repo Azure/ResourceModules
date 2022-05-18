@@ -196,17 +196,17 @@ This module requires a User Assigned Identity (MSI, managed service identity) to
 module deploymentScripts './Microsoft.Resources/deploymentScripts/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-deploymentScripts'
   params: {
-      timeout: 'PT30M'
       scriptContent: 'echo \'Hello from inside the script\''
       userAssignedIdentities: {
         '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
       }
+      runOnce: false
+      retentionInterval: 'P1D'
+      azCliVersion: '2.15.0'
+      name: '<<namePrefix>>-az-ds-cli-001'
+      timeout: 'PT30M'
       kind: 'AzureCLI'
       cleanupPreference: 'Always'
-      azCliVersion: '2.15.0'
-      retentionInterval: 'P1D'
-      runOnce: false
-      name: '<<namePrefix>>-az-ds-cli-001'
   }
 ```
 
@@ -268,17 +268,17 @@ module deploymentScripts './Microsoft.Resources/deploymentScripts/deploy.bicep' 
 module deploymentScripts './Microsoft.Resources/deploymentScripts/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-deploymentScripts'
   params: {
-      timeout: 'PT30M'
       scriptContent: 'Write-Host 'Running PowerShell from template''
-      kind: 'AzurePowerShell'
-      cleanupPreference: 'Always'
       userAssignedIdentities: {
         '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
       }
-      retentionInterval: 'P1D'
       runOnce: false
-      azPowerShellVersion: '3.0'
+      retentionInterval: 'P1D'
+      cleanupPreference: 'Always'
       name: '<<namePrefix>>-az-ds-ps-001'
+      timeout: 'PT30M'
+      kind: 'AzurePowerShell'
+      azPowerShellVersion: '3.0'
   }
 ```
 

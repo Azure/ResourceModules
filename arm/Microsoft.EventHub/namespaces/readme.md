@@ -15,12 +15,13 @@ This module deploys an event hub namespace.
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2020-10-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-10-01-preview/roleAssignments) |
-| `Microsoft.EventHub/namespaces` | [2021-06-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.EventHub/2021-06-01-preview/namespaces) |
-| `Microsoft.EventHub/namespaces/authorizationRules` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.EventHub/2017-04-01/namespaces/authorizationRules) |
-| `Microsoft.EventHub/namespaces/disasterRecoveryConfigs` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.EventHub/2017-04-01/namespaces/disasterRecoveryConfigs) |
-| `Microsoft.EventHub/namespaces/eventhubs` | [2021-06-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.EventHub/2021-06-01-preview/namespaces/eventhubs) |
-| `Microsoft.EventHub/namespaces/eventhubs/authorizationRules` | [2021-06-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.EventHub/2021-06-01-preview/namespaces/eventhubs/authorizationRules) |
-| `Microsoft.EventHub/namespaces/eventhubs/consumergroups` | [2021-06-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.EventHub/2021-06-01-preview/namespaces/eventhubs/consumergroups) |
+| `Microsoft.EventHub/namespaces` | [2021-11-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.EventHub/2021-11-01/namespaces) |
+| `Microsoft.EventHub/namespaces/authorizationRules` | [2021-11-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.EventHub/2021-11-01/namespaces/authorizationRules) |
+| `Microsoft.EventHub/namespaces/disasterRecoveryConfigs` | [2021-11-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.EventHub/2021-11-01/namespaces/disasterRecoveryConfigs) |
+| `Microsoft.EventHub/namespaces/eventhubs` | [2021-11-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.EventHub/2021-11-01/namespaces/eventhubs) |
+| `Microsoft.EventHub/namespaces/eventhubs/authorizationRules` | [2021-11-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.EventHub/namespaces/eventhubs/authorizationRules) |
+| `Microsoft.EventHub/namespaces/eventhubs/consumergroups` | [2021-11-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.EventHub/2021-11-01/namespaces/eventhubs/consumergroups) |
+| `Microsoft.EventHub/namespaces/networkRuleSets` | [2021-11-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.EventHub/2021-11-01/namespaces/networkRuleSets) |
 | `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
 | `Microsoft.Network/privateEndpoints` | [2021-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/privateEndpoints) |
 | `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | [2021-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/privateEndpoints/privateDnsZoneGroups) |
@@ -33,7 +34,7 @@ This module deploys an event hub namespace.
 | `authorizationRules` | _[authorizationRules](authorizationRules/readme.md)_ array | `[System.Collections.Hashtable]` |  | Authorization Rules for the Event Hub namespace. |
 | `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
-| `diagnosticLogCategoriesToEnable` | array | `[ArchiveLogs, OperationalLogs, KafkaCoordinatorLogs, KafkaUserErrorLogs, EventHubVNetConnectionEvent, CustomerManagedKeyUserLogs, AutoScaleLogs]` | `[ArchiveLogs, OperationalLogs, KafkaCoordinatorLogs, KafkaUserErrorLogs, EventHubVNetConnectionEvent, CustomerManagedKeyUserLogs, AutoScaleLogs]` | The name of logs that will be streamed. |
+| `diagnosticLogCategoriesToEnable` | array | `[ArchiveLogs, OperationalLogs, AutoScaleLogs, KafkaCoordinatorLogs, KafkaUserErrorLogs, EventHubVNetConnectionEvent, CustomerManagedKeyUserLogs, RuntimeAuditLogs, ApplicationMetricsLogs]` | `[ArchiveLogs, OperationalLogs, AutoScaleLogs, KafkaCoordinatorLogs, KafkaUserErrorLogs, EventHubVNetConnectionEvent, CustomerManagedKeyUserLogs, RuntimeAuditLogs, ApplicationMetricsLogs]` | The name of logs that will be streamed. |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticMetricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | The name of metrics that will be streamed. |
 | `diagnosticSettingsName` | string | `[format('{0}-diagnosticSettings', parameters('name'))]` |  | The name of the diagnostic setting, if deployed. |
@@ -47,7 +48,7 @@ This module deploys an event hub namespace.
 | `lock` | string | `'NotSpecified'` | `[CanNotDelete, NotSpecified, ReadOnly]` | Specify the type of lock. |
 | `maximumThroughputUnits` | int | `1` |  | Upper limit of throughput units when AutoInflate is enabled, value should be within 0 to 20 throughput units. |
 | `name` | string | `''` |  | The name of the event hub namespace. If no name is provided, then unique name will be created. |
-| `networkAcls` | object | `{object}` |  | Networks ACLs, this value contains IPs to whitelist and/or Subnet information. For security reasons, it is recommended to set the DefaultAction Deny. |
+| `networkRuleSets` | _[networkRuleSets](networkRuleSets/readme.md)_ object | `{object}` |  | Networks ACLs, this object contains IPs/Subnets to whitelist or restrict access to private endpoints only. For security reasons, it is recommended to configure this object on the Namespace. |
 | `privateEndpoints` | array | `[]` |  | Configuration Details for private endpoints.For security reasons, it is recommended to use private endpoints whenever possible. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `skuCapacity` | int | `1` |  | Event Hub plan scale-out capacity of the resource. |
@@ -427,17 +428,24 @@ module namespaces './Microsoft.EventHub/namespaces/deploy.bicep' = {
         "systemAssignedIdentity": {
             "value": true
         },
-        "networkAcls": {
+        "networkRuleSets": {
             "value": {
-                "bypass": "AzureServices",
                 "defaultAction": "Deny",
-                "virtualNetworkRules": [
+                "ipRules": [
                     {
-                        "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001",
-                        "action": "Allow"
+                        "action": "Allow",
+                        "ipMask": "10.10.10.10"
                     }
                 ],
-                "ipRules": []
+                "virtualNetworkRules": [
+                    {
+                        "subnet": {
+                            "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001"
+                        },
+                        "ignoreMissingVnetServiceEndpoint": true
+                    }
+                ],
+                "trustedServiceAccessEnabled": false
             }
         },
         "userAssignedIdentities": {
@@ -461,75 +469,7 @@ module namespaces './Microsoft.EventHub/namespaces/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-namespaces'
   params: {
       diagnosticLogsRetentionInDays: 7
-      diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
-      diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
-      diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
-      networkAcls: {
-        virtualNetworkRules: [
-          {
-            id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001'
-            action: 'Allow'
-          }
-        ]
-        ipRules: []
-        bypass: 'AzureServices'
-        defaultAction: 'Deny'
-      }
-      systemAssignedIdentity: true
-      userAssignedIdentities: {
-        '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
-      }
-      eventHubs: [
-        {
-          name: '<<namePrefix>>-az-evh-x-001'
-        }
-        {
-          captureDescriptionSizeLimitInBytes: 314572800
-          captureDescriptionDestinationArchiveNameFormat: '{Namespace}/{EventHub}/{PartitionId}/{Year}/{Month}/{Day}/{Hour}/{Minute}/{Second}'
-          captureDescriptionDestinationBlobContainer: 'eventhub'
-          captureDescriptionDestinationName: 'EventHubArchive.AzureBlockBlob'
-          status: 'Active'
-          messageRetentionInDays: 1
-          captureDescriptionEncoding: 'Avro'
-          captureDescriptionDestinationStorageAccountResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
-          consumerGroups: [
-            {
-              userMetadata: 'customMetadata'
-              name: 'custom'
-            }
-          ]
-          roleAssignments: [
-            {
-              roleDefinitionIdOrName: 'Reader'
-              principalIds: [
-                '<<deploymentSpId>>'
-              ]
-            }
-          ]
-          partitionCount: 2
-          captureDescriptionIntervalInSeconds: 300
-          name: '<<namePrefix>>-az-evh-x-002'
-          captureDescriptionSkipEmptyArchives: true
-          captureDescriptionEnabled: true
-          authorizationRules: [
-            {
-              rights: [
-                'Listen'
-                'Manage'
-                'Send'
-              ]
-              name: 'RootManageSharedAccessKey'
-            }
-            {
-              rights: [
-                'Listen'
-                'Send'
-              ]
-              name: 'SendListenAccess'
-            }
-          ]
-        }
-      ]
+      name: '<<namePrefix>>-az-evnsp-x-001'
       roleAssignments: [
         {
           roleDefinitionIdOrName: 'Reader'
@@ -538,6 +478,10 @@ module namespaces './Microsoft.EventHub/namespaces/deploy.bicep' = {
           ]
         }
       ]
+      systemAssignedIdentity: true
+      diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
+      diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
+      diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
       authorizationRules: [
         {
           rights: [
@@ -555,8 +499,79 @@ module namespaces './Microsoft.EventHub/namespaces/deploy.bicep' = {
           name: 'SendListenAccess'
         }
       ]
-      diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
-      name: '<<namePrefix>>-az-evnsp-x-001'
+      userAssignedIdentities: {
+        '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
+      }
+      networkRuleSets: {
+        defaultAction: 'Deny'
+        ipRules: [
+          {
+            ipMask: '10.10.10.10'
+            action: 'Allow'
+          }
+        ]
+        virtualNetworkRules: [
+          {
+            subnet: {
+              id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001'
+            }
+            ignoreMissingVnetServiceEndpoint: true
+          }
+        ]
+        trustedServiceAccessEnabled: false
+      }
+      diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
+      eventHubs: [
+        {
+          name: '<<namePrefix>>-az-evh-x-001'
+        }
+        {
+          captureDescriptionDestinationName: 'EventHubArchive.AzureBlockBlob'
+          roleAssignments: [
+            {
+              roleDefinitionIdOrName: 'Reader'
+              principalIds: [
+                '<<deploymentSpId>>'
+              ]
+            }
+          ]
+          status: 'Active'
+          captureDescriptionEnabled: true
+          name: '<<namePrefix>>-az-evh-x-002'
+          captureDescriptionDestinationStorageAccountResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
+          captureDescriptionSkipEmptyArchives: true
+          captureDescriptionIntervalInSeconds: 300
+          messageRetentionInDays: 1
+          captureDescriptionDestinationBlobContainer: 'eventhub'
+          partitionCount: 2
+          captureDescriptionEncoding: 'Avro'
+          authorizationRules: [
+            {
+              rights: [
+                'Listen'
+                'Manage'
+                'Send'
+              ]
+              name: 'RootManageSharedAccessKey'
+            }
+            {
+              rights: [
+                'Listen'
+                'Send'
+              ]
+              name: 'SendListenAccess'
+            }
+          ]
+          consumerGroups: [
+            {
+              userMetadata: 'customMetadata'
+              name: 'custom'
+            }
+          ]
+          captureDescriptionDestinationArchiveNameFormat: '{Namespace}/{EventHub}/{PartitionId}/{Year}/{Month}/{Day}/{Hour}/{Minute}/{Second}'
+          captureDescriptionSizeLimitInBytes: 314572800
+        }
+      ]
   }
 ```
 

@@ -261,10 +261,14 @@ tags: {
 module serverf './Microsoft.Web/serverf/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-serverf'
   params: {
-      diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
-      diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
-      diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
-      diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
+      diagnosticLogsRetentionInDays: 7
+      sku: {
+        name: 'S1'
+        size: 'S1'
+        family: 'S'
+        capacity: '1'
+        tier: 'Standard'
+      }
       roleAssignments: [
         {
           roleDefinitionIdOrName: 'Reader'
@@ -273,15 +277,11 @@ module serverf './Microsoft.Web/serverf/deploy.bicep' = {
           ]
         }
       ]
-      diagnosticLogsRetentionInDays: 7
-      sku: {
-        capacity: '1'
-        tier: 'Standard'
-        name: 'S1'
-        size: 'S1'
-        family: 'S'
-      }
+      diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
+      diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
       name: '<<namePrefix>>-az-asp-x-001'
+      diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
+      diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
   }
 ```
 

@@ -228,6 +228,7 @@ module availabilitySets './Microsoft.Compute/availabilitySets/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-availabilitySets'
   params: {
       name: '<<namePrefix>>-az-avs-x-001'
+      proximityPlacementGroupId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Compute/proximityPlacementGroups/adp-<<namePrefix>>-az-ppg-x-001'
       roleAssignments: [
         {
           roleDefinitionIdOrName: 'Reader'
@@ -236,7 +237,6 @@ module availabilitySets './Microsoft.Compute/availabilitySets/deploy.bicep' = {
           ]
         }
       ]
-      proximityPlacementGroupId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Compute/proximityPlacementGroups/adp-<<namePrefix>>-az-ppg-x-001'
   }
 ```
 

@@ -307,8 +307,8 @@ userAssignedIdentities: {
 module systemTopics './Microsoft.EventGrid/systemTopics/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-systemTopics'
   params: {
-      source: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
       name: '<<namePrefix>>-az-egstn-x-002'
+      source: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
       topicType: 'Microsoft.Storage.StorageAccounts'
   }
 ```
@@ -376,11 +376,7 @@ module systemTopics './Microsoft.EventGrid/systemTopics/deploy.bicep' = {
 module systemTopics './Microsoft.EventGrid/systemTopics/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-systemTopics'
   params: {
-      diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
-      diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
-      source: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
-      topicType: 'Microsoft.Storage.StorageAccounts'
-      diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
+      diagnosticLogsRetentionInDays: 7
       roleAssignments: [
         {
           roleDefinitionIdOrName: 'Reader'
@@ -389,9 +385,13 @@ module systemTopics './Microsoft.EventGrid/systemTopics/deploy.bicep' = {
           ]
         }
       ]
-      diagnosticLogsRetentionInDays: 7
-      diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
+      diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
+      diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
       name: '<<namePrefix>>-az-egstn-x-001'
+      topicType: 'Microsoft.Storage.StorageAccounts'
+      diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
+      diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
+      source: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
   }
 ```
 

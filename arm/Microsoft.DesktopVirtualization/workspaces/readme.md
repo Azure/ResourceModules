@@ -224,15 +224,8 @@ tags: {
 module workspaces './Microsoft.DesktopVirtualization/workspaces/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-workspaces'
   params: {
-      diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
-      diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
-      workspaceDescription: 'This is my first AVD Workspace'
-      location: 'westeurope'
-      appGroupResourceIds: [
-        '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.DesktopVirtualization/applicationgroups/adp-<<namePrefix>>-az-avdag-x-001'
-      ]
-      workspaceFriendlyName: 'My first AVD Workspace'
-      diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
+      diagnosticLogsRetentionInDays: 7
+      name: '<<namePrefix>>-az-avdws-x-001'
       roleAssignments: [
         {
           roleDefinitionIdOrName: 'Reader'
@@ -241,9 +234,16 @@ module workspaces './Microsoft.DesktopVirtualization/workspaces/deploy.bicep' = 
           ]
         }
       ]
-      diagnosticLogsRetentionInDays: 7
+      diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
+      workspaceDescription: 'This is my first AVD Workspace'
+      diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
+      workspaceFriendlyName: 'My first AVD Workspace'
+      appGroupResourceIds: [
+        '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.DesktopVirtualization/applicationgroups/adp-<<namePrefix>>-az-avdag-x-001'
+      ]
       diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
-      name: '<<namePrefix>>-az-avdws-x-001'
+      diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
+      location: 'westeurope'
   }
 ```
 

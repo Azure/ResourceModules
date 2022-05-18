@@ -414,18 +414,34 @@ module privateDnsZones './Microsoft.Network/privateDnsZones/deploy.bicep' = {
 module privateDnsZones './Microsoft.Network/privateDnsZones/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-privateDnsZones'
   params: {
-      SOA: [
+      CNAME: [
         {
-          soaRecord: {
-            refreshTime: 3600
-            host: 'azureprivatedns.net'
-            minimumTtl: 10
-            expireTime: 2419200
-            email: 'azureprivatedns-host.microsoft.com'
-            retryTime: 300
-            serialNumber: '1'
+          name: 'CNAME_test'
+          roleAssignments: [
+            {
+              roleDefinitionIdOrName: 'Reader'
+              principalIds: [
+                '<<deploymentSpId>>'
+              ]
+            }
+          ]
+          ttl: 3600
+          cnameRecord: {
+            cname: 'test'
           }
-          ttl: 3600
+        }
+      ]
+      SRV: [
+        {
+          name: 'SRV_contoso'
+          srvRecords: [
+            {
+              priority: 0
+              weight: 0
+              port: 9332
+              target: 'test.contoso.com'
+            }
+          ]
           roleAssignments: [
             {
               roleDefinitionIdOrName: 'Reader'
@@ -434,34 +450,18 @@ module privateDnsZones './Microsoft.Network/privateDnsZones/deploy.bicep' = {
               ]
             }
           ]
-          name: '@'
+          ttl: 3600
         }
       ]
-      AAAA: [
+      MX: [
         {
-          ttl: 3600
-          name: 'AAAA_2001_0db8_85a3_0000_0000_8a2e_0370_7334'
-          aaaaRecords: [
+          name: 'MX_contoso'
+          mxRecords: [
             {
-              ipv6Address: '2001:0db8:85a3:0000:0000:8a2e:0370:7334'
+              preference: 100
+              exchange: 'contoso.com'
             }
           ]
-        }
-      ]
-      virtualNetworkLinks: [
-        {
-          virtualNetworkResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001'
-          registrationEnabled: true
-        }
-      ]
-      PTR: [
-        {
-          ptrRecords: [
-            {
-              ptrdname: 'contoso.com'
-            }
-          ]
-          ttl: 3600
           roleAssignments: [
             {
               roleDefinitionIdOrName: 'Reader'
@@ -470,12 +470,12 @@ module privateDnsZones './Microsoft.Network/privateDnsZones/deploy.bicep' = {
               ]
             }
           ]
-          name: 'PTR_contoso'
+          ttl: 3600
         }
       ]
       TXT: [
         {
-          ttl: 3600
+          name: 'TXT_test'
           txtRecords: [
             {
               value: [
@@ -491,15 +491,21 @@ module privateDnsZones './Microsoft.Network/privateDnsZones/deploy.bicep' = {
               ]
             }
           ]
-          name: 'TXT_test'
+          ttl: 3600
         }
       ]
-      CNAME: [
+      SOA: [
         {
-          cnameRecord: {
-            cname: 'test'
+          name: '@'
+          soaRecord: {
+            retryTime: 300
+            host: 'azureprivatedns.net'
+            minimumTtl: 10
+            serialNumber: '1'
+            refreshTime: 3600
+            email: 'azureprivatedns-host.microsoft.com'
+            expireTime: 2419200
           }
-          ttl: 3600
           roleAssignments: [
             {
               roleDefinitionIdOrName: 'Reader'
@@ -508,12 +514,19 @@ module privateDnsZones './Microsoft.Network/privateDnsZones/deploy.bicep' = {
               ]
             }
           ]
-          name: 'CNAME_test'
+          ttl: 3600
         }
       ]
-      MX: [
+      name: '<<namePrefix>>-az-privdns-x-002.com'
+      virtualNetworkLinks: [
         {
-          ttl: 3600
+          registrationEnabled: true
+          virtualNetworkResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001'
+        }
+      ]
+      A: [
+        {
+          name: 'A_10.240.4.4'
           roleAssignments: [
             {
               roleDefinitionIdOrName: 'Reader'
@@ -522,11 +535,10 @@ module privateDnsZones './Microsoft.Network/privateDnsZones/deploy.bicep' = {
               ]
             }
           ]
-          name: 'MX_contoso'
-          mxRecords: [
+          ttl: 3600
+          aRecords: [
             {
-              preference: 100
-              exchange: 'contoso.com'
+              ipv4Address: '10.240.4.4'
             }
           ]
         }
@@ -539,9 +551,20 @@ module privateDnsZones './Microsoft.Network/privateDnsZones/deploy.bicep' = {
           ]
         }
       ]
-      A: [
+      AAAA: [
         {
+          name: 'AAAA_2001_0db8_85a3_0000_0000_8a2e_0370_7334'
           ttl: 3600
+          aaaaRecords: [
+            {
+              ipv6Address: '2001:0db8:85a3:0000:0000:8a2e:0370:7334'
+            }
+          ]
+        }
+      ]
+      PTR: [
+        {
+          name: 'PTR_contoso'
           roleAssignments: [
             {
               roleDefinitionIdOrName: 'Reader'
@@ -550,37 +573,14 @@ module privateDnsZones './Microsoft.Network/privateDnsZones/deploy.bicep' = {
               ]
             }
           ]
-          name: 'A_10.240.4.4'
-          aRecords: [
-            {
-              ipv4Address: '10.240.4.4'
-            }
-          ]
-        }
-      ]
-      SRV: [
-        {
           ttl: 3600
-          srvRecords: [
+          ptrRecords: [
             {
-              target: 'test.contoso.com'
-              weight: 0
-              priority: 0
-              port: 9332
+              ptrdname: 'contoso.com'
             }
           ]
-          roleAssignments: [
-            {
-              roleDefinitionIdOrName: 'Reader'
-              principalIds: [
-                '<<deploymentSpId>>'
-              ]
-            }
-          ]
-          name: 'SRV_contoso'
         }
       ]
-      name: '<<namePrefix>>-az-privdns-x-002.com'
   }
 ```
 

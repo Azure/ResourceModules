@@ -120,19 +120,19 @@ module fluxConfigurations './Microsoft.KubernetesConfiguration/fluxConfiguration
   name: '${uniqueString(deployment().name)}-fluxConfigurations'
   params: {
       clusterName: '<<namePrefix>>-az-aks-kubenet-001'
+      scope: 'cluster'
+      sourceKind: 'GitRepository'
+      name: 'flux2'
       gitRepository: {
-        sshKnownHosts: ''
-        timeoutInSeconds: 180
         repositoryRef: {
           branch: 'main'
         }
-        url: 'https://github.com/mspnp/aks-baseline'
+        sshKnownHosts: ''
         syncIntervalInSeconds: 300
+        url: 'https://github.com/mspnp/aks-baseline'
+        timeoutInSeconds: 180
       }
       namespace: 'flux-system'
-      sourceKind: 'GitRepository'
-      scope: 'cluster'
-      name: 'flux2'
   }
 ```
 
@@ -203,30 +203,30 @@ module fluxConfigurations './Microsoft.KubernetesConfiguration/fluxConfiguration
 module fluxConfigurations './Microsoft.KubernetesConfiguration/fluxConfigurations/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-fluxConfigurations'
   params: {
-      clusterName: '<<namePrefix>>-az-aks-kubenet-001'
       kustomizations: {
         unified: {
-          syncIntervalInSeconds: 300
-          prune: true
-          path: './cluster-manifests'
           dependsOn: []
-          force: false
           timeoutInSeconds: 300
+          prune: true
+          syncIntervalInSeconds: 300
+          path: './cluster-manifests'
+          force: false
         }
       }
-      namespace: 'flux-system'
-      sourceKind: 'GitRepository'
+      clusterName: '<<namePrefix>>-az-aks-kubenet-001'
       scope: 'cluster'
+      sourceKind: 'GitRepository'
+      name: 'flux2'
       gitRepository: {
-        sshKnownHosts: ''
-        timeoutInSeconds: 180
         repositoryRef: {
           branch: 'main'
         }
-        url: 'https://github.com/mspnp/aks-baseline'
+        sshKnownHosts: ''
         syncIntervalInSeconds: 300
+        url: 'https://github.com/mspnp/aks-baseline'
+        timeoutInSeconds: 180
       }
-      name: 'flux2'
+      namespace: 'flux-system'
   }
 ```
 

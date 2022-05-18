@@ -52,7 +52,7 @@ This module deploys a SQL server.
 | `systemAssignedIdentity` | bool | `False` |  | Enables system assigned managed identity on the resource. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
 | `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. |
-| `vulnerabilityAssessmentsObj` | _[vulnerabilityAssessments](vulnerabilityAssessments/readme.md)_ object | `{object}` |  | The vulnerability assessment configuration |
+| `vulnerabilityAssessmentsObj` | _[vulnerabilityAssessments](vulnerabilityAssessments/readme.md)_ object | `{object}` |  | The vulnerability assessment configuration. |
 
 
 ### Parameter Usage: `roleAssignments`
@@ -342,6 +342,7 @@ privateEndpoints:  [
         }
     }
 }
+
 ```
 
 </details>
@@ -355,11 +356,11 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-servers'
   params: {
       administrators: {
-        sid: '<<deploymentSpId>>'
-        azureADOnlyAuthentication: true
-        login: 'myspn'
-        principalType: 'Application'
         tenantId: '<<tenantId>>'
+        azureADOnlyAuthentication: true
+        principalType: 'Application'
+        login: 'myspn'
+        sid: '<<deploymentSpId>>'
       }
       name: '<<namePrefix>>-az-sqlsrv-admin-001'
   }
@@ -405,11 +406,21 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
             "value": [
                 {
                     "roleDefinitionIdOrName": "Reader",
-                    "principalIds": [
-                        "<<deploymentSpId>>"
-                    ]
+                    "principalIds": ["<<deploymentSpId>>"]
                 }
             ]
+        },
+        "vulnerabilityAssessmentsObj": {
+            "value": {
+                "name": "default",
+                "emailSubscriptionAdmins": true,
+                "recurringScansIsEnabled": true,
+                "recurringScansEmails": [
+                    "test1@contoso.com",
+                    "test2@contoso.com"
+                ],
+                "vulnerabilityAssessmentsStorageAccountId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
+            }
         },
         "databases": {
             "value": [
@@ -455,6 +466,13 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
             "value": {
                 "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001": {}
             }
+        },
+        "privateEndpoints": {
+            "value": [
+                {
+                    "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints"
+                }
+            ]
         }
     }
 }
@@ -476,36 +494,23 @@ resource kv1 'Microsoft.KeyVault/vaults@2019-09-01' existing = {
 module servers './Microsoft.Sql/servers/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-servers'
   params: {
-      securityAlertPolicies: [
-        {
-          state: 'Enabled'
-          name: 'Default'
-          emailAccountAdmins: true
-        }
-      ]
       databases: [
         {
-          diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
-          collation: 'SQL_Latin1_General_CP1_CI_AS'
-          diagnosticLogsRetentionInDays: 7
-          maxSizeBytes: 34359738368
           diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
-          skuCapacity: 12
+          maxSizeBytes: 34359738368
+          name: '<<namePrefix>>-az-sqldb-x-001'
+          collation: 'SQL_Latin1_General_CP1_CI_AS'
+          licenseType: 'LicenseIncluded'
+          diagnosticLogsRetentionInDays: 7
           skuTier: 'BusinessCritical'
           skuName: 'BC_Gen5'
-          licenseType: 'LicenseIncluded'
-          diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
-          name: '<<namePrefix>>-az-sqldb-x-001'
+          skuCapacity: 12
           skuFamily: 'Gen5'
           diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
+          diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
+          diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
         }
       ]
-      administratorLoginPassword: kv1.getSecret('administratorLoginPassword')
-      userAssignedIdentities: {
-        '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
-      }
-      systemAssignedIdentity: true
-      administratorLogin: kv1.getSecret('administratorLogin')
       roleAssignments: [
         {
           roleDefinitionIdOrName: 'Reader'
@@ -514,15 +519,43 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
           ]
         }
       ]
-      location: 'westeurope'
-      firewallRules: [
+      systemAssignedIdentity: true
+      privateEndpoints: [
         {
-          startIpAddress: '0.0.0.0'
-          endIpAddress: '0.0.0.0'
-          name: 'AllowAllWindowsAzureIps'
+          subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints'
         }
       ]
+      administratorLoginPassword: kv1.getSecret('administratorLoginPassword')
       name: '<<namePrefix>>-az-sqlsrv-x-001'
+      administratorLogin: kv1.getSecret('administratorLogin')
+      userAssignedIdentities: {
+        '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
+      }
+      vulnerabilityAssessmentsObj: {
+        name: 'default'
+        emailSubscriptionAdmins: true
+        recurringScansIsEnabled: true
+        recurringScansEmails: [
+          'test1@contoso.com'
+          'test2@contoso.com'
+        ]
+        vulnerabilityAssessmentsStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
+      }
+      securityAlertPolicies: [
+        {
+          name: 'Default'
+          state: 'Enabled'
+          emailAccountAdmins: true
+        }
+      ]
+      firewallRules: [
+        {
+          name: 'AllowAllWindowsAzureIps'
+          endIpAddress: '0.0.0.0'
+          startIpAddress: '0.0.0.0'
+        }
+      ]
+      location: 'westeurope'
   }
 ```
 

@@ -346,19 +346,14 @@ roleAssignments: [
 module imageTemplates './Microsoft.VirtualMachineImages/imageTemplates/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-imageTemplates'
   params: {
-      buildTimeoutInMinutes: 0
       userMsiResourceGroup: 'validation-rg'
-      sigImageDefinitionId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Compute/galleries/adp<<namePrefix>>azsigweux001/images/adp-<<namePrefix>>-az-imgd-x-001'
-      userMsiName: 'adp-<<namePrefix>>-az-msi-x-001'
+      unManagedImageName: '<<namePrefix>>-az-umi-x-001'
+      name: '<<namePrefix>>-az-imgt-x-001'
+      buildTimeoutInMinutes: 0
       managedImageName: '<<namePrefix>>-az-mi-x-001'
-      subnetId: ''
-      imageSource: {
-        publisher: 'MicrosoftWindowsDesktop'
-        sku: '19h2-evd'
-        type: 'PlatformImage'
-        version: 'latest'
-        offer: 'Windows-10'
-      }
+      sigImageDefinitionId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Compute/galleries/adp<<namePrefix>>azsigweux001/images/adp-<<namePrefix>>-az-imgd-x-001'
+      imageReplicationRegions: []
+      userMsiName: 'adp-<<namePrefix>>-az-msi-x-001'
       osDiskSizeGB: 127
       roleAssignments: [
         {
@@ -368,16 +363,21 @@ module imageTemplates './Microsoft.VirtualMachineImages/imageTemplates/deploy.bi
           ]
         }
       ]
-      unManagedImageName: '<<namePrefix>>-az-umi-x-001'
+      vmSize: 'Standard_D2s_v3'
       customizationSteps: [
         {
           restartTimeout: '30m'
           type: 'WindowsRestart'
         }
       ]
-      name: '<<namePrefix>>-az-imgt-x-001'
-      imageReplicationRegions: []
-      vmSize: 'Standard_D2s_v3'
+      imageSource: {
+        publisher: 'MicrosoftWindowsDesktop'
+        sku: '19h2-evd'
+        version: 'latest'
+        type: 'PlatformImage'
+        offer: 'Windows-10'
+      }
+      subnetId: ''
   }
 ```
 

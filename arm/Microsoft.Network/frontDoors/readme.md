@@ -295,29 +295,56 @@ module frontDoors './Microsoft.Network/frontDoors/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-frontDoors'
   params: {
       enforceCertificateNameCheck: 'Disabled'
-      frontendEndpoints: [
+      healthProbeSettings: [
         {
-          name: 'frontEnd'
           properties: {
-            sessionAffinityEnabledState: 'Disabled'
-            sessionAffinityTtlSeconds: 60
-            hostName: '<<namePrefix>>-az-fd-x-001.azurefd.net'
+            path: '/'
+            enabledState: ''
+            intervalInSeconds: 60
+            healthProbeMethod: ''
+            protocol: 'Https'
           }
+          name: 'heathProbe'
         }
       ]
-      sendRecvTimeoutSeconds: 10
+      backendPools: [
+        {
+          properties: {
+            LoadBalancingSettings: {
+              id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/frontDoors/<<namePrefix>>-az-fd-x-001/LoadBalancingSettings/loadBalancer'
+            }
+            backends: [
+              {
+                httpsPort: 443
+                enabledState: 'Enabled'
+                priority: 1
+                privateLinkApprovalMessage: ''
+                privateLinkAlias: ''
+                privateLinkResourceId: ''
+                address: 'biceptest.local'
+                weight: 50
+                httpPort: 80
+                privateLinkLocation: ''
+                backendHostHeader: 'backendAddress'
+              }
+            ]
+            HealthProbeSettings: {
+              id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/frontDoors/<<namePrefix>>-az-fd-x-001/HealthProbeSettings/heathProbe'
+            }
+          }
+          name: 'backendPool'
+        }
+      ]
+      name: '<<namePrefix>>-az-fd-x-001'
       routingRules: [
         {
-          name: 'routingRule'
           properties: {
-            patternsToMatch: [
-              '/*'
+            frontendEndpoints: [
+              {
+                id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/frontDoors/<<namePrefix>>-az-fd-x-001/FrontendEndpoints/frontEnd'
+              }
             ]
             enabledState: 'Enabled'
-            acceptedProtocols: [
-              'Http'
-              'Https'
-            ]
             routeConfiguration: {
               backendPool: {
                 id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/frontDoors/<<namePrefix>>-az-fd-x-001/BackendPools/backendPool'
@@ -325,65 +352,38 @@ module frontDoors './Microsoft.Network/frontDoors/deploy.bicep' = {
               '@odata.type': '#Microsoft.Azure.FrontDoor.Models.FrontdoorForwardingConfiguration'
               forwardingProtocol: 'MatchRequest'
             }
-            frontendEndpoints: [
-              {
-                id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/frontDoors/<<namePrefix>>-az-fd-x-001/FrontendEndpoints/frontEnd'
-              }
+            patternsToMatch: [
+              '/*'
+            ]
+            acceptedProtocols: [
+              'Http'
+              'Https'
             ]
           }
-        }
-      ]
-      healthProbeSettings: [
-        {
-          name: 'heathProbe'
-          properties: {
-            path: '/'
-            healthProbeMethod: ''
-            enabledState: ''
-            protocol: 'Https'
-            intervalInSeconds: 60
-          }
-        }
-      ]
-      backendPools: [
-        {
-          name: 'backendPool'
-          properties: {
-            backends: [
-              {
-                address: 'biceptest.local'
-                privateLinkApprovalMessage: ''
-                privateLinkLocation: ''
-                httpPort: 80
-                httpsPort: 443
-                weight: 50
-                enabledState: 'Enabled'
-                privateLinkResourceId: ''
-                priority: 1
-                backendHostHeader: 'backendAddress'
-                privateLinkAlias: ''
-              }
-            ]
-            LoadBalancingSettings: {
-              id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/frontDoors/<<namePrefix>>-az-fd-x-001/LoadBalancingSettings/loadBalancer'
-            }
-            HealthProbeSettings: {
-              id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/frontDoors/<<namePrefix>>-az-fd-x-001/HealthProbeSettings/heathProbe'
-            }
-          }
+          name: 'routingRule'
         }
       ]
       loadBalancingSettings: [
         {
-          name: 'loadBalancer'
           properties: {
-            sampleSize: 50
             successfulSamplesRequired: 1
             additionalLatencyMilliseconds: 0
+            sampleSize: 50
           }
+          name: 'loadBalancer'
         }
       ]
-      name: '<<namePrefix>>-az-fd-x-001'
+      frontendEndpoints: [
+        {
+          properties: {
+            sessionAffinityTtlSeconds: 60
+            hostName: '<<namePrefix>>-az-fd-x-001.azurefd.net'
+            sessionAffinityEnabledState: 'Disabled'
+          }
+          name: 'frontEnd'
+        }
+      ]
+      sendRecvTimeoutSeconds: 10
   }
 ```
 

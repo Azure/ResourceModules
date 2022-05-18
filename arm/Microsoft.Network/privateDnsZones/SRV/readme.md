@@ -100,6 +100,6 @@ roleAssignments: [
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the deployed SRV record |
+| `name` | string | The name of the deployed SRV record. |
 | `resourceGroupName` | string | The resource group of the deployed SRV record. |
 | `resourceId` | string | The resource ID of the deployed SRV record. |

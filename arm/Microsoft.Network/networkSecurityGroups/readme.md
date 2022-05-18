@@ -311,74 +311,7 @@ module networkSecurityGroups './Microsoft.Network/networkSecurityGroups/deploy.b
 module networkSecurityGroups './Microsoft.Network/networkSecurityGroups/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-networkSecurityGroups'
   params: {
-      diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
-      diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
-      securityRules: [
-        {
-          name: 'Specific'
-          properties: {
-            sourcePortRange: '*'
-            priority: 100
-            protocol: '*'
-            sourceAddressPrefix: '*'
-            direction: 'Inbound'
-            access: 'Allow'
-            description: 'Tests specific IPs and ports'
-            destinationPortRange: '8080'
-            destinationAddressPrefix: '*'
-          }
-        }
-        {
-          name: 'Ranges'
-          properties: {
-            sourceAddressPrefixes: [
-              '10.0.0.0/16'
-              '10.1.0.0/16'
-            ]
-            protocol: '*'
-            destinationAddressPrefixes: [
-              '10.2.0.0/16'
-              '10.3.0.0/16'
-            ]
-            direction: 'Inbound'
-            access: 'Allow'
-            description: 'Tests Ranges'
-            sourcePortRanges: [
-              '80'
-              '81'
-            ]
-            priority: 101
-            destinationPortRanges: [
-              '90'
-              '91'
-            ]
-          }
-        }
-        {
-          name: 'Port_8082'
-          properties: {
-            sourcePortRange: '*'
-            protocol: '*'
-            direction: 'Inbound'
-            access: 'Allow'
-            description: 'Allow inbound access on TCP 8082'
-            destinationApplicationSecurityGroups: [
-              {
-                id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationSecurityGroups/adp-<<namePrefix>>-az-asg-x-001'
-              }
-            ]
-            destinationPortRange: '8082'
-            priority: 102
-            sourceApplicationSecurityGroups: [
-              {
-                id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationSecurityGroups/adp-<<namePrefix>>-az-asg-x-001'
-              }
-            ]
-          }
-        }
-      ]
-      diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
-      diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
+      diagnosticLogsRetentionInDays: 7
       roleAssignments: [
         {
           roleDefinitionIdOrName: 'Reader'
@@ -387,8 +320,75 @@ module networkSecurityGroups './Microsoft.Network/networkSecurityGroups/deploy.b
           ]
         }
       ]
-      diagnosticLogsRetentionInDays: 7
+      diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
+      diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
       name: '<<namePrefix>>-az-nsg-x-001'
+      diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
+      securityRules: [
+        {
+          properties: {
+            destinationAddressPrefix: '*'
+            priority: 100
+            description: 'Tests specific IPs and ports'
+            destinationPortRange: '8080'
+            sourcePortRange: '*'
+            protocol: '*'
+            access: 'Allow'
+            direction: 'Inbound'
+            sourceAddressPrefix: '*'
+          }
+          name: 'Specific'
+        }
+        {
+          properties: {
+            sourceAddressPrefixes: [
+              '10.0.0.0/16'
+              '10.1.0.0/16'
+            ]
+            destinationPortRanges: [
+              '90'
+              '91'
+            ]
+            priority: 101
+            description: 'Tests Ranges'
+            destinationAddressPrefixes: [
+              '10.2.0.0/16'
+              '10.3.0.0/16'
+            ]
+            sourcePortRanges: [
+              '80'
+              '81'
+            ]
+            protocol: '*'
+            access: 'Allow'
+            direction: 'Inbound'
+          }
+          name: 'Ranges'
+        }
+        {
+          properties: {
+            destinationApplicationSecurityGroups: [
+              {
+                id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationSecurityGroups/adp-<<namePrefix>>-az-asg-x-001'
+              }
+            ]
+            priority: 102
+            description: 'Allow inbound access on TCP 8082'
+            destinationPortRange: '8082'
+            sourcePortRange: '*'
+            protocol: '*'
+            access: 'Allow'
+            sourceApplicationSecurityGroups: [
+              {
+                id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationSecurityGroups/adp-<<namePrefix>>-az-asg-x-001'
+              }
+            ]
+            direction: 'Inbound'
+          }
+          name: 'Port_8082'
+        }
+      ]
+      diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
   }
 ```
 
