@@ -350,20 +350,20 @@ function Set-UsageExamples {
         }
 
         if ($addBicep) {
-            $JSONParameters = (ConvertFrom-Json $contentInJSONFormat -AsHashtable -Depth 99).parameters
+            $JSONParametersHashTable = (ConvertFrom-Json $contentInJSONFormat -AsHashtable -Depth 99).parameters
 
             # Handle KeyVaut references
-            $keyVaultReferences = $JSONParameters.Keys | Where-Object { $JSONParameters[$_].Keys -contains 'reference' }
+            $keyVaultReferences = $JSONParametersHashTable.Keys | Where-Object { $JSONParametersHashTable[$_].Keys -contains 'reference' }
 
             if ($keyVaultReferences.Count -gt 0) {
                 $keyVaultReferenceData = @()
                 foreach ($reference in $keyVaultReferences) {
-                    $resourceIdElem = $JSONParameters[$reference].reference.keyVault.id -split '/'
+                    $resourceIdElem = $JSONParametersHashTable[$reference].reference.keyVault.id -split '/'
                     $keyVaultReferenceData += @{
                         subscriptionId    = $resourceIdElem[2]
                         resourceGroupName = $resourceIdElem[4]
                         vaultName         = $resourceIdElem[-1]
-                        secretName        = $JSONParameters[$reference].reference.secretName
+                        secretName        = $JSONParametersHashTable[$reference].reference.secretName
                         parameterName     = $reference
                     }
                 }
@@ -391,16 +391,17 @@ function Set-UsageExamples {
             foreach ($keyVaultReference in $keyVaultReferences) {
                 $matchingTuple = $keyVaultReferenceData | Where-Object { $_.parameterName -eq $keyVaultReference }
                 # kv.getSecret('vmAdminPassword')
-                $JSONParameters[$keyVaultReference] = "{0}.getSecret('{1}')" -f $matchingTuple.vaultResourceReference, $matchingTuple.secretName
+                $JSONParametersHashTable[$keyVaultReference] = "{0}.getSecret('{1}')" -f $matchingTuple.vaultResourceReference, $matchingTuple.secretName
             }
 
             # Handle VALUE references (i.e. remove them)
-            $JSONParametersWithoutValue = @{}
-            foreach ($key in $JSONParameters.Keys) {
-                if ($JSONParameters[$key].Keys -contains 'value') {
-                    $JSONParametersWithoutValue[$key] = $JSONParameters[$key].value
+            $JSONParameters = (ConvertFrom-Json $contentInJSONFormat -Depth 99).PSObject.properties['parameters'].value
+            $JSONParametersWithoutValue = [ordered]@{}
+            foreach ($parameter in $JSONParameters.PSObject.Properties) {
+                if ($parameter.value.PSObject.Properties.name -eq 'value') {
+                    $JSONParametersWithoutValue[$parameter.name] = $parameter.value.PSObject.Properties['value'].value
                 } else {
-                    $JSONParametersWithoutValue[$key] = $JSONParameters[$key]
+                    $JSONParametersWithoutValue[$parameter.name] = $parameter.value.PSObject.Properties
                 }
             }
 
