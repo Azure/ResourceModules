@@ -405,14 +405,15 @@ function Set-UsageExamples {
             }
 
             $templateParameterObject = $JSONParametersWithoutValue | ConvertTo-Json -Depth 99
+            if ($templateParameterObject -ne '{}') {
+                $contentInBicepFormat = $templateParameterObject -replace '"', "'" # Update any [xyz: "xyz"] to [xyz: 'xyz']
+                $contentInBicepFormat = $contentInBicepFormat -replace ',', '' # Update any [xyz: xyz,] to [xyz: xyz]
+                $contentInBicepFormat = $contentInBicepFormat -replace "'(\w+)':", '$1:' # Update any  ['xyz': xyz] to [xyz: xyz]
+                $contentInBicepFormat = $contentInBicepFormat -replace "'(.+.getSecret\('.+'\))'", '$1' # Update any  [xyz: 'xyz.GetSecret()'] to [xyz: xyz.GetSecret()]
 
-            $contentInBicepFormat = $templateParameterObject -replace '"', "'" # Update any [xyz: "xyz"] to [xyz: 'xyz']
-            $contentInBicepFormat = $contentInBicepFormat -replace ',', '' # Update any [xyz: xyz,] to [xyz: xyz]
-            $contentInBicepFormat = $contentInBicepFormat -replace "'(\w+)':", '$1:' # Update any  ['xyz': xyz] to [xyz: xyz]
-            $contentInBicepFormat = $contentInBicepFormat -replace "'(.+.getSecret\('.+'\))'", '$1' # Update any  [xyz: 'xyz.GetSecret()'] to [xyz: xyz.GetSecret()]
-
-            $bicepParamsArray = $contentInBicepFormat -split ('\n')
-            $bicepParamsArray = $bicepParamsArray[1..($bicepParamsArray.count - 2)]
+                $bicepParamsArray = $contentInBicepFormat -split ('\n')
+                $bicepParamsArray = $bicepParamsArray[1..($bicepParamsArray.count - 2)]
+            }
             $resourceType = $resourceTypeIdentifier.Split('/')[1]
 
             $SectionContent += @(
@@ -426,7 +427,7 @@ function Set-UsageExamples {
                 "module $resourceType './$resourceTypeIdentifier/deploy.bicep' = {"
                 "  name: '`${uniqueString(deployment().name)}-$resourceType'"
                 '  params: {'
-                ($bicepParamsArray | ForEach-Object { "    $_" }),
+                ($bicepParamsArray | ForEach-Object { "  $_" }),
                 '  }'
                 '```',
                 '',
