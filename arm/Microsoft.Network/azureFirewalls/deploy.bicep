@@ -139,33 +139,21 @@ var additionalPublicIpConfigurations_var = [for ipConfiguration in additionalPub
 //      id: !(empty(azureFirewallSubnetPublicIpId)) ? azureFirewallSubnetPublicIpId : (isCreateDefaultPublicIP ? publicIPAddress.outputs.resourceId : null)
 //    }
 var subnet_var = {
-  id: '${vNetId}/subnets/AzureFirewallSubnet' // The subnet name must be AzureFirewallSubnet
+  subnet: {
+    id: '${vNetId}/subnets/AzureFirewallSubnet' // The subnet name must be AzureFirewallSubnet
+  }
 }
-var ipConfSubnetName = 'IpConfAzureFirewallSubnet'
 var existingPip = {
-  name: ipConfSubnetName
-  properties: {
-    subnet: subnet_var
-    publicIPAddress: {
-      id: azureFirewallSubnetPublicIpId
-    }
+  publicIPAddress: {
+    id: azureFirewallSubnetPublicIpId
   }
 }
 var newPip = {
-  name: ipConfSubnetName
-  properties: {
-    subnet: subnet_var
-    publicIPAddress: {
-      id: publicIPAddress.outputs.resourceId
-    }
+  publicIPAddress: {
+    id: publicIPAddress.outputs.resourceId
   }
 }
-var noPip = {
-  name: ipConfSubnetName
-  properties: {
-    subnet: subnet_var
-  }
-}
+
 // ----------------------------------------------------------------------------
 
 var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
@@ -245,9 +233,18 @@ resource azureFirewall 'Microsoft.Network/azureFirewalls@2021-05-01' = {
     firewallPolicy: empty(firewallPolicyId) ? null : {
       id: firewallPolicyId
     }
+    // ipConfigurations: concat([
+    //   //Use existing public ip, new public ip created as in this module, or none if isCreateDefaultPublicIP is false
+    //   !empty(azureFirewallSubnetPublicIpId) ? existingPip : (isCreateDefaultPublicIP ? newPip : noPip)
+    // ], additionalPublicIpConfigurations_var)
     ipConfigurations: concat([
       //Use existing public ip, new public ip created as in this module, or none if isCreateDefaultPublicIP is false
-      !empty(azureFirewallSubnetPublicIpId) ? existingPip : (isCreateDefaultPublicIP ? newPip : noPip)
+      // !empty(azureFirewallSubnetPublicIpId) ? existingPip : (isCreateDefaultPublicIP ? newPip : noPip)
+
+      {
+        name: 'IpConfAzureFirewallSubnet'
+        properties: !empty(azureFirewallSubnetPublicIpId) ? union(subnet_var, existingPip) : (isCreateDefaultPublicIP ? union(subnet_var, newPip) : subnet_var)
+      }
     ], additionalPublicIpConfigurations_var)
 
     sku: {
