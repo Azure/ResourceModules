@@ -74,6 +74,7 @@ tags: {
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The name of the tags resource. |
+| `resourceId` | string | The resource ID of the applied tags. |
 | `tags` | object | The applied tags. |
 
 ## Deployment examples
