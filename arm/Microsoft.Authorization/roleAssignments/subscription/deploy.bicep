@@ -12,10 +12,10 @@ param subscriptionId string = subscription().subscriptionId
 @sys.description('Optional. The description of the role assignment.')
 param description string = ''
 
-@sys.description('Optional. ID of the delegated managed identity resource')
+@sys.description('Optional. ID of the delegated managed identity resource.')
 param delegatedManagedIdentityResourceId string = ''
 
-@sys.description('Optional. The conditions on the role assignment. This limits the resources it can be assigned to')
+@sys.description('Optional. The conditions on the role assignment. This limits the resources it can be assigned to.')
 param condition string = ''
 
 @sys.description('Optional. Location deployment metadata.')
@@ -353,11 +353,11 @@ resource roleAssignment 'Microsoft.Authorization/roleAssignments@2020-10-01-prev
   }
 }
 
-@sys.description('The GUID of the Role Assignment')
+@sys.description('The GUID of the Role Assignment.')
 output name string = roleAssignment.name
 
-@sys.description('The resource ID of the Role Assignment')
+@sys.description('The resource ID of the Role Assignment.')
 output scope string = subscription().id
 
-@sys.description('The scope this Role Assignment applies to')
+@sys.description('The scope this Role Assignment applies to.')
 output resourceId string = subscriptionResourceId(subscriptionId, 'Microsoft.Authorization/roleAssignments', roleAssignment.name)

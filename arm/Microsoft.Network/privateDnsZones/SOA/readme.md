@@ -83,6 +83,6 @@ Create a role assignment for the given resource. If you want to assign a service
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the deployed SOA record |
+| `name` | string | The name of the deployed SOA record. |
 | `resourceGroupName` | string | The resource group of the deployed SOA record. |
 | `resourceId` | string | The resource ID of the deployed SOA record. |

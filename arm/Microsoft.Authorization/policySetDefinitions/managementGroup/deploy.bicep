@@ -17,7 +17,7 @@ param managementGroupId string = managementGroup().name
 @sys.description('Optional. The Set Definition (Initiative) metadata. Metadata is an open ended object and is typically a collection of key-value pairs.')
 param metadata object = {}
 
-@sys.description('Required. The array of Policy definitions object to include for this policy set. Each object must include the Policy definition ID, and optionally other properties like parameters')
+@sys.description('Required. The array of Policy definitions object to include for this policy set. Each object must include the Policy definition ID, and optionally other properties like parameters.')
 param policyDefinitions array
 
 @sys.description('Optional. The metadata describing groups of policy definition references within the Policy Set Definition (Initiative).')
@@ -58,8 +58,8 @@ resource policySetDefinition 'Microsoft.Authorization/policySetDefinitions@2021-
   }
 }
 
-@sys.description('Policy Set Definition Name')
+@sys.description('Policy Set Definition Name.')
 output name string = policySetDefinition.name
 
-@sys.description('Policy Set Definition resource ID')
+@sys.description('Policy Set Definition resource ID.')
 output resourceId string = extensionResourceId(tenantResourceId('Microsoft.Management/managementGroups', managementGroupId), 'Microsoft.Authorization/policySetDefinitions', policySetDefinition.name)

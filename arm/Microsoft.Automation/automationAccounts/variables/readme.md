@@ -32,7 +32,7 @@ This module deploys a variable to an Azure Automation Account.
 | :-- | :-- | :-- | :-- |
 | `description` | string | `''` | The description of the variable. |
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `isEncrypted` | bool | `True` | If the variable should be encrypted. For security reasons encryption of variables should be enabled |
+| `isEncrypted` | bool | `True` | If the variable should be encrypted. For security reasons encryption of variables should be enabled. |
 
 
 ### Parameter Usage: `value`
@@ -63,6 +63,6 @@ This module deploys a variable to an Azure Automation Account.
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the deployed variable |
-| `resourceGroupName` | string | The resource group of the deployed variable |
-| `resourceId` | string | The resource ID of the deployed variable |
+| `name` | string | The name of the deployed variable. |
+| `resourceGroupName` | string | The resource group of the deployed variable. |
+| `resourceId` | string | The resource ID of the deployed variable. |
