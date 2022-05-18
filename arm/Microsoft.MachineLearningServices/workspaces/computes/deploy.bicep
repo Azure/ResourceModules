@@ -136,4 +136,4 @@ output resourceGroupName string = resourceGroup().name
 output systemAssignedPrincipalId string = empty(resourceId) ? (systemAssignedIdentity && contains(machineLearningWorkspaceCompute.identity, 'principalId') ? machineLearningWorkspaceCompute.identity.principalId : '') : ''
 
 @sys.description('The location the resource was deployed into.')
-output location string = machineLearningWorkspace.location
+output location string = machineLearningWorkspaceCompute.location

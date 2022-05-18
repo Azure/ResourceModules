@@ -56,7 +56,7 @@ module SRV_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in rol
   }
 }]
 
-@description('The name of the deployed SRV record')
+@description('The name of the deployed SRV record.')
 output name string = SRV.name
 
 @description('The resource ID of the deployed SRV record.')

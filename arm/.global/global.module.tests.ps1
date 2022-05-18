@@ -764,7 +764,7 @@ Describe 'Deployment template tests' -Tag Template {
             $outputs | Should -Contain 'resourceId'
         }
 
-        It "[<moduleFolderName>] parameters' description shoud start with a one word category followed by a dot, a space and the actual description text." -TestCases $deploymentFolderTestCases {
+        It "[<moduleFolderName>] parameters' description should start with a one word category starting with a capital letter, followed by a dot, a space and the actual description text ending with a dot." -TestCases $deploymentFolderTestCases {
             param(
                 $moduleFolderName,
                 $templateContent
@@ -776,15 +776,38 @@ Describe 'Deployment template tests' -Tag Template {
                 return
             }
 
-            $IncorrectParameters = @()
-            $Paramdescoutput = $templateContent.parameters.Keys
-            foreach ($Param in $Paramdescoutput) {
-                $Data = ($templateContent.parameters.$Param.metadata).description
-                if ($Data -notmatch '^[a-zA-Z]+\. .+') {
-                    $IncorrectParameters += $Param
+            $incorrectParameters = @()
+            $templateParameters = $templateContent.parameters.Keys
+            foreach ($parameter in $templateParameters) {
+                $data = ($templateContent.parameters.$parameter.metadata).description
+                if ($data -notmatch '^[A-Z][a-zA-Z]+\. .+\.$') {
+                    $incorrectParameters += $parameter
                 }
             }
-            $IncorrectParameters | Should -BeNullOrEmpty
+            $incorrectParameters | Should -BeNullOrEmpty
+        }
+
+        It "[<moduleFolderName>] outputs' description should start with a capital letter and contain text ending with a dot." -TestCases $deploymentFolderTestCases {
+            param(
+                $moduleFolderName,
+                $templateContent
+            )
+
+            if (-not $templateContent.outputs) {
+                # Skip test
+                $true | Should -Be $true
+                return
+            }
+
+            $incorrectOutputs = @()
+            $templateOutputs = $templateContent.outputs.Keys
+            foreach ($output in $templateOutputs) {
+                $data = ($templateContent.outputs.$output.metadata).description
+                if ($data -notmatch '^[A-Z].+\.$') {
+                    $incorrectOutputs += $output
+                }
+            }
+            $incorrectOutputs | Should -BeNullOrEmpty
         }
 
         # PARAMETER Tests
