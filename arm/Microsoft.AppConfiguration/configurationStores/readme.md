@@ -1,5 +1,7 @@
 # App Configuration `[Microsoft.AppConfiguration/configurationStores]`
 
+This module deploys an App Configuration Store.
+
 ## Navigation
 
 - [Resource types](#Resource-types)
@@ -80,6 +82,7 @@ You can specify multiple user assigned identities to a resource by providing add
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
+| `location` | string | The location the resource was deployed into. |
 | `name` | string | The name of the app configuration. |
 | `resourceGroupName` | string | The resource group the batch account was deployed into. |
 | `resourceId` | string | The resource ID of the app configuration. |

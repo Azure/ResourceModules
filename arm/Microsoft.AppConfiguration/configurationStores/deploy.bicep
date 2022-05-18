@@ -182,3 +182,6 @@ output resourceGroupName string = resourceGroup().name
 
 @description('The principal ID of the system assigned identity.')
 output systemAssignedPrincipalId string = systemAssignedIdentity && contains(appConfiguration.identity, 'principalId') ? appConfiguration.identity.principalId : ''
+
+@description('The location the resource was deployed into.')
+output location string = appConfiguration.location
