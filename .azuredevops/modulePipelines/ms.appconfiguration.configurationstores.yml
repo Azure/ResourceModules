@@ -1,4 +1,4 @@
-name: 'AppConfiguration: ConfigurationStores'
+name: 'AppConfiguration - ConfigurationStores'
 
 parameters:
   - name: removeDeployment
