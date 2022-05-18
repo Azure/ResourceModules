@@ -23,6 +23,16 @@
         "systemAssignedIdentity": {
             "value": true
         },
+        "roleAssignments": {
+            "value": [
+                {
+                    "roleDefinitionIdOrName": "Reader",
+                    "principalIds": [
+                        "<<deploymentSpId>>"
+                    ]
+                }
+            ]
+        },
         "createMode": {
             "value": "Recover"
         },
