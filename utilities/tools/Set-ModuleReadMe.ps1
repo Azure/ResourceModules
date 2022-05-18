@@ -375,8 +375,8 @@ function Set-UsageExamples {
                 $counter++
                 $extendedKeyVaultReferences += @(
                     "resource kv$counter 'Microsoft.KeyVault/vaults@2019-09-01' existing = {",
-                    ("    name: '{0}'" -f $reference.vaultName),
-                    ("    scope: resourceGroup('{0}','{1}')" -f $reference.subscriptionId, $reference.resourceGroupName),
+                    ("  name: '{0}'" -f $reference.vaultName),
+                    ("  scope: resourceGroup('{0}','{1}')" -f $reference.subscriptionId, $reference.resourceGroupName),
                     '}',
                     ''
                 )
