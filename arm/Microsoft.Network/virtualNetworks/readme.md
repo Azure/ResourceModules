@@ -382,10 +382,10 @@ The network security group and route table resources must reside in the same res
 module virtualNetworks './Microsoft.Network/virtualNetworks/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-virtualNetworks'
   params: {
-      addressPrefixes: [
-        '10.0.0.0/16'
-      ]
-      name: '<<namePrefix>>-az-vnet-min-001'
+    name: '<<namePrefix>>-az-vnet-min-001'
+    addressPrefixes: [
+      '10.0.0.0/16'
+    ]
   }
 ```
 
@@ -505,73 +505,73 @@ module virtualNetworks './Microsoft.Network/virtualNetworks/deploy.bicep' = {
 module virtualNetworks './Microsoft.Network/virtualNetworks/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-virtualNetworks'
   params: {
-      diagnosticLogsRetentionInDays: 7
-      addressPrefixes: [
-        '10.0.0.0/16'
-      ]
-      roleAssignments: [
-        {
-          roleDefinitionIdOrName: 'Reader'
-          principalIds: [
-            '<<deploymentSpId>>'
-          ]
-        }
-      ]
-      dnsServers: [
-        '10.0.1.4'
-        '10.0.1.5'
-      ]
-      diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
-      diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
-      diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
-      name: '<<namePrefix>>-az-vnet-x-001'
-      subnets: [
-        {
-          addressPrefix: '10.0.255.0/24'
-          name: 'GatewaySubnet'
-        }
-        {
-          serviceEndpoints: [
-            {
-              service: 'Microsoft.Storage'
+    name: '<<namePrefix>>-az-vnet-x-001'
+    addressPrefixes: [
+      '10.0.0.0/16'
+    ]
+    subnets: [
+      {
+        name: 'GatewaySubnet'
+        addressPrefix: '10.0.255.0/24'
+      }
+      {
+        name: '<<namePrefix>>-az-subnet-x-001'
+        addressPrefix: '10.0.0.0/24'
+        networkSecurityGroupId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/networkSecurityGroups/adp-<<namePrefix>>-az-nsg-x-001'
+        serviceEndpoints: [
+          {
+            service: 'Microsoft.Storage'
+          }
+          {
+            service: 'Microsoft.Sql'
+          }
+        ]
+        roleAssignments: [
+          {
+            roleDefinitionIdOrName: 'Reader'
+            principalIds: [
+              '<<deploymentSpId>>'
+            ]
+          }
+        ]
+        routeTableId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/routeTables/adp-<<namePrefix>>-az-udr-x-001'
+      }
+      {
+        name: '<<namePrefix>>-az-subnet-x-002'
+        addressPrefix: '10.0.3.0/24'
+        delegations: [
+          {
+            name: 'netappDel'
+            properties: {
+              serviceName: 'Microsoft.Netapp/volumes'
             }
-            {
-              service: 'Microsoft.Sql'
-            }
-          ]
-          roleAssignments: [
-            {
-              roleDefinitionIdOrName: 'Reader'
-              principalIds: [
-                '<<deploymentSpId>>'
-              ]
-            }
-          ]
-          routeTableId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/routeTables/adp-<<namePrefix>>-az-udr-x-001'
-          addressPrefix: '10.0.0.0/24'
-          name: '<<namePrefix>>-az-subnet-x-001'
-          networkSecurityGroupId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/networkSecurityGroups/adp-<<namePrefix>>-az-nsg-x-001'
-        }
-        {
-          name: '<<namePrefix>>-az-subnet-x-002'
-          addressPrefix: '10.0.3.0/24'
-          delegations: [
-            {
-              properties: {
-                serviceName: 'Microsoft.Netapp/volumes'
-              }
-              name: 'netappDel'
-            }
-          ]
-        }
-        {
-          name: '<<namePrefix>>-az-subnet-x-003'
-          addressPrefix: '10.0.6.0/24'
-          privateLinkServiceNetworkPolicies: 'Enabled'
-          privateEndpointNetworkPolicies: 'Disabled'
-        }
-      ]
-      diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
+          }
+        ]
+      }
+      {
+        name: '<<namePrefix>>-az-subnet-x-003'
+        addressPrefix: '10.0.6.0/24'
+        privateEndpointNetworkPolicies: 'Disabled'
+        privateLinkServiceNetworkPolicies: 'Enabled'
+      }
+    ]
+    dnsServers: [
+      '10.0.1.4'
+      '10.0.1.5'
+    ]
+    roleAssignments: [
+      {
+        roleDefinitionIdOrName: 'Reader'
+        principalIds: [
+          '<<deploymentSpId>>'
+        ]
+      }
+    ]
+    diagnosticLogsRetentionInDays: 7
+    diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
+    diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
+    diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
+    diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
   }
 ```
 
@@ -650,34 +650,34 @@ module virtualNetworks './Microsoft.Network/virtualNetworks/deploy.bicep' = {
 module virtualNetworks './Microsoft.Network/virtualNetworks/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-virtualNetworks'
   params: {
-      diagnosticLogsRetentionInDays: 7
-      addressPrefixes: [
-        '10.0.0.0/24'
-      ]
-      diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
-      subnets: [
-        {
-          addressPrefix: '10.0.0.0/26'
-          name: 'GatewaySubnet'
-        }
-      ]
-      diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
-      diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
-      name: '<<namePrefix>>-az-vnet-peer-001'
-      virtualNetworkPeerings: [
-        {
-          remotePeeringName: 'customName'
-          remotePeeringAllowVirtualNetworkAccess: true
-          remotePeeringEnabled: true
-          allowVirtualNetworkAccess: true
-          allowGatewayTransit: false
-          allowForwardedTraffic: true
-          useRemoteGateways: false
-          remoteVirtualNetworkId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-peer01'
-          remotePeeringAllowForwardedTraffic: true
-        }
-      ]
-      diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
+    name: '<<namePrefix>>-az-vnet-peer-001'
+    addressPrefixes: [
+      '10.0.0.0/24'
+    ]
+    subnets: [
+      {
+        name: 'GatewaySubnet'
+        addressPrefix: '10.0.0.0/26'
+      }
+    ]
+    virtualNetworkPeerings: [
+      {
+        remoteVirtualNetworkId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-peer01'
+        allowForwardedTraffic: true
+        allowGatewayTransit: false
+        allowVirtualNetworkAccess: true
+        useRemoteGateways: false
+        remotePeeringEnabled: true
+        remotePeeringName: 'customName'
+        remotePeeringAllowVirtualNetworkAccess: true
+        remotePeeringAllowForwardedTraffic: true
+      }
+    ]
+    diagnosticLogsRetentionInDays: 7
+    diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
+    diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
+    diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
+    diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
   }
 ```
 

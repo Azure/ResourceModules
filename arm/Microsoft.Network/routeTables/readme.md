@@ -287,25 +287,25 @@ tags: {
 module routeTables './Microsoft.Network/routeTables/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-routeTables'
   params: {
-      name: '<<namePrefix>>-az-udr-x-001'
-      routes: [
-        {
-          properties: {
-            addressPrefix: '0.0.0.0/0'
-            nextHopType: 'VirtualAppliance'
-            nextHopIpAddress: '172.16.0.20'
-          }
-          name: 'default'
+    name: '<<namePrefix>>-az-udr-x-001'
+    routes: [
+      {
+        name: 'default'
+        properties: {
+          addressPrefix: '0.0.0.0/0'
+          nextHopType: 'VirtualAppliance'
+          nextHopIpAddress: '172.16.0.20'
         }
-      ]
-      roleAssignments: [
-        {
-          roleDefinitionIdOrName: 'Reader'
-          principalIds: [
-            '<<deploymentSpId>>'
-          ]
-        }
-      ]
+      }
+    ]
+    roleAssignments: [
+      {
+        roleDefinitionIdOrName: 'Reader'
+        principalIds: [
+          '<<deploymentSpId>>'
+        ]
+      }
+    ]
   }
 ```
 

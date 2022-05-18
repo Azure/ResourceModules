@@ -300,7 +300,7 @@ userAssignedIdentities: {
 module staticSites './Microsoft.Web/staticSites/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-staticSites'
   params: {
-      name: '<<namePrefix>>-az-wss-min-001'
+    name: '<<namePrefix>>-az-wss-min-001'
   }
 ```
 
@@ -374,29 +374,29 @@ module staticSites './Microsoft.Web/staticSites/deploy.bicep' = {
 module staticSites './Microsoft.Web/staticSites/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-staticSites'
   params: {
-      sku: 'Standard'
-      roleAssignments: [
-        {
-          roleDefinitionIdOrName: 'Reader'
-          principalIds: [
-            '<<deploymentSpId>>'
-          ]
-        }
-      ]
-      systemAssignedIdentity: true
-      userAssignedIdentities: {
-        '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
+    name: '<<namePrefix>>-az-wss-x-001'
+    sku: 'Standard'
+    stagingEnvironmentPolicy: 'Enabled'
+    allowConfigFileUpdates: true
+    enterpriseGradeCdnStatus: 'Disabled'
+    systemAssignedIdentity: true
+    userAssignedIdentities: {
+      '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
+    }
+    roleAssignments: [
+      {
+        roleDefinitionIdOrName: 'Reader'
+        principalIds: [
+          '<<deploymentSpId>>'
+        ]
       }
-      name: '<<namePrefix>>-az-wss-x-001'
-      allowConfigFileUpdates: true
-      privateEndpoints: [
-        {
-          subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints'
-          service: 'staticSites'
-        }
-      ]
-      stagingEnvironmentPolicy: 'Enabled'
-      enterpriseGradeCdnStatus: 'Disabled'
+    ]
+    privateEndpoints: [
+      {
+        subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints'
+        service: 'staticSites'
+      }
+    ]
   }
 ```
 

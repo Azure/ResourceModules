@@ -184,15 +184,15 @@ roleAssignments: [
 module applicationSecurityGroups './Microsoft.Network/applicationSecurityGroups/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-applicationSecurityGroups'
   params: {
-      roleAssignments: [
-        {
-          roleDefinitionIdOrName: 'Reader'
-          principalIds: [
-            '<<deploymentSpId>>'
-          ]
-        }
-      ]
-      name: '<<namePrefix>>-az-asg-x-001'
+    name: '<<namePrefix>>-az-asg-x-001'
+    roleAssignments: [
+      {
+        roleDefinitionIdOrName: 'Reader'
+        principalIds: [
+          '<<deploymentSpId>>'
+        ]
+      }
+    ]
   }
 ```
 

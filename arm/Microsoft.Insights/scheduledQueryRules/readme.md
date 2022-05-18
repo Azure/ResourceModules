@@ -248,51 +248,51 @@ tags: {
 module scheduledQueryRules './Microsoft.Insights/scheduledQueryRules/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-scheduledQueryRules'
   params: {
-      evaluationFrequency: 'PT5M'
-      name: 'myAlert01'
-      roleAssignments: [
+    name: 'myAlert01'
+    alertDescription: 'My sample Alert'
+    scopes: [
+      '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
+    ]
+    evaluationFrequency: 'PT5M'
+    windowSize: 'PT5M'
+    suppressForMinutes: 'PT5M'
+    queryTimeRange: 'PT5M'
+    autoMitigate: false
+    criterias: {
+      allOf: [
         {
-          roleDefinitionIdOrName: 'Reader'
-          principalIds: [
-            '<<deploymentSpId>>'
+          query: 'Perf | where ObjectName == \'LogicalDisk\' | where CounterName == \'% Free Space\' | where InstanceName <> \'HarddiskVolume1\' and InstanceName <> \'_Total\' | summarize AggregatedValue = min(CounterValue) by Computer InstanceName bin(TimeGenerated5m)'
+          timeAggregation: 'Average'
+          metricMeasureColumn: 'AggregatedValue'
+          dimensions: [
+            {
+              name: 'Computer'
+              operator: 'Include'
+              values: [
+                '*'
+              ]
+            }
+            {
+              name: 'InstanceName'
+              operator: 'Include'
+              values: [
+                '*'
+              ]
+            }
           ]
+          operator: 'GreaterThan'
+          threshold: 0
         }
       ]
-      queryTimeRange: 'PT5M'
-      suppressForMinutes: 'PT5M'
-      windowSize: 'PT5M'
-      autoMitigate: false
-      alertDescription: 'My sample Alert'
-      scopes: [
-        '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
-      ]
-      criterias: {
-        allOf: [
-          {
-            timeAggregation: 'Average'
-            threshold: 0
-            dimensions: [
-              {
-                name: 'Computer'
-                values: [
-                  '*'
-                ]
-                operator: 'Include'
-              }
-              {
-                name: 'InstanceName'
-                values: [
-                  '*'
-                ]
-                operator: 'Include'
-              }
-            ]
-            metricMeasureColumn: 'AggregatedValue'
-            query: 'Perf | where ObjectName == \'LogicalDisk\' | where CounterName == \'% Free Space\' | where InstanceName <> \'HarddiskVolume1\' and InstanceName <> \'_Total\' | summarize AggregatedValue = min(CounterValue) by Computer InstanceName bin(TimeGenerated5m)'
-            operator: 'GreaterThan'
-          }
+    }
+    roleAssignments: [
+      {
+        roleDefinitionIdOrName: 'Reader'
+        principalIds: [
+          '<<deploymentSpId>>'
         ]
       }
+    ]
   }
 ```
 

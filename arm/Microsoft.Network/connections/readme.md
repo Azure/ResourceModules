@@ -358,24 +358,39 @@ tags: {
 
 ```bicep
 resource kv1 'Microsoft.KeyVault/vaults@2019-09-01' existing = {
-    name: 'adp-<<namePrefix>>-az-kv-x-001'
-    scope: resourceGroup('<<subscriptionId>>','validation-rg')
+  name: 'adp-<<namePrefix>>-az-kv-x-001'
+  scope: resourceGroup('<<subscriptionId>>','validation-rg')
 }
 
 module connections './Microsoft.Network/connections/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-connections'
   params: {
-      name: '<<namePrefix>>-az-vnetgwc-x-001'
-      vpnSharedKey: kv1.getSecret('vpnSharedKey')
-      enableBgp: false
-      virtualNetworkGateway2: {
-        id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworkGateways/<<namePrefix>>-az-vnet-vpn-gw-p-002'
+    name: '<<namePrefix>>-az-vnetgwc-x-001'
+    virtualNetworkGateway1: {
+      id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworkGateways/<<namePrefix>>-az-vnet-vpn-gw-p-001'
+    }
+    virtualNetworkGateway2: {
+      id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworkGateways/<<namePrefix>>-az-vnet-vpn-gw-p-002'
+    }
+    vpnSharedKey: [
+      {
+        Value: {
+          keyVault: {
+            id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001'
+          }
+          secretName: 'vpnSharedKey'
+        }
+        MemberType: 8
+        IsSettable: true
+        IsGettable: true
+        TypeNameOfValue: 'System.Management.Automation.PSCustomObject'
+        Name: 'reference'
+        IsInstance: true
       }
-      virtualNetworkGatewayConnectionType: 'Vnet2Vnet'
-      virtualNetworkGateway1: {
-        id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworkGateways/<<namePrefix>>-az-vnet-vpn-gw-p-001'
-      }
-      location: 'eastus'
+    ]
+    virtualNetworkGatewayConnectionType: 'Vnet2Vnet'
+    enableBgp: false
+    location: 'eastus'
   }
 ```
 

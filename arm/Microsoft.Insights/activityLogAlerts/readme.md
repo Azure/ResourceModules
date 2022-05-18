@@ -461,37 +461,37 @@ tags: {
 module activityLogAlerts './Microsoft.Insights/activityLogAlerts/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-activityLogAlerts'
   params: {
-      name: '<<namePrefix>>-az-ala-x-001'
-      conditions: [
-        {
-          field: 'category'
-          equals: 'Administrative'
-        }
-        {
-          field: 'resourceType'
-          equals: 'microsoft.compute/virtualmachines'
-        }
-        {
-          field: 'operationName'
-          equals: 'Microsoft.Compute/virtualMachines/performMaintenance/action'
-        }
-      ]
-      actions: [
-        {
-          actionGroupId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/microsoft.insights/actiongroups/adp-<<namePrefix>>-az-ag-x-001'
-        }
-      ]
-      scopes: [
-        '/subscriptions/<<subscriptionId>>'
-      ]
-      roleAssignments: [
-        {
-          roleDefinitionIdOrName: 'Reader'
-          principalIds: [
-            '<<deploymentSpId>>'
-          ]
-        }
-      ]
+    name: '<<namePrefix>>-az-ala-x-001'
+    scopes: [
+      '/subscriptions/<<subscriptionId>>'
+    ]
+    conditions: [
+      {
+        field: 'category'
+        equals: 'Administrative'
+      }
+      {
+        field: 'resourceType'
+        equals: 'microsoft.compute/virtualmachines'
+      }
+      {
+        field: 'operationName'
+        equals: 'Microsoft.Compute/virtualMachines/performMaintenance/action'
+      }
+    ]
+    actions: [
+      {
+        actionGroupId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/microsoft.insights/actiongroups/adp-<<namePrefix>>-az-ag-x-001'
+      }
+    ]
+    roleAssignments: [
+      {
+        roleDefinitionIdOrName: 'Reader'
+        principalIds: [
+          '<<deploymentSpId>>'
+        ]
+      }
+    ]
   }
 ```
 

@@ -213,18 +213,18 @@ tags: {
 module disks './Microsoft.Compute/disks/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-disks'
   params: {
-      name: '<<namePrefix>>-az-disk-image-001'
-      sku: 'Standard_LRS'
-      imageReferenceId: '/Subscriptions/<<subscriptionId>>/Providers/Microsoft.Compute/Locations/westeurope/Publishers/MicrosoftWindowsServer/ArtifactTypes/VMImage/Offers/WindowsServer/Skus/2016-Datacenter/Versions/14393.4906.2112080838'
-      createOption: 'FromImage'
-      roleAssignments: [
-        {
-          roleDefinitionIdOrName: 'Reader'
-          principalIds: [
-            '<<deploymentSpId>>'
-          ]
-        }
-      ]
+    name: '<<namePrefix>>-az-disk-image-001'
+    sku: 'Standard_LRS'
+    createOption: 'FromImage'
+    imageReferenceId: '/Subscriptions/<<subscriptionId>>/Providers/Microsoft.Compute/Locations/westeurope/Publishers/MicrosoftWindowsServer/ArtifactTypes/VMImage/Offers/WindowsServer/Skus/2016-Datacenter/Versions/14393.4906.2112080838'
+    roleAssignments: [
+      {
+        roleDefinitionIdOrName: 'Reader'
+        principalIds: [
+          '<<deploymentSpId>>'
+        ]
+      }
+    ]
   }
 ```
 
@@ -282,19 +282,19 @@ module disks './Microsoft.Compute/disks/deploy.bicep' = {
 module disks './Microsoft.Compute/disks/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-disks'
   params: {
-      sku: 'Standard_LRS'
-      roleAssignments: [
-        {
-          roleDefinitionIdOrName: 'Reader'
-          principalIds: [
-            '<<deploymentSpId>>'
-          ]
-        }
-      ]
-      sourceUri: 'https://adp<<namePrefix>>azsax001.blob.core.windows.net/vhds/adp-<<namePrefix>>-az-imgt-x-001.vhd'
-      createOption: 'Import'
-      name: '<<namePrefix>>-az-disk-import-001'
-      storageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
+    name: '<<namePrefix>>-az-disk-import-001'
+    sku: 'Standard_LRS'
+    createOption: 'Import'
+    sourceUri: 'https://adp<<namePrefix>>azsax001.blob.core.windows.net/vhds/adp-<<namePrefix>>-az-imgt-x-001.vhd'
+    storageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
+    roleAssignments: [
+      {
+        roleDefinitionIdOrName: 'Reader'
+        principalIds: [
+          '<<deploymentSpId>>'
+        ]
+      }
+    ]
   }
 ```
 
@@ -346,17 +346,17 @@ module disks './Microsoft.Compute/disks/deploy.bicep' = {
 module disks './Microsoft.Compute/disks/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-disks'
   params: {
-      name: '<<namePrefix>>-az-disk-min-001'
-      sku: 'Standard_LRS'
-      diskSizeGB: 1
-      roleAssignments: [
-        {
-          roleDefinitionIdOrName: 'Reader'
-          principalIds: [
-            '<<deploymentSpId>>'
-          ]
-        }
-      ]
+    name: '<<namePrefix>>-az-disk-min-001'
+    sku: 'Standard_LRS'
+    diskSizeGB: 1
+    roleAssignments: [
+      {
+        roleDefinitionIdOrName: 'Reader'
+        principalIds: [
+          '<<deploymentSpId>>'
+        ]
+      }
+    ]
   }
 ```
 
@@ -423,22 +423,22 @@ module disks './Microsoft.Compute/disks/deploy.bicep' = {
 module disks './Microsoft.Compute/disks/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-disks'
   params: {
-      sku: 'UltraSSD_LRS'
-      roleAssignments: [
-        {
-          roleDefinitionIdOrName: 'Reader'
-          principalIds: [
-            '<<deploymentSpId>>'
-          ]
-        }
-      ]
-      publicNetworkAccess: 'Enabled'
-      logicalSectorSize: 512
-      name: '<<namePrefix>>-az-disk-x-001'
-      osType: 'Windows'
-      diskIOPSReadWrite: 500
-      diskSizeGB: 128
-      diskMBpsReadWrite: 60
+    name: '<<namePrefix>>-az-disk-x-001'
+    sku: 'UltraSSD_LRS'
+    diskSizeGB: 128
+    logicalSectorSize: 512
+    diskIOPSReadWrite: 500
+    diskMBpsReadWrite: 60
+    osType: 'Windows'
+    publicNetworkAccess: 'Enabled'
+    roleAssignments: [
+      {
+        roleDefinitionIdOrName: 'Reader'
+        principalIds: [
+          '<<deploymentSpId>>'
+        ]
+      }
+    ]
   }
 ```
 

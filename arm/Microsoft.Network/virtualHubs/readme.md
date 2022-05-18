@@ -138,9 +138,9 @@ tags: {
 module virtualHubs './Microsoft.Network/virtualHubs/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-virtualHubs'
   params: {
-      name: '<<namePrefix>>-az-vhub-min-001'
-      virtualWanId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualWans/adp-<<namePrefix>>-az-vw-x-001'
-      addressPrefix: '10.0.0.0/16'
+    name: '<<namePrefix>>-az-vhub-min-001'
+    addressPrefix: '10.0.0.0/16'
+    virtualWanId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualWans/adp-<<namePrefix>>-az-vw-x-001'
   }
 ```
 
@@ -212,35 +212,35 @@ module virtualHubs './Microsoft.Network/virtualHubs/deploy.bicep' = {
 module virtualHubs './Microsoft.Network/virtualHubs/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-virtualHubs'
   params: {
-      name: '<<namePrefix>>-az-vhub-x-001'
-      hubRouteTables: [
-        {
-          name: 'routeTable1'
-        }
-      ]
-      virtualWanId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualWans/adp-<<namePrefix>>-az-vw-x-001'
-      hubVirtualNetworkConnections: [
-        {
-          name: 'connection1'
-          routingConfiguration: {
-            associatedRouteTable: {
-              id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualHubs/<<namePrefix>>-az-vHub-x-001/hubRouteTables/routeTable1'
-            }
-            propagatedRouteTables: {
-              labels: [
-                'none'
-              ]
-              ids: [
-                {
-                  id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualHubs/<<namePrefix>>-az-vHub-x-001/hubRouteTables/routeTable1'
-                }
-              ]
-            }
+    name: '<<namePrefix>>-az-vhub-x-001'
+    addressPrefix: '10.1.0.0/16'
+    virtualWanId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualWans/adp-<<namePrefix>>-az-vw-x-001'
+    hubRouteTables: [
+      {
+        name: 'routeTable1'
+      }
+    ]
+    hubVirtualNetworkConnections: [
+      {
+        name: 'connection1'
+        remoteVirtualNetworkId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-vhub'
+        routingConfiguration: {
+          associatedRouteTable: {
+            id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualHubs/<<namePrefix>>-az-vHub-x-001/hubRouteTables/routeTable1'
           }
-          remoteVirtualNetworkId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-vhub'
+          propagatedRouteTables: {
+            ids: [
+              {
+                id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualHubs/<<namePrefix>>-az-vHub-x-001/hubRouteTables/routeTable1'
+              }
+            ]
+            labels: [
+              'none'
+            ]
+          }
         }
-      ]
-      addressPrefix: '10.1.0.0/16'
+      }
+    ]
   }
 ```
 

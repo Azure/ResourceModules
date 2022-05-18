@@ -192,7 +192,7 @@ tags: {
 module privateDnsZones './Microsoft.Network/privateDnsZones/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-privateDnsZones'
   params: {
-      name: '<<namePrefix>>-az-privdns-x-001.com'
+    name: '<<namePrefix>>-az-privdns-x-001.com'
   }
 ```
 
@@ -414,173 +414,173 @@ module privateDnsZones './Microsoft.Network/privateDnsZones/deploy.bicep' = {
 module privateDnsZones './Microsoft.Network/privateDnsZones/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-privateDnsZones'
   params: {
-      CNAME: [
-        {
-          name: 'CNAME_test'
-          roleAssignments: [
-            {
-              roleDefinitionIdOrName: 'Reader'
-              principalIds: [
-                '<<deploymentSpId>>'
-              ]
-            }
-          ]
-          ttl: 3600
-          cnameRecord: {
-            cname: 'test'
+    name: '<<namePrefix>>-az-privdns-x-002.com'
+    roleAssignments: [
+      {
+        roleDefinitionIdOrName: 'Reader'
+        principalIds: [
+          '<<deploymentSpId>>'
+        ]
+      }
+    ]
+    AAAA: [
+      {
+        name: 'AAAA_2001_0db8_85a3_0000_0000_8a2e_0370_7334'
+        ttl: 3600
+        aaaaRecords: [
+          {
+            ipv6Address: '2001:0db8:85a3:0000:0000:8a2e:0370:7334'
           }
-        }
-      ]
-      SRV: [
-        {
-          name: 'SRV_contoso'
-          srvRecords: [
-            {
-              priority: 0
-              weight: 0
-              port: 9332
-              target: 'test.contoso.com'
-            }
-          ]
-          roleAssignments: [
-            {
-              roleDefinitionIdOrName: 'Reader'
-              principalIds: [
-                '<<deploymentSpId>>'
-              ]
-            }
-          ]
-          ttl: 3600
-        }
-      ]
-      MX: [
-        {
-          name: 'MX_contoso'
-          mxRecords: [
-            {
-              preference: 100
-              exchange: 'contoso.com'
-            }
-          ]
-          roleAssignments: [
-            {
-              roleDefinitionIdOrName: 'Reader'
-              principalIds: [
-                '<<deploymentSpId>>'
-              ]
-            }
-          ]
-          ttl: 3600
-        }
-      ]
-      TXT: [
-        {
-          name: 'TXT_test'
-          txtRecords: [
-            {
-              value: [
-                'test'
-              ]
-            }
-          ]
-          roleAssignments: [
-            {
-              roleDefinitionIdOrName: 'Reader'
-              principalIds: [
-                '<<deploymentSpId>>'
-              ]
-            }
-          ]
-          ttl: 3600
-        }
-      ]
-      SOA: [
-        {
-          name: '@'
-          soaRecord: {
-            retryTime: 300
-            host: 'azureprivatedns.net'
-            minimumTtl: 10
-            serialNumber: '1'
-            refreshTime: 3600
-            email: 'azureprivatedns-host.microsoft.com'
-            expireTime: 2419200
+        ]
+      }
+    ]
+    A: [
+      {
+        name: 'A_10.240.4.4'
+        ttl: 3600
+        aRecords: [
+          {
+            ipv4Address: '10.240.4.4'
           }
-          roleAssignments: [
-            {
-              roleDefinitionIdOrName: 'Reader'
-              principalIds: [
-                '<<deploymentSpId>>'
-              ]
-            }
-          ]
-          ttl: 3600
+        ]
+        roleAssignments: [
+          {
+            roleDefinitionIdOrName: 'Reader'
+            principalIds: [
+              '<<deploymentSpId>>'
+            ]
+          }
+        ]
+      }
+    ]
+    CNAME: [
+      {
+        name: 'CNAME_test'
+        ttl: 3600
+        cnameRecord: {
+          cname: 'test'
         }
-      ]
-      name: '<<namePrefix>>-az-privdns-x-002.com'
-      virtualNetworkLinks: [
-        {
-          registrationEnabled: true
-          virtualNetworkResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001'
+        roleAssignments: [
+          {
+            roleDefinitionIdOrName: 'Reader'
+            principalIds: [
+              '<<deploymentSpId>>'
+            ]
+          }
+        ]
+      }
+    ]
+    MX: [
+      {
+        name: 'MX_contoso'
+        ttl: 3600
+        mxRecords: [
+          {
+            exchange: 'contoso.com'
+            preference: 100
+          }
+        ]
+        roleAssignments: [
+          {
+            roleDefinitionIdOrName: 'Reader'
+            principalIds: [
+              '<<deploymentSpId>>'
+            ]
+          }
+        ]
+      }
+    ]
+    PTR: [
+      {
+        name: 'PTR_contoso'
+        ttl: 3600
+        ptrRecords: [
+          {
+            ptrdname: 'contoso.com'
+          }
+        ]
+        roleAssignments: [
+          {
+            roleDefinitionIdOrName: 'Reader'
+            principalIds: [
+              '<<deploymentSpId>>'
+            ]
+          }
+        ]
+      }
+    ]
+    SOA: [
+      {
+        name: '@'
+        ttl: 3600
+        soaRecord: {
+          email: 'azureprivatedns-host.microsoft.com'
+          expireTime: 2419200
+          host: 'azureprivatedns.net'
+          minimumTtl: 10
+          refreshTime: 3600
+          retryTime: 300
+          serialNumber: '1'
         }
-      ]
-      A: [
-        {
-          name: 'A_10.240.4.4'
-          roleAssignments: [
-            {
-              roleDefinitionIdOrName: 'Reader'
-              principalIds: [
-                '<<deploymentSpId>>'
-              ]
-            }
-          ]
-          ttl: 3600
-          aRecords: [
-            {
-              ipv4Address: '10.240.4.4'
-            }
-          ]
-        }
-      ]
-      roleAssignments: [
-        {
-          roleDefinitionIdOrName: 'Reader'
-          principalIds: [
-            '<<deploymentSpId>>'
-          ]
-        }
-      ]
-      AAAA: [
-        {
-          name: 'AAAA_2001_0db8_85a3_0000_0000_8a2e_0370_7334'
-          ttl: 3600
-          aaaaRecords: [
-            {
-              ipv6Address: '2001:0db8:85a3:0000:0000:8a2e:0370:7334'
-            }
-          ]
-        }
-      ]
-      PTR: [
-        {
-          name: 'PTR_contoso'
-          roleAssignments: [
-            {
-              roleDefinitionIdOrName: 'Reader'
-              principalIds: [
-                '<<deploymentSpId>>'
-              ]
-            }
-          ]
-          ttl: 3600
-          ptrRecords: [
-            {
-              ptrdname: 'contoso.com'
-            }
-          ]
-        }
-      ]
+        roleAssignments: [
+          {
+            roleDefinitionIdOrName: 'Reader'
+            principalIds: [
+              '<<deploymentSpId>>'
+            ]
+          }
+        ]
+      }
+    ]
+    SRV: [
+      {
+        name: 'SRV_contoso'
+        ttl: 3600
+        srvRecords: [
+          {
+            port: 9332
+            priority: 0
+            target: 'test.contoso.com'
+            weight: 0
+          }
+        ]
+        roleAssignments: [
+          {
+            roleDefinitionIdOrName: 'Reader'
+            principalIds: [
+              '<<deploymentSpId>>'
+            ]
+          }
+        ]
+      }
+    ]
+    TXT: [
+      {
+        name: 'TXT_test'
+        ttl: 3600
+        txtRecords: [
+          {
+            value: [
+              'test'
+            ]
+          }
+        ]
+        roleAssignments: [
+          {
+            roleDefinitionIdOrName: 'Reader'
+            principalIds: [
+              '<<deploymentSpId>>'
+            ]
+          }
+        ]
+      }
+    ]
+    virtualNetworkLinks: [
+      {
+        virtualNetworkResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001'
+        registrationEnabled: true
+      }
+    ]
   }
 ```
 

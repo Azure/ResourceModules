@@ -19,7 +19,7 @@ This module deploys an event hub namespace.
 | `Microsoft.EventHub/namespaces/authorizationRules` | [2021-11-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.EventHub/2021-11-01/namespaces/authorizationRules) |
 | `Microsoft.EventHub/namespaces/disasterRecoveryConfigs` | [2021-11-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.EventHub/2021-11-01/namespaces/disasterRecoveryConfigs) |
 | `Microsoft.EventHub/namespaces/eventhubs` | [2021-11-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.EventHub/2021-11-01/namespaces/eventhubs) |
-| `Microsoft.EventHub/namespaces/eventhubs/authorizationRules` | [2021-11-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.EventHub/namespaces/eventhubs/authorizationRules) |
+| `Microsoft.EventHub/namespaces/eventhubs/authorizationRules` | [2021-11-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.EventHub/2021-11-01/namespaces/eventhubs/authorizationRules) |
 | `Microsoft.EventHub/namespaces/eventhubs/consumergroups` | [2021-11-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.EventHub/2021-11-01/namespaces/eventhubs/consumergroups) |
 | `Microsoft.EventHub/namespaces/networkRuleSets` | [2021-11-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.EventHub/2021-11-01/namespaces/networkRuleSets) |
 | `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
@@ -306,8 +306,7 @@ userAssignedIdentities: {
 module namespaces './Microsoft.EventHub/namespaces/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-namespaces'
   params: {
-    {}
-    {}
+  
   }
 ```
 
@@ -468,110 +467,110 @@ module namespaces './Microsoft.EventHub/namespaces/deploy.bicep' = {
 module namespaces './Microsoft.EventHub/namespaces/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-namespaces'
   params: {
-      diagnosticLogsRetentionInDays: 7
-      name: '<<namePrefix>>-az-evnsp-x-001'
-      roleAssignments: [
-        {
-          roleDefinitionIdOrName: 'Reader'
-          principalIds: [
-            '<<deploymentSpId>>'
-          ]
-        }
-      ]
-      systemAssignedIdentity: true
-      diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
-      diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
-      diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
-      authorizationRules: [
-        {
-          rights: [
-            'Listen'
-            'Manage'
-            'Send'
-          ]
-          name: 'RootManageSharedAccessKey'
-        }
-        {
-          rights: [
-            'Listen'
-            'Send'
-          ]
-          name: 'SendListenAccess'
-        }
-      ]
-      userAssignedIdentities: {
-        '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
+    name: '<<namePrefix>>-az-evnsp-x-001'
+    authorizationRules: [
+      {
+        name: 'RootManageSharedAccessKey'
+        rights: [
+          'Listen'
+          'Manage'
+          'Send'
+        ]
       }
-      networkRuleSets: {
-        defaultAction: 'Deny'
-        ipRules: [
+      {
+        name: 'SendListenAccess'
+        rights: [
+          'Listen'
+          'Send'
+        ]
+      }
+    ]
+    roleAssignments: [
+      {
+        roleDefinitionIdOrName: 'Reader'
+        principalIds: [
+          '<<deploymentSpId>>'
+        ]
+      }
+    ]
+    eventHubs: [
+      {
+        name: '<<namePrefix>>-az-evh-x-001'
+      }
+      {
+        name: '<<namePrefix>>-az-evh-x-002'
+        authorizationRules: [
           {
-            ipMask: '10.10.10.10'
-            action: 'Allow'
+            name: 'RootManageSharedAccessKey'
+            rights: [
+              'Listen'
+              'Manage'
+              'Send'
+            ]
+          }
+          {
+            name: 'SendListenAccess'
+            rights: [
+              'Listen'
+              'Send'
+            ]
           }
         ]
-        virtualNetworkRules: [
+        roleAssignments: [
           {
-            subnet: {
-              id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001'
-            }
-            ignoreMissingVnetServiceEndpoint: true
+            roleDefinitionIdOrName: 'Reader'
+            principalIds: [
+              '<<deploymentSpId>>'
+            ]
           }
         ]
-        trustedServiceAccessEnabled: false
+        messageRetentionInDays: 1
+        partitionCount: 2
+        status: 'Active'
+        captureDescriptionEnabled: true
+        captureDescriptionEncoding: 'Avro'
+        captureDescriptionIntervalInSeconds: 300
+        captureDescriptionSizeLimitInBytes: 314572800
+        captureDescriptionDestinationName: 'EventHubArchive.AzureBlockBlob'
+        captureDescriptionDestinationStorageAccountResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
+        captureDescriptionDestinationBlobContainer: 'eventhub'
+        captureDescriptionDestinationArchiveNameFormat: '{Namespace}/{EventHub}/{PartitionId}/{Year}/{Month}/{Day}/{Hour}/{Minute}/{Second}'
+        captureDescriptionSkipEmptyArchives: true
+        consumerGroups: [
+          {
+            name: 'custom'
+            userMetadata: 'customMetadata'
+          }
+        ]
       }
-      diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
-      eventHubs: [
+    ]
+    diagnosticLogsRetentionInDays: 7
+    diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
+    diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
+    diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
+    diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
+    systemAssignedIdentity: true
+    networkRuleSets: {
+      defaultAction: 'Deny'
+      ipRules: [
         {
-          name: '<<namePrefix>>-az-evh-x-001'
-        }
-        {
-          captureDescriptionDestinationName: 'EventHubArchive.AzureBlockBlob'
-          roleAssignments: [
-            {
-              roleDefinitionIdOrName: 'Reader'
-              principalIds: [
-                '<<deploymentSpId>>'
-              ]
-            }
-          ]
-          status: 'Active'
-          captureDescriptionEnabled: true
-          name: '<<namePrefix>>-az-evh-x-002'
-          captureDescriptionDestinationStorageAccountResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
-          captureDescriptionSkipEmptyArchives: true
-          captureDescriptionIntervalInSeconds: 300
-          messageRetentionInDays: 1
-          captureDescriptionDestinationBlobContainer: 'eventhub'
-          partitionCount: 2
-          captureDescriptionEncoding: 'Avro'
-          authorizationRules: [
-            {
-              rights: [
-                'Listen'
-                'Manage'
-                'Send'
-              ]
-              name: 'RootManageSharedAccessKey'
-            }
-            {
-              rights: [
-                'Listen'
-                'Send'
-              ]
-              name: 'SendListenAccess'
-            }
-          ]
-          consumerGroups: [
-            {
-              userMetadata: 'customMetadata'
-              name: 'custom'
-            }
-          ]
-          captureDescriptionDestinationArchiveNameFormat: '{Namespace}/{EventHub}/{PartitionId}/{Year}/{Month}/{Day}/{Hour}/{Minute}/{Second}'
-          captureDescriptionSizeLimitInBytes: 314572800
+          action: 'Allow'
+          ipMask: '10.10.10.10'
         }
       ]
+      virtualNetworkRules: [
+        {
+          subnet: {
+            id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001'
+          }
+          ignoreMissingVnetServiceEndpoint: true
+        }
+      ]
+      trustedServiceAccessEnabled: false
+    }
+    userAssignedIdentities: {
+      '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
+    }
   }
 ```
 

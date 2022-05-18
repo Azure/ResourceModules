@@ -206,21 +206,21 @@ tags: {
 module images './Microsoft.Compute/images/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-images'
   params: {
-      osDiskCaching: 'ReadWrite'
-      osDiskBlobUri: 'https://adp<<namePrefix>>azsax001.blob.core.windows.net/vhds/adp-<<namePrefix>>-az-imgt-x-001.vhd'
-      roleAssignments: [
-        {
-          roleDefinitionIdOrName: 'Reader'
-          principalIds: [
-            '<<deploymentSpId>>'
-          ]
-        }
-      ]
-      zoneResilient: true
-      osAccountType: 'Premium_LRS'
-      name: '<<namePrefix>>-az-img-x-001'
-      osType: 'Windows'
-      hyperVGeneration: 'V1'
+    name: '<<namePrefix>>-az-img-x-001'
+    osAccountType: 'Premium_LRS'
+    osType: 'Windows'
+    osDiskBlobUri: 'https://adp<<namePrefix>>azsax001.blob.core.windows.net/vhds/adp-<<namePrefix>>-az-imgt-x-001.vhd'
+    osDiskCaching: 'ReadWrite'
+    zoneResilient: true
+    hyperVGeneration: 'V1'
+    roleAssignments: [
+      {
+        roleDefinitionIdOrName: 'Reader'
+        principalIds: [
+          '<<deploymentSpId>>'
+        ]
+      }
+    ]
   }
 ```
 

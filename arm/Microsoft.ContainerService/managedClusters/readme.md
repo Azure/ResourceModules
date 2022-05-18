@@ -495,95 +495,95 @@ userAssignedIdentities: {
 module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-managedClusters'
   params: {
-      diagnosticLogsRetentionInDays: 7
-      primaryAgentPoolProfile: [
-        {
-          serviceCidr: ''
-          mode: 'System'
-          maxCount: 3
-          name: 'systempool'
-          vnetSubnetID: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-aks/subnets/Primary'
-          vmSize: 'Standard_DS2_v2'
-          maxPods: 30
-          storageProfile: 'ManagedDisks'
-          osType: 'Linux'
-          minCount: 1
-          count: 1
-          type: 'VirtualMachineScaleSets'
-          enableAutoScaling: true
-          osDiskSizeGB: 0
-          availabilityZones: [
-            '1'
-          ]
-        }
-      ]
-      roleAssignments: [
-        {
-          roleDefinitionIdOrName: 'Reader'
-          principalIds: [
-            '<<deploymentSpId>>'
-          ]
-        }
-      ]
-      systemAssignedIdentity: true
-      agentPools: [
-        {
-          vnetSubnetID: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-aks/subnets/Secondary'
-          minPods: 2
-          mode: 'User'
-          maxPods: 30
-          nodeTaints: [
-            'CriticalAddonsOnly=true:NoSchedule'
-          ]
-          maxCount: 3
-          availabilityZones: [
-            '1'
-          ]
-          minCount: 1
-          scaleSetEvictionPolicy: 'Delete'
-          type: 'VirtualMachineScaleSets'
-          name: 'userpool1'
-          storageProfile: 'ManagedDisks'
-          scaleSetPriority: 'Regular'
-          osDiskSizeGB: 128
-          nodeLabels: {}
-          enableAutoScaling: true
-          vmSize: 'Standard_DS2_v2'
-          osType: 'Linux'
-          count: 2
-        }
-        {
-          vnetSubnetID: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-aks/subnets/Tertiary'
-          minPods: 2
-          mode: 'User'
-          maxPods: 30
-          nodeTaints: [
-            'CriticalAddonsOnly=true:NoSchedule'
-          ]
-          maxCount: 3
-          availabilityZones: [
-            '1'
-          ]
-          minCount: 1
-          scaleSetEvictionPolicy: 'Delete'
-          type: 'VirtualMachineScaleSets'
-          name: 'userpool2'
-          storageProfile: 'ManagedDisks'
-          scaleSetPriority: 'Regular'
-          osDiskSizeGB: 128
-          nodeLabels: {}
-          enableAutoScaling: true
-          vmSize: 'Standard_DS2_v2'
-          osType: 'Linux'
-          count: 2
-        }
-      ]
-      diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
-      diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
-      diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
-      name: '<<namePrefix>>-az-aks-azure-001'
-      aksClusterNetworkPlugin: 'azure'
-      diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
+    name: '<<namePrefix>>-az-aks-azure-001'
+    primaryAgentPoolProfile: [
+      {
+        name: 'systempool'
+        osDiskSizeGB: 0
+        count: 1
+        enableAutoScaling: true
+        minCount: 1
+        maxCount: 3
+        vmSize: 'Standard_DS2_v2'
+        osType: 'Linux'
+        storageProfile: 'ManagedDisks'
+        type: 'VirtualMachineScaleSets'
+        mode: 'System'
+        vnetSubnetID: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-aks/subnets/Primary'
+        serviceCidr: ''
+        maxPods: 30
+        availabilityZones: [
+          '1'
+        ]
+      }
+    ]
+    aksClusterNetworkPlugin: 'azure'
+    agentPools: [
+      {
+        name: 'userpool1'
+        vmSize: 'Standard_DS2_v2'
+        osDiskSizeGB: 128
+        count: 2
+        osType: 'Linux'
+        maxCount: 3
+        minCount: 1
+        enableAutoScaling: true
+        scaleSetPriority: 'Regular'
+        scaleSetEvictionPolicy: 'Delete'
+        nodeLabels: {}
+        nodeTaints: [
+          'CriticalAddonsOnly=true:NoSchedule'
+        ]
+        type: 'VirtualMachineScaleSets'
+        availabilityZones: [
+          '1'
+        ]
+        minPods: 2
+        maxPods: 30
+        storageProfile: 'ManagedDisks'
+        mode: 'User'
+        vnetSubnetID: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-aks/subnets/Secondary'
+      }
+      {
+        name: 'userpool2'
+        vmSize: 'Standard_DS2_v2'
+        osDiskSizeGB: 128
+        count: 2
+        osType: 'Linux'
+        maxCount: 3
+        minCount: 1
+        enableAutoScaling: true
+        scaleSetPriority: 'Regular'
+        scaleSetEvictionPolicy: 'Delete'
+        nodeLabels: {}
+        nodeTaints: [
+          'CriticalAddonsOnly=true:NoSchedule'
+        ]
+        type: 'VirtualMachineScaleSets'
+        availabilityZones: [
+          '1'
+        ]
+        minPods: 2
+        maxPods: 30
+        storageProfile: 'ManagedDisks'
+        mode: 'User'
+        vnetSubnetID: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-aks/subnets/Tertiary'
+      }
+    ]
+    roleAssignments: [
+      {
+        roleDefinitionIdOrName: 'Reader'
+        principalIds: [
+          '<<deploymentSpId>>'
+        ]
+      }
+    ]
+    diagnosticLogsRetentionInDays: 7
+    diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
+    diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
+    diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
+    diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
+    systemAssignedIdentity: true
   }
 ```
 
@@ -726,94 +726,94 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
 module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-managedClusters'
   params: {
-      diagnosticLogsRetentionInDays: 7
-      primaryAgentPoolProfile: [
-        {
-          serviceCidr: ''
-          mode: 'System'
-          maxCount: 3
-          name: 'systempool'
-          vmSize: 'Standard_DS2_v2'
-          maxPods: 30
-          storageProfile: 'ManagedDisks'
-          osType: 'Linux'
-          minCount: 1
-          count: 1
-          type: 'VirtualMachineScaleSets'
-          enableAutoScaling: true
-          osDiskSizeGB: 0
-          availabilityZones: [
-            '1'
-          ]
-        }
-      ]
-      roleAssignments: [
-        {
-          roleDefinitionIdOrName: 'Reader'
-          principalIds: [
-            '<<deploymentSpId>>'
-          ]
-        }
-      ]
-      agentPools: [
-        {
-          minPods: 2
-          mode: 'User'
-          maxPods: 30
-          nodeTaints: [
-            'CriticalAddonsOnly=true:NoSchedule'
-          ]
-          maxCount: 3
-          availabilityZones: [
-            '1'
-          ]
-          minCount: 1
-          scaleSetEvictionPolicy: 'Delete'
-          type: 'VirtualMachineScaleSets'
-          name: 'userpool1'
-          storageProfile: 'ManagedDisks'
-          scaleSetPriority: 'Regular'
-          osDiskSizeGB: 128
-          nodeLabels: {}
-          enableAutoScaling: true
-          vmSize: 'Standard_DS2_v2'
-          osType: 'Linux'
-          count: 2
-        }
-        {
-          minPods: 2
-          mode: 'User'
-          maxPods: 30
-          nodeTaints: [
-            'CriticalAddonsOnly=true:NoSchedule'
-          ]
-          maxCount: 3
-          availabilityZones: [
-            '1'
-          ]
-          minCount: 1
-          scaleSetEvictionPolicy: 'Delete'
-          type: 'VirtualMachineScaleSets'
-          name: 'userpool2'
-          storageProfile: 'ManagedDisks'
-          scaleSetPriority: 'Regular'
-          osDiskSizeGB: 128
-          nodeLabels: {}
-          enableAutoScaling: true
-          vmSize: 'Standard_DS2_v2'
-          osType: 'Linux'
-          count: 2
-        }
-      ]
-      diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
-      diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
-      diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
-      name: '<<namePrefix>>-az-aks-kubenet-001'
-      userAssignedIdentities: {
-        '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
+    name: '<<namePrefix>>-az-aks-kubenet-001'
+    primaryAgentPoolProfile: [
+      {
+        name: 'systempool'
+        osDiskSizeGB: 0
+        count: 1
+        enableAutoScaling: true
+        minCount: 1
+        maxCount: 3
+        vmSize: 'Standard_DS2_v2'
+        osType: 'Linux'
+        storageProfile: 'ManagedDisks'
+        type: 'VirtualMachineScaleSets'
+        mode: 'System'
+        serviceCidr: ''
+        maxPods: 30
+        availabilityZones: [
+          '1'
+        ]
       }
-      diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
-      aksClusterNetworkPlugin: 'kubenet'
+    ]
+    aksClusterNetworkPlugin: 'kubenet'
+    agentPools: [
+      {
+        name: 'userpool1'
+        vmSize: 'Standard_DS2_v2'
+        osDiskSizeGB: 128
+        count: 2
+        osType: 'Linux'
+        maxCount: 3
+        minCount: 1
+        enableAutoScaling: true
+        scaleSetPriority: 'Regular'
+        scaleSetEvictionPolicy: 'Delete'
+        nodeLabels: {}
+        nodeTaints: [
+          'CriticalAddonsOnly=true:NoSchedule'
+        ]
+        type: 'VirtualMachineScaleSets'
+        availabilityZones: [
+          '1'
+        ]
+        minPods: 2
+        maxPods: 30
+        storageProfile: 'ManagedDisks'
+        mode: 'User'
+      }
+      {
+        name: 'userpool2'
+        vmSize: 'Standard_DS2_v2'
+        osDiskSizeGB: 128
+        count: 2
+        osType: 'Linux'
+        maxCount: 3
+        minCount: 1
+        enableAutoScaling: true
+        scaleSetPriority: 'Regular'
+        scaleSetEvictionPolicy: 'Delete'
+        nodeLabels: {}
+        nodeTaints: [
+          'CriticalAddonsOnly=true:NoSchedule'
+        ]
+        type: 'VirtualMachineScaleSets'
+        availabilityZones: [
+          '1'
+        ]
+        minPods: 2
+        maxPods: 30
+        storageProfile: 'ManagedDisks'
+        mode: 'User'
+      }
+    ]
+    roleAssignments: [
+      {
+        roleDefinitionIdOrName: 'Reader'
+        principalIds: [
+          '<<deploymentSpId>>'
+        ]
+      }
+    ]
+    diagnosticLogsRetentionInDays: 7
+    diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
+    diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
+    diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
+    diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
+    userAssignedIdentities: {
+      '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
+    }
   }
 ```
 

@@ -405,8 +405,7 @@ privateEndpoints:  [
 module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-vaults'
   params: {
-    {}
-    {}
+  
   }
 ```
 
@@ -563,9 +562,40 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
 module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-vaults'
   params: {
-      keys: [
+    name: '<<namePrefix>>-az-kv-x-001'
+    softDeleteRetentionInDays: 7
+    enableRbacAuthorization: false
+    privateEndpoints: [
+      {
+        subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints'
+        service: 'vault'
+      }
+    ]
+    networkAcls: {
+      bypass: 'AzureServices'
+      defaultAction: 'Deny'
+      virtualNetworkRules: [
         {
-          name: 'keyName'
+          id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001'
+          action: 'Allow'
+        }
+      ]
+      ipRules: []
+    }
+    roleAssignments: [
+      {
+        roleDefinitionIdOrName: 'Reader'
+        principalIds: [
+          '<<deploymentSpId>>'
+        ]
+      }
+    ]
+    secrets: {
+      secureList: [
+        {
+          name: 'secretName'
+          value: 'secretValue'
+          contentType: 'Something'
           attributesExp: 1702648632
           attributesNbf: 10000
           roleAssignments: [
@@ -578,87 +608,56 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
           ]
         }
       ]
-      accessPolicies: [
-        {
-          objectId: '<<deploymentSpId>>'
-          permissions: {
-            secrets: [
-              'all'
-            ]
-            keys: [
-              'get'
-              'list'
-              'update'
-            ]
-          }
-          tenantId: '<<tenantId>>'
-        }
-        {
-          permissions: {
-            secrets: [
-              'all'
-            ]
-            certificates: [
-              'backup'
-              'create'
-              'delete'
-            ]
-          }
-          objectId: '<<deploymentSpId>>'
-        }
-      ]
-      diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
-      softDeleteRetentionInDays: 7
-      networkAcls: {
-        defaultAction: 'Deny'
-        virtualNetworkRules: [
+    }
+    keys: [
+      {
+        name: 'keyName'
+        attributesExp: 1702648632
+        attributesNbf: 10000
+        roleAssignments: [
           {
-            id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001'
-            action: 'Allow'
+            roleDefinitionIdOrName: 'Reader'
+            principalIds: [
+              '<<deploymentSpId>>'
+            ]
           }
         ]
-        ipRules: []
-        bypass: 'AzureServices'
       }
-      name: '<<namePrefix>>-az-kv-x-001'
-      diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
-      diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
-      roleAssignments: [
-        {
-          roleDefinitionIdOrName: 'Reader'
-          principalIds: [
-            '<<deploymentSpId>>'
+    ]
+    accessPolicies: [
+      {
+        objectId: '<<deploymentSpId>>'
+        permissions: {
+          keys: [
+            'get'
+            'list'
+            'update'
+          ]
+          secrets: [
+            'all'
           ]
         }
-      ]
-      privateEndpoints: [
-        {
-          subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints'
-          service: 'vault'
-        }
-      ]
-      diagnosticLogsRetentionInDays: 7
-      secrets: {
-        secureList: [
-          {
-            attributesExp: 1702648632
-            value: 'secretValue'
-            contentType: 'Something'
-            name: 'secretName'
-            roleAssignments: [
-              {
-                roleDefinitionIdOrName: 'Reader'
-                principalIds: [
-                  '<<deploymentSpId>>'
-                ]
-              }
-            ]
-            attributesNbf: 10000
-          }
-        ]
+        tenantId: '<<tenantId>>'
       }
-      diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
-      enableRbacAuthorization: false
+      {
+        objectId: '<<deploymentSpId>>'
+        permissions: {
+          certificates: [
+            'backup'
+            'create'
+            'delete'
+          ]
+          secrets: [
+            'all'
+          ]
+        }
+      }
+    ]
+    diagnosticLogsRetentionInDays: 7
+    diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
+    diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
+    diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
+    diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
   }
 ```
 

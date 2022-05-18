@@ -188,16 +188,16 @@ tags: {
 module publicIPPrefixes './Microsoft.Network/publicIPPrefixes/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-publicIPPrefixes'
   params: {
-      name: '<<namePrefix>>-az-pippfx-x-001'
-      prefixLength: 28
-      roleAssignments: [
-        {
-          roleDefinitionIdOrName: 'Reader'
-          principalIds: [
-            '<<deploymentSpId>>'
-          ]
-        }
-      ]
+    name: '<<namePrefix>>-az-pippfx-x-001'
+    prefixLength: 28
+    roleAssignments: [
+      {
+        roleDefinitionIdOrName: 'Reader'
+        principalIds: [
+          '<<deploymentSpId>>'
+        ]
+      }
+    ]
   }
 ```
 

@@ -106,11 +106,11 @@ For Details see [Prerequisites](https://docs.microsoft.com/en-us/azure/azure-arc
 module extensions './Microsoft.KubernetesConfiguration/extensions/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-extensions'
   params: {
-      name: 'flux'
-      clusterName: '<<namePrefix>>-az-aks-kubenet-001'
-      releaseTrain: 'Stable'
-      releaseNamespace: 'flux-system'
-      extensionType: 'microsoft.flux'
+    name: 'flux'
+    extensionType: 'microsoft.flux'
+    clusterName: '<<namePrefix>>-az-aks-kubenet-001'
+    releaseTrain: 'Stable'
+    releaseNamespace: 'flux-system'
   }
 ```
 
@@ -171,19 +171,19 @@ module extensions './Microsoft.KubernetesConfiguration/extensions/deploy.bicep' 
 module extensions './Microsoft.KubernetesConfiguration/extensions/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-extensions'
   params: {
-      clusterName: '<<namePrefix>>-az-aks-kubenet-001'
-      configurationSettings: {
-        'image-reflector-controller.enabled': 'false'
-        'image-automation-controller.enabled': 'false'
-        'kustomize-controller.enabled': 'true'
-        'source-controller.enabled': 'true'
-        'notification-controller.enabled': 'false'
-      }
-      extensionType: 'microsoft.flux'
-      name: 'flux'
-      releaseTrain: 'Stable'
-      releaseNamespace: 'flux-system'
-      version: '0.5.2'
+    name: 'flux'
+    extensionType: 'microsoft.flux'
+    clusterName: '<<namePrefix>>-az-aks-kubenet-001'
+    releaseTrain: 'Stable'
+    releaseNamespace: 'flux-system'
+    version: '0.5.2'
+    configurationSettings: {
+      'source-controller.enabled': 'true'
+      'kustomize-controller.enabled': 'true'
+      'notification-controller.enabled': 'false'
+      'image-automation-controller.enabled': 'false'
+      'image-reflector-controller.enabled': 'false'
+    }
   }
 ```
 

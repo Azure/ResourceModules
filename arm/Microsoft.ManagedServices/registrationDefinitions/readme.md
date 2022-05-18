@@ -219,26 +219,26 @@ There are a couple of limitations that you should be aware of with Lighthouse:
 module registrationDefinitions './Microsoft.ManagedServices/registrationDefinitions/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-registrationDefinitions'
   params: {
-      name: 'Component Validation - Subscription assignment'
-      managedByTenantId: '195ee85d-2f10-4764-8352-a3c99aa772fb'
-      registrationDescription: 'Managed by Lighthouse'
-      authorizations: [
-        {
-          roleDefinitionId: 'acdd72a7-3385-48ef-bd42-f606fba81ae7'
-          principalId: 'e87a249c-b53b-4685-94fe-863af522e4ee'
-          principalIdDisplayName: 'ResourceModules-Reader'
-        }
-        {
-          roleDefinitionId: 'b24988ac-6180-42a0-ab88-20f7382dd24c'
-          principalId: 'e2f126a7-136e-443f-b39f-f73ddfd146b1'
-          principalIdDisplayName: 'ResourceModules-Contributor'
-        }
-        {
-          roleDefinitionId: '91c1777a-f3dc-4fae-b103-61d183457e46'
-          principalId: '87813317-fb25-4c76-91fe-783af429d109'
-          principalIdDisplayName: 'ResourceModules-LHManagement'
-        }
-      ]
+    name: 'Component Validation - Subscription assignment'
+    registrationDescription: 'Managed by Lighthouse'
+    managedByTenantId: '195ee85d-2f10-4764-8352-a3c99aa772fb'
+    authorizations: [
+      {
+        principalId: 'e87a249c-b53b-4685-94fe-863af522e4ee'
+        principalIdDisplayName: 'ResourceModules-Reader'
+        roleDefinitionId: 'acdd72a7-3385-48ef-bd42-f606fba81ae7'
+      }
+      {
+        principalId: 'e2f126a7-136e-443f-b39f-f73ddfd146b1'
+        principalIdDisplayName: 'ResourceModules-Contributor'
+        roleDefinitionId: 'b24988ac-6180-42a0-ab88-20f7382dd24c'
+      }
+      {
+        principalId: '87813317-fb25-4c76-91fe-783af429d109'
+        principalIdDisplayName: 'ResourceModules-LHManagement'
+        roleDefinitionId: '91c1777a-f3dc-4fae-b103-61d183457e46'
+      }
+    ]
   }
 ```
 
@@ -302,27 +302,27 @@ module registrationDefinitions './Microsoft.ManagedServices/registrationDefiniti
 module registrationDefinitions './Microsoft.ManagedServices/registrationDefinitions/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-registrationDefinitions'
   params: {
-      name: 'Component Validation - Resource group assignment'
-      managedByTenantId: '195ee85d-2f10-4764-8352-a3c99aa772fb'
-      resourceGroupName: 'validation-rg'
-      authorizations: [
-        {
-          roleDefinitionId: 'acdd72a7-3385-48ef-bd42-f606fba81ae7'
-          principalId: 'e87a249c-b53b-4685-94fe-863af522e4ee'
-          principalIdDisplayName: 'ResourceModules-Reader'
-        }
-        {
-          roleDefinitionId: 'b24988ac-6180-42a0-ab88-20f7382dd24c'
-          principalId: 'e2f126a7-136e-443f-b39f-f73ddfd146b1'
-          principalIdDisplayName: 'ResourceModules-Contributor'
-        }
-        {
-          roleDefinitionId: '91c1777a-f3dc-4fae-b103-61d183457e46'
-          principalId: '87813317-fb25-4c76-91fe-783af429d109'
-          principalIdDisplayName: 'ResourceModules-LHManagement'
-        }
-      ]
-      registrationDescription: 'Managed by Lighthouse'
+    name: 'Component Validation - Resource group assignment'
+    registrationDescription: 'Managed by Lighthouse'
+    managedByTenantId: '195ee85d-2f10-4764-8352-a3c99aa772fb'
+    resourceGroupName: 'validation-rg'
+    authorizations: [
+      {
+        principalId: 'e87a249c-b53b-4685-94fe-863af522e4ee'
+        principalIdDisplayName: 'ResourceModules-Reader'
+        roleDefinitionId: 'acdd72a7-3385-48ef-bd42-f606fba81ae7'
+      }
+      {
+        principalId: 'e2f126a7-136e-443f-b39f-f73ddfd146b1'
+        principalIdDisplayName: 'ResourceModules-Contributor'
+        roleDefinitionId: 'b24988ac-6180-42a0-ab88-20f7382dd24c'
+      }
+      {
+        principalId: '87813317-fb25-4c76-91fe-783af429d109'
+        principalIdDisplayName: 'ResourceModules-LHManagement'
+        roleDefinitionId: '91c1777a-f3dc-4fae-b103-61d183457e46'
+      }
+    ]
   }
 ```
 

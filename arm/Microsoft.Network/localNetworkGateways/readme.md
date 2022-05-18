@@ -204,21 +204,21 @@ tags: {
 module localNetworkGateways './Microsoft.Network/localNetworkGateways/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-localNetworkGateways'
   params: {
-      roleAssignments: [
-        {
-          roleDefinitionIdOrName: 'Reader'
-          principalIds: [
-            '<<deploymentSpId>>'
-          ]
-        }
-      ]
-      localAsn: '65123'
-      name: '<<namePrefix>>-az-lng-x-001'
-      localGatewayPublicIpAddress: '8.8.8.8'
-      localAddressPrefixes: [
-        '192.168.1.0/24'
-      ]
-      localBgpPeeringAddress: '192.168.1.5'
+    name: '<<namePrefix>>-az-lng-x-001'
+    localAddressPrefixes: [
+      '192.168.1.0/24'
+    ]
+    localGatewayPublicIpAddress: '8.8.8.8'
+    localAsn: '65123'
+    localBgpPeeringAddress: '192.168.1.5'
+    roleAssignments: [
+      {
+        roleDefinitionIdOrName: 'Reader'
+        principalIds: [
+          '<<deploymentSpId>>'
+        ]
+      }
+    ]
   }
 ```
 

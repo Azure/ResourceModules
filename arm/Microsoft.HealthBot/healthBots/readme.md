@@ -185,15 +185,15 @@ roleAssignments: [
 module healthBots './Microsoft.HealthBot/healthBots/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-healthBots'
   params: {
-      roleAssignments: [
-        {
-          roleDefinitionIdOrName: 'Reader'
-          principalIds: [
-            '<<deploymentSpId>>'
-          ]
-        }
-      ]
-      name: '<<namePrefix>>-az-ahb-x-001'
+    name: '<<namePrefix>>-az-ahb-x-001'
+    roleAssignments: [
+      {
+        roleDefinitionIdOrName: 'Reader'
+        principalIds: [
+          '<<deploymentSpId>>'
+        ]
+      }
+    ]
   }
 ```
 

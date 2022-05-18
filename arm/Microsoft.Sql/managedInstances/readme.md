@@ -439,84 +439,114 @@ userAssignedIdentities: {
 
 ```bicep
 resource kv1 'Microsoft.KeyVault/vaults@2019-09-01' existing = {
-    name: 'adp-<<namePrefix>>-az-kv-x-001'
-    scope: resourceGroup('<<subscriptionId>>','validation-rg')
+  name: 'adp-<<namePrefix>>-az-kv-x-001'
+  scope: resourceGroup('<<subscriptionId>>','validation-rg')
 }
 
 module managedInstances './Microsoft.Sql/managedInstances/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-managedInstances'
   params: {
-      securityAlertPoliciesObj: {
-        name: 'default'
-        state: 'Enabled'
-        emailAccountAdmins: true
+    name: '<<namePrefix>>-az-sqlmi-x-002'
+    administratorLogin: [
+      {
+        Value: {
+          keyVault: {
+            id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001'
+          }
+          secretName: 'administratorLogin'
+        }
+        MemberType: 8
+        IsSettable: true
+        IsGettable: true
+        TypeNameOfValue: 'System.Management.Automation.PSCustomObject'
+        Name: 'reference'
+        IsInstance: true
       }
-      vCores: 4
-      vulnerabilityAssessmentsObj: {
-        name: 'default'
-        emailSubscriptionAdmins: true
-        recurringScansIsEnabled: true
-        recurringScansEmails: [
-          'test1@contoso.com'
-          'test2@contoso.com'
+    ]
+    administratorLoginPassword: [
+      {
+        Value: {
+          keyVault: {
+            id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001'
+          }
+          secretName: 'administratorLoginPassword'
+        }
+        MemberType: 8
+        IsSettable: true
+        IsGettable: true
+        TypeNameOfValue: 'System.Management.Automation.PSCustomObject'
+        Name: 'reference'
+        IsInstance: true
+      }
+    ]
+    subnetId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-sqlmi/subnets/<<namePrefix>>-az-subnet-x-sqlmi'
+    skuName: 'GP_Gen5'
+    skuTier: 'GeneralPurpose'
+    storageSizeInGB: 32
+    vCores: 4
+    licenseType: 'LicenseIncluded'
+    hardwareFamily: 'Gen5'
+    servicePrincipal: 'SystemAssigned'
+    dnsZonePartner: ''
+    timezoneId: 'UTC'
+    collation: 'SQL_Latin1_General_CP1_CI_AS'
+    proxyOverride: 'Proxy'
+    systemAssignedIdentity: true
+    userAssignedIdentities: {
+      '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
+    }
+    primaryUserAssignedIdentityId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001'
+    publicDataEndpointEnabled: false
+    roleAssignments: [
+      {
+        roleDefinitionIdOrName: 'Reader'
+        principalIds: [
+          '<<deploymentSpId>>'
         ]
-        vulnerabilityAssessmentsStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
       }
-      roleAssignments: [
-        {
-          roleDefinitionIdOrName: 'Reader'
-          principalIds: [
-            '<<deploymentSpId>>'
-          ]
-        }
-      ]
-      collation: 'SQL_Latin1_General_CP1_CI_AS'
-      servicePrincipal: 'SystemAssigned'
-      diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
-      name: '<<namePrefix>>-az-sqlmi-x-002'
-      licenseType: 'LicenseIncluded'
-      userAssignedIdentities: {
-        '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
-      }
-      diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
-      subnetId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-sqlmi/subnets/<<namePrefix>>-az-subnet-x-sqlmi'
-      hardwareFamily: 'Gen5'
-      keys: [
-        {
-          name: 'adp-<<namePrefix>>-az-kv-x-sqlmi_keyEncryptionKeySqlMi_4bf367f64c914d8ba698700fb598ad07'
-          serverKeyType: 'AzureKeyVault'
-          uri: 'https://adp-<<namePrefix>>-az-kv-x-sqlmi.vault.azure.net/keys/keyEncryptionKeySqlMi/4bf367f64c914d8ba698700fb598ad07'
-        }
-      ]
-      encryptionProtectorObj: {
+    ]
+    keys: [
+      {
+        name: 'adp-<<namePrefix>>-az-kv-x-sqlmi_keyEncryptionKeySqlMi_4bf367f64c914d8ba698700fb598ad07'
+        uri: 'https://adp-<<namePrefix>>-az-kv-x-sqlmi.vault.azure.net/keys/keyEncryptionKeySqlMi/4bf367f64c914d8ba698700fb598ad07'
         serverKeyType: 'AzureKeyVault'
-        serverKeyName: 'adp-<<namePrefix>>-az-kv-x-sqlmi_keyEncryptionKeySqlMi_4bf367f64c914d8ba698700fb598ad07'
       }
-      databases: [
-        {
-          name: '<<namePrefix>>-az-sqlmidb-x-001'
-          backupLongTermRetentionPolicies: {
-            name: 'default'
-          }
-          backupShortTermRetentionPolicies: {
-            name: 'default'
-          }
-        }
+    ]
+    encryptionProtectorObj: {
+      serverKeyName: 'adp-<<namePrefix>>-az-kv-x-sqlmi_keyEncryptionKeySqlMi_4bf367f64c914d8ba698700fb598ad07'
+      serverKeyType: 'AzureKeyVault'
+    }
+    securityAlertPoliciesObj: {
+      name: 'default'
+      state: 'Enabled'
+      emailAccountAdmins: true
+    }
+    vulnerabilityAssessmentsObj: {
+      name: 'default'
+      emailSubscriptionAdmins: true
+      recurringScansIsEnabled: true
+      recurringScansEmails: [
+        'test1@contoso.com'
+        'test2@contoso.com'
       ]
-      diagnosticLogsRetentionInDays: 7
-      diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
-      publicDataEndpointEnabled: false
-      skuName: 'GP_Gen5'
-      primaryUserAssignedIdentityId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001'
-      systemAssignedIdentity: true
-      skuTier: 'GeneralPurpose'
-      dnsZonePartner: ''
-      timezoneId: 'UTC'
-      administratorLogin: kv1.getSecret('administratorLogin')
-      storageSizeInGB: 32
-      administratorLoginPassword: kv1.getSecret('administratorLoginPassword')
-      proxyOverride: 'Proxy'
-      diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
+      vulnerabilityAssessmentsStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
+    }
+    databases: [
+      {
+        name: '<<namePrefix>>-az-sqlmidb-x-001'
+        backupShortTermRetentionPolicies: {
+          name: 'default'
+        }
+        backupLongTermRetentionPolicies: {
+          name: 'default'
+        }
+      }
+    ]
+    diagnosticLogsRetentionInDays: 7
+    diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
+    diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
+    diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
+    diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
   }
 ```
 

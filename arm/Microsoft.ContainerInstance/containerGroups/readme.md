@@ -225,23 +225,23 @@ userAssignedIdentities: {
 module containerGroups './Microsoft.ContainerInstance/containerGroups/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-containerGroups'
   params: {
-      ports: [
-        {
-          port: '80'
-          protocol: 'Tcp'
-        }
-        {
-          port: '443'
-          protocol: 'Tcp'
-        }
-      ]
-      systemAssignedIdentity: true
-      image: 'mcr.microsoft.com/azuredocs/aci-helloworld'
-      containerName: '<<namePrefix>>-az-aci-x-001'
-      name: '<<namePrefix>>-az-acg-x-001'
-      userAssignedIdentities: {
-        '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
+    name: '<<namePrefix>>-az-acg-x-001'
+    containerName: '<<namePrefix>>-az-aci-x-001'
+    image: 'mcr.microsoft.com/azuredocs/aci-helloworld'
+    ports: [
+      {
+        protocol: 'Tcp'
+        port: '80'
       }
+      {
+        protocol: 'Tcp'
+        port: '443'
+      }
+    ]
+    systemAssignedIdentity: true
+    userAssignedIdentities: {
+      '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
+    }
   }
 ```
 

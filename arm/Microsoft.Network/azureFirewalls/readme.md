@@ -328,113 +328,113 @@ The `networkRuleCollections` parameter accepts a JSON Array of AzureFirewallNetw
 module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-azureFirewalls'
   params: {
-      diagnosticLogsRetentionInDays: 7
-      applicationRuleCollections: [
-        {
-          properties: {
-            priority: 100
-            rules: [
-              {
-                name: 'allow-ase-tags'
-                sourceAddresses: [
-                  '*'
-                ]
-                fqdnTags: [
-                  'AppServiceEnvironment'
-                  'WindowsUpdate'
-                ]
-                protocols: [
-                  {
-                    port: '80'
-                    protocolType: 'HTTP'
-                  }
-                  {
-                    port: '443'
-                    protocolType: 'HTTPS'
-                  }
-                ]
-              }
-              {
-                name: 'allow-ase-management'
-                targetFqdns: [
-                  'management.azure.com'
-                ]
-                sourceAddresses: [
-                  '*'
-                ]
-                protocols: [
-                  {
-                    port: '80'
-                    protocolType: 'HTTP'
-                  }
-                  {
-                    port: '443'
-                    protocolType: 'HTTPS'
-                  }
-                ]
-              }
-            ]
-            action: {
-              type: 'allow'
-            }
+    name: '<<namePrefix>>-az-azfw-x-001'
+    zones: [
+      '1'
+      '2'
+      '3'
+    ]
+    ipConfigurations: [
+      {
+        name: 'ipConfig01'
+        publicIPAddressResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/publicIPAddresses/adp-<<namePrefix>>-az-pip-x-fw'
+        subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-azfw/subnets/AzureFirewallSubnet'
+      }
+    ]
+    applicationRuleCollections: [
+      {
+        name: 'allow-app-rules'
+        properties: {
+          priority: 100
+          action: {
+            type: 'allow'
           }
-          name: 'allow-app-rules'
-        }
-      ]
-      roleAssignments: [
-        {
-          roleDefinitionIdOrName: 'Reader'
-          principalIds: [
-            '<<deploymentSpId>>'
+          rules: [
+            {
+              name: 'allow-ase-tags'
+              sourceAddresses: [
+                '*'
+              ]
+              protocols: [
+                {
+                  protocolType: 'HTTP'
+                  port: '80'
+                }
+                {
+                  protocolType: 'HTTPS'
+                  port: '443'
+                }
+              ]
+              fqdnTags: [
+                'AppServiceEnvironment'
+                'WindowsUpdate'
+              ]
+            }
+            {
+              name: 'allow-ase-management'
+              sourceAddresses: [
+                '*'
+              ]
+              protocols: [
+                {
+                  protocolType: 'HTTP'
+                  port: '80'
+                }
+                {
+                  protocolType: 'HTTPS'
+                  port: '443'
+                }
+              ]
+              targetFqdns: [
+                'management.azure.com'
+              ]
+            }
           ]
         }
-      ]
-      networkRuleCollections: [
-        {
-          properties: {
-            priority: 100
-            rules: [
-              {
-                name: 'allow-ntp'
-                destinationAddresses: [
-                  '*'
-                ]
-                sourceAddresses: [
-                  '*'
-                ]
-                destinationPorts: [
-                  '123'
-                  '12000'
-                ]
-                protocols: [
-                  'Any'
-                ]
-              }
-            ]
-            action: {
-              type: 'allow'
-            }
+      }
+    ]
+    networkRuleCollections: [
+      {
+        name: 'allow-network-rules'
+        properties: {
+          priority: 100
+          action: {
+            type: 'allow'
           }
-          name: 'allow-network-rules'
+          rules: [
+            {
+              name: 'allow-ntp'
+              sourceAddresses: [
+                '*'
+              ]
+              destinationAddresses: [
+                '*'
+              ]
+              destinationPorts: [
+                '123'
+                '12000'
+              ]
+              protocols: [
+                'Any'
+              ]
+            }
+          ]
         }
-      ]
-      diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
-      diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
-      diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
-      name: '<<namePrefix>>-az-azfw-x-001'
-      zones: [
-        '1'
-        '2'
-        '3'
-      ]
-      ipConfigurations: [
-        {
-          name: 'ipConfig01'
-          publicIPAddressResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/publicIPAddresses/adp-<<namePrefix>>-az-pip-x-fw'
-          subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-azfw/subnets/AzureFirewallSubnet'
-        }
-      ]
-      diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
+      }
+    ]
+    roleAssignments: [
+      {
+        roleDefinitionIdOrName: 'Reader'
+        principalIds: [
+          '<<deploymentSpId>>'
+        ]
+      }
+    ]
+    diagnosticLogsRetentionInDays: 7
+    diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
+    diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
+    diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
+    diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
   }
 ```
 

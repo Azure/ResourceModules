@@ -165,7 +165,7 @@ userAssignedIdentities: {
 module firewallPolicies './Microsoft.Network/firewallPolicies/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-firewallPolicies'
   params: {
-      name: '<<namePrefix>>-az-fwpol-min-001'
+    name: '<<namePrefix>>-az-fwpol-min-001'
   }
 ```
 
@@ -241,45 +241,45 @@ module firewallPolicies './Microsoft.Network/firewallPolicies/deploy.bicep' = {
 module firewallPolicies './Microsoft.Network/firewallPolicies/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-firewallPolicies'
   params: {
-      ruleCollectionGroups: [
-        {
-          name: '<<namePrefix>>-rule-001'
-          priority: 5000
-          ruleCollections: [
-            {
-              name: 'collection002'
-              priority: 5555
-              ruleCollectionType: 'FirewallPolicyFilterRuleCollection'
-              rules: [
-                {
-                  sourceAddresses: [
-                    '*'
-                  ]
-                  destinationPorts: [
-                    '80'
-                  ]
-                  name: 'rule002'
-                  sourceIpGroups: []
-                  destinationFqdns: []
-                  destinationAddresses: [
-                    '*'
-                  ]
-                  ipProtocols: [
-                    'TCP'
-                    'UDP'
-                  ]
-                  ruleType: 'NetworkRule'
-                  destinationIpGroups: []
-                }
-              ]
-              action: {
-                type: 'Allow'
-              }
+    name: '<<namePrefix>>-az-fwpol-x-002'
+    ruleCollectionGroups: [
+      {
+        name: '<<namePrefix>>-rule-001'
+        priority: 5000
+        ruleCollections: [
+          {
+            name: 'collection002'
+            priority: 5555
+            action: {
+              type: 'Allow'
             }
-          ]
-        }
-      ]
-      name: '<<namePrefix>>-az-fwpol-x-002'
+            rules: [
+              {
+                name: 'rule002'
+                ipProtocols: [
+                  'TCP'
+                  'UDP'
+                ]
+                destinationPorts: [
+                  '80'
+                ]
+                sourceAddresses: [
+                  '*'
+                ]
+                sourceIpGroups: []
+                ruleType: 'NetworkRule'
+                destinationIpGroups: []
+                destinationAddresses: [
+                  '*'
+                ]
+                destinationFqdns: []
+              }
+            ]
+            ruleCollectionType: 'FirewallPolicyFilterRuleCollection'
+          }
+        ]
+      }
+    ]
   }
 ```
 

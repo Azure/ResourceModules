@@ -119,20 +119,20 @@ For Details see [Prerequisites](https://docs.microsoft.com/en-us/azure/azure-arc
 module fluxConfigurations './Microsoft.KubernetesConfiguration/fluxConfigurations/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-fluxConfigurations'
   params: {
-      clusterName: '<<namePrefix>>-az-aks-kubenet-001'
-      scope: 'cluster'
-      sourceKind: 'GitRepository'
-      name: 'flux2'
-      gitRepository: {
-        repositoryRef: {
-          branch: 'main'
-        }
-        sshKnownHosts: ''
-        syncIntervalInSeconds: 300
-        url: 'https://github.com/mspnp/aks-baseline'
-        timeoutInSeconds: 180
+    name: 'flux2'
+    scope: 'cluster'
+    clusterName: '<<namePrefix>>-az-aks-kubenet-001'
+    namespace: 'flux-system'
+    sourceKind: 'GitRepository'
+    gitRepository: {
+      url: 'https://github.com/mspnp/aks-baseline'
+      timeoutInSeconds: 180
+      syncIntervalInSeconds: 300
+      repositoryRef: {
+        branch: 'main'
       }
-      namespace: 'flux-system'
+      sshKnownHosts: ''
+    }
   }
 ```
 
@@ -203,30 +203,30 @@ module fluxConfigurations './Microsoft.KubernetesConfiguration/fluxConfiguration
 module fluxConfigurations './Microsoft.KubernetesConfiguration/fluxConfigurations/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-fluxConfigurations'
   params: {
-      kustomizations: {
-        unified: {
-          dependsOn: []
-          timeoutInSeconds: 300
-          prune: true
-          syncIntervalInSeconds: 300
-          path: './cluster-manifests'
-          force: false
-        }
+    name: 'flux2'
+    scope: 'cluster'
+    clusterName: '<<namePrefix>>-az-aks-kubenet-001'
+    namespace: 'flux-system'
+    sourceKind: 'GitRepository'
+    gitRepository: {
+      url: 'https://github.com/mspnp/aks-baseline'
+      timeoutInSeconds: 180
+      syncIntervalInSeconds: 300
+      repositoryRef: {
+        branch: 'main'
       }
-      clusterName: '<<namePrefix>>-az-aks-kubenet-001'
-      scope: 'cluster'
-      sourceKind: 'GitRepository'
-      name: 'flux2'
-      gitRepository: {
-        repositoryRef: {
-          branch: 'main'
-        }
-        sshKnownHosts: ''
+      sshKnownHosts: ''
+    }
+    kustomizations: {
+      unified: {
+        path: './cluster-manifests'
+        dependsOn: []
+        timeoutInSeconds: 300
         syncIntervalInSeconds: 300
-        url: 'https://github.com/mspnp/aks-baseline'
-        timeoutInSeconds: 180
+        prune: true
+        force: false
       }
-      namespace: 'flux-system'
+    }
   }
 ```
 

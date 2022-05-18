@@ -356,46 +356,46 @@ tags: {
 module hostpools './Microsoft.DesktopVirtualization/hostpools/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-hostpools'
   params: {
-      vmTemplate: {
-        galleryImagePublisher: 'microsoftwindowsdesktop'
-        customImageId: null
-        galleryImageOffer: 'office-365'
-        osDiskType: 'StandardSSD_LRS'
-        domain: 'domainname.onmicrosoft.com'
-        imageType: 'Gallery'
-        vmSize: {
-          id: 'Standard_D2s_v3'
-          ram: 8
-          cores: 2
-        }
-        useManagedDisks: true
-        imageUri: null
-        galleryImageSKU: '20h1-evd-o365pp'
-        namePrefix: 'avdv2'
+    name: '<<namePrefix>>-az-avdhp-x-001'
+    location: 'westeurope'
+    hostpoolFriendlyName: 'AVDv2'
+    hostpoolDescription: 'My first AVD Host Pool'
+    hostpoolType: 'Pooled'
+    personalDesktopAssignmentType: 'Automatic'
+    maxSessionLimit: 99999
+    loadBalancerType: 'BreadthFirst'
+    customRdpProperty: 'audiocapturemode:i:1;audiomode:i:0;drivestoredirect:s:;redirectclipboard:i:1;redirectcomports:i:1;redirectprinters:i:1;redirectsmartcards:i:1;screen mode id:i:2;'
+    vmTemplate: {
+      domain: 'domainname.onmicrosoft.com'
+      galleryImageOffer: 'office-365'
+      galleryImagePublisher: 'microsoftwindowsdesktop'
+      galleryImageSKU: '20h1-evd-o365pp'
+      imageType: 'Gallery'
+      imageUri: null
+      customImageId: null
+      namePrefix: 'avdv2'
+      osDiskType: 'StandardSSD_LRS'
+      useManagedDisks: true
+      vmSize: {
+        id: 'Standard_D2s_v3'
+        cores: 2
+        ram: 8
       }
-      validationEnviroment: false
-      diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
-      customRdpProperty: 'audiocapturemode:i:1;audiomode:i:0;drivestoredirect:s:;redirectclipboard:i:1;redirectcomports:i:1;redirectprinters:i:1;redirectsmartcards:i:1;screen mode id:i:2;'
-      hostpoolDescription: 'My first AVD Host Pool'
-      location: 'westeurope'
-      hostpoolType: 'Pooled'
-      name: '<<namePrefix>>-az-avdhp-x-001'
-      diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
-      personalDesktopAssignmentType: 'Automatic'
-      loadBalancerType: 'BreadthFirst'
-      roleAssignments: [
-        {
-          roleDefinitionIdOrName: 'Reader'
-          principalIds: [
-            '<<deploymentSpId>>'
-          ]
-        }
-      ]
-      diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
-      diagnosticLogsRetentionInDays: 7
-      hostpoolFriendlyName: 'AVDv2'
-      maxSessionLimit: 99999
-      diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
+    }
+    validationEnviroment: false
+    roleAssignments: [
+      {
+        roleDefinitionIdOrName: 'Reader'
+        principalIds: [
+          '<<deploymentSpId>>'
+        ]
+      }
+    ]
+    diagnosticLogsRetentionInDays: 7
+    diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
+    diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
+    diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
+    diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
   }
 ```
 

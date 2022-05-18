@@ -104,8 +104,7 @@ tags: {
 module tags './Microsoft.Resources/tags/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-tags'
   params: {
-    {}
-    {}
+  
   }
 ```
 
@@ -150,12 +149,12 @@ module tags './Microsoft.Resources/tags/deploy.bicep' = {
 module tags './Microsoft.Resources/tags/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-tags'
   params: {
-      onlyUpdate: false
-      tags: {
-        TestToo: 'No'
-        Test: 'Yes'
-      }
-      resourceGroupName: 'validation-rg'
+    onlyUpdate: false
+    tags: {
+      Test: 'Yes'
+      TestToo: 'No'
+    }
+    resourceGroupName: 'validation-rg'
   }
 ```
 
@@ -197,11 +196,11 @@ module tags './Microsoft.Resources/tags/deploy.bicep' = {
 module tags './Microsoft.Resources/tags/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-tags'
   params: {
-      tags: {
-        TestToo: 'No'
-        Test: 'Yes'
-      }
-      onlyUpdate: true
+    onlyUpdate: true
+    tags: {
+      Test: 'Yes'
+      TestToo: 'No'
+    }
   }
 ```
 

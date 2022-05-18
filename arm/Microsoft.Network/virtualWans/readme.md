@@ -178,7 +178,7 @@ tags: {
 module virtualWans './Microsoft.Network/virtualWans/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-virtualWans'
   params: {
-      name: '<<namePrefix>>-az-vw-min-001'
+    name: '<<namePrefix>>-az-vw-min-001'
   }
 ```
 
@@ -236,19 +236,19 @@ module virtualWans './Microsoft.Network/virtualWans/deploy.bicep' = {
 module virtualWans './Microsoft.Network/virtualWans/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-virtualWans'
   params: {
-      disableVpnEncryption: true
-      allowVnetToVnetTraffic: true
-      name: '<<namePrefix>>-az-vw-x-001'
-      type: 'Basic'
-      allowBranchToBranchTraffic: true
-      roleAssignments: [
-        {
-          roleDefinitionIdOrName: 'Reader'
-          principalIds: [
-            '<<deploymentSpId>>'
-          ]
-        }
-      ]
+    name: '<<namePrefix>>-az-vw-x-001'
+    type: 'Basic'
+    allowBranchToBranchTraffic: true
+    allowVnetToVnetTraffic: true
+    disableVpnEncryption: true
+    roleAssignments: [
+      {
+        roleDefinitionIdOrName: 'Reader'
+        principalIds: [
+          '<<deploymentSpId>>'
+        ]
+      }
+    ]
   }
 ```
 

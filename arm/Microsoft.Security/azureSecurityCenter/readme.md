@@ -135,14 +135,14 @@ securityContactProperties: {
 module azureSecurityCenter './Microsoft.Security/azureSecurityCenter/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-azureSecurityCenter'
   params: {
-      scope: '/subscriptions/<<subscriptionId>>'
-      securityContactProperties: {
-        email: 'foo@contoso.com'
-        phone: '+12345678'
-        alertsToAdmins: 'Off'
-        alertNotifications: 'Off'
-      }
-      workspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
+    scope: '/subscriptions/<<subscriptionId>>'
+    securityContactProperties: {
+      email: 'foo@contoso.com'
+      phone: '+12345678'
+      alertNotifications: 'Off'
+      alertsToAdmins: 'Off'
+    }
+    workspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
   }
 ```
 

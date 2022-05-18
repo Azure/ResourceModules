@@ -170,17 +170,17 @@ New-AzRoleAssignment -ObjectId $PrincipalID -Scope "/providers/Microsoft.Managem
 module managementGroups './Microsoft.Management/managementGroups/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-managementGroups'
   params: {
-      name: 'testMG'
-      parentId: '<<managementGroupId>>'
-      displayName: 'Test MG'
-      roleAssignments: [
-        {
-          roleDefinitionIdOrName: 'Reader'
-          principalIds: [
-            '<<deploymentSpId>>'
-          ]
-        }
-      ]
+    name: 'testMG'
+    displayName: 'Test MG'
+    parentId: '<<managementGroupId>>'
+    roleAssignments: [
+      {
+        roleDefinitionIdOrName: 'Reader'
+        principalIds: [
+          '<<deploymentSpId>>'
+        ]
+      }
+    ]
   }
 ```
 

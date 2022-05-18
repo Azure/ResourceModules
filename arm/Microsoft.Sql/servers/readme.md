@@ -355,14 +355,14 @@ privateEndpoints:  [
 module servers './Microsoft.Sql/servers/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-servers'
   params: {
-      administrators: {
-        tenantId: '<<tenantId>>'
-        azureADOnlyAuthentication: true
-        principalType: 'Application'
-        login: 'myspn'
-        sid: '<<deploymentSpId>>'
-      }
-      name: '<<namePrefix>>-az-sqlsrv-admin-001'
+    name: '<<namePrefix>>-az-sqlsrv-admin-001'
+    administrators: {
+      azureADOnlyAuthentication: true
+      login: 'myspn'
+      sid: '<<deploymentSpId>>'
+      principalType: 'Application'
+      tenantId: '<<tenantId>>'
+    }
   }
 ```
 
@@ -487,75 +487,105 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
 
 ```bicep
 resource kv1 'Microsoft.KeyVault/vaults@2019-09-01' existing = {
-    name: 'adp-<<namePrefix>>-az-kv-x-001'
-    scope: resourceGroup('<<subscriptionId>>','<<resourceGroupName>>')
+  name: 'adp-<<namePrefix>>-az-kv-x-001'
+  scope: resourceGroup('<<subscriptionId>>','<<resourceGroupName>>')
 }
 
 module servers './Microsoft.Sql/servers/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-servers'
   params: {
-      databases: [
-        {
-          diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
-          maxSizeBytes: 34359738368
-          name: '<<namePrefix>>-az-sqldb-x-001'
-          collation: 'SQL_Latin1_General_CP1_CI_AS'
-          licenseType: 'LicenseIncluded'
-          diagnosticLogsRetentionInDays: 7
-          skuTier: 'BusinessCritical'
-          skuName: 'BC_Gen5'
-          skuCapacity: 12
-          skuFamily: 'Gen5'
-          diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
-          diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
-          diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
+    name: '<<namePrefix>>-az-sqlsrv-x-001'
+    administratorLogin: [
+      {
+        Value: {
+          keyVault: {
+            id: '/subscriptions/<<subscriptionId>>/resourceGroups/<<resourceGroupName>>/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001'
+          }
+          secretName: 'administratorLogin'
         }
-      ]
-      roleAssignments: [
-        {
-          roleDefinitionIdOrName: 'Reader'
-          principalIds: [
-            '<<deploymentSpId>>'
-          ]
-        }
-      ]
-      systemAssignedIdentity: true
-      privateEndpoints: [
-        {
-          subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints'
-        }
-      ]
-      administratorLoginPassword: kv1.getSecret('administratorLoginPassword')
-      name: '<<namePrefix>>-az-sqlsrv-x-001'
-      administratorLogin: kv1.getSecret('administratorLogin')
-      userAssignedIdentities: {
-        '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
+        MemberType: 8
+        IsSettable: true
+        IsGettable: true
+        TypeNameOfValue: 'System.Management.Automation.PSCustomObject'
+        Name: 'reference'
+        IsInstance: true
       }
-      vulnerabilityAssessmentsObj: {
-        name: 'default'
-        emailSubscriptionAdmins: true
-        recurringScansIsEnabled: true
-        recurringScansEmails: [
-          'test1@contoso.com'
-          'test2@contoso.com'
+    ]
+    administratorLoginPassword: [
+      {
+        Value: {
+          keyVault: {
+            id: '/subscriptions/<<subscriptionId>>/resourceGroups/<<resourceGroupName>>/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001'
+          }
+          secretName: 'administratorLoginPassword'
+        }
+        MemberType: 8
+        IsSettable: true
+        IsGettable: true
+        TypeNameOfValue: 'System.Management.Automation.PSCustomObject'
+        Name: 'reference'
+        IsInstance: true
+      }
+    ]
+    location: 'westeurope'
+    roleAssignments: [
+      {
+        roleDefinitionIdOrName: 'Reader'
+        principalIds: [
+          '<<deploymentSpId>>'
         ]
-        vulnerabilityAssessmentsStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
       }
-      securityAlertPolicies: [
-        {
-          name: 'Default'
-          state: 'Enabled'
-          emailAccountAdmins: true
-        }
+    ]
+    vulnerabilityAssessmentsObj: {
+      name: 'default'
+      emailSubscriptionAdmins: true
+      recurringScansIsEnabled: true
+      recurringScansEmails: [
+        'test1@contoso.com'
+        'test2@contoso.com'
       ]
-      firewallRules: [
-        {
-          name: 'AllowAllWindowsAzureIps'
-          endIpAddress: '0.0.0.0'
-          startIpAddress: '0.0.0.0'
-        }
-      ]
-      location: 'westeurope'
+      vulnerabilityAssessmentsStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
+    }
+    databases: [
+      {
+        name: '<<namePrefix>>-az-sqldb-x-001'
+        collation: 'SQL_Latin1_General_CP1_CI_AS'
+        skuTier: 'BusinessCritical'
+        skuName: 'BC_Gen5'
+        skuCapacity: 12
+        skuFamily: 'Gen5'
+        maxSizeBytes: 34359738368
+        licenseType: 'LicenseIncluded'
+        diagnosticLogsRetentionInDays: 7
+        diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
+        diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
+        diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
+        diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
+      }
+    ]
+    firewallRules: [
+      {
+        name: 'AllowAllWindowsAzureIps'
+        endIpAddress: '0.0.0.0'
+        startIpAddress: '0.0.0.0'
+      }
+    ]
+    securityAlertPolicies: [
+      {
+        name: 'Default'
+        state: 'Enabled'
+        emailAccountAdmins: true
+      }
+    ]
+    systemAssignedIdentity: true
+    userAssignedIdentities: {
+      '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
+    }
+    privateEndpoints: [
+      {
+        subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints'
+      }
+    ]
   }
 ```
 
