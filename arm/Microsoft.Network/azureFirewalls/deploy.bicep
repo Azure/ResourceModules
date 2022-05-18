@@ -127,17 +127,10 @@ var additionalPublicIpConfigurations_var = [for ipConfiguration in additionalPub
 }]
 
 // ----------------------------------------------------------------------------
-// The reason we need to create a separate ipConfigurations object for each
-// scenario is because you cannot pass in
-//    publicIPAddress: {
-//      id: null
-//    }
-// because it will complain with the error: 'Value for reference ID is missing. Path
-// properties.ipConfigurations[0].properties.publicIpAddress
-// Otherwise, we could simply do
-//    publicIPAddress: {
-//      id: !(empty(azureFirewallSubnetPublicIpId)) ? azureFirewallSubnetPublicIpId : (isCreateDefaultPublicIP ? publicIPAddress.outputs.resourceId : null)
-//    }
+// Prep ipConfigurations object AzureFirewallSubnet for different uses cases:
+// 1. Use existing public ip
+// 2. Use new public ip created in this module
+// 3. Do not use a public ip if isCreateDefaultPublicIP is false
 var subnet_var = {
   subnet: {
     id: '${vNetId}/subnets/AzureFirewallSubnet' // The subnet name must be AzureFirewallSubnet
@@ -233,16 +226,10 @@ resource azureFirewall 'Microsoft.Network/azureFirewalls@2021-05-01' = {
     firewallPolicy: empty(firewallPolicyId) ? null : {
       id: firewallPolicyId
     }
-    // ipConfigurations: concat([
-    //   //Use existing public ip, new public ip created as in this module, or none if isCreateDefaultPublicIP is false
-    //   !empty(azureFirewallSubnetPublicIpId) ? existingPip : (isCreateDefaultPublicIP ? newPip : noPip)
-    // ], additionalPublicIpConfigurations_var)
     ipConfigurations: concat([
-      //Use existing public ip, new public ip created as in this module, or none if isCreateDefaultPublicIP is false
-      // !empty(azureFirewallSubnetPublicIpId) ? existingPip : (isCreateDefaultPublicIP ? newPip : noPip)
-
       {
         name: 'IpConfAzureFirewallSubnet'
+        //Use existing public ip, new public ip created in this module, or none if isCreateDefaultPublicIP is false
         properties: !empty(azureFirewallSubnetPublicIpId) ? union(subnet_var, existingPip) : (isCreateDefaultPublicIP ? union(subnet_var, newPip) : subnet_var)
       }
     ], additionalPublicIpConfigurations_var)
