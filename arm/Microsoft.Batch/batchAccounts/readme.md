@@ -76,6 +76,21 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 }
 ```
 
+### Parameter Usage: `applications`
+
+```json
+"applications": {
+    "value": [
+        {
+            "name": "TestPackage",
+            "allowUpdates": true,
+            "defaultVersion": "1.0",
+            "displayName": "Initial Test Package"
+        }
+    ]
+},
+```
+
 ### Parameter Usage: `userAssignedIdentities`
 
 You can specify multiple user assigned identities to a resource by providing additional resource IDs using the following format:
