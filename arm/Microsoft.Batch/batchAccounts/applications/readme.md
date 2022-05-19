@@ -39,6 +39,7 @@ This module deploys Batch BatchAccounts Applications.
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
+| `location` | string | The location the resource was deployed into. |
 | `name` | string | The name of the created application. |
 | `resourceGroupName` | string | The name of the resource group the application was created in. |
 | `resourceId` | string | The resource ID of the created application. |
