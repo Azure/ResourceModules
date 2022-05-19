@@ -43,7 +43,7 @@ This module deploys Batch BatchAccounts Pools.
 | `taskSchedulingPolicy` | string | `'Pack'` | `[Pack, Spread]` | Specifies how tasks should be distributed across compute nodes. |
 | `taskSlotsPerNode` | int | `1` |  | Number of tasks slots per node. Cannot be modified after pool creation. The maximum value is the smaller of 4 times the number of cores of the vmSize of the pool or 256. |
 | `userAccounts` | array | `[]` |  | The list of user accounts to be created on each node in the pool. |
-| `userAssignedIdentities` | object | `{object}` |  | The list of user identities associated with the Batch pool. |
+| `userAssignedIdentities` | object | `{object}` |  | The user identities associated with the Batch pool. |
 
 
 ### Parameter Usage: `<ParameterPlaceholder>`
