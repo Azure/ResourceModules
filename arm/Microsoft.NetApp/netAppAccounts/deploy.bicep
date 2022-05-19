@@ -7,7 +7,7 @@ param domainName string = ''
 @description('Optional. Required if domainName is specified. Username of Active Directory domain administrator, with permissions to create SMB server machine account in the AD domain.')
 param domainJoinUser string = ''
 
-@description('Optional. Required if domainName is specified. Password of the user specified in domainJoinUser parameter')
+@description('Optional. Required if domainName is specified. Password of the user specified in domainJoinUser parameter.')
 @secure()
 param domainJoinPassword string = ''
 
@@ -17,7 +17,7 @@ param domainJoinOU string = ''
 @description('Optional. Required if domainName is specified. Comma separated list of DNS server IP addresses (IPv4 only) required for the Active Directory (AD) domain join and SMB authentication operations to succeed.')
 param dnsServers string = ''
 
-@description('Optional. Required if domainName is specified. NetBIOS name of the SMB server. A computer account with this prefix will be registered in the AD and used to mount volumes')
+@description('Optional. Required if domainName is specified. NetBIOS name of the SMB server. A computer account with this prefix will be registered in the AD and used to mount volumes.')
 param smbServerNamePrefix string = ''
 
 @description('Optional. Capacity pools to create.')
@@ -119,3 +119,6 @@ output resourceId string = netAppAccount.id
 
 @description('The name of the Resource Group the NetApp account was created in.')
 output resourceGroupName string = resourceGroup().name
+
+@description('The location the resource was deployed into.')
+output location string = netAppAccount.location

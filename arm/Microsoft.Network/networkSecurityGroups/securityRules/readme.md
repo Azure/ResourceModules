@@ -20,16 +20,20 @@ This module deploys Network Security Group Security Rules.
 | Parameter Name | Type | Allowed Values | Description |
 | :-- | :-- | :-- | :-- |
 | `direction` | string | `[Inbound, Outbound]` | The direction of the rule. The direction specifies if rule will be evaluated on incoming or outgoing traffic. |
-| `name` | string |  | The name of the security rule |
-| `networkSecurityGroupName` | string |  | The name of the network security group to deploy the security rule into |
+| `name` | string |  | The name of the security rule. |
 | `priority` | int |  | The priority of the rule. The value can be between 100 and 4096. The priority number must be unique for each rule in the collection. The lower the priority number, the higher the priority of the rule. |
 | `protocol` | string | `[*, Ah, Esp, Icmp, Tcp, Udp]` | Network protocol this rule applies to. |
+
+**Conditional parameters**
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `networkSecurityGroupName` | string | The name of the parent network security group to deploy the security rule into. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `access` | string | `'Deny'` | `[Allow, Deny]` | Whether network traffic is allowed or denied. |
-| `description` | string | `''` |  | A description for this rule |
+| `description` | string | `''` |  | A description for this rule. |
 | `destinationAddressPrefix` | string | `''` |  | The destination address prefix. CIDR or destination IP range. Asterisk "*" can also be used to match all source IPs. Default tags such as "VirtualNetwork", "AzureLoadBalancer" and "Internet" can also be used. |
 | `destinationAddressPrefixes` | array | `[]` |  | The destination address prefixes. CIDR or destination IP ranges. |
 | `destinationApplicationSecurityGroups` | array | `[]` |  | The application security group specified as destination. |
@@ -47,6 +51,6 @@ This module deploys Network Security Group Security Rules.
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the security rule |
-| `resourceGroupName` | string | The resource group the security rule was deployed into |
-| `resourceId` | string | The resource ID of the security rule |
+| `name` | string | The name of the security rule. |
+| `resourceGroupName` | string | The resource group the security rule was deployed into. |
+| `resourceId` | string | The resource ID of the security rule. |

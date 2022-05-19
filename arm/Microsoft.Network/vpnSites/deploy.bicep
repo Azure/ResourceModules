@@ -1,7 +1,7 @@
 @description('Required. Name of the VPN Site.')
 param name string
 
-@description('Required. Resource ID of the virtual WAN to link to')
+@description('Required. Resource ID of the virtual WAN to link to.')
 param virtualWanId string
 
 @description('Optional. Location where all resources will be created.')
@@ -22,7 +22,7 @@ param deviceProperties object = {}
 @description('Optional. The IP-address for the VPN-site. Note: This is a deprecated property, please use the corresponding VpnSiteLinks property instead.')
 param ipAddress string = ''
 
-@description('Optional. IsSecuritySite flag')
+@description('Optional. IsSecuritySite flag.')
 param isSecuritySite bool = false
 
 @description('Optional. The Office365 breakout policy.')
@@ -42,7 +42,7 @@ param vpnSiteLinks array = []
 @description('Optional. Specify the type of lock.')
 param lock string = 'NotSpecified'
 
-@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'')
+@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
 param roleAssignments array = []
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
@@ -95,11 +95,14 @@ module vpnSite_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in
   }
 }]
 
-@description('The name of the VPN site')
+@description('The name of the VPN site.')
 output name string = vpnSite.name
 
-@description('The resource ID of the VPN site')
+@description('The resource ID of the VPN site.')
 output resourceId string = vpnSite.id
 
-@description('The resource group the VPN site was deployed into')
+@description('The resource group the VPN site was deployed into.')
 output resourceGroupName string = resourceGroup().name
+
+@description('The location the resource was deployed into.')
+output location string = vpnSite.location

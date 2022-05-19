@@ -12,17 +12,17 @@ This module can be used to deploy a file share service into a storage account.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/roleAssignments` | [2021-04-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments) |
+| `Microsoft.Authorization/roleAssignments` | [2020-10-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-10-01-preview/roleAssignments) |
 | `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
 | `Microsoft.Storage/storageAccounts/queueServices` | [2021-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Storage/2021-04-01/storageAccounts/queueServices) |
 | `Microsoft.Storage/storageAccounts/queueServices/queues` | [2019-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Storage/2019-06-01/storageAccounts/queueServices/queues) |
 
 ## Parameters
 
-**Required parameters**
+**Conditional parameters**
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `storageAccountName` | string | Name of the Storage Account. |
+| `storageAccountName` | string | The name of the parent Storage Account. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
@@ -36,7 +36,7 @@ This module can be used to deploy a file share service into a storage account.
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of a log analytics workspace. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `name` | string | `'default'` |  | The name of the queue service |
+| `name` | string | `'default'` |  | The name of the queue service. |
 | `queues` | _[queues](queues/readme.md)_ array | `[]` |  | Queues to create. |
 
 
@@ -44,6 +44,6 @@ This module can be used to deploy a file share service into a storage account.
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the deployed file share service |
-| `resourceGroupName` | string | The resource group of the deployed file share service |
-| `resourceId` | string | The resource ID of the deployed file share service |
+| `name` | string | The name of the deployed file share service. |
+| `resourceGroupName` | string | The resource group of the deployed file share service. |
+| `resourceId` | string | The resource ID of the deployed file share service. |

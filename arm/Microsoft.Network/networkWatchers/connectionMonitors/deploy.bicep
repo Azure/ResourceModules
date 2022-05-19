@@ -1,4 +1,4 @@
-@description('Optional. Name of the network watcher resource. Must be in the resource group where the Flow log will be created and same region as the NSG')
+@description('Optional. Name of the network watcher resource. Must be in the resource group where the Flow log will be created and same region as the NSG.')
 param networkWatcherName string = 'NetworkWatcher_${resourceGroup().location}'
 
 @description('Optional. Name of the resource.')
@@ -19,7 +19,7 @@ param testConfigurations array = []
 @description('Optional. List of connection monitor test groups.')
 param testGroups array = []
 
-@description('Optional. Specify the Log Analytics Workspace Resource ID')
+@description('Optional. Specify the Log Analytics Workspace Resource ID.')
 param workspaceResourceId string = ''
 
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
@@ -63,11 +63,14 @@ resource connectionMonitor 'Microsoft.Network/networkWatchers/connectionMonitors
   }
 }
 
-@description('The name of the deployed connection monitor')
+@description('The name of the deployed connection monitor.')
 output name string = connectionMonitor.name
 
-@description('The resource ID of the deployed connection monitor')
+@description('The resource ID of the deployed connection monitor.')
 output resourceId string = connectionMonitor.id
 
-@description('The resource group the connection monitor was deployed into')
+@description('The resource group the connection monitor was deployed into.')
 output resourceGroupName string = resourceGroup().name
+
+@description('The location the resource was deployed into.')
+output location string = connectionMonitor.location

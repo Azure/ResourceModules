@@ -1,12 +1,12 @@
-@description('Required. Name of the parent Service Bus Namespace for the Service Bus Queue.')
+@description('Conditional. The name of the parent Service Bus Namespace for the Service Bus Queue. Required if the template is used in a standalone deployment.')
 @minLength(6)
 @maxLength(50)
 param namespaceName string
 
-@description('Optional. The name of the virtual network rule')
+@description('Optional. The name of the virtual network rule.')
 param name string = '${namespaceName}-vnr'
 
-@description('Required. Resource ID of Virtual Network Subnet')
+@description('Required. Resource ID of Virtual Network Subnet.')
 param virtualNetworkSubnetId string
 
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')

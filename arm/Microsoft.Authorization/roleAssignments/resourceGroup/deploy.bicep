@@ -12,13 +12,13 @@ param resourceGroupName string = resourceGroup().name
 @sys.description('Optional. Subscription ID of the subscription to assign the RBAC role to. If not provided, will use the current scope for deployment.')
 param subscriptionId string = subscription().subscriptionId
 
-@sys.description('Optional. Description of role assignment')
+@sys.description('Optional. The description of the role assignment.')
 param description string = ''
 
-@sys.description('Optional. ID of the delegated managed identity resource')
+@sys.description('Optional. ID of the delegated managed identity resource.')
 param delegatedManagedIdentityResourceId string = ''
 
-@sys.description('Optional. The conditions on the role assignment. This limits the resources it can be assigned to')
+@sys.description('Optional. The conditions on the role assignment. This limits the resources it can be assigned to.')
 param condition string = ''
 
 @sys.description('Optional. Version of the condition. Currently accepted value is "2.0"')
@@ -339,7 +339,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource roleAssignment 'Microsoft.Authorization/roleAssignments@2021-04-01-preview' = {
+resource roleAssignment 'Microsoft.Authorization/roleAssignments@2020-10-01-preview' = {
   name: guid(subscriptionId, resourceGroupName, roleDefinitionId_var, principalId)
   properties: {
     roleDefinitionId: roleDefinitionId_var
@@ -352,14 +352,14 @@ resource roleAssignment 'Microsoft.Authorization/roleAssignments@2021-04-01-prev
   }
 }
 
-@sys.description('The GUID of the Role Assignment')
+@sys.description('The GUID of the Role Assignment.')
 output name string = roleAssignment.name
 
-@sys.description('The resource ID of the Role Assignment')
+@sys.description('The resource ID of the Role Assignment.')
 output scope string = resourceGroup().id
 
-@sys.description('The scope this Role Assignment applies to')
+@sys.description('The scope this Role Assignment applies to.')
 output resourceId string = az.resourceId(resourceGroupName, 'Microsoft.Authorization/roleAssignments', roleAssignment.name)
 
-@sys.description('The name of the resource group the role assignment was applied at')
+@sys.description('The name of the resource group the role assignment was applied at.')
 output resourceGroupName string = resourceGroup().name

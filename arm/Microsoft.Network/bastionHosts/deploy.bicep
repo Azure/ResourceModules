@@ -1,10 +1,10 @@
-@description('Required. Name of the Azure Bastion resource')
+@description('Required. Name of the Azure Bastion resource.')
 param name string
 
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
 
-@description('Required. Shared services Virtual Network resource identifier')
+@description('Required. Shared services Virtual Network resource identifier.')
 param vNetId string
 
 @description('Optional. Specifies the resource ID of the existing public IP to be leveraged by Azure Bastion.')
@@ -48,7 +48,7 @@ param skuType string = 'Basic'
 @description('Optional. The scale units for the Bastion Host resource.')
 param scaleUnits int = 2
 
-@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'')
+@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
 param roleAssignments array = []
 
 @description('Optional. Tags of the resource.')
@@ -187,11 +187,14 @@ module azureBastion_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, inde
   }
 }]
 
-@description('The resource group the Azure Bastion was deployed into')
+@description('The resource group the Azure Bastion was deployed into.')
 output resourceGroupName string = resourceGroup().name
 
-@description('The name the Azure Bastion')
+@description('The name the Azure Bastion.')
 output name string = azureBastion.name
 
-@description('The resource ID the Azure Bastion')
+@description('The resource ID the Azure Bastion.')
 output resourceId string = azureBastion.id
+
+@description('The location the resource was deployed into.')
+output location string = azureBastion.location

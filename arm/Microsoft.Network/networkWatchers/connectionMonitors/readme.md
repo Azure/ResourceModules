@@ -23,11 +23,11 @@ This template deploys Connection Monitors.
 | `endpoints` | array | `[]` | List of connection monitor endpoints. |
 | `location` | string | `[resourceGroup().location]` | Location for all resources. |
 | `name` | string |  | Name of the resource. |
-| `networkWatcherName` | string | `[format('NetworkWatcher_{0}', resourceGroup().location)]` | Name of the network watcher resource. Must be in the resource group where the Flow log will be created and same region as the NSG |
+| `networkWatcherName` | string | `[format('NetworkWatcher_{0}', resourceGroup().location)]` | Name of the network watcher resource. Must be in the resource group where the Flow log will be created and same region as the NSG. |
 | `tags` | object | `{object}` | Tags of the resource. |
 | `testConfigurations` | array | `[]` | List of connection monitor test configurations. |
 | `testGroups` | array | `[]` | List of connection monitor test groups. |
-| `workspaceResourceId` | string | `''` | Specify the Log Analytics Workspace Resource ID |
+| `workspaceResourceId` | string | `''` | Specify the Log Analytics Workspace Resource ID. |
 
 
 ### Parameter Usage: `tags`
@@ -51,6 +51,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the deployed connection monitor |
-| `resourceGroupName` | string | The resource group the connection monitor was deployed into |
-| `resourceId` | string | The resource ID of the deployed connection monitor |
+| `location` | string | The location the resource was deployed into. |
+| `name` | string | The name of the deployed connection monitor. |
+| `resourceGroupName` | string | The resource group the connection monitor was deployed into. |
+| `resourceId` | string | The resource ID of the deployed connection monitor. |

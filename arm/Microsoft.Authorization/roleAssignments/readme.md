@@ -14,7 +14,7 @@ This module deploys Role Assignments across the management group, subscription o
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/roleAssignments` | [2021-04-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments) |
+| `Microsoft.Authorization/roleAssignments` | [2020-10-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-10-01-preview/roleAssignments) |
 
 ## Parameters
 
@@ -27,10 +27,10 @@ This module deploys Role Assignments across the management group, subscription o
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `condition` | string | `''` |  | The conditions on the role assignment. This limits the resources it can be assigned to |
+| `condition` | string | `''` |  | The conditions on the role assignment. This limits the resources it can be assigned to. |
 | `conditionVersion` | string | `'2.0'` | `[2.0]` | Version of the condition. Currently accepted value is "2.0" |
-| `delegatedManagedIdentityResourceId` | string | `''` |  | ID of the delegated managed identity resource |
-| `description` | string | `''` |  | Description of role assignment |
+| `delegatedManagedIdentityResourceId` | string | `''` |  | ID of the delegated managed identity resource. |
+| `description` | string | `''` |  | The description of the role assignment. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `location` | string | `[deployment().location]` |  | Location deployment metadata. |
 | `managementGroupId` | string | `[managementGroup().name]` |  | Group ID of the Management Group to assign the RBAC role to. If not provided, will use the current scope for deployment. |
@@ -101,9 +101,9 @@ module roleassignment 'yourpath/arm/Microsoft.Authorization.roleAssignments/subs
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The GUID of the Role Assignment |
-| `resourceId` | string | The resource ID of the Role Assignment |
-| `scope` | string | The scope this Role Assignment applies to |
+| `name` | string | The GUID of the Role Assignment. |
+| `resourceId` | string | The resource ID of the Role Assignment. |
+| `scope` | string | The scope this Role Assignment applies to. |
 
 ## Considerations
 

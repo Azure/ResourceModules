@@ -27,7 +27,6 @@ This template deploys Virtual Network Peering.
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `peeringConfigurations` | array | `[]` | Optional. The list of remote networks to peering peer with, including the configuration. |
 
-
 ### Parameter Usage: `peeringConfigurations`
 
 Array containing multiple objects for different VNETs to peer with.
@@ -51,6 +50,10 @@ Array containing multiple objects for different VNETs to peer with.
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
+| `localVirtualNetworkPeeringResourceIds` | array | The resource IDs of the deployed virtual network peerings. |
+| `virtualNetworkPeeringNames` | array | The names of the deployed virtual network peerings. |
+| `virtualNetworkPeeringResourceGroup` | string | The resource group of the deployed virtual network peerings. |
 | `localVirtualNetworkPeeringResourceIds` | array | The resource IDs of the deployed virtual network peerings |
 | `virtualNetworkPeeringNames` | array | The names of the deployed virtual network peerings |
 | `virtualNetworkPeeringResourceGroup` | string | The resource group of the deployed virtual network peerings |
+

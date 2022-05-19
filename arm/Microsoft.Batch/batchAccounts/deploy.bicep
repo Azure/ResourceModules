@@ -1,4 +1,4 @@
-@description('Required. Name of the Azure Batch')
+@description('Required. Name of the Azure Batch.')
 param name string
 
 @description('Optional. Location for all Resources.')
@@ -80,13 +80,13 @@ param allowedAuthenticationModes array = []
 @description('Optional. Type of the key source.')
 param encryptionKeySource string = 'Microsoft.Batch'
 
-@description('Conditional. Full path to the versioned secret. Must be set if `encryptionKeySource` is set to `Microsoft.KeyVault` or `poolAllocationMode` is set to `UserSubscription`.')
+@description('Conditional. Full path to the versioned secret. Required if `encryptionKeySource` is set to `Microsoft.KeyVault` or `poolAllocationMode` is set to `UserSubscription`.')
 param encryptionKeyIdentifier string = ''
 
-@description('Conditional. The resource ID of the Azure key vault associated with the Batch account. Must be set if `encryptionKeySource` is set to `Microsoft.KeyVault` or `poolAllocationMode` is set to `UserSubscription`.')
+@description('Conditional. The resource ID of the Azure key vault associated with the Batch account. Required if `encryptionKeySource` is set to `Microsoft.KeyVault` or `poolAllocationMode` is set to `UserSubscription`.')
 param keyVaultResourceId string = ''
 
-@description('Conditional. The URL of the Azure key vault associated with the Batch account. Must be set if `encryptionKeySource` is set to `Microsoft.KeyVault` or `poolAllocationMode` is set to `UserSubscription`.')
+@description('Conditional. The URL of the Azure key vault associated with the Batch account. Required if `encryptionKeySource` is set to `Microsoft.KeyVault` or `poolAllocationMode` is set to `UserSubscription`.')
 param keyVaultUri string = ''
 
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
@@ -204,11 +204,14 @@ resource batchAccount_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@
   scope: batchAccount
 }
 
-@description('The name of the batch account')
+@description('The name of the batch account.')
 output name string = batchAccount.name
 
-@description('The resource ID of the batch account')
+@description('The resource ID of the batch account.')
 output resourceId string = batchAccount.id
 
-@description('The resource group the batch account was deployed into')
+@description('The resource group the batch account was deployed into.')
 output resourceGroupName string = resourceGroup().name
+
+@description('The location the resource was deployed into.')
+output location string = batchAccount.location

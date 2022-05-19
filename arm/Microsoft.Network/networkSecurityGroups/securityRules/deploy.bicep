@@ -1,7 +1,7 @@
-@sys.description('Required. The name of the security rule')
+@sys.description('Required. The name of the security rule.')
 param name string
 
-@sys.description('Required. The name of the network security group to deploy the security rule into')
+@sys.description('Conditional. The name of the parent network security group to deploy the security rule into. Required if the template is used in a standalone deployment.')
 param networkSecurityGroupName string
 
 @sys.description('Optional. Whether network traffic is allowed or denied.')
@@ -11,7 +11,7 @@ param networkSecurityGroupName string
 ])
 param access string = 'Deny'
 
-@sys.description('Optional. A description for this rule')
+@sys.description('Optional. A description for this rule.')
 @maxLength(140)
 param description string = ''
 
@@ -107,11 +107,11 @@ resource securityRule 'Microsoft.Network/networkSecurityGroups/securityRules@202
   }
 }
 
-@sys.description('The resource group the security rule was deployed into')
+@sys.description('The resource group the security rule was deployed into.')
 output resourceGroupName string = resourceGroup().name
 
-@sys.description('The resource ID of the security rule')
+@sys.description('The resource ID of the security rule.')
 output resourceId string = securityRule.id
 
-@sys.description('The name of the security rule')
+@sys.description('The name of the security rule.')
 output name string = securityRule.name

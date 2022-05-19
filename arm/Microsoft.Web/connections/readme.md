@@ -13,7 +13,7 @@ This module deploys an Azure API connection.
 | Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
-| `Microsoft.Authorization/roleAssignments` | [2021-04-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments) |
+| `Microsoft.Authorization/roleAssignments` | [2020-10-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-10-01-preview/roleAssignments) |
 | `Microsoft.Web/connections` | [2016-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Web/2016-06-01/connections) |
 
 ## Parameters
@@ -141,6 +141,7 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the connection |
-| `resourceGroupName` | string | The resource group the connection was deployed into |
-| `resourceId` | string | The resource ID of the connection |
+| `location` | string | The location the resource was deployed into. |
+| `name` | string | The name of the connection. |
+| `resourceGroupName` | string | The resource group the connection was deployed into. |
+| `resourceId` | string | The resource ID of the connection. |

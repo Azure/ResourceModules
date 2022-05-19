@@ -12,7 +12,7 @@ This module deploys a storage account queue
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/roleAssignments` | [2021-04-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments) |
+| `Microsoft.Authorization/roleAssignments` | [2020-10-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-10-01-preview/roleAssignments) |
 | `Microsoft.Storage/storageAccounts/queueServices/queues` | [2019-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Storage/2019-06-01/storageAccounts/queueServices/queues) |
 
 ## Parameters
@@ -21,15 +21,19 @@ This module deploys a storage account queue
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `metadata` | object | A name-value pair that represents queue metadata. |
-| `name` | string | The name of the storage queue to deploy |
-| `storageAccountName` | string | Name of the Storage Account. |
+| `name` | string | The name of the storage queue to deploy. |
+
+**Conditional parameters**
+| Parameter Name | Type | Default Value | Description |
+| :-- | :-- | :-- | :-- |
+| `queueServicesName` | string | `'default'` | The name of the parent queue service. Required if the template is used in a standalone deployment. |
+| `storageAccountName` | string |  | The name of the parent Storage Account. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `queueServicesName` | string | `'default'` | The name of the queue service |
-| `roleAssignments` | array | `[]` | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
+| `roleAssignments` | array | `[]` | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 
 
 ### Parameter Usage: `roleAssignments`
@@ -62,6 +66,6 @@ Create a role assignment for the given resource. If you want to assign a service
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the deployed queue |
-| `resourceGroupName` | string | The resource group of the deployed queue |
-| `resourceId` | string | The resource ID of the deployed queue |
+| `name` | string | The name of the deployed queue. |
+| `resourceGroupName` | string | The resource group of the deployed queue. |
+| `resourceId` | string | The resource ID of the deployed queue. |

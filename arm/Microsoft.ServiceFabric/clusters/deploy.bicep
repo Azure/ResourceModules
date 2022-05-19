@@ -33,7 +33,7 @@ param maxUnusedVersionsToKeep int = 3
 @description('Optional. The settings to enable AAD authentication on the cluster.')
 param azureActiveDirectory object = {}
 
-@description('Optional. Describes the certificate details like thumbprint of the primary certificate, thumbprint of the secondary certificate and the local certificate store location')
+@description('Optional. Describes the certificate details like thumbprint of the primary certificate, thumbprint of the secondary certificate and the local certificate store location.')
 param certificate object = {}
 
 @description('Optional. Describes a list of server certificates referenced by common name that are used to secure the cluster.')
@@ -116,7 +116,7 @@ param upgradePauseStartTimestampUtc string = ''
 @description('Optional. Indicates when new cluster runtime version upgrades will be applied after they are released. By default is Wave0.')
 param upgradeWave string = 'Wave0'
 
-@description('Optional. The VM image VMSS has been configured with. Generic names such as Windows or Linux can be used')
+@description('Optional. The VM image VMSS has been configured with. Generic names such as Windows or Linux can be used.')
 param vmImage string = ''
 
 @allowed([
@@ -129,7 +129,7 @@ param vmssZonalUpgradeMode string = 'Hierarchical'
 @description('Optional. Boolean to pause automatic runtime version upgrades to the cluster.')
 param waveUpgradePaused bool = false
 
-@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'')
+@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
 param roleAssignments array = []
 
 @description('Optional. Array of Service Fabric cluster application types.')
@@ -321,3 +321,6 @@ output resourceId string = serviceFabricCluster.id
 
 @description('The Service Fabric Cluster endpoint.')
 output endpoint string = serviceFabricCluster.properties.clusterEndpoint
+
+@description('The location the resource was deployed into.')
+output location string = serviceFabricCluster.location

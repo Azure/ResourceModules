@@ -2,7 +2,7 @@
 @minLength(1)
 param name string
 
-@description('Required. Name of the parent private link scope.')
+@description('Conditional. The name of the parent private link scope. Required if the template is used in a standalone deployment.')
 @minLength(1)
 param privateLinkScopeName string
 
@@ -36,11 +36,11 @@ resource scopedResource 'Microsoft.Insights/privateLinkScopes/scopedResources@20
   }
 }
 
-@description('The name of the resource group where the resource has been deployed')
+@description('The name of the resource group where the resource has been deployed.')
 output resourceGroupName string = resourceGroup().name
 
-@description('The resource ID of the deployed scopedResource')
+@description('The resource ID of the deployed scopedResource.')
 output resourceId string = scopedResource.id
 
-@description('The full name of the deployed Scoped Resource')
+@description('The full name of the deployed Scoped Resource.')
 output name string = scopedResource.name

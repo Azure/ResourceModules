@@ -1,4 +1,4 @@
-@sys.description('Required. Name of the parent Automation Account')
+@sys.description('Conditional. The name of the parent Automation Account. Required if the template is used in a standalone deployment.')
 param automationAccountName string
 
 @sys.description('Required. The name of the variable.')
@@ -10,7 +10,7 @@ param value string
 @sys.description('Optional. The description of the variable.')
 param description string = ''
 
-@sys.description('Optional. If the variable should be encrypted. For security reasons encryption of variables should be enabled')
+@sys.description('Optional. If the variable should be encrypted. For security reasons encryption of variables should be enabled.')
 param isEncrypted bool = true
 
 @sys.description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
@@ -42,11 +42,11 @@ resource variable 'Microsoft.Automation/automationAccounts/variables@2020-01-13-
   }
 }
 
-@sys.description('The name of the deployed variable')
+@sys.description('The name of the deployed variable.')
 output name string = variable.name
 
-@sys.description('The resource ID of the deployed variable')
+@sys.description('The resource ID of the deployed variable.')
 output resourceId string = variable.id
 
-@sys.description('The resource group of the deployed variable')
+@sys.description('The resource group of the deployed variable.')
 output resourceGroupName string = resourceGroup().name

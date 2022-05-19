@@ -21,7 +21,7 @@ param userAssignedIdentities object = {}
 ])
 param aksClusterNetworkPlugin string = ''
 
-@description('Optional. Specifies the network policy used for building Kubernetes network. - calico or azure')
+@description('Optional. Specifies the network policy used for building Kubernetes network. - calico or azure.')
 @allowed([
   ''
   'azure'
@@ -58,7 +58,7 @@ param managedOutboundIPCount int = 0
 ])
 param aksClusterOutboundType string = 'loadBalancer'
 
-@description('Optional. Tier of a managed cluster SKU. - Free or Paid')
+@description('Optional. Tier of a managed cluster SKU. - Free or Paid.')
 @allowed([
   'Free'
   'Paid'
@@ -122,11 +122,17 @@ param usePrivateDNSZone bool = false
 @description('Required. Properties of the primary agent pool.')
 param primaryAgentPoolProfile array
 
-@description('Optional. Define one or more secondary/additional agent pools')
+@description('Optional. Define one or more secondary/additional agent pools.')
 param agentPools array = []
 
 @description('Optional. Specifies whether the httpApplicationRouting add-on is enabled or not.')
 param httpApplicationRoutingEnabled bool = false
+
+@description('Optional. Specifies whether the ingressApplicationGateway (AGIC) add-on is enabled or not.')
+param ingressApplicationGatewayEnabled bool = false
+
+@description('Conditional. Specifies the resource ID of connected application gateway. Required if `ingressApplicationGatewayEnabled` is set to `true`.')
+param appGatewayResourceId string = ''
 
 @description('Optional. Specifies whether the aciConnectorLinux add-on is enabled or not.')
 param aciConnectorLinuxEnabled bool = false
@@ -202,7 +208,7 @@ param autoScalerProfileMaxTotalUnreadyPercentage string = '45'
 @description('Optional. For scenarios like burst/batch scale where you do not want CA to act before the kubernetes scheduler could schedule all the pods, you can tell CA to ignore unscheduled pods before they are a certain age. Values must be an integer followed by a unit ("s" for seconds, "m" for minutes, "h" for hours, etc).')
 param autoScalerProfileNewPodScaleUpDelay string = '0s'
 
-@description('Optional. Specifies the ok total unready count for the auto-scaler of the AKS cluster.')
+@description('Optional. Specifies the OK total unready count for the auto-scaler of the AKS cluster.')
 param autoScalerProfileOkTotalUnreadyCount string = '3'
 
 @allowed([
@@ -266,7 +272,7 @@ param diagnosticLogsRetentionInDays int = 365
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
 
-@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'')
+@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
 param roleAssignments array = []
 
 @allowed([
@@ -328,10 +334,10 @@ var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
 
 var identityType = systemAssignedIdentity ? 'SystemAssigned' : (!empty(userAssignedIdentities) ? 'UserAssigned' : 'None')
 
-var identity = identityType != 'None' ? {
+var identity = {
   type: identityType
   userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
-} : null
+}
 
 var aksClusterLinuxProfile = {
   adminUsername: aksClusterAdminUsername
@@ -363,10 +369,10 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource managedCluster 'Microsoft.ContainerService/managedClusters@2022-01-01' = {
+resource managedCluster 'Microsoft.ContainerService/managedClusters@2022-02-01' = {
   name: name
   location: location
-  tags: (empty(tags) ? null : tags)
+  tags: tags
   identity: identity
   sku: {
     name: 'Basic'
@@ -381,6 +387,13 @@ resource managedCluster 'Microsoft.ContainerService/managedClusters@2022-01-01' 
     addonProfiles: {
       httpApplicationRouting: {
         enabled: httpApplicationRoutingEnabled
+      }
+      ingressApplicationGateway: {
+        enabled: ingressApplicationGatewayEnabled && !empty(appGatewayResourceId)
+        config: {
+          applicationGatewayId: !empty(appGatewayResourceId) ? any(appGatewayResourceId) : null
+          effectiveApplicationGatewayId: !empty(appGatewayResourceId) ? any(appGatewayResourceId) : null
+        }
       }
       omsagent: {
         enabled: omsAgentEnabled && !empty(monitoringWorkspaceId)
@@ -551,16 +564,16 @@ module managedCluster_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, in
   }
 }]
 
-@description('The resource ID of the managed cluster')
+@description('The resource ID of the managed cluster.')
 output resourceId string = managedCluster.id
 
-@description('The resource group the managed cluster was deployed into')
+@description('The resource group the managed cluster was deployed into.')
 output resourceGroupName string = resourceGroup().name
 
-@description('The name of the managed cluster')
+@description('The name of the managed cluster.')
 output name string = managedCluster.name
 
-@description('The control plane FQDN of the managed cluster')
+@description('The control plane FQDN of the managed cluster.')
 output controlPlaneFQDN string = enablePrivateCluster ? managedCluster.properties.privateFQDN : managedCluster.properties.fqdn
 
 @description('The principal ID of the system assigned identity.')
@@ -571,3 +584,6 @@ output kubeletidentityObjectId string = contains(managedCluster.properties, 'ide
 
 @description('The Object ID of the OMS agent identity.')
 output omsagentIdentityObjectId string = contains(managedCluster.properties, 'addonProfiles') ? contains(managedCluster.properties.addonProfiles, 'omsagent') ? contains(managedCluster.properties.addonProfiles.omsagent, 'identity') ? managedCluster.properties.addonProfiles.omsagent.identity.objectId : '' : '' : ''
+
+@description('The location the resource was deployed into.')
+output location string = managedCluster.location

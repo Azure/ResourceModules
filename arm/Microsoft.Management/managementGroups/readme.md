@@ -18,7 +18,7 @@ This module has some known **limitations**:
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/roleAssignments` | [2021-04-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments) |
+| `Microsoft.Authorization/roleAssignments` | [2020-10-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-10-01-preview/roleAssignments) |
 | `Microsoft.Management/managementGroups` | [2021-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Management/2021-04-01/managementGroups) |
 
 ## Parameters
@@ -26,7 +26,7 @@ This module has some known **limitations**:
 **Required parameters**
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The group ID of the Management group |
+| `name` | string | The group ID of the Management group. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Description |
@@ -68,8 +68,8 @@ Create a role assignment for the given resource. If you want to assign a service
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the management group |
-| `resourceId` | string | The resource ID of the management group |
+| `name` | string | The name of the management group. |
+| `resourceId` | string | The resource ID of the management group. |
 
 ## Considerations
 

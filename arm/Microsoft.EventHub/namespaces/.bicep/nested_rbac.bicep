@@ -1,10 +1,10 @@
-@sys.description('Required. The IDs of the prinicpals to assign to role to')
+@sys.description('Required. The IDs of the principals to assign the role to.')
 param principalIds array
 
-@sys.description('Required. The name of the role to assign. If it cannot be found you can specify the role definition ID instead')
+@sys.description('Required. The name of the role to assign. If it cannot be found you can specify the role definition ID instead.')
 param roleDefinitionIdOrName string
 
-@sys.description('Required. The resource ID of the resource to apply the role assignment to')
+@sys.description('Required. The resource ID of the resource to apply the role assignment to.')
 param resourceId string
 
 @sys.description('Optional. The principal type of the assigned principal ID.')
@@ -18,7 +18,7 @@ param resourceId string
 ])
 param principalType string = ''
 
-@sys.description('Optional. Description of role assignment')
+@sys.description('Optional. The description of the role assignment.')
 param description string = ''
 
 var builtInRoleNames = {
@@ -42,11 +42,11 @@ var builtInRoleNames = {
   'User Access Administrator': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '18d7d88d-d35e-4fb5-a5c3-7773c20a72d9')
 }
 
-resource eventHubNamespace 'Microsoft.EventHub/namespaces@2017-04-01' existing = {
+resource eventHubNamespace 'Microsoft.EventHub/namespaces@2021-11-01' existing = {
   name: last(split(resourceId, '/'))
 }
 
-resource roleAssignment 'Microsoft.Authorization/roleAssignments@2021-04-01-preview' = [for principalId in principalIds: {
+resource roleAssignment 'Microsoft.Authorization/roleAssignments@2020-10-01-preview' = [for principalId in principalIds: {
   name: guid(eventHubNamespace.id, principalId, roleDefinitionIdOrName)
   properties: {
     description: description

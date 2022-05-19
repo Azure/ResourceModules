@@ -5,7 +5,7 @@ param name string
 @sys.description('Optional. Location for all resources.')
 param location string = resourceGroup().location
 
-@sys.description('Required. The type of the Application Group to be created. Allowed values: RemoteApp or Desktop')
+@sys.description('Required. The type of the Application Group to be created. Allowed values: RemoteApp or Desktop.')
 @allowed([
   'RemoteApp'
   'Desktop'
@@ -159,11 +159,14 @@ module appGroup_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) i
   }
 }]
 
-@sys.description('The resource ID  of the AVD application group')
+@sys.description('The resource ID of the AVD application group.')
 output resourceId string = appGroup.id
 
-@sys.description('The resource group the AVD application group was deployed into')
+@sys.description('The resource group the AVD application group was deployed into.')
 output resourceGroupName string = resourceGroup().name
 
-@sys.description('The name of the AVD application group')
+@sys.description('The name of the AVD application group.')
 output name string = appGroup.name
+
+@sys.description('The location the resource was deployed into.')
+output location string = appGroup.location

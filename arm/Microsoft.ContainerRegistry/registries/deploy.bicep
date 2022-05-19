@@ -1,4 +1,4 @@
-@description('Required. Name of your Azure container registry')
+@description('Required. Name of your Azure container registry.')
 @minLength(5)
 @maxLength(50)
 param name string
@@ -9,7 +9,7 @@ param acrAdminUserEnabled bool = false
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
 
-@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'')
+@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
 param roleAssignments array = []
 
 @description('Optional. Configuration Details for private endpoints.')
@@ -71,10 +71,10 @@ param dataEndpointEnabled bool = false
   'Disabled'
   'Enabled'
 ])
-@description('Optional. Whether or not public network access is allowed for the container registry. - Enabled or Disabled')
+@description('Optional. Whether or not public network access is allowed for the container registry. - Enabled or Disabled.')
 param publicNetworkAccess string = 'Enabled'
 
-@description('Optional. Whether to allow trusted Azure services to access a network restricted registry. Not relevant in case of public access. - AzureServices or None')
+@description('Optional. Whether to allow trusted Azure services to access a network restricted registry. Not relevant in case of public access. - AzureServices or None.')
 param networkRuleBypassOptions string = 'AzureServices'
 
 @allowed([
@@ -91,10 +91,10 @@ param networkRuleSetIpRules array = []
   'Disabled'
   'Enabled'
 ])
-@description('Optional. Whether or not zone redundancy is enabled for this container registry')
+@description('Optional. Whether or not zone redundancy is enabled for this container registry.')
 param zoneRedundancy string = 'Disabled'
 
-@description('Optional. All replications to create')
+@description('Optional. All replications to create.')
 param replications array = []
 
 @allowed([
@@ -304,3 +304,6 @@ output resourceId string = registry.id
 
 @description('The principal ID of the system assigned identity.')
 output systemAssignedPrincipalId string = systemAssignedIdentity && contains(registry.identity, 'principalId') ? registry.identity.principalId : ''
+
+@description('The location the resource was deployed into.')
+output location string = registry.location

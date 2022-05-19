@@ -12,16 +12,20 @@ This module deploys an EventHub Namespace EventHubs Consumer Group
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.EventHub/namespaces/eventhubs/consumergroups` | [2021-06-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.EventHub/2021-06-01-preview/namespaces/eventhubs/consumergroups) |
+| `Microsoft.EventHub/namespaces/eventhubs/consumergroups` | [2021-11-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.EventHub/2021-11-01/namespaces/eventhubs/consumergroups) |
 
 ## Parameters
 
 **Required parameters**
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `eventHubName` | string | The name of the event hub namespace event hub |
-| `name` | string | The name of the consumer group |
-| `namespaceName` | string | The name of the event hub namespace |
+| `name` | string | The name of the consumer group. |
+
+**Conditional parameters**
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `eventHubName` | string | The name of the parent event hub namespace event hub. Required if the template is used in a standalone deployment. |
+| `namespaceName` | string | The name of the parent event hub namespace. Required if the template is used in a standalone deployment.s. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Description |

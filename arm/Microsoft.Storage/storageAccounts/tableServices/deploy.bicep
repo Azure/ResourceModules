@@ -1,8 +1,8 @@
 @maxLength(24)
-@description('Required. Name of the Storage Account.')
+@description('Conditional. The name of the parent Storage Account. Required if the template is used in a standalone deployment.')
 param storageAccountName string
 
-@description('Optional. The name of the table service')
+@description('Optional. The name of the table service.')
 param name string = 'default'
 
 @description('Optional. tables to create.')
@@ -115,11 +115,11 @@ module tableServices_tables 'tables/deploy.bicep' = [for (tableName, index) in t
   }
 }]
 
-@description('The name of the deployed table service')
+@description('The name of the deployed table service.')
 output name string = tableServices.name
 
-@description('The resource ID of the deployed table service')
+@description('The resource ID of the deployed table service.')
 output resourceId string = tableServices.id
 
-@description('The resource group of the deployed table service')
+@description('The resource group of the deployed table service.')
 output resourceGroupName string = resourceGroup().name
