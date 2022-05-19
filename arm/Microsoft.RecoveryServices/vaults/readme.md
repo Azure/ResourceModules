@@ -15,7 +15,7 @@ This module deploys a recovery service vault.
 | `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2020-10-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-10-01-preview/roleAssignments) |
 | `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
-| `Microsoft.RecoveryServices/vaults` | [2021-11-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2021-11-01-preview/vaults) |
+| `Microsoft.RecoveryServices/vaults` | [2022-02-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2022-02-01/vaults) |
 | `Microsoft.RecoveryServices/vaults/backupconfig` | [2021-10-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2021-10-01/vaults/backupconfig) |
 | `Microsoft.RecoveryServices/vaults/backupFabrics/protectionContainers` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2021-08-01/vaults/backupFabrics/protectionContainers) |
 | `Microsoft.RecoveryServices/vaults/backupPolicies` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2021-08-01/vaults/backupPolicies) |
@@ -423,7 +423,6 @@ You can specify multiple user assigned identities to a resource by providing add
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `location` | string | The location the resource was deployed into. |
 | `name` | string | The Name of the recovery services vault. |
 | `resourceGroupName` | string | The name of the resource group the recovery services vault was created in. |
 | `resourceId` | string | The resource ID of the recovery services vault. |

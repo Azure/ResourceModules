@@ -148,7 +148,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource rsv 'Microsoft.RecoveryServices/vaults@2021-11-01-preview' = {
+resource rsv 'Microsoft.RecoveryServices/vaults@2022-02-01' = {
   name: name
   location: location
   tags: tags
@@ -279,6 +279,3 @@ output name string = rsv.name
 
 @description('The principal ID of the system assigned identity.')
 output systemAssignedPrincipalId string = systemAssignedIdentity && contains(rsv.identity, 'principalId') ? rsv.identity.principalId : ''
-
-@description('The location the resource was deployed into.')
-output location string = rsv.location
