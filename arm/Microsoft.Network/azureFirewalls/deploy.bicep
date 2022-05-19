@@ -15,16 +15,16 @@ param azureSkuName string = 'AZFW_VNet'
 ])
 param azureSkuTier string = 'Standard'
 
-@description('Required. Shared services Virtual Network resource ID. The virtual network ID containing AzureFirewallSubnet. If a public ip is not provided, then the public ip that is created as part of this module will be applied with the subnet provided in this variable')
+@description('Required. Shared services Virtual Network resource ID. The virtual network ID containing AzureFirewallSubnet. If a public ip is not provided, then the public ip that is created as part of this module will be applied with the subnet provided in this variable.')
 param vNetId string
 
-@description('Optional. The public ip resource ID to associate to the AzureFirewallSubnet. If empty, then the public ip that is created as part of this module will be applied to the AzureFirewallSubnet')
+@description('Optional. The public ip resource ID to associate to the AzureFirewallSubnet. If empty, then the public ip that is created as part of this module will be applied to the AzureFirewallSubnet.')
 param azureFirewallSubnetPublicIpId string = ''
 
-@description('Optional. This is to add any additional public ip configurations on top of the public ip with subnet ip configuration')
+@description('Optional. This is to add any additional public ip configurations on top of the public ip with subnet ip configuration.')
 param additionalPublicIpConfigurations array = []
 
-@description('Optional. Specifies if a public ip should be created by default if one is not provided')
+@description('Optional. Specifies if a public ip should be created by default if one is not provided.')
 param isCreateDefaultPublicIP bool = true
 
 @description('Optional. Specifies the properties of the public IP to create and be used by Azure Firewall. If it\'s not provided and publicIPAddressId is empty, a \'-pip\' suffix will be appended to the Firewall\'s name.')
@@ -85,7 +85,7 @@ param location string = resourceGroup().location
 @description('Optional. Specify the type of lock.')
 param lock string = 'NotSpecified'
 
-@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'')
+@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
 param roleAssignments array = []
 
 @description('Optional. Tags of the Azure Firewall resource.')
@@ -290,7 +290,7 @@ output resourceGroupName string = resourceGroup().name
 @description('The private IP of the Azure firewall.')
 output privateIp string = azureFirewall.properties.ipConfigurations[0].properties.privateIPAddress
 
-@description('The public ipconfiguration object for the AzureFirewallSubnet')
+@description('The public ipconfiguration object for the AzureFirewallSubnet.')
 output ipConfAzureFirewallSubnet object = azureFirewall.properties.ipConfigurations[0]
 
 @description('List of Application Rule Collections.')
