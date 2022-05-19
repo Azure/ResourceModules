@@ -1,7 +1,7 @@
 @description('Required. The name of the parent Batch Account. Required if the template is used in a standalone deployment.')
 param batchAccountName string
 
-@description('Optional. The list of user identities associated with the Batch pool.')
+@description('Optional. The user identities associated with the Batch pool.')
 param userAssignedIdentities object = {}
 
 @description('Optional. The list of application licenses must be a subset of available Batch service application licenses. If a license is requested which is not supported, pool creation will fail.')
