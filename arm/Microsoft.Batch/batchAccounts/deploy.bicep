@@ -235,8 +235,8 @@ module application 'applications/deploy.bicep' = [for app in applications: {
   }
 }]
 
-module pool 'pools/deploy.bicep' = [for pool in pools: {
-  name: '${uniqueString(deployment().name, batchAccount.name)}-${pool.name}'
+module pool 'pools/deploy.bicep' = [for (pool, index) in pools: {
+  name: '${uniqueString(deployment().name, batchAccount.name)}-pool-${index}'
   params: {
     batchAccountName: batchAccount.name
     userAssignedIdentities: contains(pool, 'userAssignedIdentities') ? pool.userAssignedIdentities : null
