@@ -142,9 +142,9 @@ var existingPip = {
   }
 }
 var newPip = {
-  publicIPAddress: {
+  publicIPAddress: (empty(azureFirewallSubnetPublicIpId) && isCreateDefaultPublicIP) ? {
     id: publicIPAddress.outputs.resourceId
-  }
+  } : null
 }
 
 var ipConfigurations = concat([
