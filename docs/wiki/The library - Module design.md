@@ -123,12 +123,8 @@ Use the following naming standard for module files and folders:
 
 This section details patterns among extension resources that are usually very similar in their structure among all modules supporting them:
 
-- [Locks](#locks)
-- [RBAC](#rbac)
-- [Diagnostic Settings](#diagnostic-settings)
-- [Private Endpoints](#private-endpoints)
-
-### Locks
+<details>
+<summary>Locks</summary>
 
 The locks extension can be added as a `resource` to the resource template directly.
 
@@ -151,7 +147,10 @@ resource <mainResource>_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lo
 }
 ```
 
-### RBAC
+</details>
+
+<details>
+<summary>RBAC</summary>
 
 The RBAC deployment has 2 elements to it. A module that contains the implementation, and a module reference in the parent resource - each with it's own loop to enable you to deploy n-amount of role assignments to n-amount of principals.
 
@@ -213,7 +212,11 @@ resource roleAssignment 'Microsoft.Authorization/roleAssignments@2020-10-01-prev
 }]
 ```
 
-### Diagnostic settings
+</details>
+
+<details>
+<summary>Diagnostic Settings</summary>
+
 
 The diagnostic settings may differ slightly depending from resource to resource. Most notably, the `<LogsIfAny>` as well as `<MetricsIfAny>` may be different and have to be added by you. However, it may just as well be the case they no metrics or no logs are existing. You can then remove the parameter and property from the resource itself.
 
@@ -287,7 +290,11 @@ resource <mainResource>_diagnosticSettings 'Microsoft.Insights/diagnosticsetting
 }
 ```
 
-### Private Endpoints
+</details>
+
+<details>
+<summary>Private Endpoints</summary>
+
 
 The Private Endpoint deployment has 2 elements to it. A module that contains the implementation, and a module reference in the parent resource. The first loops through the endpoints we want to create, the second processes them.
 
@@ -297,71 +304,27 @@ The Private Endpoint deployment has 2 elements to it. A module that contains the
 @description('Optional. Configuration Details for private endpoints.')
 param privateEndpoints array = []
 
-module <mainResource>_privateEndpoints '.bicep/nested_privateEndpoint.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
-  name: '${uniqueString(deployment().name, location)}-PrivateEndpoint-${index}'
+module <mainResource>_privateEndpoints '../../Microsoft.Network/privateEndpoints/deploy.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
+  name: '${uniqueString(deployment().name, location)}-<mainResource>-PrivateEndpoint-${index}'
   params: {
-    privateEndpointResourceId: <mainResource>.id
-    privateEndpointVnetLocation: reference(split(privateEndpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location
-    privateEndpointObj: privateEndpoint
-    tags: tags
+    groupId: privateEndpoint.groupId
+    name: contains(privateEndpoint, 'name') ? privateEndpoint.name : '${last(split(<mainResource>.id, '/'))}-${privateEndpoint.groupId}'
+    serviceResourceId: <mainResource>.id
+    subnetId: privateEndpoint.subnetResourceId
+    enableDefaultTelemetry: enableDefaultTelemetry
+    location: reference(split(privateEndpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location
+    lock: contains(privateEndpoint, 'lock') ? privateEndpoint.lock : 'NotSpecified'
+    privateDnsZoneGroups: contains(privateEndpoint, 'privateDnsZoneGroups') ? privateEndpoint.privateDnsZoneGroups : []
+    roleAssignments: contains(privateEndpoint, 'roleAssignments') ? privateEndpoint.roleAssignments : []
+    tags: contains(privateEndpoint, 'tags') ? privateEndpoint.tags : {}
+    manualPrivateLinkServiceConnections: contains(privateEndpoint, 'manualPrivateLinkServiceConnections') ? privateEndpoint.manualPrivateLinkServiceConnections : []
+    customDnsConfigs: contains(privateEndpoint, 'customDnsConfigs') ? privateEndpoint.customDnsConfigs : []
   }
 }]
+
 ```
 
-#### 2nd Element as nested `.bicep/nested_privateEndpoint.bicep` file
-
-```bicep
-param privateEndpointResourceId string
-param privateEndpointVnetLocation string
-param privateEndpointObj object
-param tags object
-
-var privateEndpointResourceName = last(split(privateEndpointResourceId, '/'))
-var privateEndpoint_var = {
-  name: contains(privateEndpointObj, 'name') ? (empty(privateEndpointObj.name) ? '${privateEndpointResourceName}-${privateEndpointObj.service}' : privateEndpointObj.name) : '${privateEndpointResourceName}-${privateEndpointObj.service}'
-  subnetResourceId: privateEndpointObj.subnetResourceId
-  service: [
-    privateEndpointObj.service
-  ]
-  privateDnsZoneResourceIds: contains(privateEndpointObj, 'privateDnsZoneResourceIds') ? (empty(privateEndpointObj.privateDnsZoneResourceIds) ? [] : privateEndpointObj.privateDnsZoneResourceIds) : []
-  customDnsConfigs: contains(privateEndpointObj, 'customDnsConfigs') ? (empty(privateEndpointObj.customDnsConfigs) ? null : privateEndpointObj.customDnsConfigs) : null
-}
-
-resource privateEndpoint 'Microsoft.Network/privateEndpoints@2021-05-01' = {
-  name: privateEndpoint_var.name
-  location: privateEndpointVnetLocation
-  tags: tags
-  properties: {
-    privateLinkServiceConnections: [
-      {
-        name: privateEndpoint_var.name
-        properties: {
-          privateLinkServiceId: privateEndpointResourceId
-          groupIds: privateEndpoint_var.service
-        }
-      }
-    ]
-    manualPrivateLinkServiceConnections: []
-    subnet: {
-      id: privateEndpoint_var.subnetResourceId
-    }
-    customDnsConfigs: privateEndpoint_var.customDnsConfigs
-  }
-}
-
-resource privateDnsZoneGroups 'Microsoft.Network/privateEndpoints/privateDnsZoneGroups@2021-05-01' = if (!empty(privateEndpoint_var.privateDnsZoneResourceIds)) {
-  name: 'default'
-  properties: {
-    privateDnsZoneConfigs: [for privateDnsZoneResourceId in privateEndpoint_var.privateDnsZoneResourceIds: {
-      name: last(split(privateDnsZoneResourceId, '/'))
-      properties: {
-        privateDnsZoneId: privateDnsZoneResourceId
-      }
-    }]
-  }
-  parent: privateEndpoint
-}
-```
+</details>
 
 ---
 
