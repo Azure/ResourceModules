@@ -296,6 +296,21 @@ stages:
               templateFilePath: $(templateFilePath)
               displayName: Default SIG and SID
 
+  - stage: deploy_bat
+    displayName: Deploy batch account
+    dependsOn:
+      - deploy_sa
+    variables:
+      resourceType: 'Microsoft.Batch/batchAccounts'
+      templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
+    jobs:
+      - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
+        parameters:
+          deploymentBlocks:
+            - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: Default batch account
+
   - stage: deploy_imgt
     displayName: Deploy image template
     condition: and(succeeded(), eq('${{ parameters.deployVhdDependencies }}', true))
