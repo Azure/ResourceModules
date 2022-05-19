@@ -24,6 +24,7 @@ The CI environment supports both ARM and Bicep and can be leveraged using GitHub
 * For information on contributing, see [Contribution](<https://github.com/Azure/ResourceModules/wiki/Contribution%20guide>)
 * File an issue via [GitHub Issues](https://github.com/azure/ResourceModules/issues/new/choose)
 * For reference documentation visit [Enterprise-Scale](https://github.com/azure/enterprise-scale)
+
 ## Available Resource Modules
 
 | Name | Status |
