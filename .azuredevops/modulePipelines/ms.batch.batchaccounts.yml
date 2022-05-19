@@ -47,7 +47,6 @@ stages:
           deploymentBlocks:
             - path: $(modulePath)/.parameters/min.parameters.json
             - path: $(modulePath)/.parameters/pool.min.parameters.json
-            - path: $(modulePath)/.parameters/app.parameters.json
             - path: $(modulePath)/.parameters/parameters.json
 
   - stage: Publishing
