@@ -1,5 +1,5 @@
-@description('Conditional. The name of the parent Batch Account. Required if the template is used in a standalone deployment.')
-param batchAccountName string = ''
+@description('Required. The name of the parent Batch Account. Required if the template is used in a standalone deployment.')
+param batchAccountName string
 
 @description('Optional. The list of user identities associated with the Batch pool.')
 param userAssignedIdentities object = {}
@@ -11,53 +11,52 @@ param applicationLicenses array = []
 @maxLength(10)
 param applicationPackages array = []
 
-@description('Optional.')
+@description('Optional. The list of certificate objects to install on the pool')
 param certificates array = []
 
-@description('Required.')
+@description('Required. Deployment configuration properties.')
 param deploymentConfiguration object
 
-@description('Required.')
+@description('Required. The display name need not be unique and can contain any Unicode characters up to a maximum length of 1024.')
 param displayName string
 
-@description('Optional.')
+@description('Optional. This imposes restrictions on which nodes can be assigned to the pool')
 @allowed([
   'Enabled'
   'Disabled'
 ])
 param interNodeCommunication string = 'Disabled'
 
-@description('Optional.')
+@description('Optional. The List of metadate for the use of user code.')
 param metadata array = []
 
-@description('Optional.')
+@description('Optional. The List of mount configurations. This supports Azure Files, NFS, CIFS/SMB, and Blobfuse.')
 param mountConfiguration array = []
 
-@description('Required.')
+@description('Required. The network configuration for a pool.')
 param networkConfiguration object
 
-@description('Required.')
+@description('Required. Defines the desired size of the pool.')
 param scaleSettings object
 
-@description('Optional.')
+@description('Optional. The start task is executed when a node is started up.')
 param startTask object = {}
 
-@description('Optional.')
+@description('Optional. Specifies how tasks should be distributed across compute nodes.')
 @allowed([
   'Pack'
   'Spread'
 ])
 param taskSchedulingPolicy string = 'Pack'
 
-@description('Optional.')
+@description('Optional. Number of tasks slots per node. Cannot be modified after pool creation. The maximum value is the smaller of 4 times the number of cores of the vmSize of the pool or 256.')
 param taskSlotsPerNode int = 1
 
-@description('Optional.')
+@description('Optional. The list of user accounts to be created on each node in the pool.')
 param userAccounts array = []
 
-@description('Required.')
+@description('Required. For information about available sizes of virtual machines for Cloud Services pools (pools created with cloudServiceConfiguration), see Sizes for Cloud Services (https://azure.microsoft.com/documentation/articles/cloud-services-sizes-specs/)')
 param vmSize string
-
 
 var identityType = !empty(userAssignedIdentities) ? 'UserAssigned' : 'None'
 
