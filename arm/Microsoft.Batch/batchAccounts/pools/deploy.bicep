@@ -55,7 +55,7 @@ param taskSlotsPerNode int = 1
 @description('Optional. The list of user accounts to be created on each node in the pool.')
 param userAccounts array = []
 
-@description('Required. For information about available sizes of virtual machines for Cloud Services pools (pools created with cloudServiceConfiguration), see Sizes for Cloud Services (https://azure.microsoft.com/documentation/articles/cloud-services-sizes-specs/)')
+@description('Required. For information about available sizes of virtual machines for Cloud Services pools (pools created with cloudServiceConfiguration), see Sizes for Cloud Services (https://azure.microsoft.com/documentation/articles/cloud-services-sizes-specs/).')
 param vmSize string
 
 @description('Optional. Location for all resources.')
