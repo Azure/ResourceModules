@@ -11,7 +11,7 @@ param applicationLicenses array = []
 @maxLength(10)
 param applicationPackages array = []
 
-@description('Optional. The list of certificate objects to install on the pool')
+@description('Optional. The list of certificate objects to install on the pool.')
 param certificates array = []
 
 @description('Required. Deployment configuration properties.')
@@ -20,7 +20,7 @@ param deploymentConfiguration object
 @description('Required. The display name need not be unique and can contain any Unicode characters up to a maximum length of 1024.')
 param displayName string
 
-@description('Optional. This imposes restrictions on which nodes can be assigned to the pool')
+@description('Optional. This imposes restrictions on which nodes can be assigned to the pool.')
 @allowed([
   'Enabled'
   'Disabled'
@@ -58,11 +58,29 @@ param userAccounts array = []
 @description('Required. For information about available sizes of virtual machines for Cloud Services pools (pools created with cloudServiceConfiguration), see Sizes for Cloud Services (https://azure.microsoft.com/documentation/articles/cloud-services-sizes-specs/)')
 param vmSize string
 
+@description('Optional. Location for all resources.')
+param location string = resourceGroup().location
+
+@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+param enableDefaultTelemetry bool = true
+
 var identityType = !empty(userAssignedIdentities) ? 'UserAssigned' : 'None'
 
 var identity = {
   type: identityType
   userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
+}
+
+resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
+  name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
+  properties: {
+    mode: 'Incremental'
+    template: {
+      '$schema': 'https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#'
+      contentVersion: '1.0.0.0'
+      resources: []
+    }
+  }
 }
 
 resource batchAccount 'Microsoft.Batch/batchAccounts@2022-01-01' existing = {

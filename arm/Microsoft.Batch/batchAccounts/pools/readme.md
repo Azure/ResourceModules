@@ -32,8 +32,10 @@ This module deploys Batch BatchAccounts Pools.
 | :-- | :-- | :-- | :-- | :-- |
 | `applicationLicenses` | array | `[]` |  | The list of application licenses must be a subset of available Batch service application licenses. If a license is requested which is not supported, pool creation will fail. |
 | `applicationPackages` | array | `[]` |  | The list of application packages to install on the nodes. There is a maximum of 10 application package references on any given pool. |
-| `certificates` | array | `[]` |  | The list of certificate objects to install on the pool |
-| `interNodeCommunication` | string | `'Disabled'` | `[Enabled, Disabled]` | This imposes restrictions on which nodes can be assigned to the pool |
+| `certificates` | array | `[]` |  | The list of certificate objects to install on the pool. |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `interNodeCommunication` | string | `'Disabled'` | `[Enabled, Disabled]` | This imposes restrictions on which nodes can be assigned to the pool. |
+| `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `metadata` | array | `[]` |  | The List of metadate for the use of user code. |
 | `mountConfiguration` | array | `[]` |  | The List of mount configurations. This supports Azure Files, NFS, CIFS/SMB, and Blobfuse. |
 | `startTask` | object | `{object}` |  | The start task is executed when a node is started up. |
