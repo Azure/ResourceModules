@@ -201,7 +201,6 @@ module logAnalyticsWorkspace_savedSearches 'savedSearches/deploy.bicep' = [for (
   params: {
     logAnalyticsWorkspaceName: logAnalyticsWorkspace.name
     name: '${savedSearch.name}${uniqueString(deployment().name)}'
-    etag: savedSearch.etag
     displayName: savedSearch.displayName
     category: savedSearch.category
     query: savedSearch.query
