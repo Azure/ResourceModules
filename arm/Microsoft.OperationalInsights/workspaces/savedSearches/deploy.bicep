@@ -25,6 +25,9 @@ param functionParameters string = ''
 @description('Optional. The version number of the query language.')
 param version int = 2
 
+@description('Optional. The ETag of the saved search. To override an existing saved search, use "*" or specify the current Etag')
+param etag string = '*'
+
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
 
@@ -47,7 +50,9 @@ resource workspace 'Microsoft.OperationalInsights/workspaces@2021-06-01' existin
 resource savedSearch 'Microsoft.OperationalInsights/workspaces/savedSearches@2020-08-01' = {
   name: name
   parent: workspace
+  //etag: etag // According to API, the variable should be here, but it doesn't work here.
   properties: {
+    etag: etag
     tags: tags
     displayName: displayName
     category: category
