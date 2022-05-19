@@ -352,7 +352,7 @@ module virtualMachine_nic '.bicep/nested_networkInterface.bicep' = [for (nicConf
     enableIPForwarding: contains(nicConfiguration, 'enableIPForwarding') ? (!empty(nicConfiguration.enableIPForwarding) ? nicConfiguration.enableIPForwarding : false) : false
     enableAcceleratedNetworking: contains(nicConfiguration, 'enableAcceleratedNetworking') ? nicConfiguration.enableAcceleratedNetworking : true
     dnsServers: contains(nicConfiguration, 'dnsServers') ? (!empty(nicConfiguration.dnsServers) ? nicConfiguration.dnsServers : []) : []
-    networkSecurityGroupId: contains(nicConfiguration, 'nsgId') ? (!empty(nicConfiguration.nsgId) ? nicConfiguration.nsgId : '') : ''
+    networkSecurityGroupId: contains(nicConfiguration, 'networkSecurityGroupId') ? (!empty(nicConfiguration.networkSecurityGroupId) ? nicConfiguration.networkSecurityGroupId : '') : ''
     ipConfigurationArray: nicConfiguration.ipConfigurations
     lock: lock
     diagnosticStorageAccountId: diagnosticStorageAccountId
