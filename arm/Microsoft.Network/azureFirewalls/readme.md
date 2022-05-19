@@ -6,9 +6,8 @@ This module deploys a firewall.
 
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
-- [Outputs](#Outputs)
 - [Considerations](#Considerations)
-- [Deployment examples](#Deployment-examples)
+- [Outputs](#Outputs)
 
 ## Resource types
 
