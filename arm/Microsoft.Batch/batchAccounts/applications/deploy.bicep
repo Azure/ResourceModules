@@ -13,7 +13,6 @@ param displayName string = ''
 @description('Optional. A value indicating whether packages within the application may be overwritten using the same version string.')
 param allowUpdates bool = true
 
-
 resource batch 'Microsoft.Batch/batchAccounts@2022-01-01' existing = {
   name: batchName
 }
@@ -28,7 +27,6 @@ resource application 'Microsoft.Batch/batchAccounts/applications@2022-01-01' = {
   }
 }
 
-
 @description('The name of the resource group the application was created in.')
 output resourceGroupName string = resourceGroup().name
 
@@ -37,3 +35,6 @@ output name string = application.name
 
 @description('The resource ID of the created application.')
 output resourceId string = application.id
+
+@description('The location the resource was deployed into.')
+output location string = batch.location

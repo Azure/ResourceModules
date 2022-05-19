@@ -93,3 +93,15 @@ resource pool 'Microsoft.Batch/batchAccounts/pools@2022-01-01' = {
     vmSize: vmSize
   }
 }
+
+@description('The name of the deployed batch account pool.')
+output name string = pool.name
+
+@description('The resource ID of the deployed batch account pool.')
+output resourceId string = pool.id
+
+@description('The resource group of the deployed batch account pool.')
+output resourceGroupName string = resourceGroup().name
+
+@description('The location the resource was deployed into.')
+output location string = batchAccount.location
