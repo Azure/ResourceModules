@@ -239,21 +239,21 @@ module pool 'pools/deploy.bicep' = [for pool in pools: {
   name: '${uniqueString(deployment().name, batchAccount.name)}-${pool.name}'
   params: {
     batchAccountName: batchAccount.name
-    userAssignedIdentities: pool.userAssignedIdentities
-    applicationLicenses: pool.applicationLicenses
-    applicationPackages: pool.applicationPackages
-    certificates: pool.certificates
+    userAssignedIdentities: contains(pool, 'userAssignedIdentities') ? pool.userAssignedIdentities : null
+    applicationLicenses: contains(pool, 'applicationLicenses') ? pool.applicationLicenses : null
+    applicationPackages: contains(pool, 'applicationPackages') ? pool.applicationPackages : null
+    certificates: contains(pool, 'certificates') ? pool.certificates : null
     deploymentConfiguration: pool.deploymentConfiguration
     displayName: pool.displayName
-    interNodeCommunication: pool.interNodeCommunication
-    metadata: pool.metadata
-    mountConfiguration: pool.mountConfiguration
+    interNodeCommunication: contains(pool, 'interNodeCommunication') ? pool.interNodeCommunication : null
+    metadata: contains(pool, 'metadata') ? pool.metadata : null
+    mountConfiguration: contains(pool, 'mountConfiguration') ? pool.mountConfiguration : null
     networkConfiguration: pool.networkConfiguration
     scaleSettings: pool.scaleSettings
-    startTask: pool.startTask
-    taskSchedulingPolicy: pool.taskSchedulingPolicy
-    taskSlotsPerNode: pool.taskSlotsPerNode
-    userAccounts: pool.userAccounts
+    startTask: contains(pool, 'startTask') ? pool.startTask : null
+    taskSchedulingPolicy: contains(pool, 'taskSchedulingPolicy') ? pool.taskSchedulingPolicy : null
+    taskSlotsPerNode: contains(pool, 'taskSlotsPerNode') ? pool.taskSlotsPerNode : null
+    userAccounts: contains(pool, 'userAccounts') ? pool.userAccounts : null
     vmSize: pool.vmSize
   }
 }]
