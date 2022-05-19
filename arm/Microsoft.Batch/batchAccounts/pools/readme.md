@@ -24,6 +24,7 @@ This module deploys Batch BatchAccounts Pools.
 | `deploymentConfiguration` | object | Deployment configuration properties. |
 | `displayName` | string | The display name need not be unique and can contain any Unicode characters up to a maximum length of 1024. |
 | `networkConfiguration` | object | The network configuration for a pool. |
+| `poolName` | string | The name of the pool. |
 | `scaleSettings` | object | Defines the desired size of the pool. |
 | `vmSize` | string | For information about available sizes of virtual machines for Cloud Services pools (pools created with cloudServiceConfiguration), see Sizes for Cloud Services (https://azure.microsoft.com/documentation/articles/cloud-services-sizes-specs/). |
 

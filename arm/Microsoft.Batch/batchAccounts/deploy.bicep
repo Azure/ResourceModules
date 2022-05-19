@@ -239,6 +239,7 @@ module pool 'pools/deploy.bicep' = [for (pool, index) in pools: {
   name: '${uniqueString(deployment().name, batchAccount.name)}-pool-${index}'
   params: {
     batchAccountName: batchAccount.name
+    poolName: pool.poolName
     userAssignedIdentities: contains(pool, 'userAssignedIdentities') ? pool.userAssignedIdentities : {}
     applicationLicenses: contains(pool, 'applicationLicenses') ? pool.applicationLicenses : []
     applicationPackages: contains(pool, 'applicationPackages') ? pool.applicationPackages : []
