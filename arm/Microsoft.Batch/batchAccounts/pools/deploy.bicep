@@ -1,6 +1,9 @@
 @description('Required. The name of the parent Batch Account. Required if the template is used in a standalone deployment.')
 param batchAccountName string
 
+@description('Required. The name of the pool.')
+param poolName string
+
 @description('Optional. The user identities associated with the Batch pool.')
 param userAssignedIdentities object = {}
 
@@ -88,7 +91,7 @@ resource batchAccount 'Microsoft.Batch/batchAccounts@2022-01-01' existing = {
 }
 
 resource pool 'Microsoft.Batch/batchAccounts/pools@2022-01-01' = {
-  name: 'string'
+  name: poolName
   parent: batchAccount
   identity: identity
   properties: {
