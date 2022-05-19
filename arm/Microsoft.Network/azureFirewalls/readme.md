@@ -8,40 +8,29 @@ This module deploys a firewall.
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Considerations](#Considerations)
-<<<<<<< HEAD
-<<<<<<< HEAD
 - [Deployment examples](#Deployment-examples)
-=======
-- [Template references](#Template-references)
->>>>>>> 440c784db (update azure firewall for PIP use cases)
-=======
->>>>>>> 6c0f1f644 (remove template reference and regenerate readme)
 
 ## Resource types
 
 | Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
-| `Microsoft.Authorization/roleAssignments` | [2021-04-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments) |
 | `Microsoft.Authorization/roleAssignments` | [2020-10-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-10-01-preview/roleAssignments) |
 | `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
 | `Microsoft.Network/azureFirewalls` | [2021-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/azureFirewalls) |
-| `Microsoft.Network/publicIPAddresses` | [2021-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/publicIPAddresses) |
 
 ## Parameters
 
 **Required parameters**
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
+| `ipConfigurations` | array | List of IP Configurations. |
 | `name` | string | Name of the Azure Firewall. |
-| `vNetId` | string | Shared services Virtual Network resource ID. The virtual network ID containing AzureFirewallSubnet. If a public ip is not provided, then the public ip that is created as part of this module will be applied with the subnet provided in this variable |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `additionalPublicIpConfigurations` | array | `[]` |  | This is to add any additional public ip configurations on top of the public ip with subnet ip configuration |
 | `applicationRuleCollections` | array | `[]` |  | Collection of application rule collections used by Azure Firewall. |
-| `azureFirewallSubnetPublicIpId` | string | `''` |  | The public ip resource ID to associate to the AzureFirewallSubnet. If empty, then the public ip that is created as part of this module will be applied to the AzureFirewallSubnet |
 | `azureSkuName` | string | `'AZFW_VNet'` | `[AZFW_VNet, AZFW_Hub]` | Name of an Azure Firewall SKU. |
 | `azureSkuTier` | string | `'Standard'` | `[Standard, Premium]` | Tier of an Azure Firewall. |
 | `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
@@ -54,75 +43,15 @@ This module deploys a firewall.
 | `diagnosticWorkspaceId` | string | `''` |  | Log Analytics workspace resource identifier. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `firewallPolicyId` | string | `''` |  | Resource ID of the Firewall Policy that should be attached. |
-| `isCreateDefaultPublicIP` | bool | `True` |  | Specifies if a public ip should be created by default if one is not provided |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `'NotSpecified'` | `[CanNotDelete, NotSpecified, ReadOnly]` | Specify the type of lock. |
 | `natRuleCollections` | array | `[]` |  | Collection of NAT rule collections used by Azure Firewall. |
 | `networkRuleCollections` | array | `[]` |  | Collection of network rule collections used by Azure Firewall. |
-| `publicIPAddressObject` | object | `{object}` |  | Specifies the properties of the public IP to create and be used by Azure Firewall. If it's not provided and publicIPAddressId is empty, a '-pip' suffix will be appended to the Firewall's name. |
-| `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
+| `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `tags` | object | `{object}` |  | Tags of the Azure Firewall resource. |
 | `threatIntelMode` | string | `'Deny'` | `[Alert, Deny, Off]` | The operation mode for Threat Intel. |
 | `zones` | array | `[1, 2, 3]` |  | Zone numbers e.g. 1,2,3. |
 
-
-### Parameter Usage: `additionalPublicIpConfigurations`
-
-Create additional public ip configurations from existing public ips
-
-```json
-        "additionalPublicIpConfigurations": {
-            "value": [
-                {
-                    "name": "ipConfig01",
-                    "publicIPAddressResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/publicIPAddresses/adp-<<namePrefix>>-az-pip-x-fw-01"
-                },
-                {
-                    "name": "ipConfig02",
-                    "publicIPAddressResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/publicIPAddresses/adp-<<namePrefix>>-az-pip-x-fw-02"
-                }
-            ]
-        }
-```
-
-### Parameter Usage: `publicIPAddressObject`
-
-The Public IP Address object to create as part of the module. This will be created if `isCreateDefaultPublicIP` is true (which it is by default). If not provided, the name and other configurations will be set by default.
-
-```json
-        "publicIPAddressObject": {
-            "value": {
-                "name": "mypip",
-                "publicIPPrefixResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/publicIPPrefixes/myprefix",
-                "publicIPAllocationMethod": "Dynamic",
-                "skuName": "Basic",
-                "skuTier": "Regional",
-                "roleAssignments": {
-                    "value": [
-                        {
-                            "roleDefinitionIdOrName": "Reader",
-                            "principalIds": [
-                                "<<deploymentSpId>>"
-                            ]
-                        }
-                    ]
-                },
-                "diagnosticMetricsToEnable": {
-                    "value": [
-                        "AllMetrics"
-                    ]
-                },
-                "diagnosticLogCategoriesToEnable": {
-                    "value": [
-                        "DDoSProtectionNotifications",
-                        "DDoSMitigationFlowLogs",
-                        "DDoSMitigationReports"
-                    ]
-                }
-            }
-        }
-
-```
 
 ### Parameter Usage: `roleAssignments`
 
@@ -229,7 +158,6 @@ tags: {
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
 | `applicationRuleCollections` | array | List of Application Rule Collections. |
-| `ipConfAzureFirewallSubnet` | object | The public ipconfiguration object for the AzureFirewallSubnet |
 | `location` | string | The location the resource was deployed into. |
 | `name` | string | The name of the Azure firewall. |
 | `natRuleCollections` | array | Collection of NAT rule collections used by Azure Firewall. |
@@ -242,9 +170,7 @@ tags: {
 
 The `applicationRuleCollections` parameter accepts a JSON Array of AzureFirewallApplicationRule objects.
 The `networkRuleCollections` parameter accepts a JSON Array of AzureFirewallNetworkRuleCollection objects.
-<<<<<<< HEAD
 
-<<<<<<< HEAD
 ## Deployment examples
 
 <h3>Example 1</h3>
@@ -514,14 +440,3 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
 
 </details>
 <p>
-=======
-## Template references
-
-- [Azurefirewalls](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/azureFirewalls)
-- [Diagnosticsettings](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings)
-- [Locks](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks)
-- [Publicipaddresses](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/publicIPAddresses)
-- [Roleassignments](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments)
->>>>>>> 440c784db (update azure firewall for PIP use cases)
-=======
->>>>>>> 6c0f1f644 (remove template reference and regenerate readme)
