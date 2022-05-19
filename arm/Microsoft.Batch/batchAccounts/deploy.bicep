@@ -92,6 +92,9 @@ param keyVaultUri string = ''
 @description('Optional. A list of application package definitions.')
 param applications array = []
 
+@description('Optional. A list of node pool configurations.')
+param pools array = []
+
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
 
@@ -229,6 +232,29 @@ module application 'applications/deploy.bicep' = [for app in applications: {
     allowUpdates: app.allowUpdates
     defaultVersion: app.defaultVersion
     displayName: app.displayName
+  }
+}]
+
+module pool 'pools/deploy.bicep' = [for pool in pools: {
+  name: '${uniqueString(deployment().name, batchAccount.name)}-${pool.name}'
+  params: {
+    batchAccountName: batchAccount.name
+    userAssignedIdentities: pool.userAssignedIdentities
+    applicationLicenses: pool.applicationLicenses
+    applicationPackages: pool.applicationPackages
+    certificates: pool.certificates
+    deploymentConfiguration: pool.deploymentConfiguration
+    displayName: pool.displayName
+    interNodeCommunication: pool.interNodeCommunication
+    metadata: pool.metadata
+    mountConfiguration: pool.mountConfiguration
+    networkConfiguration: pool.networkConfiguration
+    scaleSettings: pool.scaleSettings
+    startTask: pool.startTask
+    taskSchedulingPolicy: pool.taskSchedulingPolicy
+    taskSlotsPerNode: pool.taskSlotsPerNode
+    userAccounts: pool.userAccounts
+    vmSize: pool.vmSize
   }
 }]
 
