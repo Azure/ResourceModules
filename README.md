@@ -24,6 +24,7 @@ The CI environment supports both ARM and Bicep and can be leveraged using GitHub
 * For information on contributing, see [Contribution](<https://github.com/Azure/ResourceModules/wiki/Contribution%20guide>)
 * File an issue via [GitHub Issues](https://github.com/azure/ResourceModules/issues/new/choose)
 * For reference documentation visit [Enterprise-Scale](https://github.com/azure/enterprise-scale)
+
 ## Available Resource Modules
 
 | Name | Status |
@@ -34,6 +35,7 @@ The CI environment supports both ARM and Bicep and can be leveraged using GitHub
 | [Analysis Services Servers](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.AnalysisServices/servers) | [!['AnalysisServices: Servers'](https://github.com/Azure/ResourceModules/workflows/AnalysisServices:%20Servers/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.analysisservices.servers.yml) |
 | [API Connections](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Web/connections) | [!['Web: Connections'](https://github.com/Azure/ResourceModules/workflows/Web:%20Connections/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.web.connections.yml) |
 | [API Management Services](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.ApiManagement/service) | [!['ApiManagement: Service'](https://github.com/Azure/ResourceModules/workflows/ApiManagement:%20Service/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.apimanagement.service.yml) |
+| [App Configuration](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.AppConfiguration/configurationStores) | [!['AppConfiguration: ConfigurationStores'](https://github.com/Azure/ResourceModules/workflows/AppConfiguration:%20ConfigurationStores/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.appconfiguration.configurationstores.yml) |
 | [App Service Environments](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Web/hostingEnvironments) | [!['Web: HostingEnvironments'](https://github.com/Azure/ResourceModules/workflows/Web:%20HostingEnvironments/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.web.hostingenvironments.yml) |
 | [App Service Plans](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Web/serverfarms) | [!['Web: Serverfarms'](https://github.com/Azure/ResourceModules/workflows/Web:%20Serverfarms/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.web.serverfarms.yml) |
 | [Application Insights](https://github.com/Azure/ResourceModules/tree/main/arm/Microsoft.Insights/components) | [!['Insights: Components'](https://github.com/Azure/ResourceModules/workflows/Insights:%20Components/badge.svg)](https://github.com/Azure/ResourceModules/actions/workflows/ms.insights.components.yml) |
