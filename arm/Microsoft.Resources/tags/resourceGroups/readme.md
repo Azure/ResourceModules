@@ -48,5 +48,5 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | :-- | :-- | :-- |
 | `name` | string | The name of the tags resource. |
 | `resourceGroupName` | string | The name of the resource group the tags were applied to. |
-| `resourceId` | string | The resourceId of the resource group the tags were applied to. |
+| `resourceId` | string | The resource ID of the applied tags. |
 | `tags` | object | The applied tags. |

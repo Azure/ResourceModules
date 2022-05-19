@@ -69,5 +69,5 @@ output name string = securityAlertPolicy.name
 @description('The resource ID of the deployed security alert policy.')
 output resourceId string = securityAlertPolicy.id
 
-@description('The resourceGroup of the deployed security alert policy.')
+@description('The resource group of the deployed security alert policy.')
 output resourceGroupName string = resourceGroup().name

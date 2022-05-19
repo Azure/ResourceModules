@@ -83,5 +83,5 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | :-- | :-- | :-- |
 | `location` | string | The location the resource was deployed into. |
 | `name` | string | The name of the deployed database. |
-| `resourceGroupName` | string | The resourceGroup of the deployed database. |
+| `resourceGroupName` | string | The resource group of the deployed database. |
 | `resourceId` | string | The resource ID of the deployed database. |

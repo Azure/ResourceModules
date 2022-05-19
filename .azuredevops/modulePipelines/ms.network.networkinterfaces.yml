@@ -1,4 +1,4 @@
-name: 'Resources - DeploymentScripts'
+name: 'Network - NetworkInterfaces'
 
 parameters:
   - name: removeDeployment
@@ -19,9 +19,9 @@ trigger:
       - main
   paths:
     include:
-      - '/.azuredevops/modulePipelines/ms.resources.deploymentscripts.yml'
+      - '/.azuredevops/modulePipelines/ms.network.networkinterfaces.yml'
       - '/.azuredevops/pipelineTemplates/module.*.yml'
-      - '/arm/Microsoft.Resources/deploymentScripts/*'
+      - '/arm/Microsoft.Network/networkInterfaces/*'
       - '/arm/.global/global.module.tests.ps1'
     exclude:
       - '/**/*.md'
@@ -30,7 +30,7 @@ variables:
   - template: '../../global.variables.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/arm/Microsoft.Resources/deploymentScripts'
+    value: '/arm/Microsoft.Network/networkInterfaces'
 
 stages:
   - stage: Validation
@@ -45,9 +45,8 @@ stages:
         parameters:
           removeDeployment: '${{ parameters.removeDeployment }}'
           deploymentBlocks:
-            - path: $(modulePath)/.parameters/cli.parameters.json
-            - path: $(modulePath)/.parameters/ps.parameters.json
-
+            - path: $(modulePath)/.parameters/min.parameters.json
+            - path: $(modulePath)/.parameters/parameters.json
 
   - stage: Publishing
     displayName: Publishing
