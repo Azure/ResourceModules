@@ -34,7 +34,7 @@
             ]
         },
         "createMode": {
-            "value": "Recover"
+            "value": "Default"
         },
         "disableLocalAuth": {
             "value": false
