@@ -89,6 +89,9 @@ param keyVaultResourceId string = ''
 @description('Conditional. The URL of the Azure key vault associated with the Batch account. Required if `encryptionKeySource` is set to `Microsoft.KeyVault` or `poolAllocationMode` is set to `UserSubscription`.')
 param keyVaultUri string = ''
 
+@description('Optional. A list of application package definitions.')
+param applications array = []
+
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
 
@@ -215,6 +218,17 @@ module batchAccount_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, inde
     principalType: contains(roleAssignment, 'principalType') ? roleAssignment.principalType : ''
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
     resourceId: batchAccount.id
+  }
+}]
+
+module application 'applications/deploy.bicep' = [for app in applications: {
+  name: '${uniqueString(deployment().name, batchAccount.name)}-${app.name}'
+  params: {
+    batchName: batchAccount.name
+    appName: app.name
+    allowUpdates: app.allowUpdates
+    defaultVersion: app.defaultVersion
+    displayName: app.displayName
   }
 }]
 
