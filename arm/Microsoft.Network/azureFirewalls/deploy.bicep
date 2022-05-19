@@ -147,6 +147,14 @@ var newPip = {
   }
 }
 
+var ipConfigurations = concat([
+  {
+    name: 'IpConfAzureFirewallSubnet'
+    //Use existing public ip, new public ip created in this module, or none if isCreateDefaultPublicIP is false
+    properties: union(subnet_var, !empty(azureFirewallSubnetPublicIpId) ? existingPip : {}, (isCreateDefaultPublicIP ? newPip : {}))
+  }
+], additionalPublicIpConfigurations_var)
+
 // ----------------------------------------------------------------------------
 
 var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
@@ -226,14 +234,7 @@ resource azureFirewall 'Microsoft.Network/azureFirewalls@2021-05-01' = {
     firewallPolicy: empty(firewallPolicyId) ? null : {
       id: firewallPolicyId
     }
-    ipConfigurations: concat([
-      {
-        name: 'IpConfAzureFirewallSubnet'
-        //Use existing public ip, new public ip created in this module, or none if isCreateDefaultPublicIP is false
-        properties: !empty(azureFirewallSubnetPublicIpId) ? union(subnet_var, existingPip) : (isCreateDefaultPublicIP ? union(subnet_var, newPip) : subnet_var)
-      }
-    ], additionalPublicIpConfigurations_var)
-
+    ipConfigurations: ipConfigurations
     sku: {
       name: azureSkuName
       tier: azureSkuTier
