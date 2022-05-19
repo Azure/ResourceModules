@@ -239,21 +239,21 @@ module pool 'pools/deploy.bicep' = [for (pool, index) in pools: {
   name: '${uniqueString(deployment().name, batchAccount.name)}-pool-${index}'
   params: {
     batchAccountName: batchAccount.name
-    userAssignedIdentities: contains(pool, 'userAssignedIdentities') ? pool.userAssignedIdentities : null
-    applicationLicenses: contains(pool, 'applicationLicenses') ? pool.applicationLicenses : null
-    applicationPackages: contains(pool, 'applicationPackages') ? pool.applicationPackages : null
-    certificates: contains(pool, 'certificates') ? pool.certificates : null
+    userAssignedIdentities: contains(pool, 'userAssignedIdentities') ? pool.userAssignedIdentities : {}
+    applicationLicenses: contains(pool, 'applicationLicenses') ? pool.applicationLicenses : []
+    applicationPackages: contains(pool, 'applicationPackages') ? pool.applicationPackages : []
+    certificates: contains(pool, 'certificates') ? pool.certificates : []
     deploymentConfiguration: pool.deploymentConfiguration
     displayName: pool.displayName
-    interNodeCommunication: contains(pool, 'interNodeCommunication') ? pool.interNodeCommunication : null
-    metadata: contains(pool, 'metadata') ? pool.metadata : null
-    mountConfiguration: contains(pool, 'mountConfiguration') ? pool.mountConfiguration : null
+    interNodeCommunication: contains(pool, 'interNodeCommunication') ? pool.interNodeCommunication : 'Disabled'
+    metadata: contains(pool, 'metadata') ? pool.metadata : []
+    mountConfiguration: contains(pool, 'mountConfiguration') ? pool.mountConfiguration : []
     networkConfiguration: pool.networkConfiguration
     scaleSettings: pool.scaleSettings
-    startTask: contains(pool, 'startTask') ? pool.startTask : null
-    taskSchedulingPolicy: contains(pool, 'taskSchedulingPolicy') ? pool.taskSchedulingPolicy : null
-    taskSlotsPerNode: contains(pool, 'taskSlotsPerNode') ? pool.taskSlotsPerNode : null
-    userAccounts: contains(pool, 'userAccounts') ? pool.userAccounts : null
+    startTask: contains(pool, 'startTask') ? pool.startTask : {}
+    taskSchedulingPolicy: contains(pool, 'taskSchedulingPolicy') ? pool.taskSchedulingPolicy : 'Pack'
+    taskSlotsPerNode: contains(pool, 'taskSlotsPerNode') ? pool.taskSlotsPerNode : 1
+    userAccounts: contains(pool, 'userAccounts') ? pool.userAccounts : []
     vmSize: pool.vmSize
   }
 }]

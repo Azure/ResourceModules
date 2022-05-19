@@ -5,7 +5,7 @@ param batchAccountName string
 param userAssignedIdentities object = {}
 
 @description('Optional. The list of application licenses must be a subset of available Batch service application licenses. If a license is requested which is not supported, pool creation will fail.')
-param applicationLicenses array
+param applicationLicenses array = []
 
 @description('Optional. The list of application packages to install on the nodes. There is a maximum of 10 application package references on any given pool.')
 @maxLength(10)

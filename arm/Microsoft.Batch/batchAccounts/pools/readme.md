@@ -30,7 +30,7 @@ This module deploys Batch BatchAccounts Pools.
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `applicationLicenses` | array |  |  | The list of application licenses must be a subset of available Batch service application licenses. If a license is requested which is not supported, pool creation will fail. |
+| `applicationLicenses` | array | `[]` |  | The list of application licenses must be a subset of available Batch service application licenses. If a license is requested which is not supported, pool creation will fail. |
 | `applicationPackages` | array | `[]` |  | The list of application packages to install on the nodes. There is a maximum of 10 application package references on any given pool. |
 | `certificates` | array | `[]` |  | The list of certificate objects to install on the pool. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
