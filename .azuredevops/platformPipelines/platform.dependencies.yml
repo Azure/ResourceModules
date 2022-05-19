@@ -309,7 +309,7 @@ stages:
           deploymentBlocks:
             - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
               templateFilePath: $(templateFilePath)
-              displayName: Default batch account
+              displayName: Batch account
 
   - stage: deploy_imgt
     displayName: Deploy image template
