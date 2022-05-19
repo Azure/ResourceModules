@@ -25,7 +25,7 @@ param functionParameters string = ''
 @description('Optional. The version number of the query language.')
 param version int = 2
 
-@description('Optional. The ETag of the saved search. To override an existing saved search, use "*" or specify the current Etag'.)
+@description('Optional. The ETag of the saved search. To override an existing saved search, use "*" or specify the current Etag.')
 param etag string = '*'
 
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
