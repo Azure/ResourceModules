@@ -299,7 +299,34 @@ function Set-OutputsSection {
     return $updatedFileContent
 }
 
-function Set-UsageExamples {
+<#
+.SYNOPSIS
+Generate 'Usage Examples' for the ReadMe out of the parameter files currently used to test the template
+
+.DESCRIPTION
+Generate 'Usage Examples' for the ReadMe out of the parameter files currently used to test the template
+
+.PARAMETER TemplateFileContent
+Mandatory. The template file content object to crawl data from
+
+.PARAMETER ReadMeFileContent
+Mandatory. The readme file content array to update
+
+.PARAMETER SectionStartIdentifier
+Optional. The identifier of the 'outputs' section. Defaults to '## Deployment examples'
+
+.PARAMETER addJson
+Optional. A switch to control whether or not to add a ARM-JSON-Parameter file example. Defaults to true.
+
+.PARAMETER addBicep
+Optional. A switch to control whether or not to add a Bicep deployment example. Defaults to true.
+
+.EXAMPLE
+Set-DeploymentExamplesSection -TemplateFileContent @{ resource = @{}; ... } -ReadMeFileContent @('# Title', '', '## Section 1', ...)
+
+Update the given readme file's 'Deployment Examples' section based on the given template file content
+#>
+function Set-DeploymentExamplesSection {
 
     [CmdletBinding(SupportsShouldProcess)]
     param (
@@ -698,7 +725,7 @@ function Set-ModuleReadMe {
             ReadMeFileContent = $readMeFileContent
             TemplateFilePath  = $TemplateFilePath
         }
-        $readMeFileContent = Set-UsageExamples @inputObject
+        $readMeFileContent = Set-DeploymentExamplesSection @inputObject
     }
 
     if ($SectionsToRefresh -contains 'Navigation') {
