@@ -240,7 +240,7 @@ module pool 'pools/deploy.bicep' = [for (pool, index) in pools: {
   params: {
     batchAccountName: batchAccount.name
     userAssignedIdentities: contains(pool, 'userAssignedIdentities') ? pool.userAssignedIdentities : null
-    applicationLicenses: contains(pool, 'applicationLicenses') ? pool.applicationLicenses : null
+    applicationLicenses: contains(pool, 'applicationLicenses') ? pool.applicationLicenses : []
     applicationPackages: contains(pool, 'applicationPackages') ? pool.applicationPackages : null
     certificates: contains(pool, 'certificates') ? pool.certificates : null
     deploymentConfiguration: pool.deploymentConfiguration
