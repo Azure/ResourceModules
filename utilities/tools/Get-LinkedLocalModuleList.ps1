@@ -71,7 +71,8 @@ function Get-LinkedLocalModuleList {
 
     Write-Verbose "The modules in path [$path] have the following local folder dependencies:" -Verbose
     foreach ($resourceType in $resultSet.Keys) {
-        Write-Verbose "`nResource: $resourceType" -Verbose
+        Write-Verbose '' -Verbose
+        Write-Verbose "Resource: $resourceType" -Verbose
         $resultSet[$resourceType] | ForEach-Object {
             Write-Verbose "- $_" -Verbose
         }
