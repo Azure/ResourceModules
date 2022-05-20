@@ -1,5 +1,5 @@
 @description('Optional. Name of the private endpoint resource to create.')
-param name string = '${last(split(serviceResourceId, '/'))}-${groupIds[0]}'
+param name string = '${last(split(serviceResourceId, '/'))}-${split(subnetId, '/')[8]}_${last(split(subnetId, '/'))}'
 
 @description('Required. Resource ID of the subnet where the endpoint needs to be created.')
 param subnetId string

@@ -257,7 +257,7 @@ module app_privateEndpoints '../../Microsoft.Network/privateEndpoints/deploy.bic
   name: '${uniqueString(deployment().name, location)}-Site-PrivateEndpoint-${index}'
   params: {
     groupIds: privateEndpoint.groupIds
-    name: contains(privateEndpoint, 'name') ? privateEndpoint.name : '${last(split(app.id, '/'))}-${privateEndpoint.groupIds}'
+    name: contains(privateEndpoint, 'name') ? privateEndpoint.name : '${last(split(app.id, '/'))}-${split(privateEndpoint.subnetResourceId.id, '/')[8]}_${last(split(privateEndpoint.subnetResourceId.id, '/'))}'
     serviceResourceId: app.id
     subnetId: privateEndpoint.subnetResourceId
     enableDefaultTelemetry: enableDefaultTelemetry

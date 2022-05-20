@@ -140,7 +140,7 @@ module staticSite_privateEndpoints '../../Microsoft.Network/privateEndpoints/dep
   name: '${uniqueString(deployment().name, location)}-StaticSite-PrivateEndpoint-${index}'
   params: {
     groupIds: privateEndpoint.groupIds
-    name: contains(privateEndpoint, 'name') ? privateEndpoint.name : '${last(split(staticSite.id, '/'))}-${privateEndpoint.groupIds}'
+    name: contains(privateEndpoint, 'name') ? privateEndpoint.name : '${last(split(staticSite.id, '/'))}-${split(privateEndpoint.subnetResourceId.id, '/')[8]}_${last(split(privateEndpoint.subnetResourceId.id, '/'))}'
     serviceResourceId: staticSite.id
     subnetId: privateEndpoint.subnetResourceId
     enableDefaultTelemetry: enableDefaultTelemetry

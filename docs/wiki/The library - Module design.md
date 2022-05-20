@@ -309,7 +309,7 @@ module <mainResource>_privateEndpoints '../../Microsoft.Network/privateEndpoints
   name: '${uniqueString(deployment().name, location)}-<mainResource>-PrivateEndpoint-${index}'
   params: {
     groupIds: privateEndpoint.groupIds
-    name: contains(privateEndpoint, 'name') ? privateEndpoint.name : '${last(split(<mainResource>.id, '/'))}-${privateEndpoint.groupIds}'
+    name: contains(privateEndpoint, 'name') ? privateEndpoint.name : '${last(split(<mainResource>.id, '/'))}-${split(privateEndpoint.subnetResourceId.id, '/')[8]}_${last(split(privateEndpoint.subnetResourceId.id, '/'))}'
     serviceResourceId: <mainResource>.id
     subnetId: privateEndpoint.subnetResourceId
     enableDefaultTelemetry: enableDefaultTelemetry
