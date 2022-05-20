@@ -9,7 +9,7 @@
             "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001"
         },
         "keyUrl": {
-            "value": "https://adp-<<namePrefix>>-az-kv-x-001.vault.azure.net/keys/keyEncryptionKey/bc3bb46d95c64367975d722f473eeae5" // ID must be updated for new keys
+            "value": "https://adp-<<namePrefix>>-az-kv-x-001.vault.azure.net/keys/keyEncryptionKey/a332ff6b3d8b4e3eb3e298d662f37202" // ID must be updated for new keys
         },
         "roleAssignments": {
             "value": [
