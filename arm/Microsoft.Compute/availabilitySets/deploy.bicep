@@ -7,8 +7,8 @@ param availabilitySetFaultDomain int = 2
 @description('Optional. The number of update domains to use.')
 param availabilitySetUpdateDomain int = 5
 
-@description('''Optional. SKU of the availability set
-- Use \'Aligned\' for virtual machines with managed disks
+@description('''Optional. SKU of the availability set.
+- Use \'Aligned\' for virtual machines with managed disks.
 - Use \'Classic\' for virtual machines with unmanaged disks.
 ''')
 param availabilitySetSku string = 'Aligned'
