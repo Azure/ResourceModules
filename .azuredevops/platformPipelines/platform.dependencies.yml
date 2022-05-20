@@ -943,6 +943,9 @@ stages:
             - path: $(dependencyPath)/$(resourceType)/parameters/8.aadds.parameters.json
               templateFilePath: $(templateFilePath)
               displayName: AADDS Virtual Network
+            - path: $(dependencyPath)/$(resourceType)/parameters/9.azfw.parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: Azure Firewall Virtual Network Min
             - ${{ if eq( parameters.deploySqlMiDependencies, true) }}:
                 - path: $(dependencyPath)/$(resourceType)/parameters/6.sqlmi.parameters.json
                   templateFilePath: $(templateFilePath)

@@ -88,7 +88,6 @@ jobs:
       - job_module_pester_validation
     strategy:
       fail-fast: false
-      max-parallel: 1
       matrix:
         parameterFilePaths: ${{ fromJSON(needs.job_initialize_pipeline.outputs.parameterFilePaths) }}
     steps:

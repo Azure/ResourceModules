@@ -1260,6 +1260,7 @@ jobs:
             '5.aks.parameters.json',
             '7.virtualHubConnection.parameters.json',
             '8.aadds.parameters.json',
+            '9.azfw.parameters.json'
             'parameters.json',
           ]
     steps:
