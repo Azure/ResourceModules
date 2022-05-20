@@ -21,7 +21,7 @@ This module deploys Role Assignments across the management group, subscription o
 **Required parameters**
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `principalId` | string | The Principal or Object ID of the Security Principal (User, Group, Service Principal, Managed Identity) |
+| `principalId` | string | The Principal or Object ID of the Security Principal (User, Group, Service Principal, Managed Identity). |
 | `roleDefinitionIdOrName` | string | You can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 
 **Optional parameters**
