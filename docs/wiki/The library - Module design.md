@@ -308,7 +308,7 @@ param privateEndpoints array = []
 module <mainResource>_privateEndpoints '../../Microsoft.Network/privateEndpoints/deploy.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
   name: '${uniqueString(deployment().name, location)}-<mainResource>-PrivateEndpoint-${index}'
   params: {
-    groupId: privateEndpoint.groupId
+    groupIds: privateEndpoint.groupIds
     name: contains(privateEndpoint, 'name') ? privateEndpoint.name : '${last(split(<mainResource>.id, '/'))}-${privateEndpoint.groupId}'
     serviceResourceId: <mainResource>.id
     subnetId: privateEndpoint.subnetResourceId

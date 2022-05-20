@@ -282,7 +282,7 @@ module keyVault_keys 'keys/deploy.bicep' = [for (key, index) in keys: {
 module keyVault_privateEndpoints '../../Microsoft.Network/privateEndpoints/deploy.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
   name: '${uniqueString(deployment().name, location)}-KeyVault-PrivateEndpoint-${index}'
   params: {
-    groupId: privateEndpoint.groupId
+    groupIds: privateEndpoint.groupIds
     name: contains(privateEndpoint, 'name') ? privateEndpoint.name : '${last(split(keyVault.id, '/'))}-${privateEndpoint.groupId}'
     serviceResourceId: keyVault.id
     subnetId: privateEndpoint.subnetResourceId

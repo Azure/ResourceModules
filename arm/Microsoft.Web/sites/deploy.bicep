@@ -256,7 +256,7 @@ module app_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in rol
 module app_privateEndpoints '../../Microsoft.Network/privateEndpoints/deploy.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
   name: '${uniqueString(deployment().name, location)}-Site-PrivateEndpoint-${index}'
   params: {
-    groupId: privateEndpoint.groupId
+    groupIds: privateEndpoint.groupIds
     name: contains(privateEndpoint, 'name') ? privateEndpoint.name : '${last(split(app.id, '/'))}-${privateEndpoint.groupId}'
     serviceResourceId: app.id
     subnetId: privateEndpoint.subnetResourceId

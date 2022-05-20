@@ -134,7 +134,7 @@ resource eventGrid_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@202
 module automationAccount_privateEndpoints '../../Microsoft.Network/privateEndpoints/deploy.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
   name: '${uniqueString(deployment().name, location)}-Topic-PrivateEndpoint-${index}'
   params: {
-    groupId: privateEndpoint.groupId
+    groupIds: privateEndpoint.groupIds
     name: contains(privateEndpoint, 'name') ? privateEndpoint.name : '${last(split(topic.id, '/'))}-${privateEndpoint.groupId}'
     serviceResourceId: topic.id
     subnetId: privateEndpoint.subnetResourceId

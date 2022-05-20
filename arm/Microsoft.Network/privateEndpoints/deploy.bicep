@@ -8,7 +8,7 @@ param subnetId string
 param serviceResourceId string
 
 @description('Required. Subtype(s) of the connection to be created. The allowed values depend on the type serviceResourceId refers to.')
-param groupId array
+param groupIds array
 
 @description('Optional. Array of Private DNS zone groups configuration on the private endpoint.')
 param privateDnsZoneGroups array = []
@@ -61,7 +61,7 @@ resource privateEndpoint 'Microsoft.Network/privateEndpoints@2021-05-01' = {
         name: name
         properties: {
           privateLinkServiceId: serviceResourceId
-          groupIds: groupId
+          groupIds: groupIds
         }
       }
     ]

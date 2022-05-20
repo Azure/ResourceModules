@@ -278,7 +278,7 @@ module eventHubNamespace_networkRuleSet 'networkRuleSets/deploy.bicep' = if (!em
 module automationAccount_privateEndpoints '../../Microsoft.Network/privateEndpoints/deploy.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
   name: '${uniqueString(deployment().name, location)}-EvhbNamespace-PrivateEndpoint-${index}'
   params: {
-    groupId: privateEndpoint.groupId
+    groupIds: privateEndpoint.groupIds
     name: contains(privateEndpoint, 'name') ? privateEndpoint.name : '${last(split(eventHubNamespace.id, '/'))}-${privateEndpoint.groupId}'
     serviceResourceId: eventHubNamespace.id
     subnetId: privateEndpoint.subnetResourceId

@@ -5,8 +5,11 @@ param tags object
 param enableIPForwarding bool = false
 param enableAcceleratedNetworking bool = false
 param dnsServers array = []
-param networkSecurityGroupId string = ''
-param ipConfigurationArray array
+
+@description('Optional. The network security group (NSG) to attach to the network interface.')
+param networkSecurityGroupResourceId string = ''
+
+param ipConfigurations array
 param lock string
 param diagnosticStorageAccountId string
 param diagnosticLogsRetentionInDays int
@@ -16,7 +19,9 @@ param diagnosticEventHubName string
 param pipdiagnosticMetricsToEnable array
 param pipdiagnosticLogCategoriesToEnable array
 param nicDiagnosticMetricsToEnable array
-param roleAssignments array
+
+@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
+param roleAssignments array = []
 
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
@@ -27,17 +32,7 @@ param pipDiagnosticSettingsName string = '${virtualMachineName}-diagnosticSettin
 @description('Optional. The name of the NIC diagnostic setting, if deployed.')
 param nicDiagnosticSettingsName string = '${virtualMachineName}-diagnosticSettings'
 
-var nicDiagnosticsMetrics = [for metric in nicDiagnosticMetricsToEnable: {
-  category: metric
-  timeGrain: null
-  enabled: true
-  retentionPolicy: {
-    enabled: true
-    days: diagnosticLogsRetentionInDays
-  }
-}]
-
-module networkInterface_publicIPAddresses '../../../Microsoft.Network/publicIPAddresses/deploy.bicep' = [for (ipConfiguration, index) in ipConfigurationArray: if (contains(ipConfiguration, 'pipconfiguration')) {
+module networkInterface_publicIPAddresses '../../../Microsoft.Network/publicIPAddresses/deploy.bicep' = [for (ipConfiguration, index) in ipConfigurations: if (contains(ipConfiguration, 'pipconfiguration')) {
   name: '${deployment().name}-publicIP-${index}'
   params: {
     name: '${virtualMachineName}${ipConfiguration.pipconfiguration.publicIpNameSuffix}'
@@ -63,69 +58,65 @@ module networkInterface_publicIPAddresses '../../../Microsoft.Network/publicIPAd
   }
 }]
 
-resource networkInterface 'Microsoft.Network/networkInterfaces@2021-05-01' = {
-  name: networkInterfaceName
-  location: location
-  tags: tags
-  properties: {
-    enableIPForwarding: enableIPForwarding
-    enableAcceleratedNetworking: enableAcceleratedNetworking
-    dnsSettings: !empty(dnsServers) ? {
-      dnsServers: dnsServers
-    } : null
-    networkSecurityGroup: !empty(networkSecurityGroupId) ? {
-      id: networkSecurityGroupId
-    } : null
-    ipConfigurations: [for (ipConfiguration, index) in ipConfigurationArray: {
+var enxtendedIpConfigurations = [for (ipConfiguration, index) in ipConfigurations: {
       name: !empty(ipConfiguration.name) ? ipConfiguration.name : null
-      properties: {
-        primary: ((index == 0) ? true : false)
+
+       primary: index == 0 ? true : false
         privateIPAllocationMethod: contains(ipConfiguration, 'privateIPAllocationMethod') ? (!empty(ipConfiguration.privateIPAllocationMethod) ? ipConfiguration.privateIPAllocationMethod : null) : null
         privateIPAddress: contains(ipConfiguration, 'vmIPAddress') ? (!empty(ipConfiguration.vmIPAddress) ? ipConfiguration.vmIPAddress : null) : null
-        publicIPAddress: contains(ipConfiguration, 'pipconfiguration') ? {
-          id: resourceId('Microsoft.Network/publicIPAddresses', '${virtualMachineName}${ipConfiguration.pipconfiguration.publicIpNameSuffix}')
+        publicIPAddress: contains(ipConfiguration, 'publicIPAddressResourceId') ? {
+          id: ipConfiguration.publicIPAddressResourceId
         } : null
         subnet: {
           id: ipConfiguration.subnetId
         }
         loadBalancerBackendAddressPools: contains(ipConfiguration, 'loadBalancerBackendAddressPools') ? ipConfiguration.loadBalancerBackendAddressPools : null
         applicationSecurityGroups: contains(ipConfiguration, 'applicationSecurityGroups') ? ipConfiguration.applicationSecurityGroups : null
+        applicationGatewayBackendAddressPools: contains(ipConfiguration, 'applicationGatewayBackendAddressPools') ? ipConfiguration.applicationGatewayBackendAddressPools : null
+        gatewayLoadBalancer: contains(ipConfiguration, 'gatewayLoadBalancer') ? ipConfiguration.gatewayLoadBalancer : null
+        loadBalancerInboundNatRules: contains(ipConfiguration, 'loadBalancerInboundNatRules') ? ipConfiguration.loadBalancerInboundNatRules : null
+        privateIPAddressVersion: contains(ipConfiguration, 'privateIPAddressVersion') ? ipConfiguration.privateIPAddressVersion : null
+        virtualNetworkTaps: contains(ipConfiguration, 'virtualNetworkTaps') ? ipConfiguration.virtualNetworkTaps : null
       }
-    }]
+}]
+
+module networkInterface '../../../Microsoft.Network/networkInterfaces/deploy.bicep' = {
+  name: '${deployment().name}-NetworkInterface'
+  params: {
+    name: networkInterfaceName
+    ipConfigurations: enxtendedIpConfigurations
+    //   properties: {
+    //     primary: ((index == 0) ? true : false)
+    //     privateIPAllocationMethod: contains(ipConfiguration, 'privateIPAllocationMethod') ? (!empty(ipConfiguration.privateIPAllocationMethod) ? ipConfiguration.privateIPAllocationMethod : null) : null
+    //     privateIPAddress: contains(ipConfiguration, 'vmIPAddress') ? (!empty(ipConfiguration.vmIPAddress) ? ipConfiguration.vmIPAddress : null) : null
+    //     publicIPAddress: contains(ipConfiguration, 'pipconfiguration') ? {
+    //       id: resourceId('Microsoft.Network/publicIPAddresses', '${virtualMachineName}${ipConfiguration.pipconfiguration.publicIpNameSuffix}')
+    //     } : null
+    //     subnet: {
+    //       id: ipConfiguration.subnetId
+    //     }
+    //     loadBalancerBackendAddressPools: contains(ipConfiguration, 'loadBalancerBackendAddressPools') ? ipConfiguration.loadBalancerBackendAddressPools : null
+    //     applicationSecurityGroups: contains(ipConfiguration, 'applicationSecurityGroups') ? ipConfiguration.applicationSecurityGroups : null
+    //   }
+    // }]
+    location: location
+    tags: tags
+    diagnosticEventHubAuthorizationRuleId: diagnosticEventHubAuthorizationRuleId
+    diagnosticEventHubName: diagnosticEventHubName
+    diagnosticLogsRetentionInDays: diagnosticLogsRetentionInDays
+    diagnosticStorageAccountId: diagnosticStorageAccountId
+    diagnosticMetricsToEnable: nicDiagnosticMetricsToEnable
+    diagnosticSettingsName: nicDiagnosticSettingsName
+    diagnosticWorkspaceId: diagnosticWorkspaceId
+    dnsServers: !empty(dnsServers) ? dnsServers : []
+    enableAcceleratedNetworking: enableAcceleratedNetworking
+    enableDefaultTelemetry: enableDefaultTelemetry
+    enableIPForwarding: enableIPForwarding
+    lock: lock
+    networkSecurityGroupResourceId: !empty(networkSecurityGroupResourceId) ? networkSecurityGroupResourceId : ''
+    roleAssignments: !empty(roleAssignments) ? roleAssignments : []
   }
   dependsOn: [
     networkInterface_publicIPAddresses
   ]
 }
-
-resource networkInterface_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
-  name: '${networkInterface.name}-${lock}-lock'
-  properties: {
-    level: lock
-    notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
-  }
-  scope: networkInterface
-}
-
-resource networkInterface_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(diagnosticWorkspaceId)) || (!empty(diagnosticEventHubAuthorizationRuleId)) || (!empty(diagnosticEventHubName))) {
-  name: nicDiagnosticSettingsName
-  properties: {
-    storageAccountId: !empty(diagnosticStorageAccountId) ? diagnosticStorageAccountId : null
-    workspaceId: !empty(diagnosticWorkspaceId) ? diagnosticWorkspaceId : null
-    eventHubAuthorizationRuleId: !empty(diagnosticEventHubAuthorizationRuleId) ? diagnosticEventHubAuthorizationRuleId : null
-    eventHubName: !empty(diagnosticEventHubName) ? diagnosticEventHubName : null
-    metrics: nicDiagnosticsMetrics
-  }
-  scope: networkInterface
-}
-
-module networkInterface_rbac 'nested_networkInterface_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
-  name: '${deployment().name}-Rbac-${index}'
-  params: {
-    description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
-    principalIds: roleAssignment.principalIds
-    principalType: contains(roleAssignment, 'principalType') ? roleAssignment.principalType : ''
-    roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
-    resourceId: networkInterface.id
-  }
-}]

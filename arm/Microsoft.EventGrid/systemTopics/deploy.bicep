@@ -146,7 +146,7 @@ resource systemTopic_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2
 module automationAccount_privateEndpoints '../../Microsoft.Network/privateEndpoints/deploy.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
   name: '${uniqueString(deployment().name, location)}-SystemTopic-PrivateEndpoint-${index}'
   params: {
-    groupId: privateEndpoint.groupId
+    groupIds: privateEndpoint.groupIds
     name: contains(privateEndpoint, 'name') ? privateEndpoint.name : '${last(split(systemTopic.id, '/'))}-${privateEndpoint.groupId}'
     serviceResourceId: systemTopic.id
     subnetId: privateEndpoint.subnetResourceId

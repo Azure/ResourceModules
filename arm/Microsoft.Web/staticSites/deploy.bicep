@@ -139,7 +139,7 @@ module staticSite_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index)
 module staticSite_privateEndpoints '../../Microsoft.Network/privateEndpoints/deploy.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
   name: '${uniqueString(deployment().name, location)}-StaticSite-PrivateEndpoint-${index}'
   params: {
-    groupId: privateEndpoint.groupId
+    groupIds: privateEndpoint.groupIds
     name: contains(privateEndpoint, 'name') ? privateEndpoint.name : '${last(split(staticSite.id, '/'))}-${privateEndpoint.groupId}'
     serviceResourceId: staticSite.id
     subnetId: privateEndpoint.subnetResourceId

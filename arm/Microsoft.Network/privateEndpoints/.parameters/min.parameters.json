@@ -11,7 +11,7 @@
         "serviceResourceId": {
             "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-pe"
         },
-        "groupId": {
+        "groupIds": {
             "value": [
                 "vault"
             ]

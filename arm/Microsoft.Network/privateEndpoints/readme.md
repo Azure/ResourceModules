@@ -32,7 +32,7 @@ The following resources are required to be able to deploy this resource:
 **Required parameters**
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `groupId` | array | Subtype(s) of the connection to be created. The allowed values depend on the type serviceResourceId refers to. |
+| `groupIds` | array | Subtype(s) of the connection to be created. The allowed values depend on the type serviceResourceId refers to. |
 | `serviceResourceId` | string | Resource ID of the resource that needs to be connected to the network. |
 | `subnetId` | string | Resource ID of the subnet where the endpoint needs to be created. |
 

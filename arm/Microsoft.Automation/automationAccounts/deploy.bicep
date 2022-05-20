@@ -353,7 +353,7 @@ resource automationAccount_diagnosticSettings 'Microsoft.Insights/diagnosticSett
 module automationAccount_privateEndpoints '../../Microsoft.Network/privateEndpoints/deploy.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
   name: '${uniqueString(deployment().name, location)}-AutomationAccount-PrivateEndpoint-${index}'
   params: {
-    groupId: privateEndpoint.groupId
+    groupIds: privateEndpoint.groupIds
     name: contains(privateEndpoint, 'name') ? privateEndpoint.name : '${last(split(automationAccount.id, '/'))}-${privateEndpoint.groupId}'
     serviceResourceId: automationAccount.id
     subnetId: privateEndpoint.subnetResourceId

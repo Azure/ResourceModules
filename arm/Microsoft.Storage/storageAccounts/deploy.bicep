@@ -249,7 +249,7 @@ module storageAccount_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, in
 module storageAccount_privateEndpoints '../../Microsoft.Network/privateEndpoints/deploy.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
   name: '${uniqueString(deployment().name, location)}-StorageAccount-PrivateEndpoint-${index}'
   params: {
-    groupId: privateEndpoint.groupId
+    groupIds: privateEndpoint.groupIds
     name: contains(privateEndpoint, 'name') ? privateEndpoint.name : '${last(split(storageAccount.id, '/'))}-${privateEndpoint.groupId}'
     serviceResourceId: storageAccount.id
     subnetId: privateEndpoint.subnetResourceId

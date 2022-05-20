@@ -310,7 +310,7 @@ resource serviceBusNamespace_diagnosticSettings 'Microsoft.Insights/diagnosticSe
 module automationAccount_privateEndpoints '../../Microsoft.Network/privateEndpoints/deploy.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
   name: '${uniqueString(deployment().name, location)}-Namespace-PrivateEndpoint-${index}'
   params: {
-    groupId: privateEndpoint.groupId
+    groupIds: privateEndpoint.groupIds
     name: contains(privateEndpoint, 'name') ? privateEndpoint.name : '${last(split(serviceBusNamespace.id, '/'))}-${privateEndpoint.groupId}'
     serviceResourceId: serviceBusNamespace.id
     subnetId: privateEndpoint.subnetResourceId
