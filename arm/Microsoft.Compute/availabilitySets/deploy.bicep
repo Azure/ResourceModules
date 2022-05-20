@@ -9,7 +9,7 @@ param availabilitySetUpdateDomain int = 5
 
 @description('''Optional. SKU of the availability set
 - Use \'Aligned\' for virtual machines with managed disks
-- Use \'Classic\' for virtual machines with unmanaged disks
+- Use \'Classic\' for virtual machines with unmanaged disks.
 ''')
 param availabilitySetSku string = 'Aligned'
 
