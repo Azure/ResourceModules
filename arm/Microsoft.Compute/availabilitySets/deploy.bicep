@@ -1,4 +1,4 @@
-@description('Required. The name of the availability set that is being created.')
+@description('Required. The name of the availability set that is being created')
 param name string
 
 @description('Optional. The number of fault domains to use.')

@@ -21,7 +21,7 @@ This template deploys an availability set
 **Required parameters**
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the availability set that is being created. |
+| `name` | string | The name of the availability set that is being created |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
