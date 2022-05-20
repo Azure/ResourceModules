@@ -1,7 +1,7 @@
 @description('Required. The name of the NetApp account.')
 param name string
 
-@description('Optional. Fully Qualified Active Directory DNS Domain Name (e.g. \'contoso.com\')')
+@description('Optional. Fully Qualified Active Directory DNS Domain Name (e.g. \'contoso.com\').')
 param domainName string = ''
 
 @description('Optional. Required if domainName is specified. Username of Active Directory domain administrator, with permissions to create SMB server machine account in the AD domain.')
