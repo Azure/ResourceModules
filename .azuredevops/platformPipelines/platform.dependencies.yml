@@ -790,7 +790,7 @@ stages:
       - ${{ if eq( parameters.deploySqlMiDependencies, true) }}:
           - job:
             displayName: Set sqlmi key vault secrets and keys
-            condition: eq(${{ parameters.deploySqlMiDependencies }}, true)
+            condition: and(succeeded(), eq(${{ parameters.deploySqlMiDependencies }}, true))
             dependsOn:
               - sqlmi_kv
             pool:
