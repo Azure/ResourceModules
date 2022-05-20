@@ -247,10 +247,12 @@ resource cognitiveServices_diagnosticSettingName 'Microsoft.Insights/diagnostics
 module cognitiveServices_privateEndpoints '../../Microsoft.Network/privateEndpoints/deploy.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
   name: '${uniqueString(deployment().name, location)}-CognitiveServices-PrivateEndpoint-${index}'
   params: {
-    groupIds: privateEndpoint.groupIds
+    groupIds: [
+      privateEndpoint.service
+    ]
     name: contains(privateEndpoint, 'name') ? privateEndpoint.name : '${last(split(cognitiveServices.id, '/'))}-${split(privateEndpoint.subnetResourceId, '/')[8]}_${last(split(privateEndpoint.subnetResourceId, '/'))}'
     serviceResourceId: cognitiveServices.id
-    subnetId: privateEndpoint.subnetResourceId
+    subnetResourceId: privateEndpoint.subnetResourceId
     enableDefaultTelemetry: enableDefaultTelemetry
     location: reference(split(privateEndpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location
     lock: contains(privateEndpoint, 'lock') ? privateEndpoint.lock : 'NotSpecified'
