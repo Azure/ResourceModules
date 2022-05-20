@@ -21,13 +21,13 @@ This template deploys an availability set
 **Required parameters**
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the availability set that is being created |
+| `name` | string | The name of the availability set that is being created. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `availabilitySetFaultDomain` | int | `2` |  | The number of fault domains to use. |
-| `availabilitySetSku` | string | `'Aligned'` |  | SKU of the availability set.<p>- Use \'Aligned\' for virtual machines with managed disks<p>- Use \'Classic\' for virtual machines with unmanaged disks.<p> |
+| `availabilitySetSku` | string | `'Aligned'` |  | SKU of the availability set.<p>- Use \'Aligned\' for virtual machines with managed disks<p>- Use \'Classic\' for virtual machines with unmanaged disks<p> |
 | `availabilitySetUpdateDomain` | int | `5` |  | The number of update domains to use. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `location` | string | `[resourceGroup().location]` |  | Resource location. |
