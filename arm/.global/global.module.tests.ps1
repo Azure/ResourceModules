@@ -803,7 +803,7 @@ Describe 'Deployment template tests' -Tag Template {
             $templateOutputs = $templateContent.outputs.Keys
             foreach ($output in $templateOutputs) {
                 $data = ($templateContent.outputs.$output.metadata).description
-                if ($data -notmatch '^[A-Z].+\.$') {
+                if ($data -notmatch '(?s)^[A-Z].+\.$') {
                     $incorrectOutputs += $output
                 }
             }
