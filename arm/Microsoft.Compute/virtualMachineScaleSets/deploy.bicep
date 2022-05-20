@@ -400,7 +400,7 @@ resource vmss 'Microsoft.Compute/virtualMachineScaleSets@2021-04-01' = {
         secrets: secrets
       }
       securityProfile: {
-        encryptionAtHost: encryptionAtHost
+        encryptionAtHost: encryptionAtHost ? encryptionAtHost : null
         securityType: securityType
         uefiSettings: securityType == 'TrustedLaunch' ? {
           secureBootEnabled: secureBootEnabled

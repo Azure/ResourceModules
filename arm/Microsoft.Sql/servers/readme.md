@@ -51,7 +51,7 @@ This module deploys a SQL server.
 | `systemAssignedIdentity` | bool | `False` |  | Enables system assigned managed identity on the resource. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
 | `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. |
-| `vulnerabilityAssessmentsObj` | _[vulnerabilityAssessments](vulnerabilityAssessments/readme.md)_ object | `{object}` |  | The vulnerability assessment configuration |
+| `vulnerabilityAssessmentsObj` | _[vulnerabilityAssessments](vulnerabilityAssessments/readme.md)_ object | `{object}` |  | The vulnerability assessment configuration. |
 
 
 ### Parameter Usage: `roleAssignments`
@@ -169,6 +169,6 @@ To use Private Endpoint the following dependencies must be deployed:
 | :-- | :-- | :-- |
 | `location` | string | The location the resource was deployed into. |
 | `name` | string | The name of the deployed SQL server. |
-| `resourceGroupName` | string | The resourceGroup of the deployed SQL server. |
+| `resourceGroupName` | string | The resource group of the deployed SQL server. |
 | `resourceId` | string | The resource ID of the deployed SQL server. |
 | `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |

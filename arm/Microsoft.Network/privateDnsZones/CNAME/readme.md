@@ -33,7 +33,7 @@ This module deploys a Private DNS Zone CNAME record.
 | `cnameRecord` | object | `{object}` | A CNAME record. |
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `metadata` | object | `{object}` | The metadata attached to the record set. |
-| `roleAssignments` | array | `[]` | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
+| `roleAssignments` | array | `[]` | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `ttl` | int | `3600` | The TTL (time-to-live) of the records in the record set. |
 
 
@@ -67,6 +67,6 @@ Create a role assignment for the given resource. If you want to assign a service
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the deployed CNAME record |
+| `name` | string | The name of the deployed CNAME record. |
 | `resourceGroupName` | string | The resource group of the deployed CNAME record. |
 | `resourceId` | string | The resource ID of the deployed CNAME record. |

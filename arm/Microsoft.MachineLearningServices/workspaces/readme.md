@@ -64,7 +64,7 @@ This module deploys a Machine Learning Services Workspace.
 | `lock` | string | `'NotSpecified'` | `[CanNotDelete, NotSpecified, ReadOnly]` | Specify the type of lock. |
 | `privateEndpoints` | array | `[]` |  | Configuration Details for private endpoints. |
 | `publicNetworkAccess` | string | `'Disabled'` | `[Enabled, Disabled]` | Whether requests from Public Network are allowed. |
-| `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
+| `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `tags` | object | `{object}` |  | Resource tags. |
 
 
@@ -216,7 +216,7 @@ You can specify multiple user assigned identities to a resource by providing add
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
 | `location` | string | The location the resource was deployed into. |
-| `name` | string | The name of the machine learning service |
+| `name` | string | The name of the machine learning service. |
 | `principalId` | string | The principal ID of the system assigned identity. |
-| `resourceGroupName` | string | The resource group the machine learning service was deployed into |
-| `resourceId` | string | The resource ID of the machine learning service |
+| `resourceGroupName` | string | The resource group the machine learning service was deployed into. |
+| `resourceId` | string | The resource ID of the machine learning service. |

@@ -16,6 +16,7 @@ This section details the design principles followed by the CARML Bicep modules.
   - [Outputs](#outputs)
 - [ReadMe](#readme)
 - [Parameter files](#parameter-files)
+- [Telemetry](#telemetry)
 
 ---
 
@@ -156,7 +157,7 @@ The RBAC deployment has 2 elements to it. A module that contains the implementat
 
 #### 1st Element in main resource
 ```bicep
-@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'')
+@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
 param roleAssignments array = []
 
 module <mainResource>_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
@@ -498,3 +499,19 @@ Parameter files in CARML leverage the common `deploymentParameters.json` schema 
 - Likewise, the `name` parameter we have in most modules should give some indication of the file it was deployed with. For example, a `min.parameters.json` parameter file for the virtual network module may have a `name` property with the value `sxx-az-vnet-min-001` where `min` relates to the prefix of the parameter file itself.
 - A module should have as many parameter files as it needs to evaluate all parts of the module's functionality.
 - Sensitive data should not be stored inside the parameter file but rather be injected by the use of tokens, as described in the [Token replacement](./The%20CI%20environment%20-%20Token%20replacement) section, or via a [key vault reference](https://docs.microsoft.com/en-us/azure/azure-resource-manager/templates/key-vault-parameter?tabs=azure-cli#reference-secrets-with-static-id).
+
+# Telemetry
+
+Each module in CARML contains a `defaultTelemetry` deployment  `'pid-<GUID>-${uniqueString(deployment().name)}'`, resulting in deployments such as `'pid-<GUID>-nx2c3rnlt2wru'`.
+
+This resource enables the team responsible for CARML to query the number of deployments of a given template from Azure - and as such get insights into its adoption.
+
+When using CARML's CI environment you can enable/disable this deployment by switching the `enableDefaultTelemetry` setting in the `settings.json` file in the repository's root. This value is automatically injected into each individual deployment that is executed as part of the environment's pipeline.
+
+When consuming the modules outside of CARML's pipelines you can either
+- Set the parameter to a default value of `'false'`
+- Set the parameter to false when deploying a module
+
+> **Note:** _The deployment and its GUID can NOT be used to track [Azure Consumed Revenue (ACR)](https://docs.microsoft.com/en-us/azure/marketplace/azure-partner-customer-usage-attribution)._
+>
+> _If you want to track it, we recommend to implement it on the consuming template's level (i.e. the workload/solution) and apply the required naming format `'pid-<GUID>'` (without the suffix)._

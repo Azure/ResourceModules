@@ -7,7 +7,7 @@ param logAnalyticsWorkspaceName string
 @description('Required. The resource ID of the resource that will be linked to the workspace. This should be used for linking resources which require read access.')
 param resourceId string = ''
 
-@description('Optional. The resource ID of the resource that will be linked to the workspace. This should be used for linking resources which require write access. ')
+@description('Optional. The resource ID of the resource that will be linked to the workspace. This should be used for linking resources which require write access.')
 param writeAccessResourceId string = ''
 
 @description('Optional. Tags to configure in the resource.')

@@ -23,7 +23,7 @@ This module deploys an Azure virtual desktop application group.
 **Required parameters**
 | Parameter Name | Type | Allowed Values | Description |
 | :-- | :-- | :-- | :-- |
-| `applicationGroupType` | string | `[RemoteApp, Desktop]` | The type of the Application Group to be created. Allowed values: RemoteApp or Desktop |
+| `applicationGroupType` | string | `[RemoteApp, Desktop]` | The type of the Application Group to be created. Allowed values: RemoteApp or Desktop. |
 | `hostpoolName` | string |  | Name of the Host Pool to be linked to this Application Group. |
 | `name` | string |  | Name of the Application Group to create this application in. |
 
@@ -43,7 +43,7 @@ This module deploys an Azure virtual desktop application group.
 | `friendlyName` | string | `''` |  | The friendly name of the Application Group to be created. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `'NotSpecified'` | `[CanNotDelete, NotSpecified, ReadOnly]` | Specify the type of lock. |
-| `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalIds' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11' |
+| `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalIds' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
 
 
@@ -95,6 +95,6 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
 | `location` | string | The location the resource was deployed into. |
-| `name` | string | The name of the AVD application group |
-| `resourceGroupName` | string | The resource group the AVD application group was deployed into |
-| `resourceId` | string | The resource ID of the AVD application group |
+| `name` | string | The name of the AVD application group. |
+| `resourceGroupName` | string | The resource group the AVD application group was deployed into. |
+| `resourceId` | string | The resource ID of the AVD application group. |
