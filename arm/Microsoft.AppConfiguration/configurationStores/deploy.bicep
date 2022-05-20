@@ -97,6 +97,9 @@ param diagnosticMetricsToEnable array = [
 @description('Optional. The name of the diagnostic setting, if deployed.')
 param diagnosticSettingsName string = '${name}-diagnosticSettings'
 
+@description('Optional. Configuration Details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible.')
+param privateEndpoints array = []
+
 var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
   category: category
   enabled: true
@@ -182,6 +185,16 @@ module appConfiguration_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, 
     principalType: contains(roleAssignment, 'principalType') ? roleAssignment.principalType : ''
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
     resourceId: appConfiguration.id
+  }
+}]
+
+module appConfiguration_privateEndpoints '.bicep/nested_privateEndpoint.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
+  name: '${uniqueString(deployment().name, location)}-AppConfig-PrivateEndpoint-${index}'
+  params: {
+    privateEndpointResourceId: appConfiguration.id
+    privateEndpointVnetLocation: empty(privateEndpoints) ? 'dummy' : reference(split(privateEndpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location
+    privateEndpointObj: privateEndpoint
+    tags: tags
   }
 }]
 
