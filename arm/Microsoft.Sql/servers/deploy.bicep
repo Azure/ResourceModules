@@ -150,7 +150,7 @@ module server_privateEndpoints '../../Microsoft.Network/privateEndpoints/deploy.
   name: '${uniqueString(deployment().name, location)}-SQLServer-PrivateEndpoint-${index}'
   params: {
     groupIds: privateEndpoint.groupIds
-    name: contains(privateEndpoint, 'name') ? privateEndpoint.name : '${last(split(server.id, '/'))}-${split(privateEndpoint.subnetResourceId.id, '/')[8]}_${last(split(privateEndpoint.subnetResourceId.id, '/'))}'
+    name: contains(privateEndpoint, 'name') ? privateEndpoint.name : '${last(split(server.id, '/'))}-${split(privateEndpoint.subnetResourceId, '/')[8]}_${last(split(privateEndpoint.subnetResourceId, '/'))}'
     serviceResourceId: server.id
     subnetId: privateEndpoint.subnetResourceId
     enableDefaultTelemetry: enableDefaultTelemetry

@@ -70,7 +70,7 @@ module automationAccount_privateEndpoints '../../Microsoft.Network/privateEndpoi
   name: '${uniqueString(deployment().name, location)}-PvtLinkScope-PrivateEndpoint-${index}'
   params: {
     groupIds: privateEndpoint.groupIds
-    name: contains(privateEndpoint, 'name') ? privateEndpoint.name : '${last(split(privateLinkScope.id, '/'))}-${split(privateEndpoint.subnetResourceId.id, '/')[8]}_${last(split(privateEndpoint.subnetResourceId.id, '/'))}'
+    name: contains(privateEndpoint, 'name') ? privateEndpoint.name : '${last(split(privateLinkScope.id, '/'))}-${split(privateEndpoint.subnetResourceId, '/')[8]}_${last(split(privateEndpoint.subnetResourceId, '/'))}'
     serviceResourceId: privateLinkScope.id
     subnetId: privateEndpoint.subnetResourceId
     enableDefaultTelemetry: enableDefaultTelemetry

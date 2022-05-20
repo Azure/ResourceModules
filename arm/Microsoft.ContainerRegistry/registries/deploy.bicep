@@ -284,7 +284,7 @@ module automationAccount_privateEndpoints '../../Microsoft.Network/privateEndpoi
   name: '${uniqueString(deployment().name, location)}-ContainerRegistry-PrivateEndpoint-${index}'
   params: {
     groupIds: privateEndpoint.groupIds
-    name: contains(privateEndpoint, 'name') ? privateEndpoint.name : '${last(split(registry.id, '/'))}-${split(privateEndpoint.subnetResourceId.id, '/')[8]}_${last(split(privateEndpoint.subnetResourceId.id, '/'))}'
+    name: contains(privateEndpoint, 'name') ? privateEndpoint.name : '${last(split(registry.id, '/'))}-${split(privateEndpoint.subnetResourceId, '/')[8]}_${last(split(privateEndpoint.subnetResourceId, '/'))}'
     serviceResourceId: registry.id
     subnetId: privateEndpoint.subnetResourceId
     enableDefaultTelemetry: enableDefaultTelemetry
