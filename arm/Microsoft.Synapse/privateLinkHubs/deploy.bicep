@@ -83,24 +83,6 @@ module privateLinkHub_privateEndpoints '../../Microsoft.Network/privateEndpoints
   }
 }]
 
-module automationAccount_privateEndpoints '../../Microsoft.Network/privateEndpoints/deploy.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
-  name: '${uniqueString(deployment().name, location)}-PrivateLinkHub-PrivateEndpoint-${index}'
-  params: {
-    groupId: privateEndpoint.groupId
-    name: contains(privateEndpoint, 'name') ? privateEndpoint.name : '${last(split(privateLinkHub.id, '/'))}-${privateEndpoint.groupId}'
-    serviceResourceId: privateLinkHub.id
-    subnetId: privateEndpoint.subnetResourceId
-    enableDefaultTelemetry: enableDefaultTelemetry
-    location: reference(split(privateEndpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location
-    lock: contains(privateEndpoint, 'lock') ? privateEndpoint.lock : 'NotSpecified'
-    privateDnsZoneGroups: contains(privateEndpoint, 'privateDnsZoneGroups') ? privateEndpoint.privateDnsZoneGroups : []
-    roleAssignments: contains(privateEndpoint, 'roleAssignments') ? privateEndpoint.roleAssignments : []
-    tags: contains(privateEndpoint, 'tags') ? privateEndpoint.tags : {}
-    manualPrivateLinkServiceConnections: contains(privateEndpoint, 'manualPrivateLinkServiceConnections') ? privateEndpoint.manualPrivateLinkServiceConnections : []
-    customDnsConfigs: contains(privateEndpoint, 'customDnsConfigs') ? privateEndpoint.customDnsConfigs : []
-  }
-}]
-
 @description('The resource ID of the deployed Synapse Private Link Hub.')
 output resourceId string = privateLinkHub.id
 
