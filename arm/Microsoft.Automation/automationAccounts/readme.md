@@ -53,7 +53,7 @@ This module deploys an Azure Automation Account.
 | `keyName` | string | `''` |  | The name of key used to encrypt data. This parameter is needed only if you enable Microsoft.Keyvault as encryptionKeySource. |
 | `keyvaultUri` | string | `''` |  | The URI of the key vault key used to encrypt data. This parameter is needed only if you enable Microsoft.Keyvault as encryptionKeySource. |
 | `keyVersion` | string | `''` |  | The key version of the key used to encrypt data. This parameter is needed only if you enable Microsoft.Keyvault as encryptionKeySource. |
-| `linkedWorkspaceId` | string | `''` |  | ID of the log analytics workspace to be linked to the deployed automation account. |
+| `linkedWorkspaceResourceId` | string | `''` |  | ID of the log analytics workspace to be linked to the deployed automation account. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `'NotSpecified'` | `[CanNotDelete, NotSpecified, ReadOnly]` | Specify the type of lock. |
 | `modules` | _[modules](modules/readme.md)_ array | `[]` |  | List of modules to be created in the automation account. |
