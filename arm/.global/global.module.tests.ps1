@@ -780,7 +780,7 @@ Describe 'Deployment template tests' -Tag Template {
             $templateParameters = $templateContent.parameters.Keys
             foreach ($parameter in $templateParameters) {
                 $data = ($templateContent.parameters.$parameter.metadata).description
-                if ($data -notmatch '^[A-Z][a-zA-Z]+\. .+\.$') {
+                if ($data -notmatch '(?smi)^[A-Z][a-zA-Z]+\. .+\.$') {
                     $incorrectParameters += $parameter
                 }
             }
