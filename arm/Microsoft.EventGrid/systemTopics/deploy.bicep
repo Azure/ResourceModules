@@ -147,7 +147,7 @@ module automationAccount_privateEndpoints '../../Microsoft.Network/privateEndpoi
   name: '${uniqueString(deployment().name, location)}-SystemTopic-PrivateEndpoint-${index}'
   params: {
     groupIds: privateEndpoint.groupIds
-    name: contains(privateEndpoint, 'name') ? privateEndpoint.name : '${last(split(systemTopic.id, '/'))}-${privateEndpoint.groupId}'
+    name: contains(privateEndpoint, 'name') ? privateEndpoint.name : '${last(split(systemTopic.id, '/'))}-${privateEndpoint.groupIds}'
     serviceResourceId: systemTopic.id
     subnetId: privateEndpoint.subnetResourceId
     enableDefaultTelemetry: enableDefaultTelemetry

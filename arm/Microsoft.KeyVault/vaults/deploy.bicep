@@ -283,7 +283,7 @@ module keyVault_privateEndpoints '../../Microsoft.Network/privateEndpoints/deplo
   name: '${uniqueString(deployment().name, location)}-KeyVault-PrivateEndpoint-${index}'
   params: {
     groupIds: privateEndpoint.groupIds
-    name: contains(privateEndpoint, 'name') ? privateEndpoint.name : '${last(split(keyVault.id, '/'))}-${privateEndpoint.groupId}'
+    name: contains(privateEndpoint, 'name') ? privateEndpoint.name : '${last(split(keyVault.id, '/'))}-${privateEndpoint.groupIds}'
     serviceResourceId: keyVault.id
     subnetId: privateEndpoint.subnetResourceId
     enableDefaultTelemetry: enableDefaultTelemetry

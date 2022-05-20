@@ -248,7 +248,7 @@ module cognitiveServices_privateEndpoints '../../Microsoft.Network/privateEndpoi
   name: '${uniqueString(deployment().name, location)}-CognitiveServices-PrivateEndpoint-${index}'
   params: {
     groupIds: privateEndpoint.groupIds
-    name: contains(privateEndpoint, 'name') ? privateEndpoint.name : '${last(split(cognitiveServices.id, '/'))}-${privateEndpoint.groupId}'
+    name: contains(privateEndpoint, 'name') ? privateEndpoint.name : '${last(split(cognitiveServices.id, '/'))}-${privateEndpoint.groupIds}'
     serviceResourceId: cognitiveServices.id
     subnetId: privateEndpoint.subnetResourceId
     enableDefaultTelemetry: enableDefaultTelemetry

@@ -279,7 +279,7 @@ module automationAccount_privateEndpoints '../../Microsoft.Network/privateEndpoi
   name: '${uniqueString(deployment().name, location)}-EvhbNamespace-PrivateEndpoint-${index}'
   params: {
     groupIds: privateEndpoint.groupIds
-    name: contains(privateEndpoint, 'name') ? privateEndpoint.name : '${last(split(eventHubNamespace.id, '/'))}-${privateEndpoint.groupId}'
+    name: contains(privateEndpoint, 'name') ? privateEndpoint.name : '${last(split(eventHubNamespace.id, '/'))}-${privateEndpoint.groupIds}'
     serviceResourceId: eventHubNamespace.id
     subnetId: privateEndpoint.subnetResourceId
     enableDefaultTelemetry: enableDefaultTelemetry

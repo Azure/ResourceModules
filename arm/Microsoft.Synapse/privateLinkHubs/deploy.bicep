@@ -69,7 +69,7 @@ module privateLinkHub_privateEndpoints '../../Microsoft.Network/privateEndpoints
   name: '${uniqueString(deployment().name, location)}-PrivateLinkHub-PrivateEndpoint-${index}'
   params: {
     groupIds: privateEndpoint.groupIds
-    name: contains(privateEndpoint, 'name') ? privateEndpoint.name : '${last(split(privateLinkHub.id, '/'))}-${privateEndpoint.groupId}'
+    name: contains(privateEndpoint, 'name') ? privateEndpoint.name : '${last(split(privateLinkHub.id, '/'))}-${privateEndpoint.groupIds}'
     serviceResourceId: privateLinkHub.id
     subnetId: privateEndpoint.subnetResourceId
     enableDefaultTelemetry: enableDefaultTelemetry
