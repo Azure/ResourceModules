@@ -57,12 +57,12 @@
                         },
                         "registration": {
                             "openIdIssuer": "https://sts.windows.net/<<tenantId>>/v2.0/",
-                            "clientId": "d874dd2f-2032-4db1-a053-f0ec243685aa",
+                            "clientId": "247b0c67-6ff4-4f59-8281-ab36b925291c",
                             "clientSecretSettingName": "EASYAUTH_SECRET"
                         },
                         "validation": {
                             "allowedAudiences": [
-                                "api://d874dd2f-2032-4db1-a053-f0ec243685aa"
+                                "api://247b0c67-6ff4-4f59-8281-ab36b925291c"
                             ],
                             "defaultAuthorizationPolicy": {
                                 "allowedPrincipals": {}
