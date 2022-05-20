@@ -56,15 +56,15 @@ resource privateEndpoint 'Microsoft.Network/privateEndpoints@2021-05-01' = {
   location: location
   tags: tags
   properties: {
-    privateLinkServiceConnections: [
-      {
-        name: name
-        properties: {
-          privateLinkServiceId: serviceResourceId
-          groupIds: groupIds
-        }
+    privateLinkServiceConnections: [for groupId in groupIds: {
+      name: name
+      properties: {
+        privateLinkServiceId: serviceResourceId
+        groupIds: [
+          groupId
+        ]
       }
-    ]
+    }]
     manualPrivateLinkServiceConnections: manualPrivateLinkServiceConnections
     subnet: {
       id: subnetId
