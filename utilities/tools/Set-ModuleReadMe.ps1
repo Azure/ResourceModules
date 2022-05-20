@@ -455,6 +455,10 @@ function Set-ModuleReadMe {
         }
     }
 
+    if (-not $templateFileContent) {
+        throw "Failed to compile [$TemplateFilePath]"
+    }
+
     $fullResourcePath = (Split-Path $TemplateFilePath -Parent).Replace('\', '/').split('/arm/')[1]
 
     # Check readme
