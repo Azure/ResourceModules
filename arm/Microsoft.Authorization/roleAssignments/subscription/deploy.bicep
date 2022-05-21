@@ -21,7 +21,7 @@ param condition string = ''
 @sys.description('Optional. Location deployment metadata.')
 param location string = deployment().location
 
-@sys.description('Optional. Version of the condition. Currently accepted value is "2.0"')
+@sys.description('Optional. Version of the condition. Currently accepted value is "2.0".')
 @allowed([
   '2.0'
 ])

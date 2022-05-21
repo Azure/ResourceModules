@@ -14,12 +14,6 @@ This module deploys API Management Service Named Values.
 | :-- | :-- |
 | `Microsoft.ApiManagement/service/namedValues` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2021-08-01/service/namedValues) |
 
-### Resource dependency
-
-The following resources are required to be able to deploy this resource.
-
-- `Microsoft.ApiManagement/service`
-
 ## Parameters
 
 **Required parameters**
@@ -45,6 +39,10 @@ The following resources are required to be able to deploy this resource.
 
 ### Parameter Usage: `keyVault`
 
+<details>
+
+<summary>Parameter JSON format</summary>
+
 ```json
 "keyVault": {
     "value":{
@@ -53,6 +51,22 @@ The following resources are required to be able to deploy this resource.
     }
 }
 ```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+keyVault: {
+    secretIdentifier:'Key vault secret identifier for fetching secret.'
+    identityClientId:'SystemAssignedIdentity or UserAssignedIdentity Client ID which will be used to access key vault secret.'
+}
+```
+
+</details>
+<p>
 
 ## Outputs
 

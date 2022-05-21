@@ -46,7 +46,7 @@ param jobSchedules array = []
 param variables array = []
 
 @description('Optional. ID of the log analytics workspace to be linked to the deployed automation account.')
-param linkedWorkspaceId string = ''
+param linkedWorkspaceResourceId string = ''
 
 @description('Optional. List of gallerySolutions to be created in the linked log analytics workspace.')
 param gallerySolutions array = []
@@ -253,29 +253,29 @@ module automationAccount_variables 'variables/deploy.bicep' = [for (variable, in
   }
 }]
 
-module automationAccount_linkedService '.bicep/nested_linkedService.bicep' = if (!empty(linkedWorkspaceId)) {
+module automationAccount_linkedService '.bicep/nested_linkedService.bicep' = if (!empty(linkedWorkspaceResourceId)) {
   name: '${uniqueString(deployment().name, location)}-AutoAccount-LinkedService'
   params: {
     name: 'automation'
-    logAnalyticsWorkspaceName: last(split(linkedWorkspaceId, '/'))
+    logAnalyticsWorkspaceName: last(split(linkedWorkspaceResourceId, '/'))
     resourceId: automationAccount.id
     tags: tags
   }
   // This is to support linked services to law in different subscription and resource group than the automation account.
   // The current scope is used by default if no linked service is intended to be created.
-  scope: resourceGroup(!empty(linkedWorkspaceId) ? split(linkedWorkspaceId, '/')[2] : subscription().subscriptionId, !empty(linkedWorkspaceId) ? split(linkedWorkspaceId, '/')[4] : resourceGroup().name)
+  scope: resourceGroup(!empty(linkedWorkspaceResourceId) ? split(linkedWorkspaceResourceId, '/')[2] : subscription().subscriptionId, !empty(linkedWorkspaceResourceId) ? split(linkedWorkspaceResourceId, '/')[4] : resourceGroup().name)
 }
 
-module automationAccount_solutions '.bicep/nested_solution.bicep' = [for (gallerySolution, index) in gallerySolutions: if (!empty(linkedWorkspaceId)) {
+module automationAccount_solutions '.bicep/nested_solution.bicep' = [for (gallerySolution, index) in gallerySolutions: if (!empty(linkedWorkspaceResourceId)) {
   name: '${uniqueString(deployment().name, location)}-AutoAccount-Solution-${index}'
   params: {
     name: gallerySolution
     location: location
-    logAnalyticsWorkspaceName: last(split(linkedWorkspaceId, '/'))
+    logAnalyticsWorkspaceName: last(split(linkedWorkspaceResourceId, '/'))
   }
   // This is to support solution to law in different subscription and resource group than the automation account.
   // The current scope is used by default if no linked service is intended to be created.
-  scope: resourceGroup(!empty(linkedWorkspaceId) ? split(linkedWorkspaceId, '/')[2] : subscription().subscriptionId, !empty(linkedWorkspaceId) ? split(linkedWorkspaceId, '/')[4] : resourceGroup().name)
+  scope: resourceGroup(!empty(linkedWorkspaceResourceId) ? split(linkedWorkspaceResourceId, '/')[2] : subscription().subscriptionId, !empty(linkedWorkspaceResourceId) ? split(linkedWorkspaceResourceId, '/')[4] : resourceGroup().name)
   dependsOn: [
     automationAccount_linkedService
   ]

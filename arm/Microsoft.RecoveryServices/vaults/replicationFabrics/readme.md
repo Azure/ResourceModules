@@ -40,6 +40,10 @@ This module deploys a Replication Fabric for Azure to Azure disaster recovery sc
 
 ### Parameter Usage: `replicationContainers`
 
+<details>
+
+<summary>Parameter JSON format</summary>
+
 ```json
 "replicationContainers": {
     "value": [
@@ -58,6 +62,32 @@ This module deploys a Replication Fabric for Azure to Azure disaster recovery sc
     ]
 }
 ```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+replicationContainers: [
+    {
+        name: 'we-container1'
+        replicationContainerMappings: [ //optional
+            {
+                policyName: 'Default_values'
+                targetContainerName: 'we-container2'
+            }
+        ]
+    }
+    {
+        name: 'we-container2'
+    }
+]
+```
+
+</details>
+<p>
 
 ## Outputs
 
