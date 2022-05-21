@@ -109,7 +109,7 @@ resource topic 'Microsoft.EventGrid/topics@2020-06-01' = {
   }
 }
 
-resource eventGrid_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
+resource topic_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
   name: '${topic.name}-${lock}-lock'
   properties: {
     level: lock
@@ -118,7 +118,7 @@ resource eventGrid_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock !=
   scope: topic
 }
 
-resource eventGrid_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(diagnosticWorkspaceId)) || (!empty(diagnosticEventHubAuthorizationRuleId)) || (!empty(diagnosticEventHubName))) {
+resource topic_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(diagnosticWorkspaceId)) || (!empty(diagnosticEventHubAuthorizationRuleId)) || (!empty(diagnosticEventHubName))) {
   name: diagnosticSettingsName
   properties: {
     storageAccountId: !empty(diagnosticStorageAccountId) ? diagnosticStorageAccountId : null
@@ -131,7 +131,7 @@ resource eventGrid_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@202
   scope: topic
 }
 
-module eventGrid_privateEndpoints '../../Microsoft.Network/privateEndpoints/deploy.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
+module topic_privateEndpoints '../../Microsoft.Network/privateEndpoints/deploy.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
   name: '${uniqueString(deployment().name, location)}-Topic-PrivateEndpoint-${index}'
   params: {
     groupIds: [
@@ -151,7 +151,7 @@ module eventGrid_privateEndpoints '../../Microsoft.Network/privateEndpoints/depl
   }
 }]
 
-module eventGrid_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+module topic_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-topic-Rbac-${index}'
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
