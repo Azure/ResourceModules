@@ -1,52 +1,72 @@
-# AVD Application Groups `[Microsoft.DesktopVirtualization/applicationgroups]`
+# Network Interface `[Microsoft.Network/networkInterfaces]`
 
-This module deploys an Azure virtual desktop application group.
+This module deploys Network Interfaces.
 
 ## Navigation
 
-- [Resource types](#Resource-types)
+- [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Deployment examples](#Deployment-examples)
 
-## Resource types
+## Resource Types
 
 | Resource Type | API Version |
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2020-10-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-10-01-preview/roleAssignments) |
-| `Microsoft.DesktopVirtualization/applicationGroups` | [2021-07-12](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DesktopVirtualization/2021-07-12/applicationGroups) |
-| `Microsoft.DesktopVirtualization/applicationGroups/applications` | [2021-07-12](https://docs.microsoft.com/en-us/azure/templates/Microsoft.DesktopVirtualization/2021-07-12/applicationGroups/applications) |
 | `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
+| `Microsoft.Network/networkInterfaces` | [2021-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/networkInterfaces) |
 
 ## Parameters
 
 **Required parameters**
-| Parameter Name | Type | Allowed Values | Description |
-| :-- | :-- | :-- | :-- |
-| `applicationGroupType` | string | `[RemoteApp, Desktop]` | The type of the Application Group to be created. Allowed values: RemoteApp or Desktop. |
-| `hostpoolName` | string |  | Name of the Host Pool to be linked to this Application Group. |
-| `name` | string |  | Name of the Application Group to create this application in. |
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `ipConfigurations` | array | A list of IPConfigurations of the network interface. |
+| `name` | string | The name of the network interface. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `applications` | _[applications](applications/readme.md)_ array | `[]` |  | List of applications to be created in the Application Group. |
-| `description` | string | `''` |  | The description of the Application Group to be created. |
 | `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
-| `diagnosticLogCategoriesToEnable` | array | `[Checkpoint, Error, Management]` | `[Checkpoint, Error, Management]` | The name of logs that will be streamed. |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
+| `diagnosticMetricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | The name of metrics that will be streamed. |
 | `diagnosticSettingsName` | string | `[format('{0}-diagnosticSettings', parameters('name'))]` |  | The name of the diagnostic setting, if deployed. |
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
-| `diagnosticWorkspaceId` | string | `''` |  | Resource ID of log analytics. |
+| `diagnosticWorkspaceId` | string | `''` |  | Resource identifier of log analytics. |
+| `dnsServers` | array | `[]` |  | List of DNS servers IP addresses. Use 'AzureProvidedDNS' to switch to azure provided DNS resolution. 'AzureProvidedDNS' value cannot be combined with other IPs, it must be the only value in dnsServers collection. |
+| `enableAcceleratedNetworking` | bool | `False` |  | If the network interface is accelerated networking enabled. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `friendlyName` | string | `''` |  | The friendly name of the Application Group to be created. |
+| `enableIPForwarding` | bool | `False` |  | Indicates whether IP forwarding is enabled on this network interface. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `'NotSpecified'` | `[CanNotDelete, NotSpecified, ReadOnly]` | Specify the type of lock. |
-| `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalIds' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
+| `networkSecurityGroupResourceId` | string | `''` |  | The network security group (NSG) to attach to the network interface. |
+| `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
 
+
+### Parameter Usage: `ipConfigurations`
+
+The IP configurations to apply to the network interface.
+
+```json
+{
+    "name": "ipconfig01",
+    "subnetId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001",
+    "loadBalancerBackendAddressPools": [
+        {
+            "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/loadBalancers/adp-<<namePrefix>>-az-lb-internal-001/backendAddressPools/servers"
+        }
+    ],
+    "applicationSecurityGroups": [
+        {
+            "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationSecurityGroups/adp-<<namePrefix>>-az-asg-x-001"
+        }
+    ]
+}
+```
 
 ### Parameter Usage: `roleAssignments`
 
@@ -153,9 +173,9 @@ tags: {
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
 | `location` | string | The location the resource was deployed into. |
-| `name` | string | The name of the AVD application group. |
-| `resourceGroupName` | string | The resource group the AVD application group was deployed into. |
-| `resourceId` | string | The resource ID of the AVD application group. |
+| `name` | string | The name of the deployed resource. |
+| `resourceGroupName` | string | The resource group of the deployed resource. |
+| `resourceId` | string | The resource ID of the deployed resource. |
 
 ## Deployment examples
 
@@ -171,13 +191,15 @@ tags: {
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "<<namePrefix>>-az-avdag-min-001"
+            "value": "<<namePrefix>>-az-nic-min-001"
         },
-        "applicationGroupType": {
-            "value": "RemoteApp"
-        },
-        "hostpoolName": {
-            "value": "adp-<<namePrefix>>-az-avdhp-x-001"
+        "ipConfigurations": {
+            "value": [
+                {
+                    "name": "ipconfig01",
+                    "subnetId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001"
+                }
+            ]
         }
     }
 }
@@ -191,12 +213,16 @@ tags: {
 <summary>via Bicep module</summary>
 
 ```bicep
-module applicationgroups './Microsoft.DesktopVirtualization/applicationgroups/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-applicationgroups'
+module networkInterfaces './Microsoft.Network/networkInterfaces/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-networkInterfaces'
   params: {
-    name: '<<namePrefix>>-az-avdag-min-001'
-    applicationGroupType: 'RemoteApp'
-    hostpoolName: 'adp-<<namePrefix>>-az-avdhp-x-001'
+    name: '<<namePrefix>>-az-nic-min-001'
+    ipConfigurations: [
+      {
+        name: 'ipconfig01'
+        subnetId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001'
+      }
+    ]
   }
 ```
 
@@ -215,42 +241,7 @@ module applicationgroups './Microsoft.DesktopVirtualization/applicationgroups/de
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "<<namePrefix>>-az-avdag-x-001"
-        },
-        "location": {
-            "value": "westeurope"
-        },
-        "applicationGroupType": {
-            "value": "RemoteApp"
-        },
-        "hostpoolName": {
-            "value": "adp-<<namePrefix>>-az-avdhp-x-001"
-        },
-        "friendlyName": {
-            "value": "Remote Applications 1"
-        },
-        "description": {
-            "value": "This is my first Remote Applications bundle"
-        },
-        "applications": {
-            "value": [
-                {
-                    "name": "notepad",
-                    "description": "Notepad by ARM template",
-                    "friendlyName": "Notepad",
-                    "filePath": "C:\\Windows\\System32\\notepad.exe",
-                    "commandLineSetting": "DoNotAllow",
-                    "commandLineArguments": "",
-                    "showInPortal": true,
-                    "iconPath": "C:\\Windows\\System32\\notepad.exe",
-                    "iconIndex": 0
-                },
-                {
-                    "name": "wordpad",
-                    "filePath": "C:\\Program Files\\Windows NT\\Accessories\\wordpad.exe",
-                    "friendlyName": "Wordpad"
-                }
-            ]
+            "value": "<<namePrefix>>-az-nic-x-001"
         },
         "roleAssignments": {
             "value": [
@@ -258,6 +249,24 @@ module applicationgroups './Microsoft.DesktopVirtualization/applicationgroups/de
                     "roleDefinitionIdOrName": "Reader",
                     "principalIds": [
                         "<<deploymentSpId>>"
+                    ]
+                }
+            ]
+        },
+        "ipConfigurations": {
+            "value": [
+                {
+                    "name": "ipconfig01",
+                    "subnetId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001",
+                    "loadBalancerBackendAddressPools": [
+                        {
+                            "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/loadBalancers/adp-<<namePrefix>>-az-lb-internal-001/backendAddressPools/servers"
+                        }
+                    ],
+                    "applicationSecurityGroups": [
+                        {
+                            "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationSecurityGroups/adp-<<namePrefix>>-az-asg-x-001"
+                        }
                     ]
                 }
             ]
@@ -289,38 +298,31 @@ module applicationgroups './Microsoft.DesktopVirtualization/applicationgroups/de
 <summary>via Bicep module</summary>
 
 ```bicep
-module applicationgroups './Microsoft.DesktopVirtualization/applicationgroups/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-applicationgroups'
+module networkInterfaces './Microsoft.Network/networkInterfaces/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-networkInterfaces'
   params: {
-    name: '<<namePrefix>>-az-avdag-x-001'
-    location: 'westeurope'
-    applicationGroupType: 'RemoteApp'
-    hostpoolName: 'adp-<<namePrefix>>-az-avdhp-x-001'
-    friendlyName: 'Remote Applications 1'
-    description: 'This is my first Remote Applications bundle'
-    applications: [
-      {
-        name: 'notepad'
-        description: 'Notepad by ARM template'
-        friendlyName: 'Notepad'
-        filePath: 'C:\\Windows\\System32\\notepad.exe'
-        commandLineSetting: 'DoNotAllow'
-        commandLineArguments: ''
-        showInPortal: true
-        iconPath: 'C:\\Windows\\System32\\notepad.exe'
-        iconIndex: 0
-      }
-      {
-        name: 'wordpad'
-        filePath: 'C:\\Program Files\\Windows NT\\Accessories\\wordpad.exe'
-        friendlyName: 'Wordpad'
-      }
-    ]
+    name: '<<namePrefix>>-az-nic-x-001'
     roleAssignments: [
       {
         roleDefinitionIdOrName: 'Reader'
         principalIds: [
           '<<deploymentSpId>>'
+        ]
+      }
+    ]
+    ipConfigurations: [
+      {
+        name: 'ipconfig01'
+        subnetId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001'
+        loadBalancerBackendAddressPools: [
+          {
+            id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/loadBalancers/adp-<<namePrefix>>-az-lb-internal-001/backendAddressPools/servers'
+          }
+        ]
+        applicationSecurityGroups: [
+          {
+            id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/applicationSecurityGroups/adp-<<namePrefix>>-az-asg-x-001'
+          }
         ]
       }
     ]
