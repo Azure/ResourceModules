@@ -66,7 +66,7 @@ resource privateLinkScope_lock 'Microsoft.Authorization/locks@2017-04-01' = if (
   }
 }
 
-module automationAccount_privateEndpoints '../../Microsoft.Network/privateEndpoints/deploy.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
+module privateLinkScope_privateEndpoints '../../Microsoft.Network/privateEndpoints/deploy.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
   name: '${uniqueString(deployment().name, location)}-PvtLinkScope-PrivateEndpoint-${index}'
   params: {
     groupIds: [

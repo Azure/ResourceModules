@@ -131,7 +131,7 @@ resource eventGrid_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@202
   scope: topic
 }
 
-module automationAccount_privateEndpoints '../../Microsoft.Network/privateEndpoints/deploy.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
+module eventGrid_privateEndpoints '../../Microsoft.Network/privateEndpoints/deploy.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
   name: '${uniqueString(deployment().name, location)}-Topic-PrivateEndpoint-${index}'
   params: {
     groupIds: [
