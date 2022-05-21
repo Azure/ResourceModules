@@ -28,6 +28,34 @@ function Invoke-ResourcePostRemoval {
     )
 
     switch ($type) {
+        'Microsoft.AppConfiguration/configurationStores' {
+            $subscriptionId = $resourceId.Split('/')[2]
+            $resourceName = Split-Path $ResourceId -Leaf
+
+            # Fetch service in soft-delete
+            $getPath = '/subscriptions/{0}/providers/Microsoft.AppConfiguration/deletedConfigurationStores?api-version=2021-10-01-preview' -f $subscriptionId
+            $getRequestInputObject = @{
+                Method = 'GET'
+                Path   = $getPath
+            }
+            $softDeletedConfigurationStore = ((Invoke-AzRestMethod @getRequestInputObject).Content | ConvertFrom-Json).value | Where-Object { $_.properties.configurationStoreId -eq $resourceId }
+
+            if ($softDeletedConfigurationStore) {
+                # Purge service
+                $purgePath = '/subscriptions/{0}/providers/Microsoft.AppConfiguration/locations/{1}/deletedConfigurationStores/{2}/purge?api-version=2021-10-01-preview' -f $subscriptionId, $softDeletedConfigurationStore.properties.location, $resourceName
+                $purgeRequestInputObject = @{
+                    Method = 'POST'
+                    Path   = $purgePath
+                }
+                if ($PSCmdlet.ShouldProcess(('App Configuration Store with ID [{0}]' -f $softDeletedConfigurationStore.properties.configurationStoreId), 'Purge')) {
+                    $response = Invoke-AzRestMethod @purgeRequestInputObject
+                    if ($response.StatusCode -ne 200) {
+                        throw ('Purge of resource [{0}] failed with error code [{1}]' -f $ResourceId, $response.StatusCode)
+                    }
+                }
+            }
+            break
+        }
         'Microsoft.KeyVault/vaults' {
             $resourceName = Split-Path $ResourceId -Leaf
 
