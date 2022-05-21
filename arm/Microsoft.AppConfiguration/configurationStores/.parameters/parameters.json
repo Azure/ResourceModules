@@ -34,7 +34,7 @@
             ]
         },
         "createMode": {
-            "value": "Recover"
+            "value": "Default"
         },
         "disableLocalAuth": {
             "value": false
@@ -47,6 +47,14 @@
         },
         "softDeleteRetentionInDays": {
             "value": 1
+        },
+        "privateEndpoints": {
+            "value": [
+                {
+                    "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints",
+                    "service": "configurationStores"
+                }
+            ]
         }
     }
 }
