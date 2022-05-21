@@ -42,12 +42,12 @@ function Get-LinkedLocalModuleList {
     # Load used functions
     . (Join-Path $PSScriptRoot 'Get-LinkedModuleList.ps1')
 
-    $allRefernces = Get-LinkedModuleList -path $path
+    $allReferences = Get-LinkedModuleList -path $path
 
     $resultSet = @{}
 
-    foreach ($resourceType in $allRefernces.Keys) {
-        $relevantLocalReferences = $allRefernces[$resourceType].localPathReferences | Where-Object { $_ -match '^\.\..*$' }
+    foreach ($resourceType in $allReferences.Keys) {
+        $relevantLocalReferences = $allReferences[$resourceType].localPathReferences | Where-Object { $_ -match '^\.\..*$' }
         if ($relevantLocalReferences) {
             $relevantLocalReferences = $relevantLocalReferences | ForEach-Object {
                 # remove deploy.bicep
