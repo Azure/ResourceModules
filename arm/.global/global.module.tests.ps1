@@ -787,7 +787,7 @@ Describe 'Deployment template tests' -Tag Template {
             $incorrectParameters | Should -BeNullOrEmpty
         }
 
-        It "[<moduleFolderName>] Conditional parameters' description should contain 'Required if' followed by the condition making the conditional parameter required." -TestCases $deploymentFolderTestCases {
+        It "[<moduleFolderName>] Conditional parameters' description should contain 'Required if' followed by the condition making the parameter required." -TestCases $deploymentFolderTestCases {
             param(
                 $moduleFolderName,
                 $templateContent
@@ -807,11 +807,11 @@ Describe 'Deployment template tests' -Tag Template {
                 {
                     '^Conditional. .*'
                     {
-                        if ($data -notmatch '(?s)^.*\. Required if .*\.$') {
+                        if ($data -notmatch '.*\. Required if .*') {
                             $incorrectParameters += $parameter
                         }
                     }
-                    # Place for other cases if needed in the future
+                    # Possible additional cases can be added here
                 }
             }
             $incorrectParameters | Should -BeNullOrEmpty
