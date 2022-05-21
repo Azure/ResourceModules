@@ -56,7 +56,7 @@ function Get-LinkedLocalModuleList {
                 # remove leading path elements
                 ($_ -replace '\\', '/') -match '^[\.\/]*(.+)$'
             } | ForEach-Object {
-                # We need to apply special handling if the references resources is in the same namespace (e.g. '../publicIPAddresses')
+                # We have to differentate the case that the referenced resources is inside or outside the same provider namespace (e.g. '../publicIPAddresses')
                 if ($matches[1] -like '*/*') {
                     # Reference outside of namespace
                     $matches[1]
