@@ -803,7 +803,7 @@ Describe 'Deployment template tests' -Tag Template {
             $templateParameters = $templateContent.parameters.Keys
             foreach ($parameter in $templateParameters) {
                 $data = ($templateContent.parameters.$parameter.metadata).description
-                switch -regex $data
+                switch -regex ($data)
                 {
                     '^Conditional. .*'
                     {
