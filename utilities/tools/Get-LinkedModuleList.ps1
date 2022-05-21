@@ -65,10 +65,6 @@ function Get-LinkedModuleList {
             $remoteReferences += $content | Where-Object { $_ -match "^module .+ '(.+:.+)' .+$" } | ForEach-Object { $matches[1] }
         }
 
-        $resourceReferences = $resourceReferences | Select-Object -Unique
-        $localPathReferences = $localPathReferences | Select-Object -Unique
-        $remoteReferences = $remoteReferences | Select-Object -Unique
-
         $providerNamespace = Split-Path (Split-Path $topLevelFolderPath -Parent) -Leaf
         $resourceType = Split-Path $topLevelFolderPath -Leaf
 
