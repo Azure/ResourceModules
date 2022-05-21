@@ -787,6 +787,36 @@ Describe 'Deployment template tests' -Tag Template {
             $incorrectParameters | Should -BeNullOrEmpty
         }
 
+        It "[<moduleFolderName>] Conditional parameters' description should contain 'Required if' followed by the condition making the conditional parameter required." -TestCases $deploymentFolderTestCases {
+            param(
+                $moduleFolderName,
+                $templateContent
+            )
+
+            if (-not $templateContent.parameters) {
+                # Skip test
+                $true | Should -Be $true
+                return
+            }
+
+            $incorrectParameters = @()
+            $templateParameters = $templateContent.parameters.Keys
+            foreach ($parameter in $templateParameters) {
+                $data = ($templateContent.parameters.$parameter.metadata).description
+                switch -regex $data
+                {
+                    '^Conditional. .*'
+                    {
+                        if ($data -notmatch '(?s)^.*\. Required if .*\.$') {
+                            $incorrectParameters += $parameter
+                        }
+                    }
+                    # Place for other cases if needed in the future
+                }
+            }
+            $incorrectParameters | Should -BeNullOrEmpty
+        }
+
         It "[<moduleFolderName>] outputs' description should start with a capital letter and contain text ending with a dot." -TestCases $deploymentFolderTestCases {
             param(
                 $moduleFolderName,
