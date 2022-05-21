@@ -20,7 +20,7 @@ This module deploys an Azure Automation Account.
 | `Microsoft.Automation/automationAccounts/modules` | [2020-01-13-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Automation/2020-01-13-preview/automationAccounts/modules) |
 | `Microsoft.Automation/automationAccounts/runbooks` | [2019-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Automation/2019-06-01/automationAccounts/runbooks) |
 | `Microsoft.Automation/automationAccounts/schedules` | [2020-01-13-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Automation/2020-01-13-preview/automationAccounts/schedules) |
-| `Microsoft.Automation/automationAccounts/softwareUpdateConfigurations` | [2019-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Automation/automationAccounts/softwareUpdateConfigurations) |
+| `Microsoft.Automation/automationAccounts/softwareUpdateConfigurations` | [2019-06-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Automation/2019-06-01/automationAccounts/softwareUpdateConfigurations) |
 | `Microsoft.Automation/automationAccounts/variables` | [2020-01-13-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Automation/2020-01-13-preview/automationAccounts/variables) |
 | `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
 | `Microsoft.Network/privateEndpoints` | [2021-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/privateEndpoints) |
