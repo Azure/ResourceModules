@@ -70,6 +70,10 @@ Describes the Management groups to be created. Each management group is represen
 
 ### Parameter Usage: `roleAssignments`
 
+<details>
+
+<summary>Parameter JSON format</summary>
+
 ```json
 "roleAssignments": [
     {
