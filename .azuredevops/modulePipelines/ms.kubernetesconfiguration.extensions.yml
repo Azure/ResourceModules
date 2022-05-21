@@ -16,6 +16,8 @@ parameters:
 
 pr: none
 
+pr: none
+
 trigger:
   batch: true
   branches:

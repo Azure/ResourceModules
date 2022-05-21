@@ -304,3 +304,6 @@ output resourceId string = registry.id
 
 @description('The principal ID of the system assigned identity.')
 output systemAssignedPrincipalId string = systemAssignedIdentity && contains(registry.identity, 'principalId') ? registry.identity.principalId : ''
+
+@description('The location the resource was deployed into.')
+output location string = registry.location

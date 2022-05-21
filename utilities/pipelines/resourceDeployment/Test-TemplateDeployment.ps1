@@ -94,7 +94,7 @@ function Test-TemplateDeployment {
             $DeploymentInputs += $additionalParameters
         }
 
-        $deploymentScope = Get-ScopeOfTemplateFile -TemplateFilePath $templateFilePath
+        $deploymentScope = Get-ScopeOfTemplateFile -TemplateFilePath $templateFilePath -Verbose
 
         if ($deploymentScope -ne 'resourceGroup') {
             $deploymentNamePrefix = Split-Path -Path (Split-Path $templateFilePath -Parent) -LeafBase

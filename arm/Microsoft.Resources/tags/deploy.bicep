@@ -56,3 +56,6 @@ output name string = (!empty(resourceGroupName) && !empty(subscriptionId)) ? tag
 
 @description('The applied tags.')
 output tags object = (!empty(resourceGroupName) && !empty(subscriptionId)) ? tags_rg.outputs.tags : tags_sub.outputs.tags
+
+@description('The resource ID of the applied tags.')
+output resourceId string = (!empty(resourceGroupName) && !empty(subscriptionId)) ? tags_rg.outputs.resourceId : tags_sub.outputs.resourceId

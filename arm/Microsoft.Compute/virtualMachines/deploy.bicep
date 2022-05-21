@@ -88,7 +88,10 @@ param systemAssignedIdentity bool = false
 @description('Optional. The ID(s) to assign to the resource.')
 param userAssignedIdentities object = {}
 
-@description('Optional. Storage account used to store boot diagnostic information. Boot diagnostics will be disabled if no value is provided.')
+@description('Optional. Whether boot diagnostics should be enabled on the Virtual Machine. Boot diagnostics will be enabled with a managed storage account if no bootDiagnosticsStorageAccountName value is provided. If bootDiagnostics and bootDiagnosticsStorageAccountName values are not provided, boot diagnostics will be disabled.')
+param bootDiagnostics bool = false
+
+@description('Optional. Custom storage account used to store boot diagnostic information. Boot diagnostics will be enabled with a custom storage account if a value is provided.')
 param bootDiagnosticStorageAccountName string = ''
 
 @description('Optional. Storage account boot diagnostic base URI.')
@@ -349,7 +352,7 @@ module virtualMachine_nic '.bicep/nested_networkInterface.bicep' = [for (nicConf
     enableIPForwarding: contains(nicConfiguration, 'enableIPForwarding') ? (!empty(nicConfiguration.enableIPForwarding) ? nicConfiguration.enableIPForwarding : false) : false
     enableAcceleratedNetworking: contains(nicConfiguration, 'enableAcceleratedNetworking') ? nicConfiguration.enableAcceleratedNetworking : true
     dnsServers: contains(nicConfiguration, 'dnsServers') ? (!empty(nicConfiguration.dnsServers) ? nicConfiguration.dnsServers : []) : []
-    networkSecurityGroupId: contains(nicConfiguration, 'nsgId') ? (!empty(nicConfiguration.nsgId) ? nicConfiguration.nsgId : '') : ''
+    networkSecurityGroupId: contains(nicConfiguration, 'networkSecurityGroupId') ? (!empty(nicConfiguration.networkSecurityGroupId) ? nicConfiguration.networkSecurityGroupId : '') : ''
     ipConfigurationArray: nicConfiguration.ipConfigurations
     lock: lock
     diagnosticStorageAccountId: diagnosticStorageAccountId
@@ -437,7 +440,7 @@ resource virtualMachine 'Microsoft.Compute/virtualMachines@2021-07-01' = {
     }
     diagnosticsProfile: {
       bootDiagnostics: {
-        enabled: !empty(bootDiagnosticStorageAccountName)
+        enabled: !empty(bootDiagnosticStorageAccountName) ? true : bootDiagnostics
         storageUri: !empty(bootDiagnosticStorageAccountName) ? 'https://${bootDiagnosticStorageAccountName}${bootDiagnosticStorageAccountUri}' : null
       }
     }
@@ -656,3 +659,6 @@ output resourceGroupName string = resourceGroup().name
 
 @description('The principal ID of the system assigned identity.')
 output systemAssignedPrincipalId string = systemAssignedIdentity && contains(virtualMachine.identity, 'principalId') ? virtualMachine.identity.principalId : ''
+
+@description('The location the resource was deployed into.')
+output location string = virtualMachine.location

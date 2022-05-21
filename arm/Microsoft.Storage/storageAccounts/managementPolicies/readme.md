@@ -35,37 +35,84 @@ This module can be used to deploy a management policies into a storage account.
 
 ### Parameter Usage: `rules`
 
+<details>
+
+<summary>Parameter JSON format</summary>
+
 ```json
-[
-    {
-        "enabled": true,
-        "name": "retention-policy",
-        "type": "Lifecycle",
-        "definition": {
-            "actions": {
-                "baseBlob": {
-                    "tierToArchive": {
-                        "daysAfterModificationGreaterThan": 30
+"rules": {
+    "value": [
+        {
+            "enabled": true,
+            "name": "retention-policy",
+            "type": "Lifecycle",
+            "definition": {
+                "actions": {
+                    "baseBlob": {
+                        "tierToArchive": {
+                            "daysAfterModificationGreaterThan": 30
+                        },
+                        "delete": {
+                            "daysAfterModificationGreaterThan": 1096
+                        }
                     },
-                    "delete": {
-                        "daysAfterModificationGreaterThan": 1096
+                    "snapshot": {
+                        "delete": {
+                            "daysAfterCreationGreaterThan": 1096
+                        }
                     }
                 },
-                "snapshot": {
-                    "delete": {
-                        "daysAfterCreationGreaterThan": 1096
+                "filters": {
+                    "blobTypes": [
+                        "blockBlob"
+                    ]
+                }
+            }
+        }
+    ]
+}
+```
+</details>
+
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+rules: [
+    {
+        enabled: true
+        name: 'retention-policy'
+        type: 'Lifecycle'
+        definition: {
+            actions: {
+                baseBlob: {
+                    tierToArchive: {
+                        daysAfterModificationGreaterThan: 30
+                    }
+                    delete: {
+                        daysAfterModificationGreaterThan: 1096
                     }
                 }
-            },
-            "filters": {
-                "blobTypes": [
-                    "blockBlob"
+                snapshot: {
+                    delete: {
+                        daysAfterCreationGreaterThan: 1096
+                    }
+                }
+            }
+            filters: {
+                blobTypes: [
+                    'blockBlob'
                 ]
             }
         }
     }
 ]
 ```
+
+</details>
+<p>
 
 ## Outputs
 

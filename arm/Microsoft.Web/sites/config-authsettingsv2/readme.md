@@ -37,6 +37,10 @@ This module deploys the auth settings v2.
 
 The auth settings V2 configuration.
 
+<details>
+
+<summary>Parameter JSON format</summary>
+
 ```json
 "siteConfig": {
     "value": [
@@ -44,6 +48,21 @@ The auth settings V2 configuration.
     ]
 }
 ```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+siteConfig: [
+    // Check out https://docs.microsoft.com/en-us/azure/templates/microsoft.web/sites/config-authsettingsv2?tabs=bicep#siteauthsettingsv2properties for possible properties
+]
+```
+
+</details>
+<p>
 
 ## Outputs
 

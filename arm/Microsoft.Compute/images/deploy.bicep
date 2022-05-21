@@ -81,3 +81,6 @@ output resourceGroupName string = resourceGroup().name
 
 @description('The name of the image.')
 output name string = image.name
+
+@description('The location the resource was deployed into.')
+output location string = image.location

@@ -321,3 +321,6 @@ output resourceId string = serviceFabricCluster.id
 
 @description('The Service Fabric Cluster endpoint.')
 output endpoint string = serviceFabricCluster.properties.clusterEndpoint
+
+@description('The location the resource was deployed into.')
+output location string = serviceFabricCluster.location

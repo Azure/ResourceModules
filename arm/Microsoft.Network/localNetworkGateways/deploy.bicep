@@ -100,3 +100,6 @@ output resourceGroupName string = resourceGroup().name
 
 @description('The name of the local network gateway.')
 output name string = localNetworkGateway.name
+
+@description('The location the resource was deployed into.')
+output location string = localNetworkGateway.location

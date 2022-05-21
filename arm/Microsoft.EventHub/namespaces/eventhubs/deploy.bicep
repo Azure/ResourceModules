@@ -134,11 +134,11 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource namespace 'Microsoft.EventHub/namespaces@2021-06-01-preview' existing = {
+resource namespace 'Microsoft.EventHub/namespaces@2021-11-01' existing = {
   name: namespaceName
 }
 
-resource eventHub 'Microsoft.EventHub/namespaces/eventhubs@2021-06-01-preview' = {
+resource eventHub 'Microsoft.EventHub/namespaces/eventhubs@2021-11-01' = {
   name: name
   parent: namespace
   properties: captureDescriptionEnabled ? eventHubPropertiesWithCapture : eventHubPropertiesSimple

@@ -56,3 +56,6 @@ output resourceId string = virtualNetworkLink.id
 
 @description('The resource group of the deployed virtual network link.')
 output resourceGroupName string = resourceGroup().name
+
+@description('The location the resource was deployed into.')
+output location string = virtualNetworkLink.location

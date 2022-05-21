@@ -37,81 +37,85 @@ This module deploys a Backup Policy for a Recovery Services Vault
 
 Object continaining the configuration for backup policies. It needs to be properly formatted and can be VM backup policies, SQL on VM backup policies or fileshare policies. The following example shows a VM backup policy.
 
+<details>
+
+<summary>Parameter JSON format</summary>
+
 ```json
 "backupPolicyProperties": {
-  "value": {
+    "value": {
         "backupManagementType": "AzureIaasVM",
         "instantRPDetails": {},
         "schedulePolicy": {
-          "schedulePolicyType": "SimpleSchedulePolicy",
-          "scheduleRunFrequency": "Daily",
-          "scheduleRunTimes": [
-            "2019-11-07T07:00:00Z"
-          ],
-          "scheduleWeeklyFrequency": 0
+            "schedulePolicyType": "SimpleSchedulePolicy",
+            "scheduleRunFrequency": "Daily",
+            "scheduleRunTimes": [
+                "2019-11-07T07:00:00Z"
+            ],
+            "scheduleWeeklyFrequency": 0
         },
         "retentionPolicy": {
-          "retentionPolicyType": "LongTermRetentionPolicy",
-          "dailySchedule": {
-            "retentionTimes": [
-              "2019-11-07T07:00:00Z"
-            ],
-            "retentionDuration": {
-              "count": 180,
-              "durationType": "Days"
-            }
-          },
-          "weeklySchedule": {
-            "daysOfTheWeek": [
-              "Sunday"
-            ],
-            "retentionTimes": [
-              "2019-11-07T07:00:00Z"
-            ],
-            "retentionDuration": {
-              "count": 12,
-              "durationType": "Weeks"
-            }
-          },
-          "monthlySchedule": {
-            "retentionScheduleFormatType": "Weekly",
-            "retentionScheduleWeekly": {
-              "daysOfTheWeek": [
-                "Sunday"
-              ],
-              "weeksOfTheMonth": [
-                "First"
-              ]
+            "retentionPolicyType": "LongTermRetentionPolicy",
+            "dailySchedule": {
+                "retentionTimes": [
+                    "2019-11-07T07:00:00Z"
+                ],
+                "retentionDuration": {
+                    "count": 180,
+                    "durationType": "Days"
+                }
             },
-            "retentionTimes": [
-              "2019-11-07T07:00:00Z"
-            ],
-            "retentionDuration": {
-              "count": 60,
-              "durationType": "Months"
-            }
-          },
-          "yearlySchedule": {
-            "retentionScheduleFormatType": "Weekly",
-            "monthsOfYear": [
-              "January"
-            ],
-            "retentionScheduleWeekly": {
-              "daysOfTheWeek": [
-                "Sunday"
-              ],
-              "weeksOfTheMonth": [
-                "First"
-              ]
+            "weeklySchedule": {
+                "daysOfTheWeek": [
+                    "Sunday"
+                ],
+                "retentionTimes": [
+                    "2019-11-07T07:00:00Z"
+                ],
+                "retentionDuration": {
+                    "count": 12,
+                    "durationType": "Weeks"
+                }
             },
-            "retentionTimes": [
-              "2019-11-07T07:00:00Z"
-            ],
-            "retentionDuration": {
-              "count": 10,
-              "durationType": "Years"
+            "monthlySchedule": {
+                "retentionScheduleFormatType": "Weekly",
+                "retentionScheduleWeekly": {
+                    "daysOfTheWeek": [
+                        "Sunday"
+                    ],
+                    "weeksOfTheMonth": [
+                        "First"
+                    ]
+                },
+                "retentionTimes": [
+                    "2019-11-07T07:00:00Z"
+                ],
+                "retentionDuration": {
+                    "count": 60,
+                    "durationType": "Months"
+                }
+            },
+            "yearlySchedule": {
+                "retentionScheduleFormatType": "Weekly",
+                "monthsOfYear": [
+                    "January"
+                ],
+                "retentionScheduleWeekly": {
+                    "daysOfTheWeek": [
+                        "Sunday"
+                    ],
+                    "weeksOfTheMonth": [
+                        "First"
+                    ]
+                },
+                "retentionTimes": [
+                    "2019-11-07T07:00:00Z"
+                ],
+                "retentionDuration": {
+                    "count": 10,
+                    "durationType": "Years"
+                }
             }
-          }
         },
         "instantRpRetentionRangeInDays": 2,
         "timeZone": "UTC",
@@ -120,6 +124,96 @@ Object continaining the configuration for backup policies. It needs to be proper
 }
 ```
 
+</details>
+
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+backupPolicyProperties: {
+    backupManagementType: 'AzureIaasVM'
+    instantRPDetails: {}
+    schedulePolicy: {
+        schedulePolicyType: 'SimpleSchedulePolicy'
+        scheduleRunFrequency: 'Daily'
+        scheduleRunTimes: [
+            '2019-11-07T07:00:00Z'
+        ]
+        scheduleWeeklyFrequency: 0
+    }
+    retentionPolicy: {
+        retentionPolicyType: 'LongTermRetentionPolicy'
+        dailySchedule: {
+            retentionTimes: [
+                '2019-11-07T07:00:00Z'
+            ]
+            retentionDuration: {
+                count: 180
+                durationType: 'Days'
+            }
+        }
+        weeklySchedule: {
+            daysOfTheWeek: [
+                'Sunday'
+            ]
+            retentionTimes: [
+                '2019-11-07T07:00:00Z'
+            ]
+            retentionDuration: {
+                count: 12
+                durationType: 'Weeks'
+            }
+        }
+        monthlySchedule: {
+            retentionScheduleFormatType: 'Weekly'
+            retentionScheduleWeekly: {
+                daysOfTheWeek: [
+                    'Sunday'
+                ]
+                weeksOfTheMonth: [
+                    'First'
+                ]
+            }
+            retentionTimes: [
+                '2019-11-07T07:00:00Z'
+            ]
+            retentionDuration: {
+                count: 60
+                durationType: 'Months'
+            }
+        }
+        yearlySchedule: {
+            retentionScheduleFormatType: 'Weekly'
+            monthsOfYear: [
+                'January'
+            ]
+            retentionScheduleWeekly: {
+                daysOfTheWeek: [
+                    'Sunday'
+                ]
+                weeksOfTheMonth: [
+                    'First'
+                ]
+            }
+            retentionTimes: [
+                '2019-11-07T07:00:00Z'
+            ]
+            retentionDuration: {
+                count: 10
+                durationType: 'Years'
+            }
+        }
+    }
+    instantRpRetentionRangeInDays: 2
+    timeZone: 'UTC'
+    protectedItemsCount: 0
+}
+```
+
+</details>
+<p>
 
 ## Outputs
 
