@@ -780,7 +780,7 @@ Describe 'Deployment template tests' -Tag Template {
             $templateParameters = $templateContent.parameters.Keys
             foreach ($parameter in $templateParameters) {
                 $data = ($templateContent.parameters.$parameter.metadata).description
-                if ($data -notmatch '^[A-Z][a-zA-Z]+\. .+\.$') {
+                if ($data -notmatch '(?s)^[A-Z][a-zA-Z]+\. .+\.$') {
                     $incorrectParameters += $parameter
                 }
             }
@@ -803,7 +803,7 @@ Describe 'Deployment template tests' -Tag Template {
             $templateOutputs = $templateContent.outputs.Keys
             foreach ($output in $templateOutputs) {
                 $data = ($templateContent.outputs.$output.metadata).description
-                if ($data -notmatch '^[A-Z].+\.$') {
+                if ($data -notmatch '(?s)^[A-Z].+\.$') {
                     $incorrectOutputs += $output
                 }
             }

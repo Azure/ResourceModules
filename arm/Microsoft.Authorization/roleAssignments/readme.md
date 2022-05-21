@@ -15,7 +15,7 @@ This module deploys Role Assignments across the management group, subscription o
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.Authorization/roleAssignments` | [2020-10-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/roleAssignments) |
+| `Microsoft.Authorization/roleAssignments` | [2020-10-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-10-01-preview/roleAssignments) |
 
 ## Parameters
 
@@ -29,7 +29,7 @@ This module deploys Role Assignments across the management group, subscription o
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `condition` | string | `''` |  | The conditions on the role assignment. This limits the resources it can be assigned to. |
-| `conditionVersion` | string | `'2.0'` | `[2.0]` | Version of the condition. Currently accepted value is "2.0" |
+| `conditionVersion` | string | `'2.0'` | `[2.0]` | Version of the condition. Currently accepted value is "2.0". |
 | `delegatedManagedIdentityResourceId` | string | `''` |  | ID of the delegated managed identity resource. |
 | `description` | string | `''` |  | The description of the role assignment. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
