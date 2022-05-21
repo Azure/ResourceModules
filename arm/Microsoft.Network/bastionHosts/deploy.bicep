@@ -144,7 +144,7 @@ resource azureBastion 'Microsoft.Network/bastionHosts@2021-05-01' = {
             id: '${vNetId}/subnets/AzureBastionSubnet'
           }
           publicIPAddress: {
-            id: !(empty(publicIPAddressResourceId)) ? publicIPAddressResourceId : publicIPAddress.outputs.resourceId
+            id: !empty(publicIPAddressResourceId) ? publicIPAddressResourceId : publicIPAddress.outputs.resourceId
           }
         }
       }
