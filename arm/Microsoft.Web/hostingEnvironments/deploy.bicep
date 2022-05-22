@@ -207,3 +207,6 @@ output resourceGroupName string = resourceGroup().name
 
 @description('The name of the app service environment.')
 output name string = appServiceEnvironment.name
+
+@description('The location the resource was deployed into.')
+output location string = appServiceEnvironment.location

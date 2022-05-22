@@ -159,7 +159,7 @@ resource disk 'Microsoft.Compute/disks@2021-08-01' = {
     hyperVGeneration: empty(osType) ? null : hyperVGeneration
     maxShares: maxShares
     networkAccessPolicy: networkAccessPolicy
-    osType: empty(osType) ? null : osType
+    osType: empty(osType) ? any(null) : osType
     publicNetworkAccess: publicNetworkAccess
     supportedCapabilities: empty(osType) ? {} : {
       acceleratedNetwork: acceleratedNetwork
@@ -195,3 +195,6 @@ output resourceId string = disk.id
 
 @description('The name of the disk.')
 output name string = disk.name
+
+@description('The location the resource was deployed into.')
+output location string = disk.location

@@ -13,7 +13,7 @@ param ttl int = 3600
 @description('Optional. The list of TXT records in the record set.')
 param txtRecords array = []
 
-@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'')
+@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
 param roleAssignments array = []
 
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
@@ -56,7 +56,7 @@ module TXT_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in rol
   }
 }]
 
-@description('The name of the deployed TXT record')
+@description('The name of the deployed TXT record.')
 output name string = TXT.name
 
 @description('The resource ID of the deployed TXT record.')

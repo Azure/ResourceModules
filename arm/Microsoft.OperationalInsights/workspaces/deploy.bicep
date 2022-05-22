@@ -201,6 +201,7 @@ module logAnalyticsWorkspace_savedSearches 'savedSearches/deploy.bicep' = [for (
   params: {
     logAnalyticsWorkspaceName: logAnalyticsWorkspace.name
     name: '${savedSearch.name}${uniqueString(deployment().name)}'
+    etag: contains(savedSearch, 'eTag') ? savedSearch.etag : '*'
     displayName: savedSearch.displayName
     category: savedSearch.category
     query: savedSearch.query
@@ -274,3 +275,6 @@ output name string = logAnalyticsWorkspace.name
 
 @description('The ID associated with the workspace.')
 output logAnalyticsWorkspaceId string = logAnalyticsWorkspace.properties.customerId
+
+@description('The location the resource was deployed into.')
+output location string = logAnalyticsWorkspace.location

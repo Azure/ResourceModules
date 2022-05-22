@@ -69,3 +69,6 @@ output resourceId string = ddosProtectionPlan.id
 
 @description('The name of the DDOS protection plan.')
 output name string = ddosProtectionPlan.name
+
+@description('The location the resource was deployed into.')
+output location string = ddosProtectionPlan.location

@@ -222,3 +222,6 @@ output networkRuleCollections array = networkRuleCollections
 
 @description('Collection of NAT rule collections used by Azure Firewall.')
 output natRuleCollections array = natRuleCollections
+
+@description('The location the resource was deployed into.')
+output location string = azureFirewall.location

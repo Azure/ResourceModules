@@ -40,6 +40,10 @@ This module deploys ContainerRegistry Registries Replications.
 
 Tag names and tag values can be provided as needed. A tag can be left without a value.
 
+<details>
+
+<summary>Parameter JSON format</summary>
+
 ```json
 "tags": {
     "value": {
@@ -53,10 +57,31 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 }
 ```
 
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+tags: {
+    Environment: 'Non-Prod'
+    Contact: 'test.user@testcompany.com'
+    PurchaseOrder: '1234'
+    CostCenter: '7890'
+    ServiceName: 'DeploymentValidation'
+    Role: 'DeploymentValidation'
+}
+```
+
+</details>
+<p>
+
 ## Outputs
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
+| `location` | string | The location the resource was deployed into. |
 | `name` | string | The name of the replication. |
 | `resourceGroupName` | string | The name of the resource group the replication was created in. |
 | `resourceId` | string | The resource ID of the replication. |

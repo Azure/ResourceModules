@@ -71,3 +71,6 @@ output resourceId string = connectionMonitor.id
 
 @description('The resource group the connection monitor was deployed into.')
 output resourceGroupName string = resourceGroup().name
+
+@description('The location the resource was deployed into.')
+output location string = connectionMonitor.location

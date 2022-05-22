@@ -37,6 +37,9 @@ function Initialize-DeploymentRemoval {
         [string] $ResourceGroupName,
 
         [Parameter(Mandatory = $false)]
+        [string] $subscriptionId,
+
+        [Parameter(Mandatory = $false)]
         [string] $ManagementGroupId
     )
 
@@ -47,6 +50,12 @@ function Initialize-DeploymentRemoval {
     }
 
     process {
+
+        if (-not [String]::IsNullOrEmpty($subscriptionId)) {
+            Write-Verbose ('Setting context to subscription [{0}]' -f $subscriptionId)
+            $null = Set-AzContext -Subscription $subscriptionId
+        }
+
         $moduleName = Split-Path (Split-Path $templateFilePath -Parent) -LeafBase
 
         # The initial sequence is a general order-recommendation
