@@ -179,7 +179,7 @@ jobs:
       #-----------------------
       # - ${{ if ne(parameters.parameterFilePath,'') }}:
       - task: AzurePowerShell@5
-        displayName: 'Replace Tokens [${{ parameters.parameterFilePath }}] via connection [${{ parameters.serviceConnection }}]'
+        displayName: 'Replace Tokens [$(parameterFilePath)] via connection [${{ parameters.serviceConnection }}]'
         inputs:
           azureSubscription: ${{ parameters.serviceConnection }}
           azurePowerShellVersion: 'latestVersion'
@@ -199,7 +199,7 @@ jobs:
             # Construct Token Function Input
             $ConvertTokensInputs = @{
                 Tokens      = @{}
-                FilePath    = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.parameterFilePath }}'
+                FilePath    = Join-Path '$(System.DefaultWorkingDirectory)' '$(parameterFilePath)'
                 TokenPrefix = $Settings.parameterFileTokens.tokenPrefix
                 TokenSuffix = $Settings.parameterFileTokens.tokenSuffix
             }
@@ -265,8 +265,8 @@ jobs:
               additionalParameters = @{}
             }
 
-            if(-not [String]::IsNullOrEmpty('${{ parameters.parameterFilePath }}')) {
-              $functionInput['parameterFilePath'] = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.parameterFilePath }}'
+            if(-not [String]::IsNullOrEmpty('$(parameterFilePath)')) {
+              $functionInput['parameterFilePath'] = Join-Path '$(System.DefaultWorkingDirectory)' '$(parameterFilePath)'
             }
 
             # Passing the resource group name as a deployment parameter if accepted
@@ -334,8 +334,8 @@ jobs:
       #         additionalParameters = @{}
       #       }
 
-      #       if(-not [String]::IsNullOrEmpty('${{ parameters.parameterFilePath }}')) {
-      #         $functionInput['parameterFilePath'] = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.parameterFilePath }}'
+      #       if(-not [String]::IsNullOrEmpty('$(parameterFilePath)')) {
+      #         $functionInput['parameterFilePath'] = Join-Path '$(System.DefaultWorkingDirectory)' '$(parameterFilePath)'
       #       }
 
       #       # Passing the resource group name as a deployment parameter if accepted
