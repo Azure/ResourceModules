@@ -90,27 +90,27 @@ stages:
       $parameterTestsToPrint4: $[ dependencies.init.outputs['printParameterFilePaths.printParameterFilePaths.print_parameter_tests.parameterTestsToPrint'] ]
 
     jobs:
-      - job: print_before_template
-        # strategy:
-        #   matrix: $parameterTests
-        # variables:
-        #   $parameterTestsToPrint1: stageDependencies.init.printParameterFilePaths.outputs['print_parameter_tests.parameterTestsToPrint']
-        #   $parameterTestsToPrint2: $[ stageDependencies.init.printParameterFilePaths.outputs['print_parameter_tests.parameterTestsToPrint'] ]
-        #   $parameterTestsToPrint3: $[ stageDependencies.init.printParameterFilePaths.outputs['print_parameter_tests.parameterTestsToPrint'] ]
-        #   $parameterTestsToPrint4: $[ dependencies.init.outputs['printParameterFilePaths.printParameterFilePaths.print_parameter_tests.parameterTestsToPrint'] ]
-        steps:
-          - task: PowerShell@2
-            displayName: 'print before template'
-            inputs:
-              targetType: inline
-              pwsh: true
-              script: |
-                Write-Verbose '$(parameterTestsToPrint1)' -Verbose
-                Write-Verbose '$(parameterTestsToPrint2)' -Verbose
-                Write-Verbose '$(parameterTestsToPrint3)' -Verbose
-                Write-Verbose '$(parameterTestsToPrint4)' -Verbose
-                # Write-Host "##vso[task.setvariable variable=$jobsToRunInParallel;isOutput=true]$json"
-              name: printvar2
+      # - job: print_before_template
+      #   # strategy:
+      #   #   matrix: $parameterTests
+      #   # variables:
+      #   #   $parameterTestsToPrint1: stageDependencies.init.printParameterFilePaths.outputs['print_parameter_tests.parameterTestsToPrint']
+      #   #   $parameterTestsToPrint2: $[ stageDependencies.init.printParameterFilePaths.outputs['print_parameter_tests.parameterTestsToPrint'] ]
+      #   #   $parameterTestsToPrint3: $[ stageDependencies.init.printParameterFilePaths.outputs['print_parameter_tests.parameterTestsToPrint'] ]
+      #   #   $parameterTestsToPrint4: $[ dependencies.init.outputs['printParameterFilePaths.printParameterFilePaths.print_parameter_tests.parameterTestsToPrint'] ]
+      #   steps:
+      #     - task: PowerShell@2
+      #       displayName: 'print before template'
+      #       inputs:
+      #         targetType: inline
+      #         pwsh: true
+      #         script: |
+      #           Write-Verbose '$(parameterTestsToPrint1)' -Verbose
+      #           Write-Verbose '$(parameterTestsToPrint2)' -Verbose
+      #           Write-Verbose '$(parameterTestsToPrint3)' -Verbose
+      #           Write-Verbose '$(parameterTestsToPrint4)' -Verbose
+      #           # Write-Host "##vso[task.setvariable variable=$jobsToRunInParallel;isOutput=true]$json"
+      #         name: printvar2
       - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
         parameters:
           templateFilePath: '$(modulePath)/deploy.bicep'
