@@ -141,164 +141,164 @@ jobs:
   #   ##---------------------------------------------##
 
   #   steps:
-  #     # [Agent] Prepare environment
-  #     #----------------------------
-  #     - task: PowerShell@2
-  #       displayName: 'Setup agent for deployment'
-  #       inputs:
-  #         targetType: inline
-  #         pwsh: true
-  #         script: |
-  #           # Load used functions
-  #           . (Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
+      # [Agent] Prepare environment
+      #----------------------------
+      - task: PowerShell@2
+        displayName: 'Setup agent for deployment'
+        inputs:
+          targetType: inline
+          pwsh: true
+          script: |
+            # Load used functions
+            . (Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
 
-  #           # Write-Verbose "parameterPaths: $(parameterFilePath)" -Verbose
+            # Write-Verbose "parameterPaths: $(parameterFilePath)" -Verbose
 
-  #           # Define PS modules to install on the runner
-  #           $Modules = @(
-  #               @{ Name = 'Az.Accounts' },
-  #               @{ Name = 'Az.Resources' }
-  #           )
+            # Define PS modules to install on the runner
+            $Modules = @(
+                @{ Name = 'Az.Accounts' },
+                @{ Name = 'Az.Resources' }
+            )
 
-  #           # Additional PS modules need to be installed for the removal step in case it is enabled
-  #           if ('${{ parameters.removeDeployment}}' -eq 'true') {
-  #             $Modules += @(
-  #               @{ Name = 'Az.CognitiveServices' },
-  #               @{ Name = 'Az.Compute' },
-  #               @{ Name = 'Az.KeyVault' },
-  #               @{ Name = 'Az.Monitor' },
-  #               @{ Name = 'Az.OperationalInsights' },
-  #               @{ Name = 'Az.RecoveryServices' }
-  #             )
-  #           }
+            # Additional PS modules need to be installed for the removal step in case it is enabled
+            if ('${{ parameters.removeDeployment}}' -eq 'true') {
+              $Modules += @(
+                @{ Name = 'Az.CognitiveServices' },
+                @{ Name = 'Az.Compute' },
+                @{ Name = 'Az.KeyVault' },
+                @{ Name = 'Az.Monitor' },
+                @{ Name = 'Az.OperationalInsights' },
+                @{ Name = 'Az.RecoveryServices' }
+              )
+            }
 
-  #           # Set agent up
-  #           Set-EnvironmentOnAgent -PSModules $Modules
+            # Set agent up
+            Set-EnvironmentOnAgent -PSModules $Modules
 
-      # # [Agent] Replace tokens
-      # #-----------------------
-      # #  $msiPrincipalId = (ConvertFrom-Json '$(deploymentOutput)').principalId
-      # #           Write-Verbose "msiPrincipalId: $msiPrincipalId" -Verbose
-      # #           Write-Output ('##vso[task.setvariable variable={0};isOutput=true]{1}' -f 'msiPrincipalId', $msiPrincipalId)
-      # - ${{ if ne(parameters.parameterFilePath,'') }}:
-      #     - task: AzurePowerShell@5
-      #       displayName: 'Replace Tokens [${{ parameters.parameterFilePath }}] via connection [${{ parameters.serviceConnection }}]'
-      #       inputs:
-      #         azureSubscription: ${{ parameters.serviceConnection }}
-      #         azurePowerShellVersion: 'latestVersion'
-      #         preferredAzurePowerShellVersion: ''
-      #         ScriptType: InlineScript
-      #         pwsh: true
-      #         inline: |
-      #           # Load used functions
-      #           . (Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInFile.ps1')
+      # [Agent] Replace tokens
+      #-----------------------
+      #  $msiPrincipalId = (ConvertFrom-Json '$(deploymentOutput)').principalId
+      #           Write-Verbose "msiPrincipalId: $msiPrincipalId" -Verbose
+      #           Write-Output ('##vso[task.setvariable variable={0};isOutput=true]{1}' -f 'msiPrincipalId', $msiPrincipalId)
+      - ${{ if ne(parameters.parameterFilePath,'') }}:
+          - task: AzurePowerShell@5
+            displayName: 'Replace Tokens [${{ parameters.parameterFilePath }}] via connection [${{ parameters.serviceConnection }}]'
+            inputs:
+              azureSubscription: ${{ parameters.serviceConnection }}
+              azurePowerShellVersion: 'latestVersion'
+              preferredAzurePowerShellVersion: ''
+              ScriptType: InlineScript
+              pwsh: true
+              inline: |
+                # Load used functions
+                . (Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInFile.ps1')
 
-      #           # Load Settings File
-      #           $Settings = Get-Content -Path (Join-Path '$(System.DefaultWorkingDirectory)' 'settings.json') | ConvertFrom-Json -AsHashTable
+                # Load Settings File
+                $Settings = Get-Content -Path (Join-Path '$(System.DefaultWorkingDirectory)' 'settings.json') | ConvertFrom-Json -AsHashTable
 
-      #           # Construct Token Function Input
-      #           $ConvertTokensInputs = @{
-      #               Tokens      = @{}
-      #               FilePath    = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.parameterFilePath }}'
-      #               TokenPrefix = $Settings.parameterFileTokens.tokenPrefix
-      #               TokenSuffix = $Settings.parameterFileTokens.tokenSuffix
-      #           }
+                # Construct Token Function Input
+                $ConvertTokensInputs = @{
+                    Tokens      = @{}
+                    FilePath    = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.parameterFilePath }}'
+                    TokenPrefix = $Settings.parameterFileTokens.tokenPrefix
+                    TokenSuffix = $Settings.parameterFileTokens.tokenSuffix
+                }
 
-      #           # Add defaults
-      #           $ConvertTokensInputs.Tokens += @{
-      #             resourceGroupName = '${{ parameters.resourceGroupName }}'
-      #             subscriptionId    = '${{ parameters.subscriptionId }}'
-      #             managementGroupId = '${{ parameters.managementGroupId }}'
-      #             tenantId          = '$(ARM_TENANT_ID)'
-      #             deploymentSpId    = '$(DEPLOYMENT_SP_ID)'
-      #           }
+                # Add defaults
+                $ConvertTokensInputs.Tokens += @{
+                  resourceGroupName = '${{ parameters.resourceGroupName }}'
+                  subscriptionId    = '${{ parameters.subscriptionId }}'
+                  managementGroupId = '${{ parameters.managementGroupId }}'
+                  tenantId          = '$(ARM_TENANT_ID)'
+                  deploymentSpId    = '$(DEPLOYMENT_SP_ID)'
+                }
 
-      #           # Add local tokens
-      #           if ($Settings.parameterFileTokens.localTokens) {
-      #             $tokenMap = @{}
-      #             foreach ($token in $Settings.parameterFileTokens.localTokens) {
-      #               $tokenMap += @{ $token.name = $token.value }
-      #             }
-      #             Write-Verbose ('Using local tokens [{0}]' -f ($tokenMap.Keys -join ', ')) -Verbose
-      #             $ConvertTokensInputs.Tokens += $tokenMap
-      #           }
+                # Add local tokens
+                if ($Settings.parameterFileTokens.localTokens) {
+                  $tokenMap = @{}
+                  foreach ($token in $Settings.parameterFileTokens.localTokens) {
+                    $tokenMap += @{ $token.name = $token.value }
+                  }
+                  Write-Verbose ('Using local tokens [{0}]' -f ($tokenMap.Keys -join ', ')) -Verbose
+                  $ConvertTokensInputs.Tokens += $tokenMap
+                }
 
-      #           # Add custom tokens (passed in via the pipeline)
-      #           if(-not [String]::IsNullOrEmpty('${{ parameters.customParameterFileTokens }}')) {
-      #             $customTokens = '${{ parameters.customParameterFileTokens }}' | ConvertFrom-Json -AsHashTable
-      #             Write-Verbose ('Using custom parameter file tokens [{0}]' -f  ($customTokens.Keys -join ', ')) -Verbose
-      #             $ConvertTokensInputs.Tokens += $customTokens
-      #           }
+                # Add custom tokens (passed in via the pipeline)
+                if(-not [String]::IsNullOrEmpty('${{ parameters.customParameterFileTokens }}')) {
+                  $customTokens = '${{ parameters.customParameterFileTokens }}' | ConvertFrom-Json -AsHashTable
+                  Write-Verbose ('Using custom parameter file tokens [{0}]' -f  ($customTokens.Keys -join ', ')) -Verbose
+                  $ConvertTokensInputs.Tokens += $customTokens
+                }
 
-      #           # Invoke Token Replacement Functionality
-      #           $null = Convert-TokensInFile @ConvertTokensInputs
+                # Invoke Token Replacement Functionality
+                $null = Convert-TokensInFile @ConvertTokensInputs
 
-      # # [Validation] task(s)
-      # #---------------------
-      # - task: AzurePowerShell@5
-      #   ${{ if ne(parameters.parameterFilePath,'') }}:
-      #     displayName: 'Validate parameter file via connection [${{ parameters.serviceConnection }}]'
-      #   ${{ if eq(parameters.parameterFilePath,'') }}:
-      #     displayName: 'Validate template file via connection [${{ parameters.serviceConnection }}]'
-      #   condition: and(succeeded(), eq( '${{ parameters.enableDeployment }}', 'true'))
-      #   inputs:
-      #     azureSubscription: ${{ parameters.serviceConnection }}
-      #     azurePowerShellVersion: 'latestVersion'
-      #     preferredAzurePowerShellVersion: ''
-      #     ScriptType: InlineScript
-      #     pwsh: true
-      #     inline: |
-      #       # Load used functions
-      #       . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourceDeployment' 'Test-TemplateDeployment.ps1')
-      #       . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'sharedScripts' 'Get-ScopeOfTemplateFile.ps1')
+      # [Validation] task(s)
+      #---------------------
+      - task: AzurePowerShell@5
+        ${{ if ne(parameters.parameterFilePath,'') }}:
+          displayName: 'Validate parameter file via connection [${{ parameters.serviceConnection }}]'
+        ${{ if eq(parameters.parameterFilePath,'') }}:
+          displayName: 'Validate template file via connection [${{ parameters.serviceConnection }}]'
+        condition: and(succeeded(), eq( '${{ parameters.enableDeployment }}', 'true'))
+        inputs:
+          azureSubscription: ${{ parameters.serviceConnection }}
+          azurePowerShellVersion: 'latestVersion'
+          preferredAzurePowerShellVersion: ''
+          ScriptType: InlineScript
+          pwsh: true
+          inline: |
+            # Load used functions
+            . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourceDeployment' 'Test-TemplateDeployment.ps1')
+            . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'sharedScripts' 'Get-ScopeOfTemplateFile.ps1')
 
-      #       # ----------- #
-      #       # INVOKE TEST #
-      #       # ----------- #
-      #       $templateFilePath     = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.templateFilePath }}'
-      #       $functionInput = @{
-      #         templateFilePath     = $templateFilePath
-      #         location             = '${{ parameters.location }}'
-      #         resourceGroupName    = '${{ parameters.resourceGroupName }}'
-      #         subscriptionId       = '${{ parameters.subscriptionId }}'
-      #         managementGroupId    = '${{ parameters.managementGroupId }}'
-      #         additionalParameters = @{}
-      #       }
+            # ----------- #
+            # INVOKE TEST #
+            # ----------- #
+            $templateFilePath     = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.templateFilePath }}'
+            $functionInput = @{
+              templateFilePath     = $templateFilePath
+              location             = '${{ parameters.location }}'
+              resourceGroupName    = '${{ parameters.resourceGroupName }}'
+              subscriptionId       = '${{ parameters.subscriptionId }}'
+              managementGroupId    = '${{ parameters.managementGroupId }}'
+              additionalParameters = @{}
+            }
 
-      #       if(-not [String]::IsNullOrEmpty('${{ parameters.parameterFilePath }}')) {
-      #         $functionInput['parameterFilePath'] = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.parameterFilePath }}'
-      #       }
+            if(-not [String]::IsNullOrEmpty('${{ parameters.parameterFilePath }}')) {
+              $functionInput['parameterFilePath'] = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.parameterFilePath }}'
+            }
 
-      #       # Passing the resource group name as a deployment parameter if accepted
-      #       $deploymentScope = Get-ScopeOfTemplateFile -TemplateFilePath $templateFilePath
-      #       if ($deploymentScope -ne 'resourceGroup' -and -not [String]::IsNullOrEmpty('${{ parameters.resourceGroupName }}')) {
-      #         $templateContent = az bicep build --file $templateFilePath --stdout | ConvertFrom-Json -AsHashtable
-      #         $parameters = $templateContent.parameters.Keys
-      #         if($parameters -contains 'resourceGroupName') {
-      #           $functionInput['additionalParameters'] = @{
-      #             resourceGroupName = '${{ parameters.resourceGroupName }}'
-      #           }
-      #         }
-      #       }
+            # Passing the resource group name as a deployment parameter if accepted
+            $deploymentScope = Get-ScopeOfTemplateFile -TemplateFilePath $templateFilePath
+            if ($deploymentScope -ne 'resourceGroup' -and -not [String]::IsNullOrEmpty('${{ parameters.resourceGroupName }}')) {
+              $templateContent = az bicep build --file $templateFilePath --stdout | ConvertFrom-Json -AsHashtable
+              $parameters = $templateContent.parameters.Keys
+              if($parameters -contains 'resourceGroupName') {
+                $functionInput['additionalParameters'] = @{
+                  resourceGroupName = '${{ parameters.resourceGroupName }}'
+                }
+              }
+            }
 
-      #       # # Enables us to pass the resource group name as a deployment parameter
-      #       # if(-not [String]::IsNullOrEmpty('${{ parameters.resourceGroupName }}')) {
-      #       #   $functionInput['additionalParameters'] = @{
-      #       #     resourceGroupName = '${{ parameters.resourceGroupName }}'
-      #       #   }
-      #       # }
+            # # Enables us to pass the resource group name as a deployment parameter
+            # if(-not [String]::IsNullOrEmpty('${{ parameters.resourceGroupName }}')) {
+            #   $functionInput['additionalParameters'] = @{
+            #     resourceGroupName = '${{ parameters.resourceGroupName }}'
+            #   }
+            # }
 
-      #       $projectSettings = Get-Content -Path 'settings.json' | ConvertFrom-Json
-      #       if (-not [String]::IsNullOrEmpty($projectSettings.enableDefaultTelemetry) -and (Get-Content -Path $functionInput.templateFilePath -Raw) -like '*param enableDefaultTelemetry*') {
-      #           $functionInput['additionalParameters'] += @{
-      #               enableDefaultTelemetry = $projectSettings.enableDefaultTelemetry
-      #           }
-      #       }
+            $projectSettings = Get-Content -Path 'settings.json' | ConvertFrom-Json
+            if (-not [String]::IsNullOrEmpty($projectSettings.enableDefaultTelemetry) -and (Get-Content -Path $functionInput.templateFilePath -Raw) -like '*param enableDefaultTelemetry*') {
+                $functionInput['additionalParameters'] += @{
+                    enableDefaultTelemetry = $projectSettings.enableDefaultTelemetry
+                }
+            }
 
-      #       Write-Verbose "Invoke task with" -Verbose
-      #       Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
+            Write-Verbose "Invoke task with" -Verbose
+            Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
-      #       Test-TemplateDeployment @functionInput -Verbose
+            Test-TemplateDeployment @functionInput -Verbose
 
       # # [Deployment] task(s)
       # #---------------------
