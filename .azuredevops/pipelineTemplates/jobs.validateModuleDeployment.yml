@@ -199,7 +199,7 @@ jobs:
             # Construct Token Function Input
             $ConvertTokensInputs = @{
                 Tokens      = @{}
-                FilePath    = Join-Path '$(System.DefaultWorkingDirectory)' '$(parameterFilePath)'
+                FilePath    = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' '$(parameterFilePath)'
                 TokenPrefix = $Settings.parameterFileTokens.tokenPrefix
                 TokenSuffix = $Settings.parameterFileTokens.tokenSuffix
             }
@@ -266,7 +266,7 @@ jobs:
             }
 
             if(-not [String]::IsNullOrEmpty('$(parameterFilePath)')) {
-              $functionInput['parameterFilePath'] = Join-Path '$(System.DefaultWorkingDirectory)' '$(parameterFilePath)'
+              $functionInput['parameterFilePath'] = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' '$(parameterFilePath)'
             }
 
             # Passing the resource group name as a deployment parameter if accepted
