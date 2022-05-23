@@ -85,10 +85,11 @@ jobs:
     ${{ if eq( parameters.parameterFilePath, '') }}:
       dependsOn:
         - getParameterFilePaths
+      strategy:
+        matrix: $[ dependencies.getParameterFilePaths.outputs['getParameterFilePathsTask.parameterTests'] ]
     # variables:
     #   parameterTests: $[ dependencies.getParameterFilePaths.outputs['getParameterFilePathsTask.parameterTests'] ]
-    strategy:
-      matrix: $[ dependencies.getParameterFilePaths.outputs['getParameterFilePathsTask.parameterTests'] ]
+
     ##---------------------------------------------##
     ## TEMPLATE LOGIC                              ##
     ##---------------------------------------------##
