@@ -406,8 +406,9 @@ jobs:
             # Load used function
             . (Join-Path '$(moduleRepoRoot)' '$(pipelineFunctionsPath)' 'resourceRemoval' 'Initialize-DeploymentRemoval.ps1')
 
-            if(-not [String]::IsNullOrEmpty('${{ deploymentBlock.templateFilePath }}')) {
-              $templateFilePath = Join-Path '$(moduleRepoRoot)' '${{ deploymentBlock.templateFilePath }}'
+            if(-not [String]::IsNullOrEmpty('${{ parameters.templateFilePath }}')) {
+              $templateFilePath     = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.templateFilePath }}'
+              # $templateFilePath = Join-Path '$(moduleRepoRoot)' '${{ deploymentBlock.templateFilePath }}'
             } else {
               # Use default path
               $templateFilePath = (Test-Path (Join-Path '$(ModuleRepoRoot)' '$(modulePath)' 'deploy.bicep')) ?
