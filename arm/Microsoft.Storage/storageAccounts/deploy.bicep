@@ -220,7 +220,7 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-08-01' = {
         keyversion: !empty(cMKeyVersion) ? cMKeyVersion : null
       } : null
       identity: !empty(cMKeyName) ? {
-        userAssignedIdentity: any(cMKUserAssignedIdenityResourceId)
+        userAssignedIdentity: cMKUserAssignedIdenityResourceId
       } : null
     }
     accessTier: storageAccountKind != 'Storage' ? storageAccountAccessTier : null
