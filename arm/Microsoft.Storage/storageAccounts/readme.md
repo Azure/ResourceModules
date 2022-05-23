@@ -33,12 +33,19 @@ This module is used to deploy a storage account, with the ability to deploy 1 or
 
 ## Parameters
 
+**Conditional parameters**
+| Parameter Name | Type | Default Value | Description |
+| :-- | :-- | :-- | :-- |
+| `CMKUserAssignedIdenityResourceId` | string | `''` | User assigned identity to use when fetching the customer managed key. Required if 'CMKeyName' is not empty. |
+
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `allowBlobPublicAccess` | bool | `False` |  | Indicates whether public access is enabled for all blobs or containers in the storage account. For security reasons, it is recommended to set it to false. |
 | `azureFilesIdentityBasedAuthentication` | object | `{object}` |  | Provides the identity based authentication settings for Azure Files. |
 | `blobServices` | _[blobServices](blobServices/readme.md)_ object | `{object}` |  | Blob service and containers to deploy. |
+| `CMKeyName` | string | `''` |  | The name of the customer managed key to use for encryption |
+| `CMKKeyVaultResourceId` | string | `''` |  | The resource ID of a key vault to reference a customer managed key for encryption from. |
 | `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
@@ -58,7 +65,7 @@ This module is used to deploy a storage account, with the ability to deploy 1 or
 | `privateEndpoints` | array | `[]` |  | Configuration Details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. |
 | `publicNetworkAccess` | string | `'Enabled'` | `[Enabled, Disabled]` | Enable or disallow public network access to Storage Account.. |
 | `queueServices` | _[queueServices](queueServices/readme.md)_ object | `{object}` |  | Queue service and queues to create. |
-| `requireInfrastructureEncryption` | bool | `True` |  | A boolean indicating whether or not the service applies a secondary layer of encryption with platform managed keys for data at rest. For security reasons, it is recommended to set it to true. |
+| `requireInfrastructureEncryption` | bool | `True` |  | A Boolean indicating whether or not the service applies a secondary layer of encryption with platform managed keys for data at rest. For security reasons, it is recommended to set it to true. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `storageAccountAccessTier` | string | `'Hot'` | `[Hot, Cool]` | Storage Account Access Tier. |
 | `storageAccountKind` | string | `'StorageV2'` | `[Storage, StorageV2, BlobStorage, FileStorage, BlockBlobStorage]` | Type of Storage Account to create. |
@@ -691,6 +698,15 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
                 }
             ]
         },
+        "CMKKeyVaultResourceId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-nopr-002"
+        },
+        "CMKeyName": {
+            "value": "keyEncryptionKey"
+        },
+        "CMKUserAssignedIdenityResourceId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001"
+        },
         "diagnosticLogsRetentionInDays": {
             "value": 7
         },
@@ -861,6 +877,9 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
         ]
       }
     ]
+    CMKKeyVaultResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-nopr-002'
+    CMKeyName: 'keyEncryptionKey'
+    CMKUserAssignedIdenityResourceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001'
     diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
     diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'

@@ -56,7 +56,7 @@ param managementPolicyRules array = []
 @description('Optional. Networks ACLs, this value contains IPs to whitelist and/or Subnet information. For security reasons, it is recommended to set the DefaultAction Deny.')
 param networkAcls object = {}
 
-@description('Optional. A boolean indicating whether or not the service applies a secondary layer of encryption with platform managed keys for data at rest. For security reasons, it is recommended to set it to true.')
+@description('Optional. A Boolean indicating whether or not the service applies a secondary layer of encryption with platform managed keys for data at rest. For security reasons, it is recommended to set it to true.')
 param requireInfrastructureEncryption bool = true
 
 @description('Optional. Blob service and containers to deploy.')
@@ -138,6 +138,18 @@ param diagnosticMetricsToEnable array = [
   'Transaction'
 ]
 
+@description('Optional. The resource ID of a key vault to reference a customer managed key for encryption from.')
+param CMKKeyVaultResourceId string = ''
+
+@description('Optional. The name of the customer managed key to use for encryption')
+param CMKeyName string = ''
+
+@description('Conditional. User assigned identity to use when fetching the customer managed key. Required if \'CMKeyName\' is not empty.')
+param CMKUserAssignedIdenityResourceId string = ''
+
+@description('Optional. The version of the customer managed key to reference for encryption. If not provided, latest is used.')
+param CMKeyVersion string = ''
+
 @description('Optional. The name of the diagnostic setting, if deployed.')
 param diagnosticSettingsName string = '${name}-diagnosticSettings'
 
@@ -152,7 +164,7 @@ var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
 }]
 
 var maxNameLength = 24
-var uniqueStorageNameUntrim = '${uniqueString('Storage Account${basetime}')}'
+var uniqueStorageNameUntrim = uniqueString('Storage Account${basetime}')
 var uniqueStorageName = length(uniqueStorageNameUntrim) > maxNameLength ? substring(uniqueStorageNameUntrim, 0, maxNameLength) : uniqueStorageNameUntrim
 
 var supportsBlobService = storageAccountKind == 'BlockBlobStorage' || storageAccountKind == 'BlobStorage' || storageAccountKind == 'StorageV2' || storageAccountKind == 'Storage'
@@ -176,6 +188,11 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
+resource keyVault 'Microsoft.KeyVault/vaults@2021-06-01-preview' existing = if (!empty(CMKKeyVaultResourceId)) {
+  name: last(split(CMKKeyVaultResourceId, '/'))
+  scope: resourceGroup(split(CMKKeyVaultResourceId, '/')[2], split(CMKKeyVaultResourceId, '/')[4])
+}
+
 resource storageAccount 'Microsoft.Storage/storageAccounts@2021-08-01' = {
   name: !empty(name) ? name : uniqueStorageName
   location: location
@@ -187,7 +204,7 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-08-01' = {
   tags: tags
   properties: {
     encryption: {
-      keySource: 'Microsoft.Storage'
+      keySource: !empty(CMKeyName) ? 'Microsoft.Keyvault' : 'Microsoft.Storage'
       services: {
         blob: supportsBlobService ? {
           enabled: true
@@ -197,6 +214,14 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-08-01' = {
         } : null
       }
       requireInfrastructureEncryption: storageAccountKind != 'Storage' ? requireInfrastructureEncryption : null
+      keyvaultproperties: !empty(CMKeyName) ? {
+        keyname: CMKeyName
+        keyvaulturi: keyVault.properties.vaultUri
+        keyversion: !empty(CMKeyVersion) ? CMKeyVersion : null
+      } : null
+      identity: !empty(CMKeyName) ? {
+        userAssignedIdentity: any(CMKUserAssignedIdenityResourceId)
+      } : null
     }
     accessTier: storageAccountKind != 'Storage' ? storageAccountAccessTier : null
     supportsHttpsTrafficOnly: supportsHttpsTrafficOnly

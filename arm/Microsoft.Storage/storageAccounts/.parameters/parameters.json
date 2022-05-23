@@ -170,6 +170,15 @@
                 }
             ]
         },
+        "CMKKeyVaultResourceId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-nopr-002"
+        },
+        "CMKeyName": {
+            "value": "keyEncryptionKey"
+        },
+        "CMKUserAssignedIdenityResourceId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001"
+        },
         "diagnosticLogsRetentionInDays": {
             "value": 7
         },
