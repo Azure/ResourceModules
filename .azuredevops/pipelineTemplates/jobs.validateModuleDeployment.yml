@@ -194,11 +194,12 @@ jobs:
 
       # [Validation] task(s)
       #---------------------
-
       - task: AzurePowerShell@5
-        ${{ if ne(parameters.parameterFilePath,'') }}:
+        # ${{ if ne(parameters.parameterFilePath,'') }}:
+        ${{ if not(contains( parameters.templateFilePath, '.dependencies')) }}:
           displayName: 'Validate parameter file via connection [${{ parameters.serviceConnection }}]'
-        ${{ if eq(parameters.parameterFilePath,'') }}:
+        # ${{ if eq(parameters.parameterFilePath,'') }}:
+        ${{ if contains( parameters.templateFilePath, '.dependencies') }}:
           displayName: 'Validate template file via connection [${{ parameters.serviceConnection }}]'
         condition: and(succeeded(), eq( '${{ parameters.enableDeployment }}', 'true'))
         inputs:
@@ -264,9 +265,11 @@ jobs:
       #---------------------
       - task: AzurePowerShell@5
         name: deployModule
-        ${{ if ne(parameters.parameterFilePath,'') }}:
+        # ${{ if ne(parameters.parameterFilePath,'') }}:
+        ${{ if not(contains( parameters.templateFilePath, '.dependencies')) }}:
           displayName: 'Deploy parameter file via connection [${{ parameters.serviceConnection }}]'
-        ${{ if eq(parameters.parameterFilePath,'') }}:
+        # ${{ if eq(parameters.parameterFilePath,'') }}:
+        ${{ if contains( parameters.templateFilePath, '.dependencies') }}:
           displayName: 'Deploy template file via connection [${{ parameters.serviceConnection }}]'
         condition: and(succeeded(), eq( '${{ parameters.enableDeployment }}', 'true'))
         inputs:
