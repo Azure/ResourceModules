@@ -404,15 +404,15 @@ jobs:
           pwsh: true
           inline: |
             # Load used function
-            . (Join-Path '$(moduleRepoRoot)' '$(pipelineFunctionsPath)' 'resourceRemoval' 'Initialize-DeploymentRemoval.ps1')
+            . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourceRemoval' 'Initialize-DeploymentRemoval.ps1')
 
             if(-not [String]::IsNullOrEmpty('${{ parameters.templateFilePath }}')) {
               $templateFilePath     = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.templateFilePath }}'
             } else {
               # Use default path
-              $templateFilePath = (Test-Path (Join-Path '$(ModuleRepoRoot)' '$(modulePath)' 'deploy.bicep')) ?
-                (Join-Path '$(ModuleRepoRoot)' '$(modulePath)' 'deploy.bicep') :
-                (Join-Path '$(ModuleRepoRoot)' '$(modulePath)' 'deploy.json')
+              $templateFilePath = (Test-Path (Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' 'deploy.bicep')) ?
+                (Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' 'deploy.bicep') :
+                (Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' 'deploy.json')
             }
 
             if (-not [String]::IsNullOrEmpty('$(deploymentName)')) {
