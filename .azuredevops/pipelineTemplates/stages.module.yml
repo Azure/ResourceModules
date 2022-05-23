@@ -114,7 +114,7 @@ stages:
       - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
         parameters:
           templateFilePath: '$(modulePath)/deploy.bicep'
-          parameterFilePaths: '$(parameterTests)'
+          # parameterFilePaths: '$(parameterTests)'
           resourceGroupName: '${{ parameters.moduleResourceGroupName }}'
 
 
