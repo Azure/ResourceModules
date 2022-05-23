@@ -139,16 +139,16 @@ param diagnosticMetricsToEnable array = [
 ]
 
 @description('Optional. The resource ID of a key vault to reference a customer managed key for encryption from.')
-param CMKKeyVaultResourceId string = ''
+param cMKKeyVaultResourceId string = ''
 
 @description('Optional. The name of the customer managed key to use for encryption')
-param CMKeyName string = ''
+param cMKeyName string = ''
 
-@description('Conditional. User assigned identity to use when fetching the customer managed key. Required if \'CMKeyName\' is not empty.')
-param CMKUserAssignedIdenityResourceId string = ''
+@description('Conditional. User assigned identity to use when fetching the customer managed key. Required if \'cMKeyName\' is not empty.')
+param cMKUserAssignedIdenityResourceId string = ''
 
 @description('Optional. The version of the customer managed key to reference for encryption. If not provided, latest is used.')
-param CMKeyVersion string = ''
+param cMKeyVersion string = ''
 
 @description('Optional. The name of the diagnostic setting, if deployed.')
 param diagnosticSettingsName string = '${name}-diagnosticSettings'
@@ -188,9 +188,9 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource keyVault 'Microsoft.KeyVault/vaults@2021-06-01-preview' existing = if (!empty(CMKKeyVaultResourceId)) {
-  name: last(split(CMKKeyVaultResourceId, '/'))
-  scope: resourceGroup(split(CMKKeyVaultResourceId, '/')[2], split(CMKKeyVaultResourceId, '/')[4])
+resource keyVault 'Microsoft.KeyVault/vaults@2021-06-01-preview' existing = if (!empty(cMKKeyVaultResourceId)) {
+  name: last(split(cMKKeyVaultResourceId, '/'))
+  scope: resourceGroup(split(cMKKeyVaultResourceId, '/')[2], split(cMKKeyVaultResourceId, '/')[4])
 }
 
 resource storageAccount 'Microsoft.Storage/storageAccounts@2021-08-01' = {
@@ -204,7 +204,7 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-08-01' = {
   tags: tags
   properties: {
     encryption: {
-      keySource: !empty(CMKeyName) ? 'Microsoft.Keyvault' : 'Microsoft.Storage'
+      keySource: !empty(cMKeyName) ? 'Microsoft.Keyvault' : 'Microsoft.Storage'
       services: {
         blob: supportsBlobService ? {
           enabled: true
@@ -214,13 +214,13 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-08-01' = {
         } : null
       }
       requireInfrastructureEncryption: storageAccountKind != 'Storage' ? requireInfrastructureEncryption : null
-      keyvaultproperties: !empty(CMKeyName) ? {
-        keyname: CMKeyName
+      keyvaultproperties: !empty(cMKeyName) ? {
+        keyname: cMKeyName
         keyvaulturi: keyVault.properties.vaultUri
-        keyversion: !empty(CMKeyVersion) ? CMKeyVersion : null
+        keyversion: !empty(cMKeyVersion) ? cMKeyVersion : null
       } : null
-      identity: !empty(CMKeyName) ? {
-        userAssignedIdentity: any(CMKUserAssignedIdenityResourceId)
+      identity: !empty(cMKeyName) ? {
+        userAssignedIdentity: any(cMKUserAssignedIdenityResourceId)
       } : null
     }
     accessTier: storageAccountKind != 'Storage' ? storageAccountAccessTier : null

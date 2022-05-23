@@ -36,7 +36,7 @@ This module is used to deploy a storage account, with the ability to deploy 1 or
 **Conditional parameters**
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
-| `CMKUserAssignedIdenityResourceId` | string | `''` | User assigned identity to use when fetching the customer managed key. Required if 'CMKeyName' is not empty. |
+| `cMKUserAssignedIdenityResourceId` | string | `''` | User assigned identity to use when fetching the customer managed key. Required if 'cMKeyName' is not empty. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
@@ -44,9 +44,9 @@ This module is used to deploy a storage account, with the ability to deploy 1 or
 | `allowBlobPublicAccess` | bool | `False` |  | Indicates whether public access is enabled for all blobs or containers in the storage account. For security reasons, it is recommended to set it to false. |
 | `azureFilesIdentityBasedAuthentication` | object | `{object}` |  | Provides the identity based authentication settings for Azure Files. |
 | `blobServices` | _[blobServices](blobServices/readme.md)_ object | `{object}` |  | Blob service and containers to deploy. |
-| `CMKeyName` | string | `''` |  | The name of the customer managed key to use for encryption |
-| `CMKeyVersion` | string | `''` |  | The version of the customer managed key to reference for encryption. If not provided, latest is used. |
-| `CMKKeyVaultResourceId` | string | `''` |  | The resource ID of a key vault to reference a customer managed key for encryption from. |
+| `cMKeyName` | string | `''` |  | The name of the customer managed key to use for encryption |
+| `cMKeyVersion` | string | `''` |  | The version of the customer managed key to reference for encryption. If not provided, latest is used. |
+| `cMKKeyVaultResourceId` | string | `''` |  | The resource ID of a key vault to reference a customer managed key for encryption from. |
 | `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
