@@ -80,8 +80,8 @@ stages:
 
   - stage: deployment
     displayName: Deployment validation
-    dependsOn:
-      - dependencyDeployment
+    # dependsOn:
+    #   - dependencyDeployment
       # - init
     # variables:
     #   $parameterTestsToPrint1: stageDependencies.init.printParameterFilePaths.outputs['print_parameter_tests.parameterTestsToPrint']
