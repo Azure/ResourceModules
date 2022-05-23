@@ -1261,7 +1261,8 @@ jobs:
             '7.virtualHubConnection.parameters.json',
             '8.aadds.parameters.json',
             '9.azfw.parameters.json',
-            'parameters.json',
+            '10.azfw.parameters.json',
+            'parameters.json'
           ]
     steps:
       - name: 'Checkout'

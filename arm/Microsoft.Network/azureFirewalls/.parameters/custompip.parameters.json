@@ -1,0 +1,43 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": "<<namePrefix>>-az-fw-min-001"
+        },
+        "vNetId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-custompip-azfw"
+        },
+        "publicIPAddressObject": {
+            "value": {
+                "name": "custompip",
+                "publicIPPrefixResourceId": "",
+                "publicIPAllocationMethod": "Dynamic",
+                "skuName": "Basic",
+                "skuTier": "Regional",
+                "roleAssignments": {
+                    "value": [
+                        {
+                            "roleDefinitionIdOrName": "Reader",
+                            "principalIds": [
+                                "<<deploymentSpId>>"
+                            ]
+                        }
+                    ]
+                },
+                "diagnosticMetricsToEnable": {
+                    "value": [
+                        "AllMetrics"
+                    ]
+                },
+                "diagnosticLogCategoriesToEnable": {
+                    "value": [
+                        "DDoSProtectionNotifications",
+                        "DDoSMitigationFlowLogs",
+                        "DDoSMitigationReports"
+                    ]
+                }
+            }
+        }
+    }
+}

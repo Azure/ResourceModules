@@ -946,6 +946,9 @@ stages:
             - path: $(dependencyPath)/$(resourceType)/parameters/9.azfw.parameters.json
               templateFilePath: $(templateFilePath)
               displayName: Azure Firewall Virtual Network Min
+            - path: $(dependencyPath)/$(resourceType)/parameters/10.azfw.parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: Azure Firewall Virtual Network Custom Pip
             - ${{ if eq( parameters.deploySqlMiDependencies, true) }}:
                 - path: $(dependencyPath)/$(resourceType)/parameters/6.sqlmi.parameters.json
                   templateFilePath: $(templateFilePath)
