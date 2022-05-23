@@ -13,6 +13,7 @@ This section details the design principles followed by the CARML Bicep modules.
   - [Parameters](#parameters)
   - [Variables](#variables)
   - [Resource](#Resources)
+  - [Modules](#modules)
   - [Outputs](#outputs)
 - [ReadMe](#readme)
 - [Parameter files](#parameter-files)
