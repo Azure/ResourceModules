@@ -390,6 +390,47 @@ jobs:
               throw $res.exception
             }
 
+      # [Removal] task(s)
+      #------------------
+      - task: AzurePowerShell@5
+        displayName: 'Remove deployed resources via [${{ parameters.serviceConnection }}]'
+        condition: and(succeededOrFailed(), eq( '${{ parameters.removeDeployment }}', 'true'), not(eq(variables['deploymentName'],'')))
+        inputs:
+          azureSubscription: ${{ parameters.serviceConnection }}
+          azurePowerShellVersion: ${{ parameters.azurePowerShellVersion }}
+          preferredAzurePowerShellVersion: ${{ parameters.preferredAzurePowerShellVersion }}
+          ScriptType: InlineScript
+          failOnStandardError: false
+          pwsh: true
+          inline: |
+            # Load used function
+            . (Join-Path '$(moduleRepoRoot)' '$(pipelineFunctionsPath)' 'resourceRemoval' 'Initialize-DeploymentRemoval.ps1')
+
+            if(-not [String]::IsNullOrEmpty('${{ deploymentBlock.templateFilePath }}')) {
+              $templateFilePath = Join-Path '$(moduleRepoRoot)' '${{ deploymentBlock.templateFilePath }}'
+            } else {
+              # Use default path
+              $templateFilePath = (Test-Path (Join-Path '$(ModuleRepoRoot)' '$(modulePath)' 'deploy.bicep')) ?
+                (Join-Path '$(ModuleRepoRoot)' '$(modulePath)' 'deploy.bicep') :
+                (Join-Path '$(ModuleRepoRoot)' '$(modulePath)' 'deploy.json')
+            }
+
+            if (-not [String]::IsNullOrEmpty('$(deploymentName)')) {
+              $functionInput = @{
+                  DeploymentName    = '$(deploymentName)'
+                  TemplateFilePath  = $templateFilePath
+                  ResourceGroupName = '${{ parameters.resourceGroupName }}'
+                  subscriptionId    = '${{ parameters.subscriptionId }}'
+                  ManagementGroupId = '${{ parameters.managementGroupId }}'
+                  Verbose           = $true
+              }
+
+              Write-Verbose 'Invoke task with' -Verbose
+              Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
+
+              Initialize-DeploymentRemoval @functionInput
+            }
+
       # # [Removal] task(s)
       # #------------------
       # - task: AzurePowerShell@5
