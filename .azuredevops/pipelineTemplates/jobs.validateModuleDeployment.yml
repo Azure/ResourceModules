@@ -81,7 +81,7 @@ parameters:
 jobs:
 
   - template: /.azuredevops/pipelineTemplates/jobs.getParameterFiles.yml
-  - job: print
+  - job: deploy
     dependsOn:
       - getParameterFilePaths
     # variables:
