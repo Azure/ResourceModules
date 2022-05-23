@@ -66,22 +66,22 @@ stages:
   #   jobs:
   #     - template: /.azuredevops/pipelineTemplates/jobs.validateModulePester.yml
 
-  # - stage: dependencyDeployment
-  #   displayName: Dependency deployment
-  #   dependsOn:
-  #     # - validation
-  #     - init
-  #   jobs:
-  #     - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
-  #       parameters:
-  #         templateFilePath: '$(modulePath)/.dependencies/dependencies.bicep'
-  #         resourceGroupName: '${{ parameters.moduleResourceGroupName }}'
-  #         removeDeployment: false
+  - stage: dependencyDeployment
+    displayName: Dependency deployment
+    # dependsOn:
+    #   # - validation
+    #   - init
+    jobs:
+      - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
+        parameters:
+          templateFilePath: '$(modulePath)/.dependencies/dependencies.bicep'
+          resourceGroupName: '${{ parameters.moduleResourceGroupName }}'
+          removeDeployment: false
 
   - stage: deployment
     displayName: Deployment validation
-    # dependsOn:
-    #   - dependencyDeployment
+    dependsOn:
+      - dependencyDeployment
       # - init
     # variables:
     #   $parameterTestsToPrint1: stageDependencies.init.printParameterFilePaths.outputs['print_parameter_tests.parameterTestsToPrint']

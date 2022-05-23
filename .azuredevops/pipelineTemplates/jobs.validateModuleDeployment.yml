@@ -79,10 +79,12 @@ parameters:
 ##---------------------------------------------##
 
 jobs:
-  - ${{ if eq( parameters.parameterFilePath, '') }}:
+  # - ${{ if eq( parameters.parameterFilePath, '') }}:
+  - ${{ if and( eq(parameters.enableDeployment, 'true'), eq(parameters.removeDeployment, 'true')) }}:
     - template: /.azuredevops/pipelineTemplates/jobs.getParameterFiles.yml
   - job: deploy
-    ${{ if eq( parameters.parameterFilePath, '') }}:
+    # ${{ if eq( parameters.parameterFilePath, '') }}:
+    ${{ if and( eq(parameters.enableDeployment, 'true'), eq(parameters.removeDeployment, 'true')) }}:
       dependsOn:
         - getParameterFilePaths
       strategy:
