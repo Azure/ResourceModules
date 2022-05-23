@@ -12,7 +12,7 @@ This section details the design principles followed by the CARML Bicep modules.
 - [Bicep template guidelines](#bicep-template-guidelines)
   - [Parameters](#parameters)
   - [Variables](#variables)
-  - [Resource](#resource)
+  - [Resource](#Resources)
   - [Outputs](#outputs)
 - [ReadMe](#readme)
 - [Parameter files](#parameter-files)
@@ -416,6 +416,7 @@ Within a bicep file, use the following conventions:
 
   - Module symbolic names are in camel_Snake_Case, following the schema `<mainResourceType>_<referencedResourceType>` e.g. `storageAccount_fileServices`, `virtualMachine_nic`, `resourceGroup_rbac`.
   - Modules enable you to reuse code from a Bicep file in other Bicep files. As such they're normally leveraged for deploying child resources (e.g. file services in a storage account), cross referenced resources (e.g. network interface in a virtual machine) or extension resources (e.g. role assignment in a resource group).
+  - If deploying resources outside of the module's provider namespace, you should references this resource's module directly. For example, the instead of a Key Vault using its on implementation of a Private Endpoint, it should re-use the Private Endpoint module (e.g., `module privateEndpoint '../../Microsoft.Network/privateEndpoints/deploy.bicep'`). Aside from the added benefit of less code duplication, this enables the consumer to leverage the full interface provided the the module, if needed.
 
 ### Deployment names
 
