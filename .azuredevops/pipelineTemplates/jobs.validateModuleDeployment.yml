@@ -79,68 +79,20 @@ parameters:
 ##---------------------------------------------##
 
 jobs:
-
-  - template: /.azuredevops/pipelineTemplates/jobs.getParameterFiles.yml
+  - ${{ if eq( parameters.parameterFilePath, '') }}:
+    - template: /.azuredevops/pipelineTemplates/jobs.getParameterFiles.yml
   - job: deploy
-    dependsOn:
-      - getParameterFilePaths
+    ${{ if eq( parameters.parameterFilePath, '') }}:
+      dependsOn:
+        - getParameterFilePaths
     # variables:
     #   parameterTests: $[ dependencies.getParameterFilePaths.outputs['getParameterFilePathsTask.parameterTests'] ]
     strategy:
       matrix: $[ dependencies.getParameterFilePaths.outputs['getParameterFilePathsTask.parameterTests'] ]
-      # matrix: $[ '$(parameterFilePaths)' ]
+    ##---------------------------------------------##
+    ## TEMPLATE LOGIC                              ##
+    ##---------------------------------------------##
     steps:
-      # - task: PowerShell@2
-      #   name: print_parameterFilePaths
-      #   inputs:
-      #     targetType: inline
-      #     pwsh: true
-      #     script: |
-      #       Write-Verbose '$(parameterTests)' -Verbose
-      #       Write-Verbose '$(parameterFilePath)' -Verbose
-
-  # - job: print
-  #   steps:
-  #     - task: PowerShell@2
-  #       displayName: 'Print'
-  #       inputs:
-  #         targetType: inline
-  #         pwsh: true
-  #         script: |
-  #           # $json='$(parameterFilePath)'
-  #           # $json = '${{ parameters.parameterFilePath}}'
-  #           $json = ConvertFrom-Json '${{ parameters.parameterFilePath}}'
-  #           Write-Verbose "json 1 $json" -Verbose
-  #           $json="{'parameters.json':{'parameterFilePath':'.parameters/parameters.json'},'min.parameters.json':{'parameterFilePath':'.parameters/min.parameters.json'},'max.parameters.json':{'parameterFilePath':'.parameters/max.parameters.json'}}"
-  #           Write-Verbose "json 2 $json" -Verbose
-  #           # Write-Host "##vso[task.setvariable variable=$jobsToRunInParallel;isOutput=true]$json"
-  #         name: printvar
-
-  # # - ${{ each deploymentBlock in parameters.deploymentBlocks }}:
-  # - job: deploy
-  # # - job: ${{ deploymentBlock.jobName }}
-
-  #   # ${{ if ne( deploymentBlock.displayName, '') }}:
-  #   #   displayName: ${{ deploymentBlock.displayName }}
-  #   # ${{ if eq( deploymentBlock.displayName, '') }}:
-  #   #   displayName: Deploy with [${{ replace( deploymentBlock.path, '$(modulePath)', '') }}]
-  #   timeoutInMinutes: ${{ parameters.defaultJobTimeoutInMinutes }}
-  #   # ${{ if ne( parameters.dependsOn, '') }}:
-  #   #   dependsOn: ${{ parameters.dependsOn }}
-  #   pool:
-  #     ${{ if ne(parameters.vmImage, '') }}:
-  #       vmImage: ${{ parameters.vmImage }}
-  #     ${{ if ne(parameters.poolName, '') }}:
-  #       name: ${{ parameters.poolName }}
-
-  #   strategy:
-  #         matrix: $[ dependencies.print.outputs['printvar.jobsToRunInParallel'] ]
-
-  #   ##---------------------------------------------##
-  #   ## TEMPLATE LOGIC                              ##
-  #   ##---------------------------------------------##
-
-  #   steps:
       # [Agent] Prepare environment
       #----------------------------
       - task: PowerShell@2
@@ -431,43 +383,50 @@ jobs:
               Initialize-DeploymentRemoval @functionInput
             }
 
-      # # [Removal] task(s)
-      # #------------------
-      # - task: AzurePowerShell@5
-      #   displayName: 'Remove deployed resources via [${{ parameters.serviceConnection }}]'
-      #   condition: and(succeededOrFailed(), eq( '${{ parameters.removeDeployment }}', 'true'))
-      #   # , or(ne( parameters['deploymentName'], ''), ne( variables['deploymentName'], '')))
+#############
+
+ # - task: PowerShell@2
+      #   name: print_parameterFilePaths
       #   inputs:
-      #     azureSubscription: ${{ parameters.serviceConnection }}
-      #     azurePowerShellVersion: ${{ parameters.azurePowerShellVersion }}
-      #     preferredAzurePowerShellVersion: ${{ parameters.preferredAzurePowerShellVersion }}
-      #     ScriptType: InlineScript
-      #     failOnStandardError: false
+      #     targetType: inline
       #     pwsh: true
-      #     inline: |
-      #       # Load used function
-      #       . (Join-Path '$(moduleRepoRoot)' '$(pipelineFunctionsPath)' 'resourceRemoval' 'Initialize-DeploymentRemoval.ps1')
+      #     script: |
+      #       Write-Verbose '$(parameterTests)' -Verbose
+      #       Write-Verbose '$(parameterFilePath)' -Verbose
 
-      #       # ----------------- #
-      #       # INVOKE DEPLOYMENT #
-      #       # ----------------- #
-      #       $templateFilePath     = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.templateFilePath }}'
-      #       $functionInput = @{
-      #         templateFilePath     = $templateFilePath
-      #         ResourceGroupName = '${{ parameters.resourceGroupName }}'
-      #         ManagementGroupId = '${{ parameters.managementGroupId }}'
-      #         Verbose           = $true
-      #       }
+  # - job: print
+  #   steps:
+  #     - task: PowerShell@2
+  #       displayName: 'Print'
+  #       inputs:
+  #         targetType: inline
+  #         pwsh: true
+  #         script: |
+  #           # $json='$(parameterFilePath)'
+  #           # $json = '${{ parameters.parameterFilePath}}'
+  #           $json = ConvertFrom-Json '${{ parameters.parameterFilePath}}'
+  #           Write-Verbose "json 1 $json" -Verbose
+  #           $json="{'parameters.json':{'parameterFilePath':'.parameters/parameters.json'},'min.parameters.json':{'parameterFilePath':'.parameters/min.parameters.json'},'max.parameters.json':{'parameterFilePath':'.parameters/max.parameters.json'}}"
+  #           Write-Verbose "json 2 $json" -Verbose
+  #           # Write-Host "##vso[task.setvariable variable=$jobsToRunInParallel;isOutput=true]$json"
+  #         name: printvar
 
-      #       if (-not [String]::IsNullOrEmpty('${{ parameters.deploymentName }}') {
-      #         $functionInput['DeploymentName'] = '${{ parameters.deploymentName }}'
-      #       }
+  # # - ${{ each deploymentBlock in parameters.deploymentBlocks }}:
+  # - job: deploy
+  # # - job: ${{ deploymentBlock.jobName }}
 
-      #       if (-not [String]::IsNullOrEmpty('$(deploymentName)')) {
-      #         $functionInput['DeploymentName'] = '$(deploymentName)'
-      #       }
+  #   # ${{ if ne( deploymentBlock.displayName, '') }}:
+  #   #   displayName: ${{ deploymentBlock.displayName }}
+  #   # ${{ if eq( deploymentBlock.displayName, '') }}:
+  #   #   displayName: Deploy with [${{ replace( deploymentBlock.path, '$(modulePath)', '') }}]
+  #   timeoutInMinutes: ${{ parameters.defaultJobTimeoutInMinutes }}
+  #   # ${{ if ne( parameters.dependsOn, '') }}:
+  #   #   dependsOn: ${{ parameters.dependsOn }}
+  #   pool:
+  #     ${{ if ne(parameters.vmImage, '') }}:
+  #       vmImage: ${{ parameters.vmImage }}
+  #     ${{ if ne(parameters.poolName, '') }}:
+  #       name: ${{ parameters.poolName }}
 
-      #       Write-Verbose 'Invoke task with' -Verbose
-      #       Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
-
-      #       Initialize-DeploymentRemoval @functionInput
+  #   strategy:
+  #         matrix: $[ dependencies.print.outputs['printvar.jobsToRunInParallel'] ]
