@@ -89,8 +89,43 @@ stages:
     #   $parameterTestsToPrint3: $[ stageDependencies.init.printParameterFilePaths.outputs['print_parameter_tests.parameterTestsToPrint'] ]
     #   $parameterTestsToPrint4: $[ dependencies.init.outputs['printParameterFilePaths.printParameterFilePaths.print_parameter_tests.parameterTestsToPrint'] ]
 
+    # jobs:
+    #   - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
+    #     parameters:
+    #       templateFilePath: '$(modulePath)/deploy.bicep'
+    #       # parameterFilePaths: '$(parameterTests)'
+    #       resourceGroupName: '${{ parameters.moduleResourceGroupName }}'
+
+  - stage: dependencyRemoval
+    displayName: Dependency removal
+    dependsOn:
+      - dependencyDeployment
+      # - deployment
+    condition: succeededOrFailed()
+    # and(succeededOrFailed(), ne(dependencies.dependencyDeployment.outputs['deploy.deployModule.deploymentName'],''))
+    variables:
+      deploymentName: $[ stageDependencies.dependencyDeployment.deploy.outputs['deployModule.deploymentName'] ]
     jobs:
-      # - job: print_before_template
+      - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
+        parameters:
+          templateFilePath: '$(modulePath)/.dependencies/dependencies.bicep'
+          resourceGroupName: '${{ parameters.moduleResourceGroupName }}'
+          deploymentName: '$(deploymentName)'
+          enableDeployment: false
+
+  # - stage: Publishing
+  #   dependsOn:
+  #     - deployment
+  #   displayName: Publish module
+  #   condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/main'), eq(variables['Build.SourceBranch'], 'refs/heads/master'), eq('${{ parameters.prerelease }}', 'true')))
+  #   jobs:
+  #     - template: /.azuredevops/pipelineTemplates/jobs.publishModule.yml
+
+
+
+##################
+
+# - job: print_before_template
       #   # strategy:
       #   #   matrix: $parameterTests
       #   # variables:
@@ -111,34 +146,3 @@ stages:
       #           Write-Verbose '$(parameterTestsToPrint4)' -Verbose
       #           # Write-Host "##vso[task.setvariable variable=$jobsToRunInParallel;isOutput=true]$json"
       #         name: printvar2
-      - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
-        parameters:
-          templateFilePath: '$(modulePath)/deploy.bicep'
-          # parameterFilePaths: '$(parameterTests)'
-          resourceGroupName: '${{ parameters.moduleResourceGroupName }}'
-
-
-  - stage: dependencyRemoval
-    displayName: Dependency removal
-    dependsOn:
-      - dependencyDeployment
-      - deployment
-    condition: succeededOrFailed()
-    # and(succeededOrFailed(), ne(dependencies.dependencyDeployment.outputs['deploy.deployModule.deploymentName'],''))
-    variables:
-      deploymentName: $[ stageDependencies.dependencyDeployment.deploy.outputs['deployModule.deploymentName'] ]
-    jobs:
-      - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
-        parameters:
-          templateFilePath: '$(modulePath)/.dependencies/dependencies.bicep'
-          resourceGroupName: '${{ parameters.moduleResourceGroupName }}'
-          deploymentName: '$(deploymentName)'
-          enableDeployment: false
-
-  # - stage: Publishing
-  #   dependsOn:
-  #     - deployment
-  #   displayName: Publish module
-  #   condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/main'), eq(variables['Build.SourceBranch'], 'refs/heads/master'), eq('${{ parameters.prerelease }}', 'true')))
-  #   jobs:
-  #     - template: /.azuredevops/pipelineTemplates/jobs.publishModule.yml

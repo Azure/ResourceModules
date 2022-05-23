@@ -347,7 +347,8 @@ jobs:
       #------------------
       - task: AzurePowerShell@5
         displayName: 'Remove deployed resources via [${{ parameters.serviceConnection }}]'
-        condition: and(succeededOrFailed(), eq( '${{ parameters.removeDeployment }}', 'true'), not(eq(variables['deploymentName'],'')))
+        # condition: and(succeededOrFailed(), eq( '${{ parameters.removeDeployment }}', 'true'), not(eq(variables['deploymentName'],'')))
+        condition: and(succeededOrFailed(), eq( '${{ parameters.removeDeployment }}', 'true'))
         inputs:
           azureSubscription: ${{ parameters.serviceConnection }}
           azurePowerShellVersion: ${{ parameters.azurePowerShellVersion }}
@@ -368,9 +369,11 @@ jobs:
                 (Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' 'deploy.json')
             }
 
-            if (-not [String]::IsNullOrEmpty('$(deploymentName)')) {
+            # if (-not [String]::IsNullOrEmpty('$(deploymentName)')) {
+            if(-not [String]::IsNullOrEmpty('${{ parameters.deploymentName }}')) {
               $functionInput = @{
-                  DeploymentName    = '$(deploymentName)'
+                  # DeploymentName    = '$(deploymentName)'
+                  DeploymentName    = '${{ parameters.deploymentName }}'
                   TemplateFilePath  = $templateFilePath
                   ResourceGroupName = '${{ parameters.resourceGroupName }}'
                   subscriptionId    = '${{ parameters.subscriptionId }}'
