@@ -230,10 +230,10 @@ jobs:
             #   $functionInput['parameterFilePath'] = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' '$(parameterFilePath)'
             # }
 
-            if ( '${{ parameters.templateFilePath }}' -notcontains '.dependencies' ) {
+            if ( '${{ parameters.templateFilePath }}' -inotmatch '.dependencies' ) {
               Write-Verbose "'${{ parameters.templateFilePath }}'" -Verbose
               Write-Verbose ".dependencies" -Verbose
-              # $functionInput['parameterFilePath'] = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' '$(parameterFilePath)'
+              $functionInput['parameterFilePath'] = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' '$(parameterFilePath)'
             }
 
             # Passing the resource group name as a deployment parameter if accepted
@@ -307,7 +307,7 @@ jobs:
             #   $functionInput['parameterFilePath'] = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' '$(parameterFilePath)'
             # }
 
-            if ( '${{ parameters.templateFilePath }}' -notcontains '.dependencies' ) {
+            if ( '${{ parameters.templateFilePath }}' -inotmatch '.dependencies' ) {
               $functionInput['parameterFilePath'] = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' '$(parameterFilePath)'
             }
 
