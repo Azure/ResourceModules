@@ -229,8 +229,11 @@ jobs:
             # if(-not [String]::IsNullOrEmpty('$(parameterFilePath)')) {
             #   $functionInput['parameterFilePath'] = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' '$(parameterFilePath)'
             # }
+
             if ( '${{ parameters.templateFilePath }}' -notcontains '.dependencies' ) {
-              $functionInput['parameterFilePath'] = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' '$(parameterFilePath)'
+              Write-Verbose "'${{ parameters.templateFilePath }}'" -Verbose
+              Write-Verbose ".dependencies" -Verbose
+              # $functionInput['parameterFilePath'] = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' '$(parameterFilePath)'
             }
 
             # Passing the resource group name as a deployment parameter if accepted
