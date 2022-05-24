@@ -65,8 +65,9 @@ function Initialize-DeploymentRemoval {
             'Microsoft.Network/privateEndpoints',
             'Microsoft.OperationsManagement/solutions',
             'Microsoft.OperationalInsights/workspaces/linkedServices',
-            'Microsoft.Resources/resourceGroups',
-            'Microsoft.Compute/virtualMachines'
+            'Microsoft.OperationalInsights/workspaces',
+            'Microsoft.Compute/virtualMachines',
+            'Microsoft.Resources/resourceGroups'
         )
         Write-Verbose ('Template file path: [{0}]' -f $templateFilePath) -Verbose
         Write-Verbose ('Module name: [{0}]' -f $moduleName) -Verbose
