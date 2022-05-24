@@ -3,6 +3,7 @@ parameters:
   serviceConnection: '$(serviceConnection)'
 
   # Logic-related parameters
+  deploymentName: ''
   templateFilePath: ''
   resourceGroupName: '$(defaultResourceGroupName)'
   subscriptionId: '$(ARM_SUBSCRIPTION_ID)'
@@ -13,7 +14,7 @@ steps:
   #----------------------------
   - task: PowerShell@2
     displayName: 'Setup agent for removal'
-    condition: and( succeededOrFailed(), ne('$(deploymentName)',''), not(startsWith('$(deploymentName)', '$(')) )
+    condition: and( succeededOrFailed(), ne('${{ parameters.deploymentName }}',''), not(startsWith('${{ parameters.deploymentName }}', '$(')) )
     inputs:
       targetType: inline
       pwsh: true
@@ -40,7 +41,7 @@ steps:
   #------------------
   - task: AzurePowerShell@5
     displayName: 'Remove deployed resources via [${{ parameters.serviceConnection }}]'
-    condition: and(succeededOrFailed(), ne('$[ variables.deploymentName ]',''))
+    condition: and(succeededOrFailed(), ne('${{ parameters.deploymentName }}',''), not(startsWith('${{ parameters.deploymentName }}', '$(')) )
     inputs:
       azureSubscription: ${{ parameters.serviceConnection }}
       azurePowerShellVersion: 'latestVersion'
@@ -53,7 +54,7 @@ steps:
         . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourceRemoval' 'Initialize-DeploymentRemoval.ps1')
 
         $functionInput = @{
-            DeploymentName    = '$(deploymentName)'
+            DeploymentName    = '${{ parameters.deploymentName }}'
             TemplateFilePath  = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.templateFilePath }}'
             ResourceGroupName = '${{ parameters.resourceGroupName }}'
             ManagementGroupId = '${{ parameters.managementGroupId }}'

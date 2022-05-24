@@ -62,7 +62,7 @@ stages:
                 parameters:
                   templateFilePath: '$(modulePath)/deploy.bicep'
                   resourceGroupName: '${{ parameters.moduleResourceGroupName }}'
-                  # deploymentName: '$(deploymentName)'
+                  deploymentName: '$(deploymentName)'
 
   - ${{ if eq(parameters.removeDeployment, true) }}:
       - stage: dependencyRemoval
@@ -103,7 +103,7 @@ stages:
               - template: /.azuredevops/pipelineTemplates/steps.removeTemplateDeployment.yml
                 parameters:
                   templateFilePath: '$(modulePath)/.dependencies/dependencies.bicep'
-                  # deploymentName: '$(deploymentName)' # not working
+                  deploymentName: '$(deploymentName)' # not working
                   # deploymentName: $[ variables.deploymentName ] # not working
                   # deploymentName: '${{ variables.deploymentName }}' # not working
                   resourceGroupName: '${{ parameters.moduleResourceGroupName }}'
