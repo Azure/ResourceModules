@@ -40,7 +40,7 @@ steps:
   #------------------
   - task: AzurePowerShell@5
     displayName: 'Remove deployed resources via [${{ parameters.serviceConnection }}]'
-    condition: and(succeededOrFailed(), ne('$(deploymentName)',''), not(startsWith('$(deploymentName)', '$(')) )
+    # condition: and(succeededOrFailed(), ne('$(deploymentName)',''), not(startsWith('$(deploymentName)', '$(')) )
     inputs:
       azureSubscription: ${{ parameters.serviceConnection }}
       azurePowerShellVersion: 'latestVersion'
