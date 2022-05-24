@@ -379,7 +379,7 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
         },
         "publicIPAddressObject": {
             "value": {
-                "name": "<<namePrefix>>-az-fw-custompip-001",
+                "name": "custompip",
                 "publicIPPrefixResourceId": "",
                 "publicIPAllocationMethod": "Dynamic",
                 "skuName": "Basic",
@@ -426,7 +426,7 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
     name: '<<namePrefix>>-az-fw-custompip-001'
     vNetId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-custompip-azfw'
     publicIPAddressObject: {
-      name: '<<namePrefix>>-az-fw-custompip-001'
+      name: 'custompip'
       publicIPPrefixResourceId: ''
       publicIPAllocationMethod: 'Dynamic'
       skuName: 'Basic'
