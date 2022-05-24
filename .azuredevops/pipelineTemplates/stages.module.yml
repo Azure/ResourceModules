@@ -106,7 +106,7 @@ stages:
                   # deploymentName: '$(deploymentName)' # not working
                   # deploymentName: $[ variables.deploymentName ] # not working
                   # deploymentName: '${{ variables.deploymentName }}' # not working
-                  deploymentName: '$[ variables.deploymentName ]'
+                  # deploymentName: '$[ variables.deploymentName ]'
                   resourceGroupName: '${{ parameters.moduleResourceGroupName }}'
 
   # - stage: Publishing

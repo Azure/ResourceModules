@@ -3,6 +3,7 @@ parameters:
   serviceConnection: '$(serviceConnection)'
 
   # Logic-related parameters
+  deploymentName: ''
   templateFilePath: ''
   resourceGroupName: '$(defaultResourceGroupName)'
   subscriptionId: '$(ARM_SUBSCRIPTION_ID)'
@@ -11,36 +12,36 @@ parameters:
 steps:
   # [Agent] Prepare environment
   #----------------------------
-  # - task: PowerShell@2
-  #   displayName: 'Setup agent for removal'
-  #   condition: and( succeededOrFailed(), ne('$(deploymentName)',''), not(startsWith('$(deploymentName)', '$(')) )
-  #   inputs:
-  #     targetType: inline
-  #     pwsh: true
-  #     script: |
-  #       # Load used functions
-  #       . (Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
+  - task: PowerShell@2
+    displayName: 'Setup agent for removal'
+    condition: and( succeededOrFailed(), ne('${{ parameters.deploymentName }}',''), not(startsWith('${{ parameters.deploymentName }}', '$(')) )
+    inputs:
+      targetType: inline
+      pwsh: true
+      script: |
+        # Load used functions
+        . (Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
 
-  #       # Define PS modules to install on the runner
-  #       $Modules = @(
-  #         @{ Name = 'Az.Accounts' },
-  #         @{ Name = 'Az.Resources' }
-  #         @{ Name = 'Az.CognitiveServices' },
-  #         @{ Name = 'Az.Compute' },
-  #         @{ Name = 'Az.KeyVault' },
-  #         @{ Name = 'Az.Monitor' },
-  #         @{ Name = 'Az.OperationalInsights' },
-  #         @{ Name = 'Az.RecoveryServices' }
-  #       )
+        # Define PS modules to install on the runner
+        $Modules = @(
+          @{ Name = 'Az.Accounts' },
+          @{ Name = 'Az.Resources' }
+          @{ Name = 'Az.CognitiveServices' },
+          @{ Name = 'Az.Compute' },
+          @{ Name = 'Az.KeyVault' },
+          @{ Name = 'Az.Monitor' },
+          @{ Name = 'Az.OperationalInsights' },
+          @{ Name = 'Az.RecoveryServices' }
+        )
 
-  #       # Set agent up
-  #       Set-EnvironmentOnAgent -PSModules $Modules
+        # Set agent up
+        Set-EnvironmentOnAgent -PSModules $Modules
 
   # [Removal] task(s)
   #------------------
   - task: AzurePowerShell@5
     displayName: 'Remove deployed resources via [${{ parameters.serviceConnection }}]'
-    condition: and(succeededOrFailed(), ne('$(deploymentName)',''), not(startsWith('$(deploymentName)', '$(')) )
+    condition: and(succeededOrFailed(), ne('${{ parameters.deploymentName }}',''), not(startsWith('${{ parameters.deploymentName }}', '$(')) )
     inputs:
       azureSubscription: ${{ parameters.serviceConnection }}
       azurePowerShellVersion: 'latestVersion'
@@ -53,7 +54,7 @@ steps:
         . (Join-Path '$(System.DefaultWorkingDirectory)' '$(pipelineFunctionsPath)' 'resourceRemoval' 'Initialize-DeploymentRemoval.ps1')
 
         $functionInput = @{
-            DeploymentName    = '$(deploymentName)'
+            DeploymentName    = '${{ parameters.deploymentName }}'
             TemplateFilePath  = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.templateFilePath }}'
             ResourceGroupName = '${{ parameters.resourceGroupName }}'
             ManagementGroupId = '${{ parameters.managementGroupId }}'
