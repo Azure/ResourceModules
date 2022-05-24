@@ -5,93 +5,27 @@ parameters:
   moduleResourceGroupName: ''
 
 stages:
-  # - stage: init
-  #   displayName: Initialize pipeline
-  #   jobs:
-  #     - template: /.azuredevops/pipelineTemplates/jobs.getParameterFiles.yml
-  #     - job: printParameterFilePaths
-  #       dependsOn:
-  #         - getParameterFilePaths
-  #       variables:
-  #         parameterTestsToPrint: $[ dependencies.getParameterFilePaths.outputs['getParameterFilePathsTask.parameterTests'] ]
-  #       steps:
-  #         - task: PowerShell@2
-  #           name: print_parameter_tests
-  #           inputs:
-  #             targetType: inline
-  #             pwsh: true
-  #             script: |
-  #               Write-Verbose '$(parameterTestsToPrint)' -Verbose
-  #               $parameterTestsToPrint = '$(parameterTestsToPrint)'
-  #               Write-Output ('##vso[task.setvariable variable={0};isOutput=true]{1}' -f 'parameterTestsToPrint', $parameterTestsToPrint)
-      #### OK
-      # - job: print3
-      #   dependsOn:
-      #     - getParameterFilePaths
-      #   # strategy:
-      #   #   matrix: $parameterTests
-      #   variables:
-      #     parameterTests: $[ dependencies.getParameterFilePaths.outputs['getParameterFilePathsTask.parameterTests'] ]
-      #   steps:
-      #     - task: PowerShell@2
-      #       name: print_msi_prinId
-      #       inputs:
-      #         targetType: inline
-      #         pwsh: true
-      #         script: |
-      #           Write-Verbose '$(parameterTests)' -Verbose
-      #           $msiPrincipalId = (ConvertFrom-Json '$(parameterTests)').'parameters.json'
-      #           Write-Verbose "msiPrincipalId: $msiPrincipalId" -Verbose
-      #           # Write-Output ('##vso[task.setvariable variable={0};isOutput=true]{1}' -f 'msiPrincipalId', $msiPrincipalId)
+  # # - stage: init
+  # #   displayName: Initialize pipeline
+  # #   jobs:
+  # #     - template: /.azuredevops/pipelineTemplates/jobs.getParameterFiles.yml
 
-          # - task: PowerShell@2
-          #   displayName: 'Print3'
-          #   inputs:
-          #     targetType: inline
-          #     pwsh: true
-          #     script: |
-          #       # $json='$(parameterTests)'
-          #       $json='{"parameterTests":"$(parameterTests)"}'
-          #       # $json = '${{ parameters.parameterFilePath}}'
-          #       # $json = ConvertFrom-Json '${{ parameters.parameterFilePath}}'
-          #       Write-Verbose "json 1 $json" -Verbose
-          #       $msiPrincipalId = (ConvertFrom-Json '$(parameterTests)').'parameters.json'
-          #       Write-Verbose "msiPrincipalId: $msiPrincipalId" -Verbose
-          #       # Write-Host "##vso[task.setvariable variable=$jobsToRunInParallel;isOutput=true]$json"
-          #     name: printvar2
-
-  # - stage: validation
-  #   dependsOn: []
-  #   displayName: Static validation
-  #   jobs:
-  #     - template: /.azuredevops/pipelineTemplates/jobs.validateModulePester.yml
+  - stage: validation
+    displayName: Static validation
+    jobs:
+      - template: /.azuredevops/pipelineTemplates/jobs.validateModulePester.yml
 
   - stage: dependencyDeployment
     displayName: Dependency deployment
-    # dependsOn:
-    #   # - validation
-    #   - init
+    dependsOn:
+      - validation
+    #   # - init
     jobs:
       - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
         parameters:
           templateFilePath: '$(modulePath)/.dependencies/dependencies.bicep'
           resourceGroupName: '${{ parameters.moduleResourceGroupName }}'
           removeDeployment: false
-      # - job: print_after_dep_deploy
-      #   dependsOn:
-      #     - deploy
-      #   variables:
-      #     deploymentNameToPrint: $[ dependencies.deploy.outputs['deployModule.deploymentName'] ]
-      #   steps:
-      #     - task: PowerShell@2
-      #       name: print_deployment_name
-      #       inputs:
-      #         targetType: inline
-      #         pwsh: true
-      #         script: |
-      #           Write-Verbose '$(deploymentNameToPrint)' -Verbose
-      #           # $parameterTestsToPrint = '$(parameterTestsToPrint)'
-      #           # Write-Output ('##vso[task.setvariable variable={0};isOutput=true]{1}' -f 'parameterTestsToPrint', $parameterTestsToPrint)
 
   - stage: deployment
     displayName: Deployment validation
@@ -102,7 +36,6 @@ stages:
       - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
         parameters:
           templateFilePath: '$(modulePath)/deploy.bicep'
-          # parameterFilePaths: '$(parameterTests)'
           resourceGroupName: '${{ parameters.moduleResourceGroupName }}'
 
   - stage: dependencyRemoval
@@ -111,36 +44,23 @@ stages:
       - dependencyDeployment
       - deployment
     condition: succeededOrFailed()
-    # and(succeededOrFailed(), ne(dependencies.dependencyDeployment.outputs['deploy.deployModule.deploymentName'],''))
     variables:
       deploymentName: $[ stageDependencies.dependencyDeployment.deploy.outputs['deployModule.deploymentName'] ]
     jobs:
-      # - job: print_before_template
-      #   variables:
-      #     deploymentNameToPrint: $[ stageDependencies.dependencyDeployment.deploy.outputs['deployModule.deploymentName'] ]
-      #   steps:
-      #     - task: PowerShell@2
-      #       displayName: 'print before template'
-      #       inputs:
-      #         targetType: inline
-      #         pwsh: true
-      #         script: |
-      #           Write-Verbose '$(deploymentNameToPrint)' -Verbose
       - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
         parameters:
           templateFilePath: '$(modulePath)/.dependencies/dependencies.bicep'
           resourceGroupName: '${{ parameters.moduleResourceGroupName }}'
           deploymentName: '$(deploymentName)'
-          # deploymentName: $[ stageDependencies.dependencyDeployment.deploy.outputs['deployModule.deploymentName'] ]
           enableDeployment: false
 
-  # - stage: Publishing
-  #   dependsOn:
-  #     - deployment
-  #   displayName: Publish module
-  #   condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/main'), eq(variables['Build.SourceBranch'], 'refs/heads/master'), eq('${{ parameters.prerelease }}', 'true')))
-  #   jobs:
-  #     - template: /.azuredevops/pipelineTemplates/jobs.publishModule.yml
+  - stage: Publishing
+    dependsOn:
+      - deployment
+    displayName: Publish module
+    condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/main'), eq(variables['Build.SourceBranch'], 'refs/heads/master'), eq('${{ parameters.prerelease }}', 'true')))
+    jobs:
+      - template: /.azuredevops/pipelineTemplates/jobs.publishModule.yml
 
 
 
