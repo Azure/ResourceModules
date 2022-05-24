@@ -63,4 +63,4 @@ steps:
         Write-Verbose 'Invoke task with' -Verbose
         Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
-        Initialize-DeploymentRemoval @functionInput
+        #Initialize-DeploymentRemoval @functionInput
