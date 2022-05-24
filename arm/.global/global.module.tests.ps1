@@ -609,7 +609,7 @@ Describe 'Deployment template tests' -Tag Template {
             )
 
             if (-not $templateContent.parameters) {
-                $true | Should -Be $true
+                # Skip test
                 return
             }
 
@@ -632,7 +632,7 @@ Describe 'Deployment template tests' -Tag Template {
             )
 
             if (-not $templateContent.variables) {
-                $true | Should -Be $true
+                # Skip test
                 return
             }
 
@@ -772,7 +772,6 @@ Describe 'Deployment template tests' -Tag Template {
 
             if (-not $templateContent.parameters) {
                 # Skip test
-                $true | Should -Be $true
                 return
             }
 
@@ -795,7 +794,6 @@ Describe 'Deployment template tests' -Tag Template {
 
             if (-not $templateContent.parameters) {
                 # Skip test
-                $true | Should -Be $true
                 return
             }
 
@@ -825,7 +823,6 @@ Describe 'Deployment template tests' -Tag Template {
 
             if (-not $templateContent.outputs) {
                 # Skip test
-                $true | Should -Be $true
                 return
             }
 
