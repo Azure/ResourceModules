@@ -376,7 +376,7 @@ The hierarchical namespace of the storage account (see parameter `enableHierarch
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "<<namePrefix>>azsax003"
+            "value": "<<namePrefix>>azsaencr001"
         },
         "storageAccountSku": {
             "value": "Standard_LRS"
@@ -390,147 +390,134 @@ The hierarchical namespace of the storage account (see parameter `enableHierarch
         "requireInfrastructureEncryption": {
             "value": true
         },
-        "privateEndpoints": {
-            "value": [
-                {
-                    "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints",
-                    "service": "blob"
-                },
-                {
-                    "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints",
-                    "service": "table"
-                },
-                {
-                    "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints",
-                    "service": "queue"
-                },
-                {
-                    "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints",
-                    "service": "file"
-                }
-            ]
-        },
-        "networkAcls": {
-            "value": {
-                "bypass": "AzureServices",
-                "defaultAction": "Deny",
-                "virtualNetworkRules": [
-                    {
-                        "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001",
-                        "action": "Allow"
-                    }
-                ],
-                "ipRules": [
-                    {
-                        "action": "Allow",
-                        "value": "1.1.1.1"
-                    }
-                ]
-            }
-        },
-        "blobServices": {
-            "value": {
-                "diagnosticLogsRetentionInDays": 7,
-                "diagnosticStorageAccountId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001",
-                "diagnosticWorkspaceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001",
-                "diagnosticEventHubAuthorizationRuleId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey",
-                "diagnosticEventHubName": "adp-<<namePrefix>>-az-evh-x-001",
-                "containers": [
-                    {
-                        "name": "avdscripts",
-                        "publicAccess": "None",
-                        "roleAssignments": [
-                            {
-                                "roleDefinitionIdOrName": "Reader",
-                                "principalIds": [
-                                    "<<deploymentSpId>>"
-                                ]
-                            }
-                        ]
-                    },
-                    {
-                        "name": "archivecontainer",
-                        "publicAccess": "None",
-                        "enableWORM": true,
-                        "WORMRetention": 666,
-                        "allowProtectedAppendWrites": false
-                    }
-                ]
-            }
-        },
-        "fileServices": {
-            "value": {
-                "diagnosticLogsRetentionInDays": 7,
-                "diagnosticStorageAccountId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001",
-                "diagnosticWorkspaceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001",
-                "diagnosticEventHubAuthorizationRuleId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey",
-                "diagnosticEventHubName": "adp-<<namePrefix>>-az-evh-x-001",
-                "shares": [
-                    {
-                        "name": "avdprofiles",
-                        "shareQuota": "5120",
-                        "roleAssignments": [
-                            {
-                                "roleDefinitionIdOrName": "Reader",
-                                "principalIds": [
-                                    "<<deploymentSpId>>"
-                                ]
-                            }
-                        ]
-                    },
-                    {
-                        "name": "avdprofiles2",
-                        "shareQuota": "5120"
-                    }
-                ]
-            }
-        },
-        "tableServices": {
-            "value": {
-                "diagnosticLogsRetentionInDays": 7,
-                "diagnosticStorageAccountId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001",
-                "diagnosticWorkspaceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001",
-                "diagnosticEventHubAuthorizationRuleId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey",
-                "diagnosticEventHubName": "adp-<<namePrefix>>-az-evh-x-001",
-                "tables": [
-                    "table1",
-                    "table2"
-                ]
-            }
-        },
-        "queueServices": {
-            "value": {
-                "diagnosticLogsRetentionInDays": 7,
-                "diagnosticStorageAccountId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001",
-                "diagnosticWorkspaceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001",
-                "diagnosticEventHubAuthorizationRuleId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey",
-                "diagnosticEventHubName": "adp-<<namePrefix>>-az-evh-x-001",
-                "queues": [
-                    {
-                        "name": "queue1",
-                        "metadata": {},
-                        "roleAssignments": [
-                            {
-                                "roleDefinitionIdOrName": "Reader",
-                                "principalIds": [
-                                    "<<deploymentSpId>>"
-                                ]
-                            }
-                        ]
-                    },
-                    {
-                        "name": "queue2",
-                        "metadata": {}
-                    }
-                ]
-            }
-        },
         "systemAssignedIdentity": {
             "value": false
         },
         "userAssignedIdentities": {
             "value": {
                 "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001": {}
+            }
+        },
+        "cMKKeyVaultResourceId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-nopr-002"
+        },
+        "cMKeyName": {
+            "value": "keyEncryptionKey"
+        },
+        "cMKUserAssignedIdenityResourceId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001"
+        }
+    }
+}
+
+```
+
+</details>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-storageAccounts'
+  params: {
+    name: '<<namePrefix>>azsaencr001'
+    storageAccountSku: 'Standard_LRS'
+    allowBlobPublicAccess: false
+    publicNetworkAccess: 'Disabled'
+    requireInfrastructureEncryption: true
+    systemAssignedIdentity: false
+    userAssignedIdentities: {
+      '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
+    }
+    cMKKeyVaultResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-nopr-002'
+    cMKeyName: 'keyEncryptionKey'
+    cMKUserAssignedIdenityResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001'
+  }
+```
+
+</details>
+<p>
+
+<h3>Example 2</h3>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "allowBlobPublicAccess": {
+            "value": false
+        }
+    }
+}
+
+```
+
+</details>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-storageAccounts'
+  params: {
+    allowBlobPublicAccess: false
+  }
+```
+
+</details>
+<p>
+
+<h3>Example 3</h3>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": "<<namePrefix>>azsax002"
+        },
+        "storageAccountSku": {
+            "value": "Premium_LRS"
+        },
+        "storageAccountKind": {
+            "value": "FileStorage"
+        },
+        "allowBlobPublicAccess": {
+            "value": false
+        },
+        "supportsHttpsTrafficOnly": {
+            "value": false
+        },
+        "fileServices": {
+            "value": {
+                "shares": [
+                    {
+                        "name": "nfsfileshare",
+                        "enabledProtocols": "NFS"
+                    }
+                ]
+            }
+        },
+        "systemAssignedIdentity": {
+            "value": true
+        },
+        "userAssignedIdentities": {
+            "value": {
+                "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001": {}
             }
         },
         "roleAssignments": {
@@ -543,15 +530,6 @@ The hierarchical namespace of the storage account (see parameter `enableHierarch
                 }
             ]
         },
-        "cMKKeyVaultResourceId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-nopr-002"
-        },
-        "cMKeyName": {
-            "value": "keyEncryptionKey"
-        },
-        "cMKUserAssignedIdenityResourceId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001"
-        },
         "diagnosticLogsRetentionInDays": {
             "value": 7
         },
@@ -559,7 +537,7 @@ The hierarchical namespace of the storage account (see parameter `enableHierarch
             "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
         },
         "diagnosticWorkspaceId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001"
+            "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001"
         },
         "diagnosticEventHubAuthorizationRuleId": {
             "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
@@ -582,137 +560,22 @@ The hierarchical namespace of the storage account (see parameter `enableHierarch
 module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-storageAccounts'
   params: {
-    name: '<<namePrefix>>azsax003'
-    storageAccountSku: 'Standard_LRS'
+    name: '<<namePrefix>>azsax002'
+    storageAccountSku: 'Premium_LRS'
+    storageAccountKind: 'FileStorage'
     allowBlobPublicAccess: false
-    publicNetworkAccess: 'Disabled'
-    requireInfrastructureEncryption: true
-    privateEndpoints: [
-      {
-        subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints'
-        service: 'blob'
-      }
-      {
-        subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints'
-        service: 'table'
-      }
-      {
-        subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints'
-        service: 'queue'
-      }
-      {
-        subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints'
-        service: 'file'
-      }
-    ]
-    networkAcls: {
-      bypass: 'AzureServices'
-      defaultAction: 'Deny'
-      virtualNetworkRules: [
-        {
-          id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001'
-          action: 'Allow'
-        }
-      ]
-      ipRules: [
-        {
-          action: 'Allow'
-          value: '1.1.1.1'
-        }
-      ]
-    }
-    blobServices: {
-      diagnosticLogsRetentionInDays: 7
-      diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
-      diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
-      diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
-      diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
-      containers: [
-        {
-          name: 'avdscripts'
-          publicAccess: 'None'
-          roleAssignments: [
-            {
-              roleDefinitionIdOrName: 'Reader'
-              principalIds: [
-                '<<deploymentSpId>>'
-              ]
-            }
-          ]
-        }
-        {
-          name: 'archivecontainer'
-          publicAccess: 'None'
-          enableWORM: true
-          WORMRetention: 666
-          allowProtectedAppendWrites: false
-        }
-      ]
-    }
+    supportsHttpsTrafficOnly: false
     fileServices: {
-      diagnosticLogsRetentionInDays: 7
-      diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
-      diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
-      diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
-      diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
       shares: [
         {
-          name: 'avdprofiles'
-          shareQuota: '5120'
-          roleAssignments: [
-            {
-              roleDefinitionIdOrName: 'Reader'
-              principalIds: [
-                '<<deploymentSpId>>'
-              ]
-            }
-          ]
-        }
-        {
-          name: 'avdprofiles2'
-          shareQuota: '5120'
+          name: 'nfsfileshare'
+          enabledProtocols: 'NFS'
         }
       ]
     }
-    tableServices: {
-      diagnosticLogsRetentionInDays: 7
-      diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
-      diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
-      diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
-      diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
-      tables: [
-        'table1'
-        'table2'
-      ]
-    }
-    queueServices: {
-      diagnosticLogsRetentionInDays: 7
-      diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
-      diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
-      diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
-      diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
-      queues: [
-        {
-          name: 'queue1'
-          metadata: {}
-          roleAssignments: [
-            {
-              roleDefinitionIdOrName: 'Reader'
-              principalIds: [
-                '<<deploymentSpId>>'
-              ]
-            }
-          ]
-        }
-        {
-          name: 'queue2'
-          metadata: {}
-        }
-      ]
-    }
-    systemAssignedIdentity: false
+    systemAssignedIdentity: true
     userAssignedIdentities: {
-      '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
+      '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
     }
     roleAssignments: [
       {
@@ -722,14 +585,51 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
         ]
       }
     ]
-    cMKKeyVaultResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-nopr-002'
-    cMKeyName: 'keyEncryptionKey'
-    cMKUserAssignedIdenityResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001'
     diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
-    diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
+    diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
     diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
     diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
+  }
+```
+
+</details>
+<p>
+
+<h3>Example 4</h3>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "storageAccountKind": {
+            "value": "Storage"
+        },
+        "allowBlobPublicAccess": {
+            "value": false
+        }
+    }
+}
+
+```
+
+</details>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-storageAccounts'
+  params: {
+    storageAccountKind: 'Storage'
+    allowBlobPublicAccess: false
   }
 ```
 
