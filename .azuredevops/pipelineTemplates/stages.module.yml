@@ -69,7 +69,7 @@ stages:
         displayName: Dependency Removal
         dependsOn:
           - dependencyDeployment
-          - deployment
+          #- deployment
         condition: and(succeededOrFailed(), ne(dependencies.dependencyDeployment.outputs['deploy.deployModule.deploymentName'],''))
         jobs:
           - job: remove
