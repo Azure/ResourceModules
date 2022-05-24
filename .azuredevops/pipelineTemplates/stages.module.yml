@@ -1,3 +1,9 @@
+parameters:
+  removeDeployment: true
+  prerelease: false
+  templateFilePath: ''
+  moduleResourceGroupName: ''
+
 stages:
   - stage: A
     jobs:
