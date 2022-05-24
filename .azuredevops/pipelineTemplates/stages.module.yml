@@ -77,21 +77,21 @@ stages:
           templateFilePath: '$(modulePath)/.dependencies/dependencies.bicep'
           resourceGroupName: '${{ parameters.moduleResourceGroupName }}'
           removeDeployment: false
-      - job: print_after_dep_deploy
-        dependsOn:
-          - deploy
-        variables:
-          deploymentNameToPrint: $[ dependencies.deploy.outputs['deployModule.deploymentName'] ]
-        steps:
-          - task: PowerShell@2
-            name: print_deployment_name
-            inputs:
-              targetType: inline
-              pwsh: true
-              script: |
-                Write-Verbose '$(deploymentNameToPrint)' -Verbose
-                # $parameterTestsToPrint = '$(parameterTestsToPrint)'
-                # Write-Output ('##vso[task.setvariable variable={0};isOutput=true]{1}' -f 'parameterTestsToPrint', $parameterTestsToPrint)
+      # - job: print_after_dep_deploy
+      #   dependsOn:
+      #     - deploy
+      #   variables:
+      #     deploymentNameToPrint: $[ dependencies.deploy.outputs['deployModule.deploymentName'] ]
+      #   steps:
+      #     - task: PowerShell@2
+      #       name: print_deployment_name
+      #       inputs:
+      #         targetType: inline
+      #         pwsh: true
+      #         script: |
+      #           Write-Verbose '$(deploymentNameToPrint)' -Verbose
+      #           # $parameterTestsToPrint = '$(parameterTestsToPrint)'
+      #           # Write-Output ('##vso[task.setvariable variable={0};isOutput=true]{1}' -f 'parameterTestsToPrint', $parameterTestsToPrint)
 
   # - stage: deployment
   #   displayName: Deployment validation
@@ -115,17 +115,17 @@ stages:
     variables:
       deploymentName: $[ stageDependencies.dependencyDeployment.deploy.outputs['deployModule.deploymentName'] ]
     jobs:
-      - job: print_before_template
-        variables:
-          deploymentNameToPrint: $[ stageDependencies.dependencyDeployment.deploy.outputs['deployModule.deploymentName'] ]
-        steps:
-          - task: PowerShell@2
-            displayName: 'print before template'
-            inputs:
-              targetType: inline
-              pwsh: true
-              script: |
-                Write-Verbose '$(deploymentNameToPrint)' -Verbose
+      # - job: print_before_template
+      #   variables:
+      #     deploymentNameToPrint: $[ stageDependencies.dependencyDeployment.deploy.outputs['deployModule.deploymentName'] ]
+      #   steps:
+      #     - task: PowerShell@2
+      #       displayName: 'print before template'
+      #       inputs:
+      #         targetType: inline
+      #         pwsh: true
+      #         script: |
+      #           Write-Verbose '$(deploymentNameToPrint)' -Verbose
       - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
         parameters:
           templateFilePath: '$(modulePath)/.dependencies/dependencies.bicep'

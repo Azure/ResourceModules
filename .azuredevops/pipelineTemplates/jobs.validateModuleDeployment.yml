@@ -92,9 +92,9 @@ jobs:
         - getParameterFilePaths
       strategy:
         matrix: $[ dependencies.getParameterFilePaths.outputs['getParameterFilePathsTask.parameterTests'] ]
-    ${{ if not( contains( parameters.templateFilePath, '.dependencies')) }}:
-      variables:
-        deploymentName: $[ stageDependencies.dependencyDeployment.deploy.outputs['deployModule.deploymentName'] ]
+    # ${{ if not( contains( parameters.templateFilePath, '.dependencies')) }}:
+    #   variables:
+    #     deploymentName: $[ stageDependencies.dependencyDeployment.deploy.outputs['deployModule.deploymentName'] ]
     # variables:
     #   parameterTests: $[ dependencies.getParameterFilePaths.outputs['getParameterFilePathsTask.parameterTests'] ]
 
@@ -379,23 +379,26 @@ jobs:
             Write-Verbose '$(deploymentName)' -Verbose
             Write-Verbose '${{ variables.deploymentName }}' -Verbose
 
-            # if (-not [String]::IsNullOrEmpty('$(deploymentName)')) {
-            if(-not [String]::IsNullOrEmpty('${{ parameters.deploymentName }}')) {
-              $functionInput = @{
-                  # DeploymentName    = '$(deploymentName)'
-                  DeploymentName    = '${{ parameters.deploymentName }}'
-                  TemplateFilePath  = $templateFilePath
-                  ResourceGroupName = '${{ parameters.resourceGroupName }}'
-                  subscriptionId    = '${{ parameters.subscriptionId }}'
-                  ManagementGroupId = '${{ parameters.managementGroupId }}'
-                  Verbose           = $true
-              }
-
-              Write-Verbose 'Invoke task with' -Verbose
-              Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
-
-              Initialize-DeploymentRemoval @functionInput
+            $functionInput = @{
+              TemplateFilePath  = $templateFilePath
+              ResourceGroupName = '${{ parameters.resourceGroupName }}'
+              subscriptionId    = '${{ parameters.subscriptionId }}'
+              ManagementGroupId = '${{ parameters.managementGroupId }}'
+              Verbose           = $true
             }
+
+            if ( -not [String]::IsNullOrEmpty('$(deploymentName)') ) {
+              $functionInput['deploymentName'] = '$(deploymentName)'
+            }
+
+            if(-not [String]::IsNullOrEmpty('${{ parameters.deploymentName }}')) {
+              $functionInput['deploymentName'] = '${{ parameters.deploymentName }}'
+            }
+
+            Write-Verbose 'Invoke task with' -Verbose
+            Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
+
+            Initialize-DeploymentRemoval @functionInput
 
 #############
 
