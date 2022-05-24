@@ -73,8 +73,8 @@ stages:
         # Works
         condition: and(succeededOrFailed(), ne(dependencies.dependencyDeployment.outputs['deploy.deployModule.deploymentName'],''))
         # Works
-        # variables:
-        #   deploymentName: $[ stageDependencies.dependencyDeployment.deploy.outputs['deployModule.deploymentName'] ]
+        variables:
+          deploymentName: $[ stageDependencies.dependencyDeployment.deploy.outputs['deployModule.deploymentName'] ]
         jobs:
           - job: remove
             displayName: Remove dependencies
@@ -84,8 +84,8 @@ stages:
               ${{ if ne(variables['poolName'], '') }}:
                 name: ${{ variables['poolName'] }}
             # works
-            variables:
-              deploymentName: $[ stageDependencies.dependencyDeployment.deploy.outputs['deployModule.deploymentName'] ]
+            # variables:
+            #   deploymentName: $[ stageDependencies.dependencyDeployment.deploy.outputs['deployModule.deploymentName'] ]
             steps:
               - task: AzurePowerShell@5
                 displayName: 'Test'

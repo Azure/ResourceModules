@@ -14,7 +14,7 @@ steps:
   #----------------------------
   - task: PowerShell@2
     displayName: 'Setup agent for removal'
-    condition: and( succeededOrFailed(), ne('${{ parameters.deploymentName }}',''), not(startsWith('${{ parameters.deploymentName }}', '$(')) )
+    #condition: and( succeededOrFailed(), ne('${{ parameters.deploymentName }}',''), not(startsWith('${{ parameters.deploymentName }}', '$(')) )
     inputs:
       targetType: inline
       pwsh: true
@@ -41,7 +41,7 @@ steps:
   #------------------
   - task: AzurePowerShell@5
     displayName: 'Remove deployed resources via [${{ parameters.serviceConnection }}]'
-    condition: and(succeededOrFailed(), ne('${{ parameters.deploymentName }}',''), not(startsWith('${{ parameters.deploymentName }}', '$(')) )
+    #condition: and(succeededOrFailed(), ne('${{ parameters.deploymentName }}',''), not(startsWith('${{ parameters.deploymentName }}', '$(')) )
     inputs:
       azureSubscription: ${{ parameters.serviceConnection }}
       azurePowerShellVersion: 'latestVersion'
