@@ -28,7 +28,7 @@ param identity string = 'SystemAssigned'
 @sys.description('Optional. The Resource ID for the user assigned identity to assign to the policy assignment.')
 param userAssignedIdentityId string = ''
 
-@sys.description('Required. The IDs Of the Azure Role Definition list that is used to assign permissions to the identity. You need to provide either the fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.. See https://docs.microsoft.com/en-us/azure/role-based-access-control/built-in-roles for the list IDs for built-in Roles. They must match on what is on the policy definition')
+@sys.description('Required. The IDs Of the Azure Role Definition list that is used to assign permissions to the identity. You need to provide either the fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.. See https://docs.microsoft.com/en-us/azure/role-based-access-control/built-in-roles for the list IDs for built-in Roles. They must match on what is on the policy definition.')
 param roleDefinitionIds array = []
 
 @sys.description('Optional. The policy assignment metadata. Metadata is an open ended object and is typically a collection of key-value pairs.')
@@ -37,7 +37,7 @@ param metadata object = {}
 @sys.description('Optional. The messages that describe why a resource is non-compliant with the policy.')
 param nonComplianceMessage string = ''
 
-@sys.description('Optional. The policy assignment enforcement mode. Possible values are Default and DoNotEnforce. - Default or DoNotEnforce')
+@sys.description('Optional. The policy assignment enforcement mode. Possible values are Default and DoNotEnforce. - Default or DoNotEnforce.')
 @allowed([
   'Default'
   'DoNotEnforce'
@@ -47,7 +47,7 @@ param enforcementMode string = 'Default'
 @sys.description('Optional. The Target Scope for the Policy. The name of the management group for the policy assignment. If not provided, will use the current scope for deployment.')
 param managementGroupId string = managementGroup().name
 
-@sys.description('Optional. The policy excluded scopes')
+@sys.description('Optional. The policy excluded scopes.')
 param notScopes array = []
 
 @sys.description('Optional. Location for all resources.')
@@ -107,13 +107,13 @@ resource roleAssignment 'Microsoft.Authorization/roleAssignments@2020-10-01-prev
   }
 }]
 
-@sys.description('Policy Assignment Name')
+@sys.description('Policy Assignment Name.')
 output name string = policyAssignment.name
 
-@sys.description('Policy Assignment principal ID')
+@sys.description('Policy Assignment principal ID.')
 output principalId string = identity == 'SystemAssigned' ? policyAssignment.identity.principalId : ''
 
-@sys.description('Policy Assignment resource ID')
+@sys.description('Policy Assignment resource ID.')
 output resourceId string = extensionResourceId(tenantResourceId('Microsoft.Management/managementGroups', managementGroupId), 'Microsoft.Authorization/policyAssignments', policyAssignment.name)
 
 @sys.description('The location the resource was deployed into.')

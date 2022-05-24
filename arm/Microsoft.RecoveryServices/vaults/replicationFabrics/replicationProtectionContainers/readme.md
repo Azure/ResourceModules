@@ -39,6 +39,10 @@ This module deploys a Replication Protection Container.
 
 ### Parameter Usage: `replicationContainerMappings`
 
+<details>
+
+<summary>Parameter JSON format</summary>
+
 ```json
 "replicationContainerMappings": {
     "value": [
@@ -55,6 +59,30 @@ This module deploys a Replication Protection Container.
     ]
 }
 ```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+replicationContainerMappings: [
+    {
+        targetProtectionContainerId: '/Subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.RecoveryServices/vaults/<<namePrefix>>-az-rsv-dr-001/replicationFabrics/NorthEurope/replicationProtectionContainers/ne-container1'
+        policyId: '/Subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.RecoveryServices/vaults/<<namePrefix>>-az-rsv-dr-001/replicationPolicies/Default_values'
+    }
+    {
+        name: null //Optional
+        policyName: 'Default_values'
+        targetContainerFabricName: 'WestEurope'
+        targetContainerName: 'we-container'
+    }
+]
+```
+
+</details>
+<p>
 
 ## Outputs
 

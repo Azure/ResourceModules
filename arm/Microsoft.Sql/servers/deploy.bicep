@@ -56,7 +56,7 @@ var identity = identityType != 'None' ? {
   userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
 } : null
 
-@description('Optional. The vulnerability assessment configuration')
+@description('Optional. The vulnerability assessment configuration.')
 param vulnerabilityAssessmentsObj object = {}
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
@@ -209,7 +209,7 @@ output name string = server.name
 @description('The resource ID of the deployed SQL server.')
 output resourceId string = server.id
 
-@description('The resourceGroup of the deployed SQL server.')
+@description('The resource group of the deployed SQL server.')
 output resourceGroupName string = resourceGroup().name
 
 @description('The principal ID of the system assigned identity.')
