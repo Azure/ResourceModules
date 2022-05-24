@@ -318,7 +318,7 @@ The `networkRuleCollections` parameter accepts a JSON Array of AzureFirewallNetw
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "<<namePrefix>>-az-fw-min-001"
+            "value": "<<namePrefix>>-az-fw-add-001"
         },
         "vNetId": {
             "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-add-azfw"
@@ -346,7 +346,7 @@ The `networkRuleCollections` parameter accepts a JSON Array of AzureFirewallNetw
 module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-azureFirewalls'
   params: {
-    name: '<<namePrefix>>-az-fw-min-001'
+    name: '<<namePrefix>>-az-fw-add-001'
     vNetId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-add-azfw'
     additionalPublicIpConfigurations: [
       {
@@ -372,14 +372,14 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "<<namePrefix>>-az-fw-min-001"
+            "value": "<<namePrefix>>-az-fw-custompip-001"
         },
         "vNetId": {
             "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-custompip-azfw"
         },
         "publicIPAddressObject": {
             "value": {
-                "name": "custompip",
+                "name": "<<namePrefix>>-az-fw-custompip-001",
                 "publicIPPrefixResourceId": "",
                 "publicIPAllocationMethod": "Dynamic",
                 "skuName": "Basic",
@@ -423,10 +423,10 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
 module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-azureFirewalls'
   params: {
-    name: '<<namePrefix>>-az-fw-min-001'
+    name: '<<namePrefix>>-az-fw-custompip-001'
     vNetId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-custompip-azfw'
     publicIPAddressObject: {
-      name: 'custompip'
+      name: '<<namePrefix>>-az-fw-custompip-001'
       publicIPPrefixResourceId: ''
       publicIPAllocationMethod: 'Dynamic'
       skuName: 'Basic'
