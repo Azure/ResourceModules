@@ -130,8 +130,8 @@ stages:
         parameters:
           templateFilePath: '$(modulePath)/.dependencies/dependencies.bicep'
           resourceGroupName: '${{ parameters.moduleResourceGroupName }}'
-          # deploymentName: $(deploymentName)
-          deploymentName: $[ stageDependencies.dependencyDeployment.deploy.outputs['deployModule.deploymentName'] ]
+          deploymentName: '$(deploymentName)'
+          # deploymentName: $[ stageDependencies.dependencyDeployment.deploy.outputs['deployModule.deploymentName'] ]
           enableDeployment: false
 
   # - stage: Publishing
