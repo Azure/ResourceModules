@@ -15,12 +15,6 @@ This module deploys API Management Service APIs.
 | `Microsoft.ApiManagement/service/apis` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2021-08-01/service/apis) |
 | `Microsoft.ApiManagement/service/apis/policies` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2021-08-01/service/apis/policies) |
 
-### Resource dependency
-
-The following resources are required to be able to deploy this resource.
-
-- `Microsoft.ApiManagement/service`
-
 ## Parameters
 
 **Required parameters**
@@ -59,23 +53,6 @@ The following resources are required to be able to deploy this resource.
 | `value` | string | `''` |  | Content value when Importing an API. |
 | `wsdlSelector` | object | `{object}` |  | Criteria to limit import of WSDL to a subset of the document. |
 
-
-### Parameter Usage: `apiVersionSet`
-
-```json
-"apiVersionSet":{
-    "value":{
-        "name":"", //Required. API Version Set identifier. Must be unique in the current API Management service instance.
-        "properties":{
-            "description": "string", //Description of API Version Set.
-            "versionQueryName": "string", //Optional. Name of query parameter that indicates the API Version if versioningScheme is set to query.
-            "versionHeaderName": "string", //Optional. Name of HTTP header parameter that indicates the API Version if versioningScheme is set to header.
-            "displayName": "string", //Required. Name of API Version Set
-            "versioningScheme": "string" //Required. An value that determines where the API Version identifer will be located in a HTTP request. - Segment, Query, Header
-        }
-    }
-}
-```
 
 ## Outputs
 

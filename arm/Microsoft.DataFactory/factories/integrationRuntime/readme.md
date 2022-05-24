@@ -37,6 +37,10 @@ This module deploys a Managed or Self-Hosted Integration Runtime for an Azure Da
 
 ### Parameter Usage: [`typeProperties`](https://docs.microsoft.com/en-us/azure/templates/microsoft.datafactory/factories/integrationruntimes?tabs=bicep#integrationruntime-objects)
 
+<details>
+
+<summary>Parameter JSON format</summary>
+
 ```json
 "typeProperties": {
     "value": {
@@ -45,8 +49,22 @@ This module deploys a Managed or Self-Hosted Integration Runtime for an Azure Da
         }
     }
 }
-
 ```
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+typeProperties: {
+    computeProperties: {
+        location: 'AutoResolve'
+    }
+}
+```
+
+<details>
+<p>
 
 ## Outputs
 

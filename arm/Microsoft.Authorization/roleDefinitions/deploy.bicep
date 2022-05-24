@@ -12,10 +12,10 @@ param actions array = []
 @sys.description('Optional. List of denied actions.')
 param notActions array = []
 
-@sys.description('Optional. List of allowed data actions. This is not supported if the assignableScopes contains Management Group Scopes')
+@sys.description('Optional. List of allowed data actions. This is not supported if the assignableScopes contains Management Group Scopes.')
 param dataActions array = []
 
-@sys.description('Optional. List of denied data actions. This is not supported if the assignableScopes contains Management Group Scopes')
+@sys.description('Optional. List of denied data actions. This is not supported if the assignableScopes contains Management Group Scopes.')
 param notDataActions array = []
 
 @sys.description('Optional. The group ID of the Management Group where the Role Definition and Target Scope will be applied to. If not provided, will use the current scope for deployment.')
@@ -98,11 +98,11 @@ module roleDefinition_rg 'resourceGroup/deploy.bicep' = if (!empty(resourceGroup
   }
 }
 
-@sys.description('The GUID of the Role Definition')
+@sys.description('The GUID of the Role Definition.')
 output name string = empty(subscriptionId) && empty(resourceGroupName) ? roleDefinition_mg.outputs.name : (!empty(subscriptionId) && empty(resourceGroupName) ? roleDefinition_sub.outputs.name : roleDefinition_rg.outputs.name)
 
-@sys.description('The resource ID of the Role Definition')
+@sys.description('The resource ID of the Role Definition.')
 output resourceId string = empty(subscriptionId) && empty(resourceGroupName) ? roleDefinition_mg.outputs.resourceId : (!empty(subscriptionId) && empty(resourceGroupName) ? roleDefinition_sub.outputs.resourceId : roleDefinition_rg.outputs.resourceId)
 
-@sys.description('The scope this Role Definition applies to')
+@sys.description('The scope this Role Definition applies to.')
 output roleDefinitionScope string = empty(subscriptionId) && empty(resourceGroupName) ? roleDefinition_mg.outputs.scope : (!empty(subscriptionId) && empty(resourceGroupName) ? roleDefinition_sub.outputs.scope : roleDefinition_rg.outputs.scope)

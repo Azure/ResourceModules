@@ -44,5 +44,5 @@ This module deploys an SQL Server Security Alert Policy.
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The name of the deployed security alert policy. |
-| `resourceGroupName` | string | The resourceGroup of the deployed security alert policy. |
+| `resourceGroupName` | string | The resource group of the deployed security alert policy. |
 | `resourceId` | string | The resource ID of the deployed security alert policy. |

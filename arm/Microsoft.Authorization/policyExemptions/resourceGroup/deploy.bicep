@@ -14,7 +14,7 @@ param description string = ''
 @sys.description('Optional. The policy exemption metadata. Metadata is an open ended object and is typically a collection of key-value pairs.')
 param metadata object = {}
 
-@sys.description('Optional. The policy exemption category. Possible values are Waiver and Mitigated. Default is Mitigated')
+@sys.description('Optional. The policy exemption category. Possible values are Waiver and Mitigated. Default is Mitigated.')
 @allowed([
   'Mitigated'
   'Waiver'
@@ -27,7 +27,7 @@ param policyAssignmentId string
 @sys.description('Optional. The policy definition reference ID list when the associated policy assignment is an assignment of a policy set definition.')
 param policyDefinitionReferenceIds array = []
 
-@sys.description('Optional. The expiration date and time (in UTC ISO 8601 format yyyy-MM-ddTHH:mm:ssZ) of the policy exemption. e.g. 2021-10-02T03:57:00.000Z ')
+@sys.description('Optional. The expiration date and time (in UTC ISO 8601 format yyyy-MM-ddTHH:mm:ssZ) of the policy exemption. e.g. 2021-10-02T03:57:00.000Z.')
 param expiresOn string = ''
 
 @sys.description('Optional. The subscription ID of the subscription to be exempted from the policy assignment. If not provided, will use the current scope for deployment.')
@@ -64,14 +64,14 @@ resource policyExemption 'Microsoft.Authorization/policyExemptions@2020-07-01-pr
   }
 }
 
-@sys.description('Policy Exemption Name')
+@sys.description('Policy Exemption Name.')
 output name string = policyExemption.name
 
-@sys.description('Policy Exemption resource ID')
+@sys.description('Policy Exemption resource ID.')
 output resourceId string = az.resourceId(subscriptionId, resourceGroupName, 'Microsoft.Authorization/policyExemptions', policyExemption.name)
 
-@sys.description('Policy Exemption Scope')
+@sys.description('Policy Exemption Scope.')
 output scope string = resourceGroup().id
 
-@sys.description('The name of the resource group the policy exemption was applied at')
+@sys.description('The name of the resource group the policy exemption was applied at.')
 output resourceGroupName string = resourceGroup().name
