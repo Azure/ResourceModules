@@ -169,7 +169,7 @@ roleAssignments: [
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "<<namePrefix>>azasweumax001"
+            "value": "<<namePrefix>>rkeazasweumax001"
         },
         "skuName": {
             "value": "S0"
@@ -243,7 +243,7 @@ roleAssignments: [
 module servers './Microsoft.AnalysisServices/servers/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-servers'
   params: {
-    name: '<<namePrefix>>azasweumax001'
+    name: '<<namePrefix>>rkeazasweumax001'
     skuName: 'S0'
     skuCapacity: 1
     firewallSettings: {
@@ -295,7 +295,7 @@ module servers './Microsoft.AnalysisServices/servers/deploy.bicep' = {
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "<<namePrefix>>azasweumin001"
+            "value": "<<namePrefix>>rkeazasweumin001"
         }
     }
 }
@@ -312,7 +312,7 @@ module servers './Microsoft.AnalysisServices/servers/deploy.bicep' = {
 module servers './Microsoft.AnalysisServices/servers/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-servers'
   params: {
-    name: '<<namePrefix>>azasweumin001'
+    name: '<<namePrefix>>rkeazasweumin001'
   }
 ```
 
@@ -331,7 +331,7 @@ module servers './Microsoft.AnalysisServices/servers/deploy.bicep' = {
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "<<namePrefix>>azasweux001"
+            "value": "<<namePrefix>>rkeazasweux001"
         },
         "skuName": {
             "value": "S0"
@@ -376,7 +376,7 @@ module servers './Microsoft.AnalysisServices/servers/deploy.bicep' = {
 module servers './Microsoft.AnalysisServices/servers/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-servers'
   params: {
-    name: '<<namePrefix>>azasweux001'
+    name: '<<namePrefix>>rkeazasweux001'
     skuName: 'S0'
     roleAssignments: [
       {
