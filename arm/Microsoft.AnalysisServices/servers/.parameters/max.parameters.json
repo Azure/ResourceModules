@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "<<namePrefix>>azasweumax001"
+            "value": "<<namePrefix>>rkeazasweumax001"
         },
         "skuName": {
             "value": "S0"
