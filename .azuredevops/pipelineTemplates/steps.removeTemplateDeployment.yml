@@ -11,30 +11,30 @@ parameters:
 steps:
   # [Agent] Prepare environment
   #----------------------------
-  # - task: PowerShell@2
-  #   displayName: 'Setup agent for removal'
-  #   condition: and( succeededOrFailed(), ne('$(deploymentName)',''), not(startsWith('$(deploymentName)', '$(')) )
-  #   inputs:
-  #     targetType: inline
-  #     pwsh: true
-  #     script: |
-  #       # Load used functions
-  #       . (Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
+  - task: PowerShell@2
+    displayName: 'Setup agent for removal'
+    condition: and( succeededOrFailed(), ne('$(deploymentName)',''), not(startsWith('$(deploymentName)', '$(')) )
+    inputs:
+      targetType: inline
+      pwsh: true
+      script: |
+        # Load used functions
+        . (Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
 
-  #       # Define PS modules to install on the runner
-  #       $Modules = @(
-  #         @{ Name = 'Az.Accounts' },
-  #         @{ Name = 'Az.Resources' }
-  #         @{ Name = 'Az.CognitiveServices' },
-  #         @{ Name = 'Az.Compute' },
-  #         @{ Name = 'Az.KeyVault' },
-  #         @{ Name = 'Az.Monitor' },
-  #         @{ Name = 'Az.OperationalInsights' },
-  #         @{ Name = 'Az.RecoveryServices' }
-  #       )
+        # Define PS modules to install on the runner
+        $Modules = @(
+          @{ Name = 'Az.Accounts' },
+          @{ Name = 'Az.Resources' }
+          @{ Name = 'Az.CognitiveServices' },
+          @{ Name = 'Az.Compute' },
+          @{ Name = 'Az.KeyVault' },
+          @{ Name = 'Az.Monitor' },
+          @{ Name = 'Az.OperationalInsights' },
+          @{ Name = 'Az.RecoveryServices' }
+        )
 
-  #       # Set agent up
-  #       Set-EnvironmentOnAgent -PSModules $Modules
+        # Set agent up
+        Set-EnvironmentOnAgent -PSModules $Modules
 
   # [Removal] task(s)
   #------------------
@@ -63,4 +63,4 @@ steps:
         Write-Verbose 'Invoke task with' -Verbose
         Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
-        #Initialize-DeploymentRemoval @functionInput
+        Initialize-DeploymentRemoval @functionInput
