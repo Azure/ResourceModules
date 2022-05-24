@@ -70,7 +70,9 @@ stages:
         dependsOn:
           - dependencyDeployment
           #- deployment
+        # Works
         condition: and(succeededOrFailed(), ne(dependencies.dependencyDeployment.outputs['deploy.deployModule.deploymentName'],''))
+        # Works
         variables:
           deploymentName: $[ stageDependencies.dependencyDeployment.deploy.outputs['deployModule.deploymentName'] ]
         jobs:
@@ -99,7 +101,7 @@ stages:
               - template: /.azuredevops/pipelineTemplates/steps.removeTemplateDeployment.yml
                 parameters:
                   templateFilePath: '$(modulePath)/.dependencies/dependencies.bicep'
-                  deploymentName: '$(deploymentName)'
+                  deploymentName: '$[variables.deploymentName]'
                   resourceGroupName: '${{ parameters.moduleResourceGroupName }}'
 
   # - stage: Publishing
