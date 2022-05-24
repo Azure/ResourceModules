@@ -10,7 +10,7 @@
         },
         "publicIPAddressObject": {
             "value": {
-                "name": "custompip",
+                "name": "<<namePrefix>>-az-fw-custompip-001",
                 "publicIPPrefixResourceId": "",
                 "publicIPAllocationMethod": "Dynamic",
                 "skuName": "Basic",
