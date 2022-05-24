@@ -84,7 +84,7 @@ stages:
           deploymentNameToPrint: $[ dependencies.deploy.outputs['deployModule.deploymentName'] ]
         steps:
           - task: PowerShell@2
-            name: print_parameter_tests
+            name: print_deployment_name
             inputs:
               targetType: inline
               pwsh: true
@@ -125,7 +125,7 @@ stages:
               targetType: inline
               pwsh: true
               script: |
-                Write-Verbose '$(parameterTestsToPrint1)' -Verbose
+                Write-Verbose '$(deploymentNameToPrint)' -Verbose
       - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
         parameters:
           templateFilePath: '$(modulePath)/.dependencies/dependencies.bicep'

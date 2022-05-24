@@ -328,6 +328,9 @@ jobs:
 
             # Get deployment name
             Write-Host ('##vso[task.setvariable variable=deploymentName]{0}' -f $res.deploymentName)
+            $deploymentName=$res.deploymentName
+            Write-Verbose "Deployment name: $deploymentName" -Verbose
+            Write-Output ('##vso[task.setvariable variable={0};isOutput=true]{1}' -f 'deploymentName', $deploymentName)
 
             # Populate further outputs
             $deploymentOutputHash=@{}
