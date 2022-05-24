@@ -114,6 +114,7 @@ stages:
     # and(succeededOrFailed(), ne(dependencies.dependencyDeployment.outputs['deploy.deployModule.deploymentName'],''))
     # variables:
     #   deploymentName: $[ stageDependencies.dependencyDeployment.deploy.outputs['deployModule.deploymentName'] ]
+    jobs:
     - job: print_before_template
       variables:
         deploymentNameToPrint: $[ stageDependencies.dependencyDeployment.deploy.outputs['deployModule.deploymentName'] ]
@@ -125,7 +126,6 @@ stages:
             pwsh: true
             script: |
               Write-Verbose '$(parameterTestsToPrint1)' -Verbose
-    jobs:
       - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
         parameters:
           templateFilePath: '$(modulePath)/.dependencies/dependencies.bicep'
