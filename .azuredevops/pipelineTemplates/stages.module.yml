@@ -93,23 +93,23 @@ stages:
       #           # $parameterTestsToPrint = '$(parameterTestsToPrint)'
       #           # Write-Output ('##vso[task.setvariable variable={0};isOutput=true]{1}' -f 'parameterTestsToPrint', $parameterTestsToPrint)
 
-  # - stage: deployment
-  #   displayName: Deployment validation
-  #   dependsOn:
-  #     - dependencyDeployment
-  #     # - init
-  #   jobs:
-  #     - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
-  #       parameters:
-  #         templateFilePath: '$(modulePath)/deploy.bicep'
-  #         # parameterFilePaths: '$(parameterTests)'
-  #         resourceGroupName: '${{ parameters.moduleResourceGroupName }}'
+  - stage: deployment
+    displayName: Deployment validation
+    dependsOn:
+      - dependencyDeployment
+      # - init
+    jobs:
+      - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
+        parameters:
+          templateFilePath: '$(modulePath)/deploy.bicep'
+          # parameterFilePaths: '$(parameterTests)'
+          resourceGroupName: '${{ parameters.moduleResourceGroupName }}'
 
   - stage: dependencyRemoval
     displayName: Dependency removal
     dependsOn:
       - dependencyDeployment
-      # - deployment
+      - deployment
     condition: succeededOrFailed()
     # and(succeededOrFailed(), ne(dependencies.dependencyDeployment.outputs['deploy.deployModule.deploymentName'],''))
     variables:
