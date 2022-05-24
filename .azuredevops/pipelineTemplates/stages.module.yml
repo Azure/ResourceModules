@@ -78,7 +78,7 @@ stages:
           - job: remove
             displayName: Remove dependencies
             # condition: ne(dependencies.dependencyDeployment.outputs['deploy.deployModule.deploymentName'],'')
-            condition: ne($(deploymentName),'')
+            condition: ne(variables.deploymentName, '')
             pool:
               ${{ if ne(variables['vmImage'], '') }}:
                 vmImage: ${{ variables['vmImage'] }}
