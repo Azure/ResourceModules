@@ -25,17 +25,6 @@ stages:
             parameters:
               templateFilePath: '$(modulePath)/.dependencies/dependencies.bicep'
               resourceGroupName: '${{ parameters.moduleResourceGroupName }}'
-          # - task: AzurePowerShell@5
-          #   displayName: 'Test'
-          #   name: deployModule
-          #   inputs:
-          #     azureSubscription: '$(serviceConnection)'
-          #     azurePowerShellVersion: 'latestVersion'
-          #     preferredAzurePowerShellVersion: ''
-          #     pwsh: true
-          #     ScriptType: InlineScript
-          #     inline: |
-          #       Write-Host ('##vso[task.setvariable variable=deploymentName;isOutput=true]{0}' -f 'templateDeployment-dependencies-20220524T1505394041Z')
 
   - stage: deployment
     displayName: Deployment tests
@@ -70,9 +59,7 @@ stages:
         dependsOn:
           - dependencyDeployment
           - deployment
-        # Works
         condition: and(succeededOrFailed(), ne(dependencies.dependencyDeployment.outputs['deploy.deployModule.deploymentName'],''))
-        # Works
         variables:
           deploymentName: $[ stageDependencies.dependencyDeployment.deploy.outputs['deployModule.deploymentName'] ]
         jobs:
@@ -83,9 +70,6 @@ stages:
                 vmImage: ${{ variables['vmImage'] }}
               ${{ if ne(variables['poolName'], '') }}:
                 name: ${{ variables['poolName'] }}
-            # works
-            # variables:
-            #   deploymentName: $[ stageDependencies.dependencyDeployment.deploy.outputs['deployModule.deploymentName'] ]
             steps:
               - task: AzurePowerShell@5
                 displayName: 'Test'
@@ -103,15 +87,13 @@ stages:
               - template: /.azuredevops/pipelineTemplates/steps.removeTemplateDeployment.yml
                 parameters:
                   templateFilePath: '$(modulePath)/.dependencies/dependencies.bicep'
-                  deploymentName: '$(deploymentName)' # not working
-                  # deploymentName: $[ variables.deploymentName ] # not working
-                  # deploymentName: '${{ variables.deploymentName }}' # not working
+                  deploymentName: '$(deploymentName)'
                   resourceGroupName: '${{ parameters.moduleResourceGroupName }}'
 
-  # - stage: Publishing
-  #   dependsOn:
-  #     - deployment
-  #   displayName: Publish module
-  #   condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/main'), eq(variables['Build.SourceBranch'], 'refs/heads/master'), eq('${{ parameters.prerelease }}', 'true')))
-  #   jobs:
-  #     - template: /.azuredevops/pipelineTemplates/jobs.publishModule.yml
+  - stage: Publishing
+    dependsOn:
+      - deployment
+    displayName: Publish module
+    condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/main'), eq(variables['Build.SourceBranch'], 'refs/heads/master'), eq('${{ parameters.prerelease }}', 'true')))
+    jobs:
+      - template: /.azuredevops/pipelineTemplates/jobs.publishModule.yml
