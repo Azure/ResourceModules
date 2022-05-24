@@ -236,13 +236,13 @@ steps:
         $res = New-TemplateDeployment @functionInput -Verbose
 
         # Get deployment name
-        Write-Host ('##vso[task.setvariable variable=deploymentName]{0}' -f $res.deploymentName)
+        Write-Host ('##vso[task.setvariable variable=deploymentName;isOutput=true]{0}' -f $res.deploymentName)
 
         # Populate further outputs
         $deploymentOutputHash=@{}
 
         foreach ($outputKey in $res.deploymentOutput.Keys) {
-          Write-Output ('##vso[task.setvariable variable={0}]{1}' -f $outputKey, $res.deploymentOutput[$outputKey].Value)
+          Write-Output ('##vso[task.setvariable variable={0};isOutput=true]{1}' -f $outputKey, $res.deploymentOutput[$outputKey].Value)
           $deploymentOutputHash.add($outputKey,$res.deploymentOutput[$outputKey].Value)
         }
 
