@@ -93,11 +93,11 @@ stages:
                   ScriptType: InlineScript
                   inline: |
                     Write-Host "Hello from stage with deployment name $(deploymentName)"
-                # - template: /.azuredevops/pipelineTemplates/steps.removeTemplateDeployment.yml
-                #   parameters:
-                #     templateFilePath: '$(modulePath)/.dependencies/dependencies.bicep'
-                #     deploymentName: '$(deploymentName)'
-                #     resourceGroupName: '${{ parameters.moduleResourceGroupName }}'
+              - template: /.azuredevops/pipelineTemplates/steps.removeTemplateDeployment.yml
+                parameters:
+                  templateFilePath: '$(modulePath)/.dependencies/dependencies.bicep'
+                  deploymentName: '$(deploymentName)'
+                  resourceGroupName: '${{ parameters.moduleResourceGroupName }}'
 
   # - stage: Publishing
   #   dependsOn:
