@@ -212,6 +212,12 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-08-01' = {
         file: supportsFileService ? {
           enabled: true
         } : null
+        table: {
+          enabled: true
+        }
+        queue: {
+          enabled: true
+        }
       }
       requireInfrastructureEncryption: storageAccountKind != 'Storage' ? requireInfrastructureEncryption : null
       keyvaultproperties: !empty(cMKeyName) ? {
