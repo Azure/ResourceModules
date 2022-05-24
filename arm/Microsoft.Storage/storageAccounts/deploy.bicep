@@ -252,7 +252,7 @@ module storageAccount_privateEndpoints '../../Microsoft.Network/privateEndpoints
     groupIds: [
       privateEndpoint.service
     ]
-    name: contains(privateEndpoint, 'name') ? privateEndpoint.name : '${privateEndpoint.service}-${last(split(storageAccount.id, '/'))}-${split(privateEndpoint.subnetResourceId, '/')[8]}_${last(split(privateEndpoint.subnetResourceId, '/'))}'
+    name: contains(privateEndpoint, 'name') ? privateEndpoint.name : 'pe-${last(split(storageAccount.id, '/'))}-${privateEndpoint.service}-${index}'
     serviceResourceId: storageAccount.id
     subnetResourceId: privateEndpoint.subnetResourceId
     enableDefaultTelemetry: enableDefaultTelemetry

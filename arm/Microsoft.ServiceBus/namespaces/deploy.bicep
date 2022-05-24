@@ -313,7 +313,7 @@ module serviceBusNamespace_privateEndpoints '../../Microsoft.Network/privateEndp
     groupIds: [
       privateEndpoint.service
     ]
-    name: contains(privateEndpoint, 'name') ? privateEndpoint.name : '${privateEndpoint.service}-${last(split(serviceBusNamespace.id, '/'))}-${split(privateEndpoint.subnetResourceId, '/')[8]}_${last(split(privateEndpoint.subnetResourceId, '/'))}'
+    name: contains(privateEndpoint, 'name') ? privateEndpoint.name : 'pe-${last(split(serviceBusNamespace.id, '/'))}-${privateEndpoint.service}-${index}'
     serviceResourceId: serviceBusNamespace.id
     subnetResourceId: privateEndpoint.subnetResourceId
     enableDefaultTelemetry: enableDefaultTelemetry

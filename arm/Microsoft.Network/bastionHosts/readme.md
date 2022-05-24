@@ -216,7 +216,7 @@ module bastionHosts './Microsoft.Network/bastionHosts/deploy.bicep' = {
         "vNetId": {
             "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001"
         },
-        "publicIPAddressId": {
+        "publicIPAddressResourceId": {
             "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/publicIPAddresses/adp-<<namePrefix>>-az-pip-x-bas"
         },
         "skuType": {
@@ -267,7 +267,7 @@ module bastionHosts './Microsoft.Network/bastionHosts/deploy.bicep' = {
   params: {
     name: '<<namePrefix>>-az-bas-x-001'
     vNetId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001'
-    publicIPAddressId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/publicIPAddresses/adp-<<namePrefix>>-az-pip-x-bas'
+    publicIPAddressResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/publicIPAddresses/adp-<<namePrefix>>-az-pip-x-bas'
     skuType: 'Standard'
     scaleUnits: 4
     roleAssignments: [

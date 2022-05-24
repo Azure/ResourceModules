@@ -445,3 +445,77 @@ module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
 
 </details>
 <p>
+
+<h3>Example 2</h3>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": "<<namePrefix>>-az-cgs-speech-001"
+        },
+        "kind": {
+            "value": "SpeechServices"
+        },
+        "sku": {
+            "value": "F0"
+        },
+        "systemAssignedIdentity": {
+            "value": true
+        },
+        "userAssignedIdentities": {
+            "value": {
+                "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001": {}
+            }
+        },
+        "customSubDomainName": {
+            "value": "<<namePrefix>>domain"
+        },
+        "privateEndpoints": {
+            "value": [
+                {
+                    "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints",
+                    "service": "account"
+                }
+            ]
+        }
+    }
+}
+
+```
+
+</details>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-accounts'
+  params: {
+    name: '<<namePrefix>>-az-cgs-speech-001'
+    kind: 'SpeechServices'
+    sku: 'F0'
+    systemAssignedIdentity: true
+    userAssignedIdentities: {
+      '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
+    }
+    customSubDomainName: '<<namePrefix>>domain'
+    privateEndpoints: [
+      {
+        subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints'
+        service: 'account'
+      }
+    ]
+  }
+```
+
+</details>
+<p>

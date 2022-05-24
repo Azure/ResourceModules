@@ -286,7 +286,7 @@ module registry_privateEndpoints '../../Microsoft.Network/privateEndpoints/deplo
     groupIds: [
       privateEndpoint.service
     ]
-    name: contains(privateEndpoint, 'name') ? privateEndpoint.name : '${privateEndpoint.service}-${last(split(registry.id, '/'))}-${split(privateEndpoint.subnetResourceId, '/')[8]}_${last(split(privateEndpoint.subnetResourceId, '/'))}'
+    name: contains(privateEndpoint, 'name') ? privateEndpoint.name : 'pe-${last(split(registry.id, '/'))}-${privateEndpoint.service}-${index}'
     serviceResourceId: registry.id
     subnetResourceId: privateEndpoint.subnetResourceId
     enableDefaultTelemetry: enableDefaultTelemetry

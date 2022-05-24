@@ -281,7 +281,7 @@ module eventHubNamespace_privateEndpoints '../../Microsoft.Network/privateEndpoi
     groupIds: [
       privateEndpoint.service
     ]
-    name: contains(privateEndpoint, 'name') ? privateEndpoint.name : '${privateEndpoint.service}-${last(split(eventHubNamespace.id, '/'))}-${split(privateEndpoint.subnetResourceId, '/')[8]}_${last(split(privateEndpoint.subnetResourceId, '/'))}'
+    name: contains(privateEndpoint, 'name') ? privateEndpoint.name : 'pe-${last(split(eventHubNamespace.id, '/'))}-${privateEndpoint.service}-${index}'
     serviceResourceId: eventHubNamespace.id
     subnetResourceId: privateEndpoint.subnetResourceId
     enableDefaultTelemetry: enableDefaultTelemetry

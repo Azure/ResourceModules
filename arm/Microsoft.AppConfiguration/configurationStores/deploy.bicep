@@ -194,7 +194,7 @@ module appConfiguration_privateEndpoints '../../Microsoft.Network/privateEndpoin
     groupIds: [
       privateEndpoint.service
     ]
-    name: contains(privateEndpoint, 'name') ? privateEndpoint.name : '${privateEndpoint.service}-${last(split(appConfiguration.id, '/'))}-${split(privateEndpoint.subnetResourceId, '/')[8]}_${last(split(privateEndpoint.subnetResourceId, '/'))}'
+    name: contains(privateEndpoint, 'name') ? privateEndpoint.name : 'pe-${last(split(appConfiguration.id, '/'))}-${privateEndpoint.service}-${index}'
     serviceResourceId: appConfiguration.id
     subnetResourceId: privateEndpoint.subnetResourceId
     enableDefaultTelemetry: enableDefaultTelemetry

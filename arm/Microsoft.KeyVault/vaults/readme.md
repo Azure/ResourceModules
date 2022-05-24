@@ -405,7 +405,7 @@ privateEndpoints:  [
 module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-vaults'
   params: {
-
+  
   }
 ```
 
@@ -424,7 +424,7 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "<<namePrefix>>-az-kv-x-001"
+            "value": "<<namePrefix>>-az-kv-x-002"
         },
         "softDeleteRetentionInDays": {
             "value": 7
@@ -562,7 +562,7 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
 module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-vaults'
   params: {
-    name: '<<namePrefix>>-az-kv-x-001'
+    name: '<<namePrefix>>-az-kv-x-002'
     softDeleteRetentionInDays: 7
     enableRbacAuthorization: false
     privateEndpoints: [

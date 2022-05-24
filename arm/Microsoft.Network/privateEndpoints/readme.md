@@ -34,6 +34,7 @@ The following resources are required to be able to deploy this resource:
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
 | `groupIds` | array | Subtype(s) of the connection to be created. The allowed values depend on the type serviceResourceId refers to. |
+| `name` | string | Name of the private endpoint resource to create. |
 | `serviceResourceId` | string | Resource ID of the resource that needs to be connected to the network. |
 | `subnetResourceId` | string | Resource ID of the subnet where the endpoint needs to be created. |
 
@@ -45,7 +46,6 @@ The following resources are required to be able to deploy this resource:
 | `location` | string | `[resourceGroup().location]` |  | Location for all Resources. |
 | `lock` | string | `'NotSpecified'` | `[CanNotDelete, NotSpecified, ReadOnly]` | Specify the type of lock. |
 | `manualPrivateLinkServiceConnections` | array | `[]` |  | Manual PrivateLink Service Connections. |
-| `name` | string | `[format('{0}-{1}-{2}_{3}', parameters('groupIds')[0], last(split(parameters('serviceResourceId'), '/')), split(parameters('subnetResourceId'), '/')[8], last(split(parameters('subnetResourceId'), '/')))]` |  | Name of the private endpoint resource to create. |
 | `privateDnsZoneGroups` | _[privateDnsZoneGroups](privateDnsZoneGroups/readme.md)_ array | `[]` |  | Array of Private DNS zone groups configuration on the private endpoint. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `tags` | object | `{object}` |  | Tags to be applied on all resources/resource groups in this deployment. |
