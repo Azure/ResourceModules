@@ -369,6 +369,10 @@ jobs:
                 (Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' 'deploy.json')
             }
 
+            Write-Verbose '${{ parameters.deploymentName }}' -Verbose
+            Write-Verbose '$(deploymentName)' -Verbose
+            Write-Verbose '${{ variables.deploymentName }}' -Verbose
+
             # if (-not [String]::IsNullOrEmpty('$(deploymentName)')) {
             if(-not [String]::IsNullOrEmpty('${{ parameters.deploymentName }}')) {
               $functionInput = @{
