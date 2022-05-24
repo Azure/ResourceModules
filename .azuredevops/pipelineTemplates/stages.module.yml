@@ -97,14 +97,14 @@ stages:
       # - deployment
     condition: succeededOrFailed()
     # and(succeededOrFailed(), ne(dependencies.dependencyDeployment.outputs['deploy.deployModule.deploymentName'],''))
-    variables:
-      deploymentName: $[ stageDependencies.dependencyDeployment.deploy.outputs['deployModule.deploymentName'] ]
+    # variables:
+    #   deploymentName: $[ stageDependencies.dependencyDeployment.deploy.outputs['deployModule.deploymentName'] ]
     jobs:
       - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
         parameters:
           templateFilePath: '$(modulePath)/.dependencies/dependencies.bicep'
           resourceGroupName: '${{ parameters.moduleResourceGroupName }}'
-          deploymentName: '$(deploymentName)'
+          # deploymentName: '$(deploymentName)'
           enableDeployment: false
 
   # - stage: Publishing

@@ -92,6 +92,9 @@ jobs:
         - getParameterFilePaths
       strategy:
         matrix: $[ dependencies.getParameterFilePaths.outputs['getParameterFilePathsTask.parameterTests'] ]
+    ${{ if not( contains( parameters.templateFilePath, '.dependencies')) }}:
+      variables:
+        deploymentName: $[ stageDependencies.dependencyDeployment.deploy.outputs['deployModule.deploymentName'] ]
     # variables:
     #   parameterTests: $[ dependencies.getParameterFilePaths.outputs['getParameterFilePathsTask.parameterTests'] ]
 
