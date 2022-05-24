@@ -809,7 +809,6 @@ Describe 'Deployment template tests' -Tag Template {
                             $incorrectParameters += $parameter
                         }
                     }
-                    # Possible additional cases can be added here
                 }
             }
             $incorrectParameters | Should -BeNullOrEmpty
