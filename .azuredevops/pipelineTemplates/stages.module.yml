@@ -73,8 +73,8 @@ stages:
         # Works
         condition: and(succeededOrFailed(), ne(dependencies.dependencyDeployment.outputs['deploy.deployModule.deploymentName'],''))
         # Works
-        variables:
-          deploymentName: $[ stageDependencies.dependencyDeployment.deploy.outputs['deployModule.deploymentName'] ]
+        # variables:
+        #   deploymentName: $[ stageDependencies.dependencyDeployment.deploy.outputs['deployModule.deploymentName'] ]
         jobs:
           - job: remove
             displayName: Remove dependencies
@@ -84,8 +84,8 @@ stages:
               ${{ if ne(variables['poolName'], '') }}:
                 name: ${{ variables['poolName'] }}
             # works
-            # variables:
-            #   deploymentName: $[ stageDependencies.dependencyDeployment.deploy.outputs['deployModule.deploymentName'] ]
+            variables:
+              deploymentName: $[ stageDependencies.dependencyDeployment.deploy.outputs['deployModule.deploymentName'] ]
             steps:
               - task: AzurePowerShell@5
                 displayName: 'Test'
@@ -97,8 +97,9 @@ stages:
                   pwsh: true
                   ScriptType: InlineScript
                   inline: |
-                    Write-Host "Hello from stage with deployment name $(deploymentName)"
-                    Write-Host ('##vso[task.setVariable variable=deploymentName]{0}' -f '$(deploymentName)')
+                    $deploymentName = '$(deploymentName)'
+                    Write-Host "Hello from stage with deployment name $deploymentName"
+                    Write-Host "##vso[task.setVariable variable=deploymentName]$deploymentName"
               - template: /.azuredevops/pipelineTemplates/steps.removeTemplateDeployment.yml
                 parameters:
                   templateFilePath: '$(modulePath)/.dependencies/dependencies.bicep'
