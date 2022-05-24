@@ -35,7 +35,8 @@ stages:
               pwsh: true
               ScriptType: InlineScript
               inline: |
-                Write-Host ('##vso[task.setvariable variable=deploymentName;isOutput=true]{0}' -f 'templateDeployment-dependencies-20220524T1505394041Z')
+                # Write-Host ('##vso[task.setvariable variable=deploymentName;isOutput=true]{0}' -f 'templateDeployment-dependencies-20220524T1505394041Z')
+                Write-Host ('##vso[task.setvariable variable=deploymentName;isOutput=true]{0}' -f '')
 
   # - stage: deployment
   #   displayName: Deployment tests
@@ -106,7 +107,6 @@ stages:
                   # deploymentName: '$(deploymentName)' # not working
                   # deploymentName: $[ variables.deploymentName ] # not working
                   # deploymentName: '${{ variables.deploymentName }}' # not working
-                  # deploymentName: '$[ variables.deploymentName ]'
                   resourceGroupName: '${{ parameters.moduleResourceGroupName }}'
 
   # - stage: Publishing
