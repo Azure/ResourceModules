@@ -35,7 +35,7 @@ stages:
               pwsh: true
               ScriptType: InlineScript
               inline: |
-                Write-Host ('##vso[task.setvariable variable=deploymentName]{0}' -f 'templateDeployment-dependencies-20220524T1505394041Z')
+                Write-Host ('##vso[task.setvariable variable=deploymentName;isOutput=true]{0}' -f 'templateDeployment-dependencies-20220524T1505394041Z')
 
   # - stage: deployment
   #   displayName: Deployment tests
@@ -70,7 +70,7 @@ stages:
         dependsOn:
           - dependencyDeployment
           #- deployment
-        condition: and(succeededOrFailed(), ne(stageDependencies.dependencyDeployment.deploy.outputs['deployModule.deploymentName'],''))
+        condition: and(succeededOrFailed(), ne(dependencies.dependencyDeployment.outputs['deploy.deployModule.deploymentName'],''))
         jobs:
           - job: remove
             displayName: Remove dependencies
