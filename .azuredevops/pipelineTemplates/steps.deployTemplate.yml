@@ -236,6 +236,7 @@ steps:
         $res = New-TemplateDeployment @functionInput -Verbose
 
         # Get deployment name
+        Write-Host ('##vso[task.setvariable variable=deploymentName]{0}' -f $res.deploymentName)
         Write-Host ('##vso[task.setvariable variable=deploymentName;isOutput=true]{0}' -f $res.deploymentName)
 
         # Populate further outputs
