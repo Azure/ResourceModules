@@ -3,7 +3,7 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "name": {
-      "value": "adp-<<namePrefix>>-az-vnet-custompip-azfw"
+      "value": "adp-<<namePrefix>>-az-vnet-add-azfw"
     },
     "addressPrefixes": {
       "value": [
