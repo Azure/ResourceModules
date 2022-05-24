@@ -21,10 +21,21 @@ stages:
           ${{ if ne(variables['poolName'], '') }}:
             name: ${{ variables['poolName'] }}
         steps:
-          - template: /.azuredevops/pipelineTemplates/steps.deployTemplate.yml
-            parameters:
-              templateFilePath: '$(modulePath)/.dependencies/dependencies.bicep'
-              resourceGroupName: '${{ parameters.moduleResourceGroupName }}'
+          # - template: /.azuredevops/pipelineTemplates/steps.deployTemplate.yml
+          #   parameters:
+          #     templateFilePath: '$(modulePath)/.dependencies/dependencies.bicep'
+          #     resourceGroupName: '${{ parameters.moduleResourceGroupName }}'
+          - task: AzurePowerShell@5
+            displayName: 'Test'
+            name: deployModule
+            inputs:
+              azureSubscription: '$(serviceConnection)'
+              azurePowerShellVersion: 'latestVersion'
+              preferredAzurePowerShellVersion: ''
+              pwsh: true
+              ScriptType: InlineScript
+              inline: |
+                Write-Host ('##vso[task.setvariable variable=deploymentName]{0}' -f 'templateDeployment-dependencies-20220524T1505394041Z')
 
   # - stage: deployment
   #   displayName: Deployment tests
