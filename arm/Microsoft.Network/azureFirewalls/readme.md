@@ -58,6 +58,7 @@ This module deploys a firewall.
 | `threatIntelMode` | string | `'Deny'` | `[Alert, Deny, Off]` | The operation mode for Threat Intel. |
 | `zones` | array | `[1, 2, 3]` |  | Zone numbers e.g. 1,2,3. |
 
+
 ### Parameter Usage: `additionalPublicIpConfigurations`
 
 Create additional public ip configurations from existing public ips
@@ -320,6 +321,160 @@ The `networkRuleCollections` parameter accepts a JSON Array of AzureFirewallNetw
             "value": "<<namePrefix>>-az-fw-min-001"
         },
         "vNetId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-add-azfw"
+        },
+        "additionalPublicIpConfigurations": {
+            "value": [
+                {
+                    "name": "ipConfig01",
+                    "publicIPAddressResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/publicIPAddresses/adp-<<namePrefix>>-az-pip-additional-fw"
+                }
+            ]
+        }
+    }
+}
+
+```
+
+</details>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-azureFirewalls'
+  params: {
+    name: '<<namePrefix>>-az-fw-min-001'
+    vNetId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-add-azfw'
+    additionalPublicIpConfigurations: [
+      {
+        name: 'ipConfig01'
+        publicIPAddressResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/publicIPAddresses/adp-<<namePrefix>>-az-pip-additional-fw'
+      }
+    ]
+  }
+```
+
+</details>
+<p>
+
+<h3>Example 2</h3>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": "<<namePrefix>>-az-fw-min-001"
+        },
+        "vNetId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-custompip-azfw"
+        },
+        "publicIPAddressObject": {
+            "value": {
+                "name": "custompip",
+                "publicIPPrefixResourceId": "",
+                "publicIPAllocationMethod": "Dynamic",
+                "skuName": "Basic",
+                "skuTier": "Regional",
+                "roleAssignments": {
+                    "value": [
+                        {
+                            "roleDefinitionIdOrName": "Reader",
+                            "principalIds": [
+                                "<<deploymentSpId>>"
+                            ]
+                        }
+                    ]
+                },
+                "diagnosticMetricsToEnable": {
+                    "value": [
+                        "AllMetrics"
+                    ]
+                },
+                "diagnosticLogCategoriesToEnable": {
+                    "value": [
+                        "DDoSProtectionNotifications",
+                        "DDoSMitigationFlowLogs",
+                        "DDoSMitigationReports"
+                    ]
+                }
+            }
+        }
+    }
+}
+
+```
+
+</details>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-azureFirewalls'
+  params: {
+    name: '<<namePrefix>>-az-fw-min-001'
+    vNetId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-custompip-azfw'
+    publicIPAddressObject: {
+      name: 'custompip'
+      publicIPPrefixResourceId: ''
+      publicIPAllocationMethod: 'Dynamic'
+      skuName: 'Basic'
+      skuTier: 'Regional'
+      roleAssignments: {
+        value: [
+          {
+            roleDefinitionIdOrName: 'Reader'
+            principalIds: [
+              '<<deploymentSpId>>'
+            ]
+          }
+        ]
+      }
+      diagnosticMetricsToEnable: {
+        value: [
+          'AllMetrics'
+        ]
+      }
+      diagnosticLogCategoriesToEnable: {
+        value: [
+          'DDoSProtectionNotifications'
+          'DDoSMitigationFlowLogs'
+          'DDoSMitigationReports'
+        ]
+      }
+    }
+  }
+```
+
+</details>
+<p>
+
+<h3>Example 3</h3>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": "<<namePrefix>>-az-fw-min-001"
+        },
+        "vNetId": {
             "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-min-azfw"
         }
     }
@@ -345,7 +500,7 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
 </details>
 <p>
 
-<h3>Example 2</h3>
+<h3>Example 4</h3>
 
 <details>
 
