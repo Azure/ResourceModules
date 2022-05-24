@@ -25,7 +25,7 @@
 ##   | Parameter                       | Default Value                        | Description                                                                                               | Example                                    |
 ##   |---------------------------------|--------------------------------------|-----------------------------------------------------------------------------------------------------------|--------------------------------------------|
 ##   | serviceConnection               | '$(serviceConnection)'               | The service connection that connects to Azure                                                             | 'demo-internal'                            |
-##   | location                        | '$(defaultLocation)'                 | The location to deploy with                                                                               | 'EastUs2'                                  |
+##   | location                        | '$(location)'                 | The location to deploy with                                                                               | 'EastUs2'                                  |
 ##   | resourceGroupName               | '$(defaultResourceGroupName)'        | The resourcegroup to deploy into. Required only for Resource-Group-Level deployments                      | 'validation-rg'                            |
 ##   | subscriptionId                  | '$(ARM_SUBSCRIPTION_ID)'             | The id of the subscription to deploy into when using a Management group service connection                | 'aed7c000-6387-412e-bed0-24dfddf4bbc6'     |
 ##   | managementGroupId               | '$(ARM_MGMTGROUP_ID)'                | The id of the management group to deploy into. Required only for Management-Group-Level deployments       | '6ycc9620-cb01-454f-9ebc-fc6b1df48d64'     |
@@ -41,7 +41,7 @@ parameters:
   # Logic-related parameters
   templateFilePath: ''
   parameterFilePath: ''
-  location: '$(defaultLocation)'
+  location: '$(location)'
   resourceGroupName: '$(defaultResourceGroupName)'
   subscriptionId: '$(ARM_SUBSCRIPTION_ID)'
   managementGroupId: '$(ARM_MGMTGROUP_ID)'

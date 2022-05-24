@@ -106,7 +106,7 @@ jobs:
         uses: ./.github/actions/templates/deployTemplate
         with:
           templateFilePath: '${{ env.modulePath }}/.dependencies/dependencies.bicep'
-          location: '${{ env.defaultLocation }}'
+          location: '${{ env.location }}'
           resourceGroupName: '${{ env.customResourceGroupName }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
@@ -139,7 +139,7 @@ jobs:
         with:
           templateFilePath: '${{ env.modulePath }}/deploy.bicep'
           parameterFilePath: '${{ env.modulePath }}/${{ matrix.parameterFilePaths }}'
-          location: '${{ env.defaultLocation }}'
+          location: '${{ env.location }}'
           resourceGroupName: '${{ env.customResourceGroupName }}'
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
