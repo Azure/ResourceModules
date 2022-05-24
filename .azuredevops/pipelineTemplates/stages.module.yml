@@ -99,7 +99,7 @@ stages:
                   inline: |
                     $deploymentName = '$(deploymentName)'
                     Write-Host "Hello from stage with deployment name $deploymentName"
-                    Write-Host "##vso[task.setVariable variable=deploymentName]$deploymentName"
+                    Write-Host "##vso[task.setVariable variable=deploymentName;isoutput=true]$deploymentName"
               - template: /.azuredevops/pipelineTemplates/steps.removeTemplateDeployment.yml
                 parameters:
                   templateFilePath: '$(modulePath)/.dependencies/dependencies.bicep'
