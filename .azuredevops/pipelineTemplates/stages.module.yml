@@ -1,97 +1,18 @@
-parameters:
-  removeDeployment: true
-  prerelease: false
-  templateFilePath: ''
-  moduleResourceGroupName: ''
-
 stages:
-  # - stage: validation
-  #   displayName: Pester tests
-  #   jobs:
-  #     - template: /.azuredevops/pipelineTemplates/jobs.validateModulePester.yml
-
-  - stage: dependencyDeployment
-    displayName: Dependency Deployment
+  - stage: A
     jobs:
-      - job: deploy
-        displayName: Deploy dependencies
-        pool:
-          ${{ if ne(variables['vmImage'], '') }}:
-            vmImage: ${{ variables['vmImage'] }}
-          ${{ if ne(variables['poolName'], '') }}:
-            name: ${{ variables['poolName'] }}
+      - job: JA
         steps:
-          # - template: /.azuredevops/pipelineTemplates/steps.deployTemplate.yml
-          #   parameters:
-          #     templateFilePath: '$(modulePath)/.dependencies/dependencies.bicep'
-          #     resourceGroupName: '${{ parameters.moduleResourceGroupName }}'
-          - task: AzurePowerShell@5
-            displayName: 'Test'
-            name: deployModule
-            inputs:
-              azureSubscription: '$(serviceConnection)'
-              azurePowerShellVersion: 'latestVersion'
-              preferredAzurePowerShellVersion: ''
-              pwsh: true
-              ScriptType: InlineScript
-              inline: |
-                Write-Host ('##vso[task.setvariable variable=deploymentName;isOutput=true]{0}' -f 'templateDeployment-dependencies-20220524T1505394041Z')
+          - script: |
+              echo "This is job Foo."
+              echo "##vso[task.setvariable variable=doThing;isOutput=true]Yes" #The variable doThing is set to 'Yes'
+            name: DetermineResult
 
-  # - stage: deployment
-  #   displayName: Deployment tests
-  #   jobs:
-  #     - template: /.azuredevops/pipelineTemplates/jobs.getParameterFiles.yml
-  #     - job: deploy
-  #       displayName: Deploy
-  #       dependsOn: getParameterFilePaths
-  #       pool:
-  #         ${{ if ne(variables['vmImage'], '') }}:
-  #           vmImage: ${{ variables['vmImage'] }}
-  #         ${{ if ne(variables['poolName'], '') }}:
-  #           name: ${{ variables['poolName'] }}
-  #       strategy:
-  #         matrix: $[ dependencies.getParameterFilePaths.outputs['getParameterFilePathsTask.parameterTests'] ]
-  #       steps:
-  #         - template: /.azuredevops/pipelineTemplates/steps.deployTemplate.yml
-  #           parameters:
-  #             templateFilePath: '$(modulePath)/deploy.bicep'
-  #             parameterFilePath: '$(modulePath)/$(parameterFilePath)'
-  #             resourceGroupName: '${{ parameters.moduleResourceGroupName }}'
-  #         - ${{ if eq(parameters.removeDeployment, 'true') }}:
-  #             - template: /.azuredevops/pipelineTemplates/steps.removeTemplateDeployment.yml
-  #               parameters:
-  #                 templateFilePath: '$(modulePath)/deploy.bicep'
-  #                 resourceGroupName: '${{ parameters.moduleResourceGroupName }}'
-  #                 deploymentName: '$(deploymentName)'
-
-  - ${{ if eq(parameters.removeDeployment, 'true') }}:
-      - stage: dependencyRemoval
-        displayName: Dependency Removal
-        dependsOn:
-          - dependencyDeployment
-          #- deployment
-        condition: and(succeededOrFailed(), ne(dependencies.dependencyDeployment.outputs['deploy.deployModule.deploymentName'],''))
-        jobs:
-          - job: remove
-            displayName: Remove dependencies
-            pool:
-              ${{ if ne(variables['vmImage'], '') }}:
-                vmImage: ${{ variables['vmImage'] }}
-              ${{ if ne(variables['poolName'], '') }}:
-                name: ${{ variables['poolName'] }}
-            variables:
-              deploymentName: $[ stageDependencies.dependencyDeployment.deploy.outputs['deployModule.deploymentName'] ]
-            steps:
-              - template: /.azuredevops/pipelineTemplates/steps.removeTemplateDeployment.yml
-                parameters:
-                  templateFilePath: '$(modulePath)/.dependencies/dependencies.bicep'
-                  deploymentName: '$(deploymentName)'
-                  resourceGroupName: '${{ parameters.moduleResourceGroupName }}'
-
-  # - stage: Publishing
-  #   dependsOn:
-  #     - deployment
-  #   displayName: Publish module
-  #   condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/main'), eq(variables['Build.SourceBranch'], 'refs/heads/master'), eq('${{ parameters.prerelease }}', 'true')))
-  #   jobs:
-  #     - template: /.azuredevops/pipelineTemplates/jobs.publishModule.yml
+  #stage B runs if DetermineResult task set doThing variable on stage A
+  - stage: B
+    dependsOn: A
+    condition: eq(dependencies.A.outputs['JA.DetermineResult.doThing'], 'Yes')
+    jobs:
+      - job: JB
+        steps:
+          - bash: echo "Hello world stage B first job"
