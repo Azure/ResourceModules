@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "<<namePrefix>>azsax003"
+            "value": "<<namePrefix>>azsax001"
         },
         "storageAccountSku": {
             "value": "Standard_LRS"
@@ -169,15 +169,6 @@
                     ]
                 }
             ]
-        },
-        "cMKKeyVaultResourceId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-nopr-002"
-        },
-        "cMKeyName": {
-            "value": "keyEncryptionKey"
-        },
-        "cMKUserAssignedIdenityResourceId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001"
         },
         "diagnosticLogsRetentionInDays": {
             "value": 7

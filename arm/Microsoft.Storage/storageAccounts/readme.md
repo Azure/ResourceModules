@@ -44,7 +44,7 @@ This module is used to deploy a storage account, with the ability to deploy 1 or
 | `allowBlobPublicAccess` | bool | `False` |  | Indicates whether public access is enabled for all blobs or containers in the storage account. For security reasons, it is recommended to set it to false. |
 | `azureFilesIdentityBasedAuthentication` | object | `{object}` |  | Provides the identity based authentication settings for Azure Files. |
 | `blobServices` | _[blobServices](blobServices/readme.md)_ object | `{object}` |  | Blob service and containers to deploy. |
-| `cMKeyName` | string | `''` |  | The name of the customer managed key to use for encryption. |
+| `cMKeyName` | string | `''` |  | The name of the customer managed key to use for encryption. Cannot be deployed together with the parameter 'systemAssignedIdentity' enabled. |
 | `cMKeyVersion` | string | `''` |  | The version of the customer managed key to reference for encryption. If not provided, latest is used. |
 | `cMKKeyVaultResourceId` | string | `''` |  | The resource ID of a key vault to reference a customer managed key for encryption from. |
 | `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
@@ -376,7 +376,7 @@ The hierarchical namespace of the storage account (see parameter `enableHierarch
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "<<namePrefix>>azsax001"
+            "value": "<<namePrefix>>azsax003"
         },
         "storageAccountSku": {
             "value": "Standard_LRS"
@@ -526,7 +526,7 @@ The hierarchical namespace of the storage account (see parameter `enableHierarch
             }
         },
         "systemAssignedIdentity": {
-            "value": true
+            "value": false
         },
         "userAssignedIdentities": {
             "value": {
@@ -543,13 +543,13 @@ The hierarchical namespace of the storage account (see parameter `enableHierarch
                 }
             ]
         },
-        "CMKKeyVaultResourceId": {
+        "cMKKeyVaultResourceId": {
             "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-nopr-002"
         },
-        "CMKeyName": {
+        "cMKeyName": {
             "value": "keyEncryptionKey"
         },
-        "CMKUserAssignedIdenityResourceId": {
+        "cMKUserAssignedIdenityResourceId": {
             "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001"
         },
         "diagnosticLogsRetentionInDays": {
@@ -582,7 +582,7 @@ The hierarchical namespace of the storage account (see parameter `enableHierarch
 module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-storageAccounts'
   params: {
-    name: '<<namePrefix>>azsax001'
+    name: '<<namePrefix>>azsax003'
     storageAccountSku: 'Standard_LRS'
     allowBlobPublicAccess: false
     publicNetworkAccess: 'Disabled'
@@ -710,7 +710,7 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
         }
       ]
     }
-    systemAssignedIdentity: true
+    systemAssignedIdentity: false
     userAssignedIdentities: {
       '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
     }
@@ -722,9 +722,9 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
         ]
       }
     ]
-    CMKKeyVaultResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-nopr-002'
-    CMKeyName: 'keyEncryptionKey'
-    CMKUserAssignedIdenityResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001'
+    cMKKeyVaultResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-nopr-002'
+    cMKeyName: 'keyEncryptionKey'
+    cMKUserAssignedIdenityResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001'
     diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
     diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
