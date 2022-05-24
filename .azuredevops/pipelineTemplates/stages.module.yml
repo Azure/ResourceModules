@@ -72,19 +72,20 @@ stages:
           #- deployment
         condition: succeededOrFailed()
         #condition: and(succeededOrFailed(), ne(stageDependencies.dependencyDeployment.deploy.outputs['deployModule.deploymentName'],''))
-        # variables:
-        #   deploymentName: $[ stageDependencies.dependencyDeployment.deploy.outputs['deployModule.deploymentName'] ]
+        variables:
+          deploymentName: $[ stageDependencies.dependencyDeployment.deploy.outputs['deployModule.deploymentName'] ]
         jobs:
           - job: remove
             displayName: Remove dependencies
-            condition: ne(dependencies.dependencyDeployment.outputs['deploy.deployModule.deploymentName'],'')
+            # condition: ne(dependencies.dependencyDeployment.outputs['deploy.deployModule.deploymentName'],'')
+            condition: ne($(deploymentName),'')
             pool:
               ${{ if ne(variables['vmImage'], '') }}:
                 vmImage: ${{ variables['vmImage'] }}
               ${{ if ne(variables['poolName'], '') }}:
                 name: ${{ variables['poolName'] }}
-            variables:
-              deploymentName: $[ stageDependencies.dependencyDeployment.deploy.outputs['deployModule.deploymentName'] ]
+            # variables:
+            #   deploymentName: $[ stageDependencies.dependencyDeployment.deploy.outputs['deployModule.deploymentName'] ]
             steps:
               - template: /.azuredevops/pipelineTemplates/steps.removeTemplateDeployment.yml
                 parameters:
