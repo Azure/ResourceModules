@@ -101,7 +101,7 @@ stages:
               - template: /.azuredevops/pipelineTemplates/steps.removeTemplateDeployment.yml
                 parameters:
                   templateFilePath: '$(modulePath)/.dependencies/dependencies.bicep'
-                  deploymentName: "$[ stageDependencies.dependencyDeployment.deploy.outputs['deployModule.deploymentName'] ]"
+                  deploymentName: $[ stageDependencies.dependencyDeployment.deploy.outputs['deployModule.deploymentName'] ]
                   resourceGroupName: '${{ parameters.moduleResourceGroupName }}'
 
   # - stage: Publishing
