@@ -98,12 +98,14 @@ stages:
                   ScriptType: InlineScript
                   inline: |
                     Write-Host "Hello from stage with deployment name $(deploymentName)"
+                    Write-Host ('##vso[task.setVariable variable=deploymentName]{0}' -f '$(deploymentName)')
               - template: /.azuredevops/pipelineTemplates/steps.removeTemplateDeployment.yml
                 parameters:
                   templateFilePath: '$(modulePath)/.dependencies/dependencies.bicep'
                   # deploymentName: '$(deploymentName)' # not working
                   # deploymentName: $[ variables.deploymentName ] # not working
-                  deploymentName: '${{ variables.deploymentName }}'
+                  # deploymentName: '${{ variables.deploymentName }}' # not working
+                  deploymentName: '$(deploymentName)'
                   resourceGroupName: '${{ parameters.moduleResourceGroupName }}'
 
   # - stage: Publishing
