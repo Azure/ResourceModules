@@ -51,18 +51,13 @@ parameters:
   vmImage: '$(vmImage)'
   defaultJobTimeoutInMinutes: 120
   checkoutRepositories: ''
-  # dependsOn: []
   # Logic-related parameters
-
-  templateFilePath: ''
-  parameterFilePath: ''
-  customParameterFileTokens: ''
-
   removeDeployment: true
   enableDeployment: true
   deploymentName: ''
+  templateFilePath: ''
+  customParameterFileTokens: ''
   modulePath: '$(modulePath)'
-  deploymentBlocks: ''
   location: '$(location)'
   resourceGroupName: '$(resourceGroupName)'
   subscriptionId: '$(ARM_SUBSCRIPTION_ID)'
@@ -72,7 +67,6 @@ parameters:
   # Azure PowerShell Version parameters
   azurePowerShellVersion: '$(azurePowerShellVersion)'
   preferredAzurePowerShellVersion: '$(preferredAzurePowerShellVersion)'
-
 
 ##---------------------------------------------##
 ## TEMPLATE LOGIC                              ##
@@ -86,7 +80,10 @@ jobs:
         - getParameterFilePaths
       strategy:
         matrix: $[ dependencies.getParameterFilePaths.outputs['getParameterFilePathsTask.parameterTests'] ]
-
+    ${{ if eq( '${{ parameters.enableDeployment }}', 'true') }}:
+      displayName: 'Deploy'
+    ${{ if and (eq( '${{ parameters.enableDeployment }}', 'false'), eq( '${{ parameters.removeDeployment }}', 'true')) }}:
+      displayName: 'Remove'
     ##---------------------------------------------##
     ## TEMPLATE LOGIC                              ##
     ##---------------------------------------------##
@@ -275,10 +272,6 @@ jobs:
               additionalParameters = @{}
             }
 
-            # if(-not [String]::IsNullOrEmpty('$(parameterFilePath)')) {
-            #   $functionInput['parameterFilePath'] = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' '$(parameterFilePath)'
-            # }
-
             if ( '${{ parameters.templateFilePath }}' -inotmatch '.dependencies' ) {
               $functionInput['parameterFilePath'] = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' '$(parameterFilePath)'
             }
@@ -294,13 +287,6 @@ jobs:
                 }
               }
             }
-
-            # # Enables us to pass the resource group name as a deployment parameter
-            # if(-not [String]::IsNullOrEmpty('${{ parameters.resourceGroupName }}')) {
-            #   $functionInput['additionalParameters'] = @{
-            #     resourceGroupName = '${{ parameters.resourceGroupName }}'
-            #   }
-            # }
 
             $projectSettings = Get-Content -Path 'settings.json' | ConvertFrom-Json
             if (-not [String]::IsNullOrEmpty($projectSettings.enableDefaultTelemetry) -and (Get-Content -Path $functionInput.templateFilePath -Raw) -like '*param enableDefaultTelemetry*') {
@@ -343,7 +329,7 @@ jobs:
       - task: AzurePowerShell@5
         displayName: 'Remove deployed resources via [${{ parameters.serviceConnection }}]'
         # condition: and(succeededOrFailed(), eq( '${{ parameters.removeDeployment }}', 'true'), not(eq(variables['deploymentName'],'')))
-        condition: and(succeededOrFailed(), eq( '${{ parameters.removeDeployment }}', 'true'))
+        condition: and(succeededOrFailed(), eq( '${{ parameters.removeDeployment }}', 'true'), or( not( eq( '$(deploymentName)', '' )), not(eq('${{ parameters.deploymentName }}', '')) ))
         inputs:
           azureSubscription: ${{ parameters.serviceConnection }}
           azurePowerShellVersion: ${{ parameters.azurePowerShellVersion }}
@@ -363,10 +349,6 @@ jobs:
                 (Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' 'deploy.bicep') :
                 (Join-Path '$(System.DefaultWorkingDirectory)' '$(modulePath)' 'deploy.json')
             }
-
-            Write-Verbose '${{ parameters.deploymentName }}' -Verbose
-            Write-Verbose '$(deploymentName)' -Verbose
-            Write-Verbose '${{ variables.deploymentName }}' -Verbose
 
             $functionInput = @{
               TemplateFilePath  = $templateFilePath
