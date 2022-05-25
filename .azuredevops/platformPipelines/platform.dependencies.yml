@@ -544,7 +544,9 @@ stages:
             - path: $(dependencyPath)/$(resourceType)/parameters/fw.parameters.json
               templateFilePath: $(templateFilePath)
               displayName: Firewall Public IP
-
+            - path: $(dependencyPath)/$(resourceType)/parameters/fw.additional.parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: Firewall Additional Public IP
   - stage: deploy_appi
     displayName: Deploy application insight
     dependsOn:

@@ -752,6 +752,7 @@ jobs:
             'lb.parameters.json',
             'lb.min.parameters.json',
             'fw.parameters.json',
+            'fw.additional.parameters.json'
           ]
     steps:
       - name: 'Checkout'
