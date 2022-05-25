@@ -116,33 +116,27 @@ The Public IP Address object to create as part of the module. This will be creat
 ```json
 "publicIPAddressObject": {
     "value": {
-        "name": "mypip",
-        "publicIPPrefixResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/publicIPPrefixes/myprefix",
-        "publicIPAllocationMethod": "Dynamic",
-        "skuName": "Basic",
+        "name": "adp-<<namePrefix>>-az-pip-custom-x-fw",
+        "publicIPPrefixResourceId": "",
+        "publicIPAllocationMethod": "Static",
+        "skuName": "Standard",
         "skuTier": "Regional",
-        "roleAssignments": {
-            "value": [
-                {
-                    "roleDefinitionIdOrName": "Reader",
-                    "principalIds": [
-                        "<<deploymentSpId>>"
-                    ]
-                }
-            ]
-        },
-        "diagnosticMetricsToEnable": {
-            "value": [
-                "AllMetrics"
-            ]
-        },
-        "diagnosticLogCategoriesToEnable": {
-            "value": [
-                "DDoSProtectionNotifications",
-                "DDoSMitigationFlowLogs",
-                "DDoSMitigationReports"
-            ]
-        }
+        "roleAssignments": [
+            {
+                "roleDefinitionIdOrName": "Reader",
+                "principalIds": [
+                    "<<deploymentSpId>>"
+                ]
+            }
+        ],
+        "diagnosticMetricsToEnable": [
+            "AllMetrics"
+        ],
+        "diagnosticLogCategoriesToEnable": [
+            "DDoSProtectionNotifications",
+            "DDoSMitigationFlowLogs",
+            "DDoSMitigationReports"
+        ]
     }
 }
 ```
@@ -379,33 +373,27 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
         },
         "publicIPAddressObject": {
             "value": {
-                "name": "custompip",
+                "name": "adp-<<namePrefix>>-az-pip-custom-x-fw",
                 "publicIPPrefixResourceId": "",
-                "publicIPAllocationMethod": "Dynamic",
-                "skuName": "Basic",
+                "publicIPAllocationMethod": "Static",
+                "skuName": "Standard",
                 "skuTier": "Regional",
-                "roleAssignments": {
-                    "value": [
-                        {
-                            "roleDefinitionIdOrName": "Reader",
-                            "principalIds": [
-                                "<<deploymentSpId>>"
-                            ]
-                        }
-                    ]
-                },
-                "diagnosticMetricsToEnable": {
-                    "value": [
-                        "AllMetrics"
-                    ]
-                },
-                "diagnosticLogCategoriesToEnable": {
-                    "value": [
-                        "DDoSProtectionNotifications",
-                        "DDoSMitigationFlowLogs",
-                        "DDoSMitigationReports"
-                    ]
-                }
+                "roleAssignments": [
+                    {
+                        "roleDefinitionIdOrName": "Reader",
+                        "principalIds": [
+                            "<<deploymentSpId>>"
+                        ]
+                    }
+                ],
+                "diagnosticMetricsToEnable": [
+                    "AllMetrics"
+                ],
+                "diagnosticLogCategoriesToEnable": [
+                    "DDoSProtectionNotifications",
+                    "DDoSMitigationFlowLogs",
+                    "DDoSMitigationReports"
+                ]
             }
         }
     }
@@ -426,33 +414,27 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
     name: '<<namePrefix>>-az-fw-custompip-001'
     vNetId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-custompip-azfw'
     publicIPAddressObject: {
-      name: 'custompip'
+      name: 'adp-<<namePrefix>>-az-pip-custom-x-fw'
       publicIPPrefixResourceId: ''
-      publicIPAllocationMethod: 'Dynamic'
-      skuName: 'Basic'
+      publicIPAllocationMethod: 'Static'
+      skuName: 'Standard'
       skuTier: 'Regional'
-      roleAssignments: {
-        value: [
-          {
-            roleDefinitionIdOrName: 'Reader'
-            principalIds: [
-              '<<deploymentSpId>>'
-            ]
-          }
-        ]
-      }
-      diagnosticMetricsToEnable: {
-        value: [
-          'AllMetrics'
-        ]
-      }
-      diagnosticLogCategoriesToEnable: {
-        value: [
-          'DDoSProtectionNotifications'
-          'DDoSMitigationFlowLogs'
-          'DDoSMitigationReports'
-        ]
-      }
+      roleAssignments: [
+        {
+          roleDefinitionIdOrName: 'Reader'
+          principalIds: [
+            '<<deploymentSpId>>'
+          ]
+        }
+      ]
+      diagnosticMetricsToEnable: [
+        'AllMetrics'
+      ]
+      diagnosticLogCategoriesToEnable: [
+        'DDoSProtectionNotifications'
+        'DDoSMitigationFlowLogs'
+        'DDoSMitigationReports'
+      ]
     }
   }
 ```

@@ -10,33 +10,27 @@
         },
         "publicIPAddressObject": {
             "value": {
-                "name": "custompip",
+                "name": "adp-<<namePrefix>>-az-pip-custom-x-fw",
                 "publicIPPrefixResourceId": "",
-                "publicIPAllocationMethod": "Dynamic",
-                "skuName": "Basic",
+                "publicIPAllocationMethod": "Static",
+                "skuName": "Standard",
                 "skuTier": "Regional",
-                "roleAssignments": {
-                    "value": [
-                        {
-                            "roleDefinitionIdOrName": "Reader",
-                            "principalIds": [
-                                "<<deploymentSpId>>"
-                            ]
-                        }
-                    ]
-                },
-                "diagnosticMetricsToEnable": {
-                    "value": [
-                        "AllMetrics"
-                    ]
-                },
-                "diagnosticLogCategoriesToEnable": {
-                    "value": [
-                        "DDoSProtectionNotifications",
-                        "DDoSMitigationFlowLogs",
-                        "DDoSMitigationReports"
-                    ]
-                }
+                "roleAssignments": [
+                    {
+                        "roleDefinitionIdOrName": "Reader",
+                        "principalIds": [
+                            "<<deploymentSpId>>"
+                        ]
+                    }
+                ],
+                "diagnosticMetricsToEnable": [
+                    "AllMetrics"
+                ],
+                "diagnosticLogCategoriesToEnable": [
+                    "DDoSProtectionNotifications",
+                    "DDoSMitigationFlowLogs",
+                    "DDoSMitigationReports"
+                ]
             }
         }
     }
