@@ -451,11 +451,7 @@ Describe 'Readme tests' -Tag Readme {
             $fileHashAfter = (Get-FileHash $readMeFilePath).Hash
 
             # Compare
-            $filesAreTheSame = $fileHashBefore -eq $fileHashAfter
-            if (-not $filesAreTheSame) {
-                git diff
-            }
-            $filesAreTheSame | Should -Be $true -Because 'The file hashes before and after applying the Set-ModuleReadMe function should be identical'
+            $fileHashBefore -eq $fileHashAfter | Should -Be $true -Because 'The file hashes before and after applying the Set-ModuleReadMe function should be identical'
         }
     }
 }
@@ -613,7 +609,7 @@ Describe 'Deployment template tests' -Tag Template {
             )
 
             if (-not $templateContent.parameters) {
-                $true | Should -Be $true
+                # Skip test
                 return
             }
 
@@ -636,7 +632,7 @@ Describe 'Deployment template tests' -Tag Template {
             )
 
             if (-not $templateContent.variables) {
-                $true | Should -Be $true
+                # Skip test
                 return
             }
 
@@ -776,7 +772,6 @@ Describe 'Deployment template tests' -Tag Template {
 
             if (-not $templateContent.parameters) {
                 # Skip test
-                $true | Should -Be $true
                 return
             }
 
@@ -791,6 +786,32 @@ Describe 'Deployment template tests' -Tag Template {
             $incorrectParameters | Should -BeNullOrEmpty
         }
 
+        It "[<moduleFolderName>] Conditional parameters' description should contain 'Required if' followed by the condition making the parameter required." -TestCases $deploymentFolderTestCases {
+            param(
+                $moduleFolderName,
+                $templateContent
+            )
+
+            if (-not $templateContent.parameters) {
+                # Skip test
+                return
+            }
+
+            $incorrectParameters = @()
+            $templateParameters = $templateContent.parameters.Keys
+            foreach ($parameter in $templateParameters) {
+                $data = ($templateContent.parameters.$parameter.metadata).description
+                switch -regex ($data) {
+                    '^Conditional. .*' {
+                        if ($data -notmatch '.*\. Required if .*') {
+                            $incorrectParameters += $parameter
+                        }
+                    }
+                }
+            }
+            $incorrectParameters | Should -BeNullOrEmpty
+        }
+
         It "[<moduleFolderName>] outputs' description should start with a capital letter and contain text ending with a dot." -TestCases $deploymentFolderTestCases {
             param(
                 $moduleFolderName,
@@ -799,7 +820,6 @@ Describe 'Deployment template tests' -Tag Template {
 
             if (-not $templateContent.outputs) {
                 # Skip test
-                $true | Should -Be $true
                 return
             }
 
@@ -976,32 +996,6 @@ Describe "API version tests [All apiVersions in the template should be 'recent']
                 }
             }
         }
-    }
-
-    It 'In [<moduleName>] used resource type [<resourceType>] should use one of the recent API version(s). Currently using [<TargetApi>]' -TestCases $TestCases {
-        param(
-            $moduleName,
-            $resourceType,
-            $TargetApi,
-            $ProviderNamespace,
-            $AvailableApiVersions
-        )
-
-        $namespaceResourceTypes = ($AvailableApiVersions | Where-Object { $_.ProviderNamespace -eq $ProviderNamespace }).ResourceTypes
-        $resourceTypeApiVersions = ($namespaceResourceTypes | Where-Object { $_.ResourceTypeName -eq $resourceType }).ApiVersions
-
-        if (-not $resourceTypeApiVersions) {
-            Write-Warning ('[API Test] We are currently unable to determine the available API versions for resource type [{0}/{1}]' -f $ProviderNamespace, $resourceType)
-            continue
-        }
-
-        # We allow the latest 5 including previews (in case somebody wants to use preview), or the latest 3 non-preview
-        $approvedApiVersions = @()
-        $approvedApiVersions += $resourceTypeApiVersions | Select-Object -First 5
-        $approvedApiVersions += $resourceTypeApiVersions | Where-Object { $_ -notlike '*-preview' } | Select-Object -First 3
-        ($approvedApiVersions | Select-Object -Unique) | Should -Contain $TargetApi
-    }
-}
     }
 
     It 'In [<moduleName>] used resource type [<resourceType>] should use one of the recent API version(s). Currently using [<TargetApi>]' -TestCases $TestCases {
