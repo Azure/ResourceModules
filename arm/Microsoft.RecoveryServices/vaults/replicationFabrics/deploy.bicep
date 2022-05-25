@@ -13,6 +13,8 @@ param replicationContainers array = []
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
 
+var enableChildTelemetry = false
+
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name)}-rsvPolicy'
   properties: {
@@ -42,7 +44,7 @@ module fabric_replicationContainers 'replicationProtectionContainers/deploy.bice
     recoveryVaultName: recoveryVaultName
     replicationFabricName: name
     replicationContainerMappings: contains(container, 'replicationContainerMappings') ? container.replicationContainerMappings : []
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableChildTelemetry
   }
   dependsOn: [
     replicationFabric
