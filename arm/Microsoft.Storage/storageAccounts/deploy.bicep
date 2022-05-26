@@ -164,6 +164,8 @@ var identity = identityType != 'None' ? {
   userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
 } : null
 
+var enableChildTelemetry = false
+
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
   properties: {
@@ -262,7 +264,7 @@ module storageAccount_managementPolicies 'managementPolicies/deploy.bicep' = if 
   params: {
     storageAccountName: storageAccount.name
     rules: managementPolicyRules
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableChildTelemetry
   }
 }
 
@@ -282,7 +284,7 @@ module storageAccount_blobServices 'blobServices/deploy.bicep' = if (!empty(blob
     diagnosticLogCategoriesToEnable: contains(blobServices, 'diagnosticLogCategoriesToEnable') ? blobServices.diagnosticLogCategoriesToEnable : []
     diagnosticMetricsToEnable: contains(blobServices, 'diagnosticMetricsToEnable') ? blobServices.diagnosticMetricsToEnable : []
     diagnosticWorkspaceId: contains(blobServices, 'diagnosticWorkspaceId') ? blobServices.diagnosticWorkspaceId : ''
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableChildTelemetry
   }
 }
 
@@ -304,7 +306,7 @@ module storageAccount_fileServices 'fileServices/deploy.bicep' = if (!empty(file
     }
     shares: contains(fileServices, 'shares') ? fileServices.shares : []
     diagnosticWorkspaceId: contains(fileServices, 'diagnosticWorkspaceId') ? fileServices.diagnosticWorkspaceId : ''
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableChildTelemetry
   }
 }
 
@@ -321,7 +323,7 @@ module storageAccount_queueServices 'queueServices/deploy.bicep' = if (!empty(qu
     diagnosticMetricsToEnable: contains(queueServices, 'diagnosticMetricsToEnable') ? queueServices.diagnosticMetricsToEnable : []
     queues: contains(queueServices, 'queues') ? queueServices.queues : []
     diagnosticWorkspaceId: contains(queueServices, 'diagnosticWorkspaceId') ? queueServices.diagnosticWorkspaceId : ''
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableChildTelemetry
   }
 }
 
@@ -338,7 +340,7 @@ module storageAccount_tableServices 'tableServices/deploy.bicep' = if (!empty(ta
     diagnosticMetricsToEnable: contains(tableServices, 'diagnosticMetricsToEnable') ? tableServices.diagnosticMetricsToEnable : []
     tables: contains(tableServices, 'tables') ? tableServices.tables : []
     diagnosticWorkspaceId: contains(tableServices, 'diagnosticWorkspaceId') ? tableServices.diagnosticWorkspaceId : ''
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableChildTelemetry
   }
 }
 
