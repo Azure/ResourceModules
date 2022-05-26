@@ -76,20 +76,21 @@ parameters:
 ## TEMPLATE LOGIC                              ##
 ##---------------------------------------------##
 jobs:
-  - ${{ if not( contains( parameters.templateFilePath, '.dependencies')) }}:
-    - template: /.azuredevops/pipelineTemplates/jobs.getParameterFiles.yml
+  # - ${{ if not( contains( parameters.templateFilePath, '.dependencies')) }}:
+  #   - template: /.azuredevops/pipelineTemplates/jobs.getParameterFiles.yml
   - job: deploy
     displayName: '${{ parameters.jobDisplayName }}'
+    timeoutInMinutes: ${{ parameters.defaultJobTimeoutInMinutes }}
     pool:
       ${{ if ne(parameters.vmImage, '') }}:
         vmImage: ${{ parameters.vmImage }}
       ${{ if ne(parameters.poolName, '') }}:
         name: ${{ parameters.poolName }}
-    ${{ if not( contains( parameters.templateFilePath, '.dependencies')) }}:
-      dependsOn:
-        - getParameterFilePaths
-      strategy:
-        matrix: $[ dependencies.getParameterFilePaths.outputs['getParameterFilePathsTask.parameterTests'] ]
+    # ${{ if not( contains( parameters.templateFilePath, '.dependencies')) }}:
+    #   dependsOn:
+    #     - getParameterFilePaths
+    #   strategy:
+    #     matrix: $[ dependencies.getParameterFilePaths.outputs['getParameterFilePathsTask.parameterTests'] ]
     ##---------------------------------------------##
     ## TEMPLATE LOGIC                              ##
     ##---------------------------------------------##

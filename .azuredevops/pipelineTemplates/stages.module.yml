@@ -31,10 +31,15 @@ stages:
   - stage: deployment
     displayName: Deployment validation
     dependsOn:
-      - dependencyDeployment
+      # - dependencyDeployment
       # - init
     jobs:
+      - template: /.azuredevops/pipelineTemplates/jobs.getParameterFiles.yml
       - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
+        dependsOn:
+        - getParameterFilePaths
+        strategy:
+          matrix: $[ dependencies.getParameterFilePaths.outputs['getParameterFilePathsTask.parameterTests'] ]
         parameters:
           templateFilePath: '$(modulePath)/deploy.bicep'
           resourceGroupName: '${{ parameters.moduleResourceGroupName }}'
