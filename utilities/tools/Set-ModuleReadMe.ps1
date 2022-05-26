@@ -414,13 +414,6 @@ function Set-DeploymentExamplesSection {
                 }
             }
 
-            # replace key vault references
-            foreach ($keyVaultReference in $keyVaultReferences) {
-                $matchingTuple = $keyVaultReferenceData | Where-Object { $_.parameterName -eq $keyVaultReference }
-                # kv.getSecret('vmAdminPassword')
-                $JSONParametersHashTable[$keyVaultReference] = "{0}.getSecret('{1}')" -f $matchingTuple.vaultResourceReference, $matchingTuple.secretName
-            }
-
             # Handle VALUE references (i.e. remove them)
             $JSONParameters = (ConvertFrom-Json $contentInJSONFormat -Depth 99).PSObject.properties['parameters'].value
             $JSONParametersWithoutValue = [ordered]@{}
@@ -428,7 +421,9 @@ function Set-DeploymentExamplesSection {
                 if ($parameter.value.PSObject.Properties.name -eq 'value') {
                     $JSONParametersWithoutValue[$parameter.name] = $parameter.value.PSObject.Properties['value'].value
                 } else {
-                    $JSONParametersWithoutValue[$parameter.name] = $parameter.value.PSObject.Properties
+                    # replace key vault references
+                    $matchingTuple = $keyVaultReferenceData | Where-Object { $_.parameterName -eq $parameter.Name }
+                    $JSONParametersWithoutValue[$parameter.name] = "{0}.getSecret('{1}')" -f $matchingTuple.vaultResourceReference, $matchingTuple.secretName
                 }
             }
 
