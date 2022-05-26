@@ -163,6 +163,8 @@ var identity = identityType != 'None' ? {
   userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
 } : null
 
+var enableChildTelemetry = false
+
 // =========== //
 // Deployments //
 // =========== //
@@ -206,7 +208,7 @@ module app_appsettings 'config-appsettings/deploy.bicep' = if (!empty(appSetting
     appInsightId: appInsightId
     setAzureWebJobsDashboard: setAzureWebJobsDashboard
     appSettingsKeyValuePairs: appSettingsKeyValuePairs
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableChildTelemetry
   }
 }
 
@@ -216,7 +218,7 @@ module app_authsettingsv2 'config-authsettingsv2/deploy.bicep' = if (!empty(auth
     appName: app.name
     kind: kind
     authSettingV2Configuration: authSettingV2Configuration
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableChildTelemetry
   }
 }
 

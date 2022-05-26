@@ -531,7 +531,7 @@ module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bice
                 }
             ]
         },
-        "linkedWorkspaceId": {
+        "linkedWorkspaceResourceId": {
             "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-aut-001"
         },
         "gallerySolutions": {
@@ -720,7 +720,7 @@ module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bice
         description: 'TestEncryptedDescription'
       }
     ]
-    linkedWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-aut-001'
+    linkedWorkspaceResourceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-aut-001'
     gallerySolutions: [
       'Updates'
     ]

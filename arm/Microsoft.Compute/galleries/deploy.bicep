@@ -28,6 +28,8 @@ param tags object = {}
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
 
+var enableChildTelemetry = false
+
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
   properties: {
@@ -97,7 +99,7 @@ module galleries_images 'images/deploy.bicep' = [for (image, index) in images: {
     excludedDiskTypes: contains(image, 'excludedDiskTypes') ? image.excludedDiskTypes : []
     roleAssignments: contains(image, 'roleAssignments') ? image.roleAssignments : []
     tags: contains(image, 'tags') ? image.tags : {}
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableChildTelemetry
   }
 }]
 
