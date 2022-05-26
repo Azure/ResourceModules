@@ -94,9 +94,12 @@ var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
 var dnsServers_var = {
   dnsServers: array(dnsServers)
 }
+
 var ddosProtectionPlan = {
   id: ddosProtectionPlanId
 }
+
+var enableChildTelemetry = false
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
@@ -173,7 +176,7 @@ module virtualNetwork_subnets 'subnets/deploy.bicep' = [for (subnet, index) in s
     routeTableId: contains(subnet, 'routeTableId') ? subnet.routeTableId : ''
     serviceEndpointPolicies: contains(subnet, 'serviceEndpointPolicies') ? subnet.serviceEndpointPolicies : []
     serviceEndpoints: contains(subnet, 'serviceEndpoints') ? subnet.serviceEndpoints : []
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableChildTelemetry
   }
 }]
 
@@ -189,7 +192,7 @@ module virtualNetwork_peering_local 'virtualNetworkPeerings/deploy.bicep' = [for
     allowVirtualNetworkAccess: contains(peering, 'allowVirtualNetworkAccess') ? peering.allowVirtualNetworkAccess : true
     doNotVerifyRemoteGateways: contains(peering, 'doNotVerifyRemoteGateways') ? peering.doNotVerifyRemoteGateways : true
     useRemoteGateways: contains(peering, 'useRemoteGateways') ? peering.useRemoteGateways : false
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableChildTelemetry
   }
 }]
 
@@ -206,7 +209,7 @@ module virtualNetwork_peering_remote 'virtualNetworkPeerings/deploy.bicep' = [fo
     allowVirtualNetworkAccess: contains(peering, 'remotePeeringAllowVirtualNetworkAccess') ? peering.remotePeeringAllowVirtualNetworkAccess : true
     doNotVerifyRemoteGateways: contains(peering, 'remotePeeringDoNotVerifyRemoteGateways') ? peering.remotePeeringDoNotVerifyRemoteGateways : true
     useRemoteGateways: contains(peering, 'remotePeeringUseRemoteGateways') ? peering.remotePeeringUseRemoteGateways : false
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableChildTelemetry
   }
 }]
 

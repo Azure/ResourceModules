@@ -175,6 +175,8 @@ var formattedAccessPolicies = [for accessPolicy in accessPolicies: {
 
 var secretList = !empty(secrets) ? secrets.secureList : []
 
+var enableChildTelemetry = false
+
 // =========== //
 // Deployments //
 // =========== //
@@ -241,7 +243,7 @@ module keyVault_accessPolicies 'accessPolicies/deploy.bicep' = if (!empty(access
   params: {
     keyVaultName: keyVault.name
     accessPolicies: formattedAccessPolicies
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableChildTelemetry
   }
 }
 
@@ -257,7 +259,7 @@ module keyVault_secrets 'secrets/deploy.bicep' = [for (secret, index) in secretL
     contentType: contains(secret, 'contentType') ? secret.contentType : ''
     tags: contains(secret, 'tags') ? secret.tags : {}
     roleAssignments: contains(secret, 'roleAssignments') ? secret.roleAssignments : []
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableChildTelemetry
   }
 }]
 
@@ -275,7 +277,7 @@ module keyVault_keys 'keys/deploy.bicep' = [for (key, index) in keys: {
     kty: contains(key, 'kty') ? key.kty : 'EC'
     tags: contains(key, 'tags') ? key.tags : {}
     roleAssignments: contains(key, 'roleAssignments') ? key.roleAssignments : []
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableChildTelemetry
   }
 }]
 

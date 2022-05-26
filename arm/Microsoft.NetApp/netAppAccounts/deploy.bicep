@@ -43,6 +43,8 @@ param tags object = {}
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
 
+var enableChildTelemetry = false
+
 var activeDirectoryConnectionProperties = [
   {
     username: !empty(domainName) ? domainJoinUser : null
@@ -107,7 +109,7 @@ module netAppAccount_capacityPools 'capacityPools/deploy.bicep' = [for (capacity
     volumes: contains(capacityPool, 'volumes') ? capacityPool.volumes : []
     coolAccess: contains(capacityPool, 'coolAccess') ? capacityPool.coolAccess : false
     roleAssignments: contains(capacityPool, 'roleAssignments') ? capacityPool.roleAssignments : []
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableChildTelemetry
   }
 }]
 

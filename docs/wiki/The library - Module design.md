@@ -515,7 +515,7 @@ While exceptions might be needed, the following guidance should be followed as m
 
 # ReadMe
 
-Each module must come with a ReadMe markdown file that outlines what the module contains and 'how' it can be used.
+Each module must come with a ReadMe Markdown file that outlines what the module contains and 'how' it can be used.
 Its primary components are in order:
 - A title with a reference to the primary resource in Start Case followed by the primary resource namespace e.g. <code>Key Vaults `[Microsoft.KeyVault/vaults]`</code>.
 - A short description
@@ -526,13 +526,13 @@ Its primary components are in order:
 - A **Template references** section listing relevant resources [Azure resource reference](https://docs.microsoft.com/en-us/azure/templates).
 
 Note the following recommendations:
-- Refer to [Generate module Readme](./Contribution%20guide%20-%20Generate%20module%20Readme) for creating from scratch or updating the module ReadMe markdown file.
+- Refer to [Generate module Readme](./Contribution%20guide%20-%20Generate%20module%20Readme) for creating from scratch or updating the module ReadMe Markdown file.
 - It is not recommended to describe how to use child resources in the parent readme file (for example 'How to define a [container] entry for the [storage account]'). Instead it is recommended to reference the child resource's ReadMe instead (for example 'container/readme.md').
 
 # Parameter files
 
 Parameter files in CARML leverage the common `deploymentParameters.json` schema for ARM deployments. As parameters are usually specific to their corresponding template, we have only very few general recommendations:
-- Parameter file names should ideally relate to the content they deploy. For example, a parameter file `min.parameters.json` should be chosen for a parameter file that contains only the minimum set of parameter to deploy the module.
+- Parameter filenames should ideally relate to the content they deploy. For example, a parameter file `min.parameters.json` should be chosen for a parameter file that contains only the minimum set of parameter to deploy the module.
 - Likewise, the `name` parameter we have in most modules should give some indication of the file it was deployed with. For example, a `min.parameters.json` parameter file for the virtual network module may have a `name` property with the value `sxx-az-vnet-min-001` where `min` relates to the prefix of the parameter file itself.
 - A module should have as many parameter files as it needs to evaluate all parts of the module's functionality.
 - Sensitive data should not be stored inside the parameter file but rather be injected by the use of tokens, as described in the [Token replacement](./The%20CI%20environment%20-%20Token%20replacement) section, or via a [key vault reference](https://docs.microsoft.com/en-us/azure/azure-resource-manager/templates/key-vault-parameter?tabs=azure-cli#reference-secrets-with-static-id).
@@ -540,6 +540,10 @@ Parameter files in CARML leverage the common `deploymentParameters.json` schema 
 # Telemetry
 
 Each module in CARML contains a `defaultTelemetry` deployment  `'pid-<GUID>-${uniqueString(deployment().name)}'`, resulting in deployments such as `'pid-<GUID>-nx2c3rnlt2wru'`.
+
+> **Note:** Though implemented at each level in a module hierarchy (e.g. storage account & blobServices), the deployment will only happen for the top-level module in a deployment, but not for its children. To illustrate this better, see the following examples:
+> - Deployment of the KeyVault module and 2 Secrets: Results in 1 `PID` deployment for the KeyVault (and none for the secrets)
+> - Deployment of the Secret module: Results in 1 `PID` deployment for the Secret
 
 This resource enables the team responsible for CARML to query the number of deployments of a given template from Azure - and as such get insights into its adoption.
 
@@ -551,4 +555,4 @@ When consuming the modules outside of CARML's pipelines you can either
 
 > **Note:** _The deployment and its GUID can NOT be used to track [Azure Consumed Revenue (ACR)](https://docs.microsoft.com/en-us/azure/marketplace/azure-partner-customer-usage-attribution)._
 >
-> _If you want to track it, we recommend to implement it on the consuming template's level (i.e. the workload/solution) and apply the required naming format `'pid-<GUID>'` (without the suffix)._
+> _If you want to track consumption, we recommend to implement it on the consuming template's level (i.e. the workload/solution) and apply the required naming format `'pid-<GUID>'` (without the suffix)._
