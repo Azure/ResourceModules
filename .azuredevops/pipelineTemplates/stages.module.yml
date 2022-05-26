@@ -26,6 +26,7 @@ stages:
           templateFilePath: '$(modulePath)/.dependencies/dependencies.bicep'
           resourceGroupName: '${{ parameters.moduleResourceGroupName }}'
           removeDeployment: false
+          jobDisplayName: 'Deploy dependencies'
 
   - stage: deployment
     displayName: Deployment validation
@@ -37,6 +38,7 @@ stages:
         parameters:
           templateFilePath: '$(modulePath)/deploy.bicep'
           resourceGroupName: '${{ parameters.moduleResourceGroupName }}'
+          jobDisplayName: 'Deploy module with parameter file'
 
   - stage: dependencyRemoval
     displayName: Dependency removal
@@ -52,6 +54,7 @@ stages:
           templateFilePath: '$(modulePath)/.dependencies/dependencies.bicep'
           resourceGroupName: '${{ parameters.moduleResourceGroupName }}'
           deploymentName: '$(deploymentName)'
+          jobDisplayName: 'Remove dependencies'
           enableDeployment: false
 
   - stage: Publishing

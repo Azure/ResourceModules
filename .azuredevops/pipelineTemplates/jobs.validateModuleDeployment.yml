@@ -56,6 +56,7 @@ parameters:
   enableDeployment: true
   deploymentName: ''
   templateFilePath: ''
+  jobDisplayName: ''
   customParameterFileTokens: ''
   modulePath: '$(modulePath)'
   location: '$(location)'
@@ -75,15 +76,21 @@ jobs:
   - ${{ if not( contains( parameters.templateFilePath, '.dependencies')) }}:
     - template: /.azuredevops/pipelineTemplates/jobs.getParameterFiles.yml
   - job: deploy
+    displayName: '${{ parameters.jobDisplayName }}'
+    pool:
+      ${{ if ne(parameters.vmImage, '') }}:
+        vmImage: ${{ parameters.vmImage }}
+      ${{ if ne(parameters.poolName, '') }}:
+        name: ${{ parameters.poolName }}
     ${{ if not( contains( parameters.templateFilePath, '.dependencies')) }}:
       dependsOn:
         - getParameterFilePaths
       strategy:
         matrix: $[ dependencies.getParameterFilePaths.outputs['getParameterFilePathsTask.parameterTests'] ]
-    ${{ if eq( '${{ parameters.enableDeployment }}', 'true') }}:
-      displayName: 'Deploy'
-    ${{ if and(eq( '${{ parameters.enableDeployment }}', 'false'), eq( '${{ parameters.removeDeployment }}', 'true')) }}:
-      displayName: 'Remove'
+    # ${{ if eq( '${{ parameters.enableDeployment }}', 'true') }}:
+    #   displayName: 'Deploy'
+    # ${{ if and(eq( '${{ parameters.enableDeployment }}', 'false'), eq( '${{ parameters.removeDeployment }}', 'true')) }}:
+    #   displayName: 'Remove'
     ##---------------------------------------------##
     ## TEMPLATE LOGIC                              ##
     ##---------------------------------------------##
