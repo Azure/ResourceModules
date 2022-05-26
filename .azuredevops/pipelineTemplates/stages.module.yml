@@ -38,6 +38,7 @@ stages:
         parameters:
           templateFilePath: '$(modulePath)/deploy.bicep'
           resourceGroupName: '${{ parameters.moduleResourceGroupName }}'
+          removeDeployment: '${{ parameters.removeDeployment }}'
           jobDisplayName: 'Deploy module with parameter file'
 
   - stage: dependencyRemoval
@@ -45,7 +46,7 @@ stages:
     dependsOn:
       - dependencyDeployment
       - deployment
-    condition: succeededOrFailed()
+    condition: and( succeededOrFailed(), eq( '${{ parameters.removeDeployment }}', 'true'))
     variables:
       deploymentName: $[ stageDependencies.dependencyDeployment.deploy.outputs['deployModule.deploymentName'] ]
     jobs:
