@@ -31,7 +31,7 @@ stages:
   - stage: deployment
     displayName: Deployment validation
     dependsOn:
-      - dependencyDeployment
+      # - dependencyDeployment
       # - init
     jobs:
       - template: /.azuredevops/pipelineTemplates/jobs.getParameterFiles.yml
