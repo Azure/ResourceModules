@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "<<namePrefix>>-az-azfw-x-001"
+            "value": "<<namePrefix>>-az-fw-x-001"
         },
         "zones": {
             "value": [
@@ -12,14 +12,11 @@
                 "3"
             ]
         },
-        "ipConfigurations": {
-            "value": [
-                {
-                    "name": "ipConfig01",
-                    "publicIPAddressResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/publicIPAddresses/adp-<<namePrefix>>-az-pip-x-fw",
-                    "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-azfw/subnets/AzureFirewallSubnet"
-                }
-            ]
+        "vNetId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-azfw"
+        },
+        "azureFirewallSubnetPublicIpId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/publicIPAddresses/adp-<<namePrefix>>-az-pip-x-fw"
         },
         "applicationRuleCollections": {
             "value": [
