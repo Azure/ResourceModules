@@ -475,7 +475,7 @@ resource virtualMachine 'Microsoft.Compute/virtualMachines@2021-07-01' = {
 //   }
 // }]
 
-resource vm_configurationProfileAssignment 'Microsoft.Compute/virtualMachines/providers/configurationProfileAssignments@2021-04-30-preview' = {
+resource vm_configurationProfileAssignment 'Microsoft.Compute/virtualMachines/providers/configurationProfileAssignments@2021-04-30-preview' = if (!empty(configurationProfile)) {
   name: '${virtualMachine.name}/Microsoft.Automanage/default'
   properties: {
     configurationProfile: configurationProfile
