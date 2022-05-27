@@ -172,12 +172,12 @@ steps:
 
         if ($deploymentScope -ne 'resourceGroup' -and -not [String]::IsNullOrEmpty('${{ parameters.resourceGroupName }}') -and $parameters -contains 'resourceGroupName') {
           $functionInput['additionalParameters'] = @{
-            resourceGroupName = '${{ parameters.resourceGroupName }}'
+            resourceGroupName += '${{ parameters.resourceGroupName }}'
           }
         }
         if($parameters -contains 'namePrefix') {
-          $functionInput['additionalParameters'] = @{
-            namePrefix = $projectSettings.parameterFileTokens.localTokens[0].name
+          $functionInput['additionalParameters'] += @{
+            namePrefix = $projectSettings.parameterFileTokens.localTokens[0].value
           }
         }
 
@@ -238,13 +238,13 @@ steps:
         $parameters = $templateContent.parameters.Keys
 
         if ($deploymentScope -ne 'resourceGroup' -and -not [String]::IsNullOrEmpty('${{ parameters.resourceGroupName }}') -and $parameters -contains 'resourceGroupName') {
-          $functionInput['additionalParameters'] = @{
+          $functionInput['additionalParameters'] += @{
             resourceGroupName = '${{ parameters.resourceGroupName }}'
           }
         }
         if($parameters -contains 'namePrefix') {
-          $functionInput['additionalParameters'] = @{
-            namePrefix = $projectSettings.parameterFileTokens.localTokens[0].name
+          $functionInput['additionalParameters'] += @{
+            namePrefix = $projectSettings.parameterFileTokens.localTokens[0].value
           }
         }
 
