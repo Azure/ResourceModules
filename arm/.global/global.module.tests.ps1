@@ -609,7 +609,7 @@ Describe 'Deployment template tests' -Tag Template {
             )
 
             if (-not $templateContent.parameters) {
-                $true | Should -Be $true
+                # Skip test
                 return
             }
 
@@ -632,7 +632,7 @@ Describe 'Deployment template tests' -Tag Template {
             )
 
             if (-not $templateContent.variables) {
-                $true | Should -Be $true
+                # Skip test
                 return
             }
 
@@ -772,7 +772,6 @@ Describe 'Deployment template tests' -Tag Template {
 
             if (-not $templateContent.parameters) {
                 # Skip test
-                $true | Should -Be $true
                 return
             }
 
@@ -787,6 +786,34 @@ Describe 'Deployment template tests' -Tag Template {
             $incorrectParameters | Should -BeNullOrEmpty
         }
 
+        It "[<moduleFolderName>] Conditional parameters' description should contain 'Required if' followed by the condition making the parameter required." -TestCases $deploymentFolderTestCases {
+            param(
+                $moduleFolderName,
+                $templateContent
+            )
+
+            if (-not $templateContent.parameters) {
+                # Skip test
+                return
+            }
+
+            $incorrectParameters = @()
+            $templateParameters = $templateContent.parameters.Keys
+            foreach ($parameter in $templateParameters) {
+                $data = ($templateContent.parameters.$parameter.metadata).description
+                switch -regex ($data)
+                {
+                    '^Conditional. .*'
+                    {
+                        if ($data -notmatch '.*\. Required if .*') {
+                            $incorrectParameters += $parameter
+                        }
+                    }
+                }
+            }
+            $incorrectParameters | Should -BeNullOrEmpty
+        }
+
         It "[<moduleFolderName>] outputs' description should start with a capital letter and contain text ending with a dot." -TestCases $deploymentFolderTestCases {
             param(
                 $moduleFolderName,
@@ -795,7 +822,6 @@ Describe 'Deployment template tests' -Tag Template {
 
             if (-not $templateContent.outputs) {
                 # Skip test
-                $true | Should -Be $true
                 return
             }
 
