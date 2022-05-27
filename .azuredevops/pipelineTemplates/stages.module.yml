@@ -31,7 +31,7 @@ stages:
   - stage: deployment
     displayName: Deployment validation
     dependsOn:
-      # - dependencyDeployment
+      - dependencyDeployment
       # - init
     jobs:
       - template: /.azuredevops/pipelineTemplates/jobs.getParameterFiles.yml
@@ -66,29 +66,3 @@ stages:
     condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/main'), eq(variables['Build.SourceBranch'], 'refs/heads/master'), eq('${{ parameters.prerelease }}', 'true')))
     jobs:
       - template: /.azuredevops/pipelineTemplates/jobs.publishModule.yml
-
-
-
-##################
-
-# - job: print_before_template
-      #   # strategy:
-      #   #   matrix: $parameterTests
-      #   # variables:
-      #   #   $parameterTestsToPrint1: stageDependencies.init.printParameterFilePaths.outputs['print_parameter_tests.parameterTestsToPrint']
-      #   #   $parameterTestsToPrint2: $[ stageDependencies.init.printParameterFilePaths.outputs['print_parameter_tests.parameterTestsToPrint'] ]
-      #   #   $parameterTestsToPrint3: $[ stageDependencies.init.printParameterFilePaths.outputs['print_parameter_tests.parameterTestsToPrint'] ]
-      #   #   $parameterTestsToPrint4: $[ dependencies.init.outputs['printParameterFilePaths.printParameterFilePaths.print_parameter_tests.parameterTestsToPrint'] ]
-      #   steps:
-      #     - task: PowerShell@2
-      #       displayName: 'print before template'
-      #       inputs:
-      #         targetType: inline
-      #         pwsh: true
-      #         script: |
-      #           Write-Verbose '$(parameterTestsToPrint1)' -Verbose
-      #           Write-Verbose '$(parameterTestsToPrint2)' -Verbose
-      #           Write-Verbose '$(parameterTestsToPrint3)' -Verbose
-      #           Write-Verbose '$(parameterTestsToPrint4)' -Verbose
-      #           # Write-Host "##vso[task.setvariable variable=$jobsToRunInParallel;isOutput=true]$json"
-      #         name: printvar2
