@@ -171,8 +171,8 @@ steps:
         $parameters = $templateContent.parameters.Keys
 
         if ($deploymentScope -ne 'resourceGroup' -and -not [String]::IsNullOrEmpty('${{ parameters.resourceGroupName }}') -and $parameters -contains 'resourceGroupName') {
-          $functionInput['additionalParameters'] = @{
-            resourceGroupName += '${{ parameters.resourceGroupName }}'
+          $functionInput['additionalParameters'] += @{
+            resourceGroupName = '${{ parameters.resourceGroupName }}'
           }
         }
         if($parameters -contains 'namePrefix') {
