@@ -1004,6 +1004,134 @@ userAssignedIdentities: {
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
+            "value": "<<namePrefix>>-vm-linux-autmg-01"
+        },
+        "osType": {
+            "value": "Linux"
+        },
+        "imageReference": {
+            "value": {
+                "publisher": "Canonical",
+                "offer": "UbuntuServer",
+                "sku": "18.04-LTS",
+                "version": "latest"
+            }
+        },
+        "osDisk": {
+            "value": {
+                "diskSizeGB": "128",
+                "managedDisk": {
+                    "storageAccountType": "Premium_LRS"
+                }
+            }
+        },
+        "vmSize": {
+            "value": "Standard_B12ms"
+        },
+        "adminUsername": {
+            "value": "localAdminUser"
+        },
+        "disablePasswordAuthentication": {
+            "value": true
+        },
+        "publicKeys": {
+            "value": [
+                {
+                    "path": "/home/localAdminUser/.ssh/authorized_keys",
+                    "keyData": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDdOir5eO28EBwxU0Dyra7g9h0HUXDyMNFp2z8PhaTUQgHjrimkMxjYRwEOG/lxnYL7+TqZk+HcPTfbZOunHBw0Wx2CITzILt6531vmIYZGfq5YyYXbxZa5MON7L/PVivoRlPj5Z/t4RhqMhyfR7EPcZ516LJ8lXPTo8dE/bkOCS+kFBEYHvPEEKAyLs19sRcK37SeHjpX04zdg62nqtuRr00Tp7oeiTXA1xn5K5mxeAswotmd8CU0lWUcJuPBWQedo649b+L2cm52kTncOBI6YChAeyEc1PDF0Tn9FmpdOWKtI9efh+S3f8qkcVEtSTXoTeroBd31nzjAunMrZeM8Ut6dre+XeQQIjT7I8oEm+ZkIuIyq0x2fls8JXP2YJDWDqu8v1+yLGTQ3Z9XVt2lMti/7bIgYxS0JvwOr5n5L4IzKvhb4fm13LLDGFa3o7Nsfe3fPb882APE0bLFCmfyIeiPh7go70WqZHakpgIr6LCWTyePez9CsI/rfWDb6eAM8= generated-by-azure"
+                }
+            ]
+        },
+        "nicConfigurations": {
+            "value": [
+                {
+                    "nicSuffix": "-nic-01",
+                    "ipConfigurations": [
+                        {
+                            "name": "ipconfig01",
+                            "subnetId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001",
+                            "pipConfiguration": {
+                                "publicIpNameSuffix": "-pip-01"
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        "configurationProfile": {
+            "value": "/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction"
+        }
+    }
+}
+
+```
+
+</details>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-virtualMachines'
+  params: {
+    name: '<<namePrefix>>-vm-linux-autmg-01'
+    osType: 'Linux'
+    imageReference: {
+      publisher: 'Canonical'
+      offer: 'UbuntuServer'
+      sku: '18.04-LTS'
+      version: 'latest'
+    }
+    osDisk: {
+      diskSizeGB: '128'
+      managedDisk: {
+        storageAccountType: 'Premium_LRS'
+      }
+    }
+    vmSize: 'Standard_B12ms'
+    adminUsername: 'localAdminUser'
+    disablePasswordAuthentication: true
+    publicKeys: [
+      {
+        path: '/home/localAdminUser/.ssh/authorized_keys'
+        keyData: 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDdOir5eO28EBwxU0Dyra7g9h0HUXDyMNFp2z8PhaTUQgHjrimkMxjYRwEOG/lxnYL7+TqZk+HcPTfbZOunHBw0Wx2CITzILt6531vmIYZGfq5YyYXbxZa5MON7L/PVivoRlPj5Z/t4RhqMhyfR7EPcZ516LJ8lXPTo8dE/bkOCS+kFBEYHvPEEKAyLs19sRcK37SeHjpX04zdg62nqtuRr00Tp7oeiTXA1xn5K5mxeAswotmd8CU0lWUcJuPBWQedo649b+L2cm52kTncOBI6YChAeyEc1PDF0Tn9FmpdOWKtI9efh+S3f8qkcVEtSTXoTeroBd31nzjAunMrZeM8Ut6dre+XeQQIjT7I8oEm+ZkIuIyq0x2fls8JXP2YJDWDqu8v1+yLGTQ3Z9XVt2lMti/7bIgYxS0JvwOr5n5L4IzKvhb4fm13LLDGFa3o7Nsfe3fPb882APE0bLFCmfyIeiPh7go70WqZHakpgIr6LCWTyePez9CsI/rfWDb6eAM8= generated-by-azure'
+      }
+    ]
+    nicConfigurations: [
+      {
+        nicSuffix: '-nic-01'
+        ipConfigurations: [
+          {
+            name: 'ipconfig01'
+            subnetId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001'
+            pipConfiguration: {
+              publicIpNameSuffix: '-pip-01'
+            }
+          }
+        ]
+      }
+    ]
+    configurationProfile: '/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction'
+  }
+```
+
+</details>
+<p>
+
+<h3>Example 2</h3>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
             "value": "<<namePrefix>>-vm-linux-min-01"
         },
         "osType": {
@@ -1116,7 +1244,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
 </details>
 <p>
 
-<h3>Example 2</h3>
+<h3>Example 3</h3>
 
 <details>
 
@@ -1504,7 +1632,140 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
 </details>
 <p>
 
-<h3>Example 3</h3>
+<h3>Example 4</h3>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": "<<namePrefix>>-vm-win-02"
+        },
+        "imageReference": {
+            "value": {
+                "publisher": "MicrosoftWindowsServer",
+                "offer": "WindowsServer",
+                "sku": "2016-Datacenter",
+                "version": "latest"
+            }
+        },
+        "osType": {
+            "value": "Windows"
+        },
+        "vmSize": {
+            "value": "Standard_B12ms"
+        },
+        "osDisk": {
+            "value": {
+                "diskSizeGB": "128",
+                "managedDisk": {
+                    "storageAccountType": "Premium_LRS"
+                }
+            }
+        },
+        "adminUsername": {
+            "value": "localAdminUser"
+        },
+        "adminPassword": {
+            "reference": {
+                "keyVault": {
+                    "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001"
+                },
+                "secretName": "adminPassword"
+            }
+        },
+        "nicConfigurations": {
+            "value": [
+                {
+                    "nicSuffix": "-nic-01",
+                    "ipConfigurations": [
+                        {
+                            "name": "ipconfig01",
+                            "subnetId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001"
+                        }
+                    ]
+                }
+            ]
+        },
+        "configurationProfile": {
+            "value": "/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction"
+        }
+    }
+}
+
+```
+
+</details>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+resource kv1 'Microsoft.KeyVault/vaults@2019-09-01' existing = {
+  name: 'adp-<<namePrefix>>-az-kv-x-001'
+  scope: resourceGroup('<<subscriptionId>>','validation-rg')
+}
+
+module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-virtualMachines'
+  params: {
+    name: '<<namePrefix>>-vm-win-02'
+    imageReference: {
+      publisher: 'MicrosoftWindowsServer'
+      offer: 'WindowsServer'
+      sku: '2016-Datacenter'
+      version: 'latest'
+    }
+    osType: 'Windows'
+    vmSize: 'Standard_B12ms'
+    osDisk: {
+      diskSizeGB: '128'
+      managedDisk: {
+        storageAccountType: 'Premium_LRS'
+      }
+    }
+    adminUsername: 'localAdminUser'
+    adminPassword: [
+      {
+        Value: {
+          keyVault: {
+            id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001'
+          }
+          secretName: 'adminPassword'
+        }
+        MemberType: 8
+        IsSettable: true
+        IsGettable: true
+        TypeNameOfValue: 'System.Management.Automation.PSCustomObject'
+        Name: 'reference'
+        IsInstance: true
+      }
+    ]
+    nicConfigurations: [
+      {
+        nicSuffix: '-nic-01'
+        ipConfigurations: [
+          {
+            name: 'ipconfig01'
+            subnetId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001'
+          }
+        ]
+      }
+    ]
+    configurationProfile: '/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction'
+  }
+```
+
+</details>
+<p>
+
+<h3>Example 5</h3>
 
 <details>
 
@@ -1629,7 +1890,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
 </details>
 <p>
 
-<h3>Example 4</h3>
+<h3>Example 6</h3>
 
 <details>
 
@@ -1865,9 +2126,6 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
             "value": {
                 "commandToExecute": "powershell -ExecutionPolicy Unrestricted -Command \"& .\\scriptExtensionMasterInstaller.ps1\""
             }
-        },
-        "configurationProfile": {
-            "value": "/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction"
         }
     }
 }
@@ -2063,7 +2321,6 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
     extensionCustomScriptProtectedSetting: {
       commandToExecute: 'powershell -ExecutionPolicy Unrestricted -Command \'& .\\scriptExtensionMasterInstaller.ps1\''
     }
-    configurationProfile: '/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction'
   }
 ```
 

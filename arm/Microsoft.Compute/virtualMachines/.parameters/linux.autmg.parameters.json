@@ -1,0 +1,64 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": "<<namePrefix>>-vm-linux-autmg-01"
+        },
+        "osType": {
+            "value": "Linux"
+        },
+        "imageReference": {
+            "value": {
+                "publisher": "Canonical",
+                "offer": "UbuntuServer",
+                "sku": "18.04-LTS",
+                "version": "latest"
+            }
+        },
+        "osDisk": {
+            "value": {
+                "diskSizeGB": "128",
+                "managedDisk": {
+                    "storageAccountType": "Premium_LRS"
+                }
+            }
+        },
+        "vmSize": {
+            "value": "Standard_B12ms"
+        },
+        "adminUsername": {
+            "value": "localAdminUser"
+        },
+        "disablePasswordAuthentication": {
+            "value": true
+        },
+        "publicKeys": {
+            "value": [
+                {
+                    "path": "/home/localAdminUser/.ssh/authorized_keys",
+                    "keyData": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDdOir5eO28EBwxU0Dyra7g9h0HUXDyMNFp2z8PhaTUQgHjrimkMxjYRwEOG/lxnYL7+TqZk+HcPTfbZOunHBw0Wx2CITzILt6531vmIYZGfq5YyYXbxZa5MON7L/PVivoRlPj5Z/t4RhqMhyfR7EPcZ516LJ8lXPTo8dE/bkOCS+kFBEYHvPEEKAyLs19sRcK37SeHjpX04zdg62nqtuRr00Tp7oeiTXA1xn5K5mxeAswotmd8CU0lWUcJuPBWQedo649b+L2cm52kTncOBI6YChAeyEc1PDF0Tn9FmpdOWKtI9efh+S3f8qkcVEtSTXoTeroBd31nzjAunMrZeM8Ut6dre+XeQQIjT7I8oEm+ZkIuIyq0x2fls8JXP2YJDWDqu8v1+yLGTQ3Z9XVt2lMti/7bIgYxS0JvwOr5n5L4IzKvhb4fm13LLDGFa3o7Nsfe3fPb882APE0bLFCmfyIeiPh7go70WqZHakpgIr6LCWTyePez9CsI/rfWDb6eAM8= generated-by-azure"
+                }
+            ]
+        },
+        "nicConfigurations": {
+            "value": [
+                {
+                    "nicSuffix": "-nic-01",
+                    "ipConfigurations": [
+                        {
+                            "name": "ipconfig01",
+                            "subnetId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001",
+                            "pipConfiguration": {
+                                "publicIpNameSuffix": "-pip-01"
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        "configurationProfile": {
+            "value": "/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction"
+        }
+    }
+}
