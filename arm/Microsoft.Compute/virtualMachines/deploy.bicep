@@ -290,7 +290,7 @@ param winRM object = {}
 @description('Optional. Any VM configuration profile assignments.')
 param configurationProfileAssignments array = []
 
-@description('Required. The configuration profile of automanage')
+@description('Required. The configuration profile of automanage.')
 @allowed([
   '/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction'
   '/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesDevTest'
