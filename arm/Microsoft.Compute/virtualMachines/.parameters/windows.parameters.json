@@ -228,6 +228,9 @@
                 "commandToExecute": "powershell -ExecutionPolicy Unrestricted -Command \"& .\\scriptExtensionMasterInstaller.ps1\""
             }
         },
+        "configurationProfile": {
+            "value": "/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction"
+        },
         "configurationProfileAssignments": {
             "value": [
                 "/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction"

@@ -290,6 +290,14 @@ param winRM object = {}
 @description('Optional. Any VM configuration profile assignments.')
 param configurationProfileAssignments array = []
 
+@description('Required. The configuration profile of automanage')
+@allowed([
+  '/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction'
+  '/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesDevTest'
+  ''
+])
+param configurationProfile string = ''
+
 var vmComputerNameTransformed = vmComputerNamesTransformation == 'uppercase' ? toUpper(name) : (vmComputerNamesTransformation == 'lowercase' ? toLower(name) : name)
 
 var publicKeysFormatted = [for publicKey in publicKeys: {
@@ -459,13 +467,31 @@ resource virtualMachine 'Microsoft.Compute/virtualMachines@2021-07-01' = {
   ]
 }
 
-module vm_configurationProfileAssignment '.bicep/nested_configurationProfileAssignment.bicep' = [for (configurationProfileAssignment, index) in configurationProfileAssignments: {
-  name: '${uniqueString(deployment().name, location)}-VM-ConfigurationProfileAssignment-${index}'
-  params: {
-    virtualMachineName: virtualMachine.name
-    configurationProfile: configurationProfileAssignment
+// module vm_configurationProfileAssignment '.bicep/nested_configurationProfileAssignment.bicep' = [for (configurationProfileAssignment, index) in configurationProfileAssignments: {
+//   name: '${uniqueString(deployment().name, location)}-VM-ConfigurationProfileAssignment-${index}'
+//   params: {
+//     virtualMachineName: virtualMachine.name
+//     configurationProfile: configurationProfileAssignment
+//   }
+// }]
+
+resource vm_configurationProfileAssignment 'Microsoft.Compute/virtualMachines/providers/configurationProfileAssignments@2021-04-30-preview' = {
+  name: '${virtualMachine.name}/Microsoft.Automanage/default'
+  properties: {
+    configurationProfile: configurationProfile
   }
-}]
+}
+
+// "resources": [
+//         {
+//             "type": "Microsoft.Compute/virtualMachines/providers/configurationProfileAssignments",
+//             "apiVersion": "2021-04-30-preview",
+//             "name": "[concat(parameters('machineName'), '/Microsoft.Automanage/default')]",
+//             "properties": {
+//                 "configurationProfile": "[parameters('configurationProfile')]"
+//             }
+//         }
+//     ]
 
 module vm_domainJoinExtension 'extensions/deploy.bicep' = if (extensionDomainJoinConfig.enabled) {
   name: '${uniqueString(deployment().name, location)}-VM-DomainJoin'

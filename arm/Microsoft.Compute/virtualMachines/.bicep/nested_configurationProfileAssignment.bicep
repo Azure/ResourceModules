@@ -16,6 +16,7 @@ resource virtualMachine 'Microsoft.Compute/virtualMachines@2021-07-01' existing 
 }
 
 resource configurationProfileAssignment 'Microsoft.Automanage/configurationProfileAssignments@2021-04-30-preview' = {
+  // resource configurationProfileAssignment 'Microsoft.Compute/virtualMachines/providers/configurationProfileAssignments@2021-04-30-preview' = {
   name: name
   properties: {
     configurationProfile: configurationProfile

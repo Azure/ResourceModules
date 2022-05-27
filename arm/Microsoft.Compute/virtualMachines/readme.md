@@ -15,9 +15,9 @@ This module deploys one Virtual Machine with one or multiple nics and optionally
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2020-10-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-10-01-preview/roleAssignments) |
-| `Microsoft.Automanage/configurationProfileAssignments` | [2021-04-30-preview](https://docs.microsoft.com/en-us/azure/templates) |
 | `Microsoft.Compute/virtualMachines` | [2021-07-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Compute/2021-07-01/virtualMachines) |
 | `Microsoft.Compute/virtualMachines/extensions` | [2021-07-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Compute/2021-07-01/virtualMachines/extensions) |
+| `Microsoft.Compute/virtualMachines/providers/configurationProfileAssignments` | [2021-04-30-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Compute/virtualMachines) |
 | `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
 | `Microsoft.Network/networkInterfaces` | [2021-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/networkInterfaces) |
 | `Microsoft.Network/publicIPAddresses` | [2021-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/publicIPAddresses) |
@@ -26,14 +26,15 @@ This module deploys one Virtual Machine with one or multiple nics and optionally
 ## Parameters
 
 **Required parameters**
-| Parameter Name | Type | Allowed Values | Description |
-| :-- | :-- | :-- | :-- |
-| `adminUsername` | secureString |  | Administrator username. |
-| `imageReference` | object |  | OS image reference. In case of marketplace images, it's the combination of the publisher, offer, sku, version attributes. In case of custom images it's the resource ID of the custom image. |
-| `nicConfigurations` | array |  | Configures NICs and PIPs. |
-| `osDisk` | object |  | Specifies the OS disk. For security reasons, it is recommended to specify DiskEncryptionSet into the osDisk object.  Restrictions: DiskEncryptionSet cannot be enabled if Azure Disk Encryption (guest-VM encryption using bitlocker/DM-Crypt) is enabled on your VMs. |
-| `osType` | string | `[Windows, Linux]` | The chosen OS type. |
-| `vmSize` | string |  | Specifies the size for the VMs. |
+| Parameter Name | Type | Default Value | Allowed Values | Description |
+| :-- | :-- | :-- | :-- | :-- |
+| `adminUsername` | secureString |  |  | Administrator username. |
+| `configurationProfile` | string | `''` | `[/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction, /providers/Microsoft.Automanage/bestPractices/AzureBestPracticesDevTest, ]` | The configuration profile of automanage |
+| `imageReference` | object |  |  | OS image reference. In case of marketplace images, it's the combination of the publisher, offer, sku, version attributes. In case of custom images it's the resource ID of the custom image. |
+| `nicConfigurations` | array |  |  | Configures NICs and PIPs. |
+| `osDisk` | object |  |  | Specifies the OS disk. For security reasons, it is recommended to specify DiskEncryptionSet into the osDisk object.  Restrictions: DiskEncryptionSet cannot be enabled if Azure Disk Encryption (guest-VM encryption using bitlocker/DM-Crypt) is enabled on your VMs. |
+| `osType` | string |  | `[Windows, Linux]` | The chosen OS type. |
+| `vmSize` | string |  |  | Specifies the size for the VMs. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
@@ -1336,6 +1337,9 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
                 "commandToExecute": "sudo apt-get update"
             }
         },
+        "configurationProfile": {
+            "value": "/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction"
+        },
         "configurationProfileAssignments": {
             "value": [
                 "/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction"
@@ -1503,6 +1507,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
     extensionCustomScriptProtectedSetting: {
       commandToExecute: 'sudo apt-get update'
     }
+    configurationProfile: '/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction'
     configurationProfileAssignments: [
       '/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction'
     ]
@@ -1874,6 +1879,9 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
                 "commandToExecute": "powershell -ExecutionPolicy Unrestricted -Command \"& .\\scriptExtensionMasterInstaller.ps1\""
             }
         },
+        "configurationProfile": {
+            "value": "/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction"
+        },
         "configurationProfileAssignments": {
             "value": [
                 "/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction"
@@ -2073,6 +2081,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
     extensionCustomScriptProtectedSetting: {
       commandToExecute: 'powershell -ExecutionPolicy Unrestricted -Command \'& .\\scriptExtensionMasterInstaller.ps1\''
     }
+    configurationProfile: '/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction'
     configurationProfileAssignments: [
       '/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction'
     ]
