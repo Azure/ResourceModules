@@ -76,6 +76,8 @@ parameters:
 ## TEMPLATE LOGIC                              ##
 ##---------------------------------------------##
 jobs:
+  - ${{ if not( contains( parameters.templateFilePath, '.dependencies')) }}:
+    - template: /.azuredevops/pipelineTemplates/jobs.getParameterFiles.yml
   - job: deploy
     displayName: '${{ parameters.jobDisplayName }}'
     timeoutInMinutes: ${{ parameters.defaultJobTimeoutInMinutes }}
