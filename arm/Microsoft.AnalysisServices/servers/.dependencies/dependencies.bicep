@@ -16,6 +16,9 @@ param location string = deployment().location
 @description('Optional. A short identifier for the kind of deployment. E.g. "aspar". Should be kept short to not run into resource-name length-constraints')
 param serviceShort string = 'aspar'
 
+@description('Optional. The name prefix to inject into all resource names')
+param namePrefix string = 'carml'
+
 // =========== //
 // Deployments //
 // =========== //
@@ -34,10 +37,10 @@ module diagnosticDependencies '../../../.global/dependencyConstructs/diagnostic.
   name: '${uniqueString(deployment().name, location)}-diagDep'
   params: {
     resourceGroupName: resourceGroup.outputs.name
-    storageAccountName: 'adpsxxazsa${serviceShort}01'
-    logAnalyticsWorkspaceName: 'adp-sxx-law-${serviceShort}-01'
-    eventHubNamespaceEventHubName: 'adp-sxx-evh-${serviceShort}-01'
-    eventHubNamespaceName: 'adp-sxx-evhns-${serviceShort}-01'
+    storageAccountName: 'adp${namePrefix}azsa${serviceShort}01'
+    logAnalyticsWorkspaceName: 'adp-${namePrefix}-law-${serviceShort}-01'
+    eventHubNamespaceEventHubName: 'adp-${namePrefix}-evh-${serviceShort}-01'
+    eventHubNamespaceName: 'adp-${namePrefix}-evhns-${serviceShort}-01'
     location: location
   }
 }

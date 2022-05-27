@@ -5,10 +5,10 @@ parameters:
   moduleResourceGroupName: ''
 
 stages:
-  # - stage: validation
-  #   displayName: Pester tests
-  #   jobs:
-  #     - template: /.azuredevops/pipelineTemplates/jobs.validateModulePester.yml
+  - stage: validation
+    displayName: Pester tests
+    jobs:
+      - template: /.azuredevops/pipelineTemplates/jobs.validateModulePester.yml
 
   - stage: dependencyDeployment
     displayName: Dependency Deployment
