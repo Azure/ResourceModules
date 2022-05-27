@@ -128,6 +128,8 @@ var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
 
 var logAnalyticsSearchVersion = 1
 
+var enableChildTelemetry = false
+
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
   properties: {
@@ -181,7 +183,7 @@ module logAnalyticsWorkspace_storageInsightConfigs 'storageInsightConfigs/deploy
     containers: contains(storageInsightsConfig, 'containers') ? storageInsightsConfig.containers : []
     tables: contains(storageInsightsConfig, 'tables') ? storageInsightsConfig.tables : []
     storageAccountId: storageInsightsConfig.storageAccountId
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableChildTelemetry
   }
 }]
 
@@ -192,7 +194,7 @@ module logAnalyticsWorkspace_linkedServices 'linkedServices/deploy.bicep' = [for
     name: linkedService.name
     resourceId: linkedService.resourceId
     writeAccessResourceId: contains(linkedService, 'writeAccessResourceId') ? linkedService.writeAccessResourceId : ''
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableChildTelemetry
   }
 }]
 
@@ -208,7 +210,7 @@ module logAnalyticsWorkspace_savedSearches 'savedSearches/deploy.bicep' = [for (
     functionAlias: contains(savedSearch, 'functionAlias') ? savedSearch.functionAlias : ''
     functionParameters: contains(savedSearch, 'functionParameters') ? savedSearch.functionParameters : ''
     version: contains(savedSearch, 'version') ? savedSearch.version : 2
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableChildTelemetry
   }
 }]
 
@@ -229,7 +231,7 @@ module logAnalyticsWorkspace_dataSources 'dataSources/deploy.bicep' = [for (data
     syslogName: contains(dataSource, 'syslogName') ? dataSource.syslogName : ''
     syslogSeverities: contains(dataSource, 'syslogSeverities') ? dataSource.syslogSeverities : []
     performanceCounters: contains(dataSource, 'performanceCounters') ? dataSource.performanceCounters : []
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableChildTelemetry
   }
 }]
 

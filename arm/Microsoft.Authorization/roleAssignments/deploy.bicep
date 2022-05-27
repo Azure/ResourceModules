@@ -47,6 +47,8 @@ param principalType string = ''
 @sys.description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
 
+var enableChildTelemetry = false
+
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
   location: location
@@ -73,7 +75,7 @@ module roleAssignment_mg 'managementGroup/deploy.bicep' = if (empty(subscription
     conditionVersion: conditionVersion
     condition: !empty(condition) ? condition : ''
     location: location
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableChildTelemetry
   }
 }
 
@@ -90,7 +92,7 @@ module roleAssignment_sub 'subscription/deploy.bicep' = if (!empty(subscriptionI
     conditionVersion: conditionVersion
     condition: !empty(condition) ? condition : ''
     location: location
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableChildTelemetry
   }
 }
 
@@ -107,7 +109,7 @@ module roleAssignment_rg 'resourceGroup/deploy.bicep' = if (!empty(resourceGroup
     delegatedManagedIdentityResourceId: !empty(delegatedManagedIdentityResourceId) ? delegatedManagedIdentityResourceId : ''
     conditionVersion: conditionVersion
     condition: !empty(condition) ? condition : ''
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableChildTelemetry
   }
 }
 
