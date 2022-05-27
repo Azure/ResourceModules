@@ -15,9 +15,9 @@ This module deploys one Virtual Machine with one or multiple nics and optionally
 | :-- | :-- |
 | `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2020-10-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-10-01-preview/roleAssignments) |
+| `Microsoft.Automanage/configurationProfileAssignments` | [2021-04-30-preview](https://docs.microsoft.com/en-us/azure/templates) |
 | `Microsoft.Compute/virtualMachines` | [2021-07-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Compute/2021-07-01/virtualMachines) |
 | `Microsoft.Compute/virtualMachines/extensions` | [2021-07-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Compute/2021-07-01/virtualMachines/extensions) |
-| `Microsoft.Compute/virtualMachines/providers/configurationProfileAssignments` | [2021-04-30-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Compute/virtualMachines) |
 | `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
 | `Microsoft.Network/networkInterfaces` | [2021-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/networkInterfaces) |
 | `Microsoft.Network/publicIPAddresses` | [2021-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/publicIPAddresses) |
@@ -51,7 +51,6 @@ This module deploys one Virtual Machine with one or multiple nics and optionally
 | `bootDiagnosticStorageAccountName` | string | `''` |  | Custom storage account used to store boot diagnostic information. Boot diagnostics will be enabled with a custom storage account if a value is provided. |
 | `bootDiagnosticStorageAccountUri` | string | `[format('.blob.{0}/', environment().suffixes.storage)]` |  | Storage account boot diagnostic base URI. |
 | `certificatesToBeInstalled` | array | `[]` |  | Specifies set of certificates that should be installed onto the virtual machine. |
-| `configurationProfileAssignments` | array | `[]` |  | Any VM configuration profile assignments. |
 | `customData` | string | `''` |  | Custom data associated to the VM, this value will be automatically converted into base64 to account for the expected VM format. |
 | `dataDisks` | array | `[]` |  | Specifies the data disks. For security reasons, it is recommended to specify DiskEncryptionSet into the dataDisk object. Restrictions: DiskEncryptionSet cannot be enabled if Azure Disk Encryption (guest-VM encryption using bitlocker/DM-Crypt) is enabled on your VMs. |
 | `dedicatedHostId` | string | `''` |  | Specifies resource ID about the dedicated host that the virtual machine resides in. |
@@ -1336,14 +1335,6 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
             "value": {
                 "commandToExecute": "sudo apt-get update"
             }
-        },
-        "configurationProfile": {
-            "value": "/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction"
-        },
-        "configurationProfileAssignments": {
-            "value": [
-                "/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction"
-            ]
         }
     }
 }
@@ -1507,10 +1498,6 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
     extensionCustomScriptProtectedSetting: {
       commandToExecute: 'sudo apt-get update'
     }
-    configurationProfile: '/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction'
-    configurationProfileAssignments: [
-      '/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction'
-    ]
   }
 ```
 
@@ -1881,11 +1868,6 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
         },
         "configurationProfile": {
             "value": "/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction"
-        },
-        "configurationProfileAssignments": {
-            "value": [
-                "/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction"
-            ]
         }
     }
 }
@@ -2082,9 +2064,6 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
       commandToExecute: 'powershell -ExecutionPolicy Unrestricted -Command \'& .\\scriptExtensionMasterInstaller.ps1\''
     }
     configurationProfile: '/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction'
-    configurationProfileAssignments: [
-      '/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction'
-    ]
   }
 ```
 
