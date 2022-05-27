@@ -151,8 +151,9 @@ steps:
         # ----------- #
         # INVOKE TEST #
         # ----------- #
+        $templateFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.templateFilePath }}'
         $functionInput = @{
-          templateFilePath     = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.templateFilePath }}'
+          templateFilePath     = $templateFilePath
           location             = '${{ parameters.location }}'
           resourceGroupName    = '${{ parameters.resourceGroupName }}'
           subscriptionId       = '${{ parameters.subscriptionId }}'
@@ -216,8 +217,9 @@ steps:
         # ----------------- #
         # INVOKE DEPLOYMENT #
         # ----------------- #
+        $templateFilePath = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.templateFilePath }}'
         $functionInput = @{
-          templateFilePath     = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.templateFilePath }}'
+          templateFilePath     = $templateFilePath
           location             = '${{ parameters.location }}'
           resourceGroupName    = '${{ parameters.resourceGroupName }}'
           subscriptionId       = '${{ parameters.subscriptionId }}'
