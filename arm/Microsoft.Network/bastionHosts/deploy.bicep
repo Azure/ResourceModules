@@ -7,8 +7,14 @@ param location string = resourceGroup().location
 @description('Required. Shared services Virtual Network resource identifier.')
 param vNetId string
 
-@description('Optional. Specifies the resource ID of the existing public IP to be leveraged by Azure Bastion.')
-param publicIPAddressResourceId string = ''
+@description('Optional. The public ip resource ID to associate to the azureBastionSubnet. If empty, then the public ip that is created as part of this module will be applied to the azureBastionSubnet.')
+param azureBastionSubnetPublicIpId string = ''
+
+@description('Optional. This is to add any additional public ip configurations on top of the public ip with subnet ip configuration.')
+param additionalPublicIpConfigurations array = []
+
+@description('Optional. Specifies if a public ip should be created by default if one is not provided.')
+param isCreateDefaultPublicIP bool = true
 
 @description('Optional. Specifies the properties of the public IP to create and be used by Azure Bastion. If it\'s not provided and publicIPAddressResourceId is empty, a \'-pip\' suffix will be appended to the Bastion\'s name.')
 param publicIPAddressObject object = {}
@@ -79,6 +85,46 @@ var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
 
 var scaleUnits_var = skuType == 'Basic' ? 2 : scaleUnits
 
+var additionalPublicIpConfigurations_var = [for ipConfiguration in additionalPublicIpConfigurations: {
+  name: ipConfiguration.name
+  properties: {
+    publicIPAddress: contains(ipConfiguration, 'publicIPAddressResourceId') ? {
+      id: ipConfiguration.publicIPAddressResourceId
+    } : null
+  }
+}]
+
+// ----------------------------------------------------------------------------
+// Prep ipConfigurations object AzureBastionSubnet for different uses cases:
+// 1. Use existing public ip
+// 2. Use new public ip created in this module
+// 3. Do not use a public ip if isCreateDefaultPublicIP is false
+var subnet_var = {
+  subnet: {
+    id: '${vNetId}/subnets/AzureBastionSubnet' // The subnet name must be AzureBastionSubnet
+  }
+}
+var existingPip = {
+  publicIPAddress: {
+    id: azureBastionSubnetPublicIpId
+  }
+}
+var newPip = {
+  publicIPAddress: (empty(azureBastionSubnetPublicIpId) && isCreateDefaultPublicIP) ? {
+    id: publicIPAddress.outputs.resourceId
+  } : null
+}
+
+var ipConfigurations = concat([
+  {
+    name: 'IpConfAzureBastionSubnet'
+    //Use existing public ip, new public ip created in this module, or none if isCreateDefaultPublicIP is false
+    properties: union(subnet_var, !empty(azureBastionSubnetPublicIpId) ? existingPip : {}, (isCreateDefaultPublicIP ? newPip : {}))
+  }
+], additionalPublicIpConfigurations_var)
+
+// ----------------------------------------------------------------------------
+
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
   properties: {
@@ -91,12 +137,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource publicIPAddressExisting 'Microsoft.Network/publicIPAddresses@2021-05-01' existing = if (!empty(publicIPAddressResourceId)) {
-  name: last(split(publicIPAddressResourceId, '/'))
-  scope: resourceGroup(split(publicIPAddressResourceId, '/')[2], split(publicIPAddressResourceId, '/')[4])
-}
-
-module publicIPAddress '../publicIPAddresses/deploy.bicep' = if (empty(publicIPAddressResourceId)) {
+module publicIPAddress '.bicep/nested_publicIPAddress.bicep' = if (empty(azureBastionSubnetPublicIpId) && isCreateDefaultPublicIP) {
   name: '${uniqueString(deployment().name, location)}-Bastion-PIP'
   params: {
     name: contains(publicIPAddressObject, 'name') ? publicIPAddressObject.name : '${name}-pip'
@@ -136,19 +177,7 @@ resource azureBastion 'Microsoft.Network/bastionHosts@2021-05-01' = {
   }
   properties: {
     scaleUnits: scaleUnits_var
-    ipConfigurations: [
-      {
-        name: 'IpConf'
-        properties: {
-          subnet: {
-            id: '${vNetId}/subnets/AzureBastionSubnet'
-          }
-          publicIPAddress: {
-            id: !empty(publicIPAddressResourceId) ? publicIPAddressResourceId : publicIPAddress.outputs.resourceId
-          }
-        }
-      }
-    ]
+    ipConfigurations: ipConfigurations
   }
 }
 
@@ -195,3 +224,6 @@ output resourceId string = azureBastion.id
 
 @description('The location the resource was deployed into.')
 output location string = azureBastion.location
+
+@description('The public ipconfiguration object for the AzureBastionSubnet.')
+output ipConfAzureBastionSubnet object = azureBastion.properties.ipConfigurations[0]

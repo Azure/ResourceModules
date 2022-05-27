@@ -928,7 +928,7 @@ stages:
               displayName: Default Virtual Network
             - path: $(dependencyPath)/$(resourceType)/parameters/1.bastion.parameters.json
               templateFilePath: $(templateFilePath)
-              displayName: Bastion Virtual Network
+              displayName: Bastion Virtual Network Min
             - path: $(dependencyPath)/$(resourceType)/parameters/2.vnetpeer01.parameters.json
               templateFilePath: $(templateFilePath)
               displayName: VNET PEering 1 Virtual Network
@@ -959,7 +959,7 @@ stages:
             - path: $(dependencyPath)/$(resourceType)/parameters/12.bastion.parameters.json
               templateFilePath: $(templateFilePath)
               displayName: Bastion Virtual Network Additional
-            - path: $(dependencyPath)/$(resourceType)/parameters/12.bastion.parameters.json
+            - path: $(dependencyPath)/$(resourceType)/parameters/13.bastion.parameters.json
               templateFilePath: $(templateFilePath)
               displayName: Bastion Virtual Network Custom
 

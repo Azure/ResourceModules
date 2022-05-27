@@ -3,7 +3,7 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "name": {
-      "value": "adp-<<namePrefix>>-az-pip-x-bas"
+      "value": "adp-<<namePrefix>>-az-pip-additional-bas"
     },
     "skuName": {
       "value": "Standard"
