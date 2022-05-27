@@ -287,9 +287,6 @@ param additionalUnattendContent array = []
 @description('Optional. Specifies the Windows Remote Management listeners. This enables remote Windows PowerShell. - WinRMConfiguration object.')
 param winRM object = {}
 
-@description('Optional. Any VM configuration profile assignments.')
-param configurationProfileAssignments array = []
-
 @description('Required. The configuration profile of automanage.')
 @allowed([
   '/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction'
@@ -475,11 +472,13 @@ resource virtualMachine 'Microsoft.Compute/virtualMachines@2021-07-01' = {
 //   }
 // }]
 
-resource vm_configurationProfileAssignment 'Microsoft.Compute/virtualMachines/providers/configurationProfileAssignments@2021-04-30-preview' = if (!empty(configurationProfile)) {
-  name: '${virtualMachine.name}/Microsoft.Automanage/default'
+// resource vm_configurationProfileAssignment 'Microsoft.Compute/virtualMachines/providers/configurationProfileAssignments@2021-04-30-preview' = if (!empty(configurationProfile)) {
+resource vm_configurationProfileAssignment 'Microsoft.Automanage/configurationProfileAssignments@2021-04-30-preview' = if (!empty(configurationProfile)) {
+  name: 'default'
   properties: {
     configurationProfile: configurationProfile
   }
+  scope: virtualMachine
 }
 
 // "resources": [
