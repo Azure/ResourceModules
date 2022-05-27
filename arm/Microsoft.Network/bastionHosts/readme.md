@@ -30,6 +30,8 @@ This module deploys a bastion host.
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
+| `additionalPublicIpConfigurations` | array | `[]` |  | This is to add any additional public ip configurations on top of the public ip with subnet ip configuration. |
+| `azureBastionSubnetPublicIpId` | string | `''` |  | The public ip resource ID to associate to the azureBastionSubnet. If empty, then the public ip that is created as part of this module will be applied to the azureBastionSubnet. |
 | `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
 | `diagnosticLogCategoriesToEnable` | array | `[BastionAuditLogs]` | `[BastionAuditLogs]` | Optional. The name of bastion logs that will be streamed. |
@@ -38,14 +40,141 @@ This module deploys a bastion host.
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `isCreateDefaultPublicIP` | bool | `True` |  | Specifies if a public ip should be created by default if one is not provided. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
+<<<<<<< HEAD
 | `lock` | string | `''` | `[, CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `publicIPAddressObject` | object | `{object}` |  | Specifies the properties of the public IP to create and be used by Azure Bastion. If it's not provided and publicIPAddressResourceId is empty, a '-pip' suffix will be appended to the Bastion's name. |
 | `publicIPAddressResourceId` | string | `''` |  | Specifies the resource ID of the existing public IP to be leveraged by Azure Bastion. |
+=======
+| `lock` | string | `'NotSpecified'` | `[CanNotDelete, NotSpecified, ReadOnly]` | Specify the type of lock. |
+| `publicIPAddressObject` | object | `{object}` |  | Specifies the properties of the public IP to create and be used by Azure Bastion. If it's not provided and publicIPAddressId is empty, a '-pip' suffix will be appended to the Bastion's name. |
+>>>>>>> 6a0a5ff7 (update readme)
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `scaleUnits` | int | `2` |  | The scale units for the Bastion Host resource. |
 | `skuType` | string | `'Basic'` | `[Basic, Standard]` | The SKU of this Bastion Host. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
+
+
+### Parameter Usage: `additionalPublicIpConfigurations`
+
+Create additional public ip configurations from existing public ips
+
+<details>
+
+<summary>Parameter JSON format</summary>
+
+```json
+"additionalPublicIpConfigurations": {
+    "value": [
+        {
+            "name": "ipConfig01",
+            "publicIPAddressResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/publicIPAddresses/adp-<<namePrefix>>-az-pip-x-fw-01"
+        },
+        {
+            "name": "ipConfig02",
+            "publicIPAddressResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/publicIPAddresses/adp-<<namePrefix>>-az-pip-x-fw-02"
+        }
+    ]
+}
+```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+additionalPublicIpConfigurations: [
+    {
+        name: 'ipConfig01'
+        publicIPAddressResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/publicIPAddresses/adp-<<namePrefix>>-az-pip-x-fw-01'
+    }
+    {
+        name: 'ipConfig02'
+        publicIPAddressResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/publicIPAddresses/adp-<<namePrefix>>-az-pip-x-fw-02'
+    }
+]
+```
+
+</details>
+
+
+### Parameter Usage: `publicIPAddressObject`
+
+The Public IP Address object to create as part of the module. This will be created if `isCreateDefaultPublicIP` is true (which it is by default). If not provided, the name and other configurations will be set by default.
+
+
+<details>
+
+<summary>Parameter JSON format</summary>
+
+```json
+"publicIPAddressObject": {
+    "value": {
+        "name": "adp-<<namePrefix>>-az-pip-custom-x-fw",
+        "publicIPPrefixResourceId": "",
+        "publicIPAllocationMethod": "Static",
+        "skuName": "Standard",
+        "skuTier": "Regional",
+        "roleAssignments": [
+            {
+                "roleDefinitionIdOrName": "Reader",
+                "principalIds": [
+                    "<<deploymentSpId>>"
+                ]
+            }
+        ],
+        "diagnosticMetricsToEnable": [
+            "AllMetrics"
+        ],
+        "diagnosticLogCategoriesToEnable": [
+            "DDoSProtectionNotifications",
+            "DDoSMitigationFlowLogs",
+            "DDoSMitigationReports"
+        ]
+    }
+}
+```
+
+</details>
+
+
+
+<details>
+
+<summary>Bicep format</summary>
+
+
+```bicep
+publicIPAddressObject: {
+    name: 'mypip'
+    publicIPPrefixResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/publicIPPrefixes/myprefix'
+    publicIPAllocationMethod: 'Dynamic'
+    skuName: 'Basic'
+    skuTier: 'Regional'
+    roleAssignments: [
+        {
+            roleDefinitionIdOrName: 'Reader'
+            principalIds: [
+                '<<deploymentSpId>>'
+            ]
+        }
+    ]
+    diagnosticMetricsToEnable: [
+        'AllMetrics'
+    ]
+    diagnosticLogCategoriesToEnable: [
+        'DDoSProtectionNotifications'
+        'DDoSMitigationFlowLogs'
+        'DDoSMitigationReports'
+    ]
+}
+```
+
+</details>
+
 
 
 ### Parameter Usage: `tags`
@@ -152,6 +281,7 @@ roleAssignments: [
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
+| `ipConfAzureBastionSubnet` | object | The public ipconfiguration object for the AzureBastionSubnet. |
 | `location` | string | The location the resource was deployed into. |
 | `name` | string | The name the Azure Bastion. |
 | `resourceGroupName` | string | The resource group the Azure Bastion was deployed into. |
@@ -160,6 +290,148 @@ roleAssignments: [
 ## Deployment examples
 
 <h3>Example 1</h3>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": "<<namePrefix>>-az-bas-add-001"
+        },
+        "vNetId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-add-bas"
+        },
+        "additionalPublicIpConfigurations": {
+            "value": [
+                {
+                    "name": "ipConfig01",
+                    "publicIPAddressResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/publicIPAddresses/adp-<<namePrefix>>-az-pip-additional-bas"
+                }
+            ]
+        }
+    }
+}
+
+```
+
+</details>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module bastionHosts './Microsoft.Network/bastionHosts/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-bastionHosts'
+  params: {
+    name: '<<namePrefix>>-az-bas-add-001'
+    vNetId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-add-bas'
+    additionalPublicIpConfigurations: [
+      {
+        name: 'ipConfig01'
+        publicIPAddressResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/publicIPAddresses/adp-<<namePrefix>>-az-pip-additional-bas'
+      }
+    ]
+  }
+```
+
+</details>
+<p>
+
+<h3>Example 2</h3>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": "<<namePrefix>>-az-bas-custompip-001"
+        },
+        "vNetId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-custompip-bas"
+        },
+        "publicIPAddressObject": {
+            "value": {
+                "name": "adp-<<namePrefix>>-az-pip-custom-x-bas",
+                "publicIPPrefixResourceId": "",
+                "publicIPAllocationMethod": "Static",
+                "skuName": "Standard",
+                "skuTier": "Regional",
+                "roleAssignments": [
+                    {
+                        "roleDefinitionIdOrName": "Reader",
+                        "principalIds": [
+                            "<<deploymentSpId>>"
+                        ]
+                    }
+                ],
+                "diagnosticMetricsToEnable": [
+                    "AllMetrics"
+                ],
+                "diagnosticLogCategoriesToEnable": [
+                    "DDoSProtectionNotifications",
+                    "DDoSMitigationFlowLogs",
+                    "DDoSMitigationReports"
+                ]
+            }
+        }
+    }
+}
+
+```
+
+</details>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module bastionHosts './Microsoft.Network/bastionHosts/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-bastionHosts'
+  params: {
+    name: '<<namePrefix>>-az-bas-custompip-001'
+    vNetId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-custompip-bas'
+    publicIPAddressObject: {
+      name: 'adp-<<namePrefix>>-az-pip-custom-x-bas'
+      publicIPPrefixResourceId: ''
+      publicIPAllocationMethod: 'Static'
+      skuName: 'Standard'
+      skuTier: 'Regional'
+      roleAssignments: [
+        {
+          roleDefinitionIdOrName: 'Reader'
+          principalIds: [
+            '<<deploymentSpId>>'
+          ]
+        }
+      ]
+      diagnosticMetricsToEnable: [
+        'AllMetrics'
+      ]
+      diagnosticLogCategoriesToEnable: [
+        'DDoSProtectionNotifications'
+        'DDoSMitigationFlowLogs'
+        'DDoSMitigationReports'
+      ]
+    }
+  }
+```
+
+</details>
+<p>
+
+<h3>Example 3</h3>
 
 <details>
 
@@ -199,7 +471,7 @@ module bastionHosts './Microsoft.Network/bastionHosts/deploy.bicep' = {
 </details>
 <p>
 
-<h3>Example 2</h3>
+<h3>Example 4</h3>
 
 <details>
 
