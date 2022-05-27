@@ -210,9 +210,6 @@
             "value": {
                 "commandToExecute": "sudo apt-get update"
             }
-        },
-        "configurationProfile": {
-            "value": "/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction"
         }
     }
 }
