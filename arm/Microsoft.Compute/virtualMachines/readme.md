@@ -1644,13 +1644,13 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "<<namePrefix>>-vm-win-02"
+            "value": "<<namePrefix>>-vm-win-03"
         },
         "imageReference": {
             "value": {
                 "publisher": "MicrosoftWindowsServer",
                 "offer": "WindowsServer",
-                "sku": "2016-Datacenter",
+                "sku": "2019-Datacenter",
                 "version": "latest"
             }
         },
@@ -1715,11 +1715,11 @@ resource kv1 'Microsoft.KeyVault/vaults@2019-09-01' existing = {
 module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-virtualMachines'
   params: {
-    name: '<<namePrefix>>-vm-win-02'
+    name: '<<namePrefix>>-vm-win-03'
     imageReference: {
       publisher: 'MicrosoftWindowsServer'
       offer: 'WindowsServer'
-      sku: '2016-Datacenter'
+      sku: '2019-Datacenter'
       version: 'latest'
     }
     osType: 'Windows'
@@ -1776,11 +1776,14 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
+        "name": {
+            "value": "<<namePrefix>>-vm-win-02"
+        },
         "imageReference": {
             "value": {
                 "publisher": "MicrosoftWindowsServer",
                 "offer": "WindowsServer",
-                "sku": "2016-Datacenter",
+                "sku": "2022-datacenter-azure-edition",
                 "version": "latest"
             }
         },
@@ -1842,10 +1845,11 @@ resource kv1 'Microsoft.KeyVault/vaults@2019-09-01' existing = {
 module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-virtualMachines'
   params: {
+    name: '<<namePrefix>>-vm-win-02'
     imageReference: {
       publisher: 'MicrosoftWindowsServer'
       offer: 'WindowsServer'
-      sku: '2016-Datacenter'
+      sku: '2022-datacenter-azure-edition'
       version: 'latest'
     }
     osType: 'Windows'
@@ -1911,7 +1915,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
             "value": {
                 "publisher": "MicrosoftWindowsServer",
                 "offer": "WindowsServer",
-                "sku": "2016-Datacenter",
+                "sku": "2019-Datacenter",
                 "version": "latest"
             }
         },
@@ -2152,7 +2156,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
     imageReference: {
       publisher: 'MicrosoftWindowsServer'
       offer: 'WindowsServer'
-      sku: '2016-Datacenter'
+      sku: '2019-Datacenter'
       version: 'latest'
     }
     osType: 'Windows'
