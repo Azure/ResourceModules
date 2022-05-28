@@ -6,6 +6,7 @@ This module deploys one Virtual Machine with one or multiple nics and optionally
 
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
+- [Considerations](#Considerations)
 - [Outputs](#Outputs)
 - [Deployment examples](#Deployment-examples)
 
@@ -979,6 +980,13 @@ userAssignedIdentities: {
 
 </details>
 <p>
+
+## Considerations
+
+Enabling automanage triggers the creation of additional resources outside of the specific virtual machine deployment, such as:
+- an `Automanage-Automate-<timestamp>` in the same Virtual Machine Resource Group and linking to the log analytics workspace leveraged by Azure Security Center.
+- a `DefaultResourceGroup-<locationId>` rg hosting a recovery services vault `DefaultBackupVault-<location>` where vm backups are stored
+For further details on automanage please refer to [Automanage virtual machines](https://docs.microsoft.com/en-us/azure/automanage/automanage-virtual-machines).
 
 ## Outputs
 

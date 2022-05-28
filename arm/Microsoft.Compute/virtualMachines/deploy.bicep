@@ -464,15 +464,6 @@ resource virtualMachine 'Microsoft.Compute/virtualMachines@2021-07-01' = {
   ]
 }
 
-// module vm_configurationProfileAssignment '.bicep/nested_configurationProfileAssignment.bicep' = [for (configurationProfileAssignment, index) in configurationProfileAssignments: {
-//   name: '${uniqueString(deployment().name, location)}-VM-ConfigurationProfileAssignment-${index}'
-//   params: {
-//     virtualMachineName: virtualMachine.name
-//     configurationProfile: configurationProfileAssignment
-//   }
-// }]
-
-// resource vm_configurationProfileAssignment 'Microsoft.Compute/virtualMachines/providers/configurationProfileAssignments@2021-04-30-preview' = if (!empty(configurationProfile)) {
 resource vm_configurationProfileAssignment 'Microsoft.Automanage/configurationProfileAssignments@2021-04-30-preview' = if (!empty(configurationProfile)) {
   name: 'default'
   properties: {
@@ -480,17 +471,6 @@ resource vm_configurationProfileAssignment 'Microsoft.Automanage/configurationPr
   }
   scope: virtualMachine
 }
-
-// "resources": [
-//         {
-//             "type": "Microsoft.Compute/virtualMachines/providers/configurationProfileAssignments",
-//             "apiVersion": "2021-04-30-preview",
-//             "name": "[concat(parameters('machineName'), '/Microsoft.Automanage/default')]",
-//             "properties": {
-//                 "configurationProfile": "[parameters('configurationProfile')]"
-//             }
-//         }
-//     ]
 
 module vm_domainJoinExtension 'extensions/deploy.bicep' = if (extensionDomainJoinConfig.enabled) {
   name: '${uniqueString(deployment().name, location)}-VM-DomainJoin'
