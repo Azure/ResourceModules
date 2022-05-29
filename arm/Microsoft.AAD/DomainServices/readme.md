@@ -264,9 +264,6 @@ $pfxCertificate = [System.Convert]::ToBase64String($rawCertByteStream)
         },
         "diagnosticEventHubName": {
             "value": "adp-<<namePrefix>>-az-evh-x-001"
-        },
-        "lock": {
-            "value": "NotSpecified"
         }
     }
 }

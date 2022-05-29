@@ -209,9 +209,6 @@ roleAssignments: [
         "diagnosticEventHubName": {
             "value": "adp-<<namePrefix>>-az-evh-x-001"
         },
-        "lock": {
-            "value": "NotSpecified"
-        },
         "roleAssignments": {
             "value": [
                 {
