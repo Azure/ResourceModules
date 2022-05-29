@@ -7,13 +7,12 @@ param location string = resourceGroup().location
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
+@description('Optional. Specify the locks to apply.')
 @allowed([
   'CanNotDelete'
-  'NotSpecified'
   'ReadOnly'
 ])
-@description('Optional. Specify the type of lock.')
-param lock string = 'NotSpecified'
+param locks array = []
 
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
@@ -280,14 +279,14 @@ resource serviceFabricCluster 'Microsoft.ServiceFabric/clusters@2021-06-01' = {
 }
 
 // Service Fabric cluster resource lock
-resource serviceFabricCluster_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
+resource serviceFabricCluster_locks 'Microsoft.Authorization/locks@2017-04-01' = [for lock in locks: {
   name: '${serviceFabricCluster.name}-${lock}-lock'
   properties: {
     level: lock
     notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: serviceFabricCluster
-}
+}]
 
 // Service Fabric cluster RBAC assignment
 module serviceFabricCluster_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {

@@ -7,7 +7,7 @@ param enableAcceleratedNetworking bool = false
 param dnsServers array = []
 param networkSecurityGroupId string = ''
 param ipConfigurationArray array
-param lock string
+param locks array = []
 param diagnosticStorageAccountId string
 param diagnosticLogsRetentionInDays int
 param diagnosticWorkspaceId string
@@ -51,7 +51,7 @@ module networkInterface_publicIPConfigurations 'nested_networkInterface_publicIP
     diagnosticSettingsName: pipDiagnosticSettingsName
     diagnosticMetricsToEnable: pipdiagnosticMetricsToEnable
     diagnosticLogCategoriesToEnable: pipdiagnosticLogCategoriesToEnable
-    lock: lock
+    locks: locks
     roleAssignments: contains(ipConfiguration.pipconfiguration, 'roleAssignments') ? (!empty(ipConfiguration.pipconfiguration.roleAssignments) ? ipConfiguration.pipconfiguration.roleAssignments : []) : []
     tags: tags
   }
@@ -90,14 +90,14 @@ resource networkInterface 'Microsoft.Network/networkInterfaces@2021-05-01' = {
   ]
 }
 
-resource networkInterface_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
+resource networkInterface_locks 'Microsoft.Authorization/locks@2017-04-01' = [for lock in locks: {
   name: '${networkInterface.name}-${lock}-lock'
   properties: {
     level: lock
     notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: networkInterface
-}
+}]
 
 resource networkInterface_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(diagnosticWorkspaceId)) || (!empty(diagnosticEventHubAuthorizationRuleId)) || (!empty(diagnosticEventHubName))) {
   name: nicDiagnosticSettingsName

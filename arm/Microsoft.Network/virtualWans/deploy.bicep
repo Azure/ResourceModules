@@ -29,13 +29,12 @@ param tags object = {}
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
 
+@description('Optional. Specify the locks to apply.')
 @allowed([
   'CanNotDelete'
-  'NotSpecified'
   'ReadOnly'
 ])
-@description('Optional. Specify the type of lock.')
-param lock string = 'NotSpecified'
+param locks array = []
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
@@ -61,14 +60,14 @@ resource virtualWan 'Microsoft.Network/virtualWans@2021-05-01' = {
   }
 }
 
-resource virtualWan_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
+resource virtualWan_locks 'Microsoft.Authorization/locks@2017-04-01' = [for lock in locks: {
   name: '${virtualWan.name}-${lock}-lock'
   properties: {
     level: lock
     notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: virtualWan
-}
+}]
 
 module virtualWan_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-VWan-Rbac-${index}'

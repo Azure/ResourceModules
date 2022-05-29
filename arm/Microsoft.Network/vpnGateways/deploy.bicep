@@ -28,13 +28,12 @@ param vpnGatewayScaleUnit int = 2
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
+@description('Optional. Specify the locks to apply.')
 @allowed([
   'CanNotDelete'
-  'NotSpecified'
   'ReadOnly'
 ])
-@description('Optional. Specify the type of lock.')
-param lock string = 'NotSpecified'
+param locks array = []
 
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
@@ -68,14 +67,14 @@ resource vpnGateway 'Microsoft.Network/vpnGateways@2021-05-01' = {
   }
 }
 
-resource vpnGateway_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
+resource vpnGateway_locks 'Microsoft.Authorization/locks@2017-04-01' = [for lock in locks: {
   name: '${vpnGateway.name}-${lock}-lock'
   properties: {
     level: lock
     notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: vpnGateway
-}
+}]
 
 module vpnGateway_natRules 'natRules/deploy.bicep' = [for (natRule, index) in natRules: {
   name: '${deployment().name}-NATRule-${index}'

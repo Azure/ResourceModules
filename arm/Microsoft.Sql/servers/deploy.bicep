@@ -17,13 +17,12 @@ param systemAssignedIdentity bool = false
 @description('Optional. The ID(s) to assign to the resource.')
 param userAssignedIdentities object = {}
 
+@description('Optional. Specify the locks to apply.')
 @allowed([
   'CanNotDelete'
-  'NotSpecified'
   'ReadOnly'
 ])
-@description('Optional. Specify the type of lock.')
-param lock string = 'NotSpecified'
+param locks array = []
 
 @description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
 param roleAssignments array = []
@@ -93,14 +92,14 @@ resource server 'Microsoft.Sql/servers@2021-05-01-preview' = {
   }
 }
 
-resource server_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
+resource server_locks 'Microsoft.Authorization/locks@2017-04-01' = [for lock in locks: {
   name: '${server.name}-${lock}-lock'
   properties: {
     level: lock
-    notes: (lock == 'CanNotDelete') ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
+    notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: server
-}
+}]
 
 module server_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-Sql-Rbac-${index}'

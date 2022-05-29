@@ -41,13 +41,12 @@ param diagnosticEventHubAuthorizationRuleId string = ''
 @sys.description('Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.')
 param diagnosticEventHubName string = ''
 
-@allowed([
+@sys.description('Optional. Specify the locks to apply.')
+@sys.allowed([
   'CanNotDelete'
-  'NotSpecified'
   'ReadOnly'
 ])
-@sys.description('Optional. Specify the type of lock.')
-param lock string = 'NotSpecified'
+param locks array = []
 
 @sys.description('Optional. Tags of the resource.')
 param tags object = {}
@@ -112,14 +111,14 @@ resource appGroup 'Microsoft.DesktopVirtualization/applicationgroups@2021-07-12'
   }
 }
 
-resource appGroup_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
+resource appGroup_locks 'Microsoft.Authorization/locks@2017-04-01' = [for lock in locks: {
   name: '${appGroup.name}-${lock}-lock'
   properties: {
     level: lock
-    notes: (lock == 'CanNotDelete') ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
+    notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: appGroup
-}
+}]
 
 resource appGroup_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(diagnosticWorkspaceId)) || (!empty(diagnosticEventHubAuthorizationRuleId)) || (!empty(diagnosticEventHubName))) {
   name: diagnosticSettingsName

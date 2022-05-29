@@ -11,7 +11,7 @@ param diagnosticEventHubAuthorizationRuleId string
 param diagnosticEventHubName string
 param diagnosticMetricsToEnable array
 param diagnosticLogCategoriesToEnable array
-param lock string
+param locks array = []
 param roleAssignments array
 param tags object
 
@@ -53,14 +53,14 @@ resource publicIpAddress 'Microsoft.Network/publicIPAddresses@2021-05-01' = {
   }
 }
 
-resource publicIpAddress_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
+resource publicIpAddress_locks 'Microsoft.Authorization/locks@2017-04-01' = [for lock in locks: {
   name: '${publicIpAddress.name}-${lock}-lock'
   properties: {
     level: lock
     notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: publicIpAddress
-}
+}]
 
 resource publicIpAddress_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(diagnosticWorkspaceId)) || (!empty(diagnosticEventHubAuthorizationRuleId)) || (!empty(diagnosticEventHubName))) {
   name: diagnosticSettingsName

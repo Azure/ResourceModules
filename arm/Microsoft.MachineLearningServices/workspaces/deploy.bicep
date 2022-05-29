@@ -26,13 +26,12 @@ param associatedApplicationInsightsResourceId string
 @sys.description('Optional. The resource ID of the associated Container Registry.')
 param associatedContainerRegistryResourceId string = ''
 
-@allowed([
+@sys.description('Optional. Specify the locks to apply.')
+@sys.allowed([
   'CanNotDelete'
-  'NotSpecified'
   'ReadOnly'
 ])
-@sys.description('Optional. Specify the type of lock.')
-param lock string = 'NotSpecified'
+param locks array = []
 
 @sys.description('Optional. The flag to signal HBI data in the workspace and reduce diagnostic data collected by the service.')
 param hbiWorkspace bool = false
@@ -233,14 +232,14 @@ module workspace_computes 'computes/deploy.bicep' = [for compute in computes: {
   }
 }]
 
-resource workspace_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
+resource workspace_locks 'Microsoft.Authorization/locks@2017-04-01' = [for lock in locks: {
   name: '${workspace.name}-${lock}-lock'
   properties: {
     level: lock
-    notes: (lock == 'CanNotDelete') ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
+    notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: workspace
-}
+}]
 
 resource workspace_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(diagnosticWorkspaceId)) || (!empty(diagnosticEventHubAuthorizationRuleId)) || (!empty(diagnosticEventHubName))) {
   name: diagnosticSettingsName

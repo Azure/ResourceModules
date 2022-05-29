@@ -37,13 +37,12 @@ param customIPSecPolicy object = {
 @description('Optional. The weight added to routes learned from this BGP speaker.')
 param routingWeight int = -1
 
+@description('Optional. Specify the locks to apply.')
 @allowed([
   'CanNotDelete'
-  'NotSpecified'
   'ReadOnly'
 ])
-@description('Optional. Specify the type of lock.')
-param lock string = 'NotSpecified'
+param locks array = []
 
 @description('Optional. Tags of the resource.')
 param tags object = {}
@@ -106,14 +105,14 @@ resource connection 'Microsoft.Network/connections@2021-05-01' = {
   }
 }
 
-resource connection_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
+resource connection_locks 'Microsoft.Authorization/locks@2017-04-01' = [for lock in locks: {
   name: '${connection.name}-${lock}-lock'
   properties: {
     level: lock
     notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: connection
-}
+}]
 
 @description('The resource group the remote connection was deployed into.')
 output resourceGroupName string = resourceGroup().name
