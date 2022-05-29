@@ -1437,38 +1437,8 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
       sku: '2016-Datacenter'
       version: 'latest'
     }
-    adminUsername: [
-      {
-        Value: {
-          keyVault: {
-            id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001'
-          }
-          secretName: 'adminUsername'
-        }
-        MemberType: 8
-        IsSettable: true
-        IsGettable: true
-        TypeNameOfValue: 'System.Management.Automation.PSCustomObject'
-        Name: 'reference'
-        IsInstance: true
-      }
-    ]
-    adminPassword: [
-      {
-        Value: {
-          keyVault: {
-            id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001'
-          }
-          secretName: 'adminPassword'
-        }
-        MemberType: 8
-        IsSettable: true
-        IsGettable: true
-        TypeNameOfValue: 'System.Management.Automation.PSCustomObject'
-        Name: 'reference'
-        IsInstance: true
-      }
-    ]
+    adminUsername: kv1.getSecret('adminUsername')
+    adminPassword: kv1.getSecret('adminPassword')
     nicConfigurations: [
       {
         nicSuffix: '-nic01'
@@ -1722,38 +1692,8 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
       sku: '2016-Datacenter'
       version: 'latest'
     }
-    adminUsername: [
-      {
-        Value: {
-          keyVault: {
-            id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001'
-          }
-          secretName: 'adminUsername'
-        }
-        MemberType: 8
-        IsSettable: true
-        IsGettable: true
-        TypeNameOfValue: 'System.Management.Automation.PSCustomObject'
-        Name: 'reference'
-        IsInstance: true
-      }
-    ]
-    adminPassword: [
-      {
-        Value: {
-          keyVault: {
-            id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001'
-          }
-          secretName: 'adminPassword'
-        }
-        MemberType: 8
-        IsSettable: true
-        IsGettable: true
-        TypeNameOfValue: 'System.Management.Automation.PSCustomObject'
-        Name: 'reference'
-        IsInstance: true
-      }
-    ]
+    adminUsername: kv1.getSecret('adminUsername')
+    adminPassword: kv1.getSecret('adminPassword')
     nicConfigurations: [
       {
         nicSuffix: '-nic01'
