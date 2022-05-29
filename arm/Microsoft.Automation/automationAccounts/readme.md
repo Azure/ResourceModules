@@ -374,7 +374,6 @@ userAssignedIdentities: {
         "keyVersion" : {
                     "value" : "9917c14be51d4d93b37218de7d326f60"
         },
-
         "userAssignedIdentities": {
             "value": {
                 "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001": {}
