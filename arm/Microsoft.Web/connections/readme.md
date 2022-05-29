@@ -34,7 +34,7 @@ This module deploys an Azure API connection.
 | `customParameterValues` | object | `{object}` |  | Customized parameter values for specific connections. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `location` | string | `[resourceGroup().location]` |  | Location of the deployment. |
-| `lock` | string | `'NotSpecified'` | `[CanNotDelete, NotSpecified, ReadOnly]` | Specify the type of lock. |
+| `locks` | array | `[]` | `[CanNotDelete, ReadOnly]` | Specify the locks to apply. |
 | `nonSecretParameterValues` | object | `{object}` |  | Dictionary of nonsecret parameter values. |
 | `parameterValues` | secureObject | `{object}` |  | Connection strings or access keys for connection. Example: 'accountName' and 'accessKey' when using blobs.  It can change depending on the resource. |
 | `parameterValueType` | string | `''` |  | Value Type of parameter, in case alternativeParameterValues is used. |

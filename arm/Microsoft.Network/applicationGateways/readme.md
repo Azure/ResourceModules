@@ -55,7 +55,7 @@ This module deploys Network ApplicationGateways.
 | `httpListeners` | array | `[]` |  | Http listeners of the application gateway resource. |
 | `loadDistributionPolicies` | array | `[]` |  | Load distribution policies of the application gateway resource. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
-| `lock` | string | `'NotSpecified'` | `[CanNotDelete, NotSpecified, ReadOnly]` | Specify the type of lock. |
+| `locks` | array | `[]` | `[CanNotDelete, ReadOnly]` | Specify the locks to apply. |
 | `privateLinkConfigurations` | array | `[]` |  | PrivateLink configurations on application gateway. |
 | `probes` | array | `[]` |  | Probes of the application gateway resource. |
 | `redirectConfigurations` | array | `[]` |  | Redirect configurations of the application gateway resource. |

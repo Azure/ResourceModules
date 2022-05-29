@@ -39,7 +39,7 @@ This module deploys a traffic manager profile.
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `endpoints` | array | `[]` |  | The list of endpoints in the Traffic Manager profile. |
-| `lock` | string | `'NotSpecified'` | `[CanNotDelete, NotSpecified, ReadOnly]` | Specify the type of lock. |
+| `locks` | array | `[]` | `[CanNotDelete, ReadOnly]` | Specify the locks to apply. |
 | `maxReturn` | int | `1` |  | Maximum number of endpoints to be returned for MultiValue routing type. |
 | `monitorConfig` | object | `{object}` |  | The endpoint monitoring settings of the Traffic Manager profile. |
 | `profileStatus` | string | `'Enabled'` | `[Enabled, Disabled]` | The status of the Traffic Manager profile. |

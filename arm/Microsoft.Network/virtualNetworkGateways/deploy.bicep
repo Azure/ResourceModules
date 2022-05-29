@@ -311,13 +311,13 @@ resource virtualGatewayPublicIP 'Microsoft.Network/publicIPAddresses@2021-05-01'
 }]
 
 @batchSize(1)
-resource virtualGatewayPublicIP_lock 'Microsoft.Authorization/locks@2017-04-01' = [for (virtualGatewayPublicIpName, index) in virtualGatewayPipName_var: if (lock != 'NotSpecified') {
-  name: '${virtualGatewayPublicIpName}-${lock}-lock'
-  properties: {
-    level: lock
-    notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
+module virtualGatewayPublicIP_locks '.bicep/nested_lock.bicep' = [for (virtualGatewayPublicIpName, index) in virtualGatewayPipName_var: {
+  name: '${uniqueString(deployment().name, location)}-vnetGWPip-Locks'
+  params: {
+    resourceId: virtualGatewayPublicIP[index].id
+    locks: locks
   }
-  scope: virtualGatewayPublicIP[index]
+  scope: resourceGroup(split(virtualGatewayPublicIP[index].id, '/')[2], split(virtualGatewayPublicIP[index].id, '/')[4])
 }]
 
 @batchSize(1)

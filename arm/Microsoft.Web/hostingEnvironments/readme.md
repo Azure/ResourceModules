@@ -47,7 +47,7 @@ This module deploys an app service environment.
 | `ipsslAddressCount` | int | `2` |  | Number of IP SSL addresses reserved for the App Service Environment. |
 | `kind` | string | `'ASEV2'` |  | Kind of resource. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
-| `lock` | string | `'NotSpecified'` | `[CanNotDelete, NotSpecified, ReadOnly]` | Specify the type of lock. |
+| `locks` | array | `[]` | `[CanNotDelete, ReadOnly]` | Specify the locks to apply. |
 | `multiRoleCount` | int | `2` |  | Number of frontend instances. |
 | `multiSize` | string | `'Standard_D1_V2'` | `[Medium, Large, ExtraLarge, Standard_D2, Standard_D3, Standard_D4, Standard_D1_V2, Standard_D2_V2, Standard_D3_V2, Standard_D4_V2]` | Frontend VM size, e.g. Medium, Large. |
 | `networkAccessControlList` | array | `[]` |  | Access control list for controlling traffic to the App Service Environment.. |

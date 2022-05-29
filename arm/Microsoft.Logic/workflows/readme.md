@@ -44,7 +44,7 @@ This module deploys a Logic App resource.
 | `integrationAccount` | object | `{object}` |  | The integration account. |
 | `integrationServiceEnvironment` | object | `{object}` |  | The integration service environment. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
-| `lock` | string | `'NotSpecified'` | `[CanNotDelete, NotSpecified, ReadOnly]` | Specify the type of lock. |
+| `locks` | array | `[]` | `[CanNotDelete, ReadOnly]` | Specify the locks to apply. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `sku` | object | `{object}` |  | Sku of Logic App. Only to be set when integrating with ISE. |
 | `state` | string | `'Enabled'` | `[NotSpecified, Completed, Enabled, Disabled, Deleted, Suspended]` | The state. - NotSpecified, Completed, Enabled, Disabled, Deleted, Suspended. |

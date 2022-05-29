@@ -60,12 +60,12 @@ module privateLinkScope_scopedResource 'scopedResources/deploy.bicep' = [for (sc
 
 resource privateLinkScope_lock 'Microsoft.Authorization/locks@2017-04-01' = [for lock in locks: {
   name: '${privateLinkScope.name}-${lock}-lock'
-  scope: privateLinkScope
   properties: {
     level: lock
     notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
-}
+  scope: privateLinkScope
+}]
 
 module privateLinkScope_privateEndpoints '.bicep/nested_privateEndpoint.bicep' = [for (endpoint, index) in privateEndpoints: {
   name: '${uniqueString(deployment().name, location)}-PvtLinkScope-PrivateEndpoint-${index}'

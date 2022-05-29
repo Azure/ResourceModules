@@ -49,7 +49,7 @@ This template deploys Azure Active Directory Domain Services (AADDS).
 | `kerberosRc4Encryption` | string | `'Enabled'` | `[Enabled, Disabled]` | The value is to enable Kerberos requests that use RC4 encryption. |
 | `ldaps` | string | `'Enabled'` | `[Enabled, Disabled]` | A flag to determine whether or not Secure LDAP is enabled or disabled. |
 | `location` | string | `[resourceGroup().location]` |  | The location to deploy the Azure ADDS Services. |
-| `lock` | string | `'NotSpecified'` | `[CanNotDelete, NotSpecified, ReadOnly]` | Specify the type of lock. |
+| `locks` | array | `[]` | `[CanNotDelete, ReadOnly]` | Specify the locks to apply. |
 | `logsToEnable` | array | `[SystemSecurity, AccountManagement, LogonLogoff, ObjectAccess, PolicyChange, PrivilegeUse, DetailTracking, DirectoryServiceAccess, AccountLogon]` | `[SystemSecurity, AccountManagement, LogonLogoff, ObjectAccess, PolicyChange, PrivilegeUse, DetailTracking, DirectoryServiceAccess, AccountLogon]` | The name of logs that will be streamed. |
 | `name` | string | `[parameters('domainName')]` |  | The name of the AADDS resource. Defaults to the domain name specific to the Azure ADDS service. |
 | `notifyDcAdmins` | string | `'Enabled'` | `[Enabled, Disabled]` | The value is to notify the DC Admins. |
