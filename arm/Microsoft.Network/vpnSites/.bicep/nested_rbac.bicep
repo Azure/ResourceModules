@@ -31,7 +31,7 @@ resource roleAssignment 'Microsoft.Authorization/roleAssignments@2020-10-01-prev
   properties: {
     roleDefinitionId: contains(builtInRoleNames, roleDefinitionIdOrName) ? builtInRoleNames[roleDefinitionIdOrName] : roleDefinitionIdOrName
     principalId: principalId
-    principalType: !empty(principalType) ? principalType : null
+    principalType: !empty(principalType) ? any(principalType) : null
   }
   scope: vpnSite
 }]
