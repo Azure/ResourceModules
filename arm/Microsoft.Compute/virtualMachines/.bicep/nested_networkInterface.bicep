@@ -64,7 +64,7 @@ module networkInterface '../../../Microsoft.Network/networkInterfaces/deploy.bic
     name: networkInterfaceName
     ipConfigurations: [for (ipConfiguration, index) in ipConfigurations: {
       name: !empty(ipConfiguration.name) ? ipConfiguration.name : null
-      primary: index == 0 ? true : false
+      primary: index == 0
       privateIPAllocationMethod: contains(ipConfiguration, 'privateIPAllocationMethod') ? (!empty(ipConfiguration.privateIPAllocationMethod) ? ipConfiguration.privateIPAllocationMethod : null) : null
       privateIPAddress: contains(ipConfiguration, 'vmIPAddress') ? (!empty(ipConfiguration.vmIPAddress) ? ipConfiguration.vmIPAddress : null) : null
       publicIPAddressResourceId: contains(ipConfiguration, 'pipconfiguration') ? resourceId('Microsoft.Network/publicIPAddresses', '${virtualMachineName}${ipConfiguration.pipconfiguration.publicIpNameSuffix}') : null
