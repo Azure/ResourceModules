@@ -1869,22 +1869,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
       }
     }
     adminUsername: 'localAdminUser'
-    adminPassword: [
-      {
-        Value: {
-          keyVault: {
-            id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001'
-          }
-          secretName: 'adminPassword'
-        }
-        MemberType: 8
-        IsSettable: true
-        IsGettable: true
-        TypeNameOfValue: 'System.Management.Automation.PSCustomObject'
-        Name: 'reference'
-        IsInstance: true
-      }
-    ]
+    adminPassword: kv1.getSecret('adminPassword')
     nicConfigurations: [
       {
         nicSuffix: '-nic-01'
@@ -2200,22 +2185,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
     ]
     availabilityZone: 2
     adminUsername: 'localAdminUser'
-    adminPassword: [
-      {
-        Value: {
-          keyVault: {
-            id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001'
-          }
-          secretName: 'adminPassword'
-        }
-        MemberType: 8
-        IsSettable: true
-        IsGettable: true
-        TypeNameOfValue: 'System.Management.Automation.PSCustomObject'
-        Name: 'reference'
-        IsInstance: true
-      }
-    ]
+    adminPassword: kv1.getSecret('adminPassword')
     nicConfigurations: [
       {
         nicSuffix: '-nic-01'
