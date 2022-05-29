@@ -263,6 +263,14 @@ tags: {
                     ]
                 }
             ]
+        },
+        "privateEndpoints": {
+            "value": [
+                {
+                    "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints",
+                    "service": "azuremonitor"
+                }
+            ]
         }
     }
 }
@@ -295,6 +303,12 @@ module privateLinkScopes './Microsoft.Insights/privateLinkScopes/deploy.bicep' =
         principalIds: [
           '<<deploymentSpId>>'
         ]
+      }
+    ]
+    privateEndpoints: [
+      {
+        subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints'
+        service: 'azuremonitor'
       }
     ]
   }

@@ -104,9 +104,9 @@ resource networkInterface 'Microsoft.Network/networkInterfaces@2021-05-01' = {
         primary: index == 0 ? true : false
         privateIPAllocationMethod: contains(ipConfiguration, 'privateIPAllocationMethod') ? (!empty(ipConfiguration.privateIPAllocationMethod) ? ipConfiguration.privateIPAllocationMethod : null) : null
         privateIPAddress: contains(ipConfiguration, 'vmIPAddress') ? (!empty(ipConfiguration.vmIPAddress) ? ipConfiguration.vmIPAddress : null) : null
-        publicIPAddress: contains(ipConfiguration, 'publicIPAddressResourceId') ? {
+        publicIPAddress: contains(ipConfiguration, 'publicIPAddressResourceId') ? (ipConfiguration.publicIPAddressResourceId != null ? {
           id: ipConfiguration.publicIPAddressResourceId
-        } : null
+        } : null) : null
         subnet: {
           id: ipConfiguration.subnetId
         }

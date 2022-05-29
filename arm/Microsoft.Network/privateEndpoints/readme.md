@@ -33,17 +33,19 @@ The following resources are required to be able to deploy this resource:
 **Required parameters**
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `groupId` | array | Subtype(s) of the connection to be created. The allowed values depend on the type serviceResourceId refers to. |
+| `groupIds` | array | Subtype(s) of the connection to be created. The allowed values depend on the type serviceResourceId refers to. |
 | `name` | string | Name of the private endpoint resource to create. |
 | `serviceResourceId` | string | Resource ID of the resource that needs to be connected to the network. |
-| `targetSubnetResourceId` | string | Resource ID of the subnet where the endpoint needs to be created. |
+| `subnetResourceId` | string | Resource ID of the subnet where the endpoint needs to be created. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
+| `customDnsConfigs` | array | `[]` |  | Custom DNS configurations. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `location` | string | `[resourceGroup().location]` |  | Location for all Resources. |
 | `locks` | array | `[]` | `[CanNotDelete, ReadOnly]` | Specify the locks to apply. |
+| `manualPrivateLinkServiceConnections` | array | `[]` |  | Manual PrivateLink Service Connections. |
 | `privateDnsZoneGroups` | _[privateDnsZoneGroups](privateDnsZoneGroups/readme.md)_ array | `[]` |  | Array of Private DNS zone groups configuration on the private endpoint. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `tags` | object | `{object}` |  | Tags to be applied on all resources/resource groups in this deployment. |
@@ -174,13 +176,13 @@ roleAssignments: [
         "name": {
             "value": "<<namePrefix>>-az-pe-kvlt-min-001"
         },
-        "targetSubnetResourceId": {
+        "subnetResourceId": {
             "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints"
         },
         "serviceResourceId": {
             "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-pe"
         },
-        "groupId": {
+        "groupIds": {
             "value": [
                 "vault"
             ]
@@ -201,9 +203,9 @@ module privateEndpoints './Microsoft.Network/privateEndpoints/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-privateEndpoints'
   params: {
     name: '<<namePrefix>>-az-pe-kvlt-min-001'
-    targetSubnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints'
+    subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints'
     serviceResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-pe'
-    groupId: [
+    groupIds: [
       'vault'
     ]
   }
@@ -231,13 +233,13 @@ module privateEndpoints './Microsoft.Network/privateEndpoints/deploy.bicep' = {
                 "CanNotDelete"
             ]
         },
-        "targetSubnetResourceId": {
+        "subnetResourceId": {
             "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints"
         },
         "serviceResourceId": {
             "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-pe"
         },
-        "groupId": {
+        "groupIds": {
             "value": [
                 "vault"
             ]
@@ -280,9 +282,9 @@ module privateEndpoints './Microsoft.Network/privateEndpoints/deploy.bicep' = {
     locks: [
       'CanNotDelete'
     ]
-    targetSubnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints'
+    subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints'
     serviceResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-pe'
-    groupId: [
+    groupIds: [
       'vault'
     ]
     privateDnsZoneGroups: [

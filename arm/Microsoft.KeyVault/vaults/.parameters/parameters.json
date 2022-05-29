@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "<<namePrefix>>-az-kv-x-001"
+            "value": "<<namePrefix>>-az-kv-x-002"
         },
         "locks": {
             "value": [

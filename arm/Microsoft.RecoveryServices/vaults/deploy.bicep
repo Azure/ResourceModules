@@ -208,6 +208,8 @@ module rsv_protectionContainers 'protectionContainers/deploy.bicep' = [for (prot
     backupManagementType: protectionContainer.backupManagementType
     containerType: protectionContainer.containerType
     enableDefaultTelemetry: enableChildTelemetry
+    protectedItems: contains(protectionContainer, 'protectedItems') ? protectionContainer.protectedItems : []
+    location: location
   }
 }]
 
