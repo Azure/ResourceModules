@@ -29,7 +29,6 @@ function Remove-ResourceListInner {
     }
 
     process {
-        $locks = Get-AzResourceLock # Fetch once in case we need to unlock a resource for removal
         $resourcesToRemove | ForEach-Object { Write-Verbose ('- Remove [{0}]' -f $_.resourceId) -Verbose }
         $resourcesToRetry = @()
         $processedResources = @()
@@ -48,7 +47,7 @@ function Remove-ResourceListInner {
                 Write-Verbose ('Removing resource [{0}] of type [{1}]' -f $resourceName, $resource.type) -Verbose
                 try {
                     if ($PSCmdlet.ShouldProcess(('Resource [{0}]' -f $resource.resourceId), 'Remove')) {
-                        Invoke-ResourceRemoval -Type $resource.type -ResourceId $resource.resourceId -Locks $locks
+                        Invoke-ResourceRemoval -Type $resource.type -ResourceId $resource.resourceId
                     }
 
                     # If we removed a parent remove its children

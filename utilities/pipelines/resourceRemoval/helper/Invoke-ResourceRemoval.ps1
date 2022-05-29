@@ -27,20 +27,11 @@ function Invoke-ResourceRemoval {
         [string] $ResourceId,
 
         [Parameter(Mandatory = $true)]
-        [string] $Type,
-
-        [Parameter(Mandatory = $false)]
-        [array] $Locks = @()
+        [string] $Type
     )
 
     Write-Verbose ('Resource ID [{0}]' -f $resourceId) -Verbose
     Write-Verbose ('Resource Type [{0}]' -f $type) -Verbose
-
-    $matchingLock = $locks | Where-Object { ($_.ResourceId -split '/providers/Microsoft.Authorization/locks')[0] -eq $ResourceId }
-    if ($matchingLock) {
-        Write-Verbose ('Removing lock [{0}] of type [{1}] from resource [{2}]' -f $matchingLock.Name, $matchingLock.Properties.level, $matchingLock.ResourceName) -Verbose
-        $null = Remove-AzResourceLock -LockId $matchingLock.LockId -Force
-    }
 
     switch ($type) {
         'Microsoft.Insights/diagnosticSettings' {
