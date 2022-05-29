@@ -173,7 +173,7 @@ roleAssignments: [
         },
         "locks": {
             "value": [
-                "ReadOnly"
+                "CanNotDelete"
             ]
         },
         "skuName": {
@@ -247,7 +247,7 @@ module servers './Microsoft.AnalysisServices/servers/deploy.bicep' = {
   params: {
     name: '<<namePrefix>>azasweumax001'
     locks: [
-      'ReadOnly'
+      'CanNotDelete'
     ]
     skuName: 'S0'
     skuCapacity: 1

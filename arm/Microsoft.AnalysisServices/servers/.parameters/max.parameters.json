@@ -7,7 +7,7 @@
         },
         "locks": {
             "value": [
-                "ReadOnly"
+                "CanNotDelete"
             ]
         },
         "skuName": {

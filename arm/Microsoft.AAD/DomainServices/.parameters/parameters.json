@@ -10,7 +10,7 @@
         },
         "locks": {
             "value": [
-                "ReadOnly"
+                "CanNotDelete"
             ]
         },
         "replicaSets": {
