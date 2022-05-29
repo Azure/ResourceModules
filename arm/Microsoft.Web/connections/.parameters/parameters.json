@@ -10,9 +10,6 @@
                 "CanNotDelete"
             ]
         },
-        "connectionKind": {
-            "value": "V1"
-        },
         "displayName": {
             "value": "azuremonitorlogs"
         },

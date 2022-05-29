@@ -16,7 +16,7 @@ This module deploys an app service environment.
 | `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
 | `Microsoft.Authorization/roleAssignments` | [2020-10-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-10-01-preview/roleAssignments) |
 | `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
-| `Microsoft.Web/hostingEnvironments` | [2021-02-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Web/2021-02-01/hostingEnvironments) |
+| `Microsoft.Web/hostingEnvironments` | [2021-03-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Web/2021-03-01/hostingEnvironments) |
 
 ## Parameters
 
@@ -29,7 +29,6 @@ This module deploys an app service environment.
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `apiManagementAccountId` | string | `''` |  | API Management Account associated with the App Service Environment. |
 | `clusterSettings` | array | `[]` |  | Custom settings for changing the behavior of the App Service Environment. |
 | `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
@@ -39,23 +38,19 @@ This module deploys an app service environment.
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
 | `dnsSuffix` | string | `''` |  | DNS suffix of the App Service Environment. |
-| `dynamicCacheEnabled` | bool | `False` |  | True/false indicating whether the App Service Environment is suspended. The environment can be suspended e.g. when the management endpoint is no longer available(most likely because NSG blocked the incoming traffic). |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `frontEndScaleFactor` | int | `15` |  | Scale factor for frontends. |
-| `hasLinuxWorkers` | bool | `False` |  | Flag that displays whether an ASE has linux workers or not. |
 | `internalLoadBalancingMode` | string | `'None'` | `[None, Web, Publishing]` | Specifies which endpoints to serve internally in the Virtual Network for the App Service Environment. - None, Web, Publishing, Web,Publishing. |
 | `ipsslAddressCount` | int | `2` |  | Number of IP SSL addresses reserved for the App Service Environment. |
 | `kind` | string | `'ASEV2'` |  | Kind of resource. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `locks` | array | `[]` | `[CanNotDelete, ReadOnly]` | Specify the locks to apply. |
-| `multiRoleCount` | int | `2` |  | Number of frontend instances. |
 | `multiSize` | string | `'Standard_D1_V2'` | `[Medium, Large, ExtraLarge, Standard_D2, Standard_D3, Standard_D4, Standard_D1_V2, Standard_D2_V2, Standard_D3_V2, Standard_D4_V2]` | Frontend VM size, e.g. Medium, Large. |
-| `networkAccessControlList` | array | `[]` |  | Access control list for controlling traffic to the App Service Environment.. |
+| `physicalHardwareIsolation` | bool | `False` |  | Set to true to deploy the App Service Environments with physical hardware isolation. If enabled, zone redundancy must be disabled. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
-| `suspended` | bool | `False` |  | true if the App Service Environment is suspended; otherwise, false. The environment can be suspended, e.g. when the management endpoint is no longer available (most likely because NSG blocked the incoming traffic). |
 | `tags` | object | `{object}` |  | Resource tags. |
-| `userWhitelistedIpRanges` | array | `[]` |  | User added ip ranges to whitelist on ASE db - string. |
-| `workerPools` | array | `[]` |  | Description of worker pools with worker size IDs, VM sizes, and number of workers in each pool.. |
+| `userWhitelistedIpRanges` | array | `[]` |  | User added IP ranges to whitelist on ASE DB - string. |
+| `zoneRedundant` | bool | `False` |  | Switch to make the App Service Environment zone redundant. If enabled, the minimum App Service plan instance count will be three, otherwise 1. If enabled `physicalHardwareIsolation` must be disabled. |
 
 
 ### Parameter Usage: `roleAssignments`
@@ -152,119 +147,6 @@ tags: {
     CostCenter: '7890'
     ServiceName: 'DeploymentValidation'
     Role: 'DeploymentValidation'
-}
-```
-
-</details>
-<p>
-
-### Parameter Usage: `workerPools`
-
-<details>
-
-<summary>Parameter JSON format</summary>
-
-```json
-"workerPools": {
-    "value": {
-        "workerPools": [
-          {
-            "workerSizeId": 0,
-            "workerSize": "Small",
-            "workerCount": 2
-          },
-          {
-            "workerSizeId": 1,
-            "workerSize": "Small",
-            "workerCount": 2
-          }
-        ]
-    }
-}
-```
-
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-workerPools: {
-    workerPools: [
-        {
-            workerSizeId: 0
-            workerSize: 'Small'
-            workerCount: 2
-        }
-        {
-            workerSizeId: 1
-            workerSize: 'Small'
-            workerCount: 2
-        }
-    ]
-}
-```
-
-workerPools can have two properties workerSize and workerCount:
-
-<details>
-
-<summary>Parameter JSON format</summary>
-
-```json
-"workerSize": {
-    "type": "string",
-    "allowedValues": [
-    "Small",
-    "Medium",
-    "Large",
-    "ExtraLarge"
-    ],
-    "defaultValue": "Small",
-    "metadata": {
-    "description": "Instance size for worker pool one.  Maps to P1,P2,P3,P4."
-    }
-},
-"workerCount": {
-    "type": "int",
-    "defaultValue": 2,
-    "minValue": 2,
-    "maxValue": 100,
-    "metadata": {
-    "description": "Number of instances in worker pool one. Minimum of two."
-    }
-}
-```
-
-</details>
-
-<details>
-
-<summary>Bicep format</summary>
-
-```bicep
-workerSize: {
-    type: 'string'
-    allowedValues: [
-        'Small'
-        'Medium'
-        'Large'
-        'ExtraLarge'
-    ]
-    defaultValue: 'Small'
-    metadata: {
-        description: 'Instance size for worker pool one.  Maps to P1P2P3P4.'
-    }
-}
-workerCount: {
-    type: 'int'
-    defaultValue: 2
-    minValue: 2
-    maxValue: 100
-    metadata: {
-        description: 'Number of instances in worker pool one. Minimum of two.'
-    }
 }
 ```
 

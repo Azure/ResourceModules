@@ -505,38 +505,8 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
     locks: [
       'CanNotDelete'
     ]
-    administratorLogin: [
-      {
-        Value: {
-          keyVault: {
-            id: '/subscriptions/<<subscriptionId>>/resourceGroups/<<resourceGroupName>>/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001'
-          }
-          secretName: 'administratorLogin'
-        }
-        MemberType: 8
-        IsSettable: true
-        IsGettable: true
-        TypeNameOfValue: 'System.Management.Automation.PSCustomObject'
-        Name: 'reference'
-        IsInstance: true
-      }
-    ]
-    administratorLoginPassword: [
-      {
-        Value: {
-          keyVault: {
-            id: '/subscriptions/<<subscriptionId>>/resourceGroups/<<resourceGroupName>>/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001'
-          }
-          secretName: 'administratorLoginPassword'
-        }
-        MemberType: 8
-        IsSettable: true
-        IsGettable: true
-        TypeNameOfValue: 'System.Management.Automation.PSCustomObject'
-        Name: 'reference'
-        IsInstance: true
-      }
-    ]
+    administratorLogin: kv1.getSecret('administratorLogin')
+    administratorLoginPassword: kv1.getSecret('administratorLoginPassword')
     location: 'westeurope'
     roleAssignments: [
       {

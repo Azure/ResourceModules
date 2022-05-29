@@ -50,8 +50,7 @@ This module deploys an Azure virtual desktop host pool.
 | `startVMOnConnect` | bool | `False` |  | Enable Start VM on connect to allow users to start the virtual machine from a deallocated state. Important: Custom RBAC role required to power manage VMs. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
 | `tokenValidityLength` | string | `'PT8H'` |  | Host Pool token validity length. Usage: 'PT8H' - valid for 8 hours; 'P5D' - valid for 5 days; 'P1Y' - valid for 1 year. When not provided, the token will be valid for 8 hours. |
-| `validationEnviroment` | bool | `False` |  | Whether to use validation enviroment. When set to true, the Host Pool will be deployed in a validation 'ring' (environment) that receives all the new features (might be less stable). Ddefaults to false that stands for the stable, production-ready environment. |
-| `validationEnvironment` | bool | `False` |  | Validation host pool allows you to test service changes before they are deployed to production. |
+| `validationEnvironment` | bool | `False` |  | Validation host pools allows you to test service changes before they are deployed to production. When set to true, the Host Pool will be deployed in a validation 'ring' (environment) that receives all the new features (might be less stable). Defaults to false that stands for the stable, production-ready environment. |
 | `vmTemplate` | object | `{object}` |  | The necessary information for adding more VMs to this Host Pool. |
 
 **Generated parameters**

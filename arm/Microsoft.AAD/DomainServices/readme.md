@@ -301,38 +301,8 @@ module DomainServices './Microsoft.AAD/DomainServices/deploy.bicep' = {
         subnetId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-aadds-001/subnets/AADDSSubnet'
       }
     ]
-    pfxCertificate: [
-      {
-        Value: {
-          keyVault: {
-            id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001'
-          }
-          secretName: 'pfxBase64Certificate'
-        }
-        MemberType: 8
-        IsSettable: true
-        IsGettable: true
-        TypeNameOfValue: 'System.Management.Automation.PSCustomObject'
-        Name: 'reference'
-        IsInstance: true
-      }
-    ]
-    pfxCertificatePassword: [
-      {
-        Value: {
-          keyVault: {
-            id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001'
-          }
-          secretName: 'pfxCertificatePassword'
-        }
-        MemberType: 8
-        IsSettable: true
-        IsGettable: true
-        TypeNameOfValue: 'System.Management.Automation.PSCustomObject'
-        Name: 'reference'
-        IsInstance: true
-      }
-    ]
+    pfxCertificate: kv1.getSecret('pfxBase64Certificate')
+    pfxCertificatePassword: kv1.getSecret('pfxCertificatePassword')
     additionalRecipients: [
       '<<namePrefix>>@noreply.github.com'
     ]

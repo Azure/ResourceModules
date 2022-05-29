@@ -380,22 +380,7 @@ module connections './Microsoft.Network/connections/deploy.bicep' = {
     virtualNetworkGateway2: {
       id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworkGateways/<<namePrefix>>-az-vnet-vpn-gw-p-002'
     }
-    vpnSharedKey: [
-      {
-        Value: {
-          keyVault: {
-            id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001'
-          }
-          secretName: 'vpnSharedKey'
-        }
-        MemberType: 8
-        IsSettable: true
-        IsGettable: true
-        TypeNameOfValue: 'System.Management.Automation.PSCustomObject'
-        Name: 'reference'
-        IsInstance: true
-      }
-    ]
+    vpnSharedKey: kv1.getSecret('vpnSharedKey')
     virtualNetworkGatewayConnectionType: 'Vnet2Vnet'
     enableBgp: false
     location: 'eastus'

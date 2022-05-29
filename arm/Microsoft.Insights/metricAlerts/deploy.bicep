@@ -111,7 +111,7 @@ resource metricAlert 'Microsoft.Insights/metricAlerts@2018-03-01' = {
     targetResourceType: targetResourceType
     targetResourceRegion: targetResourceRegion
     criteria: {
-      'odata.type': alertCriteriaType
+      'odata.type': any(alertCriteriaType)
       allOf: criterias
     }
     autoMitigate: autoMitigate
