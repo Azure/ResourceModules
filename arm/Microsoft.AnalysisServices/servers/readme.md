@@ -171,6 +171,11 @@ roleAssignments: [
         "name": {
             "value": "<<namePrefix>>azasweumax001"
         },
+        "locks": {
+            "value": [
+                "ReadOnly"
+            ]
+        },
         "skuName": {
             "value": "S0"
         },
@@ -244,6 +249,9 @@ module servers './Microsoft.AnalysisServices/servers/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-servers'
   params: {
     name: '<<namePrefix>>azasweumax001'
+    locks: [
+      'ReadOnly'
+    ]
     skuName: 'S0'
     skuCapacity: 1
     firewallSettings: {
