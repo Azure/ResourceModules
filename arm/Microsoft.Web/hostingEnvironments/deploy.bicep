@@ -34,41 +34,26 @@ param internalLoadBalancingMode string = 'None'
 ])
 param multiSize string = 'Standard_D1_V2'
 
-@description('Optional. Number of frontend instances.')
-param multiRoleCount int = 2
-
 @description('Optional. Number of IP SSL addresses reserved for the App Service Environment.')
 param ipsslAddressCount int = 2
-
-@description('Optional. Description of worker pools with worker size IDs, VM sizes, and number of workers in each pool..')
-param workerPools array = []
 
 @description('Optional. DNS suffix of the App Service Environment.')
 param dnsSuffix string = ''
 
-@description('Optional. Access control list for controlling traffic to the App Service Environment..')
-param networkAccessControlList array = []
-
 @description('Optional. Scale factor for frontends.')
 param frontEndScaleFactor int = 15
 
-@description('Optional. API Management Account associated with the App Service Environment.')
-param apiManagementAccountId string = ''
-
-@description('Optional. true if the App Service Environment is suspended; otherwise, false. The environment can be suspended, e.g. when the management endpoint is no longer available (most likely because NSG blocked the incoming traffic).')
-param suspended bool = false
-
-@description('Optional. True/false indicating whether the App Service Environment is suspended. The environment can be suspended e.g. when the management endpoint is no longer available(most likely because NSG blocked the incoming traffic).')
-param dynamicCacheEnabled bool = false
-
-@description('Optional. User added ip ranges to whitelist on ASE db - string.')
+@description('Optional. User added IP ranges to whitelist on ASE DB - string.')
 param userWhitelistedIpRanges array = []
-
-@description('Optional. Flag that displays whether an ASE has linux workers or not.')
-param hasLinuxWorkers bool = false
 
 @description('Optional. Custom settings for changing the behavior of the App Service Environment.')
 param clusterSettings array = []
+
+@description('Optional. Set to true to deploy the App Service Environments with physical hardware isolation. If enabled, zone redundancy must be disabled.')
+param physicalHardwareIsolation bool = false
+
+@description('Optional. Switch to make the App Service Environment zone redundant. If enabled, the minimum App Service plan instance count will be three, otherwise 1. If enabled `physicalHardwareIsolation` must be disabled.')
+param zoneRedundant bool = false
 
 @description('Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.')
 @minValue(0)
@@ -138,32 +123,25 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource appServiceEnvironment 'Microsoft.Web/hostingEnvironments@2021-02-01' = {
+resource appServiceEnvironment 'Microsoft.Web/hostingEnvironments@2021-03-01' = {
   name: name
   kind: kind
   location: location
   tags: tags
   properties: {
-    name: name
-    location: location
     virtualNetwork: {
       id: subnetResourceId
       subnet: last(vnetResourceId)
     }
     internalLoadBalancingMode: internalLoadBalancingMode
     multiSize: multiSize
-    multiRoleCount: multiRoleCount
-    workerPools: workerPools
     ipsslAddressCount: ipsslAddressCount
     dnsSuffix: dnsSuffix
-    networkAccessControlList: networkAccessControlList
     frontEndScaleFactor: frontEndScaleFactor
-    apiManagementAccountId: apiManagementAccountId
-    suspended: suspended
-    dynamicCacheEnabled: dynamicCacheEnabled
     clusterSettings: clusterSettings
     userWhitelistedIpRanges: userWhitelistedIpRanges
-    hasLinuxWorkers: hasLinuxWorkers
+    dedicatedHostCount: !zoneRedundant && physicalHardwareIsolation ? 2 : 0
+    zoneRedundant: !physicalHardwareIsolation && zoneRedundant ? zoneRedundant : false
   }
 }
 

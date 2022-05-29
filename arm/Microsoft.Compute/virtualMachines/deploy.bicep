@@ -287,8 +287,13 @@ param additionalUnattendContent array = []
 @description('Optional. Specifies the Windows Remote Management listeners. This enables remote Windows PowerShell. - WinRMConfiguration object.')
 param winRM object = {}
 
-@description('Optional. Any VM configuration profile assignments.')
-param configurationProfileAssignments array = []
+@description('Required. The configuration profile of automanage.')
+@allowed([
+  '/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction'
+  '/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesDevTest'
+  ''
+])
+param configurationProfile string = ''
 
 var vmComputerNameTransformed = vmComputerNamesTransformation == 'uppercase' ? toUpper(name) : (vmComputerNamesTransformation == 'lowercase' ? toLower(name) : name)
 
@@ -460,13 +465,13 @@ resource virtualMachine 'Microsoft.Compute/virtualMachines@2021-07-01' = {
   ]
 }
 
-module vm_configurationProfileAssignment '.bicep/nested_configurationProfileAssignment.bicep' = [for (configurationProfileAssignment, index) in configurationProfileAssignments: {
-  name: '${uniqueString(deployment().name, location)}-VM-ConfigurationProfileAssignment-${index}'
-  params: {
-    virtualMachineName: virtualMachine.name
-    configurationProfile: configurationProfileAssignment
+resource vm_configurationProfileAssignment 'Microsoft.Automanage/configurationProfileAssignments@2021-04-30-preview' = if (!empty(configurationProfile)) {
+  name: 'default'
+  properties: {
+    configurationProfile: configurationProfile
   }
-}]
+  scope: virtualMachine
+}
 
 module vm_domainJoinExtension 'extensions/deploy.bicep' = if (extensionDomainJoinConfig.enabled) {
   name: '${uniqueString(deployment().name, location)}-VM-DomainJoin'

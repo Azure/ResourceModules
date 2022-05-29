@@ -50,7 +50,7 @@ resource protectedItem 'Microsoft.RecoveryServices/vaults/backupFabrics/protecti
   name: '${recoveryVaultName}/Azure/${protectionContainerName}/${name}'
   location: location
   properties: {
-    protectedItemType: protectedItemType
+    protectedItemType: any(protectedItemType)
     policyId: policyId
     sourceResourceId: sourceResourceId
   }
