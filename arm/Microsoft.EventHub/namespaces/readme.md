@@ -93,7 +93,7 @@ To use Private Endpoint the following dependencies must be deployed:
         // Example showing only mandatory fields
         {
             "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/sxx-az-vnet-x-001/subnets/sxx-az-subnet-x-001",
-            "groupIds": "<<serviceName>>" // e.g. vault, registry, file, blob, queue, table etc.
+            "service": "<<serviceName>>" // e.g. vault, registry, file, blob, queue, table etc.
         }
     ]
 }
@@ -306,7 +306,7 @@ userAssignedIdentities: {
 module namespaces './Microsoft.EventHub/namespaces/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-namespaces'
   params: {
-  
+
   }
 ```
 
