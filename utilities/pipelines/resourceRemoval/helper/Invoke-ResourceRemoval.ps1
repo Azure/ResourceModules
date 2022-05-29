@@ -3,13 +3,16 @@
 Remove a specific resource
 
 .DESCRIPTION
-Remove a specific resource. Tries to handle different resource types accordingly
+Remove a specific resource. Tries to handle different resource types accordingly. Locks for resources intended for deletion will be removed.
 
 .PARAMETER ResourceId
 Mandatory. The resourceID of the resource to remove
 
 .PARAMETER Type
 Mandatory. The type of the resource to remove
+
+.PARAMETER Locks
+Optional. Locks that exist in the targeted subscription. Locks for resources intended for deletion will be removed.
 
 .EXAMPLE
 Invoke-ResourceRemoval -Type 'Microsoft.Insights/diagnosticSettings' -ResourceId '/subscriptions/.../resourceGroups/validation-rg/providers/Microsoft.Network/networkInterfaces/sxx-vm-linux-001-nic-01/providers/Microsoft.Insights/diagnosticSettings/sxx-vm-linux-001-nic-01-diagnosticSettings'
@@ -24,11 +27,20 @@ function Invoke-ResourceRemoval {
         [string] $ResourceId,
 
         [Parameter(Mandatory = $true)]
-        [string] $Type
+        [string] $Type,
+
+        [Parameter(Mandatory = $false)]
+        [array] $Locks = @()
     )
 
     Write-Verbose ('Resource ID [{0}]' -f $resourceId) -Verbose
     Write-Verbose ('Resource Type [{0}]' -f $type) -Verbose
+
+    $matchingLock = $locks | Where-Object { ($_.ResourceId -split '/providers/Microsoft.Authorization/locks')[0] -eq $ResourceId }
+    if ($matchingLock) {
+        Write-Verbose ('Removing lock [{0}] of type [{1}] from resource [{2}]' -f $matchingLock.Name, $matchingLock.Properties.level, $matchingLock.ResourceName) -Verbose
+        $null = Remove-AzResourceLock -LockId $matchingLock.LockId -Force
+    }
 
     switch ($type) {
         'Microsoft.Insights/diagnosticSettings' {
