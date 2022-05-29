@@ -244,9 +244,9 @@ tags: {
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | The name of the traffix manager was deployed into. |
-| `resourceGroupName` | string | The resource group the traffix manager was deployed into. |
-| `resourceId` | string | The resource ID of the traffix manager. |
+| `name` | string | The name of the traffic manager was deployed into. |
+| `resourceGroupName` | string | The resource group the traffic manager was deployed into. |
+| `resourceId` | string | The resource ID of the traffic manager. |
 
 ## Deployment examples
 

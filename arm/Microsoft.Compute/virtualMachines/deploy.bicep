@@ -353,14 +353,15 @@ module virtualMachine_nic '.bicep/nested_networkInterface.bicep' = [for (nicConf
   name: '${uniqueString(deployment().name, location)}-VM-Nic-${index}'
   params: {
     networkInterfaceName: '${name}${nicConfiguration.nicSuffix}'
+    enableDefaultTelemetry: enableDefaultTelemetry
     virtualMachineName: name
     location: location
     tags: tags
     enableIPForwarding: contains(nicConfiguration, 'enableIPForwarding') ? (!empty(nicConfiguration.enableIPForwarding) ? nicConfiguration.enableIPForwarding : false) : false
     enableAcceleratedNetworking: contains(nicConfiguration, 'enableAcceleratedNetworking') ? nicConfiguration.enableAcceleratedNetworking : true
     dnsServers: contains(nicConfiguration, 'dnsServers') ? (!empty(nicConfiguration.dnsServers) ? nicConfiguration.dnsServers : []) : []
-    networkSecurityGroupId: contains(nicConfiguration, 'networkSecurityGroupId') ? (!empty(nicConfiguration.networkSecurityGroupId) ? nicConfiguration.networkSecurityGroupId : '') : ''
-    ipConfigurationArray: nicConfiguration.ipConfigurations
+    networkSecurityGroupResourceId: contains(nicConfiguration, 'networkSecurityGroupResourceId') ? nicConfiguration.networkSecurityGroupResourceId : ''
+    ipConfigurations: nicConfiguration.ipConfigurations
     lock: lock
     diagnosticStorageAccountId: diagnosticStorageAccountId
     diagnosticLogsRetentionInDays: diagnosticLogsRetentionInDays
@@ -615,12 +616,14 @@ module vm_diskEncryptionExtension 'extensions/deploy.bicep' = if (extensionDiskE
   ]
 }
 
-module virtualMachine_backup '.bicep/nested_backup.bicep' = if (!empty(backupVaultName)) {
+module virtualMachine_backup '../../Microsoft.RecoveryServices/vaults/protectionContainers/protectedItems/deploy.bicep' = if (!empty(backupVaultName)) {
   name: '${uniqueString(deployment().name, location)}-VM-Backup'
   params: {
-    backupResourceName: '${backupVaultName}/Azure/iaasvmcontainer;iaasvmcontainerv2;${resourceGroup().name};${virtualMachine.name}/vm;iaasvmcontainerv2;${resourceGroup().name};${virtualMachine.name}'
+    name: 'vm;iaasvmcontainerv2;${resourceGroup().name};${virtualMachine.name}'
+    policyId: az.resourceId('Microsoft.RecoveryServices/vaults/backupPolicies', backupVaultName, backupPolicyName)
     protectedItemType: 'Microsoft.Compute/virtualMachines'
-    backupPolicyId: az.resourceId('Microsoft.RecoveryServices/vaults/backupPolicies', backupVaultName, backupPolicyName)
+    protectionContainerName: 'iaasvmcontainer;iaasvmcontainerv2;${resourceGroup().name};${virtualMachine.name}'
+    recoveryVaultName: backupVaultName
     sourceResourceId: virtualMachine.id
   }
   scope: az.resourceGroup(backupVaultResourceGroup)

@@ -188,13 +188,23 @@ module appConfiguration_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, 
   }
 }]
 
-module appConfiguration_privateEndpoints '.bicep/nested_privateEndpoint.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
-  name: '${uniqueString(deployment().name, location)}-AppConfig-PrivateEndpoint-${index}'
+module appConfiguration_privateEndpoints '../../Microsoft.Network/privateEndpoints/deploy.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
+  name: '${uniqueString(deployment().name, location)}-appConfiguration-PrivateEndpoint-${index}'
   params: {
-    privateEndpointResourceId: appConfiguration.id
-    privateEndpointVnetLocation: empty(privateEndpoints) ? 'dummy' : reference(split(privateEndpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location
-    privateEndpointObj: privateEndpoint
-    tags: tags
+    groupIds: [
+      privateEndpoint.service
+    ]
+    name: contains(privateEndpoint, 'name') ? privateEndpoint.name : 'pe-${last(split(appConfiguration.id, '/'))}-${privateEndpoint.service}-${index}'
+    serviceResourceId: appConfiguration.id
+    subnetResourceId: privateEndpoint.subnetResourceId
+    enableDefaultTelemetry: enableDefaultTelemetry
+    location: reference(split(privateEndpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location
+    lock: contains(privateEndpoint, 'lock') ? privateEndpoint.lock : 'NotSpecified'
+    privateDnsZoneGroups: contains(privateEndpoint, 'privateDnsZoneGroups') ? privateEndpoint.privateDnsZoneGroups : []
+    roleAssignments: contains(privateEndpoint, 'roleAssignments') ? privateEndpoint.roleAssignments : []
+    tags: contains(privateEndpoint, 'tags') ? privateEndpoint.tags : {}
+    manualPrivateLinkServiceConnections: contains(privateEndpoint, 'manualPrivateLinkServiceConnections') ? privateEndpoint.manualPrivateLinkServiceConnections : []
+    customDnsConfigs: contains(privateEndpoint, 'customDnsConfigs') ? privateEndpoint.customDnsConfigs : []
   }
 }]
 
