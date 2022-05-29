@@ -270,6 +270,11 @@ tags: {
         "name": {
             "value": "<<namePrefix>>-az-avdhp-x-001"
         },
+        "locks": {
+            "value": [
+                "CanNotDelete"
+            ]
+        },
         "location": {
             "value": "westeurope"
         },
@@ -357,6 +362,9 @@ module hostpools './Microsoft.DesktopVirtualization/hostpools/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-hostpools'
   params: {
     name: '<<namePrefix>>-az-avdhp-x-001'
+    locks: [
+      'CanNotDelete'
+    ]
     location: 'westeurope'
     hostpoolFriendlyName: 'AVDv2'
     hostpoolDescription: 'My first AVD Host Pool'

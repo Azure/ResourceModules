@@ -217,6 +217,11 @@ module applicationgroups './Microsoft.DesktopVirtualization/applicationgroups/de
         "name": {
             "value": "<<namePrefix>>-az-avdag-x-001"
         },
+        "locks": {
+            "value": [
+                "CanNotDelete"
+            ]
+        },
         "location": {
             "value": "westeurope"
         },
@@ -293,6 +298,9 @@ module applicationgroups './Microsoft.DesktopVirtualization/applicationgroups/de
   name: '${uniqueString(deployment().name)}-applicationgroups'
   params: {
     name: '<<namePrefix>>-az-avdag-x-001'
+    locks: [
+      'CanNotDelete'
+    ]
     location: 'westeurope'
     applicationGroupType: 'RemoteApp'
     hostpoolName: 'adp-<<namePrefix>>-az-avdhp-x-001'

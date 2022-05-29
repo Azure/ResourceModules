@@ -5,6 +5,11 @@
         "name": {
             "value": "<<namePrefix>>-az-sqlsrv-x-001"
         },
+        "locks": {
+            "value": [
+                "CanNotDelete"
+            ]
+        },
         "administratorLogin": {
             "reference": {
                 "keyVault": {
@@ -28,7 +33,9 @@
             "value": [
                 {
                     "roleDefinitionIdOrName": "Reader",
-                    "principalIds": ["<<deploymentSpId>>"]
+                    "principalIds": [
+                        "<<deploymentSpId>>"
+                    ]
                 }
             ]
         },

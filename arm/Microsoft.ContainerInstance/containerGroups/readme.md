@@ -184,6 +184,11 @@ userAssignedIdentities: {
         "name": {
             "value": "<<namePrefix>>-az-acg-x-001"
         },
+        "locks": {
+            "value": [
+                "CanNotDelete"
+            ]
+        },
         "containerName": {
             "value": "<<namePrefix>>-az-aci-x-001"
         },
@@ -226,6 +231,9 @@ module containerGroups './Microsoft.ContainerInstance/containerGroups/deploy.bic
   name: '${uniqueString(deployment().name)}-containerGroups'
   params: {
     name: '<<namePrefix>>-az-acg-x-001'
+    locks: [
+      'CanNotDelete'
+    ]
     containerName: '<<namePrefix>>-az-aci-x-001'
     image: 'mcr.microsoft.com/azuredocs/aci-helloworld'
     ports: [

@@ -5,6 +5,11 @@
         "name": {
             "value": "adp-<<namePrefix>>-az-rsv-x-001"
         },
+        "locks": {
+            "value": [
+                "CanNotDelete"
+            ]
+        },
         "diagnosticLogsRetentionInDays": {
             "value": 7
         },

@@ -177,6 +177,11 @@ tags: {
         "name": {
             "value": "<<namePrefix>>-az-ngw-x-001"
         },
+        "locks": {
+            "value": [
+                "CanNotDelete"
+            ]
+        },
         "natGatewayPublicIpAddress": {
             "value": true
         },
@@ -221,6 +226,9 @@ module natGateways './Microsoft.Network/natGateways/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-natGateways'
   params: {
     name: '<<namePrefix>>-az-ngw-x-001'
+    locks: [
+      'CanNotDelete'
+    ]
     natGatewayPublicIpAddress: true
     roleAssignments: [
       {

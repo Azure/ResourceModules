@@ -282,6 +282,11 @@ userAssignedIdentities: {
         "name": {
             "value": "<<namePrefix>>-az-apim-max-001"
         },
+        "locks": {
+            "value": [
+                "CanNotDelete"
+            ]
+        },
         "publisherEmail": {
             "value": "apimgmt-noreply@mail.windowsazure.com"
         },
@@ -463,6 +468,9 @@ module service './Microsoft.ApiManagement/service/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-service'
   params: {
     name: '<<namePrefix>>-az-apim-max-001'
+    locks: [
+      'CanNotDelete'
+    ]
     publisherEmail: 'apimgmt-noreply@mail.windowsazure.com'
     publisherName: '<<namePrefix>>-az-amorg-x-001'
     apis: [
@@ -651,6 +659,11 @@ module service './Microsoft.ApiManagement/service/deploy.bicep' = {
         "name": {
             "value": "<<namePrefix>>-az-apim-x-001"
         },
+        "locks": {
+            "value": [
+                "CanNotDelete"
+            ]
+        },
         "publisherEmail": {
             "value": "apimgmt-noreply@mail.windowsazure.com"
         },
@@ -711,6 +724,9 @@ module service './Microsoft.ApiManagement/service/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-service'
   params: {
     name: '<<namePrefix>>-az-apim-x-001'
+    locks: [
+      'CanNotDelete'
+    ]
     publisherEmail: 'apimgmt-noreply@mail.windowsazure.com'
     publisherName: '<<namePrefix>>-az-amorg-x-001'
     portalSettings: [

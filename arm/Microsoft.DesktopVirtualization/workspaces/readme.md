@@ -170,6 +170,11 @@ tags: {
         "name": {
             "value": "<<namePrefix>>-az-avdws-x-001"
         },
+        "locks": {
+            "value": [
+                "CanNotDelete"
+            ]
+        },
         "location": {
             "value": "westeurope"
         },
@@ -225,6 +230,9 @@ module workspaces './Microsoft.DesktopVirtualization/workspaces/deploy.bicep' = 
   name: '${uniqueString(deployment().name)}-workspaces'
   params: {
     name: '<<namePrefix>>-az-avdws-x-001'
+    locks: [
+      'CanNotDelete'
+    ]
     location: 'westeurope'
     appGroupResourceIds: [
       '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.DesktopVirtualization/applicationgroups/adp-<<namePrefix>>-az-avdag-x-001'

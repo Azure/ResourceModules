@@ -233,6 +233,11 @@ tags: {
         "name": {
             "value": "<<namePrefix>>-az-adb-x-001"
         },
+        "locks": {
+            "value": [
+                "CanNotDelete"
+            ]
+        },
         "roleAssignments": {
             "value": [
                 {
@@ -274,6 +279,9 @@ module workspaces './Microsoft.Databricks/workspaces/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-workspaces'
   params: {
     name: '<<namePrefix>>-az-adb-x-001'
+    locks: [
+      'CanNotDelete'
+    ]
     roleAssignments: [
       {
         roleDefinitionIdOrName: 'Reader'

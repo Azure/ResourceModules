@@ -274,6 +274,11 @@ roleAssignments: [
         "name": {
             "value": "<<namePrefix>>-az-imgt-x-001"
         },
+        "locks": {
+            "value": [
+                "CanNotDelete"
+            ]
+        },
         "userMsiName": {
             "value": "adp-<<namePrefix>>-az-msi-x-001"
         },
@@ -347,6 +352,9 @@ module imageTemplates './Microsoft.VirtualMachineImages/imageTemplates/deploy.bi
   name: '${uniqueString(deployment().name)}-imageTemplates'
   params: {
     name: '<<namePrefix>>-az-imgt-x-001'
+    locks: [
+      'CanNotDelete'
+    ]
     userMsiName: 'adp-<<namePrefix>>-az-msi-x-001'
     userMsiResourceGroup: 'validation-rg'
     buildTimeoutInMinutes: 0

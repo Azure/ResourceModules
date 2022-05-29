@@ -160,6 +160,11 @@ roleAssignments: [
         "name": {
             "value": "<<namePrefix>>-az-ahb-x-001"
         },
+        "locks": {
+            "value": [
+                "CanNotDelete"
+            ]
+        },
         "roleAssignments": {
             "value": [
                 {
@@ -186,6 +191,9 @@ module healthBots './Microsoft.HealthBot/healthBots/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-healthBots'
   params: {
     name: '<<namePrefix>>-az-ahb-x-001'
+    locks: [
+      'CanNotDelete'
+    ]
     roleAssignments: [
       {
         roleDefinitionIdOrName: 'Reader'

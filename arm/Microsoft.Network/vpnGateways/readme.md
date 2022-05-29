@@ -224,6 +224,11 @@ module vpnGateways './Microsoft.Network/vpnGateways/deploy.bicep' = {
         "name": {
             "value": "<<namePrefix>>-az-vpngw-x-001"
         },
+        "locks": {
+            "value": [
+                "CanNotDelete"
+            ]
+        },
         "virtualHubResourceId": {
             "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualHubs/<<namePrefix>>-az-vhub-x-001"
         },
@@ -296,6 +301,9 @@ module vpnGateways './Microsoft.Network/vpnGateways/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-vpnGateways'
   params: {
     name: '<<namePrefix>>-az-vpngw-x-001'
+    locks: [
+      'CanNotDelete'
+    ]
     virtualHubResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualHubs/<<namePrefix>>-az-vhub-x-001'
     bgpSettings: {
       asn: 65515

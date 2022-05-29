@@ -327,6 +327,11 @@ module namespaces './Microsoft.EventHub/namespaces/deploy.bicep' = {
         "name": {
             "value": "<<namePrefix>>-az-evnsp-x-001"
         },
+        "locks": {
+            "value": [
+                "CanNotDelete"
+            ]
+        },
         "authorizationRules": {
             "value": [
                 {
@@ -468,6 +473,9 @@ module namespaces './Microsoft.EventHub/namespaces/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-namespaces'
   params: {
     name: '<<namePrefix>>-az-evnsp-x-001'
+    locks: [
+      'CanNotDelete'
+    ]
     authorizationRules: [
       {
         name: 'RootManageSharedAccessKey'

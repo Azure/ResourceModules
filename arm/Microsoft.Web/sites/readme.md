@@ -458,6 +458,11 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
         "name": {
             "value": "<<namePrefix>>-az-fa-x-001"
         },
+        "locks": {
+            "value": [
+                "CanNotDelete"
+            ]
+        },
         "kind": {
             "value": "functionapp"
         },
@@ -600,6 +605,9 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-sites'
   params: {
     name: '<<namePrefix>>-az-fa-x-001'
+    locks: [
+      'CanNotDelete'
+    ]
     kind: 'functionapp'
     serverFarmResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Web/serverFarms/adp-<<namePrefix>>-az-asp-x-001'
     siteConfig: {

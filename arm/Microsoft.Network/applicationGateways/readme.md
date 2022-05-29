@@ -236,6 +236,11 @@ userAssignedIdentities: {
         "name": {
             "value": "<<namePrefix>>-az-apgw-x-001"
         },
+        "locks": {
+            "value": [
+                "CanNotDelete"
+            ]
+        },
         "userAssignedIdentities": {
             "value": {
                 "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001": {}
@@ -607,6 +612,9 @@ module applicationGateways './Microsoft.Network/applicationGateways/deploy.bicep
   name: '${uniqueString(deployment().name)}-applicationGateways'
   params: {
     name: '<<namePrefix>>-az-apgw-x-001'
+    locks: [
+      'CanNotDelete'
+    ]
     userAssignedIdentities: {
       '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
     }

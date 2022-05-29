@@ -377,6 +377,11 @@ module disks './Microsoft.Compute/disks/deploy.bicep' = {
         "name": {
             "value": "<<namePrefix>>-az-disk-x-001"
         },
+        "locks": {
+            "value": [
+                "CanNotDelete"
+            ]
+        },
         "sku": {
             "value": "UltraSSD_LRS"
         },
@@ -424,6 +429,9 @@ module disks './Microsoft.Compute/disks/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-disks'
   params: {
     name: '<<namePrefix>>-az-disk-x-001'
+    locks: [
+      'CanNotDelete'
+    ]
     sku: 'UltraSSD_LRS'
     diskSizeGB: 128
     logicalSectorSize: 512

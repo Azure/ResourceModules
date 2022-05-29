@@ -227,6 +227,11 @@ module deploymentScripts './Microsoft.Resources/deploymentScripts/deploy.bicep' 
         "name": {
             "value": "<<namePrefix>>-az-ds-ps-001"
         },
+        "locks": {
+            "value": [
+                "CanNotDelete"
+            ]
+        },
         "userAssignedIdentities": {
             "value": {
                 "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001": {}
@@ -269,6 +274,9 @@ module deploymentScripts './Microsoft.Resources/deploymentScripts/deploy.bicep' 
   name: '${uniqueString(deployment().name)}-deploymentScripts'
   params: {
     name: '<<namePrefix>>-az-ds-ps-001'
+    locks: [
+      'CanNotDelete'
+    ]
     userAssignedIdentities: {
       '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
     }

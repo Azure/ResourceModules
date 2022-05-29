@@ -5,6 +5,11 @@
         "name": {
             "value": "carmlazsax001"
         },
+        "locks": {
+            "value": [
+                "CanNotDelete"
+            ]
+        },
         "storageAccountSku": {
             "value": "Standard_LRS"
         },

@@ -213,6 +213,11 @@ module bastionHosts './Microsoft.Network/bastionHosts/deploy.bicep' = {
         "name": {
             "value": "<<namePrefix>>-az-bas-x-001"
         },
+        "locks": {
+            "value": [
+                "CanNotDelete"
+            ]
+        },
         "vNetId": {
             "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001"
         },
@@ -266,6 +271,9 @@ module bastionHosts './Microsoft.Network/bastionHosts/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-bastionHosts'
   params: {
     name: '<<namePrefix>>-az-bas-x-001'
+    locks: [
+      'CanNotDelete'
+    ]
     vNetId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001'
     publicIPAddressId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/publicIPAddresses/adp-<<namePrefix>>-az-pip-x-bas'
     skuType: 'Standard'

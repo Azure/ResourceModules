@@ -5,6 +5,11 @@
         "name": {
             "value": "<<namePrefix>>-vm-win-01"
         },
+        "locks": {
+            "value": [
+                "CanNotDelete"
+            ]
+        },
         "encryptionAtHost": {
             "value": false
         },

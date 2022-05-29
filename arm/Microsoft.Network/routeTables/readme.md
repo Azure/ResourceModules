@@ -250,6 +250,11 @@ tags: {
         "name": {
             "value": "<<namePrefix>>-az-udr-x-001"
         },
+        "locks": {
+            "value": [
+                "CanNotDelete"
+            ]
+        },
         "routes": {
             "value": [
                 {
@@ -288,6 +293,9 @@ module routeTables './Microsoft.Network/routeTables/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-routeTables'
   params: {
     name: '<<namePrefix>>-az-udr-x-001'
+    locks: [
+      'CanNotDelete'
+    ]
     routes: [
       {
         name: 'default'

@@ -199,6 +199,11 @@ module virtualWans './Microsoft.Network/virtualWans/deploy.bicep' = {
         "name": {
             "value": "<<namePrefix>>-az-vw-x-001"
         },
+        "locks": {
+            "value": [
+                "CanNotDelete"
+            ]
+        },
         "type": {
             "value": "Basic"
         },
@@ -237,6 +242,9 @@ module virtualWans './Microsoft.Network/virtualWans/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-virtualWans'
   params: {
     name: '<<namePrefix>>-az-vw-x-001'
+    locks: [
+      'CanNotDelete'
+    ]
     type: 'Basic'
     allowBranchToBranchTraffic: true
     allowVnetToVnetTraffic: true

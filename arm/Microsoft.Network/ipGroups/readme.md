@@ -160,6 +160,11 @@ tags: {
         "name": {
             "value": "iacsGroup-servers"
         },
+        "locks": {
+            "value": [
+                "CanNotDelete"
+            ]
+        },
         "ipAddresses": {
             "value": [
                 "10.0.0.1",
@@ -192,6 +197,9 @@ module ipGroups './Microsoft.Network/ipGroups/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-ipGroups'
   params: {
     name: 'iacsGroup-servers'
+    locks: [
+      'CanNotDelete'
+    ]
     ipAddresses: [
       '10.0.0.1'
       '10.0.0.2'

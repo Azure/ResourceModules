@@ -337,6 +337,11 @@ module servers './Microsoft.AnalysisServices/servers/deploy.bicep' = {
         "name": {
             "value": "<<namePrefix>>azasweux001"
         },
+        "locks": {
+            "value": [
+                "CanNotDelete"
+            ]
+        },
         "skuName": {
             "value": "S0"
         },
@@ -381,6 +386,9 @@ module servers './Microsoft.AnalysisServices/servers/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-servers'
   params: {
     name: '<<namePrefix>>azasweux001'
+    locks: [
+      'CanNotDelete'
+    ]
     skuName: 'S0'
     roleAssignments: [
       {

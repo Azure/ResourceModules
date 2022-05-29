@@ -5,6 +5,11 @@
         "name": {
             "value": "adp-<<namePrefix>>-az-ag-x-001"
         },
+        "locks": {
+            "value": [
+                "CanNotDelete"
+            ]
+        },
         "groupShortName": {
             "value": "azagweux001"
         },

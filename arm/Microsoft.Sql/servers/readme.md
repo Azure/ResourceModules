@@ -383,6 +383,11 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
         "name": {
             "value": "<<namePrefix>>-az-sqlsrv-x-001"
         },
+        "locks": {
+            "value": [
+                "CanNotDelete"
+            ]
+        },
         "administratorLogin": {
             "reference": {
                 "keyVault": {
@@ -406,7 +411,9 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
             "value": [
                 {
                     "roleDefinitionIdOrName": "Reader",
-                    "principalIds": ["<<deploymentSpId>>"]
+                    "principalIds": [
+                        "<<deploymentSpId>>"
+                    ]
                 }
             ]
         },
@@ -495,6 +502,9 @@ module servers './Microsoft.Sql/servers/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-servers'
   params: {
     name: '<<namePrefix>>-az-sqlsrv-x-001'
+    locks: [
+      'CanNotDelete'
+    ]
     administratorLogin: [
       {
         Value: {

@@ -406,6 +406,11 @@ module virtualNetworks './Microsoft.Network/virtualNetworks/deploy.bicep' = {
         "name": {
             "value": "<<namePrefix>>-az-vnet-x-001"
         },
+        "locks": {
+            "value": [
+                "CanNotDelete"
+            ]
+        },
         "addressPrefixes": {
             "value": [
                 "10.0.0.0/16"
@@ -506,6 +511,9 @@ module virtualNetworks './Microsoft.Network/virtualNetworks/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-virtualNetworks'
   params: {
     name: '<<namePrefix>>-az-vnet-x-001'
+    locks: [
+      'CanNotDelete'
+    ]
     addressPrefixes: [
       '10.0.0.0/16'
     ]

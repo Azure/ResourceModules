@@ -159,6 +159,11 @@ tags: {
         "name": {
             "value": "<<namePrefix>>-az-ddos-x-001"
         },
+        "locks": {
+            "value": [
+                "CanNotDelete"
+            ]
+        },
         "roleAssignments": {
             "value": [
                 {
@@ -185,6 +190,9 @@ module ddosProtectionPlans './Microsoft.Network/ddosProtectionPlans/deploy.bicep
   name: '${uniqueString(deployment().name)}-ddosProtectionPlans'
   params: {
     name: '<<namePrefix>>-az-ddos-x-001'
+    locks: [
+      'CanNotDelete'
+    ]
     roleAssignments: [
       {
         roleDefinitionIdOrName: 'Reader'

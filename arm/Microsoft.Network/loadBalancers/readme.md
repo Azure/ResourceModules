@@ -719,6 +719,11 @@ module loadBalancers './Microsoft.Network/loadBalancers/deploy.bicep' = {
         "name": {
             "value": "<<namePrefix>>-az-lb-x-001"
         },
+        "locks": {
+            "value": [
+                "CanNotDelete"
+            ]
+        },
         "frontendIPConfigurations": {
             "value": [
                 {
@@ -852,6 +857,9 @@ module loadBalancers './Microsoft.Network/loadBalancers/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-loadBalancers'
   params: {
     name: '<<namePrefix>>-az-lb-x-001'
+    locks: [
+      'CanNotDelete'
+    ]
     frontendIPConfigurations: [
       {
         name: 'publicIPConfig1'

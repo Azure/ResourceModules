@@ -328,6 +328,11 @@ userAssignedIdentities: {
         "name": {
             "value": "<<namePrefix>>-az-lga-x-001"
         },
+        "locks": {
+            "value": [
+                "CanNotDelete"
+            ]
+        },
         "tags": {
             "value": {}
         },
@@ -410,6 +415,9 @@ module workflows './Microsoft.Logic/workflows/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-workflows'
   params: {
     name: '<<namePrefix>>-az-lga-x-001'
+    locks: [
+      'CanNotDelete'
+    ]
     tags: {}
     workflowActions: {
       HTTP: {

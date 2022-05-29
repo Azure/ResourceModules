@@ -1012,6 +1012,11 @@ module vaults './Microsoft.RecoveryServices/vaults/deploy.bicep' = {
         "name": {
             "value": "<<namePrefix>>-az-rsv-x-001"
         },
+        "locks": {
+            "value": [
+                "CanNotDelete"
+            ]
+        },
         "backupConfig": {
             "value": {
                 "enhancedSecurityState": "Disabled",
@@ -1305,6 +1310,9 @@ module vaults './Microsoft.RecoveryServices/vaults/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-vaults'
   params: {
     name: '<<namePrefix>>-az-rsv-x-001'
+    locks: [
+      'CanNotDelete'
+    ]
     backupConfig: {
       enhancedSecurityState: 'Disabled'
       softDeleteFeatureState: 'Disabled'

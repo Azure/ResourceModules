@@ -5,6 +5,11 @@
         "name": {
             "value": "<<namePrefix>>-az-acg-x-001"
         },
+        "locks": {
+            "value": [
+                "CanNotDelete"
+            ]
+        },
         "containerName": {
             "value": "<<namePrefix>>-az-aci-x-001"
         },

@@ -366,6 +366,11 @@ userAssignedIdentities: {
         "name": {
             "value": "<<namePrefix>>-az-cgs-x-001"
         },
+        "locks": {
+            "value": [
+                "CanNotDelete"
+            ]
+        },
         "kind": {
             "value": "Face"
         },
@@ -421,6 +426,9 @@ module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-accounts'
   params: {
     name: '<<namePrefix>>-az-cgs-x-001'
+    locks: [
+      'CanNotDelete'
+    ]
     kind: 'Face'
     sku: 'F0'
     roleAssignments: [

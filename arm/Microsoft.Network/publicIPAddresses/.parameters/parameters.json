@@ -5,6 +5,11 @@
         "name": {
             "value": "<<namePrefix>>-az-pip-x-001"
         },
+        "locks": {
+            "value": [
+                "CanNotDelete"
+            ]
+        },
         "skuName": {
             "value": "Standard"
         },

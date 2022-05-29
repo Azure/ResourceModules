@@ -488,6 +488,11 @@ module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
         "name": {
             "value": "<<namePrefix>>-az-la-x-001"
         },
+        "locks": {
+            "value": [
+                "CanNotDelete"
+            ]
+        },
         "publicNetworkAccessForIngestion": {
             "value": "Disabled"
         },
@@ -663,6 +668,9 @@ module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-workspaces'
   params: {
     name: '<<namePrefix>>-az-la-x-001'
+    locks: [
+      'CanNotDelete'
+    ]
     publicNetworkAccessForIngestion: 'Disabled'
     publicNetworkAccessForQuery: 'Disabled'
     dailyQuotaGb: 10

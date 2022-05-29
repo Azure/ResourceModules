@@ -5,6 +5,11 @@
         "name": {
             "value": "privatelink.vaultcore.azure.net"
         },
+        "locks": {
+            "value": [
+                "CanNotDelete"
+            ]
+        },
         "virtualNetworkLinks": {
             "value": [
                 {

@@ -205,6 +205,11 @@ module networkSecurityGroups './Microsoft.Network/networkSecurityGroups/deploy.b
         "name": {
             "value": "<<namePrefix>>-az-nsg-x-001"
         },
+        "locks": {
+            "value": [
+                "CanNotDelete"
+            ]
+        },
         "securityRules": {
             "value": [
                 {
@@ -312,6 +317,9 @@ module networkSecurityGroups './Microsoft.Network/networkSecurityGroups/deploy.b
   name: '${uniqueString(deployment().name)}-networkSecurityGroups'
   params: {
     name: '<<namePrefix>>-az-nsg-x-001'
+    locks: [
+      'CanNotDelete'
+    ]
     securityRules: [
       {
         name: 'Specific'

@@ -321,6 +321,11 @@ module staticSites './Microsoft.Web/staticSites/deploy.bicep' = {
         "name": {
             "value": "<<namePrefix>>-az-wss-x-001"
         },
+        "locks": {
+            "value": [
+                "CanNotDelete"
+            ]
+        },
         "sku": {
             "value": "Standard"
         },
@@ -375,6 +380,9 @@ module staticSites './Microsoft.Web/staticSites/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-staticSites'
   params: {
     name: '<<namePrefix>>-az-wss-x-001'
+    locks: [
+      'CanNotDelete'
+    ]
     sku: 'Standard'
     stagingEnvironmentPolicy: 'Enabled'
     allowConfigFileUpdates: true

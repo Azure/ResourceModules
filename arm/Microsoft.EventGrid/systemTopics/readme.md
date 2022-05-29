@@ -330,6 +330,11 @@ module systemTopics './Microsoft.EventGrid/systemTopics/deploy.bicep' = {
         "name": {
             "value": "<<namePrefix>>-az-egstn-x-001"
         },
+        "locks": {
+            "value": [
+                "CanNotDelete"
+            ]
+        },
         "source": {
             "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
         },
@@ -377,6 +382,9 @@ module systemTopics './Microsoft.EventGrid/systemTopics/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-systemTopics'
   params: {
     name: '<<namePrefix>>-az-egstn-x-001'
+    locks: [
+      'CanNotDelete'
+    ]
     source: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
     topicType: 'Microsoft.Storage.StorageAccounts'
     roleAssignments: [

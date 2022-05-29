@@ -169,6 +169,11 @@ tags: {
         "name": {
             "value": "azuremonitor"
         },
+        "locks": {
+            "value": [
+                "CanNotDelete"
+            ]
+        },
         "connectionKind": {
             "value": "V1"
         },
@@ -206,6 +211,9 @@ module connections './Microsoft.Web/connections/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-connections'
   params: {
     name: 'azuremonitor'
+    locks: [
+      'CanNotDelete'
+    ]
     connectionKind: 'V1'
     displayName: 'azuremonitorlogs'
     connectionApi: {

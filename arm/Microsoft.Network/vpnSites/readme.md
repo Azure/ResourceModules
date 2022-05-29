@@ -384,6 +384,11 @@ module vpnSites './Microsoft.Network/vpnSites/deploy.bicep' = {
         "name": {
             "value": "<<namePrefix>>-az-vSite-x-001"
         },
+        "locks": {
+            "value": [
+                "CanNotDelete"
+            ]
+        },
         "tags": {
             "value": {
                 "tagA": "valueA",
@@ -465,6 +470,9 @@ module vpnSites './Microsoft.Network/vpnSites/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-vpnSites'
   params: {
     name: '<<namePrefix>>-az-vSite-x-001'
+    locks: [
+      'CanNotDelete'
+    ]
     tags: {
       tagA: 'valueA'
       tagB: 'valueB'

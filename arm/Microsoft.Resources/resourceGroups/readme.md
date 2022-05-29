@@ -163,6 +163,11 @@ This module requires a User Assigned Identity (MSI, managed service identity) to
         "name": {
             "value": "<<namePrefix>>-az-rg-x-001"
         },
+        "locks": {
+            "value": [
+                "CanNotDelete"
+            ]
+        },
         "tags": {
             "value": {
                 "Test": "Yes"
@@ -194,6 +199,9 @@ module resourceGroups './Microsoft.Resources/resourceGroups/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-resourceGroups'
   params: {
     name: '<<namePrefix>>-az-rg-x-001'
+    locks: [
+      'CanNotDelete'
+    ]
     tags: {
       Test: 'Yes'
     }

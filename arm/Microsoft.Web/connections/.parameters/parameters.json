@@ -5,6 +5,11 @@
         "name": {
             "value": "azuremonitor"
         },
+        "locks": {
+            "value": [
+                "CanNotDelete"
+            ]
+        },
         "connectionKind": {
             "value": "V1"
         },

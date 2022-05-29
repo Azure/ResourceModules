@@ -5,6 +5,11 @@
         "name": {
             "value": "<<namePrefix>>-az-vnetgwc-x-001"
         },
+        "locks": {
+            "value": [
+                "CanNotDelete"
+            ]
+        },
         "virtualNetworkGateway1": {
             "value": {
                 "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworkGateways/<<namePrefix>>-az-vnet-vpn-gw-p-001"

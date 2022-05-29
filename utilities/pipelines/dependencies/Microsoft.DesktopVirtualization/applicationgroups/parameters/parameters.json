@@ -5,6 +5,11 @@
         "name": {
             "value": "adp-<<namePrefix>>-az-avdag-x-001"
         },
+        "locks": {
+            "value": [
+                "CanNotDelete"
+            ]
+        },
         "location": {
             "value": "westeurope"
         },

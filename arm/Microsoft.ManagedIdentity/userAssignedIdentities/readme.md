@@ -156,6 +156,11 @@ tags: {
         "name": {
             "value": "<<namePrefix>>-az-msi-x-001"
         },
+        "locks": {
+            "value": [
+                "CanNotDelete"
+            ]
+        },
         "roleAssignments": {
             "value": [
                 {
@@ -182,6 +187,9 @@ module userAssignedIdentities './Microsoft.ManagedIdentity/userAssignedIdentitie
   name: '${uniqueString(deployment().name)}-userAssignedIdentities'
   params: {
     name: '<<namePrefix>>-az-msi-x-001'
+    locks: [
+      'CanNotDelete'
+    ]
     roleAssignments: [
       {
         roleDefinitionIdOrName: 'Reader'

@@ -5,6 +5,11 @@
         "name": {
             "value": "<<namePrefix>>-az-cgs-x-001"
         },
+        "locks": {
+            "value": [
+                "CanNotDelete"
+            ]
+        },
         "kind": {
             "value": "Face"
         },

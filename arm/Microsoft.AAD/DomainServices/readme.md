@@ -287,7 +287,7 @@ resource kv1 'Microsoft.KeyVault/vaults@2019-09-01' existing = {
   scope: resourceGroup('<<subscriptionId>>','validation-rg')
 }
 
-module DomainServices './Microsoft.aad/DomainServices/deploy.bicep' = {
+module DomainServices './Microsoft.AAD/DomainServices/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-DomainServices'
   params: {
     domainName: '<<namePrefix>>.onmicrosoft.com'

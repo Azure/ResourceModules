@@ -5,6 +5,11 @@
         "name": {
             "value": "<<namePrefix>>-az-ngw-x-001"
         },
+        "locks": {
+            "value": [
+                "CanNotDelete"
+            ]
+        },
         "natGatewayPublicIpAddress": {
             "value": true
         },

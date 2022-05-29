@@ -161,6 +161,11 @@ module virtualHubs './Microsoft.Network/virtualHubs/deploy.bicep' = {
         "name": {
             "value": "<<namePrefix>>-az-vhub-x-001"
         },
+        "locks": {
+            "value": [
+                "CanNotDelete"
+            ]
+        },
         "addressPrefix": {
             "value": "10.1.0.0/16"
         },
@@ -213,6 +218,9 @@ module virtualHubs './Microsoft.Network/virtualHubs/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-virtualHubs'
   params: {
     name: '<<namePrefix>>-az-vhub-x-001'
+    locks: [
+      'CanNotDelete'
+    ]
     addressPrefix: '10.1.0.0/16'
     virtualWanId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualWans/adp-<<namePrefix>>-az-vw-x-001'
     hubRouteTables: [

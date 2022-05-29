@@ -181,6 +181,11 @@ tags: {
         "name": {
             "value": "<<namePrefix>>-az-erc-x-001"
         },
+        "locks": {
+            "value": [
+                "CanNotDelete"
+            ]
+        },
         "serviceProviderName": {
             "value": "Equinix"
         },
@@ -237,6 +242,9 @@ module expressRouteCircuits './Microsoft.Network/expressRouteCircuits/deploy.bic
   name: '${uniqueString(deployment().name)}-expressRouteCircuits'
   params: {
     name: '<<namePrefix>>-az-erc-x-001'
+    locks: [
+      'CanNotDelete'
+    ]
     serviceProviderName: 'Equinix'
     peeringLocation: 'Amsterdam'
     bandwidthInMbps: 50

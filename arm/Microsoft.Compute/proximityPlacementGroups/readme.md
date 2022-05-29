@@ -160,6 +160,11 @@ tags: {
         "name": {
             "value": "<<namePrefix>>-az-ppg-x-001"
         },
+        "locks": {
+            "value": [
+                "CanNotDelete"
+            ]
+        },
         "roleAssignments": {
             "value": [
                 {
@@ -186,6 +191,9 @@ module proximityPlacementGroups './Microsoft.Compute/proximityPlacementGroups/de
   name: '${uniqueString(deployment().name)}-proximityPlacementGroups'
   params: {
     name: '<<namePrefix>>-az-ppg-x-001'
+    locks: [
+      'CanNotDelete'
+    ]
     roleAssignments: [
       {
         roleDefinitionIdOrName: 'Reader'

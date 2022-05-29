@@ -5,6 +5,11 @@
         "name": {
             "value": "adp-<<namePrefix>>-az-fa-001"
         },
+        "locks": {
+            "value": [
+                "CanNotDelete"
+            ]
+        },
         "kind": {
             "value": "functionapp"
         },

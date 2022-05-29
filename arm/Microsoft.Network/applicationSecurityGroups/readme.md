@@ -159,6 +159,11 @@ roleAssignments: [
         "name": {
             "value": "<<namePrefix>>-az-asg-x-001"
         },
+        "locks": {
+            "value": [
+                "CanNotDelete"
+            ]
+        },
         "roleAssignments": {
             "value": [
                 {
@@ -185,6 +190,9 @@ module applicationSecurityGroups './Microsoft.Network/applicationSecurityGroups/
   name: '${uniqueString(deployment().name)}-applicationSecurityGroups'
   params: {
     name: '<<namePrefix>>-az-asg-x-001'
+    locks: [
+      'CanNotDelete'
+    ]
     roleAssignments: [
       {
         roleDefinitionIdOrName: 'Reader'

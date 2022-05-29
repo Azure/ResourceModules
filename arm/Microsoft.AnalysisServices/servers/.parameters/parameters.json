@@ -5,6 +5,11 @@
         "name": {
             "value": "<<namePrefix>>azasweux001"
         },
+        "locks": {
+            "value": [
+                "CanNotDelete"
+            ]
+        },
         "skuName": {
             "value": "S0"
         },

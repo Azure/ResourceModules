@@ -5,6 +5,11 @@
         "name": {
             "value": "<<namePrefix>>-az-egtn-x-001"
         },
+        "locks": {
+            "value": [
+                "CanNotDelete"
+            ]
+        },
         "roleAssignments": {
             "value": [
                 {

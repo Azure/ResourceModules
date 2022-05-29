@@ -339,6 +339,11 @@ module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
         "name": {
             "value": "<<namePrefix>>-az-sbn-x-002"
         },
+        "locks": {
+            "value": [
+                "CanNotDelete"
+            ]
+        },
         "skuName": {
             "value": "Premium"
         },
@@ -502,6 +507,9 @@ module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-namespaces'
   params: {
     name: '<<namePrefix>>-az-sbn-x-002'
+    locks: [
+      'CanNotDelete'
+    ]
     skuName: 'Premium'
     tags: {}
     roleAssignments: [

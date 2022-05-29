@@ -176,6 +176,11 @@ tags: {
         "name": {
             "value": "<<namePrefix>>-az-fd-x-001"
         },
+        "locks": {
+            "value": [
+                "CanNotDelete"
+            ]
+        },
         "backendPools": {
             "value": [
                 {
@@ -295,6 +300,9 @@ module frontDoors './Microsoft.Network/frontDoors/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-frontDoors'
   params: {
     name: '<<namePrefix>>-az-fd-x-001'
+    locks: [
+      'CanNotDelete'
+    ]
     backendPools: [
       {
         name: 'backendPool'

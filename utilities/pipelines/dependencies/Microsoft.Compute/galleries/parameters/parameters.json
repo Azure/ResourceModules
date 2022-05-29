@@ -5,6 +5,11 @@
         "name": {
             "value": "adp<<namePrefix>>azsigweux001"
         },
+        "locks": {
+            "value": [
+                "CanNotDelete"
+            ]
+        },
         "images": {
             "value": [
                 {

@@ -288,6 +288,11 @@ userAssignedIdentities: {
         "name": {
             "value": "<<namePrefix>>-az-sqlmi-x-002"
         },
+        "locks": {
+            "value": [
+                "CanNotDelete"
+            ]
+        },
         "administratorLogin": {
             "reference": {
                 "keyVault": {
@@ -447,6 +452,9 @@ module managedInstances './Microsoft.Sql/managedInstances/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-managedInstances'
   params: {
     name: '<<namePrefix>>-az-sqlmi-x-002'
+    locks: [
+      'CanNotDelete'
+    ]
     administratorLogin: [
       {
         Value: {

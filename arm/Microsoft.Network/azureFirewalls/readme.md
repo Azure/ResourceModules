@@ -496,6 +496,11 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
         "name": {
             "value": "<<namePrefix>>-az-fw-x-001"
         },
+        "locks": {
+            "value": [
+                "CanNotDelete"
+            ]
+        },
         "zones": {
             "value": [
                 "1",
@@ -635,6 +640,9 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-azureFirewalls'
   params: {
     name: '<<namePrefix>>-az-fw-x-001'
+    locks: [
+      'CanNotDelete'
+    ]
     zones: [
       '1'
       '2'

@@ -467,6 +467,11 @@ module workspaces './Microsoft.MachineLearningServices/workspaces/deploy.bicep' 
         "name": {
             "value": "<<namePrefix>>-az-mls-x-001"
         },
+        "locks": {
+            "value": [
+                "CanNotDelete"
+            ]
+        },
         "sku": {
             "value": "Basic"
         },
@@ -590,6 +595,9 @@ module workspaces './Microsoft.MachineLearningServices/workspaces/deploy.bicep' 
   name: '${uniqueString(deployment().name)}-workspaces'
   params: {
     name: '<<namePrefix>>-az-mls-x-001'
+    locks: [
+      'CanNotDelete'
+    ]
     sku: 'Basic'
     associatedStorageAccountResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
     associatedKeyVaultResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001'

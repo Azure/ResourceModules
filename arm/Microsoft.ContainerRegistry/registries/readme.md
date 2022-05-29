@@ -373,6 +373,11 @@ module registries './Microsoft.ContainerRegistry/registries/deploy.bicep' = {
         "name": {
             "value": "<<namePrefix>>azacrx001"
         },
+        "locks": {
+            "value": [
+                "CanNotDelete"
+            ]
+        },
         "acrAdminUserEnabled": {
             "value": false
         },
@@ -453,6 +458,9 @@ module registries './Microsoft.ContainerRegistry/registries/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-registries'
   params: {
     name: '<<namePrefix>>azacrx001'
+    locks: [
+      'CanNotDelete'
+    ]
     acrAdminUserEnabled: false
     acrSku: 'Premium'
     exportPolicyStatus: 'enabled'

@@ -264,6 +264,11 @@ tags: {
         "name": {
             "value": "tm-000001"
         },
+        "locks": {
+            "value": [
+                "CanNotDelete"
+            ]
+        },
         "relativeName": {
             "value": "tm-000001"
         },
@@ -308,6 +313,9 @@ module trafficmanagerprofiles './Microsoft.Network/trafficmanagerprofiles/deploy
   name: '${uniqueString(deployment().name)}-trafficmanagerprofiles'
   params: {
     name: 'tm-000001'
+    locks: [
+      'CanNotDelete'
+    ]
     relativeName: 'tm-000001'
     roleAssignments: [
       {

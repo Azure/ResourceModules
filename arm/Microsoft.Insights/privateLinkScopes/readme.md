@@ -241,6 +241,11 @@ tags: {
         "name": {
             "value": "<<namePrefix>>-az-pls-x-001"
         },
+        "locks": {
+            "value": [
+                "CanNotDelete"
+            ]
+        },
         "scopedResources": {
             "value": [
                 {
@@ -275,6 +280,9 @@ module privateLinkScopes './Microsoft.Insights/privateLinkScopes/deploy.bicep' =
   name: '${uniqueString(deployment().name)}-privateLinkScopes'
   params: {
     name: '<<namePrefix>>-az-pls-x-001'
+    locks: [
+      'CanNotDelete'
+    ]
     scopedResources: [
       {
         name: 'scoped1'

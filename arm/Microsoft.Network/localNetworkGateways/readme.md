@@ -165,6 +165,11 @@ tags: {
         "name": {
             "value": "<<namePrefix>>-az-lng-x-001"
         },
+        "locks": {
+            "value": [
+                "CanNotDelete"
+            ]
+        },
         "localAddressPrefixes": {
             "value": [
                 "192.168.1.0/24"
@@ -205,6 +210,9 @@ module localNetworkGateways './Microsoft.Network/localNetworkGateways/deploy.bic
   name: '${uniqueString(deployment().name)}-localNetworkGateways'
   params: {
     name: '<<namePrefix>>-az-lng-x-001'
+    locks: [
+      'CanNotDelete'
+    ]
     localAddressPrefixes: [
       '192.168.1.0/24'
     ]

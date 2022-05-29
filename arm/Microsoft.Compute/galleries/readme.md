@@ -278,6 +278,11 @@ module galleries './Microsoft.Compute/galleries/deploy.bicep' = {
         "name": {
             "value": "<<namePrefix>>azsigweux001"
         },
+        "locks": {
+            "value": [
+                "CanNotDelete"
+            ]
+        },
         "roleAssignments": {
             "value": [
                 {
@@ -304,6 +309,9 @@ module galleries './Microsoft.Compute/galleries/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-galleries'
   params: {
     name: '<<namePrefix>>azsigweux001'
+    locks: [
+      'CanNotDelete'
+    ]
     roleAssignments: [
       {
         roleDefinitionIdOrName: 'Reader'

@@ -275,15 +275,24 @@ module privateLinkHubs './Microsoft.Synapse/privateLinkHubs/deploy.bicep' = {
     "name": {
       "value": "synplhstandard001"
     },
+    "locks": {
+      "value": [
+        "CanNotDelete"
+      ]
+    },
     "roleAssignments": {
       "value": [
         {
           "roleDefinitionIdOrName": "Reader",
-          "principalIds": ["<<deploymentSpId>>"]
+          "principalIds": [
+            "<<deploymentSpId>>"
+          ]
         },
         {
           "roleDefinitionIdOrName": "/providers/Microsoft.Authorization/roleDefinitions/b24988ac-6180-42a0-ab88-20f7382dd24c",
-          "principalIds": ["<<deploymentSpId>>"]
+          "principalIds": [
+            "<<deploymentSpId>>"
+          ]
         }
       ]
     }
@@ -303,6 +312,9 @@ module privateLinkHubs './Microsoft.Synapse/privateLinkHubs/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-privateLinkHubs'
   params: {
     name: 'synplhstandard001'
+    locks: [
+      'CanNotDelete'
+    ]
     roleAssignments: [
       {
         roleDefinitionIdOrName: 'Reader'

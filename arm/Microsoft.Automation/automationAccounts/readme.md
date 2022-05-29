@@ -460,6 +460,11 @@ module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bice
         "name": {
             "value": "<<namePrefix>>-wd-aut-x-001"
         },
+        "locks": {
+            "value": [
+                "CanNotDelete"
+            ]
+        },
         "schedules": {
             "value": [
                 {
@@ -659,6 +664,9 @@ module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bice
   name: '${uniqueString(deployment().name)}-automationAccounts'
   params: {
     name: '<<namePrefix>>-wd-aut-x-001'
+    locks: [
+      'CanNotDelete'
+    ]
     schedules: [
       {
         name: 'TestSchedule'

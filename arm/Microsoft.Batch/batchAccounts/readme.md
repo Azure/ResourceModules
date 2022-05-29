@@ -194,6 +194,11 @@ module batchAccounts './Microsoft.Batch/batchAccounts/deploy.bicep' = {
         "name": {
             "value": "<<namePrefix>>azbaweux001"
         },
+        "locks": {
+            "value": [
+                "CanNotDelete"
+            ]
+        },
         "diagnosticLogsRetentionInDays": {
             "value": 7
         },
@@ -240,6 +245,9 @@ module batchAccounts './Microsoft.Batch/batchAccounts/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-batchAccounts'
   params: {
     name: '<<namePrefix>>azbaweux001'
+    locks: [
+      'CanNotDelete'
+    ]
     diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
     diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'

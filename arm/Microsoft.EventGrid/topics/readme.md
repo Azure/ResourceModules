@@ -250,6 +250,11 @@ tags: {
         "name": {
             "value": "<<namePrefix>>-az-egtn-x-001"
         },
+        "locks": {
+            "value": [
+                "CanNotDelete"
+            ]
+        },
         "roleAssignments": {
             "value": [
                 {
@@ -299,6 +304,9 @@ module topics './Microsoft.EventGrid/topics/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-topics'
   params: {
     name: '<<namePrefix>>-az-egtn-x-001'
+    locks: [
+      'CanNotDelete'
+    ]
     roleAssignments: [
       {
         roleDefinitionIdOrName: 'Reader'

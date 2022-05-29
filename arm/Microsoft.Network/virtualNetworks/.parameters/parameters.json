@@ -5,6 +5,11 @@
         "name": {
             "value": "<<namePrefix>>-az-vnet-x-001"
         },
+        "locks": {
+            "value": [
+                "CanNotDelete"
+            ]
+        },
         "addressPrefixes": {
             "value": [
                 "10.0.0.0/16"

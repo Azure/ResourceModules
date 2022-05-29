@@ -213,6 +213,11 @@ module privateDnsZones './Microsoft.Network/privateDnsZones/deploy.bicep' = {
         "name": {
             "value": "<<namePrefix>>-az-privdns-x-002.com"
         },
+        "locks": {
+            "value": [
+                "CanNotDelete"
+            ]
+        },
         "roleAssignments": {
             "value": [
                 {
@@ -415,6 +420,9 @@ module privateDnsZones './Microsoft.Network/privateDnsZones/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-privateDnsZones'
   params: {
     name: '<<namePrefix>>-az-privdns-x-002.com'
+    locks: [
+      'CanNotDelete'
+    ]
     roleAssignments: [
       {
         roleDefinitionIdOrName: 'Reader'

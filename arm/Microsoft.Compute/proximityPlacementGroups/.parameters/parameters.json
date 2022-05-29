@@ -5,6 +5,11 @@
         "name": {
             "value": "<<namePrefix>>-az-ppg-x-001"
         },
+        "locks": {
+            "value": [
+                "CanNotDelete"
+            ]
+        },
         "roleAssignments": {
             "value": [
                 {

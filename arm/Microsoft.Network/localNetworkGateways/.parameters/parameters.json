@@ -5,6 +5,11 @@
         "name": {
             "value": "<<namePrefix>>-az-lng-x-001"
         },
+        "locks": {
+            "value": [
+                "CanNotDelete"
+            ]
+        },
         "localAddressPrefixes": {
             "value": [
                 "192.168.1.0/24"

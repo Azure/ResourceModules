@@ -526,6 +526,11 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
         "name": {
             "value": "carmlazsax001"
         },
+        "locks": {
+            "value": [
+                "CanNotDelete"
+            ]
+        },
         "storageAccountSku": {
             "value": "Standard_LRS"
         },
@@ -722,6 +727,9 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-storageAccounts'
   params: {
     name: 'carmlazsax001'
+    locks: [
+      'CanNotDelete'
+    ]
     storageAccountSku: 'Standard_LRS'
     allowBlobPublicAccess: false
     publicNetworkAccess: 'Disabled'

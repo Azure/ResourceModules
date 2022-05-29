@@ -214,6 +214,11 @@ userAssignedIdentities: {
         "name": {
             "value": "<<namePrefix>>-adf-001"
         },
+        "locks": {
+            "value": [
+                "CanNotDelete"
+            ]
+        },
         "managedVirtualNetworkName": {
             "value": "default"
         },
@@ -284,6 +289,9 @@ module factories './Microsoft.DataFactory/factories/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-factories'
   params: {
     name: '<<namePrefix>>-adf-001'
+    locks: [
+      'CanNotDelete'
+    ]
     managedVirtualNetworkName: 'default'
     integrationRuntime: {
       name: 'AutoResolveIntegrationRuntime'

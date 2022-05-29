@@ -199,6 +199,11 @@ module availabilitySets './Microsoft.Compute/availabilitySets/deploy.bicep' = {
         "name": {
             "value": "<<namePrefix>>-az-avs-x-001"
         },
+        "locks": {
+            "value": [
+                "CanNotDelete"
+            ]
+        },
         "roleAssignments": {
             "value": [
                 {
@@ -228,6 +233,9 @@ module availabilitySets './Microsoft.Compute/availabilitySets/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-availabilitySets'
   params: {
     name: '<<namePrefix>>-az-avs-x-001'
+    locks: [
+      'CanNotDelete'
+    ]
     roleAssignments: [
       {
         roleDefinitionIdOrName: 'Reader'

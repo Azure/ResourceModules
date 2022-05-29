@@ -5,6 +5,11 @@
         "name": {
             "value": "<<namePrefix>>-az-wss-x-001"
         },
+        "locks": {
+            "value": [
+                "CanNotDelete"
+            ]
+        },
         "sku": {
             "value": "Standard"
         },

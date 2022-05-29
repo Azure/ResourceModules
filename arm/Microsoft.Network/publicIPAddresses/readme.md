@@ -173,6 +173,11 @@ roleAssignments: [
         "name": {
             "value": "<<namePrefix>>-az-pip-x-001"
         },
+        "locks": {
+            "value": [
+                "CanNotDelete"
+            ]
+        },
         "skuName": {
             "value": "Standard"
         },
@@ -227,6 +232,9 @@ module publicIPAddresses './Microsoft.Network/publicIPAddresses/deploy.bicep' = 
   name: '${uniqueString(deployment().name)}-publicIPAddresses'
   params: {
     name: '<<namePrefix>>-az-pip-x-001'
+    locks: [
+      'CanNotDelete'
+    ]
     skuName: 'Standard'
     publicIPAllocationMethod: 'Static'
     zones: [

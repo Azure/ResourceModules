@@ -212,6 +212,11 @@ tags: {
         "name": {
             "value": "<<namePrefix>>-az-asp-x-001"
         },
+        "locks": {
+            "value": [
+                "CanNotDelete"
+            ]
+        },
         "sku": {
             "value": {
                 "name": "S1",
@@ -262,6 +267,9 @@ module serverf './Microsoft.Web/serverf/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-serverf'
   params: {
     name: '<<namePrefix>>-az-asp-x-001'
+    locks: [
+      'CanNotDelete'
+    ]
     sku: {
       name: 'S1'
       tier: 'Standard'

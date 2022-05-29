@@ -243,6 +243,11 @@ module networkInterfaces './Microsoft.Network/networkInterfaces/deploy.bicep' = 
         "name": {
             "value": "<<namePrefix>>-az-nic-x-001"
         },
+        "locks": {
+            "value": [
+                "CanNotDelete"
+            ]
+        },
         "roleAssignments": {
             "value": [
                 {
@@ -302,6 +307,9 @@ module networkInterfaces './Microsoft.Network/networkInterfaces/deploy.bicep' = 
   name: '${uniqueString(deployment().name)}-networkInterfaces'
   params: {
     name: '<<namePrefix>>-az-nic-x-001'
+    locks: [
+      'CanNotDelete'
+    ]
     roleAssignments: [
       {
         roleDefinitionIdOrName: 'Reader'

@@ -5,6 +5,11 @@
         "name": {
             "value": "<<namePrefix>>-adf-001"
         },
+        "locks": {
+            "value": [
+                "CanNotDelete"
+            ]
+        },
         "managedVirtualNetworkName": {
             "value": "default"
         },

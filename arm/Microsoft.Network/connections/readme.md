@@ -318,6 +318,11 @@ tags: {
         "name": {
             "value": "<<namePrefix>>-az-vnetgwc-x-001"
         },
+        "locks": {
+            "value": [
+                "CanNotDelete"
+            ]
+        },
         "virtualNetworkGateway1": {
             "value": {
                 "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworkGateways/<<namePrefix>>-az-vnet-vpn-gw-p-001"
@@ -366,6 +371,9 @@ module connections './Microsoft.Network/connections/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-connections'
   params: {
     name: '<<namePrefix>>-az-vnetgwc-x-001'
+    locks: [
+      'CanNotDelete'
+    ]
     virtualNetworkGateway1: {
       id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworkGateways/<<namePrefix>>-az-vnet-vpn-gw-p-001'
     }

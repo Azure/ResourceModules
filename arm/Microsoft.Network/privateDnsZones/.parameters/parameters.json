@@ -5,6 +5,11 @@
         "name": {
             "value": "<<namePrefix>>-az-privdns-x-002.com"
         },
+        "locks": {
+            "value": [
+                "CanNotDelete"
+            ]
+        },
         "roleAssignments": {
             "value": [
                 {

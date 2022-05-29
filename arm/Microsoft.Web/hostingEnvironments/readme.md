@@ -296,6 +296,11 @@ workerCount: {
         "name": {
             "value": "<<namePrefix>>-az-appse-x-001"
         },
+        "locks": {
+            "value": [
+                "CanNotDelete"
+            ]
+        },
         "subnetResourceId": {
             "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-006"
         },
@@ -340,6 +345,9 @@ module hostingEnvironments './Microsoft.Web/hostingEnvironments/deploy.bicep' = 
   name: '${uniqueString(deployment().name)}-hostingEnvironments'
   params: {
     name: '<<namePrefix>>-az-appse-x-001'
+    locks: [
+      'CanNotDelete'
+    ]
     subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-006'
     roleAssignments: [
       {

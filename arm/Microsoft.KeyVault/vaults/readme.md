@@ -426,6 +426,11 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
         "name": {
             "value": "<<namePrefix>>-az-kv-x-001"
         },
+        "locks": {
+            "value": [
+                "CanNotDelete"
+            ]
+        },
         "softDeleteRetentionInDays": {
             "value": 7
         },
@@ -563,6 +568,9 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-vaults'
   params: {
     name: '<<namePrefix>>-az-kv-x-001'
+    locks: [
+      'CanNotDelete'
+    ]
     softDeleteRetentionInDays: 7
     enableRbacAuthorization: false
     privateEndpoints: [
