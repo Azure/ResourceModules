@@ -4,7 +4,7 @@ param name string
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
 
-@description('Required. Resource IDs fo the existing Application groups this workspace will group together.')
+@description('Required. Resource IDs for the existing Application groups this workspace will group together.')
 param appGroupResourceIds array = []
 
 @description('Optional. The friendly name of the Workspace to be created.')

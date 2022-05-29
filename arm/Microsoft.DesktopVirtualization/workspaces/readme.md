@@ -23,7 +23,7 @@ This module deploys an Azure virtual desktop workspace.
 **Required parameters**
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `appGroupResourceIds` | array | Resource IDs fo the existing Application groups this workspace will group together. |
+| `appGroupResourceIds` | array | Resource IDs for the existing Application groups this workspace will group together. |
 | `name` | string | The name of the workspace to be attach to new Application Group. |
 
 **Optional parameters**
