@@ -203,7 +203,7 @@ resource agentPool 'Microsoft.ContainerService/managedClusters/agentPools@2021-0
     enableFIPS: enableFIPS
     enableNodePublicIP: enableNodePublicIP
     enableUltraSSD: enableUltraSSD
-    gpuInstanceProfile: !empty(gpuInstanceProfile) ? gpuInstanceProfile : null
+    gpuInstanceProfile: !empty(gpuInstanceProfile) ? any(gpuInstanceProfile) : null
     kubeletDiskType: kubeletDiskType
     maxCount: maxCount != -1 ? maxCount : null
     maxPods: maxPods != -1 ? maxPods : null
