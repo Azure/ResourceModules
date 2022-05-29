@@ -8,6 +8,11 @@
         "sku": {
             "value": "Standard"
         },
+        "locks": {
+            "value": [
+                "ReadOnly"
+            ]
+        },
         "replicaSets": {
             "value": [
                 {

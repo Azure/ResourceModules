@@ -5,6 +5,11 @@
         "name": {
             "value": "<<namePrefix>>azasweumax001"
         },
+        "locks": {
+            "value": [
+                "ReadOnly"
+            ]
+        },
         "skuName": {
             "value": "S0"
         },
