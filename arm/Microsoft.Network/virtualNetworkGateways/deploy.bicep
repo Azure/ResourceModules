@@ -312,7 +312,7 @@ resource virtualGatewayPublicIP 'Microsoft.Network/publicIPAddresses@2021-05-01'
 
 @batchSize(1)
 module virtualGatewayPublicIP_locks '.bicep/nested_lock.bicep' = [for (virtualGatewayPublicIpName, index) in virtualGatewayPipName_var: {
-  name: '${uniqueString(deployment().name, location)}-vnetGWPip-Locks'
+  name: '${uniqueString(deployment().name, location)}-vnetGWPip-Locks-${index}'
   params: {
     resourceId: virtualGatewayPublicIP[index].id
     locks: locks
