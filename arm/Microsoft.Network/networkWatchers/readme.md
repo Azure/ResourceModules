@@ -199,11 +199,6 @@ module networkWatchers './Microsoft.Network/networkWatchers/deploy.bicep' = {
         "name": {
             "value": "adp-<<namePrefix>>-az-nw-x-001"
         },
-        "locks": {
-            "value": [
-                "CanNotDelete"
-            ]
-        },
         "flowLogs": {
             "value": [
                 {
@@ -303,9 +298,6 @@ module networkWatchers './Microsoft.Network/networkWatchers/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-networkWatchers'
   params: {
     name: 'adp-<<namePrefix>>-az-nw-x-001'
-    locks: [
-      'CanNotDelete'
-    ]
     flowLogs: [
       {
         targetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/networkSecurityGroups/adp-<<namePrefix>>-az-nsg-x-001'

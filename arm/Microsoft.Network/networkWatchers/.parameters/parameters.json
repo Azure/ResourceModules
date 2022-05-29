@@ -5,11 +5,6 @@
         "name": {
             "value": "adp-<<namePrefix>>-az-nw-x-001"
         },
-        "locks": {
-            "value": [
-                "CanNotDelete"
-            ]
-        },
         "flowLogs": {
             "value": [
                 {
