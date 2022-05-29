@@ -141,6 +141,8 @@ var identity = identityType != 'None' ? {
   userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
 } : null
 
+var enableChildTelemetry = false
+
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
   properties: {
@@ -173,7 +175,7 @@ module serviceBusNamespace_disasterRecoveryConfig 'disasterRecoveryConfigs/deplo
     name: contains(disasterRecoveryConfigs, 'name') ? disasterRecoveryConfigs.name : 'default'
     alternateName: contains(disasterRecoveryConfigs, 'alternateName') ? disasterRecoveryConfigs.alternateName : ''
     partnerNamespaceResourceID: contains(disasterRecoveryConfigs, 'partnerNamespace') ? disasterRecoveryConfigs.partnerNamespace : ''
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableChildTelemetry
   }
 }
 
@@ -184,7 +186,7 @@ module serviceBusNamespace_migrationConfigurations 'migrationConfigurations/depl
     name: contains(migrationConfigurations, 'name') ? migrationConfigurations.name : '$default'
     postMigrationName: migrationConfigurations.postMigrationName
     targetNamespaceResourceId: migrationConfigurations.targetNamespace
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableChildTelemetry
   }
 }
 
@@ -194,7 +196,7 @@ module serviceBusNamespace_virtualNetworkRules 'virtualNetworkRules/deploy.bicep
     namespaceName: serviceBusNamespace.name
     name: last(split(virtualNetworkRule, '/'))
     virtualNetworkSubnetId: virtualNetworkRule
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableChildTelemetry
   }
 }]
 
@@ -204,7 +206,7 @@ module serviceBusNamespace_authorizationRules 'authorizationRules/deploy.bicep' 
     namespaceName: serviceBusNamespace.name
     name: authorizationRule.name
     rights: contains(authorizationRule, 'rights') ? authorizationRule.rights : []
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableChildTelemetry
   }
 }]
 
@@ -216,7 +218,7 @@ module serviceBusNamespace_ipFilterRules 'ipFilterRules/deploy.bicep' = [for (ip
     action: ipFilterRule.action
     filterName: ipFilterRule.filterName
     ipMask: ipFilterRule.ipMask
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableChildTelemetry
   }
 }]
 
@@ -249,7 +251,7 @@ module serviceBusNamespace_queues 'queues/deploy.bicep' = [for (queue, index) in
     requiresSession: contains(queue, 'requiresSession') ? queue.requiresSession : false
     roleAssignments: contains(queue, 'roleAssignments') ? queue.roleAssignments : []
     status: contains(queue, 'status') ? queue.status : 'Active'
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableChildTelemetry
   }
 }]
 
@@ -281,7 +283,7 @@ module serviceBusNamespace_topics 'topics/deploy.bicep' = [for (topic, index) in
     roleAssignments: contains(topic, 'roleAssignments') ? topic.roleAssignments : []
     status: contains(topic, 'status') ? topic.status : 'Active'
     supportOrdering: contains(topic, 'supportOrdering') ? topic.supportOrdering : false
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableChildTelemetry
   }
 }]
 
@@ -307,13 +309,23 @@ resource serviceBusNamespace_diagnosticSettings 'Microsoft.Insights/diagnosticSe
   scope: serviceBusNamespace
 }
 
-module serviceBusNamespace_privateEndpoints '.bicep/nested_privateEndpoints.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
-  name: '${uniqueString(deployment().name, location)}-PrivateEndpoint-${index}'
+module serviceBusNamespace_privateEndpoints '../../Microsoft.Network/privateEndpoints/deploy.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
+  name: '${uniqueString(deployment().name, location)}-Namespace-PrivateEndpoint-${index}'
   params: {
-    privateEndpointResourceId: serviceBusNamespace.id
-    privateEndpointVnetLocation: reference(split(privateEndpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location
-    privateEndpoint: privateEndpoint
-    tags: tags
+    groupIds: [
+      privateEndpoint.service
+    ]
+    name: contains(privateEndpoint, 'name') ? privateEndpoint.name : 'pe-${last(split(serviceBusNamespace.id, '/'))}-${privateEndpoint.service}-${index}'
+    serviceResourceId: serviceBusNamespace.id
+    subnetResourceId: privateEndpoint.subnetResourceId
+    enableDefaultTelemetry: enableDefaultTelemetry
+    location: reference(split(privateEndpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location
+    lock: contains(privateEndpoint, 'lock') ? privateEndpoint.lock : 'NotSpecified'
+    privateDnsZoneGroups: contains(privateEndpoint, 'privateDnsZoneGroups') ? privateEndpoint.privateDnsZoneGroups : []
+    roleAssignments: contains(privateEndpoint, 'roleAssignments') ? privateEndpoint.roleAssignments : []
+    tags: contains(privateEndpoint, 'tags') ? privateEndpoint.tags : {}
+    manualPrivateLinkServiceConnections: contains(privateEndpoint, 'manualPrivateLinkServiceConnections') ? privateEndpoint.manualPrivateLinkServiceConnections : []
+    customDnsConfigs: contains(privateEndpoint, 'customDnsConfigs') ? privateEndpoint.customDnsConfigs : []
   }
 }]
 

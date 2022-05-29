@@ -22,7 +22,6 @@ This module deploys an Azure API connection.
 **Required parameters**
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `connectionKind` | string | Connection Kind. Example: 'V1' when using blobs. It can change depending on the resource. |
 | `displayName` | string | Display name connection. Example: 'blobconnection' when using blobs. It can change depending on the resource. |
 | `name` | string | Connection name for connection. Example: 'azureblob' when using blobs.  It can change depending on the resource. |
 
@@ -37,7 +36,6 @@ This module deploys an Azure API connection.
 | `lock` | string | `'NotSpecified'` | `[CanNotDelete, NotSpecified, ReadOnly]` | Specify the type of lock. |
 | `nonSecretParameterValues` | object | `{object}` |  | Dictionary of nonsecret parameter values. |
 | `parameterValues` | secureObject | `{object}` |  | Connection strings or access keys for connection. Example: 'accountName' and 'accessKey' when using blobs.  It can change depending on the resource. |
-| `parameterValueType` | string | `''` |  | Value Type of parameter, in case alternativeParameterValues is used. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `statuses` | array | `[]` |  | Status of the connection. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
@@ -169,9 +167,6 @@ tags: {
         "name": {
             "value": "azuremonitor"
         },
-        "connectionKind": {
-            "value": "V1"
-        },
         "displayName": {
             "value": "azuremonitorlogs"
         },
@@ -206,7 +201,6 @@ module connections './Microsoft.Web/connections/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-connections'
   params: {
     name: 'azuremonitor'
-    connectionKind: 'V1'
     displayName: 'azuremonitorlogs'
     connectionApi: {
       id: '/subscriptions/<<subscriptionId>>/providers/Microsoft.Web/locations/westeurope/managedApis/azuremonitorlogs'

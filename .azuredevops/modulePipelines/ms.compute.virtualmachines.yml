@@ -47,8 +47,10 @@ stages:
           deploymentBlocks:
             - path: $(modulePath)/.parameters/linux.min.parameters.json
             - path: $(modulePath)/.parameters/linux.parameters.json
+            - path: $(modulePath)/.parameters/linux.autmg.parameters.json
             - path: $(modulePath)/.parameters/windows.min.parameters.json
             - path: $(modulePath)/.parameters/windows.parameters.json
+            - path: $(modulePath)/.parameters/windows.autmg.parameters.json
 
   - stage: Publishing
     displayName: Publishing

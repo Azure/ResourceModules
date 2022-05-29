@@ -7,6 +7,13 @@ param publicIPPrefixResourceId string = ''
 @description('Optional. The public IP address allocation method. - Static or Dynamic.')
 param publicIPAllocationMethod string = 'Dynamic'
 
+@description('Optional. Zone numbers e.g. 1,2,3.')
+param zones array = [
+  '1'
+  '2'
+  '3'
+]
+
 @description('Optional. Public IP Address sku Name')
 param skuName string = 'Basic'
 
@@ -41,7 +48,7 @@ param lock string = 'NotSpecified'
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
 
-@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
+@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'')
 param roleAssignments array = []
 
 @description('Optional. Tags of the resource.')
@@ -108,6 +115,7 @@ resource publicIpAddress 'Microsoft.Network/publicIPAddresses@2021-05-01' = {
     idleTimeoutInMinutes: 4
     ipTags: []
   }
+  zones: length(zones) == 0 ? null : zones
 }
 
 resource publicIpAddress_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {

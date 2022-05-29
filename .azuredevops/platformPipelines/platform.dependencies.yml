@@ -544,7 +544,9 @@ stages:
             - path: $(dependencyPath)/$(resourceType)/parameters/fw.parameters.json
               templateFilePath: $(templateFilePath)
               displayName: Firewall Public IP
-
+            - path: $(dependencyPath)/$(resourceType)/parameters/fw.additional.parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: Firewall Additional Public IP
   - stage: deploy_appi
     displayName: Deploy application insight
     dependsOn:
@@ -942,6 +944,12 @@ stages:
             - path: $(dependencyPath)/$(resourceType)/parameters/8.aadds.parameters.json
               templateFilePath: $(templateFilePath)
               displayName: AADDS Virtual Network
+            - path: $(dependencyPath)/$(resourceType)/parameters/9.azfw.parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: Azure Firewall Virtual Network Min
+            - path: $(dependencyPath)/$(resourceType)/parameters/10.azfw.parameters.json
+              templateFilePath: $(templateFilePath)
+              displayName: Azure Firewall Virtual Network Custom Pip
             - ${{ if eq( parameters.deploySqlMiDependencies, true) }}:
                 - path: $(dependencyPath)/$(resourceType)/parameters/6.sqlmi.parameters.json
                   templateFilePath: $(templateFilePath)

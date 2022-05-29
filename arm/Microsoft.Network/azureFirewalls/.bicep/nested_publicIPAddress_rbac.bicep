@@ -1,10 +1,10 @@
-@sys.description('Required. The IDs of the principals to assign the role to.')
+@sys.description('Required. The IDs of the prinicpals to assign to role to')
 param principalIds array
 
-@sys.description('Required. The name of the role to assign. If it cannot be found you can specify the role definition ID instead.')
+@sys.description('Required. The name of the role to assign. If it cannot be found you can specify the role definition ID instead')
 param roleDefinitionIdOrName string
 
-@sys.description('Required. The resource ID of the resource to apply the role assignment to.')
+@sys.description('Required. The resource ID of the resource to apply the role assignment to')
 param resourceId string
 
 @sys.description('Optional. The principal type of the assigned principal ID.')
@@ -18,7 +18,7 @@ param resourceId string
 ])
 param principalType string = ''
 
-@sys.description('Optional. The description of the role assignment.')
+@sys.description('Optional. Description of role assignment')
 param description string = ''
 
 var builtInRoleNames = {
@@ -45,17 +45,17 @@ var builtInRoleNames = {
   'Virtual Machine User Login': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', 'fb879df8-f326-4884-b1cf-06f3ad86be52')
 }
 
-resource networkInterface 'Microsoft.Network/networkInterfaces@2021-03-01' existing = {
+resource publicIpAddress 'Microsoft.Network/publicIPAddresses@2021-05-01' existing = {
   name: last(split(resourceId, '/'))
 }
 
 resource roleAssignment 'Microsoft.Authorization/roleAssignments@2020-10-01-preview' = [for principalId in principalIds: {
-  name: guid(networkInterface.id, principalId, roleDefinitionIdOrName)
+  name: guid(publicIpAddress.name, principalId, roleDefinitionIdOrName)
   properties: {
     description: description
     roleDefinitionId: contains(builtInRoleNames, roleDefinitionIdOrName) ? builtInRoleNames[roleDefinitionIdOrName] : roleDefinitionIdOrName
     principalId: principalId
-    principalType: !empty(principalType) ? principalType : null
+    principalType: !empty(principalType) ? any(principalType) : null
   }
-  scope: networkInterface
+  scope: publicIpAddress
 }]
