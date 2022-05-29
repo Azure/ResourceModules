@@ -524,12 +524,7 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "carmlazsax001"
-        },
-        "locks": {
-            "value": [
-                "CanNotDelete"
-            ]
+            "value": "<<namePrefix>>azsax001"
         },
         "storageAccountSku": {
             "value": "Standard_LRS"
@@ -546,19 +541,19 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
         "privateEndpoints": {
             "value": [
                 {
-                    "subnetResourceId": "/subscriptions/a7439831-1cd9-435d-a091-4aa863c96556/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-carml-az-vnet-x-001/subnets/carml-az-subnet-x-005-privateEndpoints",
+                    "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints",
                     "service": "blob"
                 },
                 {
-                    "subnetResourceId": "/subscriptions/a7439831-1cd9-435d-a091-4aa863c96556/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-carml-az-vnet-x-001/subnets/carml-az-subnet-x-005-privateEndpoints",
+                    "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints",
                     "service": "table"
                 },
                 {
-                    "subnetResourceId": "/subscriptions/a7439831-1cd9-435d-a091-4aa863c96556/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-carml-az-vnet-x-001/subnets/carml-az-subnet-x-005-privateEndpoints",
+                    "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints",
                     "service": "queue"
                 },
                 {
-                    "subnetResourceId": "/subscriptions/a7439831-1cd9-435d-a091-4aa863c96556/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-carml-az-vnet-x-001/subnets/carml-az-subnet-x-005-privateEndpoints",
+                    "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints",
                     "service": "file"
                 }
             ]
@@ -569,7 +564,7 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
                 "defaultAction": "Deny",
                 "virtualNetworkRules": [
                     {
-                        "id": "/subscriptions/a7439831-1cd9-435d-a091-4aa863c96556/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-carml-az-vnet-x-001/subnets/carml-az-subnet-x-001",
+                        "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001",
                         "action": "Allow"
                     }
                 ],
@@ -584,10 +579,10 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
         "blobServices": {
             "value": {
                 "diagnosticLogsRetentionInDays": 7,
-                "diagnosticStorageAccountId": "/subscriptions/a7439831-1cd9-435d-a091-4aa863c96556/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adpcarmlazsax001",
-                "diagnosticWorkspaceId": "/subscriptions/a7439831-1cd9-435d-a091-4aa863c96556/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-carml-az-law-x-001",
-                "diagnosticEventHubAuthorizationRuleId": "/subscriptions/a7439831-1cd9-435d-a091-4aa863c96556/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-carml-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey",
-                "diagnosticEventHubName": "adp-carml-az-evh-x-001",
+                "diagnosticStorageAccountId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001",
+                "diagnosticWorkspaceId": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001",
+                "diagnosticEventHubAuthorizationRuleId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey",
+                "diagnosticEventHubName": "adp-<<namePrefix>>-az-evh-x-001",
                 "containers": [
                     {
                         "name": "avdscripts",
@@ -596,7 +591,7 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
                             {
                                 "roleDefinitionIdOrName": "Reader",
                                 "principalIds": [
-                                    "e58511af-4da2-449c-a5cd-6a10271cfb83"
+                                    "<<deploymentSpId>>"
                                 ]
                             }
                         ]
@@ -614,10 +609,10 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
         "fileServices": {
             "value": {
                 "diagnosticLogsRetentionInDays": 7,
-                "diagnosticStorageAccountId": "/subscriptions/a7439831-1cd9-435d-a091-4aa863c96556/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adpcarmlazsax001",
-                "diagnosticWorkspaceId": "/subscriptions/a7439831-1cd9-435d-a091-4aa863c96556/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-carml-az-law-x-001",
-                "diagnosticEventHubAuthorizationRuleId": "/subscriptions/a7439831-1cd9-435d-a091-4aa863c96556/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-carml-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey",
-                "diagnosticEventHubName": "adp-carml-az-evh-x-001",
+                "diagnosticStorageAccountId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001",
+                "diagnosticWorkspaceId": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001",
+                "diagnosticEventHubAuthorizationRuleId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey",
+                "diagnosticEventHubName": "adp-<<namePrefix>>-az-evh-x-001",
                 "shares": [
                     {
                         "name": "avdprofiles",
@@ -626,7 +621,7 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
                             {
                                 "roleDefinitionIdOrName": "Reader",
                                 "principalIds": [
-                                    "e58511af-4da2-449c-a5cd-6a10271cfb83"
+                                    "<<deploymentSpId>>"
                                 ]
                             }
                         ]
@@ -641,10 +636,10 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
         "tableServices": {
             "value": {
                 "diagnosticLogsRetentionInDays": 7,
-                "diagnosticStorageAccountId": "/subscriptions/a7439831-1cd9-435d-a091-4aa863c96556/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adpcarmlazsax001",
-                "diagnosticWorkspaceId": "/subscriptions/a7439831-1cd9-435d-a091-4aa863c96556/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-carml-az-law-x-001",
-                "diagnosticEventHubAuthorizationRuleId": "/subscriptions/a7439831-1cd9-435d-a091-4aa863c96556/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-carml-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey",
-                "diagnosticEventHubName": "adp-carml-az-evh-x-001",
+                "diagnosticStorageAccountId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001",
+                "diagnosticWorkspaceId": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001",
+                "diagnosticEventHubAuthorizationRuleId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey",
+                "diagnosticEventHubName": "adp-<<namePrefix>>-az-evh-x-001",
                 "tables": [
                     "table1",
                     "table2"
@@ -654,10 +649,10 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
         "queueServices": {
             "value": {
                 "diagnosticLogsRetentionInDays": 7,
-                "diagnosticStorageAccountId": "/subscriptions/a7439831-1cd9-435d-a091-4aa863c96556/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adpcarmlazsax001",
-                "diagnosticWorkspaceId": "/subscriptions/a7439831-1cd9-435d-a091-4aa863c96556/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-carml-az-law-x-001",
-                "diagnosticEventHubAuthorizationRuleId": "/subscriptions/a7439831-1cd9-435d-a091-4aa863c96556/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-carml-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey",
-                "diagnosticEventHubName": "adp-carml-az-evh-x-001",
+                "diagnosticStorageAccountId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001",
+                "diagnosticWorkspaceId": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001",
+                "diagnosticEventHubAuthorizationRuleId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey",
+                "diagnosticEventHubName": "adp-<<namePrefix>>-az-evh-x-001",
                 "queues": [
                     {
                         "name": "queue1",
@@ -666,7 +661,7 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
                             {
                                 "roleDefinitionIdOrName": "Reader",
                                 "principalIds": [
-                                    "e58511af-4da2-449c-a5cd-6a10271cfb83"
+                                    "<<deploymentSpId>>"
                                 ]
                             }
                         ]
@@ -683,7 +678,7 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
         },
         "userAssignedIdentities": {
             "value": {
-                "/subscriptions/a7439831-1cd9-435d-a091-4aa863c96556/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-carml-az-msi-x-001": {}
+                "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001": {}
             }
         },
         "roleAssignments": {
@@ -691,7 +686,7 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
                 {
                     "roleDefinitionIdOrName": "Reader",
                     "principalIds": [
-                        "e58511af-4da2-449c-a5cd-6a10271cfb83"
+                        "<<deploymentSpId>>"
                     ]
                 }
             ]
@@ -700,16 +695,16 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
             "value": 7
         },
         "diagnosticStorageAccountId": {
-            "value": "/subscriptions/a7439831-1cd9-435d-a091-4aa863c96556/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adpcarmlazsax001"
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
         },
         "diagnosticWorkspaceId": {
-            "value": "/subscriptions/a7439831-1cd9-435d-a091-4aa863c96556/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-carml-az-law-x-001"
+            "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001"
         },
         "diagnosticEventHubAuthorizationRuleId": {
-            "value": "/subscriptions/a7439831-1cd9-435d-a091-4aa863c96556/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-carml-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
         },
         "diagnosticEventHubName": {
-            "value": "adp-carml-az-evh-x-001"
+            "value": "adp-<<namePrefix>>-az-evh-x-001"
         }
     }
 }
@@ -726,29 +721,26 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
 module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-storageAccounts'
   params: {
-    name: 'carmlazsax001'
-    locks: [
-      'CanNotDelete'
-    ]
+    name: '<<namePrefix>>azsax001'
     storageAccountSku: 'Standard_LRS'
     allowBlobPublicAccess: false
     publicNetworkAccess: 'Disabled'
     requireInfrastructureEncryption: true
     privateEndpoints: [
       {
-        subnetResourceId: '/subscriptions/a7439831-1cd9-435d-a091-4aa863c96556/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-carml-az-vnet-x-001/subnets/carml-az-subnet-x-005-privateEndpoints'
+        subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints'
         service: 'blob'
       }
       {
-        subnetResourceId: '/subscriptions/a7439831-1cd9-435d-a091-4aa863c96556/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-carml-az-vnet-x-001/subnets/carml-az-subnet-x-005-privateEndpoints'
+        subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints'
         service: 'table'
       }
       {
-        subnetResourceId: '/subscriptions/a7439831-1cd9-435d-a091-4aa863c96556/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-carml-az-vnet-x-001/subnets/carml-az-subnet-x-005-privateEndpoints'
+        subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints'
         service: 'queue'
       }
       {
-        subnetResourceId: '/subscriptions/a7439831-1cd9-435d-a091-4aa863c96556/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-carml-az-vnet-x-001/subnets/carml-az-subnet-x-005-privateEndpoints'
+        subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints'
         service: 'file'
       }
     ]
@@ -757,7 +749,7 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
       defaultAction: 'Deny'
       virtualNetworkRules: [
         {
-          id: '/subscriptions/a7439831-1cd9-435d-a091-4aa863c96556/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-carml-az-vnet-x-001/subnets/carml-az-subnet-x-001'
+          id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-001'
           action: 'Allow'
         }
       ]
@@ -770,10 +762,10 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
     }
     blobServices: {
       diagnosticLogsRetentionInDays: 7
-      diagnosticStorageAccountId: '/subscriptions/a7439831-1cd9-435d-a091-4aa863c96556/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adpcarmlazsax001'
-      diagnosticWorkspaceId: '/subscriptions/a7439831-1cd9-435d-a091-4aa863c96556/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-carml-az-law-x-001'
-      diagnosticEventHubAuthorizationRuleId: '/subscriptions/a7439831-1cd9-435d-a091-4aa863c96556/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-carml-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
-      diagnosticEventHubName: 'adp-carml-az-evh-x-001'
+      diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
+      diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
+      diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
+      diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
       containers: [
         {
           name: 'avdscripts'
@@ -782,7 +774,7 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
             {
               roleDefinitionIdOrName: 'Reader'
               principalIds: [
-                'e58511af-4da2-449c-a5cd-6a10271cfb83'
+                '<<deploymentSpId>>'
               ]
             }
           ]
@@ -798,10 +790,10 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
     }
     fileServices: {
       diagnosticLogsRetentionInDays: 7
-      diagnosticStorageAccountId: '/subscriptions/a7439831-1cd9-435d-a091-4aa863c96556/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adpcarmlazsax001'
-      diagnosticWorkspaceId: '/subscriptions/a7439831-1cd9-435d-a091-4aa863c96556/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-carml-az-law-x-001'
-      diagnosticEventHubAuthorizationRuleId: '/subscriptions/a7439831-1cd9-435d-a091-4aa863c96556/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-carml-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
-      diagnosticEventHubName: 'adp-carml-az-evh-x-001'
+      diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
+      diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
+      diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
+      diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
       shares: [
         {
           name: 'avdprofiles'
@@ -810,7 +802,7 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
             {
               roleDefinitionIdOrName: 'Reader'
               principalIds: [
-                'e58511af-4da2-449c-a5cd-6a10271cfb83'
+                '<<deploymentSpId>>'
               ]
             }
           ]
@@ -823,10 +815,10 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
     }
     tableServices: {
       diagnosticLogsRetentionInDays: 7
-      diagnosticStorageAccountId: '/subscriptions/a7439831-1cd9-435d-a091-4aa863c96556/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adpcarmlazsax001'
-      diagnosticWorkspaceId: '/subscriptions/a7439831-1cd9-435d-a091-4aa863c96556/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-carml-az-law-x-001'
-      diagnosticEventHubAuthorizationRuleId: '/subscriptions/a7439831-1cd9-435d-a091-4aa863c96556/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-carml-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
-      diagnosticEventHubName: 'adp-carml-az-evh-x-001'
+      diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
+      diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
+      diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
+      diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
       tables: [
         'table1'
         'table2'
@@ -834,10 +826,10 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
     }
     queueServices: {
       diagnosticLogsRetentionInDays: 7
-      diagnosticStorageAccountId: '/subscriptions/a7439831-1cd9-435d-a091-4aa863c96556/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adpcarmlazsax001'
-      diagnosticWorkspaceId: '/subscriptions/a7439831-1cd9-435d-a091-4aa863c96556/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-carml-az-law-x-001'
-      diagnosticEventHubAuthorizationRuleId: '/subscriptions/a7439831-1cd9-435d-a091-4aa863c96556/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-carml-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
-      diagnosticEventHubName: 'adp-carml-az-evh-x-001'
+      diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
+      diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
+      diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
+      diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
       queues: [
         {
           name: 'queue1'
@@ -846,7 +838,7 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
             {
               roleDefinitionIdOrName: 'Reader'
               principalIds: [
-                'e58511af-4da2-449c-a5cd-6a10271cfb83'
+                '<<deploymentSpId>>'
               ]
             }
           ]
@@ -859,21 +851,21 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
     }
     systemAssignedIdentity: true
     userAssignedIdentities: {
-      '/subscriptions/a7439831-1cd9-435d-a091-4aa863c96556/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-carml-az-msi-x-001': {}
+      '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
     }
     roleAssignments: [
       {
         roleDefinitionIdOrName: 'Reader'
         principalIds: [
-          'e58511af-4da2-449c-a5cd-6a10271cfb83'
+          '<<deploymentSpId>>'
         ]
       }
     ]
     diagnosticLogsRetentionInDays: 7
-    diagnosticStorageAccountId: '/subscriptions/a7439831-1cd9-435d-a091-4aa863c96556/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adpcarmlazsax001'
-    diagnosticWorkspaceId: '/subscriptions/a7439831-1cd9-435d-a091-4aa863c96556/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-carml-az-law-x-001'
-    diagnosticEventHubAuthorizationRuleId: '/subscriptions/a7439831-1cd9-435d-a091-4aa863c96556/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-carml-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
-    diagnosticEventHubName: 'adp-carml-az-evh-x-001'
+    diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
+    diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
+    diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
+    diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
   }
 ```
 
