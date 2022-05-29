@@ -5,11 +5,6 @@
         "name": {
             "value": "adp-<<namePrefix>>-az-asp-x-001"
         },
-        "locks": {
-            "value": [
-                "CanNotDelete"
-            ]
-        },
         "sku": {
             "value": {
                 "name": "S1",

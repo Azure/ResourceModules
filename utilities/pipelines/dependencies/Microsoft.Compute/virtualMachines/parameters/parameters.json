@@ -5,11 +5,6 @@
         "name": {
             "value": "adp-<<namePrefix>>-vm-01"
         },
-        "locks": {
-            "value": [
-                "CanNotDelete"
-            ]
-        },
         "vmSize": {
             "value": "Standard_B1s"
         },

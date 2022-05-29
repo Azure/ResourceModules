@@ -5,11 +5,6 @@
         "name": {
             "value": "adp-<<namePrefix>>-az-imgt-x-001"
         },
-        "locks": {
-            "value": [
-                "CanNotDelete"
-            ]
-        },
         "userMsiName": {
             "value": "adp-<<namePrefix>>-az-msi-x-001"
         },
