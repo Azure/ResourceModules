@@ -3,7 +3,7 @@
 Remove a specific resource
 
 .DESCRIPTION
-Remove a specific resource. Tries to handle different resource types accordingly. Locks for resources intended for deletion will be removed.
+Remove a specific resource. Tries to handle different resource types accordingly.
 
 .PARAMETER ResourceId
 Mandatory. The resourceID of the resource to remove
@@ -12,7 +12,7 @@ Mandatory. The resourceID of the resource to remove
 Mandatory. The type of the resource to remove
 
 .PARAMETER Locks
-Optional. Locks that exist in the targeted subscription. Locks for resources intended for deletion will be removed.
+Optional. Locks that exist in the targeted subscription.
 
 .EXAMPLE
 Invoke-ResourceRemoval -Type 'Microsoft.Insights/diagnosticSettings' -ResourceId '/subscriptions/.../resourceGroups/validation-rg/providers/Microsoft.Network/networkInterfaces/sxx-vm-linux-001-nic-01/providers/Microsoft.Insights/diagnosticSettings/sxx-vm-linux-001-nic-01-diagnosticSettings'
