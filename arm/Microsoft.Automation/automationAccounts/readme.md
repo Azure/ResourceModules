@@ -359,22 +359,21 @@ userAssignedIdentities: {
         "name": {
             "value": "<<namePrefix>>-wd-aut-encr-001"
         },
-        "encryptionKeySource" : {
-            "value" : "Microsoft.Keyvault"
+        "encryptionKeySource": {
+            "value": "Microsoft.Keyvault"
         },
         "encryptionUserAssignedIdentity": {
             "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001" // this identity needs to be one of the identities defined in userAssignedIdentities section
         },
-        "keyName" : {
-                "value" : "keyEncryptionKey"
+        "keyName": {
+            "value": "keyEncryptionKey"
         },
-        "keyvaultUri" : {
-                    "value" : "https://adp-carml-az-kv-nopr-002.vault.azure.net/"
+        "keyvaultUri": {
+            "value": "https://adp-carml-az-kv-nopr-002.vault.azure.net/"
         },
-        "keyVersion" : {
-                    "value" : "9917c14be51d4d93b37218de7d326f60"
+        "keyVersion": {
+            "value": "9917c14be51d4d93b37218de7d326f60"
         },
-        
         "userAssignedIdentities": {
             "value": {
                 "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001": {}
@@ -470,7 +469,7 @@ module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bice
                 {
                     "name": "TestSchedule",
                     "startTime": "",
-                    "expiryTime": "9999-12-31T23:59:00+00:00",
+                    "expiryTime": "9999-12-31T13:00",
                     "interval": 15,
                     "frequency": "Minute",
                     "timeZone": "Europe/Berlin",
@@ -671,7 +670,7 @@ module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bice
       {
         name: 'TestSchedule'
         startTime: ''
-        expiryTime: '9999-12-31T23:59:59.9999999+01:00'
+        expiryTime: '9999-12-31T13:00'
         interval: 15
         frequency: 'Minute'
         timeZone: 'Europe/Berlin'
