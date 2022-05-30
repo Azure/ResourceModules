@@ -74,14 +74,14 @@ function Initialize-DeploymentRemoval {
         foreach ($deploymentName in $deploymentNames) {
             Write-Verbose ('Handling resource removal with deployment name [{0}]' -f $deploymentName) -Verbose
             switch ($moduleName) {
-                'virtualWans' {
-                    $removalSequence += @(
-                        'Microsoft.Network/vpnGateways',
-                        'Microsoft.Network/virtualHubs',
-                        'Microsoft.Network/vpnSites'
-                    )
-                    break
-                }
+                # 'virtualWans' {
+                #     $removalSequence += @(
+                #         'Microsoft.Network/vpnGateways',
+                #         'Microsoft.Network/virtualHubs',
+                #         'Microsoft.Network/vpnSites'
+                #     )
+                #     break
+                # }
                 ### CODE LOCATION: Add custom removal sequence here
             }
 
