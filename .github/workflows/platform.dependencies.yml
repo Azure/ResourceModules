@@ -49,7 +49,6 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-
       - name: 'Deploy module'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
@@ -77,7 +76,6 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-
       - name: 'Deploy module'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
@@ -107,7 +105,6 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-
       - name: 'Deploy module'
         id: deploy_msi
         uses: ./.github/actions/templates/validateModuleDeployment
@@ -119,7 +116,6 @@ jobs:
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
           removeDeployment: '${{ env.removeDeployment }}'
-
       - name: Set msi principal ID output
         id: print_msi_prinId
         uses: azure/powershell@v1
@@ -147,7 +143,6 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-
       - name: 'Deploy module'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
@@ -175,7 +170,6 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-
       - name: 'Deploy module'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
@@ -203,7 +197,6 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-
       - name: 'Deploy module'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
@@ -231,7 +224,6 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-
       - name: 'Deploy module'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
@@ -260,7 +252,6 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-
       - name: 'Deploy module'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
@@ -289,7 +280,6 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-
       - name: 'Deploy module'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
@@ -313,13 +303,24 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
+      - name: 'Setup agent'
+        shell: pwsh
+        run: |
+          # Load used functions
+          . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
 
+          # Define PS modules to install on the runner
+          $Modules = @(
+              @{ Name = 'Az.Storage' }
+          )
+
+          # Set agent up
+          Set-EnvironmentOnAgent -PSModules $Modules
       - name: Azure Login
         uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
           enable-AzPSSession: true
-
       - name: Run PowerShell
         uses: azure/powershell@v1
         with:
@@ -383,7 +384,6 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-
       - name: 'Deploy module'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
@@ -416,7 +416,6 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-
       - name: 'Deploy module'
         id: deploy_imgt
         uses: ./.github/actions/templates/validateModuleDeployment
@@ -428,7 +427,6 @@ jobs:
           subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
           removeDeployment: '${{ env.removeDeployment }}'
-
       - name: 'Set image template output'
         id: print_imgt_output
         uses: azure/powershell@v1
@@ -458,13 +456,25 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
+      - name: 'Setup agent'
+        shell: pwsh
+        run: |
+          # Load used functions
+          . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
 
+          # Define PS modules to install on the runner
+          $Modules = @(
+              @{ Name = 'Az.ImageBuilder' },
+              @{ Name = 'Az.Storage' }
+          )
+
+          # Set agent up
+          Set-EnvironmentOnAgent -PSModules $Modules
       - name: Azure Login
         uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
           enable-AzPSSession: true
-
       - name: 'Trigger building new image'
         uses: azure/powershell@v1
         with:
@@ -476,7 +486,6 @@ jobs:
             Write-Verbose "Trigger new image creation with imageTemplateName $imageTemplateName and imageTemplateResourceGroup $imageTemplateResourceGroup" -Verbose
             Start-AzImageBuilderTemplate -ImageTemplateName $imageTemplateName -ResourceGroupName $imageTemplateResourceGroup
           azPSVersion: 'latest'
-
       - name: 'Copy baked vhd to a storage account'
         uses: azure/powershell@v1
         with:
@@ -565,7 +574,6 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-
       - name: 'Deploy module'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
@@ -593,7 +601,6 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-
       - name: 'Deploy module'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
@@ -621,7 +628,6 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-
       - name: 'Deploy module'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
@@ -650,7 +656,6 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-
       - name: 'Deploy module'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
@@ -687,7 +692,6 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-
       - name: 'Deploy module'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
@@ -718,7 +722,6 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-
       - name: 'Deploy module'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
@@ -756,7 +759,6 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-
       - name: 'Deploy module'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
@@ -786,7 +788,6 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-
       - name: 'Deploy module'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
@@ -816,7 +817,6 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-
       - name: 'Deploy module'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
@@ -846,7 +846,6 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-
       - name: 'Deploy module'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
@@ -877,7 +876,6 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-
       - name: 'Deploy module'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
@@ -910,7 +908,6 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-
       - name: 'Deploy module'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
@@ -936,13 +933,24 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
+      - name: 'Setup agent'
+        shell: pwsh
+        run: |
+          # Load used functions
+          . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
 
+          # Define PS modules to install on the runner
+          $Modules = @(
+              @{ Name = 'Az.KeyVault' }
+          )
+
+          # Set agent up
+          Set-EnvironmentOnAgent -PSModules $Modules
       - name: Azure Login
         uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
           enable-AzPSSession: true
-
       - name: 'Set key vault secrets keys and certificates'
         uses: azure/powershell@v1
         with:
@@ -1076,7 +1084,6 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-
       - name: 'Deploy module'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
@@ -1102,13 +1109,25 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
+      - name: 'Setup agent'
+        shell: pwsh
+        run: |
+          # Load used functions
+          . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
+
+          # Define PS modules to install on the runner
+          $Modules = @(
+              @{ Name = 'Az.KeyVault' }
+          )
+
+          # Set agent up
+          Set-EnvironmentOnAgent -PSModules $Modules
 
       - name: Azure Login
         uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
           enable-AzPSSession: true
-
       - name: 'Set sqlmi key vault secrets and keys'
         uses: azure/powershell@v1
         with:
@@ -1184,7 +1203,6 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-
       - name: 'Deploy module'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
@@ -1212,7 +1230,6 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-
       - name: 'Deploy module'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
@@ -1253,7 +1270,6 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-
       - name: 'Deploy module'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
@@ -1283,7 +1299,6 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-
       - name: 'Deploy module'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
@@ -1311,7 +1326,6 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-
       - name: 'Deploy module'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
@@ -1341,7 +1355,6 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-
       - name: 'Deploy module'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
@@ -1369,7 +1382,6 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-
       - name: 'Deploy module'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
