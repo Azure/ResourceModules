@@ -135,7 +135,7 @@ resource appServiceEnvironment 'Microsoft.Web/hostingEnvironments@2021-03-01' = 
     }
     internalLoadBalancingMode: internalLoadBalancingMode
     multiSize: kind != 'ASEv3' ? multiSize : null
-    ipsslAddressCount: ipsslAddressCount
+    ipsslAddressCount: kind != 'ASEv3' ? ipsslAddressCount : null
     dnsSuffix: dnsSuffix
     frontEndScaleFactor: frontEndScaleFactor
     clusterSettings: clusterSettings
