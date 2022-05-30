@@ -91,7 +91,15 @@
         {
           "name": "<<namePrefix>>-az-subnet-x-006", // ASE subnet
           "addressPrefix": "10.0.7.0/24",
-          "networkSecurityGroupId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/networkSecurityGroups/adp-<<namePrefix>>-az-nsg-x-ase"
+          "networkSecurityGroupId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/networkSecurityGroups/adp-<<namePrefix>>-az-nsg-x-ase",
+          "delegations": [
+            {
+              "name": "ase",
+              "properties": {
+                "serviceName": "Microsoft.Web/hostingEnvironments"
+              }
+            }
+          ]
         },
         {
           "name": "<<namePrefix>>-az-subnet-x-007", // APGW subnet
