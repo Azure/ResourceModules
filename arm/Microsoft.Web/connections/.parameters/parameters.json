@@ -5,9 +5,6 @@
         "name": {
             "value": "azuremonitor"
         },
-        "connectionKind": {
-            "value": "V1"
-        },
         "displayName": {
             "value": "azuremonitorlogs"
         },
