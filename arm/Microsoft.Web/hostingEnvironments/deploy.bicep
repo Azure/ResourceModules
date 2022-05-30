@@ -21,6 +21,7 @@ param internalLoadBalancingMode string = 'None'
 
 @description('Optional. Frontend VM size, e.g. Medium, Large.')
 @allowed([
+  ''
   'Medium'
   'Large'
   'ExtraLarge'
@@ -32,7 +33,7 @@ param internalLoadBalancingMode string = 'None'
   'Standard_D3_V2'
   'Standard_D4_V2'
 ])
-param multiSize string = 'Standard_D1_V2'
+param multiSize string = ''
 
 @description('Optional. Number of IP SSL addresses reserved for the App Service Environment.')
 param ipsslAddressCount int = 2
@@ -134,7 +135,7 @@ resource appServiceEnvironment 'Microsoft.Web/hostingEnvironments@2021-03-01' = 
       subnet: last(vnetResourceId)
     }
     internalLoadBalancingMode: internalLoadBalancingMode
-    multiSize: multiSize
+    multiSize: !empty(multiSize) ? multiSize : null
     ipsslAddressCount: ipsslAddressCount
     dnsSuffix: dnsSuffix
     frontEndScaleFactor: frontEndScaleFactor
