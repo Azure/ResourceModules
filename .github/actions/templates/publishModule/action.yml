@@ -64,26 +64,6 @@ inputs:
 runs:
   using: 'composite'
   steps:
-    - name: 'Setup agent'
-      shell: pwsh
-      run: |
-        # Grouping task logs
-        Write-Output "::group::Setup agent"
-
-        # Load used functions
-        . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
-
-        # Define PS modules to install on the runner
-        $Modules = @(
-            @{ Name = 'Az.Accounts' },
-            @{ Name = 'Az.ContainerRegistry' },
-            @{ Name = 'Az.Resources' }
-        )
-
-        # Set agent up
-        Set-EnvironmentOnAgent -PSModules $Modules
-
-        Write-Output "::endgroup::"
 
     - name: Azure Login
       uses: Azure/login@v1
@@ -92,85 +72,89 @@ runs:
         enable-AzPSSession: true
 
     - name: 'Publish module to template specs'
-      shell: pwsh
       if: ${{ inputs.templateSpecsDoPublish == 'true' }}
-      run: |
-        # Grouping task logs
-        Write-Output "::group::Publish module to template specs"
+      uses: azure/powershell@v1
+      with:
+        azPSVersion: 'latest'
+        inlineScript: |
+          # Grouping task logs
+          Write-Output "::group::Publish module to template specs"
 
-        # Load used functions
-        . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourcePublish' 'Get-ModulesToPublish.ps1')
-        . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourcePublish' 'Publish-ModuleToTemplateSpec.ps1')
-
-        $functionInput = @{
-          TemplateFilePath = Join-Path $env:GITHUB_WORKSPACE "${{ inputs.templateFilePath }}"
-        }
-
-        Write-Verbose "Invoke task with" -Verbose
-        Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
-
-        # Get the modified child resources
-        $ModulesToPublish = Get-ModulesToPublish @functionInput -Verbose
-
-        # Publish the modified child resources
-        foreach ($ModuleToPublish in $ModulesToPublish) {
-          $RelPath = (($ModuleToPublish.TemplateFilePath).Split('/arm/')[-1]).Split('/deploy.')[0]
-          Write-Output "::group::$(' - [{0}] [{1}]' -f $RelPath, $ModuleToPublish.Version)"
+          # Load used functions
+          . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourcePublish' 'Get-ModulesToPublish.ps1')
+          . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourcePublish' 'Publish-ModuleToTemplateSpec.ps1')
 
           $functionInput = @{
-            TemplateFilePath         = $ModuleToPublish.TemplateFilePath
-            TemplateSpecsRgName      = '${{ inputs.templateSpecsRgName }}'
-            TemplateSpecsRgLocation  = '${{ inputs.templateSpecsRgLocation }}'
-            TemplateSpecsDescription = '${{ inputs.templateSpecsDescription }}'
-            ModuleVersion            = $ModuleToPublish.Version
+            TemplateFilePath = Join-Path $env:GITHUB_WORKSPACE "${{ inputs.templateFilePath }}"
           }
 
           Write-Verbose "Invoke task with" -Verbose
           Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
-          Publish-ModuleToTemplateSpec @functionInput -Verbose
-        }
+          # Get the modified child resources
+          $ModulesToPublish = Get-ModulesToPublish @functionInput -Verbose
 
-        Write-Output "::endgroup::"
+          # Publish the modified child resources
+          foreach ($ModuleToPublish in $ModulesToPublish) {
+            $RelPath = (($ModuleToPublish.TemplateFilePath).Split('/arm/')[-1]).Split('/deploy.')[0]
+            Write-Output "::group::$(' - [{0}] [{1}]' -f $RelPath, $ModuleToPublish.Version)"
+
+            $functionInput = @{
+              TemplateFilePath         = $ModuleToPublish.TemplateFilePath
+              TemplateSpecsRgName      = '${{ inputs.templateSpecsRgName }}'
+              TemplateSpecsRgLocation  = '${{ inputs.templateSpecsRgLocation }}'
+              TemplateSpecsDescription = '${{ inputs.templateSpecsDescription }}'
+              ModuleVersion            = $ModuleToPublish.Version
+            }
+
+            Write-Verbose "Invoke task with" -Verbose
+            Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
+
+            Publish-ModuleToTemplateSpec @functionInput -Verbose
+          }
+
+          Write-Output "::endgroup::"
 
     - name: 'Publish module to private bicep registry'
-      shell: pwsh
       if: ${{ inputs.bicepRegistryDoPublish == 'true' }}
-      run: |
-        # Grouping task logs
-        Write-Output "::group::Publish module to private bicep registry"
+      uses: azure/powershell@v1
+      with:
+        azPSVersion: 'latest'
+        inlineScript: |
+          # Grouping task logs
+          Write-Output "::group::Publish module to private bicep registry"
 
-        # Load used functions
-        . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourcePublish' 'Get-ModulesToPublish.ps1')
-        . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourcePublish' 'Publish-ModuleToPrivateBicepRegistry.ps1')
-
-        $functionInput = @{
-          TemplateFilePath = Join-Path $env:GITHUB_WORKSPACE "${{ inputs.templateFilePath }}"
-        }
-
-        Write-Verbose "Invoke task with" -Verbose
-        Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
-
-        # Get the modified child resources
-        $ModulesToPublish = Get-ModulesToPublish @functionInput -Verbose
-
-        # Publish the modified child resources
-        foreach ($ModuleToPublish in $ModulesToPublish) {
-          $RelPath = (($ModuleToPublish.TemplateFilePath).Split('/arm/')[-1]).Split('/deploy.')[0]
-          Write-Output "::group::$(' - [{0}] [{1}]' -f $RelPath, $ModuleToPublish.Version)"
+          # Load used functions
+          . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourcePublish' 'Get-ModulesToPublish.ps1')
+          . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourcePublish' 'Publish-ModuleToPrivateBicepRegistry.ps1')
 
           $functionInput = @{
-            TemplateFilePath        = $ModuleToPublish.TemplateFilePath
-            BicepRegistryName       = '${{ inputs.bicepRegistryName }}'
-            BicepRegistryRgName     = '${{ inputs.bicepRegistryRgName }}'
-            BicepRegistryRgLocation = '${{ inputs.bicepRegistryRgLocation }}'
-            ModuleVersion           = $ModuleToPublish.Version
+            TemplateFilePath = Join-Path $env:GITHUB_WORKSPACE "${{ inputs.templateFilePath }}"
           }
 
           Write-Verbose "Invoke task with" -Verbose
           Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
-          Publish-ModuleToPrivateBicepRegistry @functionInput -Verbose
-        }
+          # Get the modified child resources
+          $ModulesToPublish = Get-ModulesToPublish @functionInput -Verbose
 
-        Write-Output "::endgroup::"
+          # Publish the modified child resources
+          foreach ($ModuleToPublish in $ModulesToPublish) {
+            $RelPath = (($ModuleToPublish.TemplateFilePath).Split('/arm/')[-1]).Split('/deploy.')[0]
+            Write-Output "::group::$(' - [{0}] [{1}]' -f $RelPath, $ModuleToPublish.Version)"
+
+            $functionInput = @{
+              TemplateFilePath        = $ModuleToPublish.TemplateFilePath
+              BicepRegistryName       = '${{ inputs.bicepRegistryName }}'
+              BicepRegistryRgName     = '${{ inputs.bicepRegistryRgName }}'
+              BicepRegistryRgLocation = '${{ inputs.bicepRegistryRgLocation }}'
+              ModuleVersion           = $ModuleToPublish.Version
+            }
+
+            Write-Verbose "Invoke task with" -Verbose
+            Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
+
+            Publish-ModuleToPrivateBicepRegistry @functionInput -Verbose
+          }
+
+          Write-Output "::endgroup::"

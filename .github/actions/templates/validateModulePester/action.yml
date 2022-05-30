@@ -31,28 +31,7 @@ inputs:
 runs:
   using: 'composite'
   steps:
-    - name: 'Setup agent'
-      shell: pwsh
-      run: |
-        # Grouping task logs
-        Write-Output "::group::Setup agent"
-
-        # Load used functions
-        . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
-
-        # Define PS modules to install on the runner
-        $Modules = @(
-            # This is the latest tested Pester version. Uncomment the next line in case of a future breaking change in the default version installed on the runner.
-            # @{ Name = 'Pester'; Version = '5.3.1' }
-            @{ Name = 'Az.Resources' }
-        )
-
-        # Set agent up
-        Set-EnvironmentOnAgent -PSModules $Modules
-
-        Write-Output "::endgroup::"
-
-    - name: Azure Login
+    - name: 'Azure Login'
       uses: Azure/login@v1
       with:
         creds: ${{ env.AZURE_CREDENTIALS }}
@@ -62,61 +41,63 @@ runs:
     #-----------------------------
     - name: 'Run global tests via Pester'
       id: pester_run_step
-      shell: pwsh
-      run: |
-        # Grouping task logs
-        Write-Output "::group::Run global tests via Pester"
+      uses: azure/powershell@v1
+      with:
+        azPSVersion: 'latest'
+        inlineScript: |
+          # Grouping task logs
+          Write-Output "::group::Run global tests via Pester"
 
-        $moduleFolderPaths = @(Join-Path $env:GITHUB_WORKSPACE "${{ inputs.modulePath }}")
-        $moduleFolderPaths += (Get-ChildItem $moduleFolderPaths -Recurse -Directory -Force).FullName | Where-Object {
-          (Get-ChildItem $_ -File -Depth 0 -Include @('deploy.json', 'deploy.bicep') -Force).Count -gt 0
-        }
-        Write-Verbose "Execute tests in path(s):" -Verbose
-        foreach($moduleFolderPath in $moduleFolderPaths) {
-          Write-Verbose "- [($moduleFolderPath]" -Verbose
-        }
+          $moduleFolderPaths = @(Join-Path $env:GITHUB_WORKSPACE "${{ inputs.modulePath }}")
+          $moduleFolderPaths += (Get-ChildItem $moduleFolderPaths -Recurse -Directory -Force).FullName | Where-Object {
+            (Get-ChildItem $_ -File -Depth 0 -Include @('deploy.json', 'deploy.bicep') -Force).Count -gt 0
+          }
+          Write-Verbose "Execute tests in path(s):" -Verbose
+          foreach($moduleFolderPath in $moduleFolderPaths) {
+            Write-Verbose "- [($moduleFolderPath]" -Verbose
+          }
 
-        $enforcedTokenList = @{}
-        if (-not [String]::IsNullOrEmpty('${{ env.ARM_SUBSCRIPTION_ID }}')) {
-            $enforcedTokenList['subscriptionId'] = '${{ env.ARM_SUBSCRIPTION_ID }}'
-        }
-        if (-not [String]::IsNullOrEmpty('${{ env.ARM_MGMTGROUP_ID }}')) {
-            $enforcedTokenList['managementGroupId'] = '${{ env.ARM_MGMTGROUP_ID }}'
-        }
-        if (-not [String]::IsNullOrEmpty('${{ env.ARM_TENANT_ID }}')) {
-            $enforcedTokenList['deploymentSpId'] = '${{ env.ARM_TENANT_ID }}'
-        }
-        if (-not [String]::IsNullOrEmpty('${{ env.DEPLOYMENT_SP_ID }}')) {
-            $enforcedTokenList['tenantId'] = '${{ env.DEPLOYMENT_SP_ID }}'
-        }
+          $enforcedTokenList = @{}
+          if (-not [String]::IsNullOrEmpty('${{ env.ARM_SUBSCRIPTION_ID }}')) {
+              $enforcedTokenList['subscriptionId'] = '${{ env.ARM_SUBSCRIPTION_ID }}'
+          }
+          if (-not [String]::IsNullOrEmpty('${{ env.ARM_MGMTGROUP_ID }}')) {
+              $enforcedTokenList['managementGroupId'] = '${{ env.ARM_MGMTGROUP_ID }}'
+          }
+          if (-not [String]::IsNullOrEmpty('${{ env.ARM_TENANT_ID }}')) {
+              $enforcedTokenList['deploymentSpId'] = '${{ env.ARM_TENANT_ID }}'
+          }
+          if (-not [String]::IsNullOrEmpty('${{ env.DEPLOYMENT_SP_ID }}')) {
+              $enforcedTokenList['tenantId'] = '${{ env.DEPLOYMENT_SP_ID }}'
+          }
 
-        # --------------------- #
-        # Invoke Pester test(s) #
-        # --------------------- #
-        Invoke-Pester -Configuration @{
-          Run        = @{
-            Container = New-PesterContainer -Path 'arm/.global/global.module.tests.ps1' -Data @{
-              moduleFolderPaths = $moduleFolderPaths
-              enforcedTokenList = $enforcedTokenList
+          # --------------------- #
+          # Invoke Pester test(s) #
+          # --------------------- #
+          Invoke-Pester -Configuration @{
+            Run        = @{
+              Container = New-PesterContainer -Path 'arm/.global/global.module.tests.ps1' -Data @{
+                moduleFolderPaths = $moduleFolderPaths
+                enforcedTokenList = $enforcedTokenList
+              }
+            }
+            Filter     = @{
+              ExcludeTag = 'ApiCheck'
+            }
+            TestResult = @{
+              TestSuiteName = 'Global Module Tests'
+              OutputPath    = 'arm/.global/global-testResults.xml'
+              OutputFormat  = 'JUnitXml'
+              Enabled       = $true
+            }
+            Output     = @{
+              Verbosity = 'Detailed'
             }
           }
-          Filter     = @{
-            ExcludeTag = 'ApiCheck'
-          }
-          TestResult = @{
-            TestSuiteName = 'Global Module Tests'
-            OutputPath    = 'arm/.global/global-testResults.xml'
-            OutputFormat  = 'JUnitXml'
-            Enabled       = $true
-          }
-          Output     = @{
-            Verbosity = 'Detailed'
-          }
-        }
 
-        Write-Output "::endgroup::"
+          Write-Output "::endgroup::"
 
-    - name: Publish Test Results
+    - name: 'Publish Test Results'
       uses: EnricoMi/publish-unit-test-result-action@v1
       if: always() && !contains('cancelled,skipped', steps.pester_run_step.outcome)
       with:
@@ -127,46 +108,48 @@ runs:
     - name: 'Run API tests via Pester'
       id: pester_api_run_step
       if: always()
-      shell: pwsh
-      run: |
-        # Grouping task logs
-        Write-Output "::group::Run API tests via Pester"
+      uses: azure/powershell@v1
+      with:
+        azPSVersion: 'latest'
+        inlineScript: |
+          # Grouping task logs
+          Write-Output "::group::Run API tests via Pester"
 
-        $moduleFolderPaths = @(Join-Path $env:GITHUB_WORKSPACE "${{ inputs.modulePath }}")
-        $moduleFolderPaths += (Get-ChildItem $moduleFolderPaths -Recurse -Directory -Force).FullName | Where-Object {
-          (Get-ChildItem $_ -File -Depth 0 -Include @('deploy.json', 'deploy.bicep') -Force).Count -gt 0
-        }
-        Write-Verbose "Execute tests in path(s):" -Verbose
-        foreach($moduleFolderPath in $moduleFolderPaths) {
-          Write-Verbose "- [($moduleFolderPath]" -Verbose
-        }
+          $moduleFolderPaths = @(Join-Path $env:GITHUB_WORKSPACE "${{ inputs.modulePath }}")
+          $moduleFolderPaths += (Get-ChildItem $moduleFolderPaths -Recurse -Directory -Force).FullName | Where-Object {
+            (Get-ChildItem $_ -File -Depth 0 -Include @('deploy.json', 'deploy.bicep') -Force).Count -gt 0
+          }
+          Write-Verbose "Execute tests in path(s):" -Verbose
+          foreach($moduleFolderPath in $moduleFolderPaths) {
+            Write-Verbose "- [($moduleFolderPath]" -Verbose
+          }
 
-        # --------------------- #
-        # Invoke Pester test(s) #
-        # --------------------- #
-        Invoke-Pester -Configuration @{
-          Run        = @{
-            Container = New-PesterContainer -Path 'arm/.global/global.module.tests.ps1' -Data @{
-              moduleFolderPaths = $moduleFolderPaths
+          # --------------------- #
+          # Invoke Pester test(s) #
+          # --------------------- #
+          Invoke-Pester -Configuration @{
+            Run        = @{
+              Container = New-PesterContainer -Path 'arm/.global/global.module.tests.ps1' -Data @{
+                moduleFolderPaths = $moduleFolderPaths
+              }
+            }
+            Filter     = @{
+              Tag = 'ApiCheck'
+            }
+            TestResult = @{
+              TestSuiteName = 'Global Module API Tests'
+              OutputPath    = 'arm/.global/api-testResults.xml'
+              OutputFormat  = 'JUnitXml'
+              Enabled       = $true
+            }
+            Output     = @{
+              Verbosity = 'Detailed'
             }
           }
-          Filter     = @{
-            Tag = 'ApiCheck'
-          }
-          TestResult = @{
-            TestSuiteName = 'Global Module API Tests'
-            OutputPath    = 'arm/.global/api-testResults.xml'
-            OutputFormat  = 'JUnitXml'
-            Enabled       = $true
-          }
-          Output     = @{
-            Verbosity = 'Detailed'
-          }
-        }
 
-        Write-Output "::endgroup::"
+          Write-Output "::endgroup::"
 
-    - name: Publish Test Results
+    - name: 'Publish Test Results'
       uses: EnricoMi/publish-unit-test-result-action@v1
       if: always() && !contains('cancelled,skipped', steps.pester_api_run_step.outcome)
       with:
