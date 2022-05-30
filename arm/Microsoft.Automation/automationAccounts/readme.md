@@ -465,7 +465,7 @@ module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bice
                 {
                     "name": "TestSchedule",
                     "startTime": "",
-                    "expiryTime": "9999-12-31T23:59:00+00:00",
+                    "expiryTime": "9999-12-31T13:00",
                     "interval": 15,
                     "frequency": "Minute",
                     "timeZone": "Europe/Berlin",
@@ -663,7 +663,7 @@ module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bice
       {
         name: 'TestSchedule'
         startTime: ''
-        expiryTime: '9999-12-31T23:59:59.9999999+01:00'
+        expiryTime: '9999-12-31T13:00'
         interval: 15
         frequency: 'Minute'
         timeZone: 'Europe/Berlin'
