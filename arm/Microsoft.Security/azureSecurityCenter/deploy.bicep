@@ -137,7 +137,7 @@ var pricings = [
     pricingTier: storageAccountsPricingTier
   }
   {
-    name: 'SqlServerVirtualMachinesPricingTier'
+    name: 'SqlServerVirtualMachines'
     pricingTier: sqlServerVirtualMachinesPricingTier
   }
   {
