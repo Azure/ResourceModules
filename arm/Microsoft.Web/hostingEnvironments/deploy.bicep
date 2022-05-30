@@ -19,9 +19,8 @@ param subnetResourceId string
 ])
 param internalLoadBalancingMode string = 'None'
 
-@description('Optional. Frontend VM size, e.g. Medium, Large.')
+@description('Optional. Frontend VM size. Cannot be used with \'kind\' `ASEv3`.')
 @allowed([
-  ''
   'Medium'
   'Large'
   'ExtraLarge'
@@ -33,7 +32,7 @@ param internalLoadBalancingMode string = 'None'
   'Standard_D3_V2'
   'Standard_D4_V2'
 ])
-param multiSize string = ''
+param multiSize string = 'Standard_D1_V2'
 
 @description('Optional. Number of IP SSL addresses reserved for the App Service Environment.')
 param ipsslAddressCount int = 2
@@ -44,7 +43,7 @@ param dnsSuffix string = ''
 @description('Optional. Scale factor for frontends.')
 param frontEndScaleFactor int = 15
 
-@description('Optional. User added IP ranges to whitelist on ASE DB - string.')
+@description('Optional. User added IP ranges to whitelist on ASE DB. Cannot be used with \'kind\' `ASEv3`.')
 param userWhitelistedIpRanges array = []
 
 @description('Optional. Custom settings for changing the behavior of the App Service Environment.')
@@ -135,12 +134,12 @@ resource appServiceEnvironment 'Microsoft.Web/hostingEnvironments@2021-03-01' = 
       subnet: last(vnetResourceId)
     }
     internalLoadBalancingMode: internalLoadBalancingMode
-    multiSize: !empty(multiSize) ? multiSize : null
+    multiSize: kind != 'ASEv3' ? multiSize : null
     ipsslAddressCount: ipsslAddressCount
     dnsSuffix: dnsSuffix
     frontEndScaleFactor: frontEndScaleFactor
     clusterSettings: clusterSettings
-    userWhitelistedIpRanges: userWhitelistedIpRanges
+    userWhitelistedIpRanges: kind != 'ASEv3' ? userWhitelistedIpRanges : null
     dedicatedHostCount: !zoneRedundant && physicalHardwareIsolation ? 2 : 0
     zoneRedundant: !physicalHardwareIsolation && zoneRedundant ? zoneRedundant : false
   }
