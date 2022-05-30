@@ -6,14 +6,14 @@ param namespaceName string
 @description('Required. The name of the virtual network rule.')
 param name string
 
-@description('Optional. Public Network Access for Premium Sku')
+@description('Optional. Public Network Access for Premium Sku.')
 @allowed([
   'Enabled'
   'Disabled'
 ])
 param publicNetworkAccess string = 'Disabled'
 
-@description('Optional. Trusted Services Bypass for Premium Sku')
+@description('Optional. Trusted Services Bypass for Premium Sku.')
 param allowTrustedServices bool = true
 
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
