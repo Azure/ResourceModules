@@ -6,7 +6,7 @@ param name string
 param location string = resourceGroup().location
 
 @description('Optional. Kind of resource.')
-param kind string = 'ASEV2'
+param kind string = 'ASEv3'
 
 @description('Required. ResourceId for the sub net.')
 param subnetResourceId string

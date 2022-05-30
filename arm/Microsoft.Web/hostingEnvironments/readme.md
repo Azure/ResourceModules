@@ -42,7 +42,7 @@ This module deploys an app service environment.
 | `frontEndScaleFactor` | int | `15` |  | Scale factor for frontends. |
 | `internalLoadBalancingMode` | string | `'None'` | `[None, Web, Publishing]` | Specifies which endpoints to serve internally in the Virtual Network for the App Service Environment. - None, Web, Publishing, Web,Publishing. |
 | `ipsslAddressCount` | int | `2` |  | Number of IP SSL addresses reserved for the App Service Environment. |
-| `kind` | string | `'ASEV2'` |  | Kind of resource. |
+| `kind` | string | `'ASEv3'` |  | Kind of resource. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `'NotSpecified'` | `[CanNotDelete, NotSpecified, ReadOnly]` | Specify the type of lock. |
 | `multiSize` | string | `'Standard_D1_V2'` | `[Medium, Large, ExtraLarge, Standard_D2, Standard_D3, Standard_D4, Standard_D1_V2, Standard_D2_V2, Standard_D3_V2, Standard_D4_V2]` | Frontend VM size, e.g. Medium, Large. |
