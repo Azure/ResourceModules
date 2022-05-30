@@ -213,23 +213,10 @@ Describe 'Readme tests' -Tag Readme {
             )
 
             # Get ReadMe data
-            $resourcesSectionStartIndex = 0
-            while ($readMeContent[$resourcesSectionStartIndex] -notlike '*# Resource Types' -and -not ($resourcesSectionStartIndex -ge $readMeContent.count)) {
-                $resourcesSectionStartIndex++
-            }
-
-            $resourcesTableStartIndex = $resourcesSectionStartIndex + 1
-            while ($readMeContent[$resourcesTableStartIndex] -notlike '*|*' -and -not ($resourcesTableStartIndex -ge $readMeContent.count)) {
-                $resourcesTableStartIndex++
-            }
-
-            $resourcesTableEndIndex = $resourcesTableStartIndex + 2
-            while ($readMeContent[$resourcesTableEndIndex] -like '|*' -and -not ($resourcesTableEndIndex -ge $readMeContent.count)) {
-                $resourcesTableEndIndex++
-            }
+            $tableStartIndex, $tableEndIndex = Get-TableStartAndEndIndex -ReadMeContent $readMeContent -MarkdownSectionIdentifier '*# Resource Types'
 
             $ReadMeResourcesList = [System.Collections.ArrayList]@()
-            for ($index = $resourcesTableStartIndex + 2; $index -lt $resourcesTableEndIndex; $index++) {
+            for ($index = $tableStartIndex + 2; $index -lt $tableEndIndex; $index++) {
                 $ReadMeResourcesList += $readMeContent[$index].Split('|')[1].Replace('`', '').Trim()
             }
 
@@ -250,23 +237,10 @@ Describe 'Readme tests' -Tag Readme {
             )
 
             # Get ReadMe data
-            $resourcesSectionStartIndex = 0
-            while ($readMeContent[$resourcesSectionStartIndex] -notlike '*# Resource Types' -and -not ($resourcesSectionStartIndex -ge $readMeContent.count)) {
-                $resourcesSectionStartIndex++
-            }
-
-            $resourcesTableStartIndex = $resourcesSectionStartIndex + 1
-            while ($readMeContent[$resourcesTableStartIndex] -notlike '*|*' -and -not ($resourcesTableStartIndex -ge $readMeContent.count)) {
-                $resourcesTableStartIndex++
-            }
-
-            $resourcesTableEndIndex = $resourcesTableStartIndex + 2
-            while ($readMeContent[$resourcesTableEndIndex] -like '|*' -and -not ($resourcesTableEndIndex -ge $readMeContent.count)) {
-                $resourcesTableEndIndex++
-            }
+            $tableStartIndex, $tableEndIndex = Get-TableStartAndEndIndex -ReadMeContent $readMeContent -MarkdownSectionIdentifier '*# Resource Types'
 
             $ReadMeResourcesList = [System.Collections.ArrayList]@()
-            for ($index = $resourcesTableStartIndex + 2; $index -lt $resourcesTableEndIndex; $index++) {
+            for ($index = $tableStartIndex + 2; $index -lt $tableEndIndex; $index++) {
                 $ReadMeResourcesList += $readMeContent[$index].Split('|')[1].Replace('`', '').Trim()
             }
 
