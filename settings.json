@@ -5,7 +5,7 @@
         "localTokens": [
             {
                 "name": "namePrefix",
-                "value": "carml",
+                "value": "msx",
                 "metadata": {
                     "description": "A 3-5 character length string, included in the resources names"
                 }
@@ -15,5 +15,5 @@
     // Enable or disable CARMLs CI telemetry tracking.
     // Note: This tracks the number of deployments only
     // For more information see: https://github.com/Azure/ResourceModules/wiki/The%20library%20-%20Module%20design#telemetry
-    "enableDefaultTelemetry": true
+    "enableDefaultTelemetry": false
 }
