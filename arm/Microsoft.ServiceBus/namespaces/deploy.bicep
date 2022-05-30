@@ -141,6 +141,14 @@ var identity = identityType != 'None' ? {
   userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
 } : null
 
+var networkAcl = !empty(privateEndpoints) ? {
+  publicNetworkAccess: 'Enabled'
+  allowTrustedServices: true
+} : {
+  publicNetworkAccess: 'Disabled'
+  allowTrustedServices: false
+}
+
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
   properties: {
@@ -197,6 +205,17 @@ module serviceBusNamespace_virtualNetworkRules 'virtualNetworkRules/deploy.bicep
     enableDefaultTelemetry: enableDefaultTelemetry
   }
 }]
+
+module serviceBusNamespace_NetworkAcls 'networkRuleSets/deploy.bicep' = if (skuName == 'Premium') {
+  name: '${uniqueString(deployment().name, location)}-NetworkAcl'
+  params: {
+    namespaceName: serviceBusNamespace.name
+    name: '${serviceBusNamespace.name}-${skuName}-ACL'
+    allowTrustedServices: networkAcl.allowTrustedServices
+    publicNetworkAccess: networkAcl.publicNetworkAccess
+    enableDefaultTelemetry: enableDefaultTelemetry
+  }
+}
 
 module serviceBusNamespace_authorizationRules 'authorizationRules/deploy.bicep' = [for (authorizationRule, index) in authorizationRules: {
   name: '${uniqueString(deployment().name, location)}-AuthorizationRules-${index}'
