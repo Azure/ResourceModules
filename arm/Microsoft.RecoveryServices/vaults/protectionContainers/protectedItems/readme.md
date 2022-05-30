@@ -21,8 +21,8 @@ This module deploys a Protection Container Protected Item for a Recovery Service
 | :-- | :-- | :-- | :-- |
 | `name` | string |  | Name of the resource. |
 | `policyId` | string |  | ID of the backup policy with which this item is backed up. |
-| `protectedItemType` | string | `[AzureFileShareProtectedItem, AzureVmWorkloadSAPAseDatabase, AzureVmWorkloadSAPHanaDatabase, AzureVmWorkloadSQLDatabase, DPMProtectedItem, GenericProtectedItem, MabFileFolderProtectedItem, Microsoft.ClassicCompute/virtualMachines, Microsoft.Compute/virtualMachines, Microsoft.Sql/servers/databases]` | The backup item type |
-| `sourceResourceId` | string |  | Resource ID of the resource to back up |
+| `protectedItemType` | string | `[AzureFileShareProtectedItem, AzureVmWorkloadSAPAseDatabase, AzureVmWorkloadSAPHanaDatabase, AzureVmWorkloadSQLDatabase, DPMProtectedItem, GenericProtectedItem, MabFileFolderProtectedItem, Microsoft.ClassicCompute/virtualMachines, Microsoft.Compute/virtualMachines, Microsoft.Sql/servers/databases]` | The backup item type. |
+| `sourceResourceId` | string |  | Resource ID of the resource to back up. |
 
 **Conditional parameters**
 | Parameter Name | Type | Description |

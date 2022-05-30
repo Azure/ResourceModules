@@ -22,13 +22,13 @@ param location string = resourceGroup().location
   'Microsoft.Compute/virtualMachines'
   'Microsoft.Sql/servers/databases'
 ])
-@description('Required. The backup item type')
+@description('Required. The backup item type.')
 param protectedItemType string
 
 @description('Required. ID of the backup policy with which this item is backed up.')
 param policyId string
 
-@description('Required. Resource ID of the resource to back up')
+@description('Required. Resource ID of the resource to back up.')
 param sourceResourceId string
 
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
