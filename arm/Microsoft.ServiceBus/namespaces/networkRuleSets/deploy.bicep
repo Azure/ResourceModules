@@ -3,8 +3,8 @@
 @maxLength(50)
 param namespaceName string
 
-@description('Required. The name of the virtual network rule.')
-param name string
+@description('Required. The default is the only valid ruleset.')
+param name string = 'default'
 
 @description('Optional. Public Network Access for Premium Sku.')
 @allowed([

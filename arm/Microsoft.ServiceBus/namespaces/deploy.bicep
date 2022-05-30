@@ -210,7 +210,6 @@ module serviceBusNamespace_NetworkAcls 'networkRuleSets/deploy.bicep' = if (skuN
   name: '${uniqueString(deployment().name, location)}-NetworkAcl'
   params: {
     namespaceName: serviceBusNamespace.name
-    name: '${serviceBusNamespace.name}-${skuName}-ACL'
     allowTrustedServices: networkAcl.allowTrustedServices
     publicNetworkAccess: networkAcl.publicNetworkAccess
     enableDefaultTelemetry: enableDefaultTelemetry

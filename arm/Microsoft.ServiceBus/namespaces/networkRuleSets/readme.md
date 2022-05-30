@@ -18,9 +18,9 @@ This module deploys ServiceBus Namespaces NetworkRuleSets.
 ## Parameters
 
 **Required parameters**
-| Parameter Name | Type | Description |
-| :-- | :-- | :-- |
-| `name` | string | The name of the virtual network rule. |
+| Parameter Name | Type | Default Value | Description |
+| :-- | :-- | :-- | :-- |
+| `name` | string | `'default'` | The default is the only valid ruleset. |
 
 **Conditional parameters**
 | Parameter Name | Type | Description |
