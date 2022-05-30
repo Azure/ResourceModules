@@ -30,9 +30,9 @@ This module deploys ServiceBus Namespaces NetworkRuleSets.
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `allowTrustedServices` | bool | `True` |  | Trusted Services Bypass for Premium Sku |
+| `allowTrustedServices` | bool | `True` |  | Trusted Services Bypass for Premium Sku. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `publicNetworkAccess` | string | `'Disabled'` | `[Enabled, Disabled]` | Public Network Access for Premium Sku |
+| `publicNetworkAccess` | string | `'Disabled'` | `[Enabled, Disabled]` | Public Network Access for Premium Sku. |
 
 
 ### Parameter Usage: `<ParameterPlaceholder>`
