@@ -372,18 +372,9 @@ Describe 'Readme tests' -Tag Readme {
                 $readMeContent
             )
 
-            # Get ReadMe data
-            $outputsSectionStartIndex = 0
-            while ($readMeContent[$outputsSectionStartIndex] -notlike '*# Outputs' -and -not ($outputsSectionStartIndex -ge $readMeContent.count)) {
-                $outputsSectionStartIndex++
-            }
+            $tableStartIndex, $tableEndIndex = Get-TableStartAndEndIndex -ReadMeContent $readMeContent -MarkdownSectionIdentifier '*# Outputs'
 
-            $outputsTableStartIndex = $outputsSectionStartIndex + 1
-            while ($readMeContent[$outputsTableStartIndex] -notlike '*|*' -and -not ($outputsTableStartIndex -ge $readMeContent.count)) {
-                $outputsTableStartIndex++
-            }
-
-            $outputsTableHeader = $readMeContent[$outputsTableStartIndex].Split('|').Trim() | Where-Object { -not [String]::IsNullOrEmpty($_) }
+            $outputsTableHeader = $readMeContent[$tableStartIndex].Split('|').Trim() | Where-Object { -not [String]::IsNullOrEmpty($_) }
 
             # Test
             $expectedOutputsTableOrder = @('Output Name', 'Type')
@@ -801,10 +792,8 @@ Describe 'Deployment template tests' -Tag Template {
             $templateParameters = $templateContent.parameters.Keys
             foreach ($parameter in $templateParameters) {
                 $data = ($templateContent.parameters.$parameter.metadata).description
-                switch -regex ($data)
-                {
-                    '^Conditional. .*'
-                    {
+                switch -regex ($data) {
+                    '^Conditional. .*' {
                         if ($data -notmatch '.*\. Required if .*') {
                             $incorrectParameters += $parameter
                         }
