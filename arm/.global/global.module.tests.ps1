@@ -390,23 +390,10 @@ Describe 'Readme tests' -Tag Readme {
             )
 
             # Get ReadMe data
-            $outputsSectionStartIndex = 0
-            while ($readMeContent[$outputsSectionStartIndex] -notlike '*# Outputs' -and -not ($outputsSectionStartIndex -ge $readMeContent.count)) {
-                $outputsSectionStartIndex++
-            }
-
-            $outputsTableStartIndex = $outputsSectionStartIndex + 1
-            while ($readMeContent[$outputsTableStartIndex] -notlike '*|*' -and -not ($outputsTableStartIndex -ge $readMeContent.count)) {
-                $outputsTableStartIndex++
-            }
-
-            $outputsTableEndIndex = $outputsTableStartIndex + 2
-            while ($readMeContent[$outputsTableEndIndex] -like '|*' -and -not ($outputsTableEndIndex -ge $readMeContent.count)) {
-                $outputsTableEndIndex++
-            }
+            $tableStartIndex, $tableEndIndex = Get-TableStartAndEndIndex -ReadMeContent $readMeContent -MarkdownSectionIdentifier '*# Outputs'
 
             $ReadMeoutputsList = [System.Collections.ArrayList]@()
-            for ($index = $outputsTableStartIndex + 2; $index -lt $outputsTableEndIndex; $index++) {
+            for ($index = $tableStartIndex + 2; $index -lt $tableEndIndex; $index++) {
                 $ReadMeoutputsList += $readMeContent[$index].Split('|')[1].Replace('`', '').Trim()
             }
 
