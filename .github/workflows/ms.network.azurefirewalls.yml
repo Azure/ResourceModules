@@ -25,11 +25,17 @@ on:
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/dependencies/**'
 
+permissions:
+  id-token: write # OIDC
+  contents: read # OIDC
+  checks: write # enricomi/publish-unit-test-result-action
+  pull-requests: write # enricomi/publish-unit-test-result-action
+
 env:
   variablesPath: 'global.variables.yml'
   modulePath: 'arm/Microsoft.Network/azureFirewalls'
   workflowPath: '.github/workflows/ms.network.azurefirewalls.yml'
-  AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
+  ARM_CLIENT_ID: ${{ secrets.ARM_CLIENT_ID }}
   ARM_SUBSCRIPTION_ID: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
   ARM_MGMTGROUP_ID: '${{ secrets.ARM_MGMTGROUP_ID }}'
   ARM_TENANT_ID: '${{ secrets.ARM_TENANT_ID }}'

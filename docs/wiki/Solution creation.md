@@ -402,6 +402,12 @@ on:
       - 'network-hub-rg/Parameters/**'
       - '.github/workflows/network-hub.yml'
 
+permissions:
+  id-token: write      # OIDC
+  contents: read       # OIDC
+  checks: write        # enricomi/publish-unit-test-result-action
+  pull-requests: write # enricomi/publish-unit-test-result-action
+
 env:
   AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
   removeDeployment: false
