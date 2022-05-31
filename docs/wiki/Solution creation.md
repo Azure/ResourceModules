@@ -2,25 +2,30 @@
 
 This section shows you how you can orchestrate a deployment using multiple resource modules.
 
+> **Note:** For the sake of any of the below examples we assume you leverage Bicep as your primary DSL.
+
 ---
 
 ### _Navigation_
 
+- [Upstream workloads](#upstream-workloads)
 - [Orchestration overview](#orchestration-overview)
 - [Template orchestration](#template-orchestration)
-  - [Example with local file references](#example-with-local-file-references)
-  - [Example with a Private Bicep Registry](#example-with-a-Private-Bicep-Registry)
-  - [Example with template-specs](#example-with-template-specs)
+  - [How to start](#how-to-start)
+  - [Examples](#examples)
 - [Pipeline orchestration](#pipeline-orchestration)
-  - [\[GitHub\] Sample solution for multi-repository approach](#github-sample-solution-for-multi-repository-approach)
-    - [Summary](#summary)
-    - [Repo structure](#repo-structure)
-    - [YAML pipeline](#yaml-pipeline)
-    - [Notes](#notes)
 
 ---
 
-> **Note:** For the sake of the below examples we assume you leverage Bicep as your primary DSL.
+# Upstream workloads
+
+There are several open-source repositories that leverage the CARML library today. Alongside the examples we provide you with below, the referenced repositories are a good reference on how you can leverage CARML for larger solutions.
+
+| Repository | Description |
+| - | - |
+| [AVD Accelerator](https://github.com/Azure/avdaccelerator) | AVD Accelerator deployment automation to simplify the setup of AVD (Azure Virtual Desktop) |
+| [AKS Baseline Automation](https://github.com/Azure/aks-baseline-automation) | Repository for the AKS Landing Zone Accelerator program's Automation reference implementation |
+| [DevOps Self-Hosted](https://github.com/Azure/DevOps-Self-Hosted) | - Create & maintain images with a pipeline using the Azure Image Builder service <p> - Deploy & maintain Azure DevOps Self-Hosted agent pools with a pipeline using Virtual Machine Scale Set|
 
 # Orchestration overview
 
@@ -43,7 +48,23 @@ With this approach, modules need to be stored in an available location, where th
 
 In an enterprise environment, the recommended approach is to store these templates in a private environment, only accessible by enterprise resources. Thus, only trusted authorities can have access to these files.
 
-## ***Example with local file references***
+## How to start
+
+Once you start building a solution using this library you may wonder how best to start. Following you can find some points that can accelerate your experience:
+
+- Use the [VS-Code extension](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-bicep) for Bicep to enable DSL-native features such as auto-complete. Metadata implemented in our modules are automatically loaded through the extension.
+- Use the readme
+  - If you don't know how to use an object/array parameter you can check if the module's ReadMe file specifies any 'Parameter Usage' block for set parameter ([example](https://github.com/Azure/ResourceModules/blob/main/arm/Microsoft.AnalysisServices/servers/readme.md#parameter-usage-tags)) - or - check the module's `Deployment Examples` ([example](https://github.com/Azure/ResourceModules/blob/main/arm/Microsoft.AnalysisServices/servers/readme.md#deployment-examples)).
+  - In general, take note of the `Deployment Examples` specified in each module's ReadMe file as they provide you with rich & tested examples of how set module can be deployed ([example](https://github.com/Azure/ResourceModules/blob/main/arm/Microsoft.AnalysisServices/servers/readme.md#deployment-examples)). An easy way to get started is to copy one of the examples and then adjust to it your needs.
+- Note the outputs that are returned by each module.
+  - If an output you need isn't available, you have 2 choices:
+    1. Add the missing output to the module
+    1. Reference the deployed resource using the `existing` keyword (Note: You cannot reference the same resource as both a new deployment & `existing`. To make this work, you have to move the `existing` reference into it's own `.bicep` file).
+
+## Examples
+
+<details>
+<summary>Referencing <b>local files</b></summary>
 
 The following example shows how you could orchestrate a deployment of multiple resources using local module references. In this example we will deploy a resource group with a contained NSG and use the same in a subsequent VNET deployment.
 
@@ -129,7 +150,10 @@ module vnet '../arm/Microsoft.Network/virtualNetworks/deploy.bicep' = {
 }
 ```
 
-## ***Example with a Private Bicep Registry***
+</details>
+
+<details>
+<summary>Referencing a <b>Private Bicep Registry</b></summary>
 
 The following example shows how you could orchestrate a deployment of multiple resources using modules from a private Bicep Registry. In this example we will deploy a resource group with a contained NSG and use the same in a subsequent VNET deployment.
 
@@ -232,7 +256,10 @@ The example assumes you are using a [`bicepconfig.json`](https://docs.microsoft.
 }
 ```
 
-## ***Example with template-specs***
+</details>
+
+<details>
+<summary>Referencing <b>Template-Specs</b></summary>
 
 The following example shows how you could orchestrate a deployment of multiple resources using template specs. In this example we will deploy a NSG and use the same in a subsequent VNET deployment.
 
@@ -335,11 +362,15 @@ The example assumes you are using a [`bicepconfig.json`](https://docs.microsoft.
 }
 ```
 
+</details>
+<p>
+
 # Pipeline-orchestration
 
 The modules provided by this repo can be orchestrated to create more complex infrastructures and as such reusable solutions or products. This approach leverages the main 'ResourceModules' repository alongside its contained modules & pipeline templates to deploy resources. Each pipeline job deploys one instance of a resources and their order is controlled by specifying dependencies in the pipeline itself.
 
-## ***[GitHub] Sample solution for multi-repository approach***
+<details>
+<summary>[GitHub] Sample solution for <b>multi-repository approach</b></summary>
 
 ### Summary
 
@@ -360,7 +391,7 @@ The modules provided by this repo can be orchestrated to create more complex inf
 
 ### YAML pipeline
 
-``` YAML
+```YAML
 name: 'Multi-Repo solution deployment'
 
 on:
@@ -437,3 +468,5 @@ jobs:
 
 > 1. 'Azure/ResourceModules' repo has been checked out at the root location intentionally because GitHub Actions expect the underlying utility scripts and variables at a specific location
 > 1. 'contoso/MultiRepoTest' repo has been checked out in a nested folder called as "MultiRepoTestParentFolder" to distinguish it from the folders from the other repo in the agent but can be downloaded at the root location too if desired
+
+</details>

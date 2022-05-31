@@ -40,7 +40,7 @@ var builtInRoleNames = {
   'User Access Administrator': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '18d7d88d-d35e-4fb5-a5c3-7773c20a72d9')
 }
 
-resource eventHub 'Microsoft.EventHub/namespaces/eventhubs@2021-06-01-preview' existing = {
+resource eventHub 'Microsoft.EventHub/namespaces/eventhubs@2021-11-01' existing = {
   name: '${split(resourceId, '/')[8]}/${split(resourceId, '/')[10]}}'
 }
 
@@ -50,7 +50,7 @@ resource roleAssignment 'Microsoft.Authorization/roleAssignments@2020-10-01-prev
     description: description
     roleDefinitionId: contains(builtInRoleNames, roleDefinitionIdOrName) ? builtInRoleNames[roleDefinitionIdOrName] : roleDefinitionIdOrName
     principalId: principalId
-    principalType: !empty(principalType) ? principalType : null
+    principalType: !empty(principalType) ? any(principalType) : null
   }
   scope: eventHub
 }]

@@ -48,6 +48,8 @@ param lock string = 'NotSpecified'
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
 
+var enableChildTelemetry = false
+
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
   properties: {
@@ -75,7 +77,7 @@ module privateDnsZone_A 'A/deploy.bicep' = [for (aRecord, index) in a: {
     metadata: contains(aRecord, 'metadata') ? aRecord.metadata : {}
     ttl: contains(aRecord, 'ttl') ? aRecord.ttl : 3600
     roleAssignments: contains(aRecord, 'roleAssignments') ? aRecord.roleAssignments : []
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableChildTelemetry
   }
 }]
 
@@ -88,7 +90,7 @@ module privateDnsZone_AAAA 'AAAA/deploy.bicep' = [for (aaaaRecord, index) in aaa
     metadata: contains(aaaaRecord, 'metadata') ? aaaaRecord.metadata : {}
     ttl: contains(aaaaRecord, 'ttl') ? aaaaRecord.ttl : 3600
     roleAssignments: contains(aaaaRecord, 'roleAssignments') ? aaaaRecord.roleAssignments : []
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableChildTelemetry
   }
 }]
 
@@ -101,7 +103,7 @@ module privateDnsZone_CNAME 'CNAME/deploy.bicep' = [for (cnameRecord, index) in 
     metadata: contains(cnameRecord, 'metadata') ? cnameRecord.metadata : {}
     ttl: contains(cnameRecord, 'ttl') ? cnameRecord.ttl : 3600
     roleAssignments: contains(cnameRecord, 'roleAssignments') ? cnameRecord.roleAssignments : []
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableChildTelemetry
   }
 }]
 
@@ -114,7 +116,7 @@ module privateDnsZone_MX 'MX/deploy.bicep' = [for (mxRecord, index) in mx: {
     mxRecords: contains(mxRecord, 'mxRecords') ? mxRecord.mxRecords : []
     ttl: contains(mxRecord, 'ttl') ? mxRecord.ttl : 3600
     roleAssignments: contains(mxRecord, 'roleAssignments') ? mxRecord.roleAssignments : []
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableChildTelemetry
   }
 }]
 
@@ -127,7 +129,7 @@ module privateDnsZone_PTR 'PTR/deploy.bicep' = [for (ptrRecord, index) in ptr: {
     ptrRecords: contains(ptrRecord, 'ptrRecords') ? ptrRecord.ptrRecords : []
     ttl: contains(ptrRecord, 'ttl') ? ptrRecord.ttl : 3600
     roleAssignments: contains(ptrRecord, 'roleAssignments') ? ptrRecord.roleAssignments : []
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableChildTelemetry
   }
 }]
 
@@ -140,7 +142,7 @@ module privateDnsZone_SOA 'SOA/deploy.bicep' = [for (soaRecord, index) in soa: {
     soaRecord: contains(soaRecord, 'soaRecord') ? soaRecord.soaRecord : {}
     ttl: contains(soaRecord, 'ttl') ? soaRecord.ttl : 3600
     roleAssignments: contains(soaRecord, 'roleAssignments') ? soaRecord.roleAssignments : []
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableChildTelemetry
   }
 }]
 
@@ -153,7 +155,7 @@ module privateDnsZone_SRV 'SRV/deploy.bicep' = [for (srvRecord, index) in srv: {
     srvRecords: contains(srvRecord, 'srvRecords') ? srvRecord.srvRecords : []
     ttl: contains(srvRecord, 'ttl') ? srvRecord.ttl : 3600
     roleAssignments: contains(srvRecord, 'roleAssignments') ? srvRecord.roleAssignments : []
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableChildTelemetry
   }
 }]
 
@@ -166,7 +168,7 @@ module privateDnsZone_TXT 'TXT/deploy.bicep' = [for (txtRecord, index) in txt: {
     txtRecords: contains(txtRecord, 'txtRecords') ? txtRecord.txtRecords : []
     ttl: contains(txtRecord, 'ttl') ? txtRecord.ttl : 3600
     roleAssignments: contains(txtRecord, 'roleAssignments') ? txtRecord.roleAssignments : []
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableChildTelemetry
   }
 }]
 
@@ -179,7 +181,7 @@ module privateDnsZone_virtualNetworkLinks 'virtualNetworkLinks/deploy.bicep' = [
     location: contains(virtualNetworkLink, 'location') ? virtualNetworkLink.location : 'global'
     registrationEnabled: contains(virtualNetworkLink, 'registrationEnabled') ? virtualNetworkLink.registrationEnabled : false
     tags: contains(virtualNetworkLink, 'tags') ? virtualNetworkLink.tags : {}
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableChildTelemetry
   }
 }]
 

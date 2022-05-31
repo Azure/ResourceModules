@@ -12,7 +12,7 @@ This module deploys an EventHub Namespace Disaster Recovery Config
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.EventHub/namespaces/disasterRecoveryConfigs` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.EventHub/2017-04-01/namespaces/disasterRecoveryConfigs) |
+| `Microsoft.EventHub/namespaces/disasterRecoveryConfigs` | [2021-11-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.EventHub/2021-11-01/namespaces/disasterRecoveryConfigs) |
 
 ## Parameters
 

@@ -76,7 +76,7 @@
                 }
             ]
         },
-        "linkedWorkspaceId": {
+        "linkedWorkspaceResourceId": {
             "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-aut-001"
         },
         "gallerySolutions": {

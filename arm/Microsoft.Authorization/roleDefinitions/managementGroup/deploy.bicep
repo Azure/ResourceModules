@@ -53,11 +53,11 @@ resource roleDefinition 'Microsoft.Authorization/roleDefinitions@2018-01-01-prev
   }
 }
 
-@sys.description('The GUID of the Role Definition')
+@sys.description('The GUID of the Role Definition.')
 output name string = roleDefinition.name
 
-@sys.description('The scope this Role Definition applies to')
+@sys.description('The scope this Role Definition applies to.')
 output scope string = tenantResourceId('Microsoft.Management/managementGroups', managementGroupId)
 
-@sys.description('The resource ID of the Role Definition')
+@sys.description('The resource ID of the Role Definition.')
 output resourceId string = extensionResourceId(tenantResourceId('Microsoft.Management/managementGroups', managementGroupId), 'Microsoft.Authorization/roleDefinitions', roleDefinition.name)

@@ -27,7 +27,7 @@ param identity string = 'SystemAssigned'
 @sys.description('Optional. The Resource ID for the user assigned identity to assign to the policy assignment.')
 param userAssignedIdentityId string = ''
 
-@sys.description('Required. The IDs Of the Azure Role Definition list that is used to assign permissions to the identity. You need to provide either the fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.. See https://docs.microsoft.com/en-us/azure/role-based-access-control/built-in-roles for the list IDs for built-in Roles. They must match on what is on the policy definition')
+@sys.description('Required. The IDs Of the Azure Role Definition list that is used to assign permissions to the identity. You need to provide either the fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.. See https://docs.microsoft.com/en-us/azure/role-based-access-control/built-in-roles for the list IDs for built-in Roles. They must match on what is on the policy definition.')
 param roleDefinitionIds array = []
 
 @sys.description('Optional. The policy assignment metadata. Metadata is an open ended object and is typically a collection of key-value pairs.')
@@ -36,7 +36,7 @@ param metadata object = {}
 @sys.description('Optional. The messages that describe why a resource is non-compliant with the policy.')
 param nonComplianceMessage string = ''
 
-@sys.description('Optional. The policy assignment enforcement mode. Possible values are Default and DoNotEnforce. - Default or DoNotEnforce')
+@sys.description('Optional. The policy assignment enforcement mode. Possible values are Default and DoNotEnforce. - Default or DoNotEnforce.')
 @allowed([
   'Default'
   'DoNotEnforce'
@@ -46,13 +46,13 @@ param enforcementMode string = 'Default'
 @sys.description('Optional. The Target Scope for the Policy. The name of the management group for the policy assignment. If not provided, will use the current scope for deployment.')
 param managementGroupId string = managementGroup().name
 
-@sys.description('Optional. The Target Scope for the Policy. The subscription ID of the subscription for the policy assignment')
+@sys.description('Optional. The Target Scope for the Policy. The subscription ID of the subscription for the policy assignment.')
 param subscriptionId string = ''
 
-@sys.description('Optional. The Target Scope for the Policy. The name of the resource group for the policy assignment')
+@sys.description('Optional. The Target Scope for the Policy. The name of the resource group for the policy assignment.')
 param resourceGroupName string = ''
 
-@sys.description('Optional. The policy excluded scopes')
+@sys.description('Optional. The policy excluded scopes.')
 param notScopes array = []
 
 @sys.description('Optional. Location for all resources.')
@@ -60,6 +60,8 @@ param location string = deployment().location
 
 @sys.description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
+
+var enableChildTelemetry = false
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
@@ -92,7 +94,7 @@ module policyAssignment_mg 'managementGroup/deploy.bicep' = if (empty(subscripti
     notScopes: !empty(notScopes) ? notScopes : []
     managementGroupId: managementGroupId
     location: location
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableChildTelemetry
   }
 }
 
@@ -114,7 +116,7 @@ module policyAssignment_sub 'subscription/deploy.bicep' = if (!empty(subscriptio
     notScopes: !empty(notScopes) ? notScopes : []
     subscriptionId: subscriptionId
     location: location
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableChildTelemetry
   }
 }
 
@@ -136,17 +138,17 @@ module policyAssignment_rg 'resourceGroup/deploy.bicep' = if (!empty(resourceGro
     notScopes: !empty(notScopes) ? notScopes : []
     subscriptionId: subscriptionId
     location: location
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableChildTelemetry
   }
 }
 
-@sys.description('Policy Assignment Name')
+@sys.description('Policy Assignment Name.')
 output name string = empty(subscriptionId) && empty(resourceGroupName) ? policyAssignment_mg.outputs.name : (!empty(subscriptionId) && empty(resourceGroupName) ? policyAssignment_sub.outputs.name : policyAssignment_rg.outputs.name)
 
-@sys.description('Policy Assignment principal ID')
+@sys.description('Policy Assignment principal ID.')
 output principalId string = empty(subscriptionId) && empty(resourceGroupName) ? policyAssignment_mg.outputs.principalId : (!empty(subscriptionId) && empty(resourceGroupName) ? policyAssignment_sub.outputs.principalId : policyAssignment_rg.outputs.principalId)
 
-@sys.description('Policy Assignment resource ID')
+@sys.description('Policy Assignment resource ID.')
 output resourceId string = empty(subscriptionId) && empty(resourceGroupName) ? policyAssignment_mg.outputs.resourceId : (!empty(subscriptionId) && empty(resourceGroupName) ? policyAssignment_sub.outputs.resourceId : policyAssignment_rg.outputs.resourceId)
 
 @sys.description('The location the resource was deployed into.')

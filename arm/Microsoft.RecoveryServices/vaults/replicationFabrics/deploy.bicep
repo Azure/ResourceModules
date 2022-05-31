@@ -13,6 +13,8 @@ param replicationContainers array = []
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
 
+var enableChildTelemetry = false
+
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name)}-rsvPolicy'
   properties: {
@@ -42,7 +44,7 @@ module fabric_replicationContainers 'replicationProtectionContainers/deploy.bice
     recoveryVaultName: recoveryVaultName
     replicationFabricName: name
     replicationContainerMappings: contains(container, 'replicationContainerMappings') ? container.replicationContainerMappings : []
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableChildTelemetry
   }
   dependsOn: [
     replicationFabric
@@ -57,6 +59,3 @@ output resourceId string = replicationFabric.id
 
 @description('The name of the resource group the replication fabric was created in.')
 output resourceGroupName string = resourceGroup().name
-
-@description('The location the resource was deployed into.')
-output location string = replicationFabric.location

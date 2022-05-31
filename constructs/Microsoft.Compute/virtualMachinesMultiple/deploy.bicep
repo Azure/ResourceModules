@@ -20,7 +20,7 @@ param vmNumberOfInstances int = 1
 ])
 param vmComputerNamesTransformation string = 'none'
 
-@description('Required. Specifies the size for the VMs')
+@description('Required. Specifies the size for the VMs.')
 param vmSize string
 
 @description('Optional. This property can be used by user in the request to enable or disable the Host Encryption for the virtual machine. This will enable the encryption for all the disks including Resource/Temp disk at host itself. For security reasons, it is recommended to set encryptionAtHost to True. Restrictions: Cannot be enabled if Azure Disk Encryption (guest-VM encryption using bitlocker/DM-Crypt) is enabled on your VMs.')
@@ -50,11 +50,11 @@ param dataDisks array = []
 @description('Optional. The flag that enables or disables a capability to have one or more managed data disks with UltraSSD_LRS storage account type on the VM or VMSS. Managed disks with storage account type UltraSSD_LRS can be added to a virtual machine or virtual machine scale set only if this property is enabled.')
 param ultraSSDEnabled bool = false
 
-@description('Required. Administrator username')
+@description('Required. Administrator username.')
 @secure()
 param adminUsername string
 
-@description('Optional. When specifying a Windows Virtual Machine, this value should be passed')
+@description('Optional. When specifying a Windows Virtual Machine, this value should be passed.')
 @secure()
 param adminPassword string = ''
 
@@ -89,7 +89,7 @@ param dedicatedHostId string = ''
 ])
 param licenseType string = ''
 
-@description('Optional. The list of SSH public keys used to authenticate with linux based VMs')
+@description('Optional. The list of SSH public keys used to authenticate with linux based VMs.')
 param publicKeys array = []
 
 @description('Optional. Enables system assigned managed identity on the resource.')
@@ -173,21 +173,21 @@ param enableServerSideEncryption bool = false
 @description('Optional. Specifies whether extension operations should be allowed on the virtual machine. This may only be set to False when no extensions are present on the virtual machine.')
 param allowExtensionOperations bool = true
 
-@description('Optional. Required if domainName is specified. Password of the user specified in domainJoinUser parameter')
+@description('Optional. Required if domainName is specified. Password of the user specified in domainJoinUser parameter.')
 @secure()
 param extensionDomainJoinPassword string = ''
 
-@description('Optional. The configuration for the [Domain Join] extension. Must at least contain the ["enabled": true] property to be executed')
+@description('Optional. The configuration for the [Domain Join] extension. Must at least contain the ["enabled": true] property to be executed.')
 param extensionDomainJoinConfig object = {
   enabled: false
 }
 
-@description('Optional. The configuration for the [Anti Malware] extension. Must at least contain the ["enabled": true] property to be executed')
+@description('Optional. The configuration for the [Anti Malware] extension. Must at least contain the ["enabled": true] property to be executed.')
 param extensionAntiMalwareConfig object = {
   enabled: false
 }
 
-@description('Optional. The configuration for the [Monitoring Agent] extension. Must at least contain the ["enabled": true] property to be executed')
+@description('Optional. The configuration for the [Monitoring Agent] extension. Must at least contain the ["enabled": true] property to be executed.')
 param extensionMonitoringAgentConfig object = {
   enabled: false
 }
@@ -195,33 +195,33 @@ param extensionMonitoringAgentConfig object = {
 @description('Optional. Resource ID of the monitoring log analytics workspace. Must be set when extensionMonitoringAgentConfig is set to true.')
 param monitoringWorkspaceId string = ''
 
-@description('Optional. The configuration for the [Dependency Agent] extension. Must at least contain the ["enabled": true] property to be executed')
+@description('Optional. The configuration for the [Dependency Agent] extension. Must at least contain the ["enabled": true] property to be executed.')
 param extensionDependencyAgentConfig object = {
   enabled: false
 }
 
-@description('Optional. The configuration for the [Network Watcher Agent] extension. Must at least contain the ["enabled": true] property to be executed')
+@description('Optional. The configuration for the [Network Watcher Agent] extension. Must at least contain the ["enabled": true] property to be executed.')
 param extensionNetworkWatcherAgentConfig object = {
   enabled: false
 }
 
-@description('Optional. The configuration for the [Disk Encryption] extension. Must at least contain the ["enabled": true] property to be executed')
+@description('Optional. The configuration for the [Disk Encryption] extension. Must at least contain the ["enabled": true] property to be executed.')
 param extensionDiskEncryptionConfig object = {
   enabled: false
 }
 
-@description('Optional. The configuration for the [Desired State Configuration] extension. Must at least contain the ["enabled": true] property to be executed')
+@description('Optional. The configuration for the [Desired State Configuration] extension. Must at least contain the ["enabled": true] property to be executed.')
 param extensionDSCConfig object = {
   enabled: false
 }
 
-@description('Optional. The configuration for the [Custom Script] extension. Must at least contain the ["enabled": true] property to be executed')
+@description('Optional. The configuration for the [Custom Script] extension. Must at least contain the ["enabled": true] property to be executed.')
 param extensionCustomScriptConfig object = {
   enabled: false
   fileData: []
 }
 
-@description('Optional. Any object that contains the extension specific protected settings')
+@description('Optional. Any object that contains the extension specific protected settings.')
 @secure()
 param extensionCustomScriptProtectedSetting object = {}
 
@@ -254,7 +254,7 @@ param diagnosticEventHubName string = ''
 @description('Optional. Specify the type of lock.')
 param lock string = 'NotSpecified'
 
-@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'')
+@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
 param roleAssignments array = []
 
 @description('Optional. Tags of the resource.')
@@ -269,7 +269,7 @@ param baseTime string = utcNow('u')
 @description('Optional. SAS token validity length to use to download files from storage accounts. Usage: \'PT8H\' - valid for 8 hours; \'P5D\' - valid for 5 days; \'P1Y\' - valid for 1 year. When not provided, the SAS token will be valid for 8 hours.')
 param sasTokenValidityLength string = 'PT8H'
 
-@description('Required. The chosen OS type')
+@description('Required. The chosen OS type.')
 @allowed([
   'Windows'
   'Linux'
@@ -288,18 +288,20 @@ param enableAutomaticUpdates bool = true
 @description('Optional. Specifies the time zone of the virtual machine. e.g. \'Pacific Standard Time\'. Possible values can be TimeZoneInfo.id value from time zones returned by TimeZoneInfo.GetSystemTimeZones.')
 param timeZone string = ''
 
-@description('Optional. Specifies additional base-64 encoded XML formatted information that can be included in the Unattend.xml file, which is used by Windows Setup. - AdditionalUnattendContent object')
+@description('Optional. Specifies additional base-64 encoded XML formatted information that can be included in the Unattend.xml file, which is used by Windows Setup. - AdditionalUnattendContent object.')
 param additionalUnattendContent array = []
 
 @description('Optional. Specifies the Windows Remote Management listeners. This enables remote Windows PowerShell. - WinRMConfiguration object.')
 param winRM object = {}
 
-@description('Optional. Any VM configuration profile assignments')
+@description('Optional. Any VM configuration profile assignments.')
 param configurationProfileAssignments array = []
 
 var vmGeneratedNames = [for instance in range(0, vmNumberOfInstances): '${vmNamePrefix}${padLeft((instance + vmInitialNumber), 3, '0')}']
 
 var vmNamesToApply = !empty(vmNames) ? vmNames : vmGeneratedNames
+
+var enableChildTelemetry = false
 
 module virtualMachine '../../../arm/Microsoft.Compute/virtualMachines/deploy.bicep' = [for (vmName, index) in vmNamesToApply: {
   name: '${deployment().name}-vm-${index}'
@@ -333,7 +335,7 @@ module virtualMachine '../../../arm/Microsoft.Compute/virtualMachines/deploy.bic
     diagnosticWorkspaceId: diagnosticWorkspaceId
     disablePasswordAuthentication: disablePasswordAuthentication
     enableAutomaticUpdates: enableAutomaticUpdates
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableChildTelemetry
     enableEvictionPolicy: enableEvictionPolicy
     enableServerSideEncryption: enableServerSideEncryption
     encryptionAtHost: encryptionAtHost

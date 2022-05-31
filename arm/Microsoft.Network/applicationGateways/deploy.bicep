@@ -271,7 +271,7 @@ resource applicationGateway 'Microsoft.Network/applicationGateways@2021-05-01' =
   identity: identity
   properties: union({
     authenticationCertificates: authenticationCertificates
-    autoscaleConfiguration: autoscaleMaxCapacity > 0 && autoscaleMinCapacity > 0 ? {
+    autoscaleConfiguration: autoscaleMaxCapacity > 0 && autoscaleMinCapacity >= 0 ? {
       maxCapacity: autoscaleMaxCapacity
       minCapacity: autoscaleMinCapacity
     } : null
@@ -300,7 +300,7 @@ resource applicationGateway 'Microsoft.Network/applicationGateways@2021-05-01' =
     sku: {
       name: sku
       tier: endsWith(sku, 'v2') ? sku : substring(sku, 0, indexOf(sku, '_'))
-      capacity: autoscaleMaxCapacity > 0 && autoscaleMinCapacity > 0 ? null : capacity
+      capacity: autoscaleMaxCapacity > 0 && autoscaleMinCapacity >= 0 ? null : capacity
     }
     sslCertificates: sslCertificates
     sslPolicy: {
