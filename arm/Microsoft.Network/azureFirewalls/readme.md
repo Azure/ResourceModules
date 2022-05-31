@@ -18,19 +18,22 @@ This module deploys a firewall.
 | `Microsoft.Authorization/roleAssignments` | [2020-10-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-10-01-preview/roleAssignments) |
 | `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
 | `Microsoft.Network/azureFirewalls` | [2021-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/azureFirewalls) |
+| `Microsoft.Network/publicIPAddresses` | [2021-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/publicIPAddresses) |
 
 ## Parameters
 
 **Required parameters**
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `ipConfigurations` | array | List of IP Configurations. |
 | `name` | string | Name of the Azure Firewall. |
+| `vNetId` | string | Shared services Virtual Network resource ID. The virtual network ID containing AzureFirewallSubnet. If a public ip is not provided, then the public ip that is created as part of this module will be applied with the subnet provided in this variable. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
+| `additionalPublicIpConfigurations` | array | `[]` |  | This is to add any additional public ip configurations on top of the public ip with subnet ip configuration. |
 | `applicationRuleCollections` | array | `[]` |  | Collection of application rule collections used by Azure Firewall. |
+| `azureFirewallSubnetPublicIpId` | string | `''` |  | The public ip resource ID to associate to the AzureFirewallSubnet. If empty, then the public ip that is created as part of this module will be applied to the AzureFirewallSubnet. |
 | `azureSkuName` | string | `'AZFW_VNet'` | `[AZFW_VNet, AZFW_Hub]` | Name of an Azure Firewall SKU. |
 | `azureSkuTier` | string | `'Standard'` | `[Standard, Premium]` | Tier of an Azure Firewall. |
 | `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
@@ -43,14 +46,136 @@ This module deploys a firewall.
 | `diagnosticWorkspaceId` | string | `''` |  | Log Analytics workspace resource identifier. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `firewallPolicyId` | string | `''` |  | Resource ID of the Firewall Policy that should be attached. |
+| `isCreateDefaultPublicIP` | bool | `True` |  | Specifies if a public ip should be created by default if one is not provided. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `'NotSpecified'` | `[CanNotDelete, NotSpecified, ReadOnly]` | Specify the type of lock. |
 | `natRuleCollections` | array | `[]` |  | Collection of NAT rule collections used by Azure Firewall. |
 | `networkRuleCollections` | array | `[]` |  | Collection of network rule collections used by Azure Firewall. |
+| `publicIPAddressObject` | object | `{object}` |  | Specifies the properties of the public IP to create and be used by Azure Firewall. If it's not provided and publicIPAddressId is empty, a '-pip' suffix will be appended to the Firewall's name. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `tags` | object | `{object}` |  | Tags of the Azure Firewall resource. |
 | `threatIntelMode` | string | `'Deny'` | `[Alert, Deny, Off]` | The operation mode for Threat Intel. |
 | `zones` | array | `[1, 2, 3]` |  | Zone numbers e.g. 1,2,3. |
+
+
+### Parameter Usage: `additionalPublicIpConfigurations`
+
+Create additional public ip configurations from existing public ips
+
+<details>
+
+<summary>Parameter JSON format</summary>
+
+```json
+"additionalPublicIpConfigurations": {
+    "value": [
+        {
+            "name": "ipConfig01",
+            "publicIPAddressResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/publicIPAddresses/adp-<<namePrefix>>-az-pip-x-fw-01"
+        },
+        {
+            "name": "ipConfig02",
+            "publicIPAddressResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/publicIPAddresses/adp-<<namePrefix>>-az-pip-x-fw-02"
+        }
+    ]
+}
+```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+additionalPublicIpConfigurations: [
+    {
+        name: 'ipConfig01'
+        publicIPAddressResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/publicIPAddresses/adp-<<namePrefix>>-az-pip-x-fw-01'
+    }
+    {
+        name: 'ipConfig02'
+        publicIPAddressResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/publicIPAddresses/adp-<<namePrefix>>-az-pip-x-fw-02'
+    }
+]
+```
+
+</details>
+
+
+### Parameter Usage: `publicIPAddressObject`
+
+The Public IP Address object to create as part of the module. This will be created if `isCreateDefaultPublicIP` is true (which it is by default). If not provided, the name and other configurations will be set by default.
+
+
+<details>
+
+<summary>Parameter JSON format</summary>
+
+```json
+"publicIPAddressObject": {
+    "value": {
+        "name": "adp-<<namePrefix>>-az-pip-custom-x-fw",
+        "publicIPPrefixResourceId": "",
+        "publicIPAllocationMethod": "Static",
+        "skuName": "Standard",
+        "skuTier": "Regional",
+        "roleAssignments": [
+            {
+                "roleDefinitionIdOrName": "Reader",
+                "principalIds": [
+                    "<<deploymentSpId>>"
+                ]
+            }
+        ],
+        "diagnosticMetricsToEnable": [
+            "AllMetrics"
+        ],
+        "diagnosticLogCategoriesToEnable": [
+            "DDoSProtectionNotifications",
+            "DDoSMitigationFlowLogs",
+            "DDoSMitigationReports"
+        ]
+    }
+}
+```
+
+</details>
+
+
+
+<details>
+
+<summary>Bicep format</summary>
+
+
+```bicep
+publicIPAddressObject: {
+    name: 'mypip'
+    publicIPPrefixResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/publicIPPrefixes/myprefix'
+    publicIPAllocationMethod: 'Dynamic'
+    skuName: 'Basic'
+    skuTier: 'Regional'
+    roleAssignments: [
+        {
+            roleDefinitionIdOrName: 'Reader'
+            principalIds: [
+                '<<deploymentSpId>>'
+            ]
+        }
+    ]
+    diagnosticMetricsToEnable: [
+        'AllMetrics'
+    ]
+    diagnosticLogCategoriesToEnable: [
+        'DDoSProtectionNotifications'
+        'DDoSMitigationFlowLogs'
+        'DDoSMitigationReports'
+    ]
+}
+```
+
+</details>
 
 
 ### Parameter Usage: `roleAssignments`
@@ -158,6 +283,7 @@ tags: {
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
 | `applicationRuleCollections` | array | List of Application Rule Collections. |
+| `ipConfAzureFirewallSubnet` | object | The public ipconfiguration object for the AzureFirewallSubnet. |
 | `location` | string | The location the resource was deployed into. |
 | `name` | string | The name of the Azure firewall. |
 | `natRuleCollections` | array | Collection of NAT rule collections used by Azure Firewall. |
@@ -185,7 +311,189 @@ The `networkRuleCollections` parameter accepts a JSON Array of AzureFirewallNetw
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "<<namePrefix>>-az-azfw-x-001"
+            "value": "<<namePrefix>>-az-fw-add-001"
+        },
+        "vNetId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-add-azfw"
+        },
+        "additionalPublicIpConfigurations": {
+            "value": [
+                {
+                    "name": "ipConfig01",
+                    "publicIPAddressResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/publicIPAddresses/adp-<<namePrefix>>-az-pip-additional-fw"
+                }
+            ]
+        }
+    }
+}
+
+```
+
+</details>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-azureFirewalls'
+  params: {
+    name: '<<namePrefix>>-az-fw-add-001'
+    vNetId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-add-azfw'
+    additionalPublicIpConfigurations: [
+      {
+        name: 'ipConfig01'
+        publicIPAddressResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/publicIPAddresses/adp-<<namePrefix>>-az-pip-additional-fw'
+      }
+    ]
+  }
+```
+
+</details>
+<p>
+
+<h3>Example 2</h3>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": "<<namePrefix>>-az-fw-custompip-001"
+        },
+        "vNetId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-custompip-azfw"
+        },
+        "publicIPAddressObject": {
+            "value": {
+                "name": "adp-<<namePrefix>>-az-pip-custom-x-fw",
+                "publicIPPrefixResourceId": "",
+                "publicIPAllocationMethod": "Static",
+                "skuName": "Standard",
+                "skuTier": "Regional",
+                "roleAssignments": [
+                    {
+                        "roleDefinitionIdOrName": "Reader",
+                        "principalIds": [
+                            "<<deploymentSpId>>"
+                        ]
+                    }
+                ],
+                "diagnosticMetricsToEnable": [
+                    "AllMetrics"
+                ],
+                "diagnosticLogCategoriesToEnable": [
+                    "DDoSProtectionNotifications",
+                    "DDoSMitigationFlowLogs",
+                    "DDoSMitigationReports"
+                ]
+            }
+        }
+    }
+}
+
+```
+
+</details>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-azureFirewalls'
+  params: {
+    name: '<<namePrefix>>-az-fw-custompip-001'
+    vNetId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-custompip-azfw'
+    publicIPAddressObject: {
+      name: 'adp-<<namePrefix>>-az-pip-custom-x-fw'
+      publicIPPrefixResourceId: ''
+      publicIPAllocationMethod: 'Static'
+      skuName: 'Standard'
+      skuTier: 'Regional'
+      roleAssignments: [
+        {
+          roleDefinitionIdOrName: 'Reader'
+          principalIds: [
+            '<<deploymentSpId>>'
+          ]
+        }
+      ]
+      diagnosticMetricsToEnable: [
+        'AllMetrics'
+      ]
+      diagnosticLogCategoriesToEnable: [
+        'DDoSProtectionNotifications'
+        'DDoSMitigationFlowLogs'
+        'DDoSMitigationReports'
+      ]
+    }
+  }
+```
+
+</details>
+<p>
+
+<h3>Example 3</h3>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": "<<namePrefix>>-az-fw-min-001"
+        },
+        "vNetId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-min-azfw"
+        }
+    }
+}
+
+```
+
+</details>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-azureFirewalls'
+  params: {
+    name: '<<namePrefix>>-az-fw-min-001'
+    vNetId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-min-azfw'
+  }
+```
+
+</details>
+<p>
+
+<h3>Example 4</h3>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": "<<namePrefix>>-az-fw-x-001"
         },
         "zones": {
             "value": [
@@ -194,14 +502,11 @@ The `networkRuleCollections` parameter accepts a JSON Array of AzureFirewallNetw
                 "3"
             ]
         },
-        "ipConfigurations": {
-            "value": [
-                {
-                    "name": "ipConfig01",
-                    "publicIPAddressResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/publicIPAddresses/adp-<<namePrefix>>-az-pip-x-fw",
-                    "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-azfw/subnets/AzureFirewallSubnet"
-                }
-            ]
+        "vNetId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-azfw"
+        },
+        "azureFirewallSubnetPublicIpId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/publicIPAddresses/adp-<<namePrefix>>-az-pip-x-fw"
         },
         "applicationRuleCollections": {
             "value": [
@@ -328,19 +633,14 @@ The `networkRuleCollections` parameter accepts a JSON Array of AzureFirewallNetw
 module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-azureFirewalls'
   params: {
-    name: '<<namePrefix>>-az-azfw-x-001'
+    name: '<<namePrefix>>-az-fw-x-001'
     zones: [
       '1'
       '2'
       '3'
     ]
-    ipConfigurations: [
-      {
-        name: 'ipConfig01'
-        publicIPAddressResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/publicIPAddresses/adp-<<namePrefix>>-az-pip-x-fw'
-        subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-azfw/subnets/AzureFirewallSubnet'
-      }
-    ]
+    vNetId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-azfw'
+    azureFirewallSubnetPublicIpId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/publicIPAddresses/adp-<<namePrefix>>-az-pip-x-fw'
     applicationRuleCollections: [
       {
         name: 'allow-app-rules'

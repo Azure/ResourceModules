@@ -39,7 +39,7 @@ With this module you can perform policy assignments across the management group,
 | `metadata` | object | `{object}` |  | The policy assignment metadata. Metadata is an open ended object and is typically a collection of key-value pairs. |
 | `nonComplianceMessage` | string | `''` |  | The messages that describe why a resource is non-compliant with the policy. |
 | `notScopes` | array | `[]` |  | The policy excluded scopes. |
-| `parameters` | _[parameters](parameters/readme.md)_ object | `{object}` |  | Parameters for the policy assignment if needed. |
+| `parameters` | object | `{object}` |  | Parameters for the policy assignment if needed. |
 | `resourceGroupName` | string | `''` |  | The Target Scope for the Policy. The name of the resource group for the policy assignment. |
 | `subscriptionId` | string | `''` |  | The Target Scope for the Policy. The subscription ID of the subscription for the policy assignment. |
 | `userAssignedIdentityId` | string | `''` |  | The Resource ID for the user assigned identity to assign to the policy assignment. |

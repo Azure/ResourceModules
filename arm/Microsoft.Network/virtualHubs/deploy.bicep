@@ -79,6 +79,8 @@ param lock string = 'NotSpecified'
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
 
+var enableChildTelemetry = false
+
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
   properties: {
@@ -144,7 +146,7 @@ module virtualHub_routeTables 'hubRouteTables/deploy.bicep' = [for (routeTable, 
     name: routeTable.name
     labels: contains(routeTable, 'labels') ? routeTable.labels : []
     routes: contains(routeTable, 'routes') ? routeTable.routes : []
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableChildTelemetry
   }
 }]
 
@@ -156,7 +158,7 @@ module virtualHub_hubVirtualNetworkConnections 'hubVirtualNetworkConnections/dep
     enableInternetSecurity: contains(virtualNetworkConnection, 'enableInternetSecurity') ? virtualNetworkConnection.enableInternetSecurity : true
     remoteVirtualNetworkId: virtualNetworkConnection.remoteVirtualNetworkId
     routingConfiguration: contains(virtualNetworkConnection, 'routingConfiguration') ? virtualNetworkConnection.routingConfiguration : {}
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableChildTelemetry
   }
   dependsOn: [
     virtualHub_routeTables

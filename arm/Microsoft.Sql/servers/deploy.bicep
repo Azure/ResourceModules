@@ -56,6 +56,8 @@ var identity = identityType != 'None' ? {
   userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
 } : null
 
+var enableChildTelemetry = false
+
 @description('Optional. The vulnerability assessment configuration.')
 param vulnerabilityAssessmentsObj object = {}
 
@@ -142,21 +144,27 @@ module server_databases 'databases/deploy.bicep' = [for (database, index) in dat
     tags: contains(database, 'tags') ? database.tags : {}
     diagnosticWorkspaceId: contains(database, 'diagnosticWorkspaceId') ? database.diagnosticWorkspaceId : ''
     zoneRedundant: contains(database, 'zoneRedundant') ? database.zoneRedundant : false
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableChildTelemetry
   }
 }]
 
-module server_privateEndpoints '.bicep/nested_privateEndpoint.bicep' = [for (endpoint, index) in privateEndpoints: if (!empty(privateEndpoints)) {
-  name: '${uniqueString(deployment().name, location)}-Sql-PrivateEndpoints-${index}'
+module server_privateEndpoints '../../Microsoft.Network/privateEndpoints/deploy.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
+  name: '${uniqueString(deployment().name, location)}-SQLServer-PrivateEndpoint-${index}'
   params: {
-    privateEndpointResourceId: server.id
-    privateEndpointVnetLocation: !empty(privateEndpoints) ? reference(split(endpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location : 'dummy'
-    service: contains(endpoint, 'service') ? endpoint.service : 'sqlServer'
-    subnetResourceId: endpoint.subnetResourceId
-    customDnsConfigs: contains(endpoint, 'customDnsConfigs') ? endpoint.customDnsConfigs : []
-    name: contains(endpoint, 'name') ? endpoint.name : '${last(split(server.id, '/'))}-sql'
-    privateDnsZoneResourceIds: contains(endpoint, 'privateDnsZoneResourceIds') ? endpoint.privateDnsZoneResourceIds : []
-    tags: contains(endpoint, 'tags') ? endpoint.tags : {}
+    groupIds: [
+      privateEndpoint.service
+    ]
+    name: contains(privateEndpoint, 'name') ? privateEndpoint.name : 'pe-${last(split(server.id, '/'))}-${privateEndpoint.service}-${index}'
+    serviceResourceId: server.id
+    subnetResourceId: privateEndpoint.subnetResourceId
+    enableDefaultTelemetry: enableDefaultTelemetry
+    location: reference(split(privateEndpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location
+    lock: contains(privateEndpoint, 'lock') ? privateEndpoint.lock : 'NotSpecified'
+    privateDnsZoneGroups: contains(privateEndpoint, 'privateDnsZoneGroups') ? privateEndpoint.privateDnsZoneGroups : []
+    roleAssignments: contains(privateEndpoint, 'roleAssignments') ? privateEndpoint.roleAssignments : []
+    tags: contains(privateEndpoint, 'tags') ? privateEndpoint.tags : {}
+    manualPrivateLinkServiceConnections: contains(privateEndpoint, 'manualPrivateLinkServiceConnections') ? privateEndpoint.manualPrivateLinkServiceConnections : []
+    customDnsConfigs: contains(privateEndpoint, 'customDnsConfigs') ? privateEndpoint.customDnsConfigs : []
   }
 }]
 
@@ -167,7 +175,7 @@ module server_firewallRules 'firewallRules/deploy.bicep' = [for (firewallRule, i
     serverName: server.name
     endIpAddress: contains(firewallRule, 'endIpAddress') ? firewallRule.endIpAddress : '0.0.0.0'
     startIpAddress: contains(firewallRule, 'startIpAddress') ? firewallRule.startIpAddress : '0.0.0.0'
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableChildTelemetry
   }
 }]
 
@@ -183,7 +191,7 @@ module server_securityAlertPolicies 'securityAlertPolicies/deploy.bicep' = [for 
     state: contains(securityAlertPolicy, 'state') ? securityAlertPolicy.state : 'Disabled'
     storageAccountAccessKey: contains(securityAlertPolicy, 'storageAccountAccessKey') ? securityAlertPolicy.storageAccountAccessKey : ''
     storageEndpoint: contains(securityAlertPolicy, 'storageEndpoint') ? securityAlertPolicy.storageEndpoint : ''
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableChildTelemetry
   }
 }]
 
@@ -196,7 +204,7 @@ module server_vulnerabilityAssessment 'vulnerabilityAssessments/deploy.bicep' = 
     recurringScansEmailSubscriptionAdmins: contains(vulnerabilityAssessmentsObj, 'recurringScansEmailSubscriptionAdmins') ? vulnerabilityAssessmentsObj.recurringScansEmailSubscriptionAdmins : false
     recurringScansIsEnabled: contains(vulnerabilityAssessmentsObj, 'recurringScansIsEnabled') ? vulnerabilityAssessmentsObj.recurringScansIsEnabled : false
     vulnerabilityAssessmentsStorageAccountId: contains(vulnerabilityAssessmentsObj, 'vulnerabilityAssessmentsStorageAccountId') ? vulnerabilityAssessmentsObj.vulnerabilityAssessmentsStorageAccountId : ''
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableChildTelemetry
   }
   dependsOn: [
     server_securityAlertPolicies

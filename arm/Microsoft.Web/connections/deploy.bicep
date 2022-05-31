@@ -4,9 +4,6 @@ param alternativeParameterValues object = {}
 @description('Optional. Specific values for some API connections.')
 param connectionApi object = {}
 
-@description('Required. Connection Kind. Example: \'V1\' when using blobs. It can change depending on the resource.')
-param connectionKind string
-
 @description('Required. Connection name for connection. Example: \'azureblob\' when using blobs.  It can change depending on the resource.')
 param name string
 
@@ -28,9 +25,6 @@ param nonSecretParameterValues object = {}
 @description('Optional. Connection strings or access keys for connection. Example: \'accountName\' and \'accessKey\' when using blobs.  It can change depending on the resource.')
 @secure()
 param parameterValues object = {}
-
-@description('Optional. Value Type of parameter, in case alternativeParameterValues is used.')
-param parameterValueType string = ''
 
 @description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
 param roleAssignments array = []
@@ -67,13 +61,10 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
 resource connection 'Microsoft.Web/connections@2016-06-01' = {
   name: name
   location: location
-  kind: connectionKind
   tags: tags
   properties: {
     displayName: displayName
     customParameterValues: customParameterValues
-    parameterValueType: !empty(parameterValueType) ? parameterValueType : null
-    alternativeParameterValues: !empty(alternativeParameterValues) ? alternativeParameterValues : null
     api: connectionApi
     parameterValues: empty(alternativeParameterValues) ? parameterValues : null
     nonSecretParameterValues: !empty(nonSecretParameterValues) ? nonSecretParameterValues : null

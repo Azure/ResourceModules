@@ -82,6 +82,8 @@ var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
   }
 }]
 
+var enableChildTelemetry = false
+
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
   properties: {
@@ -144,7 +146,7 @@ module appGroup_applications 'applications/deploy.bicep' = [for (application, in
     showInPortal: contains(application, 'showInPortal') ? application.showInPortal : false
     iconPath: contains(application, 'iconPath') ? application.iconPath : application.filePath
     iconIndex: contains(application, 'iconIndex') ? application.iconIndex : 0
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableChildTelemetry
   }
 }]
 

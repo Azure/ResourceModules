@@ -120,6 +120,8 @@ param diagnosticMetricsToEnable array = [
 @description('Optional. The name of the diagnostic setting, if deployed.')
 param diagnosticSettingsName string = '${name}-diagnosticSettings'
 
+var enableChildTelemetry = false
+
 var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
   category: category
   enabled: true
@@ -190,7 +192,7 @@ module automationAccount_modules 'modules/deploy.bicep' = [for (module, index) i
     uri: module.uri
     location: location
     tags: tags
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableChildTelemetry
   }
 }]
 
@@ -206,7 +208,7 @@ module automationAccount_schedules 'schedules/deploy.bicep' = [for (schedule, in
     interval: contains(schedule, 'interval') ? schedule.interval : 0
     startTime: contains(schedule, 'startTime') ? schedule.startTime : ''
     timeZone: contains(schedule, 'timeZone') ? schedule.timeZone : ''
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableChildTelemetry
   }
 }]
 
@@ -221,7 +223,7 @@ module automationAccount_runbooks 'runbooks/deploy.bicep' = [for (runbook, index
     version: contains(runbook, 'version') ? runbook.version : ''
     location: location
     tags: tags
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableChildTelemetry
   }
 }]
 
@@ -233,7 +235,7 @@ module automationAccount_jobSchedules 'jobSchedules/deploy.bicep' = [for (jobSch
     scheduleName: jobSchedule.scheduleName
     parameters: contains(jobSchedule, 'parameters') ? jobSchedule.parameters : {}
     runOn: contains(jobSchedule, 'runOn') ? jobSchedule.runOn : ''
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableChildTelemetry
   }
   dependsOn: [
     automationAccount_schedules
@@ -249,7 +251,7 @@ module automationAccount_variables 'variables/deploy.bicep' = [for (variable, in
     description: contains(variable, 'description') ? variable.description : ''
     value: variable.value
     isEncrypted: contains(variable, 'isEncrypted') ? variable.isEncrypted : true
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableChildTelemetry
   }
 }]
 
@@ -321,7 +323,7 @@ module automationAccount_softwareUpdateConfigurations 'softwareUpdateConfigurati
       'Security'
     ]
     weekDays: contains(softwareUpdateConfiguration, 'weekDays') ? softwareUpdateConfiguration.weekDays : []
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableChildTelemetry
   }
   dependsOn: [
     automationAccount_solutions
@@ -338,7 +340,7 @@ resource automationAccount_lock 'Microsoft.Authorization/locks@2017-04-01' = if 
 }
 
 resource automationAccount_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(diagnosticWorkspaceId)) || (!empty(diagnosticEventHubAuthorizationRuleId)) || (!empty(diagnosticEventHubName))) {
-  name: '${automationAccount.name}-AutoAccount-diagnosticSettings'
+  name: diagnosticSettingsName
   properties: {
     storageAccountId: !empty(diagnosticStorageAccountId) ? diagnosticStorageAccountId : null
     workspaceId: !empty(diagnosticWorkspaceId) ? diagnosticWorkspaceId : null
@@ -350,13 +352,23 @@ resource automationAccount_diagnosticSettings 'Microsoft.Insights/diagnosticSett
   scope: automationAccount
 }
 
-module automationAccount_privateEndpoints '.bicep/nested_privateEndpoint.bicep' = [for (endpoint, index) in privateEndpoints: if (!empty(privateEndpoints)) {
-  name: '${uniqueString(deployment().name, location)}-AutoAccount-PrivateEndpoint-${index}'
+module automationAccount_privateEndpoints '../../Microsoft.Network/privateEndpoints/deploy.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
+  name: '${uniqueString(deployment().name, location)}-AutomationAccount-PrivateEndpoint-${index}'
   params: {
-    privateEndpointResourceId: automationAccount.id
-    privateEndpointVnetLocation: !empty(privateEndpoints) ? reference(split(endpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location : 'dummy'
-    privateEndpointObj: endpoint
-    tags: tags
+    groupIds: [
+      privateEndpoint.service
+    ]
+    name: contains(privateEndpoint, 'name') ? privateEndpoint.name : 'pe-${last(split(automationAccount.id, '/'))}-${privateEndpoint.service}-${index}'
+    serviceResourceId: automationAccount.id
+    subnetResourceId: privateEndpoint.subnetResourceId
+    enableDefaultTelemetry: enableDefaultTelemetry
+    location: reference(split(privateEndpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location
+    lock: contains(privateEndpoint, 'lock') ? privateEndpoint.lock : 'NotSpecified'
+    privateDnsZoneGroups: contains(privateEndpoint, 'privateDnsZoneGroups') ? privateEndpoint.privateDnsZoneGroups : []
+    roleAssignments: contains(privateEndpoint, 'roleAssignments') ? privateEndpoint.roleAssignments : []
+    tags: contains(privateEndpoint, 'tags') ? privateEndpoint.tags : {}
+    manualPrivateLinkServiceConnections: contains(privateEndpoint, 'manualPrivateLinkServiceConnections') ? privateEndpoint.manualPrivateLinkServiceConnections : []
+    customDnsConfigs: contains(privateEndpoint, 'customDnsConfigs') ? privateEndpoint.customDnsConfigs : []
   }
 }]
 

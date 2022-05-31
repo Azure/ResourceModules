@@ -357,6 +357,8 @@ var lbProfile = {
   effectiveOutboundIPs: []
 }
 
+var enableChildTelemetry = false
+
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
   properties: {
@@ -527,7 +529,7 @@ module managedCluster_agentPools 'agentPools/deploy.bicep' = [for (agentPool, in
     vmSize: contains(agentPool, 'vmSize') ? agentPool.vmSize : 'Standard_D2s_v3'
     vnetSubnetId: contains(agentPool, 'vnetSubnetId') ? agentPool.vnetSubnetId : ''
     workloadRuntime: contains(agentPool, 'workloadRuntime') ? agentPool.workloadRuntime : ''
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableChildTelemetry
   }
 }]
 

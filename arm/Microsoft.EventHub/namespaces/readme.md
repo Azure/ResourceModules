@@ -306,7 +306,6 @@ userAssignedIdentities: {
 module namespaces './Microsoft.EventHub/namespaces/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-namespaces'
   params: {
-  
   }
 ```
 
@@ -406,6 +405,14 @@ module namespaces './Microsoft.EventHub/namespaces/deploy.bicep' = {
                             "userMetadata": "customMetadata"
                         }
                     ]
+                }
+            ]
+        },
+        "privateEndpoints": {
+            "value": [
+                {
+                    "subnetResourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints",
+                    "service": "namespace"
                 }
             ]
         },
@@ -542,6 +549,12 @@ module namespaces './Microsoft.EventHub/namespaces/deploy.bicep' = {
             userMetadata: 'customMetadata'
           }
         ]
+      }
+    ]
+    privateEndpoints: [
+      {
+        subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints'
+        service: 'namespace'
       }
     ]
     diagnosticLogsRetentionInDays: 7

@@ -374,7 +374,6 @@ userAssignedIdentities: {
         "keyVersion" : {
                     "value" : "9917c14be51d4d93b37218de7d326f60"
         },
-        
         "userAssignedIdentities": {
             "value": {
                 "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001": {}
@@ -531,7 +530,7 @@ module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bice
                 }
             ]
         },
-        "linkedWorkspaceId": {
+        "linkedWorkspaceResourceId": {
             "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-aut-001"
         },
         "gallerySolutions": {
@@ -720,7 +719,7 @@ module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bice
         description: 'TestEncryptedDescription'
       }
     ]
-    linkedWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-aut-001'
+    linkedWorkspaceResourceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-aut-001'
     gallerySolutions: [
       'Updates'
     ]
