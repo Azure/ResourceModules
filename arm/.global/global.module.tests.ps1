@@ -189,20 +189,15 @@ Describe 'Readme tests' -Tag Readme {
                 $readMeContent
             )
 
-            $ReadmeHTML = ($readMeContent | ConvertFrom-Markdown -ErrorAction SilentlyContinue).Html
+            $expectedHeadersInOrder = @('Navigation', 'Resource types', 'Parameters', 'Outputs', 'Deployment examples')
+            $actualHeadersInOrder = $readMeContent | Where-Object { $_ -like '#*' } | ForEach-Object { ($_ -replace '#', '').TrimStart() }
 
-            $Heading2Order = @('Resource Types', 'parameters', 'Outputs')
-            $Headings2List = @()
-            foreach ($H in $ReadmeHTML) {
-                if ($H.Contains('<h2')) {
-                    $StartingIndex = $H.IndexOf('>') + 1
-                    $EndIndex = $H.LastIndexof('<')
-                    $headings2List += ($H.Substring($StartingIndex, $EndIndex - $StartingIndex))
-                }
-            }
+            $filteredActuals = $actualHeadersInOrder | Where-Object { $expectedHeadersInOrder -contains $_ }
 
-            $differentiatingItems = $Heading2Order | Where-Object { $Headings2List -notcontains $_ }
-            $differentiatingItems.Count | Should -Be 0 -Because ('list of heading titles missing in the ReadMe file [{0}] should be empty' -f ($differentiatingItems -join ','))
+            $missingHeaders = $expectedHeadersInOrder | Where-Object { $actualHeadersInOrder -notcontains $_ }
+            $missingHeaders.Count | Should -Be 0 -Because ('the list of missing headers [{0}] should be empty' -f ($missingHeaders -join ','))
+
+            $filteredActuals | Should -Be $expectedHeadersInOrder -Because 'the headers should exist in the expected order'
         }
 
         It '[<moduleFolderName>] Resources section should contain all resources from the template file' -TestCases $readmeFolderTestCases {
@@ -362,19 +357,19 @@ Describe 'Readme tests' -Tag Readme {
             # Get ReadMe data
             $tableStartIndex, $tableEndIndex = Get-TableStartAndEndIndex -ReadMeContent $readMeContent -MarkdownSectionIdentifier '*# Outputs'
 
-            $ReadMeoutputsList = [System.Collections.ArrayList]@()
+            $ReadMeOutputsList = [System.Collections.ArrayList]@()
             for ($index = $tableStartIndex + 2; $index -lt $tableEndIndex; $index++) {
-                $ReadMeoutputsList += $readMeContent[$index].Split('|')[1].Replace('`', '').Trim()
+                $ReadMeOutputsList += $readMeContent[$index].Split('|')[1].Replace('`', '').Trim()
             }
 
             # Template data
             $expectedOutputs = $templateContent.outputs.Keys
 
             # Test
-            $differentiatingItems = $expectedOutputs | Where-Object { $ReadMeoutputsList -notcontains $_ }
+            $differentiatingItems = $expectedOutputs | Where-Object { $ReadMeOutputsList -notcontains $_ }
             $differentiatingItems.Count | Should -Be 0 -Because ('list of template outputs missing in the ReadMe file [{0}] should be empty' -f ($differentiatingItems -join ','))
 
-            $differentiatingItems = $ReadMeoutputsList | Where-Object { $expectedOutputs -notcontains $_ }
+            $differentiatingItems = $ReadMeOutputsList | Where-Object { $expectedOutputs -notcontains $_ }
             $differentiatingItems.Count | Should -Be 0 -Because ('list of excess template outputs defined in the ReadMe file [{0}] should be empty' -f ($differentiatingItems -join ','))
         }
 
