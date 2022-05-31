@@ -24,6 +24,25 @@ function Get-MarkdownSectionStartIndex {
     return $sectionStartIndex
 }
 
+function Get-MarkdownSectionEndIndex {
+
+    [CmdletBinding()]
+    param (
+        [Parameter(Mandatory = $true)]
+        [array] $ReadMeContent,
+
+        [Parameter(Mandatory = $true)]
+        [int] $SectionStartIndex
+    )
+
+    $sectionEndIndex = $sectionStartIndex + 1
+    while ($readMeContent[$sectionEndIndex] -notlike '*# *' -and -not ($sectionEndIndex -ge $ReadMeContent.count)) {
+        $sectionEndIndex++
+    }
+
+    return $sectionEndIndex
+}
+
 function Get-TableStartAndEndIndex {
 
     [CmdletBinding()]

@@ -253,34 +253,39 @@ Describe 'Readme tests' -Tag Readme {
             $differentiatingItems.Count | Should -Be 0 -Because ("list of resources in the ReadMe's list [{0}] not in the template file should be empty" -f ($differentiatingItems -join ','))
         }
 
-        It '[<moduleFolderName>] parameters section should contain a table with these column names in order: Parameter Name, Type, Default Value, Possible values, Description' -TestCases $readmeFolderTestCases {
-            param(
-                $moduleFolderName,
-                $readMeContent
-            )
+        # TODO: Implement parameter table test that requires a table with specific columns based on the available information (like in the genration)
+        #
+        # It '[<moduleFolderName>] parameters section should contain a table with these column names in order: Parameter Name, Type, Default Value, Possible values, Description' -TestCases $readmeFolderTestCases {
+        #     param(
+        #         $moduleFolderName,
+        #         $readMeContent
+        #     )
 
-            $ReadmeHTML = ($readMeContent | ConvertFrom-Markdown -ErrorAction SilentlyContinue).Html
-            $ParameterHeadingOrder = @('Parameter Name', 'Type', 'Default Value', 'Allowed Values', 'Description')
-            $ComparisonFlag = 0
-            $Headings = @(@())
-            foreach ($H in $ReadmeHTML) {
-                if ($H.Contains('<h')) {
-                    $StartingIndex = $H.IndexOf('>') + 1
-                    $EndIndex = $H.LastIndexof('<')
-                    $Headings += , (@($H.Substring($StartingIndex, $EndIndex - $StartingIndex), $ReadmeHTML.IndexOf($H)))
-                }
-            }
-            $HeadingIndex = $Headings | Where-Object { $_ -eq 'parameters' }
-            if ($HeadingIndex -eq $null) {
-                Write-Verbose "[parameters section should contain a table with these column names in order: Parameter Name, Type, Default Value, Possible values, Description] Error At ($moduleFolderName)" -Verbose
-                $true | Should -Be $false
-            }
-            $ParameterHeadingsList = $ReadmeHTML[$HeadingIndex[1] + 2].Replace('<p>|', '').Replace('|</p>', '').Split('|').Trim()
-            if (Compare-Object -ReferenceObject $ParameterHeadingOrder -DifferenceObject $ParameterHeadingsList -SyncWindow 0) {
-                $ComparisonFlag = $ComparisonFlag + 1
-            }
-            ($ComparisonFlag -gt 2) | Should -Be $false
-        }
+        #     $tableStartIndex, $tableEndIndex = Get-TableStartAndEndIndex -ReadMeContent $readMeContent -MarkdownSectionIdentifier '*# Parameters'
+        #     $parametersTableHeader = $readMeContent[$tableStartIndex].Split('|').Trim() | Where-Object { -not [String]::IsNullOrEmpty($_) }
+
+        #     $ReadmeHTML = ($readMeContent | ConvertFrom-Markdown -ErrorAction SilentlyContinue).Html
+        #     $ParameterHeadingOrder = @('Parameter Name', 'Type', 'Default Value', 'Allowed Values', 'Description')
+        #     $ComparisonFlag = 0
+        #     $Headings = @(@())
+        #     foreach ($H in $ReadmeHTML) {
+        #         if ($H.Contains('<h')) {
+        #             $StartingIndex = $H.IndexOf('>') + 1
+        #             $EndIndex = $H.LastIndexof('<')
+        #             $Headings += , (@($H.Substring($StartingIndex, $EndIndex - $StartingIndex), $ReadmeHTML.IndexOf($H)))
+        #         }
+        #     }
+        #     $HeadingIndex = $Headings | Where-Object { $_ -eq 'parameters' }
+        #     if ($HeadingIndex -eq $null) {
+        #         Write-Verbose "[parameters section should contain a table with these column names in order: Parameter Name, Type, Default Value, Possible values, Description] Error At ($moduleFolderName)" -Verbose
+        #         $true | Should -Be $false
+        #     }
+        #     $ParameterHeadingsList = $ReadmeHTML[$HeadingIndex[1] + 2].Replace('<p>|', '').Replace('|</p>', '').Split('|').Trim()
+        #     if (Compare-Object -ReferenceObject $ParameterHeadingOrder -DifferenceObject $ParameterHeadingsList -SyncWindow 0) {
+        #         $ComparisonFlag = $ComparisonFlag + 1
+        #     }
+        #     ($ComparisonFlag -gt 2) | Should -Be $false
+        # }
 
         It '[<moduleFolderName>] parameters section should contain all parameters from the template file' -TestCases $readmeFolderTestCases {
             param(
@@ -294,26 +299,17 @@ Describe 'Readme tests' -Tag Readme {
 
             # Get ReadMe data
             ## Get section start index
-            $parametersSectionStartIndex = 0
-            while ($readMeContent[$parametersSectionStartIndex] -notlike '*# Parameters' -and -not ($parametersSectionStartIndex -ge $readMeContent.count)) {
-                $parametersSectionStartIndex++
-            }
-            Write-Verbose ("Start row of the parameters section in the readme: $parametersSectionStartIndex")
+            $sectionStartIndex = Get-MarkdownSectionStartIndex -ReadMeContent $readMeContent -MarkdownSectionIdentifier '*# Parameters'
 
-            if ($parametersSectionStartIndex -ge $readMeContent.count) {
+            if ($sectionStartIndex -ge $readMeContent.count) {
                 throw 'Parameters section is missing in the Readme. Please add and re-run the tests.'
             }
 
-            ## Get section end index
-            $parametersSectionEndIndex = $parametersSectionStartIndex + 1
-            while ($readMeContent[$parametersSectionEndIndex] -notlike '*# *' -and -not ($parametersSectionEndIndex -ge $readMeContent.count)) {
-                $parametersSectionEndIndex++
-            }
-            Write-Verbose ("End row of the parameters section in the readme: $parametersSectionEndIndex")
+            $parametersSectionEndIndex = Get-MarkdownSectionEndIndex -ReadMeContent $readMeContent -SectionStartIndex $sectionStartIndex
 
             ## Iterate over all parameter tables
             $parametersList = [System.Collections.ArrayList]@()
-            $sectionIndex = $parametersSectionStartIndex
+            $sectionIndex = $sectionStartIndex
             while ($sectionIndex -lt $parametersSectionEndIndex) {
                 ### Get table start index
                 $parametersTableStartIndex = $sectionIndex
