@@ -2,13 +2,13 @@
 param name string
 
 @description('Required. Resource ID of the subnet where the endpoint needs to be created.')
-param targetSubnetResourceId string
+param subnetResourceId string
 
 @description('Required. Resource ID of the resource that needs to be connected to the network.')
 param serviceResourceId string
 
 @description('Required. Subtype(s) of the connection to be created. The allowed values depend on the type serviceResourceId refers to.')
-param groupId array
+param groupIds array
 
 @description('Optional. Array of Private DNS zone groups configuration on the private endpoint.')
 param privateDnsZoneGroups array = []
@@ -29,6 +29,12 @@ param roleAssignments array = []
 
 @description('Optional. Tags to be applied on all resources/resource groups in this deployment.')
 param tags object = {}
+
+@description('Optional. Custom DNS configurations.')
+param customDnsConfigs array = []
+
+@description('Optional. Manual PrivateLink Service Connections.')
+param manualPrivateLinkServiceConnections array = []
 
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
@@ -57,15 +63,15 @@ resource privateEndpoint 'Microsoft.Network/privateEndpoints@2021-05-01' = {
         name: name
         properties: {
           privateLinkServiceId: serviceResourceId
-          groupIds: groupId
+          groupIds: groupIds
         }
       }
     ]
-    manualPrivateLinkServiceConnections: []
+    manualPrivateLinkServiceConnections: manualPrivateLinkServiceConnections
     subnet: {
-      id: targetSubnetResourceId
+      id: subnetResourceId
     }
-    customDnsConfigs: []
+    customDnsConfigs: customDnsConfigs
   }
 }
 
