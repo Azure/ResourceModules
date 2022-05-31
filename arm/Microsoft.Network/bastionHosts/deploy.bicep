@@ -137,7 +137,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-module publicIPAddress '.bicep/nested_publicIPAddress.bicep' = if (empty(azureBastionSubnetPublicIpId) && isCreateDefaultPublicIP) {
+module publicIPAddress '../publicIPAddresses/deploy.bicep' = if (empty(azureBastionSubnetPublicIpId) && isCreateDefaultPublicIP) {
   name: '${uniqueString(deployment().name, location)}-Bastion-PIP'
   params: {
     name: contains(publicIPAddressObject, 'name') ? publicIPAddressObject.name : '${name}-pip'
