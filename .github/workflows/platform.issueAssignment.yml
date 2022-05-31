@@ -1,5 +1,5 @@
 # Add new issues to the corrrect project
-name: Assign Issues to Projects
+name: '.Platform: Assign Issues to Projects'
 
 on:
   # Triggers the workflow on push or pull request events but only for the main branch
