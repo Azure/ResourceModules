@@ -23,7 +23,7 @@ jobs:
         if: |
           contains(github.event.issue.labels.*.name, 'bug')
         with:
-          project: https://github.com/MrMCake/ResourceModules/projects/1
+          project: https://github.com/Azure/ResourceModules/projects/4
           column_name: 'Needs triage'
       - name: Add Issues to Backlog Board
         uses: srggrs/assign-one-project-github-action@1.2.1
@@ -31,5 +31,5 @@ jobs:
           contains(github.event.issue.labels.*.name, 'needs triage') &&
           !contains(github.event.issue.labels.*.name, 'bug')
         with:
-          project: https://github.com/MrMCake/ResourceModules/projects/2
+          project: https://github.com/Azure/ResourceModules/projects/5
           column_name: 'Needs triage'
