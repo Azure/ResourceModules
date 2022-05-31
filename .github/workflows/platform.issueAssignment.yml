@@ -28,8 +28,7 @@ jobs:
       - name: Add Issues to Backlog Board
         uses: srggrs/assign-one-project-github-action@1.2.1
         if: |
-          contains(github.event.issue.labels.*.name, 'needs triage') &&
-          !contains(github.event.issue.labels.*.name, 'bug')
+          contains(github.event.issue.labels.*.name, 'enhancement')
         with:
           project: https://github.com/MrMCake/ResourceModules/projects/2
           column_name: 'Needs triage'
