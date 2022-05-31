@@ -20,7 +20,8 @@ jobs:
     steps:
       - name: Add Bug to Bug Board
         uses: srggrs/assign-one-project-github-action@1.2.1
-        if: contains(github.event.issue.labels.*.name, 'bug')
+        if: |
+          contains(github.event.issue.labels.*.name, 'bug')
         with:
           project: https://github.com/Azure/ResourceModules/projects/4
           column_name: 'Needs triage'
