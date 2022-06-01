@@ -159,6 +159,9 @@
                     "service": "namespace"
                 }
             ]
+        },
+        "allowTrustedServices": {
+            "value": false
         }
     }
 }

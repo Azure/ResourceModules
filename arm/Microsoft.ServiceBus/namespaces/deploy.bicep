@@ -77,6 +77,9 @@ param roleAssignments array = []
 @description('Optional. Configuration Details for private endpoints.')
 param privateEndpoints array = []
 
+@description('Optional. Allow trusted Azure services to access a network restricted Service Bus.')
+param allowTrustedServices bool = true
+
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
@@ -143,10 +146,10 @@ var identity = identityType != 'None' ? {
 
 var networkAcl = !empty(privateEndpoints) ? {
   publicNetworkAccess: 'Enabled'
-  allowTrustedServices: true
+  allowTrustedServices: allowTrustedServices
 } : {
   publicNetworkAccess: 'Disabled'
-  allowTrustedServices: false
+  allowTrustedServices: allowTrustedServices
 }
 
 var enableChildTelemetry = false
