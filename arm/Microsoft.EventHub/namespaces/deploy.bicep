@@ -297,7 +297,7 @@ module eventHubNamespace_privateEndpoints '../../Microsoft.Network/privateEndpoi
   }
 }]
 
-module eventHubNamespace_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+module eventHubNamespace_rbac '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-EvhbNamespace-Rbac-${index}'
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''

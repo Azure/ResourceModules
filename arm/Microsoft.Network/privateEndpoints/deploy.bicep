@@ -93,7 +93,7 @@ resource privateEndpoint_lock 'Microsoft.Authorization/locks@2017-04-01' = if (l
   scope: privateEndpoint
 }
 
-module privateEndpoint_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+module privateEndpoint_rbac '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-PrivateEndpoint-Rbac-${index}'
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''

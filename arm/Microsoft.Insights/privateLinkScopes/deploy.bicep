@@ -88,7 +88,7 @@ module privateLinkScope_privateEndpoints '../../Microsoft.Network/privateEndpoin
   }
 }]
 
-module privateLinkScope_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+module privateLinkScope_rbac '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-PvtLinkScope-Rbac-${index}'
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''

@@ -275,7 +275,7 @@ module workspace_privateEndpoints '../../Microsoft.Network/privateEndpoints/depl
   }
 }]
 
-module workspace_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+module workspace_rbac '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-MLWorkspace-Rbac-${index}'
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''

@@ -290,7 +290,7 @@ resource serviceFabricCluster_lock 'Microsoft.Authorization/locks@2017-04-01' = 
 }
 
 // Service Fabric cluster RBAC assignment
-module serviceFabricCluster_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+module serviceFabricCluster_rbac '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-ServiceFabric-Rbac-${index}'
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''

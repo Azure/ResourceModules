@@ -170,7 +170,7 @@ resource trafficManagerProfile_diagnosticSettings 'Microsoft.Insights/diagnostic
   scope: trafficManagerProfile
 }
 
-module trafficManagerProfile_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+module trafficManagerProfile_rbac '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name)}-TrafficManagerProfile-Rbac-${index}'
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''

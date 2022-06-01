@@ -86,7 +86,7 @@ resource vpnSite_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != '
   scope: vpnSite
 }
 
-module vpnSite_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+module vpnSite_rbac '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-VWan-Rbac-${index}'
   params: {
     principalIds: roleAssignment.principalIds

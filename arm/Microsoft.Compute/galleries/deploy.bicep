@@ -61,7 +61,7 @@ resource gallery_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != '
   scope: gallery
 }
 
-module gallery_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+module gallery_rbac '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-Gallery-Rbac-${index}'
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''

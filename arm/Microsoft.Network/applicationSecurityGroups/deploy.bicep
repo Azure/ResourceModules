@@ -49,7 +49,7 @@ resource applicationSecurityGroup_lock 'Microsoft.Authorization/locks@2017-04-01
   scope: applicationSecurityGroup
 }
 
-module applicationSecurityGroup_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+module applicationSecurityGroup_rbac '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-AppSecurityGroup-Rbac-${index}'
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''

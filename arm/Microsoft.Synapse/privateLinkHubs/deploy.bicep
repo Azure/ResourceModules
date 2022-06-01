@@ -53,7 +53,7 @@ resource privateLinkHub_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lo
 }
 
 // RBAC
-module privateLinkHub_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+module privateLinkHub_rbac '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${deployment().name}-rbac-${index}'
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''

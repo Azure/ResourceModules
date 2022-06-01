@@ -177,7 +177,7 @@ resource appConfiguration_diagnosticSettings 'Microsoft.Insights/diagnosticsetti
   scope: appConfiguration
 }
 
-module appConfiguration_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+module appConfiguration_rbac '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-AppConfig-Rbac-${index}'
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''

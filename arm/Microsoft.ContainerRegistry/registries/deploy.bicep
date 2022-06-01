@@ -271,7 +271,7 @@ resource registry_diagnosticSettingName 'Microsoft.Insights/diagnosticsettings@2
   scope: registry
 }
 
-module registry_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+module registry_rbac '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-ContainerRegistry-Rbac-${index}'
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''

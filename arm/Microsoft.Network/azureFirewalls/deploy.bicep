@@ -267,7 +267,7 @@ resource azureFirewall_diagnosticSettings 'Microsoft.Insights/diagnosticSettings
   scope: azureFirewall
 }
 
-module azureFirewall_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+module azureFirewall_rbac '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-AzFW-Rbac-${index}'
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
