@@ -1,7 +1,6 @@
 # ServiceBus Namespaces NetworkRuleSets `[Microsoft.ServiceBus/namespaces/networkRuleSets]`
 
 This module deploys ServiceBus Namespaces NetworkRuleSets.
-// TODO: Replace Resource and fill in description
 
 ## Navigation
 
@@ -25,7 +24,7 @@ This module deploys ServiceBus Namespaces NetworkRuleSets.
 **Conditional parameters**
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `namespaceName` | string | The name of the parent Service Bus Namespace for the Service Bus Queue. Required if the template is used in a standalone deployment. |
+| `namespaceName` | string | The name of the parent Service Bus Namespace for the Service Bus Network Rule Set. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
@@ -33,7 +32,6 @@ This module deploys ServiceBus Namespaces NetworkRuleSets.
 | `allowTrustedServices` | bool | `True` |  | Trusted Services Bypass for Premium Sku. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `publicNetworkAccess` | string | `'Disabled'` | `[Enabled, Disabled]` | Public Network Access for Premium Sku. |
-
 
 ### Parameter Usage: `<ParameterPlaceholder>`
 
