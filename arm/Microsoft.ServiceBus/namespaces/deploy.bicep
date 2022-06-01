@@ -141,7 +141,6 @@ var identity = identityType != 'None' ? {
   userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
 } : null
 
-
 var networkAcl = !empty(privateEndpoints) ? {
   publicNetworkAccess: 'Enabled'
   allowTrustedServices: true
