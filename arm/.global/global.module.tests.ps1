@@ -70,6 +70,7 @@ Describe 'File/folder tests' -Tag Modules {
         }
 
         It '[<moduleFolderName>] Module should contain a [deploy.json/deploy.bicep] file' -TestCases $moduleFolderTestCases {
+
             param( [string] $moduleFolderPath )
 
             $hasARM = (Test-Path (Join-Path -Path $moduleFolderPath 'deploy.json'))
@@ -78,16 +79,19 @@ Describe 'File/folder tests' -Tag Modules {
         }
 
         It '[<moduleFolderName>] Module should contain a [readme.md] file' -TestCases $moduleFolderTestCases {
+
             param( [string] $moduleFolderPath )
             (Test-Path (Join-Path -Path $moduleFolderPath 'readme.md')) | Should -Be $true
         }
 
         It '[<moduleFolderName>] Module should contain a [.parameters] folder' -TestCases ($moduleFolderTestCases | Where-Object { $_.isTopLevelModule }) {
+
             param( [string] $moduleFolderPath )
             Test-Path (Join-Path -Path $moduleFolderPath '.parameters') | Should -Be $true
         }
 
         It '[<moduleFolderName>] Module should contain a [version.json] file' -TestCases $moduleFolderTestCases {
+
             param( [string] $moduleFolderPath )
             (Test-Path (Join-Path -Path $moduleFolderPath 'version.json')) | Should -Be $true
         }
@@ -106,6 +110,7 @@ Describe 'File/folder tests' -Tag Modules {
         }
 
         It '[<moduleFolderName>] folder should contain one or more *parameters.json files' -TestCases $folderTestCases {
+
             param(
                 $moduleFolderName,
                 $moduleFolderPath
@@ -128,6 +133,7 @@ Describe 'File/folder tests' -Tag Modules {
         }
 
         It '[<moduleFolderName>] *parameters.json files in the .parameters folder should be valid json' -TestCases $parameterFolderFilesTestCases {
+
             param(
                 $moduleFolderName,
                 $parameterFilePath
@@ -176,6 +182,7 @@ Describe 'Readme tests' -Tag Readme {
         }
 
         It '[<moduleFolderName>] Readme.md file should not be empty' -TestCases $readmeFolderTestCases {
+
             param(
                 $moduleFolderName,
                 $readMeContent
@@ -184,6 +191,7 @@ Describe 'Readme tests' -Tag Readme {
         }
 
         It '[<moduleFolderName>] Readme.md file should contain the these titles in order: Resource Types, Parameters, Outputs' -TestCases $readmeFolderTestCases {
+
             param(
                 $moduleFolderName,
                 $readMeContent
@@ -201,10 +209,11 @@ Describe 'Readme tests' -Tag Readme {
         }
 
         It '[<moduleFolderName>] Resources section should contain all resources from the template file' -TestCases $readmeFolderTestCases {
+
             param(
-                $moduleFolderName,
-                $templateContent,
-                $readMeContent
+                [string] $moduleFolderName,
+                [hashtable] $templateContent,
+                [object[]] $readMeContent
             )
 
             # Get ReadMe data
@@ -225,10 +234,11 @@ Describe 'Readme tests' -Tag Readme {
         }
 
         It '[<moduleFolderName>] Resources section should not contain more resources as in the template file' -TestCases $readmeFolderTestCases {
+
             param(
-                $moduleFolderName,
-                $templateContent,
-                $readMeContent
+                [string] $moduleFolderName,
+                [hashtable] $templateContent,
+                [object[]] $readMeContent
             )
 
             # Get ReadMe data
@@ -248,45 +258,70 @@ Describe 'Readme tests' -Tag Readme {
             $differentiatingItems.Count | Should -Be 0 -Because ("list of resources in the ReadMe's list [{0}] not in the template file should be empty" -f ($differentiatingItems -join ','))
         }
 
-        # TODO: Implement parameter table test that requires a table with specific columns based on the available information (like in the genration)
-        #
-        # It '[<moduleFolderName>] parameters section should contain a table with these column names in order: Parameter Name, Type, Default Value, Possible values, Description' -TestCases $readmeFolderTestCases {
-        #     param(
-        #         $moduleFolderName,
-        #         $readMeContent
-        #     )
+        It '[<moduleFolderName>] should contain a parameter table for each parameter catagory in order: Required, Conditional, Optional, Generated' -TestCases $readmeFolderTestCases {
 
-        #     $tableStartIndex, $tableEndIndex = Get-TableStartAndEndIndex -ReadMeContent $readMeContent -MarkdownSectionIdentifier '*# Parameters'
-        #     $parametersTableHeader = $readMeContent[$tableStartIndex].Split('|').Trim() | Where-Object { -not [String]::IsNullOrEmpty($_) }
+            param(
+                [string] $moduleFolderName,
+                [hashtable] $templateContent,
+                [object[]] $readMeContent
+            )
 
-        #     $ReadmeHTML = ($readMeContent | ConvertFrom-Markdown -ErrorAction SilentlyContinue).Html
-        #     $ParameterHeadingOrder = @('Parameter Name', 'Type', 'Default Value', 'Allowed Values', 'Description')
-        #     $ComparisonFlag = 0
-        #     $Headings = @(@())
-        #     foreach ($H in $ReadmeHTML) {
-        #         if ($H.Contains('<h')) {
-        #             $StartingIndex = $H.IndexOf('>') + 1
-        #             $EndIndex = $H.LastIndexof('<')
-        #             $Headings += , (@($H.Substring($StartingIndex, $EndIndex - $StartingIndex), $ReadmeHTML.IndexOf($H)))
-        #         }
-        #     }
-        #     $HeadingIndex = $Headings | Where-Object { $_ -eq 'parameters' }
-        #     if ($HeadingIndex -eq $null) {
-        #         Write-Verbose "[parameters section should contain a table with these column names in order: Parameter Name, Type, Default Value, Possible values, Description] Error At ($moduleFolderName)" -Verbose
-        #         $true | Should -Be $false
-        #     }
-        #     $ParameterHeadingsList = $ReadmeHTML[$HeadingIndex[1] + 2].Replace('<p>|', '').Replace('|</p>', '').Split('|').Trim()
-        #     if (Compare-Object -ReferenceObject $ParameterHeadingOrder -DifferenceObject $ParameterHeadingsList -SyncWindow 0) {
-        #         $ComparisonFlag = $ComparisonFlag + 1
-        #     }
-        #     ($ComparisonFlag -gt 2) | Should -Be $false
-        # }
+            $expectColumnsInOrder = @('Required', 'Conditional', 'Optional', 'Generated')
+
+            ## Get all descriptions
+            $descriptions = $templateContent.parameters.Values.metadata.description
+
+            ## Get the module parameter categories
+            $expectedParamCategories = $descriptions | ForEach-Object { $_.Split('.')[0] } | Select-Object -Unique # Get categories in template
+            $expectedParamCategoriesInOrder = $expectColumnsInOrder | Where-Object { $_ -in $expectedParamCategories } # add required ones in order
+            $expectedParamCategoriesInOrder += $expectedParamCategories | Where-Object { $_ -notin $expectColumnsInOrder } # add non-required ones after
+
+            $actualParamCategories = $readMeContent | Select-String -Pattern '^\*\*(.+) parameters\*\*$' -AllMatches | ForEach-Object { $_.Matches.Groups[1].Value } # get actual in readme
+
+            $actualParamCategories | Should -Be $expectedParamCategoriesInOrder
+        }
+
+        It '[<moduleFolderName>] parameter tables should contain only columns if they contain data, and if, in order: Parameter Name, Type, Default Value, Allowed Values, Description' -TestCases $readmeFolderTestCases {
+
+            param(
+                [string] $moduleFolderName,
+                [hashtable] $templateContent,
+                [object[]] $readMeContent
+            )
+
+            ## Get all descriptions
+            $descriptions = $templateContent.parameters.Values.metadata.description
+
+            ## Get the module parameter categories
+            $paramCategories = $descriptions | ForEach-Object { $_.Split('.')[0] } | Select-Object -Unique
+
+            foreach ($paramCategory in $paramCategories) {
+
+                # Filter to relevant items
+                [array] $categoryParameters = $templateContent.parameters.Values | Where-Object { $_.metadata.description -like "$paramCategory. *" } | Sort-Object -Property 'Name' -Culture 'en-US'
+
+                # Check properties for later reference
+                $shouldHaveDefault = $categoryParameters.defaultValue.count -gt 0
+                $shouldHaveAllowed = $categoryParameters.allowedValues.count -gt 0
+
+                $expectedColumnsInOrder = @('Parameter Name', 'Type')
+                if ($shouldHaveDefault) { $expectedColumnsInOrder += @('Default Value') }
+                if ($shouldHaveAllowed) { $expectedColumnsInOrder += @('Allowed Values') }
+                $expectedColumnsInOrder += @('Description')
+
+                $readMeCategoryIndex = $readMeContent | Select-String -Pattern "^\*\*$paramCategory parameters\*\*$" | ForEach-Object { $_.LineNumber }
+                $readmeCategoryColumns = ($readMeContent[$readMeCategoryIndex] -split '\|') | ForEach-Object { $_.Trim() } | Where-Object { -not [String]::IsNullOrEmpty($_) }
+
+                $readmeCategoryColumns | Should -Be $expectedColumnsInOrder
+            }
+        }
 
         It '[<moduleFolderName>] parameters section should contain all parameters from the template file' -TestCases $readmeFolderTestCases {
+
             param(
-                $moduleFolderName,
-                $templateContent,
-                $readMeContent
+                [string] $moduleFolderName,
+                [hashtable] $templateContent,
+                [object[]] $readMeContent
             )
 
             # Get Template data
@@ -332,6 +367,7 @@ Describe 'Readme tests' -Tag Readme {
         }
 
         It '[<moduleFolderName>] Outputs section should contain a table with these column names in order: Output Name, Type' -TestCases $readmeFolderTestCases {
+
             param(
                 $moduleFolderName,
                 $readMeContent
@@ -348,10 +384,11 @@ Describe 'Readme tests' -Tag Readme {
         }
 
         It '[<moduleFolderName>] Output section should contain all outputs defined in the template file' -TestCases $readmeFolderTestCases {
+
             param(
-                $moduleFolderName,
-                $templateContent,
-                $readMeContent
+                [string] $moduleFolderName,
+                [hashtable] $templateContent,
+                [object[]] $readMeContent
             )
 
             # Get ReadMe data
@@ -374,6 +411,7 @@ Describe 'Readme tests' -Tag Readme {
         }
 
         It '[<moduleFolderName>] Set-ModuleReadMe script should not apply any updates' -TestCases $readmeFolderTestCases {
+
             param(
                 [string] $moduleFolderName,
                 [string] $templateFilePath,
@@ -458,6 +496,7 @@ Describe 'Deployment template tests' -Tag Template {
         }
 
         It '[<moduleFolderName>] the template file should not be empty' -TestCases $deploymentFolderTestCases {
+
             param(
                 $moduleFolderName,
                 $templateContent
@@ -491,6 +530,7 @@ Describe 'Deployment template tests' -Tag Template {
         }
 
         It '[<moduleFolderName>] Template schema should use HTTPS reference' -TestCases $deploymentFolderTestCases {
+
             param(
                 $moduleFolderName,
                 $templateContent
@@ -525,6 +565,7 @@ Describe 'Deployment template tests' -Tag Template {
         }
 
         It '[<moduleFolderName>] the template file should contain required elements: schema, contentVersion, resources' -TestCases $deploymentFolderTestCases {
+
             param(
                 $moduleFolderName,
                 $templateContent
@@ -535,6 +576,7 @@ Describe 'Deployment template tests' -Tag Template {
         }
 
         It '[<moduleFolderName>] If delete lock is implemented, the template should have a lock parameter with the default value of [NotSpecified]' -TestCases $deploymentFolderTestCases {
+
             param(
                 $moduleFolderName,
                 $templateContent
@@ -546,6 +588,7 @@ Describe 'Deployment template tests' -Tag Template {
         }
 
         It '[<moduleFolderName>] Parameter names should be camel-cased (no dashes or underscores and must start with lower-case letter)' -TestCases $deploymentFolderTestCases {
+
             param(
                 $moduleFolderName,
                 $templateContent
@@ -569,6 +612,7 @@ Describe 'Deployment template tests' -Tag Template {
         }
 
         It '[<moduleFolderName>] Variable names should be camel-cased (no dashes or underscores and must start with lower-case letter)' -TestCases $deploymentFolderTestCases {
+
             param(
                 $moduleFolderName,
                 $templateContent
@@ -593,6 +637,7 @@ Describe 'Deployment template tests' -Tag Template {
         }
 
         It '[<moduleFolderName>] Output names should be camel-cased (no dashes or underscores and must start with lower-case letter)' -TestCases $deploymentFolderTestCases {
+
             param(
                 $moduleFolderName,
                 $templateContent
@@ -611,6 +656,7 @@ Describe 'Deployment template tests' -Tag Template {
         }
 
         It '[<moduleFolderName>] CUA ID deployment should be present in the template' -TestCases $deploymentFolderTestCases {
+
             param(
                 $moduleFolderName,
                 $templateContent
@@ -628,6 +674,7 @@ Describe 'Deployment template tests' -Tag Template {
         }
 
         It "[<moduleFolderName>] The Location should be defined as a parameter, with the default value of 'resourceGroup().Location' or global for ResourceGroup deployment scope" -TestCases $deploymentFolderTestCases {
+
             param(
                 $moduleFolderName,
                 $templateContent
@@ -688,6 +735,7 @@ Describe 'Deployment template tests' -Tag Template {
         }
 
         It '[<moduleFolderName>] Resource name output should exist' -TestCases $deploymentFolderTestCases {
+
             param(
                 $moduleFolderName,
                 $templateContent
@@ -698,6 +746,7 @@ Describe 'Deployment template tests' -Tag Template {
         }
 
         It '[<moduleFolderName>] Resource ID output should exist' -TestCases $deploymentFolderTestCases {
+
             param(
                 $moduleFolderName,
                 $templateContent
@@ -708,6 +757,7 @@ Describe 'Deployment template tests' -Tag Template {
         }
 
         It "[<moduleFolderName>] parameters' description should start with a one word category starting with a capital letter, followed by a dot, a space and the actual description text ending with a dot." -TestCases $deploymentFolderTestCases {
+
             param(
                 $moduleFolderName,
                 $templateContent
@@ -730,6 +780,7 @@ Describe 'Deployment template tests' -Tag Template {
         }
 
         It "[<moduleFolderName>] Conditional parameters' description should contain 'Required if' followed by the condition making the parameter required." -TestCases $deploymentFolderTestCases {
+
             param(
                 $moduleFolderName,
                 $templateContent
@@ -756,6 +807,7 @@ Describe 'Deployment template tests' -Tag Template {
         }
 
         It "[<moduleFolderName>] outputs' description should start with a capital letter and contain text ending with a dot." -TestCases $deploymentFolderTestCases {
+
             param(
                 $moduleFolderName,
                 $templateContent
