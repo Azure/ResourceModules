@@ -2,14 +2,14 @@ This section provides an overview of the principles the publishing is built upon
 
 - [Publishing overview](#publishing-overview)
 - [How it works](#how-it-works)
-    - [Example scenario](#example-scenario)
-    - [Output example](#output-example)
+  - [Example scenario](#example-scenario)
+  - [Output example](#output-example)
 
 
 <img src="./media/CIEnvironment/publishingStep.png" alt="Publishing Step" height="500">
 
 # Publishing overview
-The publishing phase concludes each module's pipeline. If all previous tests succeed (i.e. no phase failed) and the pipeline is executed in the `main` or `master` branch, a new module version is published to all configured target locations. Currently we support the following target locations:
+The publishing phase concludes each module's pipeline. If all previous tests succeed (i.e. no phase failed) and the pipeline is run in the `main` or `master` branch, a new module version is published to all configured target locations. Currently we support the following target locations:
 
 - _[Template specs](https://docs.microsoft.com/en-us/azure/azure-resource-manager/templates/template-specs?tabs=azure-powershell)_
 - _[Private Bicep registry](https://docs.microsoft.com/en-gb/azure/azure-resource-manager/bicep/private-module-registry)_

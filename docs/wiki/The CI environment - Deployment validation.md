@@ -1,12 +1,12 @@
 This section provides an overview of the principles the deployment validation is built upon, how it is set up, and how you can interact with it.
 
 - [Deployment validation steps](#deployment-validation-steps)
-    - [Template validation](#template-validation)
-    - [Azure deployment validation](#azure-deployment-validation)
-        - [Output example](#output-example)
-    - [Resource removal](#removal)
-        - [How it works](#how-it-works)
-        - [Create a specialized removal procedure](#create-a-specialized-removal-procedure)
+- [Template validation](#template-validation)
+- [Azure deployment validation](#azure-deployment-validation)
+    - [Output example](#output-example)
+  - [Resource removal](#resource-removal)
+    - [How it works](#how-it-works)
+    - [Create a specialized removal procedure](#create-a-specialized-removal-procedure)
 - [Verify the deployment validation of your module locally](#verify-the-deployment-validation-of-your-module-locally)
 
 <img src="./media/CIEnvironment/deploymentValidationStep.png" alt="Deployment Validation Step" height="500">
@@ -21,9 +21,9 @@ The deployment validation phase can be divided into three steps, running in sequ
 
 # Template validation
 
-The template validation step executes a dry-run with each parameter file in the module's `'.parameters'` folder
+The template validation step performs a dry-run with each parameter file in the module's `'.parameters'` folder
 
-In particular, the step executes a `Test-AzDeployment` cmdlet (_the command may vary based on the template schema_) for each provided module parameter file to verify if the template would be able to be deployed using them.
+In particular, the step runs a `Test-AzDeployment` cmdlet (_the command may vary based on the template schema_) for each provided module parameter file to verify if the template would be able to be deployed using them.
 
 The intention of this test is to **fail fast**, before getting to the later deployment step. The template validation could fail either because the template is invalid, or because any of the parameter files is configured incorrectly.
 
@@ -57,9 +57,9 @@ The removal process will remove all resources created by the deployment. The lis
 1. Recursively fetching the list of resource IDs created in the deployment (identified via the used deployment name).
 1. Ordering the list based on resource IDs segment count (ensures child resources are removed first. E.g. `storageAccount/blobServices` comes before `storageAccount` as it has one more segments delimited by `/`).
 1. Filtering out resources used as dependencies for different modules from the list (e.g. the commonly used Log Analytics workspace).
-1. Moving specific resource types to the top of the list (if a certain order is required). For example `vWAN` requires its `Virtual Hubs` to be removed first, even though they are no child-resources.
+1. Moving specific resource types to the top of the list (if a certain order is required). For example, `vWAN` requires its `Virtual Hubs` to be removed first, even though they are no child-resources.
 
-After a resource is removed (this happens after each resource in the list), the script will execute, if defined, a **post removal operation**. This can be used for those resource types that requires a post-processing, like purging a soft-deleted key vault.
+After a resource is removed (this happens after each resource in the list), the script will run, if defined, a **post removal operation**. This can be used for those resource types that requires a post-processing, like purging a soft-deleted key vault.
 
 The procedure is initiated post-deployment by the script `/utilities/pipelines/resourceRemoval/Initialize-DeploymentRemoval.ps1` in the pipeline templates:
 - (Azure DevOps) `/.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml`

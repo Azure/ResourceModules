@@ -17,7 +17,7 @@ You can find the script under `/utilities/tools/Set-ReadMeModuleTable.ps1`
 # How it works
 
 1. The script loads the current content of the given readMe file (the one provided via the parameter `FilePath`)
-1. It then generates a new table based on an either specified or default set of intended columns (for example a `name` column, and or `status` column)
+1. It then generates a new table based on an either specified or default set of intended columns (for example, a `name` column, and or `status` column)
 1. It replaces the original content in section `Available Resource Modules` with the new table
 1. If not invoked with a `-WhatIf` the script will eventually overwrite the original file with the new content
 

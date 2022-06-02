@@ -21,7 +21,7 @@ How you proceed from here depends on the scenario:
 
 - If you just want to contribute to this project, but don't know yet where and how, feel free to navigate the the 'Projects' tab on the repository, check what items are currently still in the 'to-do' swim lane and pick one that speaks to you. In this case you should assign the item to yourself / or reach out to discuss its content & priority.
 
-   <img src="./media/projectsTab.jpg" alt="Projects Tab" height="178" width="414">
+   <img src="./media/ContributionGuide/projectsTab.jpg" alt="Projects Tab" height="178" width="414">
 
   > Note: For starters we suggest to search for issues labelled with `good first issue`.
 
@@ -43,7 +43,7 @@ How you proceed from here depends on the scenario:
 
 How you proceed from here depends on the scenario:
 
-- In case you want to contribute to the CARML Wiki, your updates need to happen through the main repo under the [docs/wiki](https://github.com/Azure/ResourceModules/tree/main/docs/wiki) folder. A dedicated pipeline included in the repository will perform a sync to the CARML Wiki once the docs contribution is merged.
+- In case you want to contribute to the CARML wiki, your updates need to happen through the main repo under the [docs/wiki](https://github.com/Azure/ResourceModules/tree/main/docs/wiki) folder. A dedicated pipeline included in the repository will perform a sync to the CARML wiki once the docs contribution is merged.
 
 - In case your contribution involves changes to the library (the modules) and/or to the CI environment (the pipelines), we kindly ask you to
 first review respectively the [Module design](./The%20library%20-%20Module%20design) and/or the [Pipeline design](./The%20CI%20environment%20-%20Pipeline%20design) sections to make sure your contribution complies with the repository design and principles.
@@ -71,10 +71,10 @@ Finally, once your contribution is implemented and validated, open a PR for CARM
 - Reference the issue number as per the [Create or pick up an issue](#Create-or-pick-up-an-issue) step.
 - If applicable, please reference the badge status of your pipeline run. This badge will show the reviewer that the code changes were successfully validated & tested in your environment. To create a badge, first select the three dots (`...`) to the top right of the pipeline, and further the `Create status badge` option.
 
-    <img src="./media/badgeDropdown.png" alt="Badge dropdown" height="200">
+    <img src="./media/ContributionGuide/badgeDropdown.png" alt="Badge dropdown" height="200">
 
   In the opening pop up, you first need to select your branch and then click on the `Copy status badge Markdown`
 
-    <img src="./media/carmlStatusBadge.png" alt="Status badge" height="400">
+    <img src="./media/ContributionGuide/carmlStatusBadge.png" alt="Status badge" height="400">
 
 

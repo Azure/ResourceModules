@@ -7,7 +7,7 @@ Use this script to automatically register all specified Azure DevOps pipelines i
 ### _Navigation_
 
 - [Location](#location)
-- [How it works](#what-it-does)
+- [How it works](#how-it-works)
 - [How to use it](#how-to-use-it)
 
 ---
@@ -17,7 +17,7 @@ You can find the script under `/utilities/tools/AzureDevOps/Register-AzureDevOps
 
 # How it works
 
-1. Get all pipelines in a given target folder (for example `.azuredevops/modulePipelines`)
+1. Get all pipelines in a given target folder (for example, `.azuredevops/modulePipelines`)
 1. Fetch all currently registered pipelines in the target Azure DevOps project
 1. Compare the local defined and remote-registered pipelines to detect which need to be created and which skipped
 1. Create all pipelines that are missing
@@ -31,7 +31,7 @@ The steps you'd want to follow are
 1. (if pipelines are in GitHub) Create a service connection to the target GitHub repository using e.g. oAuth
 1. Create a PAT token for the Azure DevOps environment in which you want to register the pipelines in
 1. Run this script with the corresponding input parameters
-1. Create any required element required to execute the pipelines. For example:
+1. Create any required element required to run the pipelines. For example:
    - Library group(s) used in the pipeline(s)
    - Service connection(s) used in the pipeline(s)
    - Agent pool(s) used in the pipeline(s) if not using the default available agents

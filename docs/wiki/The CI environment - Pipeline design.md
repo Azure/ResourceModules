@@ -38,11 +38,11 @@ The following paragraphs provide an overview of the different phases and shared 
 
 ## Pipeline phases
 
-This paragraph provides an overview of the three phases executed by each module pipeline. Further details about the implementation and design of each phase are provided in the dedicated pages linked below.
+This paragraph provides an overview of the three phases performed by each module pipeline. Further details about the implementation and design of each phase are provided on the dedicated pages linked below.
 
-1. **Static Validation**: Executes a set of static Pester tests against the module and its templates to ensure they comply with our design principles. Further details for this phase are provided by the corresponding Wiki section [Static validation](./The%20CI%20environment%20-%20Static%20validation).
-1. **Deployment Validation**: An actual Azure deployment is run against a sandbox subscription leveraging a predefined set of parameter files, each validating a different configuration of the same Azure resource in parallel. The test suite is cleaned up by default, removing all test resources post-deployment. Further details for this phase are provided by the corresponding Wiki section [Deployment validation](./The%20CI%20environment%20-%20Deployment%20validation).
-1. **Publishing**: Runs only if the previous steps are successful. A new module version is published to all configured target locations such as template specs, private Bicep registry and Azure DevOps Universal Packages. Published module versions can then be referenced by solutions using them. Further details for this phase are provided by the corresponding Wiki section [Publishing](./The%20CI%20environment%20-%20Publishing).
+1. **Static Validation**: Runs a set of static Pester tests against the module and its templates to ensure they comply with our design principles. Further details for this phase are provided on the corresponding wiki page - see the [Static validation](./The%20CI%20environment%20-%20Static%20validation) section.
+1. **Deployment Validation**: An actual Azure deployment is run against a sandbox subscription leveraging a predefined set of parameter files, each validating a different configuration of the same Azure resource in parallel. The test suite is cleaned up by default, removing all test resources post-deployment. Further details for this phase are provided on the corresponding wiki page - see the [Deployment validation](./The%20CI%20environment%20-%20Deployment%20validation) section.
+1. **Publishing**: Runs only if the previous steps are successful. A new module version is published to all configured target locations such as template specs, private Bicep registry and Azure DevOps Universal Packages. Published module versions can then be referenced by solutions using them. Further details for this phase are provided on the corresponding wiki page - see the [Publishing](./The%20CI%20environment%20-%20Publishing) page.
 
    <img src="./media/CIEnvironment/pipelineDesignPhases.png" alt="Pipeline phases" height="200">
 
@@ -66,7 +66,7 @@ In addition, workflows leverage the following composite actions:
 
 | Composite Action | Description |
 | - | - |
-| **getWorkflowInput** | This action allows fetching workflow input values from the module's workflow file, even if the pipeline was not triggered via a `workflow_dispatch` action. Without it we would not be able to process the contained information and would need to duplicate the configuration as workflow variables. Such input values are for example the removal switch `removeDeployment`. |
+| **getWorkflowInput** | This action allows fetching workflow input values from the module's workflow file, even if the pipeline was not triggered via a `workflow_dispatch` action. Without it we would not be able to process the contained information and would need to duplicate the configuration as workflow variables. Such input values are for example, the removal switch `removeDeployment`. |
 | **setEnvironmentVariables** | This action parses the variables file `global.variables.yml` and sets the key-value pairs in the `variables` list as environment variables. |
 
 Technical documentation for each composite action, such as required input and output variables, is included in each `action.yml` file located in path `.github/actions/templates`.
@@ -115,7 +115,7 @@ In addition to module pipelines, the repository includes several platform pipeli
 
 In order to successfully run module pipelines to validate and publish CARML modules to the target environment, certain Azure resources need to be deployed beforehand.
 
-For example any instance of the [Virtual Machine] module needs an existing virtual network to be connected to and a key vault hosting its required local admin credentials to be referenced.
+For example, any instance of the [Virtual Machine] module needs an existing virtual network to be connected to and a key vault hosting its required local admin credentials to be referenced.
 
 The dependencies pipeline covers this requirement and is intended to be run before executing module pipelines successfully.
 
@@ -270,12 +270,12 @@ The repository includes two major ReadMe files that should stay in sync with the
 
 The first can be found in the repository root (`README.md`) and the second in the modules folder (`arm/README.md`).
 
-The ReadMe pipeline is triggered each time changes are pushed to the `main` branch and only if a template in the `arm` folder is being altered. The pipeline leverages the script documented in the [GitHub ReadMe module table update](./The%20CI%20environment%20-%20GitHub%20ReadMe%20module%20table%20update) page.
+The ReadMe pipeline is triggered each time changes are pushed to the `main` branch and only if a template in the `arm` folder is being altered. The pipeline leverages the script documented on the [GitHub ReadMe module table update](./The%20CI%20environment%20-%20GitHub%20ReadMe%20module%20table%20update) page.
 
 Once triggered, the pipeline crawls through the library and updates the tables in each corresponding ReadMe file, creating links to the corresponding pipeline runs and updating the list of entries.
 
 ## Wiki pipeline
 
-The purpose of the Wiki pipeline is to sync any files from the `docs/wiki` folder to the wiki repository. It is triggered each time changes are pushed to the `main` branch and only if files in the `docs/wiki` folder are altered.
+The purpose of the wiki pipeline is to sync any files from the `docs/wiki` folder to the wiki repository. It is triggered each time changes are pushed to the `main` branch and only if files in the `docs/wiki` folder are altered.
 
-> **Note:** Any changes performed directly on the Wiki via the UI will be overwritten by this pipeline.
+> **Note:** Any changes performed directly on the wiki via the UI will be overwritten by this pipeline.

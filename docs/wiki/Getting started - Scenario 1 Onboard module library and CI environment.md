@@ -31,7 +31,7 @@ Next you'll want to create your own copy of the code. Depending on the repositor
 
 > **Note:** Whether you chose GitHub or Azure DevOps as your repository's environment does not affect your options when registering the pipelines.
 
-> **Note:** If you don't want to use all modules, you can remove those that should not be part of your library. However, when doing so, make sure you use the utility [`Get-LinkedLocalModuleList`](./Getting%20started%20-%20Get%20module%20cross-references) to check for any cross-module references. For example, you may find that when you'd remove the 'Microsoft.Network/privateEndpoints', that it is still referenced by some of the modules you may want to use (for example 'Microsoft.KeyVault/vaults'). In those cases, make sure to not accidently delete required references.
+> **Note:** If you don't want to use all modules, you can remove those that should not be part of your library. However, when doing so, make sure you use the utility [`Get-LinkedLocalModuleList`](./Getting%20started%20-%20Get%20module%20cross-references) to check for any cross-module references. For example, you may find that when you'd remove the 'Microsoft.Network/privateEndpoints', that it is still referenced by some of the modules you may want to use (for example, 'Microsoft.KeyVault/vaults'). In those cases, make sure to not accidently delete required references.
 
 <details>
 <summary>GitHub Repository</summary>
@@ -64,9 +64,9 @@ A clone is a direct reference to the source repository which enables you to pull
 
 from a command-line of your choice (e.g. PowerShell).
 
-If you instead just want to have a copy of the repository's content you can instead download it in the `.zip` format. You can do this by navigating to the repository folder of your choice (for example root), then select the `<> Code` button on the top left and click on `Download ZIP` on the opening blade.
+If you instead just want to have a copy of the repository's content you can instead download it in the `.zip` format. You can do this by navigating to the repository folder of your choice (for example, root), then select the `<> Code` button on the top left and click on `Download ZIP` on the opening blade.
 
- <img src="./media/cloneDownloadRepo.JPG" alt="How to download repository" height="266">
+ <img src="./media/GettingStarted/cloneDownloadRepo.JPG" alt="How to download repository" height="266">
 
 Alternatively, you can also do the same with a specific release by navigating to the [releases](https://github.com/Azure/ResourceModules/releases) page, scroll to the `'Assets'` section at the bottom end of the release you'd like to get and download the packaged release (as it was when the release was created) with a simple click on the `'Source code'` package (e.g. `Source code (zip)`) itself.
 
@@ -316,7 +316,7 @@ The primary pipeline variable file `global.variables.yml` hosts the fundamental 
 
 ### 3.2.4 Register pipelines
 
-To use the pipelines that come with the environment in Azure DevOps, you need to register them first. You can either do this manually, or, execute the utility `Register-AzureDevOpsPipeline` we provide in path `utilities/tools/AzureDevOps`. For further information, please refer to the corresponding [documentation](./Interoperability%20-%20Register%20Azure%20DevOps%20Pipelines).
+To use the pipelines that come with the environment in Azure DevOps, you need to register them first. You can either do this manually, or, run the utility `Register-AzureDevOpsPipeline` we provide in path `utilities/tools/AzureDevOps`. For further information, please refer to the corresponding [documentation](./Interoperability%20-%20Register%20Azure%20DevOps%20Pipelines).
 
 
 ### 3.2.5 Azure Artifacts Universal Packages
@@ -361,7 +361,7 @@ To successfully deploy the sites module using the parameter file `fa.parameters.
 
 Once the required dependencies are deployed, there is one more step left to get as many module pipelines running as possible.
 
-Several module parameters reference resources with unique values. For example, if a module references a Key Vault key, its version identifier will only be available once the dependencies pipeline executed once.
+Several module parameters reference resources with unique values. For example, if a module references a Key Vault key, its version identifier will only be available once the dependencies pipeline ran once.
 
 For this reason, make sure to update the references in the following modules once the dependencies pipeline concluded:
 

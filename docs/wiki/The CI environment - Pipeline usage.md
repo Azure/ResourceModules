@@ -8,9 +8,13 @@ This section provides a guideline on how to use the CARML CI environment pipelin
   - [Add a new module pipeline](#add-a-new-module-pipeline)
 - [Operate the dependencies pipeline](#operate-the-dependencies-pipeline)
   - [Add a new dependency](#add-a-new-dependency)
-- [DevOps-Tool-specific](#devops-tool-specific-guidance)
+- [DevOps-Tool-specific guidance](#devops-tool-specific-guidance)
   - [GitHub workflows](#github-workflows)
+    - [Trigger a workflow](#trigger-a-workflow)
+    - [Register a workflow](#register-a-workflow)
   - [Azure DevOps pipelines](#azure-devops-pipelines)
+    - [Trigger a pipeline](#trigger-a-pipeline)
+    - [Register a pipeline](#register-a-pipeline)
 
 ---
 
@@ -55,7 +59,7 @@ To run the dependencies pipeline you can perform the following steps:
    > Note: This option requires up to two hours completion.
 1.  Trigger the pipeline.
 
-By default, i.e. by keeping the optional flags disables, the dependencies pipeline may take up to 30 minutes to execute.
+By default, i.e., by keeping the optional flags disables, the dependencies pipeline may take up to 30 minutes to run.
 
 > **Note:** For details about the dependencies pipeline design please refer to the dedicated [Dependencies pipeline design](./The%20CI%20environment%20-%20Pipeline%20design.md#dependencies-pipeline) section.
 
@@ -82,11 +86,11 @@ This section focuses on _GitHub_ Actions & Workflows.
 
   1. Navigate to the 'Actions' tab in your repository.
 
-     <img src="./media/ghActionsTab.png" alt="Actions tab" height="100">
+     <img src="./media/CIEnvironment/ghActionsTab.png" alt="Actions tab" height="100">
 
   1. Select the pipeline of your choice from the list on the left, followed by 'Run workflow' to the right. You can then select the branch of your choice and confirm the execution by clicking on the green 'Run workflow' button.
 
-     <img src="./media/gHtriggerPipeline.png" alt="Run workflow" height="350">
+     <img src="./media/CIEnvironment/gHtriggerPipeline.png" alt="Run workflow" height="350">
 
   >**Note**: Depending on the pipeline you selected you may have additional input parameters you can provide aside from the branch. An outline can be found in the [Module pipeline inputs](./The%20CI%20environment%20-%20Pipeline%20design#module#module-pipeline-inputs) section.
 
@@ -110,15 +114,15 @@ This section focuses on _Azure DevOps_ pipelines.
 
   1. Navigate to the 'Pipelines' section (blue rocket) and select the pipeline you want to trigger.
 
-     <img src="./media/pipelineStart.png" alt="Pipeline start step 1" height="200">
+     <img src="./media/CIEnvironment/pipelineStart.png" alt="Pipeline start step 1" height="200">
 
   1. Once selected, click on the 'Run pipeline' button on the top right.
 
-     <img src="./media/pipelineStart2.png" alt="Pipeline start step 2" height="60">
+     <img src="./media/CIEnvironment/pipelineStart2.png" alt="Pipeline start step 2" height="60">
 
   1. Now you can trigger the pipeline by selecting the 'Run' button on the bottom right.
 
-     <img src="./media/pipelineStart3.png" alt="Pipeline start step 3" height="400">
+     <img src="./media/CIEnvironment/pipelineStart3.png" alt="Pipeline start step 3" height="400">
 
   >**Note**: Depending on the pipeline you selected you may have additional input parameters you can provide aside from the branch. An outline can be found in the [Module pipeline inputs](./The%20CI%20environment%20-%20Pipeline%20design#module#module-pipeline-inputs) section.
 
@@ -130,29 +134,29 @@ This section focuses on _Azure DevOps_ pipelines.
 
   1. Navigate to the 'Pipelines' section (blue rocket) and select the 'New pipeline' button on the top right.
 
-     <img src="./media/pipelineNew.png" alt="Register new pipeline step 1" height="200">
+     <img src="./media/CIEnvironment/pipelineNew.png" alt="Register new pipeline step 1" height="200">
 
   1. Next, select the repository-type you stored your template in. _Azure DevOps_ will then try to fetch all repositories you have access to.
 
-     <img src="./media/pipelineNew2.png" alt="Register new pipeline step 2" height="300">
+     <img src="./media/CIEnvironment/pipelineNew2.png" alt="Register new pipeline step 2" height="300">
 
   1. Now we have to select the particular repository to get the pipeline file from.
 
-     <img src="./media/pipelineNew3.png" alt="Register new pipeline step 3" height="240">
+     <img src="./media/CIEnvironment/pipelineNew3.png" alt="Register new pipeline step 3" height="240">
 
   1. Following, choose 'Existing Azure Pipelines YAML file' on the bottom of the list.
 
-     <img src="./media/pipelineNew4.png" alt="Register new pipeline step 4" height="430">
+     <img src="./media/CIEnvironment/pipelineNew4.png" alt="Register new pipeline step 4" height="430">
 
   1. The previous action will open a new blade that asks you for the branch you stored the pipeline file in (e.g. `master`) and then asks for the relative path (from root of the repository) of the pipeline file.
 
-     <img src="./media/pipelineNew5.png" alt="Register new pipeline step 5" height="240">
+     <img src="./media/CIEnvironment/pipelineNew5.png" alt="Register new pipeline step 5" height="240">
 
   1. Finally, _Azure DevOps_ should show you the pipeline file you created. The last thing you have to do is to either select 'Run' on the top right (which will save & run the pipeline), or click the little arrow next to it and just save the pipeline.
 
   1. Once saved you can also re-name / move the pipeline in the same view. However, this only works once you saved the pipeline at least once.
 
-     <img src="./media/pipelineNew6.png" alt="Register new pipeline step 6" height="180">
+     <img src="./media/CIEnvironment/pipelineNew6.png" alt="Register new pipeline step 6" height="180">
 
 </details>
 

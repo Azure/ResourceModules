@@ -20,7 +20,7 @@ You can find the script under `/utilities/tools/Set-ModuleReadMe.ps1`
 
 1. Using the provided template path, the script first makes sure to convert it to ARM/JSON if necessary (i.e. if a path to a Bicep file was provided)
 1. If the intended readMe file does not yet exist in the expected path, it is generated with a skeleton (with e.g. a generated header name)
-1. It then goes through all sections defined as `SectionsToRefresh` (by default all) and refreshes the section content (for example for the `Parameters`) based on the values in the ARM/JSON Template. It detects sections by their header and regenerates always the full section.
+1. It then goes through all sections defined as `SectionsToRefresh` (by default all) and refreshes the section content (for example, for the `Parameters`) based on the values in the ARM/JSON Template. It detects sections by their header and regenerates always the full section.
 1. Once all are refreshed, the current ReadMe file is overwritten. **Note:** The script can be invoked with a `WhatIf` in combination with `Verbose` to just receive an console-output of the updated content.
 
 ## Special case: 'Parameter Usage' section

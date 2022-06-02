@@ -5,7 +5,7 @@ Use this script to format a given raw 'Roles' table from Azure to the format req
 ### _Navigation_
 
 - [Location](#location)
-- [How it works](#what-it-does)
+- [How it works](#how-it-works)
 - [How to use it](#how-to-use-it)
 
 ---
@@ -37,7 +37,7 @@ To get the list of roles in the expected format:
 1. Open the `Roles` tab
 1. Set the `Type` in the dropdown to `BuiltInRole`
 
-   <img src="./media/rbacRoles.png" alt="Complete deployment flow filtered" height="300">
+   <img src="./media/ContributionGuide/rbacRoles.png" alt="Complete deployment flow filtered" height="300">
 
 1. Select and copy the entire table as is to the PowerShell variable.
 
@@ -62,7 +62,7 @@ To get the list of roles in the expected format:
    View
    '@
    ```
-1. Execute the script. The output for the above example would be
+1. Run the script. The output for the above example would be
 
     ```yml
     VERBOSE: Bicep

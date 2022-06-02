@@ -6,14 +6,19 @@ This section details the design principles followed by the CARML Bicep modules.
 
 - [General guidelines](#general-guidelines)
 - [File & folder structure](#file--folder-structure)
-  - [Naming](#naming)
   - [Structure](#structure)
+    - [**Child-Resources**](#child-resources)
+  - [Naming](#naming)
   - [Patterns](#patterns)
+      - [1st Element in main resource](#1st-element-in-main-resource)
+      - [2nd Element as nested `.bicep/nested_rbac.bicep` file](#2nd-element-as-nested-bicepnested_rbacbicep-file)
+      - [1st element in main resource](#1st-element-in-main-resource-1)
 - [Bicep template guidelines](#bicep-template-guidelines)
   - [Parameters](#parameters)
   - [Variables](#variables)
-  - [Resource](#resources)
+  - [Resources](#resources)
   - [Modules](#modules)
+    - [Deployment names](#deployment-names)
   - [Outputs](#outputs)
 - [ReadMe](#readme)
 - [Parameter files](#parameter-files)
@@ -31,11 +36,11 @@ They can be deployed in different configurations just by changing the input para
 
 - All resource modules in the 'arm' folder should not allow deployment loops on the top level resource but may optionally allow deployment loops on their child-resources.
   > **Example:** The storage account module allows the deployment of a single storage account with, optionally, multiple blob containers, multiple file shares, multiple queues and/or multiple tables.
-- The 'constructs' folder contains examples of deployment logic built on top of resource modules contained in the 'arm' folder, allowing for example deployment loops on top level resources.
+- The 'constructs' folder contains examples of deployment logic built on top of resource modules contained in the 'arm' folder, allowing for example, deployment loops on top level resources.
   > **Example:** The VirtualNetworkPeering construct leverages the VirtualNetworkPeering module to deploy multiple virtual network peerings at once
 - Where the resource type in question supports it, the module should have support for:
   1. **Diagnostic logs** and **metrics** (you can have them sent to any combination of storage account, log analytics and event hub)
-  2. Resource and child-resource level **RBAC** (for example providing data contributor access on a storage account; granting file share/blob container level access in a storage account)
+  2. Resource and child-resource level **RBAC** (for example, providing data contributor access on a storage account; granting file share/blob container level access in a storage account)
   3. **Tags** (as objects)
   4. **Locks**
   5. **Private Endpoints** (if supported)
@@ -64,7 +69,7 @@ Also, each module should be implemented with all capabilities it and its childre
 
 ## Structure
 
-Modules in the repository are structured via the module's main resource provider (for example `Microsoft.Web`) and resource type (for example `serverfarms`) where each section of the path corresponds to its place in the hierarchy. However, for cases that do not fit into this schema we provide the following guidance:
+Modules in the repository are structured via the module's main resource provider (for example, `Microsoft.Web`) and resource type (for example, `serverfarms`) where each section of the path corresponds to its place in the hierarchy. However, for cases that do not fit into this schema we provide the following guidance:
 
 ### **Child-Resources**
 
@@ -496,7 +501,7 @@ Its primary components are in order:
 
 Note the following recommendations:
 - Refer to [Generate module Readme](./Contribution%20guide%20-%20Generate%20module%20Readme) for creating from scratch or updating the module ReadMe Markdown file.
-- It is not recommended to describe how to use child resources in the parent readme file (for example 'How to define a [container] entry for the [storage account]'). Instead it is recommended to reference the child resource's ReadMe instead (for example 'container/readme.md').
+- It is not recommended to describe how to use child resources in the parent readme file (for example, 'How to define a [container] entry for the [storage account]'). Instead it is recommended to reference the child resource's ReadMe instead (for example, 'container/readme.md').
 
 # Parameter files
 
@@ -516,7 +521,7 @@ Each module in CARML contains a `defaultTelemetry` deployment  `'pid-<GUID>-${un
 
 This resource enables the team responsible for CARML to query the number of deployments of a given template from Azure - and as such get insights into its adoption.
 
-When using CARML's CI environment you can enable/disable this deployment by switching the `enableDefaultTelemetry` setting in the `settings.json` file in the repository's root. This value is automatically injected into each individual deployment that is executed as part of the environment's pipeline.
+When using CARML's CI environment you can enable/disable this deployment by switching the `enableDefaultTelemetry` setting in the `settings.json` file in the repository's root. This value is automatically injected into each individual deployment that is performed as part of the environment's pipeline.
 
 When consuming the modules outside of CARML's pipelines you can either
 - Set the parameter to a default value of `'false'`

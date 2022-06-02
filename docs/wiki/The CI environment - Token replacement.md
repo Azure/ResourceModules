@@ -77,13 +77,13 @@ The solution comes with one predefined local token `namePrefix`. When validating
 
 The below image compares the different token types that can be used for parameter file tokens:
 
-<img src="./media/tokenTypes.png" alt="tokenTypes">
+<img src="./media/CIEnvironment/tokenTypes.png" alt="tokenTypes">
 
 ## How tokens are replaced in a parameter file
 
 The below diagram illustrates the Token Replacement Functionality via the [Validate](https://github.com/Azure/ResourceModules/blob/main/.github/actions/templates/validateModuleDeploy/action.yml) and [Deploy](https://github.com/Azure/ResourceModules/blob/main/.github/actions/templates/deployModule/action.yml) Actions/Templates.
 
-<img src="./media/tokenReplacement.png" alt="tokenReplacement">
+<img src="./media/CIEnvironment/tokenReplacement.png" alt="tokenReplacement">
 
 - **1A.** The user creates default tokens as [GitHub Secrets](https://docs.github.com/en/actions/security-guides/encrypted-secrets#creating-encrypted-secrets-for-a-repository) or [Azure DevOps Pipeline Variables](https://docs.microsoft.com/en-us/azure/devops/pipelines/library/?view=azure-devops), that are injected as environment variables.
 - **1B.** The user can also create local custom Parameter File Tokens in the [Settings.json](https://github.com/Azure/ResourceModules/blob/main/settings.json) under the `localTokens` - `tokens` property.

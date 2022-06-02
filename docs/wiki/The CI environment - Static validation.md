@@ -38,7 +38,7 @@ The following activities are run executing the `arm/.global/global.module.tests.
 
 ## Additional resources
 
-- [Pester Wiki](https://github.com/pester/Pester/wiki)
+- [Pester wiki](https://github.com/pester/Pester/wiki)
 - [Pester on GitHub](https://github.com/pester/Pester)
 - [Pester Installation and Update](https://pester.dev/docs/introduction/installation)
 

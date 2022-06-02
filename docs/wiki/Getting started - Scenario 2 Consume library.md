@@ -1,8 +1,8 @@
 In case you want to simply consume the modules of the library to build a solution, you only have to perform a few simple steps:
 
-1. [Download the library](#1-download-the-library)
-1. [(Optional) Convert library to ARM](#2-optional-convert-library-to-arm)
-1. [Build a solution](#3-build-a-solution)
+- [1. Download the library](#1-download-the-library)
+- [2. (Optional) Convert library to ARM](#2-optional-convert-library-to-arm)
+- [3. Build a solution](#3-build-a-solution)
 
 # 1. Download the library
 
@@ -41,7 +41,7 @@ To download the latest version of the repository
 To clone the latest version of the repository
 1. On your local machine, open a PowerShell session
 1. Navigate to the location you want to clone the repository into
-1. Execute
+1. Run
 
     ```PowerShell
     git clone 'https://github.com/Azure/ResourceModules.git'
