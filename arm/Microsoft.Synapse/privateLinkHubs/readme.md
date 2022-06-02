@@ -276,9 +276,7 @@ module privateLinkHubs './Microsoft.Synapse/privateLinkHubs/deploy.bicep' = {
       "value": "synplhstandard001"
     },
     "lock": {
-      "value": [
-        "CanNotDelete"
-      ]
+      "value": "CanNotDelete"
     },
     "roleAssignments": {
       "value": [
@@ -320,9 +318,7 @@ module privateLinkHubs './Microsoft.Synapse/privateLinkHubs/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-privateLinkHubs'
   params: {
     name: 'synplhstandard001'
-    lock: [
-      'CanNotDelete'
-    ]
+    lock: 'CanNotDelete'
     roleAssignments: [
       {
         roleDefinitionIdOrName: 'Reader'
