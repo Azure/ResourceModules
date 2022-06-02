@@ -110,7 +110,6 @@ runs:
 
         Write-Output "::endgroup::"
 
-
     - name: Azure Login
       uses: Azure/login@v1
       with:
