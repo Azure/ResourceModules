@@ -312,13 +312,13 @@ resource virtualGatewayPublicIP 'Microsoft.Network/publicIPAddresses@2021-05-01'
 }]
 
 @batchSize(1)
-module virtualGatewayPublicIP_lock '.bicep/nested_lock.bicep' = [for (virtualGatewayPublicIpName, index) in virtualGatewayPipName_var: {
-  name: '${uniqueString(deployment().name, location)}-vnetGWPip-Locks-${index}'
-  params: {
-    resourceId: virtualGatewayPublicIP[index].id
-    lock: lock
+resource virtualGatewayPublicIP_lock 'Microsoft.Authorization/locks@2017-04-01' = [for (virtualGatewayPublicIpName, index) in virtualGatewayPipName_var: if (!empty(lock)) {
+  name: '${virtualGatewayPublicIpName}-${lock}-lock'
+  properties: {
+    level: any(lock)
+    notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
-  scope: resourceGroup(split(virtualGatewayPublicIP[index].id, '/')[2], split(virtualGatewayPublicIP[index].id, '/')[4])
+  scope: virtualGatewayPublicIP[index]
 }]
 
 @batchSize(1)
