@@ -138,7 +138,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource appConfiguration 'Microsoft.AppConfiguration/configurationStores@2021-10-01-preview' = {
+resource configurationStore 'Microsoft.AppConfiguration/configurationStores@2021-10-01-preview' = {
   name: name
   location: location
   tags: tags
@@ -155,16 +155,16 @@ resource appConfiguration 'Microsoft.AppConfiguration/configurationStores@2021-1
   }
 }
 
-resource appConfiguration_locks 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
-  name: '${appConfiguration.name}-${lock}-lock'
+resource configurationStore_locks 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+  name: '${configurationStore.name}-${lock}-lock'
   properties: {
     level: any(lock)
     notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
-  scope: appConfiguration
+  scope: configurationStore
 }
 
-resource appConfiguration_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(diagnosticWorkspaceId)) || (!empty(diagnosticEventHubAuthorizationRuleId)) || (!empty(diagnosticEventHubName))) {
+resource configurationStore_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(diagnosticWorkspaceId)) || (!empty(diagnosticEventHubAuthorizationRuleId)) || (!empty(diagnosticEventHubName))) {
   name: diagnosticSettingsName
   properties: {
     storageAccountId: !empty(diagnosticStorageAccountId) ? diagnosticStorageAccountId : null
@@ -174,28 +174,28 @@ resource appConfiguration_diagnosticSettings 'Microsoft.Insights/diagnosticsetti
     metrics: diagnosticsMetrics
     logs: diagnosticsLogs
   }
-  scope: appConfiguration
+  scope: configurationStore
 }
 
-module appConfiguration_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+module configurationStore_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-AppConfig-Rbac-${index}'
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
     principalIds: roleAssignment.principalIds
     principalType: contains(roleAssignment, 'principalType') ? roleAssignment.principalType : ''
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
-    resourceId: appConfiguration.id
+    resourceId: configurationStore.id
   }
 }]
 
-module appConfiguration_privateEndpoints '../../Microsoft.Network/privateEndpoints/deploy.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
+module configurationStore_privateEndpoints '../../Microsoft.Network/privateEndpoints/deploy.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
   name: '${uniqueString(deployment().name, location)}-appConfiguration-PrivateEndpoint-${index}'
   params: {
     groupIds: [
       privateEndpoint.service
     ]
-    name: contains(privateEndpoint, 'name') ? privateEndpoint.name : 'pe-${last(split(appConfiguration.id, '/'))}-${privateEndpoint.service}-${index}'
-    serviceResourceId: appConfiguration.id
+    name: contains(privateEndpoint, 'name') ? privateEndpoint.name : 'pe-${last(split(configurationStore.id, '/'))}-${privateEndpoint.service}-${index}'
+    serviceResourceId: configurationStore.id
     subnetResourceId: privateEndpoint.subnetResourceId
     enableDefaultTelemetry: enableDefaultTelemetry
     location: reference(split(privateEndpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location
@@ -209,16 +209,16 @@ module appConfiguration_privateEndpoints '../../Microsoft.Network/privateEndpoin
 }]
 
 @description('The name of the app configuration.')
-output name string = appConfiguration.name
+output name string = configurationStore.name
 
 @description('The resource ID of the app configuration.')
-output resourceId string = appConfiguration.id
+output resourceId string = configurationStore.id
 
 @description('The resource group the batch account was deployed into.')
 output resourceGroupName string = resourceGroup().name
 
 @description('The principal ID of the system assigned identity.')
-output systemAssignedPrincipalId string = systemAssignedIdentity && contains(appConfiguration.identity, 'principalId') ? appConfiguration.identity.principalId : ''
+output systemAssignedPrincipalId string = systemAssignedIdentity && contains(configurationStore.identity, 'principalId') ? configurationStore.identity.principalId : ''
 
 @description('The location the resource was deployed into.')
-output location string = appConfiguration.location
+output location string = configurationStore.location
