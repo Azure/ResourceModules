@@ -46,7 +46,7 @@
 | `gitRootFolder` | string | `'/'` |  | The root folder path name. Default is '/'. |
 | `integrationRuntime` | _[integrationRuntime](integrationRuntime/readme.md)_ object | `{object}` |  | The object for the configuration of a Integration Runtime. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all Resources. |
-| `locks` | array | `[]` | `[CanNotDelete, ReadOnly]` | Specify the locks to apply. |
+| `lock` | string | `''` | `[, CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `managedVirtualNetworkName` | string | `''` |  | The name of the Managed Virtual Network. |
 | `publicNetworkAccess` | bool | `True` |  | Enable or disable public network access. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
@@ -214,10 +214,8 @@ userAssignedIdentities: {
         "name": {
             "value": "<<namePrefix>>-adf-001"
         },
-        "locks": {
-            "value": [
-                "CanNotDelete"
-            ]
+        "lock": {
+            "value": "CanNotDelete"
         },
         "managedVirtualNetworkName": {
             "value": "default"
@@ -289,9 +287,7 @@ module factories './Microsoft.DataFactory/factories/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-factories'
   params: {
     name: '<<namePrefix>>-adf-001'
-    locks: [
-      'CanNotDelete'
-    ]
+    lock: 'CanNotDelete'
     managedVirtualNetworkName: 'default'
     integrationRuntime: {
       name: 'AutoResolveIntegrationRuntime'

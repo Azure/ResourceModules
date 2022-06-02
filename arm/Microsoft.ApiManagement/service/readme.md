@@ -67,7 +67,7 @@ This module deploys an API management service.
 | `hostnameConfigurations` | array | `[]` |  | Custom hostname configuration of the API Management service. |
 | `identityProviders` | _[identityProviders](identityProviders/readme.md)_ array | `[]` |  | Identity providers. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all Resources. |
-| `locks` | array | `[]` | `[CanNotDelete, ReadOnly]` | Specify the locks to apply. |
+| `lock` | string | `''` | `[, CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `minApiVersion` | string | `''` |  | Limit control plane API calls to API Management service with version equal to or newer than this value. |
 | `namedValues` | _[namedValues](namedValues/readme.md)_ array | `[]` |  | Named values. |
 | `newGuidValue` | string | `[newGuid()]` |  | Necessary to create a new GUID. |
@@ -282,7 +282,7 @@ userAssignedIdentities: {
         "name": {
             "value": "<<namePrefix>>-az-apim-max-001"
         },
-        "locks": {
+        "lock": {
             "value": [
                 "CanNotDelete"
             ]
@@ -468,7 +468,7 @@ module service './Microsoft.ApiManagement/service/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-service'
   params: {
     name: '<<namePrefix>>-az-apim-max-001'
-    locks: [
+    lock: [
       'CanNotDelete'
     ]
     publisherEmail: 'apimgmt-noreply@mail.windowsazure.com'
@@ -659,10 +659,8 @@ module service './Microsoft.ApiManagement/service/deploy.bicep' = {
         "name": {
             "value": "<<namePrefix>>-az-apim-x-001"
         },
-        "locks": {
-            "value": [
-                "CanNotDelete"
-            ]
+        "lock": {
+            "value": "CanNotDelete"
         },
         "publisherEmail": {
             "value": "apimgmt-noreply@mail.windowsazure.com"
@@ -724,9 +722,7 @@ module service './Microsoft.ApiManagement/service/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-service'
   params: {
     name: '<<namePrefix>>-az-apim-x-001'
-    locks: [
-      'CanNotDelete'
-    ]
+    lock: 'CanNotDelete'
     publisherEmail: 'apimgmt-noreply@mail.windowsazure.com'
     publisherName: '<<namePrefix>>-az-amorg-x-001'
     portalSettings: [

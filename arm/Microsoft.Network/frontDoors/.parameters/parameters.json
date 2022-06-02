@@ -5,10 +5,8 @@
         "name": {
             "value": "<<namePrefix>>-az-fd-x-001"
         },
-        "locks": {
-            "value": [
-                "CanNotDelete"
-            ]
+        "lock": {
+            "value": "CanNotDelete"
         },
         "backendPools": {
             "value": [

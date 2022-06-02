@@ -5,10 +5,8 @@
         "name": {
             "value": "tm-000001"
         },
-        "locks": {
-            "value": [
-                "CanNotDelete"
-            ]
+        "lock": {
+            "value": "CanNotDelete"
         },
         "relativeName": {
             "value": "tm-000001"

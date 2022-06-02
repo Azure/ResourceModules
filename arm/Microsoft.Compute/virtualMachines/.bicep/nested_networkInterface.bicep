@@ -10,7 +10,7 @@ param dnsServers array = []
 param networkSecurityGroupResourceId string = ''
 
 param ipConfigurations array
-param locks array = []
+param lock string = ''
 param diagnosticStorageAccountId string
 param diagnosticLogsRetentionInDays int
 param diagnosticWorkspaceId string
@@ -46,7 +46,7 @@ module networkInterface_publicIPAddresses '../../../Microsoft.Network/publicIPAd
     diagnosticWorkspaceId: diagnosticWorkspaceId
     enableDefaultTelemetry: enableDefaultTelemetry
     location: location
-    locks: locks
+    lock: lock
     publicIPAddressVersion: contains(ipConfiguration, 'publicIPAddressVersion') ? ipConfiguration.publicIPAddressVersion : 'IPv4'
     publicIPAllocationMethod: contains(ipConfiguration, 'publicIPAllocationMethod') ? ipConfiguration.publicIPAllocationMethod : 'Static'
     publicIPPrefixResourceId: contains(ipConfiguration, 'publicIPPrefixResourceId') ? ipConfiguration.publicIPPrefixResourceId : ''
@@ -69,7 +69,6 @@ module networkInterface '../../../Microsoft.Network/networkInterfaces/deploy.bic
       privateIPAddress: contains(ipConfiguration, 'vmIPAddress') ? (!empty(ipConfiguration.vmIPAddress) ? ipConfiguration.vmIPAddress : null) : null
       publicIPAddressResourceId: contains(ipConfiguration, 'pipconfiguration') ? resourceId('Microsoft.Network/publicIPAddresses', '${virtualMachineName}${ipConfiguration.pipconfiguration.publicIpNameSuffix}') : null
       subnetId: ipConfiguration.subnetId
-
       loadBalancerBackendAddressPools: contains(ipConfiguration, 'loadBalancerBackendAddressPools') ? ipConfiguration.loadBalancerBackendAddressPools : null
       applicationSecurityGroups: contains(ipConfiguration, 'applicationSecurityGroups') ? ipConfiguration.applicationSecurityGroups : null
       applicationGatewayBackendAddressPools: contains(ipConfiguration, 'applicationGatewayBackendAddressPools') ? ipConfiguration.applicationGatewayBackendAddressPools : null
@@ -91,7 +90,7 @@ module networkInterface '../../../Microsoft.Network/networkInterfaces/deploy.bic
     enableAcceleratedNetworking: enableAcceleratedNetworking
     enableDefaultTelemetry: enableDefaultTelemetry
     enableIPForwarding: enableIPForwarding
-    locks: locks
+    lock: lock
     networkSecurityGroupResourceId: !empty(networkSecurityGroupResourceId) ? networkSecurityGroupResourceId : ''
     roleAssignments: !empty(roleAssignments) ? roleAssignments : []
   }

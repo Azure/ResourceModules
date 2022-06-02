@@ -115,7 +115,7 @@ module publicIPAddress '../publicIPAddresses/deploy.bicep' = if (empty(publicIPA
     diagnosticEventHubName: diagnosticEventHubName
     enableDefaultTelemetry: enableDefaultTelemetry
     location: location
-    locks: locks
+    lock: lock
     publicIPAddressVersion: contains(publicIPAddressObject, 'publicIPAddressVersion') ? publicIPAddressObject.publicIPAddressVersion : 'IPv4'
     publicIPAllocationMethod: contains(publicIPAddressObject, 'publicIPAllocationMethod') ? publicIPAddressObject.publicIPAllocationMethod : 'Static'
     publicIPPrefixResourceId: contains(publicIPAddressObject, 'publicIPPrefixResourceId') ? publicIPAddressObject.publicIPPrefixResourceId : ''

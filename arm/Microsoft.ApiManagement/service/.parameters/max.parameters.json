@@ -5,7 +5,7 @@
         "name": {
             "value": "<<namePrefix>>-az-apim-max-001"
         },
-        "locks": {
+        "lock": {
             "value": [
                 "CanNotDelete"
             ]

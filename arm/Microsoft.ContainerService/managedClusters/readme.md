@@ -100,7 +100,7 @@ This module deploys Azure Kubernetes Cluster (AKS).
 | `ingressApplicationGatewayEnabled` | bool | `False` |  | Specifies whether the ingressApplicationGateway (AGIC) add-on is enabled or not. |
 | `kubeDashboardEnabled` | bool | `False` |  | Specifies whether the kubeDashboard add-on is enabled or not. |
 | `location` | string | `[resourceGroup().location]` |  | Specifies the location of AKS cluster. It picks up Resource Group's location by default. |
-| `locks` | array | `[]` | `[CanNotDelete, ReadOnly]` | Specify the locks to apply. |
+| `lock` | string | `''` | `[, CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `managedOutboundIPCount` | int | `0` |  | Outbound IP Count for the Load balancer. |
 | `monitoringWorkspaceId` | string | `''` |  | Resource ID of the monitoring log analytics workspace. |
 | `nodeResourceGroup` | string | `[format('{0}_aks_{1}_nodes', resourceGroup().name, parameters('name'))]` |  | Name of the resource group containing agent pool nodes. |
@@ -372,7 +372,7 @@ userAssignedIdentities: {
         "name": {
             "value": "<<namePrefix>>-az-aks-azure-001"
         },
-        "locks": {
+        "lock": {
             "value": [
                 "CanNotDelete"
             ]
@@ -501,7 +501,7 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
   name: '${uniqueString(deployment().name)}-managedClusters'
   params: {
     name: '<<namePrefix>>-az-aks-azure-001'
-    locks: [
+    lock: [
       'CanNotDelete'
     ]
     primaryAgentPoolProfile: [

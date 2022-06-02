@@ -43,7 +43,7 @@ This template deploys an express route circuit.
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
-| `locks` | array | `[]` | `[CanNotDelete, ReadOnly]` | Specify the locks to apply. |
+| `lock` | string | `''` | `[, CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `peerASN` | int | `0` |  | The autonomous system number of the customer/connectivity provider. |
 | `peering` | bool | `False` | `[True, False]` | Enabled BGP peering type for the Circuit. |
 | `peeringType` | string | `'AzurePrivatePeering'` | `[AzurePrivatePeering, MicrosoftPeering]` | BGP peering type for the Circuit. Choose from AzurePrivatePeering, AzurePublicPeering or MicrosoftPeering. |
@@ -181,10 +181,8 @@ tags: {
         "name": {
             "value": "<<namePrefix>>-az-erc-x-001"
         },
-        "locks": {
-            "value": [
-                "CanNotDelete"
-            ]
+        "lock": {
+            "value": "CanNotDelete"
         },
         "serviceProviderName": {
             "value": "Equinix"
@@ -242,9 +240,7 @@ module expressRouteCircuits './Microsoft.Network/expressRouteCircuits/deploy.bic
   name: '${uniqueString(deployment().name)}-expressRouteCircuits'
   params: {
     name: '<<namePrefix>>-az-erc-x-001'
-    locks: [
-      'CanNotDelete'
-    ]
+    lock: 'CanNotDelete'
     serviceProviderName: 'Equinix'
     peeringLocation: 'Amsterdam'
     bandwidthInMbps: 50

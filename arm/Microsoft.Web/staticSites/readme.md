@@ -35,7 +35,7 @@ This module deploys a Static Web Site.
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `enterpriseGradeCdnStatus` | string | `'Disabled'` | `[Disabled, Disabling, Enabled, Enabling]` | State indicating the status of the enterprise grade CDN serving traffic to the static web app. |
 | `location` | string | `[resourceGroup().location]` |  | Location to deploy static site. The following locations are supported: CentralUS, EastUS2, EastAsia, WestEurope, WestUS2. |
-| `locks` | array | `[]` | `[CanNotDelete, ReadOnly]` | Specify the locks to apply. |
+| `lock` | string | `''` | `[, CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `privateEndpoints` | array | `[]` |  | Configuration details for private endpoints. |
 | `provider` | string | `'None'` |  | The provider that submitted the last deployment to the primary environment of the static site. |
 | `repositoryToken` | secureString | `''` |  | The Personal Access Token for accessing the GitHub repo. |
@@ -321,10 +321,8 @@ module staticSites './Microsoft.Web/staticSites/deploy.bicep' = {
         "name": {
             "value": "<<namePrefix>>-az-wss-x-001"
         },
-        "locks": {
-            "value": [
-                "CanNotDelete"
-            ]
+        "lock": {
+            "value": "CanNotDelete"
         },
         "sku": {
             "value": "Standard"
@@ -380,9 +378,7 @@ module staticSites './Microsoft.Web/staticSites/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-staticSites'
   params: {
     name: '<<namePrefix>>-az-wss-x-001'
-    locks: [
-      'CanNotDelete'
-    ]
+    lock: 'CanNotDelete'
     sku: 'Standard'
     stagingEnvironmentPolicy: 'Enabled'
     allowConfigFileUpdates: true

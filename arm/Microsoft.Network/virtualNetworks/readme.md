@@ -44,7 +44,7 @@ This template deploys a virtual network (vNet).
 | `dnsServers` | array | `[]` |  | DNS Servers associated to the Virtual Network. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
-| `locks` | array | `[]` | `[CanNotDelete, ReadOnly]` | Specify the locks to apply. |
+| `lock` | string | `''` | `[, CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `subnets` | _[subnets](subnets/readme.md)_ array | `[]` |  | An Array of subnets to deploy to the Virtual Network. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
@@ -406,10 +406,8 @@ module virtualNetworks './Microsoft.Network/virtualNetworks/deploy.bicep' = {
         "name": {
             "value": "<<namePrefix>>-az-vnet-x-001"
         },
-        "locks": {
-            "value": [
-                "CanNotDelete"
-            ]
+        "lock": {
+            "value": "CanNotDelete"
         },
         "addressPrefixes": {
             "value": [
@@ -511,9 +509,7 @@ module virtualNetworks './Microsoft.Network/virtualNetworks/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-virtualNetworks'
   params: {
     name: '<<namePrefix>>-az-vnet-x-001'
-    locks: [
-      'CanNotDelete'
-    ]
+    lock: 'CanNotDelete'
     addressPrefixes: [
       '10.0.0.0/16'
     ]

@@ -40,8 +40,8 @@ This module deploys a queue for a service bus namespace.
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `enableExpress` | bool | `False` |  | A value that indicates whether Express Entities are enabled. An express queue holds a message in memory temporarily before writing it to persistent storage. |
 | `enablePartitioning` | bool | `False` |  | A value that indicates whether the queue is to be partitioned across multiple message brokers. |
+| `lock` | string | `''` | `[, CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `lockDuration` | string | `'PT1M'` |  | ISO 8601 timespan duration of a peek-lock; that is, the amount of time that the message is locked for other receivers. The maximum value for LockDuration is 5 minutes; the default value is 1 minute. |
-| `locks` | array | `[]` | `[CanNotDelete, ReadOnly]` | Specify the locks to apply. |
 | `maxDeliveryCount` | int | `10` |  | The maximum delivery count. A message is automatically deadlettered after this number of deliveries. default value is 10. |
 | `maxSizeInMegabytes` | int | `1024` |  | The maximum size of the queue in megabytes, which is the size of memory allocated for the queue. Default is 1024. |
 | `requiresDuplicateDetection` | bool | `False` |  | A value indicating if this queue requires duplicate detection. |

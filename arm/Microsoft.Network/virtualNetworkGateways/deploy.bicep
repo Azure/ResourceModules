@@ -316,7 +316,7 @@ module virtualGatewayPublicIP_locks '.bicep/nested_lock.bicep' = [for (virtualGa
   name: '${uniqueString(deployment().name, location)}-vnetGWPip-Locks-${index}'
   params: {
     resourceId: virtualGatewayPublicIP[index].id
-    locks: locks
+    lock: lock
   }
   scope: resourceGroup(split(virtualGatewayPublicIP[index].id, '/')[2], split(virtualGatewayPublicIP[index].id, '/')[4])
 }]

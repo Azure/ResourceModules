@@ -5,7 +5,7 @@
         "name": {
             "value": "<<namePrefix>>-az-gw-vpn-001"
         },
-        "locks": {
+        "lock": {
             "value": [
                 "CanNotDelete"
             ]

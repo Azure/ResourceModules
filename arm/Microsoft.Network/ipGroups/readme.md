@@ -30,7 +30,7 @@ This module deploys an IP group.
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `ipAddresses` | array | `[]` |  | IpAddresses/IpAddressPrefixes in the IpGroups resource. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
-| `locks` | array | `[]` | `[CanNotDelete, ReadOnly]` | Specify the locks to apply. |
+| `lock` | string | `''` | `[, CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `tags` | object | `{object}` |  | Resource tags. |
 
@@ -160,10 +160,8 @@ tags: {
         "name": {
             "value": "iacsGroup-servers"
         },
-        "locks": {
-            "value": [
-                "CanNotDelete"
-            ]
+        "lock": {
+            "value": "CanNotDelete"
         },
         "ipAddresses": {
             "value": [
@@ -197,9 +195,7 @@ module ipGroups './Microsoft.Network/ipGroups/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-ipGroups'
   params: {
     name: 'iacsGroup-servers'
-    locks: [
-      'CanNotDelete'
-    ]
+    lock: 'CanNotDelete'
     ipAddresses: [
       '10.0.0.1'
       '10.0.0.2'

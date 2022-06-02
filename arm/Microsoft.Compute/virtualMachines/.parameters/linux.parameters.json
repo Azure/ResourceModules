@@ -5,7 +5,7 @@
         "name": {
             "value": "<<namePrefix>>-vm-linux-01"
         },
-        "locks": {
+        "lock": {
             "value": [
                 "CanNotDelete"
             ]

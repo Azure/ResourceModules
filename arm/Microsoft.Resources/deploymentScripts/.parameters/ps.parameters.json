@@ -5,7 +5,7 @@
         "name": {
             "value": "<<namePrefix>>-az-ds-ps-001"
         },
-        "locks": {
+        "lock": {
             "value": [
                 "CanNotDelete"
             ]

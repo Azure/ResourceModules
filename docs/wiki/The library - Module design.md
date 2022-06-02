@@ -146,7 +146,7 @@ resource <mainResource>_locks 'Microsoft.Authorization/locks@2017-04-01' = if (!
     notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: <mainResource>
-}]
+}
 ```
 
 </details>
@@ -317,7 +317,7 @@ module <mainResource>_privateEndpoints '../../Microsoft.Network/privateEndpoints
     subnetResourceId: privateEndpoint.subnetResourceId
     enableDefaultTelemetry: enableDefaultTelemetry
     location: reference(split(privateEndpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location
-    locks: contains(privateEndpoint, 'locks') ? privateEndpoint.locks : locks
+    lock: contains(privateEndpoint, 'lock') ? privateEndpoint.lock : lock
     privateDnsZoneGroups: contains(privateEndpoint, 'privateDnsZoneGroups') ? privateEndpoint.privateDnsZoneGroups : []
     roleAssignments: contains(privateEndpoint, 'roleAssignments') ? privateEndpoint.roleAssignments : []
     tags: contains(privateEndpoint, 'tags') ? privateEndpoint.tags : {}

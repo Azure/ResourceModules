@@ -77,7 +77,7 @@ The following resources are required to be able to deploy this resource.
 | `gracePeriod` | string | `'PT30M'` |  | The amount of time for which automatic repairs are suspended due to a state change on VM. The grace time starts after the state change has completed. This helps avoid premature or accidental repairs. The time duration should be specified in ISO 8601 format. The minimum allowed grace period is 30 minutes (PT30M). The maximum allowed grace period is 90 minutes (PT90M). |
 | `licenseType` | string | `''` | `[Windows_Client, Windows_Server, ]` | Specifies that the image or disk that is being used was licensed on-premises. This element is only used for images that contain the Windows Server operating system. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
-| `locks` | array | `[]` | `[CanNotDelete, ReadOnly]` | Specify the locks to apply. |
+| `lock` | string | `''` | `[, CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `maxBatchInstancePercent` | int | `20` |  | The maximum percent of total virtual machine instances that will be upgraded simultaneously by the rolling upgrade in one batch. As this is a maximum, unhealthy instances in previous or future batches can cause the percentage of instances in a batch to decrease to ensure higher reliability. |
 | `maxPriceForLowPriorityVm` | string | `''` |  | Specifies the maximum price you are willing to pay for a low priority VM/VMSS. This price is in US Dollars. |
 | `maxUnhealthyInstancePercent` | int | `20` |  | The maximum percentage of the total virtual machine instances in the scale set that can be simultaneously unhealthy, either as a result of being upgraded, or by being found in an unhealthy state by the virtual machine health checks before the rolling upgrade aborts. This constraint will be checked prior to starting any batch. |
@@ -1015,7 +1015,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
         "name": {
             "value": "<<namePrefix>>-scaleset-linux-001"
         },
-        "locks": {
+        "lock": {
             "value": [
                 "CanNotDelete"
             ]
@@ -1213,7 +1213,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
   name: '${uniqueString(deployment().name)}-virtualMachineScaleSets'
   params: {
     name: '<<namePrefix>>-scaleset-linux-001'
-    locks: [
+    lock: [
       'CanNotDelete'
     ]
     vmNamePrefix: 'vmsslinvm'
@@ -1482,7 +1482,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
         "name": {
             "value": "<<namePrefix>>-scaleset-win-001"
         },
-        "locks": {
+        "lock": {
             "value": [
                 "CanNotDelete"
             ]
@@ -1681,7 +1681,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
   name: '${uniqueString(deployment().name)}-virtualMachineScaleSets'
   params: {
     name: '<<namePrefix>>-scaleset-win-001'
-    locks: [
+    lock: [
       'CanNotDelete'
     ]
     vmNamePrefix: 'vmsswinvm'

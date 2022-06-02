@@ -235,7 +235,7 @@ module eventHubNamespace_eventHubs 'eventhubs/deploy.bicep' = [for (eventHub, in
     captureDescriptionSizeLimitInBytes: contains(eventHub, 'captureDescriptionSizeLimitInBytes') ? eventHub.captureDescriptionSizeLimitInBytes : 314572800
     captureDescriptionSkipEmptyArchives: contains(eventHub, 'captureDescriptionSkipEmptyArchives') ? eventHub.captureDescriptionSkipEmptyArchives : false
     consumerGroups: contains(eventHub, 'consumerGroups') ? eventHub.consumerGroups : []
-    locks: contains(eventHub, 'locks') ? eventHub.locks : locks
+    lock: contains(eventHub, 'lock') ? eventHub.lock : lock
     messageRetentionInDays: contains(eventHub, 'messageRetentionInDays') ? eventHub.messageRetentionInDays : 1
     partitionCount: contains(eventHub, 'partitionCount') ? eventHub.partitionCount : 2
     roleAssignments: contains(eventHub, 'roleAssignments') ? eventHub.roleAssignments : []
@@ -288,7 +288,7 @@ module eventHubNamespace_privateEndpoints '../../Microsoft.Network/privateEndpoi
     subnetResourceId: privateEndpoint.subnetResourceId
     enableDefaultTelemetry: enableDefaultTelemetry
     location: reference(split(privateEndpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location
-    locks: contains(privateEndpoint, 'locks') ? privateEndpoint.locks : locks
+    lock: contains(privateEndpoint, 'lock') ? privateEndpoint.lock : lock
     privateDnsZoneGroups: contains(privateEndpoint, 'privateDnsZoneGroups') ? privateEndpoint.privateDnsZoneGroups : []
     roleAssignments: contains(privateEndpoint, 'roleAssignments') ? privateEndpoint.roleAssignments : []
     tags: contains(privateEndpoint, 'tags') ? privateEndpoint.tags : {}

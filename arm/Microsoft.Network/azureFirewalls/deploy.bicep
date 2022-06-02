@@ -218,7 +218,7 @@ module publicIPAddress '.bicep/nested_publicIPAddress.bicep' = if (empty(azureFi
     diagnosticWorkspaceId: diagnosticWorkspaceId
     diagnosticEventHubAuthorizationRuleId: diagnosticEventHubAuthorizationRuleId
     diagnosticEventHubName: diagnosticEventHubName
-    locks: locks
+    lock: lock
     tags: tags
     zones: zones
   }

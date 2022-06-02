@@ -38,7 +38,7 @@ This module deploys an Azure virtual desktop workspace.
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
-| `locks` | array | `[]` | `[CanNotDelete, ReadOnly]` | Specify the locks to apply. |
+| `lock` | string | `''` | `[, CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalIds' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
 | `workspaceDescription` | string | `''` |  | The description of the Workspace to be created. |
@@ -170,10 +170,8 @@ tags: {
         "name": {
             "value": "<<namePrefix>>-az-avdws-x-001"
         },
-        "locks": {
-            "value": [
-                "CanNotDelete"
-            ]
+        "lock": {
+            "value": "CanNotDelete"
         },
         "location": {
             "value": "westeurope"
@@ -230,9 +228,7 @@ module workspaces './Microsoft.DesktopVirtualization/workspaces/deploy.bicep' = 
   name: '${uniqueString(deployment().name)}-workspaces'
   params: {
     name: '<<namePrefix>>-az-avdws-x-001'
-    locks: [
-      'CanNotDelete'
-    ]
+    lock: 'CanNotDelete'
     location: 'westeurope'
     appGroupResourceIds: [
       '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.DesktopVirtualization/applicationgroups/adp-<<namePrefix>>-az-avdag-x-001'

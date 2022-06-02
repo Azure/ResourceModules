@@ -5,7 +5,7 @@
         "name": {
             "value": "<<namePrefix>>-az-vnetgwc-x-001"
         },
-        "locks": {
+        "lock": {
             "value": [
                 "CanNotDelete"
             ]

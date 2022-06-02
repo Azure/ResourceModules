@@ -39,7 +39,7 @@ This template deploys a disk
 | `hyperVGeneration` | string | `'V2'` | `[V1, V2]` | The hypervisor generation of the Virtual Machine. Applicable to OS disks only. |
 | `imageReferenceId` | string | `''` |  | A relative uri containing either a Platform Image Repository or user image reference. |
 | `location` | string | `[resourceGroup().location]` |  | Resource location. |
-| `locks` | array | `[]` | `[CanNotDelete, ReadOnly]` | Specify the locks to apply. |
+| `lock` | string | `''` | `[, CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `logicalSectorSize` | int | `4096` |  | Logical sector size in bytes for Ultra disks. Supported values are 512 ad 4096. |
 | `maxShares` | int | `1` |  | The maximum number of VMs that can attach to the disk at the same time. Default value is 0. |
 | `networkAccessPolicy` | string | `'DenyAll'` | `[AllowAll, AllowPrivate, DenyAll]` | Policy for accessing the disk via network. |
@@ -377,10 +377,8 @@ module disks './Microsoft.Compute/disks/deploy.bicep' = {
         "name": {
             "value": "<<namePrefix>>-az-disk-x-001"
         },
-        "locks": {
-            "value": [
-                "CanNotDelete"
-            ]
+        "lock": {
+            "value": "CanNotDelete"
         },
         "sku": {
             "value": "UltraSSD_LRS"
@@ -429,9 +427,7 @@ module disks './Microsoft.Compute/disks/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-disks'
   params: {
     name: '<<namePrefix>>-az-disk-x-001'
-    locks: [
-      'CanNotDelete'
-    ]
+    lock: 'CanNotDelete'
     sku: 'UltraSSD_LRS'
     diskSizeGB: 128
     logicalSectorSize: 512

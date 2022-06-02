@@ -5,10 +5,8 @@
         "name": {
             "value": "<<namePrefix>>-az-sqlmi-x-002"
         },
-        "locks": {
-            "value": [
-                "CanNotDelete"
-            ]
+        "lock": {
+            "value": "CanNotDelete"
         },
         "administratorLogin": {
             "reference": {

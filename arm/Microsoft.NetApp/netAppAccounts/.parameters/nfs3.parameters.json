@@ -5,7 +5,7 @@
         "name": {
             "value": "<<namePrefix>>-az-anf-nfs3-001"
         },
-        "locks": {
+        "lock": {
             "value": [
                 "CanNotDelete"
             ]

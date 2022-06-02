@@ -36,7 +36,7 @@ This module deploys a deployment script.
 | `environmentVariables` | array | `[]` |  | The environment variables to pass over to the script. Must have a 'name' and a 'value' or a 'secretValue' property. |
 | `kind` | string | `'AzurePowerShell'` | `[AzurePowerShell, AzureCLI]` | Type of the script. AzurePowerShell, AzureCLI. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
-| `locks` | array | `[]` | `[CanNotDelete, ReadOnly]` | Specify the locks to apply. |
+| `lock` | string | `''` | `[, CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `primaryScriptUri` | string | `''` |  | Uri for the external script. This is the entry point for the external script. To run an internal script, use the scriptContent instead. |
 | `retentionInterval` | string | `'P1D'` |  | Interval for which the service retains the script resource after it reaches a terminal state. Resource will be deleted when this duration expires. Duration is based on ISO 8601 pattern (for example P7D means one week). |
 | `runOnce` | bool | `False` |  | When set to false, script will run every time the template is deployed. When set to true, the script will only run once. |
@@ -227,7 +227,7 @@ module deploymentScripts './Microsoft.Resources/deploymentScripts/deploy.bicep' 
         "name": {
             "value": "<<namePrefix>>-az-ds-ps-001"
         },
-        "locks": {
+        "lock": {
             "value": [
                 "CanNotDelete"
             ]
@@ -274,7 +274,7 @@ module deploymentScripts './Microsoft.Resources/deploymentScripts/deploy.bicep' 
   name: '${uniqueString(deployment().name)}-deploymentScripts'
   params: {
     name: '<<namePrefix>>-az-ds-ps-001'
-    locks: [
+    lock: [
       'CanNotDelete'
     ]
     userAssignedIdentities: {

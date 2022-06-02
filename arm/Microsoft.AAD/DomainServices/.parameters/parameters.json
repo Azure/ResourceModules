@@ -8,10 +8,8 @@
         "sku": {
             "value": "Standard"
         },
-        "locks": {
-            "value": [
-                "CanNotDelete"
-            ]
+        "lock": {
+            "value": "CanNotDelete"
         },
         "replicaSets": {
             "value": [

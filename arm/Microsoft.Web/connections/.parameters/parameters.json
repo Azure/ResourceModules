@@ -5,10 +5,8 @@
         "name": {
             "value": "azuremonitor"
         },
-        "locks": {
-            "value": [
-                "CanNotDelete"
-            ]
+        "lock": {
+            "value": "CanNotDelete"
         },
         "displayName": {
             "value": "azuremonitorlogs"

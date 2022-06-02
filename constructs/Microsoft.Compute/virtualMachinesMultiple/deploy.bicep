@@ -351,7 +351,7 @@ module virtualMachine '../../../arm/Microsoft.Compute/virtualMachines/deploy.bic
     extensionNetworkWatcherAgentConfig: extensionNetworkWatcherAgentConfig
     licenseType: licenseType
     location: location
-    locks: locks
+    lock: lock
     maxPriceForLowPriorityVm: maxPriceForLowPriorityVm
     monitoringWorkspaceId: monitoringWorkspaceId
     nicdiagnosticMetricsToEnable: nicdiagnosticMetricsToEnable

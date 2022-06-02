@@ -5,10 +5,8 @@
         "name": {
             "value": "<<namePrefix>>-az-evnsp-x-001"
         },
-        "locks": {
-            "value": [
-                "CanNotDelete"
-            ]
+        "lock": {
+            "value": "CanNotDelete"
         },
         "authorizationRules": {
             "value": [

@@ -5,10 +5,8 @@
         "name": {
             "value": "<<namePrefix>>-az-lga-x-001"
         },
-        "locks": {
-            "value": [
-                "CanNotDelete"
-            ]
+        "lock": {
+            "value": "CanNotDelete"
         },
         "tags": {
             "value": {}

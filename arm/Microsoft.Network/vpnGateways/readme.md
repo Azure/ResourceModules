@@ -35,7 +35,7 @@ This module deploys VPN Gateways.
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `isRoutingPreferenceInternet` | bool | `False` |  | Enable routing preference property for the public IP interface of the VPN gateway. |
 | `location` | string | `[resourceGroup().location]` |  | Location where all resources will be created. |
-| `locks` | array | `[]` | `[CanNotDelete, ReadOnly]` | Specify the locks to apply. |
+| `lock` | string | `''` | `[, CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `natRules` | _[natRules](natRules/readme.md)_ array | `[]` |  | List of all the NAT Rules to associate with the gateway. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
 | `vpnGatewayScaleUnit` | int | `2` |  | The scale unit for this VPN gateway. |
@@ -224,10 +224,8 @@ module vpnGateways './Microsoft.Network/vpnGateways/deploy.bicep' = {
         "name": {
             "value": "<<namePrefix>>-az-vpngw-x-001"
         },
-        "locks": {
-            "value": [
-                "CanNotDelete"
-            ]
+        "lock": {
+            "value": "CanNotDelete"
         },
         "virtualHubResourceId": {
             "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualHubs/<<namePrefix>>-az-vhub-x-001"
@@ -301,9 +299,7 @@ module vpnGateways './Microsoft.Network/vpnGateways/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-vpnGateways'
   params: {
     name: '<<namePrefix>>-az-vpngw-x-001'
-    locks: [
-      'CanNotDelete'
-    ]
+    lock: 'CanNotDelete'
     virtualHubResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualHubs/<<namePrefix>>-az-vhub-x-001'
     bgpSettings: {
       asn: 65515

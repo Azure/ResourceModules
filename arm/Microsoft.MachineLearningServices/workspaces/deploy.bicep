@@ -26,12 +26,13 @@ param associatedApplicationInsightsResourceId string
 @sys.description('Optional. The resource ID of the associated Container Registry.')
 param associatedContainerRegistryResourceId string = ''
 
-@sys.description('Optional. Specify the locks to apply.')
 @sys.allowed([
+  ''
   'CanNotDelete'
   'ReadOnly'
 ])
-param locks array = []
+@sys.description('Optional. Specify the type of lock.')
+param lock string = ''
 
 @sys.description('Optional. The flag to signal HBI data in the workspace and reduce diagnostic data collected by the service.')
 param hbiWorkspace bool = false
@@ -265,7 +266,7 @@ module workspace_privateEndpoints '../../Microsoft.Network/privateEndpoints/depl
     subnetResourceId: privateEndpoint.subnetResourceId
     enableDefaultTelemetry: enableDefaultTelemetry
     location: reference(split(privateEndpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location
-    locks: contains(privateEndpoint, 'locks') ? privateEndpoint.locks : locks
+    lock: contains(privateEndpoint, 'lock') ? privateEndpoint.lock : lock
     privateDnsZoneGroups: contains(privateEndpoint, 'privateDnsZoneGroups') ? privateEndpoint.privateDnsZoneGroups : []
     roleAssignments: contains(privateEndpoint, 'roleAssignments') ? privateEndpoint.roleAssignments : []
     tags: contains(privateEndpoint, 'tags') ? privateEndpoint.tags : {}

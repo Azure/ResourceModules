@@ -362,7 +362,7 @@ module virtualMachine_nic '.bicep/nested_networkInterface.bicep' = [for (nicConf
     dnsServers: contains(nicConfiguration, 'dnsServers') ? (!empty(nicConfiguration.dnsServers) ? nicConfiguration.dnsServers : []) : []
     networkSecurityGroupResourceId: contains(nicConfiguration, 'networkSecurityGroupResourceId') ? nicConfiguration.networkSecurityGroupResourceId : ''
     ipConfigurations: nicConfiguration.ipConfigurations
-    locks: locks
+    lock: lock
     diagnosticStorageAccountId: diagnosticStorageAccountId
     diagnosticLogsRetentionInDays: diagnosticLogsRetentionInDays
     diagnosticWorkspaceId: diagnosticWorkspaceId

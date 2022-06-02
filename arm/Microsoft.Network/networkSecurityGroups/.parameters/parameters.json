@@ -5,10 +5,8 @@
         "name": {
             "value": "<<namePrefix>>-az-nsg-x-001"
         },
-        "locks": {
-            "value": [
-                "CanNotDelete"
-            ]
+        "lock": {
+            "value": "CanNotDelete"
         },
         "securityRules": {
             "value": [

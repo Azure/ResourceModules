@@ -5,7 +5,7 @@
         "name": {
             "value": "<<namePrefix>>-scaleset-win-001"
         },
-        "locks": {
+        "lock": {
             "value": [
                 "CanNotDelete"
             ]

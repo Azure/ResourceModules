@@ -45,7 +45,7 @@ This module deploys an event hub namespace.
 | `eventHubs` | _[eventHubs](eventHubs/readme.md)_ array | `[]` |  | The event hubs to deploy into this namespace. |
 | `isAutoInflateEnabled` | bool | `False` |  | Switch to enable the Auto Inflate feature of Event Hub. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
-| `locks` | array | `[]` | `[CanNotDelete, ReadOnly]` | Specify the locks to apply. |
+| `lock` | string | `''` | `[, CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `maximumThroughputUnits` | int | `1` |  | Upper limit of throughput units when AutoInflate is enabled, value should be within 0 to 20 throughput units. |
 | `name` | string | `''` |  | The name of the event hub namespace. If no name is provided, then unique name will be created. |
 | `networkRuleSets` | _[networkRuleSets](networkRuleSets/readme.md)_ object | `{object}` |  | Networks ACLs, this object contains IPs/Subnets to whitelist or restrict access to private endpoints only. For security reasons, it is recommended to configure this object on the Namespace. |
@@ -327,10 +327,8 @@ module namespaces './Microsoft.EventHub/namespaces/deploy.bicep' = {
         "name": {
             "value": "<<namePrefix>>-az-evnsp-x-001"
         },
-        "locks": {
-            "value": [
-                "CanNotDelete"
-            ]
+        "lock": {
+            "value": "CanNotDelete"
         },
         "authorizationRules": {
             "value": [
@@ -481,9 +479,7 @@ module namespaces './Microsoft.EventHub/namespaces/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-namespaces'
   params: {
     name: '<<namePrefix>>-az-evnsp-x-001'
-    locks: [
-      'CanNotDelete'
-    ]
+    lock: 'CanNotDelete'
     authorizationRules: [
       {
         name: 'RootManageSharedAccessKey'

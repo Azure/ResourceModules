@@ -55,7 +55,7 @@ This module deploys Network ApplicationGateways.
 | `httpListeners` | array | `[]` |  | Http listeners of the application gateway resource. |
 | `loadDistributionPolicies` | array | `[]` |  | Load distribution policies of the application gateway resource. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
-| `locks` | array | `[]` | `[CanNotDelete, ReadOnly]` | Specify the locks to apply. |
+| `lock` | string | `''` | `[, CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `privateLinkConfigurations` | array | `[]` |  | PrivateLink configurations on application gateway. |
 | `probes` | array | `[]` |  | Probes of the application gateway resource. |
 | `redirectConfigurations` | array | `[]` |  | Redirect configurations of the application gateway resource. |
@@ -236,10 +236,8 @@ userAssignedIdentities: {
         "name": {
             "value": "<<namePrefix>>-az-apgw-x-001"
         },
-        "locks": {
-            "value": [
-                "CanNotDelete"
-            ]
+        "lock": {
+            "value": "CanNotDelete"
         },
         "userAssignedIdentities": {
             "value": {
@@ -612,9 +610,7 @@ module applicationGateways './Microsoft.Network/applicationGateways/deploy.bicep
   name: '${uniqueString(deployment().name)}-applicationGateways'
   params: {
     name: '<<namePrefix>>-az-apgw-x-001'
-    locks: [
-      'CanNotDelete'
-    ]
+    lock: 'CanNotDelete'
     userAssignedIdentities: {
       '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
     }

@@ -35,7 +35,7 @@ This module deploys a VPN Site.
 | `ipAddress` | string | `''` |  | The IP-address for the VPN-site. Note: This is a deprecated property, please use the corresponding VpnSiteLinks property instead. |
 | `isSecuritySite` | bool | `False` |  | IsSecuritySite flag. |
 | `location` | string | `[resourceGroup().location]` |  | Location where all resources will be created. |
-| `locks` | array | `[]` | `[CanNotDelete, ReadOnly]` | Specify the locks to apply. |
+| `lock` | string | `''` | `[, CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `o365Policy` | object | `{object}` |  | The Office365 breakout policy. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
@@ -384,10 +384,8 @@ module vpnSites './Microsoft.Network/vpnSites/deploy.bicep' = {
         "name": {
             "value": "<<namePrefix>>-az-vSite-x-001"
         },
-        "locks": {
-            "value": [
-                "CanNotDelete"
-            ]
+        "lock": {
+            "value": "CanNotDelete"
         },
         "tags": {
             "value": {
@@ -470,9 +468,7 @@ module vpnSites './Microsoft.Network/vpnSites/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-vpnSites'
   params: {
     name: '<<namePrefix>>-az-vSite-x-001'
-    locks: [
-      'CanNotDelete'
-    ]
+    lock: 'CanNotDelete'
     tags: {
       tagA: 'valueA'
       tagB: 'valueB'
