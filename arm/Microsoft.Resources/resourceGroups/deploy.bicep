@@ -43,7 +43,7 @@ resource resourceGroup 'Microsoft.Resources/resourceGroups@2019-05-01' = {
   properties: {}
 }
 
-module resourceGroup_locks '.bicep/nested_lock.bicep' = if (!empty(lock)) {
+module resourceGroup_lock '.bicep/nested_lock.bicep' = if (!empty(lock)) {
   name: '${uniqueString(deployment().name, location)}-RG-${lock}-Lock'
   params: {
     level: any(lock)

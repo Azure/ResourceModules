@@ -419,7 +419,7 @@ module subscriptions_resource 'subscriptions/deploy.bicep' = [for (subscription,
   }
 }]
 
-resource apiManagementService_locks 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource apiManagementService_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
   name: '${apiManagementService.name}-${lock}-lock'
   properties: {
     level: any(lock)

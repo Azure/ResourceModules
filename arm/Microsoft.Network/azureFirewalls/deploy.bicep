@@ -245,7 +245,7 @@ resource azureFirewall 'Microsoft.Network/azureFirewalls@2021-05-01' = {
   }
 }
 
-resource azureFirewall_locks 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource azureFirewall_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
   name: '${azureFirewall.name}-${lock}-lock'
   properties: {
     level: any(lock)

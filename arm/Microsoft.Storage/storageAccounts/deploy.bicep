@@ -228,7 +228,7 @@ resource storageAccount_diagnosticSettings 'Microsoft.Insights/diagnosticSetting
   scope: storageAccount
 }
 
-resource storageAccount_locks 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource storageAccount_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
   name: '${storageAccount.name}-${lock}-lock'
   properties: {
     level: any(lock)

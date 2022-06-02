@@ -68,7 +68,7 @@ resource vpnGateway 'Microsoft.Network/vpnGateways@2021-05-01' = {
   }
 }
 
-resource vpnGateway_locks 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource vpnGateway_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
   name: '${vpnGateway.name}-${lock}-lock'
   properties: {
     level: any(lock)

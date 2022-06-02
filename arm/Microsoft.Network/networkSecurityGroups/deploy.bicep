@@ -129,7 +129,7 @@ module networkSecurityGroup_securityRules 'securityRules/deploy.bicep' = [for (s
   }
 }]
 
-resource networkSecurityGroup_locks 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource networkSecurityGroup_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
   name: '${networkSecurityGroup.name}-${lock}-lock'
   properties: {
     level: any(lock)

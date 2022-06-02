@@ -186,7 +186,7 @@ resource logicApp 'Microsoft.Logic/workflows@2019-05-01' = {
   }
 }
 
-resource logicApp_locks 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource logicApp_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
   name: '${logicApp.name}-${lock}-lock'
   properties: {
     level: any(lock)

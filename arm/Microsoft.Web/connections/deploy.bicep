@@ -73,7 +73,7 @@ resource connection 'Microsoft.Web/connections@2016-06-01' = {
   }
 }
 
-resource connection_locks 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource connection_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
   name: '${connection.name}-${lock}-lock'
   properties: {
     level: any(lock)

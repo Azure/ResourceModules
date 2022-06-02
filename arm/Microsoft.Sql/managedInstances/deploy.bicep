@@ -248,7 +248,7 @@ resource managedInstance 'Microsoft.Sql/managedInstances@2021-05-01-preview' = {
   }
 }
 
-resource managedInstance_locks 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource managedInstance_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
   name: '${managedInstance.name}-${lock}-lock'
   properties: {
     level: any(lock)

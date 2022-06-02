@@ -135,7 +135,7 @@ resource networkInterface_diagnosticSettings 'Microsoft.Insights/diagnosticSetti
   scope: networkInterface
 }
 
-resource networkInterface_locks 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource networkInterface_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
   name: '${networkInterface.name}-${lock}-lock'
   properties: {
     level: any(lock)

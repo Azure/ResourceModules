@@ -218,7 +218,7 @@ resource databaseAccount 'Microsoft.DocumentDB/databaseAccounts@2021-06-15' = {
   properties: databaseAccount_properties
 }
 
-resource databaseAccount_locks 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource databaseAccount_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
   name: '${databaseAccount.name}-${lock}-lock'
   properties: {
     level: any(lock)

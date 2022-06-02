@@ -167,7 +167,7 @@ resource disk 'Microsoft.Compute/disks@2021-08-01' = {
   }
 }
 
-resource disk_locks 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource disk_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
   name: '${disk.name}-${lock}-lock'
   properties: {
     level: any(lock)

@@ -61,7 +61,7 @@ resource virtualWan 'Microsoft.Network/virtualWans@2021-05-01' = {
   }
 }
 
-resource virtualWan_locks 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource virtualWan_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
   name: '${virtualWan.name}-${lock}-lock'
   properties: {
     level: any(lock)

@@ -77,7 +77,7 @@ resource netAppAccount 'Microsoft.NetApp/netAppAccounts@2021-04-01' = {
   }
 }
 
-resource netAppAccount_locks 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource netAppAccount_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
   name: '${netAppAccount.name}-${lock}-lock'
   properties: {
     level: any(lock)

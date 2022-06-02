@@ -188,7 +188,7 @@ resource eventHubNamespace 'Microsoft.EventHub/namespaces@2021-11-01' = {
   }
 }
 
-resource eventHubNamespace_locks 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource eventHubNamespace_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
   name: '${eventHubNamespace.name}-${lock}-lock'
   properties: {
     level: any(lock)

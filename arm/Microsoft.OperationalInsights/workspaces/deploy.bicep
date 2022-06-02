@@ -246,7 +246,7 @@ module logAnalyticsWorkspace_solutions '.bicep/nested_solutions.bicep' = [for (g
   }
 }]
 
-resource logAnalyticsWorkspace_locks 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource logAnalyticsWorkspace_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
   name: '${logAnalyticsWorkspace.name}-${lock}-lock'
   properties: {
     level: any(lock)

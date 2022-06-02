@@ -40,7 +40,7 @@ resource applicationSecurityGroup 'Microsoft.Network/applicationSecurityGroups@2
   properties: {}
 }
 
-resource applicationSecurityGroup_locks 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource applicationSecurityGroup_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
   name: '${applicationSecurityGroup.name}-${lock}-lock'
   properties: {
     level: any(lock)

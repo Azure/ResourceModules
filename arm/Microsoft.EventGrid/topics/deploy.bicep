@@ -109,7 +109,7 @@ resource topic 'Microsoft.EventGrid/topics@2020-06-01' = {
   }
 }
 
-resource topic_locks 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource topic_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
   name: '${topic.name}-${lock}-lock'
   properties: {
     level: any(lock)

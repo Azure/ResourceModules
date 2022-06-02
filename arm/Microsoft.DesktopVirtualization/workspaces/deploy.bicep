@@ -96,7 +96,7 @@ resource workspace 'Microsoft.DesktopVirtualization/workspaces@2021-07-12' = {
   }
 }
 
-resource workspace_locks 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource workspace_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
   name: '${workspace.name}-${lock}-lock'
   properties: {
     level: any(lock)

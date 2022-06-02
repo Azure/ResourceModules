@@ -46,7 +46,7 @@ resource ipGroup 'Microsoft.Network/ipGroups@2021-05-01' = {
   }
 }
 
-resource ipGroup_locks 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource ipGroup_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
   name: '${ipGroup.name}-${lock}-lock'
   properties: {
     level: any(lock)

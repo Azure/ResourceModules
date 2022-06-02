@@ -184,7 +184,7 @@ module dataFactory_integrationRuntime 'integrationRuntime/deploy.bicep' = if (!e
   ]
 }
 
-resource dataFactory_locks 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource dataFactory_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
   name: '${dataFactory.name}-${lock}-lock'
   properties: {
     level: any(lock)

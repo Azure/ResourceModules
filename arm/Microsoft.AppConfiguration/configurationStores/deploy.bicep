@@ -155,7 +155,7 @@ resource configurationStore 'Microsoft.AppConfiguration/configurationStores@2021
   }
 }
 
-resource configurationStore_locks 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource configurationStore_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
   name: '${configurationStore.name}-${lock}-lock'
   properties: {
     level: any(lock)

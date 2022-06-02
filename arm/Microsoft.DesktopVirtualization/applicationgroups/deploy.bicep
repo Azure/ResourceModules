@@ -112,7 +112,7 @@ resource appGroup 'Microsoft.DesktopVirtualization/applicationgroups@2021-07-12'
   }
 }
 
-resource appGroup_locks 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource appGroup_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
   name: '${appGroup.name}-${lock}-lock'
   properties: {
     level: any(lock)

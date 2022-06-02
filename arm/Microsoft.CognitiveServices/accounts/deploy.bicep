@@ -222,7 +222,7 @@ resource cognitiveServices 'Microsoft.CognitiveServices/accounts@2021-10-01' = {
   }
 }
 
-resource cognitiveServices_locks 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource cognitiveServices_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
   name: '${cognitiveServices.name}-${lock}-lock'
   properties: {
     level: any(lock)

@@ -638,7 +638,7 @@ module virtualMachine_backup '../../Microsoft.RecoveryServices/vaults/protection
   ]
 }
 
-resource virtualMachine_locks 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource virtualMachine_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
   name: '${virtualMachine.name}-${lock}-lock'
   properties: {
     level: any(lock)

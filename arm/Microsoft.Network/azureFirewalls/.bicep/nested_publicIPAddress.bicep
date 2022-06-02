@@ -118,7 +118,7 @@ resource publicIpAddress 'Microsoft.Network/publicIPAddresses@2021-05-01' = {
   zones: length(zones) == 0 ? null : zones
 }
 
-resource publicIpAddress_locks 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource publicIpAddress_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
   name: '${publicIpAddress.name}-${lock}-lock'
   properties: {
     level: any(lock)

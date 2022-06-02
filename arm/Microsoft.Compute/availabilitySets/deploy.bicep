@@ -64,7 +64,7 @@ resource availabilitySet 'Microsoft.Compute/availabilitySets@2021-07-01' = {
   }
 }
 
-resource availabilitySet_locks 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource availabilitySet_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
   name: '${availabilitySet.name}-${lock}-lock'
   properties: {
     level: any(lock)

@@ -72,7 +72,7 @@ resource localNetworkGateway 'Microsoft.Network/localNetworkGateways@2021-08-01'
   }
 }
 
-resource localNetworkGateway_locks 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource localNetworkGateway_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
   name: '${localNetworkGateway.name}-${lock}-lock'
   properties: {
     level: any(lock)

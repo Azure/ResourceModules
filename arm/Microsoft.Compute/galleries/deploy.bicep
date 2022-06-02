@@ -52,7 +52,7 @@ resource gallery 'Microsoft.Compute/galleries@2020-09-30' = {
   }
 }
 
-resource gallery_locks 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource gallery_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
   name: '${gallery.name}-${lock}-lock'
   properties: {
     level: any(lock)

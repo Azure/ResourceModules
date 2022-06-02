@@ -533,7 +533,7 @@ module managedCluster_agentPools 'agentPools/deploy.bicep' = [for (agentPool, in
   }
 }]
 
-resource managedCluster_locks 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource managedCluster_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
   name: '${managedCluster.name}-${lock}-lock'
   properties: {
     level: any(lock)

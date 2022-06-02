@@ -118,7 +118,7 @@ resource systemTopic 'Microsoft.EventGrid/systemTopics@2021-12-01' = {
   }
 }
 
-resource systemTopic_locks 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource systemTopic_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
   name: '${systemTopic.name}-${lock}-lock'
   properties: {
     level: any(lock)

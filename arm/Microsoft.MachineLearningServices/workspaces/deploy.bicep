@@ -233,7 +233,7 @@ module workspace_computes 'computes/deploy.bicep' = [for compute in computes: {
   }
 }]
 
-resource workspace_locks 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource workspace_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
   name: '${workspace.name}-${lock}-lock'
   properties: {
     level: any(lock)

@@ -320,7 +320,7 @@ resource applicationGateway 'Microsoft.Network/applicationGateways@2021-05-01' =
   zones: zones
 }
 
-resource applicationGateway_locks 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource applicationGateway_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
   name: '${applicationGateway.name}-${lock}-lock'
   properties: {
     level: any(lock)

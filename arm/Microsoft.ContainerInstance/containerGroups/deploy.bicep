@@ -111,7 +111,7 @@ resource containergroup 'Microsoft.ContainerInstance/containerGroups@2021-03-01'
   }
 }
 
-resource containergroup_locks 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource containergroup_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
   name: '${containergroup.name}-${lock}-lock'
   properties: {
     level: any(lock)

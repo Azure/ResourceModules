@@ -135,7 +135,7 @@ resource frontDoor 'Microsoft.Network/frontDoors@2020-05-01' = {
   }
 }
 
-resource frontDoor_locks 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource frontDoor_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
   name: '${frontDoor.name}-${lock}-lock'
   properties: {
     level: any(lock)

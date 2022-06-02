@@ -155,7 +155,7 @@ resource imageTemplate 'Microsoft.VirtualMachineImages/imageTemplates@2020-02-14
   }
 }
 
-resource imageTemplate_locks 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource imageTemplate_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
   name: '${imageTemplate.name}-${lock}-lock'
   properties: {
     level: any(lock)

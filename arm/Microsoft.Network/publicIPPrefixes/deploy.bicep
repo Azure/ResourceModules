@@ -52,7 +52,7 @@ resource publicIpPrefix 'Microsoft.Network/publicIPPrefixes@2021-05-01' = {
   }
 }
 
-resource publicIpPrefix_locks 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource publicIpPrefix_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
   name: '${publicIpPrefix.name}-${lock}-lock'
   properties: {
     level: any(lock)

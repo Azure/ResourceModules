@@ -49,7 +49,7 @@ resource proximityPlacementGroup 'Microsoft.Compute/proximityPlacementGroups@202
   }
 }
 
-resource proximityPlacementGroup_locks 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource proximityPlacementGroup_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
   name: '${proximityPlacementGroup.name}-${lock}-lock'
   properties: {
     level: any(lock)

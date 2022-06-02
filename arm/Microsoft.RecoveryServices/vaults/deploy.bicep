@@ -239,7 +239,7 @@ module rsv_backupConfig 'backupConfig/deploy.bicep' = if (!empty(backupConfig)) 
   }
 }
 
-resource rsv_locks 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource rsv_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
   name: '${rsv.name}-${lock}-lock'
   properties: {
     level: any(lock)

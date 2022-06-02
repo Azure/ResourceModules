@@ -117,7 +117,7 @@ resource deploymentScript 'Microsoft.Resources/deploymentScripts@2020-10-01' = {
   }
 }
 
-resource deploymentScript_locks 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource deploymentScript_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
   name: '${deploymentScript.name}-${lock}-lock'
   properties: {
     level: any(lock)

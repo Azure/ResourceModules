@@ -41,7 +41,7 @@ resource ddosProtectionPlan 'Microsoft.Network/ddosProtectionPlans@2021-05-01' =
   properties: {}
 }
 
-resource ddosProtectionPlan_locks 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource ddosProtectionPlan_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
   name: '${ddosProtectionPlan.name}-${lock}-lock'
   properties: {
     level: any(lock)

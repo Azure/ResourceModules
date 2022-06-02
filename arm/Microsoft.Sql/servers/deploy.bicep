@@ -93,7 +93,7 @@ resource server 'Microsoft.Sql/servers@2021-05-01-preview' = {
   }
 }
 
-resource server_locks 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource server_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
   name: '${server.name}-${lock}-lock'
   properties: {
     level: any(lock)

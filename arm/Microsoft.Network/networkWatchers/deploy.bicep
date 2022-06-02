@@ -49,7 +49,7 @@ resource networkWatcher 'Microsoft.Network/networkWatchers@2021-05-01' = {
   properties: {}
 }
 
-resource networkWatcher_locks 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource networkWatcher_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
   name: '${networkWatcher.name}-${lock}-lock'
   properties: {
     level: any(lock)

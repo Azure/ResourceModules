@@ -225,7 +225,7 @@ module loadBalancer_inboundNATRules 'inboundNatRules/deploy.bicep' = [for (inbou
   ]
 }]
 
-resource loadBalancer_locks 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource loadBalancer_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
   name: '${loadBalancer.name}-${lock}-lock'
   properties: {
     level: any(lock)

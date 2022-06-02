@@ -118,7 +118,7 @@ resource staticSite 'Microsoft.Web/staticSites@2021-03-01' = {
   }
 }
 
-resource staticSite_locks 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource staticSite_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
   name: '${staticSite.name}-${lock}-lock'
   properties: {
     level: any(lock)

@@ -182,7 +182,7 @@ resource batchAccount 'Microsoft.Batch/batchAccounts@2022-01-01' = {
   }
 }
 
-resource batchAccount_locks 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource batchAccount_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
   name: '${batchAccount.name}-${lock}-lock'
   properties: {
     level: any(lock)

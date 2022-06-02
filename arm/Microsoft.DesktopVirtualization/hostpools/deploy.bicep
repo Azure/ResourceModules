@@ -165,7 +165,7 @@ resource hostPool 'Microsoft.DesktopVirtualization/hostpools@2021-07-12' = {
   }
 }
 
-resource hostPool_locks 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource hostPool_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
   name: '${hostPool.name}-${lock}-lock'
   properties: {
     level: any(lock)

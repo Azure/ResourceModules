@@ -84,7 +84,7 @@ module privateEndpoint_privateDnsZoneGroups 'privateDnsZoneGroups/deploy.bicep' 
   }
 }]
 
-resource privateEndpoint_locks 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource privateEndpoint_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
   name: '${privateEndpoint.name}-${lock}-lock'
   properties: {
     level: any(lock)

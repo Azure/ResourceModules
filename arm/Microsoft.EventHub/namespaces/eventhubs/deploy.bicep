@@ -146,7 +146,7 @@ resource eventHub 'Microsoft.EventHub/namespaces/eventhubs@2021-11-01' = {
   properties: captureDescriptionEnabled ? eventHubPropertiesWithCapture : eventHubPropertiesSimple
 }
 
-resource eventHub_locks 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource eventHub_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
   name: '${eventHub.name}-${lock}-lock'
   properties: {
     level: any(lock)

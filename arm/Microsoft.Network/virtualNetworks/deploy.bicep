@@ -213,7 +213,7 @@ module virtualNetwork_peering_remote 'virtualNetworkPeerings/deploy.bicep' = [fo
   }
 }]
 
-resource virtualNetwork_locks 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource virtualNetwork_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
   name: '${virtualNetwork.name}-${lock}-lock'
   properties: {
     level: any(lock)

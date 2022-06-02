@@ -280,7 +280,7 @@ resource serviceFabricCluster 'Microsoft.ServiceFabric/clusters@2021-06-01' = {
 }
 
 // Service Fabric cluster resource lock
-resource serviceFabricCluster_locks 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+resource serviceFabricCluster_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
   name: '${serviceFabricCluster.name}-${lock}-lock'
   properties: {
     level: any(lock)
