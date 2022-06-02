@@ -260,9 +260,6 @@ param roleAssignments array = []
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
-param enableDefaultTelemetry bool = true
-
 @description('Generated. Do not provide a value! This date value is used to generate a registration token.')
 param baseTime string = utcNow('u')
 
@@ -295,7 +292,7 @@ param additionalUnattendContent array = []
 param winRM object = {}
 
 @description('Optional. Any VM configuration profile assignments.')
-param configurationProfileAssignments array = []
+param configurationProfileAssignments string = ''
 
 var vmGeneratedNames = [for instance in range(0, vmNumberOfInstances): '${vmNamePrefix}${padLeft((instance + vmInitialNumber), 3, '0')}']
 
@@ -324,7 +321,7 @@ module virtualMachine '../../../arm/Microsoft.Compute/virtualMachines/deploy.bic
     bootDiagnosticStorageAccountName: bootDiagnosticStorageAccountName
     bootDiagnosticStorageAccountUri: bootDiagnosticStorageAccountUri
     certificatesToBeInstalled: certificatesToBeInstalled
-    configurationProfileAssignments: configurationProfileAssignments
+    configurationProfile: configurationProfileAssignments
     customData: customData
     dataDisks: dataDisks
     dedicatedHostId: dedicatedHostId
