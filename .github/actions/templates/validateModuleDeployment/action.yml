@@ -76,6 +76,40 @@ outputs:
 runs:
   using: 'composite'
   steps:
+    # [Setup] task(s)
+    # ---------------
+    - name: 'Setup agent'
+      shell: pwsh
+      run: |
+        # Grouping task logs
+        Write-Output "::group::Setup agent"
+
+        # Load used functions
+        . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
+
+        # Define PS modules to install on the runner
+        $Modules = @(
+            @{ Name = 'Az.Accounts' },
+            @{ Name = 'Az.Resources' }
+        )
+
+        # Additional PS modules need to be installed for the removal step in case it is enabled
+        if ('${{ inputs.removeDeployment}}' -eq 'true') {
+          $Modules += @(
+            @{ Name = 'Az.CognitiveServices' },
+            @{ Name = 'Az.Compute' },
+            @{ Name = 'Az.KeyVault' },
+            @{ Name = 'Az.Monitor' },
+            @{ Name = 'Az.OperationalInsights' },
+            @{ Name = 'Az.RecoveryServices' }
+          )
+        }
+
+        # Set agent up
+        Set-EnvironmentOnAgent -PSModules $Modules
+
+        Write-Output "::endgroup::"
+
 
     - name: Azure Login
       uses: Azure/login@v1
