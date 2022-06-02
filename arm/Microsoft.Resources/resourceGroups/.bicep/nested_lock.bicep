@@ -5,7 +5,7 @@ param name string = '${level}-lock'
   'CanNotDelete'
   'ReadOnly'
 ])
-@description('Optional. Set lock level.')
+@description('Required. Set lock level.')
 param level string
 
 @description('Optional. The decription attached to the lock.')
