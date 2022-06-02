@@ -11,6 +11,9 @@ Mandatory. The resourceID of the resource to remove
 .PARAMETER Type
 Mandatory. The type of the resource to remove
 
+.EXAMPLE
+Invoke-ResourceRemoval -Type 'Microsoft.Insights/diagnosticSettings' -ResourceId '/subscriptions/.../resourceGroups/validation-rg/providers/Microsoft.Network/networkInterfaces/sxx-vm-linux-001-nic-01/providers/Microsoft.Insights/diagnosticSettings/sxx-vm-linux-001-nic-01-diagnosticSettings'
+
 Remove the resource 'sxx-vm-linux-001-nic-01-diagnosticSettings' of type 'Microsoft.Insights/diagnosticSettings' from resource '/subscriptions/.../resourceGroups/validation-rg/providers/Microsoft.Network/networkInterfaces/sxx-vm-linux-001-nic-01'
 #>
 function Invoke-ResourceRemoval {
@@ -107,9 +110,6 @@ function Invoke-ResourceRemoval {
         ### CODE LOCATION: Add custom removal action here
         Default {
             $null = Remove-AzResource -ResourceId $resourceId -Force -ErrorAction 'Stop'
-        }
-    }
-}
         }
     }
 }
