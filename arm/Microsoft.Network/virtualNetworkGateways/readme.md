@@ -371,9 +371,7 @@ module virtualNetworkGateways './Microsoft.Network/virtualNetworkGateways/deploy
             "value": "<<namePrefix>>-az-gw-vpn-001"
         },
         "lock": {
-            "value": [
-                "CanNotDelete"
-            ]
+            "value": "CanNotDelete"
         },
         "domainNameLabel": {
             "value": [
@@ -441,9 +439,7 @@ module virtualNetworkGateways './Microsoft.Network/virtualNetworkGateways/deploy
   name: '${uniqueString(deployment().name)}-virtualNetworkGateways'
   params: {
     name: '<<namePrefix>>-az-gw-vpn-001'
-    lock: [
-      'CanNotDelete'
-    ]
+    lock: 'CanNotDelete'
     domainNameLabel: [
       '<<namePrefix>>-az-gw-vpn-dm-001'
     ]

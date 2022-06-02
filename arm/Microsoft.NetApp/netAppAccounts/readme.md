@@ -205,9 +205,7 @@ module netAppAccounts './Microsoft.NetApp/netAppAccounts/deploy.bicep' = {
             "value": "<<namePrefix>>-az-anf-nfs3-001"
         },
         "lock": {
-            "value": [
-                "CanNotDelete"
-            ]
+            "value": "CanNotDelete"
         },
         "capacityPools": {
             "value": [
@@ -312,9 +310,7 @@ module netAppAccounts './Microsoft.NetApp/netAppAccounts/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-netAppAccounts'
   params: {
     name: '<<namePrefix>>-az-anf-nfs3-001'
-    lock: [
-      'CanNotDelete'
-    ]
+    lock: 'CanNotDelete'
     capacityPools: [
       {
         name: '<<namePrefix>>-az-anfcp-x-001'

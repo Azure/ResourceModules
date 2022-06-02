@@ -6,9 +6,7 @@
             "value": "<<namePrefix>>-az-ds-ps-001"
         },
         "lock": {
-            "value": [
-                "CanNotDelete"
-            ]
+            "value": "CanNotDelete"
         },
         "userAssignedIdentities": {
             "value": {

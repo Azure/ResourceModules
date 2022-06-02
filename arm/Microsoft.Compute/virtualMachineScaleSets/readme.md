@@ -1016,9 +1016,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
             "value": "<<namePrefix>>-scaleset-linux-001"
         },
         "lock": {
-            "value": [
-                "CanNotDelete"
-            ]
+            "value": "CanNotDelete"
         },
         "vmNamePrefix": {
             "value": "vmsslinvm"
@@ -1213,9 +1211,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
   name: '${uniqueString(deployment().name)}-virtualMachineScaleSets'
   params: {
     name: '<<namePrefix>>-scaleset-linux-001'
-    lock: [
-      'CanNotDelete'
-    ]
+    lock: 'CanNotDelete'
     vmNamePrefix: 'vmsslinvm'
     skuName: 'Standard_B2s'
     skuCapacity: 1
@@ -1483,9 +1479,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
             "value": "<<namePrefix>>-scaleset-win-001"
         },
         "lock": {
-            "value": [
-                "CanNotDelete"
-            ]
+            "value": "CanNotDelete"
         },
         "vmNamePrefix": {
             "value": "vmsswinvm"
@@ -1681,9 +1675,7 @@ module virtualMachineScaleSets './Microsoft.Compute/virtualMachineScaleSets/depl
   name: '${uniqueString(deployment().name)}-virtualMachineScaleSets'
   params: {
     name: '<<namePrefix>>-scaleset-win-001'
-    lock: [
-      'CanNotDelete'
-    ]
+    lock: 'CanNotDelete'
     vmNamePrefix: 'vmsswinvm'
     skuName: 'Standard_B2s'
     skuCapacity: 1

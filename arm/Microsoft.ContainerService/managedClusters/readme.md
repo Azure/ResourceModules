@@ -373,9 +373,7 @@ userAssignedIdentities: {
             "value": "<<namePrefix>>-az-aks-azure-001"
         },
         "lock": {
-            "value": [
-                "CanNotDelete"
-            ]
+            "value": "CanNotDelete"
         },
         "primaryAgentPoolProfile": {
             "value": [
@@ -501,9 +499,7 @@ module managedClusters './Microsoft.ContainerService/managedClusters/deploy.bice
   name: '${uniqueString(deployment().name)}-managedClusters'
   params: {
     name: '<<namePrefix>>-az-aks-azure-001'
-    lock: [
-      'CanNotDelete'
-    ]
+    lock: 'CanNotDelete'
     primaryAgentPoolProfile: [
       {
         name: 'systempool'

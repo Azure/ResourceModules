@@ -1267,9 +1267,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
             "value": "<<namePrefix>>-vm-linux-01"
         },
         "lock": {
-            "value": [
-                "CanNotDelete"
-            ]
+            "value": "CanNotDelete"
         },
         "systemAssignedIdentity": {
             "value": true
@@ -1493,9 +1491,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-virtualMachines'
   params: {
     name: '<<namePrefix>>-vm-linux-01'
-    lock: [
-      'CanNotDelete'
-    ]
+    lock: 'CanNotDelete'
     systemAssignedIdentity: true
     userAssignedIdentities: {
       '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
@@ -1895,9 +1891,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
             "value": "<<namePrefix>>-vm-win-01"
         },
         "lock": {
-            "value": [
-                "CanNotDelete"
-            ]
+            "value": "CanNotDelete"
         },
         "encryptionAtHost": {
             "value": false
@@ -2143,9 +2137,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-virtualMachines'
   params: {
     name: '<<namePrefix>>-vm-win-01'
-    lock: [
-      'CanNotDelete'
-    ]
+    lock: 'CanNotDelete'
     encryptionAtHost: false
     imageReference: {
       publisher: 'MicrosoftWindowsServer'

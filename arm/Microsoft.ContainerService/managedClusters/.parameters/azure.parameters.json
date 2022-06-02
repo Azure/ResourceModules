@@ -6,9 +6,7 @@
             "value": "<<namePrefix>>-az-aks-azure-001"
         },
         "lock": {
-            "value": [
-                "CanNotDelete"
-            ]
+            "value": "CanNotDelete"
         },
         "primaryAgentPoolProfile": {
             "value": [

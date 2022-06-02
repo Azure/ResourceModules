@@ -6,9 +6,7 @@
             "value": "<<namePrefix>>-vm-linux-01"
         },
         "lock": {
-            "value": [
-                "CanNotDelete"
-            ]
+            "value": "CanNotDelete"
         },
         "systemAssignedIdentity": {
             "value": true

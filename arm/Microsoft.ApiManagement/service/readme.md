@@ -283,9 +283,7 @@ userAssignedIdentities: {
             "value": "<<namePrefix>>-az-apim-max-001"
         },
         "lock": {
-            "value": [
-                "CanNotDelete"
-            ]
+            "value": "CanNotDelete"
         },
         "publisherEmail": {
             "value": "apimgmt-noreply@mail.windowsazure.com"
@@ -468,9 +466,7 @@ module service './Microsoft.ApiManagement/service/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-service'
   params: {
     name: '<<namePrefix>>-az-apim-max-001'
-    lock: [
-      'CanNotDelete'
-    ]
+    lock: 'CanNotDelete'
     publisherEmail: 'apimgmt-noreply@mail.windowsazure.com'
     publisherName: '<<namePrefix>>-az-amorg-x-001'
     apis: [

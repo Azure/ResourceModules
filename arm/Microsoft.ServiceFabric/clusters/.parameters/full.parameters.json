@@ -6,9 +6,7 @@
             "value": "<<namePrefix>>-az-sfc-full-001"
         },
         "lock": {
-            "value": [
-                "CanNotDelete"
-            ]
+            "value": "CanNotDelete"
         },
         "tags": {
             "value": {

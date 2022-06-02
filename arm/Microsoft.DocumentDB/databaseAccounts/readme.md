@@ -949,9 +949,7 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
             "value": "<<namePrefix>>-az-cdb-plain-001"
         },
         "lock": {
-            "value": [
-                "CanNotDelete"
-            ]
+            "value": "CanNotDelete"
         },
         "locations": {
             "value": [
@@ -1008,9 +1006,7 @@ module databaseAccounts './Microsoft.DocumentDB/databaseAccounts/deploy.bicep' =
   name: '${uniqueString(deployment().name)}-databaseAccounts'
   params: {
     name: '<<namePrefix>>-az-cdb-plain-001'
-    lock: [
-      'CanNotDelete'
-    ]
+    lock: 'CanNotDelete'
     locations: [
       {
         locationName: 'West Europe'

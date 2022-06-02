@@ -172,9 +172,7 @@ roleAssignments: [
             "value": "<<namePrefix>>azasweumax001"
         },
         "lock": {
-            "value": [
-                "CanNotDelete"
-            ]
+            "value": "CanNotDelete"
         },
         "skuName": {
             "value": "S0"
@@ -246,9 +244,7 @@ module servers './Microsoft.AnalysisServices/servers/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-servers'
   params: {
     name: '<<namePrefix>>azasweumax001'
-    lock: [
-      'CanNotDelete'
-    ]
+    lock: 'CanNotDelete'
     skuName: 'S0'
     skuCapacity: 1
     firewallSettings: {

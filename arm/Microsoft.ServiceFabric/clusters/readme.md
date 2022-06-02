@@ -333,9 +333,7 @@ module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
             "value": "<<namePrefix>>-az-sfc-full-001"
         },
         "lock": {
-            "value": [
-                "CanNotDelete"
-            ]
+            "value": "CanNotDelete"
         },
         "tags": {
             "value": {
@@ -549,9 +547,7 @@ module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-clusters'
   params: {
     name: '<<namePrefix>>-az-sfc-full-001'
-    lock: [
-      'CanNotDelete'
-    ]
+    lock: 'CanNotDelete'
     tags: {
       resourceType: 'Service Fabric'
       clusterName: '<<namePrefix>>-az-sfc-full-001'

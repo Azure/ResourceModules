@@ -6,9 +6,7 @@
             "value": "<<namePrefix>>azasweumax001"
         },
         "lock": {
-            "value": [
-                "CanNotDelete"
-            ]
+            "value": "CanNotDelete"
         },
         "skuName": {
             "value": "S0"

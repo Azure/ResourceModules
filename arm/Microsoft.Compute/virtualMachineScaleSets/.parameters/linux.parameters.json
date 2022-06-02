@@ -6,9 +6,7 @@
             "value": "<<namePrefix>>-scaleset-linux-001"
         },
         "lock": {
-            "value": [
-                "CanNotDelete"
-            ]
+            "value": "CanNotDelete"
         },
         "vmNamePrefix": {
             "value": "vmsslinvm"
