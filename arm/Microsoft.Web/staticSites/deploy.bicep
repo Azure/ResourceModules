@@ -57,12 +57,13 @@ param systemAssignedIdentity bool = false
 @description('Optional. The ID(s) to assign to the resource.')
 param userAssignedIdentities object = {}
 
-@description('Optional. Specify the locks to apply.')
 @allowed([
+  ''
   'CanNotDelete'
   'ReadOnly'
 ])
-param locks array = []
+@description('Optional. Specify the type of lock.')
+param lock string = ''
 
 @description('Optional. Configuration details for private endpoints.')
 param privateEndpoints array = []
@@ -117,14 +118,14 @@ resource staticSite 'Microsoft.Web/staticSites@2021-03-01' = {
   }
 }
 
-resource staticSite_locks 'Microsoft.Authorization/locks@2017-04-01' = [for lock in locks: {
+resource staticSite_locks 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
   name: '${staticSite.name}-${lock}-lock'
   properties: {
-    level: lock
+    level: any(lock)
     notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: staticSite
-}]
+}
 
 module staticSite_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-StaticSite-Rbac-${index}'

@@ -29,12 +29,13 @@ param roleAssignments array = []
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
 
-@description('Optional. Specify the locks to apply.')
 @allowed([
+  ''
   'CanNotDelete'
   'ReadOnly'
 ])
-param locks array = []
+@description('Optional. Specify the type of lock.')
+param lock string = ''
 
 @description('Optional. Tags for all resources.')
 param tags object = {}
@@ -76,14 +77,14 @@ resource netAppAccount 'Microsoft.NetApp/netAppAccounts@2021-04-01' = {
   }
 }
 
-resource netAppAccount_locks 'Microsoft.Authorization/locks@2017-04-01' = [for lock in locks: {
+resource netAppAccount_locks 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
   name: '${netAppAccount.name}-${lock}-lock'
   properties: {
-    level: lock
+    level: any(lock)
     notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: netAppAccount
-}]
+}
 
 module netAppAccount_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-ANFAccount-Rbac-${index}'

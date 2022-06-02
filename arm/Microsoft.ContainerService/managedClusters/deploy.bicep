@@ -275,12 +275,13 @@ param enableDefaultTelemetry bool = true
 @description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
 param roleAssignments array = []
 
-@description('Optional. Specify the locks to apply.')
 @allowed([
+  ''
   'CanNotDelete'
   'ReadOnly'
 ])
-param locks array = []
+@description('Optional. Specify the type of lock.')
+param lock string = ''
 
 @description('Optional. Tags of the resource.')
 param tags object = {}
@@ -532,14 +533,14 @@ module managedCluster_agentPools 'agentPools/deploy.bicep' = [for (agentPool, in
   }
 }]
 
-resource managedCluster_locks 'Microsoft.Authorization/locks@2017-04-01' = [for lock in locks: {
+resource managedCluster_locks 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
   name: '${managedCluster.name}-${lock}-lock'
   properties: {
-    level: lock
+    level: any(lock)
     notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: managedCluster
-}]
+}
 
 resource managedCluster_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(diagnosticWorkspaceId)) || (!empty(diagnosticEventHubAuthorizationRuleId)) || (!empty(diagnosticEventHubName))) {
   name: diagnosticSettingsName

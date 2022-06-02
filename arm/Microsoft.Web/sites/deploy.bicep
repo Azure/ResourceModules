@@ -60,12 +60,13 @@ param appSettingsKeyValuePairs object = {}
 param authSettingV2Configuration object = {}
 
 // Lock
-@description('Optional. Specify the locks to apply.')
 @allowed([
+  ''
   'CanNotDelete'
   'ReadOnly'
 ])
-param locks array = []
+@description('Optional. Specify the type of lock.')
+param lock string = ''
 
 // Private Endpoints
 @description('Optional. Configuration details for private endpoints.')
@@ -221,14 +222,14 @@ module app_authsettingsv2 'config-authsettingsv2/deploy.bicep' = if (!empty(auth
   }
 }
 
-resource app_locks 'Microsoft.Authorization/locks@2017-04-01' = [for lock in locks: {
+resource app_locks 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
   name: '${app.name}-${lock}-lock'
   properties: {
-    level: lock
+    level: any(lock)
     notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: app
-}]
+}
 
 resource app_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = if (!empty(diagnosticStorageAccountId) || !empty(diagnosticWorkspaceId) || !empty(diagnosticEventHubAuthorizationRuleId) || !empty(diagnosticEventHubName)) {
   name: diagnosticSettingsName

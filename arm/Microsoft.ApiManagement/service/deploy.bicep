@@ -46,12 +46,13 @@ param userAssignedIdentities object = {}
 @description('Optional. Location for all Resources.')
 param location string = resourceGroup().location
 
-@description('Optional. Specify the locks to apply.')
 @allowed([
+  ''
   'CanNotDelete'
   'ReadOnly'
 ])
-param locks array = []
+@description('Optional. Specify the type of lock.')
+param lock string = ''
 
 @description('Optional. Limit control plane API calls to API Management service with version equal to or newer than this value.')
 param minApiVersion string = ''
@@ -418,14 +419,14 @@ module subscriptions_resource 'subscriptions/deploy.bicep' = [for (subscription,
   }
 }]
 
-resource apiManagementService_locks 'Microsoft.Authorization/locks@2017-04-01' = [for lock in locks: {
+resource apiManagementService_locks 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
   name: '${apiManagementService.name}-${lock}-lock'
   properties: {
-    level: lock
+    level: any(lock)
     notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: apiManagementService
-}]
+}
 
 resource apiManagementService_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = if (!empty(diagnosticStorageAccountId) || !empty(diagnosticWorkspaceId) || !empty(diagnosticEventHubAuthorizationRuleId) || !empty(diagnosticEventHubName)) {
   name: diagnosticSettingsName

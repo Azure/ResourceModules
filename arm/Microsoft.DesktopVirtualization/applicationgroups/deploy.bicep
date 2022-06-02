@@ -111,14 +111,14 @@ resource appGroup 'Microsoft.DesktopVirtualization/applicationgroups@2021-07-12'
   }
 }
 
-resource appGroup_locks 'Microsoft.Authorization/locks@2017-04-01' = [for lock in locks: {
+resource appGroup_locks 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
   name: '${appGroup.name}-${lock}-lock'
   properties: {
-    level: lock
+    level: any(lock)
     notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: appGroup
-}]
+}
 
 resource appGroup_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(diagnosticWorkspaceId)) || (!empty(diagnosticEventHubAuthorizationRuleId)) || (!empty(diagnosticEventHubName))) {
   name: diagnosticSettingsName

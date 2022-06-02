@@ -5,12 +5,13 @@ param name string
 @description('Optional. The location of the private link scope. Should be global.')
 param location string = 'global'
 
-@description('Optional. Specify the locks to apply.')
 @allowed([
+  ''
   'CanNotDelete'
   'ReadOnly'
 ])
-param locks array = []
+@description('Optional. Specify the type of lock.')
+param lock string = ''
 
 @description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
 param roleAssignments array = []
@@ -58,14 +59,14 @@ module privateLinkScope_scopedResource 'scopedResources/deploy.bicep' = [for (sc
   }
 }]
 
-resource privateLinkScope_lock 'Microsoft.Authorization/locks@2017-04-01' = [for lock in locks: {
+resource privateLinkScope_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
   name: '${privateLinkScope.name}-${lock}-lock'
   properties: {
-    level: lock
+    level: any(lock)
     notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: privateLinkScope
-}]
+}
 
 module privateLinkScope_privateEndpoints '../../Microsoft.Network/privateEndpoints/deploy.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
   name: '${uniqueString(deployment().name, location)}-PvtLinkScope-PrivateEndpoint-${index}'

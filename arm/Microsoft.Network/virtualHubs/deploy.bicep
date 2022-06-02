@@ -68,12 +68,13 @@ param hubRouteTables array = []
 @description('Optional. Virtual network connections to create for the virtual hub.')
 param hubVirtualNetworkConnections array = []
 
-@description('Optional. Specify the locks to apply.')
 @allowed([
+  ''
   'CanNotDelete'
   'ReadOnly'
 ])
-param locks array = []
+@description('Optional. Specify the type of lock.')
+param lock string = ''
 
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
@@ -129,14 +130,14 @@ resource virtualHub 'Microsoft.Network/virtualHubs@2021-05-01' = {
   }
 }
 
-resource virtualHub_locks 'Microsoft.Authorization/locks@2017-04-01' = [for lock in locks: {
+resource virtualHub_locks 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
   name: '${virtualHub.name}-${lock}-lock'
   properties: {
-    level: lock
+    level: any(lock)
     notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: virtualHub
-}]
+}
 
 module virtualHub_routeTables 'hubRouteTables/deploy.bicep' = [for (routeTable, index) in hubRouteTables: {
   name: '${uniqueString(deployment().name, location)}-routeTable-${index}'

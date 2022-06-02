@@ -45,12 +45,13 @@ param diagnosticEventHubAuthorizationRuleId string = ''
 @description('Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.')
 param diagnosticEventHubName string = ''
 
-@description('Optional. Specify the locks to apply.')
 @allowed([
+  ''
   'CanNotDelete'
   'ReadOnly'
 ])
-param locks array = []
+@description('Optional. Specify the type of lock.')
+param lock string = ''
 
 @description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
 param roleAssignments array = []
@@ -148,14 +149,14 @@ resource publicIP 'Microsoft.Network/publicIPAddresses@2021-05-01' = if (natGate
   }
 }
 
-resource publicIP_locks 'Microsoft.Authorization/locks@2017-04-01' = [for lock in locks: {
+resource publicIP_locks 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
   name: '${publicIP.name}-${lock}-lock'
   properties: {
-    level: lock
+    level: any(lock)
     notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: publicIP
-}]
+}
 
 resource publicIP_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = if (!empty(diagnosticStorageAccountId) || !empty(diagnosticWorkspaceId) || !empty(diagnosticEventHubAuthorizationRuleId) || !empty(diagnosticEventHubName)) {
   name: diagnosticSettingsName
@@ -183,14 +184,14 @@ resource natGateway 'Microsoft.Network/natGateways@2021-05-01' = {
   zones: zones
 }
 
-resource natGateway_locks 'Microsoft.Authorization/locks@2017-04-01' = [for lock in locks: {
+resource natGateway_locks 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
   name: '${natGateway.name}-${lock}-lock'
   properties: {
-    level: lock
+    level: any(lock)
     notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: natGateway
-}]
+}
 
 module natGateway_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-NatGateway-Rbac-${index}'

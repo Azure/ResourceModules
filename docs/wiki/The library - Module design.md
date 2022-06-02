@@ -131,17 +131,18 @@ This section details patterns among extension resources that are usually very si
 The locks extension can be added as a `resource` to the resource template directly.
 
 ```bicep
-@description('Optional. Specify the locks to apply.')
 @allowed([
+  ''
   'CanNotDelete'
   'ReadOnly'
 ])
-param locks array = []
+@description('Optional. Specify the type of lock.')
+param lock string = ''
 
-resource <mainResource>_locks 'Microsoft.Authorization/locks@2017-04-01' = [for lock in locks: {
+resource <mainResource>_locks 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
   name: '${<mainResource>.name}-${lock}-lock'
   properties: {
-    level: lock
+    level: any(lock)
     notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: <mainResource>

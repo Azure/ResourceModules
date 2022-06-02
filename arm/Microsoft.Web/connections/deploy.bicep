@@ -32,12 +32,13 @@ param roleAssignments array = []
 @description('Optional. Status of the connection.')
 param statuses array = []
 
-@description('Optional. Specify the locks to apply.')
 @allowed([
+  ''
   'CanNotDelete'
   'ReadOnly'
 ])
-param locks array = []
+@description('Optional. Specify the type of lock.')
+param lock string = ''
 
 @description('Optional. Tags of the resource.')
 param tags object = {}
@@ -72,14 +73,14 @@ resource connection 'Microsoft.Web/connections@2016-06-01' = {
   }
 }
 
-resource connection_locks 'Microsoft.Authorization/locks@2017-04-01' = [for lock in locks: {
+resource connection_locks 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
   name: '${connection.name}-${lock}-lock'
   properties: {
-    level: lock
+    level: any(lock)
     notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: connection
-}]
+}
 
 module connection_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-Connection-Rbac-${index}'

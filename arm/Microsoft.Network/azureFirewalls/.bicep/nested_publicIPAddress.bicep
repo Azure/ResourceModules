@@ -37,12 +37,13 @@ param diagnosticEventHubAuthorizationRuleId string = ''
 @description('Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.')
 param diagnosticEventHubName string = ''
 
-@description('Optional. Specify the locks to apply.')
 @allowed([
+  ''
   'CanNotDelete'
   'ReadOnly'
 ])
-param locks array = []
+@description('Optional. Specify the type of lock.')
+param lock string = ''
 
 @description('Optional. Location for all resources.')
 param location string = resourceGroup().location
@@ -117,14 +118,14 @@ resource publicIpAddress 'Microsoft.Network/publicIPAddresses@2021-05-01' = {
   zones: length(zones) == 0 ? null : zones
 }
 
-resource publicIpAddress_locks 'Microsoft.Authorization/locks@2017-04-01' = [for lock in locks: {
+resource publicIpAddress_locks 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
   name: '${publicIpAddress.name}-${lock}-lock'
   properties: {
-    level: lock
+    level: any(lock)
     notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: publicIpAddress
-}]
+}
 
 resource publicIpAddress_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-01-preview' = if (!empty(diagnosticStorageAccountId) || !empty(diagnosticWorkspaceId) || !empty(diagnosticEventHubAuthorizationRuleId) || !empty(diagnosticEventHubName)) {
   name: diagnosticSettingsName

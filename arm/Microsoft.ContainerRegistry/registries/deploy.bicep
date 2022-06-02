@@ -97,12 +97,13 @@ param zoneRedundancy string = 'Disabled'
 @description('Optional. All replications to create.')
 param replications array = []
 
-@description('Optional. Specify the locks to apply.')
 @allowed([
+  ''
   'CanNotDelete'
   'ReadOnly'
 ])
-param locks array = []
+@description('Optional. Specify the type of lock.')
+param lock string = ''
 
 @description('Optional. Enables system assigned managed identity on the resource.')
 param systemAssignedIdentity bool = false
@@ -248,14 +249,14 @@ module registry_replications 'replications/deploy.bicep' = [for (replication, in
   }
 }]
 
-resource registry_locks 'Microsoft.Authorization/locks@2017-04-01' = [for lock in locks: {
+resource registry_locks 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
   name: '${registry.name}-${lock}-lock'
   properties: {
-    level: lock
+    level: any(lock)
     notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: registry
-}]
+}
 
 resource registry_diagnosticSettingName 'Microsoft.Insights/diagnosticsettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(diagnosticWorkspaceId)) || (!empty(diagnosticEventHubAuthorizationRuleId)) || (!empty(diagnosticEventHubName))) {
   name: diagnosticSettingsName

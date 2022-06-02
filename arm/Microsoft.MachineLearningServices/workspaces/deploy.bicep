@@ -232,14 +232,14 @@ module workspace_computes 'computes/deploy.bicep' = [for compute in computes: {
   }
 }]
 
-resource workspace_locks 'Microsoft.Authorization/locks@2017-04-01' = [for lock in locks: {
+resource workspace_locks 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
   name: '${workspace.name}-${lock}-lock'
   properties: {
-    level: lock
+    level: any(lock)
     notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: workspace
-}]
+}
 
 resource workspace_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2021-05-01-preview' = if ((!empty(diagnosticStorageAccountId)) || (!empty(diagnosticWorkspaceId)) || (!empty(diagnosticEventHubAuthorizationRuleId)) || (!empty(diagnosticEventHubName))) {
   name: diagnosticSettingsName
