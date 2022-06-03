@@ -35,7 +35,7 @@ param internalLoadBalancingMode string = 'None'
 param multiSize string = 'Standard_D1_V2'
 
 @description('Optional. Number of IP SSL addresses reserved for the App Service Environment.')
-param ipsslAddressCount int = 2
+param ipsslAddressCount int = -1
 
 @description('Optional. DNS suffix of the App Service Environment.')
 param dnsSuffix string = ''
@@ -134,12 +134,12 @@ resource appServiceEnvironment 'Microsoft.Web/hostingEnvironments@2021-03-01' = 
       subnet: last(vnetResourceId)
     }
     internalLoadBalancingMode: internalLoadBalancingMode
-    multiSize: kind != 'ASEv3' ? multiSize : null
-    ipsslAddressCount: kind != 'ASEv3' ? ipsslAddressCount : null
+    multiSize: !empty(multiSize) ? multiSize : null
+    ipsslAddressCount: ipsslAddressCount != -1 ? ipsslAddressCount : null
     dnsSuffix: dnsSuffix
     frontEndScaleFactor: frontEndScaleFactor
     clusterSettings: clusterSettings
-    userWhitelistedIpRanges: kind != 'ASEv3' ? userWhitelistedIpRanges : null
+    userWhitelistedIpRanges: !empty(userWhitelistedIpRanges) ? userWhitelistedIpRanges : null
     dedicatedHostCount: !zoneRedundant && physicalHardwareIsolation ? 2 : 0
     zoneRedundant: !physicalHardwareIsolation && zoneRedundant ? zoneRedundant : false
   }
