@@ -47,7 +47,10 @@ function Publish-ModuleToPrivateBicepRegistry {
         [string] $BicepRegistryRgName,
 
         [Parameter(Mandatory = $false)]
-        [string] $BicepRegistryRgLocation
+        [string] $BicepRegistryRgLocation,
+
+        [Parameter(Mandatory = $false)]
+        [string] $subscriptionId
     )
 
     begin {
@@ -60,6 +63,12 @@ function Publish-ModuleToPrivateBicepRegistry {
         #############################
         if ((Split-Path $TemplateFilePath -Extension) -ne '.bicep') {
             throw "The template in path [$TemplateFilePath] is no bicep template."
+        }
+
+        # set AzContext
+        if (-not [String]::IsNullOrEmpty($subscriptionId)) {
+            Write-Verbose ('Setting context to subscription [{0}]' -f $subscriptionId)
+            $null = Set-AzContext -Subscription $subscriptionId
         }
 
         # Resource Group
