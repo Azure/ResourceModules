@@ -243,8 +243,5 @@ resource workspaceSettings 'Microsoft.Security/workspaceSettings@2017-08-01-prev
 @description('The resource ID of the used log analytics workspace.')
 output workspaceId string = workspaceId
 
-@description('The resource ID of the security center.')
-output resourceId string = ''
-
 @description('The name of the security center.')
 output name string = 'Security'
