@@ -152,11 +152,11 @@ jobs:
             if (-not [String]::IsNullOrEmpty('${{ parameters.managementGroupId }}')) {
                 $enforcedTokenList['managementGroupId'] = '${{ parameters.managementGroupId }}'
             }
-            if (-not [String]::IsNullOrEmpty('$(ARM_TENANT_ID)')) {
-                $enforcedTokenList['tenantId'] =  '$(ARM_TENANT_ID)'
-            }
             if (-not [String]::IsNullOrEmpty('$(DEPLOYMENT_SP_ID)')) {
                 $enforcedTokenList['deploymentSpId'] = '$(DEPLOYMENT_SP_ID)'
+            }
+            if (-not [String]::IsNullOrEmpty('$(ARM_TENANT_ID)')) {
+                $enforcedTokenList['tenantId'] =  '$(ARM_TENANT_ID)'
             }
 
             # --------------------- #
