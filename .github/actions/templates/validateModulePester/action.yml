@@ -83,11 +83,11 @@ runs:
         if (-not [String]::IsNullOrEmpty('${{ env.ARM_MGMTGROUP_ID }}')) {
             $enforcedTokenList['managementGroupId'] = '${{ env.ARM_MGMTGROUP_ID }}'
         }
-        if (-not [String]::IsNullOrEmpty('${{ env.ARM_TENANT_ID }}')) {
-            $enforcedTokenList['deploymentSpId'] = '${{ env.ARM_TENANT_ID }}'
-        }
         if (-not [String]::IsNullOrEmpty('${{ env.DEPLOYMENT_SP_ID }}')) {
-            $enforcedTokenList['tenantId'] = '${{ env.DEPLOYMENT_SP_ID }}'
+            $enforcedTokenList['deploymentSpId'] = '${{ env.DEPLOYMENT_SP_ID }}'
+        }
+        if (-not [String]::IsNullOrEmpty('${{ env.ARM_TENANT_ID }}')) {
+            $enforcedTokenList['tenantId'] = '${{ env.ARM_TENANT_ID }}'
         }
 
         # --------------------- #
