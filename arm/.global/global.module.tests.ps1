@@ -156,9 +156,17 @@ Describe 'Readme tests' -Tag Readme {
                 if (Test-Path (Join-Path $moduleFolderPath 'deploy.bicep')) {
                     $templateFilePath = Join-Path $moduleFolderPath 'deploy.bicep'
                     $templateContent = az bicep build --file $templateFilePath --stdout | ConvertFrom-Json -AsHashtable
+
+                    if (-not $templateContent) {
+                        throw "Unable to compile the deploy.bicep template''s content. This can happen if there is an error in the template. Please check if you can run the command `$templateContent = az bicep build --file $templateFilePath --stdout | ConvertFrom-Json -AsHashtable`."
+                    }
                 } elseIf (Test-Path (Join-Path $moduleFolderPath 'deploy.json')) {
                     $templateFilePath = Join-Path $moduleFolderPath 'deploy.json'
                     $templateContent = Get-Content $templateFilePath -Raw | ConvertFrom-Json -AsHashtable
+
+                    if (-not $templateContent) {
+                        throw "Unable to load the deploy.json template''s content. This can happen if there is an error in the template. Please check if you can run the command `Get-Content $templateFilePath -Raw | ConvertFrom-Json -AsHashtable`."
+                    }
                 } else {
                     throw "No template file found in folder [$moduleFolderPath]"
                 }
@@ -450,9 +458,17 @@ Describe 'Deployment template tests' -Tag Template {
                 if (Test-Path (Join-Path $moduleFolderPath 'deploy.bicep')) {
                     $templateFilePath = Join-Path $moduleFolderPath 'deploy.bicep'
                     $templateContent = az bicep build --file $templateFilePath --stdout | ConvertFrom-Json -AsHashtable
+
+                    if (-not $templateContent) {
+                        throw "Unable to compile the deploy.bicep template''s content. This can happen if there is an error in the template. Please check if you can run the command `$templateContent = az bicep build --file $templateFilePath --stdout | ConvertFrom-Json -AsHashtable`."
+                    }
                 } elseIf (Test-Path (Join-Path $moduleFolderPath 'deploy.json')) {
                     $templateFilePath = Join-Path $moduleFolderPath 'deploy.json'
                     $templateContent = Get-Content $templateFilePath -Raw | ConvertFrom-Json -AsHashtable
+
+                    if (-not $templateContent) {
+                        throw "Unable to load the deploy.json template''s content. This can happen if there is an error in the template. Please check if you can run the command `Get-Content $templateFilePath -Raw | ConvertFrom-Json -AsHashtable`."
+                    }
                 } else {
                     throw "No template file found in folder [$moduleFolderPath]"
                 }
@@ -916,9 +932,17 @@ Describe "API version tests [All apiVersions in the template should be 'recent']
             if (Test-Path (Join-Path $moduleFolderPath 'deploy.bicep')) {
                 $templateFilePath = Join-Path $moduleFolderPath 'deploy.bicep'
                 $templateContent = az bicep build --file $templateFilePath --stdout | ConvertFrom-Json -AsHashtable
+
+                if (-not $templateContent) {
+                    throw "Unable to compile the deploy.bicep template''s content. This can happen if there is an error in the template. Please check if you can run the command `$templateContent = az bicep build --file $templateFilePath --stdout | ConvertFrom-Json -AsHashtable`."
+                }
             } elseIf (Test-Path (Join-Path $moduleFolderPath 'deploy.json')) {
                 $templateFilePath = Join-Path $moduleFolderPath 'deploy.json'
                 $templateContent = Get-Content $templateFilePath -Raw | ConvertFrom-Json -AsHashtable
+
+                if (-not $templateContent) {
+                    throw "Unable to load the deploy.json template''s content. This can happen if there is an error in the template. Please check if you can run the command `Get-Content $templateFilePath -Raw | ConvertFrom-Json -AsHashtable`."
+                }
             } else {
                 throw "No template file found in folder [$moduleFolderPath]"
             }
