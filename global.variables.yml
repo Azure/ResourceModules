@@ -38,8 +38,7 @@ variables:
 
   vmImage: 'ubuntu-latest' # Use this for Microsoft-hosted agents
   poolName: '' # Use this for self-hosted agents
-  serviceConnectionValidation: 'CARML-CSU-Tenant-Connection'
-  serviceConnectionPublish: 'CARML-CSU-Tenant-Connection'
+  serviceConnection: 'CARML-CSU-Tenant-Connection'
 
   ######################################
   # Source
