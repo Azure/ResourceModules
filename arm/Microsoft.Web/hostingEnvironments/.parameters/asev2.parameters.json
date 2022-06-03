@@ -3,10 +3,27 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "<<namePrefix>>-az-appse-x-001"
+            "value": "<<namePrefix>>-az-appse-asev2-001"
+        },
+        "kind": {
+            "value": "ASEv2"
+        },
+        "multiSize": {
+            "value": "Standard_D1_V2"
+        },
+        "ipsslAddressCount": {
+            "value": 2
+        },
+        "clusterSettings": {
+            "value": [
+                {
+                    "name": "DisableTls1.0",
+                    "value": "1"
+                }
+            ]
         },
         "subnetResourceId": {
-            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-006"
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-008"
         },
         "roleAssignments": {
             "value": [
