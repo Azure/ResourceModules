@@ -145,7 +145,7 @@ param cMKKeyVaultResourceId string = ''
 param cMKeyName string = ''
 
 @description('Conditional. User assigned identity to use when fetching the customer managed key. Required if \'cMKeyName\' is not empty.')
-param cMKUserAssignedIdenityResourceId string = ''
+param cMKUserAssignedIdentityResourceId string = ''
 
 @description('Optional. The version of the customer managed key to reference for encryption. If not provided, latest is used.')
 param cMKeyVersion string = ''
@@ -228,7 +228,7 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-08-01' = {
         keyversion: !empty(cMKeyVersion) ? cMKeyVersion : null
       } : null
       identity: !empty(cMKeyName) ? {
-        userAssignedIdentity: cMKUserAssignedIdenityResourceId
+        userAssignedIdentity: cMKUserAssignedIdentityResourceId
       } : null
     }
     accessTier: storageAccountKind != 'Storage' ? storageAccountAccessTier : null
