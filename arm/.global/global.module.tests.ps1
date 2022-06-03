@@ -155,11 +155,10 @@ Describe 'Readme tests' -Tag Readme {
             if (-not ($convertedTemplates.Keys -contains $moduleFolderPathKey)) {
                 if (Test-Path (Join-Path $moduleFolderPath 'deploy.bicep')) {
                     $templateFilePath = Join-Path $moduleFolderPath 'deploy.bicep'
-                    $templateContent = az bicep build --file $templateFilePath --stdout | ConvertFrom-Json -AsHashtable
+                    $templateContent = az bicep build --file $templateFilePath --stdout --no-restore | ConvertFrom-Json -AsHashtable
 
                     if (-not $templateContent) {
-                        Write-Verbose ('Test: [{0}]' -f (az bicep build --file $templateFilePath --stdout | Out-String)) -Verbose
-                        throw "Unable to compile the deploy.bicep template's content. This can happen if there is an error in the template. Please check if you can run the command `$templateContent = az bicep build --file $templateFilePath --stdout | ConvertFrom-Json -AsHashtable`."
+                        throw "Unable to compile the deploy.bicep template's content. This can happen if there is an error in the template. Please check if you can run the command `$templateContent = az bicep build --file $templateFilePath --stdout --no-restore | ConvertFrom-Json -AsHashtable`."
                     }
                 } elseIf (Test-Path (Join-Path $moduleFolderPath 'deploy.json')) {
                     $templateFilePath = Join-Path $moduleFolderPath 'deploy.json'
@@ -458,10 +457,10 @@ Describe 'Deployment template tests' -Tag Template {
             if (-not ($convertedTemplates.Keys -contains $moduleFolderPathKey)) {
                 if (Test-Path (Join-Path $moduleFolderPath 'deploy.bicep')) {
                     $templateFilePath = Join-Path $moduleFolderPath 'deploy.bicep'
-                    $templateContent = az bicep build --file $templateFilePath --stdout | ConvertFrom-Json -AsHashtable
+                    $templateContent = az bicep build --file $templateFilePath --stdout --no-restore | ConvertFrom-Json -AsHashtable
 
                     if (-not $templateContent) {
-                        throw "Unable to compile the deploy.bicep template's content. This can happen if there is an error in the template. Please check if you can run the command `$templateContent = az bicep build --file $templateFilePath --stdout | ConvertFrom-Json -AsHashtable`."
+                        throw "Unable to compile the deploy.bicep template's content. This can happen if there is an error in the template. Please check if you can run the command `$templateContent = az bicep build --file $templateFilePath --stdout --no-restore | ConvertFrom-Json -AsHashtable`."
                     }
                 } elseIf (Test-Path (Join-Path $moduleFolderPath 'deploy.json')) {
                     $templateFilePath = Join-Path $moduleFolderPath 'deploy.json'
@@ -932,10 +931,10 @@ Describe "API version tests [All apiVersions in the template should be 'recent']
         if (-not ($convertedTemplates.Keys -contains $moduleFolderPathKey)) {
             if (Test-Path (Join-Path $moduleFolderPath 'deploy.bicep')) {
                 $templateFilePath = Join-Path $moduleFolderPath 'deploy.bicep'
-                $templateContent = az bicep build --file $templateFilePath --stdout | ConvertFrom-Json -AsHashtable
+                $templateContent = az bicep build --file $templateFilePath --stdout --no-restore | ConvertFrom-Json -AsHashtable
 
                 if (-not $templateContent) {
-                    throw "Unable to compile the deploy.bicep template's content. This can happen if there is an error in the template. Please check if you can run the command `$templateContent = az bicep build --file $templateFilePath --stdout | ConvertFrom-Json -AsHashtable`."
+                    throw "Unable to compile the deploy.bicep template's content. This can happen if there is an error in the template. Please check if you can run the command `$templateContent = az bicep build --file $templateFilePath --stdout --no-restore | ConvertFrom-Json -AsHashtable`."
                 }
             } elseIf (Test-Path (Join-Path $moduleFolderPath 'deploy.json')) {
                 $templateFilePath = Join-Path $moduleFolderPath 'deploy.json'
