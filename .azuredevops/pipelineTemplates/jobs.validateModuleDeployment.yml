@@ -46,14 +46,21 @@
 
 parameters:
   # Pipeline-related parameters
+<<<<<<< HEAD
   serviceConnectionValidation: '$(serviceConnectionValidation)'
   poolName: '$(poolName)'
   vmImage: '$(vmImage)'
+=======
+  serviceConnectionValidation: "$(serviceConnectionValidation)"
+  poolName: "$(poolName)"
+  vmImage: "$(vmImage)"
+>>>>>>> 12bfc4ddc04850916f34d687d6b9a2b862afb98d
   defaultJobTimeoutInMinutes: 120
-  checkoutRepositories: ''
+  checkoutRepositories: ""
   dependsOn: []
   # Logic-related parameters
   removeDeployment: false
+<<<<<<< HEAD
   modulePath: '$(modulePath)'
   deploymentBlocks: ''
   location: '$(location)'
@@ -62,9 +69,19 @@ parameters:
   managementGroupId: '$(ARM_MGMTGROUP_ID)'
   parametersRepository: '$(Build.Repository.Name)'
   modulesRepository: '$(modulesRepository)'
+=======
+  modulePath: "$(modulePath)"
+  deploymentBlocks: ""
+  location: "$(location)"
+  resourceGroupName: "$(resourceGroupName)"
+  subscriptionId: "$(ARM_VALIDATION_SUBSCRIPTION_ID)"
+  managementGroupId: "$(ARM_MGMTGROUP_ID)"
+  parametersRepository: "$(Build.Repository.Name)"
+  modulesRepository: "$(modulesRepository)"
+>>>>>>> 12bfc4ddc04850916f34d687d6b9a2b862afb98d
   # Azure PowerShell Version parameters
-  azurePowerShellVersion: '$(azurePowerShellVersion)'
-  preferredAzurePowerShellVersion: '$(preferredAzurePowerShellVersion)'
+  azurePowerShellVersion: "$(azurePowerShellVersion)"
+  preferredAzurePowerShellVersion: "$(preferredAzurePowerShellVersion)"
 
 ##---------------------------------------------##
 ## TEMPLATE LOGIC                              ##
@@ -95,12 +112,12 @@ jobs:
               - ? ${{ each checkoutRepository in parameters.checkoutRepositories }}
                 : - checkout: ${{ checkoutRepository }}
                     fetchDepth: 1 # the depth of commits to ask Git to fetch; if not set defaults to no limit
-                    path: 's/${{ checkoutRepository }}'
+                    path: "s/${{ checkoutRepository }}"
 
           # [Agent] Prepare environment
           #----------------------------
           - task: PowerShell@2
-            displayName: 'Setup agent'
+            displayName: "Setup agent"
             inputs:
               targetType: inline
               pwsh: true
