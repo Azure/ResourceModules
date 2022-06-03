@@ -48,7 +48,7 @@ parameters:
   poolName: '$(poolName)'
   vmImage: '$(vmImage)'
   defaultJobTimeoutInMinutes: 120
-  checkoutRepositories: ""
+  checkoutRepositories: ''
   # Logic-related parameters
   modulePath: '$(modulePath)'
   parametersRepository: '$(Build.Repository.Name)'
@@ -58,8 +58,8 @@ parameters:
   managementGroupId: '$(ARM_MGMTGROUP_ID)'
   modulesRepository: '$(modulesRepository)'
   # Azure PowerShell Version parameter
-  azurePowerShellVersion: "$(azurePowerShellVersion)"
-  preferredAzurePowerShellVersion: "$(preferredAzurePowerShellVersion)"
+  azurePowerShellVersion: '$(azurePowerShellVersion)'
+  preferredAzurePowerShellVersion: '$(preferredAzurePowerShellVersion)'
 
 ##---------------------------------------------##
 ## TEMPLATE LOGIC                              ##
@@ -81,7 +81,7 @@ jobs:
           - ${{ each checkoutRepository in parameters.checkoutRepositories }}:
               - checkout: ${{ checkoutRepository }}
                 fetchDepth: 1 # the depth of commits to ask Git to fetch; if not set defaults to no limit
-                path: "s/${{ checkoutRepository }}"
+                path: 's/${{ checkoutRepository }}'
 
       # [Multi Repo] Support task
       #--------------------------
@@ -107,7 +107,7 @@ jobs:
       # [Agent] Prepare environment
       #----------------------------
       - task: PowerShell@2
-        displayName: "Setup agent"
+        displayName: 'Setup agent'
         inputs:
           targetType: inline
           pwsh: true
@@ -187,11 +187,11 @@ jobs:
       - task: PublishTestResults@2
         displayName: Publish Test Results
         inputs:
-          testRunTitle: "Global Module Tests"
+          testRunTitle: 'Global Module Tests'
           testResultsFormat: NUnit
           testResultsFiles: global-testResults.xml
           failTaskOnFailedTests: true
-          searchFolder: "arm/.global"
+          searchFolder: 'arm/.global'
         continueOnError: false
         condition: succeededOrFailed()
 
@@ -211,7 +211,7 @@ jobs:
           - ${{ each checkoutRepository in parameters.checkoutRepositories }}:
               - checkout: ${{ checkoutRepository }}
                 fetchDepth: 1 # the depth of commits to ask Git to fetch; if not set defaults to no limit
-                path: "s/${{ checkoutRepository }}"
+                path: 's/${{ checkoutRepository }}'
 
       # [Multi Repo] Support task
       #--------------------------
@@ -237,7 +237,7 @@ jobs:
       # [Agent] Prepare environment
       #----------------------------
       - task: PowerShell@2
-        displayName: "Setup agent"
+        displayName: 'Setup agent'
         inputs:
           targetType: inline
           pwsh: true
@@ -295,10 +295,10 @@ jobs:
       - task: PublishTestResults@2
         displayName: Publish Test Results
         inputs:
-          testRunTitle: "Global Module API Tests"
+          testRunTitle: 'Global Module API Tests'
           testResultsFormat: NUnit
           testResultsFiles: api-testResults.xml
           failTaskOnFailedTests: true
-          searchFolder: "arm/.global"
+          searchFolder: 'arm/.global'
         continueOnError: false
         condition: succeededOrFailed()
