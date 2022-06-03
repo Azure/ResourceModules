@@ -158,6 +158,7 @@ Describe 'Readme tests' -Tag Readme {
                     $templateContent = az bicep build --file $templateFilePath --stdout | ConvertFrom-Json -AsHashtable
 
                     if (-not $templateContent) {
+                        Write-Verbose ('Test: [{0}]' -f (az bicep build --file $templateFilePath --stdout | Out-String)) -Verbose
                         throw "Unable to compile the deploy.bicep template's content. This can happen if there is an error in the template. Please check if you can run the command `$templateContent = az bicep build --file $templateFilePath --stdout | ConvertFrom-Json -AsHashtable`."
                     }
                 } elseIf (Test-Path (Join-Path $moduleFolderPath 'deploy.json')) {
