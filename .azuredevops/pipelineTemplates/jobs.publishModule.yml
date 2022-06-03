@@ -23,7 +23,7 @@
 ##   |---------------------------------|--------------------------------------|---------------------------------------------------------------------------------------------------------|-----------------------------------|
 ##   | displayName                     | 'Publishing'                         | Name for the pipeline job                                                                               | 'Publish KeyVault'                |
 ##   | serviceConnectionPublish        | '$(serviceConnectionPublish)'        | The service connection that connects to Azure                                                           | 'demo-internal'                   |
-##   | subscriptionId                  | '$(ARM_PUBLISH_SUBSCRIPTION_ID)'         | The id of the subscription to deploy into when using a Management group service connection              | 'aed7c000-6387-412e-bed0-24dfddf4bbc6'|
+##   | subscriptionId                  | '$(ARM_PUBLISH_SUBSCRIPTION_ID)'     | The id of the subscription to deploy into when using a Management group service connection              | 'aed7c000-6387-412e-bed0-24dfddf4bbc6'|
 ##   | poolName                        | '$(poolName)'                        | You can provide either a [poolname] or [vmImage] to run the job on                                      | 'Custom Deployment Pool'          |
 ##   | vmImage                         | '$(vmImage)'                         | You can provide either a [poolname] or [vmImage] to run the job on                                      | 'ubuntu20.04'                     |
 ##   | defaultJobTimeoutInMinutes      | 120                                  | The timeout for the job in this pipeline                                                                | 120                               |
@@ -46,37 +46,37 @@
 
 parameters:
   # Pipeline-related parameters
-  checkoutRepositories: ''
-  displayName: 'Publishing'
-  serviceConnectionPublish: '$(serviceConnectionPublish)'
-  poolName: '$(poolName)'
-  vmImage: '$(vmImage)'
+  checkoutRepositories: ""
+  displayName: "Publishing"
+  serviceConnectionPublish: "$(serviceConnectionPublish)"
+  poolName: "$(poolName)"
+  vmImage: "$(vmImage)"
   defaultJobTimeoutInMinutes: 120
-  modulesRepository: '$(modulesRepository)'
-  subscriptionId: '$(ARM_PUBLISH_SUBSCRIPTION_ID)'
+  modulesRepository: "$(modulesRepository)"
+  subscriptionId: "$(ARM_PUBLISH_SUBSCRIPTION_ID)"
 
   # Logic-related parameters
   ## Module-related
-  modulePath: '$(modulePath)'
+  modulePath: "$(modulePath)"
 
   ## TemplateSpec-related
-  templateSpecsDoPublish: '$(templateSpecsDoPublish)'
-  templateSpecsRGName: '$(templateSpecsRGName)'
-  templateSpecsRGLocation: '$(templateSpecsRGLocation)'
-  templateSpecsDescription: '$(templateSpecsDescription)'
+  templateSpecsDoPublish: "$(templateSpecsDoPublish)"
+  templateSpecsRGName: "$(templateSpecsRGName)"
+  templateSpecsRGLocation: "$(templateSpecsRGLocation)"
+  templateSpecsDescription: "$(templateSpecsDescription)"
 
   ## Artifact-Feed-related
-  artifactsFeedDoPublish: '$(artifactsFeedDoPublish)'
-  vstsOrganizationUri: '$(vstsOrganizationUri)'
-  vstsFeedProject: '$(vstsFeedProject)'
-  vstsFeedName: '$(vstsFeedName)'
-  vstsFeedToken: '$(vstsFeedToken)'
+  artifactsFeedDoPublish: "$(artifactsFeedDoPublish)"
+  vstsOrganizationUri: "$(vstsOrganizationUri)"
+  vstsFeedProject: "$(vstsFeedProject)"
+  vstsFeedName: "$(vstsFeedName)"
+  vstsFeedToken: "$(vstsFeedToken)"
 
   ## Private-Bicep-Registry-related
-  bicepRegistryDoPublish: '$(bicepRegistryDoPublish)'
-  bicepRegistryName: '$(bicepRegistryName)'
-  bicepRegistryRGName: '$(bicepRegistryRGName)'
-  bicepRegistryRgLocation: '$(bicepRegistryRgLocation)'
+  bicepRegistryDoPublish: "$(bicepRegistryDoPublish)"
+  bicepRegistryName: "$(bicepRegistryName)"
+  bicepRegistryRGName: "$(bicepRegistryRGName)"
+  bicepRegistryRgLocation: "$(bicepRegistryRgLocation)"
 
 ##---------------------------------------------##
 ## TEMPLATE LOGIC                              ##
@@ -98,12 +98,12 @@ jobs:
           - ${{ each checkoutRepository in parameters.checkoutRepositories }}:
               - checkout: ${{ checkoutRepository }}
                 fetchDepth: 1 # the depth of commits to ask Git to fetch; if not set defaults to no limit
-                path: 's/${{ checkoutRepository }}'
+                path: "s/${{ checkoutRepository }}"
 
       # [Agent] Prepare environment
       #----------------------------
       - task: PowerShell@2
-        displayName: 'Setup agent'
+        displayName: "Setup agent"
         inputs:
           targetType: inline
           pwsh: true
@@ -146,7 +146,7 @@ jobs:
       # [Universal Artifact-feed publish] task(s)
       #------------------------------------------
       - task: PowerShell@2
-        displayName: 'Publish module to artifacts feed'
+        displayName: "Publish module to artifacts feed"
         condition: and(
           eq(variables['artifactsFeedDoPublish'], true),
           succeeded()
@@ -202,14 +202,14 @@ jobs:
       # [template-spec publish] task(s)
       #--------------------------------
       - task: AzurePowerShell@5
-        displayName: 'Publish module to template specs'
+        displayName: "Publish module to template specs"
         condition: and(
           eq(variables['templateSpecsDoPublish'], true),
           succeeded()
           )
         enabled: true
         inputs:
-          azureSubscription: '${{ parameters.serviceConnectionPublish }}'
+          azureSubscription: "${{ parameters.serviceConnectionPublish }}"
           azurePowerShellVersion: ${{ parameters.azurePowerShellVersion }}
           preferredAzurePowerShellVersion: ${{ parameters.preferredAzurePowerShellVersion }}
           pwsh: true
@@ -259,14 +259,14 @@ jobs:
       # [private bicep registry publish] task(s)
       #-------------------------------------------
       - task: AzureCLI@2
-        displayName: 'Publish module to private bicep registry'
+        displayName: "Publish module to private bicep registry"
         condition: and(
           eq(variables['bicepRegistryDoPublish'], true),
           succeeded()
           )
         inputs:
           addSpnToEnvironment: true
-          azureSubscription: '${{ parameters.serviceConnectionPublish }}'
+          azureSubscription: "${{ parameters.serviceConnectionPublish }}"
           scriptType: pscore
           scriptLocation: inlineScript
           inlineScript: |
