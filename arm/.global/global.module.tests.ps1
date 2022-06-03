@@ -101,7 +101,7 @@ Describe 'File/folder tests' -Tag Modules {
 
         $folderTestCases = [System.Collections.ArrayList]@()
         foreach ($moduleFolderPath in $moduleFolderPaths) {
-            if (Test-Path (Join-Path $moduleFolderPath '.paramateres')) {
+            if (Test-Path (Join-Path $moduleFolderPath '.parameters')) {
                 $folderTestCases += @{
                     moduleFolderName = $moduleFolderPath.Replace('\', '/').Split('/arm/')[1]
                     moduleFolderPath = $moduleFolderPath
