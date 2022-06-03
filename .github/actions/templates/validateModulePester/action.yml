@@ -19,19 +19,19 @@
 ##
 ##---------------------------------------------##
 
-name: 'Execute Pester module tests'
-description: 'Execute Pester module tests (if any)'
+name: "Execute Pester module tests"
+description: "Execute Pester module tests (if any)"
 
 inputs:
   modulePath:
     description: "The path to the module's folder"
     required: true
-    default: ''
+    default: ""
 
 runs:
-  using: 'composite'
+  using: "composite"
   steps:
-    - name: 'Setup agent'
+    - name: "Setup agent"
       shell: pwsh
       run: |
         # Grouping task logs
@@ -60,7 +60,7 @@ runs:
 
     # [Module Pester Test] task(s)
     #-----------------------------
-    - name: 'Run global tests via Pester'
+    - name: "Run global tests via Pester"
       id: pester_run_step
       shell: pwsh
       run: |
@@ -77,8 +77,8 @@ runs:
         }
 
         $enforcedTokenList = @{}
-        if (-not [String]::IsNullOrEmpty('${{ env.ARM_SUBSCRIPTION_ID }}')) {
-            $enforcedTokenList['subscriptionId'] = '${{ env.ARM_SUBSCRIPTION_ID }}'
+        if (-not [String]::IsNullOrEmpty('${{ env.ARM_VALIDATION_SUBSCRIPTION_ID }}')) {
+            $enforcedTokenList['subscriptionId'] = '${{ env.ARM_VALIDATION_SUBSCRIPTION_ID }}'
         }
         if (-not [String]::IsNullOrEmpty('${{ env.ARM_MGMTGROUP_ID }}')) {
             $enforcedTokenList['managementGroupId'] = '${{ env.ARM_MGMTGROUP_ID }}'
@@ -124,7 +124,7 @@ runs:
 
     # [Module Pester Test] task(s)
     #-----------------------------
-    - name: 'Run API tests via Pester'
+    - name: "Run API tests via Pester"
       id: pester_api_run_step
       if: always()
       shell: pwsh
