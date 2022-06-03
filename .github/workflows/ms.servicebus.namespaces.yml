@@ -30,7 +30,7 @@ env:
   modulePath: 'arm/Microsoft.ServiceBus/namespaces'
   workflowPath: '.github/workflows/ms.servicebus.namespaces.yml'
   AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
-  ARM_SUBSCRIPTION_ID: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
+  ARM_VALIDATION_SUBSCRIPTION_ID: '${{ secrets.ARM_VALIDATION_SUBSCRIPTION_ID }}'
   ARM_MGMTGROUP_ID: '${{ secrets.ARM_MGMTGROUP_ID }}'
   ARM_TENANT_ID: '${{ secrets.ARM_TENANT_ID }}'
   DEPLOYMENT_SP_ID: '${{ secrets.DEPLOYMENT_SP_ID }}'
@@ -106,7 +106,7 @@ jobs:
           parameterFilePath: '${{ env.modulePath }}/${{ matrix.parameterFilePaths }}'
           location: '${{ env.location }}'
           resourceGroupName: '${{ env.resourceGroupName }}'
-          subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
+          subscriptionId: '${{ secrets.ARM_VALIDATION_SUBSCRIPTION_ID }}'
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
           removeDeployment: '${{ needs.job_initialize_pipeline.outputs.removeDeployment }}'
 

@@ -24,15 +24,15 @@
 ##   |=============================================================================================================================================================================================================================|
 ##   | Parameter                       | Default Value                        | Description                                                                                               | Example                                |
 ##   |---------------------------------|--------------------------------------|-----------------------------------------------------------------------------------------------------------|----------------------------------------|
-##   | serviceConnection               | '$(serviceConnection)'               | The service connection that connects to Azure                                                             | 'demo-internal'                        |
+##   | serviceConnectionValidation     | '$(serviceConnectionValidation)'     | The service connection that connects to Azure                                                             | 'demo-internal'                        |
 ##   | poolName                        | '$(poolName)'                        | You can provide either a [poolname] or [vmImage] to run the job on                                        | 'Custom Deployment Pool'               |
 ##   | vmImage                         | '$(vmImage)'                         | You can provide either a [poolname] or [vmImage] to run the job on                                        | 'ubuntu20.04'                          |
 ##   | defaultJobTimeoutInMinutes      | 120                                  | The timeout for the job in this pipeline                                                                  | 120                                    |
 ##   | checkoutRepositories            | ''                                   | An optional list of repositories to check out at the beginning of this job in addition to the source      | 'Components'                           |
 ##   | modulePath                      | '$(modulePath)'                      | The path to the module to deploy. E.g. [c:/KeyVault]                                                      | 'c:/KeyVault'                          |
-##   | location                        | '$(location)'                 | The location to validate with                                                                             | 'France Central'                       |
-##   | resourceGroupName               | '$(resourceGroupName)'        | The resourcegroup to validate into. Required only for Resource-Group-Level validations                    | 'validation-rg'                        |
-##   | subscriptionId                  | '$(ARM_SUBSCRIPTION_ID)'             | The id of the subscription to validate with when using a Management group service connection              | 'aed7c000-6387-412e-bed0-24dfddf4bbc6' |
+##   | location                        | '$(location)'                        | The location to validate with                                                                             | 'France Central'                       |
+##   | resourceGroupName               | '$(resourceGroupName)'               | The resourcegroup to validate into. Required only for Resource-Group-Level validations                    | 'validation-rg'                        |
+##   | subscriptionId                  | '$(ARM_VALIDATION_SUBSCRIPTION_ID)'  | The id of the subscription to validate with when using a Management group service connection              | 'aed7c000-6387-412e-bed0-24dfddf4bbc6' |
 ##   | managementGroupId               | '$(ARM_MGMTGROUP_ID)'                | The id of the management group to validate with. Required only for Management-Group-Level validations     | '477c9620-cb01-454f-9ebc-fc6b1df48c14' |
 ##   | parametersRepository            | '$(Build.Repository.Name)'           | The respository with the parameter files. Defaults to the triggering repository                           | 'Solutions'                            |
 ##   | modulesRepository               | '$(modulesRepository)'               | The respository with the modules.                                                                         | 'Components'                           |
@@ -44,7 +44,7 @@
 
 parameters:
   # Pipeline-related parameters
-  serviceConnection: '$(serviceConnection)'
+  serviceConnectionValidation: '$(serviceConnectionValidation)'
   poolName: '$(poolName)'
   vmImage: '$(vmImage)'
   defaultJobTimeoutInMinutes: 120
@@ -54,7 +54,7 @@ parameters:
   parametersRepository: '$(Build.Repository.Name)'
   location: '$(location)'
   resourceGroupName: '$(resourceGroupName)'
-  subscriptionId: '$(ARM_SUBSCRIPTION_ID)'
+  subscriptionId: '$(ARM_VALIDATION_SUBSCRIPTION_ID)'
   managementGroupId: '$(ARM_MGMTGROUP_ID)'
   modulesRepository: '$(modulesRepository)'
   # Azure PowerShell Version parameter
@@ -128,9 +128,9 @@ jobs:
       # [Module Pester Test] task(s)
       #-----------------------------
       - task: AzurePowerShell@5
-        displayName: 'Run general tests via (Pester) via connection [${{ parameters.serviceConnection }}]'
+        displayName: 'Run general tests via (Pester) via connection [${{ parameters.serviceConnectionValidation }}]'
         inputs:
-          azureSubscription: ${{ parameters.serviceConnection }}
+          azureSubscription: ${{ parameters.serviceConnectionValidation }}
           azurePowerShellVersion: ${{ parameters.azurePowerShellVersion }}
           preferredAzurePowerShellVersion: ${{ parameters.preferredAzurePowerShellVersion }}
           ScriptType: InlineScript
@@ -251,9 +251,9 @@ jobs:
       # [Module Pester Test] task(s)
       #-----------------------------
       - task: AzurePowerShell@5
-        displayName: 'Run API tests via (Pester) via connection [${{ parameters.serviceConnection }}]'
+        displayName: 'Run API tests via (Pester) via connection [${{ parameters.serviceConnectionValidation }}]'
         inputs:
-          azureSubscription: ${{ parameters.serviceConnection }}
+          azureSubscription: ${{ parameters.serviceConnectionValidation }}
           azurePowerShellVersion: ${{ parameters.azurePowerShellVersion }}
           preferredAzurePowerShellVersion: ${{ parameters.preferredAzurePowerShellVersion }}
           ScriptType: InlineScript
