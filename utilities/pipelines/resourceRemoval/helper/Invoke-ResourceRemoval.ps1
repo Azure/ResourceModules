@@ -77,6 +77,11 @@ function Invoke-ResourceRemoval {
             $roleAssignmentsOnScope | Where-Object { $_.RoleAssignmentId -eq $ResourceId } | Remove-AzRoleAssignment
             break
         }
+        'Microsoft.ManagedServices/registrationDefinitions' {
+            $foundDefinition = Get-AzManagedServicesDefinition | Where-Object { $_.Id -eq $resourceId }
+            $foundDefinition | Remove-AzManagedServicesDefinition -Force
+            break
+        }
         'Microsoft.RecoveryServices/vaults' {
             # Pre-Removal
             # -----------

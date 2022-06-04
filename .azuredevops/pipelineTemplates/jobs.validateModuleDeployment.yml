@@ -122,7 +122,8 @@ jobs:
                     @{ Name = 'Az.KeyVault' },
                     @{ Name = 'Az.Monitor' },
                     @{ Name = 'Az.OperationalInsights' },
-                    @{ Name = 'Az.RecoveryServices' }
+                    @{ Name = 'Az.RecoveryServices' },
+                    @{ Name = 'Az.ManagedServices' }
                   )
                 }
 
