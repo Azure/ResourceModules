@@ -561,7 +561,7 @@ userAssignedIdentities: {
                 {
                     "name": "<<namePrefix>>-az-apgw-x-001-ssl-certificate",
                     "properties": {
-                        "keyVaultSecretId": "https://adp-<<namePrefix>>-az-kv-x-001.vault.azure.net/secrets/applicationGatewaySslCertificate02/40b9b1a7a69e48cfa1e36f24b97b8799"
+                        "keyVaultSecretId": "https://adp-<<namePrefix>>-az-kv-x-001.vault.azure.net/secrets/applicationGatewaySslCertificate"
                     }
                 }
             ]
@@ -905,7 +905,7 @@ module applicationGateways './Microsoft.Network/applicationGateways/deploy.bicep
       {
         name: '<<namePrefix>>-az-apgw-x-001-ssl-certificate'
         properties: {
-          keyVaultSecretId: 'https://adp-<<namePrefix>>-az-kv-x-001.vault.azure.net/secrets/applicationGatewaySslCertificate02/40b9b1a7a69e48cfa1e36f24b97b8799'
+          keyVaultSecretId: 'https://adp-<<namePrefix>>-az-kv-x-001.vault.azure.net/secrets/applicationGatewaySslCertificate'
         }
       }
     ]
