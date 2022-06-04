@@ -115,8 +115,17 @@ param apiProperties object = {}
 @description('Optional. Allow only Azure AD authentication.')
 param disableLocalAuth bool = false
 
-@description('Optional. Properties to configure encryption.')
-param encryption object = {}
+@description('Optional. The resource ID of a key vault to reference a customer managed key for encryption from.')
+param cMKKeyVaultResourceId string = ''
+
+@description('Optional. The name of the customer managed key to use for encryption. Cannot be deployed together with the parameter \'systemAssignedIdentity\' enabled.')
+param cMKeyName string = ''
+
+@description('Conditional. User assigned identity to use when fetching the customer managed key. Required if \'cMKeyName\' is not empty.')
+param cMKUserAssignedIdentityResourceId string = ''
+
+@description('Conditional. The version of the customer managed key to reference for encryption. Required if \'cMKeyName\' is not empty.')
+param cMKeyVersion string = ''
 
 @description('Optional. Resource migration token.')
 param migrationToken string = ''
@@ -198,6 +207,16 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
+resource cmkKeyVault 'Microsoft.KeyVault/vaults@2021-06-01-preview' existing = if (!empty(cMKKeyVaultResourceId)) {
+  name: last(split(cMKKeyVaultResourceId, '/'))
+  scope: resourceGroup(split(cMKKeyVaultResourceId, '/')[2], split(cMKKeyVaultResourceId, '/')[4])
+}
+
+resource cmkUserAssignedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-11-30' existing = if (!empty(cMKUserAssignedIdentityResourceId)) {
+  name: last(split(cMKUserAssignedIdentityResourceId, '/'))
+  scope: resourceGroup(split(cMKUserAssignedIdentityResourceId, '/')[2], split(cMKUserAssignedIdentityResourceId, '/')[4])
+}
+
 resource cognitiveServices 'Microsoft.CognitiveServices/accounts@2021-10-01' = {
   name: name
   kind: kind
@@ -214,7 +233,15 @@ resource cognitiveServices 'Microsoft.CognitiveServices/accounts@2021-10-01' = {
     allowedFqdnList: allowedFqdnList
     apiProperties: apiProperties
     disableLocalAuth: disableLocalAuth
-    encryption: !empty(encryption) ? encryption : null
+    encryption: {
+      keySource: any(!empty(cMKeyName) ? 'Microsoft.Keyvault' : 'Microsoft.CognitiveServices')
+      keyVaultProperties: !empty(cMKeyName) ? {
+        identityClientId: !empty(cMKUserAssignedIdentityResourceId) ? cmkUserAssignedIdentity.properties.principalId : null
+        keyvaulturi: cmkKeyVault.properties.vaultUri
+        keyName: cMKeyName
+        keyversion: cMKeyVersion
+      } : null
+    }
     migrationToken: !empty(migrationToken) ? migrationToken : null
     restore: restore
     restrictOutboundNetworkAccess: restrictOutboundNetworkAccess
