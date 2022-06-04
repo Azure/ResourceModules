@@ -164,4 +164,6 @@ runs:
       uses: EnricoMi/publish-unit-test-result-action@v1
       if: always()
       with:
-        files: 'arm/.global/*-testResults.xml'
+        files: |
+          'arm/.global/global-testResults.xml'
+          'arm/.global/api-testResults.xml'
