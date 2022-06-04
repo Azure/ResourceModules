@@ -6,10 +6,10 @@ This section provides details on the tokens replacement functionality that enabl
 
 - [Description](#description)
 - [Token Types](#token-types)
-  - [Default tokens](#default-tokens)
-  - [Optional local custom tokens](#optional-local-custom-tokens)
+  - [Default Tokens](#default-tokens)
+  - [(Optional) Local Custom Tokens](#optional-local-custom-tokens)
 - [How it works](#how-it-works)
-  - [How Tokens are replaced in a Parameter File](#how-tokens-are-replaced-in-a-parameter-file)
+  - [How tokens are replaced in a parameter file](#how-tokens-are-replaced-in-a-parameter-file)
 
 ---
 
@@ -17,7 +17,7 @@ This section provides details on the tokens replacement functionality that enabl
 
 Tokens allow you to test deploying modules in your own environment (i.e., using tokens for your naming conventions), or apply other customizations to your resources (i.e., injecting a subscription ID inside a Resource ID string).
 
-The [module pipelines](./The%20CI%20environment%20-%20Pipeline%20design#module-pipelines) leverage a token replacement function that enables parameter files to contain tokens (i.e., `<<subscriptionId>>`, `<<tenantId>>`) instead of using static values. This helps with the following:
+The [module pipelines](./The%20CI%20environment%20-%20Pipeline%20design.md#module-pipelines) leverage a token replacement function that enables parameter files to contain tokens (i.e., `<<subscriptionId>>`, `<<tenantId>>`) instead of using static values. This helps with the following:
 
 - Allows the repository to be portable without having static values from where it was cloned.
 - Enables dynamic updates of the tokens from single locations without having to modify all files.
@@ -29,7 +29,7 @@ There are 2 types of tokens that can be applied on a parameter file:
 
 ## Default Tokens
 
-These are tokens constructed from environment variables, which are defined in the workflow (Pipeline). Review [Getting Started - GitHub specific prerequisites](./GettingStarted) for more information on these environment variables.
+These are tokens constructed from environment variables, which are defined in the workflow (Pipeline). Review [Getting Started - GitHub specific prerequisites](./Getting%20Started.md) for more information on these environment variables.
 
 - `<<subscriptionId>>`: Will point to the Azure subscription.
 - `<<managementGroupId>>`: Will point to the Azure an Azure Management Group.
@@ -69,7 +69,7 @@ Once the Key Vault is deployed, you'll notice that the Key Vault name in Azure w
 
 The token prefix `'<<'` and suffix `'>>'` in the above example are also configurable in the [Settings.json](https://github.com/Azure/ResourceModules/blob/main/settings.json) file.
 
-The solution comes with one predefined local token `namePrefix`. When validating modules through the CI environment, you must update it to a custom value as described in the [Update default nameprefix](./Getting%20started%20-%20Scenario%201%20Onboard%20module%20library%20and%20CI%20environment#31-update-default-nameprefix) paragraph. This is done to avoid conflicts with resources requiring a globally unique name, such as storage accounts or key vaults.
+The solution comes with one predefined local token `namePrefix`. When validating modules through the CI environment, you must update it to a custom value as described in the [Update default nameprefix](./Getting%20started%20-%20Scenario%201%20Onboard%20module%20library%20and%20CI%20environment.md#31-update-default-nameprefix) paragraph. This is done to avoid conflicts with resources requiring a globally unique name, such as storage accounts or key vaults.
 
 > **Note**: Do not store sensitive information in this location as they will be present in your Git History. Follow best [practices and guidelines](https://docs.microsoft.com/en-us/azure/azure-resource-manager/templates/best-practices#security-recommendations-for-parameters) on how to handle secrets in template deployments.
 
@@ -81,7 +81,7 @@ The below image compares the different token types that can be used for paramete
 
 ## How tokens are replaced in a parameter file
 
-The below diagram illustrates the Token Replacement Functionality via the [Validate](https://github.com/Azure/ResourceModules/blob/main/.github/actions/templates/validateModuleDeploy/action.yml) and [Deploy](https://github.com/Azure/ResourceModules/blob/main/.github/actions/templates/deployModule/action.yml) Actions/Templates.
+The below diagram illustrates the Token Replacement Functionality via the [Validate](https://github.com/Azure/ResourceModules/blob/main/.github/actions/templates/validateModuleDeployment/action.yml) Action/Template.
 
 <img src="./media/CIEnvironment/tokenReplacement.png" alt="tokenReplacement">
 

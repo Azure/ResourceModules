@@ -48,7 +48,7 @@ The removal step is triggered after the deployment completes. It removes all res
 - Make sure to keep the validation subscription cost as low as possible.
 - Allow test deployments from scratch at every run.
 
-However, the removal step can be skipped in case further investigation on the deployed resource is needed. This can be controlled when running the module pipeline leveraging [Module pipeline inputs](./The%20CI%20environment%20-%20Pipeline%20design#module#module-pipeline-inputs).
+However, the removal step can be skipped in case further investigation on the deployed resource is needed. This can be controlled when running the module pipeline leveraging [Module pipeline inputs](./The%20CI%20environment%20-%20Pipeline%20design.md#module-pipeline-inputs).
 
 ### How it works
 

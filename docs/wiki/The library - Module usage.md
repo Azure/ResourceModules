@@ -221,4 +221,4 @@ For more information, please refer to the official [Microsoft docs](https://docs
 
 # Orchestrate deployment
 
-If you're interested on how to build a solution from the modules, please refer to the corresponding ['Solution creation'](./Solution%20creation) section.
+If you're interested on how to build a solution from the modules, please refer to the corresponding ['Solution creation'](./Solution%20creation.md) section.

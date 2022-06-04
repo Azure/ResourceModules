@@ -23,7 +23,7 @@ This section provides a guideline on how to use the CARML CI environment pipelin
 To validate updates to a module template, you can perform the following steps:
 
 1. (Optionally) Update the module's parameter files to reflect your changes.
-1. Push the local changes to the repository (using a branch that is not [main\|master]).
+1. Push the local changes to the repository (using a branch that is not `main|master`).
 1. On the DevOps platform, navigate to your pipelines and select the pipeline that was registered for the module you updated.
 1. Select the branch with your updated template.
 1. (Optionally) disable the `Remove deployed module` input parameter in case you don't want to apply the default behavior and want to skip the deletion of the test-deployed resources to check them post-deployment.
@@ -33,7 +33,7 @@ To validate updates to a module template, you can perform the following steps:
 
 Once the pipeline concludes, it will either be in a green (success) or red (failed) state, depending on how the module performed.
 
-Pipeline logs are available for troubleshooting and provide detailed information in case of failures. If errors occur in the [Static validation](./The%20CI%20environment%20-%20Static%20validation) phase, you may only see the failed test and need to `expand` the error message. How this looks like depends on the [DevOps platform](#devops-tool-specific-guidance) you use.
+Pipeline logs are available for troubleshooting and provide detailed information in case of failures. If errors occur in the [Static validation](./The%20CI%20environment%20-%20Static%20validation.md) phase, you may only see the failed test and need to `expand` the error message. How this looks like depends on the [DevOps platform](#devops-tool-specific-guidance) you use.
 
 ## Add a new module pipeline
 
@@ -54,8 +54,8 @@ To run the dependencies pipeline you can perform the following steps:
    > **Note:** If you want to rename any dependency resources, make sure to update any references to their name in the module parameter files too.
 1. On the DevOps platform, navigate to the dependencies pipeline.
 1. Select the branch you intend to run.
-1. (Optionally) Enable the `'Enable SqlMI dependency deployment' switch` to include the deployment of the dependencies for the [SQL managed instance] module.
-1. (Optionally) Enable the `'Enable deployment of a vhd stored in a blob container' switch` to include the deployment of the dependencies for the [Compute Images] and [Compute Disks] modules.
+1. (Optionally) Enable the `'Enable SqlMI dependency deployment' switch` to include the deployment of the dependencies for the \[SQL managed instance] module.
+1. (Optionally) Enable the `'Enable deployment of a vhd stored in a blob container' switch` to include the deployment of the dependencies for the \[Compute Images] and \[Compute Disks] modules.
    > Note: This option requires up to two hours completion.
 1.  Trigger the pipeline.
 
@@ -92,12 +92,12 @@ This section focuses on _GitHub_ Actions & Workflows.
 
      <img src="./media/CIEnvironment/gHtriggerPipeline.png" alt="Run workflow" height="350">
 
-  >**Note**: Depending on the pipeline you selected you may have additional input parameters you can provide aside from the branch. An outline can be found in the [Module pipeline inputs](./The%20CI%20environment%20-%20Pipeline%20design#module#module-pipeline-inputs) section.
+  >**Note**: Depending on the pipeline you selected you may have additional input parameters you can provide aside from the branch. An outline can be found in the [Module pipeline inputs](./The%20CI%20environment%20-%20Pipeline%20design.md#module-pipeline-inputs) section.
 
   ### Register a workflow
 
   To register a workflow in _GitHub_ you have to create the workflow file (`.yml`) and store it inside the folder `.github/workflows`.
-  > ***Note:*** Once merged to [main\|master], GitHub will automatically list the new workflow in the 'Actions' tab. Workflows are not registered from a branch unless you specify a temporal push trigger targeting your branch.
+  > ***Note:*** Once merged to `main|master`, GitHub will automatically list the new workflow in the 'Actions' tab. Workflows are not registered from a branch unless you specify a temporal push trigger targeting your branch.
 
 </details>
 
@@ -124,7 +124,7 @@ This section focuses on _Azure DevOps_ pipelines.
 
      <img src="./media/CIEnvironment/pipelineStart3.png" alt="Pipeline start step 3" height="400">
 
-  >**Note**: Depending on the pipeline you selected you may have additional input parameters you can provide aside from the branch. An outline can be found in the [Module pipeline inputs](./The%20CI%20environment%20-%20Pipeline%20design#module#module-pipeline-inputs) section.
+  >**Note**: Depending on the pipeline you selected you may have additional input parameters you can provide aside from the branch. An outline can be found in the [Module pipeline inputs](./The%20CI%20environment%20-%20Pipeline%20design.md#module-pipeline-inputs) section.
 
   ### Register a pipeline
 

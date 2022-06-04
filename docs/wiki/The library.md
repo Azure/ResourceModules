@@ -4,7 +4,7 @@ This section provides an overview of the design and principles the CARML modules
 
 ### _Navigation_
 
-- [Module design](./The%20library%20-%20Module%20design)
-- [Module usage](./The%20library%20-%20Module%20usage)
+- [Module design](./The%20library%20-%20Module%20design.md)
+- [Module usage](./The%20library%20-%20Module%20usage.md)
 
 ---

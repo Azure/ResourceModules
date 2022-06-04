@@ -163,7 +163,7 @@ module vnet '../arm/Microsoft.Network/virtualNetworks/deploy.bicep' = {
 
 The following example shows how you could orchestrate a deployment of multiple resources using modules from a private Bicep Registry. In this example we will deploy a resource group with a contained NSG and use the same in a subsequent VNET deployment.
 
-> **Note**: the preferred method to publish modules to the Bicep registry is to leverage our [CI environment](./The%20CI%20environment). However, this option may not be applicable to all scenarios (ref e.g., the [Consume library](./Getting%20started%20-%20Scenario%202%20Consume%20library) section). As an alternative, the same [Publish-ModuleToPrivateBicepRegistry.ps1](https://github.com/Azure/ResourceModules/blob/main/utilities/pipelines/resourcePublish/Publish-ModuleToPrivateBicepRegistry.ps1) script leveraged by the publishing step of the CI environment pipeline can also be run locally.
+> **Note**: the preferred method to publish modules to the Bicep registry is to leverage our [CI environment](./The%20CI%20environment.md). However, this option may not be applicable to all scenarios (ref e.g., the [Consume library](./Getting%20started%20-%20Scenario%202%20Consume%20library.md) section). As an alternative, the same [Publish-ModuleToPrivateBicepRegistry.ps1](https://github.com/Azure/ResourceModules/blob/main/utilities/pipelines/resourcePublish/Publish-ModuleToPrivateBicepRegistry.ps1) script leveraged by the publishing step of the CI environment pipeline can also be run locally.
 
 ```bicep
 targetScope = 'subscription'
@@ -269,7 +269,7 @@ The example assumes you are using a [`bicepconfig.json`](https://docs.microsoft.
 
 The following example shows how you could orchestrate a deployment of multiple resources using template specs. In this example we will deploy a NSG and use the same in a subsequent VNET deployment.
 
-> **Note**: the preferred method to publish modules to template-specs is to leverage our [CI environment](./The%20CI%20environment). However, this option may not be applicable to all scenarios (ref e.g., the [Consume library](./Getting%20started%20-%20Scenario%202%20Consume%20library) section). As an alternative, the same [Publish-ModuleToTemplateSpec.ps1](https://github.com/Azure/ResourceModules/blob/main/utilities/pipelines/resourcePublish/Publish-ModuleToTemplateSpec.ps1) script leveraged by the publishing step of the CI environment pipeline can also be run locally.
+> **Note**: the preferred method to publish modules to template-specs is to leverage our [CI environment](./The%20CI%20environment.md). However, this option may not be applicable to all scenarios (ref e.g., the [Consume library](./Getting%20started%20-%20Scenario%202%20Consume%20library.md) section). As an alternative, the same [Publish-ModuleToTemplateSpec.ps1](https://github.com/Azure/ResourceModules/blob/main/utilities/pipelines/resourcePublish/Publish-ModuleToTemplateSpec.ps1) script leveraged by the publishing step of the CI environment pipeline can also be run locally.
 
 ```bicep
 targetScope = 'subscription'
@@ -376,7 +376,7 @@ The example assumes you are using a [`bicepconfig.json`](https://docs.microsoft.
 The modules provided by this repo can be orchestrated to create more complex infrastructures and as such reusable solutions or products. This approach leverages the main 'ResourceModules' repository alongside its contained modules & pipeline templates to deploy resources. Each pipeline job deploys one instance of a resources and their order is controlled by specifying dependencies in the pipeline itself.
 
 <details>
-<summary>[GitHub] Sample solution for <b>multi-repository approach</b></summary>
+<summary>GitHub Sample solution for <b>multi-repository approach</b></summary>
 
 ### Summary
 

@@ -4,8 +4,8 @@ This section provides the step-by-step process we suggest to follow for contribu
 
 ### _Navigation_
 
-- [Contribution flow](./Contribution%20guide%20-%20Contribution%20flow)
-- [Generate module Readme](./Contribution%20guide%20-%20Generate%20module%20Readme)
-- [Get formatted RBAC roles](./Contribution%20guide%20-%20Get%20formatted%20RBAC%20roles)
-- [Validate module locally](./Contribution%20guide%20-%20Validate%20module%20locally)
+- [Contribution flow](./Contribution%20guide%20-%20Contribution%20flow.md)
+- [Generate module Readme](./Contribution%20guide%20-%20Generate%20module%20Readme.md)
+- [Get formatted RBAC roles](./Contribution%20guide%20-%20Get%20formatted%20RBAC%20roles.md)
+- [Validate module locally](./Contribution%20guide%20-%20Validate%20module%20locally.md)
 ---

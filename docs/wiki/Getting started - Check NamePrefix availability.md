@@ -1,4 +1,4 @@
-The `'Test-NamePrefixAvailability'` function provides you with the capability to test if the [`namePrefix`](./The%20CI%20environment%20-%20Token%20replacement#optional-local-custom-tokens), specified in the [`settings.json`](https://github.com/Azure/ResourceModules/blob/main/settings.json) file, conflicts with any existing resource.
+The `'Test-NamePrefixAvailability'` function provides you with the capability to test if the [`namePrefix`](./The%20CI%20environment%20-%20Token%20replacement.md#optional-local-custom-tokens), specified in the [`settings.json`](https://github.com/Azure/ResourceModules/blob/main/settings.json) file, conflicts with any existing resource.
 
 ---
 

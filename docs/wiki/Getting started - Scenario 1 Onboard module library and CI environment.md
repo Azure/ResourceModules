@@ -31,7 +31,7 @@ Next, you'll want to create your own copy of the code. Depending on the reposito
 
 > **Note:** Whether you chose GitHub or Azure DevOps as your repository's environment, it does not affect your options when registering the pipelines.
 
-> **Note:** If you don't want to use all modules, you can remove those that should not be part of your library. However, when doing so, make sure you use the utility [`Get-LinkedLocalModuleList`](./Getting%20started%20-%20Get%20module%20cross-references) to check for any cross-module references. For example, you may find that when you'd remove the 'Microsoft.Network/privateEndpoints', that it is still referenced by some of the modules you may want to use (for example, 'Microsoft.KeyVault/vaults'). In those cases, make sure to not accidentally delete required references.
+> **Note:** If you don't want to use all modules, you can remove those that should not be part of your library. However, when doing so, make sure you use the utility [`Get-LinkedLocalModuleList`](./Getting%20started%20-%20Get%20module%20cross-references.md) to check for any cross-module references. For example, you may find that when you'd remove the 'Microsoft.Network/privateEndpoints', that it is still referenced by some of the modules you may want to use (for example, 'Microsoft.KeyVault/vaults'). In those cases, make sure to not accidentally delete required references.
 
 <details>
 <summary>GitHub Repository</summary>
@@ -106,9 +106,9 @@ To update the `namePrefix`, perform the following steps:
     ```
     > **Note:** The value should be a 3-5 character long string like `cntso`. Longer strings are not recommended as they may conflict with Azure resource name length restrictions.
 
-    > **Note:** We highly encourage you to use the [Check namePrefix availability](./Getting%20started%20-%20Check%20NamePrefix%20availability) script to test if a given name prefix could conflict with any existing resource.
+    > **Note:** We highly encourage you to use the [Check namePrefix availability](./Getting%20started%20-%20Check%20NamePrefix%20availability.md) script to test if a given name prefix could conflict with any existing resource.
 
- For further information on the token replacement logic, please refer to the corresponding [Token replacement](./The%20CI%20environment%20-%20Token%20replacement) section.
+ For further information on the token replacement logic, please refer to the corresponding [Token replacement](./The%20CI%20environment%20-%20Token%20replacement.md) section.
 
 ## 3.2 Set up CI-environment-specific configuration
 
@@ -318,7 +318,7 @@ The primary pipeline variable file `global.variables.yml` hosts the fundamental 
 
 ### 3.2.4 Register pipelines
 
-To use the pipelines that come with the environment in Azure DevOps, you need to register them first. You can either do this manually, or, run the utility `Register-AzureDevOpsPipeline` we provide in `utilities/tools/AzureDevOps`. For further information, please refer to the corresponding [documentation](./Interoperability%20-%20Register%20Azure%20DevOps%20Pipelines).
+To use the pipelines that come with the environment in Azure DevOps, you need to register them first. You can either do this manually, or, run the utility `Register-AzureDevOpsPipeline` we provide in `utilities/tools/AzureDevOps`. For further information, please refer to the corresponding [documentation](./Interoperability%20-%20Register%20Azure%20DevOps%20Pipelines.md).
 
 
 ### 3.2.5 Azure Artifacts Universal Packages
@@ -346,7 +346,7 @@ In order to successfully deploy and test all modules in your desired environment
 
 The repository comes with a platform pipeline, i.e., the '*dependencies pipeline*', that deploys a set of Azure services such as Virtual Networks and Key Vaults (along with dummy secrets) to be used by the module pipeline tests.
 
-Run the dependencies pipeline by following instructions provided in the specific [Dependencies pipeline usage](./The%20CI%20environment%20-%20Pipeline%20usage#operate-the-dependencies-pipeline) section.
+Run the dependencies pipeline by following instructions provided in the specific [Dependencies pipeline usage](./The%20CI%20environment%20-%20Pipeline%20usage.md#operate-the-dependencies-pipeline) section.
 
 > **Note**: For details about the dependencies pipeline design, please refer to the dedicated [Dependencies pipeline design](./The%20CI%20environment%20-%20Pipeline%20design.md#dependencies-pipeline) section.
 
@@ -384,4 +384,4 @@ For this reason, make sure to update the references in the following modules onc
 
 # 6. (Optional) Convert library to ARM
 
-Note that in case you don't want to use Bicep, you always have the option to use the utility `ConvertTo-ARMTemplate` we provide in path `utilities/tools` to convert the repository to an ARM-only repository. Due to the way Bicep works and the CI environment is set up, you should be able to use it with ARM templates in the same way as you would when using Bicep. For further information on how to use the tool, please refer to the tool-specific [documentation](./Interoperability%20-%20Bicep%20to%20ARM%20conversion).
+Note that in case you don't want to use Bicep, you always have the option to use the utility `ConvertTo-ARMTemplate` we provide in path `utilities/tools` to convert the repository to an ARM-only repository. Due to the way Bicep works and the CI environment is set up, you should be able to use it with ARM templates in the same way as you would when using Bicep. For further information on how to use the tool, please refer to the tool-specific [documentation](./Interoperability%20-%20Bicep%20to%20ARM%20conversion.md).

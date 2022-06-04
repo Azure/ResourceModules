@@ -1,4 +1,4 @@
-This page provides an overview of the CARML CI environment. For further details, refer to the dedicated wiki section, "[The CI environment](./The%20CI%20environment)".
+This page provides an overview of the CARML CI environment. For further details, refer to the dedicated wiki section, "[The CI environment](./The%20CI%20environment.md)".
 
 ---
 
