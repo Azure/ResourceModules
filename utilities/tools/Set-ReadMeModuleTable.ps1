@@ -68,7 +68,7 @@ function Set-ReadMeModuleTable {
     $contentArray = Get-Content -Path $FilePath
 
     # Handle space in the projectname
-    $urlEncodedProjectName = $ProjectName.Replace(' ', '%20')
+    $urlEncodedProjectName = [uri]::EscapeDataString($ProjectName)
 
     $tableStringInputObject = @{
         Path           = $ModulesPath
