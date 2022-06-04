@@ -33,66 +33,24 @@ variables:
     value: '/arm/Microsoft.AnalysisServices/servers'
 
 stages:
-  - stage: dummyTest
-    displayName: Dummy test
+  - stage: Validation
+    displayName: Static validation
     jobs:
-      - job:
-        displayName: Run global tests
-        timeoutInMinutes: 180
-        pool:
-          vmImage: 'ubuntu-latest'
-        steps:
-          - task: PowerShell@2
-            displayName: 'Setup agent'
-            inputs:
-              targetType: inline
-              pwsh: true
-              script: |
-                $stopwatch = [system.diagnostics.stopwatch]::StartNew()
-                # Load used functions
-                . (Join-Path '$(System.DefaultWorkingDirectory)' 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
+      - template: /.azuredevops/pipelineTemplates/jobs.validateModulePester.yml
 
-                # Define PS modules to install on the runner
-                $Modules = @(
-                    @{ Name = 'Az.Accounts' },
-                    @{ Name = 'Az.Resources' }
-                )
+  - stage: Deployment
+    displayName: Deployment validation
+    jobs:
+      - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
+        parameters:
+          removeDeployment: '${{ parameters.removeDeployment }}'
+          deploymentBlocks:
+            - path: $(modulePath)/.parameters/min.parameters.json
+            - path: $(modulePath)/.parameters/parameters.json
+            - path: $(modulePath)/.parameters/max.parameters.json
 
-                # Additional PS modules need to be installed for the removal step in case it is enabled
-                if ('${{ parameters.removeDeployment}}' -eq 'true') {
-                  $Modules += @(
-                    @{ Name = 'Az.CognitiveServices' },
-                    @{ Name = 'Az.Compute' },
-                    @{ Name = 'Az.KeyVault' },
-                    @{ Name = 'Az.Monitor' },
-                    @{ Name = 'Az.OperationalInsights' },
-                    @{ Name = 'Az.RecoveryServices' }
-                  )
-                }
-
-                # Set agent up
-                Set-EnvironmentOnAgent -PSModules $Modules
-
-                Write-Verbose ($stopwatch.Elapsed | Out-String) -Verbose
-                $stopwatch.Stop()
-  # - stage: Validation
-  #   displayName: Static validation
-  #   jobs:
-  #     - template: /.azuredevops/pipelineTemplates/jobs.validateModulePester.yml
-
-  # - stage: Deployment
-  #   displayName: Deployment validation
-  #   jobs:
-  #     - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
-  #       parameters:
-  #         removeDeployment: '${{ parameters.removeDeployment }}'
-  #         deploymentBlocks:
-  #           - path: $(modulePath)/.parameters/min.parameters.json
-  #           - path: $(modulePath)/.parameters/parameters.json
-  #           - path: $(modulePath)/.parameters/max.parameters.json
-
-  # - stage: Publishing
-  #   displayName: Publishing
-  #   condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/main'), eq(variables['Build.SourceBranch'], 'refs/heads/master'), eq('${{ parameters.prerelease }}', 'true')))
-  #   jobs:
-  #     - template: /.azuredevops/pipelineTemplates/jobs.publishModule.yml
+  - stage: Publishing
+    displayName: Publishing
+    condition: and(succeeded(), or(eq(variables['Build.SourceBranch'], 'refs/heads/main'), eq(variables['Build.SourceBranch'], 'refs/heads/master'), eq('${{ parameters.prerelease }}', 'true')))
+    jobs:
+      - template: /.azuredevops/pipelineTemplates/jobs.publishModule.yml
