@@ -197,7 +197,7 @@ function Set-EnvironmentOnAgent {
     }
 
     # MS-hosted agents have pre-installed modules in a specific path. Let's make them discoverable if available.
-    if (Test-Path '/usr/share/' -and (Get-ChildItem -Path '/usr/share/az_*' -Directory).Count -gt 0) {
+    if ((Test-Path '/usr/share/') -and ((Get-ChildItem -Path '/usr/share/az_*' -Directory).Count -gt 0)) {
         $preInstalledModulePaths = Get-ChildItem -Path '/usr/share/az_*' -Directory
         $maximumVersionPath = '/usr/share/az_{0}' -f (($preInstalledModulePaths | ForEach-Object { ($_ -split 'az_')[1] }) | ForEach-Object { [version]$_ } | Measure-Object -Maximum ).Maximum
         Write-Verbose "Found pre-installed modules in path [$maximumVersionPath]. Adding it PSModulePath environment variable." -Verbose
