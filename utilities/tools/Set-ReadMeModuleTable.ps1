@@ -67,6 +67,9 @@ function Set-ReadMeModuleTable {
     # Logic
     $contentArray = Get-Content -Path $FilePath
 
+    # Handle space in the projectname
+    $urlEncodedProjectName = $ProjectName.Replace(' ', '%20')
+
     $tableStringInputObject = @{
         Path           = $ModulesPath
         RepositoryName = $RepositoryName
@@ -74,7 +77,7 @@ function Set-ReadMeModuleTable {
         ColumnsInOrder = $ColumnsInOrder
         SortByColumn   = $SortByColumn
         Environment    = $Environment
-        ProjectName    = $ProjectName
+        ProjectName    = $urlEncodedProjectName
     }
     Write-Verbose ($tableStringInputObject | ConvertTo-Json | Out-String) -Verbose
     $tableString = Get-ModulesAsMarkdownTable @tableStringInputObject -Verbose
