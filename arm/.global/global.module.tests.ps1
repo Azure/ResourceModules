@@ -609,7 +609,7 @@ Describe 'Deployment template tests' -Tag Template {
             )
 
             if (-not $templateContent.parameters) {
-                # Skip test
+                Set-ItResult -Skipped -Because 'the module template has no parameters.'
                 return
             }
 
@@ -632,7 +632,7 @@ Describe 'Deployment template tests' -Tag Template {
             )
 
             if (-not $templateContent.variables) {
-                # Skip test
+                Set-ItResult -Skipped -Because 'the module template has no variables.'
                 return
             }
 
@@ -747,9 +747,18 @@ Describe 'Deployment template tests' -Tag Template {
         It '[<moduleFolderName>] Resource name output should exist' -TestCases $deploymentFolderTestCases {
             param(
                 $moduleFolderName,
-                $templateContent
+                $templateContent,
+                $templateFilePath
             )
 
+            # check if module contains a 'primary' resource we could draw a name from
+            $moduleResourceType = (Split-Path (($templateFilePath -replace '\\', '/') -split '/arm/')[1] -Parent) -replace '\\', '/'
+            if ($templateContent.resources.type -notcontains $moduleResourceType) {
+                Set-ItResult -Skipped -Because 'the module template has no primary resource to fetch a name from.'
+                return
+            }
+
+            # Otherwise test for standard outputs
             $outputs = $templateContent.outputs.Keys
             $outputs | Should -Contain 'name'
         }
@@ -757,9 +766,18 @@ Describe 'Deployment template tests' -Tag Template {
         It '[<moduleFolderName>] Resource ID output should exist' -TestCases $deploymentFolderTestCases {
             param(
                 $moduleFolderName,
-                $templateContent
+                $templateContent,
+                $templateFilePath
             )
 
+            # check if module contains a 'primary' resource we could draw a name from
+            $moduleResourceType = (Split-Path (($templateFilePath -replace '\\', '/') -split '/arm/')[1] -Parent) -replace '\\', '/'
+            if ($templateContent.resources.type -notcontains $moduleResourceType) {
+                Set-ItResult -Skipped -Because 'the module template has no primary resource to fetch a resource ID from.'
+                return
+            }
+
+            # Otherwise test for standard outputs
             $outputs = $templateContent.outputs.Keys
             $outputs | Should -Contain 'resourceId'
         }
@@ -771,7 +789,7 @@ Describe 'Deployment template tests' -Tag Template {
             )
 
             if (-not $templateContent.parameters) {
-                # Skip test
+                Set-ItResult -Skipped -Because 'the module template has no parameters.'
                 return
             }
 
@@ -793,7 +811,7 @@ Describe 'Deployment template tests' -Tag Template {
             )
 
             if (-not $templateContent.parameters) {
-                # Skip test
+                Set-ItResult -Skipped -Because 'the module template has no parameters.'
                 return
             }
 
@@ -819,7 +837,7 @@ Describe 'Deployment template tests' -Tag Template {
             )
 
             if (-not $templateContent.outputs) {
-                # Skip test
+                Set-ItResult -Skipped -Because 'the module template has no outputs.'
                 return
             }
 
