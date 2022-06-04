@@ -1,5 +1,3 @@
-# CARML library
-
 This page provides an overview of the CARML library. For an in-depth look, please refer to the dedicated wiki section, "[The library](./The%20library)".
 
 ---
@@ -7,9 +5,9 @@ This page provides an overview of the CARML library. For an in-depth look, pleas
 ### _Navigation_
 
 - [Infrastructure as Code](#infrastructure-as-code)
-- [A module in CARML](#a-module-in-CARML)
-    - [CARML module features](#CARML-module-features)
-    - [Example: Multiple Storage Account variants](#example-multiple-storage-account-variants)
+- [A module in CARML](#a-module-in-carml)
+  - [CARML module features](#carml-module-features)
+  - [Example: Multiple Storage Account variants](#example-multiple-storage-account-variants)
 ---
 
 # Infrastructure as Code
@@ -41,7 +39,7 @@ A CARML module should comply with the following characteristics:
   > For example, the resource group, the network security group and the virtual network modules can be combined to create a resource group hosting a virtual network with multiple subnets associated to specific NSGs.
 - **Multi-purpose**: Each module aims to cover most of the main resource's capabilities, without the need to maintain multiple module instances for different use cases. Instead, a generalized module can be consumed through parameter files​.
   > For example, the same virtual machine module can deploy a Windows OS VM or a Linux-based VM depending on input parameters.
-- **Integrates child resources**: Each module can deploy **_one_** instance of a resource and optionally **_n_** instances of its child-resources.
+- **Integrates child resources**: Each module can deploy **_one_** instance of a resource and optionally **_n_** instances of its child resources.
   > For example, the key vault module can deploy **_one_** key vault and optionally **_n_** key vault access policies.
 - **Integrates extension resources**: Extension resources are integrated with resource modules to support additional capabilities, such as diagnostic settings, role assignments, private endpoints, locks and managed identities.
   > For example, an automation account can optionally deploy private endpoints and/or diagnostic settings to support monitoring.

@@ -5,7 +5,7 @@ Use this script to test a module locally. You can use it to run only the static 
 ### _Navigation_
 
 - [Location](#location)
-- [How it works](#what-it-does)
+- [How it works](#how-it-works)
 - [How to use it](#how-to-use-it)
 
 ---
@@ -30,5 +30,5 @@ If the switch for either the validation test (`-ValidationTest`) or deployment t
 
 # How to use it
 
-For details on how to use the function please refer to the script's local documentation.
+For details on how to use the function, please refer to the script's local documentation.
 > **Note:** The script must be loaded before the function can be invoked

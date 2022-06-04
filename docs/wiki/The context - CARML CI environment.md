@@ -1,13 +1,9 @@
-# CARML CI environment
-
 This page provides an overview of the CARML CI environment. For further details, refer to the dedicated wiki section, "[The CI environment](./The%20CI%20environment)".
 
 ---
 
 ### _Navigation_
 
-- [CARML CI environment](#carml-ci-environment)
-    - [_Navigation_](#navigation)
 - [Deployment flow](#deployment-flow)
   - [Module versioning](#module-versioning)
 - [Where does the CARML CI environment fit in?](#where-does-the-carml-ci-environment-fit-in)

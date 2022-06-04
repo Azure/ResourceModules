@@ -1,5 +1,3 @@
-# The context
-
 This section explains the context of the Common Azure Resource Modules Library (CARML) and the motivation for its creation.
 
 ---

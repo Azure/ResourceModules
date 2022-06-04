@@ -63,11 +63,11 @@ The module has a dependency on pre-existing Virtual Network Gateways which we do
 
 # CI environment specific
 
-This section outlines known issues that currently affect our CI environment, i.e. our validation and publishing pipelines.
+This section outlines known issues that currently affect our CI environment, i.e., our validation and publishing pipelines.
 
 ## Static validation
 
-This section outlines known issues that currently affect the CI environment static validation step, i.e. Pester tests.
+This section outlines known issues that currently affect the CI environment static validation step, i.e., Pester tests.
 
 ## Deployment validation
 

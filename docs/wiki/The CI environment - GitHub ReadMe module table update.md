@@ -6,7 +6,7 @@ In the platform's pipeline `platform.updateReadMe.yml`, this script is invoked e
 ### _Navigation_
 
 - [Location](#location)
-- [How it works](#what-it-does)
+- [How it works](#how-it-works)
 - [How to use it](#how-to-use-it)
 
 ---
@@ -23,6 +23,6 @@ You can find the script under `/utilities/tools/Set-ReadMeModuleTable.ps1`
 
 # How to use it
 
-For details on how to use the function please refer to the script's local documentation.
+For details on how to use the function, please refer to the script's local documentation.
 
 > **Note:** The script must be loaded before the function can be invoked

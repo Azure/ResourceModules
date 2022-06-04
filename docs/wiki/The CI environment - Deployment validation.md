@@ -31,7 +31,7 @@ The intention of this test is to **fail fast**, before getting to the later depl
 
 This step performs the actual Azure deployments using each available & configured module parameter file. The purpose of this step is to prove the module can be deployed in different configurations based on the different parameters provided. Deployments for the different variants happen in parallel.
 
-The parameter files used in this stage should ideally cover as many configurations as possible to validate the template flexibility, i.e. to verify that the module can cover multiple scenarios in which the same Azure resource may be used. Using the example of a CosmosDB module we may want to have one parameter file for the minimum amount of required parameters, one parameter file for each CosmosDB type to test individual configurations and at least one parameter file testing the supported extension resources such as RBAC & diagnostic settings.
+The parameter files used in this stage should ideally cover as many configurations as possible to validate the template flexibility, i.e., to verify that the module can cover multiple scenarios in which the same Azure resource may be used. Using the example of a CosmosDB module we may want to have one parameter file for the minimum amount of required parameters, one parameter file for each CosmosDB type to test individual configurations and at least one parameter file testing the supported extension resources such as RBAC & diagnostic settings.
 
 > **Note**: Since every customer environment might be different due to applied Azure Policies or security policies, modules might behave differently and naming conventions need to be verified beforehand.
 
@@ -55,9 +55,9 @@ However, the removal step can be skipped in case further investigation on the de
 The removal process will remove all resources created by the deployment. The list of resources is identified by:
 
 1. Recursively fetching the list of resource IDs created in the deployment (identified via the used deployment name).
-1. Ordering the list based on resource IDs segment count (ensures child resources are removed first. E.g. `storageAccount/blobServices` comes before `storageAccount` as it has one more segments delimited by `/`).
-1. Filtering out resources used as dependencies for different modules from the list (e.g. the commonly used Log Analytics workspace).
-1. Moving specific resource types to the top of the list (if a certain order is required). For example, `vWAN` requires its `Virtual Hubs` to be removed first, even though they are no child-resources.
+1. Ordering the list based on resource IDs segment count (ensures child resources are removed first. E.g., `storageAccount/blobServices` comes before `storageAccount` as it has one more segments delimited by `/`).
+1. Filtering out resources used as dependencies for different modules from the list (e.g., the commonly used Log Analytics workspace).
+1. Moving specific resource types to the top of the list (if a certain order is required). For example, `vWAN` requires its `Virtual Hubs` to be removed first, even though they are no child resources.
 
 After a resource is removed (this happens after each resource in the list), the script will run, if defined, a **post removal operation**. This can be used for those resource types that requires a post-processing, like purging a soft-deleted key vault.
 
@@ -65,7 +65,7 @@ The procedure is initiated post-deployment by the script `/utilities/pipelines/r
 - (Azure DevOps) `/.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml`
 - (GitHub) `/.github/actions/templates/validateModuleDeployment/action.yml`
 
-It uses several helper scripts that can be found in its `helper` sub-folder
+It uses several helper scripts that can be found in its `helper` subfolder
 
 ### Create a specialized removal procedure
 

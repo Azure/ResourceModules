@@ -37,11 +37,11 @@ Pipeline logs are available for troubleshooting and provide detailed information
 
 ## Add a new module pipeline
 
-To add a new module pipeline we recommend to create a copy of a currently existing module pipeline and adjust all module-specific properties, e.g. triggers and module paths. The registration of the pipeline depends on the [DevOps platform](#devops-tool-specific-guidance) you're using.
+To add a new module pipeline we recommend to create a copy of a currently existing module pipeline and adjust all module-specific properties, e.g., triggers and module paths. The registration of the pipeline depends on the [DevOps platform](#devops-tool-specific-guidance) you're using.
 
 # Operate the dependencies pipeline
 
-The dependencies pipeline must be triggered manually and deploys a set of resources we reference as part of our module tests (e.g. Virtual Networks, Log Analytics Workspace, Key Vaults).
+The dependencies pipeline must be triggered manually and deploys a set of resources we reference as part of our module tests (e.g., Virtual Networks, Log Analytics Workspace, Key Vaults).
 
 To run the dependencies pipeline you can perform the following steps:
 
@@ -61,7 +61,7 @@ To run the dependencies pipeline you can perform the following steps:
 
 By default, i.e., by keeping the optional flags disables, the dependencies pipeline may take up to 30 minutes to run.
 
-> **Note:** For details about the dependencies pipeline design please refer to the dedicated [Dependencies pipeline design](./The%20CI%20environment%20-%20Pipeline%20design.md#dependencies-pipeline) section.
+> **Note:** For details about the dependencies pipeline design, please refer to the dedicated [Dependencies pipeline design](./The%20CI%20environment%20-%20Pipeline%20design.md#dependencies-pipeline) section.
 
 ## Add a new dependency
 
@@ -130,7 +130,7 @@ This section focuses on _Azure DevOps_ pipelines.
 
   To register a pipeline in _Azure DevOps_:
 
-  1. Create a workflow file (.yml) and upload it to a repository of your choice (e.g. in _Azure DevOps_ or _GitHub_).
+  1. Create a workflow file (.yml) and upload it to a repository of your choice (e.g., in _Azure DevOps_ or _GitHub_).
 
   1. Navigate to the 'Pipelines' section (blue rocket) and select the 'New pipeline' button on the top right.
 
@@ -148,7 +148,7 @@ This section focuses on _Azure DevOps_ pipelines.
 
      <img src="./media/CIEnvironment/pipelineNew4.png" alt="Register new pipeline step 4" height="430">
 
-  1. The previous action will open a new blade that asks you for the branch you stored the pipeline file in (e.g. `master`) and then asks for the relative path (from root of the repository) of the pipeline file.
+  1. The previous action will open a new blade that asks you for the branch you stored the pipeline file in (e.g., `master`) and then asks for the relative path (from root of the repository) of the pipeline file.
 
      <img src="./media/CIEnvironment/pipelineNew5.png" alt="Register new pipeline step 5" height="240">
 

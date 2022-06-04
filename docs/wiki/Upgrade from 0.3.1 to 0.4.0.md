@@ -50,7 +50,7 @@ For the modules you copy over, a `version.json` file will already be available. 
 # CI environment
 
 ## General pipeline updates
-General updates can be migrated by essentially copying/replacing any code outside of the `arm` folder (i.e. `.github`/`.azuredevops`/`utilities`/`docs`). If you modified the CI environment in the meantime, make sure to carefully merge any conflicting code. Noteworthy changes include:
+General updates can be migrated by essentially copying/replacing any code outside of the `arm` folder (i.e., `.github`/`.azuredevops`/`utilities`/`docs`). If you modified the CI environment in the meantime, make sure to carefully merge any conflicting code. Noteworthy changes include:
 -	renamed composite actions / templates,
 -	extended placeholder handling,
 -	extended pipeline functionality (e.g., managementgroup-level removal),

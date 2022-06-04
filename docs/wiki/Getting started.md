@@ -1,3 +1,5 @@
+# Getting Started
+
 This section provides an overview on how to get started using this repository. Depending on how you want to use this repository's content you may go down different paths to get started:
 
 ---

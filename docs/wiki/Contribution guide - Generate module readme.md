@@ -7,7 +7,7 @@ The ReadMe generator utility aims to simplify contributing to the CARML library,
 ### _Navigation_
 
 - [Location](#location)
-- [How it works](#what-it-does)
+- [How it works](#how-it-works)
   - [Special case: 'Parameter Usage' section](#special-case-parameter-usage-section)
 - [How to use it](#how-to-use-it)
 
@@ -18,14 +18,14 @@ You can find the script under `/utilities/tools/Set-ModuleReadMe.ps1`
 
 # How it works
 
-1. Using the provided template path, the script first makes sure to convert it to ARM/JSON if necessary (i.e. if a path to a Bicep file was provided)
-1. If the intended readMe file does not yet exist in the expected path, it is generated with a skeleton (with e.g. a generated header name)
+1. Using the provided template path, the script first makes sure to convert it to ARM/JSON if necessary (i.e., if a path to a Bicep file was provided)
+1. If the intended readMe file does not yet exist in the expected path, it is generated with a skeleton (with e.g., a generated header name)
 1. It then goes through all sections defined as `SectionsToRefresh` (by default all) and refreshes the section content (for example, for the `Parameters`) based on the values in the ARM/JSON Template. It detects sections by their header and regenerates always the full section.
 1. Once all are refreshed, the current ReadMe file is overwritten. **Note:** The script can be invoked with a `WhatIf` in combination with `Verbose` to just receive an console-output of the updated content.
 
 ## Special case: 'Parameter Usage' section
 
-The `Parameter Usage` examples are located just beneath the `Parameters` table. They are intended to show how to use complex objects/arrays that can be provided as parameters, excluding child-resources as they have their own readMe.
+The `Parameter Usage` examples are located just beneath the `Parameters` table. They are intended to show how to use complex objects/arrays that can be provided as parameters, excluding child resources as they have their own readMe.
 
 **For the most part, this section is to be populated manually**. However, for a specific set of common parameters, we automatically add their example to the readMe if the parameter exists in the template. At the time of this writing these are:
 - Private Endpoints
@@ -45,5 +45,5 @@ For example, the content of file `resourceUsage-roleAssignments.md` in folder `m
 
 # How to use it
 
-For details on how to use the function please refer to the script's local documentation.
+For details on how to use the function, please refer to the script's local documentation.
 > **Note:** The script must be loaded before the function can be invoked

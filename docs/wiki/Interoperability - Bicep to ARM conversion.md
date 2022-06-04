@@ -8,7 +8,7 @@ This page documents the conversion utility and how to use it.
 ### _Navigation_
 
 - [Location](#location)
-- [How it works](#what-it-does)
+- [How it works](#how-it-works)
 - [How to use it](#how-to-use-it)
 
 ---
@@ -27,5 +27,5 @@ The script finds all `deploy.bicep` files and converts them to json-based ARM te
 
 # How to use it
 
-For details on how to use the function please refer to the script's local documentation.
+For details on how to use the function, please refer to the script's local documentation.
 > **Note:** The script must be loaded before the function can be invoked

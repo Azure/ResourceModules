@@ -1,5 +1,3 @@
-# CARML Overview
-
 This section provides an overview of the Common Azure Resource Modules Library (CARML) repository.
 
 <img src="./media/Context/CARML_overview.png" alt="CARML overview" height="500">

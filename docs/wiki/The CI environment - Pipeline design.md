@@ -137,7 +137,7 @@ The dependencies pipeline comes with the following runtime parameters:
 
 The resources deployed by the dependencies pipeline need to be in place before testing all the modules.
 
-> Note: Some dependency resources (e.g. [storage account], [key vault] and [event hub namespace]) require a globally unique resource name. By default, the parameter files make use of the placeholder token `'<<namePrefix>>'` to make all resource names specific to an environment. Refer to [Parameter File Tokens Design](./The%20CI%20environment%20-%20Token%20replacement) for more details.
+> Note: Some dependency resources (e.g., [storage account], [key vault] and [event hub namespace]) require a globally unique resource name. By default, the parameter files make use of the placeholder token `'<<namePrefix>>'` to make all resource names specific to an environment. Refer to [Parameter File Tokens Design](./The%20CI%20environment%20-%20Token%20replacement) for more details.
 
 Since also dependency resources are in turn subject to dependencies with each other, resources are deployed in the following grouped order.
 
@@ -199,7 +199,7 @@ This group of resources has a dependency on one or more resources in the group a
       - '_adp-\<<namePrefix\>>-az-pip-x-fw_': Leveraged by the [Azure firewall] resource.
   1. Role assignment: This resource assigns the '_Contributor_' role on the subscription to the [user assigned identity] deployed as part of the group above. This is needed by the [image template] deployment.
   1. Key vault: This resource supports monitoring, hence it has a dependency on the [storage account], [log analytics workspace] and [event hub] deployed in the group above. Multiple instances are deployed:
-      - '_adp-\<<namePrefix\>>-az-kv-x-001_': KV with required secrets, keys, certificates and access policies to be leveraged by all resources requiring access to a key vault key, secret and/or certificate, i.e. [application gateway], [azure NetApp file], [azure SQL server], [disk encryption set], [machine learning service], [virtual machine], [virtual machine scale set], [virtual network gateway connection].
+      - '_adp-\<<namePrefix\>>-az-kv-x-001_': KV with required secrets, keys, certificates and access policies to be leveraged by all resources requiring access to a key vault key, secret and/or certificate, i.e., [application gateway], [azure NetApp file], [azure SQL server], [disk encryption set], [machine learning service], [virtual machine], [virtual machine scale set], [virtual network gateway connection].
       - '_adp-\<<namePrefix\>>-az-kv-x-pe_': KV to be leveraged by the [private endpoint] resource.
       - '_adp-\<<namePrefix\>>-az-kv-x-sqlmi_': KV with required secrets, keys and access policies to be leveraged by the [SQL managed instance] resource.
         >**Note**: This resource is deployed and configured only if sqlmi dependency resources are enabled.
