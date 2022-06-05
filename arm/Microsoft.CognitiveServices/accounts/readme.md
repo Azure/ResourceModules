@@ -33,6 +33,7 @@ This module deploys different kinds of cognitive services resources
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `customSubDomainName` | string | `''` | Subdomain name used for token-based authentication. Required if 'networkAcls' are set. |
+| `userAssignedIdentities` | object | `{object}` | The ID(s) to assign to the resource. Must be set if a user assigned identity is used for encryption. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
@@ -62,7 +63,6 @@ This module deploys different kinds of cognitive services resources
 | `sku` | string | `'S0'` | `[C2, C3, C4, F0, F1, S, S0, S1, S10, S2, S3, S4, S5, S6, S7, S8, S9]` | SKU of the Cognitive Services resource. Use 'Get-AzCognitiveServicesAccountSku' to determine a valid combinations of 'kind' and 'sku' for your Azure region. |
 | `systemAssignedIdentity` | bool | `False` |  | Enables system assigned managed identity on the resource. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
-| `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. |
 | `userOwnedStorage` | array | `[]` |  | The storage accounts for this resource. |
 
 
@@ -364,6 +364,78 @@ userAssignedIdentities: {
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
+            "value": "<<namePrefix>>-az-cgs-encr-001"
+        },
+        "kind": {
+            "value": "SpeechServices"
+        },
+        "sku": {
+            "value": "S0"
+        },
+        "userAssignedIdentities": {
+            "value": {
+                "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001": {}
+            }
+        },
+        "encryption": {
+            "value": {
+                "keySource": "Microsoft.Keyvault",
+                "keyVaultProperties": {
+                    "identityClientId": "c907a696-36f4-49fe-b926-39e3aabba814", // ID must be updated for new identity
+                    "keyvaulturi": "https://adp-<<namePrefix>>-az-kv-nopr-002.vault.azure.net/",
+                    "keyName": "keyEncryptionKey",
+                    "keyversion": "4570a207ec394a0bbbe4fc9adc663a51" // ID must be updated for new keys
+                }
+            }
+        }
+    }
+}
+
+```
+
+</details>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-accounts'
+  params: {
+    name: '<<namePrefix>>-az-cgs-encr-001'
+    kind: 'SpeechServices'
+    sku: 'S0'
+    userAssignedIdentities: {
+      '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
+    }
+    encryption: {
+      keySource: 'Microsoft.Keyvault'
+      keyVaultProperties: {
+        identityClientId: 'c907a696-36f4-49fe-b926-39e3aabba814'
+        keyvaulturi: 'https://adp-<<namePrefix>>-az-kv-nopr-002.vault.azure.net/'
+        keyName: 'keyEncryptionKey'
+        keyversion: '4570a207ec394a0bbbe4fc9adc663a51'
+      }
+    }
+  }
+```
+
+</details>
+<p>
+
+<h3>Example 2</h3>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
             "value": "<<namePrefix>>-az-cgs-x-001"
         },
         "kind": {
@@ -446,7 +518,7 @@ module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
 </details>
 <p>
 
-<h3>Example 2</h3>
+<h3>Example 3</h3>
 
 <details>
 

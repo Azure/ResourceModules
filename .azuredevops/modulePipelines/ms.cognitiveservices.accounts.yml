@@ -47,6 +47,7 @@ stages:
           deploymentBlocks:
             - path: $(modulePath)/.parameters/parameters.json
             - path: $(modulePath)/.parameters/speech.parameters.json
+            - path: $(modulePath)/.parameters/encr.parameters.json
 
   - stage: Publishing
     displayName: Publishing
