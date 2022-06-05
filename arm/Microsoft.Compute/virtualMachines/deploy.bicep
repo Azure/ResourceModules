@@ -287,8 +287,13 @@ param additionalUnattendContent array = []
 @description('Optional. Specifies the Windows Remote Management listeners. This enables remote Windows PowerShell. - WinRMConfiguration object.')
 param winRM object = {}
 
-@description('Optional. Any VM configuration profile assignments.')
-param configurationProfileAssignments array = []
+@description('Required. The configuration profile of automanage.')
+@allowed([
+  '/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction'
+  '/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesDevTest'
+  ''
+])
+param configurationProfile string = ''
 
 var vmComputerNameTransformed = vmComputerNamesTransformation == 'uppercase' ? toUpper(name) : (vmComputerNamesTransformation == 'lowercase' ? toLower(name) : name)
 
@@ -330,6 +335,8 @@ var identity = identityType != 'None' ? {
   userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
 } : null
 
+var enableChildTelemetry = false
+
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
   properties: {
@@ -346,14 +353,15 @@ module virtualMachine_nic '.bicep/nested_networkInterface.bicep' = [for (nicConf
   name: '${uniqueString(deployment().name, location)}-VM-Nic-${index}'
   params: {
     networkInterfaceName: '${name}${nicConfiguration.nicSuffix}'
+    enableDefaultTelemetry: enableDefaultTelemetry
     virtualMachineName: name
     location: location
     tags: tags
     enableIPForwarding: contains(nicConfiguration, 'enableIPForwarding') ? (!empty(nicConfiguration.enableIPForwarding) ? nicConfiguration.enableIPForwarding : false) : false
     enableAcceleratedNetworking: contains(nicConfiguration, 'enableAcceleratedNetworking') ? nicConfiguration.enableAcceleratedNetworking : true
     dnsServers: contains(nicConfiguration, 'dnsServers') ? (!empty(nicConfiguration.dnsServers) ? nicConfiguration.dnsServers : []) : []
-    networkSecurityGroupId: contains(nicConfiguration, 'nsgId') ? (!empty(nicConfiguration.nsgId) ? nicConfiguration.nsgId : '') : ''
-    ipConfigurationArray: nicConfiguration.ipConfigurations
+    networkSecurityGroupResourceId: contains(nicConfiguration, 'networkSecurityGroupResourceId') ? nicConfiguration.networkSecurityGroupResourceId : ''
+    ipConfigurations: nicConfiguration.ipConfigurations
     lock: lock
     diagnosticStorageAccountId: diagnosticStorageAccountId
     diagnosticLogsRetentionInDays: diagnosticLogsRetentionInDays
@@ -457,13 +465,13 @@ resource virtualMachine 'Microsoft.Compute/virtualMachines@2021-07-01' = {
   ]
 }
 
-module vm_configurationProfileAssignment '.bicep/nested_configurationProfileAssignment.bicep' = [for (configurationProfileAssignment, index) in configurationProfileAssignments: {
-  name: '${uniqueString(deployment().name, location)}-VM-ConfigurationProfileAssignment-${index}'
-  params: {
-    virtualMachineName: virtualMachine.name
-    configurationProfile: configurationProfileAssignment
+resource vm_configurationProfileAssignment 'Microsoft.Automanage/configurationProfileAssignments@2021-04-30-preview' = if (!empty(configurationProfile)) {
+  name: 'default'
+  properties: {
+    configurationProfile: configurationProfile
   }
-}]
+  scope: virtualMachine
+}
 
 module vm_domainJoinExtension 'extensions/deploy.bicep' = if (extensionDomainJoinConfig.enabled) {
   name: '${uniqueString(deployment().name, location)}-VM-DomainJoin'
@@ -479,7 +487,7 @@ module vm_domainJoinExtension 'extensions/deploy.bicep' = if (extensionDomainJoi
     protectedSettings: {
       Password: extensionDomainJoinPassword
     }
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableChildTelemetry
   }
 }
 
@@ -494,7 +502,7 @@ module vm_microsoftAntiMalwareExtension 'extensions/deploy.bicep' = if (extensio
     autoUpgradeMinorVersion: contains(extensionAntiMalwareConfig, 'autoUpgradeMinorVersion') ? extensionAntiMalwareConfig.autoUpgradeMinorVersion : true
     enableAutomaticUpgrade: contains(extensionAntiMalwareConfig, 'enableAutomaticUpgrade') ? extensionAntiMalwareConfig.enableAutomaticUpgrade : false
     settings: extensionAntiMalwareConfig.settings
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableChildTelemetry
   }
 }
 
@@ -519,7 +527,7 @@ module vm_microsoftMonitoringAgentExtension 'extensions/deploy.bicep' = if (exte
     protectedSettings: {
       workspaceKey: !empty(monitoringWorkspaceId) ? vm_logAnalyticsWorkspace.listKeys().primarySharedKey : ''
     }
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableChildTelemetry
   }
 }
 
@@ -533,7 +541,7 @@ module vm_dependencyAgentExtension 'extensions/deploy.bicep' = if (extensionDepe
     typeHandlerVersion: contains(extensionDependencyAgentConfig, 'typeHandlerVersion') ? extensionDependencyAgentConfig.typeHandlerVersion : '9.5'
     autoUpgradeMinorVersion: contains(extensionDependencyAgentConfig, 'autoUpgradeMinorVersion') ? extensionDependencyAgentConfig.autoUpgradeMinorVersion : true
     enableAutomaticUpgrade: contains(extensionDependencyAgentConfig, 'enableAutomaticUpgrade') ? extensionDependencyAgentConfig.enableAutomaticUpgrade : true
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableChildTelemetry
   }
 }
 
@@ -547,7 +555,7 @@ module vm_networkWatcherAgentExtension 'extensions/deploy.bicep' = if (extension
     typeHandlerVersion: contains(extensionNetworkWatcherAgentConfig, 'typeHandlerVersion') ? extensionNetworkWatcherAgentConfig.typeHandlerVersion : '1.4'
     autoUpgradeMinorVersion: contains(extensionNetworkWatcherAgentConfig, 'autoUpgradeMinorVersion') ? extensionNetworkWatcherAgentConfig.autoUpgradeMinorVersion : true
     enableAutomaticUpgrade: contains(extensionNetworkWatcherAgentConfig, 'enableAutomaticUpgrade') ? extensionNetworkWatcherAgentConfig.enableAutomaticUpgrade : false
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableChildTelemetry
   }
 }
 
@@ -563,7 +571,7 @@ module vm_desiredStateConfigurationExtension 'extensions/deploy.bicep' = if (ext
     enableAutomaticUpgrade: contains(extensionDSCConfig, 'enableAutomaticUpgrade') ? extensionDSCConfig.enableAutomaticUpgrade : false
     settings: contains(extensionDSCConfig, 'settings') ? extensionDSCConfig.settings : {}
     protectedSettings: contains(extensionDSCConfig, 'protectedSettings') ? extensionDSCConfig.protectedSettings : {}
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableChildTelemetry
   }
 }
 
@@ -581,7 +589,7 @@ module vm_customScriptExtension 'extensions/deploy.bicep' = if (extensionCustomS
       fileUris: [for fileData in extensionCustomScriptConfig.fileData: contains(fileData, 'storageAccountId') ? '${fileData.uri}?${listAccountSas(fileData.storageAccountId, '2019-04-01', accountSasProperties).accountSasToken}' : fileData.uri]
     }
     protectedSettings: extensionCustomScriptProtectedSetting
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableChildTelemetry
   }
   dependsOn: [
     vm_desiredStateConfigurationExtension
@@ -600,7 +608,7 @@ module vm_diskEncryptionExtension 'extensions/deploy.bicep' = if (extensionDiskE
     enableAutomaticUpgrade: contains(extensionDiskEncryptionConfig, 'enableAutomaticUpgrade') ? extensionDiskEncryptionConfig.enableAutomaticUpgrade : false
     forceUpdateTag: contains(extensionDiskEncryptionConfig, 'forceUpdateTag') ? extensionDiskEncryptionConfig.forceUpdateTag : '1.0'
     settings: extensionDiskEncryptionConfig.settings
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableChildTelemetry
   }
   dependsOn: [
     vm_customScriptExtension
@@ -608,12 +616,14 @@ module vm_diskEncryptionExtension 'extensions/deploy.bicep' = if (extensionDiskE
   ]
 }
 
-module virtualMachine_backup '.bicep/nested_backup.bicep' = if (!empty(backupVaultName)) {
+module virtualMachine_backup '../../Microsoft.RecoveryServices/vaults/protectionContainers/protectedItems/deploy.bicep' = if (!empty(backupVaultName)) {
   name: '${uniqueString(deployment().name, location)}-VM-Backup'
   params: {
-    backupResourceName: '${backupVaultName}/Azure/iaasvmcontainer;iaasvmcontainerv2;${resourceGroup().name};${virtualMachine.name}/vm;iaasvmcontainerv2;${resourceGroup().name};${virtualMachine.name}'
+    name: 'vm;iaasvmcontainerv2;${resourceGroup().name};${virtualMachine.name}'
+    policyId: az.resourceId('Microsoft.RecoveryServices/vaults/backupPolicies', backupVaultName, backupPolicyName)
     protectedItemType: 'Microsoft.Compute/virtualMachines'
-    backupPolicyId: az.resourceId('Microsoft.RecoveryServices/vaults/backupPolicies', backupVaultName, backupPolicyName)
+    protectionContainerName: 'iaasvmcontainer;iaasvmcontainerv2;${resourceGroup().name};${virtualMachine.name}'
+    recoveryVaultName: backupVaultName
     sourceResourceId: virtualMachine.id
   }
   scope: az.resourceGroup(backupVaultResourceGroup)

@@ -136,6 +136,8 @@ var identity = identityType != 'None' ? {
   userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
 } : null
 
+var enableChildTelemetry = false
+
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
   properties: {
@@ -148,7 +150,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource rsv 'Microsoft.RecoveryServices/vaults@2021-11-01-preview' = {
+resource rsv 'Microsoft.RecoveryServices/vaults@2022-02-01' = {
   name: name
   location: location
   tags: tags
@@ -167,7 +169,7 @@ module rsv_replicationFabrics 'replicationFabrics/deploy.bicep' = [for (replicat
     name: contains(replicationFabric, 'name') ? replicationFabric.name : replicationFabric.location
     location: replicationFabric.location
     replicationContainers: contains(replicationFabric, 'replicationContainers') ? replicationFabric.replicationContainers : []
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableChildTelemetry
   }
   dependsOn: [
     rsv_replicationPolicies
@@ -183,7 +185,7 @@ module rsv_replicationPolicies 'replicationPolicies/deploy.bicep' = [for (replic
     crashConsistentFrequencyInMinutes: contains(replicationPolicy, 'crashConsistentFrequencyInMinutes') ? replicationPolicy.crashConsistentFrequencyInMinutes : 5
     multiVmSyncStatus: contains(replicationPolicy, 'multiVmSyncStatus') ? replicationPolicy.multiVmSyncStatus : 'Enable'
     recoveryPointHistory: contains(replicationPolicy, 'recoveryPointHistory') ? replicationPolicy.recoveryPointHistory : 1440
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableChildTelemetry
   }
 }]
 
@@ -193,7 +195,7 @@ module rsv_backupStorageConfiguration 'backupStorageConfig/deploy.bicep' = if (!
     recoveryVaultName: rsv.name
     storageModelType: backupStorageConfig.storageModelType
     crossRegionRestoreFlag: backupStorageConfig.crossRegionRestoreFlag
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableChildTelemetry
   }
 }
 
@@ -206,7 +208,9 @@ module rsv_protectionContainers 'protectionContainers/deploy.bicep' = [for (prot
     friendlyName: protectionContainer.friendlyName
     backupManagementType: protectionContainer.backupManagementType
     containerType: protectionContainer.containerType
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableChildTelemetry
+    protectedItems: contains(protectionContainer, 'protectedItems') ? protectionContainer.protectedItems : []
+    location: location
   }
 }]
 
@@ -216,7 +220,7 @@ module rsv_backupPolicies 'backupPolicies/deploy.bicep' = [for (backupPolicy, in
     recoveryVaultName: rsv.name
     name: backupPolicy.name
     backupPolicyProperties: backupPolicy.properties
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableChildTelemetry
   }
 }]
 
@@ -231,7 +235,7 @@ module rsv_backupConfig 'backupConfig/deploy.bicep' = if (!empty(backupConfig)) 
     storageModelType: contains(backupConfig, 'storageModelType') ? backupConfig.storageModelType : 'GeoRedundant'
     storageType: contains(backupConfig, 'storageType') ? backupConfig.storageType : 'GeoRedundant'
     storageTypeState: contains(backupConfig, 'storageTypeState') ? backupConfig.storageTypeState : 'Locked'
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableChildTelemetry
   }
 }
 

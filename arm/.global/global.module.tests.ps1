@@ -49,8 +49,8 @@ Describe 'File/folder tests' -Tag Modules {
 
                 $workflowsFolderName = Join-Path $RepoRoot '.github' 'workflows'
                 $workflowFileName = '{0}.yml' -f $moduleFolderName.Replace('\', '/').Replace('/', '.').Replace('Microsoft', 'ms').ToLower()
-
-                Test-Path (Join-Path $workflowsFolderName $workflowFileName) | Should -Be $true
+                $workflowPath = Join-Path $workflowsFolderName $workflowFileName
+                Test-Path $workflowPath | Should -Be $true -Because "path [$workflowPath] should exist."
             }
         }
 
@@ -64,8 +64,8 @@ Describe 'File/folder tests' -Tag Modules {
 
                 $pipelinesFolderName = Join-Path $RepoRoot '.azuredevops' 'modulePipelines'
                 $pipelineFileName = '{0}.yml' -f $moduleFolderName.Replace('\', '/').Replace('/', '.').Replace('Microsoft', 'ms').ToLower()
-
-                Test-Path (Join-Path $pipelinesFolderName $pipelineFileName) | Should -Be $true
+                $pipelinePath = Join-Path $pipelinesFolderName $pipelineFileName
+                Test-Path $pipelinePath | Should -Be $true -Because "path [$pipelinePath] should exist."
             }
         }
 
@@ -97,7 +97,7 @@ Describe 'File/folder tests' -Tag Modules {
 
         $folderTestCases = [System.Collections.ArrayList]@()
         foreach ($moduleFolderPath in $moduleFolderPaths) {
-            if (Test-Path (Join-Path $moduleFolderPath '.paramateres')) {
+            if (Test-Path (Join-Path $moduleFolderPath '.parameters')) {
                 $folderTestCases += @{
                     moduleFolderName = $moduleFolderPath.Replace('\', '/').Split('/arm/')[1]
                     moduleFolderPath = $moduleFolderPath
@@ -149,7 +149,7 @@ Describe 'Readme tests' -Tag Readme {
             if (-not ($convertedTemplates.Keys -contains $moduleFolderPathKey)) {
                 if (Test-Path (Join-Path $moduleFolderPath 'deploy.bicep')) {
                     $templateFilePath = Join-Path $moduleFolderPath 'deploy.bicep'
-                    $templateContent = az bicep build --file $templateFilePath --stdout | ConvertFrom-Json -AsHashtable
+                    $templateContent = az bicep build --file $templateFilePath --stdout --no-restore | ConvertFrom-Json -AsHashtable
                 } elseIf (Test-Path (Join-Path $moduleFolderPath 'deploy.json')) {
                     $templateFilePath = Join-Path $moduleFolderPath 'deploy.json'
                     $templateContent = Get-Content $templateFilePath -Raw | ConvertFrom-Json -AsHashtable
@@ -451,7 +451,12 @@ Describe 'Readme tests' -Tag Readme {
             $fileHashAfter = (Get-FileHash $readMeFilePath).Hash
 
             # Compare
-            $fileHashBefore -eq $fileHashAfter | Should -Be $true -Because 'The file hashes before and after applying the Set-ModuleReadMe function should be identical'
+            $filesAreTheSame = $fileHashBefore -eq $fileHashAfter
+            if (-not $filesAreTheSame) {
+                $diffReponse = git diff
+                Write-Warning ($diffReponse | Out-String) -Verbose
+            }
+            $filesAreTheSame | Should -Be $true -Because 'The file hashes before and after applying the Set-ModuleReadMe function should be identical'
         }
     }
 }
@@ -468,7 +473,7 @@ Describe 'Deployment template tests' -Tag Template {
             if (-not ($convertedTemplates.Keys -contains $moduleFolderPathKey)) {
                 if (Test-Path (Join-Path $moduleFolderPath 'deploy.bicep')) {
                     $templateFilePath = Join-Path $moduleFolderPath 'deploy.bicep'
-                    $templateContent = az bicep build --file $templateFilePath --stdout | ConvertFrom-Json -AsHashtable
+                    $templateContent = az bicep build --file $templateFilePath --stdout --no-restore | ConvertFrom-Json -AsHashtable
                 } elseIf (Test-Path (Join-Path $moduleFolderPath 'deploy.json')) {
                     $templateFilePath = Join-Path $moduleFolderPath 'deploy.json'
                     $templateContent = Get-Content $templateFilePath -Raw | ConvertFrom-Json -AsHashtable
@@ -609,7 +614,7 @@ Describe 'Deployment template tests' -Tag Template {
             )
 
             if (-not $templateContent.parameters) {
-                $true | Should -Be $true
+                # Skip test
                 return
             }
 
@@ -632,7 +637,7 @@ Describe 'Deployment template tests' -Tag Template {
             )
 
             if (-not $templateContent.variables) {
-                $true | Should -Be $true
+                # Skip test
                 return
             }
 
@@ -764,7 +769,7 @@ Describe 'Deployment template tests' -Tag Template {
             $outputs | Should -Contain 'resourceId'
         }
 
-        It "[<moduleFolderName>] parameters' description shoud start with a one word category followed by a dot, a space and the actual description text." -TestCases $deploymentFolderTestCases {
+        It "[<moduleFolderName>] parameters' description should start with a one word category starting with a capital letter, followed by a dot, a space and the actual description text ending with a dot." -TestCases $deploymentFolderTestCases {
             param(
                 $moduleFolderName,
                 $templateContent
@@ -772,19 +777,66 @@ Describe 'Deployment template tests' -Tag Template {
 
             if (-not $templateContent.parameters) {
                 # Skip test
-                $true | Should -Be $true
                 return
             }
 
-            $IncorrectParameters = @()
-            $Paramdescoutput = $templateContent.parameters.Keys
-            foreach ($Param in $Paramdescoutput) {
-                $Data = ($templateContent.parameters.$Param.metadata).description
-                if ($Data -notmatch '^[a-zA-Z]+\. .+') {
-                    $IncorrectParameters += $Param
+            $incorrectParameters = @()
+            $templateParameters = $templateContent.parameters.Keys
+            foreach ($parameter in $templateParameters) {
+                $data = ($templateContent.parameters.$parameter.metadata).description
+                if ($data -notmatch '(?s)^[A-Z][a-zA-Z]+\. .+\.$') {
+                    $incorrectParameters += $parameter
                 }
             }
-            $IncorrectParameters | Should -BeNullOrEmpty
+            $incorrectParameters | Should -BeNullOrEmpty
+        }
+
+        It "[<moduleFolderName>] Conditional parameters' description should contain 'Required if' followed by the condition making the parameter required." -TestCases $deploymentFolderTestCases {
+            param(
+                $moduleFolderName,
+                $templateContent
+            )
+
+            if (-not $templateContent.parameters) {
+                # Skip test
+                return
+            }
+
+            $incorrectParameters = @()
+            $templateParameters = $templateContent.parameters.Keys
+            foreach ($parameter in $templateParameters) {
+                $data = ($templateContent.parameters.$parameter.metadata).description
+                switch -regex ($data) {
+                    '^Conditional. .*' {
+                        if ($data -notmatch '.*\. Required if .*') {
+                            $incorrectParameters += $parameter
+                        }
+                    }
+                }
+            }
+            $incorrectParameters | Should -BeNullOrEmpty
+        }
+
+        It "[<moduleFolderName>] outputs' description should start with a capital letter and contain text ending with a dot." -TestCases $deploymentFolderTestCases {
+            param(
+                $moduleFolderName,
+                $templateContent
+            )
+
+            if (-not $templateContent.outputs) {
+                # Skip test
+                return
+            }
+
+            $incorrectOutputs = @()
+            $templateOutputs = $templateContent.outputs.Keys
+            foreach ($output in $templateOutputs) {
+                $data = ($templateContent.outputs.$output.metadata).description
+                if ($data -notmatch '(?s)^[A-Z].+\.$') {
+                    $incorrectOutputs += $output
+                }
+            }
+            $incorrectOutputs | Should -BeNullOrEmpty
         }
 
         # PARAMETER Tests
@@ -873,7 +925,7 @@ Describe "API version tests [All apiVersions in the template should be 'recent']
         if (-not ($convertedTemplates.Keys -contains $moduleFolderPathKey)) {
             if (Test-Path (Join-Path $moduleFolderPath 'deploy.bicep')) {
                 $templateFilePath = Join-Path $moduleFolderPath 'deploy.bicep'
-                $templateContent = az bicep build --file $templateFilePath --stdout | ConvertFrom-Json -AsHashtable
+                $templateContent = az bicep build --file $templateFilePath --stdout --no-restore | ConvertFrom-Json -AsHashtable
             } elseIf (Test-Path (Join-Path $moduleFolderPath 'deploy.json')) {
                 $templateFilePath = Join-Path $moduleFolderPath 'deploy.json'
                 $templateContent = Get-Content $templateFilePath -Raw | ConvertFrom-Json -AsHashtable

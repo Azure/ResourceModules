@@ -79,6 +79,8 @@ var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
   }
 }]
 
+var enableChildTelemetry = false
+
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name)}'
   properties: {
@@ -127,7 +129,7 @@ module fileServices_shares 'shares/deploy.bicep' = [for (share, index) in shares
     rootSquash: contains(share, 'rootSquash') ? share.rootSquash : 'NoRootSquash'
     sharedQuota: contains(share, 'sharedQuota') ? share.sharedQuota : 5120
     roleAssignments: contains(share, 'roleAssignments') ? share.roleAssignments : []
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableChildTelemetry
   }
 }]
 

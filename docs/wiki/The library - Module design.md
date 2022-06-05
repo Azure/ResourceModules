@@ -12,10 +12,12 @@ This section details the design principles followed by the CARML Bicep modules.
 - [Bicep template guidelines](#bicep-template-guidelines)
   - [Parameters](#parameters)
   - [Variables](#variables)
-  - [Resource](#resource)
+  - [Resource](#resources)
+  - [Modules](#modules)
   - [Outputs](#outputs)
 - [ReadMe](#readme)
 - [Parameter files](#parameter-files)
+- [Telemetry](#telemetry)
 
 ---
 
@@ -123,12 +125,8 @@ Use the following naming standard for module files and folders:
 
 This section details patterns among extension resources that are usually very similar in their structure among all modules supporting them:
 
-- [Locks](#locks)
-- [RBAC](#rbac)
-- [Diagnostic Settings](#diagnostic-settings)
-- [Private Endpoints](#private-endpoints)
-
-### Locks
+<details>
+<summary>Locks</summary>
 
 The locks extension can be added as a `resource` to the resource template directly.
 
@@ -151,13 +149,16 @@ resource <mainResource>_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lo
 }
 ```
 
-### RBAC
+</details>
+
+<details>
+<summary>RBAC</summary>
 
 The RBAC deployment has 2 elements to it. A module that contains the implementation, and a module reference in the parent resource - each with it's own loop to enable you to deploy n-amount of role assignments to n-amount of principals.
 
 #### 1st Element in main resource
 ```bicep
-@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'')
+@description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
 param roleAssignments array = []
 
 module <mainResource>_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
@@ -207,13 +208,17 @@ resource roleAssignment 'Microsoft.Authorization/roleAssignments@2020-10-01-prev
   properties: {
     roleDefinitionId: contains(builtInRoleNames, roleDefinitionIdOrName) ? builtInRoleNames[roleDefinitionIdOrName] : roleDefinitionIdOrName
     principalId: principalId
-    principalType: !empty(principalType) ? principalType : null
+    principalType: !empty(principalType) ? any(principalType) : null
   }
   scope: <mainResource>
 }]
 ```
 
-### Diagnostic settings
+</details>
+
+<details>
+<summary>Diagnostic Settings</summary>
+
 
 The diagnostic settings may differ slightly depending from resource to resource. Most notably, the `<LogsIfAny>` as well as `<MetricsIfAny>` may be different and have to be added by you. However, it may just as well be the case they no metrics or no logs are existing. You can then remove the parameter and property from the resource itself.
 
@@ -287,7 +292,11 @@ resource <mainResource>_diagnosticSettings 'Microsoft.Insights/diagnosticsetting
 }
 ```
 
-### Private Endpoints
+</details>
+
+<details>
+<summary>Private Endpoints</summary>
+
 
 The Private Endpoint deployment has 2 elements to it. A module that contains the implementation, and a module reference in the parent resource. The first loops through the endpoints we want to create, the second processes them.
 
@@ -297,71 +306,29 @@ The Private Endpoint deployment has 2 elements to it. A module that contains the
 @description('Optional. Configuration Details for private endpoints.')
 param privateEndpoints array = []
 
-module <mainResource>_privateEndpoints '.bicep/nested_privateEndpoint.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
-  name: '${uniqueString(deployment().name, location)}-PrivateEndpoint-${index}'
+module <mainResource>_privateEndpoints '../../Microsoft.Network/privateEndpoints/deploy.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
+  name: '${uniqueString(deployment().name, location)}-<mainResource>-PrivateEndpoint-${index}'
   params: {
-    privateEndpointResourceId: <mainResource>.id
-    privateEndpointVnetLocation: reference(split(privateEndpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location
-    privateEndpointObj: privateEndpoint
-    tags: tags
+    groupIds: [
+      privateEndpoint.service
+    ]
+    name: contains(privateEndpoint, 'name') ? privateEndpoint.name : 'pe-${last(split(<mainResource>.id, '/'))}-${privateEndpoint.service}-${index}'
+    serviceResourceId: <mainResource>.id
+    subnetResourceId: privateEndpoint.subnetResourceId
+    enableDefaultTelemetry: enableDefaultTelemetry
+    location: reference(split(privateEndpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location
+    lock: contains(privateEndpoint, 'lock') ? privateEndpoint.lock : 'NotSpecified'
+    privateDnsZoneGroups: contains(privateEndpoint, 'privateDnsZoneGroups') ? privateEndpoint.privateDnsZoneGroups : []
+    roleAssignments: contains(privateEndpoint, 'roleAssignments') ? privateEndpoint.roleAssignments : []
+    tags: contains(privateEndpoint, 'tags') ? privateEndpoint.tags : {}
+    manualPrivateLinkServiceConnections: contains(privateEndpoint, 'manualPrivateLinkServiceConnections') ? privateEndpoint.manualPrivateLinkServiceConnections : []
+    customDnsConfigs: contains(privateEndpoint, 'customDnsConfigs') ? privateEndpoint.customDnsConfigs : []
   }
 }]
+
 ```
 
-#### 2nd Element as nested `.bicep/nested_privateEndpoint.bicep` file
-
-```bicep
-param privateEndpointResourceId string
-param privateEndpointVnetLocation string
-param privateEndpointObj object
-param tags object
-
-var privateEndpointResourceName = last(split(privateEndpointResourceId, '/'))
-var privateEndpoint_var = {
-  name: contains(privateEndpointObj, 'name') ? (empty(privateEndpointObj.name) ? '${privateEndpointResourceName}-${privateEndpointObj.service}' : privateEndpointObj.name) : '${privateEndpointResourceName}-${privateEndpointObj.service}'
-  subnetResourceId: privateEndpointObj.subnetResourceId
-  service: [
-    privateEndpointObj.service
-  ]
-  privateDnsZoneResourceIds: contains(privateEndpointObj, 'privateDnsZoneResourceIds') ? (empty(privateEndpointObj.privateDnsZoneResourceIds) ? [] : privateEndpointObj.privateDnsZoneResourceIds) : []
-  customDnsConfigs: contains(privateEndpointObj, 'customDnsConfigs') ? (empty(privateEndpointObj.customDnsConfigs) ? null : privateEndpointObj.customDnsConfigs) : null
-}
-
-resource privateEndpoint 'Microsoft.Network/privateEndpoints@2021-05-01' = {
-  name: privateEndpoint_var.name
-  location: privateEndpointVnetLocation
-  tags: tags
-  properties: {
-    privateLinkServiceConnections: [
-      {
-        name: privateEndpoint_var.name
-        properties: {
-          privateLinkServiceId: privateEndpointResourceId
-          groupIds: privateEndpoint_var.service
-        }
-      }
-    ]
-    manualPrivateLinkServiceConnections: []
-    subnet: {
-      id: privateEndpoint_var.subnetResourceId
-    }
-    customDnsConfigs: privateEndpoint_var.customDnsConfigs
-  }
-}
-
-resource privateDnsZoneGroups 'Microsoft.Network/privateEndpoints/privateDnsZoneGroups@2021-05-01' = if (!empty(privateEndpoint_var.privateDnsZoneResourceIds)) {
-  name: 'default'
-  properties: {
-    privateDnsZoneConfigs: [for privateDnsZoneResourceId in privateEndpoint_var.privateDnsZoneResourceIds: {
-      name: last(split(privateDnsZoneResourceId, '/'))
-      properties: {
-        privateDnsZoneId: privateDnsZoneResourceId
-      }
-    }]
-  }
-  parent: privateEndpoint
-}
-```
+</details>
 
 ---
 
@@ -450,6 +417,9 @@ Within a bicep file, use the following conventions:
 
   - Module symbolic names are in camel_Snake_Case, following the schema `<mainResourceType>_<referencedResourceType>` e.g. `storageAccount_fileServices`, `virtualMachine_nic`, `resourceGroup_rbac`.
   - Modules enable you to reuse code from a Bicep file in other Bicep files. As such they're normally leveraged for deploying child resources (e.g. file services in a storage account), cross referenced resources (e.g. network interface in a virtual machine) or extension resources (e.g. role assignment in a resource group).
+  - When a module requires to deploy a resource whose resource type is outside of the main module's provider namespace, the module of this additional resource is referenced locally. For example, when extending the Key Vault module with Private Endpoints, instead of including in the Key Vault module an ad hoc implementation of a Private Endpoint, the Key Vault directly references the Private Endpoint module (i.e., `module privateEndpoint '../../Microsoft.Network/privateEndpoints/deploy.bicep'`). Major benefits of this implementation are less code duplication, more consistency throughout the module library and allowing the consumer to leverage the full interface provided by the referenced module.
+  > **Note**: Cross-referencing modules from the local repository creates a dependency for the modules applying this technique on the referenced modules being part of the local repository. Reusing the example from above, the Key Vault module has a dependency on the referenced Private Endpoint module, meaning that the repository from which the Key Vault module is deployed also requires the Private Endpoint module to be present. For this reason, we provide a utility to check for any local module references in a given path. This can be useful to determine which module folders you'd need if you don't want to keep the entire library. For further information on how to use the tool, please refer to the tool-specific [documentation](./Getting started%20-%20Get%20module%20cross-references).
+
 
 ### Deployment names
 
@@ -514,7 +484,7 @@ While exceptions might be needed, the following guidance should be followed as m
 
 # ReadMe
 
-Each module must come with a ReadMe markdown file that outlines what the module contains and 'how' it can be used.
+Each module must come with a ReadMe Markdown file that outlines what the module contains and 'how' it can be used.
 Its primary components are in order:
 - A title with a reference to the primary resource in Start Case followed by the primary resource namespace e.g. <code>Key Vaults `[Microsoft.KeyVault/vaults]`</code>.
 - A short description
@@ -525,13 +495,33 @@ Its primary components are in order:
 - A **Template references** section listing relevant resources [Azure resource reference](https://docs.microsoft.com/en-us/azure/templates).
 
 Note the following recommendations:
-- Refer to [Generate module Readme](./Contribution%20guide%20-%20Generate%20module%20Readme) for creating from scratch or updating the module ReadMe markdown file.
+- Refer to [Generate module Readme](./Contribution%20guide%20-%20Generate%20module%20Readme) for creating from scratch or updating the module ReadMe Markdown file.
 - It is not recommended to describe how to use child resources in the parent readme file (for example 'How to define a [container] entry for the [storage account]'). Instead it is recommended to reference the child resource's ReadMe instead (for example 'container/readme.md').
 
 # Parameter files
 
 Parameter files in CARML leverage the common `deploymentParameters.json` schema for ARM deployments. As parameters are usually specific to their corresponding template, we have only very few general recommendations:
-- Parameter file names should ideally relate to the content they deploy. For example, a parameter file `min.parameters.json` should be chosen for a parameter file that contains only the minimum set of parameter to deploy the module.
+- Parameter filenames should ideally relate to the content they deploy. For example, a parameter file `min.parameters.json` should be chosen for a parameter file that contains only the minimum set of parameter to deploy the module.
 - Likewise, the `name` parameter we have in most modules should give some indication of the file it was deployed with. For example, a `min.parameters.json` parameter file for the virtual network module may have a `name` property with the value `sxx-az-vnet-min-001` where `min` relates to the prefix of the parameter file itself.
 - A module should have as many parameter files as it needs to evaluate all parts of the module's functionality.
 - Sensitive data should not be stored inside the parameter file but rather be injected by the use of tokens, as described in the [Token replacement](./The%20CI%20environment%20-%20Token%20replacement) section, or via a [key vault reference](https://docs.microsoft.com/en-us/azure/azure-resource-manager/templates/key-vault-parameter?tabs=azure-cli#reference-secrets-with-static-id).
+
+# Telemetry
+
+Each module in CARML contains a `defaultTelemetry` deployment  `'pid-<GUID>-${uniqueString(deployment().name)}'`, resulting in deployments such as `'pid-<GUID>-nx2c3rnlt2wru'`.
+
+> **Note:** Though implemented at each level in a module hierarchy (e.g. storage account & blobServices), the deployment will only happen for the top-level module in a deployment, but not for its children. To illustrate this better, see the following examples:
+> - Deployment of the KeyVault module and 2 Secrets: Results in 1 `PID` deployment for the KeyVault (and none for the secrets)
+> - Deployment of the Secret module: Results in 1 `PID` deployment for the Secret
+
+This resource enables the team responsible for CARML to query the number of deployments of a given template from Azure - and as such get insights into its adoption.
+
+When using CARML's CI environment you can enable/disable this deployment by switching the `enableDefaultTelemetry` setting in the `settings.json` file in the repository's root. This value is automatically injected into each individual deployment that is executed as part of the environment's pipeline.
+
+When consuming the modules outside of CARML's pipelines you can either
+- Set the parameter to a default value of `'false'`
+- Set the parameter to false when deploying a module
+
+> **Note:** _The deployment and its GUID can NOT be used to track [Azure Consumed Revenue (ACR)](https://docs.microsoft.com/en-us/azure/marketplace/azure-partner-customer-usage-attribution)._
+>
+> _If you want to track consumption, we recommend to implement it on the consuming template's level (i.e. the workload/solution) and apply the required naming format `'pid-<GUID>'` (without the suffix)._

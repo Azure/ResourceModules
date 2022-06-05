@@ -8,19 +8,19 @@ param name string
 @maxLength(128)
 param displayName string = ''
 
-@sys.description('Optional. The description name of the Set Definition (Initiative)')
+@sys.description('Optional. The description name of the Set Definition (Initiative).')
 param description string = ''
 
 @sys.description('Optional. The group ID of the Management Group (Scope). If not provided, will use the current scope for deployment.')
 param managementGroupId string = managementGroup().name
 
-@sys.description('Optional. The subscription ID of the subscription (Scope). Cannot be used with managementGroupId')
+@sys.description('Optional. The subscription ID of the subscription (Scope). Cannot be used with managementGroupId.')
 param subscriptionId string = ''
 
 @sys.description('Optional. The Set Definition (Initiative) metadata. Metadata is an open ended object and is typically a collection of key-value pairs.')
 param metadata object = {}
 
-@sys.description('Required. The array of Policy definitions object to include for this policy set. Each object must include the Policy definition ID, and optionally other properties like parameters')
+@sys.description('Required. The array of Policy definitions object to include for this policy set. Each object must include the Policy definition ID, and optionally other properties like parameters.')
 param policyDefinitions array
 
 @sys.description('Optional. The metadata describing groups of policy definition references within the Policy Set Definition (Initiative).')
@@ -34,6 +34,8 @@ param location string = deployment().location
 
 @sys.description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
+
+var enableChildTelemetry = false
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
@@ -61,7 +63,7 @@ module policySetDefinition_mg 'managementGroup/deploy.bicep' = if (empty(subscri
     policyDefinitionGroups: !empty(policyDefinitionGroups) ? policyDefinitionGroups : []
     managementGroupId: managementGroupId
     location: location
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableChildTelemetry
   }
 }
 
@@ -78,12 +80,12 @@ module policySetDefinition_sub 'subscription/deploy.bicep' = if (!empty(subscrip
     policyDefinitionGroups: !empty(policyDefinitionGroups) ? policyDefinitionGroups : []
     subscriptionId: subscriptionId
     location: location
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableChildTelemetry
   }
 }
 
-@sys.description('Policy Set Definition Name')
+@sys.description('Policy Set Definition Name.')
 output name string = empty(subscriptionId) ? policySetDefinition_mg.outputs.name : policySetDefinition_sub.outputs.name
 
-@sys.description('Policy Set Definition resource ID')
+@sys.description('Policy Set Definition resource ID.')
 output resourceId string = empty(subscriptionId) ? policySetDefinition_mg.outputs.resourceId : policySetDefinition_sub.outputs.resourceId

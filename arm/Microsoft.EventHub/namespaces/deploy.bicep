@@ -43,8 +43,8 @@ param authorizationRules array = [
 @description('Optional. Configuration Details for private endpoints.For security reasons, it is recommended to use private endpoints whenever possible.')
 param privateEndpoints array = []
 
-@description('Optional. Networks ACLs, this value contains IPs to whitelist and/or Subnet information. For security reasons, it is recommended to set the DefaultAction Deny.')
-param networkAcls object = {}
+@description('Optional. Networks ACLs, this object contains IPs/Subnets to whitelist or restrict access to private endpoints only. For security reasons, it is recommended to configure this object on the Namespace.')
+param networkRuleSets object = {}
 
 @description('Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.')
 @minValue(0)
@@ -96,20 +96,24 @@ param disasterRecoveryConfig object = {}
 @allowed([
   'ArchiveLogs'
   'OperationalLogs'
+  'AutoScaleLogs'
   'KafkaCoordinatorLogs'
   'KafkaUserErrorLogs'
   'EventHubVNetConnectionEvent'
   'CustomerManagedKeyUserLogs'
-  'AutoScaleLogs'
+  'RuntimeAuditLogs'
+  'ApplicationMetricsLogs'
 ])
 param diagnosticLogCategoriesToEnable array = [
   'ArchiveLogs'
   'OperationalLogs'
+  'AutoScaleLogs'
   'KafkaCoordinatorLogs'
   'KafkaUserErrorLogs'
   'EventHubVNetConnectionEvent'
   'CustomerManagedKeyUserLogs'
-  'AutoScaleLogs'
+  'RuntimeAuditLogs'
+  'ApplicationMetricsLogs'
 ]
 
 @description('Optional. The name of metrics that will be streamed.')
@@ -153,6 +157,8 @@ var identity = identityType != 'None' ? {
   userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
 } : null
 
+var enableChildTelemetry = false
+
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
   properties: {
@@ -165,7 +171,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource eventHubNamespace 'Microsoft.EventHub/namespaces@2021-06-01-preview' = {
+resource eventHubNamespace 'Microsoft.EventHub/namespaces@2021-11-01' = {
   name: name_var
   location: location
   tags: tags
@@ -179,12 +185,6 @@ resource eventHubNamespace 'Microsoft.EventHub/namespaces@2021-06-01-preview' = 
     zoneRedundant: zoneRedundant
     isAutoInflateEnabled: isAutoInflateEnabled
     maximumThroughputUnits: maximumThroughputUnits_var
-    networkAcls: !empty(networkAcls) ? {
-      bypass: !empty(networkAcls) ? networkAcls.bypass : null
-      defaultAction: !empty(networkAcls) ? networkAcls.defaultAction : null
-      virtualNetworkRules: (!empty(networkAcls) && contains(networkAcls, 'virtualNetworkRules')) ? networkAcls.virtualNetworkRules : []
-      ipRules: (!empty(networkAcls) && contains(networkAcls, 'ipRules')) ? networkAcls.ipRules : []
-    } : null
   }
 }
 
@@ -240,7 +240,7 @@ module eventHubNamespace_eventHubs 'eventhubs/deploy.bicep' = [for (eventHub, in
     partitionCount: contains(eventHub, 'partitionCount') ? eventHub.partitionCount : 2
     roleAssignments: contains(eventHub, 'roleAssignments') ? eventHub.roleAssignments : []
     status: contains(eventHub, 'status') ? eventHub.status : 'Active'
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableChildTelemetry
   }
 }]
 
@@ -250,7 +250,7 @@ module eventHubNamespace_diasterRecoveryConfig 'disasterRecoveryConfigs/deploy.b
     namespaceName: eventHubNamespace.name
     name: disasterRecoveryConfig.name
     partnerNamespaceId: contains(disasterRecoveryConfig, 'partnerNamespaceId') ? disasterRecoveryConfig.partnerNamespaceId : ''
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableChildTelemetry
   }
 }
 
@@ -260,17 +260,40 @@ module eventHubNamespace_authorizationRules 'authorizationRules/deploy.bicep' = 
     namespaceName: eventHubNamespace.name
     name: authorizationRule.name
     rights: contains(authorizationRule, 'rights') ? authorizationRule.rights : []
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableChildTelemetry
   }
 }]
 
-module eventHubNamespace_privateEndpoints '.bicep/nested_privateEndpoint.bicep' = [for (endpoint, index) in privateEndpoints: {
+module eventHubNamespace_networkRuleSet 'networkRuleSets/deploy.bicep' = if (!empty(networkRuleSets)) {
+  name: '${uniqueString(deployment().name, location)}-EvhbNamespace-NetworkRuleSet'
+  params: {
+    namespaceName: eventHubNamespace.name
+    publicNetworkAccess: contains(networkRuleSets, 'publicNetworkAccess') ? networkRuleSets.publicNetworkAccess : 'Enabled'
+    defaultAction: contains(networkRuleSets, 'defaultAction') ? networkRuleSets.defaultAction : 'Allow'
+    trustedServiceAccessEnabled: contains(networkRuleSets, 'trustedServiceAccessEnabled') ? networkRuleSets.trustedServiceAccessEnabled : true
+    ipRules: contains(networkRuleSets, 'ipRules') ? networkRuleSets.ipRules : []
+    virtualNetworkRules: contains(networkRuleSets, 'virtualNetworkRules') ? networkRuleSets.virtualNetworkRules : []
+    enableDefaultTelemetry: enableChildTelemetry
+  }
+}
+
+module eventHubNamespace_privateEndpoints '../../Microsoft.Network/privateEndpoints/deploy.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
   name: '${uniqueString(deployment().name, location)}-EvhbNamespace-PrivateEndpoint-${index}'
   params: {
-    privateEndpointResourceId: eventHubNamespace.id
-    privateEndpointVnetLocation: (empty(privateEndpoints) ? 'dummy' : reference(split(endpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location)
-    privateEndpointObj: endpoint
-    tags: tags
+    groupIds: [
+      privateEndpoint.service
+    ]
+    name: contains(privateEndpoint, 'name') ? privateEndpoint.name : 'pe-${last(split(eventHubNamespace.id, '/'))}-${privateEndpoint.service}-${index}'
+    serviceResourceId: eventHubNamespace.id
+    subnetResourceId: privateEndpoint.subnetResourceId
+    enableDefaultTelemetry: enableDefaultTelemetry
+    location: reference(split(privateEndpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location
+    lock: contains(privateEndpoint, 'lock') ? privateEndpoint.lock : 'NotSpecified'
+    privateDnsZoneGroups: contains(privateEndpoint, 'privateDnsZoneGroups') ? privateEndpoint.privateDnsZoneGroups : []
+    roleAssignments: contains(privateEndpoint, 'roleAssignments') ? privateEndpoint.roleAssignments : []
+    tags: contains(privateEndpoint, 'tags') ? privateEndpoint.tags : {}
+    manualPrivateLinkServiceConnections: contains(privateEndpoint, 'manualPrivateLinkServiceConnections') ? privateEndpoint.manualPrivateLinkServiceConnections : []
+    customDnsConfigs: contains(privateEndpoint, 'customDnsConfigs') ? privateEndpoint.customDnsConfigs : []
   }
 }]
 

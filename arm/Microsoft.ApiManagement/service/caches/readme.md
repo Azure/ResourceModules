@@ -14,12 +14,6 @@ This module deploys an API Management Service Cache.
 | :-- | :-- |
 | `Microsoft.ApiManagement/service/caches` | [2021-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ApiManagement/2021-08-01/service/caches) |
 
-### Resource dependency
-
-The following resources are required to be able to deploy this resource.
-
-- `Microsoft.ApiManagement/service`
-
 ## Parameters
 
 **Required parameters**

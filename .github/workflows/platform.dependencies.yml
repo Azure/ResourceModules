@@ -752,6 +752,7 @@ jobs:
             'lb.parameters.json',
             'lb.min.parameters.json',
             'fw.parameters.json',
+            'fw.additional.parameters.json'
           ]
     steps:
       - name: 'Checkout'
@@ -1260,7 +1261,9 @@ jobs:
             '5.aks.parameters.json',
             '7.virtualHubConnection.parameters.json',
             '8.aadds.parameters.json',
-            'parameters.json',
+            '9.azfw.parameters.json',
+            '10.azfw.parameters.json',
+            'parameters.json'
           ]
     steps:
       - name: 'Checkout'

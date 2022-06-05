@@ -34,21 +34,6 @@ This module deploys Network Firewall Policies Rule Collection Groups.
 | `ruleCollections` | array | `[]` | Group of Firewall Policy rule collections. |
 
 
-### Parameter Usage: `ruleCollections`
-
-For remaining properties, see [FirewallPolicyRuleCollection objects](https://docs.microsoft.com/en-us/azure/templates/microsoft.network/firewallpolicies/rulecollectiongroups?tabs=json#firewallpolicyrulecollection-objects)
-
-```json
-"ruleCollections": [
-    {
-    "name": "string",
-    "priority": "int",
-    "ruleCollectionType": "string"
-    // For remaining properties, see FirewallPolicyRuleCollection objects
-    }
-]
-```
-
 ## Outputs
 
 | Output Name | Type | Description |

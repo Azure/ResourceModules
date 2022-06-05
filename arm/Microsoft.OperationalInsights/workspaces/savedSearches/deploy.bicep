@@ -16,7 +16,7 @@ param query string
 @description('Optional. Tags to configure in the resource.')
 param tags array = []
 
-@description('Optional. The function alias if query serves as a function..')
+@description('Optional. The function alias if query serves as a function.')
 param functionAlias string = ''
 
 @description('Optional. The optional function parameters if query serves as a function. Value should be in the following format: "param-name1:type1 = default_value1, param-name2:type2 = default_value2". For more examples and proper syntax please refer to /azure/kusto/query/functions/user-defined-functions.')
@@ -24,6 +24,9 @@ param functionParameters string = ''
 
 @description('Optional. The version number of the query language.')
 param version int = 2
+
+@description('Optional. The ETag of the saved search. To override an existing saved search, use "*" or specify the current Etag.')
+param etag string = '*'
 
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
@@ -47,7 +50,9 @@ resource workspace 'Microsoft.OperationalInsights/workspaces@2021-06-01' existin
 resource savedSearch 'Microsoft.OperationalInsights/workspaces/savedSearches@2020-08-01' = {
   name: name
   parent: workspace
+  //etag: etag // According to API, the variable should be here, but it doesn't work here.
   properties: {
+    etag: etag
     tags: tags
     displayName: displayName
     category: category

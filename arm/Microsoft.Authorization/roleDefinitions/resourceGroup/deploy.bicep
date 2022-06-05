@@ -12,10 +12,10 @@ param actions array = []
 @sys.description('Optional. List of denied actions.')
 param notActions array = []
 
-@sys.description('Optional. List of allowed data actions. This is not supported if the assignableScopes contains Management Group Scopes')
+@sys.description('Optional. List of allowed data actions. This is not supported if the assignableScopes contains Management Group Scopes.')
 param dataActions array = []
 
-@sys.description('Optional. List of denied data actions. This is not supported if the assignableScopes contains Management Group Scopes')
+@sys.description('Optional. List of denied data actions. This is not supported if the assignableScopes contains Management Group Scopes.')
 param notDataActions array = []
 
 @sys.description('Optional. The subscription ID where the Role Definition and Target Scope will be applied to. If not provided, will use the current scope for deployment.')
@@ -60,14 +60,14 @@ resource roleDefinition 'Microsoft.Authorization/roleDefinitions@2018-01-01-prev
   }
 }
 
-@sys.description('The GUID of the Role Definition')
+@sys.description('The GUID of the Role Definition.')
 output name string = roleDefinition.name
 
-@sys.description('The scope this Role Definition applies to')
+@sys.description('The scope this Role Definition applies to.')
 output scope string = resourceGroup().id
 
-@sys.description('The resource ID of the Role Definition')
+@sys.description('The resource ID of the Role Definition.')
 output resourceId string = roleDefinition.id
 
-@sys.description('The name of the resource group the role definition was created at')
+@sys.description('The name of the resource group the role definition was created at.')
 output resourceGroupName string = resourceGroup().name

@@ -27,13 +27,13 @@ param metadata object = {}
 @sys.description('Optional. The policy definition parameters that can be used in policy definition references.')
 param parameters object = {}
 
-@sys.description('Required. The Policy Rule details for the Policy Definition')
+@sys.description('Required. The Policy Rule details for the Policy Definition.')
 param policyRule object
 
 @sys.description('Optional. The group ID of the Management Group (Scope). If not provided, will use the current scope for deployment.')
 param managementGroupId string = managementGroup().name
 
-@sys.description('Optional. The subscription ID of the subscription (Scope). Cannot be used with managementGroupId')
+@sys.description('Optional. The subscription ID of the subscription (Scope). Cannot be used with managementGroupId.')
 param subscriptionId string = ''
 
 @sys.description('Optional. Location deployment metadata.')
@@ -41,6 +41,8 @@ param location string = deployment().location
 
 @sys.description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
+
+var enableChildTelemetry = false
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
@@ -68,7 +70,7 @@ module policyDefinition_mg 'managementGroup/deploy.bicep' = if (empty(subscripti
     parameters: !empty(parameters) ? parameters : {}
     policyRule: policyRule
     location: location
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableChildTelemetry
   }
 }
 
@@ -85,15 +87,15 @@ module policyDefinition_sub 'subscription/deploy.bicep' = if (!empty(subscriptio
     parameters: !empty(parameters) ? parameters : {}
     policyRule: policyRule
     location: location
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableChildTelemetry
   }
 }
 
-@sys.description('Policy Definition Name')
+@sys.description('Policy Definition Name.')
 output name string = empty(subscriptionId) ? policyDefinition_mg.outputs.name : policyDefinition_sub.outputs.name
 
-@sys.description('Policy Definition resource ID')
+@sys.description('Policy Definition resource ID.')
 output resourceId string = empty(subscriptionId) ? policyDefinition_mg.outputs.resourceId : policyDefinition_sub.outputs.resourceId
 
-@sys.description('Policy Definition Role Definition IDs')
+@sys.description('Policy Definition Role Definition IDs.')
 output roleDefinitionIds array = empty(subscriptionId) ? policyDefinition_mg.outputs.roleDefinitionIds : policyDefinition_sub.outputs.roleDefinitionIds

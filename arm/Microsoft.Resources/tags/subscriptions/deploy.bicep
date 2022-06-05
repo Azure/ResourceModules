@@ -46,3 +46,6 @@ output name string = tag.name
 
 @description('The applied tags.')
 output tags object = newTags
+
+@description('The resource ID of the applied tags.')
+output resourceId string = tag.id
