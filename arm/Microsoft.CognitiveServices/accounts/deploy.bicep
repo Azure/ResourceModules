@@ -212,7 +212,7 @@ resource cognitiveServices 'Microsoft.CognitiveServices/accounts@2021-10-01' = {
     allowedFqdnList: allowedFqdnList
     apiProperties: apiProperties
     disableLocalAuth: disableLocalAuth
-    encryption: encryption
+    encryption: !empty(encryption) ? encryption : null
     migrationToken: !empty(migrationToken) ? migrationToken : null
     restore: restore
     restrictOutboundNetworkAccess: restrictOutboundNetworkAccess
