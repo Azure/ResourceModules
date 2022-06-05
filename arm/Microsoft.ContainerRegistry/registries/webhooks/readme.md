@@ -19,8 +19,12 @@ This module deploys ContainerRegistry Registries Webhooks.
 **Required parameters**
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `registryName` | string | The name of the registry. |
 | `serviceUri` | string | The service URI for the webhook to post notifications. |
+
+**Conditional parameters**
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `registryName` | string | The name of the parent registry. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
@@ -32,6 +36,7 @@ This module deploys ContainerRegistry Registries Webhooks.
 | `scope` | string | `''` |  | The scope of repositories where the event can be triggered. For example, 'foo:*' means events for all tags under repository 'foo'. 'foo:bar' means events for 'foo:bar' only. 'foo' is equivalent to 'foo:latest'. Empty means all events. |
 | `status` | string | `'enabled'` | `[disabled, enabled]` | The status of the webhook at the time the operation was called. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
+
 
 ### Parameter Usage: `tags`
 
