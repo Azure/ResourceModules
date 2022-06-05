@@ -17,6 +17,7 @@ Azure Container Registry is a managed, private Docker registry service based on 
 | `Microsoft.Authorization/roleAssignments` | [2020-10-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-10-01-preview/roleAssignments) |
 | `Microsoft.ContainerRegistry/registries` | [2021-09-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ContainerRegistry/2021-09-01/registries) |
 | `Microsoft.ContainerRegistry/registries/replications` | [2021-12-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ContainerRegistry/2021-12-01-preview/registries/replications) |
+| `Microsoft.ContainerRegistry/registries/webhooks` | [2021-12-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ContainerRegistry/2021-12-01-preview/registries/webhooks) |
 | `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
 | `Microsoft.Network/privateEndpoints` | [2021-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/privateEndpoints) |
 | `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | [2021-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/privateEndpoints/privateDnsZoneGroups) |
@@ -31,38 +32,38 @@ Azure Container Registry is a managed, private Docker registry service based on 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `acrAdminUserEnabled` | bool | `False` | | Enable admin user that have push / pull permission to the registry. |
+| `acrAdminUserEnabled` | bool | `False` |  | Enable admin user that have push / pull permission to the registry. |
 | `acrSku` | string | `'Basic'` | `[Basic, Premium, Standard]` | Tier of your Azure container registry. |
-| `dataEndpointEnabled` | bool | `False` | | Enable a single data endpoint per region for serving data. Not relevant in case of disabled public access. |
-| `diagnosticEventHubAuthorizationRuleId` | string | `''` | | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
-| `diagnosticEventHubName` | string | `''` | | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
+| `dataEndpointEnabled` | bool | `False` |  | Enable a single data endpoint per region for serving data. Not relevant in case of disabled public access. |
+| `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
+| `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
 | `diagnosticLogCategoriesToEnable` | array | `[ContainerRegistryRepositoryEvents, ContainerRegistryLoginEvents]` | `[ContainerRegistryRepositoryEvents, ContainerRegistryLoginEvents]` | The name of logs that will be streamed. |
-| `diagnosticLogsRetentionInDays` | int | `365` | | Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
+| `diagnosticLogsRetentionInDays` | int | `365` |  | Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
 | `diagnosticMetricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | The name of metrics that will be streamed. |
-| `diagnosticSettingsName` | string | `[format('{0}-diagnosticSettings', parameters('name'))]` | | The name of the diagnostic setting, if deployed. |
-| `diagnosticStorageAccountId` | string | `''` | | Resource ID of the diagnostic storage account. |
-| `diagnosticWorkspaceId` | string | `''` | | Resource ID of the diagnostic log analytics workspace. |
-| `enableDefaultTelemetry` | bool | `True` | | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `diagnosticSettingsName` | string | `[format('{0}-diagnosticSettings', parameters('name'))]` |  | The name of the diagnostic setting, if deployed. |
+| `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
+| `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `encryptionStatus` | string | `'disabled'` | `[disabled, enabled]` | The value that indicates whether encryption is enabled or not. |
 | `exportPolicyStatus` | string | `'disabled'` | `[disabled, enabled]` | The value that indicates whether the export policy is enabled or not. |
-| `keyVaultProperties` | object | `{object}` | | Identity which will be used to access key vault and Key vault uri to access the encryption key. |
-| `location` | string | `[resourceGroup().location]` | | Location for all resources. |
+| `keyVaultProperties` | object | `{object}` |  | Identity which will be used to access key vault and Key vault uri to access the encryption key. |
+| `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `'NotSpecified'` | `[CanNotDelete, NotSpecified, ReadOnly]` | Specify the type of lock. |
-| `networkRuleBypassOptions` | string | `'AzureServices'` | | Whether to allow trusted Azure services to access a network restricted registry. Not relevant in case of public access. - AzureServices or None. |
+| `networkRuleBypassOptions` | string | `'AzureServices'` |  | Whether to allow trusted Azure services to access a network restricted registry. Not relevant in case of public access. - AzureServices or None. |
 | `networkRuleSetDefaultAction` | string | `'Deny'` | `[Allow, Deny]` | The default action of allow or deny when no other rules match. |
-| `networkRuleSetIpRules` | array | `[]` | | The IP ACL rules. |
-| `privateEndpoints` | array | `[]` | | Configuration Details for private endpoints. |
+| `networkRuleSetIpRules` | array | `[]` |  | The IP ACL rules. |
+| `privateEndpoints` | array | `[]` |  | Configuration Details for private endpoints. |
 | `publicNetworkAccess` | string | `'Enabled'` | `[Disabled, Enabled]` | Whether or not public network access is allowed for the container registry. - Enabled or Disabled. |
 | `quarantinePolicyStatus` | string | `'disabled'` | `[disabled, enabled]` | The value that indicates whether the quarantine policy is enabled or not. |
-| `replications` | _[replications](replications/readme.md)_ array | `[]` | | All replications to create. |
-| `retentionPolicyDays` | int | `15` | | The number of days to retain an untagged manifest after which it gets purged. |
+| `replications` | _[replications](replications/readme.md)_ array | `[]` |  | All replications to create. |
+| `retentionPolicyDays` | int | `15` |  | The number of days to retain an untagged manifest after which it gets purged. |
 | `retentionPolicyStatus` | string | `'enabled'` | `[disabled, enabled]` | The value that indicates whether the retention policy is enabled or not. |
-| `roleAssignments` | array | `[]` | | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
-| `systemAssignedIdentity` | bool | `False` | | Enables system assigned managed identity on the resource. |
-| `tags` | object | `{object}` | | Tags of the resource. |
+| `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
+| `systemAssignedIdentity` | bool | `False` |  | Enables system assigned managed identity on the resource. |
+| `tags` | object | `{object}` |  | Tags of the resource. |
 | `trustPolicyStatus` | string | `'disabled'` | `[disabled, enabled]` | The value that indicates whether the trust policy is enabled or not. |
-| `userAssignedIdentities` | object | `{object}` | | The ID(s) to assign to the resource. |
-| `webhooks` | _[webhooks](webhooks/README.md)_ array | `[]` | | All webhooks to create. |
+| `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. |
+| `webhooks` | _[webhooks](webhooks/readme.md)_ array | `[]` |  | All webhooks to create |
 | `zoneRedundancy` | string | `'Disabled'` | `[Disabled, Enabled]` | Whether or not zone redundancy is enabled for this container registry. |
 
 
@@ -313,13 +314,13 @@ userAssignedIdentities: {
 
 ## Outputs
 
-| Output Name                 | Type   | Description                                       |
-| :-------------------------- | :----- | :------------------------------------------------ |
-| `location`                  | string | The location the resource was deployed into.      |
-| `loginServer`               | string | The reference to the Azure container registry.    |
-| `name`                      | string | The Name of the Azure container registry.         |
-| `resourceGroupName`         | string | The name of the Azure container registry.         |
-| `resourceId`                | string | The resource ID of the Azure container registry.  |
+| Output Name | Type | Description |
+| :-- | :-- | :-- |
+| `location` | string | The location the resource was deployed into. |
+| `loginServer` | string | The reference to the Azure container registry. |
+| `name` | string | The Name of the Azure container registry. |
+| `resourceGroupName` | string | The name of the Azure container registry. |
+| `resourceId` | string | The resource ID of the Azure container registry. |
 | `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
 
 ## Deployment examples
@@ -397,6 +398,14 @@ module registries './Microsoft.ContainerRegistry/registries/deploy.bicep' = {
                 }
             ]
         },
+        "webhooks": {
+            "value": [
+                {
+                    "name": "<<namePrefix>>azacrx001webhook",
+                    "serviceUri": "https://www.contoso.com/webhook"
+                }
+            ]
+        },
         "roleAssignments": {
             "value": [
                 {
@@ -463,6 +472,12 @@ module registries './Microsoft.ContainerRegistry/registries/deploy.bicep' = {
       {
         name: 'northeurope'
         location: 'northeurope'
+      }
+    ]
+    webhooks: [
+      {
+        name: '<<namePrefix>>azacrx001webhook'
+        serviceUri: 'https://www.contoso.com/webhook'
       }
     ]
     roleAssignments: [

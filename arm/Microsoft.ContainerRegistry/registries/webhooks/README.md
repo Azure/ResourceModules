@@ -1,27 +1,87 @@
-# Container Registry Webhooks
+# ContainerRegistry Registries Webhooks `[Microsoft.ContainerRegistry/registries/webhooks]`
 
-This module deploys an Container Registry webhook.
+This module deploys Container Registry Registries Webhooks.
 
-## **TABLE OF CONTENTS**
+## Navigation
+
+- [Resource Types](#Resource-Types)
+- [Parameters](#Parameters)
+- [Outputs](#Outputs)
 
 ## Resource Types
 
-| Resource Type                                     | Api Version        |
-| :------------------------------------------------ | :----------------- |
-| `Microsoft.ContainerRegistry/registries`          | 2021-09-01         |
-| `Microsoft.ContainerRegistry/registries/webhooks` | 2021-12-01-preview |
+| Resource Type | API Version |
+| :-- | :-- |
+| `Microsoft.ContainerRegistry/registries/webhooks` | [2021-12-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ContainerRegistry/2021-12-01-preview/registries/webhooks) |
 
 ## Parameters
 
-| Parameter Name  | Type   | Default Value                                                   | Possible Values                                                 | Description                               |
-| :-------------- | :----- | :-------------------------------------------------------------- | :-------------------------------------------------------------- | :---------------------------------------- |
-| `registryName`  | string | N/A                                                             |                                                                 | Name of the Registry (Required)           |
-| `location`      | string | resourceGroup().location                                        | Any Azure location                                              | location of the resource                  |
-| `webhookName`   | string | ${registryName}-webhook                                         |                                                                 | name of the webhook                       |
-| `serviceUri`    | string | N/A                                                             |                                                                 | Name of the serviceUri (required)         |
-| `status`        | string | enabled                                                         | enabled, disabled                                               | statys of webhook                         |
-| `action`        | array  | [ 'chart_delete' ,'chart_push', 'delete', 'push','quarantine' ] | [ 'chart_delete' ,'chart_push', 'delete', 'push','quarantine' ] | available actions                         |
-| `tags`          | object | {}                                                              |                                                                 | tags                                      |
-| `customHeaders` | object | {}                                                              |                                                                 | custom headers for webhooks               |
-| `retPolicyDays` | int    | 30                                                              | 0-100                                                           | Retention days of retention policy on ACR |
-| `scope`         | string | ''                                                              | N/A                                                             | scopes like foo:\*                        |
+**Required parameters**
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `registryName` | string | The name of the registry. |
+| `serviceUri` | string | The service URI for the webhook to post notifications. |
+
+**Optional parameters**
+| Parameter Name | Type | Default Value | Allowed Values | Description |
+| :-- | :-- | :-- | :-- | :-- |
+| `action` | array | `[chart_delete, chart_push, delete, push, quarantine]` |  | The list of actions that trigger the webhook to post notifications. |
+| `customHeaders` | object | `{object}` |  | Custom headers that will be added to the webhook notifications. |
+| `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
+| `name` | string | `[format('{0}webhook', parameters('registryName'))]` |  | The name of the registry webhook. |
+| `scope` | string | `''` |  | The scope of repositories where the event can be triggered. For example, 'foo:*' means events for all tags under repository 'foo'. 'foo:bar' means events for 'foo:bar' only. 'foo' is equivalent to 'foo:latest'. Empty means all events. |
+| `status` | string | `'enabled'` | `[disabled, enabled]` | The status of the webhook at the time the operation was called. |
+| `tags` | object | `{object}` |  | Tags of the resource. |
+
+### Parameter Usage: `tags`
+
+Tag names and tag values can be provided as needed. A tag can be left without a value.
+
+<details>
+
+<summary>Parameter JSON format</summary>
+
+```json
+"tags": {
+    "value": {
+        "Environment": "Non-Prod",
+        "Contact": "test.user@testcompany.com",
+        "PurchaseOrder": "1234",
+        "CostCenter": "7890",
+        "ServiceName": "DeploymentValidation",
+        "Role": "DeploymentValidation"
+    }
+}
+```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+tags: {
+    Environment: 'Non-Prod'
+    Contact: 'test.user@testcompany.com'
+    PurchaseOrder: '1234'
+    CostCenter: '7890'
+    ServiceName: 'DeploymentValidation'
+    Role: 'DeploymentValidation'
+}
+```
+
+</details>
+<p>
+
+## Outputs
+
+| Output Name | Type | Description |
+| :-- | :-- | :-- |
+| `actions` | array | The actions of the webhook. |
+| `location` | string | The location the resource was deployed into. |
+| `name` | string | The name of the webhook. |
+| `provistioningState` | string | The provisioning state of the webhook. |
+| `resourceGroupName` | string | The name of the Azure container registry. |
+| `resourceId` | string | The resource ID of the webhook. |
+| `status` | string | The status of the webhook. |
