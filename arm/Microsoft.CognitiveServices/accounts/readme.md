@@ -431,7 +431,7 @@ userAssignedIdentities: {
         },
         "encryption": {
             "value": {
-                "keySource": "Microsoft.Keyvault",
+                "keySource": "Microsoft.KeyVault",
                 "keyVaultProperties": {
                     "identityClientId": "c907a696-36f4-49fe-b926-39e3aabba814", // ID must be updated for new identity
                     "keyVaultUri": "https://adp-<<namePrefix>>-az-kv-nopr-002.vault.azure.net/",
@@ -462,7 +462,7 @@ module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
       '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
     }
     encryption: {
-      keySource: 'Microsoft.Keyvault'
+      keySource: 'Microsoft.KeyVault'
       keyVaultProperties: {
         identityClientId: 'c907a696-36f4-49fe-b926-39e3aabba814'
         keyVaultUri: 'https://adp-<<namePrefix>>-az-kv-nopr-002.vault.azure.net/'
