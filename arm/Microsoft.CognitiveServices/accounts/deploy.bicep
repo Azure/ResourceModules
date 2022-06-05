@@ -115,6 +115,9 @@ param apiProperties object = {}
 @description('Optional. Allow only Azure AD authentication. Should be enabled for security reasons.')
 param disableLocalAuth bool = true
 
+@description('Optional. Properties to configure encryption.')
+param encryption object = {}
+
 @description('Optional. Resource migration token.')
 param migrationToken string = ''
 
@@ -129,9 +132,6 @@ param userOwnedStorage array = []
 
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
-
-@description('Optional. Properties to configure encryption.')
-param encryption object = {}
 
 @description('Optional. The name of logs that will be streamed.')
 @allowed([
