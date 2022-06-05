@@ -6,9 +6,9 @@ param name string
 param location string = resourceGroup().location
 
 @description('Optional. Kind of resource.')
-param kind string = 'ASEV2'
+param kind string = 'ASEv3'
 
-@description('Required. ResourceId for the sub net.')
+@description('Required. ResourceId for the subnet.')
 param subnetResourceId string
 
 @description('Optional. Specifies which endpoints to serve internally in the Virtual Network for the App Service Environment. - None, Web, Publishing, Web,Publishing.')
@@ -19,8 +19,9 @@ param subnetResourceId string
 ])
 param internalLoadBalancingMode string = 'None'
 
-@description('Optional. Frontend VM size, e.g. Medium, Large.')
+@description('Optional. Frontend VM size. Cannot be used with \'kind\' `ASEv3`.')
 @allowed([
+  ''
   'Medium'
   'Large'
   'ExtraLarge'
@@ -32,10 +33,10 @@ param internalLoadBalancingMode string = 'None'
   'Standard_D3_V2'
   'Standard_D4_V2'
 ])
-param multiSize string = 'Standard_D1_V2'
+param multiSize string = ''
 
 @description('Optional. Number of IP SSL addresses reserved for the App Service Environment.')
-param ipsslAddressCount int = 2
+param ipsslAddressCount int = -1
 
 @description('Optional. DNS suffix of the App Service Environment.')
 param dnsSuffix string = ''
@@ -43,16 +44,18 @@ param dnsSuffix string = ''
 @description('Optional. Scale factor for frontends.')
 param frontEndScaleFactor int = 15
 
-@description('Optional. User added IP ranges to whitelist on ASE DB - string.')
+@description('Optional. User added IP ranges to whitelist on ASE DB. Cannot be used with \'kind\' `ASEv3`.')
 param userWhitelistedIpRanges array = []
 
 @description('Optional. Custom settings for changing the behavior of the App Service Environment.')
-param clusterSettings array = []
+param clusterSettings array = [
+  {
+    name: 'DisableTls1.0'
+    value: '1'
+  }
+]
 
-@description('Optional. Set to true to deploy the App Service Environments with physical hardware isolation. If enabled, zone redundancy must be disabled.')
-param physicalHardwareIsolation bool = false
-
-@description('Optional. Switch to make the App Service Environment zone redundant. If enabled, the minimum App Service plan instance count will be three, otherwise 1. If enabled `physicalHardwareIsolation` must be disabled.')
+@description('Optional. Switch to make the App Service Environment zone redundant. If enabled, the minimum App Service plan instance count will be three, otherwise 1. If enabled, the `dedicatedHostCount` must be set to `-1`.')
 param zoneRedundant bool = false
 
 @description('Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.')
@@ -89,6 +92,9 @@ param tags object = {}
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
 
+@description('Optional. The Dedicated Host Count. Is not supported by ASEv2. If `zoneRedundant` is false, and you want physical hardware isolation enabled, set to 2. Otherwise 0.')
+param dedicatedHostCount int = -1
+
 @description('Optional. The name of logs that will be streamed.')
 @allowed([
   'AppServiceEnvironmentPlatformLogs'
@@ -108,8 +114,6 @@ var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
     days: diagnosticLogsRetentionInDays
   }
 }]
-
-var vnetResourceId = split(subnetResourceId, '/')
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
@@ -131,17 +135,17 @@ resource appServiceEnvironment 'Microsoft.Web/hostingEnvironments@2021-03-01' = 
   properties: {
     virtualNetwork: {
       id: subnetResourceId
-      subnet: last(vnetResourceId)
+      subnet: last(split(subnetResourceId, '/'))
     }
     internalLoadBalancingMode: internalLoadBalancingMode
-    multiSize: multiSize
-    ipsslAddressCount: ipsslAddressCount
+    multiSize: !empty(multiSize) ? any(multiSize) : null
+    ipsslAddressCount: ipsslAddressCount != -1 ? ipsslAddressCount : null
     dnsSuffix: dnsSuffix
     frontEndScaleFactor: frontEndScaleFactor
     clusterSettings: clusterSettings
-    userWhitelistedIpRanges: userWhitelistedIpRanges
-    dedicatedHostCount: !zoneRedundant && physicalHardwareIsolation ? 2 : 0
-    zoneRedundant: !physicalHardwareIsolation && zoneRedundant ? zoneRedundant : false
+    userWhitelistedIpRanges: !empty(userWhitelistedIpRanges) ? userWhitelistedIpRanges : null
+    dedicatedHostCount: dedicatedHostCount != -1 ? dedicatedHostCount : null
+    zoneRedundant: zoneRedundant
   }
 }
 
