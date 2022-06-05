@@ -9,7 +9,7 @@
             "value": "SpeechServices"
         },
         "sku": {
-            "value": "F0"
+            "value": "S0"
         },
         "systemAssignedIdentity": {
             "value": true

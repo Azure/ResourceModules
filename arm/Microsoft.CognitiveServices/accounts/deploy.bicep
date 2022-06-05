@@ -73,12 +73,12 @@ param diagnosticEventHubName string = ''
 @description('Conditional. Subdomain name used for token-based authentication. Required if \'networkAcls\' are set.')
 param customSubDomainName string = ''
 
-@description('Optional. Whether or not public endpoint access is allowed for this account.')
+@description('Optional. Whether or not public endpoint access is allowed for this account. Should be disabled for security reasons.')
 @allowed([
   'Enabled'
   'Disabled'
 ])
-param publicNetworkAccess string = 'Enabled'
+param publicNetworkAccess string = 'Disabled'
 
 @description('Optional. Service endpoint object information.')
 param networkAcls object = {}
@@ -112,20 +112,8 @@ param allowedFqdnList array = []
 @description('Optional. The API properties for special APIs.')
 param apiProperties object = {}
 
-@description('Optional. Allow only Azure AD authentication.')
-param disableLocalAuth bool = false
-
-@description('Optional. The resource ID of a key vault to reference a customer managed key for encryption from.')
-param cMKKeyVaultResourceId string = ''
-
-@description('Optional. The name of the customer managed key to use for encryption. Cannot be deployed together with the parameter \'systemAssignedIdentity\' enabled.')
-param cMKeyName string = ''
-
-@description('Conditional. User assigned identity to use when fetching the customer managed key. Required if \'cMKeyName\' is not empty.')
-param cMKUserAssignedIdentityResourceId string = ''
-
-@description('Conditional. The version of the customer managed key to reference for encryption. Required if \'cMKeyName\' is not empty.')
-param cMKeyVersion string = ''
+@description('Optional. Allow only Azure AD authentication. Should be enabled for security reasons.')
+param disableLocalAuth bool = true
 
 @description('Optional. Resource migration token.')
 param migrationToken string = ''
@@ -141,6 +129,9 @@ param userOwnedStorage array = []
 
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
+
+@description('Optional. Properties to configure encryption.')
+param encryption object = {}
 
 @description('Optional. The name of logs that will be streamed.')
 @allowed([
@@ -189,12 +180,6 @@ var identity = identityType != 'None' ? {
   userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
 } : null
 
-var networkAcls_var = {
-  defaultAction: !empty(networkAcls) ? networkAcls.defaultAction : null
-  virtualNetworkRules: !empty(networkAcls) ? ((length(networkAcls.virtualNetworkRules) == 0) ? [] : networkAcls.virtualNetworkRules) : null
-  ipRules: !empty(networkAcls) ? ((length(networkAcls.ipRules) == 0) ? [] : networkAcls.ipRules) : null
-}
-
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
   properties: {
@@ -205,16 +190,6 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
       resources: []
     }
   }
-}
-
-resource cmkKeyVault 'Microsoft.KeyVault/vaults@2021-06-01-preview' existing = if (!empty(cMKKeyVaultResourceId)) {
-  name: last(split(cMKKeyVaultResourceId, '/'))
-  scope: resourceGroup(split(cMKKeyVaultResourceId, '/')[2], split(cMKKeyVaultResourceId, '/')[4])
-}
-
-resource cmkUserAssignedIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2018-11-30' existing = if (!empty(cMKUserAssignedIdentityResourceId)) {
-  name: last(split(cMKUserAssignedIdentityResourceId, '/'))
-  scope: resourceGroup(split(cMKUserAssignedIdentityResourceId, '/')[2], split(cMKUserAssignedIdentityResourceId, '/')[4])
 }
 
 resource cognitiveServices 'Microsoft.CognitiveServices/accounts@2021-10-01' = {
@@ -228,20 +203,16 @@ resource cognitiveServices 'Microsoft.CognitiveServices/accounts@2021-10-01' = {
   }
   properties: {
     customSubDomainName: !empty(customSubDomainName) ? customSubDomainName : null
-    networkAcls: !empty(networkAcls) ? networkAcls_var : null
+    networkAcls: !empty(networkAcls) ? {
+      defaultAction: contains(networkAcls, 'defaultAction') ? networkAcls.defaultAction : 'Deny'
+      virtualNetworkRules: contains(networkAcls, 'virtualNetworkRules') ? networkAcls.virtualNetworkRules : []
+      ipRules: contains(networkAcls, 'ipRules') ? networkAcls.ipRules : []
+    } : null
     publicNetworkAccess: publicNetworkAccess
     allowedFqdnList: allowedFqdnList
     apiProperties: apiProperties
     disableLocalAuth: disableLocalAuth
-    encryption: {
-      keySource: any(!empty(cMKeyName) ? 'Microsoft.Keyvault' : 'Microsoft.CognitiveServices')
-      keyVaultProperties: !empty(cMKeyName) ? {
-        identityClientId: !empty(cMKUserAssignedIdentityResourceId) ? cmkUserAssignedIdentity.properties.principalId : null
-        keyvaulturi: cmkKeyVault.properties.vaultUri
-        keyName: cMKeyName
-        keyversion: cMKeyVersion
-      } : null
-    }
+    encryption: encryption
     migrationToken: !empty(migrationToken) ? migrationToken : null
     restore: restore
     restrictOutboundNetworkAccess: restrictOutboundNetworkAccess

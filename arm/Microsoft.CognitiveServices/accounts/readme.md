@@ -47,7 +47,7 @@ This module deploys different kinds of cognitive services resources
 | `diagnosticSettingsName` | string | `[format('{0}-diagnosticSettings', parameters('name'))]` |  | The name of the diagnostic setting, if deployed. |
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
-| `disableLocalAuth` | bool | `False` |  | Allow only Azure AD authentication. |
+| `disableLocalAuth` | bool | `True` |  | Allow only Azure AD authentication. Should be enabled for security reasons. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `encryption` | object | `{object}` |  | Properties to configure encryption. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all Resources. |
@@ -55,7 +55,7 @@ This module deploys different kinds of cognitive services resources
 | `migrationToken` | string | `''` |  | Resource migration token. |
 | `networkAcls` | object | `{object}` |  | Service endpoint object information. |
 | `privateEndpoints` | array | `[]` |  | Configuration Details for private endpoints. |
-| `publicNetworkAccess` | string | `'Enabled'` | `[Enabled, Disabled]` | Whether or not public endpoint access is allowed for this account. |
+| `publicNetworkAccess` | string | `'Disabled'` | `[Enabled, Disabled]` | Whether or not public endpoint access is allowed for this account. Should be disabled for security reasons. |
 | `restore` | bool | `False` |  | Restore a soft-deleted cognitive service at deployment time. Will fail if no such soft-deleted resource exists. |
 | `restrictOutboundNetworkAccess` | bool | `True` |  | Restrict outbound network access. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
@@ -370,7 +370,7 @@ userAssignedIdentities: {
             "value": "Face"
         },
         "sku": {
-            "value": "F0"
+            "value": "S0"
         },
         "roleAssignments": {
             "value": [
@@ -422,7 +422,7 @@ module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
   params: {
     name: '<<namePrefix>>-az-cgs-x-001'
     kind: 'Face'
-    sku: 'F0'
+    sku: 'S0'
     roleAssignments: [
       {
         roleDefinitionIdOrName: 'Reader'
@@ -464,7 +464,7 @@ module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
             "value": "SpeechServices"
         },
         "sku": {
-            "value": "F0"
+            "value": "S0"
         },
         "systemAssignedIdentity": {
             "value": true
@@ -502,7 +502,7 @@ module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
   params: {
     name: '<<namePrefix>>-az-cgs-speech-001'
     kind: 'SpeechServices'
-    sku: 'F0'
+    sku: 'S0'
     systemAssignedIdentity: true
     userAssignedIdentities: {
       '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
