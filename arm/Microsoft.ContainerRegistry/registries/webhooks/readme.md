@@ -1,7 +1,6 @@
 # ContainerRegistry Registries Webhooks `[Microsoft.ContainerRegistry/registries/webhooks]`
 
 This module deploys ContainerRegistry Registries Webhooks.
-// TODO: Replace Resource and fill in description
 
 ## Navigation
 
@@ -33,11 +32,6 @@ This module deploys ContainerRegistry Registries Webhooks.
 | `scope` | string | `''` |  | The scope of repositories where the event can be triggered. For example, 'foo:*' means events for all tags under repository 'foo'. 'foo:bar' means events for 'foo:bar' only. 'foo' is equivalent to 'foo:latest'. Empty means all events. |
 | `status` | string | `'enabled'` | `[disabled, enabled]` | The status of the webhook at the time the operation was called. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
-
-
-### Parameter Usage: `<ParameterPlaceholder>`
-
-// TODO: Fill in Parameter usage
 
 ### Parameter Usage: `tags`
 
