@@ -97,7 +97,7 @@ param zoneRedundancy string = 'Disabled'
 @description('Optional. All replications to create.')
 param replications array = []
 
-@description('Optional. All webhooks to create')
+@description('Optional. All webhooks to create.')
 param webhooks array = []
 
 @allowed([
