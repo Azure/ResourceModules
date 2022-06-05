@@ -13,7 +13,7 @@ trigger:
       - 'arm/**/deploy.json'
 
 variables:
-  - template: '/.azuredevops/pipelineVariables/global.variables.yml'
+  - template: '../../global.variables.yml'
   - name: pipelinePrincipalGitUserName
     value: 'CARMLPipelinePrincipal'
   - name: pipelinePrincipalGitUserEmail
