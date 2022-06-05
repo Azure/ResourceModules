@@ -2,19 +2,21 @@
 param registryName string
 
 @description('Optional. The name of the registry webhook.')
-param webhookName string = '${registryName}-webhook'
+@minLength(5)
+@maxLength(50)
+param name string = '${registryName}webhook'
 
-@description('Required. Service URI.')
+@description('Required. The service URI for the webhook to post notifications.')
 param serviceUri string
 
 @allowed([
   'disabled'
   'enabled'
 ])
-@description('Optional. status of webhook.')
+@description('Optional. The status of the webhook at the time the operation was called.')
 param status string = 'enabled'
 
-@description('Optional. possible actions.')
+@description('Optional. The list of actions that trigger the webhook to post notifications.')
 param action array = [
   'chart_delete'
   'chart_push'
@@ -29,10 +31,10 @@ param location string = resourceGroup().location
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
-@description('Optional. custom headers for resources.')
+@description('Optional. Custom headers that will be added to the webhook notifications.')
 param customHeaders object = {}
 
-@description('Optional. scopes like foo:*.')
+@description('Optional. The scope of repositories where the event can be triggered. For example, \'foo:*\' means events for all tags under repository \'foo\'. \'foo:bar\' means events for \'foo:bar\' only. \'foo\' is equivalent to \'foo:latest\'. Empty means all events.')
 param scope string = ''
 
 resource registry 'Microsoft.ContainerRegistry/registries@2021-09-01' existing = {
@@ -40,7 +42,7 @@ resource registry 'Microsoft.ContainerRegistry/registries@2021-09-01' existing =
 }
 
 resource webhook 'Microsoft.ContainerRegistry/registries/webhooks@2021-12-01-preview' = {
-  name: webhookName
+  name: name
   parent: registry
   location: location
   tags: tags
@@ -53,20 +55,23 @@ resource webhook 'Microsoft.ContainerRegistry/registries/webhooks@2021-12-01-pre
   }
 }
 
-@description('The id of the webhook.')
-output webhookId string = webhook.id
+@description('The resource ID of the webhook.')
+output resourceId string = webhook.id
 
 @description('The name of the webhook.')
-output webhookName string = webhook.name
+output name string = webhook.name
+
+@description('The name of the Azure container registry.')
+output resourceGroupName string = resourceGroup().name
 
 @description('The actions of the webhook.')
-output webhookActions array = webhook.properties.actions
+output actions array = webhook.properties.actions
 
 @description('The status of the webhook.')
-output webhookStatus string = webhook.properties.status
+output status string = webhook.properties.status
 
 @description('The provisioning state of the webhook.')
-output webhookprovistioningState string = webhook.properties.provisioningState
+output provistioningState string = webhook.properties.provisioningState
 
-@description('The location of the webhook.')
-output webhookLocation string = webhook.location
+@description('The location the resource was deployed into.')
+output location string = webhook.location

@@ -251,11 +251,11 @@ module registry_replications 'replications/deploy.bicep' = [for (replication, in
 }]
 
 module registry_webhooks 'webhooks/deploy.bicep' = [for (webhook, index) in webhooks: {
-  name: '${uniqueString(deployment().name, location)}-Registry-Replication-${index}'
+  name: '${uniqueString(deployment().name, location)}-Registry-Webhook-${index}'
   params: {
-    webhookName: webhook.name
+    name: webhook.name
     registryName: registry.name
-    location: contains(webhook, 'location') ? webhook.location : resourceGroup().location
+    location: contains(webhook, 'location') ? webhook.location : location
     action: contains(webhook, 'action') ? webhook.action : [
       'chart_delete'
       'chart_push'
