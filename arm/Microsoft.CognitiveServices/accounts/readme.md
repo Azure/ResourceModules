@@ -26,7 +26,7 @@ This module deploys different kinds of cognitive services resources
 **Required parameters**
 | Parameter Name | Type | Allowed Values | Description |
 | :-- | :-- | :-- | :-- |
-| `kind` | string | `[AnomalyDetector, Bing.Autosuggest.v7, Bing.CustomSearch, Bing.EntitySearch, Bing.Search.v7, Bing.SpellCheck.v7, CognitiveServices, ComputerVision, ContentModerator, CustomVision.Prediction, CustomVision.Training, Face, FormRecognizer, ImmersiveReader, Internal.AllInOne, LUIS, LUIS.Authoring, Personalizer, QnAMaker, SpeechServices, TextAnalytics, TextTranslation]` | Kind of the Cognitive Services. Use 'Get-AzCognitiveServicesAccountSku' to determine a valid combinations of 'kind' and 'sku' for your Azure region. |
+| `kind` | string | `[AnomalyDetector, Bing.Autosuggest.v7, Bing.CustomSearch, Bing.EntitySearch, Bing.Search.v7, Bing.SpellCheck.v7, CognitiveServices, ComputerVision, ContentModerator, CustomVision.Prediction, CustomVision.Training, Face, FormRecognizer, ImmersiveReader, Internal.AllInOne, LUIS, LUIS.Authoring, Personalizer, QnAMaker, SpeechServices, TextAnalytics, TextTranslation]` | Kind of the Cognitive Services. Use 'Get-AzCognitiveServicesAccountSku' to determine a valid combinations of 'kind' and 'SKU' for your Azure region. |
 | `name` | string |  | The name of Cognitive Services account. |
 
 **Conditional parameters**
@@ -60,7 +60,7 @@ This module deploys different kinds of cognitive services resources
 | `restore` | bool | `False` |  | Restore a soft-deleted cognitive service at deployment time. Will fail if no such soft-deleted resource exists. |
 | `restrictOutboundNetworkAccess` | bool | `True` |  | Restrict outbound network access. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
-| `sku` | string | `'S0'` | `[C2, C3, C4, F0, F1, S, S0, S1, S10, S2, S3, S4, S5, S6, S7, S8, S9]` | SKU of the Cognitive Services resource. Use 'Get-AzCognitiveServicesAccountSku' to determine a valid combinations of 'kind' and 'sku' for your Azure region. |
+| `sku` | string | `'S0'` | `[C2, C3, C4, F0, F1, S, S0, S1, S10, S2, S3, S4, S5, S6, S7, S8, S9]` | SKU of the Cognitive Services resource. Use 'Get-AzCognitiveServicesAccountSku' to determine a valid combinations of 'kind' and 'SKU' for your Azure region. |
 | `systemAssignedIdentity` | bool | `False` |  | Enables system assigned managed identity on the resource. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
 | `userOwnedStorage` | array | `[]` |  | The storage accounts for this resource. |
@@ -143,6 +143,58 @@ privateEndpoints:  [
 </details>
 <p>
 
+### Parameter Usage: `encryption`
+
+<details>
+
+<summary>Parameter JSON format</summary>
+
+```json
+// With customer-managed key
+"encryption": {
+    "value": {
+        "keySource": "Microsoft.KeyVault",
+        "keyVaultProperties": {
+            "identityClientId": "c907a696-36f4-49fe-b926-39e3aabba814", // ID must be updated for new identity
+            "keyVaultUri": "https://adp-<<namePrefix>>-az-kv-nopr-002.vault.azure.net/",
+            "keyName": "keyEncryptionKey",
+            "keyversion": "4570a207ec394a0bbbe4fc9adc663a51" // ID must be updated for new keys
+        }
+    }
+}
+// With service-managed key
+"encryption": {
+    "value": {
+        "keySource": "Microsoft.CognitiveServices"
+    }
+}
+```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+// With customer managed key
+encryption: {
+    keySource: 'Microsoft.KeyVault'
+    keyVaultProperties: {
+        identityClientId: 'c907a696-36f4-49fe-b926-39e3aabba814' // ID must be updated for new identity
+        keyVaultUri: 'https://adp-<<namePrefix>>-az-kv-nopr-002.vault.azure.net/'
+        keyName: 'keyEncryptionKey'
+        keyversion: '4570a207ec394a0bbbe4fc9adc663a51' // Version must be updated for new keys
+    }
+}
+// With service-managed key
+encryption: {
+    keySource: 'Microsoft.CognitiveServices'
+}
+```
+
+</details>
+<p>
 ### Parameter Usage: `roleAssignments`
 
 Create a role assignment for the given resource. If you want to assign a service principal / managed identity that is created in the same deployment, make sure to also specify the `'principalType'` parameter and set it to `'ServicePrincipal'`. This will ensure the role assignment waits for the principal's propagation in Azure.
@@ -347,7 +399,7 @@ userAssignedIdentities: {
 
 ## Considerations
 
-- Not all combinations of parameters `kind` and `sku` are valid and they may vary in different Azure Regions. Please use PowerShell CmdLet `Get-AzCognitiveServicesAccountSku` or another methods to determine valid values in your region.
+- Not all combinations of parameters `kind` and `SKU` are valid and they may vary in different Azure Regions. Please use PowerShell CMDLet `Get-AzCognitiveServicesAccountSku` or another methods to determine valid values in your region.
 - Not all kinds of Cognitive Services support virtual networks. Please visit the link below to determine supported services.
 
 ## Deployment examples
@@ -384,7 +436,7 @@ userAssignedIdentities: {
                     "identityClientId": "c907a696-36f4-49fe-b926-39e3aabba814", // ID must be updated for new identity
                     "keyvaulturi": "https://adp-<<namePrefix>>-az-kv-nopr-002.vault.azure.net/",
                     "keyName": "keyEncryptionKey",
-                    "keyversion": "4570a207ec394a0bbbe4fc9adc663a51" // ID must be updated for new keys
+                    "keyversion": "4570a207ec394a0bbbe4fc9adc663a51" // Version must be updated for new keys
                 }
             }
         }
