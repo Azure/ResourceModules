@@ -33,7 +33,7 @@ This module deploys different kinds of cognitive services resources
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `customSubDomainName` | string | `''` | Subdomain name used for token-based authentication. Required if 'networkAcls' are set. |
-| `userAssignedIdentities` | object | `{object}` | The ID(s) to assign to the resource. Must be set if a user assigned identity is used for encryption. |
+| `userAssignedIdentities` | object | `{object}` | The ID(s) to assign to the resource. Required if a user assigned identity is used for encryption. |
 
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |

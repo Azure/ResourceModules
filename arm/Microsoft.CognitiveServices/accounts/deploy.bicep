@@ -86,7 +86,7 @@ param networkAcls object = {}
 @description('Optional. Enables system assigned managed identity on the resource.')
 param systemAssignedIdentity bool = false
 
-@description('Conditional. The ID(s) to assign to the resource. Must be set if a user assigned identity is used for encryption.')
+@description('Conditional. The ID(s) to assign to the resource. Required if a user assigned identity is used for encryption.')
 param userAssignedIdentities object = {}
 
 @allowed([
