@@ -63,7 +63,7 @@ Azure Container Registry is a managed, private Docker registry service based on 
 | `tags` | object | `{object}` |  | Tags of the resource. |
 | `trustPolicyStatus` | string | `'disabled'` | `[disabled, enabled]` | The value that indicates whether the trust policy is enabled or not. |
 | `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. |
-| `webhooks` | _[webhooks](webhooks/readme.md)_ array | `[]` |  | All webhooks to create |
+| `webhooks` | _[webhooks](webhooks/readme.md)_ array | `[]` |  | All webhooks to create. |
 | `zoneRedundancy` | string | `'Disabled'` | `[Disabled, Enabled]` | Whether or not zone redundancy is enabled for this container registry. |
 
 

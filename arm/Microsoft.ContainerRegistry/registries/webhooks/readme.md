@@ -31,6 +31,7 @@ This module deploys ContainerRegistry Registries Webhooks.
 | :-- | :-- | :-- | :-- | :-- |
 | `action` | array | `[chart_delete, chart_push, delete, push, quarantine]` |  | The list of actions that trigger the webhook to post notifications. |
 | `customHeaders` | object | `{object}` |  | Custom headers that will be added to the webhook notifications. |
+| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `name` | string | `[format('{0}webhook', parameters('registryName'))]` |  | The name of the registry webhook. |
 | `scope` | string | `''` |  | The scope of repositories where the event can be triggered. For example, 'foo:*' means events for all tags under repository 'foo'. 'foo:bar' means events for 'foo:bar' only. 'foo' is equivalent to 'foo:latest'. Empty means all events. |
