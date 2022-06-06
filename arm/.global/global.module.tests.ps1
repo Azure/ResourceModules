@@ -241,7 +241,7 @@ Describe 'Readme tests' -Tag Readme {
             $differentiatingItems.Count | Should -Be 0 -Because ("list of template resources missing from the ReadMe's list [{0}] should be empty" -f ($differentiatingItems -join ','))
         }
 
-        It '[<moduleFolderName>] Resources section should not contain more resources as in the template file' -TestCases $readmeFolderTestCases {
+        It '[<moduleFolderName>] Resources section should not contain more resources than the template file' -TestCases $readmeFolderTestCases {
 
             param(
                 [string] $moduleFolderName,
