@@ -198,7 +198,7 @@ Describe 'Readme tests' -Tag Readme {
             $readMeContent | Should -Not -Be $null
         }
 
-        It '[<moduleFolderName>] Readme.md file should contain the these titles in order: Resource Types, Parameters, Outputs' -TestCases $readmeFolderTestCases {
+        It '[<moduleFolderName>] Readme.md file should contain these sections in order: Navigation, Resource Types, Parameters, Outputs, Deployment examples' -TestCases $readmeFolderTestCases {
 
             param(
                 $moduleFolderName,
