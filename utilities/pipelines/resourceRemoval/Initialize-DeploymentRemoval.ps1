@@ -77,9 +77,9 @@ function Initialize-DeploymentRemoval {
             ### CODE LOCATION: Add custom removal sequence here
             ## Add custom module-specific removal sequence following the example below
             # switch ($moduleName) {
-            #     '<moduleName01>' {
+            #     '<moduleName01>' {                # For example: 'virtualWans', 'automationAccounts'
             #         $removalSequence += @(
-            #             '<resourceType01>',
+            #             '<resourceType01>',       # For example: 'Microsoft.Network/vpnSites', 'Microsoft.OperationalInsights/workspaces/linkedServices'
             #             '<resourceType02>',
             #             '<resourceType03>'
             #         )
