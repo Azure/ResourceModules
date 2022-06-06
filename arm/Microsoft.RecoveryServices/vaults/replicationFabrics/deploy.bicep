@@ -27,7 +27,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource replicationFabric 'Microsoft.RecoveryServices/vaults/replicationFabrics@2021-12-01' = {
+resource replicationFabric 'Microsoft.RecoveryServices/vaults/replicationFabrics@2022-02-01' = {
   name: '${recoveryVaultName}/${name}'
   properties: {
     customDetails: {

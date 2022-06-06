@@ -55,7 +55,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource protectionContainer 'Microsoft.RecoveryServices/vaults/backupFabrics/protectionContainers@2021-08-01' = {
+resource protectionContainer 'Microsoft.RecoveryServices/vaults/backupFabrics/protectionContainers@2022-02-01' = {
   name: '${recoveryVaultName}/Azure/${name}'
   properties: {
     sourceResourceId: !empty(sourceResourceId) ? sourceResourceId : null

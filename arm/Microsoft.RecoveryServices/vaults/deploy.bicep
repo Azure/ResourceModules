@@ -196,6 +196,8 @@ module rsv_backupStorageConfiguration 'backupStorageConfig/deploy.bicep' = if (!
     storageModelType: backupStorageConfig.storageModelType
     crossRegionRestoreFlag: backupStorageConfig.crossRegionRestoreFlag
     enableDefaultTelemetry: enableChildTelemetry
+    dedupState: backupStorageConfig.dedupState
+    xcoolState: backupStorageConfig.xcoolState
   }
 }
 
@@ -233,6 +235,7 @@ module rsv_backupConfig 'backupConfig/deploy.bicep' = if (!empty(backupConfig)) 
     storageModelType: contains(backupConfig, 'storageModelType') ? backupConfig.storageModelType : 'GeoRedundant'
     storageType: contains(backupConfig, 'storageType') ? backupConfig.storageType : 'GeoRedundant'
     storageTypeState: contains(backupConfig, 'storageTypeState') ? backupConfig.storageTypeState : 'Locked'
+    isSoftDeleteFeatureStateEditable: contains(backupConfig, 'isSoftDeleteFeatureStateEditable') ? backupConfig.isSoftDeleteFeatureStateEditable : true
     enableDefaultTelemetry: enableChildTelemetry
   }
 }

@@ -22,11 +22,11 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource rsv 'Microsoft.RecoveryServices/vaults@2021-12-01' existing = {
+resource rsv 'Microsoft.RecoveryServices/vaults@2022-02-01' existing = {
   name: recoveryVaultName
 }
 
-resource backupPolicy 'Microsoft.RecoveryServices/vaults/backupPolicies@2021-08-01' = {
+resource backupPolicy 'Microsoft.RecoveryServices/vaults/backupPolicies@2022-02-01' = {
   name: name
   parent: rsv
   properties: backupPolicyProperties
