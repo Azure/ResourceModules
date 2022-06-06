@@ -58,7 +58,7 @@ function Install-CustomModule {
     foreach ($foundModule in $foundModules) {
 
         # Check if already installed as required
-        if ($alreadyInstalled = $installedModules | Where-Object { $_.Name -eq $Module.Name }) {
+        if ($alreadyInstalled = $InstalledModule | Where-Object { $_.Name -eq $Module.Name }) {
             if ($Module.Version) {
                 $alreadyInstalled = $alreadyInstalled | Where-Object { $_.Version -eq $Module.Version }
             } else {
