@@ -148,7 +148,7 @@ param cMKKeyName string = ''
 param cMKUserAssignedIdentityResourceId string = ''
 
 @description('Optional. The version of the customer managed key to reference for encryption. If not provided, latest is used.')
-param cMKeyVersion string = ''
+param cMKKeyVersion string = ''
 
 @description('Optional. The name of the diagnostic setting, if deployed.')
 param diagnosticSettingsName string = '${name}-diagnosticSettings'
@@ -225,7 +225,7 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-08-01' = {
       keyvaultproperties: !empty(cMKKeyName) ? {
         keyname: cMKKeyName
         keyvaulturi: keyVault.properties.vaultUri
-        keyversion: !empty(cMKeyVersion) ? cMKeyVersion : null
+        keyversion: !empty(cMKKeyVersion) ? cMKKeyVersion : null
       } : null
       identity: !empty(cMKKeyName) ? {
         userAssignedIdentity: cMKUserAssignedIdentityResourceId
