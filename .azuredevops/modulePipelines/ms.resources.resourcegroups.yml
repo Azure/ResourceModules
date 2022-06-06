@@ -21,8 +21,8 @@ trigger:
     include:
       - '/.azuredevops/modulePipelines/ms.resources.resourcegroups.yml'
       - '/.azuredevops/pipelineTemplates/module.*.yml'
-      - '/arm/Microsoft.Resources/resourceGroups/*'
-      - '/arm/.global/global.module.tests.ps1'
+      - '/modules/Microsoft.Resources/resourceGroups/*'
+      - '/modules/.global/global.module.tests.ps1'
     exclude:
       - '/**/*.md'
 
@@ -30,7 +30,7 @@ variables:
   - template: '../../global.variables.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/arm/Microsoft.Resources/resourceGroups'
+    value: '/modules/Microsoft.Resources/resourceGroups'
 
 stages:
   - stage: Validation

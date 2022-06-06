@@ -21,8 +21,8 @@ trigger:
     include:
       - '/.azuredevops/modulePipelines/ms.virtualmachineimages.imagetemplates.yml'
       - '/.azuredevops/pipelineTemplates/module.*.yml'
-      - '/arm/Microsoft.VirtualMachineImages/imageTemplates/*'
-      - '/arm/.global/global.module.tests.ps1'
+      - '/modules/Microsoft.VirtualMachineImages/imageTemplates/*'
+      - '/modules/.global/global.module.tests.ps1'
     exclude:
       - '/**/*.md'
 
@@ -30,7 +30,7 @@ variables:
   - template: '../../global.variables.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/arm/Microsoft.VirtualMachineImages/imageTemplates'
+    value: '/modules/Microsoft.VirtualMachineImages/imageTemplates'
 
 stages:
   - stage: Validation

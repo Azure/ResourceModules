@@ -21,8 +21,8 @@ trigger:
     include:
       - '/.azuredevops/modulePipelines/ms.network.applicationsecuritygroups.yml'
       - '/.azuredevops/pipelineTemplates/module.*.yml'
-      - '/arm/Microsoft.Network/applicationSecurityGroups/*'
-      - '/arm/.global/global.module.tests.ps1'
+      - '/modules/Microsoft.Network/applicationSecurityGroups/*'
+      - '/modules/.global/global.module.tests.ps1'
     exclude:
       - '/**/*.md'
 
@@ -30,7 +30,7 @@ variables:
   - template: '../../global.variables.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/arm/Microsoft.Network/applicationSecurityGroups'
+    value: '/modules/Microsoft.Network/applicationSecurityGroups'
 
 stages:
   - stage: Validation

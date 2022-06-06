@@ -29,9 +29,9 @@ They can be deployed in different configurations just by changing the input para
 
 # General guidelines
 
-- All resource modules in the 'arm' folder should not allow deployment loops on the top level resource but may optionally allow deployment loops on their child-resources.
+- All resource modules in the 'modules' folder should not allow deployment loops on the top level resource but may optionally allow deployment loops on their child-resources.
   > **Example:** The storage account module allows the deployment of a single storage account with, optionally, multiple blob containers, multiple file shares, multiple queues and/or multiple tables.
-- The 'constructs' folder contains examples of deployment logic built on top of resource modules contained in the 'arm' folder, allowing for example deployment loops on top level resources.
+- The 'constructs' folder contains examples of deployment logic built on top of resource modules contained in the 'modules' folder, allowing for example deployment loops on top level resources.
   > **Example:** The VirtualNetworkPeering construct leverages the VirtualNetworkPeering module to deploy multiple virtual network peerings at once
 - Where the resource type in question supports it, the module should have support for:
   1. **Diagnostic logs** and **metrics** (you can have them sent to any combination of storage account, log analytics and event hub)
@@ -54,7 +54,7 @@ A **CARML module** consists of
 - One or multiple template parameters files (`*parameters.json`) that will be used for testing, located in the `.parameters` sub-folder.
 - A `readme.md` file which describes the module itself.
 
-A module usually represents a single resource or a set of closely related resources. For example, a storage account and the associated lock or virtual machine and network interfaces. Modules are located in the `arm` folder.
+A module usually represents a single resource or a set of closely related resources. For example, a storage account and the associated lock or virtual machine and network interfaces. Modules are located in the `modules` folder.
 
 Also, each module should be implemented with all capabilities it and its children support. This includes
 - `Locks`

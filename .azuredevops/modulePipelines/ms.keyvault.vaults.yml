@@ -21,8 +21,8 @@ trigger:
     include:
       - '/.azuredevops/modulePipelines/ms.keyvault.vaults.yml'
       - '/.azuredevops/pipelineTemplates/module.*.yml'
-      - '/arm/Microsoft.KeyVault/vaults/*'
-      - '/arm/.global/global.module.tests.ps1'
+      - '/modules/Microsoft.KeyVault/vaults/*'
+      - '/modules/.global/global.module.tests.ps1'
     exclude:
       - '/**/*.md'
 
@@ -30,7 +30,7 @@ variables:
   - template: '../../global.variables.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/arm/Microsoft.KeyVault/vaults'
+    value: '/modules/Microsoft.KeyVault/vaults'
 
 stages:
   - stage: Validation

@@ -21,8 +21,8 @@ trigger:
     include:
       - '/.azuredevops/modulePipelines/ms.healthbot.healthbots.yml'
       - '/.azuredevops/pipelineTemplates/module.*.yml'
-      - '/arm/Microsoft.HealthBot/healthBots/*'
-      - '/arm/.global/global.module.tests.ps1'
+      - '/modules/Microsoft.HealthBot/healthBots/*'
+      - '/modules/.global/global.module.tests.ps1'
     exclude:
       - '/**/*.md'
 
@@ -30,7 +30,7 @@ variables:
   - template: '../../global.variables.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/arm/Microsoft.HealthBot/healthBots'
+    value: '/modules/Microsoft.HealthBot/healthBots'
 
 stages:
   - stage: Validation

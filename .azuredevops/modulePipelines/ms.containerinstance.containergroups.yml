@@ -21,8 +21,8 @@ trigger:
     include:
       - '/.azuredevops/modulePipelines/ms.containerinstance.containergroups.yml'
       - '/.azuredevops/pipelineTemplates/module.*.yml'
-      - '/arm/Microsoft.ContainerInstance/containerGroups/*'
-      - '/arm/.global/global.module.tests.ps1'
+      - '/modules/Microsoft.ContainerInstance/containerGroups/*'
+      - '/modules/.global/global.module.tests.ps1'
     exclude:
       - '/**/*.md'
 
@@ -30,7 +30,7 @@ variables:
   - template: '../../global.variables.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/arm/Microsoft.ContainerInstance/containerGroups'
+    value: '/modules/Microsoft.ContainerInstance/containerGroups'
 
 stages:
   - stage: Validation

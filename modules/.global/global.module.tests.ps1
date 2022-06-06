@@ -33,9 +33,9 @@ Describe 'File/folder tests' -Tag Modules {
         $moduleFolderTestCases = [System.Collections.ArrayList] @()
         foreach ($moduleFolderPath in $moduleFolderPaths) {
             $moduleFolderTestCases += @{
-                moduleFolderName = $moduleFolderPath.Replace('\', '/').Split('/arm/')[1]
+                moduleFolderName = $moduleFolderPath.Replace('\', '/').Split('/modules/')[1]
                 moduleFolderPath = $moduleFolderPath
-                isTopLevelModule = $moduleFolderPath.Replace('\', '/').Split('/arm/')[1].Split('/').Count -eq 2 # <provider>/<resourceType>
+                isTopLevelModule = $moduleFolderPath.Replace('\', '/').Split('/modules/')[1].Split('/').Count -eq 2 # <provider>/<resourceType>
             }
         }
 
@@ -99,7 +99,7 @@ Describe 'File/folder tests' -Tag Modules {
         foreach ($moduleFolderPath in $moduleFolderPaths) {
             if (Test-Path (Join-Path $moduleFolderPath '.parameters')) {
                 $folderTestCases += @{
-                    moduleFolderName = $moduleFolderPath.Replace('\', '/').Split('/arm/')[1]
+                    moduleFolderName = $moduleFolderPath.Replace('\', '/').Split('/modules/')[1]
                     moduleFolderPath = $moduleFolderPath
                 }
             }
@@ -120,7 +120,7 @@ Describe 'File/folder tests' -Tag Modules {
             if (Test-Path $parameterFolderPath) {
                 foreach ($parameterFile in (Get-ChildItem $parameterFolderPath -Filter '*parameters.json' -Force)) {
                     $parameterFolderFilesTestCases += @{
-                        moduleFolderName  = $moduleFolderPath.Replace('\', '/').Split('/arm/')[1]
+                        moduleFolderName  = $moduleFolderPath.Replace('\', '/').Split('/modules/')[1]
                         parameterFilePath = $parameterFile.FullName
                     }
                 }
@@ -145,7 +145,7 @@ Describe 'Readme tests' -Tag Readme {
         foreach ($moduleFolderPath in $moduleFolderPaths) {
 
             # For runtime purposes, we cache the compiled template in a hashtable that uses a formatted relative module path as a key
-            $moduleFolderPathKey = $moduleFolderPath.Split('arm')[1].Replace('\', '/').Trim('/').Replace('/', '-')
+            $moduleFolderPathKey = $moduleFolderPath.Split('modules')[1].Replace('\', '/').Trim('/').Replace('/', '-')
             if (-not ($convertedTemplates.Keys -contains $moduleFolderPathKey)) {
                 if (Test-Path (Join-Path $moduleFolderPath 'deploy.bicep')) {
                     $templateFilePath = Join-Path $moduleFolderPath 'deploy.bicep'
@@ -166,7 +166,7 @@ Describe 'Readme tests' -Tag Readme {
             }
 
             $readmeFolderTestCases += @{
-                moduleFolderName = $moduleFolderPath.Replace('\', '/').Split('/arm/')[1]
+                moduleFolderName = $moduleFolderPath.Replace('\', '/').Split('/modules/')[1]
                 moduleFolderPath = $moduleFolderPath
                 templateContent  = $templateContent
                 templateFilePath = $templateFilePath
@@ -469,7 +469,7 @@ Describe 'Deployment template tests' -Tag Template {
         foreach ($moduleFolderPath in $moduleFolderPaths) {
 
             # For runtime purposes, we cache the compiled template in a hashtable that uses a formatted relative module path as a key
-            $moduleFolderPathKey = $moduleFolderPath.Split('arm')[1].Replace('\', '/').Trim('/').Replace('/', '-')
+            $moduleFolderPathKey = $moduleFolderPath.Split('modules')[1].Replace('\', '/').Trim('/').Replace('/', '-')
             if (-not ($convertedTemplates.Keys -contains $moduleFolderPathKey)) {
                 if (Test-Path (Join-Path $moduleFolderPath 'deploy.bicep')) {
                     $templateFilePath = Join-Path $moduleFolderPath 'deploy.bicep'
@@ -512,7 +512,7 @@ Describe 'Deployment template tests' -Tag Template {
 
             # Test file setup
             $deploymentFolderTestCases += @{
-                moduleFolderName       = $moduleFolderPath.Replace('\', '/').Split('/arm/')[1]
+                moduleFolderName       = $moduleFolderPath.Replace('\', '/').Split('/modules/')[1]
                 templateContent        = $templateContent
                 templateFilePath       = $templateFilePath
                 parameterFileTestCases = $parameterFileTestCases
@@ -721,7 +721,7 @@ Describe 'Deployment template tests' -Tag Template {
 
             $outputs = $templateContent.outputs
 
-            $primaryResourceType = (Split-Path $TemplateFilePath -Parent).Replace('\', '/').split('/arm/')[1]
+            $primaryResourceType = (Split-Path $TemplateFilePath -Parent).Replace('\', '/').split('/modules/')[1]
             $primaryResourceTypeResource = $templateContent.resources | Where-Object { $_.type -eq $primaryResourceType }
 
             if ($primaryResourceTypeResource.keys -contains 'location' -and $primaryResourceTypeResource.location -ne 'global') {
@@ -885,7 +885,7 @@ Describe 'Deployment template tests' -Tag Template {
                             tokenSettings     = $Settings.parameterFileTokens
                             tokenName         = $token
                             tokenValue        = $enforcedTokenList[$token]
-                            moduleFolderName  = $moduleFolderPath.Replace('\', '/').Split('/arm/')[1]
+                            moduleFolderName  = $moduleFolderPath.Replace('\', '/').Split('/modules/')[1]
                         }
                     }
                 }
@@ -918,10 +918,10 @@ Describe "API version tests [All apiVersions in the template should be 'recent']
     $ApiVersions = Get-AzResourceProvider -ListAvailable
     foreach ($moduleFolderPath in $moduleFolderPathsFiltered) {
 
-        $moduleFolderName = $moduleFolderPath.Replace('\', '/').Split('/arm/')[1]
+        $moduleFolderName = $moduleFolderPath.Replace('\', '/').Split('/modules/')[1]
 
         # For runtime purposes, we cache the compiled template in a hashtable that uses a formatted relative module path as a key
-        $moduleFolderPathKey = $moduleFolderPath.Split('arm')[1].Replace('\', '/').Trim('/').Replace('/', '-')
+        $moduleFolderPathKey = $moduleFolderPath.Split('modules')[1].Replace('\', '/').Trim('/').Replace('/', '-')
         if (-not ($convertedTemplates.Keys -contains $moduleFolderPathKey)) {
             if (Test-Path (Join-Path $moduleFolderPath 'deploy.bicep')) {
                 $templateFilePath = Join-Path $moduleFolderPath 'deploy.bicep'

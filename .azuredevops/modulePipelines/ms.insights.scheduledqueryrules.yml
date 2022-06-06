@@ -21,8 +21,8 @@ trigger:
     include:
       - '/.azuredevops/modulePipelines/ms.insights.scheduledqueryrules.yml'
       - '/.azuredevops/pipelineTemplates/module.*.yml'
-      - '/arm/Microsoft.Insights/scheduledQueryRules/*'
-      - '/arm/.global/global.module.tests.ps1'
+      - '/modules/Microsoft.Insights/scheduledQueryRules/*'
+      - '/modules/.global/global.module.tests.ps1'
     exclude:
       - '/**/*.md'
 
@@ -30,7 +30,7 @@ variables:
   - template: '../../global.variables.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/arm/Microsoft.Insights/scheduledQueryRules'
+    value: '/modules/Microsoft.Insights/scheduledQueryRules'
 
 stages:
   - stage: Validation

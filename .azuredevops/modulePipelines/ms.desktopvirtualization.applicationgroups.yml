@@ -21,8 +21,8 @@ trigger:
     include:
       - '/.azuredevops/modulePipelines/ms.desktopvirtualization.applicationgroups.yml'
       - '/.azuredevops/pipelineTemplates/module.*.yml'
-      - '/arm/Microsoft.DesktopVirtualization/applicationgroups/*'
-      - '/arm/.global/global.module.tests.ps1'
+      - '/modules/Microsoft.DesktopVirtualization/applicationgroups/*'
+      - '/modules/.global/global.module.tests.ps1'
     exclude:
       - '/**/*.md'
 
@@ -30,7 +30,7 @@ variables:
   - template: '../../global.variables.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/arm/Microsoft.DesktopVirtualization/applicationgroups'
+    value: '/modules/Microsoft.DesktopVirtualization/applicationgroups'
 
 stages:
   - stage: Validation

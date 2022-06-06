@@ -21,8 +21,8 @@ trigger:
     include:
       - '/.azuredevops/modulePipelines/ms.compute.virtualmachines.yml'
       - '/.azuredevops/pipelineTemplates/module.*.yml'
-      - '/arm/Microsoft.Compute/virtualMachines/*'
-      - '/arm/.global/global.module.tests.ps1'
+      - '/modules/Microsoft.Compute/virtualMachines/*'
+      - '/modules/.global/global.module.tests.ps1'
     exclude:
       - '/**/*.md'
 
@@ -30,7 +30,7 @@ variables:
   - template: '../../global.variables.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/arm/Microsoft.Compute/virtualMachines'
+    value: '/modules/Microsoft.Compute/virtualMachines'
 
 stages:
   - stage: Validation

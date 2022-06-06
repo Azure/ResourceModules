@@ -150,7 +150,7 @@ module roleassignment 'br:bicepregistry.azurecr.io/bicep/modules/microsoft.autho
 ```
 **Local Path Reference**
 ```bicep
-module roleassignment 'yourpath/arm/Microsoft.Authorization.roleAssignments/subscription/deploy.bicep' = {}
+module roleassignment 'yourpath/modules/Microsoft.Authorization.roleAssignments/subscription/deploy.bicep' = {}
 ```
 
 ## Outputs

@@ -2,7 +2,7 @@ In this area, we provide instructions to migrate from CARML version 0.3.1 to ver
 
 # Modules
 ## General import of new modules
-New modules can usually be migrated by adding the content of the release's `arm` folder into your own `arm` folder.
+New modules can usually be migrated by adding the content of the release's `modules` folder into your own `modules` folder.
 
 > **Note:** You should only do this from a branch and carefully compare any changes the platform displays.
 >
@@ -41,7 +41,7 @@ When migrating, you may notice that many of the resource names in the module par
 You can remove these placeholders as you see fit, or migrate them together with the changes explained in the [`General pipeline updates`](#general-pipeline-updates) & [` NamePrefix in settings.json`](#nameprefix-in-settingsjson) sections of this guide.
 
 ## Version file
-A `version.json` file was added to each individual module. Please make sure such a file is added to every module folder in the `arm` folder structure.
+A `version.json` file was added to each individual module. Please make sure such a file is added to every module folder in the `modules` folder structure.
 
 For more information on how versioning is handled see [here](https://github.com/Azure/ResourceModules/wiki/PipelinesDesign#publish).
 
@@ -50,7 +50,7 @@ For the modules you copy over, a `version.json` file will already be available. 
 # CI environment
 
 ## General pipeline updates
-General updates can be migrated by essentially copying/replacing any code outside of the `arm` folder (i.e. `.github`/`.azuredevops`/`utilities`/`docs`). If you modified the CI environment in the meantime, make sure to carefully merge any conflicting code. Noteworthy changes include:
+General updates can be migrated by essentially copying/replacing any code outside of the `modules` folder (i.e. `.github`/`.azuredevops`/`utilities`/`docs`). If you modified the CI environment in the meantime, make sure to carefully merge any conflicting code. Noteworthy changes include:
 -	renamed composite actions / templates,
 -	extended placeholder handling,
 -	extended pipeline functionality (e.g., managementgroup-level removal),

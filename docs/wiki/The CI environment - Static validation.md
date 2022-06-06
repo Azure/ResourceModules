@@ -12,7 +12,7 @@ This section provides an overview of the principles the static validation is bui
 
 All module Unit tests are performed with the help of [Pester](https://github.com/pester/Pester) and ensure that our modules are configured correctly, documentation is up to date, and modules don't turn stale.
 
-The following activities are run executing the `arm/.global/global.module.tests.ps1` script.
+The following activities are run executing the `modules/.global/global.module.tests.ps1` script.
 
 - **File & folder tests** validate that the module folder structure is set up in the intended way. e.g.:
   - readme.md file exists
@@ -48,7 +48,7 @@ In this phase, Pester analyzes the API version of each resource type deployed by
 
 In particular, each resource's API version is compared with those currently available on Azure. Accepted are both the latest 5 versions (including preview versions) as well as the latest 5 non-preview versions.
 
-This test also leverages the `arm/.global/global.module.tests.ps1` script.
+This test also leverages the `modules/.global/global.module.tests.ps1` script.
 
 # Verify the static validation of your module locally
 
@@ -64,7 +64,7 @@ $pathToRepository = '<pathToClonedRepo>'
 
 # REQUIRED INPUT FOR TESTING
 $TestModuleLocallyInput = @{
-    templateFilePath              = "$pathToRepository\arm\Microsoft.Authorization\roleDefinitions\deploy.bicep"
+    templateFilePath              = "$pathToRepository\modules\Microsoft.Authorization\roleDefinitions\deploy.bicep"
     PesterTest                    = $true
     DeploymentTest                = $false
     ValidationTest                = $false

@@ -3,7 +3,7 @@
 #########################################################
 ##
 ## This composite action contains the logic to validate a module using a set of Pester tests
-## The tests are implemented in file 'arm/.global/global.module.tests.ps1'
+## The tests are implemented in file 'modules/.global/global.module.tests.ps1'
 ##
 #########################################################
 ##
@@ -14,7 +14,7 @@
 ##   |===========================================================================================================|
 ##   | Parameter  | Required | Default | Description                     | Example                               |
 ##   |------------|----------|---------|---------------------------------|---------------------------------------|
-##   | modulePath | true     | ''      | The path to the module's folder | 'arm/Microsoft.ApiManagement/service' |
+##   | modulePath | true     | ''      | The path to the module's folder | 'modules/Microsoft.ApiManagement/service' |
 ##   |===========================================================================================================|
 ##
 ##---------------------------------------------##
@@ -97,7 +97,7 @@ runs:
           # --------------------- #
           Invoke-Pester -Configuration @{
             Run        = @{
-              Container = New-PesterContainer -Path 'arm/.global/global.module.tests.ps1' -Data @{
+              Container = New-PesterContainer -Path 'modules/.global/global.module.tests.ps1' -Data @{
                 moduleFolderPaths = $moduleFolderPaths
                 enforcedTokenList = $enforcedTokenList
               }
@@ -107,7 +107,7 @@ runs:
             }
             TestResult = @{
               TestSuiteName = 'Global Module Tests'
-              OutputPath    = 'arm/.global/global-testResults.xml'
+              OutputPath    = 'modules/.global/global-testResults.xml'
               OutputFormat  = 'JUnitXml'
               Enabled       = $true
             }
@@ -122,7 +122,7 @@ runs:
       uses: EnricoMi/publish-unit-test-result-action@v1
       if: always() && !contains('cancelled,skipped', steps.pester_run_step.outcome)
       with:
-        files: arm/.global/global-testResults.xml
+        files: modules/.global/global-testResults.xml
 
     # [Module Pester Test] task(s)
     #-----------------------------
@@ -150,7 +150,7 @@ runs:
           # --------------------- #
           Invoke-Pester -Configuration @{
             Run        = @{
-              Container = New-PesterContainer -Path 'arm/.global/global.module.tests.ps1' -Data @{
+              Container = New-PesterContainer -Path 'modules/.global/global.module.tests.ps1' -Data @{
                 moduleFolderPaths = $moduleFolderPaths
               }
             }
@@ -159,7 +159,7 @@ runs:
             }
             TestResult = @{
               TestSuiteName = 'Global Module API Tests'
-              OutputPath    = 'arm/.global/api-testResults.xml'
+              OutputPath    = 'modules/.global/api-testResults.xml'
               OutputFormat  = 'JUnitXml'
               Enabled       = $true
             }
@@ -174,4 +174,4 @@ runs:
       uses: EnricoMi/publish-unit-test-result-action@v1
       if: always() && !contains('cancelled,skipped', steps.pester_api_run_step.outcome)
       with:
-        files: arm/.global/api-testResults.xml
+        files: modules/.global/api-testResults.xml

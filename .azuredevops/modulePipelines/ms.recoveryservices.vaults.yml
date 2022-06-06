@@ -21,8 +21,8 @@ trigger:
     include:
       - '/.azuredevops/modulePipelines/ms.recoveryservices.vaults.yml'
       - '/.azuredevops/pipelineTemplates/module.*.yml'
-      - '/arm/Microsoft.RecoveryServices/vaults/*'
-      - '/arm/.global/global.module.tests.ps1'
+      - '/modules/Microsoft.RecoveryServices/vaults/*'
+      - '/modules/.global/global.module.tests.ps1'
     exclude:
       - '/**/*.md'
 
@@ -30,7 +30,7 @@ variables:
   - template: '../../global.variables.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/arm/Microsoft.RecoveryServices/vaults'
+    value: '/modules/Microsoft.RecoveryServices/vaults'
 
 stages:
   - stage: Validation

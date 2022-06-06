@@ -21,8 +21,8 @@ trigger:
     include:
       - '/.azuredevops/modulePipelines/ms.network.virtualhubs.yml'
       - '/.azuredevops/pipelineTemplates/module.*.yml'
-      - '/arm/Microsoft.Network/virtualHubs/*'
-      - '/arm/.global/global.module.tests.ps1'
+      - '/modules/Microsoft.Network/virtualHubs/*'
+      - '/modules/.global/global.module.tests.ps1'
     exclude:
       - '/**/*.md'
 
@@ -30,7 +30,7 @@ variables:
   - template: '../../global.variables.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/arm/Microsoft.Network/virtualHubs'
+    value: '/modules/Microsoft.Network/virtualHubs'
 
 stages:
   - stage: Validation

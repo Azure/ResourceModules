@@ -21,8 +21,8 @@ trigger:
     include:
       - '/.azuredevops/modulePipelines/ms.synapse.privatelinkhubs.yml'
       - '/.azuredevops/pipelineTemplates/module.*.yml'
-      - '/arm/Microsoft.Synapse/privateLinkHubs/*'
-      - '/arm/.global/global.module.tests.ps1'
+      - '/modules/Microsoft.Synapse/privateLinkHubs/*'
+      - '/modules/.global/global.module.tests.ps1'
     exclude:
       - '/**/*.md'
 
@@ -30,7 +30,7 @@ variables:
   - template: '../../global.variables.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/arm/Microsoft.Synapse/privateLinkHubs'
+    value: '/modules/Microsoft.Synapse/privateLinkHubs'
 
 stages:
   - stage: Validation

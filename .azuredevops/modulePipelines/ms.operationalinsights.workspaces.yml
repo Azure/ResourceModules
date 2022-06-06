@@ -21,8 +21,8 @@ trigger:
     include:
       - '/.azuredevops/modulePipelines/ms.operationalinsights.workspaces.yml'
       - '/.azuredevops/pipelineTemplates/module.*.yml'
-      - '/arm/Microsoft.OperationalInsights/workspaces/*'
-      - '/arm/.global/global.module.tests.ps1'
+      - '/modules/Microsoft.OperationalInsights/workspaces/*'
+      - '/modules/.global/global.module.tests.ps1'
     exclude:
       - '/**/*.md'
 
@@ -30,7 +30,7 @@ variables:
   - template: '../../global.variables.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/arm/Microsoft.OperationalInsights/workspaces'
+    value: '/modules/Microsoft.OperationalInsights/workspaces'
 
 stages:
   - stage: Validation

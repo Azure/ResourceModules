@@ -21,8 +21,8 @@ trigger:
     include:
       - '/.azuredevops/modulePipelines/ms.network.vpngateways.yml'
       - '/.azuredevops/pipelineTemplates/module.*.yml'
-      - '/arm/Microsoft.Network/vpnGateways/*'
-      - '/arm/.global/global.module.tests.ps1'
+      - '/modules/Microsoft.Network/vpnGateways/*'
+      - '/modules/.global/global.module.tests.ps1'
     exclude:
       - '/**/*.md'
 
@@ -30,7 +30,7 @@ variables:
   - template: '../../global.variables.yml'
   - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: '/arm/Microsoft.Network/vpnGateways'
+    value: '/modules/Microsoft.Network/vpnGateways'
 
 stages:
   - stage: Validation
