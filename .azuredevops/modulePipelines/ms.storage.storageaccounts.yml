@@ -49,6 +49,7 @@ stages:
             - path: $(modulePath)/.parameters/nfs.parameters.json
             - path: $(modulePath)/.parameters/parameters.json
             - path: $(modulePath)/.parameters/v1.parameters.json
+            - path: $(modulePath)/.parameters/encr.parameters.json
 
   - stage: Publishing
     displayName: Publishing

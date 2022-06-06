@@ -405,6 +405,7 @@ privateEndpoints:  [
 module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-vaults'
   params: {
+  
   }
 ```
 

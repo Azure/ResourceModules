@@ -155,7 +155,7 @@ Describe 'Readme tests' -Tag Readme {
             if (-not ($convertedTemplates.Keys -contains $moduleFolderPathKey)) {
                 if (Test-Path (Join-Path $moduleFolderPath 'deploy.bicep')) {
                     $templateFilePath = Join-Path $moduleFolderPath 'deploy.bicep'
-                    $templateContent = az bicep build --file $templateFilePath --stdout | ConvertFrom-Json -AsHashtable
+                    $templateContent = az bicep build --file $templateFilePath --stdout --no-restore | ConvertFrom-Json -AsHashtable
 
                     if (-not $templateContent) {
                         throw "Unable to compile the deploy.bicep template's content. This can happen if there is an error in the template. Please check if you can run the command `$templateContent = az bicep build --file $templateFilePath --stdout | ConvertFrom-Json -AsHashtable`."
@@ -198,7 +198,7 @@ Describe 'Readme tests' -Tag Readme {
             $readMeContent | Should -Not -Be $null
         }
 
-        It '[<moduleFolderName>] Readme.md file should contain the these titles in order: Resource Types, Parameters, Outputs' -TestCases $readmeFolderTestCases {
+        It '[<moduleFolderName>] Readme.md file should contain these sections in order: Navigation, Resource Types, Parameters, Outputs, Deployment examples' -TestCases $readmeFolderTestCases {
 
             param(
                 $moduleFolderName,
@@ -241,7 +241,7 @@ Describe 'Readme tests' -Tag Readme {
             $differentiatingItems.Count | Should -Be 0 -Because ("list of template resources missing from the ReadMe's list [{0}] should be empty" -f ($differentiatingItems -join ','))
         }
 
-        It '[<moduleFolderName>] Resources section should not contain more resources as in the template file' -TestCases $readmeFolderTestCases {
+        It '[<moduleFolderName>] Resources section should not contain more resources than the template file' -TestCases $readmeFolderTestCases {
 
             param(
                 [string] $moduleFolderName,
@@ -266,7 +266,7 @@ Describe 'Readme tests' -Tag Readme {
             $differentiatingItems.Count | Should -Be 0 -Because ("list of resources in the ReadMe's list [{0}] not in the template file should be empty" -f ($differentiatingItems -join ','))
         }
 
-        It '[<moduleFolderName>] should contain a parameter table for each parameter catagory in order: Required, Conditional, Optional, Generated' -TestCases $readmeFolderTestCases {
+        It '[<moduleFolderName>] Parameters section should contain a table for each existing parameter category in the following order: Required, Conditional, Optional, Generated' -TestCases $readmeFolderTestCases {
 
             param(
                 [string] $moduleFolderName,
@@ -289,7 +289,7 @@ Describe 'Readme tests' -Tag Readme {
             $actualParamCategories | Should -Be $expectedParamCategoriesInOrder
         }
 
-        It '[<moduleFolderName>] parameter tables should contain only columns if they contain data, and if, in order: Parameter Name, Type, Default Value, Allowed Values, Description' -TestCases $readmeFolderTestCases {
+        It '[<moduleFolderName>] parameter tables should provide columns in the following order: Parameter Name, Type, Default Value, Allowed Values, Description. Each column should be present unless empty for all the rows.' -TestCases $readmeFolderTestCases {
 
             param(
                 [string] $moduleFolderName,
@@ -324,7 +324,7 @@ Describe 'Readme tests' -Tag Readme {
             }
         }
 
-        It '[<moduleFolderName>] parameters section should contain all parameters from the template file' -TestCases $readmeFolderTestCases {
+        It '[<moduleFolderName>] Parameters section should contain all parameters from the template file' -TestCases $readmeFolderTestCases {
 
             param(
                 [string] $moduleFolderName,
@@ -457,7 +457,7 @@ Describe 'Deployment template tests' -Tag Template {
             if (-not ($convertedTemplates.Keys -contains $moduleFolderPathKey)) {
                 if (Test-Path (Join-Path $moduleFolderPath 'deploy.bicep')) {
                     $templateFilePath = Join-Path $moduleFolderPath 'deploy.bicep'
-                    $templateContent = az bicep build --file $templateFilePath --stdout | ConvertFrom-Json -AsHashtable
+                    $templateContent = az bicep build --file $templateFilePath --stdout --no-restore | ConvertFrom-Json -AsHashtable
 
                     if (-not $templateContent) {
                         throw "Unable to compile the deploy.bicep template's content. This can happen if there is an error in the template. Please check if you can run the command `$templateContent = az bicep build --file $templateFilePath --stdout | ConvertFrom-Json -AsHashtable`."
@@ -931,7 +931,7 @@ Describe "API version tests [All apiVersions in the template should be 'recent']
         if (-not ($convertedTemplates.Keys -contains $moduleFolderPathKey)) {
             if (Test-Path (Join-Path $moduleFolderPath 'deploy.bicep')) {
                 $templateFilePath = Join-Path $moduleFolderPath 'deploy.bicep'
-                $templateContent = az bicep build --file $templateFilePath --stdout | ConvertFrom-Json -AsHashtable
+                $templateContent = az bicep build --file $templateFilePath --stdout --no-restore | ConvertFrom-Json -AsHashtable
 
                 if (-not $templateContent) {
                     throw "Unable to compile the deploy.bicep template's content. This can happen if there is an error in the template. Please check if you can run the command `$templateContent = az bicep build --file $templateFilePath --stdout | ConvertFrom-Json -AsHashtable`."

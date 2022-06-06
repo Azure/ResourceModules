@@ -56,7 +56,7 @@ param managementPolicyRules array = []
 @description('Optional. Networks ACLs, this value contains IPs to whitelist and/or Subnet information. For security reasons, it is recommended to set the DefaultAction Deny.')
 param networkAcls object = {}
 
-@description('Optional. A boolean indicating whether or not the service applies a secondary layer of encryption with platform managed keys for data at rest. For security reasons, it is recommended to set it to true.')
+@description('Optional. A Boolean indicating whether or not the service applies a secondary layer of encryption with platform managed keys for data at rest. For security reasons, it is recommended to set it to true.')
 param requireInfrastructureEncryption bool = true
 
 @description('Optional. Blob service and containers to deploy.')
@@ -138,6 +138,18 @@ param diagnosticMetricsToEnable array = [
   'Transaction'
 ]
 
+@description('Optional. The resource ID of a key vault to reference a customer managed key for encryption from.')
+param cMKKeyVaultResourceId string = ''
+
+@description('Optional. The name of the customer managed key to use for encryption. Cannot be deployed together with the parameter \'systemAssignedIdentity\' enabled.')
+param cMKKeyName string = ''
+
+@description('Conditional. User assigned identity to use when fetching the customer managed key. Required if \'cMKKeyName\' is not empty.')
+param cMKUserAssignedIdentityResourceId string = ''
+
+@description('Optional. The version of the customer managed key to reference for encryption. If not provided, latest is used.')
+param cMKKeyVersion string = ''
+
 @description('Optional. The name of the diagnostic setting, if deployed.')
 param diagnosticSettingsName string = '${name}-diagnosticSettings'
 
@@ -178,6 +190,11 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
+resource keyVault 'Microsoft.KeyVault/vaults@2021-06-01-preview' existing = if (!empty(cMKKeyVaultResourceId)) {
+  name: last(split(cMKKeyVaultResourceId, '/'))
+  scope: resourceGroup(split(cMKKeyVaultResourceId, '/')[2], split(cMKKeyVaultResourceId, '/')[4])
+}
+
 resource storageAccount 'Microsoft.Storage/storageAccounts@2021-08-01' = {
   name: !empty(name) ? name : uniqueStorageName
   location: location
@@ -189,7 +206,7 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-08-01' = {
   tags: tags
   properties: {
     encryption: {
-      keySource: 'Microsoft.Storage'
+      keySource: !empty(cMKKeyName) ? 'Microsoft.Keyvault' : 'Microsoft.Storage'
       services: {
         blob: supportsBlobService ? {
           enabled: true
@@ -197,8 +214,22 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-08-01' = {
         file: supportsFileService ? {
           enabled: true
         } : null
+        table: {
+          enabled: true
+        }
+        queue: {
+          enabled: true
+        }
       }
       requireInfrastructureEncryption: storageAccountKind != 'Storage' ? requireInfrastructureEncryption : null
+      keyvaultproperties: !empty(cMKKeyName) ? {
+        keyname: cMKKeyName
+        keyvaulturi: keyVault.properties.vaultUri
+        keyversion: !empty(cMKKeyVersion) ? cMKKeyVersion : null
+      } : null
+      identity: !empty(cMKKeyName) ? {
+        userAssignedIdentity: cMKUserAssignedIdentityResourceId
+      } : null
     }
     accessTier: storageAccountKind != 'Storage' ? storageAccountAccessTier : null
     supportsHttpsTrafficOnly: supportsHttpsTrafficOnly
