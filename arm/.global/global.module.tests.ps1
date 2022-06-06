@@ -324,7 +324,7 @@ Describe 'Readme tests' -Tag Readme {
             }
         }
 
-        It '[<moduleFolderName>] parameters section should contain all parameters from the template file' -TestCases $readmeFolderTestCases {
+        It '[<moduleFolderName>] Parameters section should contain all parameters from the template file' -TestCases $readmeFolderTestCases {
 
             param(
                 [string] $moduleFolderName,
