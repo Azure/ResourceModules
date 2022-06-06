@@ -312,9 +312,6 @@ tags: {
                 }
             }
         },
-        "validationEnviroment": {
-            "value": false
-        },
         "roleAssignments": {
             "value": [
                 {
@@ -381,7 +378,6 @@ module hostpools './Microsoft.DesktopVirtualization/hostpools/deploy.bicep' = {
         ram: 8
       }
     }
-    validationEnviroment: false
     roleAssignments: [
       {
         roleDefinitionIdOrName: 'Reader'

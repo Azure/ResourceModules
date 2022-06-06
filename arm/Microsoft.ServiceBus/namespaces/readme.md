@@ -318,6 +318,7 @@ userAssignedIdentities: {
 module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-namespaces'
   params: {
+  
   }
 ```
 

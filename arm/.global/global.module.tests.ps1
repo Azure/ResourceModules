@@ -149,7 +149,7 @@ Describe 'Readme tests' -Tag Readme {
             if (-not ($convertedTemplates.Keys -contains $moduleFolderPathKey)) {
                 if (Test-Path (Join-Path $moduleFolderPath 'deploy.bicep')) {
                     $templateFilePath = Join-Path $moduleFolderPath 'deploy.bicep'
-                    $templateContent = az bicep build --file $templateFilePath --stdout | ConvertFrom-Json -AsHashtable
+                    $templateContent = az bicep build --file $templateFilePath --stdout --no-restore | ConvertFrom-Json -AsHashtable
                 } elseIf (Test-Path (Join-Path $moduleFolderPath 'deploy.json')) {
                     $templateFilePath = Join-Path $moduleFolderPath 'deploy.json'
                     $templateContent = Get-Content $templateFilePath -Raw | ConvertFrom-Json -AsHashtable
@@ -451,7 +451,12 @@ Describe 'Readme tests' -Tag Readme {
             $fileHashAfter = (Get-FileHash $readMeFilePath).Hash
 
             # Compare
-            $fileHashBefore -eq $fileHashAfter | Should -Be $true -Because 'The file hashes before and after applying the Set-ModuleReadMe function should be identical'
+            $filesAreTheSame = $fileHashBefore -eq $fileHashAfter
+            if (-not $filesAreTheSame) {
+                $diffReponse = git diff
+                Write-Warning ($diffReponse | Out-String) -Verbose
+            }
+            $filesAreTheSame | Should -Be $true -Because 'The file hashes before and after applying the Set-ModuleReadMe function should be identical'
         }
     }
 }
@@ -468,7 +473,7 @@ Describe 'Deployment template tests' -Tag Template {
             if (-not ($convertedTemplates.Keys -contains $moduleFolderPathKey)) {
                 if (Test-Path (Join-Path $moduleFolderPath 'deploy.bicep')) {
                     $templateFilePath = Join-Path $moduleFolderPath 'deploy.bicep'
-                    $templateContent = az bicep build --file $templateFilePath --stdout | ConvertFrom-Json -AsHashtable
+                    $templateContent = az bicep build --file $templateFilePath --stdout --no-restore | ConvertFrom-Json -AsHashtable
                 } elseIf (Test-Path (Join-Path $moduleFolderPath 'deploy.json')) {
                     $templateFilePath = Join-Path $moduleFolderPath 'deploy.json'
                     $templateContent = Get-Content $templateFilePath -Raw | ConvertFrom-Json -AsHashtable
@@ -801,10 +806,8 @@ Describe 'Deployment template tests' -Tag Template {
             $templateParameters = $templateContent.parameters.Keys
             foreach ($parameter in $templateParameters) {
                 $data = ($templateContent.parameters.$parameter.metadata).description
-                switch -regex ($data)
-                {
-                    '^Conditional. .*'
-                    {
+                switch -regex ($data) {
+                    '^Conditional. .*' {
                         if ($data -notmatch '.*\. Required if .*') {
                             $incorrectParameters += $parameter
                         }
@@ -922,7 +925,7 @@ Describe "API version tests [All apiVersions in the template should be 'recent']
         if (-not ($convertedTemplates.Keys -contains $moduleFolderPathKey)) {
             if (Test-Path (Join-Path $moduleFolderPath 'deploy.bicep')) {
                 $templateFilePath = Join-Path $moduleFolderPath 'deploy.bicep'
-                $templateContent = az bicep build --file $templateFilePath --stdout | ConvertFrom-Json -AsHashtable
+                $templateContent = az bicep build --file $templateFilePath --stdout --no-restore | ConvertFrom-Json -AsHashtable
             } elseIf (Test-Path (Join-Path $moduleFolderPath 'deploy.json')) {
                 $templateFilePath = Join-Path $moduleFolderPath 'deploy.json'
                 $templateContent = Get-Content $templateFilePath -Raw | ConvertFrom-Json -AsHashtable
