@@ -33,12 +33,20 @@ This module is used to deploy a storage account, with the ability to deploy 1 or
 
 ## Parameters
 
+**Conditional parameters**
+| Parameter Name | Type | Default Value | Description |
+| :-- | :-- | :-- | :-- |
+| `cMKUserAssignedIdentityResourceId` | string | `''` | User assigned identity to use when fetching the customer managed key. Required if 'cMKKeyName' is not empty. |
+
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
 | `allowBlobPublicAccess` | bool | `False` |  | Indicates whether public access is enabled for all blobs or containers in the storage account. For security reasons, it is recommended to set it to false. |
 | `azureFilesIdentityBasedAuthentication` | object | `{object}` |  | Provides the identity based authentication settings for Azure Files. |
 | `blobServices` | _[blobServices](blobServices/readme.md)_ object | `{object}` |  | Blob service and containers to deploy. |
+| `cMKKeyName` | string | `''` |  | The name of the customer managed key to use for encryption. Cannot be deployed together with the parameter 'systemAssignedIdentity' enabled. |
+| `cMKKeyVaultResourceId` | string | `''` |  | The resource ID of a key vault to reference a customer managed key for encryption from. |
+| `cMKKeyVersion` | string | `''` |  | The version of the customer managed key to reference for encryption. If not provided, latest is used. |
 | `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
 | `diagnosticLogsRetentionInDays` | int | `365` |  | Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
@@ -58,7 +66,7 @@ This module is used to deploy a storage account, with the ability to deploy 1 or
 | `privateEndpoints` | array | `[]` |  | Configuration Details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. |
 | `publicNetworkAccess` | string | `'Enabled'` | `[Enabled, Disabled]` | Enable or disallow public network access to Storage Account.. |
 | `queueServices` | _[queueServices](queueServices/readme.md)_ object | `{object}` |  | Queue service and queues to create. |
-| `requireInfrastructureEncryption` | bool | `True` |  | A boolean indicating whether or not the service applies a secondary layer of encryption with platform managed keys for data at rest. For security reasons, it is recommended to set it to true. |
+| `requireInfrastructureEncryption` | bool | `True` |  | A Boolean indicating whether or not the service applies a secondary layer of encryption with platform managed keys for data at rest. For security reasons, it is recommended to set it to true. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `storageAccountAccessTier` | string | `'Hot'` | `[Hot, Cool]` | Storage Account Access Tier. |
 | `storageAccountKind` | string | `'StorageV2'` | `[Storage, StorageV2, BlobStorage, FileStorage, BlockBlobStorage]` | Type of Storage Account to create. |
@@ -367,6 +375,82 @@ The hierarchical namespace of the storage account (see parameter `enableHierarch
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
+        "name": {
+            "value": "<<namePrefix>>azsaencr001"
+        },
+        "storageAccountSku": {
+            "value": "Standard_LRS"
+        },
+        "allowBlobPublicAccess": {
+            "value": false
+        },
+        "publicNetworkAccess": {
+            "value": "Disabled"
+        },
+        "requireInfrastructureEncryption": {
+            "value": true
+        },
+        "systemAssignedIdentity": {
+            "value": false
+        },
+        "userAssignedIdentities": {
+            "value": {
+                "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001": {}
+            }
+        },
+        "cMKKeyVaultResourceId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-nopr-002"
+        },
+        "cMKKeyName": {
+            "value": "keyEncryptionKey"
+        },
+        "cMKUserAssignedIdentityResourceId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001"
+        }
+    }
+}
+
+```
+
+</details>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-storageAccounts'
+  params: {
+    name: '<<namePrefix>>azsaencr001'
+    storageAccountSku: 'Standard_LRS'
+    allowBlobPublicAccess: false
+    publicNetworkAccess: 'Disabled'
+    requireInfrastructureEncryption: true
+    systemAssignedIdentity: false
+    userAssignedIdentities: {
+      '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
+    }
+    cMKKeyVaultResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-nopr-002'
+    cMKKeyName: 'keyEncryptionKey'
+    cMKUserAssignedIdentityResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001'
+  }
+```
+
+</details>
+<p>
+
+<h3>Example 2</h3>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
         "allowBlobPublicAccess": {
             "value": false
         }
@@ -392,7 +476,7 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
 </details>
 <p>
 
-<h3>Example 2</h3>
+<h3>Example 3</h3>
 
 <details>
 
@@ -512,7 +596,7 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
 </details>
 <p>
 
-<h3>Example 3</h3>
+<h3>Example 4</h3>
 
 <details>
 
@@ -876,7 +960,7 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
 </details>
 <p>
 
-<h3>Example 4</h3>
+<h3>Example 5</h3>
 
 <details>
 

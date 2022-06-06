@@ -369,7 +369,7 @@ userAssignedIdentities: {
             "value": "keyEncryptionKey"
         },
         "keyvaultUri": {
-            "value": "https://adp-carml-az-kv-nopr-002.vault.azure.net/"
+            "value": "https://adp-<<namePrefix>>-az-kv-nopr-002.vault.azure.net/"
         },
         "keyVersion": {
             "value": "9917c14be51d4d93b37218de7d326f60"
@@ -398,7 +398,7 @@ module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bice
     encryptionKeySource: 'Microsoft.Keyvault'
     encryptionUserAssignedIdentity: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001'
     keyName: 'keyEncryptionKey'
-    keyvaultUri: 'https://adp-carml-az-kv-nopr-002.vault.azure.net/'
+    keyvaultUri: 'https://adp-<<namePrefix>>-az-kv-nopr-002.vault.azure.net/'
     keyVersion: '9917c14be51d4d93b37218de7d326f60'
     userAssignedIdentities: {
       '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
