@@ -214,7 +214,7 @@ function Set-EnvironmentOnAgent {
         Write-Verbose ('HANDLING MODULE [{0}/{1}] [{2}] ' -f $count, $Modules.Count, $Module.Name) -Verbose
         Write-Verbose ('=====================') -Verbose
         # Installing New Modules and Removing Old
-        $null = Install-CustomModule -Module $Module -InstalledModules $installedModules
+        $null = Install-CustomModule -Module $Module -InstalledModule $installedModules
         $count++
     }
 
