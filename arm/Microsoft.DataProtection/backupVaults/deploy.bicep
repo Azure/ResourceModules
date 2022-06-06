@@ -52,6 +52,8 @@ var identity = identityType != 'None' ? {
   userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
 } : null
 
+var enableChildTelemetry = false
+
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
   properties: {
@@ -85,7 +87,7 @@ module bv_backupPolicies 'backupPolicies/deploy.bicep' = [for (backupPolicy, ind
     backupVaultName: bv.name
     name: backupPolicy.name
     backupPolicyProperties: backupPolicy.properties
-    //enableDefaultTelemetry: enableChildTelemetry
+    enableDefaultTelemetry: enableChildTelemetry
   }
 }]
 

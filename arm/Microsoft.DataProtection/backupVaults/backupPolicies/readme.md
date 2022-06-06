@@ -1,7 +1,6 @@
 # DataProtection BackupVaults BackupPolicies `[Microsoft.DataProtection/backupVaults/backupPolicies]`
 
 This module deploys DataProtection BackupVaults BackupPolicies.
-// TODO: Replace Resource and fill in description
 
 ## Navigation
 
@@ -26,12 +25,83 @@ This module deploys DataProtection BackupVaults BackupPolicies.
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `backupPolicyProperties` | object | `{object}` | The properties of the backup policy. |
+| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `name` | string | `'DefaultPolicy'` | The name of the backup policy. |
 
 
-### Parameter Usage: `<ParameterPlaceholder>`
+### Parameter Usage: `backupPolicyProperties`
 
-// TODO: Fill in Parameter usage
+
+```json
+
+Create a backup policy.
+
+ "backupPolicyProperties": {
+    "value": {
+            "name": "DefaultPolicy",
+            "properties": {
+                "policyRules": [
+                    {
+                        "backupParameters": {
+                            "backupType": "Incremental",
+                            "objectType": "AzureBackupParams"
+                        },
+                        "trigger": {
+                            "schedule": {
+                                "repeatingTimeIntervals": [
+                                    "R/2022-05-31T23:30:00+01:00/P1D"
+                                ],
+                                "timeZone": "W. Europe Standard Time"
+                            },
+                            "taggingCriteria": [
+                                {
+                                    "tagInfo": {
+                                        "tagName": "Default",
+                                        "id": "Default_"
+                                    },
+                                    "taggingPriority": 99,
+                                    "isDefault": true
+                                }
+                            ],
+                            "objectType": "ScheduleBasedTriggerContext"
+                        },
+                        "dataStore": {
+                            "dataStoreType": "OperationalStore",
+                            "objectType": "DataStoreInfoBase"
+                        },
+                        "name": "BackupDaily",
+                        "objectType": "AzureBackupRule"
+                    },
+                    {
+                        "lifecycles": [
+                            {
+                                "deleteAfter": {
+                                    "objectType": "AbsoluteDeleteOption",
+                                    "duration": "P7D"
+                                },
+                                "targetDataStoreCopySettings": [],
+                                "sourceDataStore": {
+                                    "dataStoreType": "OperationalStore",
+                                    "objectType": "DataStoreInfoBase"
+                                }
+                            }
+                        ],
+                        "isDefault": true,
+                        "name": "Default",
+                        "objectType": "AzureRetentionRule"
+                    }
+                ],
+                "datasourceTypes": [
+                    "Microsoft.Compute/disks"
+                ],
+                "objectType": "BackupPolicy"
+            }
+        }
+
+}
+
+```
+
 
 ## Outputs
 
