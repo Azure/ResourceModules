@@ -255,11 +255,12 @@ module automationAccount_variables 'variables/deploy.bicep' = [for (variable, in
   }
 }]
 
-module automationAccount_linkedService '.bicep/nested_linkedService.bicep' = if (!empty(linkedWorkspaceResourceId)) {
+module automationAccount_linkedService '../../Microsoft.OperationalInsights/workspaces/linkedServices/deploy.bicep' = if (!empty(linkedWorkspaceResourceId)) {
   name: '${uniqueString(deployment().name, location)}-AutoAccount-LinkedService'
   params: {
     name: 'automation'
     logAnalyticsWorkspaceName: last(split(linkedWorkspaceResourceId, '/'))
+    enableDefaultTelemetry: enableDefaultTelemetry
     resourceId: automationAccount.id
     tags: tags
   }
