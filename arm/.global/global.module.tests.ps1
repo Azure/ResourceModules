@@ -26,7 +26,7 @@ $script:convertedTemplates = @{}
 # Shared exception messages
 $script:bicepTemplateCompilationFailedException = "Unable to compile the deploy.bicep template's content. This can happen if there is an error in the template. Please check if you can run the command `az bicep build --file {0} --stdout | ConvertFrom-Json -AsHashtable`." # -f $templateFilePath
 $script:jsonTemplateLoadFailedException = "Unable to load the deploy.json template's content. This can happen if there is an error in the template. Please check if you can run the command `Get-Content {0} -Raw | ConvertFrom-Json -AsHashtable`." # -f $templateFilePath
-$script:noTemplateFoundException = 'No template file found in folder [{0}]' # -f $moduleFolderPath
+$script:templateNotFoundException = 'No template file found in folder [{0}]' # -f $moduleFolderPath
 
 # Import any helper function used in this test script
 Import-Module (Join-Path $PSScriptRoot 'shared\helper.psm1') -Force
@@ -173,7 +173,7 @@ Describe 'Readme tests' -Tag Readme {
                         throw ($jsonTemplateLoadFailedException -f $templateFilePath)
                     }
                 } else {
-                    throw ($noTemplateFoundException -f $moduleFolderPath)
+                    throw ($templateNotFoundException -f $moduleFolderPath)
                 }
                 $convertedTemplates[$moduleFolderPathKey] = @{
                     templateFilePath = $templateFilePath
@@ -475,7 +475,7 @@ Describe 'Deployment template tests' -Tag Template {
                         throw ($jsonTemplateLoadFailedException -f $templateFilePath)
                     }
                 } else {
-                    throw ($noTemplateFoundException -f $moduleFolderPath)
+                    throw ($templateNotFoundException -f $moduleFolderPath)
                 }
                 $convertedTemplates[$moduleFolderPathKey] = @{
                     templateFilePath = $templateFilePath
@@ -949,7 +949,7 @@ Describe "API version tests [All apiVersions in the template should be 'recent']
                     throw ($jsonTemplateLoadFailedException -f $templateFilePath)
                 }
             } else {
-                throw ($noTemplateFoundException -f $moduleFolderPath)
+                throw ($templateNotFoundException -f $moduleFolderPath)
             }
             $convertedTemplates[$moduleFolderPathKey] = @{
                 templateFilePath = $templateFilePath
