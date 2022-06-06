@@ -17,6 +17,7 @@ Azure Container Registry is a managed, private Docker registry service based on 
 | `Microsoft.Authorization/roleAssignments` | [2020-10-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-10-01-preview/roleAssignments) |
 | `Microsoft.ContainerRegistry/registries` | [2021-09-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ContainerRegistry/2021-09-01/registries) |
 | `Microsoft.ContainerRegistry/registries/replications` | [2021-12-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ContainerRegistry/2021-12-01-preview/registries/replications) |
+| `Microsoft.ContainerRegistry/registries/webhooks` | [2021-12-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.ContainerRegistry/2021-12-01-preview/registries/webhooks) |
 | `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
 | `Microsoft.Network/privateEndpoints` | [2021-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/privateEndpoints) |
 | `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | [2021-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/privateEndpoints/privateDnsZoneGroups) |
@@ -62,6 +63,7 @@ Azure Container Registry is a managed, private Docker registry service based on 
 | `tags` | object | `{object}` |  | Tags of the resource. |
 | `trustPolicyStatus` | string | `'disabled'` | `[disabled, enabled]` | The value that indicates whether the trust policy is enabled or not. |
 | `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. |
+| `webhooks` | _[webhooks](webhooks/readme.md)_ array | `[]` |  | All webhooks to create. |
 | `zoneRedundancy` | string | `'Disabled'` | `[Disabled, Enabled]` | Whether or not zone redundancy is enabled for this container registry. |
 
 
@@ -396,6 +398,14 @@ module registries './Microsoft.ContainerRegistry/registries/deploy.bicep' = {
                 }
             ]
         },
+        "webhooks": {
+            "value": [
+                {
+                    "name": "<<namePrefix>>azacrx001webhook",
+                    "serviceUri": "https://www.contoso.com/webhook"
+                }
+            ]
+        },
         "roleAssignments": {
             "value": [
                 {
@@ -462,6 +472,12 @@ module registries './Microsoft.ContainerRegistry/registries/deploy.bicep' = {
       {
         name: 'northeurope'
         location: 'northeurope'
+      }
+    ]
+    webhooks: [
+      {
+        name: '<<namePrefix>>azacrx001webhook'
+        serviceUri: 'https://www.contoso.com/webhook'
       }
     ]
     roleAssignments: [
