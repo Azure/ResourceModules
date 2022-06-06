@@ -289,7 +289,7 @@ Describe 'Readme tests' -Tag Readme {
             $actualParamCategories | Should -Be $expectedParamCategoriesInOrder
         }
 
-        It '[<moduleFolderName>] parameter tables should contain only columns if they contain data, and if, in order: Parameter Name, Type, Default Value, Allowed Values, Description' -TestCases $readmeFolderTestCases {
+        It '[<moduleFolderName>] parameter tables should provide columns in the following order: Parameter Name, Type, Default Value, Allowed Values, Description. Each column should be present unless empty for all the rows.' -TestCases $readmeFolderTestCases {
 
             param(
                 [string] $moduleFolderName,
