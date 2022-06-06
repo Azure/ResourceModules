@@ -3,7 +3,7 @@
 Remove a specific resource
 
 .DESCRIPTION
-Remove a specific resource. Tries to handle different resource types accordingly.
+Remove a specific resource. Tries to handle different resource types accordingly
 
 .PARAMETER ResourceId
 Mandatory. The resourceID of the resource to remove
