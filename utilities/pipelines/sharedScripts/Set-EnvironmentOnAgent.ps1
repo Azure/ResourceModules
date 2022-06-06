@@ -15,7 +15,7 @@ Required. Modules to be installed, must be Object
     Version = '1.0.0' # Optional
 }
 
-.PARAMETER installedModules
+.PARAMETER InstalledModule
 Optional. Modules that are already installed on the machine. Can be fetched via 'Get-Module -ListAvailable'
 
 .EXAMPLE
