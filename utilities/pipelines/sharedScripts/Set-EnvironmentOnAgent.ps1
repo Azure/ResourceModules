@@ -31,7 +31,7 @@ function Install-CustomModule {
         [Hashtable] $Module,
 
         [Parameter(Mandatory = $false)]
-        [object[]] $installedModules = @()
+        [object[]] $InstalledModule = @()
     )
 
     # Remove exsisting module in session
