@@ -28,7 +28,7 @@
         "cMKKeyVaultResourceId": {
             "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-nopr-002"
         },
-        "cMKeyName": {
+        "cMKKeyName": {
             "value": "keyEncryptionKey"
         },
         "cMKUserAssignedIdentityResourceId": {

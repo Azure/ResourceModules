@@ -142,9 +142,9 @@ param diagnosticMetricsToEnable array = [
 param cMKKeyVaultResourceId string = ''
 
 @description('Optional. The name of the customer managed key to use for encryption. Cannot be deployed together with the parameter \'systemAssignedIdentity\' enabled.')
-param cMKeyName string = ''
+param cMKKeyName string = ''
 
-@description('Conditional. User assigned identity to use when fetching the customer managed key. Required if \'cMKeyName\' is not empty.')
+@description('Conditional. User assigned identity to use when fetching the customer managed key. Required if \'cMKKeyName\' is not empty.')
 param cMKUserAssignedIdentityResourceId string = ''
 
 @description('Optional. The version of the customer managed key to reference for encryption. If not provided, latest is used.')
@@ -206,7 +206,7 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-08-01' = {
   tags: tags
   properties: {
     encryption: {
-      keySource: !empty(cMKeyName) ? 'Microsoft.Keyvault' : 'Microsoft.Storage'
+      keySource: !empty(cMKKeyName) ? 'Microsoft.Keyvault' : 'Microsoft.Storage'
       services: {
         blob: supportsBlobService ? {
           enabled: true
@@ -222,12 +222,12 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-08-01' = {
         }
       }
       requireInfrastructureEncryption: storageAccountKind != 'Storage' ? requireInfrastructureEncryption : null
-      keyvaultproperties: !empty(cMKeyName) ? {
-        keyname: cMKeyName
+      keyvaultproperties: !empty(cMKKeyName) ? {
+        keyname: cMKKeyName
         keyvaulturi: keyVault.properties.vaultUri
         keyversion: !empty(cMKeyVersion) ? cMKeyVersion : null
       } : null
-      identity: !empty(cMKeyName) ? {
+      identity: !empty(cMKKeyName) ? {
         userAssignedIdentity: cMKUserAssignedIdentityResourceId
       } : null
     }
