@@ -41,7 +41,7 @@ param diagnosticEventHubAuthorizationRuleId string = ''
 @sys.description('Optional. Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category.')
 param diagnosticEventHubName string = ''
 
-@sys.allowed([
+@allowed([
   ''
   'CanNotDelete'
   'ReadOnly'
