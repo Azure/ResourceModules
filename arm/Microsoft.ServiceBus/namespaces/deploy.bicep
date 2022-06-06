@@ -243,7 +243,7 @@ module serviceBusNamespace_queues 'queues/deploy.bicep' = [for (queue, index) in
     enableBatchedOperations: contains(queue, 'enableBatchedOperations') ? queue.enableBatchedOperations : true
     enableExpress: contains(queue, 'enableExpress') ? queue.enableExpress : false
     enablePartitioning: contains(queue, 'enablePartitioning') ? queue.enablePartitioning : false
-    lock: contains(queue, 'lock') ? queue.lock : lock
+    lock: contains(queue, 'lock') ? queue.lock : ''
     lockDuration: contains(queue, 'lockDuration') ? queue.lockDuration : 'PT1M'
     maxDeliveryCount: contains(queue, 'maxDeliveryCount') ? queue.maxDeliveryCount : 10
     maxSizeInMegabytes: contains(queue, 'maxSizeInMegabytes') ? queue.maxSizeInMegabytes : 1024
@@ -276,7 +276,7 @@ module serviceBusNamespace_topics 'topics/deploy.bicep' = [for (topic, index) in
     enableBatchedOperations: contains(topic, 'enableBatchedOperations') ? topic.enableBatchedOperations : true
     enableExpress: contains(topic, 'enableExpress') ? topic.enableExpress : false
     enablePartitioning: contains(topic, 'enablePartitioning') ? topic.enablePartitioning : false
-    lock: contains(topic, 'lock') ? topic.lock : lock
+    lock: contains(topic, 'lock') ? topic.lock : ''
     maxMessageSizeInKilobytes: contains(topic, 'maxMessageSizeInKilobytes') ? topic.maxMessageSizeInKilobytes : 1024
     maxSizeInMegabytes: contains(topic, 'maxSizeInMegabytes') ? topic.maxSizeInMegabytes : 1024
     requiresDuplicateDetection: contains(topic, 'requiresDuplicateDetection') ? topic.requiresDuplicateDetection : false
