@@ -35,7 +35,7 @@ resource namespace 'Microsoft.ServiceBus/namespaces@2021-06-01-preview' existing
   name: namespaceName
 }
 
-resource networkACL 'Microsoft.ServiceBus/namespaces/networkRuleSets@2021-11-01' = {
+resource networkRuleSet 'Microsoft.ServiceBus/namespaces/networkRuleSets@2021-11-01' = {
   name: name
   parent: namespace
   properties: {
@@ -45,10 +45,10 @@ resource networkACL 'Microsoft.ServiceBus/namespaces/networkRuleSets@2021-11-01'
 }
 
 @description('The name of the Network ACL Deployment.')
-output name string = networkACL.name
+output name string = networkRuleSet.name
 
 @description('The Resource ID of the virtual network rule.')
-output resourceId string = networkACL.id
+output resourceId string = networkRuleSet.id
 
 @description('The name of the Resource Group the virtual network rule was created in.')
 output resourceGroupName string = resourceGroup().name
