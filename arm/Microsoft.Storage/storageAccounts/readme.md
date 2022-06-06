@@ -538,6 +538,9 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
         "requireInfrastructureEncryption": {
             "value": true
         },
+        "lock": {
+            "value": "CanNotDelete"
+        },
         "privateEndpoints": {
             "value": [
                 {
@@ -726,6 +729,7 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
     allowBlobPublicAccess: false
     publicNetworkAccess: 'Disabled'
     requireInfrastructureEncryption: true
+    lock: 'CanNotDelete'
     privateEndpoints: [
       {
         subnetResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001/subnets/<<namePrefix>>-az-subnet-x-005-privateEndpoints'

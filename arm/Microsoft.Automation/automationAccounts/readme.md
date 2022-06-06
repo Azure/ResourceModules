@@ -71,7 +71,7 @@ This module deploys an Azure Automation Account.
 
 
 ### Parameter Usage: `encryption`
-Prerequsites:
+Prerequisites:
 - User Assigned Identity for Encryption needs `Get`, `List`, `Wrap` and `Unwrap` permissions on the key.
 - User Assigned Identity have to be one of the defined identities in userAssignedIdentities parameter block.
 - To use Azure Automation with customer managed keys, both `Soft Delete` and `Do Not Purge` features must be turned on to allow for recovery of keys in case of accidental deletion.

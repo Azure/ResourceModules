@@ -51,9 +51,6 @@
                 }
             }
         },
-        "validationEnviroment": {
-            "value": false
-        },
         "roleAssignments": {
             "value": [
                 {
