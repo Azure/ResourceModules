@@ -211,8 +211,8 @@ module serviceBusNamespace_virtualNetworkRules 'virtualNetworkRules/deploy.bicep
   }
 }]
 
-module serviceBusNamespace_NetworkAcls 'networkRuleSets/deploy.bicep' = if (skuName == 'Premium') {
-  name: '${uniqueString(deployment().name, location)}-NetworkAcl'
+module serviceBusNamespace_networkRuleSet 'networkRuleSets/deploy.bicep' = if (skuName == 'Premium') {
+  name: '${uniqueString(deployment().name, location)}-networkRuleSet'
   params: {
     namespaceName: serviceBusNamespace.name
     allowTrustedServices: networkAcl.allowTrustedServices
