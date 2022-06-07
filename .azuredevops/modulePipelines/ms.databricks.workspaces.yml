@@ -20,7 +20,7 @@ trigger:
   paths:
     include:
       - '/.azuredevops/modulePipelines/ms.databricks.workspaces.yml'
-      - '/.azuredevops/pipelineTemplates/module.*.yml'
+      - '/.azuredevops/pipelineTemplates/jobs.*.yml'
       - '/arm/Microsoft.Databricks/workspaces/*'
       - '/arm/.global/global.module.tests.ps1'
     exclude:

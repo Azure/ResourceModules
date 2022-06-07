@@ -20,7 +20,7 @@ trigger:
   paths:
     include:
       - '/.azuredevops/modulePipelines/ms.datafactory.factories.yml'
-      - '/.azuredevops/pipelineTemplates/module.*.yml'
+      - '/.azuredevops/pipelineTemplates/jobs.*.yml'
       - '/arm/Microsoft.DataFactory/factories/*'
       - '/arm/.global/global.module.tests.ps1'
     exclude:

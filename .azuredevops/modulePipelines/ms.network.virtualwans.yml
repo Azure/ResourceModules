@@ -20,7 +20,7 @@ trigger:
   paths:
     include:
       - '/.azuredevops/modulePipelines/ms.network.virtualwans.yml'
-      - '/.azuredevops/pipelineTemplates/module.*.yml'
+      - '/.azuredevops/pipelineTemplates/jobs.*.yml'
       - '/arm/Microsoft.Network/virtualWans/*'
       - '/arm/.global/global.module.tests.ps1'
     exclude:

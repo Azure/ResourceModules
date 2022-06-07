@@ -20,7 +20,7 @@ trigger:
   paths:
     include:
       - '/.azuredevops/modulePipelines/ms.insights.privatelinkscopes.yml'
-      - '/.azuredevops/pipelineTemplates/module.*.yml'
+      - '/.azuredevops/pipelineTemplates/jobs.*.yml'
       - '/arm/Microsoft.Insights/privateLinkScopes/*'
       - '/arm/.global/global.module.tests.ps1'
     exclude:

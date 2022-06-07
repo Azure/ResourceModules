@@ -20,7 +20,7 @@ trigger:
   paths:
     include:
       - '/.azuredevops/modulePipelines/ms.managedidentity.userassignedidentities.yml'
-      - '/.azuredevops/pipelineTemplates/module.*.yml'
+      - '/.azuredevops/pipelineTemplates/jobs.*.yml'
       - '/arm/Microsoft.ManagedIdentity/userAssignedIdentities/*'
       - '/arm/.global/global.module.tests.ps1'
     exclude:
