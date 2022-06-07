@@ -116,14 +116,6 @@ runs:
             }
           }
 
-          Write-Output "::endgroup::"
-
-    - name: 'Publish Test Results'
-      uses: EnricoMi/publish-unit-test-result-action@v1
-      if: always() && !contains('cancelled,skipped', steps.pester_run_step.outcome)
-      with:
-        files: arm/.global/global-testResults.xml
-
     # [Module Pester Test] task(s)
     #-----------------------------
     - name: 'Run API tests via Pester'
@@ -172,6 +164,6 @@ runs:
 
     - name: 'Publish Test Results'
       uses: EnricoMi/publish-unit-test-result-action@v1
-      if: always() && !contains('cancelled,skipped', steps.pester_api_run_step.outcome)
+      if: always()
       with:
-        files: arm/.global/api-testResults.xml
+        files: 'arm/.global/*-testResults.xml'
