@@ -155,7 +155,7 @@ properties: {
 }
 ```
 
-
+</details>
 
 ## Outputs
 
