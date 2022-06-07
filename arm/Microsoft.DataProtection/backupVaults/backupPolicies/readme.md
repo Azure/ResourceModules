@@ -95,6 +95,12 @@ Create a backup policy.
 }
 ```
 
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
 ```bicep
 properties: {
     policyRules: [
