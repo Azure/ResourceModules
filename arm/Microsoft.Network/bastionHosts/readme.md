@@ -42,18 +42,8 @@ This module deploys a bastion host.
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `isCreateDefaultPublicIP` | bool | `True` |  | Specifies if a public ip should be created by default if one is not provided. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
-<<<<<<< HEAD
 | `lock` | string | `''` | `[, CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `publicIPAddressObject` | object | `{object}` |  | Specifies the properties of the public IP to create and be used by Azure Bastion. If it's not provided and publicIPAddressResourceId is empty, a '-pip' suffix will be appended to the Bastion's name. |
-| `publicIPAddressResourceId` | string | `''` |  | Specifies the resource ID of the existing public IP to be leveraged by Azure Bastion. |
-=======
-| `lock` | string | `'NotSpecified'` | `[CanNotDelete, NotSpecified, ReadOnly]` | Specify the type of lock. |
-<<<<<<< HEAD
-| `publicIPAddressObject` | object | `{object}` |  | Specifies the properties of the public IP to create and be used by Azure Bastion. If it's not provided and publicIPAddressId is empty, a '-pip' suffix will be appended to the Bastion's name. |
->>>>>>> 6a0a5ff7 (update readme)
-=======
-| `publicIPAddressObject` | object | `{object}` |  | Specifies the properties of the public IP to create and be used by Azure Bastion. If it's not provided and publicIPAddressResourceId is empty, a '-pip' suffix will be appended to the Bastion's name. |
->>>>>>> 9714ef5b (update to reference shared nested module for pip)
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `scaleUnits` | int | `2` |  | The scale units for the Bastion Host resource. |
 | `skuType` | string | `'Basic'` | `[Basic, Standard]` | The SKU of this Bastion Host. |
