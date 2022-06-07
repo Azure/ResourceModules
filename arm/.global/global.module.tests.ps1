@@ -528,7 +528,7 @@ Describe 'Deployment template tests' -Tag Template {
 
             param(
                 [string] $moduleFolderName,
-                $templateContent
+                [hashtable] $templateContent
             )
             $templateContent | Should -Not -Be $null
         }
@@ -538,7 +538,7 @@ Describe 'Deployment template tests' -Tag Template {
             # https://docs.microsoft.com/en-us/azure/azure-resource-manager/templates/template-syntax
             param(
                 [string] $moduleFolderName,
-                $templateContent
+                [hashtable] $templateContent
             )
 
             $Schemaverion = $templateContent.'$schema'
@@ -562,7 +562,7 @@ Describe 'Deployment template tests' -Tag Template {
 
             param(
                 [string] $moduleFolderName,
-                $templateContent
+                [hashtable] $templateContent
             )
             $Schemaverion = $templateContent.'$schema'
             ($Schemaverion.Substring(0, 5) -eq 'https') | Should -Be $true
@@ -572,7 +572,7 @@ Describe 'Deployment template tests' -Tag Template {
             #https://docs.microsoft.com/en-us/azure/azure-resource-manager/templates/template-best-practices
             param(
                 [string] $moduleFolderName,
-                $templateContent
+                [hashtable] $templateContent
             )
             $ApiVersion = $templateContent.resources.apiVersion
             $ApiVersionArray = @()
@@ -597,7 +597,7 @@ Describe 'Deployment template tests' -Tag Template {
 
             param(
                 [string] $moduleFolderName,
-                $templateContent
+                [hashtable] $templateContent
             )
             $templateContent.Keys | Should -Contain '$schema'
             $templateContent.Keys | Should -Contain 'contentVersion'
@@ -608,7 +608,7 @@ Describe 'Deployment template tests' -Tag Template {
 
             param(
                 [string] $moduleFolderName,
-                $templateContent
+                [hashtable] $templateContent
             )
             if ($lock = $templateContent.parameters.lock) {
                 $lock.Keys | Should -Contain 'defaultValue'
@@ -620,7 +620,7 @@ Describe 'Deployment template tests' -Tag Template {
 
             param(
                 [string] $moduleFolderName,
-                $templateContent
+                [hashtable] $templateContent
             )
 
             if (-not $templateContent.parameters) {
@@ -644,7 +644,7 @@ Describe 'Deployment template tests' -Tag Template {
 
             param(
                 [string] $moduleFolderName,
-                $templateContent
+                [hashtable] $templateContent
             )
 
             if (-not $templateContent.variables) {
@@ -669,7 +669,7 @@ Describe 'Deployment template tests' -Tag Template {
 
             param(
                 [string] $moduleFolderName,
-                $templateContent
+                [hashtable] $templateContent
             )
             $CamelCasingFlag = @()
             $Outputs = $templateContent.outputs.Keys
@@ -688,7 +688,7 @@ Describe 'Deployment template tests' -Tag Template {
 
             param(
                 [string] $moduleFolderName,
-                $templateContent
+                [hashtable] $templateContent
             )
             $enableDefaultTelemetryFlag = @()
             $Schemaverion = $templateContent.'$schema'
@@ -706,7 +706,7 @@ Describe 'Deployment template tests' -Tag Template {
 
             param(
                 [string] $moduleFolderName,
-                $templateContent
+                [hashtable] $templateContent
             )
             $LocationFlag = $true
             $Schemaverion = $templateContent.'$schema'
@@ -729,7 +729,7 @@ Describe 'Deployment template tests' -Tag Template {
 
             param(
                 [string] $moduleFolderName,
-                $templateContent,
+                [hashtable] $templateContent,
                 [string] $templateFilePath
             )
 
@@ -751,7 +751,7 @@ Describe 'Deployment template tests' -Tag Template {
 
             param(
                 [string] $moduleFolderName,
-                $templateContent,
+                [hashtable] $templateContent,
                 [string] $templateFilePath
             )
 
@@ -767,7 +767,7 @@ Describe 'Deployment template tests' -Tag Template {
 
             param(
                 [string] $moduleFolderName,
-                $templateContent,
+                [hashtable] $templateContent,
                 $templateFilePath
             )
 
@@ -787,7 +787,7 @@ Describe 'Deployment template tests' -Tag Template {
 
             param(
                 [string] $moduleFolderName,
-                $templateContent,
+                [hashtable] $templateContent,
                 $templateFilePath
             )
 
@@ -807,7 +807,7 @@ Describe 'Deployment template tests' -Tag Template {
 
             param(
                 [string] $moduleFolderName,
-                $templateContent
+                [hashtable] $templateContent
             )
 
             if (-not $templateContent.parameters) {
@@ -830,7 +830,7 @@ Describe 'Deployment template tests' -Tag Template {
 
             param(
                 [string] $moduleFolderName,
-                $templateContent
+                [hashtable] $templateContent
             )
 
             if (-not $templateContent.parameters) {
@@ -857,7 +857,7 @@ Describe 'Deployment template tests' -Tag Template {
 
             param(
                 [string] $moduleFolderName,
-                $templateContent
+                [hashtable] $templateContent
             )
 
             if (-not $templateContent.outputs) {
@@ -1049,12 +1049,13 @@ Describe "API version tests [All apiVersions in the template should be 'recent']
     }
 
     It 'In [<moduleName>] used resource type [<resourceType>] should use one of the recent API version(s). Currently using [<TargetApi>]' -TestCases $TestCases {
+
         param(
-            $moduleName,
-            $resourceType,
-            $TargetApi,
-            $ProviderNamespace,
-            $AvailableApiVersions
+            [string] $moduleName,
+            [string] $resourceType,
+            [string] $TargetApi,
+            [string] $ProviderNamespace,
+            [object[]] $AvailableApiVersions
         )
 
         $namespaceResourceTypes = ($AvailableApiVersions | Where-Object { $_.ProviderNamespace -eq $ProviderNamespace }).ResourceTypes
