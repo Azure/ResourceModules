@@ -30,7 +30,7 @@ resource bv 'Microsoft.DataProtection/backupVaults@2022-03-01' existing = {
 resource backupPolicy 'Microsoft.DataProtection/backupVaults/backupPolicies@2022-03-01' = {
   name: name
   parent: bv
-  properties: backupPolicyProperties
+  properties: properties
 }
 
 @description('The name of the backup policy.')
