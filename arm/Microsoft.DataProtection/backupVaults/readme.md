@@ -117,6 +117,7 @@ Create backup policies in the backupvault. An example is provided below.
 
 ```
 
+</details>
 
 ### Parameter Usage: `roleAssignments`
 
