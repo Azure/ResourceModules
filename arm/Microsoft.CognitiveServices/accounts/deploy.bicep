@@ -73,7 +73,7 @@ param diagnosticEventHubName string = ''
 @description('Conditional. Subdomain name used for token-based authentication. Required if \'networkAcls\' are set.')
 param customSubDomainName string = ''
 
-@description('Optional. Whether or not public endpoint access is allowed for this account. Should be disabled for security reasons.')
+@description('Optional. Whether or not public endpoint access is allowed for this account.')
 @allowed([
   ''
   'Enabled'
