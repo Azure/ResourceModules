@@ -205,7 +205,7 @@ resource cognitiveServices 'Microsoft.CognitiveServices/accounts@2021-10-01' = {
   properties: {
     customSubDomainName: !empty(customSubDomainName) ? customSubDomainName : null
     networkAcls: !empty(networkAcls) ? {
-      defaultAction: contains(networkAcls, 'defaultAction') ? networkAcls.defaultAction : 'Deny'
+      defaultAction: contains(networkAcls, 'defaultAction') ? networkAcls.defaultAction : null
       virtualNetworkRules: contains(networkAcls, 'virtualNetworkRules') ? networkAcls.virtualNetworkRules : []
       ipRules: contains(networkAcls, 'ipRules') ? networkAcls.ipRules : []
     } : null
