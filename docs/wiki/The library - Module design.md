@@ -149,7 +149,7 @@ resource <mainResource>_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!e
 > - Child and extension resources
 >   - Locks are not automatically passed down, as they are inherited by default in Azure
 >   - The reference of the child/extension template should look similar to: `lock: contains(<childExtensionObject>, 'lock') ? <childExtensionObject>.lock : ''`
->   - Using this implementation, a lock is only passed to the child/extension resource if explicitly specified in the module's parameter file
+>   - Using this implementation, a lock is only deployed to the child/extension resource if explicitly specified in the module's parameter file
 >   - For example, the lock of a Storage Account module is not automatically passed to a Storage Container child-deployment. Instead, the Storage Container resource is automatically locked by Azure together with a locked Storage Account
 > - Cross-referenced resources
 >   - All cross-referenced resources share the lock with the main resource to prevent depending resources to be changed or deleted
