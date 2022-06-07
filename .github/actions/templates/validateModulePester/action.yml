@@ -66,6 +66,7 @@ runs:
       with:
         azPSVersion: 'latest'
         #failOnStandardError: true
+        errorActionPreference: stop
         inlineScript: |
           # Grouping task logs
           Write-Output "::group::Run global tests via Pester"
