@@ -75,10 +75,11 @@ param customSubDomainName string = ''
 
 @description('Optional. Whether or not public endpoint access is allowed for this account. Should be disabled for security reasons.')
 @allowed([
+  ''
   'Enabled'
   'Disabled'
 ])
-param publicNetworkAccess string = 'Disabled'
+param publicNetworkAccess string = ''
 
 @description('Optional. Service endpoint object information.')
 param networkAcls object = {}
@@ -208,7 +209,7 @@ resource cognitiveServices 'Microsoft.CognitiveServices/accounts@2021-10-01' = {
       virtualNetworkRules: contains(networkAcls, 'virtualNetworkRules') ? networkAcls.virtualNetworkRules : []
       ipRules: contains(networkAcls, 'ipRules') ? networkAcls.ipRules : []
     } : null
-    publicNetworkAccess: publicNetworkAccess
+    publicNetworkAccess: !empty(publicNetworkAccess) ? any(publicNetworkAccess) : (!empty(privateEndpoints) ? 'Disabled' : null)
     allowedFqdnList: allowedFqdnList
     apiProperties: apiProperties
     disableLocalAuth: disableLocalAuth
