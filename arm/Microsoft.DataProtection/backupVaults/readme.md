@@ -276,7 +276,43 @@ userAssignedIdentities: {
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "adp-az-bv-min-001"
+            "value": "<<namePrefix>>-az-bv-min-001"
+        }
+    }
+}
+
+```
+
+</details>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module backupVaults './Microsoft.DataProtection/backupVaults/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-backupVaults'
+  params: {
+    name: '<<namePrefix>>-az-bv-min-001'
+  }
+```
+
+</details>
+<p>
+
+<h3>Example 2</h3>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": "<<namePrefix>>-az-bv-x-001"
         },
         "backupPolicies": {
             "value": [
@@ -357,7 +393,7 @@ userAssignedIdentities: {
 module backupVaults './Microsoft.DataProtection/backupVaults/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-backupVaults'
   params: {
-    name: 'adp-az-bv-min-001'
+    name: '<<namePrefix>>-az-bv-x-001'
     backupPolicies: [
       {
         name: 'DefaultPolicy'
