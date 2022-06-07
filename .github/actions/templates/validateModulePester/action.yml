@@ -63,13 +63,6 @@ runs:
     - name: 'Run global tests via Pester'
       id: pester_run_step
       shell: pwsh
-      # id: pester_run_step
-      # uses: azure/powershell@v1
-      # with:
-      #   azPSVersion: 'latest'
-      #   failOnStandardError: true
-      #   errorActionPreference: stop
-      #   inlineScript: |
       run: |
         # Grouping task logs
         Write-Output "::group::Run global tests via Pester"
