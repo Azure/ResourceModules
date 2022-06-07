@@ -429,8 +429,8 @@ userAssignedIdentities: {
                 "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001": {}
             }
         },
-        "publicNetworkAccess ": {
-            "value": true
+        "publicNetworkAccess": {
+            "value": "Enabled"
         },
         "encryption": {
             "value": {
@@ -464,7 +464,7 @@ module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
     userAssignedIdentities: {
       '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
     }
-    'publicNetworkAccess ': true
+    publicNetworkAccess: 'Enabled'
     encryption: {
       keySource: 'Microsoft.KeyVault'
       keyVaultProperties: {
