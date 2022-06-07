@@ -22,7 +22,7 @@ With this module you can create policy set definitions across the management gro
 **Required parameters**
 | Parameter Name | Type | Description |
 | :-- | :-- | :-- |
-| `name` | string | Specifies the name of the policy Set Definition (Initiative). Maximum length is 24 characters for management group scope and 64 characters for subscription scope. |
+| `name` | string | Specifies the name of the policy Set Definition (Initiative). |
 | `policyDefinitions` | array | The array of Policy definitions object to include for this policy set. Each object must include the Policy definition ID, and optionally other properties like parameters. |
 
 **Optional parameters**

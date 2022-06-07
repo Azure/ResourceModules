@@ -5,6 +5,9 @@
         "name": {
             "value": "<<namePrefix>>-wd-aut-x-001"
         },
+        "lock": {
+            "value": "CanNotDelete"
+        },
         "schedules": {
             "value": [
                 {

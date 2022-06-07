@@ -60,6 +60,7 @@ function Initialize-DeploymentRemoval {
 
         # The initial sequence is a general order-recommendation
         $removalSequence = @(
+            'Microsoft.Authorization/locks',
             'Microsoft.Insights/diagnosticSettings',
             'Microsoft.Network/privateEndpoints/privateDnsZoneGroups',
             'Microsoft.Network/privateEndpoints',

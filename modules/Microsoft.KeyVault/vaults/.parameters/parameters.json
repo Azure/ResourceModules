@@ -5,6 +5,9 @@
         "name": {
             "value": "<<namePrefix>>-az-kv-x-002"
         },
+        "lock": {
+            "value": "CanNotDelete"
+        },
         "softDeleteRetentionInDays": {
             "value": 7
         },

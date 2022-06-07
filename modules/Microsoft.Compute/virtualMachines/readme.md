@@ -78,7 +78,7 @@ This module deploys one Virtual Machine with one or multiple nics and optionally
 | `extensionNetworkWatcherAgentConfig` | object | `{object}` |  | The configuration for the [Network Watcher Agent] extension. Must at least contain the ["enabled": true] property to be executed. |
 | `licenseType` | string | `''` | `[Windows_Client, Windows_Server, ]` | Specifies that the image or disk that is being used was licensed on-premises. This element is only used for images that contain the Windows Server operating system. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
-| `lock` | string | `'NotSpecified'` | `[CanNotDelete, NotSpecified, ReadOnly]` | Specify the type of lock. |
+| `lock` | string | `''` | `[, CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `maxPriceForLowPriorityVm` | string | `''` |  | Specifies the maximum price you are willing to pay for a low priority VM/VMSS. This price is in US Dollars. |
 | `monitoringWorkspaceId` | string | `''` |  | Resource ID of the monitoring log analytics workspace. Must be set when extensionMonitoringAgentConfig is set to true. |
 | `name` | string | `[take(toLower(uniqueString(resourceGroup().name)), 10)]` |  | The name of the virtual machine to be created. You should use a unique prefix to reduce name collisions in Active Directory. If no value is provided, a 10 character long unique string will be generated based on the Resource Group's name. |
@@ -1266,6 +1266,9 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
         "name": {
             "value": "<<namePrefix>>-vm-linux-01"
         },
+        "lock": {
+            "value": "CanNotDelete"
+        },
         "systemAssignedIdentity": {
             "value": true
         },
@@ -1488,6 +1491,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-virtualMachines'
   params: {
     name: '<<namePrefix>>-vm-linux-01'
+    lock: 'CanNotDelete'
     systemAssignedIdentity: true
     userAssignedIdentities: {
       '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
@@ -1886,6 +1890,9 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
         "name": {
             "value": "<<namePrefix>>-vm-win-01"
         },
+        "lock": {
+            "value": "CanNotDelete"
+        },
         "encryptionAtHost": {
             "value": false
         },
@@ -2130,6 +2137,7 @@ module virtualMachines './Microsoft.Compute/virtualMachines/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-virtualMachines'
   params: {
     name: '<<namePrefix>>-vm-win-01'
+    lock: 'CanNotDelete'
     encryptionAtHost: false
     imageReference: {
       publisher: 'MicrosoftWindowsServer'

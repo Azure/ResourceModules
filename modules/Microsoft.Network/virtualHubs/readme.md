@@ -37,7 +37,7 @@ This module deploys a Virtual Hub.
 | `hubRouteTables` | _[hubRouteTables](hubRouteTables/readme.md)_ array | `[]` |  | Route tables to create for the virtual hub. |
 | `hubVirtualNetworkConnections` | _[hubVirtualNetworkConnections](hubVirtualNetworkConnections/readme.md)_ array | `[]` |  | Virtual network connections to create for the virtual hub. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
-| `lock` | string | `'NotSpecified'` | `[CanNotDelete, NotSpecified, ReadOnly]` | Specify the type of lock. |
+| `lock` | string | `''` | `[, CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `p2SVpnGatewayId` | string | `''` |  | Resource ID of the Point-to-Site VPN Gateway to link to. |
 | `preferredRoutingGateway` | string | `''` | `[ExpressRoute, None, VpnGateway, ]` | The preferred routing gateway types. |
 | `routeTableRoutes` | array | `[]` |  | VirtualHub route tables. |
@@ -161,6 +161,9 @@ module virtualHubs './Microsoft.Network/virtualHubs/deploy.bicep' = {
         "name": {
             "value": "<<namePrefix>>-az-vhub-x-001"
         },
+        "lock": {
+            "value": "CanNotDelete"
+        },
         "addressPrefix": {
             "value": "10.1.0.0/16"
         },
@@ -213,6 +216,7 @@ module virtualHubs './Microsoft.Network/virtualHubs/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-virtualHubs'
   params: {
     name: '<<namePrefix>>-az-vhub-x-001'
+    lock: 'CanNotDelete'
     addressPrefix: '10.1.0.0/16'
     virtualWanId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualWans/adp-<<namePrefix>>-az-vw-x-001'
     hubRouteTables: [
