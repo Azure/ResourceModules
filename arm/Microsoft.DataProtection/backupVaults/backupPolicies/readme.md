@@ -33,6 +33,10 @@ This module deploys DataProtection BackupVaults BackupPolicies.
 
 Create a backup policy.
 
+<details>
+
+<summary>Parameter JSON format</summary>
+
 ```json
  "properties": {
     "value": {
