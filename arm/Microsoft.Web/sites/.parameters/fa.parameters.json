@@ -5,6 +5,9 @@
         "name": {
             "value": "<<namePrefix>>-az-fa-x-001"
         },
+        "lock": {
+            "value": "CanNotDelete"
+        },
         "kind": {
             "value": "functionapp"
         },

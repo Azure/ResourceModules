@@ -7,7 +7,7 @@ on:
         type: boolean
         description: 'Remove deployed module'
         required: false
-        default: false # Needs a custom removal script
+        default: true
       prerelease:
         type: boolean
         description: 'Publish prerelease module'

@@ -5,6 +5,9 @@
         "name": {
             "value": "<<namePrefix>>-az-avs-x-001"
         },
+        "lock": {
+            "value": "CanNotDelete"
+        },
         "roleAssignments": {
             "value": [
                 {

@@ -28,7 +28,7 @@ param sourceResourceId string = ''
 @description('Optional. Friendly name of the Protection Container.')
 param friendlyName string = ''
 
-@description('Optional. Protected items to register in the container')
+@description('Optional. Protected items to register in the container.')
 param protectedItems array = []
 
 @description('Optional. Type of the container.')
