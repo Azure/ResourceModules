@@ -130,6 +130,7 @@ jobs:
     if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master' || github.event.inputs.prerelease == 'true'
     runs-on: ubuntu-20.04
     needs:
+      - job_module_pester_validation
       - job_module_deploy_validation
     steps:
       - name: 'Checkout'
