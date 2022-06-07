@@ -45,7 +45,7 @@
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `encryptionKeySource` | string | `'Microsoft.Batch'` | `[Microsoft.Batch, Microsoft.KeyVault]` | Type of the key source. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all Resources. |
-| `lock` | string | `'NotSpecified'` | `[CanNotDelete, NotSpecified, ReadOnly]` | Specify the type of lock. |
+| `lock` | string | `''` | `[, CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `poolAllocationMode` | string | `'BatchService'` | `[BatchService, UserSubscription]` | The allocation mode for creating pools in the Batch account. Determines which quota will be used. |
 | `publicNetworkAccess` | string | `'Enabled'` | `[Disabled, Enabled]` | The network access type for operating on the resources in the Batch account. |
 | `storageAccessIdentity` | string | `''` |  | The reference to a user assigned identity associated with the Batch pool which a compute node will use. |
@@ -194,6 +194,9 @@ module batchAccounts './Microsoft.Batch/batchAccounts/deploy.bicep' = {
         "name": {
             "value": "<<namePrefix>>azbaweux001"
         },
+        "lock": {
+            "value": "CanNotDelete"
+        },
         "diagnosticLogsRetentionInDays": {
             "value": 7
         },
@@ -240,6 +243,7 @@ module batchAccounts './Microsoft.Batch/batchAccounts/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-batchAccounts'
   params: {
     name: '<<namePrefix>>azbaweux001'
+    lock: 'CanNotDelete'
     diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
     diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'

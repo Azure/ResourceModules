@@ -5,6 +5,9 @@
         "name": {
             "value": "<<namePrefix>>-az-vw-x-001"
         },
+        "lock": {
+            "value": "CanNotDelete"
+        },
         "type": {
             "value": "Basic"
         },

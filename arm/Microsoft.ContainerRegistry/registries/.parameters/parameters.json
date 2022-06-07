@@ -5,6 +5,9 @@
         "name": {
             "value": "<<namePrefix>>azacrx001"
         },
+        "lock": {
+            "value": "CanNotDelete"
+        },
         "acrAdminUserEnabled": {
             "value": false
         },
