@@ -1,4 +1,4 @@
-name: "DataProtection - BackupVaults"
+name: 'DataProtection - BackupVaults'
 
 parameters:
   - name: removeDeployment
@@ -19,18 +19,18 @@ trigger:
       - main
   paths:
     include:
-      - "/.azuredevops/modulePipelines/ms.dataprotection.backupvaults.yml"
-      - "/.azuredevops/pipelineTemplates/module.*.yml"
-      - "/arm/Microsoft.DataProtection/vaults/*"
-      - "/arm/.global/global.module.tests.ps1"
+      - '/.azuredevops/modulePipelines/ms.dataprotection.backupvaults.yml'
+      - '/.azuredevops/pipelineTemplates/module.*.yml'
+      - '/arm/Microsoft.DataProtection/vaults/*'
+      - '/arm/.global/global.module.tests.ps1'
     exclude:
-      - "/**/*.md"
+      - '/**/*.md'
 
 variables:
-  - template: "../../global.variables.yml"
-  - group: "PLATFORM_VARIABLES"
+  - template: '../../global.variables.yml'
+  - group: 'PLATFORM_VARIABLES'
   - name: modulePath
-    value: "/arm/Microsoft.DataProtection/backupVaults"
+    value: '/arm/Microsoft.DataProtection/backupVaults'
 
 stages:
   - stage: Validation
@@ -43,10 +43,10 @@ stages:
     jobs:
       - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
         parameters:
-          removeDeployment: "${{ parameters.removeDeployment }}"
+          removeDeployment: '${{ parameters.removeDeployment }}'
           deploymentBlocks:
+            - path: $(modulePath)/.parameters/min.parameters.json
             - path: $(modulePath)/.parameters/parameters.json
-              templateFilePath: $(modulePath)/deploy.bicep
 
   - stage: Publishing
     displayName: Publishing
