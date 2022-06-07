@@ -97,13 +97,16 @@ param zoneRedundancy string = 'Disabled'
 @description('Optional. All replications to create.')
 param replications array = []
 
+@description('Optional. All webhooks to create.')
+param webhooks array = []
+
 @allowed([
+  ''
   'CanNotDelete'
-  'NotSpecified'
   'ReadOnly'
 ])
 @description('Optional. Specify the type of lock.')
-param lock string = 'NotSpecified'
+param lock string = ''
 
 @description('Optional. Enables system assigned managed identity on the resource.')
 param systemAssignedIdentity bool = false
@@ -249,11 +252,32 @@ module registry_replications 'replications/deploy.bicep' = [for (replication, in
   }
 }]
 
-resource registry_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
+module registry_webhooks 'webhooks/deploy.bicep' = [for (webhook, index) in webhooks: {
+  name: '${uniqueString(deployment().name, location)}-Registry-Webhook-${index}'
+  params: {
+    name: webhook.name
+    registryName: registry.name
+    location: contains(webhook, 'location') ? webhook.location : location
+    action: contains(webhook, 'action') ? webhook.action : [
+      'chart_delete'
+      'chart_push'
+      'delete'
+      'push'
+      'quarantine'
+    ]
+    customHeaders: contains(webhook, 'customHeaders') ? webhook.customHeaders : {}
+    scope: contains(webhook, 'scope') ? webhook.scope : ''
+    status: contains(webhook, 'status') ? webhook.status : 'enabled'
+    serviceUri: webhook.serviceUri
+    tags: contains(webhook, 'tags') ? webhook.tags : {}
+  }
+}]
+
+resource registry_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
   name: '${registry.name}-${lock}-lock'
   properties: {
-    level: lock
-    notes: (lock == 'CanNotDelete') ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
+    level: any(lock)
+    notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: registry
 }
@@ -293,7 +317,7 @@ module registry_privateEndpoints '../../Microsoft.Network/privateEndpoints/deplo
     subnetResourceId: privateEndpoint.subnetResourceId
     enableDefaultTelemetry: enableDefaultTelemetry
     location: reference(split(privateEndpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location
-    lock: contains(privateEndpoint, 'lock') ? privateEndpoint.lock : 'NotSpecified'
+    lock: contains(privateEndpoint, 'lock') ? privateEndpoint.lock : lock
     privateDnsZoneGroups: contains(privateEndpoint, 'privateDnsZoneGroups') ? privateEndpoint.privateDnsZoneGroups : []
     roleAssignments: contains(privateEndpoint, 'roleAssignments') ? privateEndpoint.roleAssignments : []
     tags: contains(privateEndpoint, 'tags') ? privateEndpoint.tags : {}

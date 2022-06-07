@@ -6,14 +6,19 @@ This section details the design principles followed by the CARML Bicep modules.
 
 - [General guidelines](#general-guidelines)
 - [File & folder structure](#file--folder-structure)
-  - [Naming](#naming)
   - [Structure](#structure)
+    - [**Child-Resources**](#child-resources)
+  - [Naming](#naming)
   - [Patterns](#patterns)
+      - [1st Element in main resource](#1st-element-in-main-resource)
+      - [2nd Element as nested `.bicep/nested_roleAssignments.bicep` file](#2nd-element-as-nested-bicepnested_roleassignmentsbicep-file)
+      - [1st element in main resource](#1st-element-in-main-resource-1)
 - [Bicep template guidelines](#bicep-template-guidelines)
   - [Parameters](#parameters)
   - [Variables](#variables)
-  - [Resource](#resources)
+  - [Resources](#resources)
   - [Modules](#modules)
+    - [Deployment names](#deployment-names)
   - [Outputs](#outputs)
 - [ReadMe](#readme)
 - [Parameter files](#parameter-files)
@@ -92,21 +97,20 @@ module server_databases 'databases/deploy.bicep' = [for (database, index) in dat
 Use the following naming standard for module files and folders:
 
 - Module folders are in camelCase and their name reflects the main resource type of the Bicep module they are hosting (e.g. `storageAccounts`, `virtualMachines`).
-- Cross-referenced and extension resource modules are placed in the `.bicep` subfolder and named `nested_<crossReferencedResourceType>.bicep`
+- Extension resource modules are placed in the `.bicep` subfolder and named `nested_<crossReferencedResourceType>.bicep`
 
   ``` txt
   Microsoft.<Provider>
   └─ <service>
       ├─ .bicep
-      |  ├─ nested_crossReferencedResource1.bicep
-      |  └─ nested_crossReferencedResource2.bicep
+      |  ├─ nested_extensionResource1.bicep
       ├─ .parameters
       |  └─ parameters.json
       ├─ deploy.bicep
       └─ readme.md
   ```
 
-  >**Example**: `nested_serverfarms.bicep` in the `Microsoft.Web\sites\.bicep` folder contains the cross-referenced `serverfarm` module leveraged by the top level `site` resource.
+  >**Example**: `nested_roleAssignments.bicep` in the `Microsoft.Web\sites\.bicep` folder contains the `site` resource RBAC implementation.
   >``` txt
   >Microsoft.Web
   >└─ sites
@@ -132,22 +136,34 @@ The locks extension can be added as a `resource` to the resource template direct
 
 ```bicep
 @allowed([
+  ''
   'CanNotDelete'
-  'NotSpecified'
   'ReadOnly'
 ])
 @description('Optional. Specify the type of lock.')
-param lock string = 'NotSpecified'
+param lock string = ''
 
-resource <mainResource>_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
+resource <mainResource>_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
   name: '${<mainResource>.name}-${lock}-lock'
   properties: {
-    level: lock
-    notes: (lock == 'CanNotDelete') ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
+    level: any(lock)
+    notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: <mainResource>
 }
 ```
+
+> **Note:** How locks are passed to other resource templates depends on the type of module relationship:
+> - Child and extension resources
+>   - Locks are not automatically passed down, as they are inherited by default in Azure
+>   - The reference of the child/extension template should look similar to: `lock: contains(<childExtensionObject>, 'lock') ? <childExtensionObject>.lock : ''`
+>   - Using this implementation, a lock is only deployed to the child/extension resource if explicitly specified in the module's parameter file
+>   - For example, the lock of a Storage Account module is not automatically passed to a Storage Container child-deployment. Instead, the Storage Container resource is automatically locked by Azure together with a locked Storage Account
+> - Cross-referenced resources
+>   - All cross-referenced resources share the lock with the main resource to prevent depending resources to be changed or deleted
+>   - The reference of the cross-referenced resource template should look similar to: `lock: contains(<referenceObject>, 'lock') ? <referenceObject>.lock : lock`
+>   - Using this implementation, a lock of the main resource is implicitly passed to the referenced module template
+>   - For example, the lock of a Key Vault module is automatically passed to an also deployed Private Endpoint module deployment
 
 </details>
 
@@ -317,7 +333,7 @@ module <mainResource>_privateEndpoints '../../Microsoft.Network/privateEndpoints
     subnetResourceId: privateEndpoint.subnetResourceId
     enableDefaultTelemetry: enableDefaultTelemetry
     location: reference(split(privateEndpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location
-    lock: contains(privateEndpoint, 'lock') ? privateEndpoint.lock : 'NotSpecified'
+    lock: contains(privateEndpoint, 'lock') ? privateEndpoint.lock : lock
     privateDnsZoneGroups: contains(privateEndpoint, 'privateDnsZoneGroups') ? privateEndpoint.privateDnsZoneGroups : []
     roleAssignments: contains(privateEndpoint, 'roleAssignments') ? privateEndpoint.roleAssignments : []
     tags: contains(privateEndpoint, 'tags') ? privateEndpoint.tags : {}

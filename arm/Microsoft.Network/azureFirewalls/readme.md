@@ -48,7 +48,7 @@ This module deploys a firewall.
 | `firewallPolicyId` | string | `''` |  | Resource ID of the Firewall Policy that should be attached. |
 | `isCreateDefaultPublicIP` | bool | `True` |  | Specifies if a public ip should be created by default if one is not provided. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
-| `lock` | string | `'NotSpecified'` | `[CanNotDelete, NotSpecified, ReadOnly]` | Specify the type of lock. |
+| `lock` | string | `''` | `[, CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `natRuleCollections` | array | `[]` |  | Collection of NAT rule collections used by Azure Firewall. |
 | `networkRuleCollections` | array | `[]` |  | Collection of network rule collections used by Azure Firewall. |
 | `publicIPAddressObject` | object | `{object}` |  | Specifies the properties of the public IP to create and be used by Azure Firewall. If it's not provided and publicIPAddressId is empty, a '-pip' suffix will be appended to the Firewall's name. |
@@ -495,6 +495,9 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
         "name": {
             "value": "<<namePrefix>>-az-fw-x-001"
         },
+        "lock": {
+            "value": "CanNotDelete"
+        },
         "zones": {
             "value": [
                 "1",
@@ -634,6 +637,7 @@ module azureFirewalls './Microsoft.Network/azureFirewalls/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-azureFirewalls'
   params: {
     name: '<<namePrefix>>-az-fw-x-001'
+    lock: 'CanNotDelete'
     zones: [
       '1'
       '2'

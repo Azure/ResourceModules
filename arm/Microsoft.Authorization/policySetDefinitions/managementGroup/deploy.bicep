@@ -1,7 +1,7 @@
 targetScope = 'managementGroup'
 
-@sys.description('Required. Specifies the name of the policy Set Definition (Initiative). Maximum length is 24 characters for management group scope.')
-@maxLength(24)
+@sys.description('Required. Specifies the name of the policy Set Definition (Initiative).')
+@maxLength(64)
 param name string
 
 @sys.description('Optional. The display name of the Set Definition (Initiative). Maximum length is 128 characters.')

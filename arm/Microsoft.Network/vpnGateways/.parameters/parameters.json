@@ -5,6 +5,9 @@
         "name": {
             "value": "<<namePrefix>>-az-vpngw-x-001"
         },
+        "lock": {
+            "value": "CanNotDelete"
+        },
         "virtualHubResourceId": {
             "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualHubs/<<namePrefix>>-az-vhub-x-001"
         },

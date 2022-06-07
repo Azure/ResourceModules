@@ -8,6 +8,9 @@
         "sku": {
             "value": "Standard"
         },
+        "lock": {
+            "value": "CanNotDelete"
+        },
         "replicaSets": {
             "value": [
                 {
@@ -48,9 +51,6 @@
         },
         "diagnosticEventHubName": {
             "value": "adp-<<namePrefix>>-az-evh-x-001"
-        },
-        "lock": {
-            "value": "NotSpecified"
         }
     }
 }
