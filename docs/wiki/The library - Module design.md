@@ -154,7 +154,7 @@ resource <mainResource>_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!e
 > - Cross-referenced resources
 >   - All cross-referenced resources share the lock with the main resource to prevent depending resources to be changed or deleted
 >   - The reference of the cross-referenced resource template should look similar to: `lock: contains(<referenceObject>, 'lock') ? <referenceObject>.lock : lock`
->   - Using this implementation, a lock of the main resource is implicitly passed  to the referenced module template
+>   - Using this implementation, a lock of the main resource is implicitly passed to the referenced module template
 >   - For example, the lock of a Key Vault module is automatically passed to an also deployed Private Endpoint module deployment
 
 </details>
