@@ -47,7 +47,7 @@ This module deploys a key vault and its child resources.
 | `enableVaultForTemplateDeployment` | bool | `True` | `[True, False]` | Specifies if the vault is enabled for a template deployment. |
 | `keys` | _[keys](keys/readme.md)_ array | `[]` |  | All keys to create. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
-| `lock` | string | `'NotSpecified'` | `[CanNotDelete, NotSpecified, ReadOnly]` | Specify the type of lock. |
+| `lock` | string | `''` | `[, CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `name` | string | `''` |  | Name of the Key Vault. If no name is provided, then unique name will be created. |
 | `networkAcls` | object | `{object}` |  | Service endpoint object information. For security reasons, it is recommended to set the DefaultAction Deny. |
 | `privateEndpoints` | array | `[]` |  | Configuration Details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. |
@@ -426,6 +426,9 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
         "name": {
             "value": "<<namePrefix>>-az-kv-x-002"
         },
+        "lock": {
+            "value": "CanNotDelete"
+        },
         "softDeleteRetentionInDays": {
             "value": 7
         },
@@ -563,6 +566,7 @@ module vaults './Microsoft.KeyVault/vaults/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-vaults'
   params: {
     name: '<<namePrefix>>-az-kv-x-002'
+    lock: 'CanNotDelete'
     softDeleteRetentionInDays: 7
     enableRbacAuthorization: false
     privateEndpoints: [

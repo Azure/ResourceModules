@@ -44,7 +44,7 @@ This module deploys Front Doors.
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `enforceCertificateNameCheck` | string | `'Disabled'` |  | Enforce certificate name check of the frontdoor resource. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
-| `lock` | string | `'NotSpecified'` | `[CanNotDelete, NotSpecified, ReadOnly]` | Specify the type of lock. |
+| `lock` | string | `''` | `[, CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `logsToEnable` | array | `[FrontdoorAccessLog, FrontdoorWebApplicationFirewallLog]` | `[FrontdoorAccessLog, FrontdoorWebApplicationFirewallLog]` | The name of logs that will be streamed. |
 | `metricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | The name of metrics that will be streamed. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
@@ -176,6 +176,9 @@ tags: {
         "name": {
             "value": "<<namePrefix>>-az-fd-x-001"
         },
+        "lock": {
+            "value": "CanNotDelete"
+        },
         "backendPools": {
             "value": [
                 {
@@ -295,6 +298,7 @@ module frontDoors './Microsoft.Network/frontDoors/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-frontDoors'
   params: {
     name: '<<namePrefix>>-az-fd-x-001'
+    lock: 'CanNotDelete'
     backendPools: [
       {
         name: 'backendPool'

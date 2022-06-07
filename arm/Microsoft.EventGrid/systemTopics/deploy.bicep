@@ -31,12 +31,12 @@ param diagnosticEventHubName string = ''
 param roleAssignments array = []
 
 @allowed([
+  ''
   'CanNotDelete'
-  'NotSpecified'
   'ReadOnly'
 ])
 @description('Optional. Specify the type of lock.')
-param lock string = 'NotSpecified'
+param lock string = ''
 
 @description('Optional. Enables system assigned managed identity on the resource.')
 param systemAssignedIdentity bool = false
@@ -118,11 +118,11 @@ resource systemTopic 'Microsoft.EventGrid/systemTopics@2021-12-01' = {
   }
 }
 
-resource systemTopic_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
+resource systemTopic_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
   name: '${systemTopic.name}-${lock}-lock'
   properties: {
-    level: lock
-    notes: (lock == 'CanNotDelete') ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
+    level: any(lock)
+    notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: systemTopic
 }

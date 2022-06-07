@@ -48,7 +48,7 @@ Azure Container Registry is a managed, private Docker registry service based on 
 | `exportPolicyStatus` | string | `'disabled'` | `[disabled, enabled]` | The value that indicates whether the export policy is enabled or not. |
 | `keyVaultProperties` | object | `{object}` |  | Identity which will be used to access key vault and Key vault uri to access the encryption key. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
-| `lock` | string | `'NotSpecified'` | `[CanNotDelete, NotSpecified, ReadOnly]` | Specify the type of lock. |
+| `lock` | string | `''` | `[, CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `networkRuleBypassOptions` | string | `'AzureServices'` |  | Whether to allow trusted Azure services to access a network restricted registry. Not relevant in case of public access. - AzureServices or None. |
 | `networkRuleSetDefaultAction` | string | `'Deny'` | `[Allow, Deny]` | The default action of allow or deny when no other rules match. |
 | `networkRuleSetIpRules` | array | `[]` |  | The IP ACL rules. |
@@ -375,6 +375,9 @@ module registries './Microsoft.ContainerRegistry/registries/deploy.bicep' = {
         "name": {
             "value": "<<namePrefix>>azacrx001"
         },
+        "lock": {
+            "value": "CanNotDelete"
+        },
         "acrAdminUserEnabled": {
             "value": false
         },
@@ -463,6 +466,7 @@ module registries './Microsoft.ContainerRegistry/registries/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-registries'
   params: {
     name: '<<namePrefix>>azacrx001'
+    lock: 'CanNotDelete'
     acrAdminUserEnabled: false
     acrSku: 'Premium'
     exportPolicyStatus: 'enabled'

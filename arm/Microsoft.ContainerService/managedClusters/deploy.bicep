@@ -276,12 +276,12 @@ param enableDefaultTelemetry bool = true
 param roleAssignments array = []
 
 @allowed([
+  ''
   'CanNotDelete'
-  'NotSpecified'
   'ReadOnly'
 ])
 @description('Optional. Specify the type of lock.')
-param lock string = 'NotSpecified'
+param lock string = ''
 
 @description('Optional. Tags of the resource.')
 param tags object = {}
@@ -533,11 +533,11 @@ module managedCluster_agentPools 'agentPools/deploy.bicep' = [for (agentPool, in
   }
 }]
 
-resource managedCluster_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
+resource managedCluster_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
   name: '${managedCluster.name}-${lock}-lock'
   properties: {
-    level: lock
-    notes: (lock == 'CanNotDelete') ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
+    level: any(lock)
+    notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: managedCluster
 }
