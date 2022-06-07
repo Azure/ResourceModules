@@ -399,7 +399,7 @@ userAssignedIdentities: {
 
 ## Considerations
 
-- Not all combinations of parameters `kind` and `SKU` are valid and they may vary in different Azure Regions. Please use PowerShell CMDLet `Get-AzCognitiveServicesAccountSku` or another methods to determine valid values in your region.
+- Not all combinations of parameters `kind` and `SKU` are valid and they may vary in different Azure Regions. Please use PowerShell cmdlet `Get-AzCognitiveServicesAccountSku` or another methods to determine valid values in your region.
 - Not all kinds of Cognitive Services support virtual networks. Please visit the link below to determine supported services.
 
 ## Deployment examples
