@@ -48,7 +48,7 @@ Describe 'File/folder tests' -Tag Modules {
             It '[<moduleFolderName>] Module should have a GitHub workflow' -TestCases ($moduleFolderTestCases | Where-Object { $_.isTopLevelModule }) {
 
                 param(
-                    [string] [string] $moduleFolderName,
+                    [string] $moduleFolderName,
                     [string] $moduleFolderPath
                 )
 
@@ -63,7 +63,7 @@ Describe 'File/folder tests' -Tag Modules {
             It '[<moduleFolderName>] Module should have an Azure DevOps pipeline' -TestCases ($moduleFolderTestCases | Where-Object { $_.isTopLevelModule }) {
 
                 param(
-                    [string] [string] $moduleFolderName,
+                    [string] $moduleFolderName,
                     [string] $moduleFolderPath
                 )
 
@@ -232,7 +232,7 @@ Describe 'Readme tests' -Tag Readme {
         It '[<moduleFolderName>] Resources section should contain all resources from the template file' -TestCases $readmeFolderTestCases {
 
             param(
-                [string] [string] $moduleFolderName,
+                [string] $moduleFolderName,
                 [hashtable] $templateContent,
                 [object[]] $readMeContent
             )
@@ -257,7 +257,7 @@ Describe 'Readme tests' -Tag Readme {
         It '[<moduleFolderName>] Resources section should not contain more resources than the template file' -TestCases $readmeFolderTestCases {
 
             param(
-                [string] [string] $moduleFolderName,
+                [string] $moduleFolderName,
                 [hashtable] $templateContent,
                 [object[]] $readMeContent
             )
@@ -282,7 +282,7 @@ Describe 'Readme tests' -Tag Readme {
         It '[<moduleFolderName>] Parameters section should contain a table for each existing parameter category in the following order: Required, Conditional, Optional, Generated' -TestCases $readmeFolderTestCases {
 
             param(
-                [string] [string] $moduleFolderName,
+                [string] $moduleFolderName,
                 [hashtable] $templateContent,
                 [object[]] $readMeContent
             )
@@ -305,7 +305,7 @@ Describe 'Readme tests' -Tag Readme {
         It '[<moduleFolderName>] parameter tables should provide columns in the following order: Parameter Name, Type, Default Value, Allowed Values, Description. Each column should be present unless empty for all the rows.' -TestCases $readmeFolderTestCases {
 
             param(
-                [string] [string] $moduleFolderName,
+                [string] $moduleFolderName,
                 [hashtable] $templateContent,
                 [object[]] $readMeContent
             )
@@ -340,7 +340,7 @@ Describe 'Readme tests' -Tag Readme {
         It '[<moduleFolderName>] Parameters section should contain all parameters from the template file' -TestCases $readmeFolderTestCases {
 
             param(
-                [string] [string] $moduleFolderName,
+                [string] $moduleFolderName,
                 [hashtable] $templateContent,
                 [object[]] $readMeContent
             )
@@ -407,7 +407,7 @@ Describe 'Readme tests' -Tag Readme {
         It '[<moduleFolderName>] Output section should contain all outputs defined in the template file' -TestCases $readmeFolderTestCases {
 
             param(
-                [string] [string] $moduleFolderName,
+                [string] $moduleFolderName,
                 [hashtable] $templateContent,
                 [object[]] $readMeContent
             )
@@ -434,7 +434,7 @@ Describe 'Readme tests' -Tag Readme {
         It '[<moduleFolderName>] Set-ModuleReadMe script should not apply any updates' -TestCases $readmeFolderTestCases {
 
             param(
-                [string] [string] $moduleFolderName,
+                [string] $moduleFolderName,
                 [string] $templateFilePath,
                 [hashtable] $templateContent,
                 [string] $readMeFilePath
@@ -728,7 +728,7 @@ Describe 'Deployment template tests' -Tag Template {
         It '[<moduleFolderName>] Location output should be returned for resources that use it' -TestCases $deploymentFolderTestCases {
 
             param(
-                [string] [string] $moduleFolderName,
+                [string] $moduleFolderName,
                 $templateContent,
                 [string] $templateFilePath
             )
@@ -750,7 +750,7 @@ Describe 'Deployment template tests' -Tag Template {
         It '[<moduleFolderName>] Resource Group output should exist for resources that are deployed into a resource group scope' -TestCases $deploymentFolderTestCases {
 
             param(
-                [string] [string] $moduleFolderName,
+                [string] $moduleFolderName,
                 $templateContent,
                 [string] $templateFilePath
             )
