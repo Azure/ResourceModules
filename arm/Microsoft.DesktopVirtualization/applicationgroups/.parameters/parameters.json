@@ -5,6 +5,9 @@
         "name": {
             "value": "<<namePrefix>>-az-avdag-x-001"
         },
+        "lock": {
+            "value": "CanNotDelete"
+        },
         "location": {
             "value": "westeurope"
         },

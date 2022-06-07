@@ -5,6 +5,9 @@
         "name": {
             "value": "<<namePrefix>>-az-sfc-full-001"
         },
+        "lock": {
+            "value": "CanNotDelete"
+        },
         "tags": {
             "value": {
                 "resourceType": "Service Fabric",

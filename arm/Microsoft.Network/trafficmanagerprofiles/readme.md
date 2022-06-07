@@ -39,7 +39,7 @@ This module deploys a traffic manager profile.
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `endpoints` | array | `[]` |  | The list of endpoints in the Traffic Manager profile. |
-| `lock` | string | `'NotSpecified'` | `[CanNotDelete, NotSpecified, ReadOnly]` | Specify the type of lock. |
+| `lock` | string | `''` | `[, CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `maxReturn` | int | `1` |  | Maximum number of endpoints to be returned for MultiValue routing type. |
 | `monitorConfig` | object | `{object}` |  | The endpoint monitoring settings of the Traffic Manager profile. |
 | `profileStatus` | string | `'Enabled'` | `[Enabled, Disabled]` | The status of the Traffic Manager profile. |
@@ -264,6 +264,9 @@ tags: {
         "name": {
             "value": "tm-000001"
         },
+        "lock": {
+            "value": "CanNotDelete"
+        },
         "relativeName": {
             "value": "tm-000001"
         },
@@ -308,6 +311,7 @@ module trafficmanagerprofiles './Microsoft.Network/trafficmanagerprofiles/deploy
   name: '${uniqueString(deployment().name)}-trafficmanagerprofiles'
   params: {
     name: 'tm-000001'
+    lock: 'CanNotDelete'
     relativeName: 'tm-000001'
     roleAssignments: [
       {

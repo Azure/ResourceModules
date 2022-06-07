@@ -45,7 +45,7 @@ This module deploys a Service Fabric Cluster.
 | `fabricSettings` | array | `[]` |  | The list of custom fabric settings to configure the cluster. |
 | `infrastructureServiceManager` | bool | `False` |  | Indicates if infrastructure service manager is enabled. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
-| `lock` | string | `'NotSpecified'` | `[CanNotDelete, NotSpecified, ReadOnly]` | Specify the type of lock. |
+| `lock` | string | `''` | `[, CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `notifications` | array | `[]` |  | Indicates a list of notification channels for cluster events. |
 | `reliabilityLevel` | string |  | `[Bronze, Gold, None, Platinum, Silver]` | The reliability level sets the replica set size of system services. Learn about ReliabilityLevel (https://docs.microsoft.com/en-us/azure/service-fabric/service-fabric-cluster-capacity). - None - Run the System services with a target replica set count of 1. This should only be used for test clusters. - Bronze - Run the System services with a target replica set count of 3. This should only be used for test clusters. - Silver - Run the System services with a target replica set count of 5. - Gold - Run the System services with a target replica set count of 7. - Platinum - Run the System services with a target replica set count of 9. |
 | `reverseProxyCertificate` | object | `{object}` |  | Describes the certificate details. |
@@ -332,6 +332,9 @@ module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
         "name": {
             "value": "<<namePrefix>>-az-sfc-full-001"
         },
+        "lock": {
+            "value": "CanNotDelete"
+        },
         "tags": {
             "value": {
                 "resourceType": "Service Fabric",
@@ -544,6 +547,7 @@ module clusters './Microsoft.ServiceFabric/clusters/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-clusters'
   params: {
     name: '<<namePrefix>>-az-sfc-full-001'
+    lock: 'CanNotDelete'
     tags: {
       resourceType: 'Service Fabric'
       clusterName: '<<namePrefix>>-az-sfc-full-001'
