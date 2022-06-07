@@ -219,7 +219,7 @@ Configure networing options on premium SKU only.
 <summary>Parameter JSON format</summary>
 
 ```json
-"networkingAclConfig": {
+"networkAclConfig": {
     "value" : {
         "publicNetworkAccess": "Disabled",
         "allowTrustedServices": true
@@ -536,7 +536,7 @@ module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
         "allowTrustedServices": {
             "value": true
         },
-        "networkingAclConfig": {
+        "networkAclConfig": {
             "value": {
                 "publicNetworkAccess": "Disabled",
                 "allowTrustedServices": true
@@ -678,7 +678,7 @@ module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
       }
     ]
     allowTrustedServices: true
-    networkingAclConfig: {
+    networkAclConfig: {
       publicNetworkAccess: 'Disabled'
       allowTrustedServices: true
     }

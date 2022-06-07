@@ -163,7 +163,7 @@
         "allowTrustedServices": {
             "value": true
         },
-        "networkingAclConfig": {
+        "networkAclConfig": {
             "value": {
                 "publicNetworkAccess": "Disabled",
                 "allowTrustedServices": true

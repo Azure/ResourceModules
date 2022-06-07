@@ -33,6 +33,7 @@ This module deploys ServiceBus Namespaces NetworkRuleSets.
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `publicNetworkAccess` | string | `'Disabled'` | `[Enabled, Disabled]` | Public Network Access for Premium Sku. |
 
+
 ## Outputs
 
 | Output Name | Type | Description |
