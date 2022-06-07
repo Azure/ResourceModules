@@ -24,19 +24,19 @@ This module deploys DataProtection BackupVaults BackupPolicies.
 **Optional parameters**
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
-| `backupPolicyProperties` | object | `{object}` | The properties of the backup policy. |
 | `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `name` | string | `'DefaultPolicy'` | The name of the backup policy. |
+| `properties` | object | `{object}` | The properties of the backup policy. |
 
 
-### Parameter Usage: `backupPolicyProperties`
+### Parameter Usage: `properties`
 
 
 ```json
 
 Create a backup policy.
 
- "backupPolicyProperties": {
+ "properties": {
     "value": {
             "name": "DefaultPolicy",
             "properties": {

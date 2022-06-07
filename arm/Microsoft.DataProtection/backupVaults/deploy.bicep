@@ -66,7 +66,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource bv 'Microsoft.DataProtection/backupVaults@2022-03-01' = {
+resource backupVault 'Microsoft.DataProtection/backupVaults@2022-03-01' = {
   name: name
   location: location
   tags: tags
@@ -81,47 +81,47 @@ resource bv 'Microsoft.DataProtection/backupVaults@2022-03-01' = {
   }
 }
 
-module bv_backupPolicies 'backupPolicies/deploy.bicep' = [for (backupPolicy, index) in backupPolicies: {
+module backupVault_backupPolicies 'backupPolicies/deploy.bicep' = [for (backupPolicy, index) in backupPolicies: {
   name: '${uniqueString(deployment().name, location)}-BV-BackupPolicy-${index}'
   params: {
-    backupVaultName: bv.name
+    backupVaultName: backupVault.name
     name: backupPolicy.name
-    backupPolicyProperties: backupPolicy.properties
+    properties: backupPolicy.properties
     enableDefaultTelemetry: enableChildTelemetry
   }
 }]
 
-resource bv_lock 'Microsoft.Authorization/locks@2020-05-01' = if (lock != 'NotSpecified') {
-  name: '${bv.name}-${lock}-lock'
+resource backupVault_lock 'Microsoft.Authorization/locks@2020-05-01' = if (lock != 'NotSpecified') {
+  name: '${backupVault.name}-${lock}-lock'
   properties: {
     level: lock
     notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
-  scope: bv
+  scope: backupVault
 }
 
-module bv_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+module backupVault_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-bv-Rbac-${index}'
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
     principalIds: roleAssignment.principalIds
     principalType: contains(roleAssignment, 'principalType') ? roleAssignment.principalType : ''
     roleDefinitionIdOrName: roleAssignment.roleDefinitionIdOrName
-    resourceId: bv.id
+    resourceId: backupVault.id
   }
 }]
 
 @description('The resource ID of the backup vault.')
-output resourceId string = bv.id
+output resourceId string = backupVault.id
 
 @description('The name of the resource group the recovery services vault was created in.')
 output resourceGroupName string = resourceGroup().name
 
 @description('The Name of the backup vault.')
-output name string = bv.name
+output name string = backupVault.name
 
 @description('The principal ID of the system assigned identity.')
-output systemAssignedPrincipalId string = systemAssignedIdentity && contains(bv.identity, 'principalId') ? bv.identity.principalId : ''
+output systemAssignedPrincipalId string = systemAssignedIdentity && contains(backupVault.identity, 'principalId') ? backupVault.identity.principalId : ''
 
 @description('The location the resource was deployed into.')
-output location string = bv.location
+output location string = backupVault.location
