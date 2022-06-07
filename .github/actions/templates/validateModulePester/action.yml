@@ -65,7 +65,7 @@ runs:
       uses: azure/powershell@v1
       with:
         azPSVersion: 'latest'
-        #failOnStandardError: true
+        failOnStandardError: true
         errorActionPreference: stop
         inlineScript: |
           # Grouping task logs
