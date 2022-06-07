@@ -5,6 +5,9 @@
         "name": {
             "value": "<<namePrefix>>-az-adb-x-001"
         },
+        "lock": {
+            "value": "CanNotDelete"
+        },
         "roleAssignments": {
             "value": [
                 {

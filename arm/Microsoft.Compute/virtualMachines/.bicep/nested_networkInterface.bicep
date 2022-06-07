@@ -10,7 +10,7 @@ param dnsServers array = []
 param networkSecurityGroupResourceId string = ''
 
 param ipConfigurations array
-param lock string
+param lock string = ''
 param diagnosticStorageAccountId string
 param diagnosticLogsRetentionInDays int
 param diagnosticWorkspaceId string
@@ -69,7 +69,6 @@ module networkInterface '../../../Microsoft.Network/networkInterfaces/deploy.bic
       privateIPAddress: contains(ipConfiguration, 'vmIPAddress') ? (!empty(ipConfiguration.vmIPAddress) ? ipConfiguration.vmIPAddress : null) : null
       publicIPAddressResourceId: contains(ipConfiguration, 'pipconfiguration') ? resourceId('Microsoft.Network/publicIPAddresses', '${virtualMachineName}${ipConfiguration.pipconfiguration.publicIpNameSuffix}') : null
       subnetId: ipConfiguration.subnetId
-
       loadBalancerBackendAddressPools: contains(ipConfiguration, 'loadBalancerBackendAddressPools') ? ipConfiguration.loadBalancerBackendAddressPools : null
       applicationSecurityGroups: contains(ipConfiguration, 'applicationSecurityGroups') ? ipConfiguration.applicationSecurityGroups : null
       applicationGatewayBackendAddressPools: contains(ipConfiguration, 'applicationGatewayBackendAddressPools') ? ipConfiguration.applicationGatewayBackendAddressPools : null

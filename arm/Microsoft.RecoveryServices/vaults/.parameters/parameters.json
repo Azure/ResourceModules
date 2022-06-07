@@ -5,6 +5,9 @@
         "name": {
             "value": "<<namePrefix>>-az-rsv-x-001"
         },
+        "lock": {
+            "value": "CanNotDelete"
+        },
         "backupConfig": {
             "value": {
                 "enhancedSecurityState": "Disabled",

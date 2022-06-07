@@ -43,7 +43,7 @@ This module deploys an Azure virtual desktop application group.
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `friendlyName` | string | `''` |  | The friendly name of the Application Group to be created. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
-| `lock` | string | `'NotSpecified'` | `[CanNotDelete, NotSpecified, ReadOnly]` | Specify the type of lock. |
+| `lock` | string | `''` | `[, CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalIds' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
 
@@ -217,6 +217,9 @@ module applicationgroups './Microsoft.DesktopVirtualization/applicationgroups/de
         "name": {
             "value": "<<namePrefix>>-az-avdag-x-001"
         },
+        "lock": {
+            "value": "CanNotDelete"
+        },
         "location": {
             "value": "westeurope"
         },
@@ -293,6 +296,7 @@ module applicationgroups './Microsoft.DesktopVirtualization/applicationgroups/de
   name: '${uniqueString(deployment().name)}-applicationgroups'
   params: {
     name: '<<namePrefix>>-az-avdag-x-001'
+    lock: 'CanNotDelete'
     location: 'westeurope'
     applicationGroupType: 'RemoteApp'
     hostpoolName: 'adp-<<namePrefix>>-az-avdhp-x-001'
