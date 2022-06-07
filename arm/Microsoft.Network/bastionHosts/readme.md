@@ -485,7 +485,7 @@ module bastionHosts './Microsoft.Network/bastionHosts/deploy.bicep' = {
         "vNetId": {
             "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001"
         },
-        "publicIPAddressResourceId": {
+        "azureBastionSubnetPublicIpId": {
             "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/publicIPAddresses/adp-<<namePrefix>>-az-pip-x-bas"
         },
         "skuType": {
@@ -537,7 +537,7 @@ module bastionHosts './Microsoft.Network/bastionHosts/deploy.bicep' = {
     name: '<<namePrefix>>-az-bas-x-001'
     lock: 'CanNotDelete'
     vNetId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-001'
-    publicIPAddressResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/publicIPAddresses/adp-<<namePrefix>>-az-pip-x-bas'
+    azureBastionSubnetPublicIpId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/publicIPAddresses/adp-<<namePrefix>>-az-pip-x-bas'
     skuType: 'Standard'
     scaleUnits: 4
     roleAssignments: [
