@@ -91,7 +91,8 @@ securityContactProperties: {
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `workspaceId` | string | The resource IDs of the used log analytics workspace. |
+| `name` | string | The name of the security center. |
+| `workspaceId` | string | The resource ID of the used log analytics workspace. |
 
 ## Deployment examples
 

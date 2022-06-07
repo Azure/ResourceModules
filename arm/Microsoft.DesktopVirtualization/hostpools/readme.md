@@ -42,7 +42,7 @@ This module deploys an Azure virtual desktop host pool.
 | `hostpoolType` | string | `'Pooled'` | `[Personal, Pooled]` | Set this parameter to Personal if you would like to enable Persistent Desktop experience. Defaults to Pooled. |
 | `loadBalancerType` | string | `'BreadthFirst'` | `[BreadthFirst, DepthFirst, Persistent]` | Type of load balancer algorithm. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
-| `lock` | string | `'NotSpecified'` | `[CanNotDelete, NotSpecified, ReadOnly]` | Specify the type of lock. |
+| `lock` | string | `''` | `[, CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `maxSessionLimit` | int | `99999` |  | Maximum number of sessions. |
 | `personalDesktopAssignmentType` | string | `''` | `[Automatic, Direct, ]` | Set the type of assignment for a Personal Host Pool type. |
 | `preferredAppGroupType` | string | `'Desktop'` | `[Desktop, None, RailApplications]` | The type of preferred application group type, default to Desktop Application Group. |
@@ -269,6 +269,9 @@ tags: {
         "name": {
             "value": "<<namePrefix>>-az-avdhp-x-001"
         },
+        "lock": {
+            "value": "CanNotDelete"
+        },
         "location": {
             "value": "westeurope"
         },
@@ -312,9 +315,6 @@ tags: {
                 }
             }
         },
-        "validationEnviroment": {
-            "value": false
-        },
         "roleAssignments": {
             "value": [
                 {
@@ -356,6 +356,7 @@ module hostpools './Microsoft.DesktopVirtualization/hostpools/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-hostpools'
   params: {
     name: '<<namePrefix>>-az-avdhp-x-001'
+    lock: 'CanNotDelete'
     location: 'westeurope'
     hostpoolFriendlyName: 'AVDv2'
     hostpoolDescription: 'My first AVD Host Pool'
@@ -381,7 +382,6 @@ module hostpools './Microsoft.DesktopVirtualization/hostpools/deploy.bicep' = {
         ram: 8
       }
     }
-    validationEnviroment: false
     roleAssignments: [
       {
         roleDefinitionIdOrName: 'Reader'

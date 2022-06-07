@@ -36,7 +36,7 @@
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
-| `lock` | string | `'NotSpecified'` | `[CanNotDelete, NotSpecified, ReadOnly]` | Specify the type of lock. |
+| `lock` | string | `''` | `[, CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `publicIPAddressVersion` | string | `'IPv4'` | `[IPv4, IPv6]` | IP address version. |
 | `publicIPAllocationMethod` | string | `'Dynamic'` | `[Dynamic, Static]` | The public IP address allocation method. |
 | `publicIPPrefixResourceId` | string | `''` |  | Resource ID of the Public IP Prefix object. This is only needed if you want your Public IPs created in a PIP Prefix. |
@@ -173,6 +173,9 @@ roleAssignments: [
         "name": {
             "value": "<<namePrefix>>-az-pip-x-001"
         },
+        "lock": {
+            "value": "CanNotDelete"
+        },
         "skuName": {
             "value": "Standard"
         },
@@ -227,6 +230,7 @@ module publicIPAddresses './Microsoft.Network/publicIPAddresses/deploy.bicep' = 
   name: '${uniqueString(deployment().name)}-publicIPAddresses'
   params: {
     name: '<<namePrefix>>-az-pip-x-001'
+    lock: 'CanNotDelete'
     skuName: 'Standard'
     publicIPAllocationMethod: 'Static'
     zones: [

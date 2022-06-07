@@ -40,7 +40,7 @@ This module deploys a topic for a service bus namespace.
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `enableExpress` | bool | `False` |  | A value that indicates whether Express Entities are enabled. An express topic holds a message in memory temporarily before writing it to persistent storage. |
 | `enablePartitioning` | bool | `False` |  | A value that indicates whether the topic is to be partitioned across multiple message brokers. |
-| `lock` | string | `'NotSpecified'` | `[CanNotDelete, NotSpecified, ReadOnly]` | Specify the type of lock. |
+| `lock` | string | `''` | `[, CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `maxMessageSizeInKilobytes` | int | `1024` |  | Maximum size (in KB) of the message payload that can be accepted by the topic. This property is only used in Premium today and default is 1024. |
 | `maxSizeInMegabytes` | int | `1024` |  | The maximum size of the topic in megabytes, which is the size of memory allocated for the topic. Default is 1024. |
 | `requiresDuplicateDetection` | bool | `False` |  | A value indicating if this topic requires duplicate detection. |
