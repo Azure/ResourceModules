@@ -65,7 +65,7 @@ runs:
       uses: azure/powershell@v1
       with:
         azPSVersion: 'latest'
-        failOnStandardError: true
+        #failOnStandardError: true
         inlineScript: |
           # Grouping task logs
           Write-Output "::group::Run global tests via Pester"
@@ -102,6 +102,7 @@ runs:
                 moduleFolderPaths = $moduleFolderPaths
                 enforcedTokenList = $enforcedTokenList
               }
+              EnableExit = $true
             }
             TestResult = @{
               TestSuiteName = 'Global Module Tests'
