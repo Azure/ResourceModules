@@ -80,6 +80,9 @@ param privateEndpoints array = []
 @description('Optional. Allow trusted Azure services to access a network restricted Service Bus.')
 param allowTrustedServices bool = true
 
+@description('Optional. Configure networking options for Premium SKU Service Bus.')
+param networkAclConfig object = {}
+
 @description('Optional. Tags of the resource.')
 param tags object = {}
 
@@ -144,13 +147,10 @@ var identity = identityType != 'None' ? {
   userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
 } : null
 
-var networkAcl = !empty(privateEndpoints) ? {
-  publicNetworkAccess: 'Enabled'
+var networkAcl = !empty(networkAclConfig) ? {
+  publicNetworkAccess: !empty(privateEndpoints) ? 'Disabled' : 'Enabled'
   allowTrustedServices: allowTrustedServices
-} : {
-  publicNetworkAccess: 'Disabled'
-  allowTrustedServices: allowTrustedServices
-}
+} : networkAclConfig
 
 var enableChildTelemetry = false
 
@@ -211,7 +211,7 @@ module serviceBusNamespace_virtualNetworkRules 'virtualNetworkRules/deploy.bicep
   }
 }]
 
-module serviceBusNamespace_networkRuleSet 'networkRuleSets/deploy.bicep' = if (skuName == 'Premium') {
+module serviceBusNamespace_networkRuleSet 'networkRuleSets/deploy.bicep' = if (skuName == 'Premium' || !empty(networkAclConfig)) {
   name: '${uniqueString(deployment().name, location)}-networkRuleSet'
   params: {
     namespaceName: serviceBusNamespace.name

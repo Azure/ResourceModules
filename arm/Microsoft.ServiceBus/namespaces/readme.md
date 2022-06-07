@@ -57,6 +57,7 @@ This module deploys a service bus namespace resource.
 | `lock` | string | `'NotSpecified'` | `[CanNotDelete, NotSpecified, ReadOnly]` | Specify the type of lock. |
 | `migrationConfigurations` | _[migrationConfigurations](migrationConfigurations/readme.md)_ object | `{object}` |  | The migration configuration. |
 | `name` | string | `''` |  | Name of the Service Bus Namespace. If no name is provided, then unique name will be created. |
+| `networkAclConfig` | object | `{object}` |  | Configure networking options for Premium SKU Service Bus. |
 | `privateEndpoints` | array | `[]` |  | Configuration Details for private endpoints. |
 | `queues` | _[queues](queues/readme.md)_ array | `[]` |  | The queues to create in the service bus namespace. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
@@ -209,6 +210,42 @@ privateEndpoints:  [
 </details>
 <p>
 
+### Parameter Usage: `networkAcl`
+
+Configure networing options on premium SKU only.
+
+<details>
+
+<summary>Parameter JSON format</summary>
+
+```json
+"networkingAclConfig": {
+    "value" : {
+        "publicNetworkAccess": "Disabled",
+        "allowTrustedServices": true
+    }
+}
+
+
+```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+networkingAclConfig: {
+    publicNetworkAccess: "Enabled"
+    allowTrustedServices: true
+}
+
+```
+
+</details>
+<p>
+
 ### Parameter Usage: `tags`
 
 Tag names and tag values can be provided as needed. A tag can be left without a value.
@@ -320,6 +357,7 @@ userAssignedIdentities: {
 module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-namespaces'
   params: {
+  
   }
 ```
 
@@ -494,6 +532,15 @@ module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
                     "service": "namespace"
                 }
             ]
+        },
+        "allowTrustedServices": {
+            "value": true
+        },
+        "networkingAclConfig": {
+            "value": {
+                "publicNetworkAccess": "Disabled",
+                "allowTrustedServices": true
+            }
         }
     }
 }
@@ -630,6 +677,11 @@ module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
         service: 'namespace'
       }
     ]
+    allowTrustedServices: true
+    networkingAclConfig: {
+      publicNetworkAccess: 'Disabled'
+      allowTrustedServices: true
+    }
   }
 ```
 
