@@ -28,7 +28,7 @@ To validate updates to a module template, you can perform the following steps:
 1. Select the branch with your updated template.
 1. (Optionally) disable the `Remove deployed module` input parameter in case you don't want to apply the default behavior and want to skip the deletion of the test-deployed resources to check them post-deployment.
 1. (Optionally) adjust the `Publish prerelease module` flag in case you want to publish a prerelease version of your updated module from your development branch.
-   > **Note:** The module version is assigned a prerelease suffix
+   > **Note:** The module version is assigned a prerelease suffix.
 1.  Trigger the pipeline.
 
 Once the pipeline concludes, it will either be in a green (success) or red (failed) state, depending on how the module performed.
@@ -37,11 +37,11 @@ Pipeline logs are available for troubleshooting and provide detailed information
 
 ## Add a new module pipeline
 
-To add a new module pipeline we recommend to create a copy of a currently existing module pipeline and adjust all module-specific properties, e.g., triggers and module paths. The registration of the pipeline depends on the [DevOps platform](#devops-tool-specific-guidance) you're using.
+To add a new module pipeline, we recommend to create a copy of a currently existing module pipeline and adjust all module-specific properties, e.g., triggers and module paths. The registration of the pipeline depends on the [DevOps platform](#devops-tool-specific-guidance) you're using.
 
 # Operate the dependencies pipeline
 
-The dependencies pipeline must be triggered manually and deploys a set of resources we reference as part of our module tests (e.g., Virtual Networks, Log Analytics Workspace, Key Vaults).
+The dependencies pipeline must be triggered manually. This deploys a set of resources we reference as part of our module tests (e.g., Virtual Networks, Log Analytics Workspace, Key Vaults).
 
 To run the dependencies pipeline you can perform the following steps:
 
@@ -49,14 +49,14 @@ To run the dependencies pipeline you can perform the following steps:
 
    | File | Parameter | Description |
    | - | - | - |
-   | `utilities\pipelines\dependencies\Microsoft.KeyVault\vaults\parameters\parameters.json` | `accessPolicies.value[0].objectId` | The 'Backup Management Service' needs access to back up the keys and secrets, along with the associated VMs. The Enterprise Application's object ID is unique per tenant. |
-1. (Optionally) Verify if you are good with the dependency resource names by checking dependency parameter files stored in path `utilities\pipelines\dependencies`. If not, make the necessary updates to you local branch and push the local changes to the repository.
+   | `utilities\pipelines\.. ..dependencies\Microsoft.KeyVault\.. ..vaults\parameters\parameters.json` | `accessPolicies.value[0].objectId` | The 'Backup Management Service' needs access to back up the keys and secrets, along with the associated VMs. The Enterprise Application's object ID is unique per tenant. |
+1. (Optionally) Verify if you are satisfied with the dependency resource names by checking dependency parameter files stored in path `utilities\pipelines\dependencies`. If not, make the necessary updates to you local branch and push the local changes to the repository.
    > **Note:** If you want to rename any dependency resources, make sure to update any references to their name in the module parameter files too.
 1. On the DevOps platform, navigate to the dependencies pipeline.
 1. Select the branch you intend to run.
-1. (Optionally) Enable the `'Enable SqlMI dependency deployment' switch` to include the deployment of the dependencies for the \[SQL managed instance] module.
-1. (Optionally) Enable the `'Enable deployment of a vhd stored in a blob container' switch` to include the deployment of the dependencies for the \[Compute Images] and \[Compute Disks] modules.
-   > Note: This option requires up to two hours completion.
+1. (Optionally) Enable the `'Enable SqlMI dependency deployment'` switch to include the deployment of the dependencies for the \[SQL managed instance] module.
+1. (Optionally) Enable the `'Enable deployment of a vhd stored in a blob container'` switch to include the deployment of the dependencies for the \[Compute Images] and \[Compute Disks] modules.
+   > **Note**: This option requires up to two hours to complete.
 1.  Trigger the pipeline.
 
 By default, i.e., by keeping the optional flags disables, the dependencies pipeline may take up to 30 minutes to run.
@@ -71,7 +71,7 @@ Depending on what you want to test in your module pipeline, you may want to incl
 
 # DevOps-Tool-specific guidance
 
-This section provides a step-by-step guideline on how to operate the pipelines based on the specific chosen DevOps platform, GitHub or Azure DevOps.
+This section provides a step-by-step guideline on how to operate the pipelines based on the chosen DevOps platform, GitHub or Azure DevOps.
 
 ## GitHub workflows
 
@@ -140,7 +140,7 @@ This section focuses on _Azure DevOps_ pipelines.
 
      <img src="./media/CIEnvironment/pipelineNew2.png" alt="Register new pipeline step 2" height="300">
 
-  1. Now we have to select the particular repository to get the pipeline file from.
+  1. Now, we have to select the particular repository to get the pipeline file from.
 
      <img src="./media/CIEnvironment/pipelineNew3.png" alt="Register new pipeline step 3" height="240">
 

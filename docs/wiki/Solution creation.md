@@ -2,7 +2,7 @@
 
 This section shows you how you can orchestrate a deployment using multiple resource modules.
 
-> **Note:** For the sake of any of the below examples we assume you leverage Bicep as your primary DSL.
+> **Note:** For the sake of any of the below examples, we assume you leverage Bicep as your primary DSL.
 
 ---
 
@@ -25,7 +25,7 @@ This section shows you how you can orchestrate a deployment using multiple resou
 
 # Upstream workloads
 
-There are several open-source repositories that leverage the CARML library today. Alongside the examples we provide you with below, the referenced repositories are a good reference on how you can leverage CARML for larger solutions.
+There are several open-source repositories that leverage the CARML library today. Alongside the examples, we provide you with below, the referenced repositories are a good reference on how you can leverage CARML for larger solutions.
 
 | Repository | Description |
 | - | - |
@@ -72,7 +72,7 @@ Once you start building a solution using this library you may wonder how best to
 <details>
 <summary>Referencing <b>local files</b></summary>
 
-The following example shows how you could orchestrate a deployment of multiple resources using local module references. In this example we will deploy a resource group with a contained NSG and use the same in a subsequent VNET deployment.
+The following example shows how you could orchestrate a deployment of multiple resources using local module references. In this example, we will deploy a resource group with a contained NSG and use the same in a subsequent VNET deployment.
 
 ```bicep
 targetScope = 'subscription'
@@ -161,7 +161,7 @@ module vnet '../arm/Microsoft.Network/virtualNetworks/deploy.bicep' = {
 <details>
 <summary>Referencing a <b>Private Bicep Registry</b></summary>
 
-The following example shows how you could orchestrate a deployment of multiple resources using modules from a private Bicep Registry. In this example we will deploy a resource group with a contained NSG and use the same in a subsequent VNET deployment.
+The following example shows how you could orchestrate a deployment of multiple resources using modules from a private Bicep Registry. In this example, we will deploy a resource group with a contained NSG and use the same in a subsequent VNET deployment.
 
 > **Note**: the preferred method to publish modules to the Bicep registry is to leverage our [CI environment](./The%20CI%20environment.md). However, this option may not be applicable to all scenarios (ref e.g., the [Consume library](./Getting%20started%20-%20Scenario%202%20Consume%20library.md) section). As an alternative, the same [Publish-ModuleToPrivateBicepRegistry.ps1](https://github.com/Azure/ResourceModules/blob/main/utilities/pipelines/resourcePublish/Publish-ModuleToPrivateBicepRegistry.ps1) script leveraged by the publishing step of the CI environment pipeline can also be run locally.
 
@@ -267,7 +267,7 @@ The example assumes you are using a [`bicepconfig.json`](https://docs.microsoft.
 <details>
 <summary>Referencing <b>Template-Specs</b></summary>
 
-The following example shows how you could orchestrate a deployment of multiple resources using template specs. In this example we will deploy a NSG and use the same in a subsequent VNET deployment.
+The following example shows how you could orchestrate a deployment of multiple resources using template specs. In this example, we will deploy a NSG and use the same in a subsequent VNET deployment.
 
 > **Note**: the preferred method to publish modules to template-specs is to leverage our [CI environment](./The%20CI%20environment.md). However, this option may not be applicable to all scenarios (ref e.g., the [Consume library](./Getting%20started%20-%20Scenario%202%20Consume%20library.md) section). As an alternative, the same [Publish-ModuleToTemplateSpec.ps1](https://github.com/Azure/ResourceModules/blob/main/utilities/pipelines/resourcePublish/Publish-ModuleToTemplateSpec.ps1) script leveraged by the publishing step of the CI environment pipeline can also be run locally.
 

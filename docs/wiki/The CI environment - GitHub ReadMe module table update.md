@@ -12,7 +12,7 @@ In the platform's pipeline `platform.updateReadMe.yml`, this script is invoked e
 ---
 # Location
 
-You can find the script under `/utilities/tools/Set-ReadMeModuleTable.ps1`
+You can find the script under [`/utilities/tools/Set-ReadMeModuleTable.ps1`](../../utilities/tools/Set-ReadMeModuleTable.ps1)
 
 # How it works
 
@@ -25,4 +25,4 @@ You can find the script under `/utilities/tools/Set-ReadMeModuleTable.ps1`
 
 For details on how to use the function, please refer to the script's local documentation.
 
-> **Note:** The script must be loaded before the function can be invoked
+> **Note:** The script must be loaded ('*dot-sourced*') before the function can be invoked.

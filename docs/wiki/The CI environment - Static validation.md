@@ -16,19 +16,19 @@ All module Unit tests are performed with the help of [Pester](https://github.com
 
 The following activities are run executing the `arm/.global/global.module.tests.ps1` script.
 
-- **File & folder tests** validate that the module folder structure is set up in the intended way. e.g.,:
+- **File & folder tests** validate that the module folder structure is set up in the intended way, e.g.:
   - readme.md file exists
   - template file (either deploy.json or deploy.bicep) exists
   - compliance with file naming convention
-- **Deployment template tests** check the template's structure and elements for errors as well as consistency matters. e.g.,
+- **Deployment template tests** check the template's structure and elements for errors as well as consistency matters, e.g.:
   - template file (or the built bicep template) converts from JSON and has all expected properties
   - variable names are camelCase
   - the minimum set of outputs is returned (see [module design](./The%20library%20-%20Module%20design.md#outputs))
-- **Module (readme.md) documentation** contains all required sections. e.g.,:
+- **Module (readme.md) documentation** contains all required sections, e.g.:
   - is not empty
   - contains all the mandatory sections
   - describes all the parameters
-- **Parameter Files**. e.g.,:
+- **Parameter Files**, e.g.:
   - at least one `*parameters.json` exists
   - files should be valid JSON
   - contains all required parameters
@@ -48,12 +48,11 @@ The following activities are run executing the `arm/.global/global.module.tests.
 
 In this phase, Pester analyzes the API version of each resource type deployed by the module.
 
-In particular, each resource's API version is compared with those currently available on Azure. Accepted are both the latest 5 versions (including preview versions) as well as the latest 5 non-preview versions.
+In particular, each resource's API version is compared with those currently available on Azure. This test has a certain level of tolerance (does not enforce the latest version): the API version in use should be one of the 5 latest versions available (including preview versions) or one of the the 5 latest non-preview versions.
 
 This test also leverages the `arm/.global/global.module.tests.ps1` script.
 
 # Verify the static validation of your module locally
-
 
 This paragraph is intended for CARML contributors or more generally for those leveraging the CARML CI environment and having the need to update or add a new module to the library.
 

@@ -27,7 +27,7 @@ The purpose of each module pipeline is twofold:
 1. **Validation**: To ensure the modules hosted by the CARML library are valid and can perform the intended deployments.
 1. **Publishing**: To publish _versioned_ and already validated modules to one or multiple target locations, from where they can be referenced by solutions consuming them.
 
-As such each pipeline can be mapped to `Phases 1 and 2` described in the [Deployment flow](./The%20context%20-%20CARML%20CI%20environment.md#deployment-flow) section.
+As such, each pipeline can be mapped to `Phases 1 and 2` described in the [Deployment flow](./The%20context%20-%20CARML%20CI%20environment.md#deployment-flow) section.
 
 <img src="./media/CIEnvironment/pipelineDesign.png" alt="Pipeline phases" height="500">
 
@@ -66,7 +66,7 @@ In addition, workflows leverage the following composite actions:
 
 | Composite Action | Description |
 | - | - |
-| **getWorkflowInput** | This action allows fetching workflow input values from the module's workflow file, even if the pipeline was not triggered via a `workflow_dispatch` action. Without it we would not be able to process the contained information and would need to duplicate the configuration as workflow variables. Such input values are for example, the removal switch `removeDeployment`. |
+| **getWorkflowInput** | This action allows fetching workflow input values from the module's workflow file, even if the pipeline was not triggered via a `workflow_dispatch` action. Without it, we would not be able to process the contained information and would need to duplicate the configuration as workflow variables. Such input values are for example, the removal switch `removeDeployment`. |
 | **setEnvironmentVariables** | This action parses the variables file `global.variables.yml` and sets the key-value pairs in the `variables` list as environment variables. |
 
 Technical documentation for each composite action, such as required input and output variables, is included in each `action.yml` file located in path `.github/actions/templates`.
@@ -115,11 +115,11 @@ In addition to module pipelines, the repository includes several platform pipeli
 
 In order to successfully run module pipelines to validate and publish CARML modules to the target environment, certain Azure resources need to be deployed beforehand.
 
-For example, any instance of the \[Virtual Machine] module needs an existing virtual network to be connected to and a key vault hosting its required local admin credentials to be referenced.
+For example, any instance of the \[Virtual Machine] module needs an existing virtual network to be connected to and a Key Vault hosting its required local admin credentials to be referenced.
 
 The dependencies pipeline covers this requirement and is intended to be run before executing module pipelines successfully.
 
-The pipeline leverages resource parameters from the `utilities\dependencies` subfolder and either one of the following pipelines:
+The pipeline leverages resource parameters from the `utilities\pipelines\dependencies` subfolder and either one of the following pipelines:
 - GitHub workflow: `.github\workflows\platform.dependencies.yml`
 - Azure DevOps pipeline: `.azuredevops\platformPipelines\platform.dependencies.yml`
 
@@ -137,7 +137,7 @@ The dependencies pipeline comes with the following runtime parameters:
 
 The resources deployed by the dependencies pipeline need to be in place before testing all the modules.
 
-> Note: Some dependency resources (e.g., \[storage account], \[key vault] and \[event hub namespace]) require a globally unique resource name. By default, the parameter files make use of the placeholder token `'<<namePrefix>>'` to make all resource names specific to an environment. Refer to [Parameter File Tokens Design](./The%20CI%20environment%20-%20Token%20replacement.md) for more details.
+> Note: Some dependency resources (e.g., \[storage account], \[Key Vault] and \[event hub namespace]) require a globally unique resource name. By default, the parameter files make use of the placeholder token `'<<namePrefix>>'` to make all resource names specific to an environment. Refer to [Parameter File Tokens Design](./The%20CI%20environment%20-%20Token%20replacement.md) for more details.
 
 Since also dependency resources are in turn subject to dependencies with each other, resources are deployed in the following grouped order.
 
@@ -162,7 +162,7 @@ This group of resources has a dependency only on the resource group which will h
       - '_adp-\<<namePrefix\>>-az-law-x-001_': Default LAW.
       - '_adp-\<<namePrefix\>>-az-law-aut-001_': Dedicated LAW to be leveraged by the \[automation account] resource.
       - '_adp-\<<namePrefix\>>-az-law-appi-001_': Dedicated LAW to be leveraged by the \[application insights] resource.
-  1. User assigned identity: This resource is leveraged by the \[role assignment], \[key vault] and \[recovery services vault] dependency resources.
+  1. User assigned identity: This resource is leveraged by the \[role assignment], \[Key Vault] and \[recovery services vault] dependency resources.
       > **Note**: The object ID of the \[user assigned identity] is needed by several dependency parameter files. However, before running the dependencies pipeline for the first time, the \[user assigned identity] resource does not exist yet, thus its object ID is unknown. For this reason, instead of the object ID value, some dependency parameter files contain the `"<<msiPrincipalId>>"` token, for which the correct value is retrieved and replaced by the pipeline at runtime.
   1. Shared image gallery and definition: These resources are leveraged by the \[image template] resource.
   1. Route table: This resource is leveraged by the virtual network subnet dedicated to test \[SQL managed instance].
@@ -198,8 +198,8 @@ This group of resources has a dependency on one or more resources in the group a
       - '_adp-\<<namePrefix\>>-az-pip-min-lb_': Leveraged by the \[load balancer] resource.
       - '_adp-\<<namePrefix\>>-az-pip-x-fw_': Leveraged by the \[Azure firewall] resource.
   1. Role assignment: This resource assigns the '_Contributor_' role on the subscription to the \[user assigned identity] deployed as part of the group above. This is needed by the \[image template] deployment.
-  1. Key vault: This resource supports monitoring, hence it has a dependency on the \[storage account], \[log analytics workspace] and \[event hub] deployed in the group above. Multiple instances are deployed:
-      - '_adp-\<<namePrefix\>>-az-kv-x-001_': KV with required secrets, keys, certificates and access policies to be leveraged by all resources requiring access to a key vault key, secret and/or certificate, i.e., \[application gateway], \[azure NetApp file], \[azure SQL server], \[disk encryption set], \[machine learning service], \[virtual machine], \[virtual machine scale set], \[virtual network gateway connection].
+  1. Key Vault: This resource supports monitoring, hence it has a dependency on the \[storage account], \[log analytics workspace] and \[event hub] deployed in the group above. Multiple instances are deployed:
+      - '_adp-\<<namePrefix\>>-az-kv-x-001_': KV with required secrets, keys, certificates and access policies to be leveraged by all resources requiring access to a Key Vault key, secret and/or certificate, i.e., \[application gateway], \[azure NetApp file], \[azure SQL server], \[disk encryption set], \[machine learning service], \[virtual machine], \[virtual machine scale set], \[virtual network gateway connection].
       - '_adp-\<<namePrefix\>>-az-kv-x-pe_': KV to be leveraged by the \[private endpoint] resource.
       - '_adp-\<<namePrefix\>>-az-kv-x-sqlmi_': KV with required secrets, keys and access policies to be leveraged by the \[SQL managed instance] resource.
         >**Note**: This resource is deployed and configured only if sqlmi dependency resources are enabled.
@@ -234,7 +234,7 @@ This group of resources has a dependency on one or more resources in the groups 
 
 This group of resources has a dependency on one or more resources in the groups above.
 
-  1. Virtual Machine: This resource is depending on the \[virtual networks] and \[key vault] deployed above. This resource is leveraged by the \[network watcher] resource.
+  1. Virtual Machine: This resource is depending on the \[virtual networks] and \[Key Vault] deployed above. This resource is leveraged by the \[network watcher] resource.
   1. Private DNS zone: This resource is depending on the \[virtual networks] deployed above. This resource is leveraged by the \[private endpoint] resource.
 
 </details>
@@ -243,25 +243,25 @@ This group of resources has a dependency on one or more resources in the groups 
 
 ### Required secrets and keys
 
-In addition to the above resources, the following secrets, keys and certificates are created in the key vaults deployed by the dependencies pipeline.
+In addition to the above resources, the following secrets, keys and certificates are created in the Key Vaults deployed by the dependencies pipeline.
 
-- Shared key vault '_adp-\<<namePrefix\>>-az-kv-x-001_'
-  1. Key vault secrets:
+- Shared Key Vault '_adp-\<<namePrefix\>>-az-kv-x-001_'
+  1. Key Vault secrets:
       - _administratorLogin_: For \[azure SQL server] .
       - _administratorLoginPassword_: For \[azure SQL server].
       - _vpnSharedKey_: For \[virtual network gateway connection].
       - _adminUserName_: For \[virtual machine].
       - _adminPassword_: For \[virtual machine].
-  1. Key vault keys:
+  1. Key Vault keys:
       - _keyEncryptionKey_: For \[disk encryption set].
-  1. Key vault certificate:
+  1. Key Vault certificate:
       - _applicationGatewaySslCertificate_: For \[application gateway].
 
-- SQL Mi key vault '_adp-\<<namePrefix\>>-az-kv-x-sqlmi_'
-  1. Key vault secrets:
+- SQL Mi Key Vault '_adp-\<<namePrefix\>>-az-kv-x-sqlmi_'
+  1. Key Vault secrets:
       - _administratorLogin_: For \[SQL managed instance].
       - _administratorLoginPassword_: For \[SQL managed instance].
-  1. Key vault keys:
+  1. Key Vault keys:
       - _keyEncryptionKeySqlMi_: For \[SQL managed instance].
 
 ## ReadMe pipeline

@@ -24,11 +24,11 @@ This section outlines known issues that currently affect our modules.
 The Domain Services module pipeline is expected to fail in our environment for a few reasons:
 
 -  The leveraged service principal has not the required permissions to actually deploy the service in the used tenant
--  The referenced (optional) `pfxCertificate` (and password) are not actually existing in the specified key vault - unless uploaded manually
+-  The referenced (optional) `pfxCertificate` (and password) are not actually existing in the specified Key Vault - unless uploaded manually
 
 To this end, the module was successfully tested manually in a dedicated environment.
 
-If you're interested what the general pre-requisites are, please refer to the [official docs](https://docs.microsoft.com/en-us/azure/active-directory-domain-services/tutorial-create-instance#prerequisites).
+If you're interested what the general prerequisites are, please refer to the [official docs](https://docs.microsoft.com/en-us/azure/active-directory-domain-services/tutorial-create-instance#prerequisites).
 
 ## Microsoft.KubernetesConfiguration/extensions
 

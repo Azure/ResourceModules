@@ -36,7 +36,7 @@ The rational is to align all modules and shorten the outputs, as it is intuitive
 Migrating to this change (by overwriting the original module templates/outputs) won't affect the CI pipelines and you can use the environment as is. However, if you built solutions using relative paths to the modules, make sure you update any output reference of the same.
 
 ## Parameter file name prefix
-When migrating, you may notice that many of the resource names in the module parameter files have a placeholder `<<namePrefix>>`. This placeholder is automatically replaced when executing any of the CI pipelines and as such requires changes to the [CI environment](#nameprefix-in-settingsjson) too.
+When migrating, you may notice that many of the resource names in the module parameter files have a placeholder `<<namePrefix>>`. This placeholder is automatically replaced when executing any of the CI pipelines and as such, requires changes to the [CI environment](#nameprefix-in-settingsjson) too.
 
 You can remove these placeholders as you see fit, or migrate them together with the changes explained in the [`General pipeline updates`](#general-pipeline-updates) & [` NamePrefix in settings.json`](#nameprefix-in-settingsjson) sections of this guide.
 

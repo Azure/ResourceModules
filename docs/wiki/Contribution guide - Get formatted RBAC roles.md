@@ -88,4 +88,4 @@ To get the list of roles in the expected format:
    ```
 
 For further details on how to use the function, please refer to the script's local documentation.
-> **Note:** The script must be loaded before the function can be invoked
+> **Note:** The script must be loaded ('*dot-sourced*') before the function can be invoked.

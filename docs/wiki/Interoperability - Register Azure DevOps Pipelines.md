@@ -37,4 +37,4 @@ The steps you'd want to follow are
    - Agent pool(s) used in the pipeline(s) if not using the default available agents
 
 For further details on how to use the function, please refer to the script's local documentation.
-> **Note:** The script must be loaded before the function can be invoked
+> **Note:** The script must be loaded ('*dot-sourced*') before the function can be invoked.

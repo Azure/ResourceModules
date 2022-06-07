@@ -29,6 +29,6 @@ When invoked, the script
 
 > **Note:** You'll need to have an active Azure login. If not connected, you can do so via the `Connect-AzAccount` cmdlet (from the `Az.Resources` PowerShell module).
 
-> **Note:** The script must be loaded before the function can be invoked.
+> **Note:** The script must be loaded ('*dot-sourced*') before the function can be invoked.
 
 For details on how to use the function, please refer to the script's local documentation.

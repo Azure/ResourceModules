@@ -23,7 +23,7 @@ How you proceed from here depends on the scenario:
 
    <img src="./media/ContributionGuide/projectsTab.jpg" alt="Projects Tab" height="178" width="414">
 
-  > Note: For starters we suggest to search for issues labelled with `good first issue`.
+  > Note: For starters, we suggest to search for issues labelled with `good first issue`.
 
 - If you find a bug or have an idea that you'd also like to work on, feel free to create an issue in the corresponding GitHub section, assign it to yourself and the project and get started.
 

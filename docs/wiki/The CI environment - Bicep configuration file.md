@@ -5,12 +5,13 @@ This section provides details on the Bicep configuration file (`bicepconfig.json
 ### _Navigation_
 
 - [Description](#description)
+- [Applied rules](#applied-rules)
 
 ---
 
 # Description
 
-Using this file you can customize your Bicep development experience. This includes
+Using this file, you can customize your Bicep development experience. This includes
 - Linter Rules (e.g., [max parameters](https://docs.microsoft.com/en-us/azure/azure-resource-manager/bicep/linter-rule-max-parameters))
 - Source locations (e.g., [aliases](https://docs.microsoft.com/en-us/azure/azure-resource-manager/bicep/bicep-config-modules))
 

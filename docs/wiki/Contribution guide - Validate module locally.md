@@ -31,4 +31,4 @@ If the switch for either the validation test (`-ValidationTest`) or deployment t
 # How to use it
 
 For details on how to use the function, please refer to the script's local documentation.
-> **Note:** The script must be loaded before the function can be invoked
+> **Note:** The script must be loaded ('*dot-sourced*') before the function can be invoked.

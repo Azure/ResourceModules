@@ -46,4 +46,4 @@ For example, the content of file `resourceUsage-roleAssignments.md` in folder `m
 # How to use it
 
 For details on how to use the function, please refer to the script's local documentation.
-> **Note:** The script must be loaded before the function can be invoked
+> **Note:** The script must be loaded ('*dot-sourced*') before the function can be invoked.
