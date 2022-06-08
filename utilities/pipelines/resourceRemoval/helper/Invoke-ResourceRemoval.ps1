@@ -42,12 +42,10 @@ function Invoke-ResourceRemoval {
         'Microsoft.Authorization/locks' {
             $lockName = ($resourceId -split '/')[-1]
             $lockScope = ($resourceId -split '/providers/Microsoft.Authorization/locks')[0]
-            do {
-                $null = Remove-AzResourceLock -LockName $lockName -Scope $lockScope -Force
-                Write-Verbose "Removed lock [$resourceName]. Waiting 5 seconds for propagation." -Verbose
-                Start-Sleep 5
-            }
-            while (Get-AzResourceLock -LockName $lockName -Scope $lockScope -ErrorAction 'SilentlyContinue')
+
+            $null = Remove-AzResourceLock -LockName $lockName -Scope $lockScope -Force
+            Write-Verbose "Removed lock [$resourceName]. Waiting 10 seconds for propagation." -Verbose
+            Start-Sleep 10
             break
         }
         'Microsoft.KeyVault/vaults/accessPolicies' {
