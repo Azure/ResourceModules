@@ -64,18 +64,18 @@ jobs:
   #########################
   #   Static validation   #
   #########################
-  # job_module_pester_validation:
-  #   runs-on: ubuntu-20.04
-  #   name: 'Static validation'
-  #   steps:
-  #     - name: 'Checkout'
-  #       uses: actions/checkout@v2
-  #       with:
-  #         fetch-depth: 0
-  #     - name: 'Run tests'
-  #       uses: ./.github/actions/templates/validateModulePester
-  #       with:
-  #         modulePath: '${{ env.modulePath }}'
+  job_module_pester_validation:
+    runs-on: ubuntu-20.04
+    name: 'Static validation'
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: 'Run tests'
+        uses: ./.github/actions/templates/validateModulePester
+        with:
+          modulePath: '${{ env.modulePath }}'
 
   #############################
   #   Deployment validation   #
@@ -85,7 +85,7 @@ jobs:
     name: 'Deployment validation'
     needs:
       - job_initialize_pipeline
-      #- job_module_pester_validation
+      - job_module_pester_validation
     strategy:
       fail-fast: false
       matrix:
