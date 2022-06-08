@@ -953,7 +953,7 @@ Describe "API version tests [All apiVersions in the template should be 'recent']
 
     $testCases = @()
     $ApiVersions = Get-AzResourceProvider -ListAvailable
-    foreach ($moduleFolderPath in $moduleFolderPathsFiltered) {
+    foreach ($moduleFolderPath in $moduleFolderPaths) {
 
         $moduleFolderName = $moduleFolderPath.Replace('\', '/').Split('/arm/')[1]
 
