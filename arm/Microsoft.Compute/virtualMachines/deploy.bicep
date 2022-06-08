@@ -625,6 +625,7 @@ module virtualMachine_backup '../../Microsoft.RecoveryServices/vaults/protection
     protectionContainerName: 'iaasvmcontainer;iaasvmcontainerv2;${resourceGroup().name};${virtualMachine.name}'
     recoveryVaultName: backupVaultName
     sourceResourceId: virtualMachine.id
+    enableDefaultTelemetry: enableChildTelemetry
   }
   scope: az.resourceGroup(backupVaultResourceGroup)
   dependsOn: [

@@ -173,6 +173,8 @@ var diagnosticsMetrics = [for metric in diagnosticMetricsToEnable: {
   }
 }]
 
+var enableChildTelemetry = false
+
 var identityType = systemAssignedIdentity ? (!empty(userAssignedIdentities) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned') : (!empty(userAssignedIdentities) ? 'UserAssigned' : 'None')
 
 var identity = identityType != 'None' ? {
@@ -253,7 +255,7 @@ module cognitiveServices_privateEndpoints '../../Microsoft.Network/privateEndpoi
     name: contains(privateEndpoint, 'name') ? privateEndpoint.name : 'pe-${last(split(cognitiveServices.id, '/'))}-${privateEndpoint.service}-${index}'
     serviceResourceId: cognitiveServices.id
     subnetResourceId: privateEndpoint.subnetResourceId
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableChildTelemetry
     location: reference(split(privateEndpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location
     lock: contains(privateEndpoint, 'lock') ? privateEndpoint.lock : lock
     privateDnsZoneGroups: contains(privateEndpoint, 'privateDnsZoneGroups') ? privateEndpoint.privateDnsZoneGroups : []

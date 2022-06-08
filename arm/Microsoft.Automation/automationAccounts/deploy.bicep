@@ -260,7 +260,7 @@ module automationAccount_linkedService '../../Microsoft.OperationalInsights/work
   params: {
     name: 'automation'
     logAnalyticsWorkspaceName: last(split(linkedWorkspaceResourceId, '/'))
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableChildTelemetry
     resourceId: automationAccount.id
     tags: tags
   }
@@ -362,7 +362,7 @@ module automationAccount_privateEndpoints '../../Microsoft.Network/privateEndpoi
     name: contains(privateEndpoint, 'name') ? privateEndpoint.name : 'pe-${last(split(automationAccount.id, '/'))}-${privateEndpoint.service}-${index}'
     serviceResourceId: automationAccount.id
     subnetResourceId: privateEndpoint.subnetResourceId
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableChildTelemetry
     location: reference(split(privateEndpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location
     lock: contains(privateEndpoint, 'lock') ? privateEndpoint.lock : lock
     privateDnsZoneGroups: contains(privateEndpoint, 'privateDnsZoneGroups') ? privateEndpoint.privateDnsZoneGroups : []

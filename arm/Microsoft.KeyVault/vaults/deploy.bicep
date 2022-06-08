@@ -290,7 +290,7 @@ module keyVault_privateEndpoints '../../Microsoft.Network/privateEndpoints/deplo
     name: contains(privateEndpoint, 'name') ? privateEndpoint.name : 'pe-${last(split(keyVault.id, '/'))}-${privateEndpoint.service}-${index}'
     serviceResourceId: keyVault.id
     subnetResourceId: privateEndpoint.subnetResourceId
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableChildTelemetry
     location: reference(split(privateEndpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location
     lock: contains(privateEndpoint, 'lock') ? privateEndpoint.lock : lock
     privateDnsZoneGroups: contains(privateEndpoint, 'privateDnsZoneGroups') ? privateEndpoint.privateDnsZoneGroups : []
