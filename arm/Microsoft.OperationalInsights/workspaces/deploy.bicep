@@ -25,7 +25,7 @@ param savedSearches array = []
 @description('Optional. LAW data sources to configure.')
 param dataSources array = []
 
-@description('Optional. LAW gallerySolutions from the gallery.')
+@description('Optional. List of gallerySolutions to be created in the log analytics workspace.')
 param gallerySolutions array = []
 
 @description('Optional. Number of days data will be retained for.')

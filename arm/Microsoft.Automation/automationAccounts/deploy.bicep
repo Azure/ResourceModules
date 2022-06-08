@@ -272,7 +272,7 @@ module automationAccount_linkedService '../../Microsoft.OperationalInsights/work
 module automationAccount_solutions '../../Microsoft.OperationsManagement/solutions/deploy.bicep' = [for (gallerySolution, index) in gallerySolutions: if (!empty(linkedWorkspaceResourceId)) {
   name: '${uniqueString(deployment().name, location)}-AutoAccount-Solution-${index}'
   params: {
-    name: gallerySolution
+    name: gallerySolution.name
     location: location
     logAnalyticsWorkspaceName: last(split(linkedWorkspaceResourceId, '/'))
     product: contains(gallerySolution, 'product') ? gallerySolution.product : 'OMSGallery'

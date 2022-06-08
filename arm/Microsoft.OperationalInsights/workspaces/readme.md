@@ -45,7 +45,7 @@ This template deploys a log analytics workspace.
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of a log analytics workspace. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `gallerySolutions` | array | `[]` |  | LAW gallerySolutions from the gallery. |
+| `gallerySolutions` | array | `[]` |  | List of gallerySolutions to be created in the log analytics workspace. |
 | `linkedServices` | _[linkedServices](linkedServices/readme.md)_ array | `[]` |  | List of services to be linked. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
 | `lock` | string | `''` | `[, CanNotDelete, ReadOnly]` | Specify the type of lock. |
@@ -70,122 +70,122 @@ This template deploys a log analytics workspace.
     "value": [
         {
             "name": "AgentHealthAssessment",
-            "product": "OMSGallery/AgentHealthAssessment",
+            "product": "OMSGallery",
             "publisher": "Microsoft"
         },
         {
             "name": "AlertManagement",
-            "product": "OMSGallery/AlertManagement",
+            "product": "OMSGallery",
             "publisher": "Microsoft"
         },
         {
             "name": "AntiMalware",
-            "product": "OMSGallery/AntiMalware",
+            "product": "OMSGallery",
             "publisher": "Microsoft"
         },
         {
             "name": "AzureActivity",
-            "product": "OMSGallery/AzureActivity",
+            "product": "OMSGallery",
             "publisher": "Microsoft"
         },
         {
             "name": "AzureAutomation",
-            "product": "OMSGallery/AzureAutomation",
+            "product": "OMSGallery",
             "publisher": "Microsoft"
         },
         {
             "name": "AzureCdnCoreAnalytics",
-            "product": "OMSGallery/AzureCdnCoreAnalytics",
+            "product": "OMSGallery",
             "publisher": "Microsoft"
         },
         {
             "name": "AzureDataFactoryAnalytics",
-            "product": "OMSGallery/AzureDataFactoryAnalytics",
+            "product": "OMSGallery",
             "publisher": "Microsoft"
         },
         {
             "name": "AzureNSGAnalytics",
-            "product": "OMSGallery/AzureNSGAnalytics",
+            "product": "OMSGallery",
             "publisher": "Microsoft"
         },
         {
             "name": "AzureSQLAnalytics",
-            "product": "OMSGallery/AzureSQLAnalytics",
+            "product": "OMSGallery",
             "publisher": "Microsoft"
         },
         {
             "name": "ChangeTracking",
-            "product": "OMSGallery/ChangeTracking",
+            "product": "OMSGallery",
             "publisher": "Microsoft"
         },
         {
             "name": "Containers",
-            "product": "OMSGallery/Containers",
+            "product": "OMSGallery",
             "publisher": "Microsoft"
         },
         {
             "name": "InfrastructureInsights",
-            "product": "OMSGallery/InfrastructureInsights",
+            "product": "OMSGallery",
             "publisher": "Microsoft"
         },
         {
             "name": "KeyVaultAnalytics",
-            "product": "OMSGallery/KeyVaultAnalytics",
+            "product": "OMSGallery",
             "publisher": "Microsoft"
         },
         {
             "name": "LogicAppsManagement",
-            "product": "OMSGallery/LogicAppsManagement",
+            "product": "OMSGallery",
             "publisher": "Microsoft"
         },
         {
             "name": "NetworkMonitoring",
-            "product": "OMSGallery/NetworkMonitoring",
+            "product": "OMSGallery",
             "publisher": "Microsoft"
         },
         {
             "name": "Security",
-            "product": "OMSGallery/Security",
+            "product": "OMSGallery",
             "publisher": "Microsoft"
         },
         {
             "name": "SecurityCenterFree",
-            "product": "OMSGallery/SecurityCenterFree",
+            "product": "OMSGallery",
             "publisher": "Microsoft"
         },
         {
             "name": "ServiceFabric",
-            "product": "OMSGallery/ServiceFabric",
+            "product": "OMSGallery",
             "publisher": "Microsoft"
         },
         {
             "name": "ServiceMap",
-            "product": "OMSGallery/ServiceMap",
+            "product": "OMSGallery",
             "publisher": "Microsoft"
         },
         {
             "name": "SQLAssessment",
-            "product": "OMSGallery/SQLAssessment",
+            "product": "OMSGallery",
             "publisher": "Microsoft"
         },
         {
             "name": "Updates",
-            "product": "OMSGallery/Updates",
+            "product": "OMSGallery",
             "publisher": "Microsoft"
         },
         {
             "name": "VMInsights",
-            "product": "OMSGallery/VMInsights",
+            "product": "OMSGallery",
             "publisher": "Microsoft"
         },
         {
             "name": "WireData2",
-            "product": "OMSGallery/WireData2",
+            "product": "OMSGallery",
             "publisher": "Microsoft"
         },
         {
             "name": "WaaSUpdateInsights",
-            "product": "OMSGallery/WaaSUpdateInsights",
+            "product": "OMSGallery",
             "publisher": "Microsoft"
         }
     ]
@@ -202,122 +202,122 @@ This template deploys a log analytics workspace.
 gallerySolutions: [
     {
         name: 'AgentHealthAssessment'
-        product: 'OMSGallery/AgentHealthAssessment'
+        product: 'OMSGallery'
         publisher: 'Microsoft'
     }
     {
         name: 'AlertManagement'
-        product: 'OMSGallery/AlertManagement'
+        product: 'OMSGallery'
         publisher: 'Microsoft'
     }
     {
         name: 'AntiMalware'
-        product: 'OMSGallery/AntiMalware'
+        product: 'OMSGallery'
         publisher: 'Microsoft'
     }
     {
         name: 'AzureActivity'
-        product: 'OMSGallery/AzureActivity'
+        product: 'OMSGallery'
         publisher: 'Microsoft'
     }
     {
         name: 'AzureAutomation'
-        product: 'OMSGallery/AzureAutomation'
+        product: 'OMSGallery'
         publisher: 'Microsoft'
     }
     {
         name: 'AzureCdnCoreAnalytics'
-        product: 'OMSGallery/AzureCdnCoreAnalytics'
+        product: 'OMSGallery'
         publisher: 'Microsoft'
     }
     {
         name: 'AzureDataFactoryAnalytics'
-        product: 'OMSGallery/AzureDataFactoryAnalytics'
+        product: 'OMSGallery'
         publisher: 'Microsoft'
     }
     {
         name: 'AzureNSGAnalytics'
-        product: 'OMSGallery/AzureNSGAnalytics'
+        product: 'OMSGallery'
         publisher: 'Microsoft'
     }
     {
         name: 'AzureSQLAnalytics'
-        product: 'OMSGallery/AzureSQLAnalytics'
+        product: 'OMSGallery'
         publisher: 'Microsoft'
     }
     {
         name: 'ChangeTracking'
-        product: 'OMSGallery/ChangeTracking'
+        product: 'OMSGallery'
         publisher: 'Microsoft'
     }
     {
         name: 'Containers'
-        product: 'OMSGallery/Containers'
+        product: 'OMSGallery'
         publisher: 'Microsoft'
     }
     {
         name: 'InfrastructureInsights'
-        product: 'OMSGallery/InfrastructureInsights'
+        product: 'OMSGallery'
         publisher: 'Microsoft'
     }
     {
         name: 'KeyVaultAnalytics'
-        product: 'OMSGallery/KeyVaultAnalytics'
+        product: 'OMSGallery'
         publisher: 'Microsoft'
     }
     {
         name: 'LogicAppsManagement'
-        product: 'OMSGallery/LogicAppsManagement'
+        product: 'OMSGallery'
         publisher: 'Microsoft'
     }
     {
         name: 'NetworkMonitoring'
-        product: 'OMSGallery/NetworkMonitoring'
+        product: 'OMSGallery'
         publisher: 'Microsoft'
     }
     {
         name: 'Security'
-        product: 'OMSGallery/Security'
+        product: 'OMSGallery'
         publisher: 'Microsoft'
     }
     {
         name: 'SecurityCenterFree'
-        product: 'OMSGallery/SecurityCenterFree'
+        product: 'OMSGallery'
         publisher: 'Microsoft'
     }
     {
         name: 'ServiceFabric'
-        product: 'OMSGallery/ServiceFabric'
+        product: 'OMSGallery'
         publisher: 'Microsoft'
     }
     {
         name: 'ServiceMap'
-        product: 'OMSGallery/ServiceMap'
+        product: 'OMSGallery'
         publisher: 'Microsoft'
     }
     {
         name: 'SQLAssessment'
-        product: 'OMSGallery/SQLAssessment'
+        product: 'OMSGallery'
         publisher: 'Microsoft'
     }
     {
         name: 'Updates'
-        product: 'OMSGallery/Updates'
+        product: 'OMSGallery'
         publisher: 'Microsoft'
     }
     {
         name: 'VMInsights'
-        product: 'OMSGallery/VMInsights'
+        product: 'OMSGallery'
         publisher: 'Microsoft'
     }
     {
         name: 'WireData2'
-        product: 'OMSGallery/WireData2'
+        product: 'OMSGallery'
         publisher: 'Microsoft'
     }
     {
         name: 'WaaSUpdateInsights'
-        product: 'OMSGallery/WaaSUpdateInsights'
+        product: 'OMSGallery'
         publisher: 'Microsoft'
     }
 ]
