@@ -67,7 +67,7 @@ runs:
         # Grouping task logs
         Write-Output "::group::Run global tests via Pester"
 
-        Write-Verbose ([Environment]::GetEnvironmentVariable('PSModulePath', 'Machine')) -Verbose
+        Write-Verbose ([Environment]::GetEnvironmentVariable('PSModulePath')) -Verbose
 
         Import-Module 'Az.Resources' -Verbose
 
