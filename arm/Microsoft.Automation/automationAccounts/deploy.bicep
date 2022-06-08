@@ -277,7 +277,7 @@ module automationAccount_solutions '../../Microsoft.OperationsManagement/solutio
     logAnalyticsWorkspaceName: last(split(linkedWorkspaceResourceId, '/'))
     product: contains(gallerySolution, 'product') ? gallerySolution.product : 'OMSGallery'
     publisher: contains(gallerySolution, 'publisher') ? gallerySolution.publisher : 'Microsoft'
-    enableDefaultTelemetry: enableChildTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
   // This is to support solution to law in different subscription and resource group than the automation account.
   // The current scope is used by default if no linked service is intended to be created.
