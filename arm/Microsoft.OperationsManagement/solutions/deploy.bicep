@@ -32,7 +32,9 @@ resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2020-08
   name: logAnalyticsWorkspaceName
 }
 
-var solutionName = '${name}(${logAnalyticsWorkspace.name})'
+var solutionName = publisher == 'Microsoft' ? '${name}(${logAnalyticsWorkspace.name})' : name
+
+var solutionProduct = publisher == 'Microsoft' ? 'OMSGallery/${name}' : product
 
 resource solution 'Microsoft.OperationsManagement/solutions@2015-11-01-preview' = {
   name: solutionName
@@ -43,7 +45,7 @@ resource solution 'Microsoft.OperationsManagement/solutions@2015-11-01-preview' 
   plan: {
     name: solutionName
     promotionCode: ''
-    product: '${product}/${name}'
+    product: solutionProduct
     publisher: publisher
   }
 }
