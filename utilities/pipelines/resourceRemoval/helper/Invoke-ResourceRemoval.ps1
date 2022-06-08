@@ -41,7 +41,7 @@ function Invoke-ResourceRemoval {
         }
         'Microsoft.Authorization/locks' {
             $lockName = ($resourceId -split '/')[-1]
-            $lockScope = ($resourceId -split 'providers/Microsoft.Authorization/locks')[0]
+            $lockScope = ($resourceId -split '/providers/Microsoft.Authorization/locks')[0]
             do {
                 $null = Remove-AzResourceLock -LockName $lockName -Scope $lockScope -Force
             }
