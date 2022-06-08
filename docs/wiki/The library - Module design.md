@@ -323,7 +323,7 @@ module <mainResource>_privateEndpoints '../../Microsoft.Network/privateEndpoints
     name: contains(privateEndpoint, 'name') ? privateEndpoint.name : 'pe-${last(split(<mainResource>.id, '/'))}-${privateEndpoint.service}-${index}'
     serviceResourceId: <mainResource>.id
     subnetResourceId: privateEndpoint.subnetResourceId
-    enableDefaultTelemetry: enableChildTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
     location: reference(split(privateEndpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location
     lock: contains(privateEndpoint, 'lock') ? privateEndpoint.lock : lock
     privateDnsZoneGroups: contains(privateEndpoint, 'privateDnsZoneGroups') ? privateEndpoint.privateDnsZoneGroups : []

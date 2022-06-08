@@ -31,7 +31,7 @@ param subscriptionsLimit int = 1
 @description('Optional. Product terms of use. Developers trying to subscribe to the product will be presented and required to accept these terms before they can complete the subscription process.')
 param terms string = ''
 
-var enableChildTelemetry = false
+var enableReferencedModulesTelemetry = false
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name)}'
@@ -69,7 +69,7 @@ module product_apis 'apis/deploy.bicep' = [for (api, index) in apis: {
     apiManagementServiceName: apiManagementServiceName
     name: api.name
     productName: name
-    enableDefaultTelemetry: enableChildTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
 
@@ -79,7 +79,7 @@ module product_groups 'groups/deploy.bicep' = [for (group, index) in groups: {
     apiManagementServiceName: apiManagementServiceName
     name: group.name
     productName: name
-    enableDefaultTelemetry: enableChildTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
 
