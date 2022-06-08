@@ -73,10 +73,10 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      # - name: 'Run tests'
-      #   uses: ./.github/actions/templates/validateModulePester
-      #   with:
-      #     modulePath: '${{ env.modulePath }}'
+      - name: 'Run tests'
+        uses: ./.github/actions/templates/validateModulePester
+        with:
+          modulePath: '${{ env.modulePath }}'
 
   #############################
   #   Deployment validation   #
