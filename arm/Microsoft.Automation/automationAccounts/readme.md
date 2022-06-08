@@ -538,7 +538,11 @@ module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bice
         },
         "gallerySolutions": {
             "value": [
-                "Updates"
+                {
+                    "name": "Updates",
+                    "product": "OMSGallery",
+                    "publisher": "Microsoft"
+                }
             ]
         },
         "softwareUpdateConfigurations": {
@@ -725,7 +729,11 @@ module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bice
     ]
     linkedWorkspaceResourceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-aut-001'
     gallerySolutions: [
-      'Updates'
+      {
+        name: 'Updates'
+        product: 'OMSGallery'
+        publisher: 'Microsoft'
+      }
     ]
     softwareUpdateConfigurations: [
       {
