@@ -235,14 +235,15 @@ module logAnalyticsWorkspace_dataSources 'dataSources/deploy.bicep' = [for (data
   }
 }]
 
-module logAnalyticsWorkspace_solutions '.bicep/nested_solutions.bicep' = [for (gallerySolution, index) in gallerySolutions: if (!empty(gallerySolutions)) {
+module logAnalyticsWorkspace_solutions '../../Microsoft.OperationsManagement/solutions/deploy.bicep' = [for (gallerySolution, index) in gallerySolutions: if (!empty(gallerySolutions)) {
   name: '${uniqueString(deployment().name, location)}-LAW-Solution-${index}'
   params: {
-    gallerySolution: gallerySolution.name
+    name: gallerySolution.name
     location: location
     logAnalyticsWorkspaceName: logAnalyticsWorkspace.name
-    product: gallerySolution.product
-    publisher: gallerySolution.publisher
+    product: contains(gallerySolution, 'product') ? gallerySolution.product : 'OMSGallery'
+    publisher: contains(gallerySolution, 'publisher') ? gallerySolution.publisher : 'Microsoft'
+    enableDefaultTelemetry: enableDefaultTelemetry
   }
 }]
 
