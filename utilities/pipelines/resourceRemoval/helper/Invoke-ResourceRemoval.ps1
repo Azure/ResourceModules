@@ -39,6 +39,15 @@ function Invoke-ResourceRemoval {
             }
             break
         }
+        'Microsoft.Authorization/locks' {
+            $lockName = ($resourceId -split '/')[-1]
+            $lockScope = ($resourceId -split 'providers/Microsoft.Authorization/locks')[0]
+            do {
+                $null = Remove-AzResourceLock -LockName $lockName -Scope $lockScope -Force
+            }
+            while (Get-AzResourceLock -LockName $lockName -Scope $lockScope -ErrorAction 'SilentlyContinue')
+            break
+        }
         'Microsoft.KeyVault/vaults/accessPolicies' {
             Write-Verbose ('Skip resource removal for type [{0}]. Reason: handled by different logic.' -f $type) -Verbose
             break
