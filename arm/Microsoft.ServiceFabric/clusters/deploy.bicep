@@ -135,7 +135,7 @@ param roleAssignments array = []
 @description('Optional. Array of Service Fabric cluster application types.')
 param applicationTypes array = []
 
-var enableChildTelemetry = false
+var enableReferencedModulesTelemetry = false
 
 var clientCertificateCommonNames_var = [for clientCertificateCommonName in clientCertificateCommonNames: {
   certificateCommonName: contains(clientCertificateCommonName, 'certificateCommonName') ? clientCertificateCommonName.certificateCommonName : null
@@ -308,7 +308,7 @@ module serviceFabricCluster_applicationTypes 'applicationTypes/deploy.bicep' = [
     name: applicationType.name
     serviceFabricClusterName: serviceFabricCluster.name
     tags: contains(applicationType, 'tags') ? applicationType.tags : {}
-    enableDefaultTelemetry: enableChildTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
 
