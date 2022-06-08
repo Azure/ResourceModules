@@ -3,16 +3,16 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "Test"
+            "value": "nonmsTestSolution"
         },
         "logAnalyticsWorkspaceName": {
             "value": "adp-<<namePrefix>>-az-law-sol-001"
         },
         "product": {
-            "value": "testProduct"
+            "value": "nonmsTestSolutionProduct"
         },
         "publisher": {
-            "value": "testPublisher"
+            "value": "nonmsTestSolutionPublisher"
         }
     }
 }
