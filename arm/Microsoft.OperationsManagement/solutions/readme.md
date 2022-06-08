@@ -82,3 +82,51 @@ module solutions './Microsoft.OperationsManagement/solutions/deploy.bicep' = {
 
 </details>
 <p>
+
+<h3>Example 2</h3>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": "AzureAutomation"
+        },
+        "logAnalyticsWorkspaceName": {
+            "value": "adp-<<namePrefix>>-az-law-sol-001"
+        },
+        "product": {
+            "value": "OMSGallery"
+        },
+        "publisher": {
+            "value": "Microsoft"
+        }
+    }
+}
+
+```
+
+</details>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module solutions './Microsoft.OperationsManagement/solutions/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-solutions'
+  params: {
+    name: 'AzureAutomation'
+    logAnalyticsWorkspaceName: 'adp-<<namePrefix>>-az-law-sol-001'
+    product: 'OMSGallery'
+    publisher: 'Microsoft'
+  }
+```
+
+</details>
+<p>

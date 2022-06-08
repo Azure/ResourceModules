@@ -3,16 +3,10 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "AzureAutomation"
+            "value": "Updates"
         },
         "logAnalyticsWorkspaceName": {
             "value": "adp-<<namePrefix>>-az-law-sol-001"
-        },
-        "product": {
-            "value": "OMSGallery"
-        },
-        "publisher": {
-            "value": "Microsoft"
         }
     }
 }
