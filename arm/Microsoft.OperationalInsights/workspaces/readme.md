@@ -61,11 +61,7 @@ This template deploys a log analytics workspace.
 
 ### Parameter Usage: `gallerySolutions`
 
-For Microsoft published gallery solutions:
-- The `name` should be in the format of `solutionType(workspaceName)`
-- The `product` should be in the format of `OMSGallery/{solutionType}`.
-
-This is handed over to the cross referenced `solution` module logic which will build the target name and product in the right format.
+Ref cross-referenced _[solutions](../../Microsoft.OperationsManagement/solutions/readme.md)_
 
 <details>
 
