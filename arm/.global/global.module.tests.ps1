@@ -604,7 +604,7 @@ Describe 'Deployment template tests' -Tag Template {
             $templateContent.Keys | Should -Contain 'resources'
         }
 
-        It '[<moduleFolderName>] If delete lock is implemented, the template should have a lock parameter with the default value of []' -TestCases $deploymentFolderTestCases {
+        It '[<moduleFolderName>] If delete lock is implemented, the template should have a lock parameter with the default value of ['''']' -TestCases $deploymentFolderTestCases {
 
             param(
                 [string] $moduleFolderName,
@@ -953,7 +953,7 @@ Describe "API version tests [All apiVersions in the template should be 'recent']
 
     $testCases = @()
     $ApiVersions = Get-AzResourceProvider -ListAvailable
-    foreach ($moduleFolderPath in $moduleFolderPathsFiltered) {
+    foreach ($moduleFolderPath in $moduleFolderPaths) {
 
         $moduleFolderName = $moduleFolderPath.Replace('\', '/').Split('/arm/')[1]
 

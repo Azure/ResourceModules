@@ -298,7 +298,7 @@ var vmGeneratedNames = [for instance in range(0, vmNumberOfInstances): '${vmName
 
 var vmNamesToApply = !empty(vmNames) ? vmNames : vmGeneratedNames
 
-var enableChildTelemetry = false
+var enableReferencedModulesTelemetry = false
 
 module virtualMachine '../../../arm/Microsoft.Compute/virtualMachines/deploy.bicep' = [for (vmName, index) in vmNamesToApply: {
   name: '${deployment().name}-vm-${index}'
@@ -332,7 +332,7 @@ module virtualMachine '../../../arm/Microsoft.Compute/virtualMachines/deploy.bic
     diagnosticWorkspaceId: diagnosticWorkspaceId
     disablePasswordAuthentication: disablePasswordAuthentication
     enableAutomaticUpdates: enableAutomaticUpdates
-    enableDefaultTelemetry: enableChildTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
     enableEvictionPolicy: enableEvictionPolicy
     enableServerSideEncryption: enableServerSideEncryption
     encryptionAtHost: encryptionAtHost
