@@ -243,7 +243,7 @@ module logAnalyticsWorkspace_solutions '../../Microsoft.OperationsManagement/sol
     logAnalyticsWorkspaceName: logAnalyticsWorkspace.name
     product: contains(gallerySolution, 'product') ? gallerySolution.product : 'OMSGallery'
     publisher: contains(gallerySolution, 'publisher') ? gallerySolution.publisher : 'Microsoft'
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableChildTelemetry
   }
 }]
 
