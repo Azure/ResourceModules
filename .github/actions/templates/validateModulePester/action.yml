@@ -67,10 +67,6 @@ runs:
         # Grouping task logs
         Write-Output "::group::Run global tests via Pester"
 
-        Write-Verbose ([Environment]::GetEnvironmentVariable('PSModulePath')) -Verbose
-
-        Import-Module 'Az.Resources' -Verbose
-
         $moduleFolderPaths = @(Join-Path $env:GITHUB_WORKSPACE "${{ inputs.modulePath }}")
         $moduleFolderPaths += (Get-ChildItem $moduleFolderPaths -Recurse -Directory -Force).FullName | Where-Object {
           (Get-ChildItem $_ -File -Depth 0 -Include @('deploy.json', 'deploy.bicep') -Force).Count -gt 0
