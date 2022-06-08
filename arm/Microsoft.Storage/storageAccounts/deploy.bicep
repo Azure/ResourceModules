@@ -176,7 +176,7 @@ var identity = identityType != 'None' ? {
   userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
 } : null
 
-var enableChildTelemetry = false
+var enableReferencedModulesTelemetry = false
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
@@ -288,7 +288,7 @@ module storageAccount_privateEndpoints '../../Microsoft.Network/privateEndpoints
     name: contains(privateEndpoint, 'name') ? privateEndpoint.name : 'pe-${last(split(storageAccount.id, '/'))}-${privateEndpoint.service}-${index}'
     serviceResourceId: storageAccount.id
     subnetResourceId: privateEndpoint.subnetResourceId
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
     location: reference(split(privateEndpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location
     lock: contains(privateEndpoint, 'lock') ? privateEndpoint.lock : lock
     privateDnsZoneGroups: contains(privateEndpoint, 'privateDnsZoneGroups') ? privateEndpoint.privateDnsZoneGroups : []
@@ -305,7 +305,7 @@ module storageAccount_managementPolicies 'managementPolicies/deploy.bicep' = if 
   params: {
     storageAccountName: storageAccount.name
     rules: managementPolicyRules
-    enableDefaultTelemetry: enableChildTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }
 
@@ -325,7 +325,7 @@ module storageAccount_blobServices 'blobServices/deploy.bicep' = if (!empty(blob
     diagnosticLogCategoriesToEnable: contains(blobServices, 'diagnosticLogCategoriesToEnable') ? blobServices.diagnosticLogCategoriesToEnable : []
     diagnosticMetricsToEnable: contains(blobServices, 'diagnosticMetricsToEnable') ? blobServices.diagnosticMetricsToEnable : []
     diagnosticWorkspaceId: contains(blobServices, 'diagnosticWorkspaceId') ? blobServices.diagnosticWorkspaceId : ''
-    enableDefaultTelemetry: enableChildTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }
 
@@ -347,7 +347,7 @@ module storageAccount_fileServices 'fileServices/deploy.bicep' = if (!empty(file
     }
     shares: contains(fileServices, 'shares') ? fileServices.shares : []
     diagnosticWorkspaceId: contains(fileServices, 'diagnosticWorkspaceId') ? fileServices.diagnosticWorkspaceId : ''
-    enableDefaultTelemetry: enableChildTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }
 
@@ -364,7 +364,7 @@ module storageAccount_queueServices 'queueServices/deploy.bicep' = if (!empty(qu
     diagnosticMetricsToEnable: contains(queueServices, 'diagnosticMetricsToEnable') ? queueServices.diagnosticMetricsToEnable : []
     queues: contains(queueServices, 'queues') ? queueServices.queues : []
     diagnosticWorkspaceId: contains(queueServices, 'diagnosticWorkspaceId') ? queueServices.diagnosticWorkspaceId : ''
-    enableDefaultTelemetry: enableChildTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }
 
@@ -381,7 +381,7 @@ module storageAccount_tableServices 'tableServices/deploy.bicep' = if (!empty(ta
     diagnosticMetricsToEnable: contains(tableServices, 'diagnosticMetricsToEnable') ? tableServices.diagnosticMetricsToEnable : []
     tables: contains(tableServices, 'tables') ? tableServices.tables : []
     diagnosticWorkspaceId: contains(tableServices, 'diagnosticWorkspaceId') ? tableServices.diagnosticWorkspaceId : ''
-    enableDefaultTelemetry: enableChildTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }
 

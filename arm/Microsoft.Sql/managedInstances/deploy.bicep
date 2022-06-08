@@ -199,7 +199,7 @@ var identity = identityType != 'None' ? {
   userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
 } : null
 
-var enableChildTelemetry = false
+var enableReferencedModulesTelemetry = false
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
@@ -306,7 +306,7 @@ module managedInstance_databases 'databases/deploy.bicep' = [for (database, inde
     diagnosticWorkspaceId: contains(database, 'diagnosticWorkspaceId') ? database.diagnosticWorkspaceId : ''
     backupShortTermRetentionPoliciesObj: contains(database, 'backupShortTermRetentionPolicies') ? database.backupShortTermRetentionPolicies : {}
     backupLongTermRetentionPoliciesObj: contains(database, 'backupLongTermRetentionPolicies') ? database.backupLongTermRetentionPolicies : {}
-    enableDefaultTelemetry: enableChildTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
 
@@ -317,7 +317,7 @@ module managedInstance_securityAlertPolicy 'securityAlertPolicies/deploy.bicep' 
     name: securityAlertPoliciesObj.name
     emailAccountAdmins: contains(securityAlertPoliciesObj, 'emailAccountAdmins') ? securityAlertPoliciesObj.emailAccountAdmins : false
     state: contains(securityAlertPoliciesObj, 'state') ? securityAlertPoliciesObj.state : 'Disabled'
-    enableDefaultTelemetry: enableChildTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }
 
@@ -330,7 +330,7 @@ module managedInstance_vulnerabilityAssessment 'vulnerabilityAssessments/deploy.
     recurringScansEmailSubscriptionAdmins: contains(vulnerabilityAssessmentsObj, 'recurringScansEmailSubscriptionAdmins') ? vulnerabilityAssessmentsObj.recurringScansEmailSubscriptionAdmins : false
     recurringScansIsEnabled: contains(vulnerabilityAssessmentsObj, 'recurringScansIsEnabled') ? vulnerabilityAssessmentsObj.recurringScansIsEnabled : false
     vulnerabilityAssessmentsStorageAccountId: contains(vulnerabilityAssessmentsObj, 'vulnerabilityAssessmentsStorageAccountId') ? vulnerabilityAssessmentsObj.vulnerabilityAssessmentsStorageAccountId : ''
-    enableDefaultTelemetry: enableChildTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
   dependsOn: [
     managedInstance_securityAlertPolicy
@@ -344,7 +344,7 @@ module managedInstance_key 'keys/deploy.bicep' = [for (key, index) in keys: {
     name: contains(key, 'name') ? key.name : ''
     serverKeyType: contains(key, 'serverKeyType') ? key.serverKeyType : 'ServiceManaged'
     uri: contains(key, 'uri') ? key.uri : ''
-    enableDefaultTelemetry: enableChildTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
 
@@ -356,7 +356,7 @@ module managedInstance_encryptionProtector 'encryptionProtector/deploy.bicep' = 
     name: contains(encryptionProtectorObj, 'name') ? encryptionProtectorObj.serverKeyType : 'current'
     serverKeyType: contains(encryptionProtectorObj, 'serverKeyType') ? encryptionProtectorObj.serverKeyType : 'ServiceManaged'
     autoRotationEnabled: contains(encryptionProtectorObj, 'autoRotationEnabled') ? encryptionProtectorObj.autoRotationEnabled : true
-    enableDefaultTelemetry: enableChildTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }
 
@@ -367,7 +367,7 @@ module managedInstance_administrator 'administrators/deploy.bicep' = if (!empty(
     login: administratorsObj.name
     sid: administratorsObj.sid
     tenantId: contains(administratorsObj, 'tenantId') ? administratorsObj.tenantId : ''
-    enableDefaultTelemetry: enableChildTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }
 

@@ -54,7 +54,7 @@ param diagnosticLogCategoriesToEnable array = [
 @description('Optional. The name of the diagnostic setting, if deployed.')
 param diagnosticSettingsName string = '${name}-diagnosticSettings'
 
-var enableChildTelemetry = false
+var enableReferencedModulesTelemetry = false
 
 var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
   category: category
@@ -125,7 +125,7 @@ module networkSecurityGroup_securityRules 'securityRules/deploy.bicep' = [for (s
     destinationAddressPrefixes: contains(securityRule.properties, 'destinationAddressPrefixes') ? securityRule.properties.destinationAddressPrefixes : []
     sourceApplicationSecurityGroups: contains(securityRule.properties, 'sourceApplicationSecurityGroups') ? securityRule.properties.sourceApplicationSecurityGroups : []
     destinationApplicationSecurityGroups: contains(securityRule.properties, 'destinationApplicationSecurityGroups') ? securityRule.properties.destinationApplicationSecurityGroups : []
-    enableDefaultTelemetry: enableChildTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
 
