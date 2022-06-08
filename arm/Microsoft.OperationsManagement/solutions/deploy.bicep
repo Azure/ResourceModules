@@ -16,12 +16,6 @@ param publisher string = 'Microsoft'
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
 
-resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2020-08-01' existing = {
-  name: logAnalyticsWorkspaceName
-}
-
-var solutionName = '${name}(${logAnalyticsWorkspace.name})'
-
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
   properties: {
@@ -33,6 +27,12 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
     }
   }
 }
+
+resource logAnalyticsWorkspace 'Microsoft.OperationalInsights/workspaces@2020-08-01' existing = {
+  name: logAnalyticsWorkspaceName
+}
+
+var solutionName = '${name}(${logAnalyticsWorkspace.name})'
 
 resource solution 'Microsoft.OperationsManagement/solutions@2015-11-01-preview' = {
   name: solutionName
