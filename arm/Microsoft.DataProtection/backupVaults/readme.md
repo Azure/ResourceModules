@@ -115,6 +115,12 @@ Create backup policies in the backupvault. An example is provided below.
 }
 ```
 
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
 ```bicep
 backupPolicies: [
     {
