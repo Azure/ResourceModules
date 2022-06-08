@@ -44,7 +44,7 @@ function Invoke-ResourceRemoval {
             $lockScope = ($resourceId -split '/providers/Microsoft.Authorization/locks')[0]
             do {
                 $null = Remove-AzResourceLock -LockName $lockName -Scope $lockScope -Force
-                Write-Verbose "Removed lock [$resourceName]. Waiting 5 seconds for propagation."
+                Write-Verbose "Removed lock [$resourceName]. Waiting 5 seconds for propagation." -Verbose
                 Start-Sleep 5
             }
             while (Get-AzResourceLock -LockName $lockName -Scope $lockScope -ErrorAction 'SilentlyContinue')
