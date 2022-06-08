@@ -115,10 +115,7 @@ Use the following naming standard for module files and folders:
   >Microsoft.Web
   >└─ sites
   >    ├─ .bicep
-  >    |  ├─ nested_components.bicep
-  >    |  ├─ nested_privateEndpoint.bicep
-  >    |  ├─ nested_roleAssignments.bicep
-  >    |  └─ nested_serverfarms.bicep
+  >    |  └─ nested_roleAssignments.bicep
   >    ├─ .parameters
   >    |  └─ parameters.json
   >    ├─ deploy.bicep
