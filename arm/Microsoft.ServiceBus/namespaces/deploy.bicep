@@ -58,12 +58,12 @@ param diagnosticEventHubAuthorizationRuleId string = ''
 param diagnosticEventHubName string = ''
 
 @allowed([
+  ''
   'CanNotDelete'
-  'NotSpecified'
   'ReadOnly'
 ])
 @description('Optional. Specify the type of lock.')
-param lock string = 'NotSpecified'
+param lock string = ''
 
 @description('Optional. Enables system assigned managed identity on the resource.')
 param systemAssignedIdentity bool = false
@@ -152,7 +152,7 @@ var networkAcl = !empty(networkAclConfig) ? {
   allowTrustedServices: allowTrustedServices
 } : networkAclConfig
 
-var enableChildTelemetry = false
+var enableReferencedModulesTelemetry = false
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
@@ -186,7 +186,7 @@ module serviceBusNamespace_disasterRecoveryConfig 'disasterRecoveryConfigs/deplo
     name: contains(disasterRecoveryConfigs, 'name') ? disasterRecoveryConfigs.name : 'default'
     alternateName: contains(disasterRecoveryConfigs, 'alternateName') ? disasterRecoveryConfigs.alternateName : ''
     partnerNamespaceResourceID: contains(disasterRecoveryConfigs, 'partnerNamespace') ? disasterRecoveryConfigs.partnerNamespace : ''
-    enableDefaultTelemetry: enableChildTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }
 
@@ -197,7 +197,7 @@ module serviceBusNamespace_migrationConfigurations 'migrationConfigurations/depl
     name: contains(migrationConfigurations, 'name') ? migrationConfigurations.name : '$default'
     postMigrationName: migrationConfigurations.postMigrationName
     targetNamespaceResourceId: migrationConfigurations.targetNamespace
-    enableDefaultTelemetry: enableChildTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }
 
@@ -207,7 +207,7 @@ module serviceBusNamespace_virtualNetworkRules 'virtualNetworkRules/deploy.bicep
     namespaceName: serviceBusNamespace.name
     name: last(split(virtualNetworkRule, '/'))
     virtualNetworkSubnetId: virtualNetworkRule
-    enableDefaultTelemetry: enableChildTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
 
@@ -217,7 +217,7 @@ module serviceBusNamespace_networkRuleSet 'networkRuleSets/deploy.bicep' = if (s
     namespaceName: serviceBusNamespace.name
     allowTrustedServices: networkAcl.allowTrustedServices
     publicNetworkAccess: networkAcl.publicNetworkAccess
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }
 
@@ -227,7 +227,7 @@ module serviceBusNamespace_authorizationRules 'authorizationRules/deploy.bicep' 
     namespaceName: serviceBusNamespace.name
     name: authorizationRule.name
     rights: contains(authorizationRule, 'rights') ? authorizationRule.rights : []
-    enableDefaultTelemetry: enableChildTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
 
@@ -239,7 +239,7 @@ module serviceBusNamespace_ipFilterRules 'ipFilterRules/deploy.bicep' = [for (ip
     action: ipFilterRule.action
     filterName: ipFilterRule.filterName
     ipMask: ipFilterRule.ipMask
-    enableDefaultTelemetry: enableChildTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
 
@@ -264,7 +264,7 @@ module serviceBusNamespace_queues 'queues/deploy.bicep' = [for (queue, index) in
     enableBatchedOperations: contains(queue, 'enableBatchedOperations') ? queue.enableBatchedOperations : true
     enableExpress: contains(queue, 'enableExpress') ? queue.enableExpress : false
     enablePartitioning: contains(queue, 'enablePartitioning') ? queue.enablePartitioning : false
-    lock: contains(queue, 'lock') ? queue.lock : 'NotSpecified'
+    lock: contains(queue, 'lock') ? queue.lock : ''
     lockDuration: contains(queue, 'lockDuration') ? queue.lockDuration : 'PT1M'
     maxDeliveryCount: contains(queue, 'maxDeliveryCount') ? queue.maxDeliveryCount : 10
     maxSizeInMegabytes: contains(queue, 'maxSizeInMegabytes') ? queue.maxSizeInMegabytes : 1024
@@ -272,7 +272,7 @@ module serviceBusNamespace_queues 'queues/deploy.bicep' = [for (queue, index) in
     requiresSession: contains(queue, 'requiresSession') ? queue.requiresSession : false
     roleAssignments: contains(queue, 'roleAssignments') ? queue.roleAssignments : []
     status: contains(queue, 'status') ? queue.status : 'Active'
-    enableDefaultTelemetry: enableChildTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
 
@@ -297,21 +297,21 @@ module serviceBusNamespace_topics 'topics/deploy.bicep' = [for (topic, index) in
     enableBatchedOperations: contains(topic, 'enableBatchedOperations') ? topic.enableBatchedOperations : true
     enableExpress: contains(topic, 'enableExpress') ? topic.enableExpress : false
     enablePartitioning: contains(topic, 'enablePartitioning') ? topic.enablePartitioning : false
-    lock: contains(topic, 'lock') ? topic.lock : 'NotSpecified'
+    lock: contains(topic, 'lock') ? topic.lock : ''
     maxMessageSizeInKilobytes: contains(topic, 'maxMessageSizeInKilobytes') ? topic.maxMessageSizeInKilobytes : 1024
     maxSizeInMegabytes: contains(topic, 'maxSizeInMegabytes') ? topic.maxSizeInMegabytes : 1024
     requiresDuplicateDetection: contains(topic, 'requiresDuplicateDetection') ? topic.requiresDuplicateDetection : false
     roleAssignments: contains(topic, 'roleAssignments') ? topic.roleAssignments : []
     status: contains(topic, 'status') ? topic.status : 'Active'
     supportOrdering: contains(topic, 'supportOrdering') ? topic.supportOrdering : false
-    enableDefaultTelemetry: enableChildTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
 
-resource serviceBusNamespace_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
+resource serviceBusNamespace_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
   name: '${serviceBusNamespace.name}-${lock}-lock'
   properties: {
-    level: lock
+    level: any(lock)
     notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: serviceBusNamespace
@@ -339,9 +339,9 @@ module serviceBusNamespace_privateEndpoints '../../Microsoft.Network/privateEndp
     name: contains(privateEndpoint, 'name') ? privateEndpoint.name : 'pe-${last(split(serviceBusNamespace.id, '/'))}-${privateEndpoint.service}-${index}'
     serviceResourceId: serviceBusNamespace.id
     subnetResourceId: privateEndpoint.subnetResourceId
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
     location: reference(split(privateEndpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location
-    lock: contains(privateEndpoint, 'lock') ? privateEndpoint.lock : 'NotSpecified'
+    lock: contains(privateEndpoint, 'lock') ? privateEndpoint.lock : lock
     privateDnsZoneGroups: contains(privateEndpoint, 'privateDnsZoneGroups') ? privateEndpoint.privateDnsZoneGroups : []
     roleAssignments: contains(privateEndpoint, 'roleAssignments') ? privateEndpoint.roleAssignments : []
     tags: contains(privateEndpoint, 'tags') ? privateEndpoint.tags : {}

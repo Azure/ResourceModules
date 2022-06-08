@@ -5,6 +5,9 @@
         "name": {
             "value": "<<namePrefix>>-az-sqlsrv-x-001"
         },
+        "lock": {
+            "value": "CanNotDelete"
+        },
         "administratorLogin": {
             "reference": {
                 "keyVault": {

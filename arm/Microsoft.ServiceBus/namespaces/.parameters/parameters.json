@@ -5,6 +5,9 @@
         "name": {
             "value": "<<namePrefix>>-az-sbn-x-002"
         },
+        "lock": {
+            "value": "CanNotDelete"
+        },
         "skuName": {
             "value": "Premium"
         },

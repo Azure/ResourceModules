@@ -49,12 +49,12 @@ param diagnosticEventHubName string = ''
 param roleAssignments array = []
 
 @allowed([
+  ''
   'CanNotDelete'
-  'NotSpecified'
   'ReadOnly'
 ])
 @description('Optional. Specify the type of lock.')
-param lock string = 'NotSpecified'
+param lock string = ''
 
 @description('Optional. Enables system assigned managed identity on the resource.')
 param systemAssignedIdentity bool = false
@@ -136,7 +136,7 @@ var identity = identityType != 'None' ? {
   userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
 } : null
 
-var enableChildTelemetry = false
+var enableReferencedModulesTelemetry = false
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
@@ -169,7 +169,7 @@ module rsv_replicationFabrics 'replicationFabrics/deploy.bicep' = [for (replicat
     name: contains(replicationFabric, 'name') ? replicationFabric.name : replicationFabric.location
     location: replicationFabric.location
     replicationContainers: contains(replicationFabric, 'replicationContainers') ? replicationFabric.replicationContainers : []
-    enableDefaultTelemetry: enableChildTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
   dependsOn: [
     rsv_replicationPolicies
@@ -185,7 +185,7 @@ module rsv_replicationPolicies 'replicationPolicies/deploy.bicep' = [for (replic
     crashConsistentFrequencyInMinutes: contains(replicationPolicy, 'crashConsistentFrequencyInMinutes') ? replicationPolicy.crashConsistentFrequencyInMinutes : 5
     multiVmSyncStatus: contains(replicationPolicy, 'multiVmSyncStatus') ? replicationPolicy.multiVmSyncStatus : 'Enable'
     recoveryPointHistory: contains(replicationPolicy, 'recoveryPointHistory') ? replicationPolicy.recoveryPointHistory : 1440
-    enableDefaultTelemetry: enableChildTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
 
@@ -195,7 +195,7 @@ module rsv_backupStorageConfiguration 'backupStorageConfig/deploy.bicep' = if (!
     recoveryVaultName: rsv.name
     storageModelType: backupStorageConfig.storageModelType
     crossRegionRestoreFlag: backupStorageConfig.crossRegionRestoreFlag
-    enableDefaultTelemetry: enableChildTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }
 
@@ -208,7 +208,7 @@ module rsv_protectionContainers 'protectionContainers/deploy.bicep' = [for (prot
     friendlyName: protectionContainer.friendlyName
     backupManagementType: protectionContainer.backupManagementType
     containerType: protectionContainer.containerType
-    enableDefaultTelemetry: enableChildTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
     protectedItems: contains(protectionContainer, 'protectedItems') ? protectionContainer.protectedItems : []
     location: location
   }
@@ -220,7 +220,7 @@ module rsv_backupPolicies 'backupPolicies/deploy.bicep' = [for (backupPolicy, in
     recoveryVaultName: rsv.name
     name: backupPolicy.name
     backupPolicyProperties: backupPolicy.properties
-    enableDefaultTelemetry: enableChildTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
 
@@ -235,14 +235,14 @@ module rsv_backupConfig 'backupConfig/deploy.bicep' = if (!empty(backupConfig)) 
     storageModelType: contains(backupConfig, 'storageModelType') ? backupConfig.storageModelType : 'GeoRedundant'
     storageType: contains(backupConfig, 'storageType') ? backupConfig.storageType : 'GeoRedundant'
     storageTypeState: contains(backupConfig, 'storageTypeState') ? backupConfig.storageTypeState : 'Locked'
-    enableDefaultTelemetry: enableChildTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }
 
-resource rsv_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
+resource rsv_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
   name: '${rsv.name}-${lock}-lock'
   properties: {
-    level: lock
+    level: any(lock)
     notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: rsv

@@ -5,6 +5,9 @@
         "name": {
             "value": "<<namePrefix>>-az-vhub-x-001"
         },
+        "lock": {
+            "value": "CanNotDelete"
+        },
         "addressPrefix": {
             "value": "10.1.0.0/16"
         },
