@@ -70,7 +70,7 @@ function Install-CustomModule {
         }
 
         # Check if not to be excluded
-        if ($module.ExcludeModules -and $module.excludeModules.contains($foundModule.Name)) {
+        if ($Module.ExcludeModules -and $Module.excludeModules.contains($foundModule.Name)) {
             Write-Verbose ('Module {0} is configured to be ignored.' -f $foundModule.Name) -Verbose
             continue
         }
