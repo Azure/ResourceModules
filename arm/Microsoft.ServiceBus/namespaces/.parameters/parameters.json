@@ -170,7 +170,7 @@
             "value": {
                 "defaultAction": "Deny",
                 "publicNetworkAccess": "Disabled",
-                "allowTrustedServices": true,
+                "trustedServiceAccessEnabled": true,
                 "virtualNetworkRules": [],
                 "ipRules": []
             }
