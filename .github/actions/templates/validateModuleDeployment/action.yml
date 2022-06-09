@@ -201,7 +201,7 @@ runs:
             $functionInput['parameterFilePath'] = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.parameterFilePath }}'
           }
 
-          if ([System.Convert]::ToBoolean('${{  env.enableDefaultTelemetry }}') -and (Get-Content -Path $functionInput.templateFilePath -Raw) -like '*param enableDefaultTelemetry*') {
+          if (-not [System.Convert]::ToBoolean('${{  env.enableDefaultTelemetry }}') -and (Get-Content -Path $functionInput.templateFilePath -Raw) -like '*param enableDefaultTelemetry*') {
               $functionInput['additionalParameters'] += @{
                   enableDefaultTelemetry = ${{  env.enableDefaultTelemetry }}
               }
@@ -242,7 +242,7 @@ runs:
             $functionInput['parameterFilePath'] = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.parameterFilePath }}'
           }
 
-          if ([System.Convert]::ToBoolean('${{  env.enableDefaultTelemetry }}') -and (Get-Content -Path $functionInput.templateFilePath -Raw) -like '*param enableDefaultTelemetry*') {
+          if (-not [System.Convert]::ToBoolean('${{  env.enableDefaultTelemetry }}') -and (Get-Content -Path $functionInput.templateFilePath -Raw) -like '*param enableDefaultTelemetry*') {
               $functionInput['additionalParameters'] += @{
                   enableDefaultTelemetry = ${{  env.enableDefaultTelemetry }}
               }
