@@ -163,9 +163,6 @@
                 }
             ]
         },
-        "trustedServiceAccessEnabled": {
-            "value": true
-        },
         "networkRuleSets": {
             "value": {
                 "defaultAction": "Deny",
