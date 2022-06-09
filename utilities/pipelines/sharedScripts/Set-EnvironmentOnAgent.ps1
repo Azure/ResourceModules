@@ -205,10 +205,13 @@ function Set-EnvironmentOnAgent {
         if ($IsWindows) {
             $env:PSModulePath += ('{0};{1}' -f $env:PSModulePath, $maximumVersionPath)
             [Environment]::SetEnvironmentVariable('PSModulePath', ('{0};{1}' -f ([Environment]::GetEnvironmentVariable('PSModulePath', 'Machine')), $maximumVersionPath), 'Machine')
+            Add-Content -Path $profile -Value '$env:PSModulePath += (''{0};{1}'' -f $env:PSModulePath, $maximumVersionPath)'
         } else {
             $env:PSModulePath += ('{0}:{1}' -f $env:PSModulePath, $maximumVersionPath)
             [Environment]::SetEnvironmentVariable('PSModulePath', ('{0}:{1}' -f ([Environment]::GetEnvironmentVariable('PSModulePath', 'Machine')), $maximumVersionPath), 'Machine')
+            Add-Content -Path $profile -Value '$env:PSModulePath += (''{0}:{1}'' -f $env:PSModulePath, $maximumVersionPath)'
         }
+
     }
 
     # Load already installed modules
