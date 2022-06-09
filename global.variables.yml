@@ -10,7 +10,7 @@ variables:
   ######################################
 
   enableLocalTokens: true # Enable or disable local tokens that are stored in the format 'localToken_*'. e.g. localToken_myTokenKey = myTokenValue
-  localToken_namePrefix: 'zu3bx' #"A 3-5 character length string, included in the resources names"
+  localToken_namePrefix: 'crocs' #"A 3-5 character length string, included in the resources names"
   localToken_test: 'tester'
 
   ######################################
