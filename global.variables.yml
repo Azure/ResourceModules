@@ -10,9 +10,7 @@ variables:
   ######################################
 
   # the token name prefix 'localToken_' will be removed from the key name when the pipelines run
-  localToken_namePrefix: 'carml' #"A 3-5 character length string, included in the resources names"
-  localToken_test: 'tester'
-  localToken_test2: 'tester2'
+  localToken_namePrefix: 'carml' # A 3-5 character length string, included in the resources names, is overridden if provided as GitHub Secret / ADO Variable
 
   ######################################
   # global tokens settings
