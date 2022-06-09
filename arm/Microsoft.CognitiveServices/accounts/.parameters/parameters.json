@@ -24,6 +24,12 @@
                 }
             ]
         },
+        "networkAcls": {
+            "value": {
+                "defaultAction": "deny",
+                "virtualNetworkRules": []
+            }
+        },
         "systemAssignedIdentity": {
             "value": true
         },
