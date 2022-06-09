@@ -67,6 +67,8 @@ runs:
         # Grouping task logs
         Write-Output "::group::Run global tests via Pester"
 
+        Write-Verbose ($env:PSModulePath) -Verbose
+        Write-Verbose ([Environment]::GetEnvironmentVariable('PSModulePath', 'Machine')) -Verbose
         Write-Verbose (Get-Module -ListAvailable | Out-String) -Verbose
 
         $moduleFolderPaths = @(Join-Path $env:GITHUB_WORKSPACE "${{ inputs.modulePath }}")
