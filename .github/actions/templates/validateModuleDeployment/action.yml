@@ -137,7 +137,7 @@ runs:
             TokenSuffix  = '${{ env.tokenSuffix }}'
           }
 
-          # Local tokens
+          # Add standard tokens
           $ConvertTokensInputs.Tokens += @{
             resourceGroupName = '${{ inputs.resourceGroupName }}'
             subscriptionId    = '${{ inputs.subscriptionId }}'
@@ -146,10 +146,14 @@ runs:
             deploymentSpId    = '${{ env.DEPLOYMENT_SP_ID }}'
           }
 
-          # Add local tokens
+          # Add local (source control) tokens
           if ([System.Convert]::ToBoolean('${{  env.enableLocalTokens }}')) {
             $tokenMap = @{}
             foreach ($token in Get-ChildItem env: | Where-Object -Property Name -Like "localToken_*") {
+              # Prioritize Name Prefix Token from Environment Variables ()
+              if(($token.name -eq 'localToken_namePrefix') -and '${{ env.TOKEN_NAMEPREFIX }}'){
+                $token.value = '${{ env.TOKEN_NAMEPREFIX }}'
+              }
               $tokenMap += @{ $token.Name.Replace('localToken_','') = $token.value }
             }
             Write-Verbose ('Using local tokens [{0}]' -f ($tokenMap.Keys -join ', ')) -Verbose
