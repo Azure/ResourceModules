@@ -163,7 +163,7 @@
                 }
             ]
         },
-        "allowTrustedServices": {
+        "trustedServiceAccessEnabled": {
             "value": true
         },
         "networkRuleSets": {
