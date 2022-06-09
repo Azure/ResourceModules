@@ -15,7 +15,7 @@ You will notice other changes, such as modified `parameter.json` files and `vers
 ## Migrate AutoMange module
 The original **standalone** AutoManage module was merged into the virtual machine module (as an extension to follow latest best practices) and subsequently removed.
 
-Feel free to keep the separate module but note that you can now deploy AutoManage directly with a virtual machine. If you're not using the dedicated module, we recommend removing it altogether.
+You can decide to keep the separate module, but note that you can now deploy AutoManage directly with a virtual machine. If you're not using the dedicated module, we recommend removing it altogether.
 
 ## Updated outputs
 A big breaking change is the alignment of module outputs.
@@ -50,10 +50,10 @@ For the modules you copy over, a `version.json` file will already be available. 
 # CI environment
 
 ## General pipeline updates
-General updates can be migrated by essentially copying/replacing any code outside of the `arm` folder (i.e., `.github`/`.azuredevops`/`utilities`/`docs`). If you modified the CI environment in the meantime, make sure to carefully merge any conflicting code. Noteworthy changes include:
+General updates can be migrated by essentially copying/replacing any code outside of the `arm` folder (i.e., `.github`, `.azuredevops`, `utilities`, `docs`). If you modified the CI environment in the meantime, make sure to carefully merge any conflicting code. Noteworthy changes include:
 -	renamed composite actions / templates,
 -	extended placeholder handling,
--	extended pipeline functionality (e.g., managementgroup-level removal),
+-	extended pipeline functionality (e.g., management group level removal),
 -	publishing of child modules and
 -	overall extended publishing using `version.json` files
 -	additional deployments in the dependencies pipeline

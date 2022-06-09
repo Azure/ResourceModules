@@ -1,4 +1,4 @@
-This page provides an overview of the CARML library. For an in-depth look, please refer to the dedicated wiki section, "[The library](./The%20library)".
+This page provides an overview of the CARML library. For an in-depth look, please refer to the dedicated wiki section, "[The library](./The%20library.md)".
 
 ---
 

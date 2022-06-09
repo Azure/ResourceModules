@@ -21,4 +21,4 @@ For a full list of available rules, please refer to the [official documentation]
 
 # Applied rules
 
-The configuration applied in our CI environment can be found in the `bicepconfig.json` file in the root folder. Next to the corresponding settings you will also find the rational for its application.
+The configuration applied in the CI environment can be found in the `bicepconfig.json` file in the root folder. Next to the corresponding settings you will also find the rational for its application.

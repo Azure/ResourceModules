@@ -1,5 +1,5 @@
 Use this script to update a given ReadMe's module table in its 'Available Resource Modules' section.
-In the platform's pipeline `platform.updateReadMe.yml`, this script is invoked each time anything in the `arm` path changes to keep the table in sync. It updates both the root ReadMe (`/readme.md`) and `arm` folder ReadMe (`/arm/readme.md`) with a different set of required columns
+In the platform's pipeline `platform.updateReadMe.yml`, this script is invoked each time anything in the `arm` path changes to keep the table in sync. It updates both the root ReadMe ([`/readme.md`](../../README.md)) and `arm` folder ReadMe ([`/arm/readme.md`](../../arm/readme.md)) with a different set of required columns
 
 ---
 

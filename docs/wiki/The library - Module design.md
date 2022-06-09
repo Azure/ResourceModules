@@ -34,9 +34,9 @@ They can be deployed in different configurations just by changing the input para
 
 # General guidelines
 
-- All resource modules in the 'arm' folder should not allow deployment loops on the top level resource but may optionally allow deployment loops on their child resources.
+- All resource modules in the 'arm' folder should not allow deployment loops on the top-level resource but may optionally allow deployment loops on their child resources.
   > **Example:** The storage account module allows the deployment of a single storage account with, optionally, multiple blob containers, multiple file shares, multiple queues and/or multiple tables.
-- The 'constructs' folder contains examples of deployment logic built on top of resource modules included in the 'arm' folder, allowing for example, deployment loops on top level resources.
+- The 'constructs' folder contains examples of deployment logic built on top of resource modules included in the 'arm' folder, allowing for example, deployment loops on top-level resources.
   > **Example:** The VirtualNetworkPeering construct leverages the VirtualNetworkPeering module to deploy multiple virtual network peering connections at once.
 - Where the resource type in question supports it, the module should have support for:
   1. **Diagnostic logs** and **metrics** (you can have them sent to one ore more of the following destination types: storage account, log analytics and event hub).
@@ -111,7 +111,7 @@ Use the following naming standard for module files and folders:
       └─ readme.md
   ```
 
-  >**Example**: `nested_serverfarms.bicep` in the `Microsoft.Web\sites\.bicep` folder contains the cross-referenced `serverfarm` module leveraged by the top level `site` resource.
+  >**Example**: `nested_serverfarms.bicep` in the `Microsoft.Web\sites\.bicep` folder contains the cross-referenced `serverfarm` module leveraged by the top-level `site` resource.
   >``` txt
   >Microsoft.Web
   >└─ sites

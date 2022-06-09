@@ -40,8 +40,8 @@ The following paragraphs provide an overview of the different phases and shared 
 
 This paragraph provides an overview of the three phases performed by each module pipeline. Further details about the implementation and design of each phase are provided on the dedicated pages linked below.
 
-1. **Static Validation**: Runs a set of static Pester tests against the module and its templates to ensure they comply with our design principles. Further details for this phase are provided on the corresponding wiki page - see the [Static validation](./The%20CI%20environment%20-%20Static%20validation.md) section.
-1. **Deployment Validation**: An actual Azure deployment is run against a sandbox subscription leveraging a predefined set of parameter files, each validating a different configuration of the same Azure resource in parallel. The test suite is cleaned up by default, removing all test resources post-deployment. Further details for this phase are provided on the corresponding wiki page - see the [Deployment validation](./The%20CI%20environment%20-%20Deployment%20validation.md) section.
+1. **Static Validation**: Runs a set of static Pester tests on the module and its templates to ensure they comply with the design principles of CARML. Further details for this phase are provided on the corresponding wiki page - see the [Static validation](./The%20CI%20environment%20-%20Static%20validation.md) section.
+1. **Deployment Validation**: An actual Azure deployment is run in a sandbox subscription leveraging a predefined set of parameter files, each validating a different configuration of the same Azure resource in parallel. The test suite is cleaned up by default, removing all test resources post-deployment. Further details for this phase are provided on the corresponding wiki page - see the [Deployment validation](./The%20CI%20environment%20-%20Deployment%20validation.md) section.
 1. **Publishing**: Runs only if the previous steps are successful. A new module version is published to all configured target locations such as template specs, private Bicep registry and Azure DevOps Universal Packages. Published module versions can then be referenced by solutions using them. Further details for this phase are provided on the corresponding wiki page - see the [Publishing](./The%20CI%20environment%20-%20Publishing.md) page.
 
    <img src="./media/CIEnvironment/pipelineDesignPhases.png" alt="Pipeline phases" height="200">
@@ -131,7 +131,7 @@ The dependencies pipeline comes with the following runtime parameters:
 - `'Enable SqlMI dependency deployment' switch`: Can be enabled or disabled and controls whether the dependencies for the \[SQL managed instance] module are deployed during execution. It is disabled by default.
 - `'Enable deployment of a vhd stored in a blob container' switch`: Can be enabled or disabled and controls whether including the baking of a VHD and subsequent backup to a target storage blob container during the execution. This is a dependency for the \[Compute Images] and \[Compute Disks] modules. This task requires up to two hours completion and is disabled by default.
 
-  <img src="./media/CIEnvironment/dependencyPipelineInput.png" alt="Dependency Pipeline Input" height="300">
+  <img src="./media/CIEnvironment/dependencyPipelineInput.png" alt="Dependencies Pipeline Input" height="300">
 
 ### Resources deployed by the dependencies pipeline
 

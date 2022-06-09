@@ -41,7 +41,7 @@ To add a new module pipeline, we recommend to create a copy of a currently exist
 
 # Operate the dependencies pipeline
 
-The dependencies pipeline must be triggered manually. This deploys a set of resources we reference as part of our module tests (e.g., Virtual Networks, Log Analytics Workspace, Key Vaults).
+The dependencies pipeline must be triggered manually. This deploys a set of resources we reference as part of the module tests (e.g., Virtual Networks, Log Analytics Workspace, Key Vaults).
 
 To run the dependencies pipeline you can perform the following steps:
 

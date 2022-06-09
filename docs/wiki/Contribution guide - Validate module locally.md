@@ -11,7 +11,7 @@ Use this script to test a module locally. You can use it to run only the static 
 ---
 # Location
 
-You can find the script under `/utilities/tools/Test-ModuleLocally.ps1`
+You can find the script under [`/utilities/tools/Test-ModuleLocally.ps1`](../../utilities/tools//Test-ModuleLocally.ps1)
 
 # How it works
 

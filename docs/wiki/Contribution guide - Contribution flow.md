@@ -1,6 +1,6 @@
 This section outlines the contribution flow to the CARML repository.
 
-Depending on the contribution, the number and execution of the required below steps may vary.
+Depending on the nature of your contribution, the number and execution of the required steps (detailed below) may vary.
 
 ---
 
@@ -16,32 +16,32 @@ Depending on the contribution, the number and execution of the required below st
 
 # Create or pick up an issue
 
-We kindly ask to have an issue mapped to the contribution you'd like to make.
-How you proceed from here depends on the scenario:
+We kindly ask you to have an issue mapped to the contribution you'd like to make.
+How you proceed from here, depends on the scenario:
 
-- If you just want to contribute to this project, but don't know yet where and how, feel free to navigate the the 'Projects' tab on the repository, check what items are currently still in the 'to-do' swim lane and pick one that speaks to you. In this case you should assign the item to yourself / or reach out to discuss its content & priority.
+- If you just want to contribute to this project, but don't know yet where and how you should start, navigate to the '[Projects](https://github.com/Azure/ResourceModules/projects)' tab on the repository, check what items are currently still in the 'to-do' swim lane and pick one that speaks to you. In this case you should assign the item to yourself / or reach out to discuss its content & priority.
 
    <img src="./media/ContributionGuide/projectsTab.jpg" alt="Projects Tab" height="178" width="414">
 
   > Note: For starters, we suggest to search for issues labelled with `good first issue`.
 
-- If you find a bug or have an idea that you'd also like to work on, feel free to create an issue in the corresponding GitHub section, assign it to yourself and the project and get started.
+- If you find a bug or have an idea that you'd also like to work on, create an issue in the corresponding GitHub section, assign it to yourself and to the project, and get started.
 
-  > Note: If you don't feel like working on that alone, you can label the issue with `help wanted` to let the community know.
+  > Note: If you don't prefer working on an issue alone, you can label the issue with `help wanted` to let the community know.
 
 # Environment setup
 
 The preferred method of contribution requires you to create your own fork and create pull requests into the source repository from there. To set the fork up, please follow the process described [here](./Getting%20started%20-%20Scenario%201%20Onboard%20module%20library%20and%20CI%20environment.md).
 
-How you proceed from here depends on the scenario:
+How you proceed from here, depends on the scenario:
 
 - In case you want to contribute to the documentation, you can limit the setup to forking the repository and cloning your fork locally.
 
-- In case your contribution involves changes to the library (the modules) and/or to the CI environment (the pipelines), you need to setup the full environment, such as service principals and secrets. This will allow you to test your changes against your environment before requesting to merge them to the main repo.
+- In case your contribution involves changes to the library (the modules) and/or to the CI environment (the pipelines), you need to setup the full environment, such as service principals and secrets. This will allow you to test your changes in your environment before requesting to merge them to the main repo.
 
 # Implement the contribution
 
-How you proceed from here depends on the scenario:
+How you proceed from here, depends on the scenario:
 
 - In case you want to contribute to the CARML wiki, your updates need to happen through the main repo under the [docs/wiki](https://github.com/Azure/ResourceModules/tree/main/docs/wiki) folder. A dedicated pipeline included in the repository will perform a sync to the CARML wiki once the docs contribution is merged.
 
@@ -55,11 +55,11 @@ first review respectively the [Module design](./The%20library%20-%20Module%20des
 
 # Validate the contribution
 
-Once the contribution is implemented and the changes are pushed to your forked repository, how you proceed depends on the scenario:
+Once the contribution is implemented and the changes are pushed to your forked repository, how you proceed, depends on the scenario:
 
 - In case you want to contribute to the documentation, you can skip this step.
 
-- In case your contribution involves changes to the library (the modules) and/or to the CI environment (the pipelines), we kindly ask you to validate your updates against your environment before requesting to merge them to the main repo. Test your code leveraging the CARML CI environment, as detailed in the [Pipeline usage](./The%20CI%20environment%20-%20Pipeline%20usage.md) section.
+- In case your contribution involves changes to the library (the modules) and/or to the CI environment (the pipelines), we kindly ask you to validate your updates in your environment before requesting to merge them to the main repo. Test your code leveraging the CARML CI environment, as detailed in the [Pipeline usage](./The%20CI%20environment%20-%20Pipeline%20usage.md) section.
    > **Note**: In case your contribution involves changes to a module, you can also optionally leverage the [Validate module locally](./Contribution%20guide%20-%20Validate%20module%20locally.md) utility to validate the updated module from your local host before validating it through its pipeline.
 
 # Open a PR

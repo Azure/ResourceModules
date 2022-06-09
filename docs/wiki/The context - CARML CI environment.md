@@ -18,7 +18,7 @@ This paragraph provides an overview of the standard development-to-deployment fl
 
 This flow generally covers 3 phases:
 
-1. In the **Develop modules** phase modules are first implemented/updated and then validated using one or multiple test-parameter files, testing their successful deployment against a sandbox subscription to prove their correctness.
+1. In the **Develop modules** phase modules are first implemented/updated and then validated using one or multiple test-parameter files, testing their successful deployment to a sandbox subscription to prove their correctness.
 
 1. The next phase, **Publish modules**, packages and publishes the tested and approved modules to a target location for later consumption. The target location (also known as package store or artifact store) should support versioning to allow referencing a specific module version and to avoid breaking changes when referencing them.
 
@@ -54,8 +54,8 @@ The top row represents your orchestration environment, for example, _GitHub_ or 
 From left to right, there are the three phases introduced before, _Develop modules_, _Publish modules_ & _Consume modules_. The diagram shows how each phase interacts with the Azure environment.
 
 1. Starting with **Develop modules**, the top left box shows the test pipelines that exist for each module, performing the following steps:
-   - _Static validation_: Pester tests are run against each module to ensure a baseline code quality across the library.
-   - _Deployment validation_: An actual Azure deployment is run against a validation/sandbox subscription, shown in the bottom left corner. The subscription is intended to be without any link to production. Resources deployed here should be considered temporary and be removed after testing.
+   - _Static validation_: Pester tests are run on each module to ensure a baseline code quality across the library.
+   - _Deployment validation_: An actual Azure deployment is performed in a validation/sandbox subscription, shown in the bottom left corner. The subscription is intended to be without any link to production. Resources deployed here should be considered temporary and be removed after testing.
    - _Publishing_: Runs only if the previous steps are successful and initiates the second phase as described below.
 
 1. The **Publish modules** phase is shown in the center box of the diagram. If all tests for a module succeed, the module is published to a given target location. Currently, the target locations supported by the CARML CI environment are:

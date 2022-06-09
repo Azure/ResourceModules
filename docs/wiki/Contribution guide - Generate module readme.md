@@ -14,7 +14,7 @@ The ReadMe generator utility aims to simplify contributing to the CARML library,
 ---
 # Location
 
-You can find the script under `/utilities/tools/Set-ModuleReadMe.ps1`
+You can find the script under [`/utilities/tools/Set-ModuleReadMe.ps1`](../../utilities/tools//Set-ModuleReadMe.ps1)
 
 # How it works
 
@@ -33,7 +33,7 @@ The `Parameter Usage` examples are located just beneath the `Parameters` table. 
 - Tags
 - User Assigned Identities
 
-To be able to change this list with minimum effort, the script reads the content from markdown files in the folder: `utilities/tools/moduleReadMeSource` and matches their title against the parameters of the template file. If a match is found, it's content is added to the readme alongside the generated header. This means, if you want to add another case, you just need to add a new file to the `moduleReadMeSource` folder and follow the naming pattern `resourceUsage-<parameteRName>.md`.
+To be able to change this list with minimum effort, the script reads the content from markdown files in the folder: `utilities/tools/moduleReadMeSource` and matches their title to the parameters of the template file. If a match is found, it's content is added to the readme alongside the generated header. This means, if you want to add another case, you just need to add a new file to the `moduleReadMeSource` folder and follow the naming pattern `resourceUsage-<parameteRName>.md`.
 
 For example, the content of file `resourceUsage-roleAssignments.md` in folder `moduleReadMeSource` is added to a template's readMe if it contains a parameter `roleAssignments`. The combined result is:
 

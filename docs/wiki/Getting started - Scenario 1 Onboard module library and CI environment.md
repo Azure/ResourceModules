@@ -157,7 +157,7 @@ To use the environment's pipelines you should use the information you gathered d
 <p>
 
 > Special case: `AZURE_CREDENTIALS`,
-> This secret represents our service connection to Azure, and its value is a compressed JSON object that must match the following format:
+> This secret represent the service connection to Azure, and its value is a compressed JSON object that must match the following format:
 >
 > ```JSON
 > {"clientId": "<client_id>", "clientSecret": "<client_secret>", "subscriptionId": "<subscriptionId>", "tenantId": "<tenant_id>" }
@@ -333,7 +333,7 @@ This section will explain what is required to publish the modules to [Azure Arti
 1. If you chose the feed to be project-scoped, you will need the Project Build Service account to have `Contributor` access to publish to the Azure Artifacts feed. To set this, follow the [Pipeline permission](https://docs.microsoft.com/en-us/azure/devops/artifacts/feeds/feed-permissions?view=azure-devops#pipelines-permissions) steps.
 
 #### Implementation Guidance
-Each `./azuredevops/modulePipelines` yaml pipeline already calls `/.azuredevops/pipelineTemplates/jobs.publishModule.yml`. This YAML template contains a method to `Publish module to artifacts feed` via `utilities\pipelines\resourcePublish\Publish-ModuleToUniversalArtifactFeed.ps1`.
+Each `./azuredevops/modulePipelines` yaml pipeline already calls [`/.azuredevops/pipelineTemplates/jobs.publishModule.yml`](../../.azuredevops/pipelineTemplates/jobs.publishModule.yml). This YAML template contains a method to `Publish module to artifacts feed` via `utilities\pipelines\resourcePublish\Publish-ModuleToUniversalArtifactFeed.ps1`.
 
 
 </details>
@@ -352,7 +352,7 @@ Run the dependencies pipeline by following instructions provided in the specific
 
 ## 4.1 Manual Dependencies
 
-In special cases, manual actions may be required to provision certain resources that are not covered by our dependency pipeline. In the following, you can find an overview of these resources, for which modules you need them and what you need to do:
+In special cases, manual actions may be required to provision certain resources that are not covered by the dependencies pipeline. In the following, you can find an overview of these resources, for which modules you need them and what you need to do:
 
 ### Microsoft.Web/sites
 

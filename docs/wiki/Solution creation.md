@@ -1,5 +1,3 @@
-# Solution creation
-
 This section shows you how you can orchestrate a deployment using multiple resource modules.
 
 > **Note:** For the sake of any of the below examples, we assume you leverage Bicep as your primary DSL.
@@ -8,8 +6,6 @@ This section shows you how you can orchestrate a deployment using multiple resou
 
 ### _Navigation_
 
-- [Solution creation](#solution-creation)
-    - [_Navigation_](#navigation)
 - [Upstream workloads](#upstream-workloads)
 - [Orchestration overview](#orchestration-overview)
 - [Template-orchestration](#template-orchestration)
@@ -58,7 +54,7 @@ In an enterprise environment, the recommended approach is to store these templat
 
 Once you start building a solution using this library you may wonder how best to start. Following you can find some points that can accelerate your experience:
 
-- Use the [VS-Code extension](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-bicep) for Bicep to enable DSL-native features such as auto-complete. Metadata implemented in our modules are automatically loaded through the extension.
+- Use the [VS-Code extension](https://marketplace.visualstudio.com/items?itemName=ms-azuretools.vscode-bicep) for Bicep to enable DSL-native features such as auto-complete. Metadata implemented in the modules are automatically loaded through the extension.
 - Use the readme
   - If you don't know how to use an object/array parameter you can check if the module's ReadMe file specifies any 'Parameter Usage' block for set parameter ([example](https://github.com/Azure/ResourceModules/blob/main/arm/Microsoft.AnalysisServices/servers/readme.md#parameter-usage-tags)) - or - check the module's `Deployment Examples` ([example](https://github.com/Azure/ResourceModules/blob/main/arm/Microsoft.AnalysisServices/servers/readme.md#deployment-examples)).
   - In general, take note of the `Deployment Examples` specified in each module's ReadMe file as they provide you with rich & tested examples of how set module can be deployed ([example](https://github.com/Azure/ResourceModules/blob/main/arm/Microsoft.AnalysisServices/servers/readme.md#deployment-examples)). An easy way to get started is to copy one of the examples and then adjust to it your needs.
@@ -163,7 +159,7 @@ module vnet '../arm/Microsoft.Network/virtualNetworks/deploy.bicep' = {
 
 The following example shows how you could orchestrate a deployment of multiple resources using modules from a private Bicep Registry. In this example, we will deploy a resource group with a contained NSG and use the same in a subsequent VNET deployment.
 
-> **Note**: the preferred method to publish modules to the Bicep registry is to leverage our [CI environment](./The%20CI%20environment.md). However, this option may not be applicable to all scenarios (ref e.g., the [Consume library](./Getting%20started%20-%20Scenario%202%20Consume%20library.md) section). As an alternative, the same [Publish-ModuleToPrivateBicepRegistry.ps1](https://github.com/Azure/ResourceModules/blob/main/utilities/pipelines/resourcePublish/Publish-ModuleToPrivateBicepRegistry.ps1) script leveraged by the publishing step of the CI environment pipeline can also be run locally.
+> **Note**: the preferred method to publish modules to the Bicep registry is to leverage the [CI environment](./The%20CI%20environment.md) provided in this repository. However, this option may not be applicable to all scenarios (ref e.g., the [Consume library](./Getting%20started%20-%20Scenario%202%20Consume%20library.md) section). As an alternative, the same [Publish-ModuleToPrivateBicepRegistry.ps1](https://github.com/Azure/ResourceModules/blob/main/utilities/pipelines/resourcePublish/Publish-ModuleToPrivateBicepRegistry.ps1) script leveraged by the publishing step of the CI environment pipeline can also be run locally.
 
 ```bicep
 targetScope = 'subscription'
@@ -269,7 +265,7 @@ The example assumes you are using a [`bicepconfig.json`](https://docs.microsoft.
 
 The following example shows how you could orchestrate a deployment of multiple resources using template specs. In this example, we will deploy a NSG and use the same in a subsequent VNET deployment.
 
-> **Note**: the preferred method to publish modules to template-specs is to leverage our [CI environment](./The%20CI%20environment.md). However, this option may not be applicable to all scenarios (ref e.g., the [Consume library](./Getting%20started%20-%20Scenario%202%20Consume%20library.md) section). As an alternative, the same [Publish-ModuleToTemplateSpec.ps1](https://github.com/Azure/ResourceModules/blob/main/utilities/pipelines/resourcePublish/Publish-ModuleToTemplateSpec.ps1) script leveraged by the publishing step of the CI environment pipeline can also be run locally.
+> **Note**: the preferred method to publish modules to template-specs is to leverage the [CI environment](./The%20CI%20environment.md) provided in this repository. However, this option may not be applicable to all scenarios (ref e.g., the [Consume library](./Getting%20started%20-%20Scenario%202%20Consume%20library.md) section). As an alternative, the same [Publish-ModuleToTemplateSpec.ps1](https://github.com/Azure/ResourceModules/blob/main/utilities/pipelines/resourcePublish/Publish-ModuleToTemplateSpec.ps1) script leveraged by the publishing step of the CI environment pipeline can also be run locally.
 
 ```bicep
 targetScope = 'subscription'
