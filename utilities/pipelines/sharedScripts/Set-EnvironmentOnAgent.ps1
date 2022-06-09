@@ -211,8 +211,6 @@ function Set-EnvironmentOnAgent {
         }
     }
 
-    Write-Verbose ($env:PSModulePath) -Verbose
-
     # Load already installed modules
     $installedModules = Get-Module -ListAvailable
 
