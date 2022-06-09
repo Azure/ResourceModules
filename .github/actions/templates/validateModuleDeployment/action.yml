@@ -147,17 +147,17 @@ runs:
           }
 
           # Add local (source control) tokens
-          if ([System.Convert]::ToBoolean('${{  env.enableLocalTokens }}')) {
-            $tokenMap = @{}
-            foreach ($token in Get-ChildItem env: | Where-Object -Property Name -Like "localToken_*") {
-              # Prioritize Name Prefix Token from Environment Variables ()
-              if(($token.name -eq 'localToken_namePrefix') -and '${{ env.TOKEN_NAMEPREFIX }}'){
-                $token.value = '${{ env.TOKEN_NAMEPREFIX }}'
-              }
-              $tokenMap += @{ $token.Name.Replace('localToken_','') = $token.value }
-            }
-            Write-Verbose ('Using local tokens [{0}]' -f ($tokenMap.Keys -join ', ')) -Verbose
-            $ConvertTokensInputs.Tokens += $tokenMap
+          $tokenMap = @{}
+          foreach ($token in (Get-ChildItem env: | Where-Object -Property Name -Like "localToken_*")) {
+            $tokenMap += @{ $token.Name.Replace('localToken_','') = $token.value }
+          }
+          Write-Verbose ('Using local tokens [{0}]' -f ($tokenMap.Keys -join ', ')) -Verbose
+          $ConvertTokensInputs.Tokens += $tokenMap
+
+          # Swap 'namePrefix' token if provided as a GitHub secret
+          if($ConvertTokensInputs.Tokens.namePrefix -and '${{ env.TOKEN_NAMEPREFIX }}'){
+            Write-Verbose 'Using [namePrefix] token from GitHub' -Verbose
+            $ConvertTokensInputs.Tokens.namePrefix = '${{ env.TOKEN_NAMEPREFIX }}'
           }
 
           # Add custom tokens (passed in via the pipeline)
