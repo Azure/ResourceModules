@@ -129,15 +129,12 @@ runs:
           # Load used functions
           . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInFile.ps1')
 
-          # Load Settings File
-          $Settings = Get-Content -Path "settings.json" | ConvertFrom-Json -AsHashTable
-
           # Construct Token Function Input
           $ConvertTokensInputs = @{
             Tokens       = @{}
             FilePath     = '${{ inputs.parameterFilePath }}'
-            TokenPrefix  = $Settings.parameterFileTokens.tokenPrefix
-            TokenSuffix  = $Settings.parameterFileTokens.tokenSuffix
+            TokenPrefix  = '${{ env.tokenPrefix }}'
+            TokenSuffix  = '${{ env.tokenSuffix }}'
           }
 
           # Local tokens
@@ -150,9 +147,11 @@ runs:
           }
 
           # Add local tokens
-          if ($Settings.parameterFileTokens.localTokens) {
+          write-verbose "New Tokens Approach" -verbose
+          $localTokens = Get-ChildItem ENV: | Where-Object -Property Name -Like "token_*"
+          if ((Get-ChildItem ENV: | Where-Object -Property Name -Like "token_*")) {
             $tokenMap = @{}
-            foreach ($token in $Settings.parameterFileTokens.localTokens) {
+            foreach ($token in $localTokens) {
               $tokenMap += @{ $token.name = $token.value }
             }
             Write-Verbose ('Using local tokens [{0}]' -f ($tokenMap.Keys -join ', ')) -Verbose
