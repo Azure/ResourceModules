@@ -32,7 +32,7 @@ This module deploys different kinds of cognitive services resources
 **Conditional parameters**
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
-| `customSubDomainName` | string | `''` | Subdomain name used for token-based authentication. Required if 'networkAcls' are set. |
+| `customSubDomainName` | string | `''` | Subdomain name used for token-based authentication. Required if 'networkAcls' are set (including private endpoints). |
 | `userAssignedIdentities` | object | `{object}` | The ID(s) to assign to the resource. Required if a user assigned identity is used for encryption. |
 
 **Optional parameters**
@@ -519,6 +519,9 @@ module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
                 "virtualNetworkRules": []
             }
         },
+        "customSubDomainName": {
+            "value": "<<namePrefix>>domain"
+        },
         "systemAssignedIdentity": {
             "value": true
         },
@@ -573,6 +576,7 @@ module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
       defaultAction: 'deny'
       virtualNetworkRules: []
     }
+    customSubDomainName: '<<namePrefix>>domain'
     systemAssignedIdentity: true
     userAssignedIdentities: {
       '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}

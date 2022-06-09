@@ -30,6 +30,9 @@
                 "virtualNetworkRules": []
             }
         },
+        "customSubDomainName": {
+            "value": "<<namePrefix>>domain"
+        },
         "systemAssignedIdentity": {
             "value": true
         },
