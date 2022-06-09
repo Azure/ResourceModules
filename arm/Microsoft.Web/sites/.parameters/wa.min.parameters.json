@@ -10,6 +10,6 @@
         },
         "serverFarmResourceId": {
             "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Web/serverFarms/adp-<<namePrefix>>-az-asp-x-001"
-        },
+        }
     }
 }
