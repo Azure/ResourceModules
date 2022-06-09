@@ -203,7 +203,7 @@ runs:
 
           if (-not [System.Convert]::ToBoolean('${{  env.enableDefaultTelemetry }}') -and (Get-Content -Path $functionInput.templateFilePath -Raw) -like '*param enableDefaultTelemetry*') {
               $functionInput['additionalParameters'] += @{
-                  enableDefaultTelemetry = [System.Convert]::ToBoolean('${{  env.enableDefaultTelemetry }}'
+                  enableDefaultTelemetry = [System.Convert]::ToBoolean('${{  env.enableDefaultTelemetry }})'
               }
           }
 
@@ -244,7 +244,7 @@ runs:
 
           if (-not [System.Convert]::ToBoolean('${{  env.enableDefaultTelemetry }}') -and (Get-Content -Path $functionInput.templateFilePath -Raw) -like '*param enableDefaultTelemetry*') {
               $functionInput['additionalParameters'] += @{
-                  enableDefaultTelemetry = [System.Convert]::ToBoolean('${{  env.enableDefaultTelemetry }}'
+                  enableDefaultTelemetry = [System.Convert]::ToBoolean('${{  env.enableDefaultTelemetry }})'
               }
           }
 
