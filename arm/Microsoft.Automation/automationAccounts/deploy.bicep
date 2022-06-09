@@ -81,12 +81,12 @@ param systemAssignedIdentity bool = false
 param userAssignedIdentities object = {}
 
 @allowed([
+  ''
   'CanNotDelete'
-  'NotSpecified'
   'ReadOnly'
 ])
 @description('Optional. Specify the type of lock.')
-param lock string = 'NotSpecified'
+param lock string = ''
 
 @description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
 param roleAssignments array = []
@@ -120,7 +120,7 @@ param diagnosticMetricsToEnable array = [
 @description('Optional. The name of the diagnostic setting, if deployed.')
 param diagnosticSettingsName string = '${name}-diagnosticSettings'
 
-var enableChildTelemetry = false
+var enableReferencedModulesTelemetry = false
 
 var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
   category: category
@@ -192,7 +192,7 @@ module automationAccount_modules 'modules/deploy.bicep' = [for (module, index) i
     uri: module.uri
     location: location
     tags: tags
-    enableDefaultTelemetry: enableChildTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
 
@@ -208,7 +208,7 @@ module automationAccount_schedules 'schedules/deploy.bicep' = [for (schedule, in
     interval: contains(schedule, 'interval') ? schedule.interval : 0
     startTime: contains(schedule, 'startTime') ? schedule.startTime : ''
     timeZone: contains(schedule, 'timeZone') ? schedule.timeZone : ''
-    enableDefaultTelemetry: enableChildTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
 
@@ -223,7 +223,7 @@ module automationAccount_runbooks 'runbooks/deploy.bicep' = [for (runbook, index
     version: contains(runbook, 'version') ? runbook.version : ''
     location: location
     tags: tags
-    enableDefaultTelemetry: enableChildTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
 
@@ -235,7 +235,7 @@ module automationAccount_jobSchedules 'jobSchedules/deploy.bicep' = [for (jobSch
     scheduleName: jobSchedule.scheduleName
     parameters: contains(jobSchedule, 'parameters') ? jobSchedule.parameters : {}
     runOn: contains(jobSchedule, 'runOn') ? jobSchedule.runOn : ''
-    enableDefaultTelemetry: enableChildTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
   dependsOn: [
     automationAccount_schedules
@@ -251,15 +251,16 @@ module automationAccount_variables 'variables/deploy.bicep' = [for (variable, in
     description: contains(variable, 'description') ? variable.description : ''
     value: variable.value
     isEncrypted: contains(variable, 'isEncrypted') ? variable.isEncrypted : true
-    enableDefaultTelemetry: enableChildTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
 
-module automationAccount_linkedService '.bicep/nested_linkedService.bicep' = if (!empty(linkedWorkspaceResourceId)) {
+module automationAccount_linkedService '../../Microsoft.OperationalInsights/workspaces/linkedServices/deploy.bicep' = if (!empty(linkedWorkspaceResourceId)) {
   name: '${uniqueString(deployment().name, location)}-AutoAccount-LinkedService'
   params: {
     name: 'automation'
     logAnalyticsWorkspaceName: last(split(linkedWorkspaceResourceId, '/'))
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
     resourceId: automationAccount.id
     tags: tags
   }
@@ -323,17 +324,17 @@ module automationAccount_softwareUpdateConfigurations 'softwareUpdateConfigurati
       'Security'
     ]
     weekDays: contains(softwareUpdateConfiguration, 'weekDays') ? softwareUpdateConfiguration.weekDays : []
-    enableDefaultTelemetry: enableChildTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
   dependsOn: [
     automationAccount_solutions
   ]
 }]
 
-resource automationAccount_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
-  name: '${automationAccount.name}-AutoAccount-${lock}-lock'
+resource automationAccount_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
+  name: '${automationAccount.name}-${lock}-lock'
   properties: {
-    level: lock
+    level: any(lock)
     notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: automationAccount
@@ -361,9 +362,9 @@ module automationAccount_privateEndpoints '../../Microsoft.Network/privateEndpoi
     name: contains(privateEndpoint, 'name') ? privateEndpoint.name : 'pe-${last(split(automationAccount.id, '/'))}-${privateEndpoint.service}-${index}'
     serviceResourceId: automationAccount.id
     subnetResourceId: privateEndpoint.subnetResourceId
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
     location: reference(split(privateEndpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location
-    lock: contains(privateEndpoint, 'lock') ? privateEndpoint.lock : 'NotSpecified'
+    lock: contains(privateEndpoint, 'lock') ? privateEndpoint.lock : lock
     privateDnsZoneGroups: contains(privateEndpoint, 'privateDnsZoneGroups') ? privateEndpoint.privateDnsZoneGroups : []
     roleAssignments: contains(privateEndpoint, 'roleAssignments') ? privateEndpoint.roleAssignments : []
     tags: contains(privateEndpoint, 'tags') ? privateEndpoint.tags : {}

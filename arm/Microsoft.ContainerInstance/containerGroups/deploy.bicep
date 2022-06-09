@@ -40,12 +40,12 @@ param environmentVariables array = []
 param location string = resourceGroup().location
 
 @allowed([
+  ''
   'CanNotDelete'
-  'NotSpecified'
   'ReadOnly'
 ])
 @description('Optional. Specify the type of lock.')
-param lock string = 'NotSpecified'
+param lock string = ''
 
 @description('Optional. Enables system assigned managed identity on the resource.')
 param systemAssignedIdentity bool = false
@@ -111,11 +111,11 @@ resource containergroup 'Microsoft.ContainerInstance/containerGroups@2021-03-01'
   }
 }
 
-resource containergroup_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
+resource containergroup_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
   name: '${containergroup.name}-${lock}-lock'
   properties: {
-    level: lock
-    notes: (lock == 'CanNotDelete') ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
+    level: any(lock)
+    notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: containergroup
 }

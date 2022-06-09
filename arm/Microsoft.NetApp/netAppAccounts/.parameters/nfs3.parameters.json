@@ -5,6 +5,9 @@
         "name": {
             "value": "<<namePrefix>>-az-anf-nfs3-001"
         },
+        "lock": {
+            "value": "CanNotDelete"
+        },
         "capacityPools": {
             "value": [
                 {

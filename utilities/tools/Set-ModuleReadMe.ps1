@@ -301,10 +301,10 @@ function Set-OutputsSection {
 
 <#
 .SYNOPSIS
-Generate 'Usage Examples' for the ReadMe out of the parameter files currently used to test the template
+Generate 'Deployment examples' for the ReadMe out of the parameter files currently used to test the template
 
 .DESCRIPTION
-Generate 'Usage Examples' for the ReadMe out of the parameter files currently used to test the template
+Generate 'Deployment examples' for the ReadMe out of the parameter files currently used to test the template
 
 .PARAMETER TemplateFileContent
 Mandatory. The template file content object to crawl data from
@@ -607,7 +607,7 @@ function Set-ModuleReadMe {
             'Outputs',
             'Template references',
             'Navigation',
-            'Usage examples'
+            'Deployment examples'
         )]
         [string[]] $SectionsToRefresh = @(
             'Resource Types',
@@ -615,7 +615,7 @@ function Set-ModuleReadMe {
             'Outputs',
             'Template references',
             'Navigation',
-            'Usage examples'
+            'Deployment examples'
         )
     )
 
@@ -628,7 +628,7 @@ function Set-ModuleReadMe {
 
     if (-not $TemplateFileContent) {
         if ((Split-Path -Path $TemplateFilePath -Extension) -eq '.bicep') {
-            $templateFileContent = az bicep build --file $TemplateFilePath --stdout | ConvertFrom-Json -AsHashtable
+            $templateFileContent = az bicep build --file $TemplateFilePath --stdout --no-restore | ConvertFrom-Json -AsHashtable
         } else {
             $templateFileContent = ConvertFrom-Json (Get-Content $TemplateFilePath -Encoding 'utf8' -Raw) -ErrorAction Stop -AsHashtable
         }
@@ -717,8 +717,8 @@ function Set-ModuleReadMe {
         $readMeFileContent = Set-OutputsSection @inputObject
     }
 
-    if ($SectionsToRefresh -contains 'Usage examples') {
-        # Handle [Usage examples] section
+    if ($SectionsToRefresh -contains 'Deployment examples') {
+        # Handle [Deployment examples] section
         # ===================================
         $inputObject = @{
             ReadMeFileContent = $readMeFileContent

@@ -5,6 +5,9 @@
         "name": {
             "value": "<<namePrefix>>-az-cdb-plain-001"
         },
+        "lock": {
+            "value": "CanNotDelete"
+        },
         "locations": {
             "value": [
                 {

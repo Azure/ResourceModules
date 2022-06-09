@@ -5,6 +5,9 @@
         "name": {
             "value": "<<namePrefix>>-az-fw-x-001"
         },
+        "lock": {
+            "value": "CanNotDelete"
+        },
         "zones": {
             "value": [
                 "1",

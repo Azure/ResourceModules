@@ -5,22 +5,21 @@
         "name": {
             "value": "<<namePrefix>>-wd-aut-encr-001"
         },
-        "encryptionKeySource" : {
-            "value" : "Microsoft.Keyvault"
+        "encryptionKeySource": {
+            "value": "Microsoft.Keyvault"
         },
         "encryptionUserAssignedIdentity": {
             "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001" // this identity needs to be one of the identities defined in userAssignedIdentities section
         },
-        "keyName" : {
-                "value" : "keyEncryptionKey"
+        "keyName": {
+            "value": "keyEncryptionKey"
         },
-        "keyvaultUri" : {
-                    "value" : "https://adp-carml-az-kv-nopr-002.vault.azure.net/"
+        "keyvaultUri": {
+            "value": "https://adp-<<namePrefix>>-az-kv-nopr-002.vault.azure.net/"
         },
-        "keyVersion" : {
-                    "value" : "9917c14be51d4d93b37218de7d326f60"
+        "keyVersion": {
+            "value": "9917c14be51d4d93b37218de7d326f60"
         },
-        
         "userAssignedIdentities": {
             "value": {
                 "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001": {}

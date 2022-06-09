@@ -47,12 +47,12 @@ param userAssignedIdentities object = {}
 param location string = resourceGroup().location
 
 @allowed([
+  ''
   'CanNotDelete'
-  'NotSpecified'
   'ReadOnly'
 ])
 @description('Optional. Specify the type of lock.')
-param lock string = 'NotSpecified'
+param lock string = ''
 
 @description('Optional. Limit control plane API calls to API Management service with version equal to or newer than this value.')
 param minApiVersion string = ''
@@ -153,7 +153,7 @@ param subscriptions array = []
 @description('Optional. The name of the diagnostic setting, if deployed.')
 param diagnosticSettingsName string = '${name}-diagnosticSettings'
 
-var enableChildTelemetry = false
+var enableReferencedModulesTelemetry = false
 
 var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
   category: category
@@ -248,7 +248,7 @@ module apis_resource 'apis/deploy.bicep' = [for (api, index) in apis: {
     type: contains(api, 'type') ? api.type : 'http'
     value: contains(api, 'value') ? api.value : ''
     wsdlSelector: contains(api, 'wsdlSelector') ? api.wsdlSelector : {}
-    enableDefaultTelemetry: enableChildTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
   dependsOn: [
     apiVersionSet_resource
@@ -261,7 +261,7 @@ module apiVersionSet_resource 'apiVersionSets/deploy.bicep' = [for (apiVersionSe
     apiManagementServiceName: apiManagementService.name
     name: apiVersionSet.name
     properties: contains(apiVersionSet, 'properties') ? apiVersionSet.properties : {}
-    enableDefaultTelemetry: enableChildTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
 
@@ -292,7 +292,7 @@ module authorizationServers_resource '.bicep/nested_authorizationServers.bicep' 
     supportState: contains(authorizationServer, 'supportState') ? authorizationServer.supportState : false
     tokenBodyParameters: contains(authorizationServer, 'tokenBodyParameters') ? authorizationServer.tokenBodyParameters : []
     tokenEndpoint: contains(authorizationServer, 'tokenEndpoint') ? authorizationServer.tokenEndpoint : ''
-    enableDefaultTelemetry: enableChildTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
 
@@ -313,7 +313,7 @@ module backends_resource 'backends/deploy.bicep' = [for (backend, index) in back
       validateCertificateChain: false
       validateCertificateName: false
     }
-    enableDefaultTelemetry: enableChildTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
 
@@ -326,7 +326,7 @@ module caches_resource 'caches/deploy.bicep' = [for (cache, index) in caches: {
     name: cache.name
     resourceId: contains(cache, 'resourceId') ? cache.resourceId : ''
     useFromLocation: cache.useFromLocation
-    enableDefaultTelemetry: enableChildTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
 
@@ -346,7 +346,7 @@ module identityProvider_resource 'identityProviders/deploy.bicep' = [for (identi
     identityProviderSignInTenant: contains(identityProvider, 'identityProviderSignInTenant') ? identityProvider.identityProviderSignInTenant : ''
     identityProviderSignUpPolicyName: contains(identityProvider, 'identityProviderSignUpPolicyName') ? identityProvider.identityProviderSignUpPolicyName : ''
     identityProviderType: contains(identityProvider, 'identityProviderType') ? identityProvider.identityProviderType : 'aad'
-    enableDefaultTelemetry: enableChildTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
 
@@ -360,7 +360,7 @@ module namedValues_resource 'namedValues/deploy.bicep' = [for (namedValue, index
     namedValueTags: contains(namedValue, 'namedValueTags') ? namedValue.namedValueTags : []
     secret: contains(namedValue, 'secret') ? namedValue.secret : false
     value: contains(namedValue, 'value') ? namedValue.value : newGuidValue
-    enableDefaultTelemetry: enableChildTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
 
@@ -370,7 +370,7 @@ module portalSettings_resource 'portalsettings/deploy.bicep' = [for (portalSetti
     apiManagementServiceName: apiManagementService.name
     name: portalSetting.name
     properties: contains(portalSetting, 'properties') ? portalSetting.properties : {}
-    enableDefaultTelemetry: enableChildTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
 
@@ -380,7 +380,7 @@ module policy_resource 'policies/deploy.bicep' = [for (policy, index) in policie
     apiManagementServiceName: apiManagementService.name
     value: policy.value
     format: contains(policy, 'format') ? policy.format : 'xml'
-    enableDefaultTelemetry: enableChildTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
 
@@ -397,7 +397,7 @@ module products_resource 'products/deploy.bicep' = [for (product, index) in prod
     subscriptionRequired: contains(product, 'subscriptionRequired') ? product.subscriptionRequired : false
     subscriptionsLimit: contains(product, 'subscriptionsLimit') ? product.subscriptionsLimit : 1
     terms: contains(product, 'terms') ? product.terms : ''
-    enableDefaultTelemetry: enableChildTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
   dependsOn: [
     apis_resource
@@ -415,14 +415,14 @@ module subscriptions_resource 'subscriptions/deploy.bicep' = [for (subscription,
     scope: contains(subscription, 'scope') ? subscription.scope : '/apis'
     secondaryKey: contains(subscription, 'secondaryKey') ? subscription.secondaryKey : ''
     state: contains(subscription, 'state') ? subscription.state : ''
-    enableDefaultTelemetry: enableChildTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
 
-resource apiManagementService_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
+resource apiManagementService_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
   name: '${apiManagementService.name}-${lock}-lock'
   properties: {
-    level: lock
+    level: any(lock)
     notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: apiManagementService

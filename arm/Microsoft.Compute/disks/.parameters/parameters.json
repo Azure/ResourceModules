@@ -5,6 +5,9 @@
         "name": {
             "value": "<<namePrefix>>-az-disk-x-001"
         },
+        "lock": {
+            "value": "CanNotDelete"
+        },
         "sku": {
             "value": "UltraSSD_LRS"
         },

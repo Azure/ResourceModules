@@ -2,38 +2,44 @@
 
 #region Helper Functions
 <#
-    .SYNOPSIS
-    Installes given PowerShell modules
+.SYNOPSIS
+Installes given PowerShell modules
 
-    .DESCRIPTION
-    Installes given PowerShell modules
+.DESCRIPTION
+Installes given PowerShell modules
 
-    .PARAMETER Module
-    Modules to be installed, must be Object
-    @{
-        Name = 'Name'
-        Version = '1.0.0' # Optional
-    }
+.PARAMETER Module
+Required. Modules to be installed, must be Object
+@{
+    Name = 'Name'
+    Version = '1.0.0' # Optional
+}
 
-    .EXAMPLE
-    Install-CustomModule @{ Name = 'Pester' } C:\Modules
+.PARAMETER InstalledModule
+Optional. Modules that are already installed on the machine. Can be fetched via 'Get-Module -ListAvailable'
 
-    Installes pester and saves it to C:\Modules
+.EXAMPLE
+Install-CustomModule @{ Name = 'Pester' } C:\Modules
+
+Installes pester and saves it to C:\Modules
 #>
 function Install-CustomModule {
 
     [CmdletBinding(SupportsShouldProcess)]
     Param (
         [Parameter(Mandatory = $true)]
-        [Hashtable] $Module
+        [Hashtable] $Module,
+
+        [Parameter(Mandatory = $false)]
+        [object[]] $InstalledModule = @()
     )
 
     # Remove exsisting module in session
-    if (Get-Module $Module -ErrorAction SilentlyContinue) {
+    if (Get-Module $Module -ErrorAction 'SilentlyContinue') {
         try {
             Remove-Module $Module -Force
         } catch {
-            Write-Error ("Unable to remove module $($Module.Name)  : $($_.Exception) found, $($_.ScriptStackTrace)")
+            Write-Error ('Unable to remove module [{0}] because of exception [{1}]. Stack Trace: [{2}]' -f $Module.Name, $_.Exception, $_.ScriptStackTrace)
         }
     }
 
@@ -42,18 +48,29 @@ function Install-CustomModule {
         name       = $Module.Name
         Repository = 'PSGallery'
     }
-    if ($module.Version) {
-        $moduleImportInputObject['RequiredVersion'] = $module.Version
+    if ($Module.Version) {
+        $moduleImportInputObject['RequiredVersion'] = $Module.Version
     }
+
+    # Get all modules that match a certain name. In case of e.g. 'Az' it returns several.
     $foundModules = Find-Module @moduleImportInputObject
+
     foreach ($foundModule in $foundModules) {
 
-        $localModuleVersions = Get-Module $foundModule.Name -ListAvailable
-        if ($localModuleVersions -and $localModuleVersions.Version -contains $foundModule.Version ) {
-            Write-Verbose ('Module [{0}] already installed with version [{1}]' -f $foundModule.Name, $foundModule.Version) -Verbose
+        # Check if already installed as required
+        if ($alreadyInstalled = $InstalledModule | Where-Object { $_.Name -eq $Module.Name }) {
+            if ($Module.Version) {
+                $alreadyInstalled = $alreadyInstalled | Where-Object { $_.Version -eq $Module.Version }
+            } else {
+                # Get latest in case of multiple
+                $alreadyInstalled = ($alreadyInstalled | Sort-Object -Property Version -Descending)[0]
+            }
+            Write-Verbose ('Module [{0}] already installed with version [{1}]' -f $alreadyInstalled.Name, $alreadyInstalled.Version) -Verbose
             continue
         }
-        if ($module.ExcludeModules -and $module.excludeModules.contains($foundModule.Name)) {
+
+        # Check if not to be excluded
+        if ($Module.ExcludeModules -and $Module.excludeModules.contains($foundModule.Name)) {
             Write-Verbose ('Module {0} is configured to be ignored.' -f $foundModule.Name) -Verbose
             continue
         }
@@ -179,6 +196,17 @@ function Set-EnvironmentOnAgent {
         $count++
     }
 
+    # MS-hosted agents have pre-installed modules in a specific path. Let's make them discoverable if available.
+    if ((Test-Path '/usr/share/') -and ((Get-ChildItem -Path '/usr/share/az_*' -Directory).Count -gt 0)) {
+        $preInstalledModulePaths = Get-ChildItem -Path '/usr/share/az_*' -Directory
+        $maximumVersionPath = '/usr/share/az_{0}' -f (($preInstalledModulePaths | ForEach-Object { ($_ -split 'az_')[1] }) | ForEach-Object { [version]$_ } | Measure-Object -Maximum ).Maximum
+        Write-Verbose "Found pre-installed modules in path [$maximumVersionPath]. Adding it PSModulePath environment variable." -Verbose
+        [Environment]::SetEnvironmentVariable('PSModulePath', "$env:PSModulePath;:$maximumVersionPath", 'Machine')
+    }
+
+    # Load already installed modules
+    $installedModules = Get-Module -ListAvailable
+
     Write-Verbose ('Install-CustomModule start') -Verbose
     $count = 1
     Foreach ($Module in $Modules) {
@@ -186,8 +214,9 @@ function Set-EnvironmentOnAgent {
         Write-Verbose ('HANDLING MODULE [{0}/{1}] [{2}] ' -f $count, $Modules.Count, $Module.Name) -Verbose
         Write-Verbose ('=====================') -Verbose
         # Installing New Modules and Removing Old
-        $null = Install-CustomModule -Module $Module
+        $null = Install-CustomModule -Module $Module -InstalledModule $installedModules
         $count++
     }
+
     Write-Verbose ('Install-CustomModule end') -Verbose
 }
