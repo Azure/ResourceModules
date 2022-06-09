@@ -34,6 +34,8 @@ param ipRules array = []
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
 
+param networkRuleSet object = {}
+
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name)}'
   properties: {
@@ -50,15 +52,15 @@ resource namespace 'Microsoft.ServiceBus/namespaces@2021-06-01-preview' existing
   name: namespaceName
 }
 
-resource networkRuleSet 'Microsoft.ServiceBus/namespaces/networkRuleSets@2021-11-01' = {
+resource serviceBusNamespace_networkRuleSet 'Microsoft.ServiceBus/namespaces/networkRuleSets@2021-11-01' = {
   name: name
   parent: namespace
   properties: {
-    defaultAction: defaultAction
-    publicNetworkAccess: publicNetworkAccess
-    trustedServiceAccessEnabled: trustedServiceAccessEnabled
-    ipRules: ipRules
-    virtualNetworkRules: virtualNetworkRules
+    defaultAction: networkRuleSet.defaultAction
+    publicNetworkAccess: networkRuleSet.publicNetworkAccess
+    trustedServiceAccessEnabled: networkRuleSet.trustedServiceAccessEnabled
+    ipRules: networkRuleSet.ipRules
+    virtualNetworkRules: networkRuleSet.virtualNetworkRules
   }
 }
 

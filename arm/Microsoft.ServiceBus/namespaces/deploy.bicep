@@ -77,17 +77,6 @@ param roleAssignments array = []
 @description('Optional. Configuration Details for private endpoints.')
 param privateEndpoints array = []
 
-@description('Optional. Whether or not public endpoint access is allowed for this account.')
-@allowed([
-  ''
-  'Enabled'
-  'Disabled'
-])
-param publicNetworkAccess string = ''
-
-@description('Optional. Allow trusted Azure services to access a network restricted Service Bus.')
-param trustedServiceAccessEnabled bool = true
-
 @description('Optional. Configure networking options for Premium SKU Service Bus.')
 param networkRuleSets object = {}
 
@@ -157,8 +146,8 @@ var identity = identityType != 'None' ? {
 
 var networkRuleSets_var = !empty(networkRuleSets) ? networkRuleSets : {
   defaultAction: contains(networkRuleSets, 'defaultAction') ? networkRuleSets.defaultAction : (!empty(privateEndpoints) ? 'Deny' : null)
-  publicNetworkAccess: !empty(publicNetworkAccess) ? any(publicNetworkAccess) : (!empty(privateEndpoints) ? 'Disabled' : null)
-  trustedServiceAccessEnabled: trustedServiceAccessEnabled
+  publicNetworkAccess: contains(networkRuleSets, 'publicNetworkAccess') ? networkRuleSets.publicNetworkAccess : (!empty(privateEndpoints) ? 'Disabled' : null)
+  trustedServiceAccessEnabled: contains(networkRuleSets, 'trustedServiceAccessEnabled') ? networkRuleSets.trustedServiceAccessEnabled : true
   virtualNetworkRules: contains(networkRuleSets, 'virtualNetworkRules') ? !empty(networkRuleSets.ipRules) ? networkRuleSets.virtualNetworkRules : [] : null
   ipRules: contains(networkRuleSets, 'ipRules') ? !empty(networkRuleSets.ipRules) ? networkRuleSets.ipRules : [] : null
 }
@@ -226,9 +215,7 @@ module serviceBusNamespace_networkRuleSet 'networkRuleSets/deploy.bicep' = if (s
   name: '${uniqueString(deployment().name, location)}-networkRuleSet'
   params: {
     namespaceName: serviceBusNamespace.name
-    trustedServiceAccessEnabled: networkRuleSets_var.trustedServiceAccessEnabled
-    publicNetworkAccess: networkRuleSets_var.publicNetworkAccess
-    enableDefaultTelemetry: enableDefaultTelemetry
+    networkRuleSet: networkRuleSets_var
   }
 }
 
