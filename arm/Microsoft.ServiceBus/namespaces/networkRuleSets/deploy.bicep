@@ -9,6 +9,7 @@ param name string = 'default'
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
 
+@description('Required. Configure networking options for Premium SKU Service Bus, ipRules and virtualNetworkRules are not required when using dedicated modules.')
 param networkRuleSet object = {}
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {

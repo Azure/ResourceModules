@@ -20,6 +20,7 @@ This module deploys ServiceBus Namespaces NetworkRuleSets.
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `name` | string | `'default'` | The default is the only valid ruleset. |
+| `networkRuleSet` | object | `{object}` | Configure networking options for Premium SKU Service Bus, ipRules and virtualNetworkRules are not required when using dedicated modules. |
 
 **Conditional parameters**
 | Parameter Name | Type | Description |
