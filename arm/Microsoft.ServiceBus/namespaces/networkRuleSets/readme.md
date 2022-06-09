@@ -27,14 +27,9 @@ This module deploys ServiceBus Namespaces NetworkRuleSets.
 | `namespaceName` | string | The name of the parent Service Bus Namespace for the Service Bus Network Rule Set. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
-| Parameter Name | Type | Default Value | Allowed Values | Description |
-| :-- | :-- | :-- | :-- | :-- |
-| `defaultAction` | string | `''` | `[, Allow, Deny]` | Defualt Action for Access to Service Bus. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `ipRules` | array | `[]` |  | A list of IP Rules to be allowed on the Service Bus. Not required when using the IpFilterRules Module. |
-| `publicNetworkAccess` | string | `''` | `[, Enabled, Disabled]` | Public Network Access for Premium Sku. |
-| `trustedServiceAccessEnabled` | bool | `True` |  | Trusted Services Bypass for Premium Sku. |
-| `virtualNetworkRules` | array | `[]` |  | A list of Virtual Network Rules to be allowed on the Service Bus. Not required when using the virtualNetworkRules Module. |
+| Parameter Name | Type | Default Value | Description |
+| :-- | :-- | :-- | :-- |
+| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 
 
 ## Outputs

@@ -6,31 +6,6 @@ param namespaceName string
 @description('Required. The default is the only valid ruleset.')
 param name string = 'default'
 
-@description('Optional. Public Network Access for Premium Sku.')
-@allowed([
-  ''
-  'Enabled'
-  'Disabled'
-])
-param publicNetworkAccess string = ''
-
-@description('Optional. Defualt Action for Access to Service Bus.')
-@allowed([
-  ''
-  'Allow'
-  'Deny'
-])
-param defaultAction string = ''
-
-@description('Optional. Trusted Services Bypass for Premium Sku.')
-param trustedServiceAccessEnabled bool = true
-
-@description('Optional. A list of Virtual Network Rules to be allowed on the Service Bus. Not required when using the virtualNetworkRules Module.')
-param virtualNetworkRules array = []
-
-@description('Optional. A list of IP Rules to be allowed on the Service Bus. Not required when using the IpFilterRules Module.')
-param ipRules array = []
-
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
 

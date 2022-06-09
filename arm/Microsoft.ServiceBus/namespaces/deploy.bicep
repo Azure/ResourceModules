@@ -77,7 +77,7 @@ param roleAssignments array = []
 @description('Optional. Configuration Details for private endpoints.')
 param privateEndpoints array = []
 
-@description('Optional. Configure networking options for Premium SKU Service Bus.')
+@description('Optional. Configure networking options for Premium SKU Service Bus, ipRules and virtualNetworkRules are not required when using dedicated modules.')
 param networkRuleSets object = {}
 
 @description('Optional. Tags of the resource.')
