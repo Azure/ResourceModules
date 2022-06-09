@@ -166,10 +166,13 @@
         "allowTrustedServices": {
             "value": true
         },
-        "networkAclConfig": {
+        "networkRuleSets": {
             "value": {
+                "defaultAction": "Deny",
                 "publicNetworkAccess": "Disabled",
-                "allowTrustedServices": true
+                "allowTrustedServices": true,
+                "virtualNetworkRules": [],
+                "ipRules": []
             }
         }
     }

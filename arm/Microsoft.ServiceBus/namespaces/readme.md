@@ -40,7 +40,6 @@ This module deploys a service bus namespace resource.
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `allowTrustedServices` | bool | `True` |  | Allow trusted Azure services to access a network restricted Service Bus. |
 | `authorizationRules` | _[authorizationRules](authorizationRules/readme.md)_ array | `[System.Collections.Hashtable]` |  | Authorization Rules for the Service Bus namespace. |
 | `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
 | `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
@@ -57,13 +56,15 @@ This module deploys a service bus namespace resource.
 | `lock` | string | `''` | `[, CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `migrationConfigurations` | _[migrationConfigurations](migrationConfigurations/readme.md)_ object | `{object}` |  | The migration configuration. |
 | `name` | string | `''` |  | Name of the Service Bus Namespace. If no name is provided, then unique name will be created. |
-| `networkAclConfig` | object | `{object}` |  | Configure networking options for Premium SKU Service Bus. |
+| `networkRuleSets` | _[networkRuleSets](networkRuleSets/readme.md)_ object | `{object}` |  | Configure networking options for Premium SKU Service Bus. |
 | `privateEndpoints` | array | `[]` |  | Configuration Details for private endpoints. |
+| `publicNetworkAccess` | string | `''` | `[, Enabled, Disabled]` | Whether or not public endpoint access is allowed for this account. |
 | `queues` | _[queues](queues/readme.md)_ array | `[]` |  | The queues to create in the service bus namespace. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `systemAssignedIdentity` | bool | `False` |  | Enables system assigned managed identity on the resource. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
 | `topics` | _[topics](topics/readme.md)_ array | `[]` |  | The topics to create in the service bus namespace. |
+| `trustedServiceAccessEnabled` | bool | `True` |  | Allow trusted Azure services to access a network restricted Service Bus. |
 | `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. |
 | `virtualNetworkRules` | _[virtualNetworkRules](virtualNetworkRules/readme.md)_ array | `[]` |  | vNet Rules SubnetIds for the Service Bus namespace. |
 | `zoneRedundant` | bool | `False` |  | Enabling this property creates a Premium Service Bus Namespace in regions supported availability zones. |
@@ -539,10 +540,13 @@ module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
         "allowTrustedServices": {
             "value": true
         },
-        "networkAclConfig": {
+        "networkRuleSets": {
             "value": {
+                "defaultAction": "Deny",
                 "publicNetworkAccess": "Disabled",
-                "allowTrustedServices": true
+                "allowTrustedServices": true,
+                "virtualNetworkRules": [],
+                "ipRules": []
             }
         }
     }
@@ -682,9 +686,12 @@ module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
       }
     ]
     allowTrustedServices: true
-    networkAclConfig: {
+    networkRuleSets: {
+      defaultAction: 'Deny'
       publicNetworkAccess: 'Disabled'
       allowTrustedServices: true
+      virtualNetworkRules: []
+      ipRules: []
     }
   }
 ```

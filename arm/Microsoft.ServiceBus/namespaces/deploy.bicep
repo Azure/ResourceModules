@@ -77,11 +77,19 @@ param roleAssignments array = []
 @description('Optional. Configuration Details for private endpoints.')
 param privateEndpoints array = []
 
+@description('Optional. Whether or not public endpoint access is allowed for this account.')
+@allowed([
+  ''
+  'Enabled'
+  'Disabled'
+])
+param publicNetworkAccess string = ''
+
 @description('Optional. Allow trusted Azure services to access a network restricted Service Bus.')
-param allowTrustedServices bool = true
+param trustedServiceAccessEnabled bool = true
 
 @description('Optional. Configure networking options for Premium SKU Service Bus.')
-param networkAclConfig object = {}
+param networkRuleSets object = {}
 
 @description('Optional. Tags of the resource.')
 param tags object = {}
@@ -147,10 +155,13 @@ var identity = identityType != 'None' ? {
   userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
 } : null
 
-var networkAcl = !empty(networkAclConfig) ? {
-  publicNetworkAccess: !empty(privateEndpoints) ? 'Disabled' : 'Enabled'
-  allowTrustedServices: allowTrustedServices
-} : networkAclConfig
+var networkRuleSets_var = !empty(networkRuleSets) ? networkRuleSets : {
+  defaultAction: contains(networkRuleSets, 'defaultAction') ? networkRuleSets.defaultAction : (!empty(privateEndpoints) ? 'Deny' : null)
+  publicNetworkAccess: !empty(publicNetworkAccess) ? any(publicNetworkAccess) : (!empty(privateEndpoints) ? 'Disabled' : null)
+  trustedServiceAccessEnabled: trustedServiceAccessEnabled
+  virtualNetworkRules: contains(networkRuleSets, 'virtualNetworkRules') ? !empty(networkRuleSets.ipRules) ? networkRuleSets.virtualNetworkRules : [] : null
+  ipRules: contains(networkRuleSets, 'ipRules') ? !empty(networkRuleSets.ipRules) ? networkRuleSets.ipRules : [] : null
+}
 
 var enableChildTelemetry = false
 
@@ -211,12 +222,12 @@ module serviceBusNamespace_virtualNetworkRules 'virtualNetworkRules/deploy.bicep
   }
 }]
 
-module serviceBusNamespace_networkRuleSet 'networkRuleSets/deploy.bicep' = if (skuName == 'Premium' || !empty(networkAclConfig)) {
+module serviceBusNamespace_networkRuleSet 'networkRuleSets/deploy.bicep' = if (skuName == 'Premium' || !empty(networkRuleSets)) {
   name: '${uniqueString(deployment().name, location)}-networkRuleSet'
   params: {
     namespaceName: serviceBusNamespace.name
-    allowTrustedServices: networkAcl.allowTrustedServices
-    publicNetworkAccess: networkAcl.publicNetworkAccess
+    trustedServiceAccessEnabled: networkRuleSets_var.trustedServiceAccessEnabled
+    publicNetworkAccess: networkRuleSets_var.publicNetworkAccess
     enableDefaultTelemetry: enableDefaultTelemetry
   }
 }
