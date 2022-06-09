@@ -209,7 +209,7 @@ function Set-EnvironmentOnAgent {
             if (-not (Test-Path $profile)) {
                 $null = New-Item -Path $profile -Force
             }
-            Add-Content -Path $profile -Value "`$env:PSModulePath += ('{0};{1}' -f $env:PSModulePath, $maximumVersionPath)"
+            Add-Content -Path $profile -Value "`$env:PSModulePath += ('{0};{1}' -f '$env:PSModulePath', '$maximumVersionPath')"
         } else {
             $env:PSModulePath += ('{0}:{1}' -f $env:PSModulePath, $maximumVersionPath)
             [Environment]::SetEnvironmentVariable('PSModulePath', ('{0}:{1}' -f ([Environment]::GetEnvironmentVariable('PSModulePath', 'Machine')), $maximumVersionPath), 'Machine')
@@ -217,7 +217,7 @@ function Set-EnvironmentOnAgent {
             if (-not (Test-Path $profile)) {
                 $null = New-Item -Path $profile -Force
             }
-            Add-Content -Path $profile -Value "`$env:PSModulePath += ('{0}:{1}' -f $env:PSModulePath, $maximumVersionPath)"
+            Add-Content -Path $profile -Value "`$env:PSModulePath += ('{0}:{1}' -f '$env:PSModulePath', '$maximumVersionPath')"
         }
     }
 
