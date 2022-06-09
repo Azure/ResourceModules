@@ -42,12 +42,11 @@ This module deploys DataProtection BackupVaults.
 
 ### Parameter Usage: `backupPolicies`
 
+Create backup policies in the backupvault.
+
 <details>
 
 <summary>Parameter JSON format</summary>
-
-Create backup policies in the backupvault. An example is provided below.
-
 ```json
  "backupPolicies": {
     "value": [
