@@ -513,6 +513,12 @@ module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
                 }
             ]
         },
+        "networkAcls": {
+            "value": {
+                "defaultAction": "deny",
+                "virtualNetworkRules": []
+            }
+        },
         "systemAssignedIdentity": {
             "value": true
         },
@@ -563,6 +569,10 @@ module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
         ]
       }
     ]
+    networkAcls: {
+      defaultAction: 'deny'
+      virtualNetworkRules: []
+    }
     systemAssignedIdentity: true
     userAssignedIdentities: {
       '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
