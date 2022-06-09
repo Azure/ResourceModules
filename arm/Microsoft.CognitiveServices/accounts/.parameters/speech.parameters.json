@@ -20,7 +20,7 @@
             }
         },
         "customSubDomainName": {
-            "value": "<<namePrefix>>domain"
+            "value": "<<namePrefix>>speechdomain"
         },
         "privateEndpoints": {
             "value": [

@@ -31,7 +31,7 @@
             }
         },
         "customSubDomainName": {
-            "value": "<<namePrefix>>domain"
+            "value": "<<namePrefix>>xdomain"
         },
         "systemAssignedIdentity": {
             "value": true
