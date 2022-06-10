@@ -19,15 +19,15 @@ on:
     paths:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.analysisservices.servers.yml'
-      - 'arm/Microsoft.AnalysisServices/servers/**'
-      - 'arm/.global/global.module.tests.ps1'
+      - '$(moduleFolderPath)/Microsoft.AnalysisServices/servers/**'
+      - '$(moduleFolderPath)/.global/global.module.tests.ps1'
       - '!*/**/readme.md'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/dependencies/**'
 
 env:
   variablesPath: 'global.variables.yml'
-  modulePath: 'arm/Microsoft.AnalysisServices/servers'
+  modulePath: '$(moduleFolderPath)/Microsoft.AnalysisServices/servers'
   workflowPath: '.github/workflows/ms.analysisservices.servers.yml'
   AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
   ARM_SUBSCRIPTION_ID: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
