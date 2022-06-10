@@ -27,11 +27,19 @@ The top-level resource in Azure Container Instances is the container group. A co
 | `image` | string | Name of the image. |
 | `name` | string | Name for the container group. |
 
+**Conditional parameters**
+| Parameter Name | Type | Default Value | Description |
+| :-- | :-- | :-- | :-- |
+| `cMKKeyVersion` | string | `''` | The version of the customer managed key to reference for encryption. Required if 'cMKeyName' is not empty. |
+
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
+| `cMKKeyName` | string | `''` |  | The name of the customer managed key to use for encryption. Cannot be deployed together with the parameter 'systemAssignedIdentity' enabled. |
+| `cMKKeyVaultResourceId` | string | `''` |  | The resource ID of a key vault to reference a customer managed key for encryption from. |
 | `cpuCores` | int | `2` |  | The number of CPU cores to allocate to the container. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `enableEncryption` | bool | `True` |  | Enable service encryption. |
 | `environmentVariables` | array | `[]` |  | Environment variables of the container group. |
 | `imageRegistryCredentials` | array | `[]` |  | The image registry credentials by which the container group is created from. |
 | `ipAddressType` | string | `'Public'` |  | Specifies if the IP is exposed to the public internet or private VNET. - Public or Private. |
@@ -41,6 +49,7 @@ The top-level resource in Azure Container Instances is the container group. A co
 | `osType` | string | `'Linux'` |  | The operating system type required by the containers in the container group. - Windows or Linux. |
 | `ports` | array | `[System.Collections.Hashtable]` |  | Port to open on the container and the public IP address. |
 | `restartPolicy` | string | `'Always'` |  | Restart policy for all containers within the container group. - Always: Always restart. OnFailure: Restart on failure. Never: Never restart. - Always, OnFailure, Never. |
+| `sku` | string | `'Standard'` | `[Dedicated, Standard]` | The container group SKU. |
 | `systemAssignedIdentity` | bool | `False` |  | Enables system assigned managed identity on the resource. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
 | `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. |
@@ -171,6 +180,73 @@ userAssignedIdentities: {
 ## Deployment examples
 
 <h3>Example 1</h3>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": "<<namePrefix>>-az-acg-ecnr-001"
+        },
+        "containerName": {
+            "value": "<<namePrefix>>-az-aci-x-001"
+        },
+        "image": {
+            "value": "mcr.microsoft.com/azuredocs/aci-helloworld"
+        },
+        "userAssignedIdentities": {
+            "value": {
+                "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001": {}
+            }
+        },
+        "cMKKeyVaultResourceId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-nopr-002"
+        },
+        "cMKKeyName": {
+            "value": "keyEncryptionKey"
+        },
+        // "cMKUserAssignedIdentityResourceId": {
+        //     "value": "/subscriptions/<YourSubscriptionId>/resourceGroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001"
+        // },
+        "cMKKeyVersion": {
+            "value": "590ebf5bfd9948698e5286ab924249a0"
+        }
+    }
+}
+
+```
+
+</details>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module containerGroups './Microsoft.ContainerInstance/containerGroups/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-containerGroups'
+  params: {
+    name: '<<namePrefix>>-az-acg-ecnr-001'
+    containerName: '<<namePrefix>>-az-aci-x-001'
+    image: 'mcr.microsoft.com/azuredocs/aci-helloworld'
+    userAssignedIdentities: {
+      '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
+    }
+    cMKKeyVaultResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-nopr-002'
+    cMKKeyName: 'keyEncryptionKey'
+    cMKKeyVersion: '590ebf5bfd9948698e5286ab924249a0'
+  }
+```
+
+</details>
+<p>
+
+<h3>Example 2</h3>
 
 <details>
 

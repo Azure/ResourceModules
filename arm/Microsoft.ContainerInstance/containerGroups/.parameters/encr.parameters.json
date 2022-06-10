@@ -1,0 +1,32 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": "<<namePrefix>>-az-acg-ecnr-001"
+        },
+        "containerName": {
+            "value": "<<namePrefix>>-az-aci-x-001"
+        },
+        "image": {
+            "value": "mcr.microsoft.com/azuredocs/aci-helloworld"
+        },
+        "userAssignedIdentities": {
+            "value": {
+                "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001": {}
+            }
+        },
+        "cMKKeyVaultResourceId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-nopr-002"
+        },
+        "cMKKeyName": {
+            "value": "keyEncryptionKey"
+        },
+        // "cMKUserAssignedIdentityResourceId": {
+        //     "value": "/subscriptions/<YourSubscriptionId>/resourceGroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001"
+        // },
+        "cMKKeyVersion": {
+            "value": "590ebf5bfd9948698e5286ab924249a0"
+        }
+    }
+}

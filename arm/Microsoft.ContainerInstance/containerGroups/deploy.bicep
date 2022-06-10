@@ -10,8 +10,8 @@ param image string
 @description('Optional. Port to open on the container and the public IP address.')
 param ports array = [
   {
-    name: 'Tcp'
-    value: '443'
+    protocol: 'Tcp'
+    port: '443'
   }
 ]
 
@@ -59,6 +59,25 @@ param tags object = {}
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
 
+@description('Optional. The container group SKU.')
+@allowed([
+  'Dedicated'
+  'Standard'
+])
+param sku string = 'Standard'
+
+@description('Optional. Enable service encryption.')
+param enableEncryption bool = true
+
+@description('Optional. The resource ID of a key vault to reference a customer managed key for encryption from.')
+param cMKKeyVaultResourceId string = ''
+
+@description('Optional. The name of the customer managed key to use for encryption. Cannot be deployed together with the parameter \'systemAssignedIdentity\' enabled.')
+param cMKKeyName string = ''
+
+@description('Conditional. The version of the customer managed key to reference for encryption. Required if \'cMKeyName\' is not empty.')
+param cMKKeyVersion string = ''
+
 var identityType = systemAssignedIdentity ? (!empty(userAssignedIdentities) ? 'SystemAssigned,UserAssigned' : 'SystemAssigned') : (!empty(userAssignedIdentities) ? 'UserAssigned' : 'None')
 
 var identity = identityType != 'None' ? {
@@ -78,12 +97,18 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
+resource cmkKeyVault 'Microsoft.KeyVault/vaults@2021-06-01-preview' existing = if (!empty(cMKKeyVaultResourceId)) {
+  name: last(split(cMKKeyVaultResourceId, '/'))
+  scope: resourceGroup(split(cMKKeyVaultResourceId, '/')[2], split(cMKKeyVaultResourceId, '/')[4])
+}
+
 resource containergroup 'Microsoft.ContainerInstance/containerGroups@2021-03-01' = {
   name: name
   location: location
   identity: identity
   tags: tags
   properties: {
+    sku: sku
     containers: [
       {
         name: containername
@@ -101,6 +126,12 @@ resource containergroup 'Microsoft.ContainerInstance/containerGroups@2021-03-01'
         }
       }
     ]
+    encryptionProperties: enableEncryption && !empty(cMKKeyName) ? {
+      // Customer-managed key
+      keyName: cMKKeyName
+      keyVersion: cMKKeyVersion
+      vaultBaseUrl: cmkKeyVault.properties.vaultUri
+    } : null
     imageRegistryCredentials: imageRegistryCredentials
     restartPolicy: restartPolicy
     osType: osType
