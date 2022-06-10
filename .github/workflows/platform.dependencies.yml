@@ -827,34 +827,34 @@ jobs:
           managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
           removeDeployment: '${{ env.removeDeployment }}'
 
-  job_deploy_avdhp:
-    runs-on: ubuntu-20.04
-    name: 'Deploy AVD host pool'
-    env:
-      namespace: 'Microsoft.DesktopVirtualization\hostpools'
-    needs:
-      - job_deploy_sa
-      - job_deploy_evh
-      - job_deploy_law
-    strategy:
-      fail-fast: false
-      matrix:
-        parameterFilePaths: ['parameters.json']
-    steps:
-      - name: 'Checkout'
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-      - name: 'Deploy module'
-        uses: ./.github/actions/templates/validateModuleDeployment
-        with:
-          templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
-          parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
-          location: '${{ env.location }}'
-          resourceGroupName: '${{ env.defaultResourceGroupName }}'
-          subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
-          managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
-          removeDeployment: '${{ env.removeDeployment }}'
+  # job_deploy_avdhp:
+  #   runs-on: ubuntu-20.04
+  #   name: 'Deploy AVD host pool'
+  #   env:
+  #     namespace: 'Microsoft.DesktopVirtualization\hostpools'
+  #   needs:
+  #     - job_deploy_sa
+  #     - job_deploy_evh
+  #     - job_deploy_law
+  #   strategy:
+  #     fail-fast: false
+  #     matrix:
+  #       parameterFilePaths: ['parameters.json']
+  #   steps:
+  #     - name: 'Checkout'
+  #       uses: actions/checkout@v2
+  #       with:
+  #         fetch-depth: 0
+  #     - name: 'Deploy module'
+  #       uses: ./.github/actions/templates/validateModuleDeployment
+  #       with:
+  #         templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
+  #         parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
+  #         location: '${{ env.location }}'
+  #         resourceGroupName: '${{ env.defaultResourceGroupName }}'
+  #         subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
+  #         managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
+  #         removeDeployment: '${{ env.removeDeployment }}'
 
   job_deploy_rsv:
     runs-on: ubuntu-20.04
@@ -1186,32 +1186,32 @@ jobs:
             }
           azPSVersion: 'latest'
 
-  job_deploy_avdag:
-    runs-on: ubuntu-20.04
-    name: 'Deploy AVD application group'
-    env:
-      namespace: 'Microsoft.DesktopVirtualization\applicationgroups'
-    needs:
-      - job_deploy_avdhp
-    strategy:
-      fail-fast: false
-      matrix:
-        parameterFilePaths: ['parameters.json']
-    steps:
-      - name: 'Checkout'
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-      - name: 'Deploy module'
-        uses: ./.github/actions/templates/validateModuleDeployment
-        with:
-          templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
-          parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
-          location: '${{ env.location }}'
-          resourceGroupName: '${{ env.defaultResourceGroupName }}'
-          subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
-          managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
-          removeDeployment: '${{ env.removeDeployment }}'
+  # job_deploy_avdag:
+  #   runs-on: ubuntu-20.04
+  #   name: 'Deploy AVD application group'
+  #   env:
+  #     namespace: 'Microsoft.DesktopVirtualization\applicationgroups'
+  #   needs:
+  #     - job_deploy_avdhp
+  #   strategy:
+  #     fail-fast: false
+  #     matrix:
+  #       parameterFilePaths: ['parameters.json']
+  #   steps:
+  #     - name: 'Checkout'
+  #       uses: actions/checkout@v2
+  #       with:
+  #         fetch-depth: 0
+  #     - name: 'Deploy module'
+  #       uses: ./.github/actions/templates/validateModuleDeployment
+  #       with:
+  #         templateFilePath: 'arm/${{ env.namespace }}/deploy.bicep'
+  #         parameterFilePath: '${{ env.dependencyPath }}/${{ env.namespace }}/parameters/${{ matrix.parameterFilePaths }}'
+  #         location: '${{ env.location }}'
+  #         resourceGroupName: '${{ env.defaultResourceGroupName }}'
+  #         subscriptionId: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
+  #         managementGroupId: '${{ secrets.ARM_MGMTGROUP_ID }}'
+  #         removeDeployment: '${{ env.removeDeployment }}'
 
   job_deploy_rolea:
     runs-on: ubuntu-20.04
