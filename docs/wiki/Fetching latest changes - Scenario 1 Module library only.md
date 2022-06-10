@@ -50,10 +50,15 @@ When the modules are stored in Template Specs a versioning feature with access t
         - TemplateSpecsRgName = the resource group that will contain the Template Spec
         - TemplateSpecsRgLocation = the location of the Template Spec
         - TemplateSpecsDescription = The description of the Template Spec
+
        To publish the Keyvault module with version 0.4 on a Template Spec that will be created in the resource group 'artifact-rg' you can execute the following example:
          ```PowerShell
-        Publish-ModuleToTemplateSpec -TemplateFilePath "D:\ResourcesModules\arm\Microsoft.KeyVault\vaults\deploy.bicep" -ModuleVersion "0.4" -TemplateSpecsRgName 'artifact-rg'  -TemplateSpecsRgLocation 'West Europe' -TemplateSpecsDescription 'CARML KV Template Spec'
+        Publish-ModuleToTemplateSpec -TemplateFilePath "D:\ResourcesModules\arm\Microsoft.KeyVault\vaults\deploy.bicep" -ModuleVersion "0.4.740" -TemplateSpecsRgName 'artifact-rg'  -TemplateSpecsRgLocation 'West Europe' -TemplateSpecsDescription 'CARML KV Template Spec'
         ```
-    As the modules to be published are more than one a Powershell Script that calls the `'Publish-ModuleToTemplateSpec'` function for each of the modules can be used.
+        As the modules to be published are more than one a Powershell Script that calls the `'Publish-ModuleToTemplateSpec'` function for each of the modules can be used.
     </details>
+    <p
+1. Update your master template in order to use the new version of the published modules.
+
+>>> put example that is in solutions
 # Bicep Registry
