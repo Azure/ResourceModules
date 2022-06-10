@@ -535,9 +535,6 @@ module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
                 }
             ]
         },
-        "trustedServiceAccessEnabled": {
-            "value": true
-        },
         "networkRuleSets": {
             "value": {
                 "defaultAction": "Deny",
@@ -683,7 +680,6 @@ module namespaces './Microsoft.ServiceBus/namespaces/deploy.bicep' = {
         service: 'namespace'
       }
     ]
-    trustedServiceAccessEnabled: true
     networkRuleSets: {
       defaultAction: 'Deny'
       publicNetworkAccess: 'Disabled'
