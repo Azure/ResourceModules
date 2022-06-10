@@ -47,7 +47,7 @@ stages:
           deploymentBlocks:
             - path: $(modulePath)/.parameters/min.parameters.json
             - path: $(modulePath)/.parameters/nonms.parameters.json
-            - path: $(modulePath)/.parameters/parameters.json
+            - path: $(modulePath)/.parameters/ms.parameters.json
 
   - stage: Publishing
     displayName: Publishing
