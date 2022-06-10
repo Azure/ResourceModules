@@ -20,7 +20,7 @@ trigger:
   paths:
     include:
       - '/.azuredevops/modulePipelines/ms.insights.actiongroups.yml'
-      - '/.azuredevops/pipelineTemplates/jobs.*.yml'
+      - '/.azuredevops/pipelineTemplates/*.yml'
       - '/arm/Microsoft.Insights/actionGroups/*'
       - '/arm/.global/global.module.tests.ps1'
     exclude:

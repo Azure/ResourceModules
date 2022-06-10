@@ -20,7 +20,7 @@ trigger:
   paths:
     include:
       - '/.azuredevops/modulePipelines/ms.web.hostingenvironments.yml'
-      - '/.azuredevops/pipelineTemplates/jobs.*.yml'
+      - '/.azuredevops/pipelineTemplates/*.yml'
       - '/arm/Microsoft.Web/hostingEnvironments/*'
       - '/arm/.global/global.module.tests.ps1'
     exclude:
