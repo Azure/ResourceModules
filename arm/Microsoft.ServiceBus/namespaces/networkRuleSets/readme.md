@@ -20,6 +20,7 @@ This module deploys ServiceBus Namespaces NetworkRuleSets.
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
 | `name` | string | `'default'` | The default is the only valid ruleset. |
+| `networkRuleSet` | object | `{object}` | Configure networking options for Premium SKU Service Bus, ipRules and virtualNetworkRules are not required when using dedicated modules. |
 
 **Conditional parameters**
 | Parameter Name | Type | Description |
@@ -27,11 +28,10 @@ This module deploys ServiceBus Namespaces NetworkRuleSets.
 | `namespaceName` | string | The name of the parent Service Bus Namespace for the Service Bus Network Rule Set. Required if the template is used in a standalone deployment. |
 
 **Optional parameters**
-| Parameter Name | Type | Default Value | Allowed Values | Description |
-| :-- | :-- | :-- | :-- | :-- |
-| `allowTrustedServices` | bool | `True` |  | Trusted Services Bypass for Premium Sku. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `publicNetworkAccess` | string | `'Disabled'` | `[Enabled, Disabled]` | Public Network Access for Premium Sku. |
+| Parameter Name | Type | Default Value | Description |
+| :-- | :-- | :-- | :-- |
+| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+
 
 
 ## Outputs
