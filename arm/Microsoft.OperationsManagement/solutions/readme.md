@@ -95,54 +95,6 @@ module solutions './Microsoft.OperationsManagement/solutions/deploy.bicep' = {
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "nonmsTestSolution"
-        },
-        "logAnalyticsWorkspaceName": {
-            "value": "adp-<<namePrefix>>-az-law-sol-001"
-        },
-        "product": {
-            "value": "nonmsTestSolutionProduct"
-        },
-        "publisher": {
-            "value": "nonmsTestSolutionPublisher"
-        }
-    }
-}
-
-```
-
-</details>
-
-<details>
-
-<summary>via Bicep module</summary>
-
-```bicep
-module solutions './Microsoft.OperationsManagement/solutions/deploy.bicep' = {
-  name: '${uniqueString(deployment().name)}-solutions'
-  params: {
-    name: 'nonmsTestSolution'
-    logAnalyticsWorkspaceName: 'adp-<<namePrefix>>-az-law-sol-001'
-    product: 'nonmsTestSolutionProduct'
-    publisher: 'nonmsTestSolutionPublisher'
-  }
-```
-
-</details>
-<p>
-
-<h3>Example 3</h3>
-
-<details>
-
-<summary>via JSON Parameter file</summary>
-
-```json
-{
-    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "name": {
             "value": "AzureAutomation"
         },
         "logAnalyticsWorkspaceName": {
@@ -173,6 +125,54 @@ module solutions './Microsoft.OperationsManagement/solutions/deploy.bicep' = {
     logAnalyticsWorkspaceName: 'adp-<<namePrefix>>-az-law-sol-001'
     product: 'OMSGallery'
     publisher: 'Microsoft'
+  }
+```
+
+</details>
+<p>
+
+<h3>Example 3</h3>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": "nonmsTestSolution"
+        },
+        "logAnalyticsWorkspaceName": {
+            "value": "adp-<<namePrefix>>-az-law-sol-001"
+        },
+        "product": {
+            "value": "nonmsTestSolutionProduct"
+        },
+        "publisher": {
+            "value": "nonmsTestSolutionPublisher"
+        }
+    }
+}
+
+```
+
+</details>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module solutions './Microsoft.OperationsManagement/solutions/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-solutions'
+  params: {
+    name: 'nonmsTestSolution'
+    logAnalyticsWorkspaceName: 'adp-<<namePrefix>>-az-law-sol-001'
+    product: 'nonmsTestSolutionProduct'
+    publisher: 'nonmsTestSolutionPublisher'
   }
 ```
 
