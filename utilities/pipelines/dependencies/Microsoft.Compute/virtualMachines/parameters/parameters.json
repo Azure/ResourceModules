@@ -57,6 +57,9 @@
             "value": {
                 "enabled": true
             }
+        },
+        "encryptionAtHost": {
+            "value": "false"
         }
     }
 }
