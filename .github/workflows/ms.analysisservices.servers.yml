@@ -1,5 +1,15 @@
 name: 'AnalysisServices: Servers'
 
+env:
+  variablesPath: 'global.variables.yml'
+  modulePath: '${{ variables.moduleFolderPath }}/Microsoft.AnalysisServices/servers'
+  workflowPath: '.github/workflows/ms.analysisservices.servers.yml'
+  AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
+  ARM_SUBSCRIPTION_ID: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
+  ARM_MGMTGROUP_ID: '${{ secrets.ARM_MGMTGROUP_ID }}'
+  ARM_TENANT_ID: '${{ secrets.ARM_TENANT_ID }}'
+  DEPLOYMENT_SP_ID: '${{ secrets.DEPLOYMENT_SP_ID }}'
+
 on:
   workflow_dispatch:
     inputs:
@@ -19,21 +29,11 @@ on:
     paths:
       - '.github/actions/templates/**'
       - '.github/workflows/ms.analysisservices.servers.yml'
-      - '$(moduleFolderPath)/Microsoft.AnalysisServices/servers/**'
-      - '$(moduleFolderPath)/.global/global.module.tests.ps1'
+      - '${{ variables.moduleFolderPath }}/Microsoft.AnalysisServices/servers/**'
+      - '${{ variables.moduleFolderPath }}/.global/global.module.tests.ps1'
       - '!*/**/readme.md'
       - 'utilities/pipelines/**'
       - '!utilities/pipelines/dependencies/**'
-
-env:
-  variablesPath: 'global.variables.yml'
-  modulePath: '$(moduleFolderPath)/Microsoft.AnalysisServices/servers'
-  workflowPath: '.github/workflows/ms.analysisservices.servers.yml'
-  AZURE_CREDENTIALS: ${{ secrets.AZURE_CREDENTIALS }}
-  ARM_SUBSCRIPTION_ID: '${{ secrets.ARM_SUBSCRIPTION_ID }}'
-  ARM_MGMTGROUP_ID: '${{ secrets.ARM_MGMTGROUP_ID }}'
-  ARM_TENANT_ID: '${{ secrets.ARM_TENANT_ID }}'
-  DEPLOYMENT_SP_ID: '${{ secrets.DEPLOYMENT_SP_ID }}'
 
 jobs:
   ###########################
