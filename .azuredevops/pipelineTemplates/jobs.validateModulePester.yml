@@ -169,9 +169,6 @@ jobs:
                   enforcedTokenList = $enforcedTokenList
                 }
               }
-              Filter     = @{
-                ExcludeTag = 'ApiCheck'
-              }
               TestResult = @{
                 TestSuiteName = 'Global Module Tests'
                 OutputPath    = 'arm/.global/global-testResults.xml'
@@ -190,114 +187,6 @@ jobs:
           testRunTitle: 'Global Module Tests'
           testResultsFormat: NUnit
           testResultsFiles: global-testResults.xml
-          failTaskOnFailedTests: true
-          searchFolder: 'arm/.global'
-        continueOnError: false
-        condition: succeededOrFailed()
-
-  - job:
-    displayName: Run global API tests
-    timeoutInMinutes: ${{ parameters.defaultJobTimeoutInMinutes }}
-    pool:
-      ${{ if ne(parameters.vmImage, '') }}:
-        vmImage: ${{ parameters.vmImage }}
-      ${{ if ne(parameters.poolName, '') }}:
-        name: ${{ parameters.poolName }}
-    steps:
-      # [Checkout Repositories] task(s)
-      #--------------------------------
-      - checkout: self
-      - ${{ if ne(parameters.checkoutRepositories, '') }}:
-          - ${{ each checkoutRepository in parameters.checkoutRepositories }}:
-              - checkout: ${{ checkoutRepository }}
-                fetchDepth: 1 # the depth of commits to ask Git to fetch; if not set defaults to no limit
-                path: 's/${{ checkoutRepository }}'
-
-      # [Multi Repo] Support task
-      #--------------------------
-      - task: PowerShell@2
-        displayName: Handle Multi-Repo Invocation
-        inputs:
-          targetType: inline
-          pwsh: true
-          script: |
-            # Handle multiple-repositories
-            if( "${{ join(';',parameters.checkoutRepositories) }}".length -gt 0) {
-              Write-Verbose "Multi-Repo Checkout" -Verbose
-              $moduleRepoRoot = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulesRepository)'
-              $parametersRepoRoot = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.parametersRepository }}'
-            } else {
-              Write-Verbose "No Multi-Repo Checkout" -Verbose
-              $moduleRepoRoot = '$(System.DefaultWorkingDirectory)'
-              $parametersRepoRoot = '$(System.DefaultWorkingDirectory)'
-            }
-            Write-Output "##vso[task.setvariable variable=ModuleRepoRoot]$moduleRepoRoot"
-            Write-Output "##vso[task.setvariable variable=ParametersRepoRoot]$parametersRepoRoot"
-
-      # [Agent] Prepare environment
-      #----------------------------
-      - task: PowerShell@2
-        displayName: 'Setup agent'
-        inputs:
-          targetType: inline
-          pwsh: true
-          script: |
-            # Load used functions
-            . (Join-Path '$(moduleRepoRoot)' 'utilities' 'pipelines' 'sharedScripts' 'Set-EnvironmentOnAgent.ps1')
-
-            # Set agent up
-            Set-EnvironmentOnAgent
-
-      # [Module Pester Test] task(s)
-      #-----------------------------
-      - task: AzurePowerShell@5
-        displayName: 'Run API tests via (Pester) via connection [${{ parameters.serviceConnection }}]'
-        inputs:
-          azureSubscription: ${{ parameters.serviceConnection }}
-          azurePowerShellVersion: ${{ parameters.azurePowerShellVersion }}
-          preferredAzurePowerShellVersion: ${{ parameters.preferredAzurePowerShellVersion }}
-          ScriptType: InlineScript
-          pwsh: true
-          inline: |
-            $moduleFolderPaths = @(Join-Path '$(moduleRepoRoot)' '${{ parameters.modulePath }}')
-            $moduleFolderPaths += (Get-ChildItem $moduleFolderPaths -Recurse -Directory -Force).FullName | Where-Object {
-              (Get-ChildItem $_ -File -Depth 0 -Include @('deploy.json', 'deploy.bicep') -Force).Count -gt 0
-            }
-            Write-Verbose "Execute tests in path(s):" -Verbose
-            foreach($moduleFolderPath in $moduleFolderPaths) {
-              Write-Verbose "- [($moduleFolderPath]" -Verbose
-            }
-
-            # --------------------- #
-            # Invoke Pester test(s) #
-            # --------------------- #
-            Invoke-Pester -Configuration @{
-              Run        = @{
-                Container = New-PesterContainer -Path (Join-Path '$(moduleRepoRoot)' 'arm' '.global' 'global.module.tests.ps1') -Data @{
-                  moduleFolderPaths = $moduleFolderPaths
-                }
-              }
-              Filter     = @{
-                Tag = 'ApiCheck'
-              }
-              TestResult = @{
-                TestSuiteName = 'Global Module API Tests'
-                OutputPath    = 'arm/.global/api-testResults.xml'
-                OutputFormat  = 'NUnitXml'
-                Enabled       = $true
-              }
-              Output     = @{
-                Verbosity = 'Detailed'
-              }
-            } -ErrorAction 'Stop'
-          errorActionPreference: continue
-
-      - task: PublishTestResults@2
-        displayName: Publish Test Results
-        inputs:
-          testRunTitle: 'Global Module API Tests'
-          testResultsFormat: NUnit
-          testResultsFiles: api-testResults.xml
           failTaskOnFailedTests: true
           searchFolder: 'arm/.global'
         continueOnError: false
