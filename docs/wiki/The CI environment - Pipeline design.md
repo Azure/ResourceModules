@@ -67,7 +67,7 @@ In addition, workflows leverage the following composite actions:
 | Composite Action | Description |
 | - | - |
 | **getWorkflowInput** | This action allows fetching workflow input values from the module's workflow file, even if the pipeline was not triggered via a `workflow_dispatch` action. Without it, we would not be able to process the contained information and would need to duplicate the configuration as workflow variables. Such input values are for example, the removal switch `removeDeployment`. |
-| **setEnvironmentVariables** | This action parses the variables file `global.variables.yml` and sets the key-value pairs in the `variables` list as environment variables. |
+| **setEnvironmentVariables** | This action parses the variables file ([`global.variables.yml`](../../global.variables.yml)) and sets the key-value pairs in the `variables` list as environment variables. |
 
 Technical documentation for each composite action, such as required input and output variables, is included in each `action.yml` file located in path `.github/actions/templates`.
 
@@ -117,19 +117,19 @@ In order to successfully run module pipelines to validate and publish CARML modu
 
 For example, any instance of the \[Virtual Machine] module needs an existing virtual network to be connected to and a Key Vault hosting its required local admin credentials to be referenced.
 
-The dependencies pipeline covers this requirement and is intended to be run before executing module pipelines successfully.
+The dependencies pipeline covers this requirement and is intended to be run before using the module pipelines.
 
 The pipeline leverages resource parameters from the `utilities\pipelines\dependencies` subfolder and either one of the following pipelines:
-- GitHub workflow: `.github\workflows\platform.dependencies.yml`
-- Azure DevOps pipeline: `.azuredevops\platformPipelines\platform.dependencies.yml`
+- GitHub workflow: [`.github\workflows\platform.dependencies.yml`](../../.github\workflows\platform.dependencies.yml)
+- Azure DevOps pipeline: [`.azuredevops\platformPipelines\platform.dependencies.yml`](../../.azuredevops\platformPipelines\platform.dependencies.yml)
 
 ### Dependencies pipeline inputs
 
 The dependencies pipeline comes with the following runtime parameters:
 
 - `'Branch' dropdown`: A dropdown to select the branch to run the pipeline from.
-- `'Enable SqlMI dependency deployment' switch`: Can be enabled or disabled and controls whether the dependencies for the \[SQL managed instance] module are deployed during execution. It is disabled by default.
-- `'Enable deployment of a vhd stored in a blob container' switch`: Can be enabled or disabled and controls whether including the baking of a VHD and subsequent backup to a target storage blob container during the execution. This is a dependency for the \[Compute Images] and \[Compute Disks] modules. This task requires up to two hours completion and is disabled by default.
+- `'Enable SqlMI dependency deployment' switch`: Can be enabled or disabled and controls whether the dependencies for the \[SQL managed instance] module are configured during deployment. It is disabled by default.
+- `'Enable deployment of a vhd stored in a blob container' switch`: Can be enabled or disabled and controls whether including the baking of a VHD and subsequent backup to a target storage blob container during the deployment. This is a dependency for the \[Compute Images] and \[Compute Disks] modules. This task requires up to two hours completion and is disabled by default.
 
   <img src="./media/CIEnvironment/dependencyPipelineInput.png" alt="Dependencies Pipeline Input" height="300">
 

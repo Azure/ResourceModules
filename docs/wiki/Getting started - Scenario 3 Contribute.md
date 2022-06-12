@@ -1,4 +1,4 @@
-Depending on the contribution you would like to make, the number and execution of the required steps may vary.
+Depending on the contribution you would like to make, the number and implementation of the required steps may vary.
 
 We identify 3 kinds of contributions:
 

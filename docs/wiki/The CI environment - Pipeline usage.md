@@ -45,7 +45,7 @@ The dependencies pipeline must be triggered manually. This deploys a set of reso
 
 To run the dependencies pipeline you can perform the following steps:
 
-1. Before executing the pipeline for the first time make sure to update the following values:
+1. Before running the pipeline for the first time make sure to update the following values:
 
    | File | Parameter | Description |
    | - | - | - |
@@ -88,7 +88,7 @@ This section focuses on _GitHub_ Actions & Workflows.
 
      <img src="./media/CIEnvironment/ghActionsTab.png" alt="Actions tab" height="100">
 
-  1. Select the pipeline of your choice from the list on the left, followed by 'Run workflow' to the right. You can then select the branch of your choice and confirm the execution by clicking on the green 'Run workflow' button.
+  1. Select the pipeline of your choice from the list on the left, followed by 'Run workflow' to the right. You can then select the branch of your choice and trigger the pipeline by clicking on the green 'Run workflow' button.
 
      <img src="./media/CIEnvironment/gHtriggerPipeline.png" alt="Run workflow" height="350">
 
@@ -96,7 +96,7 @@ This section focuses on _GitHub_ Actions & Workflows.
 
   ### Register a workflow
 
-  To register a workflow in _GitHub_ you have to create the workflow file (`.yml`) and store it inside the folder `.github/workflows`.
+  To register a workflow in _GitHub_ you have to create the workflow file (`.yml`) and store it inside the `.github/workflows` folder.
   > ***Note:*** Once merged to `main|master`, GitHub will automatically list the new workflow in the 'Actions' tab. Workflows are not registered from a branch unless you specify a temporal push trigger targeting your branch.
 
 </details>

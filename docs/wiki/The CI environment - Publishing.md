@@ -16,7 +16,7 @@ The publishing phase concludes each module's pipeline. If all previous tests suc
 - _[Azure DevOps universal packages](https://docs.microsoft.com/en-us/azure/devops/artifacts/concepts/feeds?view=azure-devops)_.
    > Note: this is only available if using Azure DevOps pipelines.
 
-Besides the execution of a the publishing phase, there is also the possibility to set the switch `Publish prerelease module`. This switch makes it possible to publish a prerelease version in every workflow run that is not based on `main` or `master`. This can be controlled when running the module pipeline leveraging [Module pipeline inputs](./The%20CI%20environment%20-%20Pipeline%20design.md#module-pipeline-inputs).
+Besides the publishing phase's runtime, there is also the possibility to set the switch `Publish prerelease module`. This switch makes it possible to publish a prerelease version in every workflow run that is not based on `main` or `master`. This can be controlled when running the module pipeline leveraging [Module pipeline inputs](./The%20CI%20environment%20-%20Pipeline%20design.md#module-pipeline-inputs).
 
 > **Note**<br>
 > The `version` used for publishing any artifact is the same for all three target locations, which reduces the maintenance effort.

@@ -73,7 +73,7 @@ Modules in the repository are structured based on their main resource provider (
 
 ### **Child resources**
 
-Resources like `Microsoft.Sql/servers` may have dedicated templates for child resources such as `Microsoft.Sql/servers/databases`. In these cases, we recommend to create a subfolder named after the child resource, so that the path to the child resource folder is consistent with its resource type. In the given example, we would have a subfolder `databases` in the parent folder `servers`.
+Resources like `Microsoft.Sql/servers` may have dedicated templates for child resources such as `Microsoft.Sql/servers/databases`. In these cases, we recommend to create a subfolder named after the child resource, so that the path to the child resource folder is consistent with its resource type. In the given example, we would have a `databases` subfolder in the `servers` parent folder.
 
 ```
 Microsoft.Sql

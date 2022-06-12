@@ -28,12 +28,12 @@ This section outlines known issues that currently affect the modules.
 
 The Domain Services module pipeline is expected to fail in our development/validation environment for a few reasons:
 
--  The leveraged service principal doesn't have the required permissions to actually deploy the service in the used tenant
--  The referenced (optional) `pfxCertificate` (and password) are not actually existing in the specified Key Vault - unless uploaded manually
+-  The leveraged service principal doesn't have the required permissions to actually deploy the service in the used tenant.
+-  The referenced (optional) `pfxCertificate` and password don't actually exist in the specified Key Vault - unless uploaded manually.
 
-Therefore, the module was successfully tested manually in a dedicated environment.
+Therefore, the module was manually tested in a dedicated environment.
 
-If you're interested what the general prerequisites are, please refer to the [official docs](https://docs.microsoft.com/en-us/azure/active-directory-domain-services/tutorial-create-instance#prerequisites).
+For the general prerequisites, please refer to the [official docs](https://docs.microsoft.com/en-us/azure/active-directory-domain-services/tutorial-create-instance#prerequisites).
 
 ## Microsoft.KubernetesConfiguration/extensions
 
@@ -82,7 +82,7 @@ This section outlines known issues that currently affect the CI environment depl
 
 The deployment validation step aims to validate multiple configurations for each module. This is done by providing multiple parameter files to be leveraged by the same resource module, each covering a specific scenario.
 
-The first planned step is to provide for each module a 'minimum-set' parameter file, limited to the top-level resource required parameters, vs. a 'maximum-set' parameter file, including all possible properties, child resources and extension resources. Some of the modules are still tested through one parameter file only. This is tracked by issue #1063.
+The first planned step for each module is to provide a 'minimum-set' parameter file, limited to the top-level resource required parameters, vs. a 'maximum-set' parameter file, including all possible properties, child resources and extension resources. Some of the modules are still tested through one parameter file only. This is tracked by issue #1063.
 
 ## Publishing
 

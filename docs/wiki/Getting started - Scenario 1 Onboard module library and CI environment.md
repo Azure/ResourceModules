@@ -167,7 +167,7 @@ To use the environment's pipelines you should use the information you gathered d
 
 ### 3.2.2 Set up variables file
 
-The primary pipeline variable file `global.variables.yml` hosts the fundamental pipeline configuration. In the file you will find and can configure settings such as:
+The primary pipeline variable file ([`global.variables.yml`](../../global.variables.yml)) hosts the fundamental pipeline configuration. In the file you will find and can configure settings such as:
 
 <details>
 <summary>General</summary>
@@ -209,7 +209,7 @@ The primary pipeline variable file `global.variables.yml` hosts the fundamental 
 
 ### 3.2.3 Enable actions
 
-Finally, 'GitHub Actions' are disabled by default and must be enabled for execution.
+Finally, 'GitHub Actions' are disabled by default and hence, must be enabled first.
 
 To do so, perform the following steps:
 
@@ -263,7 +263,7 @@ variables:
 
 ### 3.2.3 Set up variables file
 
-The primary pipeline variable file `global.variables.yml` hosts the fundamental pipeline configuration. In the file, you will find and can configure information such as:
+The primary pipeline variable file ([`global.variables.yml`](../../global.variables.yml)) hosts the fundamental pipeline configuration. In the file, you will find and can configure information such as:
 
 <details>
 <summary>General</summary>
@@ -327,13 +327,13 @@ This section will explain what is required to publish the modules to [Azure Arti
 #### The dependent components are
 1. An Azure DevOps organization and project
 1. An Azure DevOps artifacts feed
-   > Note: The default feed name is `ResourceModules` as configured in the `./global.variables.yaml` file's variable `vstsFeedName`. Update the value here if you want to use a different name, but make sure it matches the name of the artifact feed created in Azure DevOps.
+   > Note: The default feed name is `ResourceModules` as configured in the [`global.variables.yml`](../../global.variables.yml) file's variable `vstsFeedName`. Update the value here if you want to use a different name, but make sure it matches the name of the artifact feed created in Azure DevOps.
 1. An Azure DevOps project to host the artifact feed
    > Note: There are a couple options to consider when setting up an Azure Artifact feed. For example, organization-scoped feeds vs project-scoped feeds. Please see what option suits your needs by reviewing the [feeds](https://docs.microsoft.com/en-us/azure/devops/artifacts/concepts/feeds?view=azure-devops) document first.
 1. If you chose the feed to be project-scoped, you will need the Project Build Service account to have `Contributor` access to publish to the Azure Artifacts feed. To set this, follow the [Pipeline permission](https://docs.microsoft.com/en-us/azure/devops/artifacts/feeds/feed-permissions?view=azure-devops#pipelines-permissions) steps.
 
 #### Implementation Guidance
-Each `./azuredevops/modulePipelines` yaml pipeline already calls [`/.azuredevops/pipelineTemplates/jobs.publishModule.yml`](../../.azuredevops/pipelineTemplates/jobs.publishModule.yml). This YAML template contains a method to `Publish module to artifacts feed` via `utilities\pipelines\resourcePublish\Publish-ModuleToUniversalArtifactFeed.ps1`.
+Each `./azuredevops/modulePipelines` yaml pipeline already calls [`/.azuredevops/pipelineTemplates/jobs.publishModule.yml`](../../.azuredevops/pipelineTemplates/jobs.publishModule.yml). This YAML template contains a method to `Publish module to artifacts feed` via [`utilities\pipelines\resourcePublish\Publish-ModuleToUniversalArtifactFeed.ps1`](../../utilities\pipelines\resourcePublish\Publish-ModuleToUniversalArtifactFeed.ps1).
 
 
 </details>
@@ -356,7 +356,7 @@ In special cases, manual actions may be required to provision certain resources 
 
 ### Microsoft.Web/sites
 
-To successfully deploy the sites module using the parameter file `fa.parameters.json` you need to create an Azure Active Directory App with its API endpoint enabled (e.g., `api://<app id>`) and add a secret. The secret value needs then to be stored in a Key Vault secret.
+To successfully deploy the sites module using the `fa.parameters.json` parameter file, you need to create an Azure Active Directory App with its API endpoint enabled (e.g., `api://<app id>`) and add a secret. The secret value needs then to be stored in a Key Vault secret.
 
 
 # 5. Update module parameter files

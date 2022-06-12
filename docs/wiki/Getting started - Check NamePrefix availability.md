@@ -11,7 +11,7 @@ The `'Test-NamePrefixAvailability'` function provides you with the capability to
 ---
 # Location
 
-You can find the script under `utilities/tools/Test-NamePrefixAvailability.ps1`.
+You can find the script under [`utilities/tools/Test-NamePrefixAvailability.ps1`](../../utilities/tools/Test-NamePrefixAvailability.ps1).
 
 # How it works
 
