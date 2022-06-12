@@ -30,7 +30,7 @@ This template deploys a public IP prefix.
 | :-- | :-- | :-- | :-- | :-- |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
-| `lock` | string | `'NotSpecified'` | `[CanNotDelete, NotSpecified, ReadOnly]` | Specify the type of lock. |
+| `lock` | string | `''` | `[, CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
 
@@ -160,6 +160,9 @@ tags: {
         "name": {
             "value": "<<namePrefix>>-az-pippfx-x-001"
         },
+        "lock": {
+            "value": "CanNotDelete"
+        },
         "prefixLength": {
             "value": 28
         },
@@ -189,6 +192,7 @@ module publicIPPrefixes './Microsoft.Network/publicIPPrefixes/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-publicIPPrefixes'
   params: {
     name: '<<namePrefix>>-az-pippfx-x-001'
+    lock: 'CanNotDelete'
     prefixLength: 28
     roleAssignments: [
       {

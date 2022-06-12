@@ -5,6 +5,9 @@
         "name": {
             "value": "<<namePrefix>>-az-apim-x-001"
         },
+        "lock": {
+            "value": "CanNotDelete"
+        },
         "publisherEmail": {
             "value": "apimgmt-noreply@mail.windowsazure.com"
         },

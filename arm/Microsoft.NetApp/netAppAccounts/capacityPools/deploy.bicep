@@ -41,7 +41,7 @@ param roleAssignments array = []
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
 
-var enableChildTelemetry = false
+var enableReferencedModulesTelemetry = false
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
@@ -87,7 +87,7 @@ module capacityPool_volumes 'volumes/deploy.bicep' = [for (volume, index) in vol
     subnetResourceId: volume.subnetResourceId
     exportPolicyRules: contains(volume, 'exportPolicyRules') ? volume.exportPolicyRules : []
     roleAssignments: contains(volume, 'roleAssignments') ? volume.roleAssignments : []
-    enableDefaultTelemetry: enableChildTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
 

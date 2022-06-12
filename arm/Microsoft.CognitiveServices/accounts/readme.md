@@ -51,7 +51,7 @@ This module deploys different kinds of cognitive services resources
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `encryption` | object | `{object}` |  | Properties to configure encryption. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all Resources. |
-| `lock` | string | `'NotSpecified'` | `[CanNotDelete, NotSpecified, ReadOnly]` | Specify the type of lock. |
+| `lock` | string | `''` | `[, CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `migrationToken` | string | `''` |  | Resource migration token. |
 | `networkAcls` | object | `{object}` |  | Service endpoint object information. |
 | `privateEndpoints` | array | `[]` |  | Configuration Details for private endpoints. |
@@ -366,6 +366,9 @@ userAssignedIdentities: {
         "name": {
             "value": "<<namePrefix>>-az-cgs-x-001"
         },
+        "lock": {
+            "value": "CanNotDelete"
+        },
         "kind": {
             "value": "Face"
         },
@@ -421,6 +424,7 @@ module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-accounts'
   params: {
     name: '<<namePrefix>>-az-cgs-x-001'
+    lock: 'CanNotDelete'
     kind: 'Face'
     sku: 'F0'
     roleAssignments: [

@@ -54,10 +54,11 @@ However, the removal step can be skipped in case further investigation on the de
 
 The removal process will delete all resources created by the deployment. The list of resources is identified by:
 
+
 1. Recursively fetching the list of resource IDs created in the deployment (identified via the deployment name used).
 1. Ordering the list based on resource IDs segment count (ensures child resources are removed first. E.g., `storageAccount/blobServices` comes before `storageAccount` as it has one more segments delimited by `/`).
 1. Filtering out resources used as dependencies for different modules from the list (e.g., the commonly used Log Analytics workspace).
-1. Moving specific resource types to the top of the list (if a certain order is required). For example, `vWAN` requires its `Virtual Hubs` to be removed first, even though they are no child resources of each other.
+1. Moving specific resource types to the top of the list (if a certain order is required). For example, `diagnosticSettings` need to be removed before the resource to which they are applied, even though they are no child-resources.
 
 After a resource is removed (this happens after each resource in the list), if defined, the script will perform a **post removal operation**. This can be used for those resource types that require post-processing, like purging a soft-deleted Key Vault.
 
@@ -74,12 +75,12 @@ This paragraph is intended for CARML contributors who want to add a new module t
 The default removal procedure works for most of the modules. As such, it is unlikely you'll have to change anything to enable your new module for post-deployment removal.
 
 However, if you need to, you can define a custom removal procedure by:
-1. influencing the **order** in which resources are removed by prioritizing specific resource types
-    > **Example** Removing a _Virtual WAN_ resource requires related resources to be deleted in a specific order
-1. defining a **custom removal action** to remove a resource of a _specific resource type_
-    > **Example** A _Recovery Services Vault_ resource requires some protected items to be identified and removed before the vault itself can be removed
-1. defining a custom **post-removal action** to be run after removing a resource of a _specific resource type_
-    > **Example** A _Key Vault_ resource needs to be purged when soft deletion is enforced
+1. Influencing the **order** in which resources are removed by prioritizing specific resource types.
+    > **Example** _Diagnostic settings_ need to be removed before the resource to which they are applied.
+1. Defining a **custom removal** action to remove a resource of a _specific resource type_.
+    > **Example** A _Recovery Services Vault_ resource requires some protected items to be identified and removed before the vault itself can be removed.
+1. Defining a **custom post-removal** action to be run after removing a resource of a _specific resource type_.
+    > **Example** A _Key Vault_ resource needs to be purged when soft deletion is enforced.
 
 Those methods can be combined independently.
 
@@ -96,7 +97,7 @@ To define a **custom removal** action:
 1. Add a case value that matches the resource type you want to customize the removal action for
 1. In the case block, define the resource-type-specific removal action
 
-To add a **post-removal** step:
+To add a **custom post-removal** step:
 1. Open the [`/utilities/pipelines/resourceRemoval/helper/Invoke-ResourcePostRemoval.ps1`](../../utilities/pipelines/resourceRemoval/helper/Invoke-ResourcePostRemoval.ps1) file.
 1. Look for the following comment: `### CODE LOCATION: Add custom post-removal operation here`
 1. Add a case value that matches the resource type you want to add a post-removal operation for

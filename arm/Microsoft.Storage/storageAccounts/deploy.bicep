@@ -56,7 +56,7 @@ param managementPolicyRules array = []
 @description('Optional. Networks ACLs, this value contains IPs to whitelist and/or Subnet information. For security reasons, it is recommended to set the DefaultAction Deny.')
 param networkAcls object = {}
 
-@description('Optional. A boolean indicating whether or not the service applies a secondary layer of encryption with platform managed keys for data at rest. For security reasons, it is recommended to set it to true.')
+@description('Optional. A Boolean indicating whether or not the service applies a secondary layer of encryption with platform managed keys for data at rest. For security reasons, it is recommended to set it to true.')
 param requireInfrastructureEncryption bool = true
 
 @description('Optional. Blob service and containers to deploy.')
@@ -103,12 +103,12 @@ param diagnosticEventHubAuthorizationRuleId string = ''
 param diagnosticEventHubName string = ''
 
 @allowed([
+  ''
   'CanNotDelete'
-  'NotSpecified'
   'ReadOnly'
 ])
 @description('Optional. Specify the type of lock.')
-param lock string = 'NotSpecified'
+param lock string = ''
 
 @description('Optional. Tags of the resource.')
 param tags object = {}
@@ -138,6 +138,18 @@ param diagnosticMetricsToEnable array = [
   'Transaction'
 ]
 
+@description('Optional. The resource ID of a key vault to reference a customer managed key for encryption from.')
+param cMKKeyVaultResourceId string = ''
+
+@description('Optional. The name of the customer managed key to use for encryption. Cannot be deployed together with the parameter \'systemAssignedIdentity\' enabled.')
+param cMKKeyName string = ''
+
+@description('Conditional. User assigned identity to use when fetching the customer managed key. Required if \'cMKKeyName\' is not empty.')
+param cMKUserAssignedIdentityResourceId string = ''
+
+@description('Optional. The version of the customer managed key to reference for encryption. If not provided, latest is used.')
+param cMKKeyVersion string = ''
+
 @description('Optional. The name of the diagnostic setting, if deployed.')
 param diagnosticSettingsName string = '${name}-diagnosticSettings'
 
@@ -164,7 +176,7 @@ var identity = identityType != 'None' ? {
   userAssignedIdentities: !empty(userAssignedIdentities) ? userAssignedIdentities : null
 } : null
 
-var enableChildTelemetry = false
+var enableReferencedModulesTelemetry = false
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
@@ -178,6 +190,11 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
+resource keyVault 'Microsoft.KeyVault/vaults@2021-06-01-preview' existing = if (!empty(cMKKeyVaultResourceId)) {
+  name: last(split(cMKKeyVaultResourceId, '/'))
+  scope: resourceGroup(split(cMKKeyVaultResourceId, '/')[2], split(cMKKeyVaultResourceId, '/')[4])
+}
+
 resource storageAccount 'Microsoft.Storage/storageAccounts@2021-08-01' = {
   name: !empty(name) ? name : uniqueStorageName
   location: location
@@ -189,7 +206,7 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-08-01' = {
   tags: tags
   properties: {
     encryption: {
-      keySource: 'Microsoft.Storage'
+      keySource: !empty(cMKKeyName) ? 'Microsoft.Keyvault' : 'Microsoft.Storage'
       services: {
         blob: supportsBlobService ? {
           enabled: true
@@ -197,8 +214,22 @@ resource storageAccount 'Microsoft.Storage/storageAccounts@2021-08-01' = {
         file: supportsFileService ? {
           enabled: true
         } : null
+        table: {
+          enabled: true
+        }
+        queue: {
+          enabled: true
+        }
       }
       requireInfrastructureEncryption: storageAccountKind != 'Storage' ? requireInfrastructureEncryption : null
+      keyvaultproperties: !empty(cMKKeyName) ? {
+        keyname: cMKKeyName
+        keyvaulturi: keyVault.properties.vaultUri
+        keyversion: !empty(cMKKeyVersion) ? cMKKeyVersion : null
+      } : null
+      identity: !empty(cMKKeyName) ? {
+        userAssignedIdentity: cMKUserAssignedIdentityResourceId
+      } : null
     }
     accessTier: storageAccountKind != 'Storage' ? storageAccountAccessTier : null
     supportsHttpsTrafficOnly: supportsHttpsTrafficOnly
@@ -228,10 +259,10 @@ resource storageAccount_diagnosticSettings 'Microsoft.Insights/diagnosticSetting
   scope: storageAccount
 }
 
-resource storageAccount_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
+resource storageAccount_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
   name: '${storageAccount.name}-${lock}-lock'
   properties: {
-    level: lock
+    level: any(lock)
     notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: storageAccount
@@ -257,9 +288,9 @@ module storageAccount_privateEndpoints '../../Microsoft.Network/privateEndpoints
     name: contains(privateEndpoint, 'name') ? privateEndpoint.name : 'pe-${last(split(storageAccount.id, '/'))}-${privateEndpoint.service}-${index}'
     serviceResourceId: storageAccount.id
     subnetResourceId: privateEndpoint.subnetResourceId
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
     location: reference(split(privateEndpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location
-    lock: contains(privateEndpoint, 'lock') ? privateEndpoint.lock : 'NotSpecified'
+    lock: contains(privateEndpoint, 'lock') ? privateEndpoint.lock : lock
     privateDnsZoneGroups: contains(privateEndpoint, 'privateDnsZoneGroups') ? privateEndpoint.privateDnsZoneGroups : []
     roleAssignments: contains(privateEndpoint, 'roleAssignments') ? privateEndpoint.roleAssignments : []
     tags: contains(privateEndpoint, 'tags') ? privateEndpoint.tags : {}
@@ -274,7 +305,7 @@ module storageAccount_managementPolicies 'managementPolicies/deploy.bicep' = if 
   params: {
     storageAccountName: storageAccount.name
     rules: managementPolicyRules
-    enableDefaultTelemetry: enableChildTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }
 
@@ -294,7 +325,7 @@ module storageAccount_blobServices 'blobServices/deploy.bicep' = if (!empty(blob
     diagnosticLogCategoriesToEnable: contains(blobServices, 'diagnosticLogCategoriesToEnable') ? blobServices.diagnosticLogCategoriesToEnable : []
     diagnosticMetricsToEnable: contains(blobServices, 'diagnosticMetricsToEnable') ? blobServices.diagnosticMetricsToEnable : []
     diagnosticWorkspaceId: contains(blobServices, 'diagnosticWorkspaceId') ? blobServices.diagnosticWorkspaceId : ''
-    enableDefaultTelemetry: enableChildTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }
 
@@ -316,7 +347,7 @@ module storageAccount_fileServices 'fileServices/deploy.bicep' = if (!empty(file
     }
     shares: contains(fileServices, 'shares') ? fileServices.shares : []
     diagnosticWorkspaceId: contains(fileServices, 'diagnosticWorkspaceId') ? fileServices.diagnosticWorkspaceId : ''
-    enableDefaultTelemetry: enableChildTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }
 
@@ -333,7 +364,7 @@ module storageAccount_queueServices 'queueServices/deploy.bicep' = if (!empty(qu
     diagnosticMetricsToEnable: contains(queueServices, 'diagnosticMetricsToEnable') ? queueServices.diagnosticMetricsToEnable : []
     queues: contains(queueServices, 'queues') ? queueServices.queues : []
     diagnosticWorkspaceId: contains(queueServices, 'diagnosticWorkspaceId') ? queueServices.diagnosticWorkspaceId : ''
-    enableDefaultTelemetry: enableChildTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }
 
@@ -350,7 +381,7 @@ module storageAccount_tableServices 'tableServices/deploy.bicep' = if (!empty(ta
     diagnosticMetricsToEnable: contains(tableServices, 'diagnosticMetricsToEnable') ? tableServices.diagnosticMetricsToEnable : []
     tables: contains(tableServices, 'tables') ? tableServices.tables : []
     diagnosticWorkspaceId: contains(tableServices, 'diagnosticWorkspaceId') ? tableServices.diagnosticWorkspaceId : ''
-    enableDefaultTelemetry: enableChildTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }
 

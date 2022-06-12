@@ -4,7 +4,7 @@ parameters:
   - name: removeDeployment
     displayName: Remove deployed module
     type: boolean
-    default: false # Needs a custom removal script
+    default: true
   - name: prerelease
     displayName: Publish prerelease module
     type: boolean
