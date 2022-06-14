@@ -20,7 +20,7 @@ trigger:
   paths:
     include:
       - '/.azuredevops/modulePipelines/ms.desktopvirtualization.hostpools.yml'
-      - '/.azuredevops/pipelineTemplates/module.*.yml'
+      - '/.azuredevops/pipelineTemplates/*.yml'
       - '/arm/Microsoft.DesktopVirtualization/hostpools/*'
       - '/arm/.global/global.module.tests.ps1'
     exclude:
