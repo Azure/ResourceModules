@@ -1,4 +1,4 @@
-# App Configuration `[Microsoft.AppConfiguration/configurationStores]`
+# App Configuration `[Microsoft.AppConfiguration/configurationStores/keyValues]`
 
 This module deploys an App Configuration Store.
 
@@ -13,47 +13,23 @@ This module deploys an App Configuration Store.
 
 | Resource Type | API Version |
 | :-- | :-- |
-| `Microsoft.AppConfiguration/configurationStores` | [2021-10-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.AppConfiguration/2021-10-01-preview/configurationStores) |
 | `Microsoft.AppConfiguration/configurationStores/keyValues` | [2021-10-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.AppConfiguration/2021-10-01-preview/configurationStores/keyValues) |
-| `Microsoft.Authorization/locks` | [2017-04-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2017-04-01/locks) |
-| `Microsoft.Authorization/roleAssignments` | [2020-10-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Authorization/2020-10-01-preview/roleAssignments) |
-| `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
-| `Microsoft.Network/privateEndpoints` | [2021-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/privateEndpoints) |
-| `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | [2021-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/privateEndpoints/privateDnsZoneGroups) |
 
 ## Parameters
 
 **Required parameters**
-| Parameter Name | Type | Default Value | Allowed Values | Description |
-| :-- | :-- | :-- | :-- | :-- |
-| `name` | string |  |  | Name of the Azure App Configuration. |
-| `sku` | string | `'Standard'` | `[Free, Standard]` | Pricing tier of App Configuration. |
+| Parameter Name | Type | Description |
+| :-- | :-- | :-- |
+| `appConfigurationName` | string | The name of the parent app configuration store. Required if the template is used in a standalone deployment. |
+| `contentType` | string | Name of the Azure App Configuration. |
+| `name` | string | Name of the key. |
+| `value` | string | Name of the value. |
 
 **Optional parameters**
-| Parameter Name | Type | Default Value | Allowed Values | Description |
-| :-- | :-- | :-- | :-- | :-- |
-| `createMode` | string | `'Default'` | `[Default, Recover]` | Indicates whether the configuration store need to be recovered. |
-| `diagnosticEventHubAuthorizationRuleId` | string | `''` |  | Resource ID of the diagnostic event hub authorization rule for the Event Hubs namespace in which the event hub should be created or streamed to. |
-| `diagnosticEventHubName` | string | `''` |  | Name of the diagnostic event hub within the namespace to which logs are streamed. Without this, an event hub is created for each log category. |
-| `diagnosticLogCategoriesToEnable` | array | `[HttpRequest, Audit]` | `[HttpRequest, Audit]` | The name of logs that will be streamed. |
-| `diagnosticLogsRetentionInDays` | int | `365` |  | Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely. |
-| `diagnosticMetricsToEnable` | array | `[AllMetrics]` | `[AllMetrics]` | The name of metrics that will be streamed. |
-| `diagnosticSettingsName` | string | `[format('{0}-diagnosticSettings', parameters('name'))]` |  | The name of the diagnostic setting, if deployed. |
-| `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
-| `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
-| `disableLocalAuth` | bool | `False` |  | Disables all authentication methods other than AAD authentication. |
-| `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `enablePurgeProtection` | bool | `False` |  | Property specifying whether protection against purge is enabled for this configuration store. |
-| `keyValues` | _[keyValues](keyValues/readme.md)_ array | `[]` |  | All Key / Values to create. |
-| `location` | string | `[resourceGroup().location]` |  | Location for all Resources. |
-| `lock` | string | `''` | `[, CanNotDelete, ReadOnly]` | Specify the type of lock. |
-| `privateEndpoints` | array | `[]` |  | Configuration Details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. |
-| `publicNetworkAccess` | string | `'Enabled'` | `[Disabled, Enabled]` | Control permission for data plane traffic coming from public networks while private endpoint is enabled. |
-| `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
-| `softDeleteRetentionInDays` | int | `1` |  | The amount of time in days that the configuration store will be retained when it is soft deleted. |
-| `systemAssignedIdentity` | bool | `False` |  | Enables system assigned managed identity on the resource. |
-| `tags` | object | `{object}` |  | Tags of the resource. |
-| `userAssignedIdentities` | object | `{object}` |  | The ID(s) to assign to the resource. |
+| Parameter Name | Type | Default Value | Description |
+| :-- | :-- | :-- | :-- |
+| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
+| `tags` | object | `{object}` | Tags of the resource. |
 
 
 ### Parameter Usage: `tags`
@@ -272,11 +248,9 @@ privateEndpoints:  [
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `location` | string | The location the resource was deployed into. |
-| `name` | string | The name of the app configuration. |
-| `resourceGroupName` | string | The resource group the app configuration store was deployed into. |
-| `resourceId` | string | The resource ID of the app configuration. |
-| `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
+| `name` | string | The name of the key values. |
+| `resourceGroupName` | string | The resource group the batch account was deployed into. |
+| `resourceId` | string | The resource ID of the key values. |
 
 ## Deployment examples
 
@@ -330,9 +304,6 @@ module configurationStores './Microsoft.AppConfiguration/configurationStores/dep
         "name": {
             "value": "<<namePrefix>>-az-appcs-x-001"
         },
-        "lock": {
-            "value": "CanNotDelete"
-        },
         "diagnosticLogsRetentionInDays": {
             "value": 7
         },
@@ -350,24 +321,6 @@ module configurationStores './Microsoft.AppConfiguration/configurationStores/dep
         },
         "systemAssignedIdentity": {
             "value": true
-        },
-        "keyValues": {
-            "value": [
-                {
-                    "appConfigName": "<<namePrefix>>-az-appcs-min-001",
-                    "name": "keyName",
-                    "value": "valueName",
-                    "contentType": "contentType",
-                    "roleAssignments": [
-                        {
-                            "roleDefinitionIdOrName": "Reader",
-                            "principalIds": [
-                                "<<deploymentSpId>>"
-                            ]
-                        }
-                    ]
-                }
-            ]
         },
         "roleAssignments": {
             "value": [
@@ -418,29 +371,12 @@ module configurationStores './Microsoft.AppConfiguration/configurationStores/dep
   name: '${uniqueString(deployment().name)}-configurationStores'
   params: {
     name: '<<namePrefix>>-az-appcs-x-001'
-    lock: 'CanNotDelete'
     diagnosticLogsRetentionInDays: 7
     diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
     diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
     diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
     diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
     systemAssignedIdentity: true
-    keyValues: [
-      {
-        appConfigName: '<<namePrefix>>-az-appcs-min-001'
-        name: 'keyName'
-        value: 'valueName'
-        contentType: 'contentType'
-        roleAssignments: [
-          {
-            roleDefinitionIdOrName: 'Reader'
-            principalIds: [
-              '<<deploymentSpId>>'
-            ]
-          }
-        ]
-      }
-    ]
     roleAssignments: [
       {
         roleDefinitionIdOrName: 'Reader'

@@ -42,6 +42,9 @@ param publicNetworkAccess string = 'Enabled'
 @maxValue(7)
 param softDeleteRetentionInDays int = 1
 
+@description('Optional. All Key / Values to create.')
+param keyValues array = []
+
 @description('Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.')
 @minValue(0)
 @maxValue(365)
@@ -102,6 +105,8 @@ param privateEndpoints array = []
 
 var enableReferencedModulesTelemetry = false
 
+var keyValuesList = !empty(keyValues) ? keyValues : []
+
 var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
   category: category
   enabled: true
@@ -157,6 +162,18 @@ resource configurationStore 'Microsoft.AppConfiguration/configurationStores@2021
   }
 }
 
+module appConfig_KeyValues 'keyValues/deploy.bicep' = [for (keyValues, index) in keyValuesList: {
+  name: '${uniqueString(deployment().name, location)}-appConfig-KeyValues-${index}'
+  params: {
+    appConfigurationName: keyValues.appConfigName
+    name: keyValues.name
+    value: keyValues.value
+    contentType: contains(keyValues, 'contentType') ? keyValues.contentType : ''
+    tags: contains(keyValues, 'tags') ? keyValues.tags : {}
+    enableDefaultTelemetry: enableDefaultTelemetry
+  }
+}]
+
 resource configurationStore_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
   name: '${configurationStore.name}-${lock}-lock'
   properties: {
@@ -191,7 +208,7 @@ module configurationStore_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment
 }]
 
 module configurationStore_privateEndpoints '../../Microsoft.Network/privateEndpoints/deploy.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
-  name: '${uniqueString(deployment().name, location)}-appConfiguration-PrivateEndpoint-${index}'
+  name: '${uniqueString(deployment().name, location)}-configurationStore-PrivateEndpoint-${index}'
   params: {
     groupIds: [
       privateEndpoint.service
@@ -216,7 +233,7 @@ output name string = configurationStore.name
 @description('The resource ID of the app configuration.')
 output resourceId string = configurationStore.id
 
-@description('The resource group the batch account was deployed into.')
+@description('The resource group the app configuration store was deployed into.')
 output resourceGroupName string = resourceGroup().name
 
 @description('The principal ID of the system assigned identity.')
