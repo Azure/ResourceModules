@@ -93,12 +93,12 @@ param diagnosticEventHubName string = ''
 param roleAssignments array = []
 
 @allowed([
+  ''
   'CanNotDelete'
-  'NotSpecified'
   'ReadOnly'
 ])
 @description('Optional. Specify the type of lock.')
-param lock string = 'NotSpecified'
+param lock string = ''
 
 @description('Optional. Tags of the resource.')
 param tags object = {}
@@ -312,10 +312,10 @@ resource virtualGatewayPublicIP 'Microsoft.Network/publicIPAddresses@2021-05-01'
 }]
 
 @batchSize(1)
-resource virtualGatewayPublicIP_lock 'Microsoft.Authorization/locks@2017-04-01' = [for (virtualGatewayPublicIpName, index) in virtualGatewayPipName_var: if (lock != 'NotSpecified') {
+resource virtualGatewayPublicIP_lock 'Microsoft.Authorization/locks@2017-04-01' = [for (virtualGatewayPublicIpName, index) in virtualGatewayPipName_var: if (!empty(lock)) {
   name: '${virtualGatewayPublicIpName}-${lock}-lock'
   properties: {
-    level: lock
+    level: any(lock)
     notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: virtualGatewayPublicIP[index]
@@ -359,10 +359,10 @@ resource virtualNetworkGateway 'Microsoft.Network/virtualNetworkGateways@2021-05
   ]
 }
 
-resource virtualNetworkGateway_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
+resource virtualNetworkGateway_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
   name: '${virtualNetworkGateway.name}-${lock}-lock'
   properties: {
-    level: lock
+    level: any(lock)
     notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: virtualNetworkGateway
@@ -381,7 +381,7 @@ resource virtualNetworkGateway_diagnosticSettings 'Microsoft.Insights/diagnostic
   scope: virtualNetworkGateway
 }
 
-module virtualNetworkGateway_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+module virtualNetworkGateway_rbac '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-VNetGateway-Rbac-${index}'
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''

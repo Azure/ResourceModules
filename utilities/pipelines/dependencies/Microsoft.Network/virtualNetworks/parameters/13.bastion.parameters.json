@@ -1,0 +1,23 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "name": {
+      "value": "adp-<<namePrefix>>-az-vnet-custompip-bas"
+    },
+    "addressPrefixes": {
+      "value": [
+        "10.1.0.0/16"
+      ]
+    },
+    "subnets": {
+      "value": [
+        {
+          "name": "AzureBastionSubnet", // Bastion subnet
+          "addressPrefix": "10.1.5.0/24",
+          "networkSecurityGroupId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/networkSecurityGroups/adp-<<namePrefix>>-az-nsg-x-bastion"
+        }
+      ]
+    }
+  }
+}

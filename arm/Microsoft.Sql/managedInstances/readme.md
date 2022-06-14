@@ -7,6 +7,7 @@ This template deploys a SQL managed instance.
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Deployment examples](#Deployment-examples)
 
 ## Resource types
 
@@ -74,7 +75,7 @@ SQL MI allows for Azure AD Authentication via an [Azure AD Admin](https://docs.m
 | `keys` | _[keys](keys/readme.md)_ array | `[]` |  | The keys to configure. |
 | `licenseType` | string | `'LicenseIncluded'` | `[LicenseIncluded, BasePrice]` | The license type. Possible values are 'LicenseIncluded' (regular price inclusive of a new SQL license) and 'BasePrice' (discounted AHB price for bringing your own SQL licenses). |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
-| `lock` | string | `'NotSpecified'` | `[CanNotDelete, NotSpecified, ReadOnly]` | Specify the type of lock. |
+| `lock` | string | `''` | `[, CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `managedInstanceCreateMode` | string | `'Default'` | `[Default, PointInTimeRestore]` | Specifies the mode of database creation. Default: Regular instance creation. Restore: Creates an instance by restoring a set of backups to specific point in time. RestorePointInTime and SourceManagedInstanceId must be specified. |
 | `proxyOverride` | string | `'Proxy'` | `[Proxy, Redirect, Default]` | Connection type used for connecting to the instance. |
 | `publicDataEndpointEnabled` | bool | `False` |  | Whether or not the public data endpoint is enabled. |
@@ -98,18 +99,43 @@ SQL MI allows for Azure AD Authentication via an [Azure AD Admin](https://docs.m
 
 ### Parameter Usage : `userAssignedIdentities`
 
+<details>
+
+<summary>Parameter JSON format</summary>
+
 ```json
 "userAssignedIdentities": {
     "value": {
         "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001": {},
         "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002": {}
     }
-},
+}
 ```
+
+</details>
+
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+userAssignedIdentities: {
+    '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001': {}
+    '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002': {}
+}
+```
+
+</details>
+<p>
 
 ### Parameter Usage: `roleAssignments`
 
 Create a role assignment for the given resource. If you want to assign a service principal / managed identity that is created in the same deployment, make sure to also specify the `'principalType'` parameter and set it to `'ServicePrincipal'`. This will ensure the role assignment waits for the principal's propagation in Azure.
+
+<details>
+
+<summary>Parameter JSON format</summary>
 
 ```json
 "roleAssignments": {
@@ -133,9 +159,42 @@ Create a role assignment for the given resource. If you want to assign a service
 }
 ```
 
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+roleAssignments: [
+    {
+        roleDefinitionIdOrName: 'Reader'
+        description: 'Reader Role Assignment'
+        principalIds: [
+            '12345678-1234-1234-1234-123456789012' // object 1
+            '78945612-1234-1234-1234-123456789012' // object 2
+        ]
+    }
+    {
+        roleDefinitionIdOrName: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'
+        principalIds: [
+            '12345678-1234-1234-1234-123456789012' // object 1
+        ]
+        principalType: 'ServicePrincipal'
+    }
+]
+```
+
+</details>
+<p>
+
 ### Parameter Usage: `tags`
 
 Tag names and tag values can be provided as needed. A tag can be left without a value.
+
+<details>
+
+<summary>Parameter JSON format</summary>
 
 ```json
 "tags": {
@@ -150,9 +209,33 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 }
 ```
 
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+tags: {
+    Environment: 'Non-Prod'
+    Contact: 'test.user@testcompany.com'
+    PurchaseOrder: '1234'
+    CostCenter: '7890'
+    ServiceName: 'DeploymentValidation'
+    Role: 'DeploymentValidation'
+}
+```
+
+</details>
+<p>
+
 ### Parameter Usage: `userAssignedIdentities`
 
 You can specify multiple user assigned identities to a resource by providing additional resource IDs using the following format:
+
+<details>
+
+<summary>Parameter JSON format</summary>
 
 ```json
 "userAssignedIdentities": {
@@ -160,8 +243,24 @@ You can specify multiple user assigned identities to a resource by providing add
         "/subscriptions/12345678-1234-1234-1234-123456789012/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001": {},
         "/subscriptions/12345678-1234-1234-1234-123456789012/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002": {}
     }
-},
+}
 ```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+userAssignedIdentities: {
+    '/subscriptions/12345678-1234-1234-1234-123456789012/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001': {}
+    '/subscriptions/12345678-1234-1234-1234-123456789012/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002': {}
+}
+```
+
+</details>
+<p>
 
 ## Outputs
 
@@ -172,3 +271,258 @@ You can specify multiple user assigned identities to a resource by providing add
 | `resourceGroupName` | string | The resource group of the deployed managed instance. |
 | `resourceId` | string | The resource ID of the deployed managed instance. |
 | `systemAssignedPrincipalId` | string | The principal ID of the system assigned identity. |
+
+## Deployment examples
+
+<h3>Example 1</h3>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": "<<namePrefix>>-az-sqlmi-x-002"
+        },
+        "lock": {
+            "value": "CanNotDelete"
+        },
+        "administratorLogin": {
+            "reference": {
+                "keyVault": {
+                    "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001"
+                },
+                "secretName": "administratorLogin"
+            }
+        },
+        "administratorLoginPassword": {
+            "reference": {
+                "keyVault": {
+                    "id": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001"
+                },
+                "secretName": "administratorLoginPassword"
+            }
+        },
+        "subnetId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-sqlmi/subnets/<<namePrefix>>-az-subnet-x-sqlmi"
+        },
+        "skuName": {
+            "value": "GP_Gen5"
+        },
+        "skuTier": {
+            "value": "GeneralPurpose"
+        },
+        "storageSizeInGB": {
+            "value": 32
+        },
+        "vCores": {
+            "value": 4
+        },
+        "licenseType": {
+            "value": "LicenseIncluded"
+        },
+        "hardwareFamily": {
+            "value": "Gen5"
+        },
+        "servicePrincipal": {
+            "value": "SystemAssigned"
+        },
+        "dnsZonePartner": {
+            "value": ""
+        },
+        "timezoneId": {
+            "value": "UTC"
+        },
+        "collation": {
+            "value": "SQL_Latin1_General_CP1_CI_AS"
+        },
+        "proxyOverride": {
+            "value": "Proxy"
+        },
+        "systemAssignedIdentity": {
+            "value": true
+        },
+        "userAssignedIdentities": {
+            "value": {
+                "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001": {}
+            }
+        },
+        "primaryUserAssignedIdentityId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001"
+        },
+        "publicDataEndpointEnabled": {
+            "value": false
+        },
+        "roleAssignments": {
+            "value": [
+                {
+                    "roleDefinitionIdOrName": "Reader",
+                    "principalIds": [
+                        "<<deploymentSpId>>"
+                    ]
+                }
+            ]
+        },
+        "keys": {
+            "value": [
+                {
+                    "name": "adp-<<namePrefix>>-az-kv-x-sqlmi_keyEncryptionKeySqlMi_4bf367f64c914d8ba698700fb598ad07", // ID must be updated for new keys
+                    "uri": "https://adp-<<namePrefix>>-az-kv-x-sqlmi.vault.azure.net/keys/keyEncryptionKeySqlMi/4bf367f64c914d8ba698700fb598ad07", // ID must be updated for new keys
+                    "serverKeyType": "AzureKeyVault"
+                }
+            ]
+        },
+        "encryptionProtectorObj": {
+            "value": {
+                "serverKeyName": "adp-<<namePrefix>>-az-kv-x-sqlmi_keyEncryptionKeySqlMi_4bf367f64c914d8ba698700fb598ad07", // ID must be updated for new keys
+                "serverKeyType": "AzureKeyVault"
+            }
+        },
+        "securityAlertPoliciesObj": {
+            "value": {
+                "name": "default",
+                "state": "Enabled",
+                "emailAccountAdmins": true
+            }
+        },
+        "vulnerabilityAssessmentsObj": {
+            "value": {
+                "name": "default",
+                "emailSubscriptionAdmins": true,
+                "recurringScansIsEnabled": true,
+                "recurringScansEmails": [
+                    "test1@contoso.com",
+                    "test2@contoso.com"
+                ],
+                "vulnerabilityAssessmentsStorageAccountId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
+            }
+        },
+        "databases": {
+            "value": [
+                {
+                    "name": "<<namePrefix>>-az-sqlmidb-x-001",
+                    "backupShortTermRetentionPolicies": {
+                        "name": "default"
+                    },
+                    "backupLongTermRetentionPolicies": {
+                        "name": "default"
+                    }
+                }
+            ]
+        },
+        "diagnosticLogsRetentionInDays": {
+            "value": 7
+        },
+        "diagnosticStorageAccountId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001"
+        },
+        "diagnosticWorkspaceId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001"
+        },
+        "diagnosticEventHubAuthorizationRuleId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey"
+        },
+        "diagnosticEventHubName": {
+            "value": "adp-<<namePrefix>>-az-evh-x-001"
+        }
+    }
+}
+
+```
+
+</details>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+resource kv1 'Microsoft.KeyVault/vaults@2019-09-01' existing = {
+  name: 'adp-<<namePrefix>>-az-kv-x-001'
+  scope: resourceGroup('<<subscriptionId>>','validation-rg')
+}
+
+module managedInstances './Microsoft.Sql/managedInstances/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-managedInstances'
+  params: {
+    name: '<<namePrefix>>-az-sqlmi-x-002'
+    lock: 'CanNotDelete'
+    administratorLogin: kv1.getSecret('administratorLogin')
+    administratorLoginPassword: kv1.getSecret('administratorLoginPassword')
+    subnetId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-x-sqlmi/subnets/<<namePrefix>>-az-subnet-x-sqlmi'
+    skuName: 'GP_Gen5'
+    skuTier: 'GeneralPurpose'
+    storageSizeInGB: 32
+    vCores: 4
+    licenseType: 'LicenseIncluded'
+    hardwareFamily: 'Gen5'
+    servicePrincipal: 'SystemAssigned'
+    dnsZonePartner: ''
+    timezoneId: 'UTC'
+    collation: 'SQL_Latin1_General_CP1_CI_AS'
+    proxyOverride: 'Proxy'
+    systemAssignedIdentity: true
+    userAssignedIdentities: {
+      '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
+    }
+    primaryUserAssignedIdentityId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001'
+    publicDataEndpointEnabled: false
+    roleAssignments: [
+      {
+        roleDefinitionIdOrName: 'Reader'
+        principalIds: [
+          '<<deploymentSpId>>'
+        ]
+      }
+    ]
+    keys: [
+      {
+        name: 'adp-<<namePrefix>>-az-kv-x-sqlmi_keyEncryptionKeySqlMi_4bf367f64c914d8ba698700fb598ad07'
+        uri: 'https://adp-<<namePrefix>>-az-kv-x-sqlmi.vault.azure.net/keys/keyEncryptionKeySqlMi/4bf367f64c914d8ba698700fb598ad07'
+        serverKeyType: 'AzureKeyVault'
+      }
+    ]
+    encryptionProtectorObj: {
+      serverKeyName: 'adp-<<namePrefix>>-az-kv-x-sqlmi_keyEncryptionKeySqlMi_4bf367f64c914d8ba698700fb598ad07'
+      serverKeyType: 'AzureKeyVault'
+    }
+    securityAlertPoliciesObj: {
+      name: 'default'
+      state: 'Enabled'
+      emailAccountAdmins: true
+    }
+    vulnerabilityAssessmentsObj: {
+      name: 'default'
+      emailSubscriptionAdmins: true
+      recurringScansIsEnabled: true
+      recurringScansEmails: [
+        'test1@contoso.com'
+        'test2@contoso.com'
+      ]
+      vulnerabilityAssessmentsStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
+    }
+    databases: [
+      {
+        name: '<<namePrefix>>-az-sqlmidb-x-001'
+        backupShortTermRetentionPolicies: {
+          name: 'default'
+        }
+        backupLongTermRetentionPolicies: {
+          name: 'default'
+        }
+      }
+    ]
+    diagnosticLogsRetentionInDays: 7
+    diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
+    diagnosticWorkspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
+    diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
+    diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
+  }
+```
+
+</details>
+<p>

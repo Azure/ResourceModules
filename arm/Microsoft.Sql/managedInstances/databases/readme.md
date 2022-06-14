@@ -57,7 +57,7 @@ The SQL Managed Instance Database is deployed on a SQL Managed Instance.
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
-| `lock` | string | `'NotSpecified'` | `[CanNotDelete, NotSpecified, ReadOnly]` | Specify the type of lock. |
+| `lock` | string | `''` | `[, CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `restorableDroppedDatabaseId` | string | `''` |  | The restorable dropped database resource ID to restore when creating this database. |
 | `tags` | object | `{object}` |  | Tags of the resource. |
 
@@ -65,6 +65,10 @@ The SQL Managed Instance Database is deployed on a SQL Managed Instance.
 ### Parameter Usage: `tags`
 
 Tag names and tag values can be provided as needed. A tag can be left without a value.
+
+<details>
+
+<summary>Parameter JSON format</summary>
 
 ```json
 "tags": {
@@ -78,6 +82,26 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
     }
 }
 ```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+tags: {
+    Environment: 'Non-Prod'
+    Contact: 'test.user@testcompany.com'
+    PurchaseOrder: '1234'
+    CostCenter: '7890'
+    ServiceName: 'DeploymentValidation'
+    Role: 'DeploymentValidation'
+}
+```
+
+</details>
+<p>
 
 ## Outputs
 

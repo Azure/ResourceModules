@@ -36,7 +36,7 @@ This module deploys an SQL Server Security Alert Policy.
 | `retentionDays` | int | `0` |  | Specifies the number of days to keep in the Threat Detection audit logs. |
 | `state` | string | `'Disabled'` | `[Disabled, Enabled]` | Specifies the state of the policy, whether it is enabled or disabled or a policy has not been applied yet on the specific database. |
 | `storageAccountAccessKey` | secureString | `''` |  | Specifies the identifier key of the Threat Detection audit storage account.. |
-| `storageEndpoint` | string | `''` |  | Specifies the blob storage endpoint (e.g. https://mystorageaccount.blob.core.windows.net). This blob storage will hold all Threat Detection audit logs. |
+| `storageEndpoint` | string | `''` |  | Specifies the blob storage endpoint. This blob storage will hold all Threat Detection audit logs. |
 
 
 ## Outputs
@@ -44,5 +44,5 @@ This module deploys an SQL Server Security Alert Policy.
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The name of the deployed security alert policy. |
-| `resourceGroupName` | string | The resourceGroup of the deployed security alert policy. |
+| `resourceGroupName` | string | The resource group of the deployed security alert policy. |
 | `resourceId` | string | The resource ID of the deployed security alert policy. |

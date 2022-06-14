@@ -40,6 +40,10 @@ This module deploys a Replication Fabric for Azure to Azure disaster recovery sc
 
 ### Parameter Usage: `replicationContainers`
 
+<details>
+
+<summary>Parameter JSON format</summary>
+
 ```json
 "replicationContainers": {
     "value": [
@@ -59,11 +63,36 @@ This module deploys a Replication Fabric for Azure to Azure disaster recovery sc
 }
 ```
 
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+replicationContainers: [
+    {
+        name: 'we-container1'
+        replicationContainerMappings: [ //optional
+            {
+                policyName: 'Default_values'
+                targetContainerName: 'we-container2'
+            }
+        ]
+    }
+    {
+        name: 'we-container2'
+    }
+]
+```
+
+</details>
+<p>
+
 ## Outputs
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `location` | string | The location the resource was deployed into. |
 | `name` | string | The name of the replication fabric. |
 | `resourceGroupName` | string | The name of the resource group the replication fabric was created in. |
 | `resourceId` | string | The resource ID of the replication fabric. |

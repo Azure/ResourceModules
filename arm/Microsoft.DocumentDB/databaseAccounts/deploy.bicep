@@ -63,12 +63,12 @@ param mongodbDatabases array = []
 param enableDefaultTelemetry bool = true
 
 @allowed([
+  ''
   'CanNotDelete'
-  'NotSpecified'
   'ReadOnly'
 ])
 @description('Optional. Specify the type of lock.')
-param lock string = 'NotSpecified'
+param lock string = ''
 
 @description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalIds\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
 param roleAssignments array = []
@@ -179,6 +179,8 @@ var databaseAccount_locations = [for location in locations: {
 
 var kind = !empty(sqlDatabases) ? 'GlobalDocumentDB' : (!empty(mongodbDatabases) ? 'MongoDB' : 'Parse')
 
+var enableReferencedModulesTelemetry = false
+
 var databaseAccount_properties = !empty(sqlDatabases) ? {
   consistencyPolicy: consistencyPolicy[defaultConsistencyLevel]
   locations: databaseAccount_locations
@@ -216,11 +218,11 @@ resource databaseAccount 'Microsoft.DocumentDB/databaseAccounts@2021-06-15' = {
   properties: databaseAccount_properties
 }
 
-resource databaseAccount_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
+resource databaseAccount_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
   name: '${databaseAccount.name}-${lock}-lock'
   properties: {
-    level: lock
-    notes: (lock == 'CanNotDelete') ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
+    level: any(lock)
+    notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: databaseAccount
 }
@@ -238,7 +240,7 @@ resource databaseAccount_diagnosticSettings 'Microsoft.Insights/diagnosticsettin
   scope: databaseAccount
 }
 
-module databaseAccount_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+module databaseAccount_rbac '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-Rbac-${index}'
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
@@ -255,7 +257,7 @@ module sqlDatabases_resource 'sqlDatabases/deploy.bicep' = [for sqlDatabase in s
     databaseAccountName: databaseAccount.name
     name: sqlDatabase.name
     containers: contains(sqlDatabase, 'containers') ? sqlDatabase.containers : []
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
 
@@ -265,7 +267,7 @@ module mongodbDatabases_resource 'mongodbDatabases/deploy.bicep' = [for mongodbD
     databaseAccountName: databaseAccount.name
     name: mongodbDatabase.name
     collections: contains(mongodbDatabase, 'collections') ? mongodbDatabase.collections : []
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
 

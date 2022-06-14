@@ -7,6 +7,7 @@ This module deploys Firewall Policies.
 - [Resource Types](#Resource-Types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Deployment examples](#Deployment-examples)
 
 ## Resource Types
 
@@ -54,6 +55,10 @@ This module deploys Firewall Policies.
 
 Tag names and tag values can be provided as needed. A tag can be left without a value.
 
+<details>
+
+<summary>Parameter JSON format</summary>
+
 ```json
 "tags": {
     "value": {
@@ -67,9 +72,33 @@ Tag names and tag values can be provided as needed. A tag can be left without a 
 }
 ```
 
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+tags: {
+    Environment: 'Non-Prod'
+    Contact: 'test.user@testcompany.com'
+    PurchaseOrder: '1234'
+    CostCenter: '7890'
+    ServiceName: 'DeploymentValidation'
+    Role: 'DeploymentValidation'
+}
+```
+
+</details>
+<p>
+
 ### Parameter Usage: `userAssignedIdentities`
 
 You can specify multiple user assigned identities to a resource by providing additional resource IDs using the following format:
+
+<details>
+
+<summary>Parameter JSON format</summary>
 
 ```json
 "userAssignedIdentities": {
@@ -77,8 +106,24 @@ You can specify multiple user assigned identities to a resource by providing add
         "/subscriptions/12345678-1234-1234-1234-123456789012/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001": {},
         "/subscriptions/12345678-1234-1234-1234-123456789012/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002": {}
     }
-},
+}
 ```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+userAssignedIdentities: {
+    '/subscriptions/12345678-1234-1234-1234-123456789012/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-001': {}
+    '/subscriptions/12345678-1234-1234-1234-123456789012/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-sxx-az-msi-x-002': {}
+}
+```
+
+</details>
+<p>
 
 ## Outputs
 
@@ -88,3 +133,155 @@ You can specify multiple user assigned identities to a resource by providing add
 | `name` | string | The name of the deployed firewall policy. |
 | `resourceGroupName` | string | The resource group of the deployed firewall policy. |
 | `resourceId` | string | The resource ID of the deployed firewall policy. |
+
+## Deployment examples
+
+<h3>Example 1</h3>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": "<<namePrefix>>-az-fwpol-min-001"
+        }
+    }
+}
+
+```
+
+</details>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module firewallPolicies './Microsoft.Network/firewallPolicies/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-firewallPolicies'
+  params: {
+    name: '<<namePrefix>>-az-fwpol-min-001'
+  }
+```
+
+</details>
+<p>
+
+<h3>Example 2</h3>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": "<<namePrefix>>-az-fwpol-x-002"
+        },
+        "ruleCollectionGroups": {
+            "value": [
+                {
+                    "name": "<<namePrefix>>-rule-001",
+                    "priority": 5000,
+                    "ruleCollections": [
+                        {
+                            "name": "collection002",
+                            "priority": 5555,
+                            "action": {
+                                "type": "Allow"
+                            },
+                            "rules": [
+                                {
+                                    "name": "rule002",
+                                    "ipProtocols": [
+                                        "TCP",
+                                        "UDP"
+                                    ],
+                                    "destinationPorts": [
+                                        "80"
+                                    ],
+                                    "sourceAddresses": [
+                                        "*"
+                                    ],
+                                    "sourceIpGroups": [],
+                                    "ruleType": "NetworkRule",
+                                    "destinationIpGroups": [],
+                                    "destinationAddresses": [
+                                        "*"
+                                    ],
+                                    "destinationFqdns": []
+                                }
+                            ],
+                            "ruleCollectionType": "FirewallPolicyFilterRuleCollection"
+                        }
+                    ]
+                }
+            ]
+        }
+    }
+}
+
+```
+
+</details>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module firewallPolicies './Microsoft.Network/firewallPolicies/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-firewallPolicies'
+  params: {
+    name: '<<namePrefix>>-az-fwpol-x-002'
+    ruleCollectionGroups: [
+      {
+        name: '<<namePrefix>>-rule-001'
+        priority: 5000
+        ruleCollections: [
+          {
+            name: 'collection002'
+            priority: 5555
+            action: {
+              type: 'Allow'
+            }
+            rules: [
+              {
+                name: 'rule002'
+                ipProtocols: [
+                  'TCP'
+                  'UDP'
+                ]
+                destinationPorts: [
+                  '80'
+                ]
+                sourceAddresses: [
+                  '*'
+                ]
+                sourceIpGroups: []
+                ruleType: 'NetworkRule'
+                destinationIpGroups: []
+                destinationAddresses: [
+                  '*'
+                ]
+                destinationFqdns: []
+              }
+            ]
+            ruleCollectionType: 'FirewallPolicyFilterRuleCollection'
+          }
+        ]
+      }
+    ]
+  }
+```
+
+</details>
+<p>

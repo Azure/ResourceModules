@@ -13,6 +13,7 @@ This module has some known **limitations**:
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
 - [Considerations](#Considerations)
+- [Deployment examples](#Deployment-examples)
 
 ## Resource types
 
@@ -42,6 +43,10 @@ This module has some known **limitations**:
 
 Create a role assignment for the given resource. If you want to assign a service principal / managed identity that is created in the same deployment, make sure to also specify the `'principalType'` parameter and set it to `'ServicePrincipal'`. This will ensure the role assignment waits for the principal's propagation in Azure.
 
+<details>
+
+<summary>Parameter JSON format</summary>
+
 ```json
 "roleAssignments": {
     "value": [
@@ -63,6 +68,35 @@ Create a role assignment for the given resource. If you want to assign a service
     ]
 }
 ```
+
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+roleAssignments: [
+    {
+        roleDefinitionIdOrName: 'Reader'
+        description: 'Reader Role Assignment'
+        principalIds: [
+            '12345678-1234-1234-1234-123456789012' // object 1
+            '78945612-1234-1234-1234-123456789012' // object 2
+        ]
+    }
+    {
+        roleDefinitionIdOrName: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'
+        principalIds: [
+            '12345678-1234-1234-1234-123456789012' // object 1
+        ]
+        principalType: 'ServicePrincipal'
+    }
+]
+```
+
+</details>
+<p>
 
 ## Outputs
 
@@ -88,3 +122,67 @@ $TopMGID = "<The group ID of the management group here>"
 New-AzRoleAssignment -ObjectId $PrincipalID -Scope "/" -RoleDefinitionName "Automation Job Operator"
 New-AzRoleAssignment -ObjectId $PrincipalID -Scope "/providers/Microsoft.Management/managementGroups/$TopMGID" -RoleDefinitionName "Management Group Contributor"
 ```
+
+## Deployment examples
+
+<h3>Example 1</h3>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "value": "testMG"
+        },
+        "displayName": {
+            "value": "Test MG"
+        },
+        "parentId": {
+            "value": "<<managementGroupId>>"
+        },
+        "roleAssignments": {
+            "value": [
+                {
+                    "roleDefinitionIdOrName": "Reader",
+                    "principalIds": [
+                        "<<deploymentSpId>>"
+                    ]
+                }
+            ]
+        }
+    }
+}
+
+```
+
+</details>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module managementGroups './Microsoft.Management/managementGroups/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-managementGroups'
+  params: {
+    name: 'testMG'
+    displayName: 'Test MG'
+    parentId: '<<managementGroupId>>'
+    roleAssignments: [
+      {
+        roleDefinitionIdOrName: 'Reader'
+        principalIds: [
+          '<<deploymentSpId>>'
+        ]
+      }
+    ]
+  }
+```
+
+</details>
+<p>
