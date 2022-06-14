@@ -84,7 +84,11 @@
         },
         "gallerySolutions": {
             "value": [
-                "Updates"
+                {
+                    "name": "Updates",
+                    "product": "OMSGallery",
+                    "publisher": "Microsoft"
+                }
             ]
         },
         "softwareUpdateConfigurations": {
