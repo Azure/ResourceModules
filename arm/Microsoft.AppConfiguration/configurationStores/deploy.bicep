@@ -170,7 +170,7 @@ module appConfig_KeyValues 'keyValues/deploy.bicep' = [for (keyValues, index) in
     value: keyValues.value
     contentType: contains(keyValues, 'contentType') ? keyValues.contentType : ''
     tags: contains(keyValues, 'tags') ? keyValues.tags : {}
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
 
