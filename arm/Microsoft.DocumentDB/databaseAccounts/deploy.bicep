@@ -240,7 +240,7 @@ resource databaseAccount_diagnosticSettings 'Microsoft.Insights/diagnosticsettin
   scope: databaseAccount
 }
 
-module databaseAccount_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+module databaseAccount_rbac '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-Rbac-${index}'
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
