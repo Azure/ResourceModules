@@ -20,7 +20,7 @@ trigger:
   paths:
     include:
       - '/.azuredevops/modulePipelines/ms.network.privatednszones.yml'
-      - '/.azuredevops/pipelineTemplates/module.*.yml'
+      - '/.azuredevops/pipelineTemplates/*.yml'
       - '/arm/Microsoft.Network/privateDnsZones/*'
       - '/arm/.global/global.module.tests.ps1'
     exclude:
