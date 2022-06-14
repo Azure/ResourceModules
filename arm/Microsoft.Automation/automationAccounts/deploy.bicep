@@ -269,12 +269,15 @@ module automationAccount_linkedService '../../Microsoft.OperationalInsights/work
   scope: resourceGroup(!empty(linkedWorkspaceResourceId) ? split(linkedWorkspaceResourceId, '/')[2] : subscription().subscriptionId, !empty(linkedWorkspaceResourceId) ? split(linkedWorkspaceResourceId, '/')[4] : resourceGroup().name)
 }
 
-module automationAccount_solutions '.bicep/nested_solution.bicep' = [for (gallerySolution, index) in gallerySolutions: if (!empty(linkedWorkspaceResourceId)) {
+module automationAccount_solutions '../../Microsoft.OperationsManagement/solutions/deploy.bicep' = [for (gallerySolution, index) in gallerySolutions: if (!empty(linkedWorkspaceResourceId)) {
   name: '${uniqueString(deployment().name, location)}-AutoAccount-Solution-${index}'
   params: {
-    name: gallerySolution
+    name: gallerySolution.name
     location: location
     logAnalyticsWorkspaceName: last(split(linkedWorkspaceResourceId, '/'))
+    product: contains(gallerySolution, 'product') ? gallerySolution.product : 'OMSGallery'
+    publisher: contains(gallerySolution, 'publisher') ? gallerySolution.publisher : 'Microsoft'
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
   // This is to support solution to law in different subscription and resource group than the automation account.
   // The current scope is used by default if no linked service is intended to be created.
