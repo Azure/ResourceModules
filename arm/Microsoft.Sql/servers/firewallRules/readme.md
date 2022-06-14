@@ -39,5 +39,5 @@ This module deploys an SQL Server Firewall rule.
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
 | `name` | string | The name of the deployed firewall rule. |
-| `resourceGroupName` | string | The resourceGroup of the deployed firewall rule. |
+| `resourceGroupName` | string | The resource group of the deployed firewall rule. |
 | `resourceId` | string | The resource ID of the deployed firewall rule. |

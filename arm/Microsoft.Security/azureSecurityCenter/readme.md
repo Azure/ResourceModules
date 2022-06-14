@@ -7,6 +7,7 @@ This template enables Azure security center - Standard tier by default, could be
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Deployment examples](#Deployment-examples)
 
 ## Resource types
 
@@ -51,85 +52,11 @@ This template enables Azure security center - Standard tier by default, could be
 | `virtualMachinesPricingTier` | string | `'Free'` | `[Free, Standard]` | The pricing tier value for VMs. Azure Security Center is provided in two pricing tiers: free and standard, with the standard tier available with a trial period. The standard tier offers advanced security capabilities, while the free tier offers basic security features. - Free or Standard. |
 
 
-### Parameter Usage: `deviceSecurityGroupProperties`
-
-```json
-"deviceSecurityGroupProperties": {
-    "value": {
-        "thresholdRules": [
-          {
-            "isEnabled": "boolean",
-            "ruleType": "string",
-            "minThreshold": "integer",
-            "maxThreshold": "integer"
-          }
-        ],
-        "timeWindowRules": [
-          {
-            "isEnabled": "boolean",
-            "ruleType": "string",
-            "minThreshold": "integer",
-            "maxThreshold": "integer",
-            "timeWindowSize": "string"
-          }
-        ],
-        "allowlistRules": [
-          {
-            "isEnabled": "boolean",
-            "ruleType": "string",
-            "allowlistValues": [
-              "string"
-            ]
-          }
-        ],
-        "denylistRules": [
-          {
-            "isEnabled": "boolean",
-            "ruleType": "string",
-            "denylistValues": [
-              "string"
-            ]
-          }
-        ]
-    }
-}
-```
-
-### Parameter Usage: `ioTSecuritySolutionProperties`
-
-```json
-"ioTSecuritySolutionProperties": {
-  "value": {
-      "resourceGroup": "string",
-      "workspace": "string",
-      "displayName": "string",
-      "status": "string",
-      "export": [
-        "RawEvents"
-      ],
-      "disabledDataSources": [
-        "TwinData"
-      ],
-      "iotHubs": [
-        "string"
-      ],
-      "userDefinedResources": {
-        "query": "string",
-        "querySubscriptions": [
-          "string"
-        ]
-      },
-      "recommendationsConfiguration": [
-        {
-          "recommendationType": "string",
-          "status": "string"
-        }
-      ]
-    }
-}
-```
-
 ### Parameter Usage: `securityContactProperties`
+
+<details>
+
+<summary>Parameter JSON format</summary>
 
 ```json
 "securityContactProperties": {
@@ -142,8 +69,83 @@ This template enables Azure security center - Standard tier by default, could be
 }
 ```
 
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+securityContactProperties: {
+    email: 'test@contoso.com'
+    phone: '+12345678'
+    alertNotifications: 'On'
+    alertsToAdmins: 'Off'
+}
+```
+
+</details>
+<p>
+
 ## Outputs
 
 | Output Name | Type | Description |
 | :-- | :-- | :-- |
-| `workspaceId` | string | The resource IDs of the used log analytics workspace. |
+| `name` | string | The name of the security center. |
+| `workspaceId` | string | The resource ID of the used log analytics workspace. |
+
+## Deployment examples
+
+<h3>Example 1</h3>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "scope": {
+            "value": "/subscriptions/<<subscriptionId>>"
+        },
+        "securityContactProperties": {
+            "value": {
+                "email": "foo@contoso.com",
+                "phone": "+12345678",
+                "alertNotifications": "Off",
+                "alertsToAdmins": "Off"
+            }
+        },
+        "workspaceId": {
+            "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001"
+        }
+    }
+}
+
+```
+
+</details>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module azureSecurityCenter './Microsoft.Security/azureSecurityCenter/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-azureSecurityCenter'
+  params: {
+    scope: '/subscriptions/<<subscriptionId>>'
+    securityContactProperties: {
+      email: 'foo@contoso.com'
+      phone: '+12345678'
+      alertNotifications: 'Off'
+      alertsToAdmins: 'Off'
+    }
+    workspaceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-x-001'
+  }
+```
+
+</details>
+<p>

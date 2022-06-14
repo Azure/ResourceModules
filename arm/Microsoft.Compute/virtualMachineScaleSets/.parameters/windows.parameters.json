@@ -5,6 +5,9 @@
         "name": {
             "value": "<<namePrefix>>-scaleset-win-001"
         },
+        "lock": {
+            "value": "CanNotDelete"
+        },
         "vmNamePrefix": {
             "value": "vmsswinvm"
         },

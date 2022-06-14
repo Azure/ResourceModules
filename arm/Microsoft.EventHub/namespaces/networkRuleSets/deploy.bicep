@@ -12,7 +12,7 @@ param publicNetworkAccess string = 'Enabled'
   'Allow'
   'Deny'
 ])
-@description('Optional. Default Action for Network Rule Set. Default is "Allow". Will be set to "Deny" if ipRules/virtualNetworkRules or are being used. If ipRules/virtualNetworkRules are not used and PublicNetworkAccess is set to "Disabled", setting this to "Deny" would render the namespace resources inaccessible for data-plane requests')
+@description('Optional. Default Action for Network Rule Set. Default is "Allow". Will be set to "Deny" if ipRules/virtualNetworkRules or are being used. If ipRules/virtualNetworkRules are not used and PublicNetworkAccess is set to "Disabled", setting this to "Deny" would render the namespace resources inaccessible for data-plane requests.')
 param defaultAction string = 'Allow'
 
 @description('Optional. List of IpRules. When used, defaultAction will be set to "Deny" and publicNetworkAccess will be set to "Enabled".')

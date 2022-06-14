@@ -5,12 +5,15 @@
         "name": {
             "value": "<<namePrefix>>-wd-aut-x-001"
         },
+        "lock": {
+            "value": "CanNotDelete"
+        },
         "schedules": {
             "value": [
                 {
                     "name": "TestSchedule",
                     "startTime": "",
-                    "expiryTime": "9999-12-31T23:59:00+00:00",
+                    "expiryTime": "9999-12-31T13:00",
                     "interval": 15,
                     "frequency": "Minute",
                     "timeZone": "Europe/Berlin",
@@ -76,12 +79,16 @@
                 }
             ]
         },
-        "linkedWorkspaceId": {
+        "linkedWorkspaceResourceId": {
             "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-aut-001"
         },
         "gallerySolutions": {
             "value": [
-                "Updates"
+                {
+                    "name": "Updates",
+                    "product": "OMSGallery",
+                    "publisher": "Microsoft"
+                }
             ]
         },
         "softwareUpdateConfigurations": {

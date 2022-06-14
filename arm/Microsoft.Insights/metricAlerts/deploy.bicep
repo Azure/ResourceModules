@@ -111,7 +111,7 @@ resource metricAlert 'Microsoft.Insights/metricAlerts@2018-03-01' = {
     targetResourceType: targetResourceType
     targetResourceRegion: targetResourceRegion
     criteria: {
-      'odata.type': alertCriteriaType
+      'odata.type': any(alertCriteriaType)
       allOf: criterias
     }
     autoMitigate: autoMitigate
@@ -119,7 +119,7 @@ resource metricAlert 'Microsoft.Insights/metricAlerts@2018-03-01' = {
   }
 }
 
-module metricAlert_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+module metricAlert_rbac '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-MetricAlert-Rbac-${index}'
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''

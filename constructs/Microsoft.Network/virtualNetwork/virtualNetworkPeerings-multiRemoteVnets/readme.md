@@ -46,6 +46,28 @@ Array containing multiple objects for different VNETs to peer with.
 }
 ```
 
+</details>
+
+<details>
+
+<summary>Bicep format</summary>
+
+```bicep
+peeringConfigurations: [
+    {
+        peeringName: 'sxx-az-peering-x-002-sxx-az-peering-x-003'  // Optional
+        remoteVirtualNetworkId: '/subscriptions/<subscriptionId>/resourceGroups/dependencies-rg/providers/Microsoft.Network/virtualNetworks/<vnetName>'
+        allowVirtualNetworkAccess: false // Optional. Default true
+        allowForwardedTraffic: false // Optional. Default true
+        allowGatewayTransit: false // Optional. Default false
+        useRemoteGateways: false // Optional. Default true
+    }
+]
+```
+
+</details>
+<p>
+
 ## Outputs
 
 | Output Name | Type | Description |

@@ -5,6 +5,9 @@
         "name": {
             "value": "<<namePrefix>>-vm-linux-01"
         },
+        "lock": {
+            "value": "CanNotDelete"
+        },
         "systemAssignedIdentity": {
             "value": true
         },
@@ -210,11 +213,6 @@
             "value": {
                 "commandToExecute": "sudo apt-get update"
             }
-        },
-        "configurationProfileAssignments": {
-            "value": [
-                "/providers/Microsoft.Automanage/bestPractices/AzureBestPracticesProduction"
-            ]
         }
     }
 }

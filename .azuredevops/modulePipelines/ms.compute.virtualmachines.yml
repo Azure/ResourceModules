@@ -20,7 +20,7 @@ trigger:
   paths:
     include:
       - '/.azuredevops/modulePipelines/ms.compute.virtualmachines.yml'
-      - '/.azuredevops/pipelineTemplates/module.*.yml'
+      - '/.azuredevops/pipelineTemplates/*.yml'
       - '/arm/Microsoft.Compute/virtualMachines/*'
       - '/arm/.global/global.module.tests.ps1'
     exclude:
@@ -47,8 +47,10 @@ stages:
           deploymentBlocks:
             - path: $(modulePath)/.parameters/linux.min.parameters.json
             - path: $(modulePath)/.parameters/linux.parameters.json
+            - path: $(modulePath)/.parameters/linux.autmg.parameters.json
             - path: $(modulePath)/.parameters/windows.min.parameters.json
             - path: $(modulePath)/.parameters/windows.parameters.json
+            - path: $(modulePath)/.parameters/windows.autmg.parameters.json
 
   - stage: Publishing
     displayName: Publishing

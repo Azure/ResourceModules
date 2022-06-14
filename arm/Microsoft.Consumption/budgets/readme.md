@@ -7,6 +7,7 @@ This module deploys budgets for subscriptions.
 - [Resource types](#Resource-types)
 - [Parameters](#Parameters)
 - [Outputs](#Outputs)
+- [Deployment examples](#Deployment-examples)
 
 ## Resource types
 
@@ -44,3 +45,65 @@ This module deploys budgets for subscriptions.
 | `name` | string | The name of the budget. |
 | `resourceId` | string | The resource ID of the budget. |
 | `subscriptionName` | string | The subscription the budget was deployed into. |
+
+## Deployment examples
+
+<h3>Example 1</h3>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "amount": {
+            "value": 500
+        },
+        "thresholds": {
+            "value": [
+                50,
+                75,
+                90,
+                100,
+                110
+            ]
+        },
+        "contactEmails": {
+            "value": [
+                "dummy@contoso.com"
+            ]
+        }
+    }
+}
+
+```
+
+</details>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module budgets './Microsoft.Consumption/budgets/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-budgets'
+  params: {
+    amount: 500
+    thresholds: [
+      50
+      75
+      90
+      100
+      110
+    ]
+    contactEmails: [
+      'dummy@contoso.com'
+    ]
+  }
+```
+
+</details>
+<p>
