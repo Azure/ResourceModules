@@ -5,7 +5,7 @@
         "localTokens": [
             {
                 "name": "namePrefix",
-                "value": "aba",
+                "value": "xya",
                 "metadata": {
                     "description": "A 3-5 character length string, included in the resources names"
                 }
