@@ -488,7 +488,7 @@ module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "<<namePrefix>>-az-la-x-001"
+            "value": "<<namePrefix>>-az-law-x-001"
         },
         "lock": {
             "value": "CanNotDelete"
@@ -667,7 +667,7 @@ module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
 module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-workspaces'
   params: {
-    name: '<<namePrefix>>-az-la-x-001'
+    name: '<<namePrefix>>-az-law-x-001'
     lock: 'CanNotDelete'
     publicNetworkAccessForIngestion: 'Disabled'
     publicNetworkAccessForQuery: 'Disabled'
