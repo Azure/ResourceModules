@@ -29,7 +29,6 @@
         "keyValues": {
             "value": [
                 {
-                    "appConfigName": "<<namePrefix>>-az-appcs-min-001",
                     "name": "keyName",
                     "value": "valueName",
                     "contentType": "contentType",

@@ -354,7 +354,6 @@ module configurationStores './Microsoft.AppConfiguration/configurationStores/dep
         "keyValues": {
             "value": [
                 {
-                    "appConfigName": "<<namePrefix>>-az-appcs-min-001",
                     "name": "keyName",
                     "value": "valueName",
                     "contentType": "contentType",
@@ -427,7 +426,6 @@ module configurationStores './Microsoft.AppConfiguration/configurationStores/dep
     systemAssignedIdentity: true
     keyValues: [
       {
-        appConfigName: '<<namePrefix>>-az-appcs-min-001'
         name: 'keyName'
         value: 'valueName'
         contentType: 'contentType'

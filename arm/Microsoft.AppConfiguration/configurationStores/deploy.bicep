@@ -165,7 +165,7 @@ resource configurationStore 'Microsoft.AppConfiguration/configurationStores@2021
 module appConfig_KeyValues 'keyValues/deploy.bicep' = [for (keyValues, index) in keyValuesList: {
   name: '${uniqueString(deployment().name, location)}-appConfig-KeyValues-${index}'
   params: {
-    appConfigurationName: keyValues.appConfigName
+    appConfigurationName: configurationStore.name
     name: keyValues.name
     value: keyValues.value
     contentType: contains(keyValues, 'contentType') ? keyValues.contentType : ''
