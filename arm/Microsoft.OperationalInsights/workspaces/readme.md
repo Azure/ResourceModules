@@ -518,7 +518,7 @@ module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
         "linkedServices": {
             "value": [
                 {
-                    "name": "AutomationLAW",
+                    "name": "Automation",
                     "resourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Automation/automationAccounts/adp-<<namePrefix>>-wd-aut-x-002"
                 }
             ]
@@ -685,7 +685,7 @@ module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
     ]
     linkedServices: [
       {
-        name: 'AutomationLAW'
+        name: 'Automation'
         resourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Automation/automationAccounts/adp-<<namePrefix>>-wd-aut-x-002'
       }
     ]

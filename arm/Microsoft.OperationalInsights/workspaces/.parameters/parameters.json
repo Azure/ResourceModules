@@ -33,7 +33,7 @@
         "linkedServices": {
             "value": [
                 {
-                    "name": "AutomationLAW",
+                    "name": "Automation",
                     "resourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Automation/automationAccounts/adp-<<namePrefix>>-wd-aut-x-002"
                 }
             ]
