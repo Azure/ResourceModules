@@ -245,7 +245,6 @@ module logAnalyticsWorkspace_solutions '../../Microsoft.OperationsManagement/sol
     publisher: contains(gallerySolution, 'publisher') ? gallerySolution.publisher : 'Microsoft'
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
-  // dependsOn: logAnalyticsWorkspace_linkedServices
 }]
 
 resource logAnalyticsWorkspace_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
