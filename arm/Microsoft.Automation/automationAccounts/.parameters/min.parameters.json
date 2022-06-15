@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "adp-<<namePrefix>>-az-aut-min-001"
+            "value": "<<namePrefix>>-az-aut-min-001"
         }
     }
 }

@@ -452,7 +452,7 @@ tags: {
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "<<namePrefix>>-az-la-min-001"
+            "value": "<<namePrefix>>-az-law-min-001"
         }
     }
 }
@@ -469,7 +469,7 @@ tags: {
 module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-workspaces'
   params: {
-    name: '<<namePrefix>>-az-la-min-001'
+    name: '<<namePrefix>>-az-law-min-001'
   }
 ```
 
@@ -519,7 +519,7 @@ module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
             "value": [
                 {
                     "name": "Automation",
-                    "resourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Automation/automationAccounts/adp-<<namePrefix>>-wd-aut-x-002"
+                    "resourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Automation/automationAccounts/adp-<<namePrefix>>-az-aut-x-001"
                 }
             ]
         },
@@ -625,15 +625,15 @@ module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
                 }
             ]
         },
-        // "gallerySolutions": {
-        //     "value": [
-        //         {
-        //             "name": "AzureAutomation",
-        //             "product": "OMSGallery",
-        //             "publisher": "Microsoft"
-        //         }
-        //     ]
-        // },
+        "gallerySolutions": {
+            "value": [
+                {
+                    "name": "AzureAutomation",
+                    "product": "OMSGallery",
+                    "publisher": "Microsoft"
+                }
+            ]
+        },
         "useResourcePermissions": {
             "value": true
         },
@@ -686,7 +686,7 @@ module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
     linkedServices: [
       {
         name: 'Automation'
-        resourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Automation/automationAccounts/adp-<<namePrefix>>-wd-aut-x-002'
+        resourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Automation/automationAccounts/adp-<<namePrefix>>-az-aut-x-001'
       }
     ]
     savedSearches: [
@@ -785,6 +785,13 @@ module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
         name: 'sampleLinuxPerfCollection1'
         kind: 'LinuxPerformanceCollection'
         state: 'Enabled'
+      }
+    ]
+    gallerySolutions: [
+      {
+        name: 'AzureAutomation'
+        product: 'OMSGallery'
+        publisher: 'Microsoft'
       }
     ]
     useResourcePermissions: true

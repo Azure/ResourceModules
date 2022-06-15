@@ -357,7 +357,7 @@ userAssignedIdentities: {
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "<<namePrefix>>-wd-aut-encr-001"
+            "value": "<<namePrefix>>-az-aut-encr-001"
         },
         "encryptionKeySource": {
             "value": "Microsoft.Keyvault"
@@ -394,7 +394,7 @@ userAssignedIdentities: {
 module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-automationAccounts'
   params: {
-    name: '<<namePrefix>>-wd-aut-encr-001'
+    name: '<<namePrefix>>-az-aut-encr-001'
     encryptionKeySource: 'Microsoft.Keyvault'
     encryptionUserAssignedIdentity: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001'
     keyName: 'keyEncryptionKey'
@@ -421,7 +421,7 @@ module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bice
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "<<namePrefix>>-wd-aut-min-001"
+            "value": "<<namePrefix>>-az-aut-min-001"
         }
     }
 }
@@ -438,7 +438,7 @@ module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bice
 module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-automationAccounts'
   params: {
-    name: '<<namePrefix>>-wd-aut-min-001'
+    name: '<<namePrefix>>-az-aut-min-001'
   }
 ```
 
@@ -457,7 +457,7 @@ module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bice
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "<<namePrefix>>-wd-aut-x-001"
+            "value": "<<namePrefix>>-az-aut-x-001"
         },
         "lock": {
             "value": "CanNotDelete"
@@ -664,7 +664,7 @@ module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bice
 module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-automationAccounts'
   params: {
-    name: '<<namePrefix>>-wd-aut-x-001'
+    name: '<<namePrefix>>-az-aut-x-001'
     lock: 'CanNotDelete'
     schedules: [
       {
