@@ -515,14 +515,14 @@ module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
                 }
             ]
         },
-        // "linkedServices": {
-        //     "value": [
-        //         {
-        //             "name": "Automation",
-        //             "resourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Automation/automationAccounts/adp-<<namePrefix>>-wd-aut-x-001"
-        //         }
-        //     ]
-        // },
+        "linkedServices": {
+            "value": [
+                {
+                    "name": "Automation",
+                    "resourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Automation/automationAccounts/adp-<<namePrefix>>-wd-aut-x-001"
+                }
+            ]
+        },
         "savedSearches": {
             "value": [
                 {
@@ -625,15 +625,15 @@ module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
                 }
             ]
         },
-        "gallerySolutions": {
-            "value": [
-                {
-                    "name": "AzureAutomation",
-                    "product": "OMSGallery",
-                    "publisher": "Microsoft"
-                }
-            ]
-        },
+        // "gallerySolutions": {
+        //     "value": [
+        //         {
+        //             "name": "AzureAutomation",
+        //             "product": "OMSGallery",
+        //             "publisher": "Microsoft"
+        //         }
+        //     ]
+        // },
         "useResourcePermissions": {
             "value": true
         },
@@ -681,6 +681,12 @@ module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
           'WADServiceFabric*EventTable'
           'LinuxsyslogVer2v0'
         ]
+      }
+    ]
+    linkedServices: [
+      {
+        name: 'Automation'
+        resourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Automation/automationAccounts/adp-<<namePrefix>>-wd-aut-x-001'
       }
     ]
     savedSearches: [
@@ -779,13 +785,6 @@ module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
         name: 'sampleLinuxPerfCollection1'
         kind: 'LinuxPerformanceCollection'
         state: 'Enabled'
-      }
-    ]
-    gallerySolutions: [
-      {
-        name: 'AzureAutomation'
-        product: 'OMSGallery'
-        publisher: 'Microsoft'
       }
     ]
     useResourcePermissions: true
