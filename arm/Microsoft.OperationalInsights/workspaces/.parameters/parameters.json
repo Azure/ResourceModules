@@ -140,15 +140,15 @@
                 }
             ]
         },
-        // "gallerySolutions": {
-        //     "value": [
-        //         {
-        //             "name": "AzureAutomation",
-        //             "product": "OMSGallery",
-        //             "publisher": "Microsoft"
-        //         }
-        //     ]
-        // },
+        "gallerySolutions": {
+            "value": [
+                {
+                    "name": "AzureAutomation",
+                    "product": "OMSGallery",
+                    "publisher": "Microsoft"
+                }
+            ]
+        },
         "useResourcePermissions": {
             "value": true
         },
