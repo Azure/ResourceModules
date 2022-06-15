@@ -4,7 +4,7 @@ param name string
 @description('Required. Name of the value.')
 param value string
 
-@description('Required. Name of the Azure App Configuration.')
+@description('Required. The content type of the key-values value Providing a proper content-type can enable transformations of values when they are retrieved by applications.')
 param contentType string
 
 @description('Required. The name of the parent app configuration store. Required if the template is used in a standalone deployment.')
