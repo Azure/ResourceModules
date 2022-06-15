@@ -62,9 +62,9 @@ The removal process will delete all resources created by the deployment. The lis
 
 After a resource is removed (this happens after each resource in the list), if defined, the script will perform a **post removal operation**. This can be used for those resource types that require post-processing, like purging a soft-deleted Key Vault.
 
-The procedure is initiated post-deployment by the script [`/utilities/pipelines/resourceRemoval/Initialize-DeploymentRemoval.ps1`](../..//utilities/pipelines/resourceRemoval/Initialize-DeploymentRemoval.ps1) in the pipeline templates:
-- (Azure DevOps) [`/.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml`](../../.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml)
-- (GitHub) [`/.github/actions/templates/validateModuleDeployment/action.yml`](../../.github/actions/templates/validateModuleDeployment/action.yml)
+The procedure is initiated post-deployment by the script [`/utilities/pipelines/resourceRemoval/Initialize-DeploymentRemoval.ps1`](https://github.com/Azure/ResourceModules/blob/main/utilities/pipelines/resourceRemoval/Initialize-DeploymentRemoval.ps1) in the pipeline templates:
+- (Azure DevOps) [`/.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml`](https://github.com/Azure/ResourceModules/blob/main/.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml)
+- (GitHub) [`/.github/actions/templates/validateModuleDeployment/action.yml`](https://github.com/Azure/ResourceModules/blob/main/.github/actions/templates/validateModuleDeployment/action.yml)
 
 It uses several helper scripts that can be found in its `helper` subfolder
 
@@ -85,20 +85,20 @@ However, if you need to, you can define a custom removal procedure by:
 Those methods can be combined independently.
 
 To modify the resource types removal **order**:
-1. Open the [`/utilities/pipelines/resourceRemoval/Initialize-DeploymentRemoval.ps1`](../../utilities/pipelines/resourceRemoval/Initialize-DeploymentRemoval.ps1) file.
+1. Open the [`/utilities/pipelines/resourceRemoval/Initialize-DeploymentRemoval.ps1`](https://github.com/Azure/ResourceModules/blob/main/utilities/pipelines/resourceRemoval/Initialize-DeploymentRemoval.ps1) file.
 1. Look for the following comment: `### CODE LOCATION: Add custom removal sequence here`
 1. Add a case value that matches your resource type
 1. In the case block, update the `$removalSequence` variable value to accommodate your module requirements
 1. Remember to add the `break` statement.
 
 To define a **custom removal** action:
-1. Open the [`/utilities/pipelines/resourceRemoval/helper/Invoke-ResourceRemoval.ps1`](../../utilities/pipelines/resourceRemoval/helper/Invoke-ResourceRemoval.ps1) file.
+1. Open the [`/utilities/pipelines/resourceRemoval/helper/Invoke-ResourceRemoval.ps1`](https://github.com/Azure/ResourceModules/blob/main/utilities/pipelines/resourceRemoval/helper/Invoke-ResourceRemoval.ps1) file.
 1. Look for the following comment: `### CODE LOCATION: Add custom removal action here`
 1. Add a case value that matches the resource type you want to customize the removal action for
 1. In the case block, define the resource-type-specific removal action
 
 To add a **custom post-removal** step:
-1. Open the [`/utilities/pipelines/resourceRemoval/helper/Invoke-ResourcePostRemoval.ps1`](../../utilities/pipelines/resourceRemoval/helper/Invoke-ResourcePostRemoval.ps1) file.
+1. Open the [`/utilities/pipelines/resourceRemoval/helper/Invoke-ResourcePostRemoval.ps1`](https://github.com/Azure/ResourceModules/blob/main/utilities/pipelines/resourceRemoval/helper/Invoke-ResourcePostRemoval.ps1) file.
 1. Look for the following comment: `### CODE LOCATION: Add custom post-removal operation here`
 1. Add a case value that matches the resource type you want to add a post-removal operation for
 1. In the case block, define the resource-type-specific post-removal action

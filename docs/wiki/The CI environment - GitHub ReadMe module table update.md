@@ -1,5 +1,5 @@
 Use this script to update a given ReadMe's module table in its 'Available Resource Modules' section.
-In the platform's pipeline `platform.updateReadMe.yml`, this script is invoked each time anything in the `arm` path changes to keep the table in sync. It updates both the root ReadMe ([`/readme.md`](../../README.md)) and `arm` folder ReadMe ([`/arm/readme.md`](../../arm/readme.md)) with a different set of required columns
+In the platform's pipeline `platform.updateReadMe.yml`, this script is invoked each time anything in the `arm` path changes to keep the table in sync. It updates both the root ReadMe ([`/readme.md`](https://github.com/Azure/ResourceModules/blob/main/README.md)) and `arm` folder ReadMe ([`/arm/readme.md`](https://github.com/Azure/ResourceModules/blob/main/arm/readme.md)) with a different set of required columns
 
 ---
 
@@ -12,7 +12,7 @@ In the platform's pipeline `platform.updateReadMe.yml`, this script is invoked e
 ---
 # Location
 
-You can find the script under [`/utilities/tools/Set-ReadMeModuleTable.ps1`](../../utilities/tools/Set-ReadMeModuleTable.ps1)
+You can find the script under [`/utilities/tools/Set-ReadMeModuleTable.ps1`](https://github.com/Azure/ResourceModules/blob/main/utilities/tools/Set-ReadMeModuleTable.ps1)
 
 # How it works
 

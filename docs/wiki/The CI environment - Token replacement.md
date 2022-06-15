@@ -81,7 +81,7 @@ The below image compares the different token types that can be used for paramete
 
 ## How tokens are replaced in a parameter file
 
-The below diagram illustrates the Token Replacement Functionality via the [Validate](https://github.com/Azure/ResourceModules/blob/main/.github/actions/templates/validateModuleDeployment/action.yml) Action/Template.
+The below diagram illustrates the Token Replacement Functionality via the [validate module deployment](https://github.com/Azure/ResourceModules/blob/main/.github/actions/templates/validateModuleDeployment/action.yml) Action/Template.
 
 <img src="./media/CIEnvironment/tokenReplacement.png" alt="tokenReplacement">
 

@@ -7,6 +7,7 @@ This page provides an overview of the CARML library. For an in-depth look, pleas
 - [Infrastructure as Code](#infrastructure-as-code)
 - [A module in CARML](#a-module-in-carml)
   - [CARML module features](#carml-module-features)
+    - [Opinionated, but not opinionated](#opinionated-but-not-opinionated)
   - [Example: Multiple Storage Account variants](#example-multiple-storage-account-variants)
 ---
 
@@ -44,6 +45,10 @@ A CARML module should comply with the following characteristics:
 - **Integrates extension resources**: Extension resources are integrated with resource modules to support additional capabilities, such as diagnostic settings, role assignments, private endpoints, locks and managed identities.
   > For example, an automation account can optionally deploy private endpoints and/or diagnostic settings to support monitoring.
 
+### Opinionated, but not opinionated
+
+CARML can be considered "*opinionated*" as its code strictly follows a set of design principles, but at the same time it's "*not opinionated*" as it's not limiting the user of the modules (i.e., Solution Developers) to a given configuration, naming or other conventions. All modules come with a set of secure default parameters, but these can be overridden at deployment time, as opposed to hard coded variables.
+
 ## Example: Multiple Storage Account variants
 
 This section illustrates the previously described module features applied to the storage account module.
@@ -57,3 +62,4 @@ Leveraging five different parameter files, the same storage account module is ab
 > - **Variant 3**: A storage account hosting two file shares and one blob container.
 > - **Variant 4**: A storage account with a specific lock applied.
 > - **Variant 5**: A storage account hosting a file share with a specific role assignment applied on the file share level.
+

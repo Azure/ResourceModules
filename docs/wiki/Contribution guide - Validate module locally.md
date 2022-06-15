@@ -11,7 +11,7 @@ Use this script to test a module from your PC locally, without a CI environment.
 ---
 # Location
 
-You can find the script under [`/utilities/tools/Test-ModuleLocally.ps1`](../../utilities/tools//Test-ModuleLocally.ps1)
+You can find the script under [`/utilities/tools/Test-ModuleLocally.ps1`](https://github.com/Azure/ResourceModules/blob/main/utilities/tools//Test-ModuleLocally.ps1)
 
 # How it works
 

@@ -67,7 +67,7 @@ In addition, workflows leverage the following composite actions:
 | Composite Action | Description |
 | - | - |
 | **getWorkflowInput** | This action allows fetching workflow input values from the module's workflow file, even if the pipeline was not triggered via a `workflow_dispatch` action. Without it, we would not be able to process the contained information and would need to duplicate the configuration as workflow variables. Such input values are for example, the removal switch `removeDeployment`. |
-| **setEnvironmentVariables** | This action parses the variables file ([`global.variables.yml`](../../global.variables.yml)) and sets the key-value pairs in the `variables` list as environment variables. |
+| **setEnvironmentVariables** | This action parses the variables file ([`global.variables.yml`](https://github.com/Azure/ResourceModules/blob/main/global.variables.yml)) and sets the key-value pairs in the `variables` list as environment variables. |
 
 Technical documentation for each composite action, such as required input and output variables, is included in each `action.yml` file located in path `.github/actions/templates`.
 
@@ -120,8 +120,8 @@ For example, any instance of the \[Virtual Machine] module needs an existing vir
 The dependencies pipeline covers this requirement and is intended to be run before using the module pipelines.
 
 The pipeline leverages resource parameters from the `utilities\pipelines\dependencies` subfolder and either one of the following pipelines:
-- GitHub workflow: [`.github\workflows\platform.dependencies.yml`](../../.github\workflows\platform.dependencies.yml)
-- Azure DevOps pipeline: [`.azuredevops\platformPipelines\platform.dependencies.yml`](../../.azuredevops\platformPipelines\platform.dependencies.yml)
+- GitHub workflow: [`.github\workflows\platform.dependencies.yml`](https://github.com/Azure/ResourceModules/blob/main/.github\workflows\platform.dependencies.yml)
+- Azure DevOps pipeline: [`.azuredevops\platformPipelines\platform.dependencies.yml`](https://github.com/Azure/ResourceModules/blob/main/.azuredevops\platformPipelines\platform.dependencies.yml)
 
 ### Dependencies pipeline inputs
 

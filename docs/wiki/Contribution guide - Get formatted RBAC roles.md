@@ -11,7 +11,7 @@ Use this script to format a given raw 'Roles' table from the Azure portal to the
 ---
 # Location
 
-You can find the script under [`/utilities/tools/Get-FormattedRBACRoles.ps1`](../../utilities/tools/Get-FormattedRBACRoleList.ps1)
+You can find the script under [`/utilities/tools/Get-FormattedRBACRoles.ps1`](https://github.com/Azure/ResourceModules/blob/main/utilities/tools/Get-FormattedRBACRoleList.ps1)
 
 # How it works
 

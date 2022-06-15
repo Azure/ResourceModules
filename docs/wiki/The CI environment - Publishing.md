@@ -26,7 +26,7 @@ Besides the publishing phase's runtime, there is also the possibility to set the
 
 The publishing works as follows:
 
-1. The script [`utilities/pipelines/resourcePublish/Get-ModulesToPublish.ps1`](../../utilities/pipelines/resourcePublish/Get-ModulesToPublish.ps1) gets all changed module files, including child modules, and handles the logic of propagating the appropriate module version to be used:
+1. The script [`utilities/pipelines/resourcePublish/Get-ModulesToPublish.ps1`](https://github.com/Azure/ResourceModules/blob/main/utilities/pipelines/resourcePublish/Get-ModulesToPublish.ps1) gets all changed module files, including child modules, and handles the logic of propagating the appropriate module version to be used:
    1. The major (`x.0`) and minor (`0.x`) version are set based on the `version.json` file in the module folder.
    1. The patch (`0.0.x`) version is calculated based on the number of commits on the `HEAD` ref (aka. git height). This will cause the patch version to never reset to 0 with major and/or minor increment, as specified for [semver](https://semver.org/).
    1. The module is published with a `major.minor.patch` version (`x.y.z`). For Template Specs and Bicep Registry only, a `major` version (`x`) and a `major.minor` version (`x.y`) are also updated, allowing a consumer to:

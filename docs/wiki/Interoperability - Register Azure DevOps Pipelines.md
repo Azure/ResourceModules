@@ -13,7 +13,7 @@ Use the script described in this article to automatically register all specified
 ---
 # Location
 
-You can find the script under [`/utilities/tools/AzureDevOps/Register-AzureDevOpsPipeline.ps1`](../../utilities/tools//AzureDevOps/Register-AzureDevOpsPipeline.ps1)
+You can find the script under [`/utilities/tools/AzureDevOps/Register-AzureDevOpsPipeline.ps1`](https://github.com/Azure/ResourceModules/blob/main/utilities/tools//AzureDevOps/Register-AzureDevOpsPipeline.ps1)
 
 # How it works
 

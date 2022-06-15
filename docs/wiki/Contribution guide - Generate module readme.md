@@ -14,7 +14,7 @@ The ReadMe generator utility aims to simplify contributing to the CARML library,
 ---
 # Location
 
-You can find the script under [`/utilities/tools/Set-ModuleReadMe.ps1`](../../utilities/tools//Set-ModuleReadMe.ps1)
+You can find the script under [`/utilities/tools/Set-ModuleReadMe.ps1`](https://github.com/Azure/ResourceModules/blob/main/utilities/tools//Set-ModuleReadMe.ps1)
 
 # How it works
 

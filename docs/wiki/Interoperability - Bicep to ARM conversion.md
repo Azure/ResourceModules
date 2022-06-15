@@ -14,7 +14,7 @@ This page documents the conversion utility and how to use it.
 ---
 # Location
 
-You can find the script under [`/utilities/tools/ConvertTo-ARMTemplate.ps1`](../../utilities//tools/ConvertTo-ARMTemplate.ps1)
+You can find the script under [`/utilities/tools/ConvertTo-ARMTemplate.ps1`](https://github.com/Azure/ResourceModules/blob/main/utilities//tools/ConvertTo-ARMTemplate.ps1)
 
 # How it works
 
