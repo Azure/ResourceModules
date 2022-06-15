@@ -65,6 +65,21 @@ param systemAssignedIdentity bool = false
 @description('Optional. The ID(s) to assign to the resource.')
 param userAssignedIdentities object = {}
 
+@description('Optional. Enable service encryption.')
+param enableEncryption bool = true
+
+@description('Optional. The name of the customer managed key to use for encryption.')
+param cMKKeyName string = ''
+
+@description('Optional. The version of the customer managed key to use for encryption. If not provided, latest version will be used.')
+param cMKKeyVersion string = ''
+
+@description('Conditional. The URL of the Azure Key Vault used for CMK. Required if \'cMKKeyName\' is not empty.')
+param cMKKeyVaultBaseUrl string = ''
+
+@description('Conditional. User assigned identity to use to retrieve the CMK from Azure Key Vault. Required if \'cMKKeyName\' is not empty.')
+param cMKUserAssignedIdentityResourceId string = ''
+
 @description('Optional. The name of logs that will be streamed.')
 @allowed([
   'ActivityRuns'
@@ -157,6 +172,14 @@ resource dataFactory 'Microsoft.DataFactory/factories@2018-06-01' = {
   properties: {
     repoConfiguration: bool(gitConfigureLater) ? null : json('{"type": "${gitRepoType}","accountName": "${gitAccountName}","repositoryName": "${gitRepositoryName}",${((gitRepoType == 'FactoryVSTSConfiguration') ? '"projectName": "${gitProjectName}",' : '')}"collaborationBranch": "${gitCollaborationBranch}","rootFolder": "${gitRootFolder}"}')
     publicNetworkAccess: bool(publicNetworkAccess) ? 'Enabled' : 'Disabled'
+    encryption: enableEncryption && !empty(cMKKeyName) ? {
+      keyName: cMKKeyName
+      keyVersion: cMKKeyVersion
+      vaultBaseUrl: cMKKeyVaultBaseUrl
+      identity: {
+        userAssignedIdentity: cMKUserAssignedIdentityResourceId
+      }
+    } : null
   }
 }
 
