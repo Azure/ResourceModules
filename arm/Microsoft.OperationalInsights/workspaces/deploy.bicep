@@ -192,7 +192,7 @@ module logAnalyticsWorkspace_linkedServices 'linkedServices/deploy.bicep' = [for
   params: {
     logAnalyticsWorkspaceName: logAnalyticsWorkspace.name
     name: linkedService.name
-    resourceId: linkedService.resourceId
+    resourceId: contains(linkedService, 'resourceId') ? linkedService.resourceId : ''
     writeAccessResourceId: contains(linkedService, 'writeAccessResourceId') ? linkedService.writeAccessResourceId : ''
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
