@@ -30,14 +30,14 @@
                 }
             ]
         },
-        // "linkedServices": {
-        //     "value": [
-        //         {
-        //             "name": "Automation",
-        //             "resourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Automation/automationAccounts/adp-<<namePrefix>>-wd-aut-x-001"
-        //         }
-        //     ]
-        // },
+        "linkedServices": {
+            "value": [
+                {
+                    "name": "Automation",
+                    "resourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Automation/automationAccounts/adp-<<namePrefix>>-wd-aut-x-001"
+                }
+            ]
+        },
         "savedSearches": {
             "value": [
                 {
@@ -140,15 +140,15 @@
                 }
             ]
         },
-        "gallerySolutions": {
-            "value": [
-                {
-                    "name": "AzureAutomation",
-                    "product": "OMSGallery",
-                    "publisher": "Microsoft"
-                }
-            ]
-        },
+        // "gallerySolutions": {
+        //     "value": [
+        //         {
+        //             "name": "AzureAutomation",
+        //             "product": "OMSGallery",
+        //             "publisher": "Microsoft"
+        //         }
+        //     ]
+        // },
         "useResourcePermissions": {
             "value": true
         },
