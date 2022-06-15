@@ -119,7 +119,8 @@ For _GitHub_, you have to perform the following environment-specific steps:
 - [3.2.1 Setup secrets](#321-setup-secrets)
 - [3.2.2 Setup variables file](#322-setup-variables-file)
 - [3.2.3 Enable actions](#323-enable-actions)
-- [3.2.4 Set R/W Workflow permissions](#324-set-rw-wf-permissions)
+- [3.2.4 Set R/W Workflow permissions](#324-set-rw-workflow-permissions)
+
 ### 3.2.1 Setup secrets
 
 To use the environment's pipelines you should use the information you gathered during the [Azure setup](#1-configure-your-azure-environment) to set the following repository secrets up:
