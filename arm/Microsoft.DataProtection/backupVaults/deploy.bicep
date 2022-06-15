@@ -91,7 +91,7 @@ module backupVault_backupPolicies 'backupPolicies/deploy.bicep' = [for (backupPo
   }
 }]
 
-resource backupVault_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
+resource backupVault_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
   name: '${backupVault.name}-${lock}-lock'
   properties: {
     level: any(lock)
