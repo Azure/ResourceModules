@@ -4,6 +4,12 @@
     "parameters": {
         "level": {
             "value": "CanNotDelete"
+        },
+        "resourceGroupName": {
+            "value": "testrg03"
+        },
+        "subscriptionId": {
+            "value": "<<subscriptionId>>"
         }
     }
 }
