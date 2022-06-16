@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "<<namePrefix>>-wd-aut-x-001"
+            "value": "<<namePrefix>>-az-aut-x-001"
         },
         "lock": {
             "value": "CanNotDelete"
