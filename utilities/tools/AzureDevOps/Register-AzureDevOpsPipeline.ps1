@@ -155,7 +155,8 @@ function Register-AzureDevOpsPipeline {
 
     $pipelinesArray = @()
     foreach ($localPipelinePath in $localPipelinePaths) {
-        $pipelineName = (Get-Content -Path $localPipelinePath)[0].Split('name:')[1].Replace("'", '').Trim()
+        $line = (Get-Content -Path $localPipelinePath)[0]
+        $pipelineName = ($line -split 'name:')[1].Replace("'", '').Trim()
         $pipelinesArray += @{
             ProjectName      = $ProjectName
             SourceRepository = $SourceRepository

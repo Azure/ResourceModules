@@ -25,7 +25,7 @@ This module deploys an Azure Automation Account.
 | `Microsoft.Insights/diagnosticSettings` | [2021-05-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Insights/2021-05-01-preview/diagnosticSettings) |
 | `Microsoft.Network/privateEndpoints` | [2021-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/privateEndpoints) |
 | `Microsoft.Network/privateEndpoints/privateDnsZoneGroups` | [2021-05-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.Network/2021-05-01/privateEndpoints/privateDnsZoneGroups) |
-| `Microsoft.OperationalInsights/workspaces/linkedServices` | [2020-03-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.OperationalInsights/2020-03-01-preview/workspaces/linkedServices) |
+| `Microsoft.OperationalInsights/workspaces/linkedServices` | [2020-08-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.OperationalInsights/2020-08-01/workspaces/linkedServices) |
 | `Microsoft.OperationsManagement/solutions` | [2015-11-01-preview](https://docs.microsoft.com/en-us/azure/templates/Microsoft.OperationsManagement/2015-11-01-preview/solutions) |
 
 ## Parameters
@@ -56,7 +56,7 @@ This module deploys an Azure Automation Account.
 | `keyVersion` | string | `''` |  | The key version of the key used to encrypt data. This parameter is needed only if you enable Microsoft.Keyvault as encryptionKeySource. |
 | `linkedWorkspaceResourceId` | string | `''` |  | ID of the log analytics workspace to be linked to the deployed automation account. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
-| `lock` | string | `'NotSpecified'` | `[CanNotDelete, NotSpecified, ReadOnly]` | Specify the type of lock. |
+| `lock` | string | `''` | `[, CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `modules` | _[modules](modules/readme.md)_ array | `[]` |  | List of modules to be created in the automation account. |
 | `privateEndpoints` | array | `[]` |  | Configuration Details for private endpoints. |
 | `roleAssignments` | array | `[]` |  | Array of role assignment objects that contain the 'roleDefinitionIdOrName' and 'principalId' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: '/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11'. |
@@ -71,7 +71,7 @@ This module deploys an Azure Automation Account.
 
 
 ### Parameter Usage: `encryption`
-Prerequsites:
+Prerequisites:
 - User Assigned Identity for Encryption needs `Get`, `List`, `Wrap` and `Unwrap` permissions on the key.
 - User Assigned Identity have to be one of the defined identities in userAssignedIdentities parameter block.
 - To use Azure Automation with customer managed keys, both `Soft Delete` and `Do Not Purge` features must be turned on to allow for recovery of keys in case of accidental deletion.
@@ -357,24 +357,23 @@ userAssignedIdentities: {
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "<<namePrefix>>-wd-aut-encr-001"
+            "value": "<<namePrefix>>-az-aut-encr-001"
         },
-        "encryptionKeySource" : {
-            "value" : "Microsoft.Keyvault"
+        "encryptionKeySource": {
+            "value": "Microsoft.Keyvault"
         },
         "encryptionUserAssignedIdentity": {
             "value": "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001" // this identity needs to be one of the identities defined in userAssignedIdentities section
         },
-        "keyName" : {
-                "value" : "keyEncryptionKey"
+        "keyName": {
+            "value": "keyEncryptionKey"
         },
-        "keyvaultUri" : {
-                    "value" : "https://adp-carml-az-kv-nopr-002.vault.azure.net/"
+        "keyvaultUri": {
+            "value": "https://adp-<<namePrefix>>-az-kv-nopr-002.vault.azure.net/"
         },
-        "keyVersion" : {
-                    "value" : "9917c14be51d4d93b37218de7d326f60"
+        "keyVersion": {
+            "value": "9917c14be51d4d93b37218de7d326f60"
         },
-        
         "userAssignedIdentities": {
             "value": {
                 "/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001": {}
@@ -395,11 +394,11 @@ userAssignedIdentities: {
 module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-automationAccounts'
   params: {
-    name: '<<namePrefix>>-wd-aut-encr-001'
+    name: '<<namePrefix>>-az-aut-encr-001'
     encryptionKeySource: 'Microsoft.Keyvault'
     encryptionUserAssignedIdentity: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001'
     keyName: 'keyEncryptionKey'
-    keyvaultUri: 'https://adp-carml-az-kv-nopr-002.vault.azure.net/'
+    keyvaultUri: 'https://adp-<<namePrefix>>-az-kv-nopr-002.vault.azure.net/'
     keyVersion: '9917c14be51d4d93b37218de7d326f60'
     userAssignedIdentities: {
       '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
@@ -422,7 +421,7 @@ module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bice
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "<<namePrefix>>-wd-aut-min-001"
+            "value": "<<namePrefix>>-az-aut-min-001"
         }
     }
 }
@@ -439,7 +438,7 @@ module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bice
 module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-automationAccounts'
   params: {
-    name: '<<namePrefix>>-wd-aut-min-001'
+    name: '<<namePrefix>>-az-aut-min-001'
   }
 ```
 
@@ -458,14 +457,17 @@ module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bice
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "<<namePrefix>>-wd-aut-x-001"
+            "value": "<<namePrefix>>-az-aut-x-001"
+        },
+        "lock": {
+            "value": "CanNotDelete"
         },
         "schedules": {
             "value": [
                 {
                     "name": "TestSchedule",
                     "startTime": "",
-                    "expiryTime": "9999-12-31T23:59:00+00:00",
+                    "expiryTime": "9999-12-31T13:00",
                     "interval": 15,
                     "frequency": "Minute",
                     "timeZone": "Europe/Berlin",
@@ -536,7 +538,11 @@ module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bice
         },
         "gallerySolutions": {
             "value": [
-                "Updates"
+                {
+                    "name": "Updates",
+                    "product": "OMSGallery",
+                    "publisher": "Microsoft"
+                }
             ]
         },
         "softwareUpdateConfigurations": {
@@ -658,12 +664,13 @@ module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bice
 module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-automationAccounts'
   params: {
-    name: '<<namePrefix>>-wd-aut-x-001'
+    name: '<<namePrefix>>-az-aut-x-001'
+    lock: 'CanNotDelete'
     schedules: [
       {
         name: 'TestSchedule'
         startTime: ''
-        expiryTime: '9999-12-31T23:59:59.9999999+01:00'
+        expiryTime: '9999-12-31T13:00'
         interval: 15
         frequency: 'Minute'
         timeZone: 'Europe/Berlin'
@@ -722,7 +729,11 @@ module automationAccounts './Microsoft.Automation/automationAccounts/deploy.bice
     ]
     linkedWorkspaceResourceId: '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/microsoft.operationalinsights/workspaces/adp-<<namePrefix>>-az-law-aut-001'
     gallerySolutions: [
-      'Updates'
+      {
+        name: 'Updates'
+        product: 'OMSGallery'
+        publisher: 'Microsoft'
+      }
     ]
     softwareUpdateConfigurations: [
       {

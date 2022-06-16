@@ -15,6 +15,7 @@ This module deploys RecoveryServices Vaults ProtectionContainers.
 | :-- | :-- |
 | `Microsoft.RecoveryServices/vaults/backupFabrics/protectionContainers` | [2022-02-01](https://docs.microsoft.com/en-us/azure/templates/Microsoft.RecoveryServices/2022-02-01/vaults/backupFabrics/protectionContainers) |
 
+
 ## Parameters
 
 **Required parameters**
@@ -34,6 +35,8 @@ This module deploys RecoveryServices Vaults ProtectionContainers.
 | `containerType` | string | `''` | `[AzureBackupServerContainer, AzureSqlContainer, GenericContainer, Microsoft.ClassicCompute/virtualMachines, Microsoft.Compute/virtualMachines, SQLAGWorkLoadContainer, StorageContainer, VMAppContainer, Windows, ]` | Type of the container. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `friendlyName` | string | `''` |  | Friendly name of the Protection Container. |
+| `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
+| `protectedItems` | _[protectedItems](protectedItems/readme.md)_ array | `[]` |  | Protected items to register in the container. |
 | `sourceResourceId` | string | `''` |  | Resource ID of the target resource for the Protection Container. |
 
 

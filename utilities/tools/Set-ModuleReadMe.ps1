@@ -301,10 +301,10 @@ function Set-OutputsSection {
 
 <#
 .SYNOPSIS
-Generate 'Usage Examples' for the ReadMe out of the parameter files currently used to test the template
+Generate 'Deployment examples' for the ReadMe out of the parameter files currently used to test the template
 
 .DESCRIPTION
-Generate 'Usage Examples' for the ReadMe out of the parameter files currently used to test the template
+Generate 'Deployment examples' for the ReadMe out of the parameter files currently used to test the template
 
 .PARAMETER TemplateFileContent
 Mandatory. The template file content object to crawl data from
@@ -414,13 +414,6 @@ function Set-DeploymentExamplesSection {
                 }
             }
 
-            # replace key vault references
-            foreach ($keyVaultReference in $keyVaultReferences) {
-                $matchingTuple = $keyVaultReferenceData | Where-Object { $_.parameterName -eq $keyVaultReference }
-                # kv.getSecret('vmAdminPassword')
-                $JSONParametersHashTable[$keyVaultReference] = "{0}.getSecret('{1}')" -f $matchingTuple.vaultResourceReference, $matchingTuple.secretName
-            }
-
             # Handle VALUE references (i.e. remove them)
             $JSONParameters = (ConvertFrom-Json $contentInJSONFormat -Depth 99).PSObject.properties['parameters'].value
             $JSONParametersWithoutValue = [ordered]@{}
@@ -428,7 +421,9 @@ function Set-DeploymentExamplesSection {
                 if ($parameter.value.PSObject.Properties.name -eq 'value') {
                     $JSONParametersWithoutValue[$parameter.name] = $parameter.value.PSObject.Properties['value'].value
                 } else {
-                    $JSONParametersWithoutValue[$parameter.name] = $parameter.value.PSObject.Properties
+                    # replace key vault references
+                    $matchingTuple = $keyVaultReferenceData | Where-Object { $_.parameterName -eq $parameter.Name }
+                    $JSONParametersWithoutValue[$parameter.name] = "{0}.getSecret('{1}')" -f $matchingTuple.vaultResourceReference, $matchingTuple.secretName
                 }
             }
 
@@ -612,7 +607,7 @@ function Set-ModuleReadMe {
             'Outputs',
             'Template references',
             'Navigation',
-            'Usage examples'
+            'Deployment examples'
         )]
         [string[]] $SectionsToRefresh = @(
             'Resource Types',
@@ -620,7 +615,7 @@ function Set-ModuleReadMe {
             'Outputs',
             'Template references',
             'Navigation',
-            'Usage examples'
+            'Deployment examples'
         )
     )
 
@@ -633,10 +628,14 @@ function Set-ModuleReadMe {
 
     if (-not $TemplateFileContent) {
         if ((Split-Path -Path $TemplateFilePath -Extension) -eq '.bicep') {
-            $templateFileContent = az bicep build --file $TemplateFilePath --stdout | ConvertFrom-Json -AsHashtable
+            $templateFileContent = az bicep build --file $TemplateFilePath --stdout --no-restore | ConvertFrom-Json -AsHashtable
         } else {
             $templateFileContent = ConvertFrom-Json (Get-Content $TemplateFilePath -Encoding 'utf8' -Raw) -ErrorAction Stop -AsHashtable
         }
+    }
+
+    if (-not $templateFileContent) {
+        throw "Failed to compile [$TemplateFilePath]"
     }
 
     $fullResourcePath = (Split-Path $TemplateFilePath -Parent).Replace('\', '/').split('/arm/')[1]
@@ -718,8 +717,8 @@ function Set-ModuleReadMe {
         $readMeFileContent = Set-OutputsSection @inputObject
     }
 
-    if ($SectionsToRefresh -contains 'Usage examples') {
-        # Handle [Usage examples] section
+    if ($SectionsToRefresh -contains 'Deployment examples') {
+        # Handle [Deployment examples] section
         # ===================================
         $inputObject = @{
             ReadMeFileContent = $readMeFileContent

@@ -49,7 +49,7 @@ This template deploys Azure Active Directory Domain Services (AADDS).
 | `kerberosRc4Encryption` | string | `'Enabled'` | `[Enabled, Disabled]` | The value is to enable Kerberos requests that use RC4 encryption. |
 | `ldaps` | string | `'Enabled'` | `[Enabled, Disabled]` | A flag to determine whether or not Secure LDAP is enabled or disabled. |
 | `location` | string | `[resourceGroup().location]` |  | The location to deploy the Azure ADDS Services. |
-| `lock` | string | `'NotSpecified'` | `[CanNotDelete, NotSpecified, ReadOnly]` | Specify the type of lock. |
+| `lock` | string | `''` | `[, CanNotDelete, ReadOnly]` | Specify the type of lock. |
 | `logsToEnable` | array | `[SystemSecurity, AccountManagement, LogonLogoff, ObjectAccess, PolicyChange, PrivilegeUse, DetailTracking, DirectoryServiceAccess, AccountLogon]` | `[SystemSecurity, AccountManagement, LogonLogoff, ObjectAccess, PolicyChange, PrivilegeUse, DetailTracking, DirectoryServiceAccess, AccountLogon]` | The name of logs that will be streamed. |
 | `name` | string | `[parameters('domainName')]` |  | The name of the AADDS resource. Defaults to the domain name specific to the Azure ADDS service. |
 | `notifyDcAdmins` | string | `'Enabled'` | `[Enabled, Disabled]` | The value is to notify the DC Admins. |
@@ -224,6 +224,9 @@ $pfxCertificate = [System.Convert]::ToBase64String($rawCertByteStream)
         "sku": {
             "value": "Standard"
         },
+        "lock": {
+            "value": "CanNotDelete"
+        },
         "replicaSets": {
             "value": [
                 {
@@ -264,9 +267,6 @@ $pfxCertificate = [System.Convert]::ToBase64String($rawCertByteStream)
         },
         "diagnosticEventHubName": {
             "value": "adp-<<namePrefix>>-az-evh-x-001"
-        },
-        "lock": {
-            "value": "NotSpecified"
         }
     }
 }
@@ -290,44 +290,15 @@ module DomainServices './Microsoft.AAD/DomainServices/deploy.bicep' = {
   params: {
     domainName: '<<namePrefix>>.onmicrosoft.com'
     sku: 'Standard'
+    lock: 'CanNotDelete'
     replicaSets: [
       {
         location: 'WestEurope'
         subnetId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Network/virtualNetworks/adp-<<namePrefix>>-az-vnet-aadds-001/subnets/AADDSSubnet'
       }
     ]
-    pfxCertificate: [
-      {
-        Value: {
-          keyVault: {
-            id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001'
-          }
-          secretName: 'pfxBase64Certificate'
-        }
-        MemberType: 8
-        IsSettable: true
-        IsGettable: true
-        TypeNameOfValue: 'System.Management.Automation.PSCustomObject'
-        Name: 'reference'
-        IsInstance: true
-      }
-    ]
-    pfxCertificatePassword: [
-      {
-        Value: {
-          keyVault: {
-            id: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.KeyVault/vaults/adp-<<namePrefix>>-az-kv-x-001'
-          }
-          secretName: 'pfxCertificatePassword'
-        }
-        MemberType: 8
-        IsSettable: true
-        IsGettable: true
-        TypeNameOfValue: 'System.Management.Automation.PSCustomObject'
-        Name: 'reference'
-        IsInstance: true
-      }
-    ]
+    pfxCertificate: kv1.getSecret('pfxBase64Certificate')
+    pfxCertificatePassword: kv1.getSecret('pfxCertificatePassword')
     additionalRecipients: [
       '<<namePrefix>>@noreply.github.com'
     ]
@@ -335,7 +306,6 @@ module DomainServices './Microsoft.AAD/DomainServices/deploy.bicep' = {
     diagnosticStorageAccountId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Storage/storageAccounts/adp<<namePrefix>>azsax001'
     diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
     diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
-    lock: 'NotSpecified'
   }
 ```
 

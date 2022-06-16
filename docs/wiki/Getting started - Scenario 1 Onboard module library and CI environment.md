@@ -31,6 +31,8 @@ Next you'll want to create your own copy of the code. Depending on the repositor
 
 > **Note:** Whether you chose GitHub or Azure DevOps as your repository's environment does not affect your options when registering the pipelines.
 
+> **Note:** If you don't want to use all modules, you can remove those that should not be part of your library. However, when doing so, make sure you use the utility [`Get-LinkedLocalModuleList`](./Getting%20started%20-%20Get%20module%20cross-references) to check for any cross-module references. For example, you may find that when you'd remove the 'Microsoft.Network/privateEndpoints', that it is still referenced by some of the modules you may want to use (for example 'Microsoft.KeyVault/vaults'). In those cases, make sure to not accidently delete required references.
+
 <details>
 <summary>GitHub Repository</summary>
 
@@ -117,6 +119,7 @@ For _GitHub_, you have to perform the following environment-specific steps:
 - [3.2.1 Setup secrets](#321-setup-secrets)
 - [3.2.2 Setup variables file](#322-setup-variables-file)
 - [3.2.3 Enable actions](#323-enable-actions)
+- [3.2.4 Set R/W Workflow permissions](#324-set-rw-workflow-permissions)
 
 ### 3.2.1 Setup secrets
 
@@ -214,6 +217,19 @@ To do so, perform the following steps:
 1. Next, select '`I understand my workflows, go ahead and enable them`'.
 
     <img src="./media/SetupEnvironment/actionsEnable.png" alt="Enable Actions" height="380">
+
+  
+### 3.2.4 Set R/W Workflow permissions
+
+To let the worflow engine publish their results into your repository, you have to enable the read / write access for the github actions.
+
+1. Navigate to the `Settings` tab on the top of your repository page.
+
+1. Within the section `Code and automation` click on `Actions` and `General`
+
+1. Make sure to enable `Read and write permissions`
+
+    <img src="./media/SetupEnvironment/workflow_permissions.png" alt="Workflow Permissions">
 
 </details>
 

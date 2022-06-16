@@ -1,31 +1,26 @@
-@description('Optional. The name of the Lock')
-param name string = ''
+@description('Optional. The name of the lock.')
+param name string = '${level}-lock'
 
 @allowed([
   'CanNotDelete'
-  'NotSpecified'
   'ReadOnly'
 ])
-@description('Optional. Set lock level.')
-param level string = 'NotSpecified'
+@description('Required. Set lock level.')
+param level string
 
-var lockNotes = {
-  CanNotDelete: 'Cannot delete resource or child resources.'
-  ReadOnly: 'Cannot modify the resource or child resources.'
-}
+@description('Optional. The decription attached to the lock.')
+param notes string = level == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
 
-var lockName = empty(name) ? '${level}-lock' : name
-
-resource lock 'Microsoft.Authorization/locks@2017-04-01' = if (level != 'NotSpecified') {
-  name: lockName
+resource lock 'Microsoft.Authorization/locks@2017-04-01' = {
+  name: name
   properties: {
     level: level
-    notes: lockNotes[level]
+    notes: notes
   }
 }
 
-@description('The resource ID of the lock')
+@description('The resource ID of the lock.')
 output resourceId string = lock.id
 
-@description('The name of the lock')
+@description('The name of the lock.')
 output name string = lock.name

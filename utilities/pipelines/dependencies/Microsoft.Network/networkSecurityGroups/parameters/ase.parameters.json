@@ -19,6 +19,19 @@
             "priority": 1010,
             "direction": "Inbound"
           }
+        },
+        {
+          "name": "AllowPortsForASE2",
+          "properties": {
+            "protocol": "*",
+            "sourcePortRange": "*",
+            "sourceAddressPrefix": "AppServiceManagement",
+            "destinationPortRange": "454-455",
+            "destinationAddressPrefix": "10.0.9.0/24",
+            "access": "Allow",
+            "priority": 1020,
+            "direction": "Inbound"
+          }
         }
       ]
     }

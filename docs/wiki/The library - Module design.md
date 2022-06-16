@@ -6,13 +6,16 @@ This section details the design principles followed by the CARML Bicep modules.
 
 - [General guidelines](#general-guidelines)
 - [File & folder structure](#file--folder-structure)
-  - [Naming](#naming)
   - [Structure](#structure)
+    - [**Child-Resources**](#child-resources)
+  - [Naming](#naming)
   - [Patterns](#patterns)
 - [Bicep template guidelines](#bicep-template-guidelines)
   - [Parameters](#parameters)
   - [Variables](#variables)
-  - [Resource](#resource)
+  - [Resources](#resources)
+  - [Modules](#modules)
+    - [Deployment names](#deployment-names)
   - [Outputs](#outputs)
 - [ReadMe](#readme)
 - [Parameter files](#parameter-files)
@@ -91,29 +94,25 @@ module server_databases 'databases/deploy.bicep' = [for (database, index) in dat
 Use the following naming standard for module files and folders:
 
 - Module folders are in camelCase and their name reflects the main resource type of the Bicep module they are hosting (e.g. `storageAccounts`, `virtualMachines`).
-- Cross-referenced and extension resource modules are placed in the `.bicep` subfolder and named `nested_<crossReferencedResourceType>.bicep`
+- Extension resource modules are placed in the `.bicep` subfolder and named `nested_<crossReferencedResourceType>.bicep`
 
   ``` txt
   Microsoft.<Provider>
   └─ <service>
       ├─ .bicep
-      |  ├─ nested_crossReferencedResource1.bicep
-      |  └─ nested_crossReferencedResource2.bicep
+      |  ├─ nested_extensionResource1.bicep
       ├─ .parameters
       |  └─ parameters.json
       ├─ deploy.bicep
       └─ readme.md
   ```
 
-  >**Example**: `nested_serverfarms.bicep` in the `Microsoft.Web\sites\.bicep` folder contains the cross-referenced `serverfarm` module leveraged by the top level `site` resource.
+  >**Example**: `nested_roleAssignments.bicep` in the `Microsoft.Web\sites\.bicep` folder contains the `site` resource RBAC implementation.
   >``` txt
   >Microsoft.Web
   >└─ sites
   >    ├─ .bicep
-  >    |  ├─ nested_components.bicep
-  >    |  ├─ nested_privateEndpoint.bicep
-  >    |  ├─ nested_rbac.bicep
-  >    |  └─ nested_serverfarms.bicep
+  >    |  └─ nested_roleAssignments.bicep
   >    ├─ .parameters
   >    |  └─ parameters.json
   >    ├─ deploy.bicep
@@ -124,35 +123,46 @@ Use the following naming standard for module files and folders:
 
 This section details patterns among extension resources that are usually very similar in their structure among all modules supporting them:
 
-- [Locks](#locks)
-- [RBAC](#rbac)
-- [Diagnostic Settings](#diagnostic-settings)
-- [Private Endpoints](#private-endpoints)
-
-### Locks
+<details>
+<summary>Locks</summary>
 
 The locks extension can be added as a `resource` to the resource template directly.
 
 ```bicep
 @allowed([
+  ''
   'CanNotDelete'
-  'NotSpecified'
   'ReadOnly'
 ])
 @description('Optional. Specify the type of lock.')
-param lock string = 'NotSpecified'
+param lock string = ''
 
-resource <mainResource>_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
+resource <mainResource>_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
   name: '${<mainResource>.name}-${lock}-lock'
   properties: {
-    level: lock
-    notes: (lock == 'CanNotDelete') ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
+    level: any(lock)
+    notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: <mainResource>
 }
 ```
 
-### RBAC
+> **Note:** How locks are passed to other resource templates depends on the type of module relationship:
+> - Child and extension resources
+>   - Locks are not automatically passed down, as they are inherited by default in Azure
+>   - The reference of the child/extension template should look similar to: `lock: contains(<childExtensionObject>, 'lock') ? <childExtensionObject>.lock : ''`
+>   - Using this implementation, a lock is only deployed to the child/extension resource if explicitly specified in the module's parameter file
+>   - For example, the lock of a Storage Account module is not automatically passed to a Storage Container child-deployment. Instead, the Storage Container resource is automatically locked by Azure together with a locked Storage Account
+> - Cross-referenced resources
+>   - All cross-referenced resources share the lock with the main resource to prevent depending resources to be changed or deleted
+>   - The reference of the cross-referenced resource template should look similar to: `lock: contains(<referenceObject>, 'lock') ? <referenceObject>.lock : lock`
+>   - Using this implementation, a lock of the main resource is implicitly passed to the referenced module template
+>   - For example, the lock of a Key Vault module is automatically passed to an also deployed Private Endpoint module deployment
+
+</details>
+
+<details>
+<summary>RBAC</summary>
 
 The RBAC deployment has 2 elements to it. A module that contains the implementation, and a module reference in the parent resource - each with it's own loop to enable you to deploy n-amount of role assignments to n-amount of principals.
 
@@ -161,7 +171,7 @@ The RBAC deployment has 2 elements to it. A module that contains the implementat
 @description('Optional. Array of role assignment objects that contain the \'roleDefinitionIdOrName\' and \'principalId\' to define RBAC role assignments on this resource. In the roleDefinitionIdOrName attribute, you can provide either the display name of the role definition, or its fully qualified ID in the following format: \'/providers/Microsoft.Authorization/roleDefinitions/c2f4ef07-c644-48eb-af81-4b1b4947fb11\'.')
 param roleAssignments array = []
 
-module <mainResource>_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+module <mainResource>_rbac '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${deployment().name}-rbac-${index}'
   params: {
     principalIds: roleAssignment.principalIds
@@ -171,11 +181,11 @@ module <mainResource>_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, in
 }]
 ```
 
-#### 2nd Element as nested `.bicep/nested_rbac.bicep` file
+#### 2nd Element as nested `.bicep/nested_roleAssignments.bicep` file
 
 Here you specify the platform roles available for the main resource.
 
-The `builtInRoleNames` variable contains the list of applicable roles for the specific resource which the `nested_rbac.bicep` template applies.
+The `builtInRoleNames` variable contains the list of applicable roles for the specific resource which the `nested_roleAssignments.bicep` template applies.
 >**Note**: You use the helper script [Get-FormattedRBACRoles.ps1](./Contribution%20guide%20-%20Get%20formatted%20RBAC%20roles) to extract a formatted list of RBAC roles used in the CARML modules based on the RBAC lists in Azure.
 
 The element requires you to provide both the `principalIds` & `roleDefinitionOrIdName` to assign to the principal IDs. Also, the `resourceId` is target resource's resource ID that allows us to reference it as an `existing` resource. Note, the implementation of the `split` in the resource reference becomes longer the deeper you go in the child-resource hierarchy.
@@ -208,13 +218,17 @@ resource roleAssignment 'Microsoft.Authorization/roleAssignments@2020-10-01-prev
   properties: {
     roleDefinitionId: contains(builtInRoleNames, roleDefinitionIdOrName) ? builtInRoleNames[roleDefinitionIdOrName] : roleDefinitionIdOrName
     principalId: principalId
-    principalType: !empty(principalType) ? principalType : null
+    principalType: !empty(principalType) ? any(principalType) : null
   }
   scope: <mainResource>
 }]
 ```
 
-### Diagnostic settings
+</details>
+
+<details>
+<summary>Diagnostic Settings</summary>
+
 
 The diagnostic settings may differ slightly depending from resource to resource. Most notably, the `<LogsIfAny>` as well as `<MetricsIfAny>` may be different and have to be added by you. However, it may just as well be the case they no metrics or no logs are existing. You can then remove the parameter and property from the resource itself.
 
@@ -288,7 +302,11 @@ resource <mainResource>_diagnosticSettings 'Microsoft.Insights/diagnosticsetting
 }
 ```
 
-### Private Endpoints
+</details>
+
+<details>
+<summary>Private Endpoints</summary>
+
 
 The Private Endpoint deployment has 2 elements to it. A module that contains the implementation, and a module reference in the parent resource. The first loops through the endpoints we want to create, the second processes them.
 
@@ -298,71 +316,29 @@ The Private Endpoint deployment has 2 elements to it. A module that contains the
 @description('Optional. Configuration Details for private endpoints.')
 param privateEndpoints array = []
 
-module <mainResource>_privateEndpoints '.bicep/nested_privateEndpoint.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
-  name: '${uniqueString(deployment().name, location)}-PrivateEndpoint-${index}'
+module <mainResource>_privateEndpoints '../../Microsoft.Network/privateEndpoints/deploy.bicep' = [for (privateEndpoint, index) in privateEndpoints: {
+  name: '${uniqueString(deployment().name, location)}-<mainResource>-PrivateEndpoint-${index}'
   params: {
-    privateEndpointResourceId: <mainResource>.id
-    privateEndpointVnetLocation: reference(split(privateEndpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location
-    privateEndpointObj: privateEndpoint
-    tags: tags
+    groupIds: [
+      privateEndpoint.service
+    ]
+    name: contains(privateEndpoint, 'name') ? privateEndpoint.name : 'pe-${last(split(<mainResource>.id, '/'))}-${privateEndpoint.service}-${index}'
+    serviceResourceId: <mainResource>.id
+    subnetResourceId: privateEndpoint.subnetResourceId
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
+    location: reference(split(privateEndpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location
+    lock: contains(privateEndpoint, 'lock') ? privateEndpoint.lock : lock
+    privateDnsZoneGroups: contains(privateEndpoint, 'privateDnsZoneGroups') ? privateEndpoint.privateDnsZoneGroups : []
+    roleAssignments: contains(privateEndpoint, 'roleAssignments') ? privateEndpoint.roleAssignments : []
+    tags: contains(privateEndpoint, 'tags') ? privateEndpoint.tags : {}
+    manualPrivateLinkServiceConnections: contains(privateEndpoint, 'manualPrivateLinkServiceConnections') ? privateEndpoint.manualPrivateLinkServiceConnections : []
+    customDnsConfigs: contains(privateEndpoint, 'customDnsConfigs') ? privateEndpoint.customDnsConfigs : []
   }
 }]
+
 ```
 
-#### 2nd Element as nested `.bicep/nested_privateEndpoint.bicep` file
-
-```bicep
-param privateEndpointResourceId string
-param privateEndpointVnetLocation string
-param privateEndpointObj object
-param tags object
-
-var privateEndpointResourceName = last(split(privateEndpointResourceId, '/'))
-var privateEndpoint_var = {
-  name: contains(privateEndpointObj, 'name') ? (empty(privateEndpointObj.name) ? '${privateEndpointResourceName}-${privateEndpointObj.service}' : privateEndpointObj.name) : '${privateEndpointResourceName}-${privateEndpointObj.service}'
-  subnetResourceId: privateEndpointObj.subnetResourceId
-  service: [
-    privateEndpointObj.service
-  ]
-  privateDnsZoneResourceIds: contains(privateEndpointObj, 'privateDnsZoneResourceIds') ? (empty(privateEndpointObj.privateDnsZoneResourceIds) ? [] : privateEndpointObj.privateDnsZoneResourceIds) : []
-  customDnsConfigs: contains(privateEndpointObj, 'customDnsConfigs') ? (empty(privateEndpointObj.customDnsConfigs) ? null : privateEndpointObj.customDnsConfigs) : null
-}
-
-resource privateEndpoint 'Microsoft.Network/privateEndpoints@2021-05-01' = {
-  name: privateEndpoint_var.name
-  location: privateEndpointVnetLocation
-  tags: tags
-  properties: {
-    privateLinkServiceConnections: [
-      {
-        name: privateEndpoint_var.name
-        properties: {
-          privateLinkServiceId: privateEndpointResourceId
-          groupIds: privateEndpoint_var.service
-        }
-      }
-    ]
-    manualPrivateLinkServiceConnections: []
-    subnet: {
-      id: privateEndpoint_var.subnetResourceId
-    }
-    customDnsConfigs: privateEndpoint_var.customDnsConfigs
-  }
-}
-
-resource privateDnsZoneGroups 'Microsoft.Network/privateEndpoints/privateDnsZoneGroups@2021-05-01' = if (!empty(privateEndpoint_var.privateDnsZoneResourceIds)) {
-  name: 'default'
-  properties: {
-    privateDnsZoneConfigs: [for privateDnsZoneResourceId in privateEndpoint_var.privateDnsZoneResourceIds: {
-      name: last(split(privateDnsZoneResourceId, '/'))
-      properties: {
-        privateDnsZoneId: privateDnsZoneResourceId
-      }
-    }]
-  }
-  parent: privateEndpoint
-}
-```
+</details>
 
 ---
 
@@ -451,6 +427,9 @@ Within a bicep file, use the following conventions:
 
   - Module symbolic names are in camel_Snake_Case, following the schema `<mainResourceType>_<referencedResourceType>` e.g. `storageAccount_fileServices`, `virtualMachine_nic`, `resourceGroup_rbac`.
   - Modules enable you to reuse code from a Bicep file in other Bicep files. As such they're normally leveraged for deploying child resources (e.g. file services in a storage account), cross referenced resources (e.g. network interface in a virtual machine) or extension resources (e.g. role assignment in a resource group).
+  - When a module requires to deploy a resource whose resource type is outside of the main module's provider namespace, the module of this additional resource is referenced locally. For example, when extending the Key Vault module with Private Endpoints, instead of including in the Key Vault module an ad hoc implementation of a Private Endpoint, the Key Vault directly references the Private Endpoint module (i.e., `module privateEndpoint '../../Microsoft.Network/privateEndpoints/deploy.bicep'`). Major benefits of this implementation are less code duplication, more consistency throughout the module library and allowing the consumer to leverage the full interface provided by the referenced module.
+  > **Note**: Cross-referencing modules from the local repository creates a dependency for the modules applying this technique on the referenced modules being part of the local repository. Reusing the example from above, the Key Vault module has a dependency on the referenced Private Endpoint module, meaning that the repository from which the Key Vault module is deployed also requires the Private Endpoint module to be present. For this reason, we provide a utility to check for any local module references in a given path. This can be useful to determine which module folders you'd need if you don't want to keep the entire library. For further information on how to use the tool, please refer to the tool-specific [documentation](./Getting started%20-%20Get%20module%20cross-references).
+
 
 ### Deployment names
 
@@ -476,7 +455,7 @@ While exceptions might be needed, the following guidance should be followed as m
   ```
   > **Example**: for the `roleAssignment` deployment in the key vault `secrets` template
   > ```
-  >   module secret_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+  >   module secret_rbac '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
   >     name: '${deployment().name}-Rbac-${index}'
   > ```
 
