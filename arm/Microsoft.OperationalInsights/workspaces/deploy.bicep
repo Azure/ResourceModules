@@ -192,7 +192,7 @@ module logAnalyticsWorkspace_linkedServices 'linkedServices/deploy.bicep' = [for
   params: {
     logAnalyticsWorkspaceName: logAnalyticsWorkspace.name
     name: linkedService.name
-    resourceId: linkedService.resourceId
+    resourceId: contains(linkedService, 'resourceId') ? linkedService.resourceId : ''
     writeAccessResourceId: contains(linkedService, 'writeAccessResourceId') ? linkedService.writeAccessResourceId : ''
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
@@ -256,7 +256,7 @@ resource logAnalyticsWorkspace_lock 'Microsoft.Authorization/locks@2017-04-01' =
   scope: logAnalyticsWorkspace
 }
 
-module logAnalyticsWorkspace_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+module logAnalyticsWorkspace_rbac '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-LAW-Rbac-${index}'
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''

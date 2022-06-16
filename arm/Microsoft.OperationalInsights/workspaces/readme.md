@@ -452,7 +452,7 @@ tags: {
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "<<namePrefix>>-az-la-min-001"
+            "value": "<<namePrefix>>-az-law-min-001"
         }
     }
 }
@@ -469,7 +469,7 @@ tags: {
 module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-workspaces'
   params: {
-    name: '<<namePrefix>>-az-la-min-001'
+    name: '<<namePrefix>>-az-law-min-001'
   }
 ```
 
@@ -488,7 +488,7 @@ module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "<<namePrefix>>-az-la-x-001"
+            "value": "<<namePrefix>>-az-law-x-001"
         },
         "lock": {
             "value": "CanNotDelete"
@@ -519,7 +519,7 @@ module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
             "value": [
                 {
                     "name": "Automation",
-                    "resourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Automation/automationAccounts/adp-<<namePrefix>>-wd-aut-x-001"
+                    "resourceId": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Automation/automationAccounts/adp-<<namePrefix>>-az-aut-x-001"
                 }
             ]
         },
@@ -667,7 +667,7 @@ module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
 module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-workspaces'
   params: {
-    name: '<<namePrefix>>-az-la-x-001'
+    name: '<<namePrefix>>-az-law-x-001'
     lock: 'CanNotDelete'
     publicNetworkAccessForIngestion: 'Disabled'
     publicNetworkAccessForQuery: 'Disabled'
@@ -686,7 +686,7 @@ module workspaces './Microsoft.OperationalInsights/workspaces/deploy.bicep' = {
     linkedServices: [
       {
         name: 'Automation'
-        resourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Automation/automationAccounts/adp-<<namePrefix>>-wd-aut-x-001'
+        resourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Automation/automationAccounts/adp-<<namePrefix>>-az-aut-x-001'
       }
     ]
     savedSearches: [
