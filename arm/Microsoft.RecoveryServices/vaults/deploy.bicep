@@ -211,6 +211,8 @@ module rsv_protectionContainers 'protectionContainers/deploy.bicep' = [for (prot
     backupManagementType: protectionContainer.backupManagementType
     containerType: protectionContainer.containerType
     enableDefaultTelemetry: enableReferencedModulesTelemetry
+    protectedItems: contains(protectionContainer, 'protectedItems') ? protectionContainer.protectedItems : []
+    location: location
   }
 }]
 
@@ -240,10 +242,10 @@ module rsv_backupConfig 'backupConfig/deploy.bicep' = if (!empty(backupConfig)) 
   }
 }
 
-resource rsv_lock 'Microsoft.Authorization/locks@2017-04-01' = if (lock != 'NotSpecified') {
+resource rsv_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lock)) {
   name: '${rsv.name}-${lock}-lock'
   properties: {
-    level: lock
+    level: any(lock)
     notes: lock == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
   }
   scope: rsv
@@ -262,7 +264,7 @@ resource rsv_diagnosticSettings 'Microsoft.Insights/diagnosticSettings@2021-05-0
   scope: rsv
 }
 
-module rsv_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+module rsv_rbac '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-RSV-Rbac-${index}'
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
