@@ -48,6 +48,7 @@ stages:
             - path: $(modulePath)/.parameters/parameters.json
             - path: $(modulePath)/.parameters/speech.parameters.json
             - path: $(modulePath)/.parameters/encr.parameters.json
+            - path: $(modulePath)/.parameters/min.parameters.json
 
   - stage: Publishing
     displayName: Publishing
