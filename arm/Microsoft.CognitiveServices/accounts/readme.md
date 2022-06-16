@@ -32,7 +32,7 @@ This module deploys different kinds of cognitive services resources
 **Conditional parameters**
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
-| `customSubDomainName` | string | `''` | Subdomain name used for token-based authentication. Required if 'networkAcls' are set (including private endpoints). |
+| `customSubDomainName` | string | `''` | Subdomain name used for token-based authentication. Required if 'networkAcls' or 'privateEndpoints' are set. |
 | `userAssignedIdentities` | object | `{object}` | The ID(s) to assign to the resource. Required if a user assigned identity is used for encryption. |
 
 **Optional parameters**
@@ -492,6 +492,46 @@ module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
+            "value": "<<namePrefix>>-az-cgs-min-001"
+        },
+        "kind": {
+            "value": "SpeechServices"
+        }
+    }
+}
+
+```
+
+</details>
+
+<details>
+
+<summary>via Bicep module</summary>
+
+```bicep
+module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
+  name: '${uniqueString(deployment().name)}-accounts'
+  params: {
+    name: '<<namePrefix>>-az-cgs-min-001'
+    kind: 'SpeechServices'
+  }
+```
+
+</details>
+<p>
+
+<h3>Example 3</h3>
+
+<details>
+
+<summary>via JSON Parameter file</summary>
+
+```json
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
             "value": "<<namePrefix>>-az-cgs-x-001"
         },
         "lock": {
@@ -592,7 +632,7 @@ module accounts './Microsoft.CognitiveServices/accounts/deploy.bicep' = {
 </details>
 <p>
 
-<h3>Example 3</h3>
+<h3>Example 4</h3>
 
 <details>
 
