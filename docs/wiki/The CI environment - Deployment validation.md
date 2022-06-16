@@ -29,7 +29,9 @@ The intention of this test is to **fail fast**, before getting to the later depl
 
 # Azure deployment validation
 
-This step performs the actual Azure deployments using each available & configured module parameter file. The purpose of this step is to prove the module can be deployed in different configurations based on the different parameters provided. Deployments for the different variants happen in parallel.
+This step performs the actual Azure deployments using each available & configured module parameter file. The purpose of this step is to prove the module can be deployed in different configurations based on the different parameters provided. Deployments for the different variants happen in parallel. 
+
+If any of these parallel deployments require multiple/different/specific resource instances already present, these resources are deployed by the [dependencies pipeline](./The%20CI%20environment%20-%20Pipeline%20design.md#dependencies-pipeline). E.g., for the Azure Firewall to be tested with multiple configurations, the dependencies pipeline deploys multiple VNET instances, with a dedicated "AzureFirewallSubnet" in each.
 
 The parameter files used in this stage should ideally cover as many configurations as possible to validate the template flexibility, i.e., to verify that the module can cover multiple scenarios in which the given Azure resource may be used. Using the example of the CosmosDB module, we may want to have one parameter file for the minimum amount of required parameters, one parameter file for each CosmosDB type to test individual configurations, and at least one parameter file testing the supported extension resources such as RBAC & diagnostic settings.
 
@@ -53,7 +55,6 @@ However, the removal step can be skipped in case further investigation on the de
 ### How it works
 
 The removal process will delete all resources created by the deployment. The list of resources is identified by:
-
 
 1. Recursively fetching the list of resource IDs created in the deployment (identified via the deployment name used).
 1. Ordering the list based on resource IDs segment count (ensures child resources are removed first. E.g., `storageAccount/blobServices` comes before `storageAccount` as it has one more segments delimited by `/`).
@@ -102,7 +103,6 @@ To add a **custom post-removal** step:
 1. Look for the following comment: `### CODE LOCATION: Add custom post-removal operation here`
 1. Add a case value that matches the resource type you want to add a post-removal operation for
 1. In the case block, define the resource-type-specific post-removal action
-
 
 # Verify the deployment validation of your module locally
 

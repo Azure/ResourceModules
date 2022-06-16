@@ -5,7 +5,6 @@ This section provides an overview of the principles the publishing is built upon
   - [Example scenario](#example-scenario)
   - [Output example](#output-example)
 
-
 <img src="./media/CIEnvironment/publishingStep.png" alt="Publishing Step" height="500">
 
 # Publishing overview
@@ -20,7 +19,6 @@ Besides the publishing phase's runtime, there is also the possibility to set the
 
 > **Note**<br>
 > The `version` used for publishing any artifact is the same for all three target locations, which reduces the maintenance effort.
-
 
 # How it works
 

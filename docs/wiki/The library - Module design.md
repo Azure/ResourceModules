@@ -10,8 +10,12 @@ This section details the design principles followed by the CARML Bicep modules.
     - [**Child resources**](#child-resources)
   - [Naming](#naming)
   - [Patterns](#patterns)
+    - [Locks](#locks)
+    - [Role Assignments (RBAC)](#role-assignments-rbac)
       - [1st Element in main resource](#1st-element-in-main-resource)
       - [2nd Element as nested `.bicep/nested_rbac.bicep` file](#2nd-element-as-nested-bicepnested_rbacbicep-file)
+    - [Diagnostic Settings](#diagnostic-settings)
+    - [Private Endpoints](#private-endpoints)
       - [1st element in main resource](#1st-element-in-main-resource-1)
 - [Bicep template guidelines](#bicep-template-guidelines)
   - [Parameters](#parameters)
@@ -128,10 +132,12 @@ Use the following naming standard for module files and folders:
 
 This section details patterns among extension resources that are usually very similar in their structure among all modules supporting them:
 
-<details>
-<summary>Locks</summary>
+### Locks
 
 The locks extension can be added as a `resource` to the resource template directly.
+
+<details>
+<summary>Details</summary>
 
 ```bicep
 @allowed([
@@ -166,10 +172,14 @@ resource <mainResource>_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!e
 
 </details>
 
-<details>
-<summary>RBAC</summary>
+<p>
+
+### Role Assignments (RBAC)
 
 The RBAC deployment has 2 elements. A module that contains the implementation, and a module reference in the parent resource - each with it's own loop to enable you to deploy n-amount of role assignments to n-amount of principals.
+
+<details>
+<summary>Details</summary>
 
 #### 1st Element in main resource
 ```bicep
@@ -231,11 +241,14 @@ resource roleAssignment 'Microsoft.Authorization/roleAssignments@2020-10-01-prev
 
 </details>
 
-<details>
-<summary>Diagnostic Settings</summary>
+<p>
 
+### Diagnostic Settings
 
 The diagnostic settings may differ slightly, from resource to resource. Most notably, the `<LogsIfAny>` as well as `<MetricsIfAny>` may be different and have to be added by you. However, it may also happen that a given resource type simply doesn't support any metrics and/or logs. In this case, you can then remove the parameter and property from the module you develop.
+
+<details>
+<summary>Details</summary>
 
 ```bicep
 @description('Optional. Specifies the number of days that logs will be kept for; a value of 0 will retain data indefinitely.')
@@ -306,14 +319,15 @@ resource <mainResource>_diagnosticSettings 'Microsoft.Insights/diagnosticsetting
   scope: <mainResource>
 }
 ```
-
 </details>
 
-<details>
-<summary>Private Endpoints</summary>
+<p>
 
-
+### Private Endpoints
 The Private Endpoint deployment has 2 elements. A module that contains the implementation, and a module reference in the parent resource. The first one loops through the endpoints we want to create, the second one processes them.
+
+<details>
+<summary>Details</summary>
 
 #### 1st element in main resource
 
@@ -365,7 +379,6 @@ Within a bicep file, use the following conventions:
   - `Conditional` - The parameter value can be optional or required based on a condition, mostly based on the value provided to other parameters.
   - `Optional` - The parameter value is not mandatory. The module provides a default value for the parameter.
   - `Generated` - The parameter value is generated within the module and should not be specified as input.
-
 
 ## Variables
 
@@ -434,7 +447,6 @@ Within a bicep file, use the following conventions:
   - Modules enable you to reuse code from a Bicep file in other Bicep files. As such, they're normally leveraged for deploying child resources (e.g., file services in a storage account), cross referenced resources (e.g., network interface in a virtual machine) or extension resources (e.g., role assignment in a resource group).
   - When a module requires to deploy a resource whose resource type is outside of the main module's provider namespace, the module of this additional resource is referenced locally. For example, when extending the Key Vault module with Private Endpoints, instead of including in the Key Vault module an ad hoc implementation of a Private Endpoint, the Key Vault directly references the Private Endpoint module (i.e., `module privateEndpoint 'https://github.com/Azure/ResourceModules/blob/main/Microsoft.Network/privateEndpoints/deploy.bicep'`). Major benefits of this implementation are less code duplication, more consistency throughout the module library and allowing the consumer to leverage the full interface provided by the referenced module.
   > **Note**: Cross-referencing modules from the local repository creates a dependency for the modules applying this technique on the referenced modules being part of the local repository. Reusing the example from above, the Key Vault module has a dependency on the referenced Private Endpoint module, meaning that the repository from which the Key Vault module is deployed also requires the Private Endpoint module to be present. For this reason, we provide a utility to check for any local module references in a given path. This can be useful to determine which module folders you'd need if you don't want to keep the entire library. For further information on how to use the tool, please refer to the tool-specific [documentation](./Getting%20started%20-%20Get%20module%20cross-references.md).
-
 
 ### Deployment names
 

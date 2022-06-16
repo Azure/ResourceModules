@@ -12,6 +12,11 @@ This section provides an overview of the design principles applied to the CARML 
   - [Dependencies pipeline](#dependencies-pipeline)
     - [Dependencies pipeline inputs](#dependencies-pipeline-inputs)
     - [Resources deployed by the dependencies pipeline](#resources-deployed-by-the-dependencies-pipeline)
+      - [**1st level resources**](#1st-level-resources)
+      - [**2nd level resources**](#2nd-level-resources)
+      - [**3rd level resources**](#3rd-level-resources)
+      - [**4th level resources**](#4th-level-resources)
+      - [**5th level resources**](#5th-level-resources)
     - [Required secrets and keys](#required-secrets-and-keys)
   - [ReadMe pipeline](#readme-pipeline)
   - [Wiki pipeline](#wiki-pipeline)
@@ -141,16 +146,12 @@ The resources deployed by the dependencies pipeline need to be in place before t
 
 Since also dependency resources are in turn subject to dependencies with each other, resources are deployed in the following grouped order.
 
-<details>
-<summary><b>1st</b> level resources</summary>
+#### **1st level resources**
 
-  1. Resource Groups: Leveraged by all modules. Multiple instances are deployed:
+  1. Resource Group: leveraged by all modules.
      - 'validation-rg': The resource group to which resources are deployed by default during the test deployment phase. This same resource group is also the one hosting the dependencies.
 
-</details>
-
-<details>
-<summary><b>2nd</b> level resources</summary>
+#### **2nd level resources**
 
 This group of resources has a dependency only on the resource group which will host them. Resources in this group can be deployed in parallel.
 
@@ -173,10 +174,7 @@ This group of resources has a dependency only on the resource group which will h
   1. Policy assignment: This resource is leveraged by the \[policy exemption] resource.
   1. Proximity placement group: This resource is leveraged by a test deployment of the \[Availability set] module.
 
-</details>
-
-<details>
-<summary><b>3rd</b> level resources</summary>
+#### **3rd level resources**
 
 This group of resources has a dependency on one or more resources in the group above. Resources in this group can be deployed in parallel.
 
@@ -206,11 +204,7 @@ This group of resources has a dependency on one or more resources in the group a
       >**Note**: This resource has a global scope name.
   1. Recovery services vault: This resource supports monitoring, hence it has a dependency on the \[storage account], \[log analytics workspace] and \[event hub] deployed in the group above. This resource is leveraged by the \[virtual machine] resource when backup is enabled.
 
-</details>
-
-
-<details>
-<summary><b>4th</b> level resources</summary>
+#### **4th level resources**
 
 This group of resources has a dependency on one or more resources in the groups above. Resources in this group can be deployed in parallel.
 
@@ -226,20 +220,12 @@ This group of resources has a dependency on one or more resources in the groups 
   1. Azure Image Builder template: This resource triggers the build and distribution of a VHD in a storage account. The VHD file is copied to a known storage account blob container and leveraged by \[compute disks] and \[compute images] resources.
     >**Note**: This resource is deployed and configured only if the 'Enable deployment of a vhd stored in a blob container' option is selected.
 
-</details>
-
-
-<details>
-<summary><b>5th</b> level resources</summary>
+#### **5th level resources**
 
 This group of resources has a dependency on one or more resources in the groups above.
 
   1. Virtual Machine: This resource is depending on the \[virtual networks] and \[Key Vault] deployed above. This resource is leveraged by the \[network watcher] resource.
   1. Private DNS zone: This resource is depending on the \[virtual networks] deployed above. This resource is leveraged by the \[private endpoint] resource.
-
-</details>
-
-<p>
 
 ### Required secrets and keys
 

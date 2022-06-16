@@ -31,7 +31,7 @@ How you proceed from here, depends on the scenario:
 
 # Environment setup
 
-The preferred method of contribution requires you to create your own fork and create pull requests into the source repository from there. To set the fork up, please follow the process described [here](./Getting%20started%20-%20Scenario%201%20Onboard%20module%20library%20and%20CI%20environment.md).
+The preferred method of contribution requires you to create your own fork and create pull requests into the source repository from there. To set the fork up, please follow the process described [here](./Getting%20started%20-%20Scenario%202%20Onboard%20module%20library%20and%20CI%20environment.md).
 
 The approach you should take, depends on your scenario:
 

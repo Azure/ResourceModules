@@ -320,7 +320,6 @@ The primary pipeline variable file ([`global.variables.yml`](https://github.com/
 
 To use the pipelines that come with the environment in Azure DevOps, you need to register them first. You can either do this manually, or, run the utility `Register-AzureDevOpsPipeline` we provide in `utilities/tools/AzureDevOps`. For further information, please refer to the corresponding [documentation](./Interoperability%20-%20Register%20Azure%20DevOps%20Pipelines.md).
 
-
 ### 3.2.5 Azure Artifacts Universal Packages
 
 This section will explain what is required to publish the modules to [Azure Artifacts Universal Packages](https://docs.microsoft.com/en-us/azure/devops/artifacts/quickstarts/universal-packages?view=azure-devops). It will also assume you are publishing from Azure DevOps Pipelines.
@@ -334,7 +333,6 @@ This section will explain what is required to publish the modules to [Azure Arti
 
 #### Implementation Guidance
 Each `./azuredevops/modulePipelines` yaml pipeline already calls [`/.azuredevops/pipelineTemplates/jobs.publishModule.yml`](https://github.com/Azure/ResourceModules/blob/main/.azuredevops/pipelineTemplates/jobs.publishModule.yml). This YAML template contains a method to `Publish module to artifacts feed` via [`utilities\pipelines\resourcePublish\Publish-ModuleToUniversalArtifactFeed.ps1`](https://github.com/Azure/ResourceModules/blob/main/utilities\pipelines\resourcePublish\Publish-ModuleToUniversalArtifactFeed.ps1).
-
 
 </details>
 
@@ -357,7 +355,6 @@ In special cases, manual actions may be required to provision certain resources 
 ### Microsoft.Web/sites
 
 To successfully deploy the sites module using the `fa.parameters.json` parameter file, you need to create an Azure Active Directory App with its API endpoint enabled (e.g., `api://<app id>`) and add a secret. The secret value needs then to be stored in a Key Vault secret.
-
 
 # 5. Update module parameter files
 

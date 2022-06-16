@@ -6,7 +6,7 @@ We identify 3 kinds of contributions:
 - Contributing to the module library
 - Contributing to the CI environment
 
-In case your contribution involves changes to the library (the modules) and/or to the CI environment (the pipelines) the required steps to setup your environment are the same listed in the [**Scenario 1:** Onboard module library and CI environment](./Getting%20started%20-%20Scenario%201%20Onboard%20module%20library%20and%20CI%20environment.md) section.
+In case your contribution involves changes to the library (the modules) and/or to the CI environment (the pipelines) the required steps to setup your environment are the same listed in the [**Scenario 2:** Onboard module library and CI environment](./Getting%20started%20-%20Scenario%202%20Onboard%20module%20library%20and%20CI%20environment.md) section.
 
 Also, we suggest to review the corresponding documentation, to ensure your contribution will comply with the CARML design principles. For the library, please refer to [The library overview](./The%20context%20-%20CARML%20library.md) page and [The library](./The%20library.md) section. For contributions to the CI environment, please review [The CI environment overview](./The%20context%20-%20CARML%20CI%20environment.md) page and [The CI environment](./The%20CI%20environment.md) section.
 

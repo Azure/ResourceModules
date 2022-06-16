@@ -10,6 +10,10 @@ This page provides an overview of the CARML CI environment. For further details,
 
 ---
 
+The Continuous Integration environment (CI environment) is a set of automation components that are used for continuously validating and publishing module artifacts (Bicep registry repositories, template specs, universal packages). Technically, the CI environment consists of a DevOps platform (GitHub or Azure DevOps) hosting related pipelines and scripts, as well as an Azure environment (Azure AD tenant with management group(s) and subscription(s)) in which the modules are validated by the automation pipelines and scripts.
+
+In the following chapters, we're going to explain where the CI environment fits and how it is used.
+
 # Deployment flow
 
 This paragraph provides an overview of the standard development-to-deployment flow that goes from source modules to target solutions.

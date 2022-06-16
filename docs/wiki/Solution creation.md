@@ -87,11 +87,11 @@ param location string = deployment().location
 
 // NSG parameters
 @description('Optional. The name of the vnet to deploy')
-param networkSecurityGroupName string = 'BicepRegistryDemoNsg'
+param networkSecurityGroupName string = 'LocalFilesDemoNsg'
 
 // VNET parameters
 @description('Optional. The name of the vnet to deploy')
-param vnetName string = 'BicepRegistryDemoVnet'
+param vnetName string = 'LocalFilesDemoVnet'
 
 @description('Optional. An Array of 1 or more IP Address Prefixes for the Virtual Network.')
 param vNetAddressPrefixes array = [
@@ -160,7 +160,7 @@ module vnet '../arm/Microsoft.Network/virtualNetworks/deploy.bicep' = {
 
 The following example shows how you could orchestrate a deployment of multiple resources using modules from a private Bicep Registry. In this example, we will deploy a resource group with a Network Security Group (NSG), and use them in a subsequent VNET deployment.
 
-> **Note**: the preferred method to publish modules to the Bicep registry is to leverage the [CI environment](./The%20CI%20environment.md) provided in this repository. However, this option may not be applicable to all scenarios (ref e.g., the [Consume library](./Getting%20started%20-%20Scenario%202%20Consume%20library.md) section). As an alternative, the same [`Publish-ModuleToPrivateBicepRegistry.ps1`](https://github.com/Azure/ResourceModules/blob/main/utilities/pipelines/resourcePublish/Publish-ModuleToPrivateBicepRegistry.ps1) script leveraged by the publishing step of the CI environment pipeline can also be run locally.
+> **Note**: the preferred method to publish modules to the Bicep registry is to leverage the [CI environment](./The%20CI%20environment.md) provided in this repository. However, this option may not be applicable to all scenarios (ref e.g., the [Consume library](./Getting%20started%20-%20Scenario%201%20Consume%20library.md) section). As an alternative, the same [`Publish-ModuleToPrivateBicepRegistry.ps1`](https://github.com/Azure/ResourceModules/blob/main/utilities/pipelines/resourcePublish/Publish-ModuleToPrivateBicepRegistry.ps1) script leveraged by the publishing step of the CI environment pipeline can also be run locally.
 
 ```bicep
 targetScope = 'subscription'
@@ -266,7 +266,7 @@ The example assumes you are using a [`bicepconfig.json`](https://docs.microsoft.
 
 The following example shows how you could orchestrate a deployment of multiple resources using template specs. In this example, we will deploy a resource group with a Network Security Group (NSG), and use them in a subsequent VNET deployment.
 
-> **Note**: the preferred method to publish modules to template-specs is to leverage the [CI environment](./The%20CI%20environment.md) provided in this repository. However, this option may not be applicable to all scenarios (ref e.g., the [Consume library](./Getting%20started%20-%20Scenario%202%20Consume%20library.md) section). As an alternative, the same [Publish-ModuleToTemplateSpec.ps1](https://github.com/Azure/ResourceModules/blob/main/utilities/pipelines/resourcePublish/Publish-ModuleToTemplateSpec.ps1) script leveraged by the publishing step of the CI environment pipeline can also be run locally.
+> **Note**: the preferred method to publish modules to template-specs is to leverage the [CI environment](./The%20CI%20environment.md) provided in this repository. However, this option may not be applicable to all scenarios (ref e.g., the [Consume library](./Getting%20started%20-%20Scenario%201%20Consume%20library.md) section). As an alternative, the same [Publish-ModuleToTemplateSpec.ps1](https://github.com/Azure/ResourceModules/blob/main/utilities/pipelines/resourcePublish/Publish-ModuleToTemplateSpec.ps1) script leveraged by the publishing step of the CI environment pipeline can also be run locally.
 
 ```bicep
 targetScope = 'subscription'

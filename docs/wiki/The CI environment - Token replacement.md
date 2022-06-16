@@ -69,7 +69,7 @@ Once the Key Vault is deployed, you'll notice that the Key Vault name in Azure w
 
 The token prefix `'<<'` and suffix `'>>'` in the above example are also configurable in the [Settings.json](https://github.com/Azure/ResourceModules/blob/main/settings.json) file.
 
-The solution comes with one predefined local token `namePrefix`. When validating modules through the CI environment, you must update it to a custom value as described in the [Update default nameprefix](./Getting%20started%20-%20Scenario%201%20Onboard%20module%20library%20and%20CI%20environment.md#31-update-default-nameprefix) paragraph. This is done to avoid conflicts with resources requiring a globally unique name, such as storage accounts or Key Vaults.
+The solution comes with one predefined local token `namePrefix`. When validating modules through the CI environment, you must update it to a custom value as described in the [Update default nameprefix](./Getting%20started%20-%20Scenario%202%20Onboard%20module%20library%20and%20CI%20environment.md#31-update-default-nameprefix) paragraph. This is done to avoid conflicts with resources requiring a globally unique name, such as storage accounts or Key Vaults.
 
 > **Note**: Do not store sensitive information in this location as they will be present in your Git History. Follow best [practices and guidelines](https://docs.microsoft.com/en-us/azure/azure-resource-manager/templates/best-practices#security-recommendations-for-parameters) on how to handle secrets in template deployments.
 
