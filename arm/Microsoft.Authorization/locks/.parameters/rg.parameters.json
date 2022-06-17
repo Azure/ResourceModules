@@ -6,7 +6,7 @@
             "value": "CanNotDelete"
         },
         "resourceGroupName": {
-            "value": "testrg03"
+            "value": "testrg02"
         },
         "subscriptionId": {
             "value": "<<subscriptionId>>"
