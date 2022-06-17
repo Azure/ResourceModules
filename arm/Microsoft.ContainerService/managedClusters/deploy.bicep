@@ -357,7 +357,7 @@ var lbProfile = {
   effectiveOutboundIPs: []
 }
 
-var enableChildTelemetry = false
+var enableReferencedModulesTelemetry = false
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
@@ -529,7 +529,7 @@ module managedCluster_agentPools 'agentPools/deploy.bicep' = [for (agentPool, in
     vmSize: contains(agentPool, 'vmSize') ? agentPool.vmSize : 'Standard_D2s_v3'
     vnetSubnetId: contains(agentPool, 'vnetSubnetId') ? agentPool.vnetSubnetId : ''
     workloadRuntime: contains(agentPool, 'workloadRuntime') ? agentPool.workloadRuntime : ''
-    enableDefaultTelemetry: enableChildTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
 
@@ -555,7 +555,7 @@ resource managedCluster_diagnosticSettings 'Microsoft.Insights/diagnosticsetting
   scope: managedCluster
 }
 
-module managedCluster_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+module managedCluster_rbac '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-ManagedCluster-Rbac-${index}'
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''

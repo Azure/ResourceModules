@@ -68,6 +68,8 @@ param diagnosticMetricsToEnable array = [
 @description('Optional. The name of the diagnostic setting, if deployed.')
 param diagnosticSettingsName string = '${name}-diagnosticSettings'
 
+var enableReferencedModulesTelemetry = false
+
 var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
   category: category
   enabled: true
@@ -140,7 +142,7 @@ module topic_privateEndpoints '../../Microsoft.Network/privateEndpoints/deploy.b
     name: contains(privateEndpoint, 'name') ? privateEndpoint.name : 'pe-${last(split(topic.id, '/'))}-${privateEndpoint.service}-${index}'
     serviceResourceId: topic.id
     subnetResourceId: privateEndpoint.subnetResourceId
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
     location: reference(split(privateEndpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location
     lock: contains(privateEndpoint, 'lock') ? privateEndpoint.lock : lock
     privateDnsZoneGroups: contains(privateEndpoint, 'privateDnsZoneGroups') ? privateEndpoint.privateDnsZoneGroups : []
@@ -151,7 +153,7 @@ module topic_privateEndpoints '../../Microsoft.Network/privateEndpoints/deploy.b
   }
 }]
 
-module topic_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+module topic_rbac '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-topic-Rbac-${index}'
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''

@@ -117,7 +117,7 @@ Describe 'File/folder tests' -Tag Modules {
         It '[<moduleFolderName>] folder should contain one or more *parameters.json files' -TestCases $folderTestCases {
 
             param(
-                $moduleFolderName,
+                [string] $moduleFolderName,
                 $moduleFolderPath
             )
             $parameterFolderPath = Join-Path $moduleFolderPath '.parameters'
@@ -140,7 +140,7 @@ Describe 'File/folder tests' -Tag Modules {
         It '[<moduleFolderName>] *parameters.json files in the .parameters folder should be valid json' -TestCases $parameterFolderFilesTestCases {
 
             param(
-                $moduleFolderName,
+                [string] $moduleFolderName,
                 $parameterFilePath
             )
             (Get-Content $parameterFilePath) | ConvertFrom-Json
@@ -191,14 +191,15 @@ Describe 'Readme tests' -Tag Readme {
                 templateFilePath = $templateFilePath
                 readMeFilePath   = Join-Path -Path $moduleFolderPath 'readme.md'
                 readMeContent    = Get-Content (Join-Path -Path $moduleFolderPath 'readme.md')
+                isTopLevelModule = $moduleFolderPath.Replace('\', '/').Split('/arm/')[1].Split('/').Count -eq 2 # <provider>/<resourceType>
             }
         }
 
         It '[<moduleFolderName>] Readme.md file should not be empty' -TestCases $readmeFolderTestCases {
 
             param(
-                $moduleFolderName,
-                $readMeContent
+                [string] $moduleFolderName,
+                [object[]] $readMeContent
             )
             $readMeContent | Should -Not -Be $null
         }
@@ -206,11 +207,18 @@ Describe 'Readme tests' -Tag Readme {
         It '[<moduleFolderName>] Readme.md file should contain these sections in order: Navigation, Resource Types, Parameters, Outputs, Deployment examples' -TestCases $readmeFolderTestCases {
 
             param(
-                $moduleFolderName,
-                $readMeContent
+                [string] $moduleFolderName,
+                [object[]] $readMeContent,
+                [boolean] $isTopLevelModule
             )
 
-            $expectedHeadersInOrder = @('Navigation', 'Resource types', 'Parameters', 'Outputs', 'Deployment examples')
+            $expectedHeadersInOrder = @('Navigation', 'Resource types', 'Parameters', 'Outputs')
+
+            if ($isTopLevelModule) {
+                # Only top-level modules have parameter files and hence deployment examples
+                $expectedHeadersInOrder += 'Deployment examples'
+            }
+
             $actualHeadersInOrder = $readMeContent | Where-Object { $_ -like '#*' } | ForEach-Object { ($_ -replace '#', '').TrimStart() }
 
             $filteredActuals = $actualHeadersInOrder | Where-Object { $expectedHeadersInOrder -contains $_ }
@@ -382,7 +390,7 @@ Describe 'Readme tests' -Tag Readme {
         It '[<moduleFolderName>] Outputs section should contain a table with these column names in order: Output Name, Type' -TestCases $readmeFolderTestCases {
 
             param(
-                $moduleFolderName,
+                [string] $moduleFolderName,
                 $readMeContent
             )
 
@@ -445,7 +453,12 @@ Describe 'Readme tests' -Tag Readme {
             $fileHashAfter = (Get-FileHash $readMeFilePath).Hash
 
             # Compare
-            $fileHashBefore -eq $fileHashAfter | Should -Be $true -Because 'The file hashes before and after applying the Set-ModuleReadMe function should be identical'
+            $filesAreTheSame = $fileHashBefore -eq $fileHashAfter
+            if (-not $filesAreTheSame) {
+                $diffReponse = git diff
+                Write-Warning ($diffReponse | Out-String) -Verbose
+            }
+            $filesAreTheSame | Should -Be $true -Because 'The file hashes before and after applying the Set-ModuleReadMe function should be identical'
         }
     }
 }
@@ -519,8 +532,8 @@ Describe 'Deployment template tests' -Tag Template {
         It '[<moduleFolderName>] the template file should not be empty' -TestCases $deploymentFolderTestCases {
 
             param(
-                $moduleFolderName,
-                $templateContent
+                [string] $moduleFolderName,
+                [hashtable] $templateContent
             )
             $templateContent | Should -Not -Be $null
         }
@@ -529,8 +542,8 @@ Describe 'Deployment template tests' -Tag Template {
             # the actual value changes depending on the scope of the template (RG, subscription, MG, tenant) !!
             # https://docs.microsoft.com/en-us/azure/azure-resource-manager/templates/template-syntax
             param(
-                $moduleFolderName,
-                $templateContent
+                [string] $moduleFolderName,
+                [hashtable] $templateContent
             )
 
             $Schemaverion = $templateContent.'$schema'
@@ -553,8 +566,8 @@ Describe 'Deployment template tests' -Tag Template {
         It '[<moduleFolderName>] Template schema should use HTTPS reference' -TestCases $deploymentFolderTestCases {
 
             param(
-                $moduleFolderName,
-                $templateContent
+                [string] $moduleFolderName,
+                [hashtable] $templateContent
             )
             $Schemaverion = $templateContent.'$schema'
             ($Schemaverion.Substring(0, 5) -eq 'https') | Should -Be $true
@@ -563,8 +576,8 @@ Describe 'Deployment template tests' -Tag Template {
         It '[<moduleFolderName>] All apiVersion properties should be set to a static, hard-coded value' -TestCases $deploymentFolderTestCases {
             #https://docs.microsoft.com/en-us/azure/azure-resource-manager/templates/template-best-practices
             param(
-                $moduleFolderName,
-                $templateContent
+                [string] $moduleFolderName,
+                [hashtable] $templateContent
             )
             $ApiVersion = $templateContent.resources.apiVersion
             $ApiVersionArray = @()
@@ -588,19 +601,19 @@ Describe 'Deployment template tests' -Tag Template {
         It '[<moduleFolderName>] the template file should contain required elements: schema, contentVersion, resources' -TestCases $deploymentFolderTestCases {
 
             param(
-                $moduleFolderName,
-                $templateContent
+                [string] $moduleFolderName,
+                [hashtable] $templateContent
             )
             $templateContent.Keys | Should -Contain '$schema'
             $templateContent.Keys | Should -Contain 'contentVersion'
             $templateContent.Keys | Should -Contain 'resources'
         }
 
-        It '[<moduleFolderName>] If delete lock is implemented, the template should have a lock parameter with the default value of []' -TestCases $deploymentFolderTestCases {
+        It '[<moduleFolderName>] If delete lock is implemented, the template should have a lock parameter with the default value of ['''']' -TestCases $deploymentFolderTestCases {
 
             param(
-                $moduleFolderName,
-                $templateContent
+                [string] $moduleFolderName,
+                [hashtable] $templateContent
             )
             if ($lock = $templateContent.parameters.lock) {
                 $lock.Keys | Should -Contain 'defaultValue'
@@ -611,12 +624,12 @@ Describe 'Deployment template tests' -Tag Template {
         It '[<moduleFolderName>] Parameter names should be camel-cased (no dashes or underscores and must start with lower-case letter)' -TestCases $deploymentFolderTestCases {
 
             param(
-                $moduleFolderName,
-                $templateContent
+                [string] $moduleFolderName,
+                [hashtable] $templateContent
             )
 
             if (-not $templateContent.parameters) {
-                # Skip test
+                Set-ItResult -Skipped -Because 'the module template has no parameters.'
                 return
             }
 
@@ -635,12 +648,12 @@ Describe 'Deployment template tests' -Tag Template {
         It '[<moduleFolderName>] Variable names should be camel-cased (no dashes or underscores and must start with lower-case letter)' -TestCases $deploymentFolderTestCases {
 
             param(
-                $moduleFolderName,
-                $templateContent
+                [string] $moduleFolderName,
+                [hashtable] $templateContent
             )
 
             if (-not $templateContent.variables) {
-                # Skip test
+                Set-ItResult -Skipped -Because 'the module template has no variables.'
                 return
             }
 
@@ -660,8 +673,8 @@ Describe 'Deployment template tests' -Tag Template {
         It '[<moduleFolderName>] Output names should be camel-cased (no dashes or underscores and must start with lower-case letter)' -TestCases $deploymentFolderTestCases {
 
             param(
-                $moduleFolderName,
-                $templateContent
+                [string] $moduleFolderName,
+                [hashtable] $templateContent
             )
             $CamelCasingFlag = @()
             $Outputs = $templateContent.outputs.Keys
@@ -679,8 +692,8 @@ Describe 'Deployment template tests' -Tag Template {
         It '[<moduleFolderName>] CUA ID deployment should be present in the template' -TestCases $deploymentFolderTestCases {
 
             param(
-                $moduleFolderName,
-                $templateContent
+                [string] $moduleFolderName,
+                [hashtable] $templateContent
             )
             $enableDefaultTelemetryFlag = @()
             $Schemaverion = $templateContent.'$schema'
@@ -697,8 +710,8 @@ Describe 'Deployment template tests' -Tag Template {
         It "[<moduleFolderName>] The Location should be defined as a parameter, with the default value of 'resourceGroup().Location' or global for ResourceGroup deployment scope" -TestCases $deploymentFolderTestCases {
 
             param(
-                $moduleFolderName,
-                $templateContent
+                [string] $moduleFolderName,
+                [hashtable] $templateContent
             )
             $LocationFlag = $true
             $Schemaverion = $templateContent.'$schema'
@@ -721,7 +734,7 @@ Describe 'Deployment template tests' -Tag Template {
 
             param(
                 [string] $moduleFolderName,
-                $templateContent,
+                [hashtable] $templateContent,
                 [string] $templateFilePath
             )
 
@@ -743,7 +756,7 @@ Describe 'Deployment template tests' -Tag Template {
 
             param(
                 [string] $moduleFolderName,
-                $templateContent,
+                [hashtable] $templateContent,
                 [string] $templateFilePath
             )
 
@@ -758,10 +771,19 @@ Describe 'Deployment template tests' -Tag Template {
         It '[<moduleFolderName>] Resource name output should exist' -TestCases $deploymentFolderTestCases {
 
             param(
-                $moduleFolderName,
-                $templateContent
+                [string] $moduleFolderName,
+                [hashtable] $templateContent,
+                $templateFilePath
             )
 
+            # check if module contains a 'primary' resource we could draw a name from
+            $moduleResourceType = (Split-Path (($templateFilePath -replace '\\', '/') -split '/arm/')[1] -Parent) -replace '\\', '/'
+            if ($templateContent.resources.type -notcontains $moduleResourceType) {
+                Set-ItResult -Skipped -Because 'the module template has no primary resource to fetch a name from.'
+                return
+            }
+
+            # Otherwise test for standard outputs
             $outputs = $templateContent.outputs.Keys
             $outputs | Should -Contain 'name'
         }
@@ -769,10 +791,19 @@ Describe 'Deployment template tests' -Tag Template {
         It '[<moduleFolderName>] Resource ID output should exist' -TestCases $deploymentFolderTestCases {
 
             param(
-                $moduleFolderName,
-                $templateContent
+                [string] $moduleFolderName,
+                [hashtable] $templateContent,
+                $templateFilePath
             )
 
+            # check if module contains a 'primary' resource we could draw a name from
+            $moduleResourceType = (Split-Path (($templateFilePath -replace '\\', '/') -split '/arm/')[1] -Parent) -replace '\\', '/'
+            if ($templateContent.resources.type -notcontains $moduleResourceType) {
+                Set-ItResult -Skipped -Because 'the module template has no primary resource to fetch a resource ID from.'
+                return
+            }
+
+            # Otherwise test for standard outputs
             $outputs = $templateContent.outputs.Keys
             $outputs | Should -Contain 'resourceId'
         }
@@ -780,12 +811,12 @@ Describe 'Deployment template tests' -Tag Template {
         It "[<moduleFolderName>] parameters' description should start with a one word category starting with a capital letter, followed by a dot, a space and the actual description text ending with a dot." -TestCases $deploymentFolderTestCases {
 
             param(
-                $moduleFolderName,
-                $templateContent
+                [string] $moduleFolderName,
+                [hashtable] $templateContent
             )
 
             if (-not $templateContent.parameters) {
-                # Skip test
+                Set-ItResult -Skipped -Because 'the module template has no parameters.'
                 return
             }
 
@@ -803,12 +834,12 @@ Describe 'Deployment template tests' -Tag Template {
         It "[<moduleFolderName>] Conditional parameters' description should contain 'Required if' followed by the condition making the parameter required." -TestCases $deploymentFolderTestCases {
 
             param(
-                $moduleFolderName,
-                $templateContent
+                [string] $moduleFolderName,
+                [hashtable] $templateContent
             )
 
             if (-not $templateContent.parameters) {
-                # Skip test
+                Set-ItResult -Skipped -Because 'the module template has no parameters.'
                 return
             }
 
@@ -830,12 +861,12 @@ Describe 'Deployment template tests' -Tag Template {
         It "[<moduleFolderName>] outputs' description should start with a capital letter and contain text ending with a dot." -TestCases $deploymentFolderTestCases {
 
             param(
-                $moduleFolderName,
-                $templateContent
+                [string] $moduleFolderName,
+                [hashtable] $templateContent
             )
 
             if (-not $templateContent.outputs) {
-                # Skip test
+                Set-ItResult -Skipped -Because 'the module template has no outputs.'
                 return
             }
 
@@ -927,7 +958,7 @@ Describe "API version tests [All apiVersions in the template should be 'recent']
 
     $testCases = @()
     $ApiVersions = Get-AzResourceProvider -ListAvailable
-    foreach ($moduleFolderPath in $moduleFolderPathsFiltered) {
+    foreach ($moduleFolderPath in $moduleFolderPaths) {
 
         $moduleFolderName = $moduleFolderPath.Replace('\', '/').Split('/arm/')[1]
 
@@ -1023,12 +1054,13 @@ Describe "API version tests [All apiVersions in the template should be 'recent']
     }
 
     It 'In [<moduleName>] used resource type [<resourceType>] should use one of the recent API version(s). Currently using [<TargetApi>]' -TestCases $TestCases {
+
         param(
-            $moduleName,
-            $resourceType,
-            $TargetApi,
-            $ProviderNamespace,
-            $AvailableApiVersions
+            [string] $moduleName,
+            [string] $resourceType,
+            [string] $TargetApi,
+            [string] $ProviderNamespace,
+            [object[]] $AvailableApiVersions
         )
 
         $namespaceResourceTypes = ($AvailableApiVersions | Where-Object { $_.ProviderNamespace -eq $ProviderNamespace }).ResourceTypes

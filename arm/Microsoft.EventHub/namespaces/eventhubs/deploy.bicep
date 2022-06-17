@@ -96,7 +96,7 @@ param captureDescriptionSkipEmptyArchives bool = false
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
 
-var enableChildTelemetry = false
+var enableReferencedModulesTelemetry = false
 
 var eventHubPropertiesSimple = {
   messageRetentionInDays: messageRetentionInDays
@@ -162,7 +162,7 @@ module eventHub_consumergroups 'consumergroups/deploy.bicep' = [for (consumerGro
     eventHubName: eventHub.name
     name: consumerGroup.name
     userMetadata: contains(consumerGroup, 'userMetadata') ? consumerGroup.userMetadata : ''
-    enableDefaultTelemetry: enableChildTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
 
@@ -173,11 +173,11 @@ module eventHub_authorizationRules 'authorizationRules/deploy.bicep' = [for (aut
     eventHubName: eventHub.name
     name: authorizationRule.name
     rights: contains(authorizationRule, 'rights') ? authorizationRule.rights : []
-    enableDefaultTelemetry: enableChildTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
 
-module eventHub_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+module eventHub_rbac '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${deployment().name}-Rbac-${index}'
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''

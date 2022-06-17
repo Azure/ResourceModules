@@ -143,7 +143,7 @@ resource server_diagnosticSettings 'Microsoft.Insights/diagnosticsettings@2021-0
   scope: server
 }
 
-module server_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+module server_rbac '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-AnServicesServer-Rbac-${index}'
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''

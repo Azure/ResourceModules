@@ -28,7 +28,7 @@ param tags object = {}
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
 
-var enableChildTelemetry = false
+var enableReferencedModulesTelemetry = false
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
@@ -42,7 +42,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource gallery 'Microsoft.Compute/galleries@2020-09-30' = {
+resource gallery 'Microsoft.Compute/galleries@2021-10-01' = {
   name: name
   location: location
   tags: tags
@@ -61,7 +61,7 @@ resource gallery_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lo
   scope: gallery
 }
 
-module gallery_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+module gallery_rbac '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-Gallery-Rbac-${index}'
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
@@ -99,7 +99,7 @@ module galleries_images 'images/deploy.bicep' = [for (image, index) in images: {
     excludedDiskTypes: contains(image, 'excludedDiskTypes') ? image.excludedDiskTypes : []
     roleAssignments: contains(image, 'roleAssignments') ? image.roleAssignments : []
     tags: contains(image, 'tags') ? image.tags : {}
-    enableDefaultTelemetry: enableChildTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
 

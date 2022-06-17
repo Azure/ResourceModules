@@ -41,7 +41,7 @@ var builtInRoleNames = {
   'myCustomRoleAtSub': subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '60cb79d9-783a-50a4-9f05-d4c579fb8ce3')
 }
 
-resource galleryImage 'Microsoft.Compute/galleries/images@2020-09-30' existing = {
+resource galleryImage 'Microsoft.Compute/galleries/images@2021-10-01' existing = {
   name: '${split(resourceId, '/')[8]}/${split(resourceId, '/')[10]}'
 }
 

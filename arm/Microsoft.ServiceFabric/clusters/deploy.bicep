@@ -135,7 +135,7 @@ param roleAssignments array = []
 @description('Optional. Array of Service Fabric cluster application types.')
 param applicationTypes array = []
 
-var enableChildTelemetry = false
+var enableReferencedModulesTelemetry = false
 
 var clientCertificateCommonNames_var = [for clientCertificateCommonName in clientCertificateCommonNames: {
   certificateCommonName: contains(clientCertificateCommonName, 'certificateCommonName') ? clientCertificateCommonName.certificateCommonName : null
@@ -290,7 +290,7 @@ resource serviceFabricCluster_lock 'Microsoft.Authorization/locks@2017-04-01' = 
 }
 
 // Service Fabric cluster RBAC assignment
-module serviceFabricCluster_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+module serviceFabricCluster_rbac '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-ServiceFabric-Rbac-${index}'
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
@@ -308,7 +308,7 @@ module serviceFabricCluster_applicationTypes 'applicationTypes/deploy.bicep' = [
     name: applicationType.name
     serviceFabricClusterName: serviceFabricCluster.name
     tags: contains(applicationType, 'tags') ? applicationType.tags : {}
-    enableDefaultTelemetry: enableChildTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
 

@@ -254,7 +254,7 @@ jobs:
       fail-fast: false
       matrix:
         parameterFilePaths:
-          ['appi.parameters.json', 'aut.parameters.json', 'parameters.json']
+          ['appi.parameters.json', 'aut.parameters.json', 'sol.parameters.json', 'parameters.json']
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
@@ -775,6 +775,7 @@ jobs:
           [
             'apgw.parameters.json',
             'bas.parameters.json',
+            'bas.additional.parameters.json',
             'lb.parameters.json',
             'lb.min.parameters.json',
             'fw.parameters.json',
@@ -1303,6 +1304,9 @@ jobs:
             '8.aadds.parameters.json',
             '9.azfw.parameters.json',
             '10.azfw.parameters.json',
+            '11.azfw.parameters.json',
+            '12.bastion.parameters.json',
+            '13.bastion.parameters.json',
             'parameters.json'
           ]
     steps:

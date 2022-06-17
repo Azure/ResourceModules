@@ -179,7 +179,7 @@ var databaseAccount_locations = [for location in locations: {
 
 var kind = !empty(sqlDatabases) ? 'GlobalDocumentDB' : (!empty(mongodbDatabases) ? 'MongoDB' : 'Parse')
 
-var enableChildTelemetry = false
+var enableReferencedModulesTelemetry = false
 
 var databaseAccount_properties = !empty(sqlDatabases) ? {
   consistencyPolicy: consistencyPolicy[defaultConsistencyLevel]
@@ -240,7 +240,7 @@ resource databaseAccount_diagnosticSettings 'Microsoft.Insights/diagnosticsettin
   scope: databaseAccount
 }
 
-module databaseAccount_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+module databaseAccount_rbac '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-Rbac-${index}'
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
@@ -257,7 +257,7 @@ module sqlDatabases_resource 'sqlDatabases/deploy.bicep' = [for sqlDatabase in s
     databaseAccountName: databaseAccount.name
     name: sqlDatabase.name
     containers: contains(sqlDatabase, 'containers') ? sqlDatabase.containers : []
-    enableDefaultTelemetry: enableChildTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
 
@@ -267,7 +267,7 @@ module mongodbDatabases_resource 'mongodbDatabases/deploy.bicep' = [for mongodbD
     databaseAccountName: databaseAccount.name
     name: mongodbDatabase.name
     collections: contains(mongodbDatabase, 'collections') ? mongodbDatabase.collections : []
-    enableDefaultTelemetry: enableChildTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
 

@@ -28,7 +28,7 @@ param tags object = {}
 @description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
 
-var enableChildTelemetry = false
+var enableReferencedModulesTelemetry = false
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
   name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
@@ -55,7 +55,7 @@ module privateLinkScope_scopedResource 'scopedResources/deploy.bicep' = [for (sc
     name: scopedResource.name
     privateLinkScopeName: privateLinkScope.name
     linkedResourceId: scopedResource.linkedResourceId
-    enableDefaultTelemetry: enableChildTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
 
@@ -77,7 +77,7 @@ module privateLinkScope_privateEndpoints '../../Microsoft.Network/privateEndpoin
     name: contains(privateEndpoint, 'name') ? privateEndpoint.name : 'pe-${last(split(privateLinkScope.id, '/'))}-${privateEndpoint.service}-${index}'
     serviceResourceId: privateLinkScope.id
     subnetResourceId: privateEndpoint.subnetResourceId
-    enableDefaultTelemetry: enableDefaultTelemetry
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
     location: reference(split(privateEndpoint.subnetResourceId, '/subnets/')[0], '2020-06-01', 'Full').location
     lock: contains(privateEndpoint, 'lock') ? privateEndpoint.lock : lock
     privateDnsZoneGroups: contains(privateEndpoint, 'privateDnsZoneGroups') ? privateEndpoint.privateDnsZoneGroups : []
@@ -88,7 +88,7 @@ module privateLinkScope_privateEndpoints '../../Microsoft.Network/privateEndpoin
   }
 }]
 
-module privateLinkScope_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+module privateLinkScope_rbac '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-PvtLinkScope-Rbac-${index}'
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
