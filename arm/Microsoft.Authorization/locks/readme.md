@@ -56,7 +56,7 @@ This module deploys Authorization Locks.
             "value": "CanNotDelete"
         },
         "resourceGroupName": {
-            "value": "validation-rg"
+            "value": "adp-<<namePrefix>>-az-locks-rg-001"
         },
         "subscriptionId": {
             "value": "<<subscriptionId>>"
@@ -77,7 +77,7 @@ module locks './Microsoft.Authorization/locks/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-locks'
   params: {
     level: 'CanNotDelete'
-    resourceGroupName: 'validation-rg'
+    resourceGroupName: 'adp-<<namePrefix>>-az-locks-rg-001'
     subscriptionId: '<<subscriptionId>>'
   }
 ```
