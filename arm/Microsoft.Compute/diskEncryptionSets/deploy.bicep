@@ -60,7 +60,31 @@ resource diskEncryptionSet 'Microsoft.Compute/diskEncryptionSets@2021-04-01' = {
   }
 }
 
-module keyVaultAccessPolicies '.bicep/nested_kvAccessPolicy.bicep' = {
+// module keyVaultAccessPolicies '.bicep/nested_kvAccessPolicy.bicep' = {
+//   name: '${uniqueString(deployment().name, location)}-DiskEncrSet-KVAccessPolicies'
+//   params: {
+//     keyVaultName: last(split(keyVaultId, '/'))
+//     accessPolicies: [
+//       {
+//         tenantId: subscription().tenantId
+//         objectId: diskEncryptionSet.identity.principalId
+//         permissions: {
+//           keys: [
+//             'get'
+//             'wrapKey'
+//             'unwrapKey'
+//           ]
+//           secrets: []
+//           certificates: []
+//         }
+//       }
+//     ]
+//   }
+//   // This is to support access policies to KV in different subscription and resource group than the disk encryption set.
+//   scope: resourceGroup(split(keyVaultId, '/')[2], split(keyVaultId, '/')[4])
+// }
+
+module keyVaultAccessPolicies '../../Microsoft.KeyVault/vaults/accessPolicies/deploy.bicep' = {
   name: '${uniqueString(deployment().name, location)}-DiskEncrSet-KVAccessPolicies'
   params: {
     keyVaultName: last(split(keyVaultId, '/'))
