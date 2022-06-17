@@ -19,10 +19,14 @@ param resourceGroupName string = ''
 @description('Optional. Subscription ID of the subscription to assign the lock to.')
 param subscriptionId string = ''
 
+@sys.description('Optional. Location for all resources.')
+param location string = deployment().location
+
 var enableReferencedModulesTelemetry = false
 
 resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (enableDefaultTelemetry) {
-  name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name)}'
+  name: 'pid-47ed15a6-730a-4827-bcb4-0fd963ffbd82-${uniqueString(deployment().name, location)}'
+  location: location
   properties: {
     mode: 'Incremental'
     template: {
@@ -34,7 +38,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
 }
 
 module lock_rg 'resourceGroup/deploy.bicep' = if (!empty(resourceGroupName) && !empty(subscriptionId)) {
-  name: '${uniqueString(deployment().name)}-Lock-RG-Module'
+  name: '${uniqueString(deployment().name, location)}-Lock-RG-Module'
   scope: resourceGroup(subscriptionId, resourceGroupName)
   params: {
     level: level
