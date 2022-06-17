@@ -1,7 +1,6 @@
 # Authorization Locks `[Microsoft.Authorization/locks]`
 
 This module deploys Authorization Locks.
-// TODO: Replace Resource and fill in description
 
 ## Navigation
 
@@ -26,13 +25,10 @@ This module deploys Authorization Locks.
 **Optional parameters**
 | Parameter Name | Type | Default Value | Description |
 | :-- | :-- | :-- | :-- |
-| `name` | string | `[format('{0}-lock', parameters('level'))]` | The name of the lock. |
+| `enableDefaultTelemetry` | bool | `True` | Enable telemetry via the Customer Usage Attribution ID (GUID). |
 | `notes` | string | `[if(equals(parameters('level'), 'CanNotDelete'), 'Cannot delete resource or child resources.', 'Cannot modify the resource or child resources.')]` | The decription attached to the lock. |
-
-
-### Parameter Usage: `<ParameterPlaceholder>`
-
-// TODO: Fill in Parameter usage
+| `resourceGroupName` | string | `''` | Name of the Resource Group to assign the lock to. If Resource Group name is provided, and Subscription ID is provided, the module deploys at resource group level, therefore assigns the provided lock to the resource group. |
+| `subscriptionId` | string | `''` | Subscription ID of the subscription to assign the lock to. |
 
 ## Outputs
 
@@ -56,6 +52,12 @@ This module deploys Authorization Locks.
     "parameters": {
         "level": {
             "value": "CanNotDelete"
+        },
+        "resourceGroupName": {
+            "value": "validation-rg"
+        },
+        "subscriptionId": {
+            "value": "<<subscriptionId>>"
         }
     }
 }
@@ -73,6 +75,8 @@ module locks './Microsoft.Authorization/locks/deploy.bicep' = {
   name: '${uniqueString(deployment().name)}-locks'
   params: {
     level: 'CanNotDelete'
+    resourceGroupName: 'validation-rg'
+    subscriptionId: '<<subscriptionId>>'
   }
 ```
 
