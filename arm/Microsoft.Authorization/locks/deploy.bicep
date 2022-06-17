@@ -41,6 +41,7 @@ module lock_rg 'resourceGroup/deploy.bicep' = if (!empty(resourceGroupName) && !
   name: '${uniqueString(deployment().name, location)}-Lock-RG-Module'
   scope: resourceGroup(subscriptionId, resourceGroupName)
   params: {
+    name: '${resourceGroupName}-${level}-lock'
     level: level
     notes: notes
     enableDefaultTelemetry: enableReferencedModulesTelemetry
