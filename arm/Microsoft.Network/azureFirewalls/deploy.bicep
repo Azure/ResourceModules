@@ -131,6 +131,7 @@ var additionalPublicIpConfigurations_var = [for ipConfiguration in additionalPub
 // 1. Use existing public ip
 // 2. Use new public ip created in this module
 // 3. Do not use a public ip if isCreateDefaultPublicIP is false
+
 var subnet_var = {
   subnet: {
     id: '${vNetId}/subnets/AzureFirewallSubnet' // The subnet name must be AzureFirewallSubnet
@@ -148,12 +149,12 @@ var newPip = {
 }
 
 var ipConfigurations = concat([
-  {
-    name: 'IpConfAzureFirewallSubnet'
-    //Use existing public ip, new public ip created in this module, or none if isCreateDefaultPublicIP is false
-    properties: union(subnet_var, !empty(azureFirewallSubnetPublicIpId) ? existingPip : {}, (isCreateDefaultPublicIP ? newPip : {}))
-  }
-], additionalPublicIpConfigurations_var)
+    {
+      name: 'IpConfAzureFirewallSubnet'
+      //Use existing public ip, new public ip created in this module, or none if isCreateDefaultPublicIP is false
+      properties: union(subnet_var, !empty(azureFirewallSubnetPublicIpId) ? existingPip : {}, (isCreateDefaultPublicIP ? newPip : {}))
+    }
+  ], additionalPublicIpConfigurations_var)
 
 // ----------------------------------------------------------------------------
 
@@ -189,7 +190,42 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
 }
 
 // create a public ip address if one is not provided and the flag is true
-module publicIPAddress '.bicep/nested_publicIPAddress.bicep' = if (empty(azureFirewallSubnetPublicIpId) && isCreateDefaultPublicIP) {
+// module publicIPAddress '.bicep/nested_publicIPAddress.bicep' = if (empty(azureFirewallSubnetPublicIpId) && isCreateDefaultPublicIP) {
+//   name: '${uniqueString(deployment().name, location)}-Firewall-PIP'
+//   params: {
+//     name: contains(publicIPAddressObject, 'name') ? (!(empty(publicIPAddressObject.name)) ? publicIPAddressObject.name : '${name}-pip') : '${name}-pip'
+//     publicIPPrefixResourceId: contains(publicIPAddressObject, 'publicIPPrefixResourceId') ? (!(empty(publicIPAddressObject.publicIPPrefixResourceId)) ? publicIPAddressObject.publicIPPrefixResourceId : '') : ''
+//     publicIPAllocationMethod: contains(publicIPAddressObject, 'publicIPAllocationMethod') ? (!(empty(publicIPAddressObject.publicIPAllocationMethod)) ? publicIPAddressObject.publicIPAllocationMethod : 'Static') : 'Static'
+//     skuName: contains(publicIPAddressObject, 'skuName') ? (!(empty(publicIPAddressObject.skuName)) ? publicIPAddressObject.skuName : 'Standard') : 'Standard'
+//     skuTier: contains(publicIPAddressObject, 'skuTier') ? (!(empty(publicIPAddressObject.skuTier)) ? publicIPAddressObject.skuTier : 'Regional') : 'Regional'
+//     roleAssignments: contains(publicIPAddressObject, 'roleAssignments') ? (!empty(publicIPAddressObject.roleAssignments) ? publicIPAddressObject.roleAssignments : []) : []
+//     diagnosticMetricsToEnable: contains(publicIPAddressObject, 'diagnosticMetricsToEnable') ? (!(empty(publicIPAddressObject.diagnosticMetricsToEnable)) ? publicIPAddressObject.diagnosticMetricsToEnable : [
+//       'AllMetrics'
+//     ]) : [
+//       'AllMetrics'
+//     ]
+//     diagnosticLogCategoriesToEnable: contains(publicIPAddressObject, 'diagnosticLogCategoriesToEnable') ? (!(empty(publicIPAddressObject.diagnosticLogCategoriesToEnable)) ? publicIPAddressObject.diagnosticLogCategoriesToEnable : [
+//       'DDoSProtectionNotifications'
+//       'DDoSMitigationFlowLogs'
+//       'DDoSMitigationReports'
+//     ]) : [
+//       'DDoSProtectionNotifications'
+//       'DDoSMitigationFlowLogs'
+//       'DDoSMitigationReports'
+//     ]
+//     location: location
+//     diagnosticStorageAccountId: diagnosticStorageAccountId
+//     diagnosticLogsRetentionInDays: diagnosticLogsRetentionInDays
+//     diagnosticWorkspaceId: diagnosticWorkspaceId
+//     diagnosticEventHubAuthorizationRuleId: diagnosticEventHubAuthorizationRuleId
+//     diagnosticEventHubName: diagnosticEventHubName
+//     lock: lock
+//     tags: tags
+//     zones: zones
+//   }
+// }
+
+module publicIPAddress '../../Microsoft.Network/publicIPAddresses/deploy.bicep' = if (empty(azureFirewallSubnetPublicIpId) && isCreateDefaultPublicIP) {
   name: '${uniqueString(deployment().name, location)}-Firewall-PIP'
   params: {
     name: contains(publicIPAddressObject, 'name') ? (!(empty(publicIPAddressObject.name)) ? publicIPAddressObject.name : '${name}-pip') : '${name}-pip'
