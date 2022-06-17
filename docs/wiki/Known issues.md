@@ -45,9 +45,13 @@ which we don't have deployed using the dependencies pipeline for cost reasons.
 
 ## Microsoft.Management/managementGroups
 
-The Management Group deployment is not working when applying role assignments at management group scope.
+The Management Group module does not currently include the role assignments extension resource.
 
-Further details are provided in issue [#1342](https://github.com/Azure/ResourceModules/issues/1342) as well as in issue [#6832](https://github.com/Azure/bicep/issues/6832) in the Bicep board.
+Including RBAC capabilities has been tested setting the scope to the previously created management group and resulted in failing with the error: '`ManagementGroupNotFound - The management group 'EXAMPLEMG' cannot be found`'.
+
+A related issue has been opened to the Bicep board [#6832](https://github.com/Azure/bicep/issues/6832).
+
+Further details are also provided in issue [#1342](https://github.com/Azure/ResourceModules/issues/1342).
 
 ## Microsoft.Network/vpnGateways
 
