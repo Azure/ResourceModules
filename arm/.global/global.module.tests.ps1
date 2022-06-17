@@ -12,13 +12,12 @@ param (
 )
 
 $script:RepoRoot = Split-Path (Split-Path $PSScriptRoot -Parent) -Parent
-$script:Settings = Get-Content -Path (Join-Path $PSScriptRoot '..\..\settings.json') | ConvertFrom-Json -AsHashtable
+$script:TokensSettings = Get-Content -Path (Join-Path $PSScriptRoot '..\..\global.variables.yml') | ConvertFrom-Yaml | Select-Object -ExpandProperty variables | Select-Object tokenPrefix, tokenSuffix
 $script:RGdeployment = 'https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#'
 $script:Subscriptiondeployment = 'https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#'
 $script:MGdeployment = 'https://schema.management.azure.com/schemas/2019-08-01/managementGroupDeploymentTemplate.json#'
 $script:Tenantdeployment = 'https://schema.management.azure.com/schemas/2019-08-01/tenantDeploymentTemplate.json#'
 $script:moduleFolderPaths = $moduleFolderPaths
-$script:enforcedTokenList = $enforcedTokenList
 
 # For runtime purposes, we cache the compiled template in a hashtable that uses a formatted relative module path as a key
 $script:convertedTemplates = @{}
@@ -510,7 +509,7 @@ Describe 'Deployment template tests' -Tag Template {
                         parameterFile_AllParameterNames      = $parameterFile_AllParameterNames
                         templateFile_AllParameterNames       = $TemplateFile_AllParameterNames
                         templateFile_RequiredParametersNames = $TemplateFile_RequiredParametersNames
-                        tokenSettings                        = $Settings.parameterFileTokens
+                        tokenSettings                        = $TokensSettings
                     }
                 }
             }
@@ -919,7 +918,7 @@ Describe 'Deployment template tests' -Tag Template {
                         $parameterFileTokenTestCases += @{
                             parameterFilePath = $ParameterFilePath
                             parameterFileName = Split-Path $ParameterFilePath -Leaf
-                            tokenSettings     = $Settings.parameterFileTokens
+                            tokenSettings     = $TokensSettings
                             tokenName         = $token
                             tokenValue        = $enforcedTokenList[$token]
                             moduleFolderName  = $moduleFolderPath.Replace('\', '/').Split('/arm/')[1]
@@ -933,7 +932,7 @@ Describe 'Deployment template tests' -Tag Template {
             param (
                 [string] $parameterFilePath,
                 [string] $parameterFileName,
-                [hashtable] $tokenSettings,
+                [Selected.System.Collections.Hashtable] $tokenSettings,
                 [string] $tokenName,
                 [string] $tokenValue,
                 [string] $moduleFolderName
