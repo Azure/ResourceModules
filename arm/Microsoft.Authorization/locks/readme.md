@@ -30,6 +30,7 @@ This module deploys Authorization Locks.
 | `resourceGroupName` | string | `''` | Name of the Resource Group to assign the lock to. If Resource Group name is provided, and Subscription ID is provided, the module deploys at resource group level, therefore assigns the provided lock to the resource group. |
 | `subscriptionId` | string | `''` | Subscription ID of the subscription to assign the lock to. |
 
+
 ## Outputs
 
 | Output Name | Type | Description |

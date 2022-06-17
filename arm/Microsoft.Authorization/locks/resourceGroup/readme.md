@@ -28,6 +28,7 @@ This module deploys Authorization Locks on Resource Group level.
 | `name` | string | `[format('{0}-lock', parameters('level'))]` | The name of the lock. |
 | `notes` | string | `[if(equals(parameters('level'), 'CanNotDelete'), 'Cannot delete resource or child resources.', 'Cannot modify the resource or child resources.')]` | The decription attached to the lock. |
 
+
 ## Outputs
 
 | Output Name | Type | Description |
