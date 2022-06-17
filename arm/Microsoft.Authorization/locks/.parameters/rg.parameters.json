@@ -6,7 +6,7 @@
             "value": "CanNotDelete"
         },
         "resourceGroupName": {
-            "value": "validation-rg"
+            "value": "adp-<<namePrefix>>-az-locks-rg-001"
         },
         "subscriptionId": {
             "value": "<<subscriptionId>>"
