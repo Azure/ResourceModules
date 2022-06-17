@@ -4,11 +4,11 @@ param name string
 @description('Required. Name of the value.')
 param value string
 
-@description('Required. The content type of the key-values value. Providing a proper content-type can enable transformations of values when they are retrieved by applications.')
-param contentType string
-
 @description('Conditional. The name of the parent app configuration store. Required if the template is used in a standalone deployment.')
 param appConfigurationName string
+
+@description('Optional. The content type of the key-values value. Providing a proper content-type can enable transformations of values when they are retrieved by applications.')
+param contentType string
 
 @description('Optional. Tags of the resource.')
 param tags object = {}

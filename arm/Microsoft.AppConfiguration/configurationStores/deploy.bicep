@@ -105,8 +105,6 @@ param privateEndpoints array = []
 
 var enableReferencedModulesTelemetry = false
 
-var keyValuesList = !empty(keyValues) ? keyValues : []
-
 var diagnosticsLogs = [for category in diagnosticLogCategoriesToEnable: {
   category: category
   enabled: true
@@ -162,7 +160,7 @@ resource configurationStore 'Microsoft.AppConfiguration/configurationStores@2021
   }
 }
 
-module configurationStore_keyValues 'keyValues/deploy.bicep' = [for (keyValues, index) in keyValuesList: {
+module configurationStore_keyValues 'keyValues/deploy.bicep' = [for (keyValues, index) in keyValues: {
   name: '${uniqueString(deployment().name, location)}-appConfig-KeyValues-${index}'
   params: {
     appConfigurationName: configurationStore.name
