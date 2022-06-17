@@ -47,7 +47,7 @@ which we don't have deployed using the dependencies pipeline for cost reasons.
 
 The Management Group module does not currently include the role assignments extension resource.
 
-Including RBAC capabilities has been tested setting the scope to the previously created management group and resulted in failing with the error: '`ManagementGroupNotFound - The management group 'EXAMPLEMG' cannot be found`'.
+Including RBAC capabilities has been tested setting the scope to the previously created management group and resulted in failing already in the validation step with the error: '`ManagementGroupNotFound - The management group 'EXAMPLEMG' cannot be found`'.
 
 A related issue has been opened to the Bicep board [#6832](https://github.com/Azure/bicep/issues/6832).
 
