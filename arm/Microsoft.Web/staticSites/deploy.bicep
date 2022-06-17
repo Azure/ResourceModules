@@ -129,7 +129,7 @@ resource staticSite_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty
   scope: staticSite
 }
 
-module staticSite_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+module staticSite_rbac '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-StaticSite-Rbac-${index}'
   params: {
     principalIds: roleAssignment.principalIds

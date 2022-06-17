@@ -43,6 +43,16 @@ The module has a dependency on
 
 which we don't have deployed using the dependencies pipeline for cost reasons.
 
+## Microsoft.Management/managementGroups
+
+The Management Group module does not currently include the role assignments extension resource.
+
+Including RBAC capabilities has been tested setting the scope to the previously created management group and resulted in failing already in the validation step with the error: '`ManagementGroupNotFound - The management group 'EXAMPLEMG' cannot be found`'.
+
+A related issue has been opened to the Bicep board [#6832](https://github.com/Azure/bicep/issues/6832).
+
+Further details are also provided in issue [#1342](https://github.com/Azure/ResourceModules/issues/1342).
+
 ## Microsoft.Network/vpnGateways
 
 The module has a dependency on a pre-existing Virtual Hub which we don't have deployed using the dependencies pipeline for cost reasons.
@@ -77,7 +87,7 @@ This section outlines known issues that currently affect the CI environment depl
 
 The deployment validation step aims to validate multiple configurations for each module. This is done by providing multiple parameter files to be leveraged by the same resource module, each covering a specific scenario.
 
-The first planned step is to provide for each module a 'minimum-set' parameter file, limited to the top-level resource required parameters, vs. a 'maximum-set' parameter file, including all possible properties, child resources and extension resources. Some of our modules are still tested through one parameter file only. This is tracked by issue #1063.
+The first planned step is to provide for each module a 'minimum-set' parameter file, limited to the top-level resource required parameters, vs. a 'maximum-set' parameter file, including all possible properties, child resources and extension resources. Some of our modules are still tested through one parameter file only. This is tracked by issue [#401](https://github.com/Azure/ResourceModules/issues/401).
 
 ## Publishing
 

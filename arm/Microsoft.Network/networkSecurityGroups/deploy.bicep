@@ -150,7 +150,7 @@ resource networkSecurityGroup_diagnosticSettings 'Microsoft.Insights/diagnosticS
   scope: networkSecurityGroup
 }
 
-module networkSecurityGroup_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+module networkSecurityGroup_rbac '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-NSG-Rbac-${index}'
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''

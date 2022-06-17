@@ -737,7 +737,7 @@ module sites './Microsoft.Web/sites/deploy.bicep' = {
         },
         "serverFarmResourceId": {
             "value": "/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.Web/serverFarms/adp-<<namePrefix>>-az-asp-x-001"
-        },
+        }
     }
 }
 

@@ -58,7 +58,7 @@ resource proximityPlacementGroup_lock 'Microsoft.Authorization/locks@2017-04-01'
   scope: proximityPlacementGroup
 }
 
-module proximityPlacementGroup_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+module proximityPlacementGroup_rbac '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-ProxPlaceGroup-Rbac-${index}'
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''

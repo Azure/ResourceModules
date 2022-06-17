@@ -25,7 +25,7 @@ param savedSearches array = []
 @description('Optional. LAW data sources to configure.')
 param dataSources array = []
 
-@description('Optional. LAW gallerySolutions from the gallery.')
+@description('Optional. List of gallerySolutions to be created in the log analytics workspace.')
 param gallerySolutions array = []
 
 @description('Optional. Number of days data will be retained for.')
@@ -192,7 +192,7 @@ module logAnalyticsWorkspace_linkedServices 'linkedServices/deploy.bicep' = [for
   params: {
     logAnalyticsWorkspaceName: logAnalyticsWorkspace.name
     name: linkedService.name
-    resourceId: linkedService.resourceId
+    resourceId: contains(linkedService, 'resourceId') ? linkedService.resourceId : ''
     writeAccessResourceId: contains(linkedService, 'writeAccessResourceId') ? linkedService.writeAccessResourceId : ''
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
@@ -235,14 +235,15 @@ module logAnalyticsWorkspace_dataSources 'dataSources/deploy.bicep' = [for (data
   }
 }]
 
-module logAnalyticsWorkspace_solutions '.bicep/nested_solutions.bicep' = [for (gallerySolution, index) in gallerySolutions: if (!empty(gallerySolutions)) {
+module logAnalyticsWorkspace_solutions '../../Microsoft.OperationsManagement/solutions/deploy.bicep' = [for (gallerySolution, index) in gallerySolutions: if (!empty(gallerySolutions)) {
   name: '${uniqueString(deployment().name, location)}-LAW-Solution-${index}'
   params: {
-    gallerySolution: gallerySolution.name
+    name: gallerySolution.name
     location: location
     logAnalyticsWorkspaceName: logAnalyticsWorkspace.name
-    product: gallerySolution.product
-    publisher: gallerySolution.publisher
+    product: contains(gallerySolution, 'product') ? gallerySolution.product : 'OMSGallery'
+    publisher: contains(gallerySolution, 'publisher') ? gallerySolution.publisher : 'Microsoft'
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
 
@@ -255,7 +256,7 @@ resource logAnalyticsWorkspace_lock 'Microsoft.Authorization/locks@2017-04-01' =
   scope: logAnalyticsWorkspace
 }
 
-module logAnalyticsWorkspace_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+module logAnalyticsWorkspace_rbac '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-LAW-Rbac-${index}'
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''
