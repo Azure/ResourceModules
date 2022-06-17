@@ -6,7 +6,7 @@
             "value": "CanNotDelete"
         },
         "resourceGroupName": {
-            "value": "testrg02"
+            "value": "validation-rg"
         },
         "subscriptionId": {
             "value": "<<subscriptionId>>"

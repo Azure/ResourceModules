@@ -8,13 +8,13 @@ param level string
 @description('Optional. The decription attached to the lock.')
 param notes string = level == 'CanNotDelete' ? 'Cannot delete resource or child resources.' : 'Cannot modify the resource or child resources.'
 
-@sys.description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
+@description('Optional. Enable telemetry via the Customer Usage Attribution ID (GUID).')
 param enableDefaultTelemetry bool = true
 
-@sys.description('Optional. Name of the Resource Group to assign the lock to. If Resource Group name is provided, and Subscription ID is provided, the module deploys at resource group level, therefore assigns the provided lock to the resource group.')
+@description('Optional. Name of the Resource Group to assign the lock to. If Resource Group name is provided, and Subscription ID is provided, the module deploys at resource group level, therefore assigns the provided lock to the resource group.')
 param resourceGroupName string = ''
 
-@sys.description('Optional. Subscription ID of the subscription to assign the lock to.')
+@description('Optional. Subscription ID of the subscription to assign the lock to.')
 param subscriptionId string = ''
 
 var enableReferencedModulesTelemetry = false
@@ -41,8 +41,8 @@ module lock_rg 'resourceGroup/deploy.bicep' = if (!empty(resourceGroupName) && !
   }
 }
 
-@sys.description('The GUID of the Role Assignment.')
+@description('The name of the lock.')
 output name string = lock_rg.outputs.name
 
-@sys.description('The resource ID of the Role Assignment.')
+@description('The resource ID of the lock.')
 output resourceId string = lock_rg.outputs.resourceId
