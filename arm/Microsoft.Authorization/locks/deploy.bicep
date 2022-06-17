@@ -1,3 +1,5 @@
+targetScope = 'subscription'
+
 @allowed([
   'CanNotDelete'
   'ReadOnly'
