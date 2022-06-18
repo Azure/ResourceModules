@@ -77,7 +77,7 @@ runs:
           Write-Verbose "- [($moduleFolderPath]" -Verbose
         }
 
-        $GlobalVariablesObject = Get-Content -Path '${{ inputs.variablesPath }}' | ConvertFrom-Yaml | Select-Object -ExpandProperty variables
+        $GlobalVariablesObject = Get-Content -Path 'global.variables.yml' | ConvertFrom-Yaml | Select-Object -ExpandProperty variables
 
         # Construct Token Configuration Input
         $tokenConfiguration = @{
