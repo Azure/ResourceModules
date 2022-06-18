@@ -14,7 +14,7 @@
 ##   |============================================================================================================================================================================|
 ##   | Parameter                 | Required | Default | Description                                           | Example                                                           |
 ##   |---------------------------|----------|---------|-------------------------------------------------------|-------------------------------------------------------------------|
-##   | templateFilePath          | true     | ''      | The path to the template file to use for deployment              | 'arm/Microsoft.ApiManagement/service/deploy.bicep'                |
+##   | templateFilePath          | true     | ''      | The path to the template file to use for deployment   | 'arm/Microsoft.ApiManagement/service/deploy.bicep'                |
 ##   | parameterFilePath         | true     | ''      | The path to the parameter file to use for deployment  | 'arm/Microsoft.ApiManagement/service/.parameters/parameters.json' |
 ##   | location                  | true     | ''      | The location to use for deployment                    | 'WestEurope'                                                      |
 ##   | resourceGroupName         | false    | ''      | The resource group to deploy to                       | 'validation-rg'                                                   |
@@ -137,7 +137,7 @@ runs:
             TokenSuffix  = '${{ env.tokenSuffix }}'
           }
 
-          # Add standard tokens
+          # Add enforced tokens
           $ConvertTokensInputs.Tokens += @{
             resourceGroupName = '${{ inputs.resourceGroupName }}'
             subscriptionId    = '${{ inputs.subscriptionId }}'

@@ -6,13 +6,12 @@ param (
         (Get-ChildItem $_ -File -Depth 0 -Include @('deploy.json', 'deploy.bicep') -Force).Count -gt 0
         }),
 
-    # Tokens to test for (i.e. their value should not be used in the parameter files, but their placeholder)
+    # Dedicated Tokens configuration hashtable containing the tokens and token prefix and suffix.
     [Parameter(Mandatory = $false)]
-    [hashtable] $enforcedTokenList = @{}
+    [hashtable] $tokenConfiguration = @{}
 )
 
 $script:RepoRoot = Split-Path (Split-Path $PSScriptRoot -Parent) -Parent
-$script:TokensSettings = Get-Content -Path (Join-Path $PSScriptRoot '..\..\global.variables.yml') | ConvertFrom-Yaml | Select-Object -ExpandProperty variables | Select-Object tokenPrefix, tokenSuffix
 $script:RGdeployment = 'https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#'
 $script:Subscriptiondeployment = 'https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#'
 $script:MGdeployment = 'https://schema.management.azure.com/schemas/2019-08-01/managementGroupDeploymentTemplate.json#'
@@ -146,7 +145,6 @@ Describe 'File/folder tests' -Tag Modules {
         }
     }
 }
-
 Describe 'Readme tests' -Tag Readme {
 
     Context 'Readme content tests' {
@@ -514,7 +512,7 @@ Describe 'Deployment template tests' -Tag Template {
                         parameterFile_AllParameterNames      = $parameterFile_AllParameterNames
                         templateFile_AllParameterNames       = $TemplateFile_AllParameterNames
                         templateFile_RequiredParametersNames = $TemplateFile_RequiredParametersNames
-                        tokenSettings                        = $TokensSettings
+                        tokenConfiguration                   = $tokenConfiguration
                     }
                 }
             }
@@ -919,13 +917,14 @@ Describe 'Deployment template tests' -Tag Template {
             if (Test-Path (Join-Path $moduleFolderPath '.parameters')) {
                 $ParameterFilePaths = (Get-ChildItem (Join-Path -Path $moduleFolderPath -ChildPath '.parameters' -AdditionalChildPath '*parameters.json') -Recurse -Force).FullName
                 foreach ($ParameterFilePath in $ParameterFilePaths) {
-                    foreach ($token in $enforcedTokenList.Keys) {
+                    foreach ($token in $tokenConfiguration.Tokens.Keys) {
                         $parameterFileTokenTestCases += @{
                             parameterFilePath = $ParameterFilePath
                             parameterFileName = Split-Path $ParameterFilePath -Leaf
-                            tokenSettings     = $TokensSettings
+                            tokenPrefix       = $tokenConfiguration.TokenPrefix
+                            tokenSuffix       = $tokenConfiguration.TokenSuffix
                             tokenName         = $token
-                            tokenValue        = $enforcedTokenList[$token]
+                            tokenValue        = $tokenConfiguration.Tokens[$token]
                             moduleFolderName  = $moduleFolderPath.Replace('\', '/').Split('/arm/')[1]
                         }
                     }
@@ -933,21 +932,24 @@ Describe 'Deployment template tests' -Tag Template {
             }
         }
 
-        It '[<moduleFolderName>] [Tokens] Parameter file [<parameterFileName>] should not contain the plain value for token [<tokenName>] guid' -TestCases $parameterFileTokenTestCases {
-            param (
-                [string] $parameterFilePath,
-                [string] $parameterFileName,
-                [Selected.System.Collections.Hashtable] $tokenSettings,
-                [string] $tokenName,
-                [string] $tokenValue,
-                [string] $moduleFolderName
-            )
-            $ParameterFileTokenName = -join ($tokenSettings.tokenPrefix, $tokenName, $tokenSettings.tokenSuffix)
-            $ParameterFileContent = Get-Content -Path $parameterFilePath
+        foreach ($parameterFileTokenTestCase in $parameterFileTokenTestCases) {
+            It '[<moduleFolderName>] [Tokens] Parameter file [<parameterFileName>] should not contain the plain value for token [<tokenName>]' -TestCases $parameterFileTokenTestCase {
+                param (
+                    [string] $parameterFilePath,
+                    [string] $parameterFileName,
+                    [string] $tokenPrefix,
+                    [string] $tokenSuffix,
+                    [string] $tokenName,
+                    [string] $tokenValue,
+                    [string] $moduleFolderName
+                )
+                $ParameterFileTokenName = -join ($tokenPrefix, $tokenName, $tokenSuffix)
+                $ParameterFileContent = Get-Content -Path $parameterFilePath
 
-            $incorrectReferencesFound = $ParameterFileContent | Select-String -Pattern $tokenValue -AllMatches
-            if ($incorrectReferencesFound.Matches) {
-                $incorrectReferencesFound.Matches.Count | Should -Be 0 -Because ('Parameter file should not contain the [{0}] value, instead should reference the token value [{1}]. Please check the {2} lines: [{3}]' -f $tokenName, $ParameterFileTokenName, $incorrectReferencesFound.Matches.Count, ($incorrectReferencesFound.Line.Trim() -join ",`n"))
+                $incorrectReferencesFound = $ParameterFileContent | Select-String -Pattern $tokenValue -AllMatches
+                if ($incorrectReferencesFound.Matches) {
+                    $incorrectReferencesFound.Matches.Count | Should -Be 0 -Because ('Parameter file should not contain the [{0}] value, instead should reference the token value [{1}]. Please check the {2} lines: [{3}]' -f $tokenName, $ParameterFileTokenName, $incorrectReferencesFound.Matches.Count, ($incorrectReferencesFound.Line.Trim() -join ",`n"))
+                }
             }
         }
     }

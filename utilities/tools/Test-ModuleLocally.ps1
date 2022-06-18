@@ -143,32 +143,55 @@ function Test-ModuleLocally {
         . (Join-Path $PSScriptRoot '../pipelines/resourceDeployment/Test-TemplateDeployment.ps1')
     }
     process {
+        ################
+        # TOKENS Replacement #
+        ################
 
+        $GlobalVariablesObject = Get-Content -Path (Join-Path $PSScriptRoot '..\..\global.variables.yml') | ConvertFrom-Yaml -ErrorAction Stop | Select-Object -ExpandProperty variables
+
+        # Construct Token Configuration Input
+        $tokenConfiguration = @{
+            Tokens      = @{}
+            TokenPrefix = $GlobalVariablesObject | Select-Object -ExpandProperty tokenPrefix
+            TokenSuffix = $GlobalVariablesObject | Select-Object -ExpandProperty tokenSuffix
+        }
+
+        ## Enforced Tokens
+        if ($ValidateOrDeployParameters.ContainsKey('subscriptionId')) {
+            $tokenConfiguration.Tokens['subscriptionId'] = $ValidateOrDeployParameters.SubscriptionId
+        }
+        if ($ValidateOrDeployParameters.ContainsKey('managementGroupId')) {
+            $tokenConfiguration.Tokens['managementGroupId'] = $ValidateOrDeployParameters.ManagementGroupId
+        }
+        if ($AdditionalTokens.ContainsKey('deploymentSpId')) {
+            $tokenConfiguration.Tokens['deploymentSpId'] = $AdditionalTokens['deploymentSpId']
+        }
+        if ($AdditionalTokens.ContainsKey('tenantId')) {
+            $tokenConfiguration.Tokens['tenantId'] = $AdditionalTokens['tenantId']
+        }
+
+        ## Local Tokens from global.variables.yml
+        foreach ($localToken in $GlobalVariablesObject.Keys | ForEach-Object { if ($PSItem.contains('localToken_')) { $PSItem } }) {
+            $tokenConfiguration.Tokens[$localToken.Replace('localToken_', '')] = $GlobalVariablesObject.$localToken
+        }
+
+        #Add Other Parameter File Tokens (For Testing)
+        $AdditionalTokens.Keys | ForEach-Object {
+            if (-not $tokenConfiguration.Tokens.ContainsKey($PSItem)) {
+                $tokenConfiguration.Tokens[$PSItem] = $AdditionalTokens.$PSItem
+            }
+        }
         ################
         # PESTER Tests #
         ################
         if ($PesterTest) {
             Write-Verbose "Pester Testing Module: $ModuleName"
             try {
-                $enforcedTokenList = @{}
-                if ($ValidateOrDeployParameters.ContainsKey('subscriptionId')) {
-                    $enforcedTokenList['subscriptionId'] = $ValidateOrDeployParameters.SubscriptionId
-                }
-                if ($ValidateOrDeployParameters.ContainsKey('managementGroupId')) {
-                    $enforcedTokenList['managementGroupId'] = $ValidateOrDeployParameters.ManagementGroupId
-                }
-                if ($AdditionalTokens.ContainsKey('deploymentSpId')) {
-                    $enforcedTokenList['deploymentSpId'] = $AdditionalTokens['deploymentSpId']
-                }
-                if ($AdditionalTokens.ContainsKey('tenantId')) {
-                    $enforcedTokenList['tenantId'] = $AdditionalTokens['tenantId']
-                }
-
                 Invoke-Pester -Configuration @{
                     Run    = @{
                         Container = New-PesterContainer -Path (Join-Path (Get-Item $PSScriptRoot).Parent.Parent 'arm/.global/global.module.tests.ps1') -Data @{
-                            moduleFolderPaths = Split-Path $TemplateFilePath -Parent
-                            enforcedTokenList = $enforcedTokenList
+                            moduleFolderPaths  = Split-Path $TemplateFilePath -Parent
+                            tokenConfiguration = $tokenConfiguration
                         }
                     }
                     Output = @{
@@ -193,43 +216,8 @@ function Test-ModuleLocally {
                 $ModuleParameterFiles = @($parameterFilePath)
             }
 
-            # Replace parameter file tokens
-            # -----------------------------
-
-            # Default Tokens
-            $ConvertTokensInputs = @{
-                Tokens = @{
-                    subscriptionId    = $ValidateOrDeployParameters.SubscriptionId
-                    managementGroupId = $ValidateOrDeployParameters.ManagementGroupId
-                }
-            }
-
-            #Add Other Parameter File Tokens (For Testing)
-            if ($AdditionalTokens) {
-                $ConvertTokensInputs.Tokens += $AdditionalTokens
-            }
-
-            # Tokens in settings.json
-            $settingsFilePath = Join-Path (Get-Item $PSScriptRoot).Parent.Parent 'settings.json'
-            if (Test-Path $settingsFilePath) {
-                $Settings = Get-Content -Path $settingsFilePath -Raw | ConvertFrom-Json -AsHashtable
-                $ConvertTokensInputs += @{
-                    TokenPrefix = $Settings.parameterFileTokens.tokenPrefix
-                    TokenSuffix = $Settings.parameterFileTokens.tokenSuffix
-                }
-
-                if ($Settings.parameterFileTokens.localTokens) {
-                    $tokenMap = @{}
-                    foreach ($token in $Settings.parameterFileTokens.localTokens) {
-                        $tokenMap += @{ $token.name = $token.value }
-                    }
-                    Write-Verbose ('Using local tokens [{0}]' -f ($tokenMap.Keys -join ', ')) -Verbose
-                    $ConvertTokensInputs.Tokens += $tokenMap
-                }
-            }
-
             # Invoke Token Replacement Functionality and Convert Tokens in Parameter Files
-            $ModuleParameterFiles | ForEach-Object { $null = Convert-TokensInFile @ConvertTokensInputs -FilePath $_ }
+            $ModuleParameterFiles | ForEach-Object { $null = Convert-TokensInFile @tokenConfiguration -FilePath $_ }
 
             # Deployment & Validation Testing
             # -------------------------------
@@ -273,7 +261,7 @@ function Test-ModuleLocally {
                 if (($ValidationTest -or $DeploymentTest) -and $ValidateOrDeployParameters) {
                     # Replace Values with Tokens For Repo Updates
                     Write-Verbose 'Restoring Tokens'
-                    $ModuleParameterFiles | ForEach-Object { $null = Convert-TokensInFile @ConvertTokensInputs -FilePath $_ -SwapValueWithName $true }
+                    $ModuleParameterFiles | ForEach-Object { $null = Convert-TokensInFile @tokenConfiguration -FilePath $_ -SwapValueWithName $true }
                 }
             }
         }
