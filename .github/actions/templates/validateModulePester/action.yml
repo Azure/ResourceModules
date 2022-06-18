@@ -87,16 +87,16 @@ runs:
         }
 
         ## Enforced Tokens
-        if ($ValidateOrDeployParameters.ContainsKey('subscriptionId')) {
+        if (-not [String]::IsNullOrEmpty('${{ env.ARM_SUBSCRIPTION_ID }}')) {
             $tokenConfiguration.Tokens['subscriptionId'] = '${{ env.ARM_SUBSCRIPTION_ID }}'
         }
-        if ($ValidateOrDeployParameters.ContainsKey('managementGroupId')) {
+        if (-not [String]::IsNullOrEmpty('${{ env.ARM_MGMTGROUP_ID }}')) {
             $tokenConfiguration.Tokens['managementGroupId'] = '${{ env.ARM_MGMTGROUP_ID }}'
         }
-        if ($AdditionalTokens.ContainsKey('deploymentSpId')) {
+        if (-not [String]::IsNullOrEmpty('${{ env.DEPLOYMENT_SP_ID }}')) {
             $tokenConfiguration.Tokens['deploymentSpId'] = '${{ env.DEPLOYMENT_SP_ID }}'
         }
-        if ($AdditionalTokens.ContainsKey('tenantId')) {
+        if (-not [String]::IsNullOrEmpty('${{ env.ARM_TENANT_ID }}')) {
             $tokenConfiguration.Tokens['tenantId'] = '${{ env.ARM_TENANT_ID }}'
         }
 
