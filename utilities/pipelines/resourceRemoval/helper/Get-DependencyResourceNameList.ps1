@@ -33,24 +33,20 @@ function Get-DependencyResourceNameList {
     }
 
     # Replace tokens in dependency parameter files
-    $Settings = Get-Content -Path (Join-Path $repoRootPath 'settings.json') | ConvertFrom-Json -AsHashtable
+    $GlobalVariablesObject = Get-Content -Path (Join-Path $PSScriptRoot '..\..\global.variables.yml') | ConvertFrom-Yaml -ErrorAction Stop | Select-Object -ExpandProperty variables
 
-    # Add local tokens
-    if ($Settings.parameterFileTokens.localTokens) {
-        $tokenMap = @{}
-        foreach ($token in $Settings.parameterFileTokens.localTokens) {
-            $tokenMap += @{ $token.name = $token.value }
-        }
-        Write-Verbose ('Using local tokens [{0}]' -f ($tokenMap.Keys -join ', '))
-
-        $ConvertTokensInputs = @{
-            Tokens      = $tokenMap
-            TokenPrefix = $Settings.parameterFileTokens.tokenPrefix
-            TokenSuffix = $Settings.parameterFileTokens.tokenSuffix
-            Verbose     = $false
-        }
-        $parameterFilePaths | ForEach-Object { $null = Convert-TokensInFile @ConvertTokensInputs -FilePath $_ }
+    # Construct Token Configuration Input
+    $tokenConfiguration = @{
+        Tokens      = @{}
+        TokenPrefix = $GlobalVariablesObject | Select-Object -ExpandProperty tokenPrefix
+        TokenSuffix = $GlobalVariablesObject | Select-Object -ExpandProperty tokenSuffix
     }
+
+    ## Local Tokens from global.variables.yml
+    foreach ($localToken in $GlobalVariablesObject.Keys | ForEach-Object { if ($PSItem.contains('localToken_')) { $PSItem } }) {
+        $tokenConfiguration.Tokens[$localToken.Replace('localToken_', '')] = $GlobalVariablesObject.$localToken
+    }
+    $parameterFilePaths | ForEach-Object { $null = Convert-TokensInFile @tokenConfiguration -FilePath $_ }
 
     $dependencyResourceNames = [System.Collections.ArrayList]@()
     foreach ($parameterFilePath in $parameterFilePaths) {
@@ -60,10 +56,8 @@ function Get-DependencyResourceNameList {
         }
     }
 
-    if ($Settings.parameterFileTokens.localTokens) {
-        Write-Verbose 'Restoring Tokens'
-        $parameterFilePaths | ForEach-Object { $null = Convert-TokensInFile @ConvertTokensInputs -FilePath $_ -SwapValueWithName $true }
-    }
+    Write-Verbose 'Restoring Tokens'
+    $parameterFilePaths | ForEach-Object { $null = Convert-TokensInFile @tokenConfiguration -FilePath $_ -SwapValueWithName $true }
 
     return $dependencyResourceNames
 }
