@@ -44,7 +44,7 @@ Azure Container Registry is a managed, private Docker registry service based on 
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `encryptionStatus` | string | `'disabled'` | `[disabled, enabled]` | The value that indicates whether encryption is enabled or not. |
+| `encryptionStatus` | string | `'enabled'` | `[disabled, enabled]` | The value that indicates whether encryption is enabled or not. |
 | `exportPolicyStatus` | string | `'disabled'` | `[disabled, enabled]` | The value that indicates whether the export policy is enabled or not. |
 | `keyVaultProperties` | object | `{object}` |  | Identity which will be used to access key vault and Key vault uri to access the encryption key. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
@@ -52,7 +52,7 @@ Azure Container Registry is a managed, private Docker registry service based on 
 | `networkRuleBypassOptions` | string | `'AzureServices'` |  | Whether to allow trusted Azure services to access a network restricted registry. Not relevant in case of public access. - AzureServices or None. |
 | `networkRuleSetDefaultAction` | string | `'Deny'` | `[Allow, Deny]` | The default action of allow or deny when no other rules match. |
 | `networkRuleSetIpRules` | array | `[]` |  | The IP ACL rules. |
-| `privateEndpoints` | array | `[]` |  | Configuration Details for private endpoints. |
+| `privateEndpoints` | array | `[]` |  | Configuration details for private endpoints. For security reasons, it is recommended to use private endpoints whenever possible. |
 | `publicNetworkAccess` | string | `'Enabled'` | `[Disabled, Enabled]` | Whether or not public network access is allowed for the container registry. - Enabled or Disabled. |
 | `quarantinePolicyStatus` | string | `'disabled'` | `[disabled, enabled]` | The value that indicates whether the quarantine policy is enabled or not. |
 | `replications` | _[replications](replications/readme.md)_ array | `[]` |  | All replications to create. |
