@@ -191,9 +191,9 @@ jobs:
                 $ConvertTokensInputs.Tokens += $tokenMap
 
                 # Swap 'namePrefix' token if provided as a GitHub secret
-                if($ConvertTokensInputs.Tokens.namePrefix -and (-not [String]::IsNullOrEmpty('$(TOKEN_NAMEPREFIX)'))){
+                if($ConvertTokensInputs.Tokens.namePrefix -and (-not [String]::IsNullOrEmpty("$env:TOKEN_NAMEPREFIX"))){
                   Write-Verbose 'Using [namePrefix] token from Azure DevOps Variable Groups' -Verbose
-                  $ConvertTokensInputs.Tokens.namePrefix = '$(TOKEN_NAMEPREFIX)'
+                  $ConvertTokensInputs.Tokens.namePrefix = "$env:TOKEN_NAMEPREFIX"
                 }
 
                 # Add custom tokens (passed in via the pipeline)
