@@ -22,9 +22,6 @@
         "cMKKeyName": {
             "value": "keyEncryptionKey"
         },
-        // "cMKUserAssignedIdentityResourceId": {
-        //     "value": "/subscriptions/<YourSubscriptionId>/resourceGroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001"
-        // },
         "cMKKeyVersion": {
             "value": "590ebf5bfd9948698e5286ab924249a0"
         }

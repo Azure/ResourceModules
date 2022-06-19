@@ -66,7 +66,7 @@ param enableDefaultTelemetry bool = true
 ])
 param sku string = 'Standard'
 
-@description('Optional. Enable service encryption.')
+@description('Optional. Enable service encryption. Note: This feature requires you to register a service principal for application [Azure Container Instance Service] as described here: https://docs.microsoft.com/en-us/azure/container-instances/container-instances-encrypt-data#create-service-principal-for-aci.')
 param enableEncryption bool = true
 
 @description('Optional. The resource ID of a key vault to reference a customer managed key for encryption from.')
