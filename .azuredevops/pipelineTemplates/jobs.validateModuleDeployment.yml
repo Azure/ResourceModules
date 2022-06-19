@@ -123,6 +123,7 @@ jobs:
                     @{ Name = 'Az.Monitor' },
                     @{ Name = 'Az.OperationalInsights' },
                     @{ Name = 'Az.RecoveryServices' }
+                    @{ Name = 'powershell-yaml'; Version = '0.4.2'}
                   )
                 }
 
@@ -201,6 +202,10 @@ jobs:
                   Write-Verbose ('Using custom parameter file tokens [{0}]' -f  ($customTokens.Keys -join ', ')) -Verbose
                   $ConvertTokensInputs.Tokens += $customTokens
                 }
+
+                Get-ChildItem env:
+
+                Write-Verbose "Convert Tokens Input:`n $($ConvertTokensInputs | ConvertTo-Json -Depth 10)" -Verbose
 
                 # Invoke Token Replacement Functionality
                 $null = Convert-TokensInFile @ConvertTokensInputs
