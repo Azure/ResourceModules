@@ -7,7 +7,8 @@ This requires several steps:
 1. [Configure the CI environment](#3-configure-the-ci-environment)
 1. [Deploy dependencies](#4-deploy-dependencies)
 1. [Update module parameter files](#5-update-module-parameter-files)
-1. [(Optional) Convert library to ARM](#6-optional-convert-library-to-arm)
+1. [Setup special module requirements](#6-setup-special-module-requirements)
+1. [(Optional) Convert library to ARM](#7-optional-convert-library-to-arm)
 
 Depending on the DevOps environment you choose (GitHub or Azure DevOps) make sure you also account for the specific requirements outlined below.
 
@@ -218,7 +219,7 @@ To do so, perform the following steps:
 
     <img src="./media/SetupEnvironment/actionsEnable.png" alt="Enable Actions" height="380">
 
-  
+
 ### 3.2.4 Set R/W Workflow permissions
 
 To let the worflow engine publish their results into your repository, you have to enable the read / write access for the github actions.
@@ -390,10 +391,18 @@ For this reason, make sure to update the references in the following modules onc
 | `arm\Microsoft.Network\applicationGateways\.parameters\parameters.json` | `sslCertificates.value.properties.keyVaultSecretId` | |
 | `arm\Microsoft.Web\sites\.parameters\fa.parameters.json` | `appSettingsKeyValuePairs.value.EASYAUTH_SECRET` | Key Vault secret URI without version |
 | `arm\Microsoft.Web\sites\.parameters\fa.parameters.json` | `authSettingV2Configuration.value.identityProviders.azureActiveDirectory.registration.clientId` | App ID from the Azure Active Directory App |
-| `arm\Microsoft.Web\sites\.parameters\fa.parameters.json` | `authSettingV2Configuration.value.identityProviders.azureActiveDirectory.validation.allowedAudiences` | API endpoint from the Azure Active Directory app |
+| `arm\Microsoft.Web\sites\.parameters\fa.parameters.json` | `authSettingV2Configuration.value.identityProviders.azureActiveDirectory.validation.allowedAudiences` | API endpoint from the Azure Active Directory app ||
+| `arm\Microsoft.ContainerInstance\containerGroups\.parameters\encr.parameters.json` | `cMKKeyVersion` |
 
 </details>
 
-# 6. (Optional) Convert library to ARM
+# 6. Setup special module requirements
+
+Certain module may require you to perform additional actions if you want to use them in your CI environment:
+
+| Module | Condition | Actions |
+| arm\Microsoft.ContainerInstance\containerGroups | If you want to test Customer-Managed-Key encryption using the `encr.parameters.json` file. | See [ref](https://docs.microsoft.com/en-us/azure/container-instances/container-instances-encrypt-data#create-service-principal-for-aci) |
+
+# 7. (Optional) Convert library to ARM
 
 Note that in case you don't want to use Bicep, you always have the option to use the utility `ConvertTo-ARMTemplate` we provide in path `utilities/tools` to convert the repository to an ARM-only repository. Due to the way Bicep works and the CI environment is set up, you should be able to use it with ARM templates in the same way as you would when using Bicep. For further information on how to use the tool, please refer to the tool-specific [documentation](./Interoperability%20-%20Bicep%20to%20ARM%20conversion).

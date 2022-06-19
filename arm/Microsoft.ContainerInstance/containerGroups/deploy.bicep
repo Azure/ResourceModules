@@ -69,7 +69,7 @@ param sku string = 'Standard'
 @description('Optional. Enable service encryption. Note: This feature requires you to register a service principal for application [Azure Container Instance Service] as described here: https://docs.microsoft.com/en-us/azure/container-instances/container-instances-encrypt-data#create-service-principal-for-aci.')
 param enableEncryption bool = true
 
-@description('Optional. The resource ID of a key vault to reference a customer managed key for encryption from.')
+@description('Optional. The resource ID of a key vault to reference a customer managed key for encryption from. Required if \'cMKeyName\' is not empty.')
 param cMKKeyVaultResourceId string = ''
 
 @description('Optional. The name of the customer managed key to use for encryption. Cannot be deployed together with the parameter \'systemAssignedIdentity\' enabled.')
