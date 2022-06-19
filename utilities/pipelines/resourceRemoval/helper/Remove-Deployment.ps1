@@ -109,6 +109,10 @@ function Remove-Deployment {
         [array] $resourcesToRemove = Get-ResourceIdsAsFormattedObjectList -ResourceIds $rawTargetResourceIdsToRemove
         Write-Verbose ('Total number of deployment target resources after formatting items [{0}]' -f $resourcesToRemove.Count) -Verbose
 
+        if ($resourcesToRemove.Count -eq 0) {
+            return
+        }
+
         # Filter all dependency resources
         # ===============================
         $dependencyResourceNames = Get-DependencyResourceNameList

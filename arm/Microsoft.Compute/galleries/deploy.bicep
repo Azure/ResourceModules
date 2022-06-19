@@ -42,7 +42,7 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-resource gallery 'Microsoft.Compute/galleries@2020-09-30' = {
+resource gallery 'Microsoft.Compute/galleries@2021-10-01' = {
   name: name
   location: location
   tags: tags
@@ -61,7 +61,7 @@ resource gallery_lock 'Microsoft.Authorization/locks@2017-04-01' = if (!empty(lo
   scope: gallery
 }
 
-module gallery_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+module gallery_rbac '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name, location)}-Gallery-Rbac-${index}'
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''

@@ -45,7 +45,7 @@ resource SRV 'Microsoft.Network/privateDnsZones/SRV@2020-06-01' = {
   }
 }
 
-module SRV_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+module SRV_rbac '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${uniqueString(deployment().name)}-PDNSSRV-Rbac-${index}'
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''

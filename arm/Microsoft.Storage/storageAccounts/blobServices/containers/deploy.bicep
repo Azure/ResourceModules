@@ -70,7 +70,7 @@ module immutabilityPolicy 'immutabilityPolicies/deploy.bicep' = if (!empty(immut
   }
 }
 
-module container_rbac '.bicep/nested_rbac.bicep' = [for (roleAssignment, index) in roleAssignments: {
+module container_rbac '.bicep/nested_roleAssignments.bicep' = [for (roleAssignment, index) in roleAssignments: {
   name: '${deployment().name}-Rbac-${index}'
   params: {
     description: contains(roleAssignment, 'description') ? roleAssignment.description : ''

@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "name": {
-            "value": "<<namePrefix>>-wd-aut-encr-001"
+            "value": "<<namePrefix>>-az-aut-encr-001"
         },
         "encryptionKeySource": {
             "value": "Microsoft.Keyvault"

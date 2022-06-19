@@ -79,7 +79,7 @@ This function will search the current directory and all parent directories for a
 Mandatory. Path to the folder/file that should be searched
 
 .EXAMPLE
-Find-TemplateFile -Path "C:\Repos\Azure\ResourceModules\arm\Microsoft.Storage\storageAccounts\tableServices\tables\.bicep\nested_rbac.bicep"
+Find-TemplateFile -Path "C:\Repos\Azure\ResourceModules\arm\Microsoft.Storage\storageAccounts\tableServices\tables\.bicep\nested_roleAssignments.bicep"
 
     Directory: C:\Repos\Azure\ResourceModules\arm\Microsoft.Storage\storageAccounts\tableServices\tables
 
