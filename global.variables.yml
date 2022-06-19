@@ -58,7 +58,7 @@ variables:
 
   vmImage: 'ubuntu-latest' # Use this for Microsoft-hosted agents
   poolName: '' # Use this for self-hosted agents
-  serviceConnection: 'carml'
+  serviceConnection: 'AzureConnection'
 
   ######################################
   # Source
