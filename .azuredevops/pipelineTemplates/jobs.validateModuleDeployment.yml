@@ -185,7 +185,7 @@ jobs:
                 # Add local (source control) tokens
                 $tokenMap = @{}
                 foreach ($token in (Get-ChildItem env: | Where-Object -Property Name -Like "localToken_*")) {
-                  $tokenMap += @{ $token.Name.Replace('localToken_','') = $token.value }
+                  $tokenMap += @{ $token.Name.Replace('localToken_','','OrdinalIgnoreCase') = $token.value }
                 }
                 Write-Verbose ('Using local tokens [{0}]' -f ($tokenMap.Keys -join ', ')) -Verbose
                 $ConvertTokensInputs.Tokens += $tokenMap

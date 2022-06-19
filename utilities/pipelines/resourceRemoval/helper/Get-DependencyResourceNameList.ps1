@@ -44,7 +44,7 @@ function Get-DependencyResourceNameList {
 
     ## Local Tokens from global.variables.yml
     foreach ($localToken in $GlobalVariablesObject.Keys | ForEach-Object { if ($PSItem.contains('localToken_')) { $PSItem } }) {
-        $tokenConfiguration.Tokens[$localToken.Replace('localToken_', '')] = $GlobalVariablesObject.$localToken
+        $tokenConfiguration.Tokens[$localToken.Replace('localToken_', '', 'OrdinalIgnoreCase')] = $GlobalVariablesObject.$localToken
     }
     $parameterFilePaths | ForEach-Object { $null = Convert-TokensInFile @tokenConfiguration -FilePath $_ }
 
