@@ -120,6 +120,7 @@ jobs:
                 # This is the latest tested Pester version. Uncomment the next line in case of a future breaking change in the default version installed on the runner.
                 # @{ Name = 'Pester'; Version = '5.3.1' }
                 @{ Name = 'Az.Resources' }
+                @{ Name = 'powershell-yaml'; Version = '0.4.2'}
             )
 
             # Set agent up
@@ -145,19 +146,30 @@ jobs:
               Write-Verbose "- [($moduleFolderPath]" -Verbose
             }
 
-            $enforcedTokenList = @{}
+            $GlobalVariablesObject = Get-Content -Path (Join-Path '$(System.DefaultWorkingDirectory)' 'global.variables.yml') | ConvertFrom-Yaml | Select-Object -ExpandProperty variables
+            # Construct Token Configuration Input
+            $tokenConfiguration = @{
+                Tokens      = @{}
+                TokenPrefix = $GlobalVariablesObject | Select-Object -ExpandProperty tokenPrefix
+                TokenSuffix = $GlobalVariablesObject | Select-Object -ExpandProperty tokenSuffix
+            }
+
             if (-not [String]::IsNullOrEmpty('${{ parameters.subscriptionId }}')) {
-                $enforcedTokenList['subscriptionId'] = '${{ parameters.subscriptionId }}'
+                $tokenConfiguration.Tokens['subscriptionId'] = '${{ parameters.subscriptionId }}'
             }
             if (-not [String]::IsNullOrEmpty('${{ parameters.managementGroupId }}')) {
-                $enforcedTokenList['managementGroupId'] = '${{ parameters.managementGroupId }}'
+                $tokenConfiguration.Tokens['managementGroupId'] = '${{ parameters.managementGroupId }}'
             }
             if (-not [String]::IsNullOrEmpty('$(DEPLOYMENT_SP_ID)')) {
-                $enforcedTokenList['deploymentSpId'] = '$(DEPLOYMENT_SP_ID)'
+                $tokenConfiguration.Tokens['deploymentSpId'] = '$(DEPLOYMENT_SP_ID)'
             }
             if (-not [String]::IsNullOrEmpty('$(ARM_TENANT_ID)')) {
-                $enforcedTokenList['tenantId'] =  '$(ARM_TENANT_ID)'
+                $tokenConfiguration.Tokens['tenantId'] =  '$(ARM_TENANT_ID)'
             }
+
+            ## Local Tokens from global.variables.yml
+            foreach ($localToken in $GlobalVariablesObject.Keys | ForEach-Object { if ($PSItem.contains('localToken_')) { $PSItem } }) {
+                $tokenConfiguration.Tokens[$localToken.Replace('localToken_', '')] = $GlobalVariablesObject.$localToken
 
             # --------------------- #
             # Invoke Pester test(s) #
@@ -165,8 +177,8 @@ jobs:
             Invoke-Pester -Configuration @{
               Run        = @{
                 Container = New-PesterContainer -Path (Join-Path '$(moduleRepoRoot)' 'arm' '.global' 'global.module.tests.ps1') -Data @{
-                  moduleFolderPaths = $moduleFolderPaths
-                  enforcedTokenList = $enforcedTokenList
+                  moduleFolderPaths  = $moduleFolderPaths
+                  tokenConfiguration = $tokenConfiguration
                 }
               }
               TestResult = @{
