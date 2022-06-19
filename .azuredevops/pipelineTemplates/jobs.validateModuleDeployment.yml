@@ -168,8 +168,8 @@ jobs:
                 $ConvertTokensInputs = @{
                     Tokens      = @{}
                     FilePath    = Join-Path '$(parametersRepoRoot)' '${{ deploymentBlock.path }}'
-                    TokenPrefix = $(tokenPrefix)
-                    TokenSuffix = $(tokenSuffix)
+                    TokenPrefix = '$(tokenPrefix)'
+                    TokenSuffix = '$(tokenSuffix)'
                 }
 
                 # Add enforced tokens
