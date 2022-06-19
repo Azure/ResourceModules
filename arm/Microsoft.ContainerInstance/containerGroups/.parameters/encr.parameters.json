@@ -27,16 +27,6 @@
         // },
         "cMKKeyVersion": {
             "value": "590ebf5bfd9948698e5286ab924249a0"
-        },
-        "ports": {
-            "value": [
-                {
-                    "port": 80
-                },
-                {
-                    "port": 8080
-                }
-            ]
         }
     }
 }
