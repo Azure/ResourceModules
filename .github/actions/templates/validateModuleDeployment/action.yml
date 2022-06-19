@@ -167,6 +167,10 @@ runs:
             $ConvertTokensInputs.Tokens += $customTokens
           }
 
+          Get-ChildItem env:
+
+          Write-Verbose "Convert Tokens Input:`n $($ConvertTokensInputs | ConvertTo-Json -Depth 10)" -Verbose
+
           # Invoke Token Replacement Functionality
           $null = Convert-TokensInFile @ConvertTokensInputs
 
