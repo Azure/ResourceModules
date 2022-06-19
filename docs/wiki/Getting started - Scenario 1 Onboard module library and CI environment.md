@@ -401,6 +401,7 @@ For this reason, make sure to update the references in the following modules onc
 Certain module may require you to perform additional actions if you want to use them in your CI environment:
 
 | Module | Condition | Actions | Opt-out |
+| - | - | - | - |
 | arm\Microsoft.ContainerInstance\containerGroups | If you want to test Customer-Managed-Key encryption using the `encr.parameters.json` file. | See [ref](https://docs.microsoft.com/en-us/azure/container-instances/container-instances-encrypt-data#create-service-principal-for-aci) | If you don't want to test the encryption properties or lack the capabilities to satisfy the requirements you can simply remove the `encr.parameters.json` parameter file from the module folder. |
 
 # 7. (Optional) Convert library to ARM
