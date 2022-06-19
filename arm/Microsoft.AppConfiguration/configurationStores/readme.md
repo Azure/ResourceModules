@@ -307,6 +307,7 @@ module configurationStores './Microsoft.AppConfiguration/configurationStores/dep
   params: {
     name: '<<namePrefix>>-az-appcs-min-001'
   }
+}
 ```
 
 </details>
@@ -423,6 +424,7 @@ module configurationStores './Microsoft.AppConfiguration/configurationStores/dep
       }
     ]
   }
+}
 ```
 
 </details>

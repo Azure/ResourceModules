@@ -202,6 +202,7 @@ module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' 
     roleDefinitionIdOrName: 'Storage Queue Data Reader'
     principalId: '<<deploymentSpId>>'
   }
+}
 ```
 
 </details>
@@ -254,6 +255,7 @@ module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' 
     principalType: 'ServicePrincipal'
     managementGroupId: '<<managementGroupId>>'
   }
+}
 ```
 
 </details>
@@ -302,6 +304,7 @@ module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' 
     subscriptionId: '<<subscriptionId>>'
     resourceGroupName: '<<resourceGroupName>>'
   }
+}
 ```
 
 </details>
@@ -358,6 +361,7 @@ module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' 
     subscriptionId: '<<subscriptionId>>'
     resourceGroupName: '<<resourceGroupName>>'
   }
+}
 ```
 
 </details>
@@ -402,6 +406,7 @@ module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' 
     principalId: '<<deploymentSpId>>'
     subscriptionId: '<<subscriptionId>>'
   }
+}
 ```
 
 </details>
@@ -454,6 +459,7 @@ module roleAssignments './Microsoft.Authorization/roleAssignments/deploy.bicep' 
     principalType: 'ServicePrincipal'
     subscriptionId: '<<subscriptionId>>'
   }
+}
 ```
 
 </details>

@@ -435,6 +435,7 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
     cMKKeyName: 'keyEncryptionKey'
     cMKUserAssignedIdentityResourceId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001'
   }
+}
 ```
 
 </details>
@@ -471,6 +472,7 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
   params: {
     allowBlobPublicAccess: false
   }
+}
 ```
 
 </details>
@@ -591,6 +593,7 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
     diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
     diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
   }
+}
 ```
 
 </details>
@@ -955,6 +958,7 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
     diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
     diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
   }
+}
 ```
 
 </details>
@@ -995,6 +999,7 @@ module storageAccounts './Microsoft.Storage/storageAccounts/deploy.bicep' = {
     storageAccountKind: 'Storage'
     allowBlobPublicAccess: false
   }
+}
 ```
 
 </details>

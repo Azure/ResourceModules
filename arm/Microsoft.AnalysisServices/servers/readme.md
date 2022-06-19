@@ -278,6 +278,7 @@ module servers './Microsoft.AnalysisServices/servers/deploy.bicep' = {
       'AllMetrics'
     ]
   }
+}
 ```
 
 </details>
@@ -314,6 +315,7 @@ module servers './Microsoft.AnalysisServices/servers/deploy.bicep' = {
   params: {
     name: '<<namePrefix>>azasweumin001'
   }
+}
 ```
 
 </details>
@@ -396,6 +398,7 @@ module servers './Microsoft.AnalysisServices/servers/deploy.bicep' = {
     diagnosticEventHubAuthorizationRuleId: '/subscriptions/<<subscriptionId>>/resourceGroups/validation-rg/providers/Microsoft.EventHub/namespaces/adp-<<namePrefix>>-az-evhns-x-001/AuthorizationRules/RootManageSharedAccessKey'
     diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
   }
+}
 ```
 
 </details>

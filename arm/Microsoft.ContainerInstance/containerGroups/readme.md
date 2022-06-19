@@ -247,6 +247,7 @@ module containerGroups './Microsoft.ContainerInstance/containerGroups/deploy.bic
       '/subscriptions/<<subscriptionId>>/resourcegroups/validation-rg/providers/Microsoft.ManagedIdentity/userAssignedIdentities/adp-<<namePrefix>>-az-msi-x-001': {}
     }
   }
+}
 ```
 
 </details>

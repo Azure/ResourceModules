@@ -199,6 +199,7 @@ module healthBots './Microsoft.HealthBot/healthBots/deploy.bicep' = {
       }
     ]
   }
+}
 ```
 
 </details>

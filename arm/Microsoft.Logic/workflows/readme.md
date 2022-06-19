@@ -460,6 +460,7 @@ module workflows './Microsoft.Logic/workflows/deploy.bicep' = {
     diagnosticEventHubName: 'adp-<<namePrefix>>-az-evh-x-001'
     systemAssignedIdentity: true
   }
+}
 ```
 
 </details>
