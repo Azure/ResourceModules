@@ -160,14 +160,14 @@ resource configurationStore 'Microsoft.AppConfiguration/configurationStores@2021
   }
 }
 
-module configurationStore_keyValues 'keyValues/deploy.bicep' = [for (keyValues, index) in keyValues: {
+module configurationStore_keyValues 'keyValues/deploy.bicep' = [for (keyValue, index) in keyValues: {
   name: '${uniqueString(deployment().name, location)}-appConfig-KeyValues-${index}'
   params: {
     appConfigurationName: configurationStore.name
-    name: keyValues.name
-    value: keyValues.value
-    contentType: contains(keyValues, 'contentType') ? keyValues.contentType : ''
-    tags: contains(keyValues, 'tags') ? keyValues.tags : {}
+    name: keyValue.name
+    value: keyValue.value
+    contentType: contains(keyValue, 'contentType') ? keyValue.contentType : ''
+    tags: contains(keyValue, 'tags') ? keyValue.tags : {}
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }
 }]
