@@ -130,7 +130,7 @@ resource containergroup 'Microsoft.ContainerInstance/containerGroups@2021-03-01'
       // Customer-managed key
       keyName: cMKKeyName
       keyVersion: cMKKeyVersion
-      vaultBaseUrl: cmkKeyVault.properties.vaultUri
+      vaultBaseUrl: 'https://adp-carml-az-kv-nopr-002.vault.azure.net' //cmkKeyVault.properties.vaultUri
     } : null
     imageRegistryCredentials: imageRegistryCredentials
     restartPolicy: restartPolicy
