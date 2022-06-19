@@ -170,6 +170,7 @@ jobs:
             ## Local Tokens from global.variables.yml
             foreach ($localToken in $GlobalVariablesObject.Keys | ForEach-Object { if ($PSItem.contains('localToken_')) { $PSItem } }) {
                 $tokenConfiguration.Tokens[$localToken.Replace('localToken_', '')] = $GlobalVariablesObject.$localToken
+            }
 
             # --------------------- #
             # Invoke Pester test(s) #
