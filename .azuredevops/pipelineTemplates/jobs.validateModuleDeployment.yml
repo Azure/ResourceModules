@@ -190,7 +190,7 @@ jobs:
                 Write-Verbose ('Using local tokens [{0}]' -f ($tokenMap.Keys -join ', ')) -Verbose
                 $ConvertTokensInputs.Tokens += $tokenMap
 
-                # Swap 'namePrefix' token if provided as a GitHub secret
+                # Swap 'namePrefix' token if provided as a Azure DevOps variable
                 if(-not [String]::IsNullOrEmpty("$env:TOKEN_NAMEPREFIX")){
                   Write-Verbose 'Using [namePrefix] token from Azure DevOps Variable Groups' -Verbose
                   $ConvertTokensInputs.Tokens['namePrefix'] = "$env:TOKEN_NAMEPREFIX"
