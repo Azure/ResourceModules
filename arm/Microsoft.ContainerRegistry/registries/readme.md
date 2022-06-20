@@ -44,7 +44,6 @@ Azure Container Registry is a managed, private Docker registry service based on 
 | `diagnosticStorageAccountId` | string | `''` |  | Resource ID of the diagnostic storage account. |
 | `diagnosticWorkspaceId` | string | `''` |  | Resource ID of the diagnostic log analytics workspace. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `encryptionStatus` | string | `'disabled'` | `[disabled, enabled]` | The value that indicates whether encryption is enabled or not. |
 | `exportPolicyStatus` | string | `'disabled'` | `[disabled, enabled]` | The value that indicates whether the export policy is enabled or not. |
 | `keyVaultProperties` | object | `{object}` |  | Identity which will be used to access key vault and Key vault uri to access the encryption key. |
 | `location` | string | `[resourceGroup().location]` |  | Location for all resources. |
