@@ -78,7 +78,10 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-
+      - name: Set environment variables
+        uses: ./.github/actions/templates/setEnvironmentVariables
+        with:
+          variablesPath: ${{ env.variablesPath }}
       - name: 'Deploy module'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
@@ -108,7 +111,10 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-
+      - name: Set environment variables
+        uses: ./.github/actions/templates/setEnvironmentVariables
+        with:
+          variablesPath: ${{ env.variablesPath }}
       - name: 'Deploy module'
         id: deploy_msi
         uses: ./.github/actions/templates/validateModuleDeployment
@@ -148,7 +154,10 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-
+      - name: Set environment variables
+        uses: ./.github/actions/templates/setEnvironmentVariables
+        with:
+          variablesPath: ${{ env.variablesPath }}
       - name: 'Deploy module'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
@@ -176,7 +185,10 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-
+      - name: Set environment variables
+        uses: ./.github/actions/templates/setEnvironmentVariables
+        with:
+          variablesPath: ${{ env.variablesPath }}
       - name: 'Deploy module'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
@@ -204,7 +216,10 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-
+      - name: Set environment variables
+        uses: ./.github/actions/templates/setEnvironmentVariables
+        with:
+          variablesPath: ${{ env.variablesPath }}
       - name: 'Deploy module'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
@@ -232,7 +247,10 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-
+      - name: Set environment variables
+        uses: ./.github/actions/templates/setEnvironmentVariables
+        with:
+          variablesPath: ${{ env.variablesPath }}
       - name: 'Deploy module'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
@@ -261,7 +279,10 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-
+      - name: Set environment variables
+        uses: ./.github/actions/templates/setEnvironmentVariables
+        with:
+          variablesPath: ${{ env.variablesPath }}
       - name: 'Deploy module'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
@@ -290,7 +311,10 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-
+      - name: Set environment variables
+        uses: ./.github/actions/templates/setEnvironmentVariables
+        with:
+          variablesPath: ${{ env.variablesPath }}
       - name: 'Deploy module'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
@@ -314,7 +338,6 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-
       - name: 'Setup agent'
         shell: pwsh
         run: |
@@ -398,7 +421,10 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-
+      - name: Set environment variables
+        uses: ./.github/actions/templates/setEnvironmentVariables
+        with:
+          variablesPath: ${{ env.variablesPath }}
       - name: 'Deploy module'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
@@ -431,7 +457,10 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-
+      - name: Set environment variables
+        uses: ./.github/actions/templates/setEnvironmentVariables
+        with:
+          variablesPath: ${{ env.variablesPath }}
       - name: 'Deploy module'
         id: deploy_imgt
         uses: ./.github/actions/templates/validateModuleDeployment
@@ -473,7 +502,6 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-
       - name: 'Setup agent'
         shell: pwsh
         run: |
@@ -595,7 +623,10 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-
+      - name: Set environment variables
+        uses: ./.github/actions/templates/setEnvironmentVariables
+        with:
+          variablesPath: ${{ env.variablesPath }}
       - name: 'Deploy module'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
@@ -623,7 +654,10 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-
+      - name: Set environment variables
+        uses: ./.github/actions/templates/setEnvironmentVariables
+        with:
+          variablesPath: ${{ env.variablesPath }}
       - name: 'Deploy module'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
@@ -651,7 +685,10 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-
+      - name: Set environment variables
+        uses: ./.github/actions/templates/setEnvironmentVariables
+        with:
+          variablesPath: ${{ env.variablesPath }}
       - name: 'Deploy module'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
@@ -680,7 +717,10 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-
+      - name: Set environment variables
+        uses: ./.github/actions/templates/setEnvironmentVariables
+        with:
+          variablesPath: ${{ env.variablesPath }}
       - name: 'Deploy module'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
@@ -717,7 +757,10 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-
+      - name: Set environment variables
+        uses: ./.github/actions/templates/setEnvironmentVariables
+        with:
+          variablesPath: ${{ env.variablesPath }}
       - name: 'Deploy module'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
@@ -748,7 +791,10 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-
+      - name: Set environment variables
+        uses: ./.github/actions/templates/setEnvironmentVariables
+        with:
+          variablesPath: ${{ env.variablesPath }}
       - name: 'Deploy module'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
@@ -787,7 +833,10 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-
+      - name: Set environment variables
+        uses: ./.github/actions/templates/setEnvironmentVariables
+        with:
+          variablesPath: ${{ env.variablesPath }}
       - name: 'Deploy module'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
@@ -817,7 +866,10 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-
+      - name: Set environment variables
+        uses: ./.github/actions/templates/setEnvironmentVariables
+        with:
+          variablesPath: ${{ env.variablesPath }}
       - name: 'Deploy module'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
@@ -847,7 +899,10 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-
+      - name: Set environment variables
+        uses: ./.github/actions/templates/setEnvironmentVariables
+        with:
+          variablesPath: ${{ env.variablesPath }}
       - name: 'Deploy module'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
@@ -877,7 +932,10 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-
+      - name: Set environment variables
+        uses: ./.github/actions/templates/setEnvironmentVariables
+        with:
+          variablesPath: ${{ env.variablesPath }}
       - name: 'Deploy module'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
@@ -908,7 +966,10 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-
+      - name: Set environment variables
+        uses: ./.github/actions/templates/setEnvironmentVariables
+        with:
+          variablesPath: ${{ env.variablesPath }}
       - name: 'Deploy module'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
@@ -941,7 +1002,10 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-
+      - name: Set environment variables
+        uses: ./.github/actions/templates/setEnvironmentVariables
+        with:
+          variablesPath: ${{ env.variablesPath }}
       - name: 'Deploy module'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
@@ -967,7 +1031,6 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-
       - name: 'Setup agent'
         shell: pwsh
         run: |
@@ -1121,7 +1184,10 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-
+      - name: Set environment variables
+        uses: ./.github/actions/templates/setEnvironmentVariables
+        with:
+          variablesPath: ${{ env.variablesPath }}
       - name: 'Deploy module'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
@@ -1147,7 +1213,6 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-
       - name: 'Setup agent'
         shell: pwsh
         run: |
@@ -1243,7 +1308,10 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-
+      - name: Set environment variables
+        uses: ./.github/actions/templates/setEnvironmentVariables
+        with:
+          variablesPath: ${{ env.variablesPath }}
       - name: 'Deploy module'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
@@ -1271,7 +1339,10 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-
+      - name: Set environment variables
+        uses: ./.github/actions/templates/setEnvironmentVariables
+        with:
+          variablesPath: ${{ env.variablesPath }}
       - name: 'Deploy module'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
@@ -1315,7 +1386,10 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-
+      - name: Set environment variables
+        uses: ./.github/actions/templates/setEnvironmentVariables
+        with:
+          variablesPath: ${{ env.variablesPath }}
       - name: 'Deploy module'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
@@ -1345,7 +1419,10 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-
+      - name: Set environment variables
+        uses: ./.github/actions/templates/setEnvironmentVariables
+        with:
+          variablesPath: ${{ env.variablesPath }}
       - name: 'Deploy module'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
@@ -1373,7 +1450,10 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-
+      - name: Set environment variables
+        uses: ./.github/actions/templates/setEnvironmentVariables
+        with:
+          variablesPath: ${{ env.variablesPath }}
       - name: 'Deploy module'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
@@ -1403,7 +1483,10 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-
+      - name: Set environment variables
+        uses: ./.github/actions/templates/setEnvironmentVariables
+        with:
+          variablesPath: ${{ env.variablesPath }}
       - name: 'Deploy module'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
@@ -1431,7 +1514,10 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
-
+      - name: Set environment variables
+        uses: ./.github/actions/templates/setEnvironmentVariables
+        with:
+          variablesPath: ${{ env.variablesPath }}
       - name: 'Deploy module'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
