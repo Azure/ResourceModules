@@ -35,11 +35,10 @@ The top-level resource in Azure Container Instances is the container group. A co
 **Optional parameters**
 | Parameter Name | Type | Default Value | Allowed Values | Description |
 | :-- | :-- | :-- | :-- | :-- |
-| `cMKKeyName` | string | `''` |  | The name of the customer managed key to use for encryption. Cannot be deployed together with the parameter 'systemAssignedIdentity' enabled. |
-| `cMKKeyVaultResourceId` | string | `''` |  | The resource ID of a key vault to reference a customer managed key for encryption from. |
+| `cMKKeyName` | string | `''` |  | The name of the customer managed key to use for encryption. |
+| `cMKKeyVaultResourceId` | string | `''` |  | The resource ID of a key vault to reference a customer managed key for encryption from. Required if 'cMKeyName' is not empty. |
 | `cpuCores` | int | `2` |  | The number of CPU cores to allocate to the container. |
 | `enableDefaultTelemetry` | bool | `True` |  | Enable telemetry via the Customer Usage Attribution ID (GUID). |
-| `enableEncryption` | bool | `True` |  | Enable service encryption. Note: This feature requires you to register a service principal for application [Azure Container Instance Service] as described here: https://docs.microsoft.com/en-us/azure/container-instances/container-instances-encrypt-data#create-service-principal-for-aci. |
 | `environmentVariables` | array | `[]` |  | Environment variables of the container group. |
 | `imageRegistryCredentials` | array | `[]` |  | The image registry credentials by which the container group is created from. |
 | `ipAddressType` | string | `'Public'` |  | Specifies if the IP is exposed to the public internet or private VNET. - Public or Private. |
@@ -211,7 +210,7 @@ userAssignedIdentities: {
             "value": "keyEncryptionKey"
         },
         "cMKKeyVersion": {
-            "value": "590ebf5bfd9948698e5286ab924249a0"
+            "value": "590ebf5bfd9948698e5286ab924249a0" // ID must be updated for new keys
         }
     }
 }

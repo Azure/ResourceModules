@@ -66,13 +66,10 @@ param enableDefaultTelemetry bool = true
 ])
 param sku string = 'Standard'
 
-@description('Optional. Enable service encryption. Note: This feature requires you to register a service principal for application [Azure Container Instance Service] as described here: https://docs.microsoft.com/en-us/azure/container-instances/container-instances-encrypt-data#create-service-principal-for-aci.')
-param enableEncryption bool = true
-
 @description('Optional. The resource ID of a key vault to reference a customer managed key for encryption from. Required if \'cMKeyName\' is not empty.')
 param cMKKeyVaultResourceId string = ''
 
-@description('Optional. The name of the customer managed key to use for encryption. Cannot be deployed together with the parameter \'systemAssignedIdentity\' enabled.')
+@description('Optional. The name of the customer managed key to use for encryption.')
 param cMKKeyName string = ''
 
 @description('Conditional. The version of the customer managed key to reference for encryption. Required if \'cMKeyName\' is not empty.')
@@ -126,7 +123,7 @@ resource containergroup 'Microsoft.ContainerInstance/containerGroups@2021-03-01'
         }
       }
     ]
-    encryptionProperties: enableEncryption && !empty(cMKKeyName) ? {
+    encryptionProperties: !empty(cMKKeyName) ? {
       // Customer-managed key
       keyName: cMKKeyName
       keyVersion: cMKKeyVersion
