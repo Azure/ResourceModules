@@ -37,16 +37,16 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-module lock_sub 'subscription/deploy.bicep' = if (!empty(subscriptionId) && empty(resourceGroupName)) {
-  name: '${uniqueString(deployment().name, location)}-Lock-Sub-Module'
-  scope: subscription(subscriptionId)
-  params: {
-    name: '${subscription().displayName}-${level}-lock'
-    level: level
-    notes: notes
-    enableDefaultTelemetry: enableReferencedModulesTelemetry
-  }
-}
+// module lock_sub 'subscription/deploy.bicep' = if (!empty(subscriptionId) && empty(resourceGroupName)) {
+//   name: '${uniqueString(deployment().name, location)}-Lock-Sub-Module'
+//   scope: subscription(subscriptionId)
+//   params: {
+//     name: '${subscription().displayName}-${level}-lock'
+//     level: level
+//     notes: notes
+//     enableDefaultTelemetry: enableReferencedModulesTelemetry
+//   }
+// }
 
 module lock_rg 'resourceGroup/deploy.bicep' = if (!empty(subscriptionId) && !empty(resourceGroupName)) {
   name: '${uniqueString(deployment().name, location)}-Lock-RG-Module'
@@ -60,10 +60,13 @@ module lock_rg 'resourceGroup/deploy.bicep' = if (!empty(subscriptionId) && !emp
 }
 
 @description('The name of the lock.')
-output name string = empty(resourceGroupName) ? lock_sub.outputs.name : lock_rg.outputs.name
+// output name string = empty(resourceGroupName) ? lock_sub.outputs.name : lock_rg.outputs.name
+output name string = lock_rg.outputs.name
 
 @description('The resource ID of the lock.')
-output resourceId string = empty(resourceGroupName) ? lock_sub.outputs.resourceId : lock_rg.outputs.resourceId
+// output resourceId string = empty(resourceGroupName) ? lock_sub.outputs.resourceId : lock_rg.outputs.resourceId
+output resourceId string = lock_rg.outputs.resourceId
 
 @sys.description('The scope this lock applies to.')
-output scope string = empty(resourceGroupName) ? subscription().id : any(resourceGroup(resourceGroupName))
+// output scope string = empty(resourceGroupName) ? subscription().id : any(resourceGroup(resourceGroupName))
+output scope string = any(resourceGroup(resourceGroupName))
