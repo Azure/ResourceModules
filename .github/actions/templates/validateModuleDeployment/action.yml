@@ -202,7 +202,7 @@ runs:
           }
 
           # Passing the resource group name as a deployment parameter if accepted
-          $templateContent = az bicep build --file $templateFilePath --stdout | ConvertFrom-Json -AsHashtable
+          $templateContent = az bicep build --file $templateFilePath --stdout --no-restore | ConvertFrom-Json -AsHashtable
           $parameters = $templateContent.parameters.Keys
 
           $projectSettings = Get-Content -Path 'settings.json' | ConvertFrom-Json
@@ -254,7 +254,7 @@ runs:
           }
 
           # Passing the resource group name as a deployment parameter if accepted
-          $templateContent = az bicep build --file $templateFilePath --stdout | ConvertFrom-Json -AsHashtable
+          $templateContent = az bicep build --file $templateFilePath --stdout --no-restore | ConvertFrom-Json -AsHashtable
           $parameters = $templateContent.parameters.Keys
 
           $projectSettings = Get-Content -Path 'settings.json' | ConvertFrom-Json
