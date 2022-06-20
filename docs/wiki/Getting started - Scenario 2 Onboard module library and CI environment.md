@@ -219,6 +219,18 @@ To do so, perform the following steps:
 
     <img src="./media/SetupEnvironment/actionsEnable.png" alt="Enable Actions" height="380">
 
+### 3.2.4 Set R/W Workflow permissions
+
+To let the worflow engine publish their results into your repository, you have to enable the read / write access for the github actions.
+
+1. Navigate to the `Settings` tab on the top of your repository page.
+
+1. Within the section `Code and automation` click on `Actions` and `General`
+
+1. Make sure to enable `Read and write permissions`
+
+    <img src="./media/SetupEnvironment/workflow_permissions.png" alt="Workflow Permissions">
+    
 </details>
 
 <p>
