@@ -27,9 +27,9 @@ function Get-DependencyResourceNameList {
     . (Join-Path $repoRootPath 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInFile.ps1')
 
     $parameterFolders = Get-ChildItem -Path $dependencyParameterPath -Recurse -Filter 'parameters' -Directory
-    $parameterFilePaths = [System.Collections.ArrayList]@()
+    $deploymentTestPaths = [System.Collections.ArrayList]@()
     foreach ($parameterFolderPath in $parameterFolders.FullName) {
-        $parameterFilePaths += Get-ChildItem -Path $parameterFolderPath -Recurse -Filter '*.json'
+        $deploymentTestPaths += Get-ChildItem -Path $parameterFolderPath -Recurse -Filter '*.json'
     }
 
     # Replace tokens in dependency parameter files
@@ -49,20 +49,20 @@ function Get-DependencyResourceNameList {
             TokenSuffix = $Settings.parameterFileTokens.tokenSuffix
             Verbose     = $false
         }
-        $parameterFilePaths | ForEach-Object { $null = Convert-TokensInFile @ConvertTokensInputs -FilePath $_ }
+        $deploymentTestPaths | ForEach-Object { $null = Convert-TokensInFile @ConvertTokensInputs -FilePath $_ }
     }
 
     $dependencyResourceNames = [System.Collections.ArrayList]@()
-    foreach ($parameterFilePath in $parameterFilePaths) {
+    foreach ($parameterFilePath in $deploymentTestPaths) {
         $paramFileContent = ConvertFrom-Json (Get-Content -Path $parameterFilePath -Raw)
-        if ($nameParam = $paramFileContent.parameters.name.value) {
+        if ($nameParam = $paramFileContent.deploymentTests.name.value) {
             $dependencyResourceNames += $nameParam
         }
     }
 
     if ($Settings.parameterFileTokens.localTokens) {
         Write-Verbose 'Restoring Tokens'
-        $parameterFilePaths | ForEach-Object { $null = Convert-TokensInFile @ConvertTokensInputs -FilePath $_ -SwapValueWithName $true }
+        $deploymentTestPaths | ForEach-Object { $null = Convert-TokensInFile @ConvertTokensInputs -FilePath $_ -SwapValueWithName $true }
     }
 
     return $dependencyResourceNames

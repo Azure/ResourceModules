@@ -233,7 +233,7 @@ module automationAccount_jobSchedules 'jobSchedules/deploy.bicep' = [for (jobSch
     automationAccountName: automationAccount.name
     runbookName: jobSchedule.runbookName
     scheduleName: jobSchedule.scheduleName
-    parameters: contains(jobSchedule, 'parameters') ? jobSchedule.parameters : {}
+    parameters: contains(jobSchedule, 'parameters') ? jobSchedule.deploymentTests : {}
     runOn: contains(jobSchedule, 'runOn') ? jobSchedule.runOn : ''
     enableDefaultTelemetry: enableReferencedModulesTelemetry
   }

@@ -7,9 +7,9 @@ inputs:
     required: true
 
 outputs:
-  parameterFilePaths:
+  deploymentTestPaths:
     description: 'The parameter files to use for template evaluation'
-    value: ${{ steps.get-parameter-file-paths.outputs.parameterFilePaths }}
+    value: ${{ steps.get-parameter-file-paths.outputs.deploymentTestPaths }}
 
 runs:
   using: 'composite'
@@ -21,19 +21,19 @@ runs:
         # Grouping task logs
         Write-Output "::group::Get parameter files"
         # Load used functions
-        . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'sharedScripts' 'Get-ModuleParameterFiles.ps1')
+        . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'sharedScripts' 'Get-DeploymentTestFileList.ps1')
         $functionInput = @{
           ModulePath = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.modulePath }}'
         }
         Write-Verbose "Invoke task with" -Verbose
         Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
         # Get the list of parameter file paths
-        $parameterFilePaths = Get-ModuleParameterFiles @functionInput -Verbose
+        $deploymentTestPaths = Get-DeploymentTestFileList @functionInput -Verbose
         # Output values to be accessed by next jobs
-        $compressedOutput = $parameterFilePaths | ConvertTo-Json -Compress
+        $compressedOutput = $deploymentTestPaths | ConvertTo-Json -Compress
         if($compressedOutput -notmatch "\[.*\]") {
           $compressedOutput = "[$compressedOutput]"
         }
         Write-Verbose "Publishing output: $compressedOutput" -Verbose
-        Write-Output "::set-output name=parameterFilePaths::$compressedOutput"
+        Write-Output "::set-output name=deploymentTestPaths::$compressedOutput"
         Write-Output "::endgroup::"

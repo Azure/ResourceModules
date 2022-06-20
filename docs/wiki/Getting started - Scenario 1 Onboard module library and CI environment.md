@@ -218,7 +218,7 @@ To do so, perform the following steps:
 
     <img src="./media/SetupEnvironment/actionsEnable.png" alt="Enable Actions" height="380">
 
-  
+
 ### 3.2.4 Set R/W Workflow permissions
 
 To let the worflow engine publish their results into your repository, you have to enable the read / write access for the github actions.
@@ -368,7 +368,7 @@ In special cases, manual actions may be required to provision certain resources 
 
 ### Microsoft.Web/sites
 
-To successfully deploy the sites module using the parameter file `fa.parameters.json` you need to create an Azure Active Directory App with its API endpoint enabled (e.g. `api://<app id>`) and add a secret. The secret value needs then to be stored in a Key Vault secret.
+To successfully deploy the sites module using the parameter file `fa.deploymentTests.json` you need to create an Azure Active Directory App with its API endpoint enabled (e.g. `api://<app id>`) and add a secret. The secret value needs then to be stored in a Key Vault secret.
 
 
 # 5. Update module parameter files
@@ -381,16 +381,16 @@ For this reason, make sure to update the references in the following modules onc
 
 | File | Parameter | Notes |
 | - | - | - |
-| `arm\Microsoft.Compute\diskEncryptionSets\.parameters\parameters.json` |`keyUrl.value` | |
-| `arm\Microsoft.Compute\virtualMachines\.parameters\linux.parameters.json` | `extensionDiskEncryptionConfig.value.settings.KeyEncryptionKeyURL` | |
-| `arm\Microsoft.Compute\virtualMachines\.parameters\windows.parameters.json` | `extensionDiskEncryptionConfig.value.settings.KeyEncryptionKeyURL` | |
-| `arm\Microsoft.Compute\virtualMachineScaleSets\.parameters\linux.parameters.json` | `extensionDiskEncryptionConfig.value.settings.KeyEncryptionKeyURL` | |
-| `arm\Microsoft.Compute\virtualMachineScaleSets\.parameters\windows.parameters.json` | `extensionDiskEncryptionConfig.value.settings.KeyEncryptionKeyURL` | |
-| `arm\Microsoft.Sql\managedInstances\.parameters\parameters.json` | `keys.value.uri` | |
-| `arm\Microsoft.Network\applicationGateways\.parameters\parameters.json` | `sslCertificates.value.properties.keyVaultSecretId` | |
-| `arm\Microsoft.Web\sites\.parameters\fa.parameters.json` | `appSettingsKeyValuePairs.value.EASYAUTH_SECRET` | Key Vault secret URI without version |
-| `arm\Microsoft.Web\sites\.parameters\fa.parameters.json` | `authSettingV2Configuration.value.identityProviders.azureActiveDirectory.registration.clientId` | App ID from the Azure Active Directory App |
-| `arm\Microsoft.Web\sites\.parameters\fa.parameters.json` | `authSettingV2Configuration.value.identityProviders.azureActiveDirectory.validation.allowedAudiences` | API endpoint from the Azure Active Directory app |
+| `arm\Microsoft.Compute\diskEncryptionSets\.deploymentTests\parameters.json` |`keyUrl.value` | |
+| `arm\Microsoft.Compute\virtualMachines\.deploymentTests\linux.deploymentTests.json` | `extensionDiskEncryptionConfig.value.settings.KeyEncryptionKeyURL` | |
+| `arm\Microsoft.Compute\virtualMachines\.deploymentTests\windows.deploymentTests.json` | `extensionDiskEncryptionConfig.value.settings.KeyEncryptionKeyURL` | |
+| `arm\Microsoft.Compute\virtualMachineScaleSets\.deploymentTests\linux.deploymentTests.json` | `extensionDiskEncryptionConfig.value.settings.KeyEncryptionKeyURL` | |
+| `arm\Microsoft.Compute\virtualMachineScaleSets\.deploymentTests\windows.deploymentTests.json` | `extensionDiskEncryptionConfig.value.settings.KeyEncryptionKeyURL` | |
+| `arm\Microsoft.Sql\managedInstances\.deploymentTests\parameters.json` | `keys.value.uri` | |
+| `arm\Microsoft.Network\applicationGateways\.deploymentTests\parameters.json` | `sslCertificates.value.properties.keyVaultSecretId` | |
+| `arm\Microsoft.Web\sites\.deploymentTests\fa.deploymentTests.json` | `appSettingsKeyValuePairs.value.EASYAUTH_SECRET` | Key Vault secret URI without version |
+| `arm\Microsoft.Web\sites\.deploymentTests\fa.deploymentTests.json` | `authSettingV2Configuration.value.identityProviders.azureActiveDirectory.registration.clientId` | App ID from the Azure Active Directory App |
+| `arm\Microsoft.Web\sites\.deploymentTests\fa.deploymentTests.json` | `authSettingV2Configuration.value.identityProviders.azureActiveDirectory.validation.allowedAudiences` | API endpoint from the Azure Active Directory app |
 
 </details>
 

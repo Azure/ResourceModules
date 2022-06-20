@@ -141,7 +141,7 @@ jobs:
                 if( "${{ join(';',parameters.checkoutRepositories) }}".length -gt 0) {
                   Write-Verbose "Multi-Repo Checkout" -Verbose
                   $moduleRepoRoot = Join-Path '$(System.DefaultWorkingDirectory)' '$(modulesRepository)'
-                  $parametersRepoRoot = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.parametersRepository }}'
+                  $parametersRepoRoot = Join-Path '$(System.DefaultWorkingDirectory)' '${{ parameters.deploymentTestsRepository }}'
                 } else {
                   Write-Verbose "No Multi-Repo Checkout" -Verbose
                   $moduleRepoRoot = '$(System.DefaultWorkingDirectory)'

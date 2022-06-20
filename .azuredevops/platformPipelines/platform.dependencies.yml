@@ -44,7 +44,7 @@ stages:
       - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
         parameters:
           deploymentBlocks:
-            - path: $(dependencyPath)/$(resourceType)/parameters/validation.parameters.json
+            - path: $(dependencyPath)/$(resourceType)/parameters/validation.deploymentTests.json
               templateFilePath: $(templateFilePath)
               displayName: Validation Resource Group
 
@@ -142,10 +142,10 @@ stages:
       - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
         parameters:
           deploymentBlocks:
-            - path: $(dependencyPath)/$(resourceType)/parameters/mg.parameters.json
+            - path: $(dependencyPath)/$(resourceType)/parameters/mg.deploymentTests.json
               templateFilePath: $(templateFilePath)
               displayName: Policy assignment (mg)
-            - path: $(dependencyPath)/$(resourceType)/parameters/sub.parameters.json
+            - path: $(dependencyPath)/$(resourceType)/parameters/sub.deploymentTests.json
               templateFilePath: $(templateFilePath)
               displayName: Policy assignment (sub)
 
@@ -178,10 +178,10 @@ stages:
             - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
               templateFilePath: $(templateFilePath)
               displayName: Default LAW
-            - path: $(dependencyPath)/$(resourceType)/parameters/aut.parameters.json
+            - path: $(dependencyPath)/$(resourceType)/parameters/aut.deploymentTests.json
               templateFilePath: $(templateFilePath)
               displayName: Automation account LAW
-            - path: $(dependencyPath)/$(resourceType)/parameters/appi.parameters.json
+            - path: $(dependencyPath)/$(resourceType)/parameters/appi.deploymentTests.json
               templateFilePath: $(templateFilePath)
               displayName: AppInsights LAW
 
@@ -200,10 +200,10 @@ stages:
               templateFilePath: $(templateFilePath)
               displayName: Default storage account
               jobName: default_sa
-            - path: $(dependencyPath)/$(resourceType)/parameters/law.parameters.json
+            - path: $(dependencyPath)/$(resourceType)/parameters/law.deploymentTests.json
               templateFilePath: $(templateFilePath)
               displayName: LAW storage account
-            - path: $(dependencyPath)/$(resourceType)/parameters/fa.parameters.json
+            - path: $(dependencyPath)/$(resourceType)/parameters/fa.deploymentTests.json
               templateFilePath: $(templateFilePath)
               displayName: FunctionApp storage account
       - job:
@@ -264,7 +264,7 @@ stages:
                 $null = Convert-TokensInFile @ConvertTokensInputs
 
                 # Get storage account name
-                $storageAccountParameters = (ConvertFrom-Json (Get-Content -path $parameterFilePath -Raw)).parameters
+                $storageAccountParameters = (ConvertFrom-Json (Get-Content -path $parameterFilePath -Raw)).deploymentTests
 
                 # Upload files to storage account
                 $functionInput = @{
@@ -393,12 +393,12 @@ stages:
                     Write-Verbose "Retrieving parameters from storage account parameter files" -Verbose
                     $parameterFilePath = Join-Path '$(Build.SourcesDirectory)' '$(dependencyPath)' '$(saResourceType)' 'parameters' 'parameters.json'
                     $null = Convert-TokensInFile @ConvertTokensInputs -FilePath $parameterFilePath -Verbose
-                    $storageAccountParameters = (ConvertFrom-Json (Get-Content -path $parameterFilePath -Raw)).parameters
+                    $storageAccountParameters = (ConvertFrom-Json (Get-Content -path $parameterFilePath -Raw)).deploymentTests
 
                     Write-Verbose "Retrieving parameters from image template parameter files" -Verbose
                     $parameterFilePath = Join-Path '$(Build.SourcesDirectory)' '$(dependencyPath)' '$(resourceType)' 'parameters' 'parameters.json'
                     $null = Convert-TokensInFile @ConvertTokensInputs -FilePath $parameterFilePath -Verbose
-                    $imageTemplateParameters = (ConvertFrom-Json (Get-Content -path $parameterFilePath -Raw)).parameters
+                    $imageTemplateParameters = (ConvertFrom-Json (Get-Content -path $parameterFilePath -Raw)).deploymentTests
 
                     # Initializing parameters before the blob copy
                     Write-Verbose "Initializing source storage account parameters before the blob copy" -Verbose
@@ -479,7 +479,7 @@ stages:
               templateFilePath: $(templateFilePath)
               displayName: Default User Defined Routes
             - ${{ if eq( parameters.deploySqlMiDependencies, true) }}:
-                - path: $(dependencyPath)/$(resourceType)/parameters/sqlMi.parameters.json
+                - path: $(dependencyPath)/$(resourceType)/parameters/sqlMi.deploymentTests.json
                   templateFilePath: $(templateFilePath)
                   displayName: SQLMI User Defined Routes
 
@@ -499,20 +499,20 @@ stages:
             - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
               templateFilePath: $(templateFilePath)
               displayName: Default NSG
-            - path: $(dependencyPath)/$(resourceType)/parameters/apgw.parameters.json
+            - path: $(dependencyPath)/$(resourceType)/parameters/apgw.deploymentTests.json
               templateFilePath: $(templateFilePath)
               displayName: App Gateway NSG
-            - path: $(dependencyPath)/$(resourceType)/parameters/ase.parameters.json
+            - path: $(dependencyPath)/$(resourceType)/parameters/ase.deploymentTests.json
               templateFilePath: $(templateFilePath)
               displayName: ASE NSG
-            - path: $(dependencyPath)/$(resourceType)/parameters/bastion.parameters.json
+            - path: $(dependencyPath)/$(resourceType)/parameters/bastion.deploymentTests.json
               templateFilePath: $(templateFilePath)
               displayName: Bastion NSG
-            - path: $(dependencyPath)/$(resourceType)/parameters/aadds.parameters.json
+            - path: $(dependencyPath)/$(resourceType)/parameters/aadds.deploymentTests.json
               templateFilePath: $(templateFilePath)
               displayName: AADDS NSG
             - ${{ if eq( parameters.deploySqlMiDependencies, true) }}:
-                - path: $(dependencyPath)/$(resourceType)/parameters/sqlmi.parameters.json
+                - path: $(dependencyPath)/$(resourceType)/parameters/sqlmi.deploymentTests.json
                   templateFilePath: $(templateFilePath)
                   displayName: SQLMI NSG
 
@@ -529,25 +529,25 @@ stages:
       - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
         parameters:
           deploymentBlocks:
-            - path: $(dependencyPath)/$(resourceType)/parameters/apgw.parameters.json
+            - path: $(dependencyPath)/$(resourceType)/parameters/apgw.deploymentTests.json
               templateFilePath: $(templateFilePath)
               displayName: App Gateway Public IP
-            - path: $(dependencyPath)/$(resourceType)/parameters/bas.parameters.json
+            - path: $(dependencyPath)/$(resourceType)/parameters/bas.deploymentTests.json
               templateFilePath: $(templateFilePath)
               displayName: Bastion Public IP
-            - path: $(dependencyPath)/$(resourceType)/parameters/lb.parameters.json
+            - path: $(dependencyPath)/$(resourceType)/parameters/lb.deploymentTests.json
               templateFilePath: $(templateFilePath)
               displayName: Load balancer Public IP
-            - path: $(dependencyPath)/$(resourceType)/parameters/lb.min.parameters.json
+            - path: $(dependencyPath)/$(resourceType)/parameters/lb.min.deploymentTests.json
               templateFilePath: $(templateFilePath)
               displayName: Min Load balancer Public IP
-            - path: $(dependencyPath)/$(resourceType)/parameters/fw.parameters.json
+            - path: $(dependencyPath)/$(resourceType)/parameters/fw.deploymentTests.json
               templateFilePath: $(templateFilePath)
               displayName: Firewall Public IP
-            - path: $(dependencyPath)/$(resourceType)/parameters/fw.additional.parameters.json
+            - path: $(dependencyPath)/$(resourceType)/parameters/fw.additional.deploymentTests.json
               templateFilePath: $(templateFilePath)
               displayName: Firewall Additional Public IP
-            - path: $(dependencyPath)/$(resourceType)/parameters/bas.additional.parameters.json
+            - path: $(dependencyPath)/$(resourceType)/parameters/bas.additional.deploymentTests.json
               templateFilePath: $(templateFilePath)
               displayName: Bastion Additional Public IP
   - stage: deploy_appi
@@ -641,17 +641,17 @@ stages:
               displayName: Default Key Vault
               jobName: default_kv
               customParameterFileTokens: '{"msiPrincipalId":"$(msiPrincipalId)"}'
-            - path: $(dependencyPath)/$(resourceType)/parameters/nopr.parameters.json
+            - path: $(dependencyPath)/$(resourceType)/parameters/nopr.deploymentTests.json
               templateFilePath: $(templateFilePath)
               displayName: Purge proteced key vault
               jobName: default_kv_nopr
               customParameterFileTokens: '{"msiPrincipalId":"$(msiPrincipalId)"}'
-            - path: $(dependencyPath)/$(resourceType)/parameters/pe.parameters.json
+            - path: $(dependencyPath)/$(resourceType)/parameters/pe.deploymentTests.json
               templateFilePath: $(templateFilePath)
               displayName: Private Endpoint Key Vault
               customParameterFileTokens: '{"msiPrincipalId":"$(msiPrincipalId)"}'
             - ${{ if eq( parameters.deploySqlMiDependencies, true) }}:
-                - path: $(dependencyPath)/$(resourceType)/parameters/sqlmi.parameters.json
+                - path: $(dependencyPath)/$(resourceType)/parameters/sqlmi.deploymentTests.json
                   templateFilePath: $(templateFilePath)
                   displayName: SQLMI key vault
                   jobName: sqlmi_kv
@@ -688,7 +688,7 @@ stages:
               ScriptType: 'InlineScript'
               Inline: |
                 $parameterFilePath = Join-Path '$(Build.SourcesDirectory)' '$(dependencyPath)' '$(resourceType)' 'parameters' 'parameters.json'
-                $noprParameterFilePath = Join-Path '$(Build.SourcesDirectory)' '$(dependencyPath)' '$(resourceType)' 'parameters' 'nopr.parameters.json'
+                $noprParameterFilePath = Join-Path '$(Build.SourcesDirectory)' '$(dependencyPath)' '$(resourceType)' 'parameters' 'nopr.deploymentTests.json'
 
                 # Load used functions
                 . (Join-Path '$(Build.SourcesDirectory)' 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInFile.ps1')
@@ -718,10 +718,10 @@ stages:
                 $null = Convert-TokensInFile @NoprConvertTokensInputs
 
                 # Get key vault name
-                $keyVaultParameters = (ConvertFrom-Json (Get-Content -Path $parameterFilePath -Raw)).parameters
+                $keyVaultParameters = (ConvertFrom-Json (Get-Content -Path $parameterFilePath -Raw)).deploymentTests
                 $keyVaultName = $keyVaultParameters.name.value
                 # No Purge Key Vault
-                $noprKeyVaultParameters = (ConvertFrom-Json (Get-Content -Path $noprParameterFilePath -Raw)).parameters
+                $noprKeyVaultParameters = (ConvertFrom-Json (Get-Content -Path $noprParameterFilePath -Raw)).deploymentTests
                 $noprKeyVaultName = $noprKeyVaultParameters.name.value
 
                 # Generate values
@@ -826,7 +826,7 @@ stages:
                   ScriptType: 'InlineScript'
                   Inline: |
 
-                    $parameterFilePath = Join-Path '$(Build.SourcesDirectory)' '$(dependencyPath)' '$(resourceType)' 'parameters' 'sqlmi.parameters.json'
+                    $parameterFilePath = Join-Path '$(Build.SourcesDirectory)' '$(dependencyPath)' '$(resourceType)' 'parameters' 'sqlmi.deploymentTests.json'
                     # Load used functions
                     . (Join-Path '$(Build.SourcesDirectory)' 'utilities' 'pipelines' 'tokensReplacement' 'Convert-TokensInFile.ps1')
 
@@ -848,7 +848,7 @@ stages:
                     $null = Convert-TokensInFile @ConvertTokensInputs
 
                     # Get key vault name
-                    $keyVaultParameters = (ConvertFrom-Json (Get-Content -Path $parameterFilePath -Raw)).parameters
+                    $keyVaultParameters = (ConvertFrom-Json (Get-Content -Path $parameterFilePath -Raw)).deploymentTests
                     $keyVaultName = $keyVaultParameters.name.value
 
                     # Generate values
@@ -926,45 +926,45 @@ stages:
             - path: $(dependencyPath)/$(resourceType)/parameters/parameters.json
               templateFilePath: $(templateFilePath)
               displayName: Default Virtual Network
-            - path: $(dependencyPath)/$(resourceType)/parameters/1.bastion.parameters.json
+            - path: $(dependencyPath)/$(resourceType)/parameters/1.bastion.deploymentTests.json
               templateFilePath: $(templateFilePath)
               displayName: Bastion Virtual Network Min
-            - path: $(dependencyPath)/$(resourceType)/parameters/2.vnetpeer01.parameters.json
+            - path: $(dependencyPath)/$(resourceType)/parameters/2.vnetpeer01.deploymentTests.json
               templateFilePath: $(templateFilePath)
               displayName: VNET PEering 1 Virtual Network
-            - path: $(dependencyPath)/$(resourceType)/parameters/3.vnetpeer02.parameters.json
+            - path: $(dependencyPath)/$(resourceType)/parameters/3.vnetpeer02.deploymentTests.json
               templateFilePath: $(templateFilePath)
               displayName: VNET Peering 2 Virtual Network
-            - path: $(dependencyPath)/$(resourceType)/parameters/4.azfw.parameters.json
+            - path: $(dependencyPath)/$(resourceType)/parameters/4.azfw.deploymentTests.json
               templateFilePath: $(templateFilePath)
               displayName: Azure Firewall Virtual Network
-            - path: $(dependencyPath)/$(resourceType)/parameters/5.aks.parameters.json
+            - path: $(dependencyPath)/$(resourceType)/parameters/5.aks.deploymentTests.json
               templateFilePath: $(templateFilePath)
               displayName: AKS Virtual Network
-            - path: $(dependencyPath)/$(resourceType)/parameters/7.virtualHubConnection.parameters.json
+            - path: $(dependencyPath)/$(resourceType)/parameters/7.virtualHubConnection.deploymentTests.json
               templateFilePath: $(templateFilePath)
               displayName: Virtual Hub Connection Virtual Network
-            - path: $(dependencyPath)/$(resourceType)/parameters/8.aadds.parameters.json
+            - path: $(dependencyPath)/$(resourceType)/parameters/8.aadds.deploymentTests.json
               templateFilePath: $(templateFilePath)
               displayName: AADDS Virtual Network
-            - path: $(dependencyPath)/$(resourceType)/parameters/9.azfw.parameters.json
+            - path: $(dependencyPath)/$(resourceType)/parameters/9.azfw.deploymentTests.json
               templateFilePath: $(templateFilePath)
               displayName: Azure Firewall Virtual Network Min
-            - path: $(dependencyPath)/$(resourceType)/parameters/10.azfw.parameters.json
+            - path: $(dependencyPath)/$(resourceType)/parameters/10.azfw.deploymentTests.json
               templateFilePath: $(templateFilePath)
               displayName: Azure Firewall Virtual Network Additonal
-            - path: $(dependencyPath)/$(resourceType)/parameters/11.azfw.parameters.json
+            - path: $(dependencyPath)/$(resourceType)/parameters/11.azfw.deploymentTests.json
               templateFilePath: $(templateFilePath)
               displayName: Azure Firewall Virtual Network Custom
-            - path: $(dependencyPath)/$(resourceType)/parameters/12.bastion.parameters.json
+            - path: $(dependencyPath)/$(resourceType)/parameters/12.bastion.deploymentTests.json
               templateFilePath: $(templateFilePath)
               displayName: Bastion Virtual Network Additional
-            - path: $(dependencyPath)/$(resourceType)/parameters/13.bastion.parameters.json
+            - path: $(dependencyPath)/$(resourceType)/parameters/13.bastion.deploymentTests.json
               templateFilePath: $(templateFilePath)
               displayName: Bastion Virtual Network Custom
 
             - ${{ if eq( parameters.deploySqlMiDependencies, true) }}:
-                - path: $(dependencyPath)/$(resourceType)/parameters/6.sqlmi.parameters.json
+                - path: $(dependencyPath)/$(resourceType)/parameters/6.sqlmi.deploymentTests.json
                   templateFilePath: $(templateFilePath)
                   displayName: SQL MI Virtual Network
 
@@ -1011,6 +1011,6 @@ stages:
       - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
         parameters:
           deploymentBlocks:
-            - path: $(dependencyPath)/$(resourceType)/parameters/internal.parameters.json
+            - path: $(dependencyPath)/$(resourceType)/parameters/internal.deploymentTests.json
               templateFilePath: $(templateFilePath)
               displayName: Deploy module
