@@ -185,11 +185,13 @@ runs:
           # Load used functions
           . (Join-Path $env:GITHUB_WORKSPACE 'utilities' 'pipelines' 'resourceDeployment' 'Test-TemplateDeployment.ps1')
 
+          $templateFilePath = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.templateFilePath }}'
+
           # ----------- #
           # INVOKE TEST #
           # ----------- #
           $functionInput = @{
-            templateFilePath     = Join-Path $env:GITHUB_WORKSPACE '${{ inputs.templateFilePath }}'
+            templateFilePath     = $templateFilePath
             location             = '${{ inputs.location }}'
             resourceGroupName    = '${{ inputs.resourceGroupName }}'
             subscriptionId       = '${{ inputs.subscriptionId }}'
