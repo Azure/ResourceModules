@@ -29,17 +29,13 @@ variables:
   - group: 'PLATFORM_VARIABLES'
   - name: dependencyPath
     value: 'utilities/pipelines/dependencies'
-  - name: modulesPath
-    value: 'arm'
-  - name: defaultResourceGroupName
-    value: 'validation-rg'
 
 stages:
   - stage: deploy_rg
     displayName: Deploy resource group
     variables:
       resourceType: 'Microsoft.Resources/resourceGroups'
-      templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
+      templateFilePath: $(modulesFolderRelativePath)/$(resourceType)/deploy.bicep
     jobs:
       - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
         parameters:
@@ -57,7 +53,7 @@ stages:
       - deploy_rg
     variables:
       resourceType: 'Microsoft.Compute/proximityPlacementGroups'
-      templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
+      templateFilePath: $(modulesFolderRelativePath)/$(resourceType)/deploy.bicep
     jobs:
       - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
         parameters:
@@ -72,7 +68,7 @@ stages:
       - deploy_rg
     variables:
       resourceType: 'Microsoft.ManagedIdentity/userAssignedIdentities'
-      templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
+      templateFilePath: $(modulesFolderRelativePath)/$(resourceType)/deploy.bicep
     jobs:
       - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
         parameters:
@@ -110,7 +106,7 @@ stages:
       - deploy_rg
     variables:
       resourceType: 'Microsoft.Web/serverfarms'
-      templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
+      templateFilePath: $(modulesFolderRelativePath)/$(resourceType)/deploy.bicep
     jobs:
       - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
         parameters:
@@ -125,7 +121,7 @@ stages:
       - deploy_sf
     variables:
       resourceType: 'Microsoft.Web/sites'
-      templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
+      templateFilePath: $(modulesFolderRelativePath)/$(resourceType)/deploy.bicep
     jobs:
       - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
         parameters:
@@ -140,7 +136,7 @@ stages:
       - deploy_rg
     variables:
       resourceType: 'Microsoft.Authorization/policyAssignments'
-      templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
+      templateFilePath: $(modulesFolderRelativePath)/$(resourceType)/deploy.bicep
     jobs:
       - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
         parameters:
@@ -158,7 +154,7 @@ stages:
       - deploy_rg
     variables:
       resourceType: 'Microsoft.EventHub/namespaces'
-      templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
+      templateFilePath: $(modulesFolderRelativePath)/$(resourceType)/deploy.bicep
     jobs:
       - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
         parameters:
@@ -173,7 +169,7 @@ stages:
       - deploy_rg
     variables:
       resourceType: 'Microsoft.OperationalInsights/workspaces'
-      templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
+      templateFilePath: $(modulesFolderRelativePath)/$(resourceType)/deploy.bicep
     jobs:
       - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
         parameters:
@@ -194,7 +190,7 @@ stages:
       - deploy_rg
     variables:
       resourceType: 'Microsoft.Storage/storageAccounts'
-      templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
+      templateFilePath: $(modulesFolderRelativePath)/$(resourceType)/deploy.bicep
     jobs:
       - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
         parameters:
@@ -271,7 +267,7 @@ stages:
 
                 # Upload files to storage account
                 $functionInput = @{
-                  ResourceGroupName   = '$(defaultResourceGroupName)'
+                  ResourceGroupName   = '$(resourceGroupName)'
                   StorageAccountName  = $storageAccountParameters.name.value
                   contentDirectories  = Join-Path '$(Build.SourcesDirectory)' $(dependencyPath) '$(resourceType)' 'uploads'
                   targetContainer     = $storageAccountParameters.blobServices.value.containers[0].name
@@ -290,7 +286,7 @@ stages:
       - deploy_rg
     variables:
       resourceType: 'Microsoft.Compute/galleries'
-      templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
+      templateFilePath: $(modulesFolderRelativePath)/$(resourceType)/deploy.bicep
     jobs:
       - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
         parameters:
@@ -309,7 +305,7 @@ stages:
         variables:
           resourceType: 'Microsoft.VirtualMachineImages\imageTemplates'
           saResourceType: 'Microsoft.Storage\storageAccounts'
-          templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
+          templateFilePath: $(modulesFolderRelativePath)/$(resourceType)/deploy.bicep
         jobs:
           - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
             parameters:
@@ -443,7 +439,7 @@ stages:
       - deploy_rg
     variables:
       resourceType: 'Microsoft.Insights/actionGroups'
-      templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
+      templateFilePath: $(modulesFolderRelativePath)/$(resourceType)/deploy.bicep
     jobs:
       - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
         parameters:
@@ -458,7 +454,7 @@ stages:
       - deploy_rg
     variables:
       resourceType: 'Microsoft.Network/applicationSecurityGroups'
-      templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
+      templateFilePath: $(modulesFolderRelativePath)/$(resourceType)/deploy.bicep
     jobs:
       - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
         parameters:
@@ -473,7 +469,7 @@ stages:
       - deploy_rg
     variables:
       resourceType: 'Microsoft.Network/routeTables'
-      templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
+      templateFilePath: $(modulesFolderRelativePath)/$(resourceType)/deploy.bicep
     jobs:
       - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
         parameters:
@@ -494,7 +490,7 @@ stages:
       - deploy_law
     variables:
       resourceType: 'Microsoft.Network/networkSecurityGroups'
-      templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
+      templateFilePath: $(modulesFolderRelativePath)/$(resourceType)/deploy.bicep
     jobs:
       - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
         parameters:
@@ -527,7 +523,7 @@ stages:
       - deploy_law
     variables:
       resourceType: 'Microsoft.Network\publicIPAddresses'
-      templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
+      templateFilePath: $(modulesFolderRelativePath)/$(resourceType)/deploy.bicep
     jobs:
       - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
         parameters:
@@ -561,7 +557,7 @@ stages:
       - deploy_law
     variables:
       resourceType: 'Microsoft.Insights/components'
-      templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
+      templateFilePath: $(modulesFolderRelativePath)/$(resourceType)/deploy.bicep
     jobs:
       - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
         parameters:
@@ -578,7 +574,7 @@ stages:
       - deploy_law
     variables:
       resourceType: 'Microsoft.Automation/automationAccounts'
-      templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
+      templateFilePath: $(modulesFolderRelativePath)/$(resourceType)/deploy.bicep
     jobs:
       - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
         parameters:
@@ -595,7 +591,7 @@ stages:
       - deploy_law
     variables:
       resourceType: 'Microsoft.DesktopVirtualization/hostpools'
-      templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
+      templateFilePath: $(modulesFolderRelativePath)/$(resourceType)/deploy.bicep
     jobs:
       - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
         parameters:
@@ -613,7 +609,7 @@ stages:
       - deploy_msi
     variables:
       resourceType: 'Microsoft.RecoveryServices/vaults'
-      templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
+      templateFilePath: $(modulesFolderRelativePath)/$(resourceType)/deploy.bicep
       msiPrincipalId: $[ stageDependencies.deploy_msi.job_set_msi_id.outputs['print_msi_prinId.msiPrincipalId'] ]
     jobs:
       - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
@@ -633,7 +629,7 @@ stages:
       - deploy_msi
     variables:
       resourceType: 'Microsoft.KeyVault/vaults'
-      templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
+      templateFilePath: $(modulesFolderRelativePath)/$(resourceType)/deploy.bicep
       msiPrincipalId: $[ stageDependencies.deploy_msi.job_set_msi_id.outputs['print_msi_prinId.msiPrincipalId'] ]
     jobs:
       - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
@@ -887,7 +883,7 @@ stages:
       - deploy_avdhp
     variables:
       resourceType: 'Microsoft.DesktopVirtualization/applicationgroups'
-      templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
+      templateFilePath: $(modulesFolderRelativePath)/$(resourceType)/deploy.bicep
     jobs:
       - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
         parameters:
@@ -902,7 +898,7 @@ stages:
       - deploy_msi
     variables:
       resourceType: 'Microsoft.Authorization/roleAssignments'
-      templateFilePath: $(modulesPath)/$(resourceType)/subscription/deploy.bicep
+      templateFilePath: $(modulesFolderRelativePath)/$(resourceType)/subscription/deploy.bicep
       msiPrincipalId: $[ stageDependencies.deploy_msi.job_set_msi_id.outputs['print_msi_prinId.msiPrincipalId'] ]
     jobs:
       - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
@@ -921,7 +917,7 @@ stages:
           - deploy_udr
     variables:
       resourceType: 'Microsoft.Network/virtualNetworks'
-      templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
+      templateFilePath: $(modulesFolderRelativePath)/$(resourceType)/deploy.bicep
     jobs:
       - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
         parameters:
@@ -977,7 +973,7 @@ stages:
       - deploy_vnet
     variables:
       resourceType: 'Microsoft.Network/privateDnsZones'
-      templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
+      templateFilePath: $(modulesFolderRelativePath)/$(resourceType)/deploy.bicep
     jobs:
       - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
         parameters:
@@ -994,7 +990,7 @@ stages:
       - deploy_kv
     variables:
       resourceType: 'Microsoft.Compute/virtualMachines'
-      templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
+      templateFilePath: $(modulesFolderRelativePath)/$(resourceType)/deploy.bicep
     jobs:
       - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
         parameters:
@@ -1009,7 +1005,7 @@ stages:
       - deploy_vnet
     variables:
       resourceType: 'Microsoft.Network/loadBalancers'
-      templateFilePath: $(modulesPath)/$(resourceType)/deploy.bicep
+      templateFilePath: $(modulesFolderRelativePath)/$(resourceType)/deploy.bicep
     jobs:
       - template: /.azuredevops/pipelineTemplates/jobs.validateModuleDeployment.yml
         parameters:
