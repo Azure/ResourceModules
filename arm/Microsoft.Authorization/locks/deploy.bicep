@@ -1,5 +1,8 @@
 targetScope = 'subscription'
 
+@description('Optional. The name of the lock.')
+param name string = '${level}-lock'
+
 @allowed([
   'CanNotDelete'
   'ReadOnly'
@@ -16,8 +19,8 @@ param enableDefaultTelemetry bool = true
 @description('Optional. Name of the Resource Group to assign the lock to. If Resource Group name is provided, and Subscription ID is provided, the module deploys at resource group level, therefore assigns the provided lock to the resource group.')
 param resourceGroupName string = ''
 
-@description('Optional. Subscription ID of the subscription to assign the lock to.')
-param subscriptionId string = ''
+@description('Optional. Subscription ID of the subscription to assign the lock to. If not provided, will use the current scope for deployment. If no resource group name is provided, the module deploys at subscription level, therefore assigns the provided locks to the subscription.')
+param subscriptionId string = subscription().id
 
 @sys.description('Optional. Location for all resources.')
 param location string = deployment().location
@@ -37,11 +40,22 @@ resource defaultTelemetry 'Microsoft.Resources/deployments@2021-04-01' = if (ena
   }
 }
 
-module lock_rg 'resourceGroup/deploy.bicep' = if (!empty(resourceGroupName) && !empty(subscriptionId)) {
+module lock_sub 'subscription/deploy.bicep' = if (!empty(subscriptionId) && empty(resourceGroupName)) {
+  name: '${uniqueString(deployment().name, location)}-Lock-Sub-Module'
+  scope: subscription(subscriptionId)
+  params: {
+    name: name
+    level: level
+    notes: notes
+    enableDefaultTelemetry: enableReferencedModulesTelemetry
+  }
+}
+
+module lock_rg 'resourceGroup/deploy.bicep' = if (!empty(subscriptionId) && !empty(resourceGroupName)) {
   name: '${uniqueString(deployment().name, location)}-Lock-RG-Module'
   scope: resourceGroup(subscriptionId, resourceGroupName)
   params: {
-    name: '${resourceGroupName}-${level}-lock'
+    name: name
     level: level
     notes: notes
     enableDefaultTelemetry: enableReferencedModulesTelemetry
@@ -49,7 +63,10 @@ module lock_rg 'resourceGroup/deploy.bicep' = if (!empty(resourceGroupName) && !
 }
 
 @description('The name of the lock.')
-output name string = lock_rg.outputs.name
+output name string = empty(resourceGroupName) ? lock_sub.outputs.name : lock_rg.outputs.name
 
 @description('The resource ID of the lock.')
-output resourceId string = lock_rg.outputs.resourceId
+output resourceId string = empty(resourceGroupName) ? lock_sub.outputs.resourceId : lock_rg.outputs.resourceId
+
+@sys.description('The scope this lock applies to.')
+output scope string = empty(resourceGroupName) ? subscription().id : any(resourceGroup(resourceGroupName))
