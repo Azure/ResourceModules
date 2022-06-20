@@ -42,5 +42,8 @@ output name string = lock.name
 @description('The resource ID of the lock.')
 output resourceId string = lock.id
 
-@description('The name of the resource group the lock was applied to.')
+@description('The name of the resource group name the lock was applied to.')
 output resourceGroupName string = resourceGroup().name
+
+@sys.description('The scope this lock applies to.')
+output scope string = resourceGroup().id
