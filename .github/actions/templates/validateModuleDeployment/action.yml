@@ -273,6 +273,12 @@ runs:
               }
           }
 
+          if($parameters -contains 'namePrefix') {
+            $functionInput['additionalParameters'] += @{
+              namePrefix = $projectSettings.parameterFileTokens.localTokens[0].value
+            }
+          }
+
           Write-Verbose "Invoke task with" -Verbose
           Write-Verbose ($functionInput | ConvertTo-Json | Out-String) -Verbose
 
