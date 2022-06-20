@@ -24,7 +24,7 @@ The following activities are performed by the [`arm/.global/global.module.tests.
   - template file (or the built bicep template) converts from JSON and has all expected properties
   - variable names are camelCase
   - the minimum set of outputs is returned (see [module design](./The%20library%20-%20Module%20design.md#outputs))
-- **Module (readme.md) documentation** contains all required sections, e.g.:
+- **Module (readme) documentation** contains all required sections, e.g.:
   - is not empty
   - contains all the mandatory sections
   - describes all the parameters

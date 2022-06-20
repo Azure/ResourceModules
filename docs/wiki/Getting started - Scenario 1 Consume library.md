@@ -53,8 +53,8 @@ To clone the latest version of the repository
 
 # 2. (Optional) Convert library to ARM
 
-Note that in case you don't want to use Bicep, you always have the option to use the utility `ConvertTo-ARMTemplate`  we provide in path `utilities/tools`, to convert the repository to an ARM-only repository. For further information on how to use the tool, please refer to the tool-specific [documentation](./Interoperability%20-%20Bicep%20to%20ARM%20conversion.md).
+Note that in case you don't want to use Bicep, you always have the option to use the utility `ConvertTo-ARMTemplate`  we provide in path `utilities/tools`, to convert the repository to an ARM-only repository. For further information on how to use the tool, please refer to the tool-specific [documentation](./Interoperability%20-%20Bicep%20to%20ARM%20conversion).
 
 # 3. Build a solution
 
-With the codebase ready, you can now start to build a solution. For examples on how to do so, please refer to the corresponding [solution creation](./Solution%20creation.md) section.
+With the codebase ready, you can now start to build a solution. For examples on how to do so, please refer to the corresponding [solution creation](./Solution%20creation) section.

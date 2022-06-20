@@ -5,7 +5,7 @@ This is how you will run different scripts and set up a module in either ARM JSO
 ---
 
 ### _Navigation_
-- [Bicep to ARM/JSON conversion](./Interoperability%20-%20Bicep%20to%20ARM%20conversion.md)
-- [Register Azure DevOps pipelines](./Interoperability%20-%20Register%20Azure%20DevOps%20pipelines.md)
+- [Bicep to ARM/JSON conversion](./Interoperability%20-%20Bicep%20to%20ARM%20conversion)
+- [Register Azure DevOps pipelines](./Interoperability%20-%20Register%20Azure%20DevOps%20pipelines)
 
 ---

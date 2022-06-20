@@ -45,9 +45,9 @@ The following paragraphs provide an overview of the different phases and shared 
 
 This paragraph provides an overview of the three phases performed by each module pipeline. Further details about the implementation and design of each phase are provided on the dedicated pages linked below.
 
-1. **Static Validation**: Runs a set of static Pester tests on the module and its templates to ensure they comply with the design principles of CARML. Further details for this phase are provided on the corresponding wiki page - see the [Static validation](./The%20CI%20environment%20-%20Static%20validation.md) section.
-1. **Deployment Validation**: An actual Azure deployment is run in a sandbox subscription leveraging a predefined set of parameter files, each validating a different configuration of the same Azure resource in parallel. The test suite is cleaned up by default, removing all test resources post-deployment. Further details for this phase are provided on the corresponding wiki page - see the [Deployment validation](./The%20CI%20environment%20-%20Deployment%20validation.md) section.
-1. **Publishing**: Runs only if the previous steps are successful. A new module version is published to all configured target locations such as template specs, private Bicep registry and Azure DevOps Universal Packages. Published module versions can then be referenced by solutions using them. Further details for this phase are provided on the corresponding wiki page - see the [Publishing](./The%20CI%20environment%20-%20Publishing.md) page.
+1. **Static Validation**: Runs a set of static Pester tests on the module and its templates to ensure they comply with the design principles of CARML. Further details for this phase are provided on the corresponding wiki page - see the [Static validation](./The%20CI%20environment%20-%20Static%20validation) section.
+1. **Deployment Validation**: An actual Azure deployment is run in a sandbox subscription leveraging a predefined set of parameter files, each validating a different configuration of the same Azure resource in parallel. The test suite is cleaned up by default, removing all test resources post-deployment. Further details for this phase are provided on the corresponding wiki page - see the [Deployment validation](./The%20CI%20environment%20-%20Deployment%20validation) section.
+1. **Publishing**: Runs only if the previous steps are successful. A new module version is published to all configured target locations such as template specs, private Bicep registry and Azure DevOps Universal Packages. Published module versions can then be referenced by solutions using them. Further details for this phase are provided on the corresponding wiki page - see the [Publishing](./The%20CI%20environment%20-%20Publishing) page.
 
    <img src="./media/CIEnvironment/pipelineDesignPhases.png" alt="Pipeline phases" height="200">
 
@@ -102,7 +102,7 @@ Each module pipeline comes with the following runtime parameters:
 
 - `'Branch' dropdown`: A dropdown to select the branch to run the pipeline from.
 - `'Remove deployed module' switch`: Can be enabled or disabled and controls whether the test-deployed resources are removed after testing. It is enabled by default.
-- `'Publish prerelease module' switch`: Can be enabled or disabled and allows publishing a prerelease version for the corresponding module when running the pipeline from a branch different than `main|master`. It is disabled by default. For further information of how the input is processed refer to the [Publishing](./The%20CI%20environment%20-%20Publishing.md) dedicated page.
+- `'Publish prerelease module' switch`: Can be enabled or disabled and allows publishing a prerelease version for the corresponding module when running the pipeline from a branch different than `main|master`. It is disabled by default. For further information of how the input is processed refer to the [Publishing](./The%20CI%20environment%20-%20Publishing) dedicated page.
 
   <img src="./media/CIEnvironment/modulePipelineInput.png" alt="Module Pipeline Input" height="300">
 
@@ -142,7 +142,7 @@ The dependencies pipeline comes with the following runtime parameters:
 
 The resources deployed by the dependencies pipeline need to be in place before testing all the modules.
 
-> Note: Some dependency resources (e.g., \[storage account], \[Key Vault] and \[event hub namespace]) require a globally unique resource name. By default, the parameter files make use of the placeholder token `'<<namePrefix>>'` to make all resource names specific to an environment. Refer to [Parameter File Tokens Design](./The%20CI%20environment%20-%20Token%20replacement.md) for more details.
+> Note: Some dependency resources (e.g., \[storage account], \[Key Vault] and \[event hub namespace]) require a globally unique resource name. By default, the parameter files make use of the placeholder token `'<<namePrefix>>'` to make all resource names specific to an environment. Refer to [Parameter File Tokens Design](./The%20CI%20environment%20-%20Token%20replacement) for more details.
 
 Since also dependency resources are in turn subject to dependencies with each other, resources are deployed in the following grouped order.
 
@@ -256,7 +256,7 @@ The repository includes two major ReadMe files that should stay in sync with the
 
 The first can be found in the repository root (`README.md`) and the second in the modules folder (`arm/README.md`).
 
-The ReadMe pipeline is triggered each time changes are pushed to the `main` branch and only if a template in the `arm` folder is being altered. The pipeline leverages the script documented on the [GitHub ReadMe module table update](./The%20CI%20environment%20-%20GitHub%20ReadMe%20module%20table%20update.md) page.
+The ReadMe pipeline is triggered each time changes are pushed to the `main` branch and only if a template in the `arm` folder is being altered. The pipeline leverages the script documented on the [GitHub ReadMe module table update](./The%20CI%20environment%20-%20GitHub%20ReadMe%20module%20table%20update) page.
 
 Once triggered, the pipeline crawls through the library and updates the tables in each corresponding ReadMe file, creating links to the corresponding pipeline runs and updating the list of entries.
 

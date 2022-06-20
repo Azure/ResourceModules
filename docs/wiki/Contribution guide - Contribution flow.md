@@ -31,7 +31,7 @@ How you proceed from here, depends on the scenario:
 
 # Environment setup
 
-The preferred method of contribution requires you to create your own fork and create pull requests into the source repository from there. To set the fork up, please follow the process described [here](./Getting%20started%20-%20Scenario%202%20Onboard%20module%20library%20and%20CI%20environment.md).
+The preferred method of contribution requires you to create your own fork and create pull requests into the source repository from there. To set the fork up, please follow the process described [here](./Getting%20started%20-%20Scenario%202%20Onboard%20module%20library%20and%20CI%20environment).
 
 The approach you should take, depends on your scenario:
 
@@ -45,11 +45,11 @@ How you proceed from here, depends on your scenario:
 
 - In case you want to contribute to the CARML wiki, your updates need to happen through the main repo under the [docs/wiki](https://github.com/Azure/ResourceModules/tree/main/docs/wiki) folder. A dedicated pipeline included in the repository will perform a sync to the CARML wiki, once your contribution is merged.
 
-- In case your contribution involves changes to the library (the modules) and/or to the CI environment (the pipelines), we kindly ask you to first review the [Module design](./The%20library%20-%20Module%20design.md) and/or the [Pipeline design](./The%20CI%20environment%20-%20Pipeline%20design.md) sections respectively, to make sure your contribution complies with the repository's design and principles.
+- In case your contribution involves changes to the library (the modules) and/or to the CI environment (the pipelines), we kindly ask you to first review the [Module design](./The%20library%20-%20Module%20design) and/or the [Pipeline design](./The%20CI%20environment%20-%20Pipeline%20design) sections respectively, to make sure your contribution complies with the repository's design and principles.
 
 - If your contribution involves the creation of a new module or an update to an existing module:
-  - Make sure you also reflect your changes in the module's `readme.md` file. Refer to the [Generate module Readme](./Contribution%20guide%20-%20Generate%20module%20Readme.md) section for details on how to leverage the Readme generator utility to support you with this task.
-  - If you are adding or updating role assignments to resources deployable by the module, refer to the [Get formatted RBAC roles](./Contribution%20guide%20-%20Get%20formatted%20RBAC%20roles.md) section for details on how to leverage the RBAC roles formatting utility to support you with this task.
+  - Make sure you also reflect your changes in the module's `readme.md` file. Refer to the [Generate module Readme](./Contribution%20guide%20-%20Generate%20module%20Readme) section for details on how to leverage the Readme generator utility to support you with this task.
+  - If you are adding or updating role assignments to resources deployable by the module, refer to the [Get formatted RBAC roles](./Contribution%20guide%20-%20Get%20formatted%20RBAC%20roles) section for details on how to leverage the RBAC roles formatting utility to support you with this task.
   - If applicable, make sure you set or update the major and minor versions in the corresponding module `version.json` file.
 
 # Validate the contribution
@@ -58,8 +58,8 @@ Once the contribution is implemented and the changes are pushed to your forked r
 
 - In case you want to contribute to the documentation, you can skip this step.
 
-- In case your contribution involves changes to the library (the modules) and/or to the CI environment (the pipelines), we kindly ask you to validate your updates in your own cloud environment before requesting to merge them to the main repo. Test your code leveraging the CARML CI environment, as detailed in the [Pipeline usage](./The%20CI%20environment%20-%20Pipeline%20usage.md) section.
-   > **Note**: In case your contribution involves changes to a module, you can also optionally leverage the [Validate module locally](./Contribution%20guide%20-%20Validate%20module%20locally.md) utility to validate the updated module from your local host before validating it through its pipeline.
+- In case your contribution involves changes to the library (the modules) and/or to the CI environment (the pipelines), we kindly ask you to validate your updates in your own cloud environment before requesting to merge them to the main repo. Test your code leveraging the CARML CI environment, as detailed in the [Pipeline usage](./The%20CI%20environment%20-%20Pipeline%20usage) section.
+   > **Note**: In case your contribution involves changes to a module, you can also optionally leverage the [Validate module locally](./Contribution%20guide%20-%20Validate%20module%20locally) utility to validate the updated module from your local host before validating it through its pipeline.
 
 # Open a PR
 

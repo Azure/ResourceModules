@@ -29,7 +29,7 @@ There are 2 types of tokens that can be applied on a parameter file:
 
 ## Default Tokens
 
-These are tokens constructed from environment variables, which are defined in the workflow (Pipeline). Review [Getting Started - GitHub specific prerequisites](./Getting%20Started.md) for more information on these environment variables.
+These are tokens constructed from environment variables, which are defined in the workflow (Pipeline). Review [Getting Started - GitHub specific prerequisites](./Getting%20Started) for more information on these environment variables.
 
 - `<<subscriptionId>>`: Will point to the Azure subscription.
 - `<<managementGroupId>>`: Will point to the Azure an Azure Management Group.

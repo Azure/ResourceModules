@@ -4,42 +4,42 @@ The objective of this repository is to provide a template library that can accel
 
 This wiki describes the content of this repository, its modules, pipelines, and possible options on how to use them and how to contribute to this project.
 
-If you're unfamiliar with Infrastructure as Code, or wonder how you can use the content of this repository in your deployments, check out [The context](./The%20context.md) section of this wiki.
+If you're unfamiliar with Infrastructure as Code, or wonder how you can use the content of this repository in your deployments, check out [The context](./The%20context) section of this wiki.
 
 ### _Navigation_
 
-- [The context](./The%20context.md)
-  - [CARML overview](./The%20context%20-%20CARML%20overview.md)
-    - [The library](./The%20context%20-%20CARML%20library.md)
-    - [The CI environment](./The%20context%20-%20CARML%20CI%20environment.md)
-- [Getting started](./Getting%20started.md)
-  - [**Scenario 1:** Consume module library only](./Getting%20started%20-%20Scenario%201%20Consume%20library.md)
-  - [**Scenario 2:** Onboard module library and CI environment](./Getting%20started%20-%20Scenario%202%20Onboard%20module%20library%20and%20CI%20environment.md)
-    - [Check namePrefix availability](./Getting%20started%20-%20Check%20NamePrefix%20availability.md)
-  - [**Scenario 3:** Contribute](./Getting%20started%20-%20Scenario%203%20Contribute.md)
-- [The library](./The%20library.md)
-  - [Module design](./The%20library%20-%20Module%20design.md)
-  - [Module usage](./The%20library%20-%20Module%20usage.md)
-- [The CI environment](./The%20CI%20environment.md)
-  - [Pipeline design](./The%20CI%20environment%20-%20Pipeline%20design.md)
-    - [Static validation](./The%20CI%20environment%20-%20Static%20validation.md)
-    - [Deployment validation](./The%20CI%20environment%20-%20Deployment%20validation.md)
-    - [Publishing](./The%20CI%20environment%20-%20Publishing.md)
-    - [Token replacement](./The%20CI%20environment%20-%20Token%20replacement.md)
-    - [GitHub ReadMe module table update](./The%20CI%20environment%20-%20GitHub%20ReadMe%20module%20table%20update.md)
-  - [Pipeline usage](./The%20CI%20environment%20-%20Pipeline%20usage.md)
-- [Interoperability](./Interoperability.md)
-  - [Bicep to ARM/JSON conversion](./Interoperability%20-%20Bicep%20to%20ARM%20conversion.md)
-  - [Register Azure DevOps pipelines](./Interoperability%20-%20Register%20Azure%20DevOps%20pipelines.md)
-- [Contribution guide](./Contribution%20guide.md)
-  - [Contribution flow](./Contribution%20guide%20-%20Contribution%20flow.md)
-  - [Generate module Readme](./Contribution%20guide%20-%20Generate%20module%20Readme.md)
-  - [Get formatted RBAC roles](./Contribution%20guide%20-%20Get%20formatted%20RBAC%20roles.md)
-  - [Validate module locally](./Contribution%20guide%20-%20Validate%20module%20locally.md)
-- [Solution creation](./Solution%20creation.md)
+- [The context](./The%20context)
+  - [CARML overview](./The%20context%20-%20CARML%20overview)
+    - [The library](./The%20context%20-%20CARML%20library)
+    - [The CI environment](./The%20context%20-%20CARML%20CI%20environment)
+- [Getting started](./Getting%20started)
+  - [**Scenario 1:** Consume module library only](./Getting%20started%20-%20Scenario%201%20Consume%20library)
+  - [**Scenario 2:** Onboard module library and CI environment](./Getting%20started%20-%20Scenario%202%20Onboard%20module%20library%20and%20CI%20environment)
+    - [Check namePrefix availability](./Getting%20started%20-%20Check%20NamePrefix%20availability)
+  - [**Scenario 3:** Contribute](./Getting%20started%20-%20Scenario%203%20Contribute)
+- [The library](./The%20library)
+  - [Module design](./The%20library%20-%20Module%20design)
+  - [Module usage](./The%20library%20-%20Module%20usage)
+- [The CI environment](./The%20CI%20environment)
+  - [Pipeline design](./The%20CI%20environment%20-%20Pipeline%20design)
+    - [Static validation](./The%20CI%20environment%20-%20Static%20validation)
+    - [Deployment validation](./The%20CI%20environment%20-%20Deployment%20validation)
+    - [Publishing](./The%20CI%20environment%20-%20Publishing)
+    - [Token replacement](./The%20CI%20environment%20-%20Token%20replacement)
+    - [GitHub ReadMe module table update](./The%20CI%20environment%20-%20GitHub%20ReadMe%20module%20table%20update)
+  - [Pipeline usage](./The%20CI%20environment%20-%20Pipeline%20usage)
+- [Interoperability](./Interoperability)
+  - [Bicep to ARM/JSON conversion](./Interoperability%20-%20Bicep%20to%20ARM%20conversion)
+  - [Register Azure DevOps pipelines](./Interoperability%20-%20Register%20Azure%20DevOps%20pipelines)
+- [Contribution guide](./Contribution%20guide)
+  - [Contribution flow](./Contribution%20guide%20-%20Contribution%20flow)
+  - [Generate module Readme](./Contribution%20guide%20-%20Generate%20module%20Readme)
+  - [Get formatted RBAC roles](./Contribution%20guide%20-%20Get%20formatted%20RBAC%20roles)
+  - [Validate module locally](./Contribution%20guide%20-%20Validate%20module%20locally)
+- [Solution creation](./Solution%20creation)
 - Upgrade guideline.mds
-  - [Upgrade from 0.3.1 to 0.4.0](./Upgrade%20from%200.3.1%20to%200.4.0.md)
-- [Known issues](./Known%20issues.md)
+  - [Upgrade from 0.3.1 to 0.4.0](./Upgrade%20from%200.3.1%20to%200.4.0)
+- [Known issues](./Known%20issues)
 
 ---
 
@@ -51,7 +51,7 @@ Following, you can find an abstract overview of everything in- and out-of-scope 
 
 - **Module library:** A collection of comprehensive, reusable, Bicep-based building blocks to deploy Azure resources, that can be combined to create & orchestrate more complex, multi-module Azure solutions.
 - **CI environment:** Pipelines to validate modules & publish the successfully validated ones to a target location, using semantic versioning. Available with both GitHub Workflows and Azure DevOps pipelines.
-- **Documentation:** Including design principles and usage of [The library](./The%20library.md) and [The CI environment](./The%20CI%20environment.md) as well as step-by-step guidelines on how to start leveraging them - see in the [Getting started](./Getting%20started.md) section.
+- **Documentation:** Including design principles and usage of [The library](./The%20library) and [The CI environment](./The%20CI%20environment) as well as step-by-step guidelines on how to start leveraging them - see in the [Getting started](./Getting%20started) section.
 
 ## Out of Scope
 

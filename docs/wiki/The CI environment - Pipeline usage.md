@@ -33,7 +33,7 @@ To validate updates to a module template, you can perform the following steps:
 
 Once the pipeline concludes, it will either be in a green (success) or red (failed) state, depending on how the module performed.
 
-Pipeline logs are available for troubleshooting and provide detailed information in case of failures. If errors occur in the [Static validation](./The%20CI%20environment%20-%20Static%20validation.md) phase, you may only see the failed test and need to `expand` the error message. How this looks like depends on the [DevOps platform](#devops-tool-specific-guidance) you use.
+Pipeline logs are available for troubleshooting and provide detailed information in case of failures. If errors occur in the [Static validation](./The%20CI%20environment%20-%20Static%20validation) phase, you may only see the failed test and need to `expand` the error message. How this looks like depends on the [DevOps platform](#devops-tool-specific-guidance) you use.
 
 ## Add a new module pipeline
 
