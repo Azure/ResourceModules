@@ -65,5 +65,5 @@ resource eventHubNamespace 'Microsoft.EventHub/namespaces@2021-11-01' = {
 output storageAccountResourceId string = storageAccount.id
 output logAnalyticsWorkspaceResourceId string = logAnalyticsWorkspace.id
 output eventHubNamespaceResourceId string = eventHubNamespace.id
-output eventHubAuthorizationRuleId string = eventHubNamespace::eventHub.id
-output eventHubNamespaceEventHubName string = eventHubNamespace::authorizationRule.id
+output eventHubNamespaceEventHubName string = eventHubNamespace::eventHub.id
+output eventHubAuthorizationRuleId string = eventHubNamespace::authorizationRule.id
