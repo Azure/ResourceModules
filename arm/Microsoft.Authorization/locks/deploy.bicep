@@ -1,8 +1,5 @@
 targetScope = 'subscription'
 
-@description('Optional. The name of the lock.')
-param name string = '${level}-lock'
-
 @allowed([
   'CanNotDelete'
   'ReadOnly'
@@ -44,7 +41,7 @@ module lock_sub 'subscription/deploy.bicep' = if (!empty(subscriptionId) && empt
   name: '${uniqueString(deployment().name, location)}-Lock-Sub-Module'
   scope: subscription(subscriptionId)
   params: {
-    name: name
+    name: '${subscription().displayName}-${level}-lock'
     level: level
     notes: notes
     enableDefaultTelemetry: enableReferencedModulesTelemetry
@@ -55,7 +52,7 @@ module lock_rg 'resourceGroup/deploy.bicep' = if (!empty(subscriptionId) && !emp
   name: '${uniqueString(deployment().name, location)}-Lock-RG-Module'
   scope: resourceGroup(subscriptionId, resourceGroupName)
   params: {
-    name: name
+    name: '${resourceGroupName}-${level}-lock'
     level: level
     notes: notes
     enableDefaultTelemetry: enableReferencedModulesTelemetry
