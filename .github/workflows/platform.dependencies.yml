@@ -23,6 +23,7 @@ on:
   #     - 'utilities/pipelines/dependencies/**'
 
 env:
+  variablesPath: 'global.variables.yml'
   location: 'WestEurope'
   defaultResourceGroupName: 'validation-rg'
   resourceGroupNameArtifacts: 'artifacts-rg'
@@ -49,6 +50,10 @@ jobs:
         uses: actions/checkout@v2
         with:
           fetch-depth: 0
+      - name: Set environment variables
+        uses: ./.github/actions/templates/setEnvironmentVariables
+        with:
+          variablesPath: ${{ env.variablesPath }}
       - name: 'Deploy module'
         uses: ./.github/actions/templates/validateModuleDeployment
         with:
