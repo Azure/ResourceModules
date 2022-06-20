@@ -212,6 +212,8 @@ runs:
               }
           }
 
+          Write-Output ($parameters | Out-String)
+
           if($parameters -contains 'namePrefix') {
             $functionInput['additionalParameters'] += @{
               namePrefix = $projectSettings.parameterFileTokens.localTokens[0].value
